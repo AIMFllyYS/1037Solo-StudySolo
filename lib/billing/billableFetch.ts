@@ -48,7 +48,10 @@ export async function billableJsonFetch(url: RequestInfo | URL, init: RequestIni
     ...price, input: Math.max(price.input, price.cachedInput, price.cacheWrite ?? 0),
   }) : usageCny({ input: quantity * 1_000_000, output: 0, cached: 0, written: 0 }, { input: perUnit, cachedInput: perUnit, output: 0 });
   const call = allocateCall(cap, billing.model);
-  const admission = await reserveCredit(call.userId, call.key, cap, { ...call.metadata, kind: billing.kind });
+  const admission = await reserveCredit(call.userId, call.key, cap, {
+    ...call.metadata, kind: billing.kind, priceSnapshot: price ?? { perUnit },
+    creditsPerCny: process.env.ECOSYSTEM_CREDITS_PER_CNY || "1",
+  });
   if (init.signal?.aborted) { await cancelCredit(admission); throw init.signal.reason; }
   // Transport failures are ambiguous and deliberately leave their reservation held.
   const response = await fetch(url, init);

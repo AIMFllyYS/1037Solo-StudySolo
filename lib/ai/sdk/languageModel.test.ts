@@ -37,6 +37,35 @@ function fixtureModel(reasoningField?: string) {
 
 const fixturePrompt = [{ role: "user" as const, content: [{ type: "text" as const, text: "你好" }] }];
 
+test("platform-managed custom endpoint uses actual model tariff, not BYOK overhead", async (t) => {
+  let charged = -1;
+  let calls = 0;
+  t.mock.method(globalThis, "fetch", async () => {
+    calls += 1;
+    return Response.json({ id: "fixture", object: "chat.completion", created: 1,
+      model: "z-ai/glm-5.3-flash", choices: [{ index: 0, finish_reason: "stop", message: { role: "assistant", content: "标题" } }],
+      usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 },
+    });
+  });
+  const credits: CreditDriver = { ...fixtureCredits, async settleMicro(_admission, amount) { charged = amount; } };
+  const resolved = resolveProductionLanguageModel("custom", {
+    baseUrl: "https://fixture.invalid/v1", apiKey: "fixture-only", model: "z-ai/glm-5.3-flash",
+  }, { platformManagedCredentials: true, creditDriver: credits });
+  await runPaidContext({ userId: "00000000-0000-4000-8000-000000000001", requestId: crypto.randomUUID(), route: "test", sequence: 0, reservedCny: 0 },
+    () => resolved.model.doGenerate({ prompt: fixturePrompt }));
+  assert.equal(calls, 1);
+  assert.equal(charged, 22);
+});
+
+test("unpriced platform-managed custom endpoint is rejected before provider network", async (t) => {
+  const network = t.mock.method(globalThis, "fetch", async () => { throw new Error("must not call"); });
+  const resolved = resolveLanguageModel("custom", {
+    baseUrl: "https://fixture.invalid/v1", apiKey: "fixture-only", model: "unpriced-server-title",
+  }, { platformManagedCredentials: true });
+  await assert.rejects(async () => await resolved.model.doGenerate({ prompt: fixturePrompt }), /定价/);
+  assert.equal(network.mock.callCount(), 0);
+});
+
 async function readParts(stream: ReadableStream<LanguageModelV4StreamPart>) {
   const reader = stream.getReader();
   const parts: LanguageModelV4StreamPart[] = [];

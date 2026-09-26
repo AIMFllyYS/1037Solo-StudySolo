@@ -71,6 +71,8 @@ export interface ResolvedLanguageModel {
 }
 
 export interface ResolveLanguageModelOptions {
+  /** Server-configured custom endpoint, not a user-supplied BYOK credential. Never read from request JSON. */
+  platformManagedCredentials?: boolean;
   /** Server-owned dependency injection for integration tests; never accepted from JSON. */
   creditDriver?: CreditDriver;
   /** An automatic selection is a closed candidate set, including every fallback hop. */
@@ -288,7 +290,12 @@ export function resolveLanguageModel(
   if (!providers.length) throw new Error('当前没有可用的自动模型，请稍后重试或手动选择模型。');
   let actualProvider = providers[0] ?? primary;
   const candidates: FailoverCandidate[] = providers.map((p) => ({
-    model: withProviderAdmission(buildBaseModel(p), (!p.isCustom && getModelInfo(p.apiModelId) ? p.apiModelId : p.registryId), p.isCustom === true, options.creditDriver),
+    model: withProviderAdmission(
+      buildBaseModel(p),
+      options.platformManagedCredentials || (!p.isCustom && getModelInfo(p.apiModelId)) ? p.apiModelId : p.registryId,
+      p.isCustom === true && options.platformManagedCredentials !== true,
+      options.creditDriver,
+    ),
     label: p.apiModelId,
   }));
 

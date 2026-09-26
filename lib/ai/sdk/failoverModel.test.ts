@@ -4,8 +4,21 @@ import { APICallError } from "@ai-sdk/provider";
 import type { LanguageModelV4, LanguageModelV4StreamPart } from "@ai-sdk/provider";
 import { MockLanguageModelV4, convertArrayToReadableStream, convertReadableStreamToArray } from "ai/test";
 import { createFailoverLanguageModel, defaultIsRecoverable } from "./failoverModel.ts";
+import { CreditAdmissionError } from "@/lib/billing/centralCredits";
 
 const callOptions = { prompt: [{ role: "user" as const, content: [{ type: "text" as const, text: "hi" }] }] } as Parameters<LanguageModelV4["doStream"]>[0];
+
+test("failover never bypasses credit admission even after its attempt timer expires", async () => {
+  const denied = new MockLanguageModelV4({ doStream: ({ abortSignal }) => new Promise((_, reject) => {
+    abortSignal?.addEventListener("abort", () => reject(new CreditAdmissionError("duplicate admission", 409)), { once: true });
+  }) });
+  let fallbackCalls = 0;
+  const backup = new MockLanguageModelV4({ doStream: async () => { fallbackCalls++; return { stream: textStream("must not call") }; } });
+  const model = createFailoverLanguageModel([{ model: denied, label: "denied" }, { model: backup, label: "backup" }],
+    { firstChunkTimeoutMs: 5, isRecoverable: () => true });
+  await assert.rejects(async () => await model.doStream(callOptions), /duplicate admission/);
+  assert.equal(fallbackCalls, 0);
+});
 
 function apiError(statusCode: number, body = ""): APICallError {
   return new APICallError({

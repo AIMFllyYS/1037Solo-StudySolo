@@ -1,10 +1,23 @@
-import { test, mockPaidFetch } from "@/tests/helpers/paidAiFixture";
+import { test, mockPaidFetch, fixtureLedger } from "@/tests/helpers/paidAiFixture";
+import { runPaidContext } from "@/lib/billing/paidContext";
+import { fixtureUser } from "@/tests/helpers/paidAiFixture";
 import assert from "node:assert/strict";
 import { afterEach, } from "node:test";
 import { FAST_MODEL_TIMEOUT_MS, callFastModel, fastModelConfig } from "./fastModel.ts";
 
 const KEYS = ["AI_FAST_BASE_URL", "AI_FAST_API_KEY", "AI_FAST_MODEL", "QINIU_BASE_URL", "QINIU_API_KEY"] as const;
 const saved = new Map<string, string | undefined>();
+
+test("callFastModel: duplicate admission propagates and never buys a fallback call", async (t) => {
+  setEnv({ QINIU_API_KEY: "fixture-only" });
+  const provider = mockPaidFetch(t, async () => Response.json({ choices: [{ message: { content: "title" } }], usage: { prompt_tokens: 10, completion_tokens: 2 } }));
+  const run = () => runPaidContext({ userId: fixtureUser, requestId: "fixed-title-request", route: "/api/chat-title", sequence: 0, reservedCny: 0 },
+    () => callFastModel({ system: "s", user: "u", maxTokens: 8 }));
+  assert.ok(await run());
+  await assert.rejects(run, error => (error as { status?: number }).status === 409);
+  assert.equal(provider.mock.callCount(), 1);
+  assert.equal(fixtureLedger.seen.size, 1);
+});
 function setEnv(patch: Partial<Record<(typeof KEYS)[number], string | undefined>>) {
   for (const key of KEYS) {
     if (!saved.has(key)) saved.set(key, process.env[key]);

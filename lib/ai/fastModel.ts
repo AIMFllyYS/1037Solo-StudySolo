@@ -1,4 +1,5 @@
 import { billableJsonFetch } from "@/lib/billing/billableFetch";
+import { CreditAdmissionError } from "@/lib/billing/centralCredits";
 // 极轻量「快速模型」调用（服务端）：只服务内部调度——自动路由选模型、标签页命名。
 //
 // 为什么不用 AI SDK 走一遍：这类调用要的是**确定性**——必须真正关掉思考、temperature 0、
@@ -6,7 +7,7 @@ import { billableJsonFetch } from "@/lib/billing/billableFetch";
 // /chat/completions 最可预测、也最少开销（少几层封装，单次 200–600ms）。
 //
 // 默认用七牛云的 doubao-seed-2.0-mini：实测关思考后 max_tokens=8 就能返回干净 JSON，
-// 单次成本可忽略；失败一律返回 null，调用方回落到规则或本地兜底，绝不把主流程卡在这里。
+// 普通上游失败返回 null，调用方可回落到规则；身份、余额和幂等拒绝必须向上传递。
 //
 // env 在**每次请求**读取（对比 provider.ts 的模块级读取）：这两个变量属于"运维调优"，
 // 改完应当立刻生效，而不是重启进程。
@@ -61,8 +62,7 @@ function readNumber(value: unknown): number {
 }
 
 /**
- * 调用快速模型。任何失败（未配置 / 超时 / 非 2xx / 解析不出文本）都返回 null，
- * 由调用方决定回落策略——这条链路永远不能成为主流程的单点故障。
+ * 普通上游失败返回 null；中央准入或结算错误向上传递，避免再买一次备用调用。
  */
 export async function callFastModel(input: CallFastModelInput): Promise<FastModelResult | null> {
   const config = fastModelConfig();
@@ -107,7 +107,9 @@ export async function callFastModel(input: CallFastModelInput): Promise<FastMode
       elapsedMs: Date.now() - startedAt,
       model: config.model,
     };
-  } catch {
+  } catch (error) {
+    // A duplicate/denied admission must stop the request, not buy a fallback call.
+    if (error instanceof CreditAdmissionError) throw error;
     return null;
   }
 }

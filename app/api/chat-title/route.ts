@@ -94,7 +94,7 @@ async function handlePOST(req: NextRequest) {
   try {
     // Title credentials/model deliberately have their own precedence. Resolve
     // this explicit endpoint as custom so unknown title models never become Flash.
-    const resolved = resolveLanguageModel("custom", provider);
+    const resolved = resolveLanguageModel("custom", provider, { platformManagedCredentials: true });
     const result = await generateText({
       model: resolved.model,
       instructions: SESSION_TITLE_SYSTEM_PROMPT,
