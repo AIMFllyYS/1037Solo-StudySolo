@@ -50,6 +50,16 @@ function MembershipSponsorWindow() {
         </p>
 
         <a
+          href="https://1037solo.com/me#data"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-xl border border-[var(--line)] bg-[var(--bg-muted)] px-3.5 py-3 text-[13px] text-[var(--ink)] hover:border-[var(--md-sys-color-primary)]"
+        >
+          统一会员与订单中心
+          <span className="mt-1 block text-[11px] text-[var(--ink-soft)]">前往 1037Solo 官网查看会员、额度及测试订单；暂未开放真实收款。</span>
+        </a>
+
+        <a
           href={GITHUB_REPO_URL}
           target="_blank"
           rel="noopener noreferrer"
