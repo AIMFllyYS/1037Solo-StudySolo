@@ -36,7 +36,9 @@ const allowBob = async (token: string) => (token === "valid-bob" ? { id: "bob" }
 test("proxy matcher 覆盖全部 /api（剥掉伪造的可信 header），gate 只拦付费路由", () => {
   // x-studyreview-user-id 是 proxy 验证后注入的内部信号：matcher 必须罩住每一条
   // /api 请求才能先剥掉客户端自报值，而不是只罩 PAID_AI_API_PATHS。
-  assert.deepEqual(config.matcher, ["/api/:path*"]);
+  // /login 也在 matcher 内：历史域名拿不到 Account 共享 cookie，proxy 需要在那里
+  // 308 到正式域名，不再提供独立登录入口。
+  assert.deepEqual(config.matcher, ["/api/:path*", "/login"]);
   for (const path of PAID_AI_API_PATHS) {
     assert.ok(path.startsWith("/api/"), `${path} 应被 /api/:path* 覆盖`);
     assert.equal(isPaidAiApiPath(path), true);

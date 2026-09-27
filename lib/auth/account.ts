@@ -1,14 +1,19 @@
 import { tryGetBrowserAuthClient } from "./browserClient";
 import { snapshotAuthSession, type AuthSession } from "./session";
+import { CANONICAL_SITE_ORIGIN, isFirstPartyHost } from "./authMode";
 
 export const ACCOUNT_URL = process.env.NEXT_PUBLIC_ACCOUNT_URL || "https://account.1037solo.com";
 export function accountUrl(action: "login" | "register" | "forgot-password" | "update-password" | "security") {
   if(typeof window!=="undefined"){
     const host=window.location.hostname;
-    if(host!=="1037solo.com"&&!host.endsWith(".1037solo.com")){
-      const url=new URL('/api/account/oauth/start',window.location.origin);
+    if(!isFirstPartyHost(host)){
+      // 历史域名（notebook1b/notebook2a.husteread.icu）不在 1037solo.com 下，
+      // 拿不到 Account 写在 .1037solo.com 的共享会话，因此不再单独登录：
+      // 一律去正式域名的登录页，并带上用户原本要去的地址。
       const next=(window.location.pathname==='/login'||window.location.pathname.startsWith('/auth/'))?'/':window.location.pathname+window.location.search;
-      url.searchParams.set('next',next);url.searchParams.set('action',action);return url.toString();
+      const url=new URL('/login',CANONICAL_SITE_ORIGIN);
+      url.searchParams.set('next',next);
+      return url.toString();
     }
   }
   const url = new URL(`/${action}`, ACCOUNT_URL);
