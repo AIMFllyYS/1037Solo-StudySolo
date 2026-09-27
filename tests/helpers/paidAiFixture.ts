@@ -8,7 +8,7 @@ export const fixtureUser = "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee";
 const origin = "https://paid-fixture.supabase.co";
 let token = "", jwk: unknown;
 const env = { SUPABASE_URL: origin, NEXT_PUBLIC_SUPABASE_URL: origin, SUPABASE_SERVICE_ROLE_KEY: "dummy", NEXT_PUBLIC_SUPABASE_ANON_KEY: "fixture-public-only",
-  ECOSYSTEM_MODEL_PRICES_JSON: JSON.stringify(Object.fromEntries(["doubao-seed-2.0-mini","mini","mini-router","title-unknown-model","title-model","embedding-3","BAAI/bge-m3"].map(id=>[id,{input:0.5,cachedInput:0.5,output:0.5}]))),
+  ECOSYSTEM_MODEL_PRICES_JSON: JSON.stringify(Object.fromEntries(["doubao-seed-2.0-mini","mini","mini-router","title-unknown-model","title-model","title-bill-model","embedding-3","BAAI/bge-m3"].map(id=>[id,{input:0.5,cachedInput:0.5,output:0.5}]))),
   ECOSYSTEM_SERVICE_PRICES_JSON: JSON.stringify({"search:search_pro":0.001,"byok:search:*":0.001,"search:api.perplexity.ai":0.001,"search:sonar":0.001,"search:kimi-k2.6":0.001,"image-search:unsplash":0,"rerank:BAAI/bge-reranker-v2-m3":0.001}) };
 const saved = Object.fromEntries(Object.keys(env).map(k=>[k,process.env[k]]));
 export const fixtureLedger = { available: 100000000, events: [] as string[], seen: new Set<string>(), active: true, factors: [] as object[] };

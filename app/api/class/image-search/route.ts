@@ -1,3 +1,4 @@
+import {configuredUnitRate} from "@/lib/billing/unitRate";
 import {z} from 'zod';
 import {extractAccessToken,verifySupabaseAccessToken} from '@/lib/auth/aiGate';
 import {reserveCredit,settleCredit,cancelCredit,CreditAdmissionError} from '@/lib/billing/centralCredits';
@@ -8,8 +9,8 @@ export async function POST(request:Request){
  if(user.mfaRequired)return Response.json({error:'请完成两步验证'},{status:403});
  try{
   const {query}=z.object({query:z.string().min(1).max(200)}).parse(await request.json());
-  const key=process.env.CLASS_IMAGE_SEARCH_API_KEY;const cost=Number(process.env.CLASS_IMAGE_SEARCH_CNY_PER_CALL);
-  if(!key||!Number.isFinite(cost)||cost<=0)throw new CreditAdmissionError('课堂图片检索服务或单价未配置',503);
+  const key=process.env.CLASS_IMAGE_SEARCH_API_KEY;const cost=configuredUnitRate(process.env.CLASS_IMAGE_SEARCH_CNY_PER_CALL);
+  if(!key||cost===null)throw new CreditAdmissionError('课堂图片检索服务或单价未配置',503);
   const id=z.string().uuid().parse(request.headers.get('x-request-id')||crypto.randomUUID());
   const admission=await reserveCredit(user.id,`class-image:${id}`,cost,{route:'class-image',provider:'unsplash'});
   const url=new URL('https://api.unsplash.com/search/photos');url.searchParams.set('query',query);url.searchParams.set('per_page','1');

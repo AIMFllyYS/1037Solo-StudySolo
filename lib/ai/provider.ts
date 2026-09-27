@@ -99,6 +99,7 @@ export interface CustomProvider {
 }
 
 export interface ResolvedProvider {
+  billingProvider?: ProviderKind;
   /** Built-in OpenAI gateway uses its own sampling defaults, not the calling feature's temperature. */
   gatewayDefaults?: boolean;
   temperature?: number;
@@ -298,6 +299,7 @@ function resolveBuiltinEndpoint(
     ?? effectiveInfo;
 
   return {
+    billingProvider: endpoint?.provider ?? "siliconflow",
     registryId: effectiveId,
     apiModelId,
     baseUrl: cred.baseUrl,

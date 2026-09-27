@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import type { LanguageModelV4 } from "@ai-sdk/provider";
 import { withProviderAdmission, type CreditDriver } from "./providerAdmission";
@@ -12,19 +12,19 @@ import { cnyToMicrocredits } from "./centralCredits";
 test("real PostgreSQL admission/settlement: duplicate and insufficient funds never invoke provider", {
   skip: process.env.RUN_LOCAL_CREDIT_TESTS !== "1", timeout: 120_000,
 }, async () => {
-  const container="rootsolo-shared-ledger-test-20260927";
+  const container="rootsolo-target-stage-20260927";
   const db=`studysolo_admission_${Date.now()}`;
   const literal=(s:string)=>"'"+s.replaceAll("'","''")+"'";
   const sql=(query:string,database=db)=>execFileSync("docker",["exec","-i",container,"psql","-U","postgres","-d",database,"-X","-qAt","-v","ON_ERROR_STOP=1"],{input:query,encoding:"utf8",timeout:30_000}).trim();
-  sql(`CREATE DATABASE ${db}`,"postgres");
-  sql(`CREATE SCHEMA auth; CREATE TABLE auth.users(id uuid PRIMARY KEY);
-    CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$ SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
-    GRANT USAGE ON SCHEMA auth,public TO anon,authenticated,service_role;
-    CREATE TABLE public.admission_guard(user_id uuid,request_key text,PRIMARY KEY(user_id,request_key));`);
-  sql(readFileSync(resolve("../1037Solo-Shared/supabase/migrations/202609270001_shared_foundation.sql"),"utf8"));
-  sql(readFileSync(resolve("supabase/migrations/202609270003_usage_detail.sql"),"utf8"));
-  const user="00000000-0000-4000-8000-000000000101",empty="00000000-0000-4000-8000-000000000102";
-  sql(`INSERT INTO auth.users VALUES('${user}'),('${empty}'); SELECT credit_apply('${user}','studysolo','seed','grant',1000000,'{}');`);
+  sql(`CREATE DATABASE ${db} TEMPLATE rootsolo_stage_v2`,"postgres");
+  for(const folder of ["../1037Solo-Shared/supabase/migrations","supabase/migrations"]){
+    for(const name of readdirSync(resolve(folder)).filter(n=>n.startsWith("20260927")&&n.endsWith(".sql")).sort())sql(readFileSync(resolve(folder,name),"utf8"));
+  }
+  sql("CREATE TABLE public.admission_guard(user_id uuid,request_key text,PRIMARY KEY(user_id,request_key));");
+  const user=crypto.randomUUID(),empty=crypto.randomUUID();
+  sql(`INSERT INTO auth.users(id,email,email_confirmed_at) VALUES('${user}','${user}@example.invalid',now()),('${empty}','${empty}@example.invalid',now());
+    INSERT INTO user_profiles(id,email,is_active) VALUES('${user}','${user}@example.invalid',true),('${empty}','${empty}@example.invalid',true);
+    SELECT credit_apply('${user}','studysolo','seed','grant',1000000,'{}');`);
   const credits:CreditDriver={
     async reserve(userId,requestKey,maxCny,metadata){
       sql(`INSERT INTO admission_guard VALUES(${literal(userId)},${literal(requestKey)});`);

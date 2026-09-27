@@ -3,16 +3,17 @@ import {z} from "zod";
 import {extractAccessToken,verifySupabaseAccessToken} from "@/lib/auth/aiGate";
 import {resolveProvider,ENV_MODEL_FLASH,chatCompletionsUrl} from "@/lib/ai/provider";
 import {getModelInfo} from "@/lib/ai/models";
-import {reserveCredit,settleCredit,cancelCredit,CreditAdmissionError,type Admission} from "@/lib/billing/centralCredits";
+import {reserveCredit,settleMicrocredits,cancelCredit,CreditAdmissionError,type Admission} from "@/lib/billing/centralCredits";
+import {tokenTariff,reservationPrice,tierPrice,endpointProvider,type TokenTariff} from "@/lib/billing/tariffs";
+import {measuredTokens,usageCny,usageMicrocredits} from "@/lib/billing/providerAdmission";
 export const runtime="nodejs";export const dynamic="force-dynamic";
 const schema=z.object({messages:z.array(z.record(z.string(),z.unknown())).min(1).max(100),tools:z.array(z.record(z.string(),z.unknown())).max(8).optional(),tool_choice:z.unknown().optional(),stream:z.boolean().optional(),temperature:z.number().min(0).max(2).optional(),max_tokens:z.number().int().positive().optional(),max_completion_tokens:z.number().int().positive().optional()});
-function actualCost(usage:unknown,inputPrice:number,outputPrice:number):number|null{
-  if(!usage||typeof usage!=="object")return null;
-  const value=usage as Record<string,unknown>;
-  const input=Number(value.prompt_tokens);const output=Number(value.completion_tokens);
-  if(!Number.isSafeInteger(input)||!Number.isSafeInteger(output)||input<0||output<0)return null;
-  return (input*inputPrice+output*outputPrice)/1_000_000;
+function actualAmount(usage:unknown,tariff:TokenTariff,ratio:number,inputBound:number,outputLimit:number):number {
+  const measured=measuredTokens(usage);
+  if(!measured||measured.input>inputBound||measured.output>outputLimit)throw new CreditAdmissionError("模型用量缺失或超出边界，额度已预留待核对",503);
+  return usageMicrocredits(measured,tierPrice(tariff,measured.input),ratio);
 }
+
 export async function POST(request:Request){
   const token=extractAccessToken(request.headers);const user=token?await verifySupabaseAccessToken(token):null;
   if(!user)return Response.json({error:{message:"请先登录"}},{status:401});
@@ -22,30 +23,51 @@ export async function POST(request:Request){
     const text=await boundedText(request,128000);if(new TextEncoder().encode(text).length>128000)return Response.json({error:{message:"课堂上下文过长，请分段提问"}},{status:413});
     const body=schema.parse(JSON.parse(text));
     const provider=resolveProvider(process.env.CLASS_AI_MODEL||ENV_MODEL_FLASH);
-    const price=getModelInfo(provider.registryId)?.pricing;
-    if(!provider.configured||provider.apiProtocol!=="openai"||!price||!Number.isFinite(price.input)||!Number.isFinite(price.output)||price.input<=0||price.output<=0)throw new CreditAdmissionError("课堂 AI 模型或价格未配置",503);
+    if(!provider.configured||provider.apiProtocol!=="openai")throw new CreditAdmissionError("课堂 AI 模型未配置",503);
+    const tariff=tokenTariff(provider.billingProvider??endpointProvider(provider.baseUrl),provider.apiModelId);
+    const ratio=Number(process.env.ECOSYSTEM_CREDITS_PER_CNY||"1");
     const outputLimit=Math.min(4096,body.max_tokens||body.max_completion_tokens||2048);
-    const inputBound=new TextEncoder().encode(JSON.stringify(body.messages)+JSON.stringify(body.tools||[])).length+4096;
+    const hasMedia=body.messages.some(m=>Array.isArray(m.content)&&m.content.some(part=>part&&typeof part==='object'&&(part as Record<string,unknown>).type!=='text'));
+    const inputBound=hasMedia?(getModelInfo(provider.registryId)?.contextK??128)*1000:new TextEncoder().encode(JSON.stringify(body.messages)+JSON.stringify(body.tools||[])).length+4096;
+    const reserveCny=usageCny({input:inputBound,output:outputLimit,cached:0,written:0},reservationPrice(tariff,inputBound));
+    const ceiling=Number(process.env.ECOSYSTEM_MAX_REQUEST_CNY||'20');
+    if(!Number.isFinite(ceiling)||ceiling<=0||reserveCny>ceiling)throw new CreditAdmissionError('课堂请求超出额度预留预算',402);
     const key=z.string().uuid().parse(request.headers.get("x-request-id")||crypto.randomUUID());
-    admission=await reserveCredit(user.id,`class-ai:${key}`,(inputBound*price.input+outputLimit*price.output)/1_000_000,{route:"class-ai",model:provider.registryId,max_output_tokens:outputLimit,input_bound:inputBound});
+    admission=await reserveCredit(user.id,`class-ai:${key}`,reserveCny,{route:"class-ai",model:provider.registryId,provider:tariff.provider,upstream_model:provider.apiModelId,priceSnapshot:tariff,creditsPerCny:String(ratio),max_output_tokens:outputLimit,input_bound:inputBound});
     const upstream=await fetch(chatCompletionsUrl(provider.baseUrl),{method:"POST",headers:{Authorization:`Bearer ${provider.apiKey}`,"Content-Type":"application/json"},body:JSON.stringify({...body,model:provider.apiModelId,max_tokens:outputLimit,max_completion_tokens:undefined,stream:body.stream===true,...(body.stream?{stream_options:{include_usage:true}}:{})}),signal:AbortSignal.any([request.signal,AbortSignal.timeout(180000)])});
     if(!upstream.ok){if([400,401,403,404,413,422,429].includes(upstream.status))await cancelCredit(admission);return Response.json({error:{message:`课堂模型服务暂不可用 (${upstream.status})`}},{status:502});}
-    if(!body.stream){const data=await upstream.json();const cost=actualCost(data.usage,price.input,price.output);if(cost===null)throw new CreditAdmissionError("模型未返回用量，额度已预留待核对",503);await settleCredit(admission,cost);return Response.json(data);}
+    if(!body.stream){const data=await upstream.json();await settleMicrocredits(admission,actualAmount(data.usage,tariff,ratio,inputBound,outputLimit));return Response.json(data);}
     if(!upstream.body)throw new Error("Missing provider stream");
-    const reader=upstream.body.getReader();const decoder=new TextDecoder();let buffer='';let usage:unknown;const reserved=admission;
+    const reader=upstream.body.getReader();const decoder=new TextDecoder(),encoder=new TextEncoder();let buffer='';let usage:unknown;const reserved=admission;
+    const terminal:string[]=[];let finished=false,terminalBytes=0;
     const stream=new ReadableStream<Uint8Array>({
       async start(controller){
+        function frame(raw:string){
+          const lines=raw.split('\n').filter(line=>line.startsWith('data:')).map(line=>line.slice(5).trim());
+          let final=false;
+          for(const text of lines){
+            if(text==='[DONE]'){finished=true;final=true;continue;}
+            if(!text)continue;
+            const data=JSON.parse(text);
+            if(data.error)throw new CreditAdmissionError('模型流返回错误，额度保留待核对',503);
+            if(data.usage){usage=data.usage;if(!Array.isArray(data.choices)||data.choices.length===0)final=true;}
+            if(data.choices?.some((c:Record<string,unknown>)=>c.finish_reason)){finished=true;final=true;}
+          }
+          if(final){terminalBytes+=raw.length;if(terminalBytes>256000)throw new Error('Provider terminal frames too large');terminal.push(raw);}
+          else controller.enqueue(encoder.encode(raw+'\n\n'));
+        }
         try{
-          while(true){const chunk=await reader.read();if(chunk.done)break;controller.enqueue(chunk.value);buffer+=decoder.decode(chunk.value,{stream:true});
-            const lines=buffer.split('\n');buffer=lines.pop()||'';
-            for(const line of lines){if(!line.startsWith('data:'))continue;const raw=line.slice(5).trim();if(!raw||raw==='[DONE]')continue;try{const data=JSON.parse(raw);if(data.usage)usage=data.usage;}catch{}}
+          while(true){const chunk=await reader.read();if(chunk.done)break;buffer+=decoder.decode(chunk.value,{stream:true});
+            buffer=buffer.replaceAll('\r\n','\n');const frames=buffer.split('\n\n');buffer=frames.pop()||'';
+            for(const raw of frames)frame(raw);
             if(buffer.length>256000)throw new Error('Provider frame too large');
           }
-          const cost=actualCost(usage,price.input,price.output);
-          if(cost!==null)await settleCredit(reserved,cost);
-          // Missing final usage/disconnect stays reserved; never fabricate a free charge.
+          buffer+=decoder.decode();if(buffer.trim())frame(buffer);
+          if(!finished)throw new CreditAdmissionError('模型流未完整结束，额度保留待核对',503);
+          await settleMicrocredits(reserved,actualAmount(usage,tariff,ratio,inputBound,outputLimit));
+          for(const raw of terminal)controller.enqueue(encoder.encode(raw+'\n\n'));
           controller.close();
-        }catch(error){controller.error(error);}finally{reader.releaseLock();}
+        }catch(error){await reader.cancel(error).catch(()=>{});controller.error(error);}finally{reader.releaseLock();}
       },
       async cancel(){await reader.cancel();},
     });

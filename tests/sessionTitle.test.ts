@@ -59,7 +59,7 @@ test("chat-title：优先走廉价快速模型，失败才回落到原来的中�
   assert.match(route, /callFastModel/);
   assert.match(route, /sanitizeGeneratedTitle/);
   // 回落路径必须还在：快速模型没配时不能连标题都不生成。
-  assert.match(route, /resolveLanguageModel\("custom", provider\)/);
+  assert.match(route, /resolveLanguageModel\("custom", provider, \{ platformManagedCredentials: true \}\)/);
 });
 
 test("useChat generates first-turn titles through the lightweight title endpoint", () => {

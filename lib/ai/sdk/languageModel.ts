@@ -1,3 +1,4 @@
+import { endpointProvider, tokenTariff } from "@/lib/billing/tariffs";
 import { withProviderAdmission, type CreditDriver } from "@/lib/billing/providerAdmission";
 // AI SDK 模型工厂：把 provider.ts 的凭证/端点解析结果装配成一个可直接交给
 // ToolLoopAgent / generateText / streamText 的 LanguageModel。
@@ -286,7 +287,12 @@ export function resolveLanguageModel(
   const supportsTools = info?.tools !== false;
 
   const providers = collectCandidates(primary, custom, options.fallbackModelIds ?? [])
-    .filter((p) => !options.allowedModelIds || options.allowedModelIds.includes(p.registryId));
+    .filter((p) => !options.allowedModelIds || options.allowedModelIds.includes(p.registryId))
+    .filter((p) => {
+      if(!options.allowedModelIds)return true;
+      try{tokenTariff(p.billingProvider??endpointProvider(p.baseUrl),p.apiModelId,p.isCustom===true&&options.platformManagedCredentials!==true);return true;}
+      catch{return false;} // Automatic routing never selects a pending/unpriced channel.
+    });
   if (!providers.length) throw new Error('当前没有可用的自动模型，请稍后重试或手动选择模型。');
   let actualProvider = providers[0] ?? primary;
   const candidates: FailoverCandidate[] = providers.map((p) => ({
@@ -295,6 +301,7 @@ export function resolveLanguageModel(
       options.platformManagedCredentials || (!p.isCustom && getModelInfo(p.apiModelId)) ? p.apiModelId : p.registryId,
       p.isCustom === true && options.platformManagedCredentials !== true,
       options.creditDriver,
+      {provider:p.billingProvider ?? endpointProvider(p.baseUrl),model:p.apiModelId},
     ),
     label: p.apiModelId,
   }));

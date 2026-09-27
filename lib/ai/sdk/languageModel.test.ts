@@ -49,7 +49,7 @@ test("platform-managed custom endpoint uses actual model tariff, not BYOK overhe
   });
   const credits: CreditDriver = { ...fixtureCredits, async settleMicro(_admission, amount) { charged = amount; } };
   const resolved = resolveProductionLanguageModel("custom", {
-    baseUrl: "https://fixture.invalid/v1", apiKey: "fixture-only", model: "z-ai/glm-5.3-flash",
+    baseUrl: "https://api.qnaigc.com/v1", apiKey: "fixture-only", model: "z-ai/glm-5.3-flash",
   }, { platformManagedCredentials: true, creditDriver: credits });
   await runPaidContext({ userId: "00000000-0000-4000-8000-000000000001", requestId: crypto.randomUUID(), route: "test", sequence: 0, reservedCny: 0 },
     () => resolved.model.doGenerate({ prompt: fixturePrompt }));
@@ -64,6 +64,13 @@ test("unpriced platform-managed custom endpoint is rejected before provider netw
   }, { platformManagedCredentials: true });
   await assert.rejects(async () => await resolved.model.doGenerate({ prompt: fixturePrompt }), /定价/);
   assert.equal(network.mock.callCount(), 0);
+});
+
+test("known model name on an unknown managed endpoint cannot borrow Qiniu pricing",async(t)=>{
+  const network=t.mock.method(globalThis,"fetch",async()=>{throw new Error("must not call");});
+  const resolved=resolveLanguageModel("custom",{baseUrl:"https://unpriced.invalid/v1",apiKey:"fixture-only",model:"z-ai/glm-5.3-flash"},{platformManagedCredentials:true});
+  await assert.rejects(async()=>resolved.model.doGenerate({prompt:fixturePrompt}),/定价/);
+  assert.equal(network.mock.callCount(),0);
 });
 
 async function readParts(stream: ReadableStream<LanguageModelV4StreamPart>) {
