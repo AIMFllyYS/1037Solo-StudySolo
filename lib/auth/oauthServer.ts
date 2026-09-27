@@ -4,7 +4,7 @@ import {resolvePublicAuthEnv} from './env';
 import {verifySupabaseAccessToken} from './aiGate';
 export const OAUTH_TRANSIENT_PATH='/api/account/oauth';
 const CANONICAL_SITE_ORIGIN='https://studysolo.1037solo.com';
-const LEGACY_SITE_ORIGINS=new Set(['https://notebook1b.husteread.icu']);
+const LEGACY_SITE_ORIGINS=new Set(['https://notebook1b.husteread.icu','https://notebook2a.husteread.icu']);
 // Public Supabase OAuth client ID; it is intentionally non-secret and has exact
 // production/local callbacks registered. Keep environment override for local clients.
 const DEFAULT_PUBLIC_OAUTH_CLIENT_ID='e469cd5c-2363-4ddd-bf5c-e36562995a9c';
