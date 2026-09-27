@@ -1,4 +1,4 @@
-import {AUTH_ACCESS_COOKIE} from "@/lib/auth/sessionCookie";
+import {hasAccessTokenCookie} from "@/lib/auth/sessionCookie";
 import { NextResponse, type NextRequest } from "next/server";
 import { decideAiGate, TRUSTED_PROXY_USER_HEADER } from "@/lib/auth/aiGate";
 
@@ -18,7 +18,10 @@ export const config = {
 export async function proxy(request: NextRequest) {
   // Authenticated cookie mutations require the actual browser origin. Explicit
   // Bearer APIs are non-ambient; the backend still validates their token.
-  if (!["GET","HEAD","OPTIONS"].includes(request.method) && request.cookies.has(AUTH_ACCESS_COOKIE) && !request.headers.get("authorization")) {
+  // 2026-09-28：改用 hasAccessTokenCookie，同时接受 ss_access_token（当前写入名）
+  // 与历史共享域 access_token。原先只看 AUTH_ACCESS_COOKIE，而该常量曾依赖
+  // SUPABASE_OAUTH_CLIENT_ID，导致与写入端不一致、每个请求都被判为未登录。
+  if (!["GET","HEAD","OPTIONS"].includes(request.method) && hasAccessTokenCookie(request.cookies) && !request.headers.get("authorization")) {
     const origin=request.headers.get("origin");
     const configured=new Set((process.env.APP_ALLOWED_ORIGINS || process.env.NEXT_PUBLIC_APP_URL || "https://notebook1b.husteread.icu,https://study.1037solo.com").split(",").map(v=>v.trim()).filter(Boolean));
     configured.add("https://studysolo.1037solo.com");
