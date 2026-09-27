@@ -42,7 +42,7 @@ Original source: ../1037Solo-Classolo/src (read-only; contains user-owned uncomm
 
 ## Retained-domain OAuth deployment contract
 
-Production remains `https://notebook1b.husteread.icu`; local development is `http://localhost:35349`. Each is a separately registered public PKCE client with exact callback `/api/account/oauth/callback`. Configure `SUPABASE_OAUTH_CLIENT_ID`, `NEXT_PUBLIC_APP_URL`, `APP_ALLOWED_ORIGINS`, RootSolo `NEXT_PUBLIC_SUPABASE_URL` / publishable anon key and server-only service key. A client secret is unnecessary for these public clients. Do not put service/provider keys in `NEXT_PUBLIC_*` variables.
+Canonical production origin is `https://studysolo.1037solo.com`; `https://notebook1b.husteread.icu` remains a compatibility alias during migration. Local development is `http://localhost:35349`. Production and local callbacks are separately registered public PKCE clients with exact callback `/api/account/oauth/callback`. Configure `SUPABASE_OAUTH_CLIENT_ID`, `NEXT_PUBLIC_APP_URL`, `APP_ALLOWED_ORIGINS`, RootSolo `NEXT_PUBLIC_SUPABASE_URL` / publishable anon key and server-only service key. A client secret is unnecessary for these public clients. Do not put service/provider keys in `NEXT_PUBLIC_*` variables.
 
 - `/api/account/oauth/start`: state and S256 PKCE, bounded local return path; only registered official authorize/token endpoints.
 - `/api/account/oauth/callback`: exact state and code exchange; validates canonical identity and registered client. Incomplete required MFA becomes a pending local session, not an application login.

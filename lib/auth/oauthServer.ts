@@ -3,19 +3,27 @@ import {NextResponse,type NextRequest} from 'next/server';
 import {resolvePublicAuthEnv} from './env';
 import {verifySupabaseAccessToken} from './aiGate';
 export const OAUTH_TRANSIENT_PATH='/api/account/oauth';
+const CANONICAL_SITE_ORIGIN='https://studysolo.1037solo.com';
+const LEGACY_SITE_ORIGINS=new Set(['https://notebook1b.husteread.icu']);
+// Public Supabase OAuth client ID; it is intentionally non-secret and has exact
+// production/local callbacks registered. Keep environment override for local clients.
+const DEFAULT_PUBLIC_OAUTH_CLIENT_ID='e469cd5c-2363-4ddd-bf5c-e36562995a9c';
+export function nativeOAuthClientId(){return process.env.SUPABASE_OAUTH_CLIENT_ID||DEFAULT_PUBLIC_OAUTH_CLIENT_ID;}
 export function safeNext(raw:string|null|undefined):string{
   if(!raw||raw!==raw.trim()||!raw.startsWith('/')||raw.startsWith('//')||/[\\\u0000-\u001f\u007f]/.test(raw))return '/';
   return raw;
 }
 export function publicOrigin(requestOrigin?:string){
   const configured=process.env.NEXT_PUBLIC_APP_URL||process.env.NEXT_PUBLIC_STUDYSOLO_URL;
-  const fallback=process.env.NODE_ENV!=='production'&&requestOrigin&&/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(requestOrigin)?requestOrigin:'https://notebook1b.husteread.icu';
-  const url=new URL(configured||fallback);
+  const fallback=process.env.NODE_ENV!=='production'&&requestOrigin&&/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(requestOrigin)?requestOrigin:CANONICAL_SITE_ORIGIN;
+  const configuredOrigin=configured?new URL(configured).origin:undefined;
+  const resolved=process.env.NODE_ENV==='production'&&configuredOrigin&&LEGACY_SITE_ORIGINS.has(configuredOrigin)?CANONICAL_SITE_ORIGIN:configuredOrigin||fallback;
+  const url=new URL(resolved);
   if(url.username||url.password||(process.env.NODE_ENV==='production'&&url.protocol!=='https:'))throw new Error('Invalid public application origin');
   return url.origin;
 }
 export function oauthConfig(requestOrigin?:string){
-  const clientId=process.env.SUPABASE_OAUTH_CLIENT_ID||'';
+  const clientId=nativeOAuthClientId();
   const origin=publicOrigin(requestOrigin);const env=resolvePublicAuthEnv();
   return {clientId,origin,callback:`${origin}/api/account/oauth/callback`,authBase:`${env.supabaseUrl}/auth/v1`,anonKey:env.anonKey,secret:process.env.SUPABASE_OAUTH_CLIENT_SECRET||''};
 }

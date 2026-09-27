@@ -1,6 +1,6 @@
 import {verifySupabaseAccessToken} from "@/lib/auth/aiGate";
 import { NextResponse,type NextRequest } from "next/server";
-import {oauthSession,publicOrigin} from "@/lib/auth/oauthServer";
+import {nativeOAuthClientId,oauthSession,publicOrigin} from "@/lib/auth/oauthServer";
 export const runtime = "nodejs";
 const OPERATIONS = {session:"browser-session",refresh:"refresh",logout:"logout"} as const;
 export async function POST(request: NextRequest, context: {params:Promise<{operation:string}>}) {
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest, context: {params:Promise<{opera
   allowed.add(publicOrigin(request.nextUrl.origin));
   if(process.env.NODE_ENV!=="production") {allowed.add("http://localhost:35349");allowed.add("http://127.0.0.1:35349");}
   if(!origin || !allowed.has(origin))return NextResponse.json({error:"Trusted request origin required"},{status:403});
-  if(process.env.SUPABASE_OAUTH_CLIENT_ID)return oauthSession(request,operation);
+  if(nativeOAuthClientId())return oauthSession(request,operation);
   try {
     const base=(process.env.ACCOUNT_BACKEND_URL || "http://127.0.0.1:3041").replace(/\/$/,"");
     const upstream=await fetch(`${base}/api/auth/${OPERATIONS[operation as keyof typeof OPERATIONS]}`,{method:"POST",headers:{Origin:origin,Cookie:request.headers.get("cookie") || "","Content-Type":"application/json"},body:"{}",cache:"no-store",signal:AbortSignal.timeout(15000)});
