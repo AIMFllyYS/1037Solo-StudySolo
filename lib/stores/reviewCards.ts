@@ -55,6 +55,7 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
 
       addSaved: (originalText, ctx) => {
         const id = genId();
+        const now = Date.now();
         const card: ReviewCard = {
           id,
           subjectId: ctx.subjectId,
@@ -66,7 +67,9 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
           front: "",
           back: "",
           status: "saved",
-          createdAt: Date.now(),
+          createdAt: now,
+          // 见 finalize 的注释：设备端变更必须推进版本号。
+          updatedAt: now,
         };
         set((s) => ({ byId: { ...s.byId, [id]: card }, order: [...s.order, id] }));
         scheduleCloudUpsert("review-card", id);
@@ -92,6 +95,10 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
                 status: "ready",
                 error: undefined,
                 model,
+                // 每次本机改动都要推进版本号。否则本机永远停在 createdAt，
+                // 而别处（Platform Wiki）写过一次就会一直赢，用户在本机的编辑
+                // 会在下一次 push 时被静默丢弃。
+                updatedAt: Date.now(),
               },
             },
           };
@@ -102,7 +109,7 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
           const prev = s.byId[id];
           if (!prev) return s;
           scheduleCloudUpsert("review-card", id);
-          return { byId: { ...s.byId, [id]: { ...prev, status: "processing", mode, error: undefined } } };
+          return { byId: { ...s.byId, [id]: { ...prev, status: "processing", mode, error: undefined, updatedAt: Date.now() } } };
         }),
 
       markError: (id, message) =>
@@ -110,7 +117,7 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
           const prev = s.byId[id];
           if (!prev) return s;
           scheduleCloudUpsert("review-card", id);
-          return { byId: { ...s.byId, [id]: { ...prev, status: "error", error: message } } };
+          return { byId: { ...s.byId, [id]: { ...prev, status: "error", error: message, updatedAt: Date.now() } } };
         }),
 
       remove: (id) =>
@@ -134,6 +141,7 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
                 ...prev,
                 subjectId,
                 sourceLabel: retargetCardSourceLabel(prev.sourceLabel, subjectId),
+                updatedAt: Date.now(),
               },
             },
           };
