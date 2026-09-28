@@ -68,6 +68,22 @@ export const DEFAULT_APPEARANCE_SETTINGS: AppearanceSettings = {
   },
 };
 
+/**
+ * 每套预设主题的招牌字体（第一性原理：主题 = 配色 + 排印；只换颜色不换字，主题就只换了一半）。
+ * 切主题时把字体一并切过去；之后用户仍可在字体下拉里单独改。custom 保留用户自己的选择。
+ */
+export const THEME_DEFAULT_FONTS: Record<Exclude<AppearanceMode, "custom">, GlobalFontId> = {
+  default: "system",
+  colorful: "hei",
+  anthropic: "serif",
+  ios: "system",
+  codex: "mono",
+};
+
+export function fontForAppearanceMode(mode: AppearanceMode, current: GlobalFontId): GlobalFontId {
+  return mode === "custom" ? current : THEME_DEFAULT_FONTS[mode];
+}
+
 const APPEARANCE_MODES = new Set<AppearanceMode>([
   "default",
   "colorful",
@@ -181,7 +197,8 @@ export function serializeAppearanceSettings(settings: AppearanceSettings): strin
 
 export function buildAppearanceCssVars(settings: AppearanceSettings): Record<string, string> {
   const normalized = normalizeAppearanceSettings(settings);
-  if (normalized.mode !== "custom") return {};
+  // 字体是主题的一部分：任何外观下都应用当前字体（切主题时 store 会换成该主题的招牌字体）。
+  if (normalized.mode !== "custom") return { "--font-sans": FONT_CHOICES[normalized.custom.font].cssValue };
 
   const {
     lightBackground,

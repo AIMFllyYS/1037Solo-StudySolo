@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   DEFAULT_APPEARANCE_SETTINGS,
   applyAppearanceToDocument,
+  fontForAppearanceMode,
   normalizeAppearanceSettings,
   readAppearanceFromStorage,
   writeAppearanceToStorage,
@@ -80,7 +81,12 @@ export const useTheme = create<ThemeState>((set, get) => ({
     set({ theme: next });
   },
   setAppearanceMode: (mode) => {
-    const next = normalizeAppearanceSettings({ ...get().appearance, mode });
+    const current = get().appearance;
+    const next = normalizeAppearanceSettings({
+      ...current,
+      mode,
+      custom: { ...current.custom, font: fontForAppearanceMode(mode, current.custom.font) },
+    });
     persistAppearance(next);
     set({ appearance: next });
   },

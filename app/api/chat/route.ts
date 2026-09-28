@@ -23,9 +23,10 @@ import { estimateTokens } from "@/lib/context/estimateTokens";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { withSseHeartbeat } from "@/lib/ai/sdk/heartbeat";
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
-import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
+import { createStudyAgent, type StudyAgentInput } from "@/lib/ai/agent/studyAgent";
+import { addUsage, decideContinuation } from "@/lib/ai/agent/completionGuard";
 import { isComposerForcedTool } from "@/lib/chat/composerIntent";
-import { TOOL_STEP_LIMIT_INFO } from "@/lib/ai/agent/tools/server";
+import { TOOL_STEP_LIMIT_INFO, clampMaxToolRounds } from "@/lib/ai/agent/tools/server";
 import { computeContextBreakdown, estimateRequestContextTokens } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
 import { formatRequestError, parseChatRequest, RequestTooLargeError, type ChatRequest } from "@/lib/ai/agent/requestSchema";
@@ -235,7 +236,7 @@ async function handlePOST(req: NextRequest) {
       const contextBudget = Math.min(ctxResult.maxTokens, candidateLimit,
         requestedBudget != null && requestedBudget > 0 ? requestedBudget : ctxResult.maxTokens);
 
-      const makeBundle = (truncated: boolean, referenceContext: string) => createStudyAgent({
+      const bundleInput = (truncated: boolean, referenceContext: string): StudyAgentInput => ({
         model: resolved.model,
         chatCtx,
         options,
@@ -259,6 +260,8 @@ async function handlePOST(req: NextRequest) {
         forcedTool: isComposerForcedTool(body.forcedTool) ? body.forcedTool : undefined,
         attachedFiles: body.attachedFiles,
       });
+      const makeBundle = (truncated: boolean, referenceContext: string) =>
+        createStudyAgent(bundleInput(truncated, referenceContext));
 
       const estimateIncoming = (truncated: boolean, referenceContext: string) => {
         const next = makeBundle(truncated, referenceContext);
@@ -320,7 +323,54 @@ async function handlePOST(req: NextRequest) {
         streamFailed = true;
       }
 
-      const aborted = streamFailed || generationSignal.aborted;
+      let aborted = streamFailed || generationSignal.aborted;
+      let continuationUsage: unknown;
+      let continuationText = "";
+      let continuationFinish: Awaited<typeof result.finishReason> | undefined;
+      if (!aborted) {
+        // 收尾守卫：空正文 / 口头宣称调用工具却未调用 → 同一条消息内续写一次。
+        const firstSteps = await result.steps;
+        const decision = decideContinuation({
+          steps: firstSteps.map((step) => ({
+            text: step.text,
+            reasoningText: step.reasoningText,
+            finishReason: step.finishReason,
+            toolCalls: step.toolCalls,
+          })),
+          toolNames: Object.keys(bundle.tools),
+          stepLimit: clampMaxToolRounds(body.maxToolRounds),
+          disabled: isImageMode || body.planMode === true,
+        });
+        if (decision) {
+          const recoveryBundle = createStudyAgent({ ...bundleInput(contextTruncated, ctxResult.context), recovery: decision.kind });
+          const response = await result.response;
+          const recovery = await recoveryBundle.agent.stream({
+            messages: [...historyMessages, ...response.messages, { role: "user", content: decision.nudge }],
+            abortSignal: generationSignal,
+          });
+          try {
+            for await (const chunk of recovery.toUIMessageStream<ChatMessage>({
+              sendReasoning: decision.kind !== "answer", sendStart: false, sendFinish: false, onError: formatError,
+            })) {
+              writer.write(chunk);
+              if (chunk.type === "error" || chunk.type === "abort") {
+                generationAbort.abort();
+                streamFailed = true;
+                break;
+              }
+            }
+          } catch {
+            generationAbort.abort();
+            streamFailed = true;
+          }
+          continuationUsage = await awaitUsage(recovery.totalUsage);
+          if (!streamFailed) {
+            continuationText = await recovery.text;
+            continuationFinish = await recovery.finishReason;
+          }
+          aborted = streamFailed || generationSignal.aborted;
+        }
+      }
       if (!aborted) writer.write({ type: 'data-answer-complete', data: { durationMs: Date.now() - startedAt } });
       const selectedModelId = modelId ?? effectiveModelId;
       const actualProvider = resolved.getActualProvider();
@@ -330,7 +380,7 @@ async function handlePOST(req: NextRequest) {
       // 上游 usage 到手即记账；abort/error 也走这里，不依赖客户端是否还连着 SSE。
       // BYOK 主模型不进任何池、不落行。
       const settled = await settleChatUsage({
-        rawUsage: await awaitUsage(result.totalUsage),
+        rawUsage: addUsage(await awaitUsage(result.totalUsage), continuationUsage),
         userId,
         selectedModelId,
         actualModelId,
@@ -343,9 +393,11 @@ async function handlePOST(req: NextRequest) {
       });
       if (aborted) return;
 
-      const [steps, finalText, finishReason] = await Promise.all([
+      const [steps, firstText, firstFinish] = await Promise.all([
         result.steps, result.text, result.finishReason,
       ]);
+      const finalText = [firstText, continuationText].filter((text) => text.trim()).join("\n\n");
+      const finishReason = continuationFinish ?? firstFinish;
 
       // 第 6 步仍要工具且无第 7 次 LLM：SDK finishReason 为 tool-calls。
       if (finishReason === "tool-calls") {
