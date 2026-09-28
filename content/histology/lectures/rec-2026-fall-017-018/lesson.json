@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "histology",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-017-018",
+  "courseName": "人体组织学",
+  "sessionRange": {
+    "start": 17,
+    "end": 18
+  },
+  "taughtOn": "2026-09-28",
+  "topic": "神经系统组织学——大脑皮质六层、小脑皮质三层(普肯耶细胞层)、脊髓灰/白质",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-017-018"
+}
