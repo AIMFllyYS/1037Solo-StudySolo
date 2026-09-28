@@ -1,0 +1,260 @@
+{
+  "subjectId": "histology",
+  "chapterId": "rec-2026-fall-017-018",
+  "generatedAt": "2026-09-28",
+  "examConfig": {
+    "source": "content/histology/lectures/rec-2026-fall-017-018/recording.md；content/histology/lectures/rec-2026-fall-017-018/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-017-018",
+    "revision": 1,
+    "recordingHash": "cd24b7c7447d7afcc2ccdead20847481bf2e31621107914100a9eab53e9017c6",
+    "notesTextHash": "fa712f84c5928d886e5f621668312f4c9910febab5344f4a1b20f190d3311181"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "灰质与白质的成分区别"
+      },
+      "stem": "中枢神经系统中，灰质和白质的主要成分分别是？",
+      "options": [
+        "灰质=神经元胞体和树突；白质=有髓神经纤维",
+        "灰质=有髓神经纤维；白质=神经元胞体和树突",
+        "灰质=神经胶质细胞；白质=神经纤维",
+        "灰质=神经元轴突；白质=毛细血管和结缔组织"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**灰质主要由神经元胞体和树突起始处构成，因胞体聚集色泽灰暗而得名；白质主要由有髓神经纤维构成，髓鞘呈白色。脑和小脑表面的灰质称皮质，深层白质称髓质；脊髓则相反，灰质位于中央呈H形，白质在周边。B错：正好把灰质和白质的成分说反。C错：灰质并非以神经胶质细胞为主。D错：轴突只是白质纤维的一部分，白质不是血管和结缔组织。",
+      "hint": "灰质=胞体树突（暗），白质=有髓纤维（白）。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "大脑皮质六层由表及里顺序"
+      },
+      "stem": "大脑皮质由表及里的六层结构，最表层（第1层）是？",
+      "options": [
+        "外颗粒层",
+        "分子层",
+        "内锥体细胞层",
+        "多形细胞层"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**大脑皮质由表及里依次为：①分子层 ②外颗粒层 ③外锥体细胞层 ④内颗粒层 ⑤内锥体细胞层 ⑥多形细胞层。最表层是分子层，含少量星形细胞和平行纤维。A错：外颗粒层是第2层，不是最表层。C错：内锥体细胞层是第5层，位于深层。D错：多形细胞层是最深处的第6层。",
+      "hint": "口诀：分外锥，内粒内锥多形层——开头是分子层。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "小脑皮质唯一传出神经元Purkinje细胞"
+      },
+      "stem": "小脑皮质唯一的传出神经元是？",
+      "options": [
+        "星形细胞",
+        "篮状细胞",
+        "普肯耶（Purkinje）细胞",
+        "颗粒细胞"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**Purkinje细胞是小脑皮质唯一的传出神经元（高尔基I型），胞体呈梨形、单层排列，树突分支如大树般扇形伸向分子层，其轴突进入髓质。A、B错：星形细胞和篮状细胞位于分子层，都是局部中间神经元。D错：颗粒细胞位于颗粒层、数量极多，是中间神经元而非传出神经元。",
+      "hint": "朴（Purkinje）氏单层梨形，唯一传出，树突如大树。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "神经细胞（神经元）的形态标志"
+      },
+      "stem": "HE染色下，鉴别神经元胞体的重要形态标志是？",
+      "options": [
+        "核小而深染，胞质嗜酸性",
+        "核大而圆、染色浅、核仁清楚，胞质内有尼氏体",
+        "双核仁，胞质内大量脂褐素",
+        "胞体扁平，无突起，胞质透明"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**神经元胞体的标志是：细胞核大而圆、因常染色质多而染色浅、核仁清楚；胞质内有特征性的尼氏体（HE下呈嗜碱性斑块/颗粒）。A错：核小深染、胞质嗜酸性不是神经元特点。C错：神经元通常单核，脂褐素只是老年色素，不是鉴别标志。D错：神经元必有突起，胞体也不扁平透明。",
+      "hint": "核大而圆染色浅、核仁清楚+胞质尼氏体（嗜碱）。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "大脑皮质第5层（内锥体细胞层）的主细胞"
+      },
+      "stem": "大脑皮质由表及里第5层（内锥体细胞层）的主要细胞是？",
+      "options": [
+        "星形细胞为主",
+        "梭形细胞为主",
+        "大/巨大锥体细胞",
+        "小型锥体细胞和篮状细胞"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**大脑皮质第5层为内锥体细胞层，主要含大/巨大锥体细胞（如运动皮质的Betz细胞），其长轴突参与投射纤维下行。A错：星形细胞为主是第4层（内颗粒层）。B错：梭形细胞为主是第6层（多形细胞层）。D错：小型锥体细胞和篮状细胞属于第2、3层（外颗粒层、外锥体细胞层）。",
+      "hint": "第5层=内锥体细胞层=大/巨大锥体细胞；第6层才是梭形多形层。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "投射/联合/联络三种神经纤维的连接部位"
+      },
+      "stem": "关于大脑三种神经纤维的连接部位，下列配对正确的是？",
+      "options": [
+        "投射纤维=同侧不同脑区；联合纤维=左右半球；联络纤维=皮质到下级中枢",
+        "投射纤维=皮质到下级中枢；联合纤维=左右半球；联络纤维=同侧不同脑区",
+        "投射纤维=左右半球；联合纤维=同侧脑区；联络纤维=皮质到下级中枢",
+        "投射纤维=同侧脑区；联合纤维=皮质到下级中枢；联络纤维=左右半球"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**投射纤维连接大脑皮质与下级中枢（丘脑、脑干、脊髓，长距离下行）；联合纤维连接左右两半球（如胼胝体）；联络纤维在同侧不同脑区/脑回之间走行，不交叉到对侧。A、C、D错：三者的连接对象均被错配。",
+      "hint": "投射=上下（皮质→下级），联合=左右，联络=同侧脑区之间。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "锥体细胞与颗粒细胞（高尔基I型/II型）的区别"
+      },
+      "stem": "关于大脑皮质锥体细胞和颗粒细胞的比较，下列正确的是？",
+      "options": [
+        "锥体细胞轴突短、属高尔基II型；颗粒细胞轴突长、属高尔基I型",
+        "锥体细胞轴突长、多参与投射纤维、属高尔基I型；颗粒细胞轴突短、为中间神经元、属高尔基II型",
+        "两者轴突都很长，都形成投射纤维",
+        "颗粒细胞数量最少，锥体细胞数量最多"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**锥体细胞胞体呈三角形，轴突长、下行参与投射纤维，属高尔基I型长轴突神经元；颗粒细胞数量最多、胞体小、轴突短，多为局部中间神经元（星形/篮状/水平细胞），形成联络纤维，属高尔基II型。A错：正好把轴突长短和I/II型说反。C错：颗粒细胞轴突短，不形成投射纤维。D错：颗粒细胞数量最多而非最少。",
+      "hint": "锥长投射I型，颗短联络II型；颗粒细胞数量最多。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "脊髓前角α与γ运动神经元的支配对象"
+      },
+      "stem": "关于脊髓前角α和γ运动神经元，下列配对正确的是？",
+      "options": [
+        "α运动神经元支配梭内肌；γ运动神经元支配梭外肌",
+        "α运动神经元支配梭外肌（骨骼肌收缩）；γ运动神经元支配梭内肌、维持肌梭敏感性",
+        "α和γ都支配梭外肌，仅胞体大小不同",
+        "α运动神经元是感觉传入神经元；γ是运动神经元"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**α运动神经元胞体大，支配梭外肌（普通骨骼肌纤维），引起骨骼肌收缩，尼氏体粗大致\"虎斑\"样；γ运动神经元胞体小，支配肌梭内的梭内肌两端，维持和调节肌梭的敏感性。A错：正好把梭内肌和梭外肌的支配对象说反。C错：γ不支配梭外肌。D错：α和γ都是前角运动（传出）神经元，不是感觉神经元。",
+      "hint": "α大管梭外收缩，γ小管梭内调敏。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "小脑皮质三层由表及里顺序"
+      },
+      "stem": "小脑皮质由表及里的三层结构依次是？",
+      "options": [
+        "颗粒层→Purkinje细胞层→分子层",
+        "分子层→Purkinje细胞层→颗粒层",
+        "Purkinje细胞层→分子层→颗粒层",
+        "分子层→颗粒层→Purkinje细胞层"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**小脑皮质由表及里为：①分子层（星形/篮状细胞，细胞最少）②Purkinje细胞层（单层梨形大细胞）③颗粒层（大量密集颗粒细胞）。A、C、D错：均把三层的顺序排错，Purkinje细胞层固定位于分子层与颗粒层之间。",
+      "hint": "分（分子）、朴（Purkinje单层）、粒（颗粒密）。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "小脑Purkinje细胞与心肌浦肯野纤维的同名鉴别"
+      },
+      "stem": "组织学中两处\"浦肯野（Purkinje）\"结构的区别，下列描述正确的是？",
+      "options": [
+        "小脑Purkinje细胞是心肌传导纤维；浦肯野纤维是小脑传出神经元",
+        "小脑Purkinje细胞是小脑皮质唯一传出神经元；心肌浦肯野纤维（束细胞）是心脏传导系统的传导纤维",
+        "两者都是神经元，都存在于中枢神经系统",
+        "两者都由不同学者发现，与Purkinje无关"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**两处Purkinje结构虽同名但部位和功能完全不同：小脑Purkinje细胞是小脑皮质唯一传出神经元（高尔基I型，轴突入髓质）；心肌浦肯野纤维（束细胞）属心脏传导系统，负责快速传导冲动。二者均由Purkinje发现，故同名。A错：正好把两者部位说反。C错：心肌浦肯野纤维是特化心肌细胞，不是神经元，也不在中枢神经系统。D错：二者均以Purkinje命名。",
+      "hint": "朴氏两处：小脑=传出神经元；心肌=传导束细胞。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/histology/lectures/rec-2026-fall-017-018/recording.md",
+        "label": "脊髓侧角交感节前神经元的节段分布与肌梭γ调节"
+      },
+      "stem": "关于脊髓灰质侧角与肌梭运动调节，下列描述正确的是？",
+      "options": [
+        "侧角见于脊髓全长，含副交感节后神经元；γ运动神经元直接引起梭外肌收缩",
+        "侧角仅见于胸段和腰段上部，含交感神经节前神经元；γ运动神经元支配梭内肌、维持肌梭敏感性",
+        "侧角含运动神经元，与前角功能相同；α运动神经元维持肌梭敏感性",
+        "侧角仅见于骶段，含副交感节前神经元；肌梭敏感性由α运动神经元调节"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**脊髓侧角（侧角）仅见于胸段和腰段上部，内含交感神经节前神经元；肌梭由梭内肌和γ运动神经元共同调节——γ运动神经元支配梭内肌两端，维持肌梭对牵拉刺激的敏感性，而α运动神经元支配梭外肌引起骨骼肌收缩。A错：侧角不见于脊髓全长，且γ不支配梭外肌。C错：侧角不是运动神经元，与前角不同功能，维持肌梭敏感性的是γ而非α。D错：交感节前神经元在胸腰段侧角而非骶段，调节肌梭的是γ而非α。",
+      "hint": "侧角=胸腰段交感节前；γ调梭内肌敏度，α管梭外肌收缩。"
+    }
+  ]
+}
