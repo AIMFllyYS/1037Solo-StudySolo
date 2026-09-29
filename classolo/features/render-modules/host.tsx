@@ -20,8 +20,10 @@ export function RenderHost({
 
   if (messages.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">
-        {target === 'transcript' ? '文稿' : '笔记'}渲染区空闲
+      <p className="text-[13px] text-[color:var(--ink-faint)]">
+        {target === 'transcript'
+          ? '课堂补充会显示在这里（配图 / 讲解 / 随堂题）'
+          : '笔记补充会显示在这里（要点 / 解析）'}
       </p>
     )
   }
@@ -59,7 +61,7 @@ function RenderMessageView({
   const anchor = message.meta.transcriptAnchor
   return (
     <div
-      className="rounded-md border border-border bg-card p-2 text-sm text-card-foreground"
+      className="rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] p-2.5 text-[13px] text-[color:var(--ink)]"
       data-slot="render-message"
       data-module={message.module}
     >
@@ -71,7 +73,7 @@ function RenderMessageView({
       {anchor ? (
         <button
           type="button"
-          className="mt-2 text-xs text-primary hover:underline"
+          className="mt-2 text-[11px] text-[color:var(--accent)] hover:underline"
           onClick={() => onAnchorClick?.(anchor)}
         >
           回跳文稿

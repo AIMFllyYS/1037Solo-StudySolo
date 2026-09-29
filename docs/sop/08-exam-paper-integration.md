@@ -421,7 +421,7 @@ pnpm build-index
 | [lib/markdown/calloutTypes.ts](../../lib/markdown/calloutTypes.ts) | callout kind 定义 |
 | [components/shared/directives/Callout.tsx](../../components/shared/directives/Callout.tsx) | callout 渲染组件 |
 | [content/chemistry/kaoqian-moni/](../../content/chemistry/kaoqian-moni/) | 现有试卷参考（平移后） |
-| [docs/compose/specs/2026-06-28-kaoshi-moniji-optimization-design.md](../compose/specs/2026-06-28-kaoshi-moniji-optimization-design.md) | 卡片化设计文档 |
+| [docs/archive/compose/specs/2026-06-28-kaoshi-moniji-optimization-design.md](../archive/compose/specs/2026-06-28-kaoshi-moniji-optimization-design.md) | 卡片化设计文档 |
 | [docs/sop/00-infrastructure.md](./00-infrastructure.md) | 文档解析基础设施 |
 | [docs/sop/05-content-integration.md](./05-content-integration.md) | manifest 注册与验证 |
 | [docs/sop/07-testing.md](./07-testing.md) | 测试体系 |

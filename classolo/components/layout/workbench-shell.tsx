@@ -48,10 +48,10 @@ export function WorkbenchShell({
     <WorkbenchStaticPanes {...slots} />
   ) : isWorkbenchNarrow(viewportWidth) ? (
     <div className="grid h-full grid-cols-1 gap-3 overflow-auto p-2">
-      <section className="min-h-64 rounded-xl border p-3">{transcript}</section>
-      <section className="min-h-80 rounded-xl border p-3">{notes}</section>
-      <section className="min-h-40 rounded-xl border p-3">{transcriptRender}</section>
-      <section className="min-h-40 rounded-xl border p-3">{notesRender}</section>
+      <section className="min-h-64 rounded-xl border border-[color:var(--line-soft)] p-3">{transcript}</section>
+      <section className="min-h-80 rounded-xl border border-[color:var(--line-soft)] p-3">{notes}</section>
+      <section className="min-h-40 rounded-xl border border-[color:var(--line-soft)] p-3">{transcriptRender}</section>
+      <section className="min-h-40 rounded-xl border border-[color:var(--line-soft)] p-3">{notesRender}</section>
     </div>
   ) : (
     <WorkbenchResizablePanes {...slots} />

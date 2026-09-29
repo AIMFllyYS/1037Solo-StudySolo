@@ -24,6 +24,7 @@ const MODE_HINT_KEYS: Record<AppMode, string> = {
   studio: "menu.mode.hint.studio",
   agent: "menu.mode.hint.agent",
   class: "menu.mode.hint.class",
+  review: "menu.mode.hint.review",
 };
 
 export default function ModeSwitcher({

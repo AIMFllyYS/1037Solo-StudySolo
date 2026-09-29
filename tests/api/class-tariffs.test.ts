@@ -50,6 +50,12 @@ test('Class image search accepts explicit zero, while missing rate is not free',
  const provider=mockPaidFetch(t,async()=>Response.json({results:[]}));
  const make=()=>new PaidRequest('https://local.invalid/api/class/image-search',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({query:'fixture'})});
  assert.equal((await imageRoute.POST(make())).status,200);
+ // 专属单价缺失时回落到生态服务价目表 image-search:unsplash；两者都缺才禁用（未知价格绝不当作免费）。
  delete process.env.CLASS_IMAGE_SEARCH_CNY_PER_CALL;
- assert.equal((await imageRoute.POST(make())).status,503);assert.equal(provider.mock.callCount(),1);
+ const table=process.env.ECOSYSTEM_SERVICE_PRICES_JSON;
+ process.env.ECOSYSTEM_SERVICE_PRICES_JSON=JSON.stringify({'image-search:unsplash':0});
+ assert.equal((await imageRoute.POST(make())).status,200);
+ delete process.env.ECOSYSTEM_SERVICE_PRICES_JSON;
+ try{assert.equal((await imageRoute.POST(make())).status,503);assert.equal(provider.mock.callCount(),2);}
+ finally{if(table===undefined)delete process.env.ECOSYSTEM_SERVICE_PRICES_JSON;else process.env.ECOSYSTEM_SERVICE_PRICES_JSON=table;}
 });

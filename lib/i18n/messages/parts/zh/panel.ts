@@ -34,6 +34,23 @@ export const panelZh = {
     removeBookmark: "移除收藏",
   },
 
+  // 中间笔记区上方的 Tab 栏（笔记 / 视频 / 可交互 / 浏览器）
+  centerTab: {
+    notes: "笔记",
+    aria: "内容视图",
+  },
+
+  // 右栏 Agent 顶部（Cursor 式）：最近对话标签条 + 图标动作
+  agentBar: {
+    recentAria: "最近对话",
+    newChat: "开启新对话",
+    settings: "AI 设置",
+    history: "历史记录",
+    collapse: "收起右侧面板",
+    closeTab: "关闭 {title}",
+    untitled: "新对话",
+  },
+
   // 窗口 chrome（红绿灯 / 标题 / 外链 / 缩放）与右栏标签条
   window: {
     minimize: "最小化",

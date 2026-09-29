@@ -221,6 +221,7 @@ export const menuZh = {
       studio: "当前主界面",
       agent: "对话工作区",
       class: "开发中",
+      review: "笔记 · 闪卡 · 答题",
     },
   },
 };

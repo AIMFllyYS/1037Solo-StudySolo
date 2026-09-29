@@ -52,6 +52,14 @@ export interface ReviewCard extends ReviewCardContext {
   /** 实际成卡所用模型 id。 */
   model?: string;
   createdAt: number;
+  /**
+   * 本机最后修改时间（epoch ms）。
+   *
+   * 同步引擎用它判断本机与云端谁更新。现网旧卡没有这个字段，`cardVersion`
+   * 会退回 `createdAt`，所以不需要迁移数据。任何本机改动都必须推进它，否则
+   * 本机永远赢不了别处（如 Platform Wiki）写下的版本。
+   */
+  updatedAt?: number;
 }
 
 /** 下载导出的容器结构（本科目或全部）。 */

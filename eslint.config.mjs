@@ -37,6 +37,8 @@ export default defineConfig([
   globalIgnores([
     ".next/**",
     ".local-archive/**",
+    "1037Solo-Classolo/**",
+    "1037Solo-StudySolo/**",
     "out/**",
     "build/**",
     "dist-desktop/**",

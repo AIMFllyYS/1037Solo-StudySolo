@@ -1,11 +1,12 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
 import {
   Background,
   Controls,
   ReactFlow,
   ReactFlowProvider,
+  useReactFlow,
   type Edge,
   type Node,
   type NodeTypes,
@@ -33,6 +34,16 @@ function treeSignature(nodes: readonly OutlineTreeNode[]): string {
     .join('\n')
 }
 
+/** 跟随 StudySolo 的主题（html[data-theme]），而不是操作系统——否则浅色主题下会出现深色画布。 */
+function subscribeHostTheme(onChange: () => void): () => void {
+  const observer = new MutationObserver(onChange)
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+  return () => observer.disconnect()
+}
+function readHostTheme(): 'dark' | 'light' {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+}
+
 function MindmapFlow({ nodes, className, onNodeClick }: ClassroomMindmapProps) {
   const signature = treeSignature(nodes)
   const [seenSignature, setSeenSignature] = useState(signature)
@@ -41,6 +52,14 @@ function MindmapFlow({ nodes, className, onNodeClick }: ClassroomMindmapProps) {
     setSeenSignature(signature)
     setDiffed(diffOutlineLayout(diffed.graph.nodes, nodes))
   }
+
+  const colorMode = useSyncExternalStore(subscribeHostTheme, readHostTheme, () => 'light' as const)
+  const { fitView } = useReactFlow()
+  // 大纲是增量长出来的：fitView 只在首帧生效，后续新增节点会跑出视口。签名变化后重新适配。
+  useEffect(() => {
+    const id = requestAnimationFrame(() => { void fitView({ padding: 0.15, duration: 240, maxZoom: 1 }) })
+    return () => cancelAnimationFrame(id)
+  }, [signature, fitView])
 
   const flowNodes: Node[] = useMemo(() => {
     const entered = new Set(diffed.enteredIds)
@@ -74,7 +93,7 @@ function MindmapFlow({ nodes, className, onNodeClick }: ClassroomMindmapProps) {
         fitView
         minZoom={0.25}
         maxZoom={2}
-        colorMode="system"
+        colorMode={colorMode}
         defaultEdgeOptions={{ type: 'smoothstep' }}
         onNodeClick={(_event, node) => {
           onNodeClick?.(node.id)

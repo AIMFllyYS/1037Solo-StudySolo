@@ -22,7 +22,7 @@ export function ClassroomOutlineNode({
   return (
     <motion.div
       className={cn(
-        'min-w-40 max-w-56 rounded-lg border border-border bg-card px-3 py-2 text-sm text-card-foreground shadow-sm',
+        'w-[180px] rounded-lg border border-border bg-card px-3 py-2 text-sm text-card-foreground shadow-sm',
         selected && 'ring-2 ring-ring',
       )}
       initial={data.entering ? { opacity: 0, scale: 0.85 } : false}
@@ -31,13 +31,13 @@ export function ClassroomOutlineNode({
     >
       <Handle
         type="target"
-        position={Position.Top}
+        position={Position.Left}
         className="!h-2 !w-2 !border-border !bg-primary"
       />
-      <p className="font-medium leading-snug">{data.title}</p>
+      <p className="line-clamp-2 font-medium leading-snug" title={data.title}>{data.title}</p>
       <Handle
         type="source"
-        position={Position.Bottom}
+        position={Position.Right}
         className="!h-2 !w-2 !border-border !bg-primary"
       />
     </motion.div>

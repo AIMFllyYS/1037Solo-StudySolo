@@ -22,6 +22,7 @@ import { AGENT_DOCK_CONTENT_ID } from "@/lib/constants/layout";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
 import { translate, useT } from "@/lib/i18n";
+import RightAgentHeader from "@/components/workspace/RightAgentHeader";
 
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
   ssr: false,
@@ -112,6 +113,53 @@ class RightPanelTabBoundary extends Component<
   }
 }
 
+/**
+ * Studio 桌面右栏 = 纯 Agent 对话（Cursor 式）。
+ *
+ * 顶部一条自绘头：左边最近对话标签条 + 「＋」，右边纯图标（历史 / 设置 / 收起），
+ * 没有「AI 助教」标题、没有内置栏目——视频 / 可交互 / 浏览器已经搬到中间笔记区的 tab 栏。
+ * 历史面板在这里自持（ChatPanel 用 hideHeader，不再自带头）。
+ */
+function StudioAgentPanel({ onCollapse }: { onCollapse?: () => void }) {
+  const openAgentSettings = useStore((s) => s.openAgentSettings);
+  const layoutProfile = useStore((s) => s.layoutProfile);
+  const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
+
+  const activeSubjectId = useStore((s) => s.activeSubjectId);
+  const activeCategoryId = useStore((s) => s.activeCategoryId);
+  const activeItemId = useStore((s) => s.activeItemId);
+  const academicYear = useAcademicYear((s) => s.year);
+  const chatContext: ChatContext = useMemo(
+    () => ({
+      subjectId: activeSubjectId,
+      categoryId: activeCategoryId,
+      itemId: activeItemId,
+      currentTopic: `${activeSubjectId} ${activeCategoryId} ${activeItemId}`,
+      academicYear,
+    }),
+    [activeSubjectId, activeCategoryId, activeItemId, academicYear],
+  );
+
+  const collapse = useCallback(() => {
+    if (onCollapse) onCollapse();
+    else setRightCollapsedForProfile(layoutProfile, true);
+  }, [layoutProfile, onCollapse, setRightCollapsedForProfile]);
+
+  return (
+    <div className="flex h-full flex-col border-l border-[var(--line-soft)] bg-[var(--bg-panel)]">
+      <RightAgentHeader
+        chatContext={chatContext}
+        onOpenSettings={openAgentSettings}
+        onCollapse={collapse}
+      />
+      <div className="relative min-h-0 flex-1 overflow-hidden">
+        <ChatPanel chatContext={chatContext} hideHeader />
+      </div>
+    </div>
+  );
+}
+
+
 export default function RightPanel({
   showWindowDock = false,
   hideBuiltinTabs = false,
@@ -126,6 +174,24 @@ export default function RightPanel({
   /** 顶部「收起」按钮的落点。默认收起当前 Studio 档位的右栏；Agent 右栏由外壳传入。 */
   onCollapse?: () => void;
 } = {}) {
+  // Studio 桌面右栏：纯 Agent 对话（Cursor 式头）。它自持全部 hook，
+  // 提前返回不违反 hooks 规则——这两个 prop 在一次挂载里恒定（Studio 恒为空、Agent 恒为 dock）。
+  if (!showWindowDock && !hideBuiltinTabs) {
+    return <StudioAgentPanel onCollapse={onCollapse} />;
+  }
+
+  return <RightPanelDock showWindowDock={showWindowDock} hideBuiltinTabs={hideBuiltinTabs} onCollapse={onCollapse} />;
+}
+
+function RightPanelDock({
+  showWindowDock = false,
+  hideBuiltinTabs = false,
+  onCollapse,
+}: {
+  showWindowDock?: boolean;
+  hideBuiltinTabs?: boolean;
+  onCollapse?: () => void;
+}) {
   const t = useT();
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);

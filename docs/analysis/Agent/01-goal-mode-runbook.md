@@ -121,7 +121,7 @@ verify: pnpm test
 `prebuild` 串了 8 个守卫（全量扫 `content/` 的编码、KaTeX 字符、媒体同步、注册表一致性等）+ 一轮 code 单测。修复阶段用 `pnpm test` 就够。
 
 **③ 仓库是 PUBLIC。**
-Issue 正文、PR、提交都公开可见。不得写入任何 key、内网地址、真实邮箱。`.env` 与 `.env.production` **没有**被 gitignore（只有 `.env.local` 有），#51 会补这个规则。
+Issue 正文、PR、提交都公开可见。不得写入任何 key、内网地址、真实邮箱。`.env` 与 `.env.production` 当时**没有**被 gitignore（只有 `.env.local` 有），#51 之后已补上规则——现网 `.gitignore` 是 `.env*` + `!.env.example`，只有 `.env.example` 入库。
 
 ---
 

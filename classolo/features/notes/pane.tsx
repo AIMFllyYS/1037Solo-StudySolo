@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo } from 'react'
+import { Network } from 'lucide-react'
 
 import { ClassroomMindmap } from '@/classolo/components/mindmap'
 import { useNotesPublic } from '@/classolo/lib/session'
@@ -10,23 +11,30 @@ import { startOutlineOrganizer } from './organizer'
 
 export function NotesPane() {
   useEffect(() => startOutlineOrganizer(), [])
-  const version = useNotesPublic((state) => state.outlineVersion)
   const digest = useNotesPublic((state) => state.outlineDigest)
   const tree = useMemo(
-    () => digest.map((node) => ({ id: node.id, title: node.title })),
+    () =>
+      digest.map((node) => ({
+        id: node.id,
+        title: node.title,
+        parentId: node.parentId ?? null,
+      })),
     [digest],
   )
 
+  if (tree.length === 0) {
+    return (
+      <div className="flex h-full min-h-0 flex-col items-center justify-center gap-2 text-center text-[13px] text-[color:var(--ink-faint)]">
+        <Network className="size-6 opacity-50" aria-hidden />
+        <p>思维导图会随课堂文稿自动生成</p>
+        <p className="text-xs">开始录音或导入文稿后，这里会出现层级大纲</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex h-full min-h-64 flex-col gap-2 text-sm">
-      <p className="text-muted-foreground">大纲版本：{version}</p>
-      {tree.length === 0 ? (
-        <p className="text-muted-foreground">尚无大纲节点。</p>
-      ) : (
-        <div className="min-h-64 flex-1 overflow-hidden rounded-lg border border-border">
-          <ClassroomMindmap nodes={tree} onNodeClick={publishOutlineJump} />
-        </div>
-      )}
+    <div className="h-full min-h-0 w-full overflow-hidden rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)]">
+      <ClassroomMindmap nodes={tree} onNodeClick={publishOutlineJump} />
     </div>
   )
 }

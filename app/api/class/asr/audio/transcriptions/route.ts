@@ -26,6 +26,9 @@ export async function POST(request:Request){
     stage='reserve';
     const admission=await reserveCredit(user.id,`class-asr:${requestKey}`,seconds*rate,{route:"class-asr",model,seconds,rate_cny_per_second:rate});
     const form=new FormData();form.append('file',file,'class.wav');form.append('model',model);
+    // 热词上下文：只接受有界纯文本（≤600 字），不接受任意字段透传。
+    const prompt=data.get('prompt');
+    if(typeof prompt==='string'&&prompt.trim()){if(prompt.length>600)return Response.json({error:"热词过长"},{status:400});form.append('prompt',prompt.trim());}
     const url=base.replace(/\/$/,'').endsWith('/audio/transcriptions')?base:`${base.replace(/\/$/,'')}/audio/transcriptions`;
     stage='provider';
     const response=await fetch(url,{method:'POST',headers:{Authorization:`Bearer ${key}`,'X-Trace-Id':requestKey},body:form,signal:AbortSignal.any([request.signal,AbortSignal.timeout(120000)])});

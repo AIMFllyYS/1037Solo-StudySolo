@@ -7,14 +7,16 @@
 `prebuild` 按顺序调用：
 
 1. `check-content-encoding.mjs`
-2. `gen-nav-manifest.ts`
-3. `check-registry-consistency.ts`
-4. `gen-script-ids.mjs`
-5. `check-katex-chars.mjs`
-6. `check-recording-example-latex-escapes.mjs`
-7. `check-media-sync.mjs`
-8. `check-prose-svg-rules.mjs`
-9. `run-unit-tests.mjs`（阶段 D 起带 `--filter=code`，不含内容校验）
+2. `gen-lectures-manifest.ts`
+3. `check-lectures.ts`
+4. `gen-nav-manifest.ts`
+5. `check-registry-consistency.ts`
+6. `gen-script-ids.mjs`
+7. `check-katex-chars.mjs`
+8. `check-recording-example-latex-escapes.mjs`
+9. `check-media-sync.mjs`
+10. `check-prose-svg-rules.mjs`
+11. `run-unit-tests.mjs`（带 `--filter=code`，不含内容校验）
 
 独立构建入口：
 

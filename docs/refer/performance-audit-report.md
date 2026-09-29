@@ -32,8 +32,8 @@
 
 - [存储架构规范](./storage-architecture.md)
 - [渲染架构](./rendering-architecture.md)
-- [测试体系审查（已归档）](../plans/test-audit-report.md)
-- [考前模拟内容优化计划](../compose/plans/2026-06-28-kaoshi-moniji-optimization.md)（内容层，非运行时）
+- [测试体系审查（已归档）](../plans/archive/test-audit-report.md)
+- [考前模拟内容优化计划](../archive/compose/plans/2026-06-28-kaoshi-moniji-optimization.md)（内容层，非运行时）
 
 ---
 
@@ -565,7 +565,7 @@ idb: attachment-{id} → ArrayBuffer
 | [storage-architecture.md](./storage-architecture.md) | 「单 key 整包 stringify」问题已随 Storage v2 解决（见 §5.1.1 订正）；该文档已同步收录 Storage v2 与全部 IndexedDB/localStorage store 清单 |
 | [rendering-architecture.md](./rendering-architecture.md) | SSR 策略与本次结论一致 |
 | [07-testing.md](../sop/07-testing.md) | 建议增加「性能敏感路径」测试备注（idb 防抖、chat 节流） |
-| [kaoshi-moniji-optimization](../compose/plans/2026-06-28-kaoshi-moniji-optimization.md) | 内容 markdown 优化，与运行时正交 |
+| [kaoshi-moniji-optimization](../archive/compose/plans/2026-06-28-kaoshi-moniji-optimization.md) | 内容 markdown 优化，与运行时正交 |
 
 ---
 

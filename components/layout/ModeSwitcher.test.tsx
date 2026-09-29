@@ -19,7 +19,7 @@ describe("ModeSwitcher", () => {
     useAppMode.setState({ mode: "studio", lastStudioPath: "/", hydrated: true });
   });
 
-  it("默认显示 StudySolo · Studio，菜单含 Studio / Agent / Class", () => {
+  it("默认显示 StudySolo · Studio，菜单含 Studio / Agent / Class / Review", () => {
     render(<ModeSwitcher />);
     expect(screen.getByTestId("app-mode-switcher")).toHaveTextContent("StudySolo · Studio");
     fireEvent.click(screen.getByTestId("app-mode-switcher"));
@@ -27,6 +27,16 @@ describe("ModeSwitcher", () => {
     expect(screen.getByTestId("app-mode-option-agent")).toHaveTextContent("Agent");
     expect(screen.getByTestId("app-mode-option-class")).toHaveTextContent("Class");
     expect(screen.getByTestId("app-mode-option-class")).toHaveTextContent("开发中");
+    expect(screen.getByTestId("app-mode-option-review")).toHaveTextContent("Review");
+  });
+
+  it("点 Review 写入 persist 并跳到 /review", () => {
+    render(<ModeSwitcher />);
+    fireEvent.click(screen.getByTestId("app-mode-switcher"));
+    fireEvent.click(screen.getByTestId("app-mode-option-review"));
+    expect(useAppMode.getState().mode).toBe("review");
+    expect(push).toHaveBeenCalledWith("/review");
+    expect(JSON.parse(localStorage.getItem("studysolo-app-mode") ?? "{}").mode).toBe("review");
   });
 
   it("点 Agent 写入 persist 并跳到 /agent", () => {

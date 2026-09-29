@@ -25,18 +25,38 @@ test("模式表与顶栏文案：StudySolo · Studio", () => {
   assert.equal(appModeTitle("studio"), "StudySolo · Studio");
   assert.equal(appModeTitle("agent"), "StudySolo · Agent");
   assert.equal(appModeTitle("class"), "StudySolo · Class");
-  assert.deepEqual(APP_MODE_LABELS, { studio: "Studio", agent: "Agent", class: "Class" });
-  assert.deepEqual(APP_MODE_PATHS, { studio: "/", agent: "/agent", class: "/class" });
+  assert.equal(appModeTitle("review"), "StudySolo · Review");
+  assert.deepEqual(APP_MODE_LABELS, { studio: "Studio", agent: "Agent", class: "Class", review: "Review" });
+  assert.deepEqual(APP_MODE_PATHS, { studio: "/", agent: "/agent", class: "/class", review: "/review" });
 });
 
 test("isAppMode / parseAppMode 拒绝未知值", () => {
   assert.equal(isAppMode("studio"), true);
   assert.equal(isAppMode("agent"), true);
   assert.equal(isAppMode("class"), true);
-  assert.equal(isAppMode("review"), false);
+  assert.equal(isAppMode("review"), true);
+  assert.equal(isAppMode("nope"), false);
   assert.equal(parseAppMode("class"), "class");
+  assert.equal(parseAppMode("review"), "review");
   assert.equal(parseAppMode("nope"), "studio");
   assert.equal(parseAppMode(null), "studio");
+});
+
+test("Review 模式：/review 顶层路由独立成壳，学科复习页 /<subject>/review 仍归 Studio", () => {
+  assert.equal(appModeFromPathname("/review"), "review");
+  assert.equal(appModeFromPathname("/review/"), "review");
+  assert.equal(isAppModePath("/review"), true);
+  assert.equal(usesStudioChrome("/review"), false);
+  assert.equal(usesMobileStudioChrome("/review"), false);
+  assert.equal(resolveAppMode("/review", "studio"), "review");
+  assert.equal(resolveMobileAppMode("/review", "studio"), "review");
+  assert.equal(hrefForAppMode("review", "/anatomy/detail/1.1"), "/review");
+  assert.equal(hrefForMobileAppMode("review", "/anatomy/detail/1.1"), "/review");
+  // /review 不是「回 Studio 的落点」。
+  assert.equal(isRememberableStudioPath("/review"), false);
+  // app/review 静态段优先于 [subject]，学科复习页（/<subject>/review/...）仍是 Studio。
+  assert.equal(appModeFromPathname("/anatomy/review/1.1"), "studio");
+  assert.equal(usesStudioChrome("/anatomy/review/1.1"), true);
 });
 
 test("pathname 映射：Agent / Class 独立，登录不改 persist", () => {

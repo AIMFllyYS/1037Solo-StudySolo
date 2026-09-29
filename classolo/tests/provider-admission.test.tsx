@@ -30,7 +30,8 @@ describe('classroom provider admission',()=>{
   expect(mocks.settleMicro).toHaveBeenCalledWith(expect.anything(),17);
  });
  it('keeps unknown upstream outcomes reserved',async()=>{mocks.fetch.mockRejectedValue(new TypeError('network timeout'));expect((await POST(request())).status).toBe(503);expect(mocks.cancel).not.toHaveBeenCalled();expect(mocks.settleMicro).not.toHaveBeenCalled();});
- it('releases reservation only for a definitive rejected upstream request',async()=>{mocks.fetch.mockResolvedValue(new Response('',{status:429}));expect((await POST(request())).status).toBe(502);expect(mocks.cancel).toHaveBeenCalledOnce();});
+ it('releases reservation only for a definitive rejected upstream request',async()=>{mocks.fetch.mockResolvedValue(new Response('',{status:429}));const res=await POST(request());expect(res.status).toBe(429);expect(res.headers.get('retry-after')).toBeTruthy();expect(mocks.cancel).toHaveBeenCalledOnce();});
+ it('keeps other definitive upstream rejections as 502 with the hold released',async()=>{mocks.fetch.mockResolvedValue(new Response('',{status:400}));expect((await POST(request())).status).toBe(502);expect(mocks.cancel).toHaveBeenCalledOnce();});
  it('parses usage across SSE chunks and settles actual usage',async()=>{
   const encoder=new TextEncoder();mocks.fetch.mockResolvedValue(new Response(new ReadableStream({start(controller){controller.enqueue(encoder.encode('data: {"usage":{"prompt_tokens":10,'));controller.enqueue(encoder.encode('"completion_tokens":3}}\n\ndata: [DONE]\n\n'));controller.close();}})));
   const response=await POST(request({stream:true}));expect(response.status).toBe(200);expect(await response.text()).toContain('[DONE]');expect(mocks.settleMicro).toHaveBeenCalledWith(expect.anything(),17);

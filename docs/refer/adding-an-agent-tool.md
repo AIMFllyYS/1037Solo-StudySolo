@@ -106,12 +106,12 @@ export function createExampleTool(_ctx: StudyToolContext, _runtime: StudyToolRun
 
 ```ts
 export type StudyTools = {
-  // ...现有 13 项
+  // ...现有 21 项
   exampleTool: { input: ExampleToolInput; output: ExampleToolOutput };
 };
 
 export const STUDY_TOOL_NAMES = [
-  // ...现有 13 项
+  // ...现有 21 项
   "exampleTool",
 ] as const;
 ```
