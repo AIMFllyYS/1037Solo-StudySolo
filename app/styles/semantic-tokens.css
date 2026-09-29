@@ -63,3 +63,23 @@
   [data-slot="dialog-content"],
   [data-slot="select-content"] { animation: none !important; }
 }
+
+
+/*
+ * 各模式共用的动效词汇（Studio / Class / Review / Agent 面板统一一套手感）：
+ * - .ss-rail：侧栏 / Agent 栏的拉出与收起，与 Studio 左右栏同一条横向缓动（--duration-pane + decelerate）；
+ * - .ss-view-enter：切换板块 / 视图时内容淡入 + 微上移，等同 lib/motion 的 fadeInUpVariants；
+ * - 交互反馈沿用全站 .press 与 --duration-fast 的颜色过渡。
+ */
+.ss-rail {
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: width var(--duration-pane) var(--ease-decelerate), min-width var(--duration-pane) var(--ease-decelerate);
+}
+@keyframes ss-view-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.ss-view-enter { animation: ss-view-in var(--duration-normal) var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-rail { transition: none; }
+  .ss-view-enter { animation: none; }
+}

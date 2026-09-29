@@ -41,8 +41,8 @@ export default function ReviewSidebar({
     <aside
       data-review-sidebar
       className={clsx(
-        "flex h-full shrink-0 flex-col border-r border-[var(--line-soft)] bg-[var(--bg-panel)] transition-[width] duration-200",
-        collapsed ? "w-14" : "w-64",
+        "ss-rail flex h-full flex-col border-r border-[var(--line-soft)] bg-[var(--bg-panel)]",
+        collapsed ? "w-14 min-w-14" : "w-64 min-w-64",
       )}
     >
       <div className="flex items-center justify-between px-2 py-2">

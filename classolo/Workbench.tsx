@@ -234,7 +234,10 @@ export default function Workbench(){
       {showDraft&&<div className="border-b border-[color:var(--line-soft)] p-3"><textarea aria-label="已有课堂文稿" className="h-24 w-full rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-app)] p-3 text-[13px] text-[color:var(--ink)] outline-none placeholder:text-[color:var(--ink-faint)]" maxLength={100000} value={draft} onChange={e=>setDraft(e.target.value)} placeholder="粘贴已有文稿，或补充课堂记录。导入后会生成提纲与补充解析。"/><div className="mt-2 flex gap-2"><button className="ss-tool" disabled={busy||!draft.trim()} onClick={()=>void importText()}>创建课堂并整理</button><button className="ss-tool" onClick={()=>{setShowDraft(false);setDraft('');}}>取消</button></div></div>}
       <div className="relative min-h-0 flex-1"><SilentAgentBoot/><WorkbenchShell chrome={false} transcript={<TranscriptPane enabled={capabilities?.asr!==false}/>} notes={<NotesPane/>} transcriptRender={<RenderHost target="transcript" onAnchorClick={id=>publishCommand({type:'transcript.scrollTo',segmentId:id,source:'render'})}/>} notesRender={<RenderHost target="notes" onAnchorClick={id=>publishCommand({type:'transcript.scrollTo',segmentId:id,source:'render'})}/>}/></div>
     </div>
-    {!agentCollapsed&&<div className="ss-class-agent hidden min-h-0 w-[clamp(320px,28vw,440px)] shrink-0 md:block"><StudioAgentPanel chatContext={agentContext} onCollapse={()=>setAgentCollapsed(true)}/></div>}
+    {/* Agent 栏：和 Studio 右栏同一个面板、同一条横向缓动；收起时保持挂载（对话流与草稿不丢）。 */}
+    <div className={`ss-rail ss-class-agent hidden min-h-0 md:block ${agentCollapsed?'w-0 min-w-0':'w-[clamp(320px,28vw,440px)] min-w-[320px]'}`} aria-hidden={agentCollapsed||undefined} inert={agentCollapsed||undefined}>
+      <div className="h-full w-[clamp(320px,28vw,440px)]"><StudioAgentPanel chatContext={agentContext} onCollapse={()=>setAgentCollapsed(true)}/></div>
+    </div>
     {toast&&<div className="pointer-events-none absolute bottom-4 left-1/2 z-30 -translate-x-1/2 rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] px-3 py-1.5 text-[12px] text-[color:var(--ink)] shadow-lg"><span className="inline-flex items-center gap-1.5">{toast}<button className="pointer-events-auto" onClick={()=>setToast('')}><X className="size-3"/></button></span></div>}
     <ClassroomSettings open={showSettings} onOpenChange={setShowSettings} capabilities={capabilities}/>
   </div>;

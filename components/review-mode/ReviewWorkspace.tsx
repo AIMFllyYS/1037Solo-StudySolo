@@ -91,10 +91,13 @@ export default function ReviewWorkspace() {
       </ReviewSidebar>
 
       <main className="min-h-0 min-w-0 flex-1 overflow-hidden">
-        {section === "notes" && <ReviewNoteEditor noteId={activeNoteId} onDeleted={() => setActiveNoteId(null)} />}
-        {section === "flashcards" && <ReviewFlashcardSession subjectId={deckSubject} />}
-        {section === "quiz" && <ReviewQuizPane />}
-        {section === "overview" && <ReviewMasteryOverview />}
+        {/* 换板块时整块内容淡入微移（与 Studio / Class / Agent 同一套 .ss-view-enter）。 */}
+        <div key={section} className="ss-view-enter h-full min-h-0">
+          {section === "notes" && <ReviewNoteEditor noteId={activeNoteId} onDeleted={() => setActiveNoteId(null)} />}
+          {section === "flashcards" && <ReviewFlashcardSession subjectId={deckSubject} />}
+          {section === "quiz" && <ReviewQuizPane />}
+          {section === "overview" && <ReviewMasteryOverview />}
+        </div>
       </main>
     </div>
   );

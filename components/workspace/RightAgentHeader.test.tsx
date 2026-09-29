@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useAgentTabs } from "@/lib/stores/agentTabs";
@@ -40,7 +40,8 @@ describe("RightAgentHeader — 关闭标签只隐藏，不删除", () => {
   it("叉掉非当前标签：标签消失，对话不被删除", async () => {
     render(<RightAgentHeader chatContext={{} as never} onOpenSettings={() => {}} onCollapse={() => {}} />);
     await userEvent.click(screen.getByRole("button", { name: "关闭 会话一" }));
-    expect(tabTitles()).toEqual(["会话三", "会话二"]);
+    // 标签以 popLayout 退场动画离开：等动画结束后再断言。
+    await waitFor(() => expect(tabTitles()).toEqual(["会话三", "会话二"]));
     expect(deleteSession).not.toHaveBeenCalled();
     expect(useChatHistory.getState().sessionsMeta).toHaveLength(3);
     expect(useAgentTabs.getState().closedIds).toEqual(["s1"]);
@@ -51,7 +52,7 @@ describe("RightAgentHeader — 关闭标签只隐藏，不删除", () => {
     await userEvent.click(screen.getByRole("button", { name: "关闭 会话三" }));
     expect(switchSession).toHaveBeenCalledWith("s2");
     expect(deleteSession).not.toHaveBeenCalled();
-    expect(tabTitles()).toEqual(["会话二", "会话一"]);
+    await waitFor(() => expect(tabTitles()).toEqual(["会话二", "会话一"]));
   });
 
   it("从历史重新切回已关闭的对话：自动回到标签条", async () => {
