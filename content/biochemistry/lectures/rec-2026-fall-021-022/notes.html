@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>糖异生·可视化</title>
+<style>
+:root{--paper:#FAF8F1;--ink:#24201A;--soft:#4A4337;--muted:#857B68;--line:#E6DECC;
+--accent:#2E7D4F;--accent-d:#1F5C39;--accent-t:#E8F1EA;--mnem:#A2630C;--mnem-t:#F8ECD3;--red:#B23A2E;--red-t:#F7E4DF;}
+*{box-sizing:border-box}body{font-family:"Microsoft YaHei",sans-serif;background:var(--paper);color:var(--ink);margin:0;line-height:1.7;font-size:10.5pt}
+.page{width:210mm;min-height:297mm;margin:0 auto;padding:18mm 16mm;background:var(--paper)}
+h1{font-family:serif;color:var(--accent-d);font-size:24pt;margin:0 0 3mm;border-bottom:2.5pt solid var(--accent);padding-bottom:3mm}
+h2{font-family:serif;color:var(--accent-d);font-size:15pt;margin:7mm 0 3mm;border-left:4pt solid var(--accent);padding-left:3mm}
+.cover{display:flex;flex-direction:column;justify-content:center;min-height:260mm}
+.cover h1{font-size:28pt;border:none}.cover .sub{font-size:13pt;color:var(--soft);margin-top:3mm}
+.meta{margin-top:8mm;font-size:10pt;color:var(--muted);line-height:2}
+table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt}
+th{background:var(--accent);color:#fff;padding:2mm;text-align:left}td{padding:2mm;border-bottom:.5pt solid var(--line)}
+tr:nth-child(even) td{background:#fff}
+.box{background:#fff;border:.5pt solid var(--line);border-radius:2mm;padding:3mm 4mm;margin:3mm 0}
+.warn{background:var(--red-t);border:.5pt solid #E6BDB4;padding:3mm;margin:3mm 0;border-radius:2mm}
+.tip{background:var(--mnem-t);border-left:3pt solid var(--mnem);padding:3mm;margin:3mm 0;border-radius:0 2mm 2mm 0}
+</style></head><body>
+<div class="page cover">
+<div style="letter-spacing:.3em;color:var(--mnem);font-size:10pt">BIOCHEMISTRY</div>
+<h1>糖异生与糖原调节<span style="color:var(--mnem)">可视化</span></h1>
+<div class="sub">生物化学 第21-22节 · 2026-09-29</div>
+<div class="meta">Gluconeogenesis · F-2,6-BP · Cori循环 · 胰岛素调节</div>
+</div>
+
+<div class="page">
+<h2>一、糖异生三个能障</h2>
+<table><tr><th>糖酵解(不可逆)</th><th>糖异生替代酶</th></tr>
+<tr><td>丙酮酸→PEP</td><td><b>丙酮酸羧化酶+PEP羧激酶</b></td></tr>
+<tr><td>F-1,6-BP→F-6-P</td><td><b>果糖二磷酸酶-1</b></td></tr>
+<tr><td>G-6-P→葡萄糖</td><td><b>葡萄糖-6-磷酸酶</b>(仅肝肾)</td></tr></table>
+<div class="warn">原料：乳酸+甘油+生糖氨基酸。<b>脂肪酸不能异生糖！</b></div>
+
+<h2>二、丙酮酸羧化支路</h2>
+<div class="box">丙酮酸 →(丙酮酸羧化酶,生物素,ATP)→ 草酰乙酸<br>
+→ 苹果酸穿梭出线粒体 →(PEP羧激酶,GTP)→ PEP</div>
+
+<h2>三、F-2,6-BP 最强别构调节</h2>
+<table><tr><th>激素</th><th>F-2,6-BP</th><th>代谢方向</th></tr>
+<tr><td>胰岛素</td><td>↑</td><td>糖酵解↑</td></tr>
+<tr><td>胰高血糖素</td><td>↓</td><td>糖异生↑</td></tr></table>
+</div>
+
+<div class="page">
+<h2>四、糖原调节</h2>
+<table><tr><th>组织</th><th>酶</th><th>别构物</th></tr>
+<tr><td>肝</td><td>磷酸化酶</td><td>葡萄糖抑制</td></tr>
+<tr><td>肌</td><td>磷酸化酶</td><td>AMP激活/ATP抑制</td></tr></table>
+<div class="tip">胰岛素→PP1→去磷酸化→糖原合酶激活+磷酸化酶抑制</div>
+
+<h2>五、Cori循环</h2>
+<div class="box">肌乳酸→血→肝→糖异生→葡萄糖→血→肌</div>
+
+<h2>六、糖醛酸途径</h2>
+<div class="box">UDPG→UDPGA(生物转化+糖胺聚糖)</div>
+</div>
+</body></html>
