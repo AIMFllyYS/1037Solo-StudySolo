@@ -1,3 +1,4 @@
+import { CLASS_OUTPUT_TOKENS } from '@/classolo/lib/ai/budget'
 import { isClassHydrating } from '@/classolo/lib/db'
 import { createModel, generateText } from '@/classolo/lib/ai'
 import { resolveSecret } from '@/classolo/lib/providers/secrets'
@@ -99,7 +100,7 @@ export async function modelOutline(
     })
     const result = await generateText({
       model,
-      maxOutputTokens: 1024,
+      maxOutputTokens: CLASS_OUTPUT_TOKENS,
       maxRetries: 0,
       prompt:
         '把本节课整理成层级大纲。用缩进（每层 2 个空格）表达主题与子要点，' +

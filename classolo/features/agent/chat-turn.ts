@@ -1,3 +1,4 @@
+import { CLASS_OUTPUT_TOKENS } from '@/classolo/lib/ai/budget'
 import { getClassUserId } from '@/classolo/lib/db'
 import { MissingAISecretError, streamText, stepCountIs } from '@/classolo/lib/ai'
 import { resolveSecret } from '@/classolo/lib/providers/secrets'
@@ -48,7 +49,7 @@ async function* defaultModelStream(
     prompt,
     tools: { search_transcript: searchTranscriptTool },
     stopWhen: stepCountIs(4),
-    maxOutputTokens: 2048,
+    maxOutputTokens: CLASS_OUTPUT_TOKENS,
     maxRetries: 0,
     abortSignal: signal,
   })

@@ -1,3 +1,4 @@
+import { CLASS_OUTPUT_TOKENS } from '@/classolo/lib/ai/budget'
 /**
  * 生成知识卡片（issue #65）：让课堂 AI 从文稿/大纲抽取闪卡，
  * 复用 StudySolo 复习卡片仓库（useReviewCards）落库。
@@ -35,7 +36,7 @@ export async function generateClassroomFlashcards(input: {
   try {
     const result = await generateText({
       model: createModel({ baseUrl: '', model: 'classroom' }),
-      maxOutputTokens: 1500,
+      maxOutputTokens: CLASS_OUTPUT_TOKENS,
       maxRetries: 0,
       prompt:
         '根据以下课堂文稿与大纲，抽取 3-8 张问答式知识卡片，覆盖关键概念与易错点。' +

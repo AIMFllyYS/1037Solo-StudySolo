@@ -30,6 +30,18 @@ function extractCitations(text: string): string[] {
   return [...ids]
 }
 
+/**
+ * 正文里把 `[uuid]` 换成短编号 `〔1〕`：学生读到的是「第几条出处」，而不是一串 36 位 id；
+ * 真正的回跳由下方同编号芯片完成。
+ */
+export function numberCitations(text: string, ids: readonly string[]): string {
+  if (ids.length === 0) return text
+  return text.replace(/\[([0-9a-f-]{6,36})\]/gi, (_all, id: string) => {
+    const index = ids.indexOf(id)
+    return index < 0 ? _all : `〔${index + 1}〕`
+  })
+}
+
 function ReasoningBlock({ reasoning }: { reasoning: string }) {
   const [open, setOpen] = useState(false)
   return (
@@ -84,19 +96,20 @@ function MessageBubble({ message }: { message: ChatMessage }) {
         {isUser ? (
           <p className="whitespace-pre-wrap">{message.content}</p>
         ) : (
-          <MarkdownStream markdown={message.content} />
+          <MarkdownStream markdown={numberCitations(message.content, citations)} />
         )}
         {message.reasoning ? <ReasoningBlock reasoning={message.reasoning} /> : null}
         {citations.length > 0 ? (
           <div className="mt-1.5 flex flex-wrap gap-1">
-            {citations.map((id) => (
+            {citations.map((id, index) => (
               <button
                 key={id}
                 type="button"
+                title="回跳到文稿对应位置"
                 className="rounded-md border border-[color:var(--line-soft)] px-1.5 py-0.5 text-[11px] text-[color:var(--accent)] hover:bg-[color:var(--bg-muted)]"
                 onClick={() => jumpToSegment(id)}
               >
-                回跳文稿
+                〔{index + 1}〕文稿
               </button>
             ))}
           </div>

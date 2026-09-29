@@ -1,3 +1,4 @@
+import { CLASS_OUTPUT_TOKENS } from '@/classolo/lib/ai/budget'
 /**
  * 静默 Agent 投递：调用 AI 生成“工具即渲染”消息（issues #5/#6/#29-#35）。
  *
@@ -95,14 +96,24 @@ export async function deliverSilentRender(): Promise<void> {
       props: { status: '分析中', detail: '正在根据最新文稿补充讲解…' },
       meta: { createdAt: Date.now(), source: 'silent-agent' },
     })
-    const result = await generateText({
-      model: createModel({ baseUrl: '', model: 'classroom' }),
-      system: SYSTEM_PROMPT,
-      prompt: buildSilentPrompt(),
-      tools: buildSilentTools(),
-      stopWhen: stepCountIs(3),
-      maxOutputTokens: 900,
-      maxRetries: 0,
+    const run = () =>
+      generateText({
+        model: createModel({ baseUrl: '', model: 'classroom' }),
+        system: SYSTEM_PROMPT,
+        prompt: buildSilentPrompt(),
+        tools: buildSilentTools(),
+        stopWhen: stepCountIs(3),
+        maxOutputTokens: CLASS_OUTPUT_TOKENS,
+        maxRetries: 0,
+      })
+    // 服务端对「连接阶段失败」已释放预留并返回 503 + Retry-After：这类瞬时错误值得自动再试一次，
+    // 否则导入文稿后不会再有新文稿触发，静默补充就永远停在「暂不可用」。
+    const result = await run().catch(async (error: unknown) => {
+      const status = (error as { statusCode?: unknown } | null)?.statusCode
+      if (status !== 503 && status !== 502) throw error
+      await new Promise((resolve) => setTimeout(resolve, 3000))
+      if (getTranscriptPublic().sessionId !== session) throw error
+      return run()
     })
     if (getTranscriptPublic().sessionId !== session) return
     const calls = collectToolCalls(result).slice(0, 3)

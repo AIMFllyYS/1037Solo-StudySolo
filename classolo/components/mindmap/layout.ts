@@ -47,10 +47,12 @@ export function layoutOutlineTree(
 ): LaidOutGraph {
   const graph = new dagre.graphlib.Graph()
   graph.setDefaultEdgeLabel(() => ({}))
+  // 思维导图约定俗成是「根在左、分支向右」：同级要点纵向排列。
+  // 原来的 TB 布局会把一节课 10+ 个顶层要点排成一整行，fitView 后节点缩到看不清。
   graph.setGraph({
-    rankdir: 'TB',
-    nodesep: 40,
-    ranksep: 72,
+    rankdir: 'LR',
+    nodesep: 14,
+    ranksep: 56,
     marginx: 16,
     marginy: 16,
   })

@@ -1,7 +1,7 @@
 "use client";
 import {useCallback,useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {get} from 'idb-keyval';
-import {FileText,Import,PanelRightClose,PanelRightOpen,Settings2,Sparkles,X} from 'lucide-react';
+import {Download,FileText,Import,PanelRightClose,PanelRightOpen,Settings2,Sparkles,X} from 'lucide-react';
 import {useAuthSession} from '@/lib/hooks/useAuthSession';
 import {redirectAccount} from '@/lib/auth/account';
 import {createAndOpenNote} from '@/lib/notes/openUserNote';
@@ -98,6 +98,7 @@ export default function Workbench(){
       await stopSession();resetTranscriptPublic();resetNotesPublic();resetRenderProjection();resetChatPrivate();resetChatPersistSeq();
       const db=await getDb();const session=await insertSession(db,{title:draft.trim().slice(0,35),status:'ended',asrSnapshot:{family:'text-import',dialect:'text',model:'none',baseUrl:'',sampleRate:16000}});
       patchTranscriptPublic({sessionId:session.id,recordingStatus:'stopped'});
+      try{const url=new URL(window.location.href);url.searchParams.set('session',session.id);window.history.replaceState(null,'',url);}catch{}
       const paragraphs=draft.trim().split(/\n+/).filter(Boolean).flatMap(text=>text.match(/.{1,4000}/gu)||[]).slice(0,100);
       const rows=paragraphs.map((text,i)=>({id:crypto.randomUUID(),sessionId:session.id,seq:i+1,startMs:0,endMs:0,text}));
       await insertTranscriptSegments(db,rows);rows.forEach(appendCommitted);setDraft('');setShowDraft(false);refreshSessions();
@@ -144,15 +145,15 @@ export default function Workbench(){
   return <div className="ss-class-workbench relative flex h-full min-h-0 w-full overflow-hidden" key={owner}>
     <SessionSidebar sessions={sessions} currentId={sessionId} collapsed={sidebarCollapsed} pendingCount={getPendingCount()} busy={busy} onToggle={()=>setSidebarCollapsed(v=>!v)} onOpen={id=>void open(id)} onNew={()=>void newClass()} onRename={(id,t)=>void rename(id,t)} onArchive={id=>void archive(id)}/>
     <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-      <header className="flex flex-wrap items-center gap-2 border-b border-[color:var(--line-soft)] px-3 py-2">
+      <header className="flex items-center gap-1.5 border-b border-[color:var(--line-soft)] px-3 py-2">
         <div className="mr-auto min-w-0">
           <p className="truncate text-[13px] font-medium text-[color:var(--ink)]">{sessionId?(sessions.find(s=>s.id===sessionId)?.title||'课堂'):'课堂工作台'}</p>
           <p className="text-[11px] text-[color:var(--ink-faint)]">文稿、思维导图与提问相互关联 · 由 1037Solo 统一账号计费</p>
         </div>
         <button className="ss-tool" onClick={()=>setShowDraft(v=>!v)}><Import className="size-3.5"/>导入文稿</button>
         <button className="ss-tool" disabled={!sessionId} onClick={exportNote}><FileText className="size-3.5"/>存为笔记</button>
-        <button className="ss-tool" disabled={!sessionId||busy} onClick={()=>void makeCards()}><Sparkles className="size-3.5"/>生成知识卡片</button>
-        <button className="ss-tool" disabled={!sessionId} onClick={()=>void downloadAudio()}>导出录音</button>
+        <button className="ss-tool" disabled={!sessionId||busy} onClick={()=>void makeCards()} title="从本节课生成知识卡片（进入复习闪卡）"><Sparkles className="size-3.5"/>知识卡片</button>
+        <button className="ss-tool" disabled={!sessionId} aria-label="导出录音" title="导出本机录音（ZIP）" onClick={()=>void downloadAudio()}><Download className="size-3.5"/></button>
         <button className="ss-tool" aria-label="课堂设置" onClick={()=>setShowSettings(true)}><Settings2 className="size-3.5"/></button>
         <button className="ss-tool" aria-label={agentCollapsed?'展开课堂助手':'收起课堂助手'} onClick={()=>setAgentCollapsed(v=>!v)}>{agentCollapsed?<PanelRightOpen className="size-3.5"/>:<PanelRightClose className="size-3.5"/>}</button>
       </header>
