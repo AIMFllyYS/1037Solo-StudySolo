@@ -38,6 +38,8 @@ export const panelZh = {
   centerTab: {
     notes: "笔记",
     aria: "内容视图",
+    collapseTopBar: "收起顶部导航栏",
+    expandTopBar: "展开顶部导航栏",
   },
 
   // 右栏 Agent 顶部（Cursor 式）：最近对话标签条 + 图标动作
