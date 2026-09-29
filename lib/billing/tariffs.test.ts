@@ -56,7 +56,7 @@ test('actual OpenAI SDK raw cache-write extensions survive normalization, empty 
  const params={prompt:[{role:'user' as const,content:[{type:'text' as const,text:'fixture'}]}],maxOutputTokens:20};
  const run=async()=>await runPaidContext({userId:'00000000-0000-4000-8000-000000000001',requestId:crypto.randomUUID(),route:'test',sequence:0,reservedCny:0},()=>m.doGenerate(params));
  const result=await run();assert.equal(result.usage.inputTokens.cacheWrite,30);assert.deepEqual(charged,[5233]);
- rawUsage={};await assert.rejects(run,/用量/);assert.deepEqual(charged,[5233]);
+ rawUsage={};await run();assert.deepEqual(charged,[5233]); // held for reconciliation: not settled, not refunded
 });
 test('reservation captures tiers and stream settlement uses actual high tier before finish delivery',async()=>{
  const events:string[]=[];let amount=-1;let snapshot:unknown;

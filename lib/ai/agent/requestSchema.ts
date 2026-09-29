@@ -218,6 +218,10 @@ export const chatRequestSchema = z.object({
   classContext: classAgentContextSchema.optional(),
   /** 工具循环上限（1–20，对齐 ToolLoopAgent 默认 stopWhen）。缺省由服务端 clamp 为 6。 */
   maxToolRounds: z.number().finite().optional(),
+  /** 设置页「单次输出上限」（token，含思考）。0 / 缺省 = 跟随模型注册表声明的最大输出。 */
+  maxOutputTokens: z.number().finite().min(0).optional(),
+  /** 设置页「单轮预算上限」（积分）。0 / 缺省 = 运营上限；只能收紧，不能超过运营上限。 */
+  turnBudgetCredits: z.number().finite().min(0).optional(),
   /** 计划模式：只读工具，先输出计划文档。 */
   planMode: z.boolean().optional(),
   /** 输入框强制选用的工具或 skill:id。 */

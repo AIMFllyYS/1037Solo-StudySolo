@@ -1,4 +1,5 @@
 import { withPaidRequest } from "@/lib/billing/paidRequest";
+import { optionalPaidContext } from "@/lib/billing/paidContext";
 import type { NextRequest } from "next/server";
 import {
   convertToModelMessages,
@@ -24,7 +25,7 @@ import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { withSseHeartbeat } from "@/lib/ai/sdk/heartbeat";
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { createStudyAgent, type StudyAgentInput } from "@/lib/ai/agent/studyAgent";
-import { addUsage, decideContinuation } from "@/lib/ai/agent/completionGuard";
+import { addUsage, decideContinuation, isTextOnlyContinuation } from "@/lib/ai/agent/completionGuard";
 import { isComposerForcedTool } from "@/lib/chat/composerIntent";
 import { TOOL_STEP_LIMIT_INFO, clampMaxToolRounds } from "@/lib/ai/agent/tools/server";
 import { computeContextBreakdown, estimateRequestContextTokens } from "@/lib/ai/agent/contextBreakdown";
@@ -116,6 +117,12 @@ async function handlePOST(req: NextRequest) {
   const generationSignal = AbortSignal.any([req.signal, generationAbort.signal]);
   const requestId = crypto.randomUUID();
   const userId = await resolveQuotaUserId(req.headers);
+  // 设置页「单轮预算上限」：积分 → 元，只收紧运营上限（见 paidContext.effectiveRequestCapCny）。
+  const paid = optionalPaidContext();
+  if (paid && body.turnBudgetCredits && body.turnBudgetCredits > 0) {
+    const creditsPerCny = Number(process.env.ECOSYSTEM_CREDITS_PER_CNY || "1");
+    if (Number.isFinite(creditsPerCny) && creditsPerCny > 0) paid.budgetCny = body.turnBudgetCredits / creditsPerCny;
+  }
 
   // 生图模式：用户选择了生图模型时，文本对话使用 imageModeTextModel（失败降级到 fallback）。
   const selectedModelInfo = modelId ? getModelInfoWithCustom(modelId, customGroups) : undefined;
@@ -256,6 +263,7 @@ async function handlePOST(req: NextRequest) {
         userNotes: body.noteWindowAgent ? [] : body.userNotes,
         flashcards: body.noteWindowAgent ? [] : body.flashcards,
         maxToolRounds: body.maxToolRounds,
+        maxOutputTokens: body.maxOutputTokens,
         planMode: body.planMode,
         forcedTool: isComposerForcedTool(body.forcedTool) ? body.forcedTool : undefined,
         attachedFiles: body.attachedFiles,
@@ -344,7 +352,11 @@ async function handlePOST(req: NextRequest) {
           disabled: isImageMode || body.planMode === true,
         });
         if (decision) {
+          const textOnly = isTextOnlyContinuation(decision.kind);
           const recoveryBundle = createStudyAgent({ ...bundleInput(contextTruncated, ctxResult.context), recovery: decision.kind });
+          // bundleInput 会重新请求思考参数；只写正文的续写必须在它之后真正关掉思考，
+          // 否则 prepareCall 仍给每一跳补上思考参数，续写可能再次只思考不写正文。
+          if (textOnly) resolved.suspendThinking();
           const response = await result.response;
           const recovery = await recoveryBundle.agent.stream({
             messages: [...historyMessages, ...response.messages, { role: "user", content: decision.nudge }],
@@ -352,7 +364,7 @@ async function handlePOST(req: NextRequest) {
           });
           try {
             for await (const chunk of recovery.toUIMessageStream<ChatMessage>({
-              sendReasoning: decision.kind !== "answer", sendStart: false, sendFinish: false, onError: formatError,
+              sendReasoning: !textOnly, sendStart: false, sendFinish: false, onError: formatError,
             })) {
               writer.write(chunk);
               if (chunk.type === "error" || chunk.type === "abort") {

@@ -40,6 +40,10 @@ export interface ChatRequestBodySettings {
   projectFiles?: ProjectFileCatalogItem[];
   projectSlices?: ProjectSlicePayload[];
   maxToolRounds?: number;
+  /** 0 / 缺省 = 跟随模型注册表。 */
+  maxOutputTokens?: number;
+  /** 0 / 缺省 = 服务端运营上限。 */
+  turnBudgetCredits?: number;
   planMode?: boolean;
   forcedTool?: ComposerForcedTool;
   attachedFiles?: AttachedFileRef[];
@@ -79,6 +83,8 @@ export interface ChatRequestBody {
   projectFiles?: ProjectFileCatalogItem[];
   projectSlices?: ProjectSlicePayload[];
   maxToolRounds?: number;
+  maxOutputTokens?: number;
+  turnBudgetCredits?: number;
   planMode?: boolean;
   forcedTool?: ComposerForcedTool;
   attachedFiles?: AttachedFileRef[];
@@ -143,6 +149,8 @@ export function buildChatRequestBody(
     projectFiles: settings.projectFiles ?? [],
     projectSlices: settings.projectSlices ?? [],
     maxToolRounds: settings.maxToolRounds,
+    ...(settings.maxOutputTokens && settings.maxOutputTokens > 0 ? { maxOutputTokens: settings.maxOutputTokens } : {}),
+    ...(settings.turnBudgetCredits && settings.turnBudgetCredits > 0 ? { turnBudgetCredits: settings.turnBudgetCredits } : {}),
     planMode: settings.planMode,
     forcedTool: settings.forcedTool,
     attachedFiles: settings.attachedFiles ?? [],
