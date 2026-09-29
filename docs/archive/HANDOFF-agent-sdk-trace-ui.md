@@ -1,6 +1,6 @@
 # 项目交接：Agent 架构现代化 + 思考链 Trace UI 迁移
 
-> **状态：已完成并被取代。** 本文描述的 Agent SDK / Trace UI 迁移已由计划 `22`（Agent 架构）、`23`（UI 层归位）、`24`（记忆卡与指令解析）完成并验收，当前实现见 `docs/plans/00-execution-contract.md` 第六节与 `docs/refer/rendering-architecture.md`。本文仅作历史记录保留。
+> **状态：已完成并被取代。** 本文描述的 Agent SDK / Trace UI 迁移已由计划 `22`（Agent 架构）、`23`（UI 层归位）、`24`（记忆卡与指令解析）完成并验收，当前实现见 `docs/plans/archive/00-execution-contract.md` 第六节与 `docs/refer/rendering-architecture.md`。本文仅作历史记录保留。
 
 ## 项目基本信息
 

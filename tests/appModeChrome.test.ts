@@ -51,13 +51,14 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   const classPage = readWorkspaceFile("app/class/page.tsx");
   const workspace = readWorkspaceFile("components/layout/AgentShell.tsx");
   const appShell = readWorkspaceFile("components/layout/AppShell.tsx");
-  const placeholder = readWorkspaceFile("components/layout/ClassPlaceholder.tsx");
+
 
   // 左栏放在 Agent 段布局里：切到 /agent/assets 等子页时左栏要原样留着，只有中央区换内容。
   assert.match(agentLayout, /from "@\/components\/layout\/AgentShell"/);
   assert.match(agentLayout, /<AgentShell>\{children\}<\/AgentShell>/);
   assert.match(agentPage, /from "@\/components\/agent\/AgentChatCenter"/);
-  assert.match(classPage, /from "@\/components\/layout\/ClassPlaceholder"/);
+  assert.match(classPage, /ClassEntry/);
+  assert.doesNotMatch(classPage, /ClassPlaceholder/);
   // 左对话栏是常驻列（可收起），右侧工作区是顶层外壳里与顶栏并列、通到窗口最顶的一列。
   assert.match(workspace, /data-agent-slot="conversations"/);
   assert.match(workspace, /data-agent-slot="main"/);
@@ -88,7 +89,7 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.match(sidebar, /label=\{t\("agent\.sidebar\.projects"\)\}/);
   assert.match(sidebar, /label=\{t\("agent\.sidebar\.recents"\)\}/);
   assert.match(appShell, /hideWindowTaskbar/);
-  assert.match(placeholder, /开发中/);
+
 
   const settings = readWorkspaceFile("components/layout/MobileSettingsPanel.tsx");
   const globalSettings = readWorkspaceFile("components/layout/GlobalSettings.tsx");
@@ -127,7 +128,7 @@ test("Agent 顶栏：网页全屏按钮紧贴右侧工作区开关左侧，且�
 
   // 4) Agent 顶栏是控件条：不吃 Studio 那个会落盘的「收起顶栏」，否则两个键一起消失。
   //    React 侧（barCollapsed）与首帧 CSS（html[data-topbar-collapsed] 那条）都要放过它。
-  assert.match(appShell, /const barCollapsed = !agentMode && topBarCollapsed;/);
+  assert.match(appShell, /const barCollapsed = !agentMode && !classMode && !reviewMode && topBarCollapsed;/);
   assert.match(appShell, /barCollapsed \? "h-0 border-b-0 py-0"/);
   assert.match(appShell, /data-agent-bar=\{agentMode \? "true" : undefined\}/);
   const globals = readWorkspaceFile("app/globals.css");

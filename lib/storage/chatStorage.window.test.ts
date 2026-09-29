@@ -1,3 +1,4 @@
+import { activateStorageOwner, ownedStorageKey } from "@/lib/storage/ownerScope";
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, test } from "node:test";
 import {
@@ -12,6 +13,7 @@ import { INITIAL_WINDOW_TURNS, TURNS_PER_CHUNK } from "@/lib/chat/turnSpine.ts";
 const storage = new Map<string, string>();
 
 function installBrowserMocks() {
+  activateStorageOwner("fixture-user");
   (globalThis as { window?: unknown }).window = { addEventListener: () => {} };
   (globalThis as { indexedDB?: object }).indexedDB = {};
   (globalThis as { localStorage?: Storage }).localStorage = {
@@ -35,6 +37,10 @@ function installBrowserMocks() {
     },
   };
 }
+const physical = (key: string) => ownedStorageKey(key)!;
+const fixtureSet = (key: string, value: string) => storage.set(physical(key), value);
+const fixtureGet = (key: string) => storage.get(physical(key));
+
 
 function msg(id: string, role: "user" | "assistant", text = id): ChatMessage {
   return { id, role, parts: [{ type: "text", text }], timestamp: 1 } as ChatMessage;
@@ -77,11 +83,11 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
     const messages = sessionOf(TURNS_PER_CHUNK + 3);
     await saveAndWait("s1", messages);
 
-    assert.ok(storage.get("chat-s3:s1:h"), "head key 应存在");
-    assert.ok(storage.get("chat-s3:s1:c:0"), "chunk0 应存在");
-    assert.ok(storage.get("chat-s3:s1:c:1"), "chunk1 应存在");
-    assert.equal(storage.get("chat-s3:s1:c:2"), undefined);
-    assert.equal(storage.get(chatSessionKey("s1")), undefined, "v2 键不应写入");
+    assert.ok(fixtureGet("chat-s3:s1:h"), "head key 应存在");
+    assert.ok(fixtureGet("chat-s3:s1:c:0"), "chunk0 应存在");
+    assert.ok(fixtureGet("chat-s3:s1:c:1"), "chunk1 应存在");
+    assert.equal(fixtureGet("chat-s3:s1:c:2"), undefined);
+    assert.equal(fixtureGet(chatSessionKey("s1")), undefined, "v2 键不应写入");
 
     const loaded = await loadSessionMessages("s1");
     assert.deepEqual(loaded?.map((m) => m.id), messages.map((m) => m.id));
@@ -135,7 +141,7 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
     appendSessionMessages("s5", [msg("u8", "user"), msg("a8", "assistant")]);
     flushPendingWrites();
 
-    assert.ok(storage.get("chat-s3:s5:c:1"), "应产生 chunk1");
+    assert.ok(fixtureGet("chat-s3:s5:c:1"), "应产生 chunk1");
     const loaded = await loadSessionMessages("s5");
     assert.equal(loaded!.length, (TURNS_PER_CHUNK + 1) * 2);
     assert.equal(loaded![TURNS_PER_CHUNK * 2].id, "u8");
@@ -157,13 +163,13 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
   test("v2 单 blob 惰性迁移为 v3", async () => {
     const { loadSessionWindow, loadSessionMessages } = await import("./chatStorage.ts");
     const messages = sessionOf(6);
-    storage.set(chatSessionKey("s7"), JSON.stringify(messages));
+    fixtureSet(chatSessionKey("s7"), JSON.stringify(messages));
 
     const window = await loadSessionWindow("s7");
     assert.ok(window);
     assert.equal(window!.turnCount, 6);
-    assert.ok(storage.get("chat-s3:s7:h"), "迁移后应写 v3 head");
-    assert.equal(storage.get(chatSessionKey("s7")), undefined, "v2 键应被清除");
+    assert.ok(fixtureGet("chat-s3:s7:h"), "迁移后应写 v3 head");
+    assert.equal(fixtureGet(chatSessionKey("s7")), undefined, "v2 键应被清除");
 
     const loaded = await loadSessionMessages("s7");
     assert.equal(loaded!.length, 12);
@@ -207,7 +213,7 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
   test("gcOrphanedChatKeys 识别 v3 孤儿键", async () => {
     const { gcOrphanedChatKeys } = await import("./chatStorage.ts");
     // manifest 里只有 keep；orphan 的 v3 键应被整组清掉。
-    storage.set("chat-manifest", JSON.stringify({
+    fixtureSet("chat-manifest", JSON.stringify({
       version: 2, activeSessionId: "keep",
       sessions: [{ id: "keep", title: "", createdAt: 0, updatedAt: 0, messageCount: 0, artifactIds: [] }],
       folders: [], activeProjectId: null,
@@ -220,6 +226,6 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
     for (const key of [...storage.keys()]) {
       assert.ok(!key.startsWith("chat-s3:orphan:"));
     }
-    assert.ok(storage.get("chat-s3:keep:h"), "存活会话的 head 不应被删");
+    assert.ok(fixtureGet("chat-s3:keep:h"), "存活会话的 head 不应被删");
   });
 });

@@ -78,7 +78,7 @@ test("六类来源都能摊平成资产，标题与副标题有内容", () => {
   const items = buildAssetItems(sources);
   assert.equal(items.length, 6);
   const kinds = new Set(items.map((item) => item.kind));
-  for (const kind of ASSET_KINDS) assert.ok(kinds.has(kind), `缺少 ${kind}`);
+  for (const kind of ASSET_KINDS.filter(kind=>kind!=="classroom")) assert.ok(kinds.has(kind), `缺少 ${kind}`);
   const note = items.find((item) => item.kind === "note");
   assert.equal(note?.title, "组胚笔记");
   assert.match(note?.subtitle ?? "", /组胚|个人笔记/);
@@ -146,4 +146,10 @@ test("体积格式化：空值不显示", () => {
   assert.equal(formatAssetSize(512), "512 B");
   assert.equal(formatAssetSize(2048), "2 KB");
   assert.equal(formatAssetSize(3 * 1024 * 1024), "3.0 MB");
+});
+
+test("classroom sessions join the existing asset catalog with owner-local/cloud provenance",()=>{
+ const items=buildAssetItems({...sources,classrooms:[{id:"class-1",title:"课堂记录",updatedAt:"2026-09-27T00:00:00Z",origin:"both"}]});
+ const classroom=items.find(item=>item.kind==="classroom");
+ assert.equal(classroom?.title,"课堂记录");assert.equal(classroom?.origin,"both");assert.equal(assetCounts(items).byKind.classroom,1);
 });

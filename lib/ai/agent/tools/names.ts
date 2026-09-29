@@ -19,6 +19,7 @@ import type { CommitFlashcardsInput, CommitFlashcardsOutput } from "@/lib/ai/age
 import type { UpdateUserNoteInput, UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/types";
 import type { GetProjectFilesInput, GetProjectFilesOutput } from "@/lib/ai/agent/tools/getProjectFiles/types";
 import type { ReadProjectSlicesInput, ReadProjectSlicesOutput } from "@/lib/ai/agent/tools/readProjectSlices/types";
+import type { SearchClassTranscriptInput, SearchClassTranscriptOutput } from "@/lib/ai/agent/tools/searchClassTranscript/types";
 
 /** 供 UIMessage<…, StudyTools> 使用的 UITools 形状（type alias 才能满足 Record 约束）。 */
 export type StudyTools = {
@@ -43,6 +44,7 @@ export type StudyTools = {
   updateUserNote: { input: UpdateUserNoteInput; output: UpdateUserNoteOutput };
   getProjectFiles: { input: GetProjectFilesInput; output: GetProjectFilesOutput };
   readProjectSlices: { input: ReadProjectSlicesInput; output: ReadProjectSlicesOutput };
+  searchClassTranscript: { input: SearchClassTranscriptInput; output: SearchClassTranscriptOutput };
 };
 
 export type StudyToolName = keyof StudyTools;
@@ -69,4 +71,5 @@ export const STUDY_TOOL_NAMES: readonly StudyToolName[] = [
   "updateUserNote",
   "getProjectFiles",
   "readProjectSlices",
+  "searchClassTranscript",
 ];

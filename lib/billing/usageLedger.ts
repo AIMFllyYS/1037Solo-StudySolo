@@ -1,11 +1,12 @@
 /**
- * 服务端用量台账：上游消耗到手即写 usage_ledger。
+ * Provider detail evidence in ss_usage_ledger; shared credit_ledger is the financial authority.
+ * Actual charging is performed by upfront providerAdmission/billableFetch, never by this best-effort detail insert.
  * 主聊天走 settleChatUsage；卫星路由 / 工具侧车走 settleUsage。
  * 0/0 不落行；reasoning / cache-write 进列并参与计价。
  */
 
 import { AsyncLocalStorage } from "node:async_hooks";
-import { extractAccessToken, readTrustedProxyUserId, verifySupabaseAccessToken, type VerifyAccessToken } from "@/lib/auth/aiGate";
+import { extractAccessToken, verifySupabaseAccessToken, type VerifyAccessToken } from "@/lib/auth/aiGate";
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
 import { getModelInfo, getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
 import { BYOK_OVERHEAD_CNY_PER_MILLION, type UsagePool } from "@/lib/billing/usagePool";
@@ -345,13 +346,9 @@ export async function resolveLedgerUserId(
 ): Promise<string | null> {
   const token = extractAccessToken(headers);
   if (!token) return null;
-  if (deps?.allowTrustedProxyHeader) {
-    const trusted = readTrustedProxyUserId(headers);
-    if (trusted) return trusted;
-  }
   try {
     const user = await (deps?.verify ?? verifySupabaseAccessToken)(token);
-    return user?.id ?? null;
+    return user && !user.mfaRequired ? user.id : null;
   } catch {
     return null;
   }
@@ -359,7 +356,7 @@ export async function resolveLedgerUserId(
 
 async function defaultInsert(row: UsageLedgerRow): Promise<void> {
   const client = createServiceAuthClient();
-  const { error } = await client.from("usage_ledger").insert(row);
+  const { error } = await client.from("ss_usage_ledger").insert(row);
   if (error) throw new Error(error.message);
 }
 

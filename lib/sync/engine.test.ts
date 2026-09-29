@@ -420,4 +420,146 @@ describe("cloud sync engine", { concurrency: false }, () => {
     assert.equal(memory.notes.get("n1")?.title, "本机新稿");
     assert.match(JSON.stringify(api.upserts.at(-1)?.payload), /本机/);
   });
+
+  /**
+   * 闪卡过去没有版本比较：`pushOne` 只有 user-note / chat-project 分支，
+   * review-card 一律无条件 upsert。于是只要本机对同一张卡有任何改动，
+   * 就会静默覆盖别处（Platform Wiki）写下的编辑。
+   */
+  test("review-card push does not clobber a newer remote version", async () => {
+    const memory = createMemoryStores();
+    memory.cards.set("c1", {
+      id: "c1",
+      subjectId: "anatomy",
+      sourceLabel: "组织学",
+      originalText: "被覆上皮",
+      cardType: "excerpt",
+      front: "本机旧稿",
+      back: "本机旧答案",
+      status: "ready",
+      createdAt: 1,
+      updatedAt: 10,
+    });
+    const api = createMemorySyncClient();
+    await api.upsert({
+      kind: "review-card",
+      client_id: "c1",
+      deleted: false,
+      payload: {
+        id: "c1",
+        subjectId: "anatomy",
+        sourceLabel: "组织学",
+        originalText: "被覆上皮",
+        cardType: "excerpt",
+        front: "Platform 新稿",
+        back: "Platform 新答案",
+        status: "ready",
+        createdAt: 1,
+        updatedAt: 90,
+      },
+    });
+    const before = api.upserts.length;
+
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests(api);
+    // 走推送路径而不是先拉取：这正是有本地改动时的真实时序。
+    enqueueUpsert("review-card", "c1");
+    await flushCloudSyncForTests();
+
+    assert.equal(
+      api.upserts.length,
+      before,
+      "云端更新时不得再次上传，否则会覆盖 Platform 的编辑"
+    );
+    assert.equal(memory.cards.get("c1")?.front, "Platform 新稿");
+    assert.equal(memory.cards.get("c1")?.back, "Platform 新答案");
+  });
+
+  test("review-card push still wins when the local copy is newer", async () => {
+    const memory = createMemoryStores();
+    memory.cards.set("c1", {
+      id: "c1",
+      subjectId: "anatomy",
+      sourceLabel: "组织学",
+      originalText: "被覆上皮",
+      cardType: "excerpt",
+      front: "本机新稿",
+      back: "本机新答案",
+      status: "ready",
+      createdAt: 1,
+      updatedAt: 90,
+    });
+    const api = createMemorySyncClient();
+    await api.upsert({
+      kind: "review-card",
+      client_id: "c1",
+      deleted: false,
+      payload: {
+        id: "c1",
+        subjectId: "anatomy",
+        sourceLabel: "组织学",
+        originalText: "被覆上皮",
+        cardType: "excerpt",
+        front: "云端旧稿",
+        back: "云端旧答案",
+        status: "ready",
+        createdAt: 1,
+        updatedAt: 10,
+      },
+    });
+    const before = api.upserts.length;
+
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests(api);
+    enqueueUpsert("review-card", "c1");
+    await flushCloudSyncForTests();
+
+    assert.equal(api.upserts.length, before + 1, "本机更新时必须照常上传");
+    assert.match(JSON.stringify(api.upserts.at(-1)?.payload), /本机新稿/);
+  });
+
+  /**
+   * 现网 94 张卡都没有 updatedAt，只靠 createdAt 比较。这条保证旧数据无需迁移。
+   */
+  test("review-card without updatedAt falls back to createdAt", async () => {
+    const memory = createMemoryStores();
+    memory.cards.set("c1", {
+      id: "c1",
+      subjectId: "anatomy",
+      sourceLabel: "组织学",
+      originalText: "被覆上皮",
+      cardType: "excerpt",
+      front: "本机旧稿",
+      back: "本机旧答案",
+      status: "ready",
+      createdAt: 1,
+    });
+    const api = createMemorySyncClient();
+    await api.upsert({
+      kind: "review-card",
+      client_id: "c1",
+      deleted: false,
+      payload: {
+        id: "c1",
+        subjectId: "anatomy",
+        sourceLabel: "组织学",
+        originalText: "被覆上皮",
+        cardType: "excerpt",
+        front: "Platform 新稿",
+        back: "Platform 新答案",
+        status: "ready",
+        createdAt: 1,
+        updatedAt: 90,
+      },
+    });
+    const before = api.upserts.length;
+
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests(api);
+    enqueueUpsert("review-card", "c1");
+    await flushCloudSyncForTests();
+
+    assert.equal(api.upserts.length, before);
+    assert.equal(memory.cards.get("c1")?.front, "Platform 新稿");
+  });
 });

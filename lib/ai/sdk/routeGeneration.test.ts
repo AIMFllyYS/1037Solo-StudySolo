@@ -1,5 +1,6 @@
+import { test, mockPaidFetch } from "@/tests/helpers/paidAiFixture";
 import assert from "node:assert/strict";
-import { test, type TestContext } from "node:test";
+import { type TestContext } from "node:test";
 import { buildCustomModelRegistryId, type CustomApiGroup } from "../models.ts";
 import { resolveLanguageModel } from "./languageModel.ts";
 import { streamRouteText } from "./routeGeneration.ts";
@@ -19,7 +20,7 @@ function model() {
 }
 
 function mockSse(t: TestContext, parts: unknown[]) {
-  t.mock.method(globalThis, "fetch", async () => new Response(parts.map(event).join("") + "data: [DONE]\n\n", {
+  mockPaidFetch(t, async () => new Response(parts.map(event).join("") + "data: [DONE]\n\n", {
     headers: { "Content-Type": "text/event-stream" },
   }));
 }
@@ -74,7 +75,7 @@ test("route text stream: malformed protocol data rejects", async (t) => {
 });
 
 test("route text stream: already-aborted requests do not call upstream", async (t) => {
-  const fetchMock = t.mock.method(globalThis, "fetch", async () => { throw new Error("must not call"); });
+  const fetchMock = mockPaidFetch(t, async () => { throw new Error("must not call"); });
   const controller = new AbortController();
   controller.abort(new DOMException("user cancelled", "AbortError"));
   await assert.rejects(streamRouteText({
@@ -86,7 +87,7 @@ test("route text stream: already-aborted requests do not call upstream", async (
 
 test("route text stream: idle timeout aborts an upstream body and never returns success", { timeout: 3000 }, async (t) => {
   let aborted = false;
-  t.mock.method(globalThis, "fetch", async (_input: unknown, init: RequestInit) => new Response(new ReadableStream({
+  mockPaidFetch(t, async (_input: unknown, init: RequestInit) => new Response(new ReadableStream({
     start(controller) {
       controller.enqueue(encoder.encode(event(chunk({ content: "partial" }))));
       init.signal?.addEventListener("abort", () => {
@@ -104,7 +105,7 @@ test("route text stream: idle timeout aborts an upstream body and never returns 
 
 test("route text stream: an upstream with headers but no first content also times out", { timeout: 3000 }, async (t) => {
   let aborted = false;
-  t.mock.method(globalThis, "fetch", async (_input: unknown, init: RequestInit) => new Response(new ReadableStream({
+  mockPaidFetch(t, async (_input: unknown, init: RequestInit) => new Response(new ReadableStream({
     start(controller) {
       init.signal?.addEventListener("abort", () => {
         aborted = true;

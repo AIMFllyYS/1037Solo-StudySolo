@@ -1,0 +1,260 @@
+{
+  "subjectId": "anatomy",
+  "chapterId": "rec-2026-fall-027-028",
+  "generatedAt": "2026-09-29",
+  "examConfig": {
+    "source": "content/anatomy/lectures/rec-2026-fall-027-028/recording.md；content/anatomy/lectures/rec-2026-fall-027-028/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-027-028",
+    "revision": 1,
+    "recordingHash": "3c7cf8ed3d9003e6d90aa8e1117027e97b8efca4f9969b75876e9b61f9e4200c",
+    "notesTextHash": "226792602265db9707cdf79930a9fb32cfa1b40c88269804b48587dcff710da9"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "输卵管四部与受精结扎部位"
+      },
+      "stem": "关于输卵管的分部及临床意义，下列哪项正确？",
+      "options": [
+        "子宫部→峡部→壶腹部→漏斗部；受精发生在壶腹部，结扎常选峡部",
+        "子宫部→壶腹部→峡部→漏斗部；受精发生在峡部，结扎常选壶腹部",
+        "漏斗部→壶腹部→峡部→子宫部；受精发生在漏斗部，结扎常选子宫部",
+        "子宫部→峡部→壶腹部→漏斗部；受精与结扎都发生在峡部"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**输卵管由子宫向卵巢依次为子宫部、峡部、壶腹部、漏斗部；壶腹部最宽大是受精部位，峡部管腔窄壁厚是输卵管结扎常选处，漏斗部末端伞端拾卵。B错：受精在壶腹不在峡部。C错：方向颠倒。D错：受精不在峡部。",
+      "hint": "宫→峡→壶→漏；受精壶腹，结扎峡部，拾卵靠伞。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "子宫四韧带功能"
+      },
+      "stem": "维持子宫前倾、前屈位及防止脱垂的韧带配对，正确的是？",
+      "options": [
+        "圆韧带——维持前倾；骶子宫韧带——维持前屈；主韧带——防脱垂",
+        "阔韧带——维持前倾；圆韧带——防脱垂；主韧带——维持前屈",
+        "圆韧带——防脱垂；主韧带——维持前倾；骶子宫韧带——限制侧移",
+        "阔韧带——维持前屈；主韧带——维持前倾；圆韧带——防脱垂"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**子宫四韧带：阔韧带为双层腹膜、限制侧移；圆韧带维持前倾；主韧带（宫旁组织）防止子宫脱垂；骶子宫韧带维持前屈。B错：阔韧带不负责前倾，主韧带不维持前屈。C错：圆韧带不防脱垂。D错：三者功能全错位。",
+      "hint": "圆前倾、骶前屈、主防脱、阔挡侧移。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-027-028/recording.md",
+        "label": "卵巢位置与卵巢窝"
+      },
+      "stem": "成年女性卵巢的位置是？",
+      "options": [
+        "盆腔侧壁、髂内动脉与髂外动脉夹角处的卵巢窝内",
+        "腹腔后壁、肾的下方腹膜后间隙",
+        "膀胱前方的腹前壁内",
+        "直肠后方的骶骨前方"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**成年卵巢位于盆腔侧壁、髂内动脉与髂外动脉夹角处的卵巢窝内。B错：胚胎早期卵巢在腹膜后肾下方，出生后下移入盆腔，成年不在肾下。C、D错：卵巢不在膀胱前或直肠后。",
+      "hint": "卵巢窝=髂内外动脉夹角。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "直肠子宫陷凹"
+      },
+      "stem": "直立位女性腹膜腔的最低点是？",
+      "options": [
+        "膀胱子宫陷凹",
+        "直肠子宫陷凹（Douglas 窝）",
+        "网膜囊",
+        "膀胱旁窝"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**直立位时女性腹膜腔最低处为直肠与子宫之间的直肠子宫陷凹（Douglas 窝），腹腔积液、积血常积聚于此。A错：膀胱子宫陷凹位置较高。C错：网膜囊是小腹膜腔，不是最低点。",
+      "hint": "女最低=直肠子宫陷凹。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-027-028/recording.md",
+        "label": "卵巢悬韧带与卵巢血管"
+      },
+      "stem": "手术中寻找卵巢血管的重要标志是？",
+      "options": [
+        "卵巢固有韧带",
+        "卵巢系膜",
+        "卵巢悬韧带",
+        "子宫阔韧带"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**卵巢悬韧带内含有卵巢血管，是术中寻找、结扎卵巢血管的标志。A错：卵巢固有韧带连卵巢下端与子宫角，不含血管主干。B错：卵巢系膜连卵巢前缘与阔韧带。D错：阔韧带是双层腹膜，不是找卵巢血管的直接标志。",
+      "hint": "悬韧带里走卵巢血管。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "子宫峡部"
+      },
+      "stem": "剖宫产常选择的手术切口部位是？",
+      "options": [
+        "子宫底",
+        "子宫体部",
+        "子宫峡部",
+        "子宫颈外口"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**子宫峡部是子宫体与子宫颈之间的狭窄部分，妊娠后伸展形成子宫下段，是剖宫产常选切口处。A、B错：子宫底、体部血管丰富，不作常规剖宫产切口。D错：宫颈外口不是剖宫产切口部位。",
+      "hint": "峡部=子宫下段=剖腹产切口。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-027-028/recording.md",
+        "label": "阴道后穹穿刺"
+      },
+      "stem": "经阴道后穹穿刺可用于诊断腹腔（盆腔）积液，其解剖学基础是？",
+      "options": [
+        "后穹最深，紧邻直肠子宫陷凹（女性直立腹膜腔最低点）",
+        "后穹紧邻膀胱子宫陷凹",
+        "后穹位于阴道最前方、紧邻尿道",
+        "后穹与腹膜腔互不相通"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**阴道后穹最深，其上方紧邻直肠子宫陷凹（直立位女性腹膜腔最低点），腹腔积液/积血多积聚于此，故经后穹穿刺可抽出积液明确诊断。B错：不是膀胱子宫陷凹。C错：后穹在后方。D错：穿刺正是经此到达腹膜腔。",
+      "hint": "后穹最深贴 Douglas 窝，穿刺抽积液。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "大网膜与网膜囊"
+      },
+      "stem": "关于大网膜与网膜囊，下列描述正确的是？",
+      "options": [
+        "大网膜能包裹病灶，有\"腹腔卫士\"之称；网膜囊是小网膜后方的扁窄间隙",
+        "大网膜位于腹膜外，无包裹作用",
+        "网膜囊即腹膜腔，借前壁直接与体外相通",
+        "大网膜是男性生殖器的组成部分"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**大网膜为胃大弯下垂的腹膜皱襞，可包裹病灶、限制炎症扩散，故称\"腹腔卫士\"；网膜囊是小网膜和胃后方的扁窄间隙（小腹膜腔），借网膜孔与大腹膜腔相通。B、C、D均为明显错误。",
+      "hint": "大网膜=腹腔卫士，网膜囊=小腹膜腔。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-027-028/recording.md",
+        "label": "黄体的内分泌功能"
+      },
+      "stem": "排卵后卵泡壁塌陷形成的黄体，其主要分泌功能是？",
+      "options": [
+        "分泌雄激素和雌激素",
+        "分泌雌激素、孕激素和抑制素",
+        "只分泌黏液",
+        "分泌肾素"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**排卵后卵泡壁重新闭合、颜色变黄形成黄体，分泌雌激素、孕激素（黄体酮）和抑制素，作用约维持两周。A错：雄激素主要由睾丸间质细胞分泌。C、D错：黄体不分泌黏液或肾素。",
+      "hint": "黄体=雌激素+孕激素+抑制素。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "子宫位置前倾前屈"
+      },
+      "stem": "成年子宫的正常位置及维持其位置的主要韧带组合是？",
+      "options": [
+        "位于膀胱前方，呈后倾后屈位",
+        "位于膀胱与直肠之间，呈前倾前屈位；圆韧带维持前倾、骶子宫韧带维持前屈",
+        "位于直肠后方，呈水平位",
+        "位于腹腔上部，无韧带固定"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**成年子宫位于膀胱与直肠之间，呈前倾前屈位；圆韧带维持前倾、骶子宫韧带维持前屈，主韧带防脱垂、阔韧带限制侧移。A、C、D均与正常位置不符。",
+      "hint": "膀胱直肠之间前倾前屈；圆前倾、骶前屈。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-027-028/recording.md",
+        "label": "直立腹膜腔最低点男女对比与乳腺"
+      },
+      "stem": "关于直立位腹膜腔最低点及乳腺癌\"橘皮样改变\"，下列组合正确的是？",
+      "options": [
+        "男性最低点为直肠膀胱陷凹；女性为直肠子宫陷凹；橘皮样改变由淋巴回流受阻+ Cooper 韧带牵拉所致",
+        "男女最低点相同，均为膀胱子宫陷凹",
+        "男性最低点为直肠子宫陷凹；女性为膀胱子宫陷凹",
+        "橘皮样改变由皮肤色素沉着所致，与淋巴无关"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**直立位腹膜腔最低点：男性为直肠膀胱陷凹，女性因子宫存在而为直肠子宫陷凹；乳腺癌时淋巴管阻塞致淋巴水肿、加之 Cooper（乳房悬）韧带牵拉，皮肤呈橘皮样改变。B、C错：男女最低点不同。D错：橘皮样改变机制解释错误。",
+      "hint": "男直肠膀胱、女直肠子宫；橘皮=淋巴堵+韧带拉。"
+    }
+  ]
+}

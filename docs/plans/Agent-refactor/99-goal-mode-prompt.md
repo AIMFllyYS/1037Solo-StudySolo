@@ -1,7 +1,7 @@
 # 99 · 目标模式提示词（Loop 制 · 第二轮）
 
 > **用途**：一次性投喂给主 Agent，让它无人值守连续跑完 L0–L7 全部 8 个 loop。
-> **取代**：`docs/analysis/Agent/02-goal-mode-prompt.md`（一号一循环的旧版）。旧版的调度规则已作废，其「已就绪的环境」与「三个坑」仍可参考。
+> **取代**：`docs/archive/2026-09-12-one-issue-per-loop/analysis/Agent/02-goal-mode-prompt.md`（一号一循环的旧版，已归档）。旧版的调度规则已作废，其「已就绪的环境」与「三个坑」仍可参考。
 > **前提**：第一轮已关 #48–#66（19 个 Issue），集成分支 `refactor/agent-platform-hardening` 上 `pnpm test` 恒绿。#67 的 A 已交回待验收。
 > 下面 `====` 之间的内容即为可直接投喂的提示词正文。
 

@@ -6,7 +6,9 @@
 > **项目版本**：gailvlun v0.3.1
 > **文档性质**：调研规划，不含代码修改
 >
-> **2026-09 校对说明**（计划 `25`）：本文档记录的是 2026-07-01 立项时的调研问题清单，多处提到的路径（`lib/store.ts`、`lib/quiz-store.ts`、`directiveComponents.ts`、`lib/hooks/useXxx.ts` 等）已随计划 `22`/`23` 搬家，仅在命中处补充了「现已搬到 X」的括注，不改写问题原文——它记录的是「当时为什么要问这个问题」，具体现网路径请以 `docs/plans/00-execution-contract.md` 第六节与对应维度报告（`01`/`03`/`06` 等）为准。
+> **2026-09 校对说明**（计划 `25`）：本文档记录的是 2026-07-01 立项时的调研问题清单，多处提到的路径（`lib/store.ts`、`lib/quiz-store.ts`、`directiveComponents.ts`、`lib/hooks/useXxx.ts` 等）已随计划 `22`/`23` 搬家，仅在命中处补充了「现已搬到 X」的括注，不改写问题原文——它记录的是「当时为什么要问这个问题」，具体现网路径请以 `docs/plans/archive/00-execution-contract.md` 第六节与对应维度报告（`01`/`03`/`06` 等）为准。
+>
+> **目录搬迁提示（2026-09 之后）**：本轮调研报告实际落在 `docs/analysis/9-9/`（不再是本文正文写的 `docs/research/`）；`docs/superpowers/`、`docs/compose/`、`docs/releases/`、`docs/plans/01`–`25` 均已移入 `docs/archive/` 与 `docs/plans/archive/`。下文这些旧路径按当时状态保留，**照抄会找不到文件**。
 
 ---
 
@@ -37,9 +39,9 @@
 | `docs/refer/storage-architecture.md` | **深化** | 已有存储架构规范，调研报告将深入 Storage v2 分会话分 key、水合门控、迁移策略的实现细节 |
 | `docs/refer/performance-audit-report.md` | **补充** | 已有性能审计报告（2026-06-28），调研报告将覆盖更广范围（含构建/SSR/交互组件性能），并审查已有优化是否仍有效 |
 | `docs/sop/00-08` | **引用+评估** | SOP 体系已标准化，调研报告评估其自动化潜力，不重复 SOP 内容 |
-| `docs/superpowers/specs/` | **引用** | 4 个设计文档（学习应用设计/AI升级/浮窗统一/CanvasBlock 重建），调研报告引用其设计决策 |
-| `docs/compose/specs/` | **引用** | 考前模拟优化设计，调研报告引用 |
-| `docs/releases/` | **引用** | v0.3.1 修复说明，调研报告引用 |
+| `docs/archive/superpowers/specs/` | **引用** | 4 个设计文档（学习应用设计/AI升级/浮窗统一/CanvasBlock 重建），调研报告引用其设计决策 |
+| `docs/archive/compose/specs/` | **引用** | 考前模拟优化设计，调研报告引用 |
+| `docs/archive/releases/` | **引用** | v0.3.1 修复说明，调研报告引用 |
 
 ---
 

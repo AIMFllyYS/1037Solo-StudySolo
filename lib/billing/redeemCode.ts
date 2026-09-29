@@ -44,10 +44,25 @@ export interface RedeemUserRow {
 
 export interface RedeemSuccess {
   ok: true;
-  tier: UserTier;
-  periodStart: string;
-  periodEnd: string;
-  months: number;
+  tier: UserTier | "pro_plus" | "ultra";
+  periodStart?: string;
+  periodEnd: string | null;
+  months?: number;
+  status?: "redeemed" | "already_redeemed" | "higher_tier_kept";
+  lifetime?: boolean;
+  isStudentVerified?: boolean;
+}
+
+export function centralRedeemResult(value: unknown): RedeemSuccess {
+  if (!value || typeof value !== "object") throw new Error("Invalid central redemption response");
+  const row = value as Record<string, unknown>;
+  if (!["redeemed", "already_redeemed", "higher_tier_kept"].includes(String(row.status))
+    || !["free", "pro", "pro_plus", "ultra"].includes(String(row.tier))) throw new Error("Invalid central redemption response");
+  const lifetime = row.tier_expires_at === "infinity";
+  const expiry = lifetime || row.tier_expires_at == null ? null : String(row.tier_expires_at);
+  if (expiry && !Number.isFinite(Date.parse(expiry))) throw new Error("Invalid central membership expiry");
+  return { ok: true, tier: row.tier as RedeemSuccess["tier"], status: row.status as RedeemSuccess["status"],
+    periodEnd: expiry, lifetime, isStudentVerified: row.is_student_verified === true };
 }
 
 export interface RedeemFailure {
@@ -121,98 +136,7 @@ export function nextMembershipPeriod(input: {
 }
 
 function defaultStore(): RedeemStore {
-  return {
-    async findCode(code) {
-      const client = createServiceAuthClient();
-      const { data, error } = await client
-        .from("redemption_codes")
-        .select("id, code, tier, months, max_uses, used_count, expires_at")
-        .eq("code", code)
-        .maybeSingle();
-      if (error) throw new Error(error.message);
-      if (!data) return null;
-      return {
-        ...data,
-        tier: asUserTier(String(data.tier)),
-        months: Number(data.months) || 1,
-        max_uses: Number(data.max_uses) || 1,
-        used_count: Number(data.used_count) || 0,
-      } as RedeemCodeRow;
-    },
-    async getUser(userId) {
-      const client = createServiceAuthClient();
-      const { data, error } = await client
-        .from("app_users")
-        .select("id, tier, period_start, period_end")
-        .eq("id", userId)
-        .maybeSingle();
-      if (error) throw new Error(error.message);
-      return (data as RedeemUserRow | null) ?? null;
-    },
-    async hasRedemption(codeId, userId) {
-      const client = createServiceAuthClient();
-      const { data, error } = await client
-        .from("redemptions")
-        .select("id")
-        .eq("code_id", codeId)
-        .eq("user_id", userId)
-        .maybeSingle();
-      if (error) throw new Error(error.message);
-      return !!data;
-    },
-    async insertRedemption(codeId, userId) {
-      const client = createServiceAuthClient();
-      const { error } = await client.from("redemptions").insert({ code_id: codeId, user_id: userId });
-      if (!error) return "ok";
-      if (error.code === "23505") return "duplicate";
-      throw new Error(error.message);
-    },
-    async incrementUsedCount(codeId, maxUses) {
-      const client = createServiceAuthClient();
-      const { data, error } = await client
-        .from("redemption_codes")
-        .select("used_count")
-        .eq("id", codeId)
-        .maybeSingle();
-      if (error) throw new Error(error.message);
-      const used = Number(data?.used_count ?? 0);
-      if (used >= maxUses) return false;
-      const { data: updated, error: updError } = await client
-        .from("redemption_codes")
-        .update({ used_count: used + 1 })
-        .eq("id", codeId)
-        .eq("used_count", used)
-        .select("id");
-      if (updError) throw new Error(updError.message);
-      return (updated ?? []).length > 0;
-    },
-    async applyUser(userId, patch) {
-      const client = createServiceAuthClient();
-      const { error } = await client
-        .from("app_users")
-        .update({
-          tier: patch.tier,
-          period_start: patch.periodStart.toISOString(),
-          period_end: patch.periodEnd.toISOString(),
-        })
-        .eq("id", userId);
-      if (error) throw new Error(error.message);
-    },
-    async insertGrant(row) {
-      const client = createServiceAuthClient();
-      const { error } = await client.from("quota_grants").insert({
-        user_id: row.userId,
-        pool: row.pool,
-        tier: row.tier,
-        amount_cny: row.amountCny,
-        period_start: row.periodStart.toISOString(),
-        period_end: row.periodEnd.toISOString(),
-        source: "redemption",
-        redemption_id: row.redemptionId ?? null,
-      });
-      if (error) throw new Error(error.message);
-    },
-  };
+  throw new Error("Local redemption grants retired; use atomic ecosystem redemption");
 }
 
 function activeStore(): RedeemStore {
@@ -226,6 +150,16 @@ export async function redeemCodeForUser(
 ): Promise<RedeemSuccess | RedeemFailure> {
   const code = normalizeRedeemCode(rawCode);
   if (!code) return { ok: false, errorCode: "invalid" };
+  if (!deps.store && !testDeps?.store) {
+    const result = await createServiceAuthClient().rpc("redeem_membership_code", { p_user_id: userId, p_code: code });
+    if (result.error) {
+      if (result.error.message.includes("membership_code_invalid")) return { ok: false, errorCode: "invalid" };
+      throw new Error("Unified redemption temporarily unavailable");
+    }
+    invalidateQuotaCache(userId);
+    return centralRedeemResult(result.data);
+  }
+
 
   const now = (deps.now ?? testDeps?.now ?? (() => new Date()))();
   const db = deps.store ?? activeStore();

@@ -141,7 +141,7 @@ test("滚动 30 天：过期窗口按用户锚点前进，旧账不计入", asyn
   assert.equal(snapshot.remaining.platform, 7);
 });
 
-test("platform 耗尽则拒，提示可改用 BYOK", async () => {
+test("共享额度耗尽时平台和 BYOK 开销均拒绝", async () => {
   const period = {
     start: new Date("2026-09-01T00:00:00.000Z"),
     end: new Date("2026-10-01T00:00:00.000Z"),
@@ -170,12 +170,12 @@ test("platform 耗尽则拒，提示可改用 BYOK", async () => {
   const blocked = await assertQuotaAvailable({ userId: USER, pool: "platform" });
   assert.equal(blocked.ok, false);
   if (!blocked.ok) {
-    assert.match(blocked.error, /可改用 BYOK/);
+    assert.match(blocked.error, /生态共享/);
     assert.equal(blocked.error, PLATFORM_QUOTA_EXHAUSTED_MESSAGE);
     assert.equal(blocked.status, 402);
   }
   const byokMain = await assertQuotaAvailable({ userId: USER, pool: null });
-  assert.equal(byokMain.ok, true);
+  assert.equal(byokMain.ok, false);
 });
 
 test("额度查询失败不放行：返回 503，不能把故障当成额度充足", async () => {
@@ -200,7 +200,7 @@ test("额度查询失败不放行：返回 503，不能把故障当成额度充�
   }
 });
 
-test("未配置额度服务仍放行（本地开发 / 未接 Supabase）", async () => {
+test("未配置额度服务也必须拒绝", async () => {
   const unconfigured: QuotaStore = {
     async getUser() {
       throw new Error("Need SUPABASE_SERVICE_ROLE_KEY");
@@ -215,14 +215,14 @@ test("未配置额度服务仍放行（本地开发 / 未接 Supabase）", async
   };
   setQuotaGateTestDeps({ store: unconfigured, now: () => NOW });
   const decision = await assertQuotaAvailable({ userId: USER, pool: "platform" });
-  assert.equal(decision.ok, true);
+  assert.equal(decision.ok, false);
   assert.equal(isQuotaServiceUnconfigured(new Error("Need SUPABASE_SERVICE_ROLE_KEY")), true);
   assert.equal(isQuotaServiceUnconfigured(new Error("fetch failed")), false);
 });
 
-test("无 userId 不拦截（proxy 已拦未登录）", async () => {
+test("无 userId 拒绝，不能以 proxy 为由省略身份", async () => {
   const open = await assertQuotaAvailable({ userId: null, pool: "platform" });
-  assert.equal(open.ok, true);
+  assert.equal(open.ok, false);
 });
 
 test("sumLedgerUsed 排除历史错 pool 的 BYOK 主模型", () => {

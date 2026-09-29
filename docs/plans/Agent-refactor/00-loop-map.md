@@ -213,7 +213,7 @@ Epic 层的划分其实是对的——它就是按系统分的。错在**执行�
 另有两份配套文档：
 
 - **`MODELS.md`** —— 项目支持的全部模型及其真实价格、上下文、思考方言。价格口径是**非优惠、非峰谷、阶梯取最贵档**。它是 L0 的配套产物，也是以后加删模型的唯一真相源。
-- **`99-goal-mode-prompt.md`** —— 可直接投喂给主 Agent 的目标模式提示词，一次覆盖 L0–L7 全部 8 个 loop。取代 `docs/analysis/Agent/02-goal-mode-prompt.md`。
+- **`99-goal-mode-prompt.md`** —— 可直接投喂给主 Agent 的目标模式提示词，一次覆盖 L0–L7 全部 8 个 loop。取代 `docs/archive/2026-09-12-one-issue-per-loop/analysis/Agent/02-goal-mode-prompt.md`（已归档）。
 
 ## 8. 完成定义（每个 loop）
 

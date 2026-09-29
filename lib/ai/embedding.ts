@@ -1,3 +1,4 @@
+import { billableJsonFetch } from "@/lib/billing/billableFetch";
 // SiliconFlow Embedding 客户端：封装 /v1/embeddings 调用，实现 EmbeddingProvider 接口。
 import type { EmbeddingProvider } from '@/lib/context/semanticSearch';
 import { mainUsedPlatformCredentials, settleUsage } from '@/lib/billing/usageLedger';
@@ -54,14 +55,14 @@ export class SiliconFlowEmbedding implements EmbeddingProvider {
 
     for (let i = 0; i < texts.length; i += BATCH_SIZE) {
       const batch = texts.slice(i, i + BATCH_SIZE);
-      const resp = await fetch(`${this.baseUrl}/embeddings`, {
+      const resp = await billableJsonFetch(`${this.baseUrl}/embeddings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this.apiKey}`,
         },
         body: JSON.stringify({ model: this.model, input: batch }),
-      });
+      }, { model: this.model, kind: "embedding", byok: !this.usedPlatformCredentials });
 
       if (!resp.ok) {
         const errText = await resp.text().catch(() => '');
@@ -123,14 +124,14 @@ export class ZhipuEmbedding implements EmbeddingProvider {
 
     for (let i = 0; i < texts.length; i += ZHIPU_BATCH_SIZE) {
       const batch = texts.slice(i, i + ZHIPU_BATCH_SIZE);
-      const resp = await fetch(`${this.baseUrl}/embeddings`, {
+      const resp = await billableJsonFetch(`${this.baseUrl}/embeddings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this.apiKey}`,
         },
         body: JSON.stringify({ model: this.model, input: batch }),
-      });
+      }, { model: this.model, kind: "embedding" });
 
       if (!resp.ok) {
         const errText = await resp.text().catch(() => '');

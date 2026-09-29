@@ -4,6 +4,7 @@ import { openSourcePreview } from "@/lib/chat/openSourcePreview";
 import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
 import { parseNotePath } from "@/lib/content/notePath";
 import { useNoteCitations } from "@/lib/stores/noteCitations";
+import { openClassSegment } from "@/lib/class/jump";
 
 function citationToTraceSource(source: CitationSource) {
   if (source.kind === "web") {
@@ -24,6 +25,11 @@ function citationToTraceSource(source: CitationSource) {
 
 /** 点内联 [n]：网页开预览窗，教材开笔记引用窗，其余走来源追踪。 */
 export function openCitationSource(source: CitationSource, catalog: readonly CitationSource[] = []) {
+  if (source.classSegment) {
+    openClassSegment(source.classSegment);
+    return;
+  }
+
   if (source.kind === "web" && isHttpUrl(source.url)) {
     openSourcePreview({ url: source.url, title: source.title });
     return;

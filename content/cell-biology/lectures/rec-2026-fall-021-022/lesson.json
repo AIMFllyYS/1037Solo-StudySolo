@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "cell-biology",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-021-022",
+  "courseName": "细胞生物学",
+  "sessionRange": {
+    "start": 21,
+    "end": 22
+  },
+  "taughtOn": "2026-09-28",
+  "topic": "微丝及其调控、Arp2/3复合物、Formin、小GTP酶(Rho家族)与伪足/细胞运动",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-021-022"
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FileDigit, Globe, Layers, MonitorPlay } from "lucide-react";
+import { FileDigit, Globe, Layers, MonitorPlay, GraduationCap } from "lucide-react";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import FileTypeIcon, { resolveFileGlyphKind } from "@/components/icons/file-types/FileTypeIcon";
 import { assetHref } from "@/lib/agent/assetHref";
@@ -9,6 +9,7 @@ import { assetOriginLabel, formatAssetTime, type AssetItem } from "@/lib/agent/a
 
 /** 资产卡片的类型图标：六类各不相同，橱窗视图只显示它与标题（不预览正文）。 */
 export function AssetKindIcon({ item, size = 20 }: { item: AssetItem; size?: number }) {
+  if(item.kind==="classroom")return <GraduationCap size={size}/>;
   if (item.kind === "note") return <NotebookFormulaIcon size={size} />;
   if (item.kind === "flashcard") return <Layers size={size} />;
   if (item.kind === "document") return <FileDigit size={size} />;

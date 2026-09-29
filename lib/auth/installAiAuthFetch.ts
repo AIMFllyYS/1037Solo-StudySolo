@@ -21,10 +21,21 @@ export function installAiAuthFetch(
   fetchImpl: typeof fetch = globalThis.fetch.bind(globalThis),
   origin = typeof location === 'undefined' ? 'http://local.invalid' : location.origin,
 ): () => void {
+  const keys=new WeakMap<object,{url:string;body:unknown;key:string}>();
   const wrapped: typeof fetch = async (input, init) => {
     if (!isAuthenticatedAppUrl(input, origin)) return fetchImpl(input, init);
     const headers = new Headers(input instanceof Request ? input.headers : undefined);
     new Headers(init?.headers).forEach((value, name) => headers.set(name, value));
+    const method=(init?.method||(input instanceof Request?input.method:'GET')).toUpperCase();
+    if(method==='POST'&&!headers.has('Idempotency-Key')){
+      const object=input instanceof Request?input:init;
+      const url=typeof input==='string'?input:input instanceof URL?input.href:input.url;
+      const body=init?.body??(input instanceof Request?input:null);
+      const previous=object?keys.get(object):undefined;
+      const key=headers.get('X-Request-Id')||(previous&&previous.url===url&&previous.body===body?previous.key:crypto.randomUUID());
+      if(object)keys.set(object,{url,body,key});
+      headers.set('Idempotency-Key',key);
+    }
     if (!headers.has("Authorization")) {
       const token = await getAccessToken();
       if (token) headers.set("Authorization", `Bearer ${token}`);

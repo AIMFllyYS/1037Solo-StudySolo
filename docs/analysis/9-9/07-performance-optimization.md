@@ -4,15 +4,15 @@
 > **调研日期**：2026-07-05
 > **项目版本**：gailvlun v0.4.0（package.json:3；任务描述中记为 v0.3.1，以源码为准）
 > **关联文档**：
-> - [已有性能审查报告](../../docs/refer/performance-audit-report.md)（2026-06-28，本次在其基础上深化补充）
-> - [渲染架构](../../docs/refer/rendering-architecture.md)
-> - [存储架构](../../docs/refer/storage-architecture.md)
+> - [已有性能审查报告](../../refer/performance-audit-report.md)（2026-06-28，本次在其基础上深化补充）
+> - [渲染架构](../../refer/rendering-architecture.md)
+> - [存储架构](../../refer/storage-architecture.md)
 >
 > **2026-09 校对说明**（计划 `25`）：第 7 节问题清单中 `useTokenTracker`/`useFloatingTokenTracker` 的路径已更新为现网位置 `lib/stores/`（计划 `22` 从 `lib/hooks/` 搬出，原路径留转发壳）。正文其余机制描述（流式双节流、虚拟化、LazyVisible、代码分割等）路径未变，未逐条重新核实是否仍生效。
 
 ## 1. 执行摘要
 
-gailvlun 在性能优化上已建立起一套**成体系且自洽**的工程化方案，远高于同类个人项目平均水平。核心防线是「流式双节流（UI 60ms + IDB 800ms 防抖）+ Tab 级组件完全卸载 + 视口懒挂载（LazyVisible）+ 交互组件 dynamic 代码分割 + SSR 预渲染正文」五件套。2026-06-28 的 [Performance Fix Roadmap v2](../../docs/refer/performance-audit-report.md) 将 P0/P1 共 8 项优化全部落地，包括 ChatThread 虚拟化（@tanstack/react-virtual）、Storage v2 + Blob 分离、非活跃会话 LRU 冷卸载、requestMessages 滑动窗口、tool call 节流纳入 60ms、浮窗最小化卸载 FloatingChatBody、按会话引用相等订阅等。
+gailvlun 在性能优化上已建立起一套**成体系且自洽**的工程化方案，远高于同类个人项目平均水平。核心防线是「流式双节流（UI 60ms + IDB 800ms 防抖）+ Tab 级组件完全卸载 + 视口懒挂载（LazyVisible）+ 交互组件 dynamic 代码分割 + SSR 预渲染正文」五件套。2026-06-28 的 [Performance Fix Roadmap v2](../../refer/performance-audit-report.md) 将 P0/P1 共 8 项优化全部落地，包括 ChatThread 虚拟化（@tanstack/react-virtual）、Storage v2 + Blob 分离、非活跃会话 LRU 冷卸载、requestMessages 滑动窗口、tool call 节流纳入 60ms、浮窗最小化卸载 FloatingChatBody、按会话引用相等订阅等。
 
 本次调研在已有报告基础上**深化三方面**：（1）首次完整梳理 `next.config.mjs` 中 `optimizePackageImports`、`outputFileTracingIncludes/Excludes`、`output: standalone` 三项构建期优化策略，并解释 katex 不可加入 barrel 优化的根因（mhchem 副作用补丁）；（2）剖析 ChatThread 虚拟化的 fallback 设计——当 virtualizer 未挂载时退化为前 14 条简单 map，避免首次渲染抖动；（3）梳理「media.scripts.ids.generated.ts → media.scripts.generated.ts（388KB）」的二段式懒加载链路，由 `scripts/gen-script-ids.mjs` 在 prebuild 期生成。当前主要债务：缺少自动化性能回归测试（1228 个测试只覆盖正确性）、token tracker 双子仍未合并、`useTokenTracker`/`useFloatingTokenTracker` 同构算术重复。
 
@@ -503,10 +503,10 @@ flowchart LR
 ## 10. 参考资料
 
 ### 项目内文档
-- [已有性能审查报告](../../docs/refer/performance-audit-report.md)（2026-06-28，本报告在其基础上深化）
-- [存储架构规范](../../docs/refer/storage-architecture.md)
-- [渲染架构](../../docs/refer/rendering-architecture.md)
-- [考前模拟内容优化计划](../../docs/compose/plans/2026-06-28-kaoshi-moniji-optimization.md)
+- [已有性能审查报告](../../refer/performance-audit-report.md)（2026-06-28，本报告在其基础上深化）
+- [存储架构规范](../../refer/storage-architecture.md)
+- [渲染架构](../../refer/rendering-architecture.md)
+- [考前模拟内容优化计划](../../archive/compose/plans/2026-06-28-kaoshi-moniji-optimization.md)
 
 ### 源码引用
 - `next.config.mjs:13-26`（构建期优化配置）

@@ -1,3 +1,4 @@
+import { billableJsonFetch } from "@/lib/billing/billableFetch";
 // 混合检索 + Rerank：并行 BM25 + 向量 → RRF 合并 → rerank API 精排 → MultiSearchHit[]
 import { bm25Search, getBm25BuiltAt, isBM25IndexLoaded } from "./bm25Store";
 import { vectorSearch, isVectorIndexLoaded, getVectorIndexModel } from "./vectorStore";
@@ -145,7 +146,7 @@ async function rerank(
   const model = overlayOptional(ep.rerankModelId, process.env.AI_RERANK_MODEL || "BAAI/bge-reranker-v2-m3");
 
   try {
-    const resp = await fetch(`${baseUrl}/rerank`, {
+    const resp = await billableJsonFetch(`${baseUrl}/rerank`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -159,7 +160,7 @@ async function rerank(
         return_documents: false,
       }),
       signal: AbortSignal.timeout(RERANK_TIMEOUT_MS),
-    });
+    }, { model, kind: "rerank", byok: !resolved.usedPlatformCredentials });
 
     if (!resp.ok) {
       throw new Error(`Rerank API error ${resp.status}`);
@@ -174,7 +175,7 @@ async function rerank(
     const zhipuKey = process.env.ZHIPU_API_KEY || "";
     const zhipuModel = process.env.ZHIPU_RERANK_MODEL || "rerank";
     if (zhipuBaseUrl && zhipuKey) {
-      const resp = await fetch(`${zhipuBaseUrl}/rerank`, {
+      const resp = await billableJsonFetch(`${zhipuBaseUrl}/rerank`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -188,7 +189,7 @@ async function rerank(
           return_documents: false,
         }),
         signal: AbortSignal.timeout(RERANK_TIMEOUT_MS),
-      });
+      }, { model: zhipuModel, kind: "rerank" });
 
       if (!resp.ok) {
         throw new Error(`Zhipu Rerank API error ${resp.status}`);

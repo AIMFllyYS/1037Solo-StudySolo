@@ -1,9 +1,23 @@
+import { test, mockPaidFetch, fixtureLedger } from "@/tests/helpers/paidAiFixture";
+import { runPaidContext } from "@/lib/billing/paidContext";
+import { fixtureUser } from "@/tests/helpers/paidAiFixture";
 import assert from "node:assert/strict";
-import { afterEach, test } from "node:test";
+import { afterEach, } from "node:test";
 import { FAST_MODEL_TIMEOUT_MS, callFastModel, fastModelConfig } from "./fastModel.ts";
 
 const KEYS = ["AI_FAST_BASE_URL", "AI_FAST_API_KEY", "AI_FAST_MODEL", "QINIU_BASE_URL", "QINIU_API_KEY"] as const;
 const saved = new Map<string, string | undefined>();
+
+test("callFastModel: duplicate admission propagates and never buys a fallback call", async (t) => {
+  setEnv({ QINIU_API_KEY: "fixture-only" });
+  const provider = mockPaidFetch(t, async () => Response.json({ choices: [{ message: { content: "title" } }], usage: { prompt_tokens: 10, completion_tokens: 2 } }));
+  const run = () => runPaidContext({ userId: fixtureUser, requestId: "fixed-title-request", route: "/api/chat-title", sequence: 0, reservedCny: 0 },
+    () => callFastModel({ system: "s", user: "u", maxTokens: 8 }));
+  assert.ok(await run());
+  await assert.rejects(run, error => (error as { status?: number }).status === 409);
+  assert.equal(provider.mock.callCount(), 1);
+  assert.equal(fixtureLedger.seen.size, 1);
+});
 function setEnv(patch: Partial<Record<(typeof KEYS)[number], string | undefined>>) {
   for (const key of KEYS) {
     if (!saved.has(key)) saved.set(key, process.env[key]);
@@ -54,10 +68,10 @@ test("callFastModel：未配置 / 上游非 2xx / 网络异常都返回 null，�
   assert.equal(await callFastModel({ system: "s", user: "u", maxTokens: 8 }), null);
 
   setEnv({ QINIU_BASE_URL: "https://api.qnaigc.com/v1", QINIU_API_KEY: "sk" });
-  t.mock.method(globalThis, "fetch", async () => new Response("nope", { status: 500 }));
+  mockPaidFetch(t, async () => new Response("nope", { status: 500 }));
   assert.equal(await callFastModel({ system: "s", user: "u", maxTokens: 8 }), null);
 
-  t.mock.method(globalThis, "fetch", async () => {
+  mockPaidFetch(t, async () => {
     throw new Error("network down");
   });
   assert.equal(await callFastModel({ system: "s", user: "u", maxTokens: 8 }), null);
@@ -66,7 +80,7 @@ test("callFastModel：未配置 / 上游非 2xx / 网络异常都返回 null，�
 test("callFastModel：请求体是极简结构化调用（关思考 + temperature 0 + 小 max_tokens）", async (t) => {
   setEnv({ QINIU_BASE_URL: "https://api.qnaigc.com/v1", QINIU_API_KEY: "sk-qiniu" });
   let captured: { url: string; body: Record<string, unknown>; auth: string | null } | null = null;
-  t.mock.method(globalThis, "fetch", async (url: unknown, init?: RequestInit) => {
+  mockPaidFetch(t, async (url: unknown, init?: RequestInit) => {
     captured = {
       url: String(url),
       body: JSON.parse(String(init?.body)) as Record<string, unknown>,

@@ -398,6 +398,94 @@
       }
     },
     {
+      "subjectId": "anatomy",
+      "lessonId": "rec-2026-fall-025-026",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "系统解剖学",
+      "sessionRange": {
+        "start": 25,
+        "end": 26
+      },
+      "taughtOn": "2026-09-28",
+      "topic": "泌尿系统——肾的大体结构与被膜、肾单位、输尿管、膀胱、尿道",
+      "revision": 1,
+      "quizId": "rec-2026-fall-025-026",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-025-026"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-025-026"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-025-026"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-025-026"
+        }
+      },
+      "hashes": {
+        "recording": "8ef072bae078e0783bb4c81d6606bf657844dfc9918ae9d49a2be46598ba19d6",
+        "notesText": "84f4df8fc785fa36cebb08898195d660fe343aa05920cc62eea0d3cbff50aca2"
+      }
+    },
+    {
+      "subjectId": "anatomy",
+      "lessonId": "rec-2026-fall-027-028",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "系统解剖学",
+      "sessionRange": {
+        "start": 27,
+        "end": 28
+      },
+      "taughtOn": "2026-09-29",
+      "topic": "女性生殖系统与腹膜",
+      "revision": 1,
+      "quizId": "rec-2026-fall-027-028",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-027-028"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-027-028"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-027-028"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-027-028"
+        }
+      },
+      "hashes": {
+        "recording": "3c7cf8ed3d9003e6d90aa8e1117027e97b8efca4f9969b75876e9b61f9e4200c",
+        "notesText": "226792602265db9707cdf79930a9fb32cfa1b40c88269804b48587dcff710da9"
+      }
+    },
+    {
       "subjectId": "biochemistry",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -838,6 +926,50 @@
       }
     },
     {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-021-022",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 21,
+        "end": 22
+      },
+      "taughtOn": "2026-09-29",
+      "topic": "糖原调节与糖异生",
+      "revision": 1,
+      "quizId": "rec-2026-fall-021-022",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-021-022"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-021-022"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-021-022"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-021-022"
+        }
+      },
+      "hashes": {
+        "recording": "affa426fc39ac5bd4f5116b0279581021ea9c0020de360db0ef61b84835df343",
+        "notesText": "915fa0a15424dd5d15f895d91be4975888911186ac6030b1333b5c43380ae850"
+      }
+    },
+    {
       "subjectId": "cell-biology",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -1187,6 +1319,50 @@
       "hashes": {
         "recording": "3f89079cf4e34e2e5b95d0a29e6a7b69aabee7820dfeb2f37e92df3bf74845ef",
         "notesText": "e8a298fe94d9efb19be791ac6db3a040519cac758ccce7217b5915a9f7e9a228"
+      }
+    },
+    {
+      "subjectId": "cell-biology",
+      "lessonId": "rec-2026-fall-021-022",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "细胞生物学",
+      "sessionRange": {
+        "start": 21,
+        "end": 22
+      },
+      "taughtOn": "2026-09-28",
+      "topic": "微丝及其调控、Arp2/3复合物、Formin、小GTP酶(Rho家族)与伪足/细胞运动",
+      "revision": 1,
+      "quizId": "rec-2026-fall-021-022",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-021-022"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-021-022"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-021-022"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-021-022"
+        }
+      },
+      "hashes": {
+        "recording": "842ac129884d4c6ded6f4c0c79d835a3faaab90289642dd8272cb2722c63701b",
+        "notesText": "3ebf031c9d09c6fce2abbcef416a7b17363e058f8bd53cfadc058849940d8005"
       }
     },
     {
@@ -1586,6 +1762,50 @@
       }
     },
     {
+      "subjectId": "histology",
+      "lessonId": "rec-2026-fall-017-018",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "人体组织学",
+      "sessionRange": {
+        "start": 17,
+        "end": 18
+      },
+      "taughtOn": "2026-09-28",
+      "topic": "神经系统组织学——大脑皮质六层、小脑皮质三层(普肯耶细胞层)、脊髓灰/白质",
+      "revision": 1,
+      "quizId": "rec-2026-fall-017-018",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-017-018"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-017-018"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-017-018"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-017-018"
+        }
+      },
+      "hashes": {
+        "recording": "cd24b7c7447d7afcc2ccdead20847481bf2e31621107914100a9eab53e9017c6",
+        "notesText": "fa712f84c5928d886e5f621668312f4c9910febab5344f4a1b20f190d3311181"
+      }
+    },
+    {
       "subjectId": "instrumental-analysis",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -1935,6 +2155,50 @@
       "hashes": {
         "recording": "b2c0d99fadb26d2b9117d8d369ea4eeb6129d19f855daa07baab12957e24aef9",
         "notesText": "25dab3eb2d15e7f035e191a886b335eb5d33977048a9a3678dd5855ba6b75dbb"
+      }
+    },
+    {
+      "subjectId": "instrumental-analysis",
+      "lessonId": "rec-2026-fall-017-018",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "分析化学",
+      "sessionRange": {
+        "start": 17,
+        "end": 18
+      },
+      "taughtOn": "2026-09-28",
+      "topic": "化学发光收尾与磷光补充、原子吸收光谱法(AAS)开篇：原子吸收基本原理、锐线光源与原子化器",
+      "revision": 1,
+      "quizId": "rec-2026-fall-017-018",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-017-018"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-017-018"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-017-018"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-017-018"
+        }
+      },
+      "hashes": {
+        "recording": "95157d270999e14c165c55662b4e2589e515aae360c22ae6c785029a1cbdc67b",
+        "notesText": "e0ecad9e667c5c68ab713b8685f24112a58aca74657eed48d89635b236c30142"
       }
     },
     {

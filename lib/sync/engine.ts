@@ -1,4 +1,4 @@
-import { tryGetBrowserAuthClient } from "@/lib/auth/browserClient";
+﻿import { tryGetBrowserAuthClient } from "@/lib/auth/browserClient";
 import {
   deleteSessionData,
   isSystemProject,
@@ -393,6 +393,19 @@ function asReviewCard(value: unknown): ReviewCard | null {
   return row;
 }
 
+/**
+ * 闪卡的版本号。
+ *
+ * 闪卡本来没有 updatedAt（现网 94/94 只有 createdAt），所以过去无法判断先后，
+ * 导致 pushOne 对 review-card 只能无条件覆盖云端。第三方改写方（Platform 的
+ * Wiki）会补一个更新鲜的 updatedAt；没补时退回 createdAt，这样现网已有的卡
+ * 无需迁移就能参与比较。
+ */
+function cardVersion(card: ReviewCard): number {
+  const stamped = (card as { updatedAt?: unknown }).updatedAt;
+  return typeof stamped === "number" && Number.isFinite(stamped) ? stamped : card.createdAt;
+}
+
 function asChatProject(value: unknown): ChatProjectSyncPayload | null {
   if (!value || typeof value !== "object") return null;
   const row = value as ChatProjectSyncPayload;
@@ -556,6 +569,21 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     const remoteNote = asUserNote(remote.payload);
     if (localNote && remoteNote && remoteNote.updatedAt > localNote.updatedAt) {
       stores.applyNote(remoteNote);
+      rememberBaseline(kind, clientId, remote.updated_at);
+      lastPushedHash.set(jobKey(kind, clientId), payloadFingerprint(remote.payload));
+      noteRemoteBytes(kind, clientId, payloadByteSize(remote.payload), false);
+      return;
+    }
+  }
+  if (kind === "review-card" && remote && !remote.deleted) {
+    const localCard = asReviewCard(local);
+    const remoteCard = asReviewCard(remote.payload);
+    // 与 user-note 分支同构：云端更新就采用云端并放弃本次上传。
+    //
+    // 这个分支过去不存在，于是只要本机对同一张卡有任何改动（哪怕只是换科目），
+    // 就会无条件把本机副本 upsert 上去，静默覆盖别处（如 Platform Wiki）的编辑。
+    if (localCard && remoteCard && cardVersion(remoteCard) > cardVersion(localCard)) {
+      stores.applyCard(remoteCard);
       rememberBaseline(kind, clientId, remote.updated_at);
       lastPushedHash.set(jobKey(kind, clientId), payloadFingerprint(remote.payload));
       noteRemoteBytes(kind, clientId, payloadByteSize(remote.payload), false);

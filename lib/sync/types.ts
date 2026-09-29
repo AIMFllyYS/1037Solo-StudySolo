@@ -11,7 +11,7 @@ export type CloudSyncKind = (typeof CLOUD_SYNC_KINDS)[number];
 
 export const SCHEMA_SYNC_KINDS = ["chat-session", "artifact", "settings", "skill", "document", "user-note", "review-card", "chat-project"] as const;
 
-export const SYNC_TABLE = "sync_documents";
+export const SYNC_TABLE = "ss_sync_documents";
 
 export type SyncQuotaPool = "notes" | "flashcards";
 
@@ -25,9 +25,9 @@ export const MAX_USER_NOTE_BYTES = 2 * 1024 * 1024;
 export const MAX_REVIEW_CARD_BYTES = 256 * 1024;
 /** 项目只是一行名字 + 时间戳；32 KB 足够，也避免有人往里塞别的东西。 */
 export const MAX_CHAT_PROJECT_BYTES = 32 * 1024;
-export const MAX_NOTES_POOL_BYTES = 20 * 1024 * 1024;
-export const MAX_FLASHCARDS_POOL_BYTES = 20 * 1024 * 1024;
-export const MAX_USER_SYNC_BYTES = 48 * 1024 * 1024;
+export const MAX_NOTES_POOL_BYTES = Number.MAX_SAFE_INTEGER;
+export const MAX_FLASHCARDS_POOL_BYTES = Number.MAX_SAFE_INTEGER;
+export const MAX_USER_SYNC_BYTES = Number.MAX_SAFE_INTEGER;
 
 export const KIND_SIZE_LIMIT: Record<CloudSyncKind, number> = {
   "chat-session": MAX_CHAT_SESSION_BYTES,

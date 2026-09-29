@@ -1,3 +1,4 @@
+import { billableJsonFetch } from "@/lib/billing/billableFetch";
 import { mainUsedPlatformCredentials, settleUsage } from "@/lib/billing/usageLedger";
 import { resolveSidecarBilling } from "@/lib/billing/usagePool";
 import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
@@ -65,7 +66,7 @@ export async function searchImages(
 
   try {
     const enhancedQuery = enhanceQueryForEducation(query);
-    const res = await fetch(
+    const res = await billableJsonFetch(
       `${UNSPLASH_API_URL}?query=${encodeURIComponent(enhancedQuery)}&per_page=${numResults * 2}&content_filter=high`,
       {
         headers: {
@@ -74,6 +75,7 @@ export async function searchImages(
         },
         signal: AbortSignal.timeout(15_000),
       },
+      { model: "unsplash", kind: "image-search", byok: !usedPlatformCredentials },
     );
 
     if (!res.ok) return { configured: true, results: [], usedPlatformCredentials };

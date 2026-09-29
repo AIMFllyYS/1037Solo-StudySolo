@@ -1,3 +1,5 @@
+import { billableJsonFetch } from "@/lib/billing/billableFetch";
+import { withPaidRequest } from "@/lib/billing/paidRequest";
 import { after, type NextRequest } from "next/server";
 import { Agent } from "undici";
 import {
@@ -40,7 +42,7 @@ function jsonError(status: number, error: string, code: string) {
   return Response.json({ error, code }, { status });
 }
 
-export async function POST(req: NextRequest) {
+async function handlePOST(req: NextRequest) {
   let body: ReturnType<typeof parseImageGenRequest>;
   try {
     body = parseImageGenRequest(await req.json().catch(() => ({})));
@@ -131,7 +133,7 @@ export async function POST(req: NextRequest) {
   const timeoutId = setTimeout(() => abortCtrl.abort(), upstreamTimeoutMs);
 
   try {
-    const res = await fetch(endpoint, {
+    const res = await billableJsonFetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -140,7 +142,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify(requestBody),
       signal: abortCtrl.signal,
       dispatcher: imageGenDispatcher,
-    } as RequestInit);
+    } as RequestInit, { model: provider.registryId, kind: "image", byok: provider.isCustom, quantity: count, actualUnits: data => normalizeImageGenImages(data).length });
 
     if (!res.ok) {
       const errText = await res.text().catch(() => "");
@@ -236,3 +238,5 @@ export async function POST(req: NextRequest) {
     clearTimeout(timeoutId);
   }
 }
+
+export const POST = withPaidRequest(handlePOST, "/api/image-gen");

@@ -202,7 +202,7 @@ test("resolveLedgerUserId：Bearer / 校验失败", async () => {
       },
       { verify, allowTrustedProxyHeader: true },
     ),
-    "from-proxy",
+    "ada",
   );
   assert.equal(
     await resolveLedgerUserId(

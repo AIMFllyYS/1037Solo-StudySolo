@@ -40,7 +40,7 @@ export async function defaultListUsageLedgerRows(
 ): Promise<UsageLedgerDbRow[]> {
   const client = createServiceAuthClient();
   let query = client
-    .from("usage_ledger")
+    .from("ss_usage_ledger")
     .select(LEDGER_SELECT)
     .eq("user_id", userId)
     .order("occurred_at", { ascending: false })

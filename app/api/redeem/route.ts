@@ -49,9 +49,12 @@ export async function POST(req: NextRequest) {
       tier: result.tier,
       periodStart: result.periodStart,
       periodEnd: result.periodEnd,
+      status: result.status,
+      lifetime: result.lifetime,
+      isStudentVerified: result.isStudentVerified,
     });
   } catch (error) {
     console.warn("[redeem] failed:", error instanceof Error ? error.message : error);
-    return NextResponse.json({ error: REDEEM_PUBLIC_ERROR }, { status: 400 });
+    return NextResponse.json({ error: "统一兑换服务暂不可用，请稍后重试。" }, { status: 503 });
   }
 }

@@ -9,6 +9,7 @@ import { useAcademicYear } from './useAcademicYear';
 import { useArtifacts } from './useArtifacts';
 import { useSessionRuns } from '@/lib/stores/sessionRuns';
 import { collectRequestArtifacts } from '@/lib/context/compactArtifacts';
+import { getClassAgentContext } from '@/lib/class/agentContext';
 import type { ChatMessage, ChatContext, ChatOptions } from '@/lib/types/chat';
 import { createAssistantPlaceholder, createUserMessage } from '@/lib/chat/messageParts';
 import { buildRequestMessages, MAX_REQUEST_MESSAGES } from '@/lib/chat/buildRequestMessages';
@@ -203,6 +204,8 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
               planMode: sendOptions?.planMode,
               forcedTool: sendOptions?.forcedTool,
               attachedFiles: sendOptions?.attachedFiles,
+              // 只有主对话在 Class 模式里带课堂上下文；浮窗/笔记窗各管各的语境。
+              classContext: ovSessionId || isNoteWindow ? undefined : getClassAgentContext() ?? undefined,
             },
             resolved,
             budget,

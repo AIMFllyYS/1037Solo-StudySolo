@@ -1,3 +1,4 @@
+import {activateStorageOwner} from "./ownerScope.ts";
 import assert from "node:assert/strict";
 import { test, beforeEach, afterEach } from "node:test";
 import {
@@ -56,12 +57,14 @@ function installBrowserMocks() {
 }
 
 beforeEach(() => {
+  activateStorageOwner("test-owner");
   storage.clear();
   __resetIdbStoragePendingForTests();
   installBrowserMocks();
 });
 
 afterEach(() => {
+  activateStorageOwner(null);
   __resetIdbStoragePendingForTests();
   delete (globalThis as { window?: unknown }).window;
   delete (globalThis as { indexedDB?: object }).indexedDB;
@@ -84,7 +87,7 @@ test("setItem：防抖窗口内多次写入只落盘最后一次", async () => {
 
   await new Promise((r) => setTimeout(r, WRITE_DEBOUNCE_MS + 50));
   assert.equal(writes, 1, "防抖结束后应只写一次");
-  assert.equal(storage.get("chat-history"), '{"v":3}');
+  assert.equal(storage.get("ss-user:test-owner:chat-history"), '{"v":3}');
 });
 
 test("getItem：未落盘时返回 pending 最新值", async () => {
@@ -105,13 +108,13 @@ test("flushPendingWrites：立即落盘所有挂起 key", () => {
   idbStorage.setItem("b", "2");
   flushPendingWrites();
   assert.equal(writes, 2);
-  assert.equal(storage.get("a"), "1");
-  assert.equal(storage.get("b"), "2");
+  assert.equal(storage.get("ss-user:test-owner:a"), "1");
+  assert.equal(storage.get("ss-user:test-owner:b"), "2");
 });
 
 test("setItemNow：绕过防抖并返回写入结果", async () => {
   const ok = await setItemNow("chat-manifest", '{"version":2}');
 
   assert.equal(ok, true);
-  assert.equal(storage.get("chat-manifest"), '{"version":2}');
+  assert.equal(storage.get("ss-user:test-owner:chat-manifest"), '{"version":2}');
 });

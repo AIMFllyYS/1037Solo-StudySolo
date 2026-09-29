@@ -18,9 +18,9 @@ test("createBrowserAuthClient exposes signInWithOtp / verifyOtp", () => {
   assert.equal(typeof client.auth.verifyOtp, "function");
 });
 
-test("browser client persists the session across reloads", () => {
-  assert.equal(BROWSER_AUTH_OPTIONS.persistSession, true);
-  assert.equal(BROWSER_AUTH_OPTIONS.autoRefreshToken, true);
+test("browser client uses Account transport without standalone persisted sessions", () => {
+  assert.equal(BROWSER_AUTH_OPTIONS.persistSession, false);
+  assert.equal(BROWSER_AUTH_OPTIONS.autoRefreshToken, false);
   resetBrowserAuthClient();
   const env = {
     NEXT_PUBLIC_SUPABASE_URL: "https://abc123.supabase.co",

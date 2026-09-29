@@ -220,6 +220,7 @@ export const menuEn = {
       studio: "Current workspace",
       agent: "Chat workspace",
       class: "In development",
+      review: "Notes · flashcards · quizzes",
     },
   },
 };

@@ -124,7 +124,7 @@ test("MODELS：19 个菜单模型价格与 cacheWrite", () => {
     assert.ok(m?.pricing, id);
     return m!.pricing!;
   };
-  assert.deepEqual(price("deepseek/deepseek-v4.1-flash"), { input: 2.1, cachedInput: 0.042, output: 8.4 });
+  assert.deepEqual(price("deepseek/deepseek-v4.1-flash"), { input: 2, cachedInput: 0.04, output: 8 });
   assert.deepEqual(price("Qwen/Qwen3.7-Flash"), { input: 1.2, cachedInput: 0.24, output: 4.8 });
   assert.deepEqual(price("gpt-5.6-luna"), { input: 1.4, cachedInput: 0.14, cacheWrite: 1.75, output: 8.4 });
   assert.deepEqual(price("mimo-v2.6-flash"), { input: 1, cachedInput: 0.02, cacheWrite: 1, output: 2 });
@@ -136,11 +136,11 @@ test("MODELS：19 个菜单模型价格与 cacheWrite", () => {
   assert.deepEqual(price("meta/muse-spark-1.3-contributor"), { input: 0.7, cachedInput: 0.014, output: 1.4 });
   assert.deepEqual(price("poolside/laguna-s-2.1-free"), { input: 0, cachedInput: 0, output: 0 });
   assert.deepEqual(price("inclusionai/ling-3.0-flash-sante:free"), { input: 0, cachedInput: 0, output: 0 });
-  assert.deepEqual(price("gpt-5.6-sol"), { input: 28, cachedInput: 2.8, cacheWrite: 35, output: 140 });
-  assert.deepEqual(price("kimi-k3"), { input: 20, cachedInput: 2, output: 100 });
+  assert.deepEqual(price("gpt-5.6-sol"), { input: 35, cachedInput: 3.5, cacheWrite: 43.75, output: 210 });
+  assert.deepEqual(price("kimi-k3"), { input: 7, cachedInput: 0.7, cacheWrite: 0, output: 35 });
   assert.deepEqual(price("Tongyi-MAI/Z-Image-Turbo"), { input: 0, cachedInput: 0, output: 0.1 });
   // 新增生图：廉价快速通道 + 慢速高价中转站
-  assert.deepEqual(price("baidu/ERNIE-Image-Turbo"), { input: 0, cachedInput: 0, output: 0.5 });
+  assert.deepEqual(price("baidu/ERNIE-Image-Turbo"), { input: 0, cachedInput: 0, output: 0.11 });
   assert.deepEqual(price("nano-banana"), { input: 0, cachedInput: 0, output: 1 });
   assert.deepEqual(price("gpt-image-2.5"), { input: 0, cachedInput: 0, output: 1 });
   assert.deepEqual(price("gpt-image-2"), { input: 0, cachedInput: 0, output: 1 });

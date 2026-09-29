@@ -13,7 +13,7 @@
  * 所以不要为了让它的外壳不同而把 `s` 并进 Agent。
  */
 
-export const APP_MODES = ["studio", "agent", "class"] as const;
+export const APP_MODES = ["studio", "agent", "class", "review"] as const;
 export type AppMode = (typeof APP_MODES)[number];
 
 export const DEFAULT_APP_MODE: AppMode = "studio";
@@ -26,12 +26,14 @@ export const APP_MODE_LABELS: Record<AppMode, string> = {
   studio: "Studio",
   agent: "Agent",
   class: "Class",
+  review: "Review",
 };
 
 export const APP_MODE_PATHS: Record<AppMode, string> = {
   studio: "/",
   agent: "/agent",
   class: "/class",
+  review: "/review",
 };
 
 /** localStorage 键。值为 JSON：`{ mode, lastStudioPath }`。 */
@@ -56,26 +58,28 @@ function firstSegment(pathname: string): string | undefined {
 
 /** `/login` 不参与模式路由，避免登录页改写 persist。 */
 export function isAuthPath(pathname: string): boolean {
-  return firstSegment(pathname) === "login";
+  return firstSegment(pathname) === "login" || pathname.startsWith("/auth/");
 }
 
 /** 不套 Studio 顶栏 + 左栏 + 右栏的路径：`/c/<id>` 与 `/agent` 共用同一个工作区外壳。 */
 export function isAppModePath(pathname: string): boolean {
   const first = firstSegment(pathname);
-  return first === "agent" || first === "class" || first === "c";
+  return first === "agent" || first === "class" || first === "c" || first === "review";
 }
 
 /**
  * 从 URL 解析模式。
  * - `/agent`、`/c/<sessionId>` → agent（C 路由就是 Agent 工作区里的单条对话）
  * - `/class` → class
+ * - `/review` → review（复习工作区：笔记 / 闪卡 / 答题）
  * - `/login` → null（不改 persist）
- * - 其余 Studio 路由（含分享页 `/s/<id>`）→ studio
+ * - 其余 Studio 路由（含分享页 `/s/<id>`、`/<subject>/review/...` 学科复习页）→ studio
  */
 export function appModeFromPathname(pathname: string): AppMode | null {
   const first = firstSegment(pathname);
   if (first === "agent" || first === "c") return "agent";
   if (first === "class") return "class";
+  if (first === "review") return "review";
   if (isAuthPath(pathname)) return null;
   return "studio";
 }
@@ -87,10 +91,11 @@ export function usesStudioChrome(pathname: string): boolean {
 
 /**
  * 手机壳：Agent 仍用最初 Studio 五段底栏，不套桌面左对话+右侧窗。
- * `/c/<id>` 与 `/agent` 同口径（都算 Agent）；Class 继续独立「开发中」页。
+ * `/c/<id>` 与 `/agent` 同口径（都算 Agent）；Class / Review 继续独立页（各自的移动布局）。
  */
 export function usesMobileStudioChrome(pathname: string): boolean {
-  return firstSegment(pathname) !== "class";
+  const first = firstSegment(pathname);
+  return first !== "class" && first !== "review";
 }
 
 export function resolveAppMode(pathname: string, persisted: AppMode): AppMode {
@@ -104,6 +109,7 @@ export function resolveAppMode(pathname: string, persisted: AppMode): AppMode {
 export function resolveMobileAppMode(pathname: string, persisted: AppMode): AppMode {
   const fromPath = appModeFromPathname(pathname);
   if (fromPath === "class") return "class";
+  if (fromPath === "review") return "review";
   if (fromPath === "agent") return "agent";
   if (fromPath === null) return isAuthPath(pathname) ? "studio" : persisted;
   return persisted === "agent" ? "agent" : "studio";
@@ -122,6 +128,7 @@ export function hrefForAppMode(mode: AppMode, lastStudioPath: string): string {
 /** 手机切 Agent 留在 Studio 路由，避免进入桌面 Agent 工作区。 */
 export function hrefForMobileAppMode(mode: AppMode, lastStudioPath: string): string {
   if (mode === "class") return APP_MODE_PATHS.class;
+  if (mode === "review") return APP_MODE_PATHS.review;
   return hrefForAppMode("studio", lastStudioPath);
 }
 

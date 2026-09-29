@@ -33,6 +33,8 @@ function mockClient(initial?: { id: string; email: string } | null): AuthRuntime
   return client;
 }
 
+vi.mock("@/lib/auth/account",()=>({logoutAccount:vi.fn(async()=>{}),redirectAccount:vi.fn(),restoreAccountSession:vi.fn()}));
+
 describe("useAuthSessionController", () => {
   it('a late initial signed-out snapshot cannot erase a newer login or cookie', async () => {
     const client = mockClient();
@@ -45,7 +47,7 @@ describe("useAuthSessionController", () => {
     act(() => event('INITIAL_SESSION', null));
     await act(async () => finish({ data: { session: null }, error: null }));
     expect(result.current.userId).toBe('u2');
-    expect(document.cookie).toContain('srp-access-token=new-login');
+    expect(document.cookie).not.toContain('new-login');
   });
   it('reconciles a login from another page on focus without overwriting a newer event', async () => {
     const client = mockClient();

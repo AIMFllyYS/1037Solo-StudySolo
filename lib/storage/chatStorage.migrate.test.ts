@@ -1,3 +1,4 @@
+import { activateStorageOwner, ownedStorageKey } from "@/lib/storage/ownerScope";
 import assert from "node:assert/strict";
 import { test, beforeEach, afterEach } from "node:test";
 import { PERSIST_KEYS } from "./idbStorage.ts";
@@ -6,6 +7,7 @@ const storage = new Map<string, string>();
 let failSetItemForPrefix: string | null = null;
 
 function installBrowserMocks() {
+  activateStorageOwner("fixture-user");
   (globalThis as { window?: unknown }).window = {};
   (globalThis as { indexedDB?: object }).indexedDB = {};
   (globalThis as { localStorage?: Storage }).localStorage = {
@@ -19,7 +21,7 @@ function installBrowserMocks() {
       return storage.get(key) ?? null;
     },
     setItem(key: string, value: string) {
-      if (failSetItemForPrefix && key.startsWith(failSetItemForPrefix)) {
+      if (failSetItemForPrefix && key.startsWith(physical(failSetItemForPrefix))) {
         throw new Error(`forced write failure: ${key}`);
       }
       storage.set(key, value);
@@ -32,6 +34,10 @@ function installBrowserMocks() {
     },
   };
 }
+const physical = (key: string) => ownedStorageKey(key)!;
+const fixtureSet = (key: string, value: string) => storage.set(physical(key), value);
+const fixtureGet = (key: string) => storage.get(physical(key));
+
 
 beforeEach(() => {
   storage.clear();
@@ -67,7 +73,7 @@ test("migrateFromV1IfNeeded：v1 单体 JSON 拆分为 manifest + per-session", 
       ],
     },
   };
-  storage.set(PERSIST_KEYS.chatHistory, JSON.stringify(v1));
+  fixtureSet(PERSIST_KEYS.chatHistory, JSON.stringify(v1));
 
   const { migrateFromV1IfNeeded, loadManifest, loadSessionMessages } = await import("./chatStorage.ts");
 
@@ -86,7 +92,7 @@ test("migrateFromV1IfNeeded：v1 单体 JSON 拆分为 manifest + per-session", 
   // v1 旧扁平结构在迁移时同时转成 parts
   assert.deepEqual(messages![0].parts, [{ type: "text", text: "hi", state: "done" }]);
 
-  assert.equal(storage.get(PERSIST_KEYS.chatHistory), undefined);
+  assert.equal(fixtureGet(PERSIST_KEYS.chatHistory), undefined);
 
   const again = await migrateFromV1IfNeeded();
   assert.equal(again, false);
@@ -108,7 +114,7 @@ test("migrateFromV1IfNeeded：v2 写入失败时保留 legacy 以便重试", asy
     },
   };
   const legacyRaw = JSON.stringify(v1);
-  storage.set(PERSIST_KEYS.chatHistory, legacyRaw);
+  fixtureSet(PERSIST_KEYS.chatHistory, legacyRaw);
   failSetItemForPrefix = "chat-s3:";
 
   const { migrateFromV1IfNeeded, loadManifest } = await import("./chatStorage.ts");
@@ -116,7 +122,7 @@ test("migrateFromV1IfNeeded：v2 写入失败时保留 legacy 以便重试", asy
   const migrated = await migrateFromV1IfNeeded();
 
   assert.equal(migrated, false);
-  assert.equal(storage.get(PERSIST_KEYS.chatHistory), legacyRaw);
+  assert.equal(fixtureGet(PERSIST_KEYS.chatHistory), legacyRaw);
   assert.equal(await loadManifest(), null);
 });
 
@@ -144,7 +150,7 @@ test("migrateFromV1IfNeeded：inline 图片迁移为 blob ref 且可 hydrate 回
       ],
     },
   };
-  storage.set(PERSIST_KEYS.chatHistory, JSON.stringify(v1));
+  fixtureSet(PERSIST_KEYS.chatHistory, JSON.stringify(v1));
 
   const { migrateFromV1IfNeeded, loadSessionMessages, hydrateAttachmentsForApi } = await import("./chatStorage.ts");
 
@@ -175,7 +181,7 @@ test("migrateFromV1IfNeeded：文档正文单独落 blob 并可无损 hydrate", 
       }],
     },
   };
-  storage.set(PERSIST_KEYS.chatHistory, JSON.stringify(v1));
+  fixtureSet(PERSIST_KEYS.chatHistory, JSON.stringify(v1));
   const { migrateFromV1IfNeeded, loadSessionMessages, hydrateAttachmentsForApi } = await import("./chatStorage.ts");
 
   assert.equal(await migrateFromV1IfNeeded(), true);
@@ -210,7 +216,7 @@ test("migrateFromV1IfNeeded：本地 PDF 数据只落本机 blob 并可恢复预
       }],
     },
   };
-  storage.set(PERSIST_KEYS.chatHistory, JSON.stringify(v1));
+  fixtureSet(PERSIST_KEYS.chatHistory, JSON.stringify(v1));
   const { migrateFromV1IfNeeded, loadSessionMessages, hydrateAttachmentsForApi } = await import("./chatStorage.ts");
 
   assert.equal(await migrateFromV1IfNeeded(), true);

@@ -4,12 +4,28 @@ import {
   normalizeAnthropicBaseUrl,
   applyThinkingCallSettings,
   buildThinkingSettings,
-  resolveLanguageModel,
+  resolveLanguageModel as resolveProductionLanguageModel,
   UPSTREAM_PROVIDER_NAME,
 } from "./languageModel.ts";
 import type { ResolvedProvider } from "./../provider.ts";
 import { buildCustomModelRegistryId, getModelInfo, type CustomApiGroup } from "./../models.ts";
 import type { LanguageModelV4StreamPart } from "@ai-sdk/provider";
+
+import { runPaidContext } from "@/lib/billing/paidContext";
+import type { CreditDriver } from "@/lib/billing/providerAdmission";
+const fixtureCredits: CreditDriver = {
+  async reserve(userId,requestKey,amount,metadata){return {userId,requestKey,reserved:Math.ceil(amount*1e6),metadata};},
+  async settleMicro(){}, async cancel(){},
+};
+function resolveLanguageModel(...args: Parameters<typeof resolveProductionLanguageModel>) {
+  const result = resolveProductionLanguageModel(args[0],args[1],{...args[2],creditDriver:fixtureCredits});
+  const model=result.model;
+  const context=()=>({userId:"00000000-0000-4000-8000-000000000001",requestId:crypto.randomUUID(),route:"test",sequence:0,reservedCny:0});
+  return {...result,model:{...model,
+    doGenerate:(params:Parameters<typeof model.doGenerate>[0])=>runPaidContext(context(),()=>model.doGenerate(params)),
+    doStream:(params:Parameters<typeof model.doStream>[0])=>runPaidContext(context(),()=>model.doStream(params)),
+  }};
+}
 
 function fixtureModel(reasoningField?: string) {
   const groups: CustomApiGroup[] = [{
@@ -20,6 +36,42 @@ function fixtureModel(reasoningField?: string) {
 }
 
 const fixturePrompt = [{ role: "user" as const, content: [{ type: "text" as const, text: "你好" }] }];
+
+test("platform-managed custom endpoint uses actual model tariff, not BYOK overhead", async (t) => {
+  let charged = -1;
+  let calls = 0;
+  t.mock.method(globalThis, "fetch", async () => {
+    calls += 1;
+    return Response.json({ id: "fixture", object: "chat.completion", created: 1,
+      model: "z-ai/glm-5.3-flash", choices: [{ index: 0, finish_reason: "stop", message: { role: "assistant", content: "标题" } }],
+      usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 },
+    });
+  });
+  const credits: CreditDriver = { ...fixtureCredits, async settleMicro(_admission, amount) { charged = amount; } };
+  const resolved = resolveProductionLanguageModel("custom", {
+    baseUrl: "https://api.qnaigc.com/v1", apiKey: "fixture-only", model: "z-ai/glm-5.3-flash",
+  }, { platformManagedCredentials: true, creditDriver: credits });
+  await runPaidContext({ userId: "00000000-0000-4000-8000-000000000001", requestId: crypto.randomUUID(), route: "test", sequence: 0, reservedCny: 0 },
+    () => resolved.model.doGenerate({ prompt: fixturePrompt }));
+  assert.equal(calls, 1);
+  assert.equal(charged, 22);
+});
+
+test("unpriced platform-managed custom endpoint is rejected before provider network", async (t) => {
+  const network = t.mock.method(globalThis, "fetch", async () => { throw new Error("must not call"); });
+  const resolved = resolveLanguageModel("custom", {
+    baseUrl: "https://fixture.invalid/v1", apiKey: "fixture-only", model: "unpriced-server-title",
+  }, { platformManagedCredentials: true });
+  await assert.rejects(async () => await resolved.model.doGenerate({ prompt: fixturePrompt }), /定价/);
+  assert.equal(network.mock.callCount(), 0);
+});
+
+test("known model name on an unknown managed endpoint cannot borrow Qiniu pricing",async(t)=>{
+  const network=t.mock.method(globalThis,"fetch",async()=>{throw new Error("must not call");});
+  const resolved=resolveLanguageModel("custom",{baseUrl:"https://unpriced.invalid/v1",apiKey:"fixture-only",model:"z-ai/glm-5.3-flash"},{platformManagedCredentials:true});
+  await assert.rejects(async()=>resolved.model.doGenerate({prompt:fixturePrompt}),/定价/);
+  assert.equal(network.mock.callCount(),0);
+});
 
 async function readParts(stream: ReadableStream<LanguageModelV4StreamPart>) {
   const reader = stream.getReader();

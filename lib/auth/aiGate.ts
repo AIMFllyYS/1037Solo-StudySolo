@@ -17,6 +17,10 @@ export const AI_GATE_RATE_LIMITED = { error: "Too many requests" } as const;
 
 export interface GateUser {
   id: string;
+  mfaRequired?: boolean;
+  clientId?: string;
+  aal?: string;
+  sessionId?: string;
 }
 
 export type VerifyAccessToken = (token: string) => Promise<GateUser | null>;
@@ -38,7 +42,7 @@ export type AiGateDecision =
   | { action: "next"; userId?: string }
   | {
       action: "reject";
-      status: 401 | 429;
+      status: 401 | 403 | 429;
       body: { error: string };
       headers?: Record<string, string>;
     };
@@ -58,8 +62,16 @@ export async function verifySupabaseAccessToken(token: string): Promise<GateUser
     });
     const { data, error } = await client.auth.getUser(token);
     const id = data.user?.id;
-    if (error || typeof id !== "string" || !id) return null;
-    return { id };
+    if (error || !id || !data.user?.email_confirmed_at) return null;
+    const verified=await client.auth.getClaims(token);
+    const claims=verified.data?.claims;
+    if(verified.error || !claims || claims.sub!==id || claims.iss!==`${env.supabaseUrl}/auth/v1` || claims.aud!=="authenticated")return null;
+    const {createServiceAuthClient}=await import("./serviceClient");
+    const profile=await createServiceAuthClient().from("user_profiles").select("account_role,is_active").eq("id",id).maybeSingle();
+    if(profile.error)throw profile.error;
+    if(!profile.data||profile.data.is_active!==true)return null;
+    const requiresMfa=["admin","super_admin"].includes(profile.data?.account_role) || (data.user.factors??[]).some(f=>f.status==="verified");
+    return {id,mfaRequired:requiresMfa && claims.aal!=="aal2",clientId:typeof claims.client_id==="string"?claims.client_id:undefined,aal:typeof claims.aal==="string"?claims.aal:undefined,sessionId:typeof claims.session_id==="string"?claims.session_id:undefined};
   } catch {
     return null;
   }
@@ -91,6 +103,8 @@ export async function decideAiGate(
   if (!user) {
     return { action: "reject", status: 401, body: { ...AI_GATE_UNAUTHORIZED } };
   }
+
+  if(user.mfaRequired)return {action:"reject",status:403,body:{error:"请在统一账号中心完成两步验证"}};
 
   const consume = deps.consume ?? consumeRateLimit;
   const hit = consume(`user:${user.id}`, {

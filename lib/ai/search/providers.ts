@@ -1,3 +1,4 @@
+import { billableJsonFetch } from "@/lib/billing/billableFetch";
 // 三家搜索供应商的调用实现。
 //
 // 凭证：用户在设置里填的（capability endpoints）优先；没填才用站点 env。
@@ -120,13 +121,14 @@ function describeProviderError(err: unknown): string {
   return String(e?.message ?? err);
 }
 
-async function fetchJson(url: string, apiKey: string, body: unknown, timeoutMs: number, signal?: AbortSignal): Promise<{ ok: boolean; status: number; data: Record<string, unknown> | null; raw: string }> {
-  const res = await fetch(url, {
+async function fetchJson(url: string, apiKey: string, body: unknown, timeoutMs: number, signal: AbortSignal | undefined, usedPlatformCredentials: boolean): Promise<{ ok: boolean; status: number; data: Record<string, unknown> | null; raw: string }> {
+  const params = body as Record<string, unknown>;
+  const res = await billableJsonFetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
     body: JSON.stringify(body),
     signal: mergedSignal(timeoutMs, signal),
-  });
+  }, { model: String(params.search_engine ?? params.model ?? new URL(url).hostname), kind: "search", byok: !usedPlatformCredentials });
   const raw = await res.text().catch(() => "");
   let data: Record<string, unknown> | null = null;
   try { data = JSON.parse(raw) as Record<string, unknown>; } catch { data = null; }
@@ -152,7 +154,7 @@ export async function searchZhipu(query: string, count: number, opts: ProviderCa
       count: Math.min(Math.max(count, 1), 50),
       search_recency_filter: "noLimit",
       content_size: "high",
-    }, opts.timeoutMs ?? ZHIPU_TIMEOUT_MS, opts.signal);
+    }, opts.timeoutMs ?? ZHIPU_TIMEOUT_MS, opts.signal, config.usedPlatformCredentials);
     if (!r.ok || !r.data) {
       return { provider: "zhipu", results: [], citations: [], ms: Date.now() - started, usedPlatformCredentials: config.usedPlatformCredentials, error: "上游 " + r.status };
     }
@@ -190,7 +192,7 @@ export async function searchPerplexity(query: string, count: number, opts: Provi
     const r = await fetchJson(PERPLEXITY_BASE + "/search", config.apiKey, {
       query,
       max_results: Math.min(Math.max(count, 1), 20),
-    }, timeoutMs, opts.signal);
+    }, timeoutMs, opts.signal, config.usedPlatformCredentials);
     if (r.ok && r.data && Array.isArray(r.data.results)) {
       const results: SearchItem[] = (r.data.results as Record<string, unknown>[]).map((p) => ({
         title: String(p.title ?? ""),
@@ -208,7 +210,7 @@ export async function searchPerplexity(query: string, count: number, opts: Provi
     const sonar = await fetchJson(PERPLEXITY_BASE + "/chat/completions", config.apiKey, {
       model: "sonar",
       messages: [{ role: "user", content: query }],
-    }, timeoutMs, opts.signal);
+    }, timeoutMs, opts.signal, config.usedPlatformCredentials);
     if (!sonar.ok || !sonar.data) {
       return { provider: "perplexity", results: [], citations: [], ms: Date.now() - started, usedPlatformCredentials: config.usedPlatformCredentials, error: "上游 " + sonar.status };
     }
@@ -271,7 +273,7 @@ export async function searchKimi(query: string, count: number, opts: ProviderCal
         model,
         messages,
         tools: [KIMI_WEB_SEARCH_TOOL],
-      }, timeoutMs, opts.signal);
+      }, timeoutMs, opts.signal, config.usedPlatformCredentials);
       if (!r.ok || !r.data) {
         return { provider: "kimi", results: [], citations: [], ms: Date.now() - started, usedPlatformCredentials: config.usedPlatformCredentials, error: "上游 " + r.status };
       }

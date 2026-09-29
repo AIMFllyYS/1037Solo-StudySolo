@@ -22,6 +22,7 @@ import { AGENT_DOCK_CONTENT_ID } from "@/lib/constants/layout";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
 import { translate, useT } from "@/lib/i18n";
+import StudioAgentPanel from "@/components/layout/StudioAgentPanel";
 
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
   ssr: false,
@@ -126,6 +127,24 @@ export default function RightPanel({
   /** 顶部「收起」按钮的落点。默认收起当前 Studio 档位的右栏；Agent 右栏由外壳传入。 */
   onCollapse?: () => void;
 } = {}) {
+  // Studio 桌面右栏：纯 Agent 对话（Cursor 式头）。它自持全部 hook，
+  // 提前返回不违反 hooks 规则——这两个 prop 在一次挂载里恒定（Studio 恒为空、Agent 恒为 dock）。
+  if (!showWindowDock && !hideBuiltinTabs) {
+    return <StudioAgentPanel onCollapse={onCollapse} />;
+  }
+
+  return <RightPanelDock showWindowDock={showWindowDock} hideBuiltinTabs={hideBuiltinTabs} onCollapse={onCollapse} />;
+}
+
+function RightPanelDock({
+  showWindowDock = false,
+  hideBuiltinTabs = false,
+  onCollapse,
+}: {
+  showWindowDock?: boolean;
+  hideBuiltinTabs?: boolean;
+  onCollapse?: () => void;
+}) {
   const t = useT();
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);

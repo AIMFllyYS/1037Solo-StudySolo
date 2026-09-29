@@ -5,8 +5,8 @@
 > **项目版本**：gailvlun v0.4.0（package.json:3）
 > **关联文档**：
 > - [性能优化报告](./07-performance-optimization.md)（代码分割机制）
-> - [渲染架构](../../docs/refer/rendering-architecture.md)
-> - [已有性能审查报告](../../docs/refer/performance-audit-report.md) §3.5、§7.3
+> - [渲染架构](../../refer/rendering-architecture.md)
+> - [已有性能审查报告](../../refer/performance-audit-report.md) §3.5、§7.3
 >
 > **2026-09 校对说明**（计划 `25`）：正文里 `directiveComponents` 的文件路径已更新为现网位置 `components/shared/directives/registry.ts`（计划 `23` 从 `lib/markdown/` 搬出）；`components/interactives/registry.ts`（右侧「可交互」tab，53 个组件）与 `:::interactive` 指令走的 `MediaEmbed` 链路本身未变，仍是本报告的准确描述。
 
@@ -617,10 +617,10 @@ id 命名：{chapterId}-{sectionId}-{slug}
 
 ### 项目内文档
 - [性能优化报告](./07-performance-optimization.md)（代码分割机制）
-- [渲染架构](../../docs/refer/rendering-architecture.md)
-- [已有性能审查报告](../../docs/refer/performance-audit-report.md) §3.5、§7.3
-- [SOP 02 详情生成](../../docs/sop/02-detail-generation.md)
-- [SOP 学科接入](../../docs/sop/subject-onboarding.md)
+- [渲染架构](../../refer/rendering-architecture.md)
+- [已有性能审查报告](../../refer/performance-audit-report.md) §3.5、§7.3
+- [SOP 02 详情生成](../../sop/02-detail-generation.md)
+- [SOP 学科接入](../../sop/subject-onboarding.md)
 
 ### 源码引用
 - `components/interactives/registry.ts:5-13`（InteractiveMeta 接口）

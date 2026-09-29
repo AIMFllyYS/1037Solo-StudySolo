@@ -9,6 +9,7 @@
 @import "./styles/pdf-reader.css";
 @import "./styles/pptx-reader.css";
 @import "./styles/appearance.css";
+@import "./styles/semantic-tokens.css";
 
 /* Keep wheel/touch/keyboard scrolling everywhere in the app; hide only native scrollbar chrome. */
 * { scrollbar-width: none !important; -ms-overflow-style: none; }
@@ -874,7 +875,7 @@ html[data-reduce-motion="true"] *::after {
    Agent 顶栏（[data-agent-bar]）不吃这条：它是**控件条**——网页全屏与右侧工作区开关都挂在上面，
    而它自己根本没有「收起顶栏」入口。落盘的收起态只属于 Studio；从 Studio 收着顶栏切到 Agent 时
    必须放过它，否则首帧就把两个键一起吃掉（React 侧同口径，见 AppShell 的 barCollapsed）。 */
-html[data-topbar-collapsed="true"] header[data-topbar]:not([data-agent-bar]) {
+html[data-topbar-collapsed="true"] header[data-topbar]:not([data-agent-bar]):not([data-class-bar]) {
   height: 0;
   padding-top: 0;
   padding-bottom: 0;

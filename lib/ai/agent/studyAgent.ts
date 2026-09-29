@@ -24,7 +24,9 @@ import { forcedSkillId, resolveForcedToolName } from "@/lib/chat/composerIntent"
 import { createAgentLifecycleHooks } from "@/lib/ai/observability/agentLog";
 import { formatArtifactCatalog, type ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
+import type { ContinuationKind } from "@/lib/ai/agent/completionGuard";
 import { formatEditingUserNoteContext, type EditingUserNoteContext } from "@/lib/notes/editingUserNote";
+import { formatClassContextBlock, type ClassAgentContext } from "@/lib/class/agentContext";
 import {
   formatMemoryCatalogLine,
   type FlashcardCatalogItem,
@@ -67,7 +69,23 @@ export interface StudyAgentInput {
   planMode?: boolean;
   forcedTool?: ComposerForcedTool;
   attachedFiles?: AttachedFileRef[];
+  /**
+   * 收尾守卫续写（completionGuard）。answer：关闭思考与工具，只写正文；
+   * tool：沿用原工具集，让模型补发刚才只口头宣称的调用。
+   */
+  recovery?: ContinuationKind;
+  /** 发起请求的登录用户 id（课堂文稿工具按账号读库）。 */
+  userId?: string;
+  /** Class 模式的当前课堂上下文。 */
+  classContext?: ClassAgentContext;
 }
+
+/**
+ * 输出预算。推理模型的 reasoning 与正文共用 max_tokens：预算太小时思考会把额度吃光，
+ * 正文为空且 finishReason=length。开启思考时给足空间；关闭思考时仍留余量（部分模型强制思考）。
+ */
+export const DEFAULT_MAX_OUTPUT_TOKENS = 8192;
+export const THINKING_MAX_OUTPUT_TOKENS = 16384;
 
 export interface StudyAgentBundle {
   agent: ToolLoopAgent<never, ToolSet>;
@@ -101,6 +119,9 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     planMode,
     forcedTool,
     attachedFiles = [],
+    recovery,
+    userId,
+    classContext,
   } = input;
   const toolRoundLimit = clampMaxToolRounds(maxToolRounds);
 
@@ -150,6 +171,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
   });
   const volatile =
     buildLocationLine(chatCtx) +
+    (classContext && !noteWindowAgent ? `\n\n${formatClassContextBlock(classContext)}` : "") +
     (editingUserNote ? `\n\n${formatEditingUserNoteContext(editingUserNote)}` : "") +
     (memoryLine ? `\n\n${memoryLine}` : "") +
     (referenceContext ? `\n\n【参考材料】\n${referenceContext}` : "") +
@@ -175,6 +197,8 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
           editingUserNote,
           userNotes,
           flashcards,
+          userId,
+          classContext: noteWindowAgent ? undefined : classContext,
           artifactUnsupportedReason: isImageMode
             ? "当前生图模型不支持 HTML 交互组件生成，请切换文本模型后重试。"
             : undefined,
@@ -202,6 +226,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
   // （避免强制 toolChoice 在每步重复触发）；imageSearch 配额耗尽后不再暴露。
   // 输入框指定工具：首步强制调用，其它工具仍可见。
   const prepareStep: PrepareStepFunction<ToolSet> = ({ stepNumber }) => {
+    if (recovery === "answer") return { activeTools: [], toolChoice: "none" };
     if (toolNames.length === 0) return {};
     if (isImageMode && toolNames.includes("generateImage")) {
       return stepNumber === 0
@@ -223,12 +248,18 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     middleware: lifecycle.modelMiddleware,
   });
 
+  const thinkingActive = recovery !== "answer" && !!thinking.providerOptions;
+  const maxOutputTokens = Math.max(
+    thinking.maxOutputTokens ?? 0,
+    thinkingActive ? THINKING_MAX_OUTPUT_TOKENS : DEFAULT_MAX_OUTPUT_TOKENS,
+  );
+
   const agent = new ToolLoopAgent<never, ToolSet>({
     id: "study-tutor",
     model: observedModel,
     instructions,
     tools,
-    stopWhen: isStepCount(toolRoundLimit),
+    stopWhen: isStepCount(recovery === "answer" ? 1 : toolRoundLimit),
     // Endpoint fallback is owned by the model adapter; never repeat the entire
     // failed chain three times (especially for local permission/network errors).
     maxRetries: 0,
@@ -239,8 +270,8 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     onToolExecutionStart: lifecycle.onToolExecutionStart,
     onToolExecutionEnd: lifecycle.onToolExecutionEnd,
     telemetry: lifecycle.telemetry,
-    ...(thinking.providerOptions ? { providerOptions: thinking.providerOptions } : {}),
-    ...(thinking.maxOutputTokens ? { maxOutputTokens: thinking.maxOutputTokens } : {}),
+    ...(thinkingActive ? { providerOptions: thinking.providerOptions } : {}),
+    maxOutputTokens,
   });
 
   return {

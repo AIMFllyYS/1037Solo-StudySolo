@@ -1,12 +1,14 @@
 /**
- * 额度闸门：请求前「明显耗尽则拒」，结算后扣。8 条花钱路由共用，解析 body 后各调一次。
- * 历史错 pool 行不改；聚合按当前周期 + kind/meta 再判。
+ * Shared wallet read gate. Each actual provider call additionally reserves atomically.
+ * Legacy grant/period helpers remain for archival tests only; production never spends them.
  */
 
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
-import { readQuotaPages } from "@/lib/billing/readQuotaPages";
+import { optionalPaidContext } from "./paidContext";
+
 import type { UsagePool } from "@/lib/billing/usagePool";
 
+/** Legacy archive units only; membership_plans controls current grants. */
 export const TIER_QUOTA_CNY = { free: 7, plus: 70, pro: 700 } as const;
 export type UserTier = keyof typeof TIER_QUOTA_CNY;
 
@@ -20,9 +22,9 @@ export const QUOTA_UNAVAILABLE_MESSAGE =
   "额度服务暂时不可用，请稍后重试。为避免记错账，本次请求未发往模型。";
 
 export const PLATFORM_QUOTA_EXHAUSTED_MESSAGE =
-  "平台额度已用完。可改用 BYOK（在设置中填写自己的 API 密钥）继续使用。";
+  "生态共享 AI 额度已用完，请到统一个人中心查看或补充额度。";
 export const BYOK_QUOTA_EXHAUSTED_MESSAGE =
-  "BYOK 平台侧开销额度已用完。使用自备密钥的主模型仍可继续。";
+  "生态共享 AI 额度已用完，BYOK 平台开销也使用同一额度池。";
 
 const OVERHEAD_KINDS = new Set(["embedding", "rerank", "web-search", "image-search"]);
 const OVERHEAD_SOURCES = new Set([
@@ -40,7 +42,9 @@ export interface QuotaPeriod {
 
 export interface QuotaSnapshot {
   userId: string;
-  tier: UserTier;
+  tier: UserTier | "pro_plus" | "ultra";
+  sharedWallet?: boolean;
+  heldCny?: number;
   period: QuotaPeriod;
   rolled: boolean;
   cap: Record<UsagePool, number>;
@@ -131,7 +135,7 @@ export function quotaRejectedJson(decision: Extract<QuotaDecision, { ok: false }
   );
 }
 
-/** 区分「没配 Supabase」与「配了但查不通」：前者放行，后者必须拒。 */
+/** 区分「没配 Supabase」与「配了但查不通」：both fail closed; exported classification retained for legacy tests. */
 export function isQuotaServiceUnconfigured(error: unknown): boolean {
   const message = error instanceof Error ? error.message : String(error);
   return (
@@ -216,75 +220,34 @@ export function sumLedgerUsed(rows: QuotaLedgerRow[], pool: UsagePool): number {
 }
 
 function defaultStore(): QuotaStore {
-  return {
-    async getUser(userId) {
-      const client = createServiceAuthClient();
-      const { data, error } = await client
-        .from("app_users")
-        .select("id, tier, period_start, period_end")
-        .eq("id", userId)
-        .maybeSingle();
-      if (error) throw new Error(error.message);
-      return (data as QuotaUserRow | null) ?? null;
-    },
-    async savePeriod(userId, period, tier) {
-      const client = createServiceAuthClient();
-      const patch: Record<string, string> = {
-        period_start: period.start.toISOString(),
-        period_end: period.end.toISOString(),
-      };
-      if (tier) patch.tier = tier;
-      const { error } = await client.from("app_users").update(patch).eq("id", userId);
-      if (error) throw new Error(error.message);
-    },
-    async listGrants(userId) {
-      const client = createServiceAuthClient();
-      return readQuotaPages<QuotaGrantRow>(async (from, to) => {
-      const { data, error } = await client
-        .from("quota_grants")
-        .select("pool, tier, amount_cny, period_start, period_end")
-        .eq("user_id", userId).order("id").range(from, to);
-      if (error) throw new Error(error.message);
-      return (data ?? []) as QuotaGrantRow[];
-      });
-    },
-    async listLedger(userId, period) {
-      const client = createServiceAuthClient();
-      return readQuotaPages<QuotaLedgerRow>(async (from, to) => {
-      const { data, error } = await client
-        .from("usage_ledger")
-        .select("pool, kind, cost_cny, meta")
-        .eq("user_id", userId)
-        .gte("occurred_at", period.start.toISOString())
-        .lt("occurred_at", period.end.toISOString()).order("id").range(from, to);
-      if (error) throw new Error(error.message);
-      return (data ?? []) as QuotaLedgerRow[];
-      });
-    },
-    async sumLedger(userId, period) {
-      const client = createServiceAuthClient();
-      const { data, error } = await client.rpc("quota_period_sum", {
-        p_user_id: userId,
-        p_start: period.start.toISOString(),
-        p_end: period.end.toISOString(),
-      });
-      if (error) {
-        const ledger = await this.listLedger(userId, period);
-        return {
-          platform: sumLedgerUsed(ledger, "platform"),
-          byok: sumLedgerUsed(ledger, "byok"),
-        };
-      }
-      const used: QuotaLedgerSum = { platform: 0, byok: 0 };
-      for (const row of (data ?? []) as Array<{ pool?: string; used?: number }>) {
-        if (row.pool === "platform" || row.pool === "byok") {
-          const amount = Number(row.used);
-          if (Number.isFinite(amount) && amount > 0) used[row.pool] = amount;
-        }
-      }
-      return used;
-    },
+  throw new Error("Legacy local grants are archival only; use shared credit accounts");
+}
+
+async function loadSharedSnapshot(userId: string): Promise<QuotaSnapshot> {
+  const client = createServiceAuthClient();
+  const allowance = await client.rpc("ensure_period_credits", { p_user_id: userId });
+  if (allowance.error) throw new Error("Shared allowance unavailable");
+  const [balance, membership] = await Promise.all([
+    client.rpc("credit_account_summary", { p_user_id: userId }),
+    client.rpc("ecosystem_entitlements", { p_user_id: userId }),
+  ]);
+  if (balance.error || membership.error) throw new Error("Shared credit summary unavailable");
+  const wallet = Array.isArray(balance.data) ? balance.data[0] : balance.data;
+  const convert = (value: unknown) => {
+    const number = Number(value ?? 0);
+    const ratio = Number(process.env.ECOSYSTEM_CREDITS_PER_CNY || "1");
+    if (!Number.isSafeInteger(number) || number < 0 || !Number.isFinite(ratio) || ratio <= 0) throw new Error("Invalid central credit balance");
+    return number / 1_000_000 / ratio;
   };
+  const available = convert(wallet?.available_microcredits), held = convert(wallet?.held_microcredits);
+  const charged = convert(wallet?.charged_microcredits);
+  const period = Array.isArray(allowance.data) ? allowance.data[0] : allowance.data;
+  const start = new Date(period?.period_start), end = new Date(period?.period_end);
+  if (!Number.isFinite(start.getTime()) || !Number.isFinite(end.getTime())) throw new Error("Shared allowance period unavailable");
+  const cap = available + held + charged;
+  return { userId, tier: membership.data?.plan_id ?? "free", period: { start, end }, rolled: false,
+    cap: { platform: cap, byok: cap }, used: { platform: charged, byok: charged },
+    remaining: { platform: available, byok: available }, sharedWallet: true, heldCny: held };
 }
 
 function store(): QuotaStore {
@@ -323,6 +286,7 @@ export async function resolveSessionUserId(
 }
 
 async function loadQuotaSnapshotFresh(userId: string): Promise<QuotaSnapshot | null> {
+  if (!testDeps?.store) return loadSharedSnapshot(userId);
   const now = nowDate();
   const db = store();
   const user = await db.getUser(userId);
@@ -382,38 +346,32 @@ export async function loadQuotaSnapshot(userId: string): Promise<QuotaSnapshot |
 }
 
 /**
- * pool=null 表示主模型 BYOK，不进池、不拦截。
- * 无 userId 时放行（proxy 已拦未登录；单测直调路由也走这里）。
+ * All operator usage and BYOK overhead share one wallet. Missing identity/config fails closed.
  */
 export async function assertQuotaAvailable(input: {
   userId?: string | null;
   headers?: { get(name: string): string | null };
   pool: UsagePool | null;
 }): Promise<QuotaDecision> {
-  if (input.pool == null) return { ok: true, snapshot: null };
-  const userId = input.userId ?? (input.headers ? await resolveQuotaUserId(input.headers) : null);
-  if (!userId) return { ok: true, snapshot: null };
+  const pool = input.pool ?? "platform";
+  const userId = optionalPaidContext()?.userId ?? input.userId ?? (input.headers ? await resolveQuotaUserId(input.headers) : null);
+  if (!userId) return { ok: false, status: QUOTA_UNAVAILABLE_STATUS, code: QUOTA_UNAVAILABLE_CODE, error: "需要统一账号身份", pool };
 
   try {
     const snapshot = await loadQuotaSnapshot(userId);
-    if (!snapshot) return { ok: true, snapshot: null };
-    if (snapshot.remaining[input.pool] <= 0) {
+    if (!snapshot) throw new Error("Shared account unavailable");
+    if (snapshot.remaining[pool] <= 0) {
       return {
         ok: false,
         status: QUOTA_EXHAUSTED_STATUS,
         code: QUOTA_EXHAUSTED_CODE,
-        error: quotaExhaustedMessage(input.pool),
-        pool: input.pool,
+        error: quotaExhaustedMessage(pool),
+        pool,
       };
     }
     return { ok: true, snapshot };
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error);
-    // 没配额度服务（本地开发、自托管未接 Supabase）本就没有额度可言，放行。
-    if (isQuotaServiceUnconfigured(error)) {
-      console.warn("[quota] 额度服务未配置，跳过闸门:", detail);
-      return { ok: true, snapshot: null };
-    }
     // 配了但查不通：必须拒。放行等于无限额度，而且这笔钱花出去还不会入账。
     console.error("[quota] 额度查询失败，拒绝本次请求:", detail);
     return {
@@ -421,7 +379,7 @@ export async function assertQuotaAvailable(input: {
       status: QUOTA_UNAVAILABLE_STATUS,
       code: QUOTA_UNAVAILABLE_CODE,
       error: QUOTA_UNAVAILABLE_MESSAGE,
-      pool: input.pool,
+      pool,
     };
   }
 }

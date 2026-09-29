@@ -13,7 +13,7 @@ import type { ImportRecord } from "@/lib/stores/imports";
  * 对话本身不在这里：它们在左栏，资产页只列「产物」与「导入」。
  */
 
-export type AssetKind = "note" | "flashcard" | "document" | "artifact" | "file" | "url";
+export type AssetKind = "note" | "flashcard" | "document" | "artifact" | "file" | "url" | "classroom";
 
 export const ASSET_KINDS: readonly AssetKind[] = [
   "note",
@@ -22,6 +22,7 @@ export const ASSET_KINDS: readonly AssetKind[] = [
   "artifact",
   "file",
   "url",
+  "classroom",
 ];
 
 export const ASSET_KIND_LABELS: Record<AssetKind, string> = {
@@ -31,6 +32,7 @@ export const ASSET_KIND_LABELS: Record<AssetKind, string> = {
   artifact: "可交互",
   file: "文件",
   url: "网址",
+  classroom:"课堂",
 };
 
 /** 与云同步 kind 的对应关系；file / url 只在本机。 */
@@ -65,6 +67,7 @@ export interface AssetSources {
   /** 按写入顺序（旧 → 新）；产物没有时间戳，只能靠顺序表近似。 */
   artifacts: Artifact[];
   imports: ImportRecord[];
+  classrooms?:Array<{id:string;title:string;updatedAt:string;origin:AssetOrigin}>;
   /** 云端行是否存在：true=已同步，false=仅本机，null=还没拉过（不显示角标）。 */
   cloudRow?: (kind: string, id: string) => boolean | null;
 }
@@ -175,6 +178,7 @@ export function buildAssetItems(sources: AssetSources): AssetItem[] {
     });
   }
 
+  for(const session of sources.classrooms??[]){items.push({id:session.id,kind:"classroom",title:session.title,subtitle:"Classolo 文稿、提纲与课堂问答",updatedAt:new Date(session.updatedAt).getTime(),origin:session.origin});}
   return items;
 }
 

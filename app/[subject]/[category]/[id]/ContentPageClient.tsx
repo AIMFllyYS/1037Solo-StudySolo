@@ -19,6 +19,8 @@ import { useToc } from "@/lib/hooks/useToc";
 import { useCitationLocator } from "@/lib/hooks/useCitationLocator";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
 import GlobalSearchButton from "@/components/search/GlobalSearchButton";
+import { useCenterTabsHosted } from "@/components/layout/center/centerTabsHost";
+import { useContentTabs } from "@/lib/stores/contentTabs";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
 const ExampleTab = dynamic(() => import("@/components/examples/ExampleTab"), { ssr: false });
@@ -89,7 +91,15 @@ export default function ContentPageClient({
   layoutFlags: flags,
 }: ContentPageClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState<ContentTab>("content");
+  // 桌面三栏里 Tab 栏由中间工作区统一绘制（与视频/可交互/浏览器同一条），状态走共享 store；
+  // 没有工作区外壳（移动端）时内容页自己画栏、自己持有状态。
+  const hosted = useCenterTabsHosted();
+  const [localTab, setLocalTab] = useState<ContentTab>("content");
+  const hostedTab = useContentTabs((s) => s.active);
+  const setHostedTab = useContentTabs((s) => s.setActive);
+  const setHostedTabs = useContentTabs((s) => s.setTabs);
+  const activeTab: ContentTab = hosted ? hostedTab : localTab;
+  const setActiveTab = hosted ? setHostedTab : setLocalTab;
   const topBarCollapsed = useStore((s) => s.topBarCollapsed);
   const toggleTopBar = useStore((s) => s.toggleTopBar);
   const isMobile = useIsMobile();
@@ -114,9 +124,22 @@ export default function ContentPageClient({
   const showTabBar = visibleTabs.length > 1;
   const resolvedTab: ContentTab = visibleTabs.some((t) => t.id === activeTab) ? activeTab : "content";
 
+  // 交给中间工作区的那条栏渲染；进入新内容页回到「正文」，离开时清空。
+  useEffect(() => {
+    if (!hosted) return;
+    setHostedTabs(visibleTabs.map(({ id, label }) => ({ id, label })));
+  }, [hosted, visibleTabs, setHostedTabs]);
+  useEffect(() => {
+    if (!hosted) return;
+    setHostedTab("content");
+    return () => setHostedTabs([]);
+  }, [hosted, itemId, setHostedTab, setHostedTabs]);
+
+  // 切换方向（决定面板从左还是右滑入）：渲染期按 index 变化派生，不依赖是谁点的按钮。
   const tabIndex = visibleTabs.findIndex((t) => t.id === resolvedTab);
-  const prevTabIndexRef = useRef(tabIndex);
-  const [tabDirection, setTabDirection] = useState<1 | -1>(1);
+  const [tabMotion, setTabMotion] = useState<{ index: number; dir: 1 | -1 }>({ index: tabIndex, dir: 1 });
+  if (tabMotion.index !== tabIndex) setTabMotion({ index: tabIndex, dir: tabIndex >= tabMotion.index ? 1 : -1 });
+  const tabDirection = tabMotion.dir;
 
   // 正文由服务端 SSR 注入（initialContent）。客户端切换路由时 page.tsx 会重新做
   // 服务端渲染并以新 prop 下发，无需再 fetch /api/section，消除瀑布与骨架闪烁。
@@ -132,7 +155,7 @@ export default function ContentPageClient({
     initialContent ?? "",
   );
 
-  const switchToContentTab = useCallback(() => setActiveTab("content"), []);
+  const switchToContentTab = useCallback(() => setActiveTab("content"), [setActiveTab]);
   useCitationLocator({
     containerRef,
     subjectId,
@@ -161,17 +184,13 @@ export default function ContentPageClient({
 
   return (
     <div className="relative flex h-full flex-col bg-[var(--bg-app)]" data-layout-profile={layoutProfile}>
-      {/* Content tab bar：仅多于一个 tab 时渲染按钮；收起顶栏按钮与任务栏始终保留 */}
+      {/* Content tab bar：桌面三栏由中间工作区统一绘制（hosted），这里只在没有工作区外壳时自己画。 */}
+      {!hosted && (
       <div className="flex shrink-0 items-center border-b border-[var(--line)] bg-[var(--bg-app)]">
         {showTabBar && visibleTabs.map((t) => (
           <button
             key={t.id}
-            onClick={() => {
-            const newIdx = visibleTabs.findIndex((x) => x.id === t.id);
-            setTabDirection(newIdx >= prevTabIndexRef.current ? 1 : -1);
-            prevTabIndexRef.current = newIdx;
-            setActiveTab(t.id);
-          }}
+            onClick={() => setActiveTab(t.id)}
             className={clsx(
               "relative flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium transition-colors",
               resolvedTab === t.id
@@ -213,6 +232,7 @@ export default function ContentPageClient({
         )}
 
       </div>
+      )}
 
       {/* Content area */}
       <div ref={containerRef} data-notes-root className="scroll-y flex-1">

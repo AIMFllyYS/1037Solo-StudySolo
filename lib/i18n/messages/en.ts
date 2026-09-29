@@ -11,6 +11,7 @@ import { appEn } from "./parts/en/app";
 import { commonEn } from "./parts/en/common";
 import { menuEn } from "./parts/en/menu";
 import { panelEn } from "./parts/en/panel";
+import { reviewEn } from "./parts/en/review";
 import { settingsEn } from "./parts/en/settings";
 import { shareEn } from "./parts/en/share";
 import { traceEn } from "./parts/en/trace";
@@ -331,6 +332,7 @@ export const en = {
   settings: settingsEn,
   menu: menuEn,
   panel: panelEn,
+  review: reviewEn,
   trace: traceEn,
   window: windowEn,
   share: shareEn,

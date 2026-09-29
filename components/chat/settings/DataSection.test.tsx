@@ -43,7 +43,7 @@ describe("CloudSyncSection", () => {
     vi.mocked(loadCloudSyncUsage).mockResolvedValue(usageFixture);
     render(<CloudSyncSection />);
     expect(screen.getByText(/个人笔记和复习闪卡/)).toBeInTheDocument();
-    expect(screen.getByText(/笔记额度池 20 MB/)).toBeInTheDocument();
+    expect(screen.queryByText(/笔记额度池 20 MB/)).toBeNull();
     expect(screen.getByText(/工具读过的笔记以摘要同步/)).toBeInTheDocument();
     expect(screen.getByText(/用户上传的图片与 PDF 不上云/)).toBeInTheDocument();
     expect(await screen.findByRole("progressbar", { name: "云端已用" })).toBeInTheDocument();

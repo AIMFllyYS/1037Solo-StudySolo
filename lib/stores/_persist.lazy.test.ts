@@ -1,3 +1,4 @@
+import { activateStorageOwner } from "@/lib/storage/ownerScope";
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, test } from "node:test";
 import { flushPendingWrites, __resetIdbStoragePendingForTests } from "@/lib/storage/idbStorage";
@@ -6,6 +7,7 @@ import { createLazyIdbJSONStorage } from "./_persist.ts";
 const storage = new Map<string, string>();
 
 function installBrowserMocks() {
+  activateStorageOwner("fixture-user");
   (globalThis as { window?: unknown }).window = {
     addEventListener: () => {},
   };
@@ -31,6 +33,7 @@ function installBrowserMocks() {
     },
   };
 }
+
 
 beforeEach(() => {
   storage.clear();

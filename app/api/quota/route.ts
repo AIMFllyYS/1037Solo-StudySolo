@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     const snapshot = await loadQuotaSnapshot(userId);
     if (!snapshot) return Response.json({ error: '账户额度暂不可用。' }, { status: 503, headers });
     const view: QuotaView = {
-      userId, tier: snapshot.tier,
+      userId, tier: snapshot.tier, sharedWallet: snapshot.sharedWallet, heldCny: snapshot.heldCny,
       periodStart: snapshot.period.start.toISOString(), periodEnd: snapshot.period.end.toISOString(),
       updatedAt: new Date().toISOString(),
       platform: { cap: snapshot.cap.platform, used: snapshot.used.platform, remaining: snapshot.remaining.platform },

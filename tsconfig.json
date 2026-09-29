@@ -43,6 +43,9 @@
     "showroom",
     "exhibition-hall",
     "dist-desktop",
-    "scripts/one-off"
+    "scripts/one-off",
+    ".local-archive",
+    "1037Solo-Classolo",
+    "1037Solo-StudySolo"
   ]
 }

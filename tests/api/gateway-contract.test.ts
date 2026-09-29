@@ -1,5 +1,6 @@
+import { test, mockPaidFetch } from "@/tests/helpers/paidAiFixture";
 import assert from 'node:assert/strict';
-import { before, test } from 'node:test';
+import { before, } from 'node:test';
 import { generateText } from 'ai';
 import type { LanguageModelV4CallOptions } from '@ai-sdk/provider';
 import { buildCustomModelRegistryId, normalizeRegistryId, type CustomApiGroup } from '@/lib/ai/models';
@@ -14,7 +15,7 @@ before(async () => {
 for (const id of ['deepseek/deepseek-v4.1-flash', 'kimi-k3', 'mimo-v2.5']) {
   test(`gateway wire contract: ${id}`, async (t) => {
     let body: Record<string, unknown> = {};
-    t.mock.method(globalThis, 'fetch', async (input: unknown, init?: RequestInit) => {
+    mockPaidFetch(t, async (input: unknown, init?: RequestInit) => {
       assert.equal(String(input), 'https://gateway.invalid/v1/chat/completions');
       assert.equal(new Headers(init?.headers).get('authorization'), 'Bearer gateway-test-only');
       body = JSON.parse(String(init?.body));
@@ -33,9 +34,9 @@ for (const id of ['deepseek/deepseek-v4.1-flash', 'kimi-k3', 'mimo-v2.5']) {
 
 test('DeepSeek thinking replaces unsupported named choice with a single-tool auto inventory', async (t) => {
   let body: Record<string, unknown> = {};
-  t.mock.method(globalThis, 'fetch', async (_url: unknown, init?: RequestInit) => {
+  mockPaidFetch(t, async (_url: unknown, init?: RequestInit) => {
     body = JSON.parse(String(init?.body));
-    return Response.json({ choices: [{ index: 0, message: { role: 'assistant', content: 'OK' }, finish_reason: 'stop' }] });
+    return Response.json({ usage:{prompt_tokens:1,completion_tokens:1,total_tokens:2}, choices: [{ index: 0, message: { role: 'assistant', content: 'OK' }, finish_reason: 'stop' }] });
   });
   const model = resolve('deepseek/deepseek-v4.1-flash');
   await model.model.doGenerate({ prompt: [{ role: 'user', content: [{ type: 'text', text: 'test' }] }],
@@ -47,13 +48,13 @@ test('DeepSeek thinking replaces unsupported named choice with a single-tool aut
 for (const mode of ['generate', 'stream'] as const) {
   test(`gateway ${mode} repairs legacy malformed Unicode across prompt and tools without mutating input`, async (t) => {
     let body: Record<string, unknown> = {};
-    t.mock.method(globalThis, 'fetch', async (_url: unknown, init?: RequestInit) => {
+    mockPaidFetch(t, async (_url: unknown, init?: RequestInit) => {
       body = JSON.parse(String(init?.body));
       if (mode === 'stream') return new Response(
-        'data: {"id":"test","object":"chat.completion.chunk","created":1,"model":"deepseek/deepseek-v4.1-flash","choices":[{"index":0,"delta":{"content":"OK"},"finish_reason":null}]}\n\ndata: [DONE]\n\n',
+        'data: {"id":"test","object":"chat.completion.chunk","created":1,"model":"deepseek/deepseek-v4.1-flash","choices":[{"index":0,"delta":{"content":"OK"},"finish_reason":null}]}\n\ndata: {"choices":[{"index":0,"delta":{},"finish_reason":"stop"}],"usage":{"prompt_tokens":1,"completion_tokens":1,"total_tokens":2}}\n\ndata: [DONE]\n\n',
         { headers: { 'content-type': 'text/event-stream' } },
       );
-      return Response.json({ choices: [{ index: 0, message: { role: 'assistant', content: 'OK' }, finish_reason: 'stop' }] });
+      return Response.json({ usage:{prompt_tokens:1,completion_tokens:1,total_tokens:2}, choices: [{ index: 0, message: { role: 'assistant', content: 'OK' }, finish_reason: 'stop' }] });
     });
     const options: LanguageModelV4CallOptions = {
       prompt: [
@@ -83,7 +84,7 @@ for (const mode of ['generate', 'stream'] as const) {
 
 test('custom native Anthropic uses the same Unicode boundary without changing protocol or credentials', async (t) => {
   let body: Record<string, unknown> = {};
-  t.mock.method(globalThis, 'fetch', async (url: unknown, init?: RequestInit) => {
+  mockPaidFetch(t, async (url: unknown, init?: RequestInit) => {
     assert.equal(String(url), 'https://anthropic.invalid/v1/messages');
     assert.equal(new Headers(init?.headers).get('x-api-key'), 'custom-test-only');
     body = JSON.parse(String(init?.body));

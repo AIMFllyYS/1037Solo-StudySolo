@@ -1,3 +1,4 @@
+import { activateStorageOwner, ownedStorageKey } from "@/lib/storage/ownerScope";
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, test } from "node:test";
 import {
@@ -14,6 +15,7 @@ import type { ChatManifestV2 } from "./chatStorage.ts";
 const storage = new Map<string, string>();
 
 function installBrowserMocks() {
+  activateStorageOwner("fixture-user");
   (globalThis as { window?: unknown }).window = { addEventListener: () => {} };
   (globalThis as { indexedDB?: object }).indexedDB = {};
   (globalThis as { localStorage?: Storage }).localStorage = {
@@ -37,6 +39,9 @@ function installBrowserMocks() {
     },
   };
 }
+const physical = (key: string) => ownedStorageKey(key)!;
+const fixtureSet = (key: string, value: string) => storage.set(physical(key), value);
+
 
 describe("chatStorage gc", { concurrency: false }, () => {
 beforeEach(() => {
@@ -170,9 +175,9 @@ test("gcOrphanedChatKeys：存活会话正文读不出来时不动任何附件",
 
 test("listAllChatKeys enumerates session and blob prefixes from local storage", async () => {
   const { listAllChatKeys } = await import("./chatStorage.ts");
-  storage.set(chatSessionKey("zzz"), "[]");
-  storage.set(chatBlobKey("b1"), "data:image/png;base64,AAA");
-  storage.set("unrelated", "nope");
+  fixtureSet(chatSessionKey("zzz"), "[]");
+  fixtureSet(chatBlobKey("b1"), "data:image/png;base64,AAA");
+  fixtureSet("unrelated", "nope");
   flushPendingWrites();
   const keys = await listAllChatKeys();
   assert.ok(keys.includes(`${CHAT_SESSION_KEY_PREFIX}zzz`));

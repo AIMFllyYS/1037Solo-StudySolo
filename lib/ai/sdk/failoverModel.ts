@@ -12,6 +12,7 @@ import type {
   LanguageModelV4StreamResult,
 } from "@ai-sdk/provider";
 import { APICallError } from "@ai-sdk/provider";
+import { CreditAdmissionError } from "@/lib/billing/centralCredits";
 import { isRecoverableUpstreamFailure, parseUpstreamErrorBody, isFetchAbortError } from "@/lib/ai/upstream";
 
 export interface FailoverCandidate {
@@ -85,6 +86,7 @@ export function createFailoverLanguageModel(
 
   // 用户主动取消不触发切换；本模型内部的首字节超时或可恢复的上游错误才切换。
   const shouldFailover = (error: unknown, attempt: Attempt, userSignal: AbortSignal | undefined, index: number) => {
+    if (error instanceof CreditAdmissionError) return false;
     if (index >= candidates.length - 1) return false;
     if (userSignal?.aborted) return false;
     if (attempt.timedOut()) return true;

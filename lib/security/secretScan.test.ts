@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 import { test } from "node:test";
 import { runSecretScanCli } from "../../scripts/check-secrets.ts";
@@ -132,6 +133,23 @@ test("pre-commit hook 对暂存文件跑扫描且要求显式确认词", () => {
   assert.match(hook, /SECRET_SCAN_ALLOW=I_UNDERSTAND/);
 });
 
-test("runSecretScanCli 在干净追踪树上退出 0（knip import）", () => {
-  assert.equal(runSecretScanCli([], {}), 0);
+test("runSecretScanCli scans a retained Git fixture, including archived builds", () => {
+  // Production releases are git archives, not working checkouts. Exercise the
+  // real CLI on its own tracked fixture instead of relying on the caller's .git.
+  const original = process.cwd();
+  const fixtures = join(original, ".local-archive", "secret-scan-fixtures");
+  mkdirSync(fixtures, { recursive: true });
+  const fixture = mkdtempSync(join(fixtures, "tracked-"));
+  execFileSync("git", ["init", "--quiet", fixture], { stdio: "pipe" });
+  writeFileSync(join(fixture, "fixture.ts"), "export const healthy = true;\n");
+  execFileSync("git", ["-C", fixture, "add", "fixture.ts"], { stdio: "pipe" });
+  try {
+    process.chdir(fixture);
+    assert.equal(runSecretScanCli([], {}), 0);
+    writeFileSync("fixture.ts", `export const token = "${FAKE_SK}";\n`);
+    assert.equal(runSecretScanCli([], {}), 1);
+  } finally {
+    process.chdir(original);
+  }
+  // Keep the synthetic fixture for audit; never delete deployment/user files.
 });

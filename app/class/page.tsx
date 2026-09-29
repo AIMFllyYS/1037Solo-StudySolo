@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ClassPlaceholder from "@/components/layout/ClassPlaceholder";
+import ClassEntry from "@/classolo/ClassEntry";
 import { appModeTitle } from "@/lib/constants/app-mode";
 
 export const metadata: Metadata = {
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function ClassPage() {
-  return <ClassPlaceholder />;
+  return <ClassEntry />;
 }

@@ -3,7 +3,7 @@
  * never writes them to disk.
  */
 
-export const DEFAULT_AUTH_PROJECT_REF = "jlahwwnjbhqfnsicdjsx";
+export const DEFAULT_AUTH_PROJECT_REF = "zizaonaxfguvlzdcbxzw";
 export const DEFAULT_AUTH_SUPABASE_URL = `https://${DEFAULT_AUTH_PROJECT_REF}.supabase.co`;
 
 const SUPABASE_HOST_RE = /^https:\/\/[a-z0-9-]+\.supabase\.co$/i;

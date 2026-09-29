@@ -6,6 +6,7 @@ import {
   type PersistStorage,
   type StorageValue,
 } from "zustand/middleware";
+import { registerOwnerHydrator } from "@/lib/storage/ownerScope";
 import { idbStorage } from "@/lib/storage/idbStorage";
 
 export type PersistedStoreOptions<T> = {
@@ -43,7 +44,7 @@ export function createPersistedStore<T>(
       ? createLazyIdbJSONStorage()
       : createJSONStorage(() => localStorage);
 
-  return create<T>()(
+  const store=create<T>()(
     persist(initializer, {
       name: opts.name,
       storage,
@@ -53,4 +54,6 @@ export function createPersistedStore<T>(
       ...(opts.onRehydrateStorage ? { onRehydrateStorage: opts.onRehydrateStorage } : {}),
     }),
   );
+  if(opts.storage==="idb")registerOwnerHydrator(async()=>{await store.persist.rehydrate();});
+  return store;
 }

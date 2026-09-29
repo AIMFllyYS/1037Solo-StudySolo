@@ -24,7 +24,7 @@ async function defaultRpc(shareId: string): Promise<RpcResponse> {
   // 浏览器 anon client：公开读不需要登录态，未配置 Supabase 时这里直接返回 null。
   const client = tryGetBrowserAuthClient();
   if (!client) return { data: null, error: { message: "supabase-unconfigured" } };
-  return (await client.rpc("get_shared_conversation", { p_id: shareId })) as unknown as RpcResponse;
+  return (await client.rpc("ss_get_shared_conversation", { p_id: shareId })) as unknown as RpcResponse;
 }
 
 /**

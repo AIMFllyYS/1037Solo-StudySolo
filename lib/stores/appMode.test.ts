@@ -74,6 +74,20 @@ test("syncFromPathname 跟 URL，登录页不改 persist", () => {
   assert.equal(useAppMode.getState().mode, "class");
 });
 
+test("setMode / syncFromPathname 支持 review 模式", () => {
+  useAppMode.getState().setMode("review");
+  assert.equal(useAppMode.getState().mode, "review");
+  assert.equal(attrs.get("data-app-mode"), "review");
+  assert.deepEqual(JSON.parse(storage.get(APP_MODE_STORAGE_KEY) ?? "{}"), {
+    mode: "review",
+    lastStudioPath: "/",
+  });
+  useAppMode.getState().syncFromPathname("/review");
+  assert.equal(useAppMode.getState().mode, "review");
+  useAppMode.getState().syncFromPathname("/anatomy/detail/1.1");
+  assert.equal(useAppMode.getState().mode, "studio");
+});
+
 test("手机 retainAgentOnStudio：Studio 路由不把 Agent persist 改回 studio", () => {
   useAppMode.getState().setMode("agent");
   useAppMode.getState().rememberStudioPath("/anatomy/detail/1.1");

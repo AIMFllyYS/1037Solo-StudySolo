@@ -1,5 +1,6 @@
+import { test, PaidRequest } from "@/tests/helpers/paidAiFixture";
 import assert from "node:assert/strict";
-import { after, afterEach, before, test } from "node:test";
+import { after, afterEach, before, } from "node:test";
 import type { NextRequest } from "next/server";
 import { buildCustomModelRegistryId, type CustomApiGroup } from "@/lib/ai/models";
 import {
@@ -47,7 +48,7 @@ const groups: CustomApiGroup[] = [
 ];
 
 function request(body: unknown) {
-  return new Request("https://app.invalid/api/document", {
+  return new PaidRequest("https://app.invalid/api/document", {
     method: "POST",
     headers: { "Content-Type": "application/json", authorization: "Bearer test-token" },
     body: JSON.stringify(body),

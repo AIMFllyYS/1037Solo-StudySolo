@@ -159,3 +159,14 @@ test("有效码核销改变档位与周期；超 max_uses 与重复核销被拒"
   assert.equal(publicRedeemMessage("already_redeemed"), REDEEM_PUBLIC_ERROR);
   assert.equal(normalizeRedeemCode("  ABC  "), "ABC");
 });
+
+
+test("central redemption retains canonical tiers, retry status and lifetime expiry", async () => {
+  const { centralRedeemResult } = await import("./redeemCode.ts");
+  const kept = centralRedeemResult({ status: "higher_tier_kept", tier: "ultra", tier_expires_at: "infinity", is_student_verified: true });
+  assert.equal(kept.tier, "ultra"); assert.equal(kept.lifetime, true); assert.equal(kept.periodEnd, null);
+  const retry = centralRedeemResult({ status: "already_redeemed", tier: "pro_plus", tier_expires_at: "2026-11-01T00:00:00Z" });
+  assert.equal(retry.status, "already_redeemed"); assert.equal(retry.tier, "pro_plus");
+  assert.equal(retry.months, undefined); assert.equal(retry.periodStart, undefined);
+  assert.throws(() => centralRedeemResult({ status: "paid", tier: "plus" }));
+});

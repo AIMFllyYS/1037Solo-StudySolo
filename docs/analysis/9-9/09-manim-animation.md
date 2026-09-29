@@ -4,9 +4,9 @@
 > **调研日期**：2026-07-05
 > **项目版本**：gailvlun v0.4.0（package.json:3）
 > **关联文档**：
-> - [SOP 02 详情生成](../../docs/sop/02-detail-generation.md) §Step 5（Manim 动画）
-> - [SOP 04 题库生成](../../docs/sop/04-quiz-generation.md) §4（复杂题 Manim 视频讲解）
-> - [SOP 学科接入](../../docs/sop/subject-onboarding.md)
+> - [SOP 02 详情生成](../../sop/02-detail-generation.md) §Step 5（Manim 动画）
+> - [SOP 04 题库生成](../../sop/04-quiz-generation.md) §4（复杂题 Manim 视频讲解）
+> - [SOP 学科接入](../../sop/subject-onboarding.md)
 > - [性能优化报告](./07-performance-optimization.md) §3.8（讲稿二段式懒加载）
 > - [交互组件系统](./08-interactive-components.md) §9.4（与 Manim 系统的协同）
 
@@ -826,12 +826,12 @@ sequenceDiagram
 ## 10. 参考资料
 
 ### 项目内文档
-- [SOP 02 详情生成](../../docs/sop/02-detail-generation.md) §Step 5（Manim 动画开发规范）
-- [SOP 04 题库生成](../../docs/sop/04-quiz-generation.md) §4（复杂题 Manim 视频讲解）
-- [SOP 学科接入](../../docs/sop/subject-onboarding.md) §media.generated.ts
+- [SOP 02 详情生成](../../sop/02-detail-generation.md) §Step 5（Manim 动画开发规范）
+- [SOP 04 题库生成](../../sop/04-quiz-generation.md) §4（复杂题 Manim 视频讲解）
+- [SOP 学科接入](../../sop/subject-onboarding.md) §media.generated.ts
 - [性能优化报告](./07-performance-optimization.md) §3.8（讲稿二段式懒加载）
 - [交互组件系统报告](./08-interactive-components.md) §9.4（与 Manim 系统协同）
-- [渲染架构](../../docs/refer/rendering-architecture.md)
+- [渲染架构](../../refer/rendering-architecture.md)
 
 ### 源码引用
 - `manim/render.py:1-202`（概率论渲染管线完整实现）

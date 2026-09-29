@@ -40,11 +40,13 @@ const MEMBERSHIP_LABELS = {
   free: "免费会员",
   plus: "Plus 会员",
   pro: "Pro 会员",
+  pro_plus:"Pro+ 会员",
+  ultra:"Ultra 会员",
 } as const;
 
 export type MembershipTier = keyof typeof MEMBERSHIP_LABELS;
 
 export function membershipLabel(tier: string | null | undefined): string {
-  if (tier === "plus" || tier === "pro" || tier === "free") return MEMBERSHIP_LABELS[tier];
+  if (tier === "plus" || tier === "pro" || tier === "pro_plus" || tier === "ultra" || tier === "free") return MEMBERSHIP_LABELS[tier];
   return MEMBERSHIP_LABELS.free;
 }

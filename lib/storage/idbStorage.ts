@@ -7,6 +7,7 @@
 // 3. SSR 安全：所有方法在 typeof window === "undefined" 时降级返回 null/no-op。
 // 4. 隐私模式/禁用 IndexedDB 时降级为 no-op，内存态仍可用（同 localStorage 失败行为）。
 
+import {ownedStorageKey,getStorageOwner} from "./ownerScope";
 import { createStore, get as idbGet, set as idbSet, del as idbDel, keys as idbKeys } from "idb-keyval";
 
 // ── 常量（单一真相源）────────────────────────────────────────────
@@ -99,6 +100,7 @@ export function flushPendingWrites(): void {
 /** 立即写入并等待完成；用于迁移这类必须知道成功/失败的数据安全路径。 */
 export async function setItemNow(name: string, value: string): Promise<boolean> {
   if (!isBrowser()) return false;
+  const scoped=ownedStorageKey(name);if(!scoped)return false;name=scoped;
   const timer = pendingTimers.get(name);
   if (timer) {
     clearTimeout(timer);
@@ -128,12 +130,14 @@ if (typeof window !== "undefined") {
 export const idbStorage = {
   async getItem(name: string): Promise<string | null> {
     if (!isBrowser()) return null;
+    const owner=getStorageOwner();const scoped=ownedStorageKey(name);if(!scoped)return null;name=scoped;
     // 命中尚未落盘的最新值，避免「写后立即读」拿到旧数据
     const pending = pendingValues.get(name);
     if (pending !== undefined) return typeof pending === "function" ? pending() : pending;
     try {
       // 1. 先读 IndexedDB
       const val = await idbGet<string>(name, idbStore);
+      if(getStorageOwner()!==owner)return null;
       if (val != null) return val;
 
       // 2. IndexedDB 无 → 回退读旧 localStorage（透明迁移）
@@ -160,6 +164,7 @@ export const idbStorage = {
   // 返回 void（同步调度）——persist 不依赖其完成，避免每 token 一次真实 IDB 写。
   setItem(name: string, value: string): void {
     if (!isBrowser()) return;
+    const scoped=ownedStorageKey(name);if(!scoped)return;name=scoped;
     pendingValues.set(name, value);
     const existing = pendingTimers.get(name);
     if (existing) clearTimeout(existing);
@@ -169,6 +174,7 @@ export const idbStorage = {
   /** Coalesce before serialization; a bounded checkpoint also runs during uninterrupted streams. */
   setItemLazy(name: string, serialize: () => string): void {
     if (!isBrowser()) return;
+    const scoped=ownedStorageKey(name);if(!scoped)return;name=scoped;
     pendingValues.set(name, serialize);
     if (!pendingTimers.has(name)) {
       pendingTimers.set(name, setTimeout(() => flushKey(name), WRITE_DEBOUNCE_MS));
@@ -177,6 +183,7 @@ export const idbStorage = {
 
   async removeItem(name: string): Promise<void> {
     if (!isBrowser()) return;
+    const scoped=ownedStorageKey(name);if(!scoped)return;name=scoped;
     // 取消尚未落盘的写，避免删除后又被旧值覆盖回来
     const timer = pendingTimers.get(name);
     if (timer) {
@@ -219,5 +226,7 @@ export async function listPersistedKeys(): Promise<string[]> {
   } catch {
     // ignore
   }
-  return [...found];
+  const owner=getStorageOwner();if(!owner)return [];
+  const prefix=`ss-user:${owner}:`;
+  return [...found].filter(key=>key.startsWith(prefix)).map(key=>key.slice(prefix.length));
 }

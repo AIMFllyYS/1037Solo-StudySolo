@@ -148,5 +148,5 @@ pnpm exec tsc --noEmit
 - [lib/content-data/manifest.ts](../../lib/content-data/manifest.ts) — 操作目标
 - [lib/content/loader.ts](../../lib/content/loader.ts) — 路径解析逻辑
 - [lib/content/layoutProfile.ts](../../lib/content/layoutProfile.ts) — 布局档位推导
-- [lib/ai/agent/tools/](../../lib/ai/agent/tools/) — AI 工具定义（13 个目录，见 `index.ts` 的公共再导出）
+- [lib/ai/agent/tools/](../../lib/ai/agent/tools/) — AI 工具定义（22 个目录、21 个可注册工具，工具名全集见 `names.ts` 的 `STUDY_TOOL_NAMES`；公共再导出见 `index.ts`）
 - [README.md](./README.md) — SOP 全局规范

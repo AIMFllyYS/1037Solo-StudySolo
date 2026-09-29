@@ -98,6 +98,7 @@ content/.index/
 .trae/
 .mimocode/
 .workbuddy/
+.kiro/
 
 # backup / typo directories
 content/probability/shizhan-yanlian/_backup_v1/
@@ -112,3 +113,8 @@ docs/plans/**/verify/
 
 # Supabase CLI 的临时态（db query/push 会写 project ref 与版本号，不是真相源）
 supabase/.temp/
+
+# Preserved dependency snapshot
+.local-archive/
+
+1037Solo-Classolo/

@@ -56,6 +56,8 @@ export default function AgentAssetDetail({ kind, id }: { kind: AssetKind; id: st
     </Link>
   );
 
+  if(kind==="classroom")return <section className="space-y-4 p-6">{back}<h1 className="text-xl font-semibold">{item?.title||"课堂记录"}</h1><Link href={`/class?session=${encodeURIComponent(id)}`} className={ACTION_CLASS}>打开课堂工作台</Link></section>;
+
   if (assets !== null && !item) {
     return (
       <section data-testid="agent-asset-detail" className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">

@@ -1,3 +1,4 @@
+import { withPaidRequest } from "@/lib/billing/paidRequest";
 import type { NextRequest } from "next/server";
 import type { RecordCardAI, RecordMode } from "@/lib/review/types";
 import { ENV_MODEL_FLASH } from "@/lib/ai/provider";
@@ -128,7 +129,7 @@ function parseCardContent(raw: string, mode: RecordMode): RecordCardAI {
   };
 }
 
-export async function POST(req: NextRequest) {
+async function handlePOST(req: NextRequest) {
   let body: ReturnType<typeof parseRecordRequest>;
   try {
     body = parseRecordRequest(await req.json().catch(() => ({})));
@@ -289,3 +290,5 @@ export async function POST(req: NextRequest) {
     },
   });
 }
+
+export const POST = withPaidRequest(handlePOST, "/api/record");

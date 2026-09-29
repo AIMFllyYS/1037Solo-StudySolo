@@ -180,6 +180,11 @@ export const traceEn = {
       settingsLabel: "Project slices",
       description: "Reads project file bodies slice by slice (slices not in context prompt you to bring them in)",
     },
+    searchClassTranscript: {
+      label: "Search class transcript",
+      settingsLabel: "Class transcript",
+      description: "In Class mode, searches this or earlier classes' transcripts and cites them by number",
+    },
   },
   // Message shell.
   message: {

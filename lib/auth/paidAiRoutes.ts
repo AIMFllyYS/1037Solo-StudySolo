@@ -9,6 +9,9 @@ export const PAID_AI_API_PATHS = [
   "/api/follow-ups",
   "/api/image-gen",
   "/api/record",
+  "/api/class/ai/chat/completions",
+  "/api/class/image-search",
+  "/api/class/asr/audio/transcriptions",
 ] as const;
 
 const PAID_AI_API_PATH_SET = new Set<string>(PAID_AI_API_PATHS);

@@ -11,6 +11,7 @@ import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { DEFAULT_ACADEMIC_YEAR } from "@/lib/constants/academic-year";
 
 vi.mock("next/navigation", () => ({
+  useSearchParams: () => new URLSearchParams(),
   useRouter: () => ({ push: vi.fn() }),
   usePathname: () => "/",
 }));
@@ -40,7 +41,7 @@ describe("LoginOverlay", () => {
     const dialog = screen.getByRole("dialog", { name: "登录 StudySolo" });
     expect(dialog).toHaveClass("login-dialog");
     expect(dialog.closest("[data-testid=login-overlay]")).toHaveClass("login-overlay");
-    expect(screen.getByRole("heading", { name: "StudySolo" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "使用 1037Solo 统一账号" })).toBeInTheDocument();
   });
 
   it("closes from the backdrop and the close button", async () => {

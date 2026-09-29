@@ -1,5 +1,5 @@
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
-import { resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveSessionUserId } from "@/lib/billing/quotaGate";
 import { membershipLabel, normalizeNickname, type MembershipTier } from "./displayName";
 
 export interface AccountProfileRow {
@@ -25,7 +25,7 @@ export function setProfileApiTestDeps(deps: ProfileApiTestDeps | null): void {
 }
 
 function asTier(value: string | null | undefined): MembershipTier {
-  return value === "plus" || value === "pro" || value === "free" ? value : "free";
+  return value === "plus" || value === "pro" || value === "pro_plus" || value === "ultra" || value === "free" ? value : "free";
 }
 
 function defaultDb(): AccountProfileDb {
@@ -33,31 +33,35 @@ function defaultDb(): AccountProfileDb {
   return {
     async getProfile(userId) {
       const { data, error } = await client
-        .from("app_users")
+        .from("user_profiles")
         .select("email, nickname, tier")
         .eq("id", userId)
         .maybeSingle();
       if (error) throw error;
       if (!data) return null;
+      const entitlement=await client.rpc("ecosystem_entitlements",{p_user_id:userId});
+      if(entitlement.error)throw entitlement.error;
       return {
         email: typeof data.email === "string" ? data.email : null,
         nickname: typeof data.nickname === "string" ? data.nickname : null,
-        tier: typeof data.tier === "string" ? data.tier : "free",
+        tier: typeof entitlement.data?.plan_id === "string" ? entitlement.data.plan_id : "free",
       };
     },
     async saveNickname(userId, nickname) {
       const { data, error } = await client
-        .from("app_users")
+        .from("user_profiles")
         .update({ nickname })
         .eq("id", userId)
         .select("email, nickname, tier")
         .maybeSingle();
       if (error) throw error;
       if (!data) return null;
+      const entitlement=await client.rpc("ecosystem_entitlements",{p_user_id:userId});
+      if(entitlement.error)throw entitlement.error;
       return {
         email: typeof data.email === "string" ? data.email : null,
         nickname: typeof data.nickname === "string" ? data.nickname : null,
-        tier: typeof data.tier === "string" ? data.tier : "free",
+        tier: typeof entitlement.data?.plan_id === "string" ? entitlement.data.plan_id : "free",
       };
     },
   };
@@ -67,7 +71,7 @@ export async function resolveProfileUserId(
   headers: { get(name: string): string | null },
 ): Promise<string | null> {
   if (testDeps?.resolveUserId) return testDeps.resolveUserId(headers);
-  return resolveQuotaUserId(headers);
+  return resolveSessionUserId(headers);
 }
 
 export function toProfileView(userId: string, row: AccountProfileRow) {

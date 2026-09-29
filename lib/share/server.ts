@@ -2,7 +2,7 @@ import { createServiceAuthClient } from "@/lib/auth/serviceClient";
 import type { SharedConversationSnapshot, SharedLinkSummary } from "./types.ts";
 
 /** 表名常量：route、测试与将来的撤回接口共用一处，避免三处写错同一个名字。 */
-export const SHARED_CONVERSATIONS_TABLE = "shared_conversations";
+export const SHARED_CONVERSATIONS_TABLE = "ss_shared_conversations";
 
 export interface SharedConversationInsert {
   id: string;

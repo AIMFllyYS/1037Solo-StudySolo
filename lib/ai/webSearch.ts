@@ -1,3 +1,4 @@
+import { billableJsonFetch } from "@/lib/billing/billableFetch";
 // 联网搜索门面（对外保持历史入口不变）。
 //
 // 两种用法：
@@ -46,12 +47,12 @@ async function fetchZhipuRaw(
     content_size: opts.contentSize ?? "high",
   };
   if (opts.domainFilter) body.search_domain_filter = opts.domainFilter;
-  const res = await fetch(ZHIPU_SEARCH_URL, {
+  const res = await billableJsonFetch(ZHIPU_SEARCH_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
     body: JSON.stringify(body),
     signal: AbortSignal.timeout(20_000),
-  });
+  }, { model: String(body.search_engine), kind: "search", byok: !resolveSearchKey(opts.apiKey).usedPlatformCredentials });
   if (!res.ok) throw new Error("Zhipu Search " + res.status);
   const data = await res.json();
   const items = data?.search_result ?? [];

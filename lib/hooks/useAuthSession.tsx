@@ -1,29 +1,24 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import {getStorageOwner,activateStorageOwner,hydrateOwnerStores} from "@/lib/storage/ownerScope";
+import {flushPendingWrites} from "@/lib/storage/idbStorage";
+import { createContext, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from "react";
+import { restoreAccountSession, logoutAccount, redirectAccount } from "@/lib/auth/account";
 import { tryGetBrowserAuthClient } from "@/lib/auth/browserClient";
 import {
-  requestEmailOtp,
-  verifyEmailOtp,
   type AuthOtpClient,
   type OtpRequestResult,
   type OtpVerifyResult,
 } from "@/lib/auth/otp";
 import {
-  requestPasswordReset,
-  signInWithPasswordEmail,
-  signUpWithPasswordEmail,
-  updateAccountPassword,
   type AuthPasswordClient,
   type PasswordAuthResult,
   type PasswordMailResult,
 } from "@/lib/auth/password";
 import { installAiAuthFetch } from "@/lib/auth/installAiAuthFetch";
-import { applySessionCookie, sessionAccessToken } from "@/lib/auth/sessionCookie";
+import { sessionAccessToken } from "@/lib/auth/sessionCookie";
 import {
   readPersistedSession,
-  signOutSession,
-  snapshotAuthSession,
   subscribeAuthSession,
   type AuthSession,
   type AuthSessionClient,
@@ -59,162 +54,32 @@ export interface AuthSessionApi {
 
 const AuthSessionContext = createContext<AuthSessionApi | null>(null);
 
-const UNAVAILABLE: Extract<OtpRequestResult, { ok: false }> = {
-  ok: false,
-  code: "auth_error",
-  message: "登录未配置：浏览器读不到 Supabase 公钥。确认 .env.local 有 NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY 后重启 dev。",
-};
-
 export function useAuthSessionController(injected?: AuthRuntimeClient | null): AuthSessionApi {
-  const [client] = useState<AuthRuntimeClient | null>(
-    () => (injected !== undefined ? injected : tryGetBrowserAuthClient()),
-  );
-
-  const [status, setStatus] = useState<AuthStatus>(client ? "loading" : "signedOut");
-  const [session, setSession] = useState<AuthSession | null>(null);
-  const [needsNewPassword, setNeedsNewPassword] = useState(false);
-  const authRevision = useRef(0);
-
-  const apply = useCallback((next: AuthSession | null) => {
-    setSession(next);
-    setStatus(next ? "signedIn" : "signedOut");
-  }, []);
-
-  useEffect(() => {
-    if (!client) return;
-    let cancelled = false;
-    let readSequence = 0;
-    const restore = async () => {
-      const revision = authRevision.current;
-      const sequence = ++readSequence;
-      const accept = () => !cancelled && authRevision.current === revision && readSequence === sequence;
-      try {
-        const next = await readPersistedSession(client, accept);
-        if (accept()) { authRevision.current += 1; apply(next); }
-      } catch {
-        // A transient read error must not erase an already authenticated session or its cookie.
-        if (accept()) setStatus((current) => current === 'loading' ? 'signedOut' : current);
-      }
-    };
-    const unsub = subscribeAuthSession(client, (next, event) => {
-      if (!cancelled) {
-        if (event === "PASSWORD_RECOVERY") setNeedsNewPassword(true);
-        authRevision.current += 1;
-        apply(next);
-      }
-    }, (event) => event !== 'INITIAL_SESSION' || authRevision.current === 0);
+  const [client] = useState<AuthRuntimeClient | null>(() => injected !== undefined ? injected : tryGetBrowserAuthClient());
+  const [status,setStatus]=useState<AuthStatus>("loading");
+  const [session,setSession]=useState<AuthSession|null>(null);
+  useEffect(()=>{
+    let active=true;
+    let revision=0;
+    const apply=(next:AuthSession|null)=>{if(active){setSession(next);setStatus(next?"signedIn":"signedOut");}};
+    const restore=async()=>{const started=revision;try{const next=injected!==undefined && client ? await readPersistedSession(client) : await restoreAccountSession();if(started===revision)apply(next);}catch{if(active&&started===revision)setStatus(current=>current==="loading"?"signedOut":current);}};
+    const unsubscribe=client?subscribeAuthSession(client,(next,event)=>{if(event==='INITIAL_SESSION'&&revision>0)return;revision++;apply(next);}):()=>{};
     void restore();
-    const onFocus = () => { if (document.visibilityState !== 'hidden') void restore(); };
-    const onStorage = (event: StorageEvent) => {
-      if (event.key === null || /^sb-.*-auth-token$/.test(event.key)) void restore();
-    };
-    window.addEventListener('focus', onFocus);
-    window.addEventListener('storage', onStorage);
-    document.addEventListener('visibilitychange', onFocus);
-    return () => {
-      cancelled = true;
-      unsub();
-      window.removeEventListener('focus', onFocus);
-      window.removeEventListener('storage', onStorage);
-      document.removeEventListener('visibilitychange', onFocus);
-    };
-  }, [apply, client]);
-
-  const requestOtp = useCallback(
-    async (email: string, opts?: { shouldCreateUser?: boolean }): Promise<OtpRequestResult> => {
-      if (!client) return UNAVAILABLE;
-      return requestEmailOtp(client, email, opts);
-    },
-    [client],
-  );
-
-  const applyAuthOk = useCallback((result: PasswordAuthResult) => {
-    if (result.ok && result.session) {
-      authRevision.current += 1;
-      applySessionCookie(result.session);
-      apply(snapshotAuthSession(result.user, result.session));
-    }
-    return result;
-  }, [apply]);
-
-  const signInWithPassword = useCallback(
-    async (email: string, password: string): Promise<PasswordAuthResult> => {
-      if (!client?.auth.signInWithPassword) return { ...UNAVAILABLE };
-      authRevision.current += 1;
-      return applyAuthOk(await signInWithPasswordEmail(client as AuthPasswordClient, email, password));
-    },
-    [applyAuthOk, client],
-  );
-
-  const signUpWithPassword = useCallback(
-    async (email: string, password: string, confirm: string): Promise<PasswordAuthResult | PasswordMailResult> => {
-      if (!client?.auth.signUp) return { ...UNAVAILABLE };
-      const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/login` : undefined;
-      const result = await signUpWithPasswordEmail(client as AuthPasswordClient, email, password, confirm, redirectTo);
-      if (result.ok && "session" in result) applyAuthOk(result);
-      return result;
-    },
-    [applyAuthOk, client],
-  );
-
-  const requestReset = useCallback(
-    async (email: string): Promise<PasswordMailResult> => {
-      if (!client?.auth.resetPasswordForEmail) return { ...UNAVAILABLE };
-      const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/login` : undefined;
-      return requestPasswordReset(client as AuthPasswordClient, email, redirectTo);
-    },
-    [client],
-  );
-
-  const updatePassword = useCallback(
-    async (password: string, confirm: string): Promise<PasswordMailResult> => {
-      if (!client?.auth.updateUser) return { ...UNAVAILABLE };
-      const result = await updateAccountPassword(client as AuthPasswordClient, password, confirm);
-      if (result.ok) setNeedsNewPassword(false);
-      return result;
-    },
-    [client],
-  );
-
-  const verifyOtp = useCallback(
-    async (email: string, token: string): Promise<OtpVerifyResult> => {
-      if (!client) return { ...UNAVAILABLE };
-      authRevision.current += 1;
-      const result = await verifyEmailOtp(client, email, token);
-      if (result.ok) {
-        authRevision.current += 1;
-        applySessionCookie(result.session);
-        apply(snapshotAuthSession(result.user, result.session));
-      }
-      return result;
-    },
-    [apply, client],
-  );
-
-  const signOut = useCallback(async () => {
-    authRevision.current += 1;
-    if (client) {
-      const result = await signOutSession(client);
-      if (!result.ok) return;
-    }
-    apply(null);
-  }, [apply, client]);
-
+    const focus=()=>{if(document.visibilityState!=="hidden")void restore();};
+    const timer=setInterval(()=>void restore(),300000);
+    window.addEventListener("focus",focus);
+    return ()=>{active=false;clearInterval(timer);unsubscribe();window.removeEventListener("focus",focus);};
+  },[client,injected]);
+  const redirectResult=(action:Parameters<typeof redirectAccount>[0])=>{
+    redirectAccount(action);return {ok:false as const,code:"auth_error" as const,message:"请在统一账号中心完成操作"};
+  };
   return {
-    status,
-    session,
-    email: session?.user.email ?? null,
-    displayName: session?.user.displayName ?? null,
-    avatarUrl: session?.user.avatarUrl ?? null,
-    userId: session?.user.id ?? null,
-    needsNewPassword,
-    requestOtp,
-    verifyOtp,
-    signInWithPassword,
-    signUpWithPassword,
-    requestPasswordReset: requestReset,
-    updatePassword,
-    signOut,
+    status,session,email:session?.user.email??null,displayName:session?.user.displayName??null,
+    avatarUrl:session?.user.avatarUrl??null,userId:session?.user.id??null,needsNewPassword:false,
+    requestOtp:async()=>redirectResult("login"),verifyOtp:async()=>redirectResult("login"),
+    signInWithPassword:async()=>redirectResult("login"),signUpWithPassword:async()=>redirectResult("register"),
+    requestPasswordReset:async()=>redirectResult("forgot-password"),updatePassword:async()=>redirectResult("update-password"),
+    signOut:async()=>{await logoutAccount();setSession(null);setStatus("signedOut");},
   };
 }
 
@@ -249,9 +114,24 @@ export function AuthProvider({
   const value = useAuthSessionController(client);
   const fetchClient = client !== undefined ? client : tryGetBrowserAuthClient();
   useInstallAiAuthFetch(fetchClient);
-  useCloudSyncOnAuth(value.status, value.userId);
-  return <AuthSessionContext.Provider value={value}>{children}</AuthSessionContext.Provider>;
+  const [readyOwner,setReadyOwner]=useState<string|null|undefined>(undefined);
+  useEffect(()=>{
+    if(value.status==="loading")return;
+    setCloudSyncEnabled(false);
+    const previous=getStorageOwner();
+    if(previous&&previous!==value.userId){flushPendingWrites();window.location.reload();return;}
+    activateStorageOwner(value.userId);
+    let active=true;
+    void hydrateOwnerStores().then(()=>{if(active)setReadyOwner(value.userId);});
+    return()=>{active=false;};
+  },[value.status,value.userId]);
+  const ready=value.status!=="loading"&&readyOwner===value.userId;
+  useCloudSyncOnAuth(ready?value.status:"loading",ready?value.userId:null);
+  return <AuthSessionContext.Provider value={value}>{ready?children:<div className="p-8 text-sm">正在打开账号专属学习空间…</div>}</AuthSessionContext.Provider>;
+
 }
+
+const UNAVAILABLE={ok:false as const,code:"auth_error" as const,message:"请在统一账号中心登录"};
 
 const FALLBACK: AuthSessionApi = {
   status: "signedOut",

@@ -3,9 +3,9 @@ import { defaultAuthProcessEnv, resolvePublicAuthEnv, type PublicAuthEnv } from 
 
 /** Browser / anon client. Do not pass the service role key here. */
 export const BROWSER_AUTH_OPTIONS = {
-  persistSession: true,
-  autoRefreshToken: true,
-  detectSessionInUrl: true,
+  persistSession: false,
+  autoRefreshToken: false,
+  detectSessionInUrl: false,
 } as const;
 
 let browserClientSingleton: SupabaseClient | undefined;

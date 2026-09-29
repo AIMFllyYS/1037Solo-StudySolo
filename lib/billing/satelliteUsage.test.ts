@@ -1,5 +1,6 @@
+import { test, mockPaidFetch, PaidRequest } from "@/tests/helpers/paidAiFixture";
 import assert from "node:assert/strict";
-import { after, before, test, type TestContext } from "node:test";
+import { after, before, type TestContext } from "node:test";
 import type { NextRequest } from "next/server";
 import { buildCustomModelRegistryId, type CustomApiGroup } from "@/lib/ai/models";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
@@ -97,7 +98,7 @@ async function captureRowsInByokRound<T>(
 }
 
 test("FollowUp 兜底：平台模型入账 /api/follow-ups", async (t: TestContext) => {
-  t.mock.method(globalThis, "fetch", async () => openAiJson("如何应用|如何验证|能否推广"));
+  mockPaidFetch(t, async () => openAiJson("如何应用|如何验证|能否推广"));
   const { value, rows } = await captureRows(() =>
     generateFallbackFollowUps({
       userText: "什么是线粒体",
@@ -114,7 +115,7 @@ test("FollowUp 兜底：平台模型入账 /api/follow-ups", async (t: TestConte
 });
 
 test("FollowUp 兜底第二次 generateText 入账 /api/follow-ups", async (t: TestContext) => {
-  t.mock.method(globalThis, "fetch", async () => openAiJson("如何应用|如何验证|能否推广"));
+  mockPaidFetch(t, async () => openAiJson("如何应用|如何验证|能否推广"));
   const { value, rows } = await captureRows(() =>
     generateFallbackFollowUps({
       userText: "什么是线粒体",
@@ -130,7 +131,7 @@ test("FollowUp 兜底第二次 generateText 入账 /api/follow-ups", async (t: T
 
 test("文档大纲与每节分别入账", async (t: TestContext) => {
   const model = resolveLanguageModel(modelId, groups).model;
-  t.mock.method(globalThis, "fetch", async () =>
+  mockPaidFetch(t, async () =>
     openAiStream('[{"title":"引言","brief":"开篇"}]', { prompt_tokens: 15, completion_tokens: 9, total_tokens: 24 }),
   );
   const outline = await captureRows(() =>
@@ -146,7 +147,7 @@ test("文档大纲与每节分别入账", async (t: TestContext) => {
   assert.equal(outline.rows[0].meta.phase, "outline");
   assert.equal(outline.rows[0].prompt_tokens, 15);
 
-  t.mock.method(globalThis, "fetch", async () =>
+  mockPaidFetch(t, async () =>
     openAiStream("## 引言\n正文", { prompt_tokens: 30, completion_tokens: 11, total_tokens: 41 }),
   );
   const section = await captureRows(() =>
@@ -179,8 +180,8 @@ test("卫星路由 /api/chat-title 入账", async (t: TestContext) => {
   delete process.env.AI_TITLE_BASE_URL;
   delete process.env.AI_TITLE_API_KEY;
   const { POST } = await import("@/app/api/chat-title/route");
-  t.mock.method(globalThis, "fetch", async () => openAiJson("线粒体笔记"));
-  const req = new Request("https://local.invalid/api/chat-title", {
+  mockPaidFetch(t, async () => openAiJson("线粒体笔记"));
+  const req = new PaidRequest("https://local.invalid/api/chat-title", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ content: "什么是线粒体" }),
@@ -196,7 +197,7 @@ test("卫星路由 /api/chat-title 入账", async (t: TestContext) => {
 
 test("工具侧车：联网搜索 / 搜图 / 嵌入入账，缓存命中不建行", async (t: TestContext) => {
   const query = `billing-sidecar-${Date.now()}`;
-  t.mock.method(globalThis, "fetch", async (input: string | URL | Request) => {
+  mockPaidFetch(t, async (input: string | URL | Request) => {
     const url = String(input);
     if (url.includes("web_search")) {
       return Response.json({
@@ -265,7 +266,7 @@ test("工具侧车：联网搜索 / 搜图 / 嵌入入账，缓存命中不建�
 });
 
 test("BYOK 轮里我们垫付的平台侧车进 byok 池，不进 platform", async (t: TestContext) => {
-  t.mock.method(globalThis, "fetch", async (input: string | URL | Request) => {
+  mockPaidFetch(t, async (input: string | URL | Request) => {
     const url = String(input);
     if (url.includes("web_search")) {
       return Response.json({

@@ -3,7 +3,7 @@
 > **调研人**：Agent-B（AI与存储调研员）
 > **调研日期**：2026-07-05
 > **项目版本**：gailvlun v0.3.1
-> **关联文档**：[存储架构规范](../../docs/refer/storage-architecture.md)、[性能审查报告](../../docs/refer/performance-audit-report.md)、[渲染架构](../../docs/refer/rendering-architecture.md)
+> **关联文档**：[存储架构规范](../../refer/storage-architecture.md)、[性能审查报告](../../refer/performance-audit-report.md)、[渲染架构](../../refer/rendering-architecture.md)
 >
 > **⚠ 过时快照。** §1 与 §3–§9 是 2026-07 调研（734 行 `route.ts`、`anthropicAdapter`、9 个工具、`MAX_TOOL_TURNS`）——这些在现网**都不存在**。不要按那些段落改代码。
 >
@@ -570,6 +570,6 @@ flowchart LR
 - [Anthropic Extended Thinking](https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking)
 - [SiliconFlow Rerank API](https://docs.siliconflow.cn/api-reference/rerank/create-rerank)
 - [Zustand persist middleware](https://zustand.docs.pmnd.rs/reference/integrations/persisting-store-data)
-- [项目内：存储架构规范](../../docs/refer/storage-architecture.md)
-- [项目内：性能审查报告 §5.1 AI 对话与历史](../../docs/refer/performance-audit-report.md)
-- [项目内：渲染架构](../../docs/refer/rendering-architecture.md)
+- [项目内：存储架构规范](../../refer/storage-architecture.md)
+- [项目内：性能审查报告 §5.1 AI 对话与历史](../../refer/performance-audit-report.md)
+- [项目内：渲染架构](../../refer/rendering-architecture.md)

@@ -1,3 +1,4 @@
+import { withPaidRequest } from "@/lib/billing/paidRequest";
 import type { NextRequest } from 'next/server';
 import { generateText } from 'ai';
 import { getModelInfoWithCustom } from '@/lib/ai/models';
@@ -23,7 +24,7 @@ function hasUsableBlock(value: unknown): value is CanvasBlock {
   return isRecord(value) && typeof value.kind === 'string';
 }
 
-export async function POST(req: NextRequest) {
+async function handlePOST(req: NextRequest) {
   let body: ReturnType<typeof parseCanvasReviseRequest>;
   try {
     body = parseCanvasReviseRequest(await req.json().catch(() => ({})));
@@ -119,3 +120,5 @@ export async function POST(req: NextRequest) {
 
   return Response.json({ block: extracted.block, diagnostics });
 }
+
+export const POST = withPaidRequest(handlePOST, "/api/canvas-revise");

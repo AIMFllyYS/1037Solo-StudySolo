@@ -23,6 +23,7 @@ import { presentation as commitFlashcards } from "@/lib/ai/agent/tools/commitFla
 import { presentation as updateUserNote } from "@/lib/ai/agent/tools/updateUserNote/presentation";
 import { presentation as getProjectFiles } from "@/lib/ai/agent/tools/getProjectFiles/presentation";
 import { presentation as readProjectSlices } from "@/lib/ai/agent/tools/readProjectSlices/presentation";
+import { presentation as searchClassTranscript } from "@/lib/ai/agent/tools/searchClassTranscript/presentation";
 
 export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
   getCurrentPage,
@@ -46,6 +47,7 @@ export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
   updateUserNote,
   getProjectFiles,
   readProjectSlices,
+  searchClassTranscript,
 };
 
 /**

@@ -1,5 +1,6 @@
+import { test, mockPaidFetch, PaidRequest } from "@/tests/helpers/paidAiFixture";
 import assert from "node:assert/strict";
-import { after, before, test, type TestContext } from "node:test";
+import { after, before, type TestContext } from "node:test";
 import type { NextRequest } from "next/server";
 import { buildCustomModelRegistryId, type CustomApiGroup } from "../../lib/ai/models.ts";
 import { buildFallbackSessionTitle } from "../../lib/chat/sessionTitle.ts";
@@ -49,7 +50,7 @@ const groups: CustomApiGroup[] = [{
   ],
 }];
 const config = (id = "openai-text") => ({ modelId: buildCustomModelRegistryId("routes", id), customApiGroups: groups });
-const request = (body: unknown, signal?: AbortSignal) => new Request("https://local.invalid/api/test", {
+const request = (body: unknown, signal?: AbortSignal) => new PaidRequest("https://local.invalid/api/test", {
   method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal,
 }) as NextRequest;
 
@@ -69,7 +70,7 @@ interface WireBody {
 interface CapturedRequest { url: string; init: RequestInit; body: WireBody }
 function upstream(t: TestContext, responder: (call: CapturedRequest) => Response | Promise<Response>) {
   const calls: CapturedRequest[] = [];
-  t.mock.method(globalThis, "fetch", async (input: string | URL | Request, init: RequestInit = {}) => {
+  mockPaidFetch(t, async (input: string | URL | Request, init: RequestInit = {}) => {
     const call = { url: String(input), init, body: JSON.parse(String(init.body)) as WireBody };
     calls.push(call);
     return responder(call);
@@ -326,7 +327,7 @@ test("record/artifact: cancelling the downstream response body aborts the provid
     let markAborted!: () => void;
     const started = new Promise<void>((resolve) => { markStarted = resolve; });
     const aborted = new Promise<void>((resolve) => { markAborted = resolve; });
-    const fetchMock = t.mock.method(globalThis, "fetch", async (_input: unknown, init: RequestInit) => {
+    const fetchMock = mockPaidFetch(t, async (_input: unknown, init: RequestInit) => {
       markStarted();
       return new Response(new ReadableStream({
         start(controller) {

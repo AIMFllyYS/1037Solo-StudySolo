@@ -54,7 +54,7 @@ export function RedemptionSection() {
               body: JSON.stringify({ code: submitted }),
             })
               .then(async (res) => {
-                const body = (await res.json().catch(() => null)) as { error?: string; tier?: string } | null;
+                const body = (await res.json().catch(() => null)) as { error?: string; tier?: string; status?: string } | null;
                 if (!res.ok) {
                   setOk(false);
                   setMessage(typeof body?.error === "string" ? body.error : t("settings.data.redeem.failed"));
@@ -63,7 +63,7 @@ export function RedemptionSection() {
                 setOk(true);
                 notifyAccountUsageChanged();
                 setCode("");
-                setMessage(body?.tier ? t("settings.data.redeem.successTier", { tier: body.tier.toUpperCase() }) : t("settings.data.redeem.success"));
+                setMessage(body?.status === "already_redeemed" ? "该兑换记录已存在，权益不会重复发放。" : body?.status === "higher_tier_kept" ? "已保留您当前更高等级的会员权益。" : body?.tier ? t("settings.data.redeem.successTier", { tier: body.tier.toUpperCase() }) : t("settings.data.redeem.success"));
               })
               .catch(() => {
                 setOk(false);

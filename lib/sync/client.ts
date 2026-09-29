@@ -23,17 +23,16 @@ function asRow(value: unknown): SyncDocumentRow | null {
 export function createSupabaseSyncClient(client: SupabaseClient, userId: string): SyncDocumentsApi {
   return {
     async list(kinds) {
-      const { data, error } = await client
-        .from(SYNC_TABLE)
-        .select("kind, client_id, payload, deleted, updated_at")
-        .eq("user_id", userId)
-        .in("kind", [...kinds]);
-      if (error) return { data: [], error: { message: error.message } };
-      return {
-        data: (data ?? []).map(asRow).filter((row): row is SyncDocumentRow => row !== null),
-        error: null,
-      };
+      const rows:SyncDocumentRow[]=[];
+      for(let page=0;page<100;page++){
+        const {data,error}=await client.from(SYNC_TABLE).select("kind, client_id, payload, deleted, updated_at").eq("user_id",userId).in("kind",[...kinds]).order("id").range(page*100,page*100+99);
+        if(error)return {data:[],error:{message:error.message}};
+        rows.push(...(data??[]).map(asRow).filter((row):row is SyncDocumentRow=>row!==null));
+        if((data?.length??0)<100)return {data:rows,error:null};
+      }
+      return {data:[],error:{message:"同步文档数量超过当前批量读取上限，请分项目导出；未应用不完整数据"}};
     },
+
     async get(kind, clientId) {
       const { data, error } = await client
         .from(SYNC_TABLE)
@@ -46,22 +45,13 @@ export function createSupabaseSyncClient(client: SupabaseClient, userId: string)
       return { data: asRow(data), error: null };
     },
     async upsert(row) {
-      const { data, error } = await client
-        .from(SYNC_TABLE)
-        .upsert(
-          {
-            user_id: userId,
-            kind: row.kind,
-            client_id: row.client_id,
-            payload: row.payload,
-            deleted: row.deleted,
-          },
-          { onConflict: "user_id,kind,client_id" },
-        )
-        .select("kind, client_id, payload, deleted, updated_at")
-        .maybeSingle();
-      if (error) return { data: null, error: { message: error.message } };
-      return { data: asRow(data), error: null };
+      try {
+        const response=await fetch('/api/sync',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({expectedUserId:userId,row})});
+        const result=await response.json();
+        if(!response.ok)return {data:null,error:{message:result.error||'Cloud sync failed'}};
+        return {data:asRow(result),error:null};
+      }catch(error){return {data:null,error:{message:error instanceof Error?error.message:'Cloud sync unavailable'}};}
+
     },
   };
 }

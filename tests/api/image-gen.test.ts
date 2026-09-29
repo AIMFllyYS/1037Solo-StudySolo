@@ -1,5 +1,6 @@
+import { test, mockPaidFetch, PaidRequest } from "@/tests/helpers/paidAiFixture";
 import assert from "node:assert/strict";
-import { after, before, test, type TestContext } from "node:test";
+import { after, before, type TestContext } from "node:test";
 import type { NextRequest } from "next/server";
 import { Agent } from "undici";
 
@@ -32,7 +33,7 @@ after(() => {
 });
 
 function request(body: unknown) {
-  return new Request("https://local.invalid/api/image-gen", {
+  return new PaidRequest("https://local.invalid/api/image-gen", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -47,7 +48,7 @@ interface CapturedRequest {
 
 function upstream(t: TestContext, responder: (call: CapturedRequest) => Response | Promise<Response>) {
   const calls: CapturedRequest[] = [];
-  t.mock.method(globalThis, "fetch", async (input: string | URL | Request, init: RequestInit = {}) => {
+  mockPaidFetch(t, async (input: string | URL | Request, init: RequestInit = {}) => {
     const call = {
       url: String(input),
       init,

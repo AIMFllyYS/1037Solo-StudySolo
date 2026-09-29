@@ -1,3 +1,4 @@
+import { withPaidRequest } from "@/lib/billing/paidRequest";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
@@ -26,7 +27,7 @@ function asClientMessage(value: unknown): ClientMessage | null {
   return { role: rec.role, content: rec.content };
 }
 
-export async function POST(req: NextRequest) {
+async function handlePOST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const messages: ClientMessage[] = Array.isArray(body.messages)
     ? (body.messages as unknown[]).map(asClientMessage).filter((message): message is ClientMessage => message != null)
@@ -84,3 +85,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ questions: [] });
   }
 }
+
+export const POST = withPaidRequest(handlePOST, "/api/follow-ups");

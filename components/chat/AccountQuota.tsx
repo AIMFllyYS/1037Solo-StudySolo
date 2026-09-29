@@ -70,14 +70,14 @@ export function AccountQuota({ variant = "context" }: { variant?: "context" | "p
   return <section aria-label={t('panel.quota.title')} className={chrome}>
     <div className="mb-2 flex items-center justify-between gap-2">
       <div className="flex min-w-0 items-center gap-2">
-        <strong className="text-[12px] text-[var(--ink)]">{data ? t(TIER_KEYS[data.tier]) : t('panel.quota.title')}</strong>
+        <strong className="text-[12px] text-[var(--ink)]">{data ? (data.tier === 'ultra' ? 'Ultra' : t(TIER_KEYS[data.tier === 'pro_plus' ? 'plus' : data.tier])) : t('panel.quota.title')}</strong>
         <GetMembershipTag />
       </div>
       <button type="button" className="shrink-0 rounded px-2 py-1 text-[11px] text-[var(--accent-ink)] hover:bg-[var(--bg-muted)]" onClick={() => setRevision((n) => n + 1)}>{t('panel.quota.refresh')}</button>
     </div>
     {data ? <>
-      {(['platform', 'byok'] as const).map((key) => <div key={key} className="mb-2">
-        <div className="flex justify-between gap-2 text-[11px]"><span>{t(key === 'platform' ? 'panel.quota.platform' : 'panel.quota.byok')}</span><strong className={data[key].remaining <= 0 ? 'text-[var(--md-sys-color-error)]' : ''}>{money(data[key].remaining)} <span className="font-normal text-[var(--ink-faint)]">/ {money(data[key].cap)}</span></strong></div>
+      {((data.sharedWallet ? ['platform'] : ['platform', 'byok']) as Array<'platform' | 'byok'>).map((key) => <div key={key} className="mb-2">
+        <div className="flex justify-between gap-2 text-[11px]"><span>{data.sharedWallet ? '生态共享 AI 额度' : t(key === 'platform' ? 'panel.quota.platform' : 'panel.quota.byok')}</span><strong className={data[key].remaining <= 0 ? 'text-[var(--md-sys-color-error)]' : ''}>{money(data[key].remaining)} <span className="font-normal text-[var(--ink-faint)]">/ {money(data[key].cap)}</span></strong></div>
         <div className="mt-1">
           <UsageProgressBar
             ratio={data[key].cap > 0 ? data[key].remaining / data[key].cap : 0}
@@ -86,7 +86,7 @@ export function AccountQuota({ variant = "context" }: { variant?: "context" | "p
           />
         </div>
       </div>)}
-      <p className="text-[10px] leading-relaxed text-[var(--ink-faint)]">{t('panel.quota.note')}<br />{t('panel.quota.periodEnd', { date: new Date(data.periodEnd).toLocaleDateString('zh-CN') })}</p>
+      <p className="text-[10px] leading-relaxed text-[var(--ink-faint)]">{data.sharedWallet ? `各项目共用同一额度，当前预留 ${money(data.heldCny ?? 0)}。` : <>{t('panel.quota.note')}<br />{t('panel.quota.periodEnd', { date: new Date(data.periodEnd).toLocaleDateString('zh-CN') })}</>}</p>
       {error ? <p className="mt-1 text-[10px] text-[var(--ink-faint)]">{t('panel.quota.updatedAt', { time: new Date(data.updatedAt).toLocaleTimeString('zh-CN') })}</p> : null}
     </> : !error ? <p role="status">{t('panel.quota.reading')}</p> : null}
     {error ? <p role="status" className="mt-1 text-[11px] text-[var(--md-sys-color-error)]">{error}</p> : null}

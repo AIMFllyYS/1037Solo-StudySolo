@@ -1,5 +1,6 @@
+import { test, mockPaidFetch } from "@/tests/helpers/paidAiFixture";
 import assert from "node:assert/strict";
-import { afterEach, beforeEach, describe, test } from "node:test";
+import { afterEach, beforeEach, describe, type TestContext } from "node:test";
 import { dedupeItems, runSearchSubagent } from "./subagent.ts";
 import type { SearchItem } from "./types.ts";
 
@@ -28,11 +29,11 @@ interface MockState { urls: string[]; bodies: Record<string, unknown>[]; maxInFl
 
 /** 装一个会统计并发数的 fetch mock：每个请求都真的"在飞"一会儿。handler 可返回 Promise（测超时/中止用）。 */
 function installFetch(
-  t: { mock: { method: (obj: unknown, name: string, fn: unknown) => unknown } },
+  t: TestContext,
   handler: (url: string, body: Record<string, unknown>, state: MockState, init?: RequestInit) => Response | Promise<Response>,
 ): MockState {
   const state: MockState = { urls: [], bodies: [], maxInFlight: 0, inFlight: 0 };
-  t.mock.method(globalThis, "fetch", async (input: unknown, init?: RequestInit) => {
+  mockPaidFetch(t, async (input: unknown, init?: RequestInit) => {
     const url = String(input);
     state.urls.push(url);
     state.inFlight += 1;

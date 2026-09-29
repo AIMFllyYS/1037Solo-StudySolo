@@ -1,3 +1,4 @@
+import { withPaidRequest } from "@/lib/billing/paidRequest";
 import type { NextRequest } from "next/server";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
@@ -18,7 +19,7 @@ function sse(obj: unknown): string {
   return `data: ${JSON.stringify(obj)}\n\n`;
 }
 
-export async function POST(req: NextRequest) {
+async function handlePOST(req: NextRequest) {
   const raw = await req.json().catch(() => ({}));
   let body: ReturnType<typeof parseDocumentRequest>;
   try {
@@ -155,3 +156,5 @@ export async function POST(req: NextRequest) {
     },
   });
 }
+
+export const POST = withPaidRequest(handlePOST, "/api/document");

@@ -5,6 +5,7 @@ import {
   FONT_CHOICES,
   buildAppearanceCssVars,
   contrastText,
+  fontForAppearanceMode,
   normalizeAppearanceSettings,
   safeHexColor,
   serializeAppearanceSettings,
@@ -116,10 +117,17 @@ test("buildAppearanceCssVars exposes custom background, color, and font variable
   assert.equal(vars["--font-sans"], FONT_CHOICES.songti.cssValue);
 });
 
-test("buildAppearanceCssVars keeps non-custom modes from overriding CSS tokens", () => {
-  assert.deepEqual(buildAppearanceCssVars(DEFAULT_APPEARANCE_SETTINGS), {});
+test("buildAppearanceCssVars keeps non-custom modes from overriding color tokens but applies the font", () => {
+  assert.deepEqual(Object.keys(buildAppearanceCssVars(DEFAULT_APPEARANCE_SETTINGS)), ["--font-sans"]);
   assert.deepEqual(
-    buildAppearanceCssVars({ mode: "anthropic", custom: DEFAULT_APPEARANCE_SETTINGS.custom }),
-    {},
+    buildAppearanceCssVars({ mode: "anthropic", custom: { ...DEFAULT_APPEARANCE_SETTINGS.custom, font: "serif" } }),
+    { "--font-sans": FONT_CHOICES.serif.cssValue },
   );
+});
+
+test("each preset theme switches to its signature font; custom keeps the user's font", () => {
+  assert.equal(fontForAppearanceMode("codex", "system"), "mono");
+  assert.equal(fontForAppearanceMode("anthropic", "system"), "serif");
+  assert.equal(fontForAppearanceMode("default", "mono"), "system");
+  assert.equal(fontForAppearanceMode("custom", "kaiti"), "kaiti");
 });

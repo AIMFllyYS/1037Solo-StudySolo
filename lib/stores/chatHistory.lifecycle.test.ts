@@ -1,3 +1,4 @@
+import { activateStorageOwner, ownedStorageKey } from "@/lib/storage/ownerScope";
 import assert from "node:assert/strict";
 import { beforeEach, afterEach, describe, test } from "node:test";
 import { flushPendingWrites, PERSIST_KEYS, chatBlobKey, chatSessionKey, __resetIdbStoragePendingForTests } from "@/lib/storage/idbStorage";
@@ -8,6 +9,7 @@ import type { SessionMeta } from "@/lib/storage/chatStorage";
 const storage = new Map<string, string>();
 
 function installBrowserMocks() {
+  activateStorageOwner("fixture-user");
   (globalThis as { window?: unknown }).window = {
     addEventListener: () => {},
   };
@@ -37,6 +39,12 @@ function installBrowserMocks() {
     },
   };
 }
+const physical = (key: string) => ownedStorageKey(key)!;
+const fixtureSet = (key: string, value: string) => storage.set(physical(key), value);
+const fixtureGet = (key: string) => storage.get(physical(key));
+const fixtureHas = (key: string) => storage.has(physical(key));
+const fixtureDelete = (key: string) => storage.delete(physical(key));
+
 
 function msg(id: string, content: string): ChatMessage {
   return { id, role: "assistant", parts: [{ type: "text", text: content }], timestamp: Number(id.replace(/\D/g, "")) || 1 };
@@ -96,7 +104,7 @@ afterEach(() => {
 
 test("deleteSession：删除 active 会话后加载新的 active 会话消息", async () => {
   const { useChatHistory } = await import("./chatHistory.ts");
-  storage.set(chatSessionKey("s2"), JSON.stringify([msg("m2", "loaded")]));
+  fixtureSet(chatSessionKey("s2"), JSON.stringify([msg("m2", "loaded")]));
   useChatHistory.setState({
     sessionsMeta: [meta("s1"), meta("s2")],
     messagesById: { s1: [msg("m1", "old")] },
@@ -121,7 +129,7 @@ test("deleteSession：删除 active 会话后加载新的 active 会话消息", 
 test("updateMessage：content-only 流式更新只写 session，不写 manifest", async () => {
   const { useChatHistory } = await import("./chatHistory.ts");
   // v3 下 writeSessionMessage 需要会话正文已存在（v2 键会被就地迁移为分块）。
-  storage.set(chatSessionKey("s1"), JSON.stringify([msg("m1", "old")]));
+  fixtureSet(chatSessionKey("s1"), JSON.stringify([msg("m1", "old")]));
   useChatHistory.setState({
     sessionsMeta: [meta("s1")],
     messagesById: { s1: [msg("m1", "old")] },
@@ -140,12 +148,12 @@ test("updateMessage：content-only 流式更新只写 session，不写 manifest"
 
   const stored = await loadSessionMessages("s1");
   assert.equal(textOf(stored?.[0]), "new");
-  assert.equal(storage.get(PERSIST_KEYS.chatManifest), undefined);
+  assert.equal(fixtureGet(PERSIST_KEYS.chatManifest), undefined);
 });
 
 test("updateMessage：新增 artifactId 时写 manifest 供冷 prune 使用", async () => {
   const { useChatHistory } = await import("./chatHistory.ts");
-  storage.set(chatSessionKey("s1"), JSON.stringify([msg("m1", "old")]));
+  fixtureSet(chatSessionKey("s1"), JSON.stringify([msg("m1", "old")]));
   useChatHistory.setState({
     sessionsMeta: [meta("s1")],
     messagesById: { s1: [msg("m1", "old")] },
@@ -170,7 +178,7 @@ test("updateMessage：新增 artifactId 时写 manifest 供冷 prune 使用", as
   });
   await waitForPendingWrites();
 
-  const manifest = JSON.parse(storage.get(PERSIST_KEYS.chatManifest) ?? "{}");
+  const manifest = JSON.parse(fixtureGet(PERSIST_KEYS.chatManifest) ?? "{}");
   assert.deepEqual(manifest.sessions[0].artifactIds, ["a1"]);
 });
 
@@ -205,7 +213,7 @@ test("evicting past MAX_SESSIONS deletes blobs and drops messagesById", async ()
   const evicted = "old-49";
   const metas = Array.from({ length: 50 }, (_, index) => meta(`old-${String(index).padStart(2, "0")}`));
   const blobId = "blob-evicted";
-  storage.set(
+  fixtureSet(
     chatSessionKey(evicted),
     JSON.stringify([
       {
@@ -217,7 +225,7 @@ test("evicting past MAX_SESSIONS deletes blobs and drops messagesById", async ()
       },
     ]),
   );
-  storage.set(chatBlobKey(blobId), "data:image/png;base64,QUJD");
+  fixtureSet(chatBlobKey(blobId), "data:image/png;base64,QUJD");
   useChatHistory.setState({
     sessionsMeta: metas,
     messagesById: {
@@ -242,16 +250,16 @@ test("evicting past MAX_SESSIONS deletes blobs and drops messagesById", async ()
   useChatHistory.getState().createSession();
   // 淘汰链路 = listBlobIds（触发 v2→v3 迁移写）→ deleteSessionData（排队删 v3 键）：
   // 都是异步队列，轮询到删除落地为止，而不是赌一个固定毫秒数。
-  for (let i = 0; i < 60 && (storage.has(chatBlobKey(blobId)) || storage.has(chatSessionKey(evicted))); i += 1) {
+  for (let i = 0; i < 60 && (fixtureHas(chatBlobKey(blobId)) || fixtureHas(chatSessionKey(evicted))); i += 1) {
     await new Promise((resolve) => setTimeout(resolve, 10));
     flushPendingWrites();
   }
   await waitForPendingWrites();
 
   assert.equal(useChatHistory.getState().messagesById[evicted], undefined);
-  assert.equal(storage.has(chatBlobKey(blobId)), false);
-  assert.equal(storage.has(chatSessionKey(evicted)), false);
-  assert.equal(storage.has(`chat-s3:${evicted}:h`), false);
+  assert.equal(fixtureHas(chatBlobKey(blobId)), false);
+  assert.equal(fixtureHas(chatSessionKey(evicted)), false);
+  assert.equal(fixtureHas(`chat-s3:${evicted}:h`), false);
   const ids = useChatHistory.getState().sessionsMeta.map((item) => item.id);
   assert.equal(ids.includes(evicted), false);
   assert.equal(ids.length, 50);
@@ -272,10 +280,10 @@ test("updateMessage on an evicted session does not write the shard back", async 
     _activeMessagesReady: true,
   });
   useChatHistory.getState().createSession();
-  storage.delete(chatSessionKey(evicted));
+  fixtureDelete(chatSessionKey(evicted));
   useChatHistory.getState().updateMessage(evicted, "m1", { parts: [{ type: "text", text: "ghost" }] });
   await waitForPendingWrites();
-  assert.equal(storage.get(chatSessionKey(evicted)), undefined);
+  assert.equal(fixtureGet(chatSessionKey(evicted)), undefined);
 });
 
 describe("chatHistory.startNewChat", { concurrency: false }, () => {
@@ -361,12 +369,12 @@ describe("chatHistory.startNewChat", { concurrency: false }, () => {
     useChatHistory.getState().createSession();
     await waitForPendingWrites();
     // 未水合 → 守卫拦下写入：盘上不会出现「只剩这一条」的 manifest
-    assert.equal(storage.get(PERSIST_KEYS.chatManifest), undefined);
+    assert.equal(fixtureGet(PERSIST_KEYS.chatManifest), undefined);
 
     useChatHistory.setState({ _hasHydrated: true });
     useChatHistory.getState().createSession();
     await waitForPendingWrites();
-    const manifest = JSON.parse(storage.get(PERSIST_KEYS.chatManifest) ?? "{}");
+    const manifest = JSON.parse(fixtureGet(PERSIST_KEYS.chatManifest) ?? "{}");
     assert.equal(manifest.sessions.length, 2);
   });
 
@@ -378,7 +386,7 @@ describe("chatHistory.startNewChat", { concurrency: false }, () => {
     // 未水合：这一下点击既不新建也不落盘（水合完成后才由延后逻辑兑现）
     assert.equal(id, null);
     assert.equal(useChatHistory.getState().sessionsMeta.length, before);
-    assert.equal(storage.get(PERSIST_KEYS.chatManifest), undefined);
+    assert.equal(fixtureGet(PERSIST_KEYS.chatManifest), undefined);
     await waitForPendingWrites();
   });
 
@@ -459,7 +467,7 @@ describe("chatHistory.rememberReadSlices", { concurrency: false }, () => {
     await waitForPendingWrites();
 
     assert.deepEqual(useChatHistory.getState().sessionsMeta[0]?.readSliceIds, ["slice-1", "slice-2", "slice-3"]);
-    const manifest = JSON.parse(storage.get(PERSIST_KEYS.chatManifest) ?? "{}") as {
+    const manifest = JSON.parse(fixtureGet(PERSIST_KEYS.chatManifest) ?? "{}") as {
       sessions?: { id: string; readSliceIds?: string[] }[];
     };
     assert.deepEqual(manifest.sessions?.find((s) => s.id === "s1")?.readSliceIds, ["slice-1", "slice-2", "slice-3"]);
@@ -469,13 +477,13 @@ describe("chatHistory.rememberReadSlices", { concurrency: false }, () => {
     const { useChatHistory } = await import("./chatHistory.ts");
     useChatHistory.getState().rememberReadSlices("s1", ["slice-1"]);
     await waitForPendingWrites();
-    const firstWrite = storage.get(PERSIST_KEYS.chatManifest);
+    const firstWrite = fixtureGet(PERSIST_KEYS.chatManifest);
     assert.ok(firstWrite);
 
     useChatHistory.getState().rememberReadSlices("s1", ["slice-1"]);
     useChatHistory.getState().rememberReadSlices("s1", []);
     await waitForPendingWrites();
-    assert.equal(storage.get(PERSIST_KEYS.chatManifest), firstWrite, "同样的片不该再写一次 manifest");
+    assert.equal(fixtureGet(PERSIST_KEYS.chatManifest), firstWrite, "同样的片不该再写一次 manifest");
   });
 
   test("会话不存在时静默跳过（不新建、不落盘）", async () => {
