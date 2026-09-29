@@ -86,7 +86,7 @@ export default function ReviewSidebar({
               {showBadge && (
                 <span
                   className={clsx(
-                    "rounded-full bg-[var(--accent)] px-1.5 py-0.5 text-[10px] font-semibold leading-none text-[var(--accent-ink)]",
+                    "rounded-full bg-[var(--accent)] px-1.5 py-0.5 text-[10px] font-semibold leading-none text-[var(--md-sys-color-on-primary)]",
                     collapsed && "absolute translate-x-4 -translate-y-3",
                   )}
                 >

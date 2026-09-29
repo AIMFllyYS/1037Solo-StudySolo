@@ -9,6 +9,7 @@
 @import "./styles/pdf-reader.css";
 @import "./styles/pptx-reader.css";
 @import "./styles/appearance.css";
+@import "./styles/semantic-tokens.css";
 
 /* Keep wheel/touch/keyboard scrolling everywhere in the app; hide only native scrollbar chrome. */
 * { scrollbar-width: none !important; -ms-overflow-style: none; }

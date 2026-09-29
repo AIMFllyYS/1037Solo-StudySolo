@@ -69,7 +69,7 @@ export function AiAskModule({
               type="button"
               disabled={picked === null}
               onClick={() => picked !== null && ask(picked)}
-              className="rounded-md bg-[color:var(--accent)] px-2.5 py-1 text-[12px] text-[color:var(--accent-ink)] disabled:opacity-40"
+              className="rounded-md bg-[color:var(--accent)] px-2.5 py-1 text-[12px] text-[color:var(--md-sys-color-on-primary)] disabled:opacity-40"
             >
               {asked ? '再问一次' : '提交并请助手讲解'}
             </button>

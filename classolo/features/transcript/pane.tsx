@@ -92,7 +92,7 @@ export function TranscriptPane({ enabled = true }: { enabled?: boolean }) {
             type="button"
             onClick={() => void startSession()}
             disabled={!enabled}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[color:var(--accent)] px-3 py-1.5 text-[13px] font-medium text-[color:var(--accent-ink)] disabled:opacity-40"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-[color:var(--accent)] px-3 py-1.5 text-[13px] font-medium text-[color:var(--md-sys-color-on-primary)] disabled:opacity-40"
           >
             <Mic className="size-4" />
             开始录音

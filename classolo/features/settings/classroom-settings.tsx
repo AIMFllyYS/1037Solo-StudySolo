@@ -31,7 +31,7 @@ function CapabilityRow({ label, ok }: { label: string; ok: boolean }) {
   return (
     <div className="flex items-center gap-2 text-[13px]">
       {ok ? (
-        <CheckCircle2 className="size-4 text-emerald-600" />
+        <CheckCircle2 className="size-4 text-[color:var(--accent)]" />
       ) : (
         <XCircle className="size-4 text-[color:var(--ink-faint)]" />
       )}

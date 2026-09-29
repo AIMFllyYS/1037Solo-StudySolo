@@ -1,0 +1,65 @@
+/*
+ * 语义色 / 动效令牌（shadcn 命名 → StudySolo 主题变量）。
+ *
+ * Classolo 迁进来的组件（Dialog / Select / Tabs / Button …）用的是 bg-card、text-muted-foreground、
+ * border-border 这套语义类。这些 @theme 以前写在 classolo/styles.css 里——那不是 Tailwind 的
+ * 入口文件，Tailwind 不会据此生成工具类，于是 bg-card 之类根本不存在：课堂设置弹窗背景透明、
+ * 文字颜色掉回默认，就是这个原因。
+ *
+ * 现在统一在主入口注册，且每个令牌都指向 StudySolo 的 MD3 变量，所以换主题时这些组件跟着换色。
+ * Studio 自己一律用 bg-[var(--…)] 任意值，与这些名字不冲突。
+ */
+@theme inline {
+  --color-background: var(--bg-app);
+  --color-foreground: var(--ink);
+  --color-muted: var(--bg-muted);
+  --color-muted-foreground: var(--ink-soft);
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--accent);
+  --color-primary: var(--accent);
+  /* 实色主按钮上的字：必须是 on-primary（不是 accent-ink，那是给浅色 accent-weak 底用的）。 */
+  --color-primary-foreground: var(--md-sys-color-on-primary);
+  --color-secondary: var(--bg-muted);
+  --color-secondary-foreground: var(--ink);
+  --color-card: var(--bg-panel);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--md-sys-color-surface-container-high);
+  --color-popover-foreground: var(--ink);
+  --color-accent: var(--bg-muted);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--md-sys-color-error);
+  --color-destructive-foreground: var(--md-sys-color-on-error);
+}
+
+:root {
+  /* 迁移组件里的 duration-[var(--motion-base)] / ease-[var(--motion-ease)]：对齐全站动效令牌。 */
+  --motion-base: var(--duration-normal);
+  --motion-ease: var(--ease-out);
+  --popover: var(--md-sys-color-surface-container-high);
+  --popover-foreground: var(--ink);
+  --border: var(--line);
+}
+
+/*
+ * Radix 弹层（Dialog / Select）的进出场。原组件依赖 tw-animate-css 的 animate-in / zoom-in-95，
+ * 本项目没有那个插件，于是弹层是「硬切」的。这里用全站同一套时长与缓动（与 lib/motion 的
+ * scaleIn：淡 + 0.96→1 微缩，展开 decelerate、收起 standard）补上。
+ */
+@keyframes ss-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ss-overlay-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes ss-pop-in { from { opacity: 0; scale: 0.96; } to { opacity: 1; scale: 1; } }
+@keyframes ss-pop-out { from { opacity: 1; scale: 1; } to { opacity: 0; scale: 0.96; } }
+
+[data-slot="dialog-overlay"][data-state="open"] { animation: ss-overlay-in var(--duration-normal) var(--ease-out); }
+[data-slot="dialog-overlay"][data-state="closed"] { animation: ss-overlay-out var(--duration-fast) var(--ease-in-out); }
+[data-slot="dialog-content"][data-state="open"],
+[data-slot="select-content"][data-state="open"] { animation: ss-pop-in var(--duration-normal) var(--ease-out); }
+[data-slot="dialog-content"][data-state="closed"],
+[data-slot="select-content"][data-state="closed"] { animation: ss-pop-out var(--duration-fast) var(--ease-in-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="dialog-overlay"],
+  [data-slot="dialog-content"],
+  [data-slot="select-content"] { animation: none !important; }
+}
