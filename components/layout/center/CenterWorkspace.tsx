@@ -4,13 +4,26 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
-import { FileText, MonitorPlay, Hand, Globe, X } from "lucide-react";
+import { FileText, MonitorPlay, Hand, Globe, X, Lightbulb, ClipboardCheck, PanelTopClose, PanelTopOpen } from "lucide-react";
+import { motion } from "framer-motion";
 import { useStore, type CenterTab } from "@/lib/stores/ui";
 import { resolveRouteLayout } from "@/lib/content/routeLayout";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
+import { useUiReducedMotion as useReducedMotion } from "@/lib/hooks/useUiReducedMotion";
+import { LAYOUT_REFLOW } from "@/lib/motion";
+import { useContentTabs, type ContentTabId } from "@/lib/stores/contentTabs";
 import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
+import GlobalSearchButton from "@/components/search/GlobalSearchButton";
+import WindowTaskbar from "@/components/window/WindowTaskbar";
+import { CenterTabsHostContext } from "./centerTabsHost";
 import { useT } from "@/lib/i18n";
+
+const CONTENT_TAB_ICONS: Record<ContentTabId, React.ReactNode> = {
+  content: <FileText size={15} />,
+  examples: <Lightbulb size={15} />,
+  quiz: <ClipboardCheck size={15} />,
+};
 
 // 阅读型内容按需挂载：只有切到该 tab 时才拉进对应本体，笔记（children）永远挂着不卸载。
 const VideoTab = dynamic(() => import("@/components/video/VideoTab"), {
@@ -99,56 +112,84 @@ export default function CenterWorkspace({ children }: { children: React.ReactNod
     if (next === "browser") openBrowse();
   };
 
-  const tabBtnCls = (active: boolean) =>
-    clsx(
-      "press flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
-      active
-        ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
-        : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
-    );
+  // 内容页（正文 / 例题 / 题目测试）注册进来的标签：和媒体标签合成同一条栏。
+  const contentTabs = useContentTabs((s) => s.tabs);
+  const contentActive = useContentTabs((s) => s.active);
+  const setContentActive = useContentTabs((s) => s.setActive);
+  const onContentPage = contentTabs.length > 0;
+  const showContentButtons = contentTabs.length > 1 || (onContentPage && mediaTabs.length > 0);
+  const topBarCollapsed = useStore((s) => s.topBarCollapsed);
+  const toggleTopBar = useStore((s) => s.toggleTopBar);
+  const reducedMotion = useReducedMotion();
+  const barVisible = showTabBar || onContentPage;
+
+  /** 同一条栏里所有标签共用一个选中底：切换时底色滑到新标签（与右栏 Agent 标签同一手感）。 */
+  const tabButton = (key: string, active: boolean, onClick: () => void, icon: React.ReactNode, label: string, testId: string) => (
+    <button
+      key={key}
+      type="button"
+      role="tab"
+      aria-selected={active}
+      data-testid={testId}
+      onClick={onClick}
+      className={clsx(
+        "press relative flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors duration-[var(--duration-fast)]",
+        active ? "text-[var(--accent-ink)]" : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink)]",
+      )}
+    >
+      {active && (
+        <motion.span
+          layoutId={reducedMotion ? undefined : "center-tab-active"}
+          transition={LAYOUT_REFLOW}
+          className="absolute inset-0 z-0 rounded-lg bg-[var(--accent-weak)]"
+          aria-hidden
+        />
+      )}
+      <span className="relative z-[1] flex items-center gap-1.5">
+        {icon}
+        {label}
+      </span>
+    </button>
+  );
 
   return (
+    <CenterTabsHostContext.Provider value={true}>
     <div className="flex h-full min-h-0 w-full flex-col">
-      {showTabBar && (
+      {barVisible && (
         <div
           role="tablist"
           aria-label={t("panel.centerTab.aria")}
           data-testid="center-tabs"
-          className="flex shrink-0 items-center gap-1 border-b border-[var(--line-soft)] bg-[var(--bg-panel)] px-1.5 py-1.5"
+          className="flex h-11 shrink-0 items-center gap-1 border-b border-[var(--line-soft)] bg-[var(--bg-panel)] px-1.5"
         >
           <div className="hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === "notes"}
-              data-testid="center-tab-notes"
-              onClick={() => switchTo("notes")}
-              className={tabBtnCls(activeTab === "notes")}
-            >
-              <FileText size={15} />
-              {t("panel.centerTab.notes")}
-            </button>
+            {onContentPage
+              ? showContentButtons &&
+                contentTabs.map((tab) =>
+                  tabButton(
+                    tab.id,
+                    activeTab === "notes" && contentActive === tab.id,
+                    () => {
+                      setContentActive(tab.id);
+                      switchTo("notes");
+                    },
+                    CONTENT_TAB_ICONS[tab.id],
+                    tab.label,
+                    `center-tab-${tab.id}`,
+                  ),
+                )
+              : tabButton("notes", activeTab === "notes", () => switchTo("notes"), <FileText size={15} />, t("panel.centerTab.notes"), "center-tab-notes")}
 
-            {mediaTabs.map((item) => {
-              const active =
-                item.id === "browser"
-                  ? activeTab === "browser" && activeTabId === BROWSE_TAB
-                  : activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeTab === item.id}
-                  data-testid={`center-tab-${item.id}`}
-                  onClick={() => switchTo(item.id)}
-                  className={tabBtnCls(active)}
-                >
-                  {item.icon}
-                  {t(item.labelKey)}
-                </button>
-              );
-            })}
+            {mediaTabs.map((item) =>
+              tabButton(
+                item.id,
+                item.id === "browser" ? activeTab === "browser" && activeTabId === BROWSE_TAB : activeTab === item.id,
+                () => switchTo(item.id),
+                item.icon,
+                t(item.labelKey),
+                `center-tab-${item.id}`,
+              ),
+            )}
 
             {/* 浏览器收藏夹标签：独立固定标签，与右栏原逻辑一致，只是落点换到中间。 */}
             {showBrowser && safeBookmarks.length > 0 && (
@@ -190,6 +231,25 @@ export default function CenterWorkspace({ children }: { children: React.ReactNod
               })}
           </div>
           {showBrowser && <BrowserSettingsButton onAdded={() => switchTo("browser")} />}
+          {/* 内容页原来自带的一条栏里的右侧工具（顶栏收起时的搜索/任务栏、收起顶栏）并到这里。 */}
+          {onContentPage && topBarCollapsed && (
+            <div className="flex min-w-0 shrink items-center gap-1 border-l border-[var(--line-soft)] pl-1.5">
+              <GlobalSearchButton />
+              <WindowTaskbar host="content-tab" />
+            </div>
+          )}
+          {onContentPage && (
+            <button
+              type="button"
+              onClick={toggleTopBar}
+              title={t(topBarCollapsed ? "panel.centerTab.expandTopBar" : "panel.centerTab.collapseTopBar")}
+              aria-label={t(topBarCollapsed ? "panel.centerTab.expandTopBar" : "panel.centerTab.collapseTopBar")}
+              aria-pressed={topBarCollapsed}
+              className="press flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink)]"
+            >
+              {topBarCollapsed ? <PanelTopOpen size={17} /> : <PanelTopClose size={17} />}
+            </button>
+          )}
         </div>
       )}
 
@@ -218,5 +278,6 @@ export default function CenterWorkspace({ children }: { children: React.ReactNod
         )}
       </div>
     </div>
+    </CenterTabsHostContext.Provider>
   );
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import {
   Archive,
@@ -65,9 +65,19 @@ export function SessionSidebar({
     [sessions, query],
   )
 
+  // 收起 / 展开共用同一个外层 .ss-rail：宽度用 Studio 左右栏同一条横向缓动过渡，内层固定宽度避免挤压换行。
+  const rail = (inner: ReactNode) => (
+    <div
+      data-class-sidebar
+      className={`ss-rail h-full border-r border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] ${collapsed ? 'w-11 min-w-11' : 'w-64 min-w-64'}`}
+    >
+      {inner}
+    </div>
+  )
+
   if (collapsed) {
-    return (
-      <div className="flex h-full w-11 flex-col items-center gap-2 border-r border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] py-3">
+    return rail(
+      <div className="flex h-full w-11 flex-col items-center gap-2 py-3">
         <button
           type="button"
           aria-label="展开课堂列表"
@@ -89,8 +99,8 @@ export function SessionSidebar({
     )
   }
 
-  return (
-    <div className="flex h-full w-64 min-w-64 flex-col border-r border-[color:var(--line-soft)] bg-[color:var(--bg-panel)]">
+  return rail(
+    <div className="flex h-full w-64 min-w-64 flex-col">
       <div className="flex items-center gap-2 px-3 py-2.5">
         <span className="mr-auto text-[13px] font-medium text-[color:var(--ink)]">
           课堂记录

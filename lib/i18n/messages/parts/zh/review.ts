@@ -34,6 +34,10 @@ export const reviewZh = {
     delete: "删除笔记",
     deleteConfirm: "删除后无法恢复，确认删除这篇笔记？",
     count: "{count} 篇笔记",
+    editedAt: "最近编辑 {time}",
+    breadcrumb: "复习笔记",
+    emptyTitle: "开始一篇复习笔记",
+    emptyBody: "像 Notion 一样写：输入 / 唤出命令菜单，支持标题、列表、公式与代码块，内容自动保存并随账号同步。",
   },
   flashcards: {
     title: "闪卡",

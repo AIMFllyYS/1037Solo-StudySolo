@@ -36,7 +36,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        'fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
+        'fixed inset-0 z-[10020] bg-black/40 backdrop-blur-[5px]',
         className,
       )}
       {...props}
@@ -58,7 +58,8 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          'fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-2xl border border-border bg-card p-6 text-card-foreground shadow-lg duration-[var(--motion-base)] outline-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 sm:max-w-lg',
+          // 与 Studio 的 .app-dialog 同一套外观：surface-container 实底、outline-variant 描边、20px 圆角、深投影。
+          'fixed top-[50%] left-[50%] z-[10021] grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-[20px] border border-[var(--line)] bg-[var(--md-sys-color-surface-container)] p-6 text-[var(--ink)] shadow-[0_24px_70px_rgb(0_0_0/0.32)] outline-none sm:max-w-lg',
           className,
         )}
         {...props}
@@ -67,7 +68,7 @@ function DialogContent({
         {showCloseButton ? (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:bg-muted hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-muted data-[state=open]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+            className="absolute top-4 right-4 flex size-7 items-center justify-center rounded-lg text-[var(--ink-soft)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
           >
             <XIcon />
             <span className="sr-only">关闭</span>

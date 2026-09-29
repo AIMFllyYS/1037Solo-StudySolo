@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useDeferredValue, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
+import DeleteNoteDialog from "@/components/notes/DeleteNoteDialog";
 import { motion } from "framer-motion";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import clsx from "clsx";
@@ -430,35 +430,5 @@ function NotePreviewPane({ markdown }: { markdown: string }) {
         <p className="note-citation-status">{t("window.note.editor.emptyPreview")}</p>
       )}
     </div>
-  );
-}
-
-function DeleteNoteDialog({
-  title,
-  onCancel,
-  onConfirm,
-}: {
-  title: string;
-  onCancel: () => void;
-  onConfirm: () => void;
-}) {
-  const t = useT();
-  return createPortal(
-    <div className="app-dialog-backdrop">
-      <div role="alertdialog" aria-modal="true" aria-label={t("window.note.editor.deleteDialogAria")} className="app-dialog">
-        <div className="app-dialog-eyebrow">{t("window.note.common.deleteConfirmEyebrow")}</div>
-        <h2>{t("window.note.common.deleteConfirmTitle", { title })}</h2>
-        <p>{t("window.note.editor.deleteDialogBody")}</p>
-        <div className="user-note-dialog-actions">
-          <button type="button" className="user-note-dialog-cancel" onClick={onCancel}>
-            {t("common.cancel")}
-          </button>
-          <button type="button" className="app-dialog-confirm" onClick={onConfirm}>
-            {t("window.common.delete")}
-          </button>
-        </div>
-      </div>
-    </div>,
-    document.body,
   );
 }

@@ -33,6 +33,11 @@ vi.mock("@/components/browser/BrowserSettingsButton", () => ({
 }));
 
 import CenterWorkspace from "./CenterWorkspace";
+import { useCenterTabsHosted } from "./centerTabsHost";
+import { useContentTabs } from "@/lib/stores/contentTabs";
+
+vi.mock("@/components/search/GlobalSearchButton", () => ({ default: () => null }));
+vi.mock("@/components/window/WindowTaskbar", () => ({ default: () => null }));
 
 describe("CenterWorkspace", () => {
   beforeEach(() => {
@@ -81,5 +86,39 @@ describe("CenterWorkspace", () => {
     expect(screen.getByTestId("lazy-media")).toBeInTheDocument();
     // 笔记不卸载：滚动位置与 DOM 状态得以保留。
     expect(screen.getByText("笔记正文")).toBeInTheDocument();
+  });
+
+  it("内容页的 正文 / 例题 / 题目测试 与 视频 / 可交互 / 浏览器 合成同一条栏", async () => {
+    useContentTabs.setState({
+      tabs: [
+        { id: "content", label: "正文" },
+        { id: "examples", label: "例题" },
+        { id: "quiz", label: "题目测试" },
+      ],
+      active: "content",
+    });
+    useStore.setState({ centerTab: "video" });
+    function Probe() {
+      return <div data-testid="hosted">{String(useCenterTabsHosted())}</div>;
+    }
+    render(
+      <CenterWorkspace>
+        <Probe />
+      </CenterWorkspace>,
+    );
+    const bars = screen.getAllByRole("tablist");
+    expect(bars).toHaveLength(1);
+    expect(screen.getByTestId("hosted")).toHaveTextContent("true");
+    expect(screen.queryByTestId("center-tab-notes")).not.toBeInTheDocument();
+    for (const id of ["content", "examples", "quiz", "video", "interactive", "browser"]) {
+      expect(screen.getByTestId(`center-tab-${id}`)).toBeInTheDocument();
+    }
+    // 在视频上点「题目测试」：回到笔记区并切到题目。
+    await userEvent.click(screen.getByTestId("center-tab-quiz"));
+    expect(useStore.getState().centerTab).toBe("notes");
+    expect(useContentTabs.getState().active).toBe("quiz");
+    expect(screen.getByTestId("center-tab-quiz")).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByTestId("center-tab-video")).toHaveAttribute("aria-selected", "false");
+    useContentTabs.setState({ tabs: [], active: "content" });
   });
 });

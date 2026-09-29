@@ -92,7 +92,7 @@ export function TranscriptPane({ enabled = true }: { enabled?: boolean }) {
             type="button"
             onClick={() => void startSession()}
             disabled={!enabled}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[color:var(--accent)] px-3 py-1.5 text-[13px] font-medium text-[color:var(--accent-ink)] disabled:opacity-40"
+            className="press inline-flex items-center gap-1.5 rounded-lg transition-colors duration-[var(--duration-fast)] bg-[color:var(--accent)] px-3 py-1.5 text-[13px] font-medium text-[color:var(--md-sys-color-on-primary)] disabled:opacity-40"
           >
             <Mic className="size-4" />
             开始录音
@@ -104,7 +104,7 @@ export function TranscriptPane({ enabled = true }: { enabled?: boolean }) {
               onClick={() =>
                 void (status === 'paused' ? resumeSession() : pauseSession())
               }
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] px-3 py-1.5 text-[13px] text-[color:var(--ink)] hover:bg-[color:var(--bg-muted)]"
+              className="press inline-flex items-center gap-1.5 rounded-lg transition-colors duration-[var(--duration-fast)] border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] px-3 py-1.5 text-[13px] text-[color:var(--ink)] hover:bg-[color:var(--bg-muted)]"
             >
               {status === 'paused' ? (
                 <>
@@ -121,7 +121,7 @@ export function TranscriptPane({ enabled = true }: { enabled?: boolean }) {
             <button
               type="button"
               onClick={() => void stopSession()}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] px-3 py-1.5 text-[13px] text-[color:var(--ink)] hover:bg-[color:var(--bg-muted)]"
+              className="press inline-flex items-center gap-1.5 rounded-lg transition-colors duration-[var(--duration-fast)] border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] px-3 py-1.5 text-[13px] text-[color:var(--ink)] hover:bg-[color:var(--bg-muted)]"
             >
               <Square className="size-4" />
               结束
@@ -139,7 +139,7 @@ export function TranscriptPane({ enabled = true }: { enabled?: boolean }) {
             ].join(' ')}
           >
             {recording ? (
-              <span className="size-1.5 animate-pulse rounded-full bg-red-500" />
+              <span className="size-1.5 animate-pulse rounded-full bg-[color:var(--md-sys-color-error)]" />
             ) : null}
             {statusLabel(status)}
           </span>

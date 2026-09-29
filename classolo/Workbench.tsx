@@ -1,18 +1,21 @@
 "use client";
-import {useCallback,useEffect,useRef,useState,useSyncExternalStore} from 'react';
+import {useCallback,useEffect,useMemo,useRef,useState,useSyncExternalStore} from 'react';
 import {get} from 'idb-keyval';
-import {Download,FileText,Import,PanelRightClose,PanelRightOpen,Settings2,Sparkles,X} from 'lucide-react';
+import {Download,FileText,Import,PanelRightOpen,Settings2,Sparkles,X} from 'lucide-react';
 import {useAuthSession} from '@/lib/hooks/useAuthSession';
 import {redirectAccount} from '@/lib/auth/account';
 import {createAndOpenNote} from '@/lib/notes/openUserNote';
 import {WorkbenchShell} from './components/layout/workbench-shell';
 import {TranscriptPane} from './features/transcript/pane';
 import {NotesPane} from './features/notes/pane';
-import {ChatPanel} from './features/agent/chat-panel';
+import StudioAgentPanel from '@/components/layout/StudioAgentPanel';
+import {useStore as useUiStore} from '@/lib/stores/ui';
+import {useAcademicYear} from '@/lib/hooks/useAcademicYear';
+import type {ChatContext} from '@/lib/types/chat';
+import {setClassAgentContextProvider,tailSegments} from '@/lib/class/agentContext';
+import {CLASS_JUMP_EVENT,type ClassJumpDetail} from '@/lib/class/jump';
 import {SilentAgentBoot} from './features/agent/silent-boot';
 import {RenderHost} from './features/render-modules/host';
-import {resetChatPrivate} from './features/agent/chat-store';
-import {resetChatPersistSeq,hydrateChatHistory} from './features/agent/chat-persist';
 import {stopSession} from './features/transcript/pipeline';
 import {SessionSidebar} from './features/session-library/sidebar';
 import {ClassroomSettings} from './features/settings/classroom-settings';
@@ -48,7 +51,7 @@ export default function Workbench(){
     setClassUserId(null);
     void stopSession().finally(()=>{
       if(!active)return;
-      resetTranscriptPublic();resetNotesPublic();resetRenderProjection();resetChatPrivate();resetChatPersistSeq();
+      resetTranscriptPublic();resetNotesPublic();resetRenderProjection();
       setClassUserId(auth.userId);initialized.current=null;
       if(auth.userId)void getDb().then(listSessions).then(rows=>{if(active)setSessions(rows);}).catch(e=>{if(active)setError(String(e));});
     });
@@ -72,10 +75,48 @@ export default function Workbench(){
     return()=>{notes();render();clearInterval(syncTimer);window.removeEventListener('online',sync);};
   },[owner,auth.userId]);
   useEffect(()=>{if(owner&&owner===auth.userId&&sessionId)refreshSessions();},[owner,auth.userId,sessionId,recordingStatus,refreshSessions]);
+  // 主 Agent 的课堂上下文：只在工作台挂载期间注册，离开 Class 模式即注销。
+  const sessionsForAgent=useRef(sessions);sessionsForAgent.current=sessions;
+  useEffect(()=>{
+    setClassAgentContextProvider(()=>{
+      const state=getTranscriptPublic();
+      if(!state.sessionId||!getClassUserId())return null;
+      return {
+        sessionId:state.sessionId,
+        title:(sessionsForAgent.current.find(s=>s.id===state.sessionId)?.title||'').slice(0,200),
+        live:state.recordingStatus==='recording'||state.recordingStatus==='paused',
+        outline:getNotesPublic().outlineDigest.map(n=>n.title.slice(0,200)).filter(Boolean).slice(0,80),
+        recent:tailSegments(state.committed),
+      };
+    });
+    return()=>setClassAgentContextProvider(null);
+  },[]);
+  // Agent 引用〔n〕跳回文稿：同一节课直接滚动；别的课先打开再滚动。
+  const pendingSegment=useRef<string|null>(null);
+  useEffect(()=>{
+    const onJump=(event:Event)=>{
+      const {sessionId:target,segmentId}=(event as CustomEvent<ClassJumpDetail>).detail||{};
+      if(!target||!segmentId)return;
+      if(target===getTranscriptPublic().sessionId){publishCommand({type:'transcript.scrollTo',segmentId,source:'agent'});return;}
+      pendingSegment.current=segmentId;void open(target);
+    };
+    window.addEventListener(CLASS_JUMP_EVENT,onJump);
+    return()=>window.removeEventListener(CLASS_JUMP_EVENT,onJump);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+  // 任何「发给 Agent」的入口（随堂题讲解等）都要让右栏可见，否则消息排着队看不到。
+  useEffect(()=>useUiStore.subscribe((state,prev)=>{if(state.outbound&&state.outbound!==prev.outbound)setAgentCollapsed(false);}),[]);
+  const subjectId=useUiStore(s=>s.activeSubjectId);
+  const academicYear=useAcademicYear(s=>s.year);
+  const classTitle=sessionId?(sessions.find(s=>s.id===sessionId)?.title||'课堂'):'课堂工作台';
+  // Class 不绑定 Studio 的某一页：章节定位与页正文不注入，课堂语境走 classContext。
+  const agentContext:ChatContext=useMemo(()=>({subjectId,categoryId:'',itemId:'',currentTopic:`课堂 ${classTitle}`,academicYear}),[subjectId,classTitle,academicYear]);
   useEffect(()=>{
     if(!owner||owner!==auth.userId||initialized.current===owner)return;
     initialized.current=owner;
     const id=new URL(window.location.href).searchParams.get('session');
+    const segment=new URL(window.location.href).searchParams.get('segment');
+    if(segment)pendingSegment.current=segment;
     if(id&&/^[0-9a-f-]{36}$/i.test(id))void open(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[owner,auth.userId]);
@@ -84,20 +125,22 @@ export default function Workbench(){
     try{
       await stopSession();const db=await getDb();const data=await loadClassSession(db,id);
       if(getClassUserId()!==db.userId)return;
-      setClassHydrating(true);resetTranscriptPublic();resetNotesPublic();resetRenderProjection();resetChatPrivate();resetChatPersistSeq();
+      setClassHydrating(true);resetTranscriptPublic();resetNotesPublic();resetRenderProjection();
       patchTranscriptPublic({sessionId:id,recordingStatus:'stopped'});
       for(const row of data.transcript)appendCommitted(row);
       const nodes=data.outline?.outline.nodes;
       if(Array.isArray(nodes))patchNotesPublic({outlineDigest:nodes as {id:string;title:string;parentId?:string|null}[],outlineVersion:data.outline?.revision||0});
       for(const row of data.renders)upsertRenderMessage({id:row.id,module:row.module,version:row.version,target:row.target as RenderMessage['target'],props:row.props,meta:{source:row.source as RenderMessage['meta']['source'],createdAt:new Date(row.createdAt||Date.now()).getTime(),...(row.transcriptAnchor?{transcriptAnchor:row.transcriptAnchor}:{})}});
-      if(Array.isArray(data.chat))hydrateChatHistory(data.chat);
-      try{const url=new URL(window.location.href);url.searchParams.set('session',id);window.history.replaceState(null,'',url);}catch{}
+      
+      try{const url=new URL(window.location.href);url.searchParams.set('session',id);url.searchParams.delete('segment');window.history.replaceState(null,'',url);}catch{}
+      const segment=pendingSegment.current;pendingSegment.current=null;
+      if(segment)requestAnimationFrame(()=>publishCommand({type:'transcript.scrollTo',segmentId:segment,source:'agent'}));
     }catch(e){setError(e instanceof Error?e.message:'打开失败');}finally{setClassHydrating(false);setBusy(false);}
   }
   async function importText(){
     if(!draft.trim()||busy)return;setBusy(true);setError('');
     try{
-      await stopSession();resetTranscriptPublic();resetNotesPublic();resetRenderProjection();resetChatPrivate();resetChatPersistSeq();
+      await stopSession();resetTranscriptPublic();resetNotesPublic();resetRenderProjection();
       const db=await getDb();const session=await insertSession(db,{title:draft.trim().slice(0,35),status:'ended',asrSnapshot:{family:'text-import',dialect:'text',model:'none',baseUrl:'',sampleRate:16000}});
       patchTranscriptPublic({sessionId:session.id,recordingStatus:'stopped'});
       try{const url=new URL(window.location.href);url.searchParams.set('session',session.id);window.history.replaceState(null,'',url);}catch{}
@@ -110,7 +153,7 @@ export default function Workbench(){
   // 导入已有文稿是另一个入口（onImport），不再和 + 混在一起。
   async function newClass(){
     if(busy)return;
-    await stopSession();resetTranscriptPublic();resetNotesPublic();resetRenderProjection();resetChatPrivate();resetChatPersistSeq();
+    await stopSession();resetTranscriptPublic();resetNotesPublic();resetRenderProjection();
     setShowDraft(false);setDraft('');
     try{const url=new URL(window.location.href);url.searchParams.delete('session');window.history.replaceState(null,'',url);}catch{}
   }
@@ -118,7 +161,7 @@ export default function Workbench(){
     try{const db=await getDb();await updateSession(db,id,{title});refreshSessions();}catch(e){setError(e instanceof Error?e.message:'重命名失败');}
   }
   async function archive(id:string){
-    try{const db=await getDb();await updateSession(db,id,{archived:true});if(id===sessionId){resetTranscriptPublic();resetNotesPublic();resetRenderProjection();resetChatPrivate();}refreshSessions();}catch(e){setError(e instanceof Error?e.message:'归档失败');}
+    try{const db=await getDb();await updateSession(db,id,{archived:true});if(id===sessionId){resetTranscriptPublic();resetNotesPublic();resetRenderProjection();}refreshSessions();}catch(e){setError(e instanceof Error?e.message:'归档失败');}
   }
   function exportNote(){
     const state=getTranscriptPublic();if(!state.sessionId)return;
@@ -169,7 +212,7 @@ export default function Workbench(){
   },[recordingStatus,owner,sessionId]);
   useEffect(()=>{if(!toast)return;const t=setTimeout(()=>setToast(''),3200);return()=>clearTimeout(t);},[toast]);
   if(auth.status==='loading')return <div className="p-8 text-sm text-[color:var(--ink-soft)]">正在验证课堂账号…</div>;
-  if(!auth.userId)return <section className="m-6 rounded-2xl border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] p-8"><h1 className="text-2xl font-semibold text-[color:var(--ink)]">课堂工作台</h1><p className="my-4 text-[color:var(--ink-soft)]">登录后录音、整理笔记与课堂提问，课堂产物随账号同步。</p><button className="rounded-xl bg-[color:var(--accent)] px-5 py-3 text-[color:var(--accent-ink)]" onClick={()=>redirectAccount()}>登录统一账号</button></section>;
+  if(!auth.userId)return <section className="m-6 rounded-2xl border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] p-8"><h1 className="text-2xl font-semibold text-[color:var(--ink)]">课堂工作台</h1><p className="my-4 text-[color:var(--ink-soft)]">登录后录音、整理笔记与课堂提问，课堂产物随账号同步。</p><button className="rounded-xl bg-[color:var(--accent)] px-5 py-3 text-[color:var(--md-sys-color-on-primary)]" onClick={()=>redirectAccount()}>登录统一账号</button></section>;
   if(owner!==auth.userId)return <div className="p-8 text-sm text-[color:var(--ink-soft)]">正在安全切换课堂空间…</div>;
   return <div className="ss-class-workbench relative flex h-full min-h-0 w-full overflow-hidden" key={owner}>
     <SessionSidebar sessions={sessions} currentId={sessionId} liveStatus={recordingStatus} collapsed={sidebarCollapsed} pendingCount={getPendingCount()} busy={busy} onToggle={()=>setSidebarCollapsed(v=>!v)} onOpen={id=>void open(id)} onNew={()=>void newClass()} onImport={()=>setShowDraft(true)} onOpenSettings={()=>setShowSettings(true)} onRename={(id,t)=>void rename(id,t)} onArchive={id=>void archive(id)}/>
@@ -184,14 +227,17 @@ export default function Workbench(){
         <button className="ss-tool" disabled={!sessionId||busy} onClick={()=>void makeCards()} title="从本节课生成知识卡片（进入复习闪卡）"><Sparkles className="size-3.5"/>知识卡片</button>
         <button className="ss-tool" disabled={!sessionId} aria-label="导出录音" title="导出本机录音（ZIP）" onClick={()=>void downloadAudio()}><Download className="size-3.5"/></button>
         <button className="ss-tool" aria-label="课堂设置" onClick={()=>setShowSettings(true)}><Settings2 className="size-3.5"/></button>
-        <button className="ss-tool" aria-label={agentCollapsed?'展开课堂助手':'收起课堂助手'} onClick={()=>setAgentCollapsed(v=>!v)}>{agentCollapsed?<PanelRightOpen className="size-3.5"/>:<PanelRightClose className="size-3.5"/>}</button>
+        {agentCollapsed&&<button className="ss-tool" aria-label="展开 Agent" title="展开 Agent" onClick={()=>setAgentCollapsed(false)}><PanelRightOpen className="size-3.5"/></button>}
       </header>
       {(error||getSyncError())&&<p role="alert" className="m-2 rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-muted)] p-2 text-[12px] text-[color:var(--ink)]">{error||getSyncError()} <button className="underline" onClick={()=>{setError('');void getDb().then(flushClassPending);}}>重试同步</button></p>}
       {capabilities&&!capabilities.asr&&<p className="px-3 py-1 text-[11px] text-[color:var(--ink-faint)]">语音转写服务暂未启用；可以导入已有文稿继续整理与提问。</p>}
       {showDraft&&<div className="border-b border-[color:var(--line-soft)] p-3"><textarea aria-label="已有课堂文稿" className="h-24 w-full rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-app)] p-3 text-[13px] text-[color:var(--ink)] outline-none placeholder:text-[color:var(--ink-faint)]" maxLength={100000} value={draft} onChange={e=>setDraft(e.target.value)} placeholder="粘贴已有文稿，或补充课堂记录。导入后会生成提纲与补充解析。"/><div className="mt-2 flex gap-2"><button className="ss-tool" disabled={busy||!draft.trim()} onClick={()=>void importText()}>创建课堂并整理</button><button className="ss-tool" onClick={()=>{setShowDraft(false);setDraft('');}}>取消</button></div></div>}
       <div className="relative min-h-0 flex-1"><SilentAgentBoot/><WorkbenchShell chrome={false} transcript={<TranscriptPane enabled={capabilities?.asr!==false}/>} notes={<NotesPane/>} transcriptRender={<RenderHost target="transcript" onAnchorClick={id=>publishCommand({type:'transcript.scrollTo',segmentId:id,source:'render'})}/>} notesRender={<RenderHost target="notes" onAnchorClick={id=>publishCommand({type:'transcript.scrollTo',segmentId:id,source:'render'})}/>}/></div>
     </div>
-    {!agentCollapsed&&<div className="hidden min-h-0 w-80 shrink-0 border-l border-[color:var(--line-soft)] md:block"><ChatPanel/></div>}
+    {/* Agent 栏：和 Studio 右栏同一个面板、同一条横向缓动；收起时保持挂载（对话流与草稿不丢）。 */}
+    <div className={`ss-rail ss-class-agent hidden min-h-0 md:block ${agentCollapsed?'w-0 min-w-0':'w-[clamp(320px,28vw,440px)] min-w-[320px]'}`} aria-hidden={agentCollapsed||undefined} inert={agentCollapsed||undefined}>
+      <div className="h-full w-[clamp(320px,28vw,440px)]"><StudioAgentPanel chatContext={agentContext} onCollapse={()=>setAgentCollapsed(true)}/></div>
+    </div>
     {toast&&<div className="pointer-events-none absolute bottom-4 left-1/2 z-30 -translate-x-1/2 rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] px-3 py-1.5 text-[12px] text-[color:var(--ink)] shadow-lg"><span className="inline-flex items-center gap-1.5">{toast}<button className="pointer-events-auto" onClick={()=>setToast('')}><X className="size-3"/></button></span></div>}
     <ClassroomSettings open={showSettings} onOpenChange={setShowSettings} capabilities={capabilities}/>
   </div>;

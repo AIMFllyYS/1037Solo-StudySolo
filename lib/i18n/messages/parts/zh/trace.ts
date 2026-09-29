@@ -182,6 +182,11 @@ export const traceZh = {
       settingsLabel: "项目切片",
       description: "按切片读项目文件正文（未携带的切片会提示用户点「带入对话」）",
     },
+    searchClassTranscript: {
+      label: "检索课堂文稿",
+      settingsLabel: "课堂文稿",
+      description: "Class 模式下检索本节课或以前课堂的录音文稿，并按编号标注出处",
+    },
   },
   // 消息外壳
   message: {

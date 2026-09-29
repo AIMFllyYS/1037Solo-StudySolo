@@ -259,6 +259,8 @@ async function handlePOST(req: NextRequest) {
         planMode: body.planMode,
         forcedTool: isComposerForcedTool(body.forcedTool) ? body.forcedTool : undefined,
         attachedFiles: body.attachedFiles,
+        userId: userId ?? undefined,
+        classContext: body.noteWindowAgent ? undefined : body.classContext,
       });
       const makeBundle = (truncated: boolean, referenceContext: string) =>
         createStudyAgent(bundleInput(truncated, referenceContext));

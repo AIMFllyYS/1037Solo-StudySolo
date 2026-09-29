@@ -26,6 +26,7 @@ import { formatArtifactCatalog, type ArtifactCatalogItem } from "@/lib/context/c
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
 import type { ContinuationKind } from "@/lib/ai/agent/completionGuard";
 import { formatEditingUserNoteContext, type EditingUserNoteContext } from "@/lib/notes/editingUserNote";
+import { formatClassContextBlock, type ClassAgentContext } from "@/lib/class/agentContext";
 import {
   formatMemoryCatalogLine,
   type FlashcardCatalogItem,
@@ -73,6 +74,10 @@ export interface StudyAgentInput {
    * tool：沿用原工具集，让模型补发刚才只口头宣称的调用。
    */
   recovery?: ContinuationKind;
+  /** 发起请求的登录用户 id（课堂文稿工具按账号读库）。 */
+  userId?: string;
+  /** Class 模式的当前课堂上下文。 */
+  classContext?: ClassAgentContext;
 }
 
 /**
@@ -115,6 +120,8 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     forcedTool,
     attachedFiles = [],
     recovery,
+    userId,
+    classContext,
   } = input;
   const toolRoundLimit = clampMaxToolRounds(maxToolRounds);
 
@@ -164,6 +171,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
   });
   const volatile =
     buildLocationLine(chatCtx) +
+    (classContext && !noteWindowAgent ? `\n\n${formatClassContextBlock(classContext)}` : "") +
     (editingUserNote ? `\n\n${formatEditingUserNoteContext(editingUserNote)}` : "") +
     (memoryLine ? `\n\n${memoryLine}` : "") +
     (referenceContext ? `\n\n【参考材料】\n${referenceContext}` : "") +
@@ -189,6 +197,8 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
           editingUserNote,
           userNotes,
           flashcards,
+          userId,
+          classContext: noteWindowAgent ? undefined : classContext,
           artifactUnsupportedReason: isImageMode
             ? "当前生图模型不支持 HTML 交互组件生成，请切换文本模型后重试。"
             : undefined,

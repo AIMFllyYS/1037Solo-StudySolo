@@ -149,7 +149,7 @@ function EmbeddedRunner({ quiz, onRecorded }: { quiz: GeneratedQuiz; onRecorded?
             type="button"
             onClick={recordAttempt}
             data-testid="review-quiz-record"
-            className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-[13px] font-medium text-[var(--accent-ink)] hover:brightness-95"
+            className="rounded-lg bg-[var(--accent)] px-4 py-1.5 text-[13px] font-medium text-[var(--md-sys-color-on-primary)] hover:brightness-95"
           >
             {allAnswered ? t("review.quiz.submit") : t("review.quiz.submitPartial")}
           </button>
@@ -366,7 +366,7 @@ export default function ReviewQuizPane() {
               }}
               disabled={busy || !canDiagnose}
               data-testid="review-quiz-wrong-cta"
-              className="rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--accent-ink)] hover:brightness-95 disabled:opacity-50"
+              className="rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] hover:brightness-95 disabled:opacity-50"
             >
               {t("review.quiz.wrong.cta")}
             </button>
@@ -431,7 +431,7 @@ export default function ReviewQuizPane() {
               }}
               disabled={busy || !subjectId || !chapterId}
               data-testid="review-quiz-chapter-cta"
-              className="rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--accent-ink)] hover:brightness-95 disabled:opacity-50"
+              className="rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] hover:brightness-95 disabled:opacity-50"
             >
               {t("review.quiz.chapter.cta")}
             </button>

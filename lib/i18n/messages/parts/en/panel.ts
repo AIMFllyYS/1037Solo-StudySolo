@@ -39,6 +39,8 @@ export const panelEn = {
   centerTab: {
     notes: "Notes",
     aria: "Content view",
+    collapseTopBar: "Collapse top bar",
+    expandTopBar: "Expand top bar",
   },
 
   // Right-panel Agent header (Cursor-like): recent-conversation tab strip + icon actions.

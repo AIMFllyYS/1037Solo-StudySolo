@@ -1,8 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { LAYOUT_REFLOW, reflowItemProps } from "@/lib/motion";
+import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
 import {
   AgentPlusIcon,
   AgentHistoryIcon,
@@ -13,6 +16,7 @@ import ChatHistoryOverlay from "@/components/chat/ChatHistoryOverlay";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { useTokenTracker } from "@/lib/hooks/useTokenTracker";
+import { useAgentTabs } from "@/lib/stores/agentTabs";
 import type { ChatContext } from "@/lib/types/chat";
 import { useT } from "@/lib/i18n";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
@@ -48,19 +52,36 @@ export default function RightAgentHeader({
   const sessionsMeta = useChatHistory((s) => s.sessionsMeta);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
   const switchSession = useChatHistory((s) => s.switchSession);
-  const deleteSession = useChatHistory((s) => s.deleteSession);
   const startNewChat = useChatHistory((s) => s.startNewChat);
+  const closedIds = useAgentTabs((s) => s.closedIds);
+  const closeTab = useAgentTabs((s) => s.closeTab);
+  const reopenTab = useAgentTabs((s) => s.reopenTab);
   const [showHistory, setShowHistory] = useState(false);
+  const reducedMotion = useUiReducedMotion();
 
-  const recent = useMemo(
-    () =>
-      sessionsMeta
-        .filter(isMainSession)
-        .slice()
-        .sort((a, b) => b.updatedAt - a.updatedAt)
-        .slice(0, MAX_RECENT_TABS),
-    [sessionsMeta],
-  );
+  // 当前会话（无论从历史、侧栏还是新建切过来）总在标签条上。
+  useEffect(() => {
+    if (activeSessionId) reopenTab(activeSessionId);
+  }, [activeSessionId, reopenTab]);
+
+  const recent = useMemo(() => {
+    const closed = new Set(closedIds);
+    return sessionsMeta
+      .filter((meta) => isMainSession(meta) && (!closed.has(meta.id) || meta.id === activeSessionId))
+      .slice()
+      .sort((a, b) => b.updatedAt - a.updatedAt)
+      .slice(0, MAX_RECENT_TABS);
+  }, [sessionsMeta, closedIds, activeSessionId]);
+
+  /** 关闭标签：只从标签条移走，对话留在历史里。关的是当前标签就切到相邻标签，没有就开一个空对话。 */
+  const handleCloseTab = (id: string) => {
+    closeTab(id);
+    if (id !== activeSessionId) return;
+    const index = recent.findIndex((meta) => meta.id === id);
+    const neighbor = recent[index + 1] ?? recent[index - 1];
+    if (neighbor) switchSession(neighbor.id);
+    else handleNewChat();
+  };
 
   const handleNewChat = () => {
     startNewChat(chatContext);
@@ -82,49 +103,60 @@ export default function RightAgentHeader({
         data-testid="recent-chat-tabs"
         className="hide-scrollbar flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto"
       >
+        <AnimatePresence initial={false} mode="popLayout">
         {recent.map((meta) => {
           const active = meta.id === activeSessionId;
           const title = meta.title?.trim() || t("panel.agentBar.untitled");
           return (
-            <span
+            <motion.span
               key={meta.id}
+              {...reflowItemProps(reducedMotion)}
               role="tab"
               aria-selected={active}
               data-testid="recent-chat-tab"
               data-active={active || undefined}
               className={clsx(
-                "group flex h-7 shrink-0 items-center gap-1 rounded-lg py-1 pl-2.5 pr-1 text-[12.5px] font-medium transition-colors",
-                active
-                  ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
-                  : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
+                "group relative flex h-7 shrink-0 items-center gap-1 rounded-lg py-1 pl-2.5 pr-1 text-[12.5px] font-medium transition-colors duration-[var(--duration-fast)]",
+                active ? "text-[var(--accent-ink)]" : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink)]",
               )}
             >
+              {/* 选中底色跟随切换滑动（与中间 Tab 栏同一套 LAYOUT_REFLOW 弹簧）。 */}
+              {active && (
+                <motion.span
+                  layoutId={reducedMotion ? undefined : "agent-tab-active"}
+                  transition={LAYOUT_REFLOW}
+                  className="absolute inset-0 z-0 rounded-lg bg-[var(--accent-weak)]"
+                  aria-hidden
+                />
+              )}
               <button
                 type="button"
                 onClick={() => switchSession(meta.id)}
                 title={title}
-                className="press max-w-[128px] truncate text-left"
+                className="press relative z-[1] max-w-[128px] truncate text-left"
               >
                 {title}
               </button>
+              {/* 关闭 = 从标签条移走（不是删除），所以用中性色而不是报错红。 */}
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  deleteSession(meta.id);
+                  handleCloseTab(meta.id);
                 }}
                 title={t("panel.agentBar.closeTab", { title })}
                 aria-label={t("panel.agentBar.closeTab", { title })}
                 className={clsx(
-                  "flex h-4 w-4 items-center justify-center rounded text-[var(--ink-faint)] transition-opacity hover:text-[var(--md-sys-color-error)]",
-                  active ? "opacity-70 hover:opacity-100" : "opacity-0 group-hover:opacity-100",
+                  "relative z-[1] flex h-4 w-4 items-center justify-center rounded text-[var(--ink-faint)] transition-opacity duration-[var(--duration-fast)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink)]",
+                  active ? "opacity-70 hover:opacity-100" : "opacity-0 group-hover:opacity-100 focus-visible:opacity-100",
                 )}
               >
                 <X size={11} />
               </button>
-            </span>
+            </motion.span>
           );
         })}
+        </AnimatePresence>
         <button
           type="button"
           onClick={handleNewChat}

@@ -36,6 +36,10 @@ export const reviewEn = {
     delete: "Delete note",
     deleteConfirm: "This cannot be undone. Delete this note?",
     count: "{count} notes",
+    editedAt: "Edited {time}",
+    breadcrumb: "Review notes",
+    emptyTitle: "Start a review note",
+    emptyBody: "Write like Notion: type / for the command menu — headings, lists, formulas and code blocks. Everything autosaves and syncs with your account.",
   },
   flashcards: {
     title: "Flashcards",

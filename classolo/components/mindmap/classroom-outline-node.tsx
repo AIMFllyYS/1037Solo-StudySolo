@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 
 import { cn } from '@/classolo/lib/utils'
+import { DURATION, EASE } from '@/lib/motion'
 
 export type ClassroomOutlineNodeData = {
   title: string
@@ -25,9 +26,9 @@ export function ClassroomOutlineNode({
         'w-[180px] rounded-lg border border-border bg-card px-3 py-2 text-sm text-card-foreground shadow-sm',
         selected && 'ring-2 ring-ring',
       )}
-      initial={data.entering ? { opacity: 0, scale: 0.85 } : false}
+      initial={data.entering ? { opacity: 0, scale: 0.96 } : false}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.28, ease: 'easeOut' }}
+      transition={{ duration: DURATION.normal, ease: EASE.decelerate }}
     >
       <Handle
         type="target"

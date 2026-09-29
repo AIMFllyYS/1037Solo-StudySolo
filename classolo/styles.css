@@ -1,21 +1,4 @@
-@theme inline {
-  --color-background: var(--class-background, var(--bg-app));
-  --color-foreground: var(--class-foreground, var(--ink));
-  --color-muted-foreground: var(--ink-soft);
-  --color-border: var(--line);
-  --color-primary: var(--md-sys-color-primary);
-  --color-primary-foreground: white;
-  --color-secondary: var(--bg-muted);
-  --color-secondary-foreground: var(--ink);
-  --color-card: var(--bg-panel);
-  --color-card-foreground: var(--ink);
-  --color-muted: var(--bg-muted);
-  --color-accent: var(--bg-muted);
-  --color-accent-foreground: var(--ink);
-  --color-destructive: #b42318;
-  --color-ring: var(--md-sys-color-primary);
-  --color-input: var(--line);
-}
+/* 语义色令牌已迁到 app/styles/semantic-tokens.css（Tailwind 主入口），这里只放课堂工作台的组件类。 */
 .ss-class-workbench{background:var(--bg-app);color:var(--ink);--class-background:var(--bg-app);--class-foreground:var(--ink);}
 .ss-class-workbench .class-action{border:1px solid var(--line);border-radius:.65rem;padding:.45rem .7rem;font-size:.8rem;background:var(--bg-panel);}
 .ss-class-workbench .class-action:hover{background:var(--bg-muted);}
@@ -28,9 +11,13 @@
 .ss-class-workbench :focus-visible{outline:2px solid var(--md-sys-color-primary);outline-offset:2px;}
 .ss-class-workbench .react-flow__attribution{font-size:9px;}
 
-.ss-class-workbench .ss-nav-cta{display:inline-flex;align-items:center;justify-content:center;gap:.35rem;border-radius:.6rem;padding:.45rem .5rem;font-size:.78rem;font-weight:500;background:var(--accent);color:var(--accent-ink);white-space:nowrap;}
+.ss-class-workbench .ss-nav-cta{display:inline-flex;align-items:center;justify-content:center;gap:.35rem;border-radius:.6rem;padding:.45rem .5rem;font-size:.78rem;font-weight:500;background:var(--accent);color:var(--md-sys-color-on-primary);white-space:nowrap;}
 .ss-class-workbench .ss-nav-cta:hover{filter:brightness(.96);}
 .ss-class-workbench .ss-nav-cta:disabled{opacity:.45;cursor:not-allowed;}
 .ss-class-workbench .ss-nav-cta--ghost{background:var(--bg-app);color:var(--ink-soft);border:1px solid var(--line-soft);}
 .ss-class-workbench .ss-nav-link{display:flex;align-items:center;gap:.5rem;border-radius:.5rem;padding:.35rem .5rem;font-size:.78rem;color:var(--ink-soft);text-align:left;}
 .ss-class-workbench .ss-nav-link:hover{background:var(--bg-muted);color:var(--ink);}
+
+/* 交互反馈与 Studio 统一：颜色走 --duration-fast，按下走全站 .press 的缩放。 */
+.ss-class-workbench :is(.ss-tool,.ss-nav-cta,.ss-nav-link,.class-action){transition:background-color var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out),border-color var(--duration-fast) var(--ease-out),filter var(--duration-fast) var(--ease-out),transform var(--duration-instant) var(--ease-out);}
+.ss-class-workbench :is(.ss-tool,.ss-nav-cta,.class-action):not(:disabled):active{transform:scale(var(--scale-press));}

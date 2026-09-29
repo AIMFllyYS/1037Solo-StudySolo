@@ -3,8 +3,7 @@
 import { useState } from 'react'
 
 import { MarkdownStream } from '@/classolo/components/markdown'
-import { runChatTurn } from '@/classolo/features/agent/chat-turn'
-import { chatPrivateStore } from '@/classolo/features/agent/chat-store'
+import { useStore as useUiStore } from '@/lib/stores/ui'
 
 import type { RenderMessage } from '../types'
 
@@ -30,19 +29,19 @@ export function AiAskModule({
   const choices = props.choices ?? []
 
   function ask(index: number) {
-    if (chatPrivateStore.getState().streaming) return
     setAsked(true)
     const letter = String.fromCharCode(65 + index)
     const list = choices.map((c, i) => `${String.fromCharCode(65 + i)}. ${c}`).join('\n')
-    void runChatTurn(
-      `随堂提问：${props.question}\n${list}\n\n我选 ${letter}。请结合本节课文稿判断对错，并简要讲解。`,
-    )
+    // 交给右栏同一个 Agent（与 Studio 共用会话与工具），它会用 searchClassTranscript 对照文稿讲解。
+    useUiStore
+      .getState()
+      .sendToChat(`随堂提问：${props.question}\n${list}\n\n我选 ${letter}。请结合本节课文稿判断对错，并简要讲解。`)
   }
 
   return (
     <div data-slot="ai-ask" className="text-sm">
-      <p className="font-medium text-foreground">随堂提问</p>
-      <MarkdownStream markdown={props.question} className="mt-1 text-card-foreground" />
+      <p className="font-medium text-[color:var(--ink)]">随堂提问</p>
+      <MarkdownStream markdown={props.question} className="mt-1 text-[color:var(--ink)]" />
       {choices.length > 0 ? (
         <div role="radiogroup" aria-label="选项" className="mt-2 flex flex-col gap-1.5">
           {choices.map((choice, index) => (
@@ -70,12 +69,12 @@ export function AiAskModule({
               type="button"
               disabled={picked === null}
               onClick={() => picked !== null && ask(picked)}
-              className="rounded-md bg-[color:var(--accent)] px-2.5 py-1 text-[12px] text-[color:var(--accent-ink)] disabled:opacity-40"
+              className="rounded-md bg-[color:var(--accent)] px-2.5 py-1 text-[12px] text-[color:var(--md-sys-color-on-primary)] disabled:opacity-40"
             >
               {asked ? '再问一次' : '提交并请助手讲解'}
             </button>
             {asked ? (
-              <span className="text-[11px] text-[color:var(--ink-faint)]">讲解显示在右侧课堂助手</span>
+              <span className="text-[11px] text-[color:var(--ink-faint)]">讲解显示在右侧 Agent</span>
             ) : null}
           </div>
         </div>
