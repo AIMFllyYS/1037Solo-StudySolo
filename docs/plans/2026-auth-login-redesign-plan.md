@@ -1,6 +1,10 @@
 # 登录注册板块 · 人机验证面板 —— 深度分析与升级规划
 
-> 状态：**仅规划，未动代码**。本文基于对仓库现状代码的逐行阅读 + 站内既有设计规范（studysolo-glass 快照）+ 外部最佳实践调研写成。
+> 状态：**主体已落地**（2026-09-21 `dc2e5c0e`，与 `app/login/page.tsx`、`app/styles/auth.css`、`components/auth/LoginOverlay.tsx`、`components/auth/HumanChallengeDialog.tsx` 同批提交；`components/auth/OtpInput.tsx`、`app/styles/auth.css` 与 `HumanChallengeDialog.tsx` 的 `CooldownRing` 环形冷却均已存在，`globals.css` 已含 `--subj-*` 学科色令牌）。本文同时是对仓库现状代码的逐行阅读 + 站内既有设计规范（studysolo-glass 快照）+ 外部最佳实践调研。
+>
+> **与原文已有偏差的一处（务必先读）**：登录入口不再是本文第三章描述的「邮箱 + OTP 分格输入」自建表单。`components/auth/LoginForm.tsx` 现在只渲染一个「登录并继续」按钮，经 `lib/auth/account.ts` 的 `redirectAccount()` 跳转 **1037Solo 统一账号中心**；邮箱登录 / Google / GitHub / 找回密码 / 两步验证都在账号中心完成，本仓库不再维护自己的登录会话。因此 `components/auth/OtpInput.tsx` 目前**没有调用方**，第三章 3.1/3.2 的 OTP 分格输入设计已成历史；Phase 1 规划的 `components/auth/GlassCard.tsx` 未创建（玻璃窗框直接落在 `app/styles/auth.css` 的 `.auth-window` / `.auth-titlebar` 上）。人机验证面板（第四章）与外观部分仍然有效。
+>
+> 写作背景：本文基于对仓库当时现状代码的逐行阅读 + 站内既有设计规范（studysolo-glass 快照）+ 外部最佳实践调研写成。
 > 涉及文件：`components/auth/LoginForm.tsx`、`components/auth/LoginOverlay.tsx`、`components/auth/HumanChallengeDialog.tsx`、`app/login/page.tsx`、`app/styles/prose.css`、`components/window/WindowChrome.tsx`、`docs/design-snapshots/2026-09-studysolo-glass/`。
 
 ---

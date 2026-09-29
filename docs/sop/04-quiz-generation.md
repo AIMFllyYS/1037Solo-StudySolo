@@ -313,7 +313,7 @@ pnpm check:registry
 
 ## 毛概教材 Tab 出题专节
 
-> 毛概「教材」Tab 的题目测试与详解 Tab **完全独立**，使用 `tb-chXX` 命名空间。详见 [`docs/plans/05d-quiz-maogai-textbook.md`](../plans/05d-quiz-maogai-textbook.md)。
+> 毛概「教材」Tab 的题目测试与详解 Tab **完全独立**，使用 `tb-chXX` 命名空间。详见 [`docs/plans/archive/05d-quiz-maogai-textbook.md`](../plans/archive/05d-quiz-maogai-textbook.md)。
 
 | 维度 | 教材 Tab | 详解 Tab |
 |------|----------|----------|

@@ -29,4 +29,11 @@
 
 ## 待汇报问题
 
-（执行中追加）
+- 本机网络经 198.18.0.1 TUN 代理：到模型商偶发 `ECONNRESET` / 上游 429。连接阶段失败与 429 已自动退避重试且不计费；发送后断连按既定口径「额度保留待核对」，不自动重试。生产环境需另行观察。
+
+## 进度日志
+
+- 05:00 E2E 基建：Playwright(core 1.63) + 专用测试账号 OAuth(aal2) cookie，脚本在 `$KIROCREW_SCRATCH/kc/pw`（不入库）。
+- 05:05 根因：课堂 AI SDK baseURL 为相对路径 → `new URL` 抛错，静默 Agent/课堂助手/大纲从未真正调用模型（「没有真正接入」的主因）。已修 453a8a9c。
+- 05:30 真实录音链路验证：Chromium 伪麦克风 + Windows TTS 中文 WAV → `/api/class/asr` (SiliconFlow Qwen3-ASR) 200，文稿实时出现，停止后 AI 层级大纲、随堂题、KaTeX 补充卡片正常。979babbc。
+- 下一步：Review 模式 E2E（闪卡含课堂自动卡、笔记编辑器、答题/错题），再做 Studio 右栏与中间 Tab 验收。

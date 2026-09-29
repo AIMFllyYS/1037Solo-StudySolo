@@ -43,7 +43,7 @@ UNSPLASH_ACCESS_KEY=（可选）在 unsplash.com/oauth/applications 申请，启
 
 ### 检索索引分发
 
-`searchNotes` 只读本地 `content/.index/`（不随 git 入库）。开发机执行 `pnpm build-index` 生成；部署时把该目录作为产物同步到服务器同路径，重启 Node 进程后 `GET /api/health/search` 应返回 `ok: true`。详见 `docs/sop/10-search-index-lifecycle.md` 与 `docs/plans/15-search-index-distribution-and-rag-quality.md`。
+`searchNotes` 只读本地 `content/.index/`（不随 git 入库）。开发机执行 `pnpm build-index` 生成；部署时把该目录作为产物同步到服务器同路径，重启 Node 进程后 `GET /api/health/search` 应返回 `ok: true`。详见 `docs/sop/10-search-index-lifecycle.md` 与 `docs/plans/archive/15-search-index-distribution-and-rag-quality.md`。
 
 ## 渲染动画（Manim）
 
@@ -136,7 +136,7 @@ public/              # 静态资源（视频、图片、海报、PWA 图标）
 ### 关键技术组件
 - **内容树** - `lib/content-data/manifest.ts` 定义多学科内容结构
 - **路由系统** - 动态路由 `/[subject]/[category]/[id]` 支持多学科访问
-- **AI 集成** - AI SDK 7 `ToolLoopAgent` + UIMessage Stream；保留原 provider/模型注册表，兼容 OpenAI-compatible 与 Anthropic，前端 transport/stream 只负责传输，Zustand + IndexedDB 继续负责历史与持久化。迁移边界及验收见 [Agent SDK / Trace UI 记录](docs/plans/13-agent-sdk-trace-ui.md)
+- **AI 集成** - AI SDK 7 `ToolLoopAgent` + UIMessage Stream；保留原 provider/模型注册表，兼容 OpenAI-compatible 与 Anthropic，前端 transport/stream 只负责传输，Zustand + IndexedDB 继续负责历史与持久化。迁移边界及验收见 [Agent SDK / Trace UI 记录](docs/plans/archive/13-agent-sdk-trace-ui.md)
 - **可视化引擎** - 基于 Manim 的数学动画 + React 可交互组件
 - **公式渲染** - KaTeX 实现完美的数学公式显示
 

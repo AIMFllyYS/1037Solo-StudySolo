@@ -3,7 +3,7 @@
 > **调研人**：Agent-A（架构与渲染调研员）
 > **调研日期**：2026-07-05（正文机制描述）；**2026-09 全量校对重写**（计划 `25`，随计划 `23` 的 UI 层归位同步）
 > **项目版本**：gailvlun v0.3.1 → v0.4.x
-> **关联文档**：`docs/refer/rendering-architecture.md`、`docs/refer/performance-audit-report.md`、`docs/sop/subject-onboarding.md`、`docs/plans/00-execution-contract.md` 第六节「"右侧 Agent 里那个可视化 HTML"的唯一入口」与「指令注册表的环已断」
+> **关联文档**：`docs/refer/rendering-architecture.md`、`docs/refer/performance-audit-report.md`、`docs/sop/subject-onboarding.md`、`docs/plans/archive/00-execution-contract.md` 第六节「"右侧 Agent 里那个可视化 HTML"的唯一入口」与「指令注册表的环已断」
 >
 > **本次重写说明**：2026-07 初版基于 `lib/markdown/directiveComponents.ts` 与 `lib/markdown/noteComponents.tsx` 撰写，两个文件当时都在 `lib/markdown/` 下。计划 `23`（UI 层归位）把它们**移出了 `lib/`**：指令组件映射表现在是 `components/shared/directives/registry.ts`（导出名仍叫 `directiveComponents`），笔记侧组件映射表现在是 `components/notes/noteComponents.tsx`。原因是 `lib/**` 不得 import `components/**`（ESLint `no-restricted-imports` 已是 error），而这两个映射表本质是「引用一堆 React 组件的纯对象」，不该留在 `lib/` 里。搬家过程中还**顺带断开了一个真实存在的循环依赖**（`QuizMarkdown → registry.ts → MemoryCard → 回 QuizMarkdown`），以及**修复了两个既存 P0**（`normalizeDirectiveLabels` 的属性边界改用白名单判定；`MemoryCard` 正文改用 `hProperties.raw` 而非从已解析 React 树回抽）。本篇已按现网结构重写，插件链本身（`lib/markdown/plugins.ts`）与指令归一逻辑（`remarkDirectives.ts`）的文件位置未变。
 
@@ -45,7 +45,7 @@ components/interactives/                # 与指令系统无关的另一套（�
   registry.ts                           # 供 MediaEmbed 的 InteractiveEmbed 查表（::interactive{id=...}）
 ```
 
-**红线（`docs/plans/00-execution-contract.md` 第六节）**：`QuizMarkdownBase.tsx` 不得 import `components/shared/directives/registry`（直接或间接均不可）；`MemoryCard.tsx` 不得改回 import `QuizMarkdown.tsx`（只能 import `QuizMarkdownBase`）。这两条红线断开的正是 2026-07 时代真实存在过的环：`QuizMarkdown → registry.ts → MemoryCard → 回 QuizMarkdown`，历史上曾以「先求值 `registry.ts` 时 14 个指令组件被静默丢弃」与「`Cannot access 'directiveComponents' before initialization` 崩溃」两种形态出现过。
+**红线（`docs/plans/archive/00-execution-contract.md` 第六节）**：`QuizMarkdownBase.tsx` 不得 import `components/shared/directives/registry`（直接或间接均不可）；`MemoryCard.tsx` 不得改回 import `QuizMarkdown.tsx`（只能 import `QuizMarkdownBase`）。这两条红线断开的正是 2026-07 时代真实存在过的环：`QuizMarkdown → registry.ts → MemoryCard → 回 QuizMarkdown`，历史上曾以「先求值 `registry.ts` 时 14 个指令组件被静默丢弃」与「`Cannot access 'directiveComponents' before initialization` 崩溃」两种形态出现过。
 
 ## 1. 执行摘要
 
@@ -633,7 +633,7 @@ sequenceDiagram
 - `docs/refer/rendering-architecture.md` — 共享渲染架构规范（权威文档）
 - `docs/refer/performance-audit-report.md` — 性能审查报告（RSC 预渲染、懒加载）
 - `docs/sop/subject-onboarding.md` — 学科接入 SOP（指令组件注册）
-- `docs/plans/00-execution-contract.md` 第六节 — 「指令注册表的环已断」「"右侧 Agent 里那个可视化 HTML"的唯一入口」
+- `docs/plans/archive/00-execution-contract.md` 第六节 — 「指令注册表的环已断」「"右侧 Agent 里那个可视化 HTML"的唯一入口」
 
 ### 关键源码
 

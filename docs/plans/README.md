@@ -17,3 +17,5 @@
 | [`agent-ux-finalization.execution.md`](./agent-ux-finalization.execution.md) | 同上：实施记录（落点对照 · 决定 · 验收 · 已知边界） |
 | [`notes-flashcards-cloud-sync.md`](./notes-flashcards-cloud-sync.md) | 笔记 / 闪卡云同步（0005 迁移） |
 | [`app-users-nickname.md`](./app-users-nickname.md) | 昵称（0006 迁移） |
+| [`classolo-review-goal-20260929.md`](./classolo-review-goal-20260929.md) | Classolo 全量接入 + Review 模式 + Agent UX：可恢复的目标与进度记录（2026-09-29 起，含阶段状态与 Issue 取舍） |
+| [`2026-auth-login-redesign-plan.md`](./2026-auth-login-redesign-plan.md) | 登录注册板块 + 人机验证面板改版：设计与落地规划（**主体已落地**；文首记录了与现状的偏差——登录入口已改为跳转 1037Solo 统一账号中心） |

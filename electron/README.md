@@ -16,8 +16,8 @@ API 密钥作为环境变量注入。**Next 应用代码零改动。**
     不可手改。打开「应用 → API 密钥设置…」，已存的密钥会自动带出，只需在新增栏补填后
     「保存并启动」即热生效。新增一个密钥 = 在 `main.js` 的 `KEY_NAMES`、`startServer` 注入、
     `setup.html` 各加一处，其余流程自动复用。
-- **内置的非密钥配置**（见 `electron/config.js`，可安全打进 exe）：base URL、模型名、
-  reasoning 字段、embedding/rerank 模型、search mode、视频 CDN、索引 COS 兜底。
+- **内置的非密钥配置**（见 `electron/config.js`，可安全打进 exe）：固定本地端口 `APP_PORT: 35349`（与 `package.json` 的 `dev`/`start` 一致，保证网页端与桌面端同源）、base URL、模型名、
+  reasoning 字段、embedding/rerank 模型、search mode、视频 CDN。
 
 ## 离线 / 在线
 
@@ -49,7 +49,7 @@ pnpm run desktop:dev    # electron . —— 走真实主进程：弹密钥设置
 
 1. `main.js` 读取/收集密钥（`KEY_NAMES`，`safeStorage` DPAPI 加密）。
 2. 以 `ELECTRON_RUN_AS_NODE` 用 Electron 自带 Node 跑 `.next/standalone/server.js`，
-   `cwd` 设为 standalone 目录（应用用 `process.cwd()` 读 `content/`），注入 env + 动态端口。
+   `cwd` 设为 standalone 目录（应用用 `process.cwd()` 读 `content/`），注入 env + **固定端口 35349**（`electron/config.js` 的 `APP_PORT`；端口变了 origin 就变，本地数据会被孤立，因此绝不随机换端口）。
 3. 轮询端口就绪后开 `BrowserWindow` 加载 `127.0.0.1:PORT`。
 4. 「应用 → API 密钥设置」可改密钥，保存后自动重启 server 并刷新（因 `provider.ts`
    在模块加载时读 env，密钥变更需重启服务进程）。
@@ -58,4 +58,4 @@ pnpm run desktop:dev    # electron . —— 走真实主进程：弹密钥设置
 
 - 未做代码签名：首次运行 Windows SmartScreen/杀软可能提示，「仍要运行」即可（或后续配置签名）。
 - 图标可选：放 `build/icon.ico` 后在 `electron-builder.yml` 取消 `icon` 注释。
-- `next.config.mjs` 仅当 `BUILD_STANDALONE=1` 才切到 standalone + 关图片优化，**不影响本地 / 自托管 Web 构建**。检索索引随 `content/.index/` 打进包内。
+- `next.config.mjs` 仅当 `BUILD_STANDALONE=1` 才切到 standalone + 关图片优化，**不影响本地 / 自托管 Web 构建**。检索索引随 `content/.index/` 打进包内，运行时只读本地、不从远端回退（见 `docs/sop/10-search-index-lifecycle.md`）。

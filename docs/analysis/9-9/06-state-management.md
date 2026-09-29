@@ -3,7 +3,7 @@
 > **调研人**：Agent-B（AI与存储调研员）
 > **调研日期**：2026-07-05（正文机制描述）；**2026-09 全量校对重写**（计划 `25`，随计划 `22` 的 store 搬家同步）
 > **项目版本**：gailvlun v0.3.1 → v0.4.x
-> **关联文档**：[存储架构规范](../refer/storage-architecture.md)、[性能审查报告](../refer/performance-audit-report.md)、`lib/stores/README.md`（store 清点的权威来源）、`docs/plans/00-execution-contract.md` 第六节
+> **关联文档**：[存储架构规范](../../refer/storage-architecture.md)、[性能审查报告](../../refer/performance-audit-report.md)、`lib/stores/README.md`（store 清点的权威来源）、`docs/plans/archive/00-execution-contract.md` 第六节
 >
 > **本次重写说明**：2026-07 初版基于当时的 `lib/store.ts`（全局 store 真身）+ `lib/hooks/useXxx.ts`（17 个 store 散落各处）快照撰写。计划 `22` 把全部 store 收进 `lib/stores/`（现网 **28** 个），`lib/store.ts` 与原 `lib/hooks/useXxx.ts` 只留 `@public @deprecated` 的一行转发壳（`export * from "@/lib/stores/xxx"`）。**本篇已按现网结构整篇重写**，机制性结论（订阅优化、持久化模式、跨 store 调用）在搬家后逐一核对仍然成立，仅路径与数量更新；历史决策分析（§6）保留 2026-07 视角作为演进记录。
 
@@ -686,7 +686,7 @@ sequenceDiagram
 - [Zustand persist middleware](https://zustand.docs.pmnd.rs/reference/integrations/persisting-store-data)
 - [Zustand SSR / hydration](https://zustand.docs.pmnd.rs/guides/nextjs)
 - [useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore)
-- 项目内：[存储架构规范](../refer/storage-architecture.md)
-- 项目内：[性能审查报告](../refer/performance-audit-report.md)
+- 项目内：[存储架构规范](../../refer/storage-architecture.md)
+- 项目内：[性能审查报告](../../refer/performance-audit-report.md)
 - 项目内：`lib/stores/README.md`（store 清点权威来源）
-- 项目内：`docs/plans/00-execution-contract.md` 第六节「Agent 与状态契约」「布局档位契约」
+- 项目内：`docs/plans/archive/00-execution-contract.md` 第六节「Agent 与状态契约」「布局档位契约」

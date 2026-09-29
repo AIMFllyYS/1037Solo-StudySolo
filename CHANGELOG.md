@@ -49,7 +49,7 @@
 - 新增 Agent Trace 时间轴：思考、工具调用与中间说明按序排列，完成自动折叠、取消保留部分内容，支持键盘折叠与 reduced-motion；引用、图片画廊、交互产物及生图批准卡置于最终回答下方。
 - 保留流式 UI 节流、SSE 心跳活动检测、取消/卸载清理、标题和追问生成、图片附件水合、上下文软上限，以及主会话/划词浮窗独立的模型、Token 与计费归属；data/metadata 用量每请求只结算一次。
 - artifact、record、chat-title、follow-ups、canvas-revise 统一通过 SDK 模型工厂调用，保留各自的客户端响应契约；专用 image-gen 协议不变。
-- 移除无消费者的旧 Anthropic 手写翻译器、旧消息/思考组件及嵌套处理卡片 CSS；补充真实 SDK 协议、hook、Trace 与浏览器回归。完整验收边界与待修复稳定层问题见 `docs/plans/13-agent-sdk-trace-ui.md`。
+- 移除无消费者的旧 Anthropic 手写翻译器、旧消息/思考组件及嵌套处理卡片 CSS；补充真实 SDK 协议、hook、Trace 与浏览器回归。完整验收边界与待修复稳定层问题见 `docs/plans/archive/13-agent-sdk-trace-ui.md`。
 
 - 学科元数据收敛到 `lib/content-data/subjects.registry.ts`，学科名称、短名、学年、图标和提示词配置由单一注册表派生。
 - 板块能力与 key 推导策略改为 manifest 声明，标准板块统一由 `lib/content-data/category-templates.ts` 提供。

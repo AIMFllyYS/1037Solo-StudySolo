@@ -3,7 +3,7 @@
 > **调研人**：Agent-B（AI与存储调研员）
 > **调研日期**：2026-07-05
 > **项目版本**：gailvlun v0.3.1
-> **关联文档**：[存储架构规范](../../docs/refer/storage-architecture.md)、[性能审查报告](../../docs/refer/performance-audit-report.md)
+> **关联文档**：[存储架构规范](../../refer/storage-architecture.md)、[性能审查报告](../../refer/performance-audit-report.md)
 >
 > **2026-09 校对说明**（计划 `25`）：`lib/storage/idbStorage.ts` / `lib/storage/chatStorage.ts` 本身的机制与文件位置未变，正文描述仍准确。但所有消费方 store 已随计划 `22` 从 `lib/hooks/useXxx.ts` 搬到 `lib/stores/xxx.ts`（原路径只留 1 行 `@deprecated` 转发壳），本文档已把命中的 `lib/hooks/useChatHistory.ts`、`useReviewCards.ts`、`useSettings.ts`、`useBrowser.ts` 等路径更新为现网真身位置；`PERSIST_KEYS` 现网新增了 `documents`（`useDocuments` 持久化 key，2026-07 调研时还没有这个 store）。行号未逐条重新核对，仅路径迁移。
 
@@ -725,5 +725,5 @@ flowchart TD
 - [useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore)
 - [IndexedDB API](https://developer.mozilla.org/docs/Web/API/IndexedDB_API)
 - [Page Visibility API](https://developer.mozilla.org/docs/Web/API/Page_Visibility_API)
-- [项目内：存储架构规范](../../docs/refer/storage-architecture.md)
-- [项目内：性能审查报告 §3.1 流式对话双节流](../../docs/refer/performance-audit-report.md)
+- [项目内：存储架构规范](../../refer/storage-architecture.md)
+- [项目内：性能审查报告 §3.1 流式对话双节流](../../refer/performance-audit-report.md)

@@ -7,7 +7,7 @@
 > **React 版本**：19.2.7
 > **TypeScript 版本**：5.7.3
 >
-> **2026-09 校对说明**（计划 `25`）：第 2.15 节 `noteComponents.tsx` 路径已更新为现网位置 `components/notes/noteComponents.tsx`（计划 `23` 从 `lib/markdown/` 搬出）。本报告其余的合规判定（P0/P1/P2/P3 问题清单、ESLint/图片优化/元数据等现状）为 2026-07 快照，未逐条重新核实是否已修复；如需最新合规状态，请重新跑 `pnpm lint` / `pnpm exec tsc --noEmit` 并对照 `docs/plans/00-execution-contract.md` 第六节。
+> **2026-09 校对说明**（计划 `25`）：第 2.15 节 `noteComponents.tsx` 路径已更新为现网位置 `components/notes/noteComponents.tsx`（计划 `23` 从 `lib/markdown/` 搬出）。本报告其余的合规判定（P0/P1/P2/P3 问题清单、ESLint/图片优化/元数据等现状）为 2026-07 快照，未逐条重新核实是否已修复；如需最新合规状态，请重新跑 `pnpm lint` / `pnpm exec tsc --noEmit` 并对照 `docs/plans/archive/00-execution-contract.md` 第六节。
 
 ## 1. 执行摘要
 

@@ -1,5 +1,9 @@
 # 目标模式提示词：Agent 板块整改夜间连续执行
 
+> ⛔ **已归档，不要执行。** 这是 2026-09-12 16:45 之前的「一个 Issue = 一个 loop」旧调度提示词，当天已被 loop 制取代；它教人按 54 个子 Issue 逐个开跑，**照做会重跑已经关掉的工作**。现行入口：[`docs/plans/Agent-refactor/00-loop-map.md`](../../../../plans/Agent-refactor/00-loop-map.md)，可直接投喂的提示词是 [`docs/plans/Agent-refactor/99-goal-mode-prompt.md`](../../../../plans/Agent-refactor/99-goal-mode-prompt.md)。归档索引见 [`docs/archive/README.md`](../../../README.md)。
+>
+> 本文件原先在 `docs/analysis/Agent/`，因被 `99-goal-mode-prompt.md` 明确取代而移入 `docs/archive/`，正文一字未改（其中的「`.env` 未被 gitignore」「prebuild 串了 8 个守卫」等现状描述均已过时）。
+
 > 用途：无人值守连续跑数小时，逐个消化 `AIMFllyYS/Notebook-MedFreshman` 上 #48–#101 的 54 个子 Issue。
 > 配套：调度规则见 `01-goal-mode-runbook.md`，问题背景见 `00-agent-issues-consolidated.md`。
 > 下面 `====` 之间的内容即为可直接投喂的提示词正文。
