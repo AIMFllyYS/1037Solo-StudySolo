@@ -98,6 +98,7 @@ content/.index/
 .trae/
 .mimocode/
 .workbuddy/
+.kiro/
 
 # backup / typo directories
 content/probability/shizhan-yanlian/_backup_v1/
