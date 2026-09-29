@@ -19,6 +19,8 @@ import { filterSessions, sessionStatusLabel } from './filter'
 export interface SessionSidebarProps {
   sessions: readonly ClassSession[]
   currentId: string | null
+  /** 当前课的实时录音状态：云端状态落库有延迟，当前行以它为准，停止后不再残留「录音中」。 */
+  liveStatus?: 'idle' | 'recording' | 'paused' | 'stopped'
   collapsed: boolean
   pendingCount: number
   busy?: boolean
@@ -32,6 +34,7 @@ export interface SessionSidebarProps {
 export function SessionSidebar({
   sessions,
   currentId,
+  liveStatus,
   collapsed,
   pendingCount,
   busy,
@@ -173,7 +176,7 @@ export function SessionSidebar({
                         {s.title || '未命名课堂'}
                       </span>
                       <span className="mt-0.5 block text-[11px] text-[color:var(--ink-faint)]">
-                        {sessionStatusLabel(s.status)}
+                        {sessionStatusLabel(active && liveStatus && liveStatus !== 'idle' ? (liveStatus === 'stopped' ? 'ended' : liveStatus) : s.status)}
                       </span>
                     </button>
                     <button

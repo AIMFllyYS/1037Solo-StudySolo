@@ -106,15 +106,8 @@ export async function deliverSilentRender(): Promise<void> {
         maxOutputTokens: CLASS_OUTPUT_TOKENS,
         maxRetries: 0,
       })
-    // 服务端对「连接阶段失败」已释放预留并返回 503 + Retry-After：这类瞬时错误值得自动再试一次，
-    // 否则导入文稿后不会再有新文稿触发，静默补充就永远停在「暂不可用」。
-    const result = await run().catch(async (error: unknown) => {
-      const status = (error as { statusCode?: unknown } | null)?.statusCode
-      if (status !== 503 && status !== 502) throw error
-      await new Promise((resolve) => setTimeout(resolve, 3000))
-      if (getTranscriptPublic().sessionId !== session) throw error
-      return run()
-    })
+    // 瞬时失败（429 / 连接阶段 503）由课堂 transport 统一退避重试，这里不再二次重试，避免结果未知时重复计费。
+    const result = await run()
     if (getTranscriptPublic().sessionId !== session) return
     const calls = collectToolCalls(result).slice(0, 3)
     let produced = 0

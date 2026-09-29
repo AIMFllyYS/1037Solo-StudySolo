@@ -59,7 +59,7 @@ export async function POST(request:Request){
       if(isConnectPhaseFailure(error)){await cancelCredit(admission);return Response.json({error:{message:"课堂模型服务连接失败，请稍后重试（未扣费）"}},{status:503,headers:{"Retry-After":"3"}});}
       throw error;
     }
-    if(!upstream.ok){if([400,401,403,404,413,422,429].includes(upstream.status))await cancelCredit(admission);return Response.json({error:{message:`课堂模型服务暂不可用 (${upstream.status})`}},{status:502});}
+    if(!upstream.ok){console.warn(`[class-ai] upstream ${upstream.status} model=${provider.apiModelId}`);if([400,401,403,404,413,422,429].includes(upstream.status))await cancelCredit(admission);if(upstream.status===429)return Response.json({error:{message:"课堂模型繁忙，请稍后重试（未扣费）"}},{status:429,headers:{"Retry-After":upstream.headers.get("retry-after")||"2"}});return Response.json({error:{message:`课堂模型服务暂不可用 (${upstream.status})`}},{status:502});}
     if(!body.stream){const data=await upstream.json();await settleMicrocredits(admission,actualAmount(data.usage,tariff,ratio,inputBound,outputLimit));return Response.json(data);}
     if(!upstream.body)throw new Error("Missing provider stream");
     const reader=upstream.body.getReader();const decoder=new TextDecoder(),encoder=new TextEncoder();let buffer='';let usage:unknown;const reserved=admission;
@@ -98,7 +98,7 @@ export async function POST(request:Request){
     return new Response(stream,{headers:{"Content-Type":"text/event-stream","Cache-Control":"no-store","X-Accel-Buffering":"no"}});
   }catch(error){
     const status=error instanceof RequestBodyTooLarge?413:error instanceof CreditAdmissionError?error.status:error instanceof z.ZodError||error instanceof SyntaxError?400:503;
-    if(status>=500)console.warn(`[class-ai] ${status} ${error instanceof Error?`${error.name}: ${error.message.slice(0,160)}`:"unknown"}`);
+    if(status>=500)console.warn(`[class-ai] ${status} ${error instanceof Error?`${error.name}: ${error.message.slice(0,160)} cause=${String((error as {cause?:{code?:unknown}}).cause?.code??"")}`:"unknown"}`);
     return Response.json({error:{message:error instanceof CreditAdmissionError?error.message:"课堂 AI 请求未能完成；已接受的请求额度保留待核对"}},{status});
   }
 }

@@ -31,6 +31,8 @@ export default function Workbench(){
   const revision=useSyncExternalStore(subscribeClassSync,getClassRevision,()=>0);
   void revision;
   const sessionId=useTranscriptPublic(s=>s.sessionId);
+  // 录音开始 / 结束会改会话状态；侧栏要跟着刷新，否则停止后仍显示「录音中」。
+  const recordingStatus=useTranscriptPublic(s=>s.recordingStatus);
   const [sessions,setSessions]=useState<ClassSession[]>([]);
   const [capabilities,setCapabilities]=useState<{ai:boolean;asr:boolean;image:boolean}|null>(null);
   const [error,setError]=useState('');const [busy,setBusy]=useState(false);
@@ -69,7 +71,7 @@ export default function Workbench(){
     const sync=()=>{void flushClassPending(db);};window.addEventListener('online',sync);const syncTimer=setInterval(sync,10000);
     return()=>{notes();render();clearInterval(syncTimer);window.removeEventListener('online',sync);};
   },[owner,auth.userId]);
-  useEffect(()=>{if(owner&&owner===auth.userId&&sessionId)refreshSessions();},[owner,auth.userId,sessionId,refreshSessions]);
+  useEffect(()=>{if(owner&&owner===auth.userId&&sessionId)refreshSessions();},[owner,auth.userId,sessionId,recordingStatus,refreshSessions]);
   useEffect(()=>{
     if(!owner||owner!==auth.userId||initialized.current===owner)return;
     initialized.current=owner;
@@ -138,12 +140,34 @@ export default function Workbench(){
     const bytes=zipSync(files,{level:0});const url=URL.createObjectURL(new Blob([bytes.slice().buffer],{type:'application/zip'}));
     const a=document.createElement('a');a.href=url;a.download=`class-${sessionId}.zip`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
+  // issue #65：录音结束后自动整理知识卡片（每节课只自动一次，写入复习闪卡）。
+  // 等 8 秒让最后一段转写和大纲落定；文稿太短（<120 字）不值得出卡。
+  const prevRecording=useRef(recordingStatus);
+  const sessionsRef=useRef(sessions);sessionsRef.current=sessions;
+  const autoCardTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
+  useEffect(()=>()=>{if(autoCardTimer.current)clearTimeout(autoCardTimer.current);},[]);
+  useEffect(()=>{
+    const prev=prevRecording.current;prevRecording.current=recordingStatus;
+    if(!owner||!sessionId||recordingStatus!=='stopped'||(prev!=='recording'&&prev!=='paused'))return;
+    const key=`ss-class-autocards:${owner}:${sessionId}`;
+    try{if(localStorage.getItem(key))return;}catch{return;}
+    if(autoCardTimer.current)clearTimeout(autoCardTimer.current);
+    autoCardTimer.current=setTimeout(()=>{
+      autoCardTimer.current=null;
+      if(getTranscriptPublic().sessionId!==sessionId)return;
+      const chars=getTranscriptPublic().committed.reduce((n,s)=>n+s.text.length,0);
+      if(chars<120)return;
+      try{localStorage.setItem(key,new Date().toISOString());}catch{}
+      const title=sessionsRef.current.find(s=>s.id===sessionId)?.title;
+      void generateClassroomFlashcards({title}).then(r=>setToast(r.error?`自动出卡未完成：${r.error}`:`已自动生成 ${r.saved} 张知识卡片，可在 Review 模式复习`));
+    },8000);
+  },[recordingStatus,owner,sessionId]);
   useEffect(()=>{if(!toast)return;const t=setTimeout(()=>setToast(''),3200);return()=>clearTimeout(t);},[toast]);
   if(auth.status==='loading')return <div className="p-8 text-sm text-[color:var(--ink-soft)]">正在验证课堂账号…</div>;
   if(!auth.userId)return <section className="m-6 rounded-2xl border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] p-8"><h1 className="text-2xl font-semibold text-[color:var(--ink)]">课堂工作台</h1><p className="my-4 text-[color:var(--ink-soft)]">登录后录音、整理笔记与课堂提问，课堂产物随账号同步。</p><button className="rounded-xl bg-[color:var(--accent)] px-5 py-3 text-[color:var(--accent-ink)]" onClick={()=>redirectAccount()}>登录统一账号</button></section>;
   if(owner!==auth.userId)return <div className="p-8 text-sm text-[color:var(--ink-soft)]">正在安全切换课堂空间…</div>;
   return <div className="ss-class-workbench relative flex h-full min-h-0 w-full overflow-hidden" key={owner}>
-    <SessionSidebar sessions={sessions} currentId={sessionId} collapsed={sidebarCollapsed} pendingCount={getPendingCount()} busy={busy} onToggle={()=>setSidebarCollapsed(v=>!v)} onOpen={id=>void open(id)} onNew={()=>void newClass()} onRename={(id,t)=>void rename(id,t)} onArchive={id=>void archive(id)}/>
+    <SessionSidebar sessions={sessions} currentId={sessionId} liveStatus={recordingStatus} collapsed={sidebarCollapsed} pendingCount={getPendingCount()} busy={busy} onToggle={()=>setSidebarCollapsed(v=>!v)} onOpen={id=>void open(id)} onNew={()=>void newClass()} onRename={(id,t)=>void rename(id,t)} onArchive={id=>void archive(id)}/>
     <div className="flex min-h-0 min-w-0 flex-1 flex-col">
       <header className="flex items-center gap-1.5 border-b border-[color:var(--line-soft)] px-3 py-2">
         <div className="mr-auto min-w-0">

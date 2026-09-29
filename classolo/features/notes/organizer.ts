@@ -2,7 +2,7 @@ import { CLASS_OUTPUT_TOKENS } from '@/classolo/lib/ai/budget'
 import { isClassHydrating } from '@/classolo/lib/db'
 import { createModel, generateText } from '@/classolo/lib/ai'
 import { resolveSecret } from '@/classolo/lib/providers/secrets'
-import { getTranscriptPublic, subscribeTranscriptPublic } from '@/classolo/lib/session'
+import { getNotesPublic, getTranscriptPublic, subscribeTranscriptPublic } from '@/classolo/lib/session'
 import { patchNotesPublic } from '@/classolo/lib/session/writes/notes'
 import type { OutlineDigestNode } from '@/classolo/lib/session'
 
@@ -115,10 +115,22 @@ export async function modelOutline(
       title: node.title,
       parentId: node.parentId ?? null,
     }))
-  } catch {
+  } catch (error) {
+    // 模型瞬时失败（429 / 断连）时不要用启发式结果覆盖已有的 AI 层级大纲；
+    // 交给调度器稍后重试。没有已有大纲时才回落启发式，保证面板不空。
+    if (getNotesPublic().outlineDigest.length > 0) throw new OutlineModelUnavailable(error)
     return heuristicOutline(texts)
   }
 }
+
+export class OutlineModelUnavailable extends Error {
+  constructor(cause: unknown) {
+    super('outline model unavailable', { cause })
+  }
+}
+
+/** 失败后重试的延迟；导出便于测试。 */
+export const OUTLINE_RETRY_MS = 15000
 
 export function getOutlineGenerateCalls(): number {
   return generateCalls
@@ -135,6 +147,7 @@ export function startOutlineOrganizer(
   const subscribeCommitted =
     options.subscribeCommitted ?? defaultSubscribeCommitted
 
+  let retried = false
   const schedule = () => {
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => {
@@ -148,7 +161,16 @@ export function startOutlineOrganizer(
           return
         }
         const sessionId=getTranscriptPublic().sessionId
-        const digest = await generate(texts)
+        let digest: readonly OutlineDigestNode[]
+        try {
+          digest = await generate(texts)
+        } catch (error) {
+          if (!(error instanceof OutlineModelUnavailable) || retried) return
+          retried = true
+          if (currentRun === runId) timer = setTimeout(() => { timer = null; schedule() }, OUTLINE_RETRY_MS)
+          return
+        }
+        retried = false
         if (getTranscriptPublic().sessionId!==sessionId || currentRun !== runId) return
         patchNotesPublic({ outlineDigest: digest })
       })()

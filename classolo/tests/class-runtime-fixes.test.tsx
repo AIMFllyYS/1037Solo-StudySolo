@@ -72,3 +72,24 @@ describe('transcript search', () => {
     expect(searchTranscriptSnapshot('细胞膜', committed)).toHaveLength(0)
   })
 })
+
+describe('classroom transport retry policy', () => {
+  it('retries only statuses where the server released the credit hold', async () => {
+    const { isRetryableClassResponse } = await import('@/classolo/lib/ai/create-model')
+    const r = (status: number, headers: Record<string, string> = {}) => ({ status, headers: new Headers(headers) })
+    expect(isRetryableClassResponse(r(429))).toBe(true)
+    expect(isRetryableClassResponse(r(503, { 'retry-after': '3' }))).toBe(true)
+    // 无 Retry-After 的 503 = 结果未知、额度保留待核对：不能重试，否则可能重复计费。
+    expect(isRetryableClassResponse(r(503))).toBe(false)
+    expect(isRetryableClassResponse(r(502))).toBe(false)
+    expect(isRetryableClassResponse(r(200))).toBe(false)
+  })
+
+  it('honours Retry-After and caps the backoff', async () => {
+    const { retryDelayMs } = await import('@/classolo/lib/ai/create-model')
+    const d = retryDelayMs({ status: 429, headers: new Headers({ 'retry-after': '2' }) }, 0)
+    expect(d).toBeGreaterThanOrEqual(2000)
+    expect(d).toBeLessThan(2500)
+    expect(retryDelayMs({ status: 429, headers: new Headers({ 'retry-after': '60' }) }, 0)).toBeLessThanOrEqual(8400)
+  })
+})
