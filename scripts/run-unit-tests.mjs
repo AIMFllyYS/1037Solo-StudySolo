@@ -27,6 +27,8 @@ const SKIP_DIRS = new Set([
 
 const SKIP_PATH_PREFIXES = [
   "docs/refer/dist",
+  // 原独立 Classolo 源码只读归档在仓库内（gitignored），不属于本项目测试面。
+  "1037Solo-Classolo",
 ];
 
 function shouldSkipDir(path) {
