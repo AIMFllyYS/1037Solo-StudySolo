@@ -3,11 +3,9 @@ import { z } from 'zod'
 import type { RenderModuleManifest } from '../manifest'
 
 import { ImageModule } from './Component'
+import { imagePropsSchema } from './schema'
 
-export const imagePropsSchema = z.object({
-  query: z.string().min(1),
-  alt: z.string().optional(),
-})
+export { imagePropsSchema } from './schema'
 
 export const imageModule = {
   name: 'image',

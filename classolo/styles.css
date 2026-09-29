@@ -20,7 +20,10 @@
 .ss-class-workbench .class-action{border:1px solid var(--line);border-radius:.65rem;padding:.45rem .7rem;font-size:.8rem;background:var(--bg-panel);}
 .ss-class-workbench .class-action:hover{background:var(--bg-muted);}
 .ss-class-workbench .class-action:disabled{opacity:.45;cursor:not-allowed;}
-.ss-class-workbench .glass-panel{background:var(--bg-panel);border:1px solid var(--line);box-shadow:0 8px 32px #00000015;}
+.ss-class-workbench .ss-tool{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--line-soft);border-radius:.55rem;padding:.35rem .6rem;font-size:.78rem;line-height:1;color:var(--ink-soft);background:var(--bg-panel);}
+.ss-class-workbench .ss-tool:hover{background:var(--bg-muted);color:var(--ink);}
+.ss-class-workbench .ss-tool:disabled{opacity:.4;cursor:not-allowed;}
+.ss-class-workbench .glass-panel{background:var(--bg-panel);border:1px solid var(--line-soft);box-shadow:0 8px 32px #00000015;}
 .ss-class-workbench .node-paper-bg{background:var(--bg-panel);}
 .ss-class-workbench :focus-visible{outline:2px solid var(--md-sys-color-primary);outline-offset:2px;}
 .ss-class-workbench .react-flow__attribution{font-size:9px;}

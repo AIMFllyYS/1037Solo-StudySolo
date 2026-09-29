@@ -24,6 +24,8 @@ export interface TranscriptPublic {
 export interface OutlineDigestNode {
   id: string
   title: string
+  /** 父节点 id，用于思维导图层级；顶层为 null/undefined。 */
+  parentId?: string | null
 }
 
 export interface NotesPublic {

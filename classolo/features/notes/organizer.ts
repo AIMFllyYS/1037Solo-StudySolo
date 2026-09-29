@@ -5,6 +5,8 @@ import { getTranscriptPublic, subscribeTranscriptPublic } from '@/classolo/lib/s
 import { patchNotesPublic } from '@/classolo/lib/session/writes/notes'
 import type { OutlineDigestNode } from '@/classolo/lib/session'
 
+import { outlineTreeFromLines, stableOutlineId } from './hierarchy'
+
 export const OUTLINE_DEBOUNCE_MS = 4000
 
 export type OutlineGenerator = (
@@ -23,27 +25,18 @@ let generateCalls = 0
 let runId = 0
 let stopCurrent: (() => void) | null = null
 
-function stableId(title: string): string {
-  let hash = 0
-  for (let i = 0; i < title.length; i += 1) {
-    hash = (hash * 31 + title.charCodeAt(i)) | 0
-  }
-  return `outline-${Math.abs(hash)}`
-}
-
 function defaultReadTexts(): string[] {
   return getTranscriptPublic().committed.map((segment) => segment.text)
 }
 
+/**
+ * 把层级树的顶层节点尽量锚定到文稿片段 id（点击回跳）。
+ * 顶层节点按顺序对应最近的文稿片段；子节点保留派生 id。
+ */
 async function outlineFromTranscript(
   texts: string[],
 ): Promise<readonly OutlineDigestNode[]> {
-  const titled = await modelOutline(texts)
-  const committed = getTranscriptPublic().committed
-  return titled.map((node, index) => ({
-    id: committed[index]?.id ?? node.id,
-    title: node.title,
-  }))
+  return modelOutline(texts)
 }
 
 function defaultSubscribeCommitted(onCommitted: () => void): () => void {
@@ -72,18 +65,20 @@ function readAiRuntime(): { baseUrl: string; model: string } {
 export async function heuristicOutline(
   texts: string[],
 ): Promise<readonly OutlineDigestNode[]> {
-  const titles = texts
-    .map((text) => text.trim().slice(0, 24))
-    .filter((title) => title.length > 0)
-  const unique: OutlineDigestNode[] = []
+  // 无模型时：每段落取首句为主题（顶层），锚定到该文稿片段。
+  const committed = getTranscriptPublic().committed
+  const nodes: OutlineDigestNode[] = []
   const seen = new Set<string>()
-  for (const title of titles) {
-    const id = stableId(title)
-    if (seen.has(id)) continue
+  texts.forEach((text, index) => {
+    const title = text.trim().split(/[。！？.!?\n]/u)[0]?.trim().slice(0, 32)
+    if (!title) return
+    const anchor = committed[index]?.id
+    const id = anchor ?? stableOutlineId(null, title)
+    if (seen.has(id)) return
     seen.add(id)
-    unique.push({ id, title })
-  }
-  return unique
+    nodes.push({ id, title, parentId: null })
+  })
+  return nodes
 }
 
 export async function modelOutline(
@@ -103,14 +98,22 @@ export async function modelOutline(
       model: runtime.model,
     })
     const result = await generateText({
-      model,maxOutputTokens:1024,maxRetries:0,
-      prompt: `用中文列出本节课大纲标题，每行一个，不要编号，不要解释。\n${texts.slice(-12).join('\n')}`,
+      model,
+      maxOutputTokens: 1024,
+      maxRetries: 0,
+      prompt:
+        '把本节课整理成层级大纲。用缩进（每层 2 个空格）表达主题与子要点，' +
+        '每行一个要点，不要编号、不要解释。\n' +
+        texts.slice(-16).join('\n'),
     })
-    const lines = result.text
-      .split('\n')
-      .map((line) => line.replace(/^\d+[\.、)\s]*/u, '').trim())
-      .filter(Boolean)
-    return heuristicOutline(lines.length > 0 ? lines : texts)
+    const lines = result.text.split('\n')
+    const tree = outlineTreeFromLines(lines)
+    if (tree.length === 0) return heuristicOutline(texts)
+    return tree.map((node) => ({
+      id: node.id,
+      title: node.title,
+      parentId: node.parentId ?? null,
+    }))
   } catch {
     return heuristicOutline(texts)
   }
