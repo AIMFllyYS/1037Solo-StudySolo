@@ -31,6 +31,8 @@ import {
   clampThinkingEffort,
   wireThinkingEffort,
   modelMenuCategories,
+  declaredMaxOutputTokens,
+  FALLBACK_MAX_OUTPUT_TOKENS,
 } from "./models.ts";
 import { getMaxTokens } from "@/lib/context/types.ts";
 
@@ -509,4 +511,13 @@ test("modelAcceptsImageInput：自定义 vision 声明生效", () => {
   assert.equal(modelAcceptsImageInput(buildCustomModelRegistryId("g", "text"), groups), false);
   assert.equal(modelAcceptsImageInput("mimo-v2.6-pro", []), true);
   assert.equal(modelAcceptsImageInput("meituan/LongCat-2.0:free", []), false);
+});
+
+test("MODELS：每个文本模型都声明单次最大输出，未声明时按兜底值", () => {
+  for (const m of MODELS.filter((x) => x.type !== "image")) {
+    assert.ok((m.maxOutputK ?? 0) > 0, `${m.id} 缺 maxOutputK`);
+    assert.ok((m.maxOutputK ?? 0) <= (m.contextK ?? Infinity), `${m.id} 最大输出不能超过上下文`);
+  }
+  assert.equal(declaredMaxOutputTokens(getModelInfo("gpt-5.6-sol")), 128_000);
+  assert.equal(declaredMaxOutputTokens(undefined), FALLBACK_MAX_OUTPUT_TOKENS);
 });

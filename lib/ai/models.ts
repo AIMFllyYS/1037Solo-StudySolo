@@ -90,6 +90,11 @@ export interface ModelInfo {
   vision?: boolean;
   /** 上下文窗口（千 token），用于提示。 */
   contextK?: number;
+  /**
+   * 单次调用最大输出（千 token，含思考 token）。用户没在设置里改「单次输出上限」时，
+   * 每次调用都按它下发 max_tokens。缺省按 FALLBACK_MAX_OUTPUT_TOKENS。
+   */
+  maxOutputK?: number;
   hint: string;
   /** 有序端点链：失败且可恢复时尝试下一项。 */
   endpoints: ModelEndpoint[];
@@ -230,6 +235,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 128,
+    maxOutputK: 32,
     hint: "自定义 OpenAI 兼容端点 · 在桌面设置中填写 URL / 模型 ID / API Key",
     endpoints: [ep(RELAY, CUSTOM_OPENAI_MODEL_ID)],
   },
@@ -248,6 +254,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 64,
     hint: "全局默认 · 七牛优先 · 固定峰值平台费率 · 备用按渠道结算",
     // 七牛云第一跳（延迟最低），Protocom 中转容灾。七牛云支持 thinking 真正关闭。
     endpoints: [ep(QINIU, "deepseek/deepseek-v4.1-flash"), ep(RELAY, "deepseek/deepseek-v4.1-flash")],
@@ -269,6 +276,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 32,
     hint: "平台渠道暂未启用：供应商上下文分档与价格待核验",
     endpoints: [ep(QINIU, "qwen/qwen3.7-flash"), ep(RELAY, "Qwen/Qwen3.7-Flash")],
     icon: "qwen",
@@ -288,6 +296,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 64,
     hint: "平台固定额度价 · 中转供应商成本未核实 · 全模态",
     endpoints: [ep(RELAY, "mimo-v2.6-flash")],
     icon: "mimo",
@@ -306,6 +315,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 64,
     hint: "平台固定额度价 · 中转供应商成本未核实 · Pro的10倍",
     endpoints: [ep(RELAY, "xiaomi/mimo-v2.6-pro-ultraspeed")],
     icon: "mimo",
@@ -325,6 +335,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 128,
     hint: "平台渠道暂未启用：当前聚合组不能套用Codex优惠价",
     endpoints: [ep(RELAY, "gpt-5.6-luna")],
     icon: "openai",
@@ -342,6 +353,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 64,
     hint: "平台固定额度价 · 中转供应商成本未核实 · 1M",
     endpoints: [ep(RELAY, "mimo-v2.6-pro")],
     icon: "mimo",
@@ -363,6 +375,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 64,
     hint: "1M · 思考不可关",
     endpoints: [ep(RELAY, "google/gemini-3.8-flash")],
     icon: "gemini",
@@ -385,6 +398,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 128,
     hint: "1M · 思考不可关",
     // 第一跳七牛云，第二跳 Protocom 同模型，第三跳 MiMo 2.6 Flash（换模型兜底）。
     endpoints: [
@@ -408,6 +422,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 32,
     hint: "平台渠道暂未启用：多模态与缓存单位待核验",
     // 上游真实模型 id 是 Omni 版；registry id / 前端展示名保持 3.8 Flash 不变。
     endpoints: [ep(RELAY, "Qwen/Qwen3.8-Omni-Flash")],
@@ -428,6 +443,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 32,
     hint: "视觉 · 1M · high→xhigh",
     vendorTrainingNotice: MUSE_VENDOR_TRAINING_NOTICE,
     endpoints: [ep(RELAY, "meta/muse-spark-1.3-contributor")],
@@ -447,6 +463,7 @@ export const MODELS: ModelInfo[] = [
     thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
     contextK: 256,
+    maxOutputK: 32,
     hint: "免费 · 256K",
     endpoints: [ep(RELAY, "poolside/laguna-s-2.1-free")],
     icon: "poolside",
@@ -462,6 +479,7 @@ export const MODELS: ModelInfo[] = [
     thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
     contextK: 256,
+    maxOutputK: 32,
     hint: "免费 · 256K",
     endpoints: [ep(RELAY, "inclusionai/ling-3.0-flash-sante:free")],
     icon: "inclusionai",
@@ -479,6 +497,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 128,
     hint: "旗舰 · ≤272K展示基础价；>272K整单使用高档价",
     endpoints: [ep(RELAY, "gpt-5.6-sol")],
     icon: "openai",
@@ -497,6 +516,7 @@ export const MODELS: ModelInfo[] = [
     tools: true,
     vision: true,
     contextK: 1000,
+    maxOutputK: 64,
     hint: "旗舰 · 1M · 平台USD固定7换算 · 默认推理配置",
     endpoints: [ep(RELAY, "kimi-k3")],
     icon: "kimi",
@@ -751,6 +771,15 @@ export function getModelInfo(id: string): ModelInfo | undefined {
  */
 export function getLandedModelInfo(apiModelId: string, registryId: string): ModelInfo | undefined {
   return getModelInfo(apiModelId) ?? getModelInfo(registryId);
+}
+
+/** 注册表没声明 maxOutputK 时（自定义模型、未知上游）的单次输出上限。 */
+export const FALLBACK_MAX_OUTPUT_TOKENS = 32_768;
+
+/** 注册表声明的单次最大输出（token，含思考）。 */
+export function declaredMaxOutputTokens(info: Pick<ModelInfo, "maxOutputK"> | undefined): number {
+  const k = info?.maxOutputK;
+  return typeof k === "number" && Number.isFinite(k) && k > 0 ? Math.round(k * 1000) : FALLBACK_MAX_OUTPUT_TOKENS;
 }
 
 /** 主路由 provider（endpoints[0]）。 */

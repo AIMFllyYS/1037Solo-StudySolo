@@ -1,6 +1,7 @@
 import { resolveLedgerUserId } from "./usageLedger";
 import { runPaidContext } from "./paidContext";
 import { CreditAdmissionError } from "./centralCredits";
+import { releaseStaleAdmissions } from "./staleAdmissions";
 
 export function withPaidRequest<T extends Request>(handler: (request: T) => Promise<Response>, route: string) {
   return async (request: T): Promise<Response> => {
@@ -8,6 +9,8 @@ export function withPaidRequest<T extends Request>(handler: (request: T) => Prom
     if (!userId) return Response.json({ error: "请先登录并完成两步验证", code: "authentication_required" }, { status: 401 });
     const key = request.headers.get("idempotency-key") || crypto.randomUUID();
     if (!/^[A-Za-z0-9:_-]{8,100}$/.test(key)) return Response.json({ error: "请求标识格式无效" }, { status: 400 });
+    // 顺手回收该用户超时未结算的预留（进程内节流，失败不影响本次请求）。
+    void releaseStaleAdmissions(userId).catch(() => {});
     try {
       return await runPaidContext({ userId, requestId: key, route, sequence: 0, reservedCny: 0 }, () => handler(request));
     } catch (error) {

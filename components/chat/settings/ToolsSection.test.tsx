@@ -7,9 +7,41 @@ afterEach(() => {
   cleanup();
   useSettings.getState().setMaxToolRounds(6);
   useSettings.getState().setMaxWaitMs(300_000);
+  useSettings.getState().setMaxOutputTokens(0);
+  useSettings.getState().setTurnBudgetCredits(0);
 });
 
 describe("ToolsSection", () => {
+  it("单次输出上限：默认 0 = 跟随模型，失焦才提交并夹到合法范围", () => {
+    render(<ToolsSection />);
+    const input = screen.getByTestId("max-output-tokens");
+    expect(input).toHaveValue(0);
+    // 逐键输入不应在中途被夹成下限。
+    fireEvent.change(input, { target: { value: "8" } });
+    expect(useSettings.getState().maxOutputTokens).toBe(0);
+    fireEvent.change(input, { target: { value: "8192" } });
+    fireEvent.blur(input);
+    expect(useSettings.getState().maxOutputTokens).toBe(8192);
+    fireEvent.change(input, { target: { value: "10" } });
+    fireEvent.blur(input);
+    expect(useSettings.getState().maxOutputTokens).toBe(1024);
+    fireEvent.change(input, { target: { value: "0" } });
+    fireEvent.blur(input);
+    expect(useSettings.getState().maxOutputTokens).toBe(0);
+  });
+
+  it("单轮预算上限：默认 0 = 服务端上限，可设小数积分", () => {
+    render(<ToolsSection />);
+    const input = screen.getByTestId("turn-budget-credits");
+    expect(input).toHaveValue(0);
+    fireEvent.change(input, { target: { value: "2.5" } });
+    fireEvent.blur(input);
+    expect(useSettings.getState().turnBudgetCredits).toBe(2.5);
+    fireEvent.change(input, { target: { value: "-3" } });
+    fireEvent.blur(input);
+    expect(useSettings.getState().turnBudgetCredits).toBe(0);
+  });
+
   it("可以改最大工具调用轮数并写入 store", () => {
     render(<ToolsSection />);
     const input = screen.getByTestId("max-tool-rounds");

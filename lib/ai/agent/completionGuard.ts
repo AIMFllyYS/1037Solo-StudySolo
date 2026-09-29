@@ -10,7 +10,12 @@
  * 守卫只做一次续写（不会无限循环），续写与首轮共用同一条 UI 消息流与计费通道。
  */
 
-export type ContinuationKind = "answer" | "tool";
+export type ContinuationKind = "answer" | "tool" | "continue";
+
+/** 只写正文的续写（关闭思考与工具）。 */
+export function isTextOnlyContinuation(kind: ContinuationKind | undefined): boolean {
+  return kind === "answer" || kind === "continue";
+}
 
 export interface GuardStep {
   text: string;
@@ -47,6 +52,9 @@ export const ANSWER_RECOVERY_NUDGE =
 export const TOOL_RECOVERY_NUDGE =
   "（系统提示）你上一条回复说要调用工具，但并没有真正发起工具调用。现在立即发起你刚才说的那个工具调用（不要再口头说明）；如果确实不需要工具，就直接给出完整回答。";
 
+export const CONTINUE_RECOVERY_NUDGE =
+  "（系统提示）你上一条回答因为达到输出长度上限被截断了。现在不要重复已经写过的内容，也不要重新开头，直接从断开的地方接着写完；不要再思考、也不要调用工具。";
+
 export function decideContinuation(input: GuardInput): ContinuationDecision | null {
   if (input.disabled) return null;
   const last = input.steps[input.steps.length - 1];
@@ -56,6 +64,10 @@ export function decideContinuation(input: GuardInput): ContinuationDecision | nu
   // 整轮任何一步已产出正文时，空的最后一步不算「没回答」（例如工具后只追加 FollowUp）。
   const anyText = input.steps.some((step) => step.text.trim().length > 0);
   if (!anyText) return { kind: "answer", nudge: ANSWER_RECOVERY_NUDGE };
+  // 写了一半被输出上限截断：接着写，而不是让学生看到半句话。
+  if (last.finishReason === "length" && last.text.trim().length > 0) {
+    return { kind: "continue", nudge: CONTINUE_RECOVERY_NUDGE };
+  }
   if (
     input.toolNames.length > 0 &&
     input.steps.length < input.stepLimit &&
