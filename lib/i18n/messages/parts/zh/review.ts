@@ -70,6 +70,8 @@ export const reviewZh = {
       cta: "生成诊断题",
       empty: "还没有足够的错题数据。先在 Studio 里做几套题，这里就能针对薄弱点出题了。",
       weakList: "本次将重点加固：",
+      bookList: "错题本 · 共 {count} 道（按真实错题加固）",
+      jump: "回到出处知识点",
     },
     chapter: {
       title: "按章节出题",
@@ -77,6 +79,7 @@ export const reviewZh = {
       subject: "学科",
       chapter: "章节",
       pickSubject: "请选择学科",
+      classSource: "课堂记录（Class 模式的课）",
       pickChapter: "请选择章节",
       cta: "让 Agent 出题",
     },
@@ -87,5 +90,9 @@ export const reviewZh = {
     resultTitle: "题目 · {count} 题",
     regenerate: "重新出题",
     recorded: "本次成绩已记录，会计入你的薄弱点分析。",
+    submit: "交卷并记录",
+    submitPartial: "交卷（未答题计 0 分）",
+    progress: "已作答 {done}/{total} 道客观题",
+    wrongRecorded: "{count} 道错题已进错题本。"
   },
 };

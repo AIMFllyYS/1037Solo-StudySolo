@@ -72,6 +72,8 @@ export const reviewEn = {
       cta: "Generate diagnostic quiz",
       empty: "Not enough mistake data yet. Take a few quizzes in Studio and this can target your weak points.",
       weakList: "This round reinforces:",
+      bookList: "Wrong-answer book · {count} questions (reinforced from real mistakes)",
+      jump: "Jump back to the source topic",
     },
     chapter: {
       title: "Quiz by chapter",
@@ -79,6 +81,7 @@ export const reviewEn = {
       subject: "Subject",
       chapter: "Chapter",
       pickSubject: "Select a subject",
+      classSource: "Class recordings (Class mode)",
       pickChapter: "Select a chapter",
       cta: "Ask the Agent to generate",
     },
@@ -89,5 +92,9 @@ export const reviewEn = {
     resultTitle: "Quiz · {count} questions",
     regenerate: "Regenerate",
     recorded: "Your result is saved and counts toward weak-point analysis.",
+    submit: "Submit and record",
+    submitPartial: "Submit (unanswered count as 0)",
+    progress: "{done}/{total} objective questions answered",
+    wrongRecorded: "{count} wrong answers added to your wrong-answer book."
   },
 } satisfies LocaleMessages["review"];

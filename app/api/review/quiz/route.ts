@@ -1,11 +1,11 @@
 import { withPaidRequest } from "@/lib/billing/paidRequest";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { generateObject } from "ai";
+import { generateText, stepCountIs } from "ai";
 import { ENV_MODEL_PRO } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
-import { createQuizInputSchema, normalizeQuiz } from "@/lib/ai/agent/quizTool";
-import type { CreateQuizInput } from "@/lib/ai/agent/tools/createQuiz/types";
+import { createCreateQuizTool } from "@/lib/ai/agent/tools/createQuiz/tool";
+import type { CreateQuizOutput } from "@/lib/ai/agent/tools/createQuiz/types";
 import { logSatelliteError } from "@/lib/ai/observability/agentLog";
 import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
 import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
@@ -44,13 +44,18 @@ async function handlePOST(req: NextRequest) {
   }
 
   try {
-    const result = await generateObject({
+    // 复用 Agent 的 createQuiz 工具（同一 schema / 归一化 / 渲染契约），用强制工具调用出题。
+    // 之前的 generateObject 走 json_object 模式：模型看不到 schema，返回结构对不上，出题每次失败。
+    const result = await generateText({
       model,
-      schema: createQuizInputSchema,
+      tools: { createQuiz: createCreateQuizTool() },
+      toolChoice: { type: "tool", toolName: "createQuiz" },
+      stopWhen: stepCountIs(1),
       temperature: 0.6,
+      maxOutputTokens: 12000,
       system:
-        "你是学习复习助教，负责按学生的薄弱点或指定章节出一套可自动判分的复习题。" +
-        "只输出结构化题目：选择题给足选项与正确下标，判断/辨析题 answer 用 1（正确）/0（错误），" +
+        "你是学习复习助教，负责按学生的薄弱点或指定章节出一套可自动判分的复习题，并且必须调用 createQuiz 工具交付。" +
+        "选择题给足选项与正确下标，判断/辨析题 answer 用 1（正确）/0（错误），" +
         "填空 / 简答给参考答案；每题都要有 explanation 解析并标出易错点。题量 6–10 道，题型混合。",
       prompt: instruction,
       maxRetries: 1,
@@ -59,7 +64,7 @@ async function handlePOST(req: NextRequest) {
 
     await settleUsage({
       headers: req.headers,
-      rawUsage: result.usage,
+      rawUsage: result.totalUsage,
       route: "/api/review/quiz",
       kind: "llm",
       selectedModelId: ENV_MODEL_PRO,
@@ -69,17 +74,17 @@ async function handlePOST(req: NextRequest) {
       meta: { source: "review-quiz-route" },
     });
 
-    const input = result.object as CreateQuizInput;
-    const quizId = `review_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
-    const normalized = normalizeQuiz(input, quizId);
+    const output = result.toolResults.find((r) => r.toolName === "createQuiz")?.output as CreateQuizOutput | undefined;
+    if (!output || output.questions.length === 0) {
+      return NextResponse.json({ title, intent, questions: [], droppedCount: output?.droppedCount ?? 0, error: "generation_failed" });
+    }
     return NextResponse.json({
-      quizId,
-      title: (input.title ?? title).trim() || title,
-      intent: input.intent ?? intent,
-      questions: normalized.questions,
-      droppedCount: normalized.droppedCount,
-    });
-  } catch (err) {
+      quizId: output.quizId,
+      title: output.title?.trim() || title,
+      intent: output.intent ?? intent,
+      questions: output.questions,
+      droppedCount: output.droppedCount,
+    });  } catch (err) {
     logSatelliteError("/api/review/quiz", err);
     return NextResponse.json({ title, intent, questions: [], droppedCount: 0, error: "generation_failed" });
   }
