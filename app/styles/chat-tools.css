@@ -2348,3 +2348,18 @@ mark.citation-flash {
   color: var(--ink);
 }
 
+
+/* Review 笔记页（Notion 式整页）：编辑器融进页面底色，正文与大标题左对齐，字号略放大便于长文阅读。 */
+.review-note-body .user-note-crepe,
+.review-note-body .user-note-crepe .milkdown {
+  background: transparent;
+  --crepe-color-background: transparent;
+  --crepe-color-surface: transparent;
+  --crepe-base-font-size: 15.5px;
+}
+.review-note-body .user-note-crepe .milkdown .ProseMirror {
+  /* 左侧留 28px 给 Crepe 的块拖拽手柄；外层用负边距抵消，正文仍与标题对齐。 */
+  padding: 0 0 40px 28px;
+  line-height: 1.75;
+}
+.review-note-body { margin-left: -28px; }
