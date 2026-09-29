@@ -16,6 +16,8 @@ export interface TranscriptionsRequest {
   apiKey: string
   model: string
   wav: ArrayBuffer
+  /** 热词上下文（学科热词包 + 自定义热词），由服务端转给识别模型作偏置提示。 */
+  prompt?: string
 }
 
 export type TranscriptionsFetch = (
@@ -55,6 +57,22 @@ export function pcm16ToWav(pcm: Int16Array, sampleRate: number): ArrayBuffer {
   return buffer
 }
 
+/** 与服务端 /api/class/asr 的 prompt 上限保持一致。 */
+export const HOTWORD_PROMPT_MAX = 600
+
+/** 热词 → 识别上下文：去重、按总长上限截断；无热词返回 undefined（不发该字段）。 */
+export function buildHotwordPrompt(words: readonly string[] | undefined): string | undefined {
+  if (!words || words.length === 0) return undefined
+  const out: string[] = []
+  let length = 0
+  for (const raw of new Set(words.map((w) => w.trim()).filter(Boolean))) {
+    if (length + raw.length + 1 > HOTWORD_PROMPT_MAX - 20) break
+    out.push(raw)
+    length += raw.length + 1
+  }
+  return out.length ? `本节课可能出现的专有名词：${out.join('、')}` : undefined
+}
+
 async function defaultFetch(request: TranscriptionsRequest): Promise<string> {
   const owner=request.ownerId||getClassUserId(); const sessionId=request.sessionId||getTranscriptPublic().sessionId;
   if(!owner||!sessionId)throw new Error('课堂账号或会话已失效');
@@ -71,6 +89,7 @@ async function defaultFetch(request: TranscriptionsRequest): Promise<string> {
   )
   form.append('model', request.model)
   form.append('response_format', 'json')
+  if (request.prompt) form.append('prompt', request.prompt)
   const response = await fetch(request.url, {
     method: 'POST',
     credentials: 'include',
@@ -91,7 +110,8 @@ async function defaultFetch(request: TranscriptionsRequest): Promise<string> {
 export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
   readonly capabilities: ASRCapabilities = {
     streaming: 'pseudo',
-    supportsHotwords: false,
+    // Qwen3-ASR 支持上下文偏置：热词经 BFF 以 prompt 字段转发（长度有上限）。
+    supportsHotwords: true,
     maxSessionSeconds: null,
   }
 
@@ -102,6 +122,7 @@ export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
   private running = false
   private ownerId:string|undefined
   private sessionId:string|undefined
+  private prompt:string|undefined
   private readonly partialListeners = new Set<(segment: ASRSegment) => void>()
   private readonly finalListeners = new Set<(segment: ASRSegment) => void>()
   private readonly errorListeners = new Set<(error: Error) => void>()
@@ -125,7 +146,7 @@ export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
     if (!this.config.sampleRate) {
       throw new Error('缺 ASR 采样率：必须显式配置')
     }
-    void hotwordsForStart(this.capabilities, this.config.hotwords)
+    this.prompt = buildHotwordPrompt(hotwordsForStart(this.capabilities, this.config.hotwords))
     this.ownerId=getClassUserId()||undefined
     this.sessionId=getTranscriptPublic().sessionId||undefined
     if(!this.ownerId||!this.sessionId)throw new Error("请先登录并创建课堂")
@@ -207,7 +228,7 @@ export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
         url: transcriptionsUrl(this.config.baseUrl),
         apiKey: secret.value,
         model: this.config.model,
-        wav,ownerId:this.ownerId,sessionId:this.sessionId,
+        wav,ownerId:this.ownerId,sessionId:this.sessionId,prompt:this.prompt,
       })
       const segment: ASRSegment = {
         text,

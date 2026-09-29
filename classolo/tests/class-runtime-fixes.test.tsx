@@ -109,3 +109,15 @@ describe('past classes search (#70)', () => {
     expect(hits.some((h) => h.sessionId === 's2')).toBe(false)
   })
 })
+
+
+describe('ASR hotword context', () => {
+  it('builds a bounded, de-duplicated prompt and omits it when empty', async () => {
+    const { buildHotwordPrompt, HOTWORD_PROMPT_MAX } = await import('@/classolo/lib/providers/asr/transcriptions-rest/openai-compatible')
+    expect(buildHotwordPrompt([])).toBeUndefined()
+    expect(buildHotwordPrompt(undefined)).toBeUndefined()
+    expect(buildHotwordPrompt(['定积分', ' 定积分 ', '牛顿-莱布尼茨'])).toBe('本节课可能出现的专有名词：定积分、牛顿-莱布尼茨')
+    const long = buildHotwordPrompt(Array.from({ length: 400 }, (_, i) => `术语${i}`))!
+    expect(long.length).toBeLessThanOrEqual(HOTWORD_PROMPT_MAX)
+  })
+})
