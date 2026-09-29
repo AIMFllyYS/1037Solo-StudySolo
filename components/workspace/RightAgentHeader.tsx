@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { X } from "lucide-react";
 import {
@@ -13,6 +13,7 @@ import ChatHistoryOverlay from "@/components/chat/ChatHistoryOverlay";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { useTokenTracker } from "@/lib/hooks/useTokenTracker";
+import { useAgentTabs } from "@/lib/stores/agentTabs";
 import type { ChatContext } from "@/lib/types/chat";
 import { useT } from "@/lib/i18n";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
@@ -48,19 +49,35 @@ export default function RightAgentHeader({
   const sessionsMeta = useChatHistory((s) => s.sessionsMeta);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
   const switchSession = useChatHistory((s) => s.switchSession);
-  const deleteSession = useChatHistory((s) => s.deleteSession);
   const startNewChat = useChatHistory((s) => s.startNewChat);
+  const closedIds = useAgentTabs((s) => s.closedIds);
+  const closeTab = useAgentTabs((s) => s.closeTab);
+  const reopenTab = useAgentTabs((s) => s.reopenTab);
   const [showHistory, setShowHistory] = useState(false);
 
-  const recent = useMemo(
-    () =>
-      sessionsMeta
-        .filter(isMainSession)
-        .slice()
-        .sort((a, b) => b.updatedAt - a.updatedAt)
-        .slice(0, MAX_RECENT_TABS),
-    [sessionsMeta],
-  );
+  // 当前会话（无论从历史、侧栏还是新建切过来）总在标签条上。
+  useEffect(() => {
+    if (activeSessionId) reopenTab(activeSessionId);
+  }, [activeSessionId, reopenTab]);
+
+  const recent = useMemo(() => {
+    const closed = new Set(closedIds);
+    return sessionsMeta
+      .filter((meta) => isMainSession(meta) && (!closed.has(meta.id) || meta.id === activeSessionId))
+      .slice()
+      .sort((a, b) => b.updatedAt - a.updatedAt)
+      .slice(0, MAX_RECENT_TABS);
+  }, [sessionsMeta, closedIds, activeSessionId]);
+
+  /** 关闭标签：只从标签条移走，对话留在历史里。关的是当前标签就切到相邻标签，没有就开一个空对话。 */
+  const handleCloseTab = (id: string) => {
+    closeTab(id);
+    if (id !== activeSessionId) return;
+    const index = recent.findIndex((meta) => meta.id === id);
+    const neighbor = recent[index + 1] ?? recent[index - 1];
+    if (neighbor) switchSession(neighbor.id);
+    else handleNewChat();
+  };
 
   const handleNewChat = () => {
     startNewChat(chatContext);
@@ -111,7 +128,7 @@ export default function RightAgentHeader({
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  deleteSession(meta.id);
+                  handleCloseTab(meta.id);
                 }}
                 title={t("panel.agentBar.closeTab", { title })}
                 aria-label={t("panel.agentBar.closeTab", { title })}
