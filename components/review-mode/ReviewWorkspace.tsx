@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import ReviewSidebar, { type ReviewSection } from "./ReviewSidebar";
 import { ReviewNotesList, ReviewNoteEditor } from "./ReviewNotesPane";
 import { ReviewFlashcardDecks, ReviewFlashcardSession } from "./ReviewFlashcardsPane";
@@ -20,10 +21,38 @@ import { useReviewSchedule } from "@/lib/review-mode/scheduleStore";
  *
  * AppShell 已为 /review 提供裸壳（保留 TopBar，去掉 Studio 左右栏）；本组件铺满其下方。
  */
+const SECTIONS: readonly ReviewSection[] = ["notes", "flashcards", "quiz", "overview"];
+function parseSection(raw: string | null): ReviewSection {
+  return SECTIONS.includes(raw as ReviewSection) ? (raw as ReviewSection) : "notes";
+}
+/** 只改查询串、不触发 Next 路由（避免整页重渲染与编辑器重挂）。 */
+function writeUrl(patch: Record<string, string | null>) {
+  try {
+    const url = new URL(window.location.href);
+    for (const [k, v] of Object.entries(patch)) {
+      if (v) url.searchParams.set(k, v);
+      else url.searchParams.delete(k);
+    }
+    window.history.replaceState(window.history.state, "", url);
+  } catch {
+    /* 非浏览器环境忽略 */
+  }
+}
+
 export default function ReviewWorkspace() {
-  const [section, setSection] = useState<ReviewSection>("notes");
+  // 板块与当前笔记写进 URL（?section=&note=）：刷新 / 分享链接 / 从 Class「存为笔记」跳来都能回到原处。
+  const params = useSearchParams();
+  const [section, setSectionState] = useState<ReviewSection>(() => parseSection(params.get("section")));
   const [collapsed, setCollapsed] = useState(false);
-  const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
+  const [activeNoteId, setActiveNoteState] = useState<string | null>(() => params.get("note"));
+  const setSection = useCallback((next: ReviewSection) => {
+    setSectionState(next);
+    writeUrl({ section: next === "notes" ? null : next });
+  }, []);
+  const setActiveNoteId = useCallback((id: string | null) => {
+    setActiveNoteState(id);
+    writeUrl({ note: id });
+  }, []);
   const [deckSubject, setDeckSubject] = useState<string | null>(null);
 
   // 侧栏「闪卡」徽标：到期（含新卡）张数。

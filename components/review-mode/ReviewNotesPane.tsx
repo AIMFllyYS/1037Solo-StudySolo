@@ -159,7 +159,7 @@ export function ReviewNoteEditor({ noteId, onDeleted }: { noteId: string | null;
             setTitle(e.target.value);
             scheduleSave({ title: e.target.value });
           }}
-          placeholder={t("review.notes.titlePlaceholder")}
+          placeholder={note?.title?.trim() || t("review.notes.titlePlaceholder")}
           aria-label={t("review.notes.titlePlaceholder")}
           data-testid="review-note-title"
           className="min-w-0 flex-1 bg-transparent text-[20px] font-semibold text-[var(--ink)] placeholder:text-[var(--ink-faint)] focus:outline-none"
