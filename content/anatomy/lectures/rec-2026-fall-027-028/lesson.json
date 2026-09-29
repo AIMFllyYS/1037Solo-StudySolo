@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "anatomy",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-027-028",
+  "courseName": "系统解剖学",
+  "sessionRange": { "start": 27, "end": 28 },
+  "taughtOn": "2026-09-29",
+  "topic": "女性生殖系统与腹膜",
+  "revision": 1,
+  "materials": {
+    "recording": { "file": "recording.md", "format": "text" },
+    "minutes": { "file": "minutes.md", "format": "markdown" },
+    "notes": { "file": "notes.html", "format": "html" },
+    "cards": { "file": "cards.md", "format": "markdown" }
+  },
+  "quizId": "rec-2026-fall-027-028"
+}

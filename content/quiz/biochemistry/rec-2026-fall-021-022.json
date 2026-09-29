@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-021-022",
+  "generatedAt": "2026-09-29",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-021-022/recording.md；content/biochemistry/lectures/rec-2026-fall-021-022/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-021-022",
+    "revision": 1,
+    "recordingHash": "affa426fc39ac5bd4f5116b0279581021ea9c0020de360db0ef61b84835df343",
+    "notesTextHash": "915fa0a15424dd5d15f895d91be4975888911186ac6030b1333b5c43380ae850"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "糖异生底物"
+      },
+      "stem": "下列物质中，**不能**作为糖异生原料的是？",
+      "options": [
+        "乳酸",
+        "甘油",
+        "生糖氨基酸",
+        "脂肪酸"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**糖异生的原料是乳酸、甘油和生糖氨基酸；脂肪酸经β-氧化生成乙酰CoA，乙酰CoA不能净生成草酰乙酸异生为糖，故脂肪酸不能净生成葡萄糖。A、B、C均为合法糖异生原料。",
+      "hint": "乳酸甘油生糖氨基酸能，脂肪酸不行。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "糖异生三个能障替代酶"
+      },
+      "stem": "糖异生绕过糖酵解三个不可逆反应所需的关键替代酶，正确组合是？",
+      "options": [
+        "丙酮酸羧化酶+PEP羧激酶、果糖二磷酸酶-1、葡萄糖-6-磷酸酶",
+        "己糖激酶、磷酸果糖激酶-1、丙酮酸激酶",
+        "丙酮酸脱氢酶、柠檬酸合酶、苹果酸脱氢酶",
+        "糖原合酶、分支酶、脱支酶"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**糖异生需绕过三处能障：丙酮酸→PEP 由丙酮酸羧化酶+PEP羧激酶催化；F-1,6-BP→F-6-P 由果糖二磷酸酶-1催化；G-6-P→葡萄糖 由葡萄糖-6-磷酸酶催化（仅肝/肾有）。B错：这三个正是糖酵解的不可逆酶。C、D与糖异生无关。",
+      "hint": "羧化酶+PEP羧激酶、FBPase-1、6-磷酸酶。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-021-022/recording.md",
+        "label": "糖原酶的共价修饰双向调控"
+      },
+      "stem": "关于糖原合酶与糖原磷酸化酶的磷酸化修饰效果，正确的是？",
+      "options": [
+        "磷酸化酶磷酸化后活性升高（促分解）；糖原合酶磷酸化后无活性（抑合成）",
+        "磷酸化酶磷酸化后无活性；糖原合酶磷酸化后活性升高",
+        "两种酶磷酸化后都活性升高",
+        "磷酸化对两种酶均无影响"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**共价修饰双向调控：糖原磷酸化酶磷酸化为 a 型、活性升高（促分解）；糖原合酶磷酸化为 b 型、无活性（抑合成）。同一条 cAMP-PKA 信号使分解↑、合成↓，避免无效循环。B、C、D均与事实相反。",
+      "hint": "磷酸化解糖原、磷酸化合酶被抑。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "F-2,6-BP 别构调节"
+      },
+      "stem": "2,6-二磷酸果糖（F-2,6-BP）对糖酵解与糖异生的调节方向是？",
+      "options": [
+        "激活 PFK-1（促糖酵解）并抑制 FBPase-1（抑糖异生）",
+        "抑制 PFK-1 并激活 FBPase-1",
+        "对两条途径均无影响",
+        "只激活糖异生关键酶"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**F-2,6-BP 是最强别构调节物：激活 PFK-1 促糖酵解，同时抑制 FBPase-1 抑糖异生，从而使代谢向糖酵解方向倾斜。B错：方向颠倒。C、D错：F-2,6-BP 作用明确。",
+      "hint": "F-2,6-BP 抬糖酵解、压糖异生。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-021-022/recording.md",
+        "label": "胰岛素通过PP1调控糖原代谢"
+      },
+      "stem": "胰岛素促进糖原合成的分子机制是？",
+      "options": [
+        "激活蛋白磷酸酶1（PP1），使糖原合酶去磷酸化而激活，同时使磷酸化酶去磷酸化而失活",
+        "激活 PKA 使两种酶都磷酸化",
+        "直接抑制己糖激酶",
+        "促进 cAMP 升高"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**胰岛素激活 PP1，使糖原合酶去磷酸化而激活（促合成），同时使糖原磷酸化酶去磷酸化而失活（抑分解），与胰高血糖素的磷酸化通路方向相反。B、D错：那是升糖激素（胰高血糖素/肾上腺素）的通路。C错：与己糖激酶无关。",
+      "hint": "胰岛素开 PP1，一脱磷酸合成酶活、磷酸化酶停。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "组织别构差异"
+      },
+      "stem": "关于肝、肌糖原磷酸化酶的别构调节，正确的是？",
+      "options": [
+        "肝磷酸化酶受葡萄糖别构抑制；肌磷酸化酶受 AMP 激活、ATP 抑制",
+        "肝磷酸化酶受 AMP 激活；肌磷酸化酶受葡萄糖抑制",
+        "肝、肌磷酸化酶均只受激素调节，无别构效应",
+        "肝磷酸化酶受 ATP 激活、AMP 抑制"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**肝要维持血糖，故葡萄糖是肝磷酸化酶的别构抑制剂（血糖高即抑制肝糖原分解）；肌肉只为本组织供能，故肌磷酸化酶受 AMP 激活、ATP 抑制（能量荷调节），肌肉收缩时 Ca²⁺ 还可激活磷酸化酶 b 激酶。B、C、D均颠倒。",
+      "hint": "肝看葡萄糖、肌看 AMP/ATP。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-021-022/recording.md",
+        "label": "丙酮酸羧化支路与苹果酸穿梭"
+      },
+      "stem": "丙酮酸异生为 PEP 的正确途径是？",
+      "options": [
+        "丙酮酸→丙酮酸羧化酶（生物素、ATP）→草酰乙酸→苹果酸穿梭出线粒体→PEP羧激酶（GTP）→PEP",
+        "丙酮酸直接由丙酮酸激酶逆反应生成 PEP",
+        "丙酮酸→乙酰CoA→草酰乙酸→直接出线粒体",
+        "丙酮酸→乳酸→PEP，无需耗能"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**丙酮酸先在线粒体由丙酮酸羧化酶（辅酶生物素，耗 ATP）生成草酰乙酸；草酰乙酸不能自由出线粒体，经苹果酸（或天冬氨酸）穿梭到胞液后，由 PEP 羧激酶（耗 GTP）催化生成 PEP，共耗 2 个高能键。B错：丙酮酸激酶反应不可逆、不能逆走。C错：乙酰CoA不能回补生成草酰乙酸净糖。D错：耗能且路径错误。",
+      "hint": "丙酮酸→草酰乙酸（生物素ATP）→苹果酸出线→PEP（GTP）。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "乳酸循环Cori循环"
+      },
+      "stem": "乳酸循环（Cori 循环）的生理意义是？",
+      "options": [
+        "把肌肉无氧酵解产生的乳酸经血送到肝脏糖异生为葡萄糖，回收碳源并防止酸中毒",
+        "把肝脏乳酸送到肌肉合成糖原",
+        "促进乳酸经肺直接排出",
+        "把脂肪酸转化为葡萄糖"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**肌肉无氧酵解产生乳酸，经血入肝经糖异生变回葡萄糖再回肌肉，既回收乳酸碳源、又防止乳酸堆积引起代谢性酸中毒。B错：方向相反。C错：乳酸不经肺排出。D错：与脂肪酸无关。",
+      "hint": "肌乳酸→肝变糖→回肌，回收防酸中毒。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-021-022/recording.md",
+        "label": "糖原累积病von Gierke"
+      },
+      "stem": "von Gierke 病（最常见糖原累积病）的酶缺陷是？",
+      "options": [
+        "葡萄糖-6-磷酸酶缺陷，肝糖原无法分解为游离葡萄糖，致肝大、低血糖",
+        "糖原合酶缺陷",
+        "磷酸化酶缺陷仅局限于肌肉",
+        "分支酶缺陷"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**von Gierke 病为葡萄糖-6-磷酸酶缺陷，肝糖原分解产生的 G-6-P 不能脱去磷酸变为游离葡萄糖入血，导致肝大、低血糖、乳酸血症等，属糖原分解障碍性遗传代谢病。B、D错：合酶/分支酶缺陷对应其他类型。C错：本病主要在肝/肾，非肌肉局限。",
+      "hint": "6-磷酸酶缺了，肝糖出不来。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "胰高血糖素对F-2,6-BP的调节"
+      },
+      "stem": "饥饿时胰高血糖素促进糖异生的关键环节是？",
+      "options": [
+        "降低 F-2,6-BP，从而抑制 PFK-1（糖酵解↓）、解除对 FBPase-1 的抑制（糖异生↑）",
+        "升高 F-2,6-BP，激活糖酵解",
+        "直接激活糖原合酶",
+        "抑制糖异生关键酶"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**胰高血糖素降低 F-2,6-BP：对 PFK-1 的激活减弱使糖酵解下降，对 FBPase-1 的抑制解除使糖异生上升，从而在饥饿时维持血糖。B错：那是胰岛素的方向。C、D错：胰高血糖素促分解、促糖异生，不合糖原。",
+      "hint": "胰高血糖素压 F-2,6-BP，糖异生上来。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-021-022/recording.md",
+        "label": "糖异生的生理意义"
+      },
+      "stem": "关于糖异生的生理意义，下列说法错误的是？",
+      "options": [
+        "饥饿/长期空腹时维持血糖恒定，保障脑与红细胞的葡萄糖供应",
+        "长期饥饿时肾脏糖异生可产 NH₄⁺，参与酸碱平衡调节",
+        "进食后可补充肝糖原",
+        "可将脂肪酸大量净转化为葡萄糖以提升血糖"
+      ],
+      "answer": 3,
+      "explanation": "**D 错误（为本题答案）。**脂肪酸不能净异生为葡萄糖，这是糖异生的基本限制。A、B、C均为糖异生的正确生理意义：饥饿时维持血糖（脑、红细胞依赖葡萄糖）、肾糖异生参与酸碱平衡（产 NH₄⁺）、进食后补充肝糖原。",
+      "hint": "脂肪酸不能变糖——选它。"
+    }
+  ]
+}
