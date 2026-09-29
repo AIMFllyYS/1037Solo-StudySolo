@@ -6251,6 +6251,45 @@
                   "quizRef": "rec-2026-fall-025-026"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-027-028",
+              "title": "第27-28节 · 女性生殖系统与腹膜",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-027-028",
+                  "title": "课堂原文 · 第27-28节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-027-028",
+                  "quizRef": "rec-2026-fall-027-028"
+                },
+                {
+                  "id": "note-rec-2026-fall-027-028",
+                  "title": "课堂笔记 · 第27-28节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-027-028",
+                  "quizRef": "rec-2026-fall-027-028"
+                },
+                {
+                  "id": "card-rec-2026-fall-027-028",
+                  "title": "复习手卡 · 第27-28节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-027-028",
+                  "quizRef": "rec-2026-fall-027-028"
+                }
+              ]
             }
           ]
         },
@@ -6372,6 +6411,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-025-026",
               "quizRef": "rec-2026-fall-025-026",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-027-028",
+              "title": "课堂纪要 · 第27-28节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-027-028",
+              "quizRef": "rec-2026-fall-027-028",
               "layoutProfile": "full"
             }
           ]
@@ -10749,6 +10799,45 @@
                   "quizRef": "rec-2026-fall-019-020"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-021-022",
+              "title": "第21-22节 · 糖原调节与糖异生",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-021-022",
+                  "title": "课堂原文 · 第21-22节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-021-022",
+                  "quizRef": "rec-2026-fall-021-022"
+                },
+                {
+                  "id": "note-rec-2026-fall-021-022",
+                  "title": "课堂笔记 · 第21-22节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-021-022",
+                  "quizRef": "rec-2026-fall-021-022"
+                },
+                {
+                  "id": "card-rec-2026-fall-021-022",
+                  "title": "复习手卡 · 第21-22节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-021-022",
+                  "quizRef": "rec-2026-fall-021-022"
+                }
+              ]
             }
           ]
         },
@@ -10876,6 +10965,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-019-020",
               "quizRef": "rec-2026-fall-019-020",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-021-022",
+              "title": "课堂纪要 · 第21-22节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-021-022",
+              "quizRef": "rec-2026-fall-021-022",
               "layoutProfile": "full"
             }
           ]

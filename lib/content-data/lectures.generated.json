@@ -442,6 +442,50 @@
       }
     },
     {
+      "subjectId": "anatomy",
+      "lessonId": "rec-2026-fall-027-028",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "系统解剖学",
+      "sessionRange": {
+        "start": 27,
+        "end": 28
+      },
+      "taughtOn": "2026-09-29",
+      "topic": "女性生殖系统与腹膜",
+      "revision": 1,
+      "quizId": "rec-2026-fall-027-028",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-027-028"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-027-028"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-027-028"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-027-028"
+        }
+      },
+      "hashes": {
+        "recording": "3c7cf8ed3d9003e6d90aa8e1117027e97b8efca4f9969b75876e9b61f9e4200c",
+        "notesText": "226792602265db9707cdf79930a9fb32cfa1b40c88269804b48587dcff710da9"
+      }
+    },
+    {
       "subjectId": "biochemistry",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -879,6 +923,50 @@
       "hashes": {
         "recording": "cf88d111d629d708ddc96b676c83d53771f3b10c7d6f5fdc7bfb2c3a4b4900a6",
         "notesText": "45567cc1c56fd08c806a5ee72acedb37e7500d302db274ee208b0f1b85f4ac64"
+      }
+    },
+    {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-021-022",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 21,
+        "end": 22
+      },
+      "taughtOn": "2026-09-29",
+      "topic": "糖原调节与糖异生",
+      "revision": 1,
+      "quizId": "rec-2026-fall-021-022",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-021-022"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-021-022"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-021-022"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-021-022"
+        }
+      },
+      "hashes": {
+        "recording": "affa426fc39ac5bd4f5116b0279581021ea9c0020de360db0ef61b84835df343",
+        "notesText": "915fa0a15424dd5d15f895d91be4975888911186ac6030b1333b5c43380ae850"
       }
     },
     {
