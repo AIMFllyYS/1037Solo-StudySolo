@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import type { LanguageModelV4, LanguageModelV4GenerateResult, LanguageModelV4StreamPart } from "@ai-sdk/provider";
-import { withProviderAdmission, usageMicrocredits, measuredTokens, priceForModel, type CreditDriver } from "./providerAdmission";
+import { withProviderAdmission, usageMicrocredits, measuredTokens, priceForModel, boundedCall, type CreditDriver } from "./providerAdmission";
 import { runPaidContext } from "./paidContext";
 
 const userId = "00000000-0000-4000-8000-000000000001";
@@ -50,15 +50,50 @@ test("known rejection cancels; network or unknown usage keeps reservation for re
   await assert.rejects(async () => await runPaidContext(context(),()=>withProviderAdmission(unknown.model,"custom",true,unknown.credits).doGenerate(params)));
   assert.deepEqual(unknown.events,["reserve"]);
   const missing=setup();missing.model.doGenerate=async()=>({content:[],usage:{},warnings:[]} as unknown as LanguageModelV4GenerateResult);
-  await assert.rejects(async () => await runPaidContext(context(),()=>withProviderAdmission(missing.model,"custom",true,missing.credits).doGenerate(params)));
+  // 用量缺失只影响账目：结果照常返回，预留保持占用待核对（不 settle、不 cancel）。
+  const kept=await runPaidContext(context(),()=>withProviderAdmission(missing.model,"custom",true,missing.credits).doGenerate(params));
+  assert.deepEqual(kept.content,[]);
   assert.deepEqual(missing.events,["reserve"]);
 });
-test("stream finish settles once, early close without usage errors and keeps funds held", async () => {
+test("stream finish settles once; early close without usage still delivers and keeps funds held", async () => {
   const s=setup();
   const result=await runPaidContext(context(),()=>withProviderAdmission(s.model,"custom",true,s.credits).doStream(params));
   const reader=result.stream.getReader();while(!(await reader.read()).done){}
   assert.deepEqual(s.events,["reserve","provider","settle"]);
-  const missing=setup();missing.model.doStream=async()=>({stream:new ReadableStream({start(c){c.close();}})});
+  const missing=setup();missing.model.doStream=async()=>({stream:new ReadableStream({start(c){c.enqueue({type:"text-delta",id:"t",delta:"partial"});c.close();}})});
   const noUsage=await runPaidContext(context(),()=>withProviderAdmission(missing.model,"custom",true,missing.credits).doStream(params));
-  await assert.rejects(noUsage.stream.getReader().read());assert.deepEqual(missing.events,["reserve"]);
+  const r=noUsage.stream.getReader();
+  assert.equal(((await r.read()).value as {delta?:string}).delta,"partial");
+  assert.equal((await r.read()).done,true);
+  assert.deepEqual(missing.events,["reserve"]);
+});
+test("settlement failure at finish does not turn the answer into an error", async () => {
+  const s=setup();s.credits.settleMicro=async()=>{throw new Error("ledger unreachable");};
+  const result=await runPaidContext(context(),()=>withProviderAdmission(s.model,"custom",true,s.credits).doStream(params));
+  const parts:string[]=[];const reader=result.stream.getReader();
+  for(;;){const {done,value}=await reader.read();if(done)break;parts.push(value.type);}
+  assert.deepEqual(parts,["finish"]);
+});
+test("per-turn budget counts settled cost, not every step's worst-case reservation", async () => {
+  const s=setup();
+  let stepCap=0;const reserve=s.credits.reserve;
+  s.credits.reserve=async(...args)=>{stepCap=args[2];return reserve(...args);};
+  await runPaidContext(context(),()=>withProviderAdmission(s.model,"custom",true,s.credits).doGenerate(params));
+  assert.ok(stepCap>0);
+  // 预算只够 2.5 步的最坏预留：预留不退回的话第 3 步就会被拦下。
+  const ctx={...context(),budgetCny:stepCap*2.5};
+  await runPaidContext(ctx,async()=>{for(let i=0;i<8;i++)await withProviderAdmission(s.model,"custom",true,s.credits).doGenerate(params);});
+  assert.equal(s.events.filter(e=>e==="settle").length,9);
+  assert.ok(ctx.reservedCny<stepCap);
+  // 真正超出预算时仍会拦截，且不触达上游。
+  const tight={...context(),budgetCny:stepCap/2};
+  await assert.rejects(async()=>await runPaidContext(tight,()=>withProviderAdmission(s.model,"custom",true,s.credits).doGenerate(params)),/预算已达上限/);
+});
+test("output bound defaults to the declared model maximum and is clamped, never rejected", () => {
+  const prompt=[{role:"user" as const,content:[{type:"text" as const,text:"中".repeat(60_000)}]}];
+  const bounded=boundedCall({prompt},{contextTokens:128_000,maxOutputTokens:64_000});
+  assert.equal(bounded.output,64_000);
+  // 18 万字节的中文远小于 128k token 窗口：不再按字节数误判超窗，预留按窗口封顶。
+  assert.equal(bounded.input,128_000);
+  assert.equal(boundedCall({prompt,maxOutputTokens:999_999},{maxOutputTokens:8_000}).output,131_072);
 });

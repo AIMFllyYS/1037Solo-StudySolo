@@ -33,6 +33,7 @@ import {
   type ResolvedProvider,
 } from "@/lib/ai/provider";
 import {
+  declaredMaxOutputTokens,
   getModelInfo,
   getLandedModelInfo,
   getModelInfoWithCustom,
@@ -69,6 +70,12 @@ export interface ResolvedLanguageModel {
   supportsTools: boolean;
   /** 若启用思考，返回应合并进 generateText/streamText/Agent 的参数；模型不支持思考时返回 {}。 */
   thinkingSettings(effort: ThinkingEffort | undefined): ThinkingCallSettings;
+  /**
+   * 之后的调用不再下发思考参数（七牛云方言会显式下发 disabled）。
+   * thinkingSettings() 一旦被调用，prepareCall 会给每一跳都补上思考参数；
+   * 收尾续写（只写正文）必须用它关掉，否则续写仍在思考，可能再次没有正文。
+   */
+  suspendThinking(): void;
 }
 
 export interface ResolveLanguageModelOptions {
@@ -253,7 +260,10 @@ export function applyThinkingCallSettings(
   return {
     ...callOptions,
     providerOptions: providerOptions as SharedV4ProviderOptions,
-    ...(settings.maxOutputTokens != null ? { maxOutputTokens: settings.maxOutputTokens } : {}),
+    // 思考方言要求的最小输出（Anthropic：budget + 4096）只能抬高调用方的上限，不能压低它。
+    ...(settings.maxOutputTokens != null
+      ? { maxOutputTokens: Math.max(callOptions.maxOutputTokens ?? 0, settings.maxOutputTokens) }
+      : {}),
   };
 }
 
@@ -295,16 +305,23 @@ export function resolveLanguageModel(
     });
   if (!providers.length) throw new Error('当前没有可用的自动模型，请稍后重试或手动选择模型。');
   let actualProvider = providers[0] ?? primary;
-  const candidates: FailoverCandidate[] = providers.map((p) => ({
-    model: withProviderAdmission(
-      buildBaseModel(p),
-      options.platformManagedCredentials || (!p.isCustom && getModelInfo(p.apiModelId)) ? p.apiModelId : p.registryId,
-      p.isCustom === true && options.platformManagedCredentials !== true,
-      options.creditDriver,
-      {provider:p.billingProvider ?? endpointProvider(p.baseUrl),model:p.apiModelId},
-    ),
-    label: p.apiModelId,
-  }));
+  const candidates: FailoverCandidate[] = providers.map((p) => {
+    const hopInfo = getModelInfoWithCustom(p.registryId, customGroups) ?? getLandedModelInfo(p.apiModelId, p.registryId);
+    return {
+      model: withProviderAdmission(
+        buildBaseModel(p),
+        options.platformManagedCredentials || (!p.isCustom && getModelInfo(p.apiModelId)) ? p.apiModelId : p.registryId,
+        p.isCustom === true && options.platformManagedCredentials !== true,
+        options.creditDriver,
+        {
+          provider: p.billingProvider ?? endpointProvider(p.baseUrl), model: p.apiModelId,
+          contextTokens: (hopInfo?.contextK ?? 128) * 1000,
+          maxOutputTokens: declaredMaxOutputTokens(hopInfo),
+        },
+      ),
+      label: p.apiModelId,
+    };
+  });
 
   let thinkingSettingsRequested = false;
   let lastThinkingEffort: ThinkingEffort | undefined;
@@ -370,6 +387,9 @@ export function resolveLanguageModel(
       if (!supportsThinking) return {};
       const landed = landedThinkingContext(actualProvider, customGroups, info);
       return buildThinkingSettings(landed.provider, effort, landed.info);
+    },
+    suspendThinking: () => {
+      thinkingSettingsRequested = false;
     },
   };
 }

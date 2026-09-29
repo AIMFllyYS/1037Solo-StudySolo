@@ -15,6 +15,7 @@ import {
 } from "@/lib/ai/capabilityEndpoints";
 import { DEFAULT_SELECTION_ASSISTANT_ACTIONS, normalizeSelectionAssistantActions, type SelectionAssistantActions } from "@/lib/notes/selectionAssistant";
 import { clampMaxToolRounds, MAX_TOOL_STEPS } from "@/lib/ai/agent/toolRounds";
+import { clampTurnBudgetCredits, clampUserMaxOutputTokens } from "@/lib/ai/outputLimits";
 import { DEFAULT_IMAGE_MODEL_ID } from "@/lib/ai/models";
 import { clampMaxWaitMs, DEFAULT_MAX_WAIT_MS } from "@/lib/chat/createStallWatchdog";
 // 只依赖 types（不依赖 lib/i18n 的入口），避免 store ↔ i18n 形成运行时循环导入。
@@ -95,6 +96,15 @@ export interface SettingsState {
   /** Agent 单轮最大工具调用轮数（接到 ToolLoop stopWhen）。 */
   maxToolRounds: number;
   setMaxToolRounds: (v: number) => void;
+  /**
+   * Agent 每次模型调用的最大输出（token，含思考）。0 = 自动：按所选模型在注册表里
+   * 声明的最大输出。调小能少占预留额度，但推理模型可能把额度用在思考上。
+   */
+  maxOutputTokens: number;
+  setMaxOutputTokens: (v: number) => void;
+  /** 一轮回答（含全部工具步骤）最多花多少积分。0 = 自动（服务端运营上限）；只能收紧。 */
+  turnBudgetCredits: number;
+  setTurnBudgetCredits: (v: number) => void;
   /**
    * 一次回答的最长等待时间（毫秒，客户端看门狗总闸）。
    * 深度思考 + 多步工具超过它会被本地停止；用户可在设置里提到 600s。
@@ -204,6 +214,8 @@ type Persisted = Pick<
   | "floatingChatModelId"
   | "quizModelId"
   | "maxToolRounds"
+  | "maxOutputTokens"
+  | "turnBudgetCredits"
   | "maxWaitMs"
   | "selectionAssistantEnabled"
   | "selectionAssistantActions"
@@ -240,6 +252,8 @@ const DEFAULTS: Persisted = {
   floatingChatModelId: "Qwen/Qwen3.8-27B",
   quizModelId: DEFAULT_MODEL_ID,
   maxToolRounds: MAX_TOOL_STEPS,
+  maxOutputTokens: 0,
+  turnBudgetCredits: 0,
   maxWaitMs: DEFAULT_MAX_WAIT_MS,
   selectionAssistantEnabled: true,
   selectionAssistantActions: DEFAULT_SELECTION_ASSISTANT_ACTIONS,
@@ -341,6 +355,8 @@ function load(): Persisted & { settingsLoadWarning?: string | null } {
         parsed.customApiGroups,
       );
       parsed.maxToolRounds = clampMaxToolRounds(parsed.maxToolRounds);
+      parsed.maxOutputTokens = clampUserMaxOutputTokens(parsed.maxOutputTokens);
+      parsed.turnBudgetCredits = clampTurnBudgetCredits(parsed.turnBudgetCredits);
       parsed.maxWaitMs = clampMaxWaitMs(parsed.maxWaitMs);
       parsed.selectionAssistantEnabled = parsed.selectionAssistantEnabled !== false;
       parsed.selectionAssistantActions = normalizeSelectionAssistantActions(parsed.selectionAssistantActions);
@@ -437,6 +453,8 @@ function persist(get: () => SettingsState) {
     floatingChatModelId: s.floatingChatModelId,
     quizModelId: s.quizModelId,
     maxToolRounds: clampMaxToolRounds(s.maxToolRounds),
+    maxOutputTokens: clampUserMaxOutputTokens(s.maxOutputTokens),
+    turnBudgetCredits: clampTurnBudgetCredits(s.turnBudgetCredits),
     maxWaitMs: clampMaxWaitMs(s.maxWaitMs),
     selectionAssistantEnabled: s.selectionAssistantEnabled !== false,
     selectionAssistantActions: normalizeSelectionAssistantActions(s.selectionAssistantActions),
@@ -750,6 +768,14 @@ export const useSettings = create<SettingsState>((rawSet, get) => {
   },
   setMaxToolRounds: (v) => {
     set({ maxToolRounds: clampMaxToolRounds(v) });
+    persist(get);
+  },
+  setMaxOutputTokens: (v) => {
+    set({ maxOutputTokens: clampUserMaxOutputTokens(v) });
+    persist(get);
+  },
+  setTurnBudgetCredits: (v) => {
+    set({ turnBudgetCredits: clampTurnBudgetCredits(v) });
     persist(get);
   },
   setMaxWaitMs: (v) => {

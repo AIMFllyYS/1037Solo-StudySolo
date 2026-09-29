@@ -1,6 +1,6 @@
 /** Non-streaming provider transport: reserve before network, settle only verifiable results. */
 import { tokenTariff, tierPrice, reservationPrice, endpointProvider, configuredTariff } from "./tariffs";
-import { allocateCall } from "./paidContext";
+import { allocateCall, releaseCall } from "./paidContext";
 import { CreditAdmissionError, reserveCredit, settleMicrocredits, cancelCredit } from "./centralCredits";
 import { measuredTokens, usageCny, usageMicrocredits } from "./providerAdmission";
 
@@ -55,11 +55,11 @@ export async function billableJsonFetch(url: RequestInfo | URL, init: RequestIni
     ...call.metadata, kind: billing.kind, priceSnapshot: tariff ?? imageTariff ?? { perUnit, unit: "request", source: "operator-explicit-service-tariff" }, provider,
     creditsPerCny: process.env.ECOSYSTEM_CREDITS_PER_CNY || "1",
   });
-  if (init.signal?.aborted) { await cancelCredit(admission); throw init.signal.reason; }
+  if (init.signal?.aborted) { await cancelCredit(admission); releaseCall(call, 0); throw init.signal.reason; }
   // Transport failures are ambiguous and deliberately leave their reservation held.
   const response = await fetch(url, init);
   if (!response.ok) {
-    if ([400, 401, 403, 404, 413, 422, 429].includes(response.status)) await cancelCredit(admission);
+    if ([400, 401, 403, 404, 413, 422, 429].includes(response.status)) { await cancelCredit(admission); releaseCall(call, 0); }
     return response;
   }
   const data = await response.clone().json().catch(() => null) as Record<string, unknown> | null;
@@ -78,5 +78,6 @@ export async function billableJsonFetch(url: RequestInfo | URL, init: RequestIni
     actualMicrocredits = usageMicrocredits({ input: units * 1_000_000, output: 0, cached: 0, written: 0 }, { input: perUnit, cachedInput: perUnit, output: 0 },Number(admission.metadata.creditsPerCny));
   }
   await settleMicrocredits(admission, actualMicrocredits);
+  releaseCall(call, actualMicrocredits / (Number(admission.metadata.creditsPerCny) * 1_000_000));
   return response;
 }

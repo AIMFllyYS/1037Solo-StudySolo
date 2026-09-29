@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { addUsage, announcesToolCall, decideContinuation } from "./completionGuard.ts";
+import { addUsage, announcesToolCall, decideContinuation, isTextOnlyContinuation } from "./completionGuard.ts";
 
 const step = (text: string, finishReason = "stop", toolCalls: unknown[] = []) => ({ text, finishReason, toolCalls });
 
@@ -37,4 +37,16 @@ test("addUsage sums nested numeric usage fields", () => {
   );
   assert.deepEqual(sum, { inputTokens: 30, outputTokens: 12, outputTokenDetails: { reasoningTokens: 5, textTokens: 7 }, raw: { total_tokens: 15 } });
   assert.deepEqual(addUsage(undefined, { a: 1 }), { a: 1 });
+});
+
+
+test("answer cut off by the output limit gets a text-only continue", () => {
+  const d = decideContinuation({ steps: [step("线粒体的功能包括：1. 产生 ATP；2.", "length")], toolNames: ["searchNotes"], stepLimit: 6 });
+  assert.equal(d?.kind, "continue");
+  assert.equal(isTextOnlyContinuation(d?.kind), true);
+  assert.equal(isTextOnlyContinuation("tool"), false);
+});
+
+test("a complete answer that stopped normally is left alone", () => {
+  assert.equal(decideContinuation({ steps: [step("完整回答。")], toolNames: [], stepLimit: 6 }), null);
 });
