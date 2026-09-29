@@ -7,20 +7,20 @@ import type { ComponentProps } from 'react'
 import { cn } from '@/classolo/lib/utils'
 
 const buttonVariants = cva(
-  "motion-press inline-flex shrink-0 items-center justify-center gap-1.5 font-medium whitespace-nowrap outline-none transition-[opacity,background-color,border-color,color,box-shadow] duration-[var(--motion-base)] ease-[var(--motion-ease)] focus-visible:ring-1 focus-visible:ring-primary/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "motion-press inline-flex shrink-0 items-center justify-center gap-1.5 font-medium whitespace-nowrap outline-none transition-[opacity,background-color,border-color,color,box-shadow] duration-[var(--duration-fast)] ease-[var(--ease-out)] focus-visible:ring-1 focus-visible:ring-primary/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
         default:
-          'rounded-full bg-primary text-primary-foreground shadow-glow hover:opacity-90',
+          'rounded-lg bg-primary text-primary-foreground hover:brightness-95',
         destructive:
-          'rounded-full bg-destructive text-primary-foreground hover:opacity-90',
+          'rounded-lg bg-destructive text-destructive-foreground hover:brightness-95',
         outline:
-          'rounded-full border border-border bg-background/60 text-foreground hover:border-primary/40 hover:text-primary',
+          'rounded-lg border border-border bg-background text-foreground hover:bg-muted',
         secondary:
-          'rounded-full bg-secondary/80 text-secondary-foreground hover:bg-secondary',
+          'rounded-lg bg-secondary text-secondary-foreground hover:brightness-95',
         ghost:
-          'rounded-lg text-muted-foreground hover:bg-muted/40 hover:text-foreground',
+          'rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground',
         link: 'rounded-none text-primary underline-offset-4 hover:underline',
       },
       size: {
