@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "instrumental-analysis",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-017-018",
+  "courseName": "分析化学",
+  "sessionRange": {
+    "start": 17,
+    "end": 18
+  },
+  "taughtOn": "2026-09-28",
+  "topic": "化学发光收尾与磷光补充、原子吸收光谱法(AAS)开篇：原子吸收基本原理、锐线光源与原子化器",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-017-018"
+}

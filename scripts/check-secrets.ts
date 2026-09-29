@@ -27,6 +27,9 @@ function gitLines(args: string[]): string[] {
     encoding: "utf8",
     cwd: process.cwd(),
     stdio: ["ignore", "pipe", "pipe"],
+    // 仓库追踪文件已破万，`git ls-files -z` 输出接近默认 1MB maxBuffer，
+    // 会在 CI/本地触发 spawnSync git ENOBUFS；显式放大缓冲。
+    maxBuffer: 64 * 1024 * 1024,
   });
   return stdout
     .split("\0")

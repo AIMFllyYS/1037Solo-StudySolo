@@ -1,0 +1,260 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "rec-2026-fall-017-018",
+  "generatedAt": "2026-09-28",
+  "examConfig": {
+    "source": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/recording.md；content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-017-018",
+    "revision": 1,
+    "recordingHash": "95157d270999e14c165c55662b4e2589e515aae360c22ae6c785029a1cbdc67b",
+    "notesTextHash": "e0ecad9e667c5c68ab713b8685f24112a58aca74657eed48d89635b236c30142"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "化学发光与荧光的能量来源区别"
+      },
+      "stem": "化学发光分析区别于荧光分析、在仪器结构上最本质的一点是：",
+      "options": [
+        "化学发光由化学反应供能激发分子，仪器无需光源，只需反应池+暗箱+光电倍增管",
+        "化学发光必须用氙灯等强光源照射才能发光",
+        "化学发光本质就是荧光，只是叫法不同",
+        "化学发光灵敏度远低于紫外-可见吸收法"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**荧光是光致发光（先照光、吸光后发光），需激发光源；化学发光由化学反应释放能量激发分子，自己发光，故仪器无需光源，只需反应池（比色皿）+暗箱+检测器。B错：不需要外光源。C错：能量来源不同。D错：化学发光灵敏度极高（检出限可达10⁻¹⁷ mol/L量级）。",
+      "hint": "化学反应供能、无光源。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "鲁米诺发光反应条件"
+      },
+      "stem": "鲁米诺（发光胺）化学发光反应发生所需要的条件是：",
+      "options": [
+        "弱酸性条件下无需催化剂即可发光",
+        "强碱性(NaOH)下加 Fe²⁺/Cu²⁺ 等金属离子催化才发光",
+        "需要激光照射才能发光",
+        "必须在低温高真空下才能反应"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**鲁米诺在强碱性(NaOH)条件下、并有 Fe²⁺（血中血红蛋白含铁）、Cu²⁺ 等金属离子催化时才发光；刑侦上正是利用血中铁离子催化，喷洒后关灯血迹处发蓝光。A错：需强碱而非弱酸、且需催化剂。C错：是化学发光不需照光。D错：与低温高真空无关。",
+      "hint": "强碱 NaOH + 金属离子催化。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "原子吸收的定义与共振线"
+      },
+      "stem": "原子吸收光谱法(AAS)所测量的吸收是指：",
+      "options": [
+        "气态基态原子对共振线光的吸收",
+        "液态分子对紫外连续光的吸收",
+        "激发态原子对发射线的散射",
+        "基态分子对白光的折射"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**原子吸收 = 气态基态原子对共振线光的吸收；关键词是气态、基态、共振线。共振线指基态→第一激发态，发生概率最大、强度最大、最灵敏。B错：那是分子紫外-可见吸收。C错：不是散射、也不是激发态。D错：对象是气态原子而非液态分子。",
+      "hint": "气态、基态、共振线三关键词。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "石墨炉三阶段升温程序"
+      },
+      "stem": "石墨炉原子化器的升温程序正确顺序是：",
+      "options": [
+        "原子化→灰化→干燥",
+        "灰化→干燥→原子化",
+        "干燥(~100°C除水/溶剂)→灰化(数百度除有机物)→原子化(上千K测吸收)",
+        "干燥→原子化→灰化"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**石墨炉分三阶段：干燥(~100°C)先除水/溶剂，灰化(数百度)再烧除有机物，最后原子化(上千K)使样品原子化并测吸收。这样分步是为避免溶剂、有机物在原子化时同时蒸发产生宽带背景吸收。A、B、D错：顺序错误，会把背景与待测原子信号混在一起。",
+      "hint": "先除水、再除有机物、最后原子化。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "谱线变宽的主要类型"
+      },
+      "stem": "在原子吸收中，导致吸收谱线变宽、最重要的两类是：",
+      "options": [
+        "多普勒(热)变宽与压力(碰撞)变宽",
+        "自然宽度与斯塔克(场致)变宽",
+        "仅自然宽度",
+        "仅斯塔克场致变宽"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**谱线变宽有四类：自然宽度(10⁻⁵ nm，可忽略)、多普勒变宽=热变宽(原子热运动，10⁻³ nm，重要)、压力变宽=碰撞变宽(原子间碰撞，10⁻³ nm，重要)、斯塔克变宽=场致变宽(可屏蔽电磁场消除)。主要的两个是热变宽+压力变宽；要谱线变锐就降温(小电流)、减压(抽真空)。B、C、D错：自然宽度可忽略、斯塔克可屏蔽，都不是主要变宽。",
+      "hint": "热变宽+压力变宽是主力。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "空心阴极灯为何发射锐线"
+      },
+      "stem": "空心阴极灯(HCL)为什么能发射出很窄的锐线特征谱线？",
+      "options": [
+        "因为充了高压氧气且使用很大电流",
+        "毫安级小电流使温度低、热(多普勒)变宽小；抽真空使压力变宽小；阴极由待测元素制成、发射其特征共振线",
+        "因为它使用了连续光源加单色器",
+        "因为阴极由钨丝制成"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**HCL 阴极由待测元素本身制成、充 Ar 并抽真空；加电压后 Ar⁺ 撞击阴极使其原子激发、回基态发射特征共振线。之所以锐：①电流小(毫安级)→温度低→多普勒热变宽小；②抽真空→压力小→碰撞变宽小。A错：抽真空而非充氧气、电流小而非大。C错：HCL 本身就是锐线光源，不靠连续光源+单色器。D错：阴极是待测元素而非钨。",
+      "hint": "小电流低温+抽真空低压，阴极即待测元素。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "三种火焰的温度与氧化还原性"
+      },
+      "stem": "关于原子吸收火焰的三种类型，下列对应正确的是：",
+      "options": [
+        "中性焰(化学计量比)温度最高；富燃焰(燃气多)还原性强，适合易生成氧化物的元素",
+        "富燃焰温度最高、贫燃焰还原性最强",
+        "三种火焰温度与氧化还原性完全相同",
+        "贫燃焰因助燃气最多而温度最高"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**中性火焰按化学计量比、无多余燃气/助燃气稀释降温，故温度最高，用于难解离物质；富燃焰燃气过剩、有还原性，适合易生成氧化物的元素；贫燃焰助燃气多、偏氧化性。常用空气-乙炔焰(~2450K)，笑气-乙炔(~3000K)温度最高、用于难熔元素。B、D错：温度最高的是中性焰而非富燃/贫燃。C错：三者温度与性质不同。",
+      "hint": "中性温度最高，富燃还原性强。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/recording.md",
+        "label": "AAS为何要用锐线光源"
+      },
+      "stem": "原子吸收为什么必须采用锐线光源，而不能像紫外-可见那样用连续光源加单色器？",
+      "options": [
+        "因为连续光源比锐线光源便宜得多",
+        "原子吸收谱线极窄(10⁻²~10⁻³ nm)，连续光源分光后带宽仍远大于吸收线、不满足朗伯定律‘平行单色光’条件；锐线光源发射线比吸收线窄1/10~1/100才能测峰值吸收",
+        "因为原子吸收谱线很宽，需要锐线光源再把它展宽",
+        "因为锐线光源不需要任何阴极材料"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**朗伯定律要求平行单色光，而原子吸收谱线宽度仅 10⁻²~10⁻³ nm，用连续光源经单色器分光后，出射带宽仍远大于吸收线宽度，无法在吸收线中心测峰值吸收。Walsh 的解决办法是用发射线更窄(比吸收线窄 1/10~1/100)的锐线光源(空心阴极灯)，从而测峰值吸收得 A=0.434 K N₀L。A错：与成本无关。C错：原子谱线极窄而非宽。D错：锐线光源阴极正是由待测元素制成。",
+      "hint": "原子谱线极窄，连续光源分光不够锐。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "Boltzmann分布与A=Kc的由来"
+      },
+      "stem": "由 A=0.434 K N₀L 出发，为什么原子吸收最终能简化为与浓度成正比的 A=Kc？",
+      "options": [
+        "任何温度下激发态原子都占绝对多数",
+        "由Boltzmann分布，3000K时最易激发的Na的 N_J/N₀ 仅 5.88×10⁻⁴，激发态原子可忽略，故 N₀≈c",
+        "高温下必须按激发态原子数 N_J 来定量",
+        "A=Kc 成立是因为火焰中根本不存在原子"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**原式写 N₀（单位体积基态原子数）是因为高温下可能有激发态原子；但 Boltzmann 分布表明即使在 3000 K，最易激发的 Na 的激发态/基态原子数比 N_J/N₀ 也仅 5.88×10⁻⁴，激发态原子可忽略，故基态原子数 N₀≈样品浓度 c，于是 A=Kc。A错：激发态占比极小。C错：正因激发态可忽略才按 N₀。D错：火焰中正是靠基态原子吸收。",
+      "hint": "3000K 下 N_J/N₀≈10⁻⁴，激发态可忽略。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/recording.md",
+        "label": "鲁米诺测血的干扰与假阳性"
+      },
+      "stem": "关于鲁米诺试剂在刑侦上检测肉眼看不见血迹，下列说法正确的是：",
+      "options": [
+        "鲁米诺测血无任何干扰，可单独作为血迹的确证",
+        "血中血红蛋白含铁离子催化鲁米诺发光，但Cu²⁺等其他金属也能催化，故有假阳性、仅作快速筛查，确证需其他方法",
+        "鲁米诺只对血液中的蛋白质发光，与金属离子无关",
+        "鲁米诺发光反应不需要任何催化剂"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**鲁米诺在强碱下需金属离子催化才发光；血液血红蛋白含铁离子，故喷洒后关灯血迹处发蓝光，灵敏度极高(一大缸水加一滴血即可检出)。但 Cu²⁺ 等其他金属同样能催化，会产生假阳性，因此它只是快速筛查手段，确证血迹还需其他方法。A错：有干扰和假阳性。C错：正是靠铁离子催化。D错：必须有催化剂。",
+      "hint": "铁铜都催化，假阳性要当心。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
+        "label": "石墨炉分阶段升温的目的"
+      },
+      "stem": "石墨炉原子化为什么要分干燥→灰化→原子化三步，而不直接把样品升到高温原子化？",
+      "options": [
+        "分步在干燥除水/溶剂、灰化除有机物，避免它们在原子化时同时蒸发产生宽带背景吸收、干扰待测原子的吸收信号",
+        "为了省电并延长石墨管寿命",
+        "因为仪器只能一步一步升温、无法直接达到高温",
+        "为了增大进样量"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**若直接升到高温，样品中的溶剂和有机物会与待测原子同时蒸发；这些分子/基团产生的是宽范围(宽带)背景吸收，仪器无法区分是待测原子还是背景在吸光，会干扰测定。分步用干燥除水、灰化除有机物，再在原子化阶段测干净的原子吸收。B、C、D错：省电/升温能力/进样量都不是分阶段的根本原因；另注意开机须先通 Ar/N₂ 再升温，否则石墨管氧化成 CO₂ 烧损。",
+      "hint": "先除溶剂和有机物，避免宽带背景吸收。"
+    }
+  ]
+}

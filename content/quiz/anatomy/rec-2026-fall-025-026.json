@@ -1,0 +1,260 @@
+{
+  "subjectId": "anatomy",
+  "chapterId": "rec-2026-fall-025-026",
+  "generatedAt": "2026-09-28",
+  "examConfig": {
+    "source": "content/anatomy/lectures/rec-2026-fall-025-026/recording.md；content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-025-026",
+    "revision": 1,
+    "recordingHash": "8ef072bae078e0783bb4c81d6606bf657844dfc9918ae9d49a2be46598ba19d6",
+    "notesTextHash": "84f4df8fc785fa36cebb08898195d660fe343aa05920cc62eea0d3cbff50aca2"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "泌尿系统四器官功能"
+      },
+      "stem": "泌尿系统由四个器官组成，下列哪项功能配对完全正确？",
+      "options": [
+        "肾——输送尿液；输尿管——生成尿液；膀胱——排出尿液；尿道——储存尿液",
+        "肾——生成尿液；输尿管——输送尿液；膀胱——储存尿液；尿道——排出尿液",
+        "膀胱——生成尿液；肾——储存尿液；输尿管——排出尿液；尿道——输送尿液",
+        "肾——排出尿液；输尿管——储存尿液；膀胱——生成尿液；尿道——输送尿液"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**泌尿系统四器官分工为：肾生成尿液，输尿管输送尿液，膀胱储存尿液（约300-500mL），尿道排出尿液。A错：把肾与输尿管、膀胱与尿道的功能全部对调。C错：生成尿液的是肾而非膀胱，储存尿液的是膀胱而非肾。D错：四项功能全部错位。",
+      "hint": "肾造尿、输尿管运尿、膀胱存尿、尿道排尿。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "肾门平面与左右肾高低"
+      },
+      "stem": "关于肾的位置与形态，下列描述正确的是？",
+      "options": [
+        "肾门平对第2腰椎体平面；左肾比右肾更低",
+        "肾门平对第1腰椎体（L1）平面；右肾因受肝压迫较左肾稍低",
+        "肾门平对第12胸椎；左右两肾高度完全相等",
+        "肾位于腹前壁腹膜腔内，左右各一，形似圆球"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**肾门是血管神经出入处，平对第1腰椎体（L1）平面；右肾上方邻肝、被肝下压，故较左肾稍低（左肾约T11下缘，右肾约T12上缘）。A错：肾门平L1而非L2，且左肾比右肾高而非低。C错：两肾不等高，右肾低。D错：肾位于腹后壁腹膜后间隙（腹膜外位），不是腹前壁腹膜腔内，外形似蚕豆而非圆球。",
+      "hint": "肾门平L1，右肾被肝压得低。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "肾被膜四层顺序"
+      },
+      "stem": "紧贴肾实质由内向外，肾的被膜层次正确排列是？",
+      "options": [
+        "肾筋膜 → 脂肪囊 → 纤维囊 → 基质膜",
+        "纤维囊 → 基质膜 → 脂肪囊 → 肾筋膜",
+        "基质膜 → 纤维囊 → 脂肪囊 → 肾筋膜",
+        "脂肪囊 → 纤维囊 → 肾筋膜 → 基质膜"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**紧贴肾实质表面先有不可分离的基质膜；向外才是肾被膜三层——纤维囊、脂肪囊（肾床）、最外层肾筋膜。A错：把顺序完全颠倒，肾筋膜在最外而非最内。B错：基质膜紧贴实质应在纤维囊之内。D错：脂肪囊不在最内层，基质膜也不在最外层。",
+      "hint": "基质最内不可离，纤维、脂肪、筋膜由内向外。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "输尿管三个狭窄"
+      },
+      "stem": "输尿管全长有三个生理性狭窄，其中最狭窄、输尿管结石最易嵌顿的部位是？",
+      "options": [
+        "肾盂与输尿管移行处（起始部）",
+        "跨越髂血管/小骨盆上口处",
+        "输尿管腹部中点处",
+        "输尿管壁内部（穿膀胱壁处）"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**输尿管三个狭窄为：①肾盂移行处、②跨髂血管/小骨盆上口处、③壁内部；其中壁内部是全程最狭窄处，结石最易嵌顿于此。A错：第一狭窄虽可嵌顿但不是最窄。B错：第二狭窄位于跨髂血管处，也不是最窄。C错：输尿管腹部中点并非生理性狭窄。",
+      "hint": "三个狭窄=起头、跨髂、穿壁；穿壁处最窄。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-025-026/recording.md",
+        "label": "纤维囊与基质膜剥离及肾手术缝合"
+      },
+      "stem": "肾破裂或行肾部分切除后，需要缝合的是哪一层？它与紧贴肾实质的基质膜之间是什么关系？",
+      "options": [
+        "肾筋膜；与基质膜完全融合、不可分离",
+        "脂肪囊；与基质膜紧密粘连，不可剥离",
+        "纤维囊；与基质膜之间容易剥离，若发生粘连反而是病理现象",
+        "基质膜本身；与肾实质可随意剥离"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**纤维囊是包裹肾实质表面的薄层致密结缔组织，与内侧紧贴实质的基质膜之间容易剥离；若二者粘连则属病理现象；肾破裂或手术时需缝合纤维囊。A错：肾筋膜是最外层固定结构，不与基质膜融合。B错：脂肪囊在纤维囊之外，不是缝合层。D错：基质膜紧贴肾实质、不可分离，正是不可剥离的那一层。",
+      "hint": "基质不可离，纤维易剥离，手术缝纤维囊。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "脂肪囊与肾囊封闭"
+      },
+      "stem": "临床上的“肾囊封闭”是将药液直接注入哪一层结构？",
+      "options": [
+        "纤维囊",
+        "脂肪囊（又称肾床）",
+        "肾筋膜",
+        "腹膜腔内"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**脂肪囊又称肾床，是包绕纤维囊、保护肾和肾上腺的脂肪层，肾囊封闭即把药液注入此层。A错：纤维囊紧贴实质、易剥离，不是注药封闭的部位。C错：肾筋膜是最外层固定结构，不做肾囊封闭。D错：肾为腹膜外位器官，肾囊封闭不进入腹膜腔。",
+      "hint": "脂肪囊=肾床，肾囊封闭打在这里。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-025-026/recording.md",
+        "label": "肾筋膜下方不愈着与肾下垂"
+      },
+      "stem": "肾筋膜在下方前后两层相互分离、不愈着，可导致的临床现象是？",
+      "options": [
+        "肾动脉狭窄和高血压",
+        "肾下垂；肾周积脓可沿此间隙向下蔓延至髂窝甚至大腿根部",
+        "膀胱输尿管反流",
+        "肾上腺随肾一起上移"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**肾筋膜上方、外侧缘前后愈着，内侧后筋膜附椎体筋膜、前筋膜向对侧移行；唯下方前后分离，故对肾的悬吊固定在下方薄弱，可发生肾下垂；肾周炎症积脓也可沿此向下蔓延至髂窝、大腿根部。A错：肾筋膜走行与肾动脉狭窄无直接关系。C错：输尿管斜穿膀胱壁才与反流有关。D错：下方不固定反而使肾下垂，不会使肾上腺上移。",
+      "hint": "肾筋膜上方外侧粘、下方分开→肾下垂、脓液往下窜。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "膀胱三角黏膜下组织缺如"
+      },
+      "stem": "膀胱三角成为肿瘤、结核、炎症好发区，其最重要的解剖学基础是？",
+      "options": [
+        "该区黏膜最厚、血管最丰富，故易发生肿瘤",
+        "该区缺少黏膜下组织，黏膜与肌层紧密相贴、平滑无皱襞",
+        "该区位于膀胱尖部，尿液滞留最久",
+        "该区上皮角化，对刺激特别敏感"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**膀胱三角位于两侧输尿管口与尿道内口之间，缺少黏膜下组织，黏膜平滑无皱襞，是肿瘤、结核、炎症的好发部位。A错：恰恰相反，该处黏膜薄而无皱襞，并非黏膜最厚。C错：膀胱三角位于膀胱底内面而非膀胱尖。D错：该处为移行上皮，并无角化层。",
+      "hint": "缺黏膜下、平滑无皱，肿瘤结核都找它。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-025-026/recording.md",
+        "label": "充盈膀胱耻骨上穿刺层次"
+      },
+      "stem": "膀胱充盈时，在耻骨联合上方行膀胱穿刺，为何不伤及腹膜、不污染腹腔？",
+      "options": [
+        "因为耻骨联合后方原本就没有腹膜反折",
+        "因为充盈的膀胱将腹前壁的腹膜反折推向上方，穿刺点位于腹膜反折以下",
+        "因为穿刺针即使穿过腹膜，腹膜也能自行密封",
+        "因为空虚膀胱才位于盆腔以外"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**空虚膀胱全部位于盆腔内；充盈时膀胱胀大升至耻骨联合上方，把覆盖其前上面的腹膜反折一并向上推开，此时在耻骨联合上方穿刺可经腹前壁直接进入膀胱前壁而不经过腹膜腔。A错：耻骨联合后方原本有腹膜反折，只是被充盈膀胱推开。C错：穿刺原则上要求不进入腹膜腔，并非依靠腹膜自行密封。D错：空虚膀胱位于盆腔内，而非盆腔以外。",
+      "hint": "憋尿后膀胱顶上去，腹膜反折被推高，耻骨上穿刺不进腹腔。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "尿液排出途径"
+      },
+      "stem": "尿液由肾乳头排出体外，正确的途经顺序是？",
+      "options": [
+        "肾乳头 → 肾大盏 → 肾小盏 → 肾盂 → 输尿管 → 膀胱 → 尿道",
+        "肾乳头 → 肾小盏 → 肾大盏 → 肾盂 → 输尿管 → 膀胱 → 尿道",
+        "肾小盏 → 肾乳头 → 肾大盏 → 肾盂 → 输尿管 → 尿道",
+        "肾乳头 → 肾小盏 → 肾盂 → 肾大盏 → 输尿管 → 膀胱 → 尿道"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**2~3个肾锥体尖端合成肾乳头，乳头管开口于肾小盏；2~3个肾小盏合成肾大盏，再合成肾盂，肾盂出肾门移行为输尿管，经输尿管入膀胱，最后经尿道排出。A错：把肾小盏与肾大盏的汇合顺序颠倒。C错：肾小盏包绕肾乳头，顺序起点错误。D错：肾大盏应先于肾盂，不能跳过肾大盏直接由肾小盏到肾盂。",
+      "hint": "乳头→小盏→大盏→肾盂→输尿管→膀胱→尿道。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/anatomy/lectures/rec-2026-fall-025-026/recording.md",
+        "label": "肾单位组成与皮髓质定位"
+      },
+      "stem": "关于肾单位（肾结构和功能的基本单位）的组成与位置，下列哪项正确？",
+      "options": [
+        "肾单位由肾小体和集合管组成，全部位于肾髓质",
+        "肾单位由肾小体和肾小管组成；肾小体位于肾皮质，肾小管曲部在皮质、髓袢伸入髓质",
+        "肾单位就是肾锥体，位于肾髓质深部",
+        "肾单位由肾小盏和肾大盏汇合而成"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**肾单位=肾小体+肾小管；肾小体分布于肾皮质（肉眼所见皮质红色细颗粒即肾小体与肾小管），肾小管近端曲段行于皮质、髓袢伸入髓质。A错：集合管不属肾单位，且肾小体在皮质而非髓质。C错：肾锥体是髓质结构，不是肾单位。D错：肾小盏、肾大盏是排尿管道的集尿结构，与肾单位无关。",
+      "hint": "肾单位=肾小体+肾小管；小体在皮质。"
+    }
+  ]
+}

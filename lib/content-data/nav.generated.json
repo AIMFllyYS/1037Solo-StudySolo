@@ -5291,6 +5291,45 @@
                   "quizRef": "rec-2026-fall-015-016"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-017-018",
+              "title": "第17-18节 · 化学发光收尾与磷光补充、原子吸收光谱法(AAS)开篇：原子吸收基本原理、锐线光源与原子化器",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-017-018",
+                  "title": "课堂原文 · 第17-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-017-018",
+                  "quizRef": "rec-2026-fall-017-018"
+                },
+                {
+                  "id": "note-rec-2026-fall-017-018",
+                  "title": "课堂笔记 · 第17-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-017-018",
+                  "quizRef": "rec-2026-fall-017-018"
+                },
+                {
+                  "id": "card-rec-2026-fall-017-018",
+                  "title": "复习手卡 · 第17-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-017-018",
+                  "quizRef": "rec-2026-fall-017-018"
+                }
+              ]
             }
           ]
         },
@@ -5390,6 +5429,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-015-016",
               "quizRef": "rec-2026-fall-015-016",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-017-018",
+              "title": "课堂纪要 · 第17-18节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-017-018",
+              "quizRef": "rec-2026-fall-017-018",
               "layoutProfile": "full"
             }
           ]
@@ -6162,6 +6212,45 @@
                   "quizRef": "rec-2026-fall-023-024"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-025-026",
+              "title": "第25-26节 · 泌尿系统——肾的大体结构与被膜、肾单位、输尿管、膀胱、尿道",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-025-026",
+                  "title": "课堂原文 · 第25-26节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-025-026",
+                  "quizRef": "rec-2026-fall-025-026"
+                },
+                {
+                  "id": "note-rec-2026-fall-025-026",
+                  "title": "课堂笔记 · 第25-26节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-025-026",
+                  "quizRef": "rec-2026-fall-025-026"
+                },
+                {
+                  "id": "card-rec-2026-fall-025-026",
+                  "title": "复习手卡 · 第25-26节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-025-026",
+                  "quizRef": "rec-2026-fall-025-026"
+                }
+              ]
             }
           ]
         },
@@ -6272,6 +6361,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-023-024",
               "quizRef": "rec-2026-fall-023-024",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-025-026",
+              "title": "课堂纪要 · 第25-26节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-025-026",
+              "quizRef": "rec-2026-fall-025-026",
               "layoutProfile": "full"
             }
           ]
@@ -7641,6 +7741,45 @@
                   "quizRef": "rec-2026-fall-019-020"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-021-022",
+              "title": "第21-22节 · 微丝及其调控、Arp2/3复合物、Formin、小GTP酶(Rho家族)与伪足/细胞运动",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-021-022",
+                  "title": "课堂原文 · 第21-22节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-021-022",
+                  "quizRef": "rec-2026-fall-021-022"
+                },
+                {
+                  "id": "note-rec-2026-fall-021-022",
+                  "title": "课堂笔记 · 第21-22节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-021-022",
+                  "quizRef": "rec-2026-fall-021-022"
+                },
+                {
+                  "id": "card-rec-2026-fall-021-022",
+                  "title": "复习手卡 · 第21-22节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-021-022",
+                  "quizRef": "rec-2026-fall-021-022"
+                }
+              ]
             }
           ]
         },
@@ -7740,6 +7879,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-019-020",
               "quizRef": "rec-2026-fall-019-020",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-021-022",
+              "title": "课堂纪要 · 第21-22节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-021-022",
+              "quizRef": "rec-2026-fall-021-022",
               "layoutProfile": "full"
             }
           ]
@@ -9049,6 +9199,45 @@
                   "quizRef": "rec-2026-fall-015-016"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-017-018",
+              "title": "第17-18节 · 神经系统组织学——大脑皮质六层、小脑皮质三层(普肯耶细胞层)、脊髓灰/白质",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-017-018",
+                  "title": "课堂原文 · 第17-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-017-018",
+                  "quizRef": "rec-2026-fall-017-018"
+                },
+                {
+                  "id": "note-rec-2026-fall-017-018",
+                  "title": "课堂笔记 · 第17-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-017-018",
+                  "quizRef": "rec-2026-fall-017-018"
+                },
+                {
+                  "id": "card-rec-2026-fall-017-018",
+                  "title": "复习手卡 · 第17-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-017-018",
+                  "quizRef": "rec-2026-fall-017-018"
+                }
+              ]
             }
           ]
         },
@@ -9126,6 +9315,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-015-016",
               "quizRef": "rec-2026-fall-015-016",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-017-018",
+              "title": "课堂纪要 · 第17-18节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-017-018",
+              "quizRef": "rec-2026-fall-017-018",
               "layoutProfile": "full"
             }
           ]
