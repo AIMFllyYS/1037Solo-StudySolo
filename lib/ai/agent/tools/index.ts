@@ -26,6 +26,7 @@ export type { CommitNotesInput, CommitNotesOutput } from "@/lib/ai/agent/tools/c
 export type { CommitFlashcardsInput, CommitFlashcardsOutput, CommitFlashcardItem } from "@/lib/ai/agent/tools/commitFlashcards/types";
 export type { UpdateUserNoteAction, UpdateUserNoteInput, UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/types";
 export type { StudyTools, StudyToolName } from "@/lib/ai/agent/tools/names";
+export type { ClassTranscriptHit, SearchClassTranscriptInput, SearchClassTranscriptOutput } from "@/lib/ai/agent/tools/searchClassTranscript/types";
 /** @public 兼容旧 import 路径；设置面板与思考链从 presentations / toolPresentation 取用。 */
 export { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";
 /** @public 注册表与结果卡片的客户端类型。 */

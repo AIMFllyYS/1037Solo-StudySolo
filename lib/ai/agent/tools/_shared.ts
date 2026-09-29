@@ -2,6 +2,7 @@ import type { Skill } from "@/lib/types/skill";
 import type { AcademicYearId } from "@/lib/constants/academic-year";
 import type { TextToolOutput } from "@/lib/ai/agent/tools/_types";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
+import type { ClassAgentContext } from "@/lib/class/agentContext";
 import type { FlashcardCatalogItem, UserNoteCatalogItem } from "@/lib/ai/agent/tools/memoryCatalog";
 import type {
   ProjectFileCatalogItem,
@@ -39,6 +40,10 @@ export interface StudyToolContext {
   projectFiles?: ProjectFileCatalogItem[];
   /** 本轮携带的项目切片正文。 */
   projectSlices?: ProjectSlicePayload[];
+  /** 发起请求的登录用户（课堂文稿等按账号读库的工具用）。 */
+  userId?: string;
+  /** Class 模式携带的当前课堂；有值时才暴露 searchClassTranscript。 */
+  classContext?: ClassAgentContext;
 }
 
 /** 跨工具轮次的可变状态（同一请求内共享）。 */

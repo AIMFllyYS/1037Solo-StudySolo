@@ -29,6 +29,7 @@ import { createCommitFlashcardsTool } from "@/lib/ai/agent/tools/commitFlashcard
 import { createUpdateUserNoteTool } from "@/lib/ai/agent/tools/updateUserNote/tool";
 import { createGetProjectFilesTool } from "@/lib/ai/agent/tools/getProjectFiles/tool";
 import { createReadProjectSlicesTool } from "@/lib/ai/agent/tools/readProjectSlices/tool";
+import { createSearchClassTranscriptTool } from "@/lib/ai/agent/tools/searchClassTranscript/tool";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 import type { ArtifactCatalogItem } from "@/lib/ai/agent/tools/getArtifact/types";
 import { PLAN_MODE_WRITE_TOOL_SET } from "@/lib/ai/agent/planMode";
@@ -115,6 +116,7 @@ export function buildStudyTools(
     updateUserNote: createUpdateUserNoteTool(ctx),
     getProjectFiles: createGetProjectFilesTool(ctx),
     readProjectSlices: createReadProjectSlicesTool(ctx, runtime),
+    searchClassTranscript: createSearchClassTranscriptTool(ctx, runtime),
   } satisfies Record<StudyToolName, unknown>;
 
   // 稳定工具在前；enableSearch / useSkill 易变，追加在末尾，失效范围可解释。
@@ -139,6 +141,8 @@ export function buildStudyTools(
   ];
   if (opts.memoryCommit === "note") names.push("commitNotes");
   if (opts.memoryCommit === "flashcards") names.push("commitFlashcards");
+  // 课堂文稿只在 Class 模式（请求带了课堂上下文且已登录）时出现。
+  if (ctx.classContext && ctx.userId) names.push("searchClassTranscript");
   if (opts.enableSearch) names.push("webSearch", "imageSearch");
   if (menuSkillNames.length > 0) names.push("useSkill");
   const forced = opts.forcedToolName as StudyToolName | undefined;

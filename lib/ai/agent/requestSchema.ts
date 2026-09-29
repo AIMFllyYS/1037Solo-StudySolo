@@ -3,6 +3,7 @@
 // 加上限只约束体积与枚举，不把可选字段改成必填。
 
 import { z } from "zod";
+import { classAgentContextSchema } from "@/lib/class/agentContext";
 import { DEFAULT_ACADEMIC_YEAR, isAcademicYearId, type AcademicYearId } from "@/lib/constants/academic-year";
 import {
   MAX_MEMORY_CARDS,
@@ -213,6 +214,8 @@ export const chatRequestSchema = z.object({
     .optional(),
   /** 窗内笔记 Agent：与主对话共用前缀，但可收窄工具。 */
   noteWindowAgent: z.boolean().optional(),
+  /** Class 模式随请求携带的当前课堂（提纲 + 实时文稿尾部）；有值才挂课堂文稿工具。 */
+  classContext: classAgentContextSchema.optional(),
   /** 工具循环上限（1–20，对齐 ToolLoopAgent 默认 stopWhen）。缺省由服务端 clamp 为 6。 */
   maxToolRounds: z.number().finite().optional(),
   /** 计划模式：只读工具，先输出计划文档。 */

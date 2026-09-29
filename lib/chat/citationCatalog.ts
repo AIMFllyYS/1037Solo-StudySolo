@@ -11,6 +11,8 @@ export interface CitationSource {
   snippet: string;
   url?: string;
   path?: string;
+  /** 课堂文稿引用：点编号跳回那节课的那一段。 */
+  classSegment?: { sessionId: string; segmentId: string };
 }
 
 export const INLINE_CITE_RE = /\[(\d{1,2}(?:\s*,\s*\d{1,2})*)\]/g;
@@ -115,6 +117,20 @@ export function collectCitationCatalog(parts: ChatMessagePart[]): CitationSource
         title: source.title || source.url,
         url: source.url ?? "",
         snippet: source.snippet ?? "",
+      });
+    }
+  }
+
+  for (const part of getToolPartsByName({ parts }, "searchClassTranscript")) {
+    if (!isCompleteOutput(part)) continue;
+    for (const hit of part.output.hits ?? []) {
+      if (!hit.citeIndex) continue;
+      add({
+        index: hit.citeIndex,
+        kind: "note",
+        title: `《${hit.sessionTitle}》课堂文稿`,
+        snippet: snippetOf(hit.text, hit.sessionTitle),
+        classSegment: { sessionId: hit.sessionId, segmentId: hit.segmentId },
       });
     }
   }

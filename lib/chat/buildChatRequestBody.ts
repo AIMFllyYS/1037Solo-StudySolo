@@ -14,6 +14,7 @@ import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 import type { FlashcardCatalogItem, UserNoteCatalogItem } from "@/lib/ai/agent/tools/memoryCatalog";
 import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composerIntent";
+import type { ClassAgentContext } from "@/lib/class/agentContext";
 import type {
   ProjectFileCatalogItem,
   ProjectSlicePayload,
@@ -42,6 +43,7 @@ export interface ChatRequestBodySettings {
   planMode?: boolean;
   forcedTool?: ComposerForcedTool;
   attachedFiles?: AttachedFileRef[];
+  classContext?: ClassAgentContext;
 }
 
 /** 发给 /api/chat 的 body（messages 由 transport 另传）。字段须与 chatRequestSchema 对齐。 */
@@ -80,6 +82,7 @@ export interface ChatRequestBody {
   planMode?: boolean;
   forcedTool?: ComposerForcedTool;
   attachedFiles?: AttachedFileRef[];
+  classContext?: ClassAgentContext;
 }
 
 export function buildChatRequestBody(
@@ -143,5 +146,6 @@ export function buildChatRequestBody(
     planMode: settings.planMode,
     forcedTool: settings.forcedTool,
     attachedFiles: settings.attachedFiles ?? [],
+    ...(settings.classContext ? { classContext: settings.classContext } : {}),
   };
 }
