@@ -106,8 +106,13 @@ export default function Workbench(){
       await insertTranscriptSegments(db,rows);rows.forEach(appendCommitted);setDraft('');setShowDraft(false);refreshSessions();
     }catch(e){setError(e instanceof Error?e.message:'导入失败');}finally{setBusy(false);}
   }
+  // 「新录音」= 开一节空白课：停掉当前录音、清空工作台、去掉 ?session=，文稿区回到「开始录音」。
+  // 导入已有文稿是另一个入口（onImport），不再和 + 混在一起。
   async function newClass(){
-    if(busy)return;setShowDraft(true);
+    if(busy)return;
+    await stopSession();resetTranscriptPublic();resetNotesPublic();resetRenderProjection();resetChatPrivate();resetChatPersistSeq();
+    setShowDraft(false);setDraft('');
+    try{const url=new URL(window.location.href);url.searchParams.delete('session');window.history.replaceState(null,'',url);}catch{}
   }
   async function rename(id:string,title:string){
     try{const db=await getDb();await updateSession(db,id,{title});refreshSessions();}catch(e){setError(e instanceof Error?e.message:'重命名失败');}
@@ -167,7 +172,7 @@ export default function Workbench(){
   if(!auth.userId)return <section className="m-6 rounded-2xl border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] p-8"><h1 className="text-2xl font-semibold text-[color:var(--ink)]">课堂工作台</h1><p className="my-4 text-[color:var(--ink-soft)]">登录后录音、整理笔记与课堂提问，课堂产物随账号同步。</p><button className="rounded-xl bg-[color:var(--accent)] px-5 py-3 text-[color:var(--accent-ink)]" onClick={()=>redirectAccount()}>登录统一账号</button></section>;
   if(owner!==auth.userId)return <div className="p-8 text-sm text-[color:var(--ink-soft)]">正在安全切换课堂空间…</div>;
   return <div className="ss-class-workbench relative flex h-full min-h-0 w-full overflow-hidden" key={owner}>
-    <SessionSidebar sessions={sessions} currentId={sessionId} liveStatus={recordingStatus} collapsed={sidebarCollapsed} pendingCount={getPendingCount()} busy={busy} onToggle={()=>setSidebarCollapsed(v=>!v)} onOpen={id=>void open(id)} onNew={()=>void newClass()} onRename={(id,t)=>void rename(id,t)} onArchive={id=>void archive(id)}/>
+    <SessionSidebar sessions={sessions} currentId={sessionId} liveStatus={recordingStatus} collapsed={sidebarCollapsed} pendingCount={getPendingCount()} busy={busy} onToggle={()=>setSidebarCollapsed(v=>!v)} onOpen={id=>void open(id)} onNew={()=>void newClass()} onImport={()=>setShowDraft(true)} onOpenSettings={()=>setShowSettings(true)} onRename={(id,t)=>void rename(id,t)} onArchive={id=>void archive(id)}/>
     <div className="flex min-h-0 min-w-0 flex-1 flex-col">
       <header className="flex items-center gap-1.5 border-b border-[color:var(--line-soft)] px-3 py-2">
         <div className="mr-auto min-w-0">

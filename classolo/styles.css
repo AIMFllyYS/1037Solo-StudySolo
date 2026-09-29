@@ -27,3 +27,10 @@
 .ss-class-workbench .node-paper-bg{background:var(--bg-panel);}
 .ss-class-workbench :focus-visible{outline:2px solid var(--md-sys-color-primary);outline-offset:2px;}
 .ss-class-workbench .react-flow__attribution{font-size:9px;}
+
+.ss-class-workbench .ss-nav-cta{display:inline-flex;align-items:center;justify-content:center;gap:.35rem;border-radius:.6rem;padding:.45rem .5rem;font-size:.78rem;font-weight:500;background:var(--accent);color:var(--accent-ink);white-space:nowrap;}
+.ss-class-workbench .ss-nav-cta:hover{filter:brightness(.96);}
+.ss-class-workbench .ss-nav-cta:disabled{opacity:.45;cursor:not-allowed;}
+.ss-class-workbench .ss-nav-cta--ghost{background:var(--bg-app);color:var(--ink-soft);border:1px solid var(--line-soft);}
+.ss-class-workbench .ss-nav-link{display:flex;align-items:center;gap:.5rem;border-radius:.5rem;padding:.35rem .5rem;font-size:.78rem;color:var(--ink-soft);text-align:left;}
+.ss-class-workbench .ss-nav-link:hover{background:var(--bg-muted);color:var(--ink);}

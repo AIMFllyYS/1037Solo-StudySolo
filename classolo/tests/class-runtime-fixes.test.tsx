@@ -93,3 +93,19 @@ describe('classroom transport retry policy', () => {
     expect(retryDelayMs({ status: 429, headers: new Headers({ 'retry-after': '60' }) }, 0)).toBeLessThanOrEqual(8400)
   })
 })
+
+
+describe('past classes search (#70)', () => {
+  const seg = (id: string, seq: number, text: string) => ({ id, seq, text, startMs: 0, endMs: 0 }) as never
+  it('returns hits across classes with jump-back links, best of each class first', async () => {
+    const { rankPastClassHits } = await import('@/classolo/features/agent/search-past-classes')
+    const hits = rankPastClassHits('定积分 面积', [
+      { id: 's1', title: '定积分', segments: [seg('a', 1, '定积分表示曲线下方的面积。'), seg('b', 2, '定积分的性质与面积')] },
+      { id: 's2', title: '导数', segments: [seg('c', 1, '导数是切线斜率。')] },
+      { id: 's3', title: '反常积分', segments: [seg('d', 1, '无穷区间上的定积分也可以表示面积')] },
+    ])
+    expect(hits.map((h) => h.sessionId).slice(0, 2).sort()).toEqual(['s1', 's3'])
+    expect(hits.every((h) => h.href === `/class?session=${h.sessionId}`)).toBe(true)
+    expect(hits.some((h) => h.sessionId === 's2')).toBe(false)
+  })
+})

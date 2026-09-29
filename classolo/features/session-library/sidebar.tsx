@@ -1,14 +1,21 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import Link from 'next/link'
 import {
   Archive,
   Check,
   ChevronLeft,
   ChevronRight,
+  FileInput,
+  Layers,
+  ListChecks,
+  Mic,
+  NotebookText,
   Pencil,
   Plus,
   Search,
+  Settings2,
   X,
 } from 'lucide-react'
 
@@ -27,6 +34,9 @@ export interface SessionSidebarProps {
   onToggle: () => void
   onOpen: (id: string) => void
   onNew: () => void
+  /** 导入已有文稿（与新录音分开：+ 是开一节新课，不是导入）。 */
+  onImport?: () => void
+  onOpenSettings?: () => void
   onRename: (id: string, title: string) => void
   onArchive: (id: string) => void
 }
@@ -41,6 +51,8 @@ export function SessionSidebar({
   onToggle,
   onOpen,
   onNew,
+  onImport,
+  onOpenSettings,
   onRename,
   onArchive,
 }: SessionSidebarProps) {
@@ -101,7 +113,16 @@ export function SessionSidebar({
           <ChevronLeft className="size-4" />
         </button>
       </div>
-      <div className="px-3 pb-2">
+      {/* issue #64：完整导航——新录音 / 导入 在上，资源库 / 复习 / 测试 / 设置 在下；
+          每个入口都落到真实页面（Review 模式对应板块），没有假入口。 */}
+      <div className="grid grid-cols-2 gap-1.5 px-3 pb-2">
+        <button type="button" onClick={onNew} disabled={busy} className="ss-nav-cta">
+          <Mic className="size-3.5" />新录音
+        </button>
+        <button type="button" onClick={onImport} disabled={busy || !onImport} className="ss-nav-cta ss-nav-cta--ghost">
+          <FileInput className="size-3.5" />导入文稿
+        </button>
+      </div>      <div className="px-3 pb-2">
         <div className="flex items-center gap-2 rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-app)] px-2.5 py-1.5">
           <Search className="size-3.5 text-[color:var(--ink-faint)]" />
           <input
@@ -205,10 +226,17 @@ export function SessionSidebar({
           })
         )}
       </ul>
-      <div className="border-t border-[color:var(--line-soft)] px-3 py-2 text-[11px] text-[color:var(--ink-faint)]">
+      <nav aria-label="课堂之外" className="border-t border-[color:var(--line-soft)] px-2 py-1.5">
+        <Link href="/review?section=notes" className="ss-nav-link"><NotebookText className="size-3.5" />资源库（笔记）</Link>
+        <Link href="/review?section=flashcards" className="ss-nav-link"><Layers className="size-3.5" />复习站（闪卡）</Link>
+        <Link href="/review?section=quiz" className="ss-nav-link"><ListChecks className="size-3.5" />测试站（出题）</Link>
+        {onOpenSettings ? (
+          <button type="button" onClick={onOpenSettings} className="ss-nav-link w-full"><Settings2 className="size-3.5" />课堂设置</button>
+        ) : null}
+      </nav>      <div className="border-t border-[color:var(--line-soft)] px-3 py-2 text-[11px] text-[color:var(--ink-faint)]">
         {pendingCount > 0 ? (
           <span className="inline-flex items-center gap-1.5">
-            <span className="size-1.5 rounded-full bg-amber-500" />
+            <span className="size-1.5 rounded-full bg-[color:var(--md-sys-color-tertiary,var(--accent))]" />
             {pendingCount} 项待同步
           </span>
         ) : (

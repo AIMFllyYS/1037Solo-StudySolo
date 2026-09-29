@@ -69,7 +69,7 @@ function TraceRow({ toolName, query }: { toolName: string; query?: string }) {
   return (
     <div className="mt-1 inline-flex items-center gap-1.5 rounded-md bg-[color:var(--bg-muted)] px-2 py-0.5 text-[11px] text-[color:var(--ink-soft)]">
       <Search className="size-3" />
-      {toolName === 'search_transcript' ? '检索文稿' : toolName}
+      {toolName === 'search_transcript' ? '检索文稿' : toolName === 'search_past_classes' ? '检索历史课堂' : toolName}
       {query ? <span className="text-[color:var(--ink-faint)]">· {query}</span> : null}
     </div>
   )

@@ -17,6 +17,7 @@ import {
   searchTranscriptSnapshot,
   searchTranscriptTool,
 } from './search-transcript'
+import { searchPastClassesTool } from './search-past-classes'
 
 export interface ChatStreamPart {
   text?: string
@@ -33,6 +34,7 @@ const SYSTEM_PROMPT = [
   '你是课堂问答助手。基于本节课文稿回答学生问题，语言简洁准确。',
   '涉及“刚才老师讲了什么”等问题时必须调用 search_transcript 工具，不要凭记忆作答。',
   '引用具体文稿时用 [segmentId] 标注来源，方便学生回跳。',
+  '学生问到以前的课、上节课或需要跨课复习时，调用 search_past_classes，并注明出自哪节课、附上回看链接（Markdown 链接）。',
 ].join('\n')
 
 async function* defaultModelStream(
@@ -47,7 +49,7 @@ async function* defaultModelStream(
     model: getChatModel(),
     system: SYSTEM_PROMPT,
     prompt,
-    tools: { search_transcript: searchTranscriptTool },
+    tools: { search_transcript: searchTranscriptTool, search_past_classes: searchPastClassesTool },
     stopWhen: stepCountIs(4),
     maxOutputTokens: CLASS_OUTPUT_TOKENS,
     maxRetries: 0,
