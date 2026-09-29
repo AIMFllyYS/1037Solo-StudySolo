@@ -39,6 +39,7 @@ import { hydrateSettings } from "@/lib/stores/settings";
 import { useBrowserFullscreen } from "@/lib/hooks/useBrowserFullscreen";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
+import CenterWorkspace from "./center/CenterWorkspace";
 import ModeSwitcher from "./ModeSwitcher";
 import { AgentCenterTabsLive } from "@/components/agent/AgentCenterTabs";
 import { useT } from "@/lib/i18n";
@@ -88,6 +89,7 @@ function TopBar({
   hideWindowTaskbar = false,
   agentMode = false,
   classMode = false,
+  reviewMode = false,
   dockOpen = false,
   onToggleDock,
   showCenterTabs = false,
@@ -99,6 +101,8 @@ function TopBar({
   /** Agent 工作区：顶栏只留品牌 + 全屏 + 右侧工作区开关，面包屑/全局搜索/收起顶栏都不在这里。 */
   agentMode?: boolean;
   classMode?: boolean;
+  /** Review 工作区：顶栏只留品牌 + 全屏（复习页有自绘左侧栏，无需 Studio 面包屑/搜索/顶栏收起）。 */
+  reviewMode?: boolean;
   /** 右侧工作区当前是否展开（Agent 模式）。 */
   dockOpen?: boolean;
   onToggleDock?: () => void;
@@ -119,7 +123,7 @@ function TopBar({
    * 所以不能沿用 Studio 那个会落盘的收起态：从 Studio 收着顶栏切到 Agent，
    * h-0 会把这两个键一起吃掉——既没有面板开关，也没有全屏入口（Esc 之外无路可回）。
    */
-  const barCollapsed = !agentMode && !classMode && topBarCollapsed;
+  const barCollapsed = !agentMode && !classMode && !reviewMode && topBarCollapsed;
 
   const subject = getSubject(subjectId);
   const category = getCategory(subjectId, categoryId);
@@ -137,7 +141,7 @@ function TopBar({
     >
       {/* 侧边栏开合：Studio 与 Agent 共用一个开关、同一个落点（LOGO 左侧）。
           Agent 收起后**没有**第二个入口——中间那块不再浮一个「展开对话栏」按钮。 */}
-      {!classMode && <button
+      {!classMode && !reviewMode && <button
         onClick={toggleSidebar}
         title={
           sidebarShortcutEnabled
@@ -156,7 +160,7 @@ function TopBar({
         </svg>
       </button>}
       <ModeSwitcher />
-      {!agentMode && !classMode && <div className="ml-2 flex min-w-0 items-center gap-1.5 text-[13px] text-[var(--ink-faint)]">
+      {!agentMode && !classMode && !reviewMode && <div className="ml-2 flex min-w-0 items-center gap-1.5 text-[13px] text-[var(--ink-faint)]">
         {subject && (
           <>
             <span className="shrink-0">·</span>
@@ -184,13 +188,13 @@ function TopBar({
       </div>}
 
       <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-1">
-        {!topBarCollapsed && !agentMode && (
+        {!topBarCollapsed && !agentMode && !reviewMode && (
           <div className="mr-1 flex min-w-0 flex-1 items-center justify-end gap-1 border-r border-[var(--line-soft)] pr-2">
             <GlobalSearchButton />
             {!hideWindowTaskbar && <WindowTaskbar host="topbar" />}
           </div>
         )}
-        {!agentMode && !classMode && (
+        {!agentMode && !classMode && !reviewMode && (
           <button
             onClick={toggleTopBar}
             title={topBarCollapsed ? t("app.topbar.expandTopBar") : t("app.topbar.collapseTopBar")}
@@ -620,6 +624,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         hideWindowTaskbar={resolvedMode === "agent"}
         agentMode={resolvedMode === "agent"}
         classMode={resolvedMode === "class"}
+        reviewMode={resolvedMode === "review"}
       />
       {!studioChrome ? (
       <div className="min-h-0 flex-1">
@@ -664,7 +669,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <div className="relative h-full w-full">
               {/* 被 ManagedWindow fullscreenTarget="notes" 用作全屏对齐目标，勿改 id */}
               <div id={NOTES_PANEL_ID} className="h-full w-full">
-                {children}
+                <CenterWorkspace>{children}</CenterWorkspace>
               </div>
               {routeLayout.showRightPanel && (
                 <button

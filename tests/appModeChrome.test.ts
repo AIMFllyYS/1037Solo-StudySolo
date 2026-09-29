@@ -128,7 +128,7 @@ test("Agent 顶栏：网页全屏按钮紧贴右侧工作区开关左侧，且�
 
   // 4) Agent 顶栏是控件条：不吃 Studio 那个会落盘的「收起顶栏」，否则两个键一起消失。
   //    React 侧（barCollapsed）与首帧 CSS（html[data-topbar-collapsed] 那条）都要放过它。
-  assert.match(appShell, /const barCollapsed = !agentMode && !classMode && topBarCollapsed;/);
+  assert.match(appShell, /const barCollapsed = !agentMode && !classMode && !reviewMode && topBarCollapsed;/);
   assert.match(appShell, /barCollapsed \? "h-0 border-b-0 py-0"/);
   assert.match(appShell, /data-agent-bar=\{agentMode \? "true" : undefined\}/);
   const globals = readWorkspaceFile("app/globals.css");

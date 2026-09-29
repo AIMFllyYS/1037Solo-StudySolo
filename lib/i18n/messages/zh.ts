@@ -13,6 +13,7 @@ import { appZh } from "./parts/zh/app";
 import { commonZh } from "./parts/zh/common";
 import { menuZh } from "./parts/zh/menu";
 import { panelZh } from "./parts/zh/panel";
+import { reviewZh } from "./parts/zh/review";
 import { settingsZh } from "./parts/zh/settings";
 import { shareZh } from "./parts/zh/share";
 import { traceZh } from "./parts/zh/trace";
@@ -334,6 +335,7 @@ export const zh = {
   settings: settingsZh,
   menu: menuZh,
   panel: panelZh,
+  review: reviewZh,
   trace: traceZh,
   window: windowZh,
   share: shareZh,

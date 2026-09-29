@@ -1,0 +1,93 @@
+import type { LocaleMessages } from "../../../types";
+
+/**
+ * review namespace (English) — Review mode (/review): notes / flashcards / quiz / mastery.
+ * Must mirror parts/zh/review.ts exactly; `satisfies LocaleMessages["review"]` enforces the shape.
+ */
+export const reviewEn = {
+  title: "Review",
+  sidebar: {
+    collapse: "Collapse sidebar",
+    expand: "Expand sidebar",
+    notes: "Notes",
+    flashcards: "Flashcards",
+    quiz: "Quiz",
+    overview: "Mastery",
+  },
+  overview: {
+    title: "Learning mastery",
+    dueCards: "Cards due",
+    recentAccuracy: "Recent accuracy",
+    weakPoints: "Weak points",
+    notesCount: "Notes",
+    empty: "No review data yet. Write a few notes, build flashcards, or take a quiz and your progress will show up here.",
+    none: "None",
+  },
+  notes: {
+    title: "Notes",
+    search: "Search note title or body",
+    new: "New note",
+    empty: "No notes yet. Click “New note” to start a Notion-style review note with formulas, lists and a slash menu.",
+    emptyPick: "Pick a note on the left to edit, or create a new one.",
+    untitled: "Untitled note",
+    titlePlaceholder: "Note title",
+    saved: "Saved automatically",
+    saving: "Saving…",
+    delete: "Delete note",
+    deleteConfirm: "This cannot be undone. Delete this note?",
+    count: "{count} notes",
+  },
+  flashcards: {
+    title: "Flashcards",
+    empty: "No flashcards yet. Select text in a note or chat and “Save” to turn key points into reviewable cards.",
+    emptyDeck: "This subject has no flashcards yet.",
+    due: "{count} due",
+    allSubjects: "All subjects",
+    session: {
+      done: "Review round complete!",
+      doneHint: "Reviewed {count} cards. Due cards are rescheduled based on your grades.",
+      restart: "Go again",
+      progress: "Card {current} / {total}",
+      reveal: "Show answer",
+      empty: "No cards are due right now — take a break. You can also review all cards.",
+      reviewAll: "Review all",
+      onlyDue: "Due only",
+    },
+    grade: {
+      again: "Again",
+      hard: "Hard",
+      good: "Good",
+      easy: "Easy",
+      againHint: "Missed it",
+      hardHint: "A struggle",
+      goodHint: "Recalled",
+      easyHint: "Too easy",
+    },
+  },
+  quiz: {
+    title: "Quiz",
+    wrong: {
+      title: "Smart quiz from mistakes",
+      hint: "AI generates a targeted diagnostic quiz from your recent mistakes and weak chapters.",
+      cta: "Generate diagnostic quiz",
+      empty: "Not enough mistake data yet. Take a few quizzes in Studio and this can target your weak points.",
+      weakList: "This round reinforces:",
+    },
+    chapter: {
+      title: "Quiz by chapter",
+      hint: "Pick a subject and chapter and let the Agent generate a practice quiz for it.",
+      subject: "Subject",
+      chapter: "Chapter",
+      pickSubject: "Select a subject",
+      pickChapter: "Select a chapter",
+      cta: "Ask the Agent to generate",
+    },
+    generating: "Asking the Agent to generate…",
+    error: "Generation failed, please try again.",
+    quotaError: "Not signed in or out of quota — can't generate.",
+    empty: "Pick a generation mode above; the quiz will appear here.",
+    resultTitle: "Quiz · {count} questions",
+    regenerate: "Regenerate",
+    recorded: "Your result is saved and counts toward weak-point analysis.",
+  },
+} satisfies LocaleMessages["review"];
