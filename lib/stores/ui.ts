@@ -15,6 +15,22 @@ import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 export type RightTab = LayoutRightTab;
 export type MobileTab = "detail" | "review" | "ai" | "browser" | "settings";
 
+/**
+ * 中间「笔记展示区」上方的 Tab。
+ *
+ * `notes` 是默认叶子（页面 children 本身）；`video` / `interactive` / `browser`
+ * 是以前挂在右栏的「阅读型内容」——它们和笔记争的是同一块阅读宽度，理应在中间切换，
+ * 把右栏彻底留给对话 Agent。可用性沿用 routeLayout 的 rightTabs（去掉 `ai`）。
+ */
+export type CenterTab = "notes" | "video" | "interactive" | "browser";
+
+/** rightTab 的媒体值 → centerTab 的映射（向后兼容旧的 setRightTab 调用路径）。 */
+const RIGHT_TO_CENTER: Partial<Record<RightTab, CenterTab>> = {
+  video: "video",
+  interactive: "interactive",
+  browser: "browser",
+};
+
 export interface OutboundMessage {
   /** 要发送给 AI 的完整内容（可能含划词引用） */
   content: string;
@@ -110,6 +126,9 @@ interface AppState {
   // ── 右侧面板 ──────────────────────────────────────────
   rightTab: RightTab;
   setRightTab: (t: RightTab) => void;
+  /** 中间笔记区上方的 Tab（笔记 / 视频 / 可交互 / 浏览器）。 */
+  centerTab: CenterTab;
+  setCenterTab: (t: CenterTab) => void;
   /** 当前路由对应的布局档位（由 setActiveRoute 写入） */
   layoutProfile: LayoutProfile;
   /** 当前档位允许的右侧 tab */
@@ -196,6 +215,9 @@ export const useStore = create<AppState>((set) => ({
       const flags = layoutFlags(profile, cat, item);
       const rightTabs = flags.rightTabs;
       const rightTab = rightTabs.includes(s.rightTab) ? s.rightTab : (rightTabs[0] ?? "ai");
+      // centerTab 只在「当前值不再可用」时回落到笔记：切章保留用户停留的视图（若该章仍有该 tab）。
+      const centerAvailable = s.centerTab === "notes" || rightTabs.includes(s.centerTab as RightTab);
+      const centerTab: CenterTab = centerAvailable ? s.centerTab : "notes";
       return {
         activeSubjectId: subjectId,
         activeCategoryId: categoryId,
@@ -206,6 +228,7 @@ export const useStore = create<AppState>((set) => ({
         layoutProfile: profile,
         rightTabs,
         rightTab,
+        centerTab,
       };
     }),
 
@@ -270,8 +293,27 @@ export const useStore = create<AppState>((set) => ({
     }),
 
   rightTab: "ai",
+  /**
+   * 向后兼容：老代码用 `setRightTab('video'|'interactive'|'browser')` 打开阅读型内容，
+   * 现在这些内容住在**中间**的 tab 栏。把媒体值路由到 centerTab，`ai` 则把中间切回笔记
+   * （表示「去看对话」——右栏 AI 常驻，中间回到笔记）。仍写回 rightTab 供其余订阅者读取。
+   */
   setRightTab: (t) =>
-    set((s) => (s.rightTabs.length === 0 || s.rightTabs.includes(t) ? { rightTab: t } : s)),
+    set((s) => {
+      if (s.rightTabs.length !== 0 && !s.rightTabs.includes(t)) return s;
+      const center = RIGHT_TO_CENTER[t];
+      return {
+        rightTab: t,
+        centerTab: center ?? (t === "ai" ? "notes" : s.centerTab),
+      };
+    }),
+  centerTab: "notes",
+  setCenterTab: (t) =>
+    set((s) => {
+      if (t === "notes") return { centerTab: "notes" };
+      // 只认当前路由允许的媒体 tab；不可用时忽略（等价于停在笔记）。
+      return s.rightTabs.includes(t as RightTab) ? { centerTab: t } : s;
+    }),
   layoutProfile: "full",
   rightTabs: DEFAULT_RIGHT_TABS,
   rightCollapsedByProfile: { ...DEFAULT_RIGHT_COLLAPSED },
@@ -308,6 +350,8 @@ export const useStore = create<AppState>((set) => ({
   sendToChat: (content, opts) =>
     set((s) => ({
       rightTab: "ai",
+      // 划词 / 建议追问：AI 常驻右栏，中间回到笔记，让用户对照原文看回答。
+      centerTab: "notes",
       mobileTab: "ai",
       outbound: { content, nonce: (s.outbound?.nonce ?? 0) + 1, memoryCommit: opts?.memoryCommit },
     })),

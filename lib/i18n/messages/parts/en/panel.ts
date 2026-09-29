@@ -35,6 +35,23 @@ export const panelEn = {
     removeBookmark: "Remove bookmark",
   },
 
+  // The center tab bar above the notes area (Notes / Video / Interactive / Browser).
+  centerTab: {
+    notes: "Notes",
+    aria: "Content view",
+  },
+
+  // Right-panel Agent header (Cursor-like): recent-conversation tab strip + icon actions.
+  agentBar: {
+    recentAria: "Recent chats",
+    newChat: "Start a new chat",
+    settings: "AI settings",
+    history: "History",
+    collapse: "Collapse the right panel",
+    closeTab: "Close {title}",
+    untitled: "New chat",
+  },
+
   // Window chrome (traffic lights / title / external link / resize) and the dock tab strip.
   window: {
     minimize: "Minimize",

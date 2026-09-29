@@ -58,3 +58,48 @@ describe("layout persist contract", () => {
     expect(useStore.getState().rightTabs).toEqual(["ai"]);
   });
 });
+
+describe("center tab contract", () => {
+  beforeEach(() => {
+    useStore.setState({
+      rightTab: "ai",
+      rightTabs: ["ai", "video", "interactive", "browser"],
+      centerTab: "notes",
+    });
+  });
+
+  it("setCenterTab 只接受当前允许的媒体 tab，notes 恒可用", () => {
+    useStore.getState().setCenterTab("video");
+    expect(useStore.getState().centerTab).toBe("video");
+    useStore.getState().setCenterTab("notes");
+    expect(useStore.getState().centerTab).toBe("notes");
+  });
+
+  it("setCenterTab 忽略不在 rightTabs 里的媒体 tab", () => {
+    useStore.setState({ rightTabs: ["ai"], centerTab: "notes" });
+    useStore.getState().setCenterTab("video");
+    expect(useStore.getState().centerTab).toBe("notes");
+  });
+
+  it("向后兼容：setRightTab('video') 路由到 centerTab，setRightTab('ai') 把中间切回笔记", () => {
+    useStore.getState().setRightTab("video");
+    expect(useStore.getState().centerTab).toBe("video");
+    expect(useStore.getState().rightTab).toBe("video");
+    useStore.getState().setRightTab("ai");
+    expect(useStore.getState().centerTab).toBe("notes");
+  });
+
+  it("setActiveRoute 切到不再有该媒体 tab 的路由时，centerTab 回落到笔记", () => {
+    useStore.setState({ centerTab: "video" });
+    useStore.getState().setActiveRoute("histology", "shizhan-yanlian", "real-04");
+    expect(useStore.getState().rightTabs).toEqual(["ai"]);
+    expect(useStore.getState().centerTab).toBe("notes");
+  });
+
+  it("sendToChat 把中间切回笔记（对照原文看回答）", () => {
+    useStore.setState({ centerTab: "video" });
+    useStore.getState().sendToChat("hi");
+    expect(useStore.getState().centerTab).toBe("notes");
+    expect(useStore.getState().rightTab).toBe("ai");
+  });
+});
