@@ -4235,6 +4235,45 @@
                   "quizRef": "rec-2026-fall-007-008"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-009-010",
+              "title": "第9-10节 · Unit 5 膀胱外翻（bladder exstrophy）课文结构与医学写作手法分析；假期脑机接口（BCI）项目安排",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-009-010",
+                  "title": "课堂原文 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                },
+                {
+                  "id": "note-rec-2026-fall-009-010",
+                  "title": "课堂笔记 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                },
+                {
+                  "id": "card-rec-2026-fall-009-010",
+                  "title": "复习手卡 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                }
+              ]
             }
           ]
         },
@@ -4290,6 +4329,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-007-008",
               "quizRef": "rec-2026-fall-007-008",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-009-010",
+              "title": "课堂纪要 · 第9-10节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-009-010",
+              "quizRef": "rec-2026-fall-009-010",
               "layoutProfile": "full"
             }
           ]
@@ -10838,6 +10888,45 @@
                   "quizRef": "rec-2026-fall-021-022"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-023-024",
+              "title": "第23-24节 · 糖代谢总复习：血糖标准与糖尿病分型、糖异生与糖代谢途径串讲、血糖来源去路",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-023-024",
+                  "title": "课堂原文 · 第23-24节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-023-024",
+                  "quizRef": "rec-2026-fall-023-024"
+                },
+                {
+                  "id": "note-rec-2026-fall-023-024",
+                  "title": "课堂笔记 · 第23-24节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-023-024",
+                  "quizRef": "rec-2026-fall-023-024"
+                },
+                {
+                  "id": "card-rec-2026-fall-023-024",
+                  "title": "复习手卡 · 第23-24节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-023-024",
+                  "quizRef": "rec-2026-fall-023-024"
+                }
+              ]
             }
           ]
         },
@@ -10976,6 +11065,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-021-022",
               "quizRef": "rec-2026-fall-021-022",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-023-024",
+              "title": "课堂纪要 · 第23-24节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-023-024",
+              "quizRef": "rec-2026-fall-023-024",
               "layoutProfile": "full"
             }
           ]

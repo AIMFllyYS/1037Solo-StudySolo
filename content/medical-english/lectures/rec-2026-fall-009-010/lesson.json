@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "medical-english",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-009-010",
+  "courseName": "医学英语",
+  "sessionRange": {
+    "start": 9,
+    "end": 10
+  },
+  "taughtOn": "2026-09-30",
+  "topic": "Unit 5 膀胱外翻（bladder exstrophy）课文结构与医学写作手法分析；假期脑机接口（BCI）项目安排",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-009-010"
+}
