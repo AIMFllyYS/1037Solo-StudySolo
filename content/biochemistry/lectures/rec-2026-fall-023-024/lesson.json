@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "biochemistry",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-023-024",
+  "courseName": "生物化学与分子生物学",
+  "sessionRange": {
+    "start": 23,
+    "end": 24
+  },
+  "taughtOn": "2026-09-30",
+  "topic": "糖代谢总复习：血糖标准与糖尿病分型、糖异生与糖代谢途径串讲、血糖来源去路",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-023-024"
+}

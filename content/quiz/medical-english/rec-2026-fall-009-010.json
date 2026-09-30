@@ -1,0 +1,194 @@
+{
+  "subjectId": "medical-english",
+  "chapterId": "rec-2026-fall-009-010",
+  "generatedAt": "2026-10-01",
+  "examConfig": {
+    "source": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md；content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+    "totalPoints": 80,
+    "timeLimit": 30
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-009-010",
+    "revision": 1,
+    "recordingHash": "4cfe3c90f700647a279658645d7e5ce7d8d1b74c5225229fcf5bf2ea5c1aa3de",
+    "notesTextHash": "54cca945d9854757020c2fe47b68f2f1108ae8481010bda631b3a8031aeac944"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "疾病定义句式"
+      },
+      "stem": "课文在定义疾病（如 bladder exstrophy）时，主要采用的写作手法是？",
+      "options": [
+        "短语 + 同位语（phrase + appositive）",
+        "单句 + 定语从句",
+        "冒号直接引出",
+        "直接引用权威文献"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**第二段定义膀胱外翻时用一个短语、再用同位语（where 引导的空间描述）说明 disease。B 是手术/操作的定义句式；C 是新技术定义；D 用于增强说服力。",
+      "hint": "疾病=短语+同位语。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "手术定义句式"
+      },
+      "stem": "在解释手术/操作（如 enterocystoplasty）时，课文使用的定义句型是？",
+      "options": [
+        "短语 + 同位语",
+        "It is a major surgery that...（单句 + 定语从句）",
+        "冒号引出",
+        "疑问句"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**讲具体手术操作时另起一句 \"It is a major surgery that...\"，用 that 定语从句解释这是一种什么手术。A 用于疾病定义；C 用于新技术。",
+      "hint": "手术=单句+定语从句。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "新技术定义句式"
+      },
+      "stem": "介绍新技术（biological composite scaffold）时，课文主要用哪种标点/手法引出其优势？",
+      "options": [
+        "冒号（colon）补充说明",
+        "分号并列",
+        "破折号插入",
+        "括号注释"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**第八段介绍生物复合支架这一 cutting-edge approach 时用冒号引出，对新技术加以褒扬和补充。三种定义句式分别对应疾病、手术、新技术，以避免重复。",
+      "hint": "新技术=冒号补充。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
+        "label": "并发症举例顺序"
+      },
+      "stem": "第三段列举膀胱外翻并发症（kidney/bladder stone → kidney infections → cancer）的排列逻辑是？",
+      "options": [
+        "按严重程度递增，顺序不能调换",
+        "按字母顺序",
+        "随机列举",
+        "按就诊时间先后"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**并发症举例按疾病严重程度递进（结石→感染→癌症），是 cause-effect chain，逻辑顺序不可调换。",
+      "hint": "按严重程度递增，不可换序。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "risk 高频搭配"
+      },
+      "stem": "下列哪组动词在医学英语中都可与 risk 搭配，表示“增加风险”？",
+      "options": [
+        "heighten / increase / raise the risk",
+        "reduce / lower the risk",
+        "avoid / escape the risk",
+        "ignore / neglect the risk"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**heighten/increase/raise（及 intensify、amplify）the risk 都表示增加风险，是本课文高频句型。B、C、D 方向相反或无关。",
+      "hint": "heighten/increase/raise=增加风险。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
+        "label": "三类风险排列逻辑"
+      },
+      "stem": "第七段列出肠膀胱成形术三类风险时，其排列遵循的逻辑是？",
+      "options": [
+        "按手术过程（术前/术中/术后 process）顺序，不可调换",
+        "按风险出现概率从高到低",
+        "按作者喜好任意排列",
+        "按字母顺序"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**三类风险按手术 process 逻辑排列：器官功能冲突（术前即存在）→术后新环境致感染/结石与社会 stigma→膀胱过度膨胀致穿孔（术后）。逻辑顺序不可换。",
+      "hint": "按术前术后过程排。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
+        "label": "in sync 词义"
+      },
+      "stem": "在本课语境中，短语 in sync (with the body) 的含义是？",
+      "options": [
+        "与身体协调、相容、不排异；out of sync 即排异",
+        "与身体完全不同步、必然排斥",
+        "指手术速度快",
+        "指支架坚硬不变形"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**in sync with 指（支架与身体组织）协调、和谐、不排异；out of sync 即排异。这与支架可 expand/contract synchronously with bladder movement 相呼应。",
+      "hint": "in sync=同步不排异。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
+        "label": "自身干细胞消除排斥"
+      },
+      "stem": "生物复合支架使用患者自身干细胞（seeded stem cells）的主要目的是？",
+      "options": [
+        "从根本上消除移植物排斥（graft rejection）风险，并促组织再生",
+        "让支架永久留在体内不降解",
+        "增加手术费用",
+        "减少手术时间"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**用患者自身细胞可消除 graft rejection（移植物排斥），干细胞协同（synergistic）促进膀胱组织确定性再生；同时支架会随时间 degrade（降解）。B、C、D 均与课文原理相反。",
+      "hint": "用自身细胞=消除排斥。"
+    }
+  ]
+}
