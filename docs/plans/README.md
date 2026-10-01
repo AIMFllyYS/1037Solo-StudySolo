@@ -2,12 +2,13 @@
 
 现行 Agent 重构计划在 [`Agent-refactor/`](./Agent-refactor/)。入口是 [`00-loop-map.md`](./Agent-refactor/00-loop-map.md)，可投喂的目标模式提示词是 [`99-goal-mode-prompt.md`](./Agent-refactor/99-goal-mode-prompt.md)。
 
-已完成或被取代的内容计划、工程基线与审计报告在 [`archive/`](./archive/)。滚动契约仍以 [`archive/00-execution-contract.md`](./archive/00-execution-contract.md) 第六节为准。
+已完成或被取代的内容计划、工程基线与审计报告在 [`archive/`](./archive/)，仅供历史参考。当前滚动与渲染行为以现行代码及 [`../refer/rendering-architecture.md`](../refer/rendering-architecture.md) 为准。
 
 ## 现行计划
 
 | 计划 | 说明 |
 |---|---|
+| [`2026-10-02-memory-performance-optimization-spec.md`](./2026-10-02-memory-performance-optimization-spec.md) | 系统内存与性能优化执行规格：会话/存储/资源/检索Worker/同步/内容边界及验收（待实施） |
 | [`agent-right-panel-unification.md`](./agent-right-panel-unification.md) | 右栏统一：现状分析与选型（改造前快照） |
 | [`agent-right-panel-unification.execution.md`](./agent-right-panel-unification.execution.md) | 右栏统一的落地记录（含附一～附十一） |
 | [`agent-sidebar-assets.md`](./agent-sidebar-assets.md) | Agent 左栏体系化 + 我的资产 / 项目 / 项目文件：规划 |
