@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
 import {
   Background,
   Controls,
@@ -55,11 +55,13 @@ function MindmapFlow({ nodes, className, onNodeClick }: ClassroomMindmapProps) {
 
   const colorMode = useSyncExternalStore(subscribeHostTheme, readHostTheme, () => 'light' as const)
   const { fitView } = useReactFlow()
-  // 大纲是增量长出来的：fitView 只在首帧生效，后续新增节点会跑出视口。签名变化后重新适配。
+  const fitted=useRef(false)
+  // Fit the first nonempty tree; later updates must respect the user's reading viewport.
   useEffect(() => {
-    const id = requestAnimationFrame(() => { void fitView({ padding: 0.15, duration: 240, maxZoom: 1 }) })
+    if(fitted.current||!nodes.length)return
+    const id = requestAnimationFrame(() => { fitted.current=true;void fitView({ padding: 0.15, duration: 240, maxZoom: 1 }) })
     return () => cancelAnimationFrame(id)
-  }, [signature, fitView])
+  }, [nodes.length, fitView])
 
   const flowNodes: Node[] = useMemo(() => {
     const entered = new Set(diffed.enteredIds)

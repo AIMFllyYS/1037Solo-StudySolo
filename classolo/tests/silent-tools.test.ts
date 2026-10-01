@@ -22,6 +22,7 @@ test('every silent tool maps to a registered render module', () => {
     'render_gen_ui',
     'render_image',
     'render_rich_text',
+    'render_visual',
   ])
 })
 

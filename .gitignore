@@ -5,6 +5,7 @@ node_modules/
 
 # next.js
 .next/
+.next-class-verify/
 out/
 next-env.d.ts
 

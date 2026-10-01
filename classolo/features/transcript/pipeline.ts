@@ -11,8 +11,10 @@ import {
 } from '@/classolo/lib/session/writes/transcript'
 
 import { readAsrRuntimeConfig } from './asr-config'
+import {getClassCourseDraft} from '@/classolo/lib/course/preference'
 import {
   onPcmFrame,
+  onCaptureEnded,
   pauseCapture,
   resumeCapture,
   startCapture,
@@ -26,35 +28,17 @@ import { patchTranscriptPrivate, resetTranscriptPrivate } from './private-store'
 
 let provider: ASRProvider | null = null
 let seq = 0
-
-function warnMissingAnchor(segmentId: string): void {
-  console.warn(`[transcript] segment not found: ${segmentId}`)
-}
+let startTask:Promise<void>|null=null
+let stopTask:Promise<void>|null=null
+let runtimeGeneration=0
 
 function consumeCommands(): void {
   subscribeCommands((command) => {
     if (command.type === 'transcript.scrollTo') {
-      if (typeof document === 'undefined') return
-      const node = document.querySelector(
-        `[data-segment-id="${command.segmentId}"]`,
-      )
-      if (!(node instanceof HTMLElement)) {
-        warnMissingAnchor(command.segmentId)
-        return
-      }
-      node.scrollIntoView({ block: 'center' })
       patchTranscriptPrivate({ highlightId: command.segmentId })
       return
     }
     if (command.type === 'transcript.highlight') {
-      if (typeof document === 'undefined') return
-      const node = document.querySelector(
-        `[data-segment-id="${command.segmentId}"]`,
-      )
-      if (!(node instanceof HTMLElement)) {
-        warnMissingAnchor(command.segmentId)
-        return
-      }
       patchTranscriptPrivate({ highlightId: command.segmentId })
       return
     }
@@ -65,39 +49,52 @@ function consumeCommands(): void {
       return
     }
     if (command.type === 'session.reset') {
-      void stopSession()
-      resetTranscriptPrivate()
-      resetTranscriptPublic()
-      seq = 0
+      void stopSession().then(()=>{resetTranscriptPrivate();resetTranscriptPublic();seq=0}).catch(()=>{})
     }
   })
 }
 
 consumeCommands()
 
-export async function startSession(): Promise<void> {
-  resetTranscriptPublic()
-  resetNotesPublic()
-  resetRenderProjection()
-  seq = 0
+export function startSession(): Promise<void> {
+  if(startTask)return startTask
+  if(stopTask)return stopTask
+  if(provider)return Promise.resolve()
+  patchTranscriptPrivate({lifecycle:'starting'})
+  startTask=startSessionRuntime().finally(()=>{startTask=null;if(!stopTask)patchTranscriptPrivate({lifecycle:'idle'})})
+  return startTask
+}
+
+async function startSessionRuntime():Promise<void>{
+  const generation=++runtimeGeneration
+  const previous=getTranscriptPublic()
   const sessionId = crypto.randomUUID()
   const owner=getClassUserId()
-  transcriptFlusher.attach(sessionId)
-  patchTranscriptPublic({
-    sessionId,
-    recordingStatus: 'recording',
-    latestCommittedId: null,
-  })
+  const profile=getClassCourseDraft()
+  if(!owner){patchTranscriptPrivate({error:'请先登录统一账号'});return}
+  const earlyFrames:Int16Array[]=[]
+  onPcmFrame(frame=>earlyFrames.push(frame))
   patchTranscriptPrivate({ error: null, partial: '', highlightId: null })
   try {
-    await persistRecordingSession(sessionId)
+    await transcriptFlusher.flush(true)
+    if(transcriptFlusher.pendingCount())throw new Error('上一节课尚有未保存文稿，请先重试保存')
+    const captured=await startCapture()
+    if(!captured){if(getClassUserId()===owner)patchTranscriptPublic({recordingStatus:previous.recordingStatus});return}
+    if(generation!==runtimeGeneration||getClassUserId()!==owner){await stopCapture(false);return}
+    await persistRecordingSession(sessionId,profile)
+    if(generation!==runtimeGeneration||getClassUserId()!==owner){await stopCapture(false);return}
+    transcriptFlusher.attach(sessionId)
   } catch (error) {
+    await stopCapture(false)
     patchTranscriptPrivate({error:error instanceof Error?error.message:"课堂无法保存",status:"idle"})
-    patchTranscriptPublic({recordingStatus:"idle"})
+    if(getClassUserId()===owner)patchTranscriptPublic({recordingStatus:previous.recordingStatus})
     return
   }
 
-  const asr = createASRProvider(readAsrRuntimeConfig())
+  resetTranscriptPublic();resetNotesPublic();resetRenderProjection();seq=0
+  patchTranscriptPublic({sessionId,recordingStatus:'recording',latestCommittedId:null,autoOrganize:true})
+
+  const asr = createASRProvider(readAsrRuntimeConfig(profile))
   patchTranscriptPrivate({ streaming: asr.capabilities.streaming })
   asr.onPartial((segment) => {
     if(getClassUserId()!==owner||getTranscriptPublic().sessionId!==sessionId)return
@@ -105,18 +102,19 @@ export async function startSession(): Promise<void> {
   })
   asr.onFinal((segment) => {
     if(getClassUserId()!==owner||getTranscriptPublic().sessionId!==sessionId)return
-    seq += 1
-    const id = crypto.randomUUID()
+    const segmentSeq=segment.seq??seq+1
+    seq=Math.max(seq,segmentSeq)
+    const id = segment.id||crypto.randomUUID()
     appendCommitted({
       id,
-      seq,
+      seq:segmentSeq,
       text: segment.text,
       startMs: segment.startMs ?? 0,
       endMs: segment.endMs ?? 0,
     })
     transcriptFlusher.enqueue({
       id,
-      seq,
+      seq:segmentSeq,
       startMs: segment.startMs ?? 0,
       endMs: segment.endMs ?? 0,
       text: segment.text,
@@ -147,6 +145,8 @@ export async function startSession(): Promise<void> {
   try {
     await asr.start()
   } catch (error) {
+    await stopCapture(false)
+    await asr.stop().catch(()=>{})
     const message = error instanceof Error ? error.message : 'ASR 启动失败'
     patchTranscriptPrivate({ error: message, status: 'idle', connection: 'idle' })
     patchTranscriptPublic({ recordingStatus: 'idle' })
@@ -162,7 +162,8 @@ export async function startSession(): Promise<void> {
     )
     asr.sendAudio(bytes.slice().buffer)
   })
-  await startCapture()
+  onCaptureEnded(()=>{void stopSession().catch(()=>{})})
+  for(const frame of earlyFrames)asr.sendAudio(frame.slice().buffer)
 }
 
 export async function pauseSession(): Promise<void> {
@@ -174,11 +175,26 @@ export async function resumeSession(): Promise<void> {
   await resumeCapture()
 }
 
-export async function stopSession(): Promise<void> {
-  const current=getTranscriptPublic();const db=await getDb().catch(()=>null);
-  const active=provider;provider=null;
-  await stopCapture()
-  await active?.stop()
-  await transcriptFlusher.flush(true)
-  if(current.sessionId&&db){try{await updateSession(db,current.sessionId,{status:'ended'});}catch{}}
+export function stopSession(): Promise<void> {
+  if(stopTask)return stopTask
+  runtimeGeneration++
+  patchTranscriptPrivate({lifecycle:'stopping'})
+  stopTask=(async()=>{
+    const starting=startTask
+    await stopCapture(false)
+    await starting
+    onCaptureEnded(null)
+    const current=getTranscriptPublic(),db=await getDb().catch(()=>null),active=provider
+    await active?.stop()
+    await transcriptFlusher.flush(true)
+    if(transcriptFlusher.pendingCount())throw new Error('课堂尾段尚未保存，请重试保存，暂勿切换课堂')
+    provider=null
+    if(active&&current.sessionId&&db)await updateSession(db,current.sessionId,{status:'ended'})
+    patchTranscriptPrivate({connection:'idle',partial:''})
+    patchTranscriptPublic({recordingStatus:'stopped'})
+  })().catch(error=>{
+    patchTranscriptPrivate({error:error instanceof Error?error.message:'课堂结束保存失败'})
+    throw error
+  }).finally(()=>{stopTask=null;patchTranscriptPrivate({lifecycle:'idle'})})
+  return stopTask
 }

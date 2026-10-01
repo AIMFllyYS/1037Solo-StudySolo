@@ -1,4 +1,5 @@
-import { isClassHydrating } from '@/classolo/lib/db'
+import { isClassHydrating,getClassUserId } from '@/classolo/lib/db'
+import {createBoundedScheduler} from '@/classolo/lib/session/bounded-scheduler'
 import {
   getNotesPublic,
   getTranscriptPublic,
@@ -9,6 +10,7 @@ import { deliverSilentRender } from './silent-deliver'
 
 export const SILENT_AGENT_DEBOUNCE_MS = 6000
 export const SILENT_AGENT_MIN_SEGMENTS = 3
+export const SILENT_AGENT_MAX_WAIT_MS=12000
 
 export type SilentAgentStatus = 'idle' | 'armed' | 'thinking'
 
@@ -22,15 +24,16 @@ export interface SilentAgentPrivateState {
 
 export interface SilentAgentOptions {
   debounceMs?: number
+  maxWaitMs?:number
   minNewSegments?: number
   subscribeCommitted?: (onCommitted: () => void) => () => void
   readCommittedCount?: () => number
   readCommittedVersion?: () => number
   readOutlineVersion?: () => number
-  onTick?: (state: SilentAgentPrivateState) => void
+  onTick?: (state: SilentAgentPrivateState) => void|Promise<void>
 }
 
-let timer: ReturnType<typeof setTimeout> | null = null
+let resetScheduler:(()=>void)|null=null
 let stopCurrent: (() => void) | null = null
 let privateState: SilentAgentPrivateState = {
   status: 'idle',
@@ -42,10 +45,8 @@ let privateState: SilentAgentPrivateState = {
 
 function defaultSubscribe(onCommitted: () => void): () => void {
   return subscribeTranscriptPublic(
-    (state) => state.committedVersion,
-    () => {
-      if(!isClassHydrating())onCommitted()
-    },
+    (state) => `${state.sessionId}:${state.committedVersion}`,
+    onCommitted,
   )
 }
 
@@ -54,10 +55,7 @@ export function getSilentAgentPrivateState(): SilentAgentPrivateState {
 }
 
 export function resetSilentAgentPrivateState(): void {
-  if (timer) {
-    clearTimeout(timer)
-    timer = null
-  }
+  resetScheduler?.()
   privateState = {
     status: 'idle',
     lastFiredCommittedVersion: 0,
@@ -71,6 +69,7 @@ export function startSilentAgent(
   options: SilentAgentOptions = {},
 ): () => void {
   stopCurrent?.()
+  resetSilentAgentPrivateState()
   const debounceMs = options.debounceMs ?? SILENT_AGENT_DEBOUNCE_MS
   const minNewSegments = options.minNewSegments ?? SILENT_AGENT_MIN_SEGMENTS
   const readCommittedCount =
@@ -83,40 +82,27 @@ export function startSilentAgent(
   const subscribeCommitted =
     options.subscribeCommitted ?? defaultSubscribe
 
-  const arm = () => {
-    privateState = { ...privateState, status: 'armed' }
-    if (timer) clearTimeout(timer)
-    timer = setTimeout(() => {
-      timer = null
-      const version = readCommittedVersion()
-      const count = readCommittedCount()
-      const grown = count - privateState.lastFiredCount
-      if (grown < minNewSegments) {
-        privateState = { ...privateState, status: 'idle' }
-        return
-      }
-      privateState = {
-        status: 'thinking',
-        lastFiredCommittedVersion: version,
-        lastFiredCount: count,
-        ticks: privateState.ticks + 1,
-        lastOutlineVersion: readOutlineVersion(),
-      }
-      options.onTick?.(getSilentAgentPrivateState())
-      if (!options.onTick) {
-        deliverSilentRender()
-      }
-      privateState = { ...privateState, status: 'idle' }
-    }, debounceMs)
+  let scope=`${getClassUserId()}:${getTranscriptPublic().sessionId}`
+  const scheduler=createBoundedScheduler({delayMs:debounceMs,maxWaitMs:options.maxWaitMs??SILENT_AGENT_MAX_WAIT_MS,run:async signal=>{
+    if(isClassHydrating()||(!options.onTick&&!getTranscriptPublic().autoOrganize))return
+    const count=readCommittedCount(),current=scope
+    if(count-privateState.lastFiredCount<minNewSegments){privateState={...privateState,status:'idle'};return}
+    privateState={status:'thinking',lastFiredCommittedVersion:readCommittedVersion(),lastFiredCount:count,ticks:privateState.ticks+1,lastOutlineVersion:readOutlineVersion()}
+    if(options.onTick)await options.onTick(getSilentAgentPrivateState());else await deliverSilentRender(signal)
+    if(!signal.aborted&&scope===current)privateState={...privateState,status:'idle'}
+  }})
+  resetScheduler=scheduler.reset
+  const arm=()=>{
+    const next=`${getClassUserId()}:${getTranscriptPublic().sessionId}`
+    if(scope!==next||readCommittedCount()<privateState.lastFiredCount){scope=next;resetSilentAgentPrivateState()}
+    if(isClassHydrating()||(!options.onTick&&!getTranscriptPublic().autoOrganize))return
+    privateState={...privateState,status:'armed'};scheduler.schedule()
   }
 
   const unsubscribe = subscribeCommitted(arm)
   const stop = () => {
     unsubscribe()
-    if (timer) {
-      clearTimeout(timer)
-      timer = null
-    }
+    scheduler.stop();if(resetScheduler===scheduler.reset)resetScheduler=null
     if (stopCurrent === stop) stopCurrent = null
   }
   stopCurrent = stop

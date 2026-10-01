@@ -10,6 +10,8 @@ import { aiAskPropsSchema } from './ai-ask/schema'
 import { genUiPropsSchema } from './gen-ui/schema'
 import { imagePropsSchema } from './image/schema'
 import { richTextPropsSchema } from './rich-text/schema'
+import {formulaPropsSchema} from '@/classolo/features/formulas/schema'
+import {visualPropsSchema} from './visual/schema'
 
 export interface RenderSchemaEntry {
   name: string
@@ -19,6 +21,8 @@ export interface RenderSchemaEntry {
 }
 
 export const renderSchemaRegistry: Readonly<Record<string, RenderSchemaEntry>> = {
+  visual:{name:'visual',version:'1.0',toolName:'render_visual',propsSchema:visualPropsSchema as z.ZodType<unknown>},
+  formula:{name:'formula',version:'1.0',toolName:'render_formula',propsSchema:formulaPropsSchema as z.ZodType<unknown>},
   image: {
     name: 'image',
     version: '1.0',

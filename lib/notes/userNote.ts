@@ -8,7 +8,7 @@ import { isSubjectId } from "@/lib/types/content";
 
 export type UserNoteKind = "personal" | "classroom";
 
-export type ClassroomNoteSourceKind = "content" | "agent" | "review";
+export type ClassroomNoteSourceKind = "content" | "agent" | "review" | "class";
 
 /** 课堂便签的出处：哪一页正文 / 哪次 Agent 回答 / 复习板。 */
 export interface ClassroomNoteSource {
@@ -18,6 +18,12 @@ export interface ClassroomNoteSource {
   categoryId?: string;
   itemId?: string;
   path?: string;
+  /** Class workbench link; only meaningful for source.kind=class. */
+  sessionId?: string;
+  ownerId?: string;
+  generatedHash?: string;
+  proposalHash?: string;
+  ignoredHash?: string;
 }
 
 export interface UserNote {

@@ -3,6 +3,7 @@ import { createStore } from 'zustand/vanilla'
 export type CaptureStatus = 'idle' | 'recording' | 'paused' | 'stopped'
 
 export interface TranscriptPrivateState {
+  lifecycle: 'idle' | 'starting' | 'stopping'
   status: CaptureStatus
   level: number
   error: string | null
@@ -13,6 +14,7 @@ export interface TranscriptPrivateState {
 }
 
 const initialState: TranscriptPrivateState = {
+  lifecycle:'idle',
   status: 'idle',
   level: 0,
   error: null,

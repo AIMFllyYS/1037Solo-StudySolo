@@ -3,8 +3,7 @@ import { patchTranscriptPublic } from '@/classolo/lib/session/writes/transcript'
 import {
   floatToPcm16,
   peakLevel,
-  resampleTo16k,
-  TARGET_SAMPLE_RATE,
+  createStreamingResampler,
 } from './resample'
 import { patchTranscriptPrivate } from './private-store'
 
@@ -37,6 +36,10 @@ let stream: MediaStream | null = null
 let audioContext: AudioContext | null = null
 let node: AudioWorkletNode | null = null
 let pcmHandler: PcmFrameHandler | null = null
+let onDeviceEnded:(()=>void)|null=null
+let captureGeneration=0
+
+export function onCaptureEnded(handler:(()=>void)|null){onDeviceEnded=handler}
 
 function fail(message: string): void {
   patchTranscriptPrivate({ status: 'idle', error: message, level: 0 })
@@ -47,33 +50,41 @@ export function onPcmFrame(handler: PcmFrameHandler): void {
   pcmHandler = handler
 }
 
-export async function startCapture(deps: CaptureDeps = defaultDeps()): Promise<void> {
+export async function startCapture(deps: CaptureDeps = defaultDeps()): Promise<boolean> {
+  const generation=++captureGeneration
   patchTranscriptPrivate({ error: null })
   try {
-    stream = await deps.getUserMedia({
+    const opened = await deps.getUserMedia({
       audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true },
     })
+    if(generation!==captureGeneration){opened.getTracks().forEach(track=>track.stop());return false}
+    stream=opened
   } catch (error) {
     const name = error instanceof Error ? error.name : ''
     if (name === 'NotAllowedError' || name === 'PermissionDeniedError') {
       fail('麦克风权限被拒绝')
-      return
+      return false
     }
     if (name === 'NotFoundError') {
       fail('未找到麦克风设备')
-      return
+      return false
     }
     fail('无法打开麦克风')
-    return
+    return false
   }
 
   const [track] = stream.getAudioTracks()
   track?.addEventListener('ended', () => {
-    fail('麦克风设备已断开')
-    void stopCapture()
+    if(generation!==captureGeneration)return
+    patchTranscriptPrivate({error:'麦克风设备已断开，正在保存已采集内容'})
+    if(onDeviceEnded)onDeviceEnded();else void stopCapture()
   })
 
+  try{
   audioContext = new deps.AudioContext({ sampleRate: 48000 })
+  const context=audioContext
+  const resampler=createStreamingResampler(context.sampleRate)
+  let lastLevelAt=0
   const blob = new Blob([WORKLET_SOURCE], { type: 'application/javascript' })
   const workletUrl = URL.createObjectURL(blob)
   try {
@@ -81,19 +92,26 @@ export async function startCapture(deps: CaptureDeps = defaultDeps()): Promise<v
   } finally {
     URL.revokeObjectURL(workletUrl)
   }
+  if(generation!==captureGeneration)return false
 
   const source = audioContext.createMediaStreamSource(stream)
   node = new AudioWorkletNode(audioContext, 'pcm-capture')
   node.port.onmessage = (event: MessageEvent<Float32Array>) => {
     const input = event.data
-    const resampled = resampleTo16k(input, audioContext?.sampleRate ?? TARGET_SAMPLE_RATE)
-    patchTranscriptPrivate({ level: peakLevel(resampled) })
+    if(generation!==captureGeneration)return
+    const resampled = resampler.process(input)
+    if(Date.now()-lastLevelAt>=50){lastLevelAt=Date.now();patchTranscriptPrivate({ level: peakLevel(resampled) })}
     pcmHandler?.(floatToPcm16(resampled))
   }
   source.connect(node)
 
   patchTranscriptPrivate({ status: 'recording', error: null })
-  patchTranscriptPublic({ recordingStatus: 'recording' })
+  return true
+  }catch{
+    await stopCapture()
+    fail('麦克风音频处理初始化失败，请重试或导入文稿')
+    return false
+  }
 }
 
 export async function pauseCapture(): Promise<void> {
@@ -112,16 +130,17 @@ export async function resumeCapture(): Promise<void> {
   patchTranscriptPublic({ recordingStatus: 'recording' })
 }
 
-export async function stopCapture(): Promise<void> {
+export async function stopCapture(publishStopped=true): Promise<void> {
+  captureGeneration++
   node?.port.close()
   node?.disconnect()
   node = null
   stream?.getTracks().forEach((track) => track.stop())
   stream = null
   if (audioContext) {
-    await audioContext.close()
-    audioContext = null
+    const closing=audioContext;audioContext=null
+    if(closing.state!=='closed')await closing.close()
   }
   patchTranscriptPrivate({ status: 'stopped', level: 0 })
-  patchTranscriptPublic({ recordingStatus: 'stopped' })
+  if(publishStopped)patchTranscriptPublic({ recordingStatus: 'stopped' })
 }

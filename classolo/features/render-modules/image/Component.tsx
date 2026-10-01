@@ -1,74 +1,41 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+
+import { getClassUserId,getLocalClassSnapshot } from '@/classolo/lib/db'
+import { getTranscriptPublic } from '@/classolo/lib/session'
+import { upsertRenderMessage } from '@/classolo/lib/session/writes/render'
+import {classCourseProfileSchema,reviewSubjectForClass} from '@/classolo/lib/course/profile'
 
 import type { RenderMessage } from '../types'
+import { imagePropsSchema } from './schema'
+import { searchClassroomImage } from './search'
 
-import {
-  searchClassroomImage,
-  type ImageSearchState,
-} from './search'
+export type ImageModuleProps = typeof imagePropsSchema._output
 
-export type ImageModuleProps = {
-  query: string
-  alt?: string
-}
+/** Render a frozen search result. Legacy cards require an explicit click before a billable lookup. */
+export function ImageModule({ props, message }: { props: ImageModuleProps; message: RenderMessage<ImageModuleProps>; onAnchorClick?: (segmentId: string) => void }) {
+  const [working, setWorking] = useState(false)
+  const result = props.result
 
-export function ImageModule({
-  props,
-}: {
-  props: ImageModuleProps
-  message: RenderMessage<ImageModuleProps>
-  onAnchorClick?: (segmentId: string) => void
-}) {
-  const [seenQuery, setSeenQuery] = useState(props.query)
-  const [state, setState] = useState<ImageSearchState>({ status: 'loading' })
-  if (props.query !== seenQuery) {
-    setSeenQuery(props.query)
-    setState({ status: 'loading' })
+  async function lookup() {
+    if (working) return
+    const owner = getClassUserId(), sessionId = getTranscriptPublic().sessionId
+    if (!owner || !sessionId) return
+    setWorking(true)
+    const profile=classCourseProfileSchema.safeParse(getLocalClassSnapshot(sessionId)?.session.profile)
+    const next = await searchClassroomImage(props.query,profile.success?reviewSubjectForClass(profile.data):undefined)
+    if (owner !== getClassUserId() || sessionId !== getTranscriptPublic().sessionId) return
+    upsertRenderMessage({ ...message, props: { ...props, result: next } })
+    setWorking(false)
   }
 
-  useEffect(() => {
-    let cancelled = false
-    void searchClassroomImage(props.query).then((next) => {
-      if (!cancelled) setState(next)
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [props.query])
-
-  if (state.status === 'loading') {
-    return (
-      <p className="text-sm text-muted-foreground" data-slot="image-loading">
-        正在检索图片…
-      </p>
-    )
-  }
-  if (state.status === 'empty') {
-    return (
-      <p className="text-sm text-muted-foreground" data-slot="image-empty">
-        无结果
-      </p>
-    )
-  }
-  if (state.status === 'error') {
-    return (
-      <p className="text-sm text-destructive" data-slot="image-error">
-        {state.message}
-      </p>
-    )
-  }
-  return (
-    <Image
-      src={state.url}
-      alt={props.alt || state.alt}
-      width={640}
-      height={320}
-      unoptimized
-      className="max-h-48 w-full rounded-md object-cover"
-      data-slot="image-ready"
-    />
-  )
+  if (!result) return <div data-slot="image-unresolved" className="text-sm"><p>资料图片尚未检索。检索可能产生费用。</p><button type="button" className="mt-2 underline" disabled={working} onClick={() => void lookup()}>{working ? '正在检索…' : '检索一次'}</button></div>
+  if (result.status === 'empty') return <p data-slot="image-empty" className="text-sm text-muted-foreground">这次检索没有找到图片，可调整关键词后重新生成资料卡。</p>
+  if (result.status === 'error') return <p data-slot="image-error" className="text-sm text-destructive">{result.message}。本次请求状态请在计费记录中核对，卡片不会自动重试。</p>
+  return <figure data-slot="image-ready">
+    <Image src={result.url} alt={props.alt || result.alt} width={640} height={320} unoptimized className="max-h-48 w-full rounded-md object-cover" />
+    <figcaption className="mt-1 text-[11px] text-[color:var(--ink-faint)]">{result.provider==='course'?'教材笔记图片':'真实资料图片'} · <a href={result.pageUrl} target="_blank" rel="noopener noreferrer" className="underline">{result.author}{result.provider==='unsplash'?' / Unsplash':''}</a>{result.licenseUrl&&<> · <a href={result.licenseUrl} target="_blank" rel="noopener noreferrer" className="underline">许可</a></>}</figcaption>
+  </figure>
 }

@@ -11,9 +11,13 @@ export interface TranscriptCommittedSegment {
   text: string
   startMs: number
   endMs: number
+  rawText?:string
+  correctionRevision?:number
 }
 
 export interface TranscriptPublic {
+  /** Only the recording/importing device runs automatic paid analysis. */
+  autoOrganize?:boolean
   sessionId: string | null
   recordingStatus: RecordingStatus
   committed: readonly TranscriptCommittedSegment[]
@@ -26,11 +30,21 @@ export interface OutlineDigestNode {
   title: string
   /** 父节点 id，用于思维导图层级；顶层为 null/undefined。 */
   parentId?: string | null
+  /** 来源文稿ID独立于节点身份，改名/移动节点不会破坏引用。 */
+  sourceSegmentIds?: readonly string[]
+  origin?:'ai'|'manual'
+  locked?:boolean
 }
+
+export type OutlineProgress=Readonly<Record<string,{chars:number;fingerprint:string}>>
 
 export interface NotesPublic {
   outlineVersion: number
   outlineDigest: readonly OutlineDigestNode[]
+  processedSegments?:OutlineProgress
+  organizerStatus?:'idle'|'queued'|'thinking'|'error'|'fallback'
+  organizerError?:string
+  organizedAt?:number
 }
 
 export interface SettingsPublic {

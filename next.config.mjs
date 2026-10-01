@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Verification builds use a separate output directory so an active dev server keeps its .next state.
+  ...(process.env.STUDYSOLO_BUILD_DIR === ".next-class-verify"
+    ? { distDir: ".next-class-verify" }
+    : {}),
   // Next 16 默认拦截跨源访问 dev 资源（/_next/webpack-hmr、__nextjs_font 等）。
   // 经反向代理/IDE 预览（如 127.0.0.1 的预览端口）访问时，HMR 会 502、字体 403，
   // 进而导致页面无法水合。放行本机来源即可正常开发。

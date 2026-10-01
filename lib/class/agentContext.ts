@@ -1,4 +1,5 @@
 import { z } from "zod";
+import {classCourseProfileSchema,classSubjectLabel} from '@/classolo/lib/course/profile';
 
 /**
  * Class 模式给主 Agent 的课堂上下文。
@@ -20,6 +21,7 @@ export const CLASS_CONTEXT_LIMITS = {
 } as const;
 
 export const classAgentContextSchema = z.object({
+  profile:classCourseProfileSchema.optional(),
   sessionId: z.string().uuid(),
   title: z.string().max(CLASS_CONTEXT_LIMITS.title).default(""),
   live: z.boolean().default(false),
@@ -78,6 +80,7 @@ export function formatClassContextBlock(ctx: ClassAgentContext): string {
   const recent = ctx.recent.slice(-8).map((segment) => segment.text.trim()).filter(Boolean).join("\n");
   return [
     `【课堂模式】学生正在 Class 模式${ctx.live ? "上课（录音进行中）" : "查看一节课"}：《${ctx.title || "未命名课堂"}》。`,
+    ctx.profile?`- 课堂学科：${classSubjectLabel(ctx.profile)}；语言：${ctx.profile.language==='mixed'?'中英混合':ctx.profile.language==='en'?'英语':'中文'}。学科信息只用于理解术语，课内事实仍须检索文稿。`:'- 旧课堂尚未分类，可根据文稿回答。',
     "- 问到“老师刚才讲了什么”、本节课的定义/例题/结论时，必须调用 searchClassTranscript 检索文稿，不要凭记忆作答；依据命中写出的句子句末标注对应 [n]。",
     "- 问到以前的课、上节课或需要跨课复习时，调用 searchClassTranscript(scope=\"past\")，并说明出自哪节课。",
     "- 本节课之外的教材知识仍可用 searchNotes / getSection 等工具。",
