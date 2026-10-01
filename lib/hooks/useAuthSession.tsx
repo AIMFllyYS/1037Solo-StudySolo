@@ -3,7 +3,7 @@
 import {getStorageOwner,activateStorageOwner,hydrateOwnerStores} from "@/lib/storage/ownerScope";
 import {flushPendingWrites} from "@/lib/storage/idbStorage";
 import { createContext, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from "react";
-import { restoreAccountSession, logoutAccount, redirectAccount } from "@/lib/auth/account";
+import { restoreAccountSession, logoutAccount, redirectAccount, SIGNED_IN_EVENT } from "@/lib/auth/account";
 import { tryGetBrowserAuthClient } from "@/lib/auth/browserClient";
 import {
   type AuthOtpClient,
@@ -66,9 +66,11 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
     const unsubscribe=client?subscribeAuthSession(client,(next,event)=>{if(event==='INITIAL_SESSION'&&revision>0)return;revision++;apply(next);}):()=>{};
     void restore();
     const focus=()=>{if(document.visibilityState!=="hidden")void restore();};
+    const signedIn=()=>void restore();
     const timer=setInterval(()=>void restore(),300000);
     window.addEventListener("focus",focus);
-    return ()=>{active=false;clearInterval(timer);unsubscribe();window.removeEventListener("focus",focus);};
+    window.addEventListener(SIGNED_IN_EVENT,signedIn);
+    return ()=>{active=false;clearInterval(timer);unsubscribe();window.removeEventListener("focus",focus);window.removeEventListener(SIGNED_IN_EVENT,signedIn);};
   },[client,injected]);
   const redirectResult=(action:Parameters<typeof redirectAccount>[0])=>{
     redirectAccount(action);return {ok:false as const,code:"auth_error" as const,message:"请在统一账号中心完成操作"};

@@ -17,7 +17,9 @@
   "ignoreIssues": {
     "lib/ai/agent/tools/index.ts": ["types"],
     "lib/context/index.ts": ["types"],
-    "components/visualizations/primitives/index.ts": ["types"]
+    "components/visualizations/primitives/index.ts": ["types"],
+    "lib/auth/sign-in/sign-in-window.ts": ["exports", "types"],
+    "lib/auth/sign-in/sign-in-prompt.ts": ["files", "exports", "types"]
   },
   "treatConfigHintsAsErrors": false,
   "next": true,
