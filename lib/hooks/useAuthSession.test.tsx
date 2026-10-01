@@ -33,9 +33,20 @@ function mockClient(initial?: { id: string; email: string } | null): AuthRuntime
   return client;
 }
 
-vi.mock("@/lib/auth/account",()=>({logoutAccount:vi.fn(async()=>{}),redirectAccount:vi.fn(),restoreAccountSession:vi.fn()}));
+vi.mock("@/lib/auth/account",()=>({logoutAccount:vi.fn(async()=>{}),redirectAccount:vi.fn(),restoreAccountSession:vi.fn(),SIGNED_IN_EVENT:"1037solo:signed-in"}));
 
 describe("useAuthSessionController", () => {
+  it("without an injected client it follows the in-memory browser session (no SDK session)", async () => {
+    const { setBrowserSession } = await import("@/lib/auth/browserSession");
+    const { result, unmount } = renderHook(() => useAuthSessionController());
+    await waitFor(() => expect(result.current.status).toBe("signedOut"));
+    act(() => setBrowserSession({ accessToken: "a1", expiresAt: Math.floor(Date.now() / 1000) + 3600, user: { id: "u9", email: "u9@example.com", user_metadata: { display_name: "九" } } }));
+    expect(result.current.userId).toBe("u9");
+    expect(result.current.displayName).toBe("九");
+    act(() => setBrowserSession(null));
+    expect(result.current.status).toBe("signedOut");
+    unmount();
+  });
   it('a late initial signed-out snapshot cannot erase a newer login or cookie', async () => {
     const client = mockClient();
     let finish!: (value: Awaited<ReturnType<typeof client.auth.getSession>>) => void;

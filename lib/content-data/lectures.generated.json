@@ -970,6 +970,50 @@
       }
     },
     {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-023-024",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 23,
+        "end": 24
+      },
+      "taughtOn": "2026-09-30",
+      "topic": "糖代谢总复习：血糖标准与糖尿病分型、糖异生与糖代谢途径串讲、血糖来源去路",
+      "revision": 1,
+      "quizId": "rec-2026-fall-023-024",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-023-024"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-023-024"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-023-024"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-023-024"
+        }
+      },
+      "hashes": {
+        "recording": "d99eb9cf8689f56f7a8d2e412a91d8fee3d2cd6bd2298f191a38dc233f804b61",
+        "notesText": "11331e1d53dd527a5866f95339e2e79afac58650a7a51b1ead6355864cd2074a"
+      }
+    },
+    {
       "subjectId": "cell-biology",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -2375,6 +2419,50 @@
       "hashes": {
         "recording": "b13231b87de2b18c28dc6d2ed849dd79ae9c5b2f7586120c6fe8269841d75f06",
         "notesText": "707b638490b1c84743bfda4cc2eb3dad3640627c0e62911c0dc902210f963ef5"
+      }
+    },
+    {
+      "subjectId": "medical-english",
+      "lessonId": "rec-2026-fall-009-010",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "医学英语",
+      "sessionRange": {
+        "start": 9,
+        "end": 10
+      },
+      "taughtOn": "2026-09-30",
+      "topic": "Unit 5 膀胱外翻（bladder exstrophy）课文结构与医学写作手法分析；假期脑机接口（BCI）项目安排",
+      "revision": 1,
+      "quizId": "rec-2026-fall-009-010",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-009-010"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-009-010"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-009-010"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-009-010"
+        }
+      },
+      "hashes": {
+        "recording": "4cfe3c90f700647a279658645d7e5ce7d8d1b74c5225229fcf5bf2ea5c1aa3de",
+        "notesText": "54cca945d9854757020c2fe47b68f2f1108ae8481010bda631b3a8031aeac944"
       }
     }
   ]

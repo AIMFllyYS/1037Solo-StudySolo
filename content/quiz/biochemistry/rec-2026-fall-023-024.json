@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-023-024",
+  "generatedAt": "2026-10-01",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-023-024/recording.md；content/biochemistry/lectures/rec-2026-fall-023-024/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-023-024",
+    "revision": 1,
+    "recordingHash": "d99eb9cf8689f56f7a8d2e412a91d8fee3d2cd6bd2298f191a38dc233f804b61",
+    "notesTextHash": "11331e1d53dd527a5866f95339e2e79afac58650a7a51b1ead6355864cd2074a"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "空腹血糖正常范围"
+      },
+      "stem": "健康成人空腹血糖的正常范围是？",
+      "options": [
+        "3.9-6.0 mmol/L",
+        "2.8-3.9 mmol/L",
+        "6.0-7.0 mmol/L",
+        "7.0-11.1 mmol/L"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**空腹血糖正常为 3.9-6.0 mmol/L。B 低于正常下限；C 为偏高区间；D 已达糖尿病诊断相关区间。",
+      "hint": "空腹三九六零。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "低血糖诊断标准"
+      },
+      "stem": "临床上把血糖低于多少称为低血糖？",
+      "options": [
+        "低于 7.0 mmol/L",
+        "低于 2.8 mmol/L",
+        "低于 3.9 mmol/L",
+        "低于 11.1 mmol/L"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**血糖低于 2.8 mmol/L 称低血糖；因脑神经元只能靠葡萄糖供能，低血糖可致休克、昏迷。A、C 偏高；D 是糖耐量异常区间。",
+      "hint": "低二八。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "2型糖尿病病因"
+      },
+      "stem": "2 型糖尿病的主要发病机制是？",
+      "options": [
+        "胰岛素分泌不足",
+        "胰岛素抵抗（受体缺陷，对胰岛素信号不接纳）",
+        "胰高血糖素分泌不足",
+        "肾脏对糖重吸收障碍"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**2 型糖尿病是胰岛素抵抗、胰岛素受体缺陷，机体对胰岛素信号不反应。A 是 1 型；C、D 不是 2 型主因（肾重吸收障碍是另一类高血糖原因）。",
+      "hint": "2型不接收信号。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "1型糖尿病病因"
+      },
+      "stem": "1 型糖尿病的主要发病机制是？",
+      "options": [
+        "胰岛素分泌不足，胰腺不产生胰岛素信号",
+        "胰岛素受体缺陷",
+        "靶器官对胰岛素过度敏感",
+        "肾上腺素分泌不足"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**1 型是胰岛素分泌不足（胰腺本身不产生信号），多青少年起病、家族遗传。B 是 2 型；C、D 与事实相反或无关。",
+      "hint": "1型没信号。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "代谢总规则"
+      },
+      "stem": "各类营养物质彻底氧化供能，进入共同途径前都要先转变为？",
+      "options": [
+        "丙酮酸",
+        "乙酰CoA，再进入三羧酸循环（TCA）",
+        "磷酸二羟丙酮",
+        "草酰乙酸"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**糖、脂、氨基酸等彻底氧化都先汇成乙酰CoA，再进入 TCA 彻底氧化成 CO₂ 和水。A、C、D 都是某条支路的中间物，不是共同入口。",
+      "hint": "万物氧化先成乙酰CoA。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "甘油进入糖代谢的方式"
+      },
+      "stem": "甘油在糖代谢中是如何进入代谢通路的？",
+      "options": [
+        "直接转变为丙酮酸",
+        "转变为磷酸二羟丙酮，直接插入糖酵解",
+        "转变为乙酰CoA 直接进入 TCA",
+        "经糖异生途径先变成葡萄糖-6-磷酸酶"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**甘油在中间一步即转变为磷酸二羟丙酮、直接进入糖酵解，并不先到丙酮酸。A 错：甘油不到丙酮酸。C 错：不是直接乙酰CoA。D 错：张冠李戴。",
+      "hint": "甘油走磷酸二羟丙酮。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "心肌直接利用乳酸"
+      },
+      "stem": "关于乳酸在不同组织中的代谢，正确的是？",
+      "options": [
+        "心肌可直接利用乳酸供能；肌肉无氧酵解产乳酸经血液运送",
+        "所有组织都只能把乳酸重新合成为糖原",
+        "乳酸必须先在肌肉内氧化为乙酰CoA",
+        "心肌不能利用任何乳酸"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**肌肉无氧酵解产生乳酸入血，心肌可直接摄取乳酸氧化供能，肝脏则可经糖异生把乳酸变回葡萄糖。B、C、D 均与课堂强调的组织差异不符。",
+      "hint": "心肌直接用乳酸。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "糖尿病典型特征"
+      },
+      "stem": "糖尿病最典型的临床特征是？",
+      "options": [
+        "一过性高血糖",
+        "持续性高血糖并出现尿糖阳性",
+        "仅空腹血糖偏高、糖耐量正常",
+        "低血糖反复发作"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**糖尿病典型特征是持续性高血糖且尿中出现糖（尿糖阳性）。A 是激动/输液等一过性高血糖；C 不符合糖尿病；D 与糖尿病相反。",
+      "hint": "持续高血糖+尿糖。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "OGTT 糖尿病判定"
+      },
+      "stem": "口服葡萄糖耐量试验（OGTT）中，提示糖尿病病人的表现是？",
+      "options": [
+        "服糖后 0.5-1h 达峰，2h 降到 7.8 mmol/L 以下",
+        "服糖后起效慢、血糖下降缓慢，2h 仍高于 11.1 mmol/L",
+        "服糖后血糖立即降到正常",
+        "服糖后血糖始终不变"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**糖尿病人糖耐量异常：起效慢、下坡缓，血糖持续高位，服糖 2h 仍 >11.1 mmol/L。A 是正常人曲线。C、D 不符合生理。",
+      "hint": "两小时还超 11.1 就是糖尿病。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "饥饿时肝脏维持血糖"
+      },
+      "stem": "饥饿状态下，肝脏维持血糖恒定的主要方式是？",
+      "options": [
+        "只靠摄取食物糖",
+        "肝糖原分解 + 非糖物质糖异生，补充血糖保障脑与红细胞供能",
+        "把葡萄糖转变为脂肪储存",
+        "抑制肾脏的酸碱平衡"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**饥饿时肝通过糖原分解与糖异生补充血糖，保障依赖葡萄糖的脑、红细胞供能。A 饥饿时无食物糖；C 是进食后去路；D 与肾糖异生维持酸碱平衡的意义相反。",
+      "hint": "饥饿靠糖原分解+糖异生。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "血糖三个来源"
+      },
+      "stem": "人体血糖的三个来源是？",
+      "options": [
+        "食物消化吸收、肝糖原分解、非糖物质糖异生",
+        "脂肪动员、蛋白质分解、肌糖原直接入血",
+        "肾脏排糖、肺排出、皮肤蒸发",
+        "糖原合成、磷酸戊糖途径、糖醛酸途径"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**血糖三来源：食物消化吸收、肝糖原分解、非糖物质糖异生（肌糖原不能直接补充血糖，故 B 错）。C、D 均非血糖来源。",
+      "hint": "食物、肝糖原、糖异生。"
+    }
+  ]
+}

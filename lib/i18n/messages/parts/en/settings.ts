@@ -422,6 +422,8 @@ export const settingsEn = {
     currentPassword: "Current password",
     newPassword: "New password",
     confirmPassword: "Confirm new password",
+    passwordInAccount: "Your password is managed by your 1037Solo account. Changing it asks for the current one.",
+    openPasswordPage: "Change it in your 1037Solo account",
     nicknameFailed: "Could not save the nickname",
     avatarFailed: "Could not save the avatar",
     authMissing: "Sign-in is not configured",

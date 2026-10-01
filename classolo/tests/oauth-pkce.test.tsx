@@ -26,6 +26,14 @@ describe('official Supabase OAuth PKCE for retained external domain',()=>{
   const response=await oauthSession(new NextRequest(`${origin}/api/account/session`,{method:'POST',headers:{cookie:'access_token=account-token; refresh_token=account-refresh'}}),'session');
   expect(response.status).toBe(401);expect(mocks.verify).not.toHaveBeenCalled();expect(mocks.fetch).not.toHaveBeenCalled();
  });
+ it('hands the browser only the access token; the refresh token stays in its HttpOnly cookie',async()=>{
+  mocks.verify.mockResolvedValue({id:'user',clientId:'test-client',mfaRequired:false});
+  const response=await oauthSession(new NextRequest(`${origin}/api/account/session`,{method:'POST',headers:{cookie:'ss_access_token=oauth-access; ss_refresh_token=oauth-refresh'}}),'session');
+  expect(response.status).toBe(200);
+  const body=await response.json();
+  expect(body.access_token).toBe('oauth-access');expect(body.user.id).toBe('user');
+  expect(JSON.stringify(body)).not.toContain('oauth-refresh');expect(body).not.toHaveProperty('refresh_token');
+ });
  it('logs out only its own OAuth cookie transport, preserving Account login',async()=>{
   const response=await oauthSession(new NextRequest(`${origin}/api/account/logout`,{method:'POST',headers:{cookie:'ss_access_token=oauth-token; access_token=account-token'}}),'logout');
   expect(response.status).toBe(200);

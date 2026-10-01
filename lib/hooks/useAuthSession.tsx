@@ -3,8 +3,8 @@
 import {getStorageOwner,activateStorageOwner,hydrateOwnerStores} from "@/lib/storage/ownerScope";
 import {flushPendingWrites} from "@/lib/storage/idbStorage";
 import { createContext, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from "react";
-import { restoreAccountSession, logoutAccount, redirectAccount } from "@/lib/auth/account";
-import { tryGetBrowserAuthClient } from "@/lib/auth/browserClient";
+import { restoreAccountSession, logoutAccount, redirectAccount, SIGNED_IN_EVENT } from "@/lib/auth/account";
+import { freshAccessToken, onBrowserSessionChange } from "@/lib/auth/browserSession";
 import {
   type AuthOtpClient,
   type OtpRequestResult,
@@ -19,6 +19,7 @@ import { installAiAuthFetch } from "@/lib/auth/installAiAuthFetch";
 import { sessionAccessToken } from "@/lib/auth/sessionCookie";
 import {
   readPersistedSession,
+  snapshotAuthSession,
   subscribeAuthSession,
   type AuthSession,
   type AuthSessionClient,
@@ -55,7 +56,8 @@ export interface AuthSessionApi {
 const AuthSessionContext = createContext<AuthSessionApi | null>(null);
 
 export function useAuthSessionController(injected?: AuthRuntimeClient | null): AuthSessionApi {
-  const [client] = useState<AuthRuntimeClient | null>(() => injected !== undefined ? injected : tryGetBrowserAuthClient());
+  // Tests inject a fake SDK client; the app itself keeps no SDK session (lib/auth/browserSession.ts).
+  const [client] = useState<AuthRuntimeClient | null>(() => injected !== undefined ? injected : null);
   const [status,setStatus]=useState<AuthStatus>("loading");
   const [session,setSession]=useState<AuthSession|null>(null);
   useEffect(()=>{
@@ -63,12 +65,15 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
     let revision=0;
     const apply=(next:AuthSession|null)=>{if(active){setSession(next);setStatus(next?"signedIn":"signedOut");}};
     const restore=async()=>{const started=revision;try{const next=injected!==undefined && client ? await readPersistedSession(client) : await restoreAccountSession();if(started===revision)apply(next);}catch{if(active&&started===revision)setStatus(current=>current==="loading"?"signedOut":current);}};
-    const unsubscribe=client?subscribeAuthSession(client,(next,event)=>{if(event==='INITIAL_SESSION'&&revision>0)return;revision++;apply(next);}):()=>{};
+    const unsubscribe=client?subscribeAuthSession(client,(next,event)=>{if(event==='INITIAL_SESSION'&&revision>0)return;revision++;apply(next);})
+      :onBrowserSessionChange((next)=>{revision++;apply(next?snapshotAuthSession(next.user,null):null);});
     void restore();
     const focus=()=>{if(document.visibilityState!=="hidden")void restore();};
+    const signedIn=()=>void restore();
     const timer=setInterval(()=>void restore(),300000);
     window.addEventListener("focus",focus);
-    return ()=>{active=false;clearInterval(timer);unsubscribe();window.removeEventListener("focus",focus);};
+    window.addEventListener(SIGNED_IN_EVENT,signedIn);
+    return ()=>{active=false;clearInterval(timer);unsubscribe();window.removeEventListener("focus",focus);window.removeEventListener(SIGNED_IN_EVENT,signedIn);};
   },[client,injected]);
   const redirectResult=(action:Parameters<typeof redirectAccount>[0])=>{
     redirectAccount(action);return {ok:false as const,code:"auth_error" as const,message:"请在统一账号中心完成操作"};
@@ -85,7 +90,7 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
 
 function useInstallAiAuthFetch(authClient: AuthSessionClient | null) {
   useLayoutEffect(() => {
-    if (!authClient) return;
+    if (!authClient) return installAiAuthFetch(freshAccessToken);
     return installAiAuthFetch(async () => {
       const { data } = await authClient.auth.getSession();
       return sessionAccessToken(data.session);
@@ -112,7 +117,7 @@ export function AuthProvider({
   client?: AuthRuntimeClient | null;
 }) {
   const value = useAuthSessionController(client);
-  const fetchClient = client !== undefined ? client : tryGetBrowserAuthClient();
+  const fetchClient = client ?? null;
   useInstallAiAuthFetch(fetchClient);
   const [readyOwner,setReadyOwner]=useState<string|null|undefined>(undefined);
   useEffect(()=>{

@@ -1,4 +1,5 @@
-import { tryGetBrowserAuthClient } from "@/lib/auth/browserClient";
+import { currentAccessToken } from "@/lib/auth/browserSession";
+import { resolvePublicAuthEnv } from "@/lib/auth/env";
 import { membershipLabel, normalizeNickname, type MembershipTier } from "./displayName";
 
 export interface AccountProfile {
@@ -55,11 +56,18 @@ export async function saveAccountNickname(nickname: string | null): Promise<Acco
     tier?: string;
   };
   if (!body.userId) throw new Error("昵称未能保存");
-  const client = tryGetBrowserAuthClient();
-  if (client) {
-    await client.auth.updateUser({
-      data: { display_name: cleaned, nickname: cleaned },
-    }).catch(() => undefined);
+  const token = currentAccessToken();
+  if (token) {
+    // Best effort: keep the Account-wide display name in step (Supabase Auth user metadata).
+    // Uses only the short-lived access token; the browser has no SDK auth session.
+    try {
+      const env = resolvePublicAuthEnv();
+      await fetch(`${env.supabaseUrl}/auth/v1/user`, {
+        method: "PUT",
+        headers: { apikey: env.anonKey, Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ data: { display_name: cleaned, nickname: cleaned } }),
+      });
+    } catch { /* the StudySolo nickname above is already saved */ }
   }
   const tier = asTier(body.tier);
   return {

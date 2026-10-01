@@ -2,6 +2,7 @@ import {createHash,randomBytes,timingSafeEqual} from 'node:crypto';
 import {NextResponse,type NextRequest} from 'next/server';
 import {resolvePublicAuthEnv} from './env';
 import {verifySupabaseAccessToken} from './aiGate';
+import {browserSessionBody} from './browserSessionBody';
 export const OAUTH_TRANSIENT_PATH='/api/account/oauth';
 const CANONICAL_SITE_ORIGIN='https://studysolo.1037solo.com';
 const LEGACY_SITE_ORIGINS=new Set(['https://notebook1b.husteread.icu','https://notebook2a.husteread.icu']);
@@ -76,7 +77,7 @@ export async function oauthSession(request:NextRequest,operation:string):Promise
       const tokens=await refreshOAuth(pendingRefresh,config);const current=await verifySupabaseAccessToken(tokens.access_token);
       if(!current||current.id!==original.id||current.clientId!==config.clientId||current.sessionId!==original.sessionId)throw new Error('Session lineage mismatch');
       if(current.mfaRequired){const response=NextResponse.json({error:'Two-factor verification required',code:'MFA_REQUIRED',challenge_url:'/auth/challenge'},{status:403});pendingMfaCookies(response,tokens,pendingNext,secure);return response;}
-      const response=NextResponse.json({...tokens,returnTo:pendingNext});oauthCookies(response,tokens,secure);pendingMfaCookies(response,undefined,'/',secure);return response;
+      const response=NextResponse.json({...browserSessionBody(tokens.access_token,current.id),returnTo:pendingNext});oauthCookies(response,tokens,secure);pendingMfaCookies(response,undefined,'/',secure);return response;
     }catch{return NextResponse.json({error:'Two-factor verification required',code:'MFA_REQUIRED',challenge_url:'/auth/challenge'},{status:403});}
   }
   if(!refresh)return NextResponse.json({error:'Sign in required'},{status:401});
@@ -86,6 +87,7 @@ export async function oauthSession(request:NextRequest,operation:string):Promise
     if(!user||operation==='refresh'){tokens=await refreshOAuth(refresh,config);user=await verifySupabaseAccessToken(tokens.access_token);}
     if(!user||user.clientId!==config.clientId)throw new Error('OAuth client identity mismatch');
     if(user.mfaRequired){const response=NextResponse.json({error:'Two-factor verification required',code:'MFA_REQUIRED',challenge_url:'/auth/challenge'},{status:403});oauthCookies(response,undefined,secure);pendingMfaCookies(response,tokens,'/',secure);return response;}
-    const response=NextResponse.json(tokens);oauthCookies(response,tokens,secure);return response;
+    // 续期凭证只进 HttpOnly cookie，不进响应体。
+    const response=NextResponse.json(browserSessionBody(tokens.access_token,user.id));oauthCookies(response,tokens,secure);return response;
   }catch{const response=NextResponse.json({error:'Session expired; sign in again'},{status:401});oauthCookies(response,undefined,secure);return response;}
 }

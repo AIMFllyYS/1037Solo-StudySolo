@@ -1,7 +1,8 @@
 import {verifySupabaseAccessToken} from "@/lib/auth/aiGate";
 import { NextResponse,type NextRequest } from "next/server";
 import {oauthSession,publicOrigin} from "@/lib/auth/oauthServer";
-import {authModeForRequest,canonicalUrlFor} from "@/lib/auth/authMode";
+import {accountBackendUrl,authModeForRequest,canonicalUrlFor} from "@/lib/auth/authMode";
+import {browserSessionBody} from "@/lib/auth/browserSessionBody";
 export const runtime = "nodejs";
 const OPERATIONS = {session:"browser-session",refresh:"refresh",logout:"logout"} as const;
 export async function POST(request: NextRequest, context: {params:Promise<{operation:string}>}) {
@@ -18,11 +19,11 @@ export async function POST(request: NextRequest, context: {params:Promise<{opera
   allowed.add(publicOrigin(request.nextUrl.origin));
   if(process.env.NODE_ENV!=="production") {allowed.add("http://localhost:35349");allowed.add("http://127.0.0.1:35349");}
   if(!origin || !allowed.has(origin))return NextResponse.json({error:"Trusted request origin required"},{status:403});
-  // 只有显式的本地开发模式才走自签 OAuth 通道。
+  // 只有生产构建里的 localhost 与未知主机才走自签 OAuth 通道。
   if(mode==="oauth-native")return oauthSession(request,operation);
-  // 第一方域名：身份唯一来源是 Account 的共享会话。地址只从环境变量读，
-  // 未配置时明确报 503，不再静默回退到 127.0.0.1:3041（那会变成难以定位的 502/超时）。
-  const base=(process.env.ACCOUNT_BACKEND_URL||"").trim().replace(/\/$/,"");
+  // 第一方域名与本机开发：身份唯一来源是 Account 的共享会话（本机开发用本机 Account）。
+  // 线上地址只从环境变量读，未配置时明确报 503，不再静默回退到 127.0.0.1:3041（那会变成难以定位的 502/超时）。
+  const base=accountBackendUrl(mode);
   if(!base)return NextResponse.json({error:"未配置 ACCOUNT_BACKEND_URL，无法查询统一账号服务",code:"ACCOUNT_BACKEND_UNSET"},{status:503});
   try {
     const upstream=await fetch(`${base}/api/auth/${OPERATIONS[operation as keyof typeof OPERATIONS]}`,{method:"POST",headers:{Origin:origin,Cookie:request.headers.get("cookie") || "","Content-Type":"application/json"},body:"{}",cache:"no-store",signal:AbortSignal.timeout(15000)});
@@ -30,7 +31,8 @@ export async function POST(request: NextRequest, context: {params:Promise<{opera
     if(operation==='session'&&upstream.ok){
       const session=await upstream.json();
       const user=typeof session.access_token==='string'?await verifySupabaseAccessToken(session.access_token):null;
-      response=!user?NextResponse.json({error:'统一会话无效'},{status:401}):user.mfaRequired?NextResponse.json({error:'请先完成两步验证',code:'MFA_REQUIRED'},{status:403}):NextResponse.json(session);
+      // 只把访问令牌（1 小时）交给浏览器；续期凭证留在 HttpOnly cookie 里，由服务端续期（接入协议 §6、§8）。
+      response=!user?NextResponse.json({error:'统一会话无效'},{status:401}):user.mfaRequired?NextResponse.json({error:'请先完成两步验证',code:'MFA_REQUIRED'},{status:403}):NextResponse.json(browserSessionBody(session.access_token,user.id));
       response.headers.set('Cache-Control','no-store');
     }else{
       // 不吞掉上游错误：把状态码与截断后的响应体写到服务端日志，便于定位。

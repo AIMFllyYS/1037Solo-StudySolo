@@ -3,15 +3,9 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
-import { tryGetBrowserAuthClient } from "@/lib/auth/browserClient";
+import { redirectAccount } from "@/lib/auth/account";
 import { saveAccountNickname } from "@/lib/profile/client";
 import { fileToLocalAvatar } from "@/lib/profile/localAvatar";
-import {
-  changeAccountPassword,
-  readPasswordFlag,
-  setAccountPassword,
-  type PasswordAuthClient,
-} from "@/lib/profile/password";
 import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
 import { useUserProfile } from "@/lib/stores/userProfile";
 import { useToast } from "@/lib/stores/toast";
@@ -30,29 +24,13 @@ export default function AccountDialog({
   const fileRef = useRef<HTMLInputElement>(null);
   const [draftName, setDraftName] = useState(nickname);
   const [syncedName, setSyncedName] = useState(nickname);
-  const [hasPassword, setHasPassword] = useState(false);
-  const [oldPassword, setOldPassword] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [busy, setBusy] = useState<"name" | "avatar" | "password" | null>(null);
+  const [busy, setBusy] = useState<"name" | "avatar" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const t = useT();
   if (nickname !== syncedName) {
     setSyncedName(nickname);
     setDraftName(nickname);
   }
-
-  useEffect(() => {
-    const client = tryGetBrowserAuthClient() as PasswordAuthClient | null;
-    if (!client || !signedIn) return;
-    let cancelled = false;
-    void readPasswordFlag(client).then((result) => {
-      if (!cancelled && result.ok) setHasPassword(result.hasPassword);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [signedIn]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -93,29 +71,6 @@ export default function AccountDialog({
       setBusy(null);
       if (fileRef.current) fileRef.current.value = "";
     }
-  };
-
-  const savePassword = async () => {
-    const client = tryGetBrowserAuthClient() as PasswordAuthClient | null;
-    if (!client) {
-      setError(t("settings.account.authMissing"));
-      return;
-    }
-    setBusy("password");
-    setError(null);
-    const result = hasPassword
-      ? await changeAccountPassword(client, email ?? "", oldPassword, password, confirm)
-      : await setAccountPassword(client, password, confirm);
-    setBusy(null);
-    if (!result.ok) {
-      setError(result.message);
-      return;
-    }
-    setHasPassword(true);
-    setOldPassword("");
-    setPassword("");
-    setConfirm("");
-    showSaved();
   };
 
   const node = (
@@ -238,53 +193,14 @@ export default function AccountDialog({
           {signedIn ? (
             <div className="flex flex-col gap-2">
               <div className="text-[12px] font-medium text-[var(--md-sys-color-on-surface)]">
-                {t(hasPassword ? "settings.account.changePassword" : "settings.account.setPassword")}
+                {t("settings.account.changePassword")}
               </div>
-              {hasPassword ? (
-                <input
-                  type="password"
-                  autoComplete="current-password"
-                  placeholder={t("settings.account.currentPassword")}
-                  value={oldPassword}
-                  onChange={(event) => setOldPassword(event.target.value)}
-                  className="rounded-lg px-2.5 py-1.5 text-[13px]"
-                  style={{
-                    background: "var(--md-sys-color-surface-container)",
-                    border: "1px solid var(--md-sys-color-outline-variant)",
-                    color: "var(--md-sys-color-on-surface)",
-                  }}
-                />
-              ) : null}
-              <input
-                type="password"
-                autoComplete="new-password"
-                placeholder={t("settings.account.newPassword")}
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                className="rounded-lg px-2.5 py-1.5 text-[13px]"
-                style={{
-                  background: "var(--md-sys-color-surface-container)",
-                  border: "1px solid var(--md-sys-color-outline-variant)",
-                  color: "var(--md-sys-color-on-surface)",
-                }}
-              />
-              <input
-                type="password"
-                autoComplete="new-password"
-                placeholder={t("settings.account.confirmPassword")}
-                value={confirm}
-                onChange={(event) => setConfirm(event.target.value)}
-                className="rounded-lg px-2.5 py-1.5 text-[13px]"
-                style={{
-                  background: "var(--md-sys-color-surface-container)",
-                  border: "1px solid var(--md-sys-color-outline-variant)",
-                  color: "var(--md-sys-color-on-surface)",
-                }}
-              />
+              <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                {t("settings.account.passwordInAccount")}
+              </div>
               <button
                 type="button"
-                onClick={() => void savePassword()}
-                disabled={busy === "password"}
+                onClick={() => redirectAccount("update-password")}
                 className="self-start rounded-full px-3 py-1 text-[12px] font-semibold"
                 style={{
                   background: "var(--md-sys-color-surface-container-highest)",
@@ -292,7 +208,7 @@ export default function AccountDialog({
                   border: "none",
                 }}
               >
-                {t(hasPassword ? "settings.account.updatePassword" : "settings.account.setPassword")}
+                {t("settings.account.openPasswordPage")}
               </button>
             </div>
           ) : null}

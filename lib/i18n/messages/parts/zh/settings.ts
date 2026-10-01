@@ -424,6 +424,8 @@ export const settingsZh = {
     currentPassword: "当前密码",
     newPassword: "新密码",
     confirmPassword: "确认新密码",
+    passwordInAccount: "密码由 1037Solo 统一账号管理，修改时需要输入当前密码。",
+    openPasswordPage: "前往统一账号修改密码",
     nicknameFailed: "昵称未能保存",
     avatarFailed: "头像未能保存",
     authMissing: "登录未配置",

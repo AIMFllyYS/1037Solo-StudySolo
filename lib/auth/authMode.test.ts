@@ -1,13 +1,17 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
+  accountBackendUrl,
   authModeForHost,
   authModeForRequest,
   canonicalUrlFor,
   isFirstPartyHost,
   isLegacyHost,
+  isLocalDevHost,
   normalizeHost,
   CANONICAL_SITE_ORIGIN,
+  LOCAL_ACCOUNT_BACKEND_URL,
+  LOCAL_ACCOUNT_URL,
 } from "./authMode";
 
 test("authModeForHost 的三种返回", () => {
@@ -22,10 +26,39 @@ test("authModeForHost 的三种返回", () => {
   assert.equal(authModeForHost("notebook1b.husteread.icu"), "redirect-canonical");
   assert.equal(authModeForHost("notebook2a.husteread.icu"), "redirect-canonical");
 
-  // 本地开发：保留自签 OAuth
-  assert.equal(authModeForHost("localhost"), "oauth-native");
-  assert.equal(authModeForHost("127.0.0.1"), "oauth-native");
-  assert.equal(authModeForHost("localhost:35349"), "oauth-native");
+  // 本机开发：与线上同一套共享会话，Account 跑在本机
+  assert.equal(authModeForHost("localhost"), "account-local");
+  assert.equal(authModeForHost("127.0.0.1"), "account-local");
+  assert.equal(authModeForHost("localhost:35349"), "account-local");
+  assert.equal(authModeForHost("[::1]:35349"), "account-local");
+
+  // 生产构建里的 localhost 行为不变
+  assert.equal(authModeForHost("localhost:35349", "production"), "oauth-native");
+  assert.equal(authModeForHost("studysolo.1037solo.com", "production"), "account-shared");
+});
+
+test("本机开发不是历史域名：绝不跳到线上", () => {
+  for (const host of ["localhost", "127.0.0.1", "localhost:35349"]) {
+    assert.equal(isLocalDevHost(host), true, host);
+    assert.equal(isLegacyHost(host), false, host);
+    assert.equal(isFirstPartyHost(host), false, host);
+  }
+  assert.equal(isLocalDevHost("localhost", "production"), false);
+  assert.equal(isLocalDevHost("localhost.evil.test"), false);
+  assert.equal(isLocalDevHost("studysolo.1037solo.com"), false);
+});
+
+test("accountBackendUrl：线上只认配置，本机开发只用本机", () => {
+  // 线上：只读配置，未配置返回空串（路由报 503），不做任何回退
+  assert.equal(accountBackendUrl("account-shared", "https://account.1037solo.com/"), "https://account.1037solo.com");
+  assert.equal(accountBackendUrl("account-shared", ""), "");
+  assert.equal(accountBackendUrl("account-shared", undefined), "");
+  // 本机开发：未配置用本机 3041；配置了本机地址就用它；配置成线上地址也改回本机
+  assert.equal(accountBackendUrl("account-local", undefined), LOCAL_ACCOUNT_BACKEND_URL);
+  assert.equal(accountBackendUrl("account-local", "http://localhost:4041"), "http://localhost:4041");
+  assert.equal(accountBackendUrl("account-local", "https://account.1037solo.com"), LOCAL_ACCOUNT_BACKEND_URL);
+  assert.equal(LOCAL_ACCOUNT_BACKEND_URL, "http://127.0.0.1:3041");
+  assert.equal(LOCAL_ACCOUNT_URL, "http://localhost:3040");
 });
 
 test("域名大小写与端口不影响判定", () => {
