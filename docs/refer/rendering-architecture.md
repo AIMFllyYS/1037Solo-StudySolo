@@ -58,8 +58,8 @@
 
 | 导出 | 内容 | 说明 |
 |---|---|---|
-| `sharedRemarkPlugins` | `[remarkGfm, remarkMath, remarkDirective, remarkDirectives]` | Markdown → MDAST 解析插件 |
-| `sharedRehypePlugins` | `[rehypeRaw, [rehypeKatex, { throwOnError: false, strict: false }], [rehypeHighlight, { detect: true, ignoreMissing: true }]]` | MDAST → HAST 转换插件（rehype-raw 在 KaTeX 前，以支持内联 HTML/SVG） |
+| `sharedRemarkPlugins` | `[remarkGfm, remarkMath, remarkDirective, remarkDirectives, remarkCalloutSoftBreaks]` | Markdown → MDAST 解析插件，以 `lib/markdown/plugins.ts` 为事实源 |
+| `sharedRehypePlugins` | `[rehypeRaw, [rehypeSanitize, markdownSanitizeSchema], [rehypeKatex, { throwOnError: false, strict: false }], [rehypeHighlight, { detect: false, ignoreMissing: true, subset: … }]]` | raw 后先清洗，再进行可信公式/高亮变换；`subset` 只约束自动识别候选，不裁剪语言 bundle |
 
 **禁止**在 `NoteRenderer` 或 `MessageContent` 中直接内联插件配置。必须从此文件导入。
 

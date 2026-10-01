@@ -34,7 +34,7 @@ export async function generateStaticParams() {
   return params;
 }
 
-// 未在 manifest 中枚举的 id（如 stub）按需在 Node Function 渲染后缓存，不直接 404。
+// 未被 generateStaticParams 枚举的路径直接 404；manifest 中的 stub 仍会被枚举并生成占位页。
 export const dynamicParams = false;
 // 内容随 git 提交变动 → 构建期烘焙即可，无需时间型增量再生。
 export const revalidate = false;
