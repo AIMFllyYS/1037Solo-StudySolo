@@ -2,6 +2,7 @@ import {verifySupabaseAccessToken} from "@/lib/auth/aiGate";
 import { NextResponse,type NextRequest } from "next/server";
 import {oauthSession,publicOrigin} from "@/lib/auth/oauthServer";
 import {accountBackendUrl,authModeForRequest,canonicalUrlFor} from "@/lib/auth/authMode";
+import {browserSessionBody} from "@/lib/auth/browserSessionBody";
 export const runtime = "nodejs";
 const OPERATIONS = {session:"browser-session",refresh:"refresh",logout:"logout"} as const;
 export async function POST(request: NextRequest, context: {params:Promise<{operation:string}>}) {
@@ -30,7 +31,8 @@ export async function POST(request: NextRequest, context: {params:Promise<{opera
     if(operation==='session'&&upstream.ok){
       const session=await upstream.json();
       const user=typeof session.access_token==='string'?await verifySupabaseAccessToken(session.access_token):null;
-      response=!user?NextResponse.json({error:'统一会话无效'},{status:401}):user.mfaRequired?NextResponse.json({error:'请先完成两步验证',code:'MFA_REQUIRED'},{status:403}):NextResponse.json(session);
+      // 只把访问令牌（1 小时）交给浏览器；续期凭证留在 HttpOnly cookie 里，由服务端续期（接入协议 §6、§8）。
+      response=!user?NextResponse.json({error:'统一会话无效'},{status:401}):user.mfaRequired?NextResponse.json({error:'请先完成两步验证',code:'MFA_REQUIRED'},{status:403}):NextResponse.json(browserSessionBody(session.access_token,user.id));
       response.headers.set('Cache-Control','no-store');
     }else{
       // 不吞掉上游错误：把状态码与截断后的响应体写到服务端日志，便于定位。

@@ -1,4 +1,5 @@
-﻿import { tryGetBrowserAuthClient } from "@/lib/auth/browserClient";
+﻿import { tryGetBrowserDataClient } from "@/lib/auth/browserClient";
+import { getBrowserSession } from "@/lib/auth/browserSession";
 import {
   deleteSessionData,
   isSystemProject,
@@ -195,10 +196,9 @@ export function __resetCloudSyncForTests(): void {
 
 async function resolveClient(): Promise<SyncDocumentsApi | null> {
   if (injectedClient !== undefined) return injectedClient;
-  const supabase = tryGetBrowserAuthClient();
+  const supabase = tryGetBrowserDataClient();
   if (!supabase) return null;
-  const { data } = await supabase.auth.getSession();
-  const userId = data.session?.user && "id" in data.session.user ? data.session.user.id : null;
+  const userId = getBrowserSession()?.user.id ?? null;
   if (typeof userId !== "string" || !userId) return null;
   return createSupabaseSyncClient(supabase, userId);
 }
