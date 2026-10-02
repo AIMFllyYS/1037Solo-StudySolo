@@ -1,0 +1,1269 @@
+{
+  "/images/anatomy/detail/cranial-nerves.jpg": {
+    "src": "/images-display/v2/anatomy/detail/cranial-nerves.jpg.e123d0cef5c1.webp",
+    "width": 2048,
+    "height": 1945,
+    "originalWidth": 3091,
+    "originalHeight": 2935
+  },
+  "/images/anatomy/detail/pathway.jpg": {
+    "src": "/images-display/v2/anatomy/detail/pathway.jpg.599bc32a8eb3.webp",
+    "width": 2048,
+    "height": 660,
+    "originalWidth": 4231,
+    "originalHeight": 1363
+  },
+  "/images/biochemistry/textbook/p0001_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0001_01.png.00bfa98ea7e1.webp",
+    "width": 2048,
+    "height": 1353,
+    "originalWidth": 2610,
+    "originalHeight": 1724
+  },
+  "/images/biochemistry/textbook/p0040_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0040_02.png.42666a79653c.webp",
+    "width": 2048,
+    "height": 251,
+    "originalWidth": 3294,
+    "originalHeight": 404
+  },
+  "/images/biochemistry/textbook/p0041_04.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0041_04.png.bffef9f3856d.webp",
+    "width": 2048,
+    "height": 415,
+    "originalWidth": 2614,
+    "originalHeight": 530
+  },
+  "/images/biochemistry/textbook/p0046_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0046_01.png.be34a47290cd.webp",
+    "width": 2048,
+    "height": 1227,
+    "originalWidth": 2642,
+    "originalHeight": 1583
+  },
+  "/images/biochemistry/textbook/p0061_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0061_02.png.3f59b1af3021.webp",
+    "width": 2048,
+    "height": 579,
+    "originalWidth": 3171,
+    "originalHeight": 897
+  },
+  "/images/biochemistry/textbook/p0079_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0079_01.png.21965455df81.webp",
+    "width": 2048,
+    "height": 1380,
+    "originalWidth": 2832,
+    "originalHeight": 1908
+  },
+  "/images/biochemistry/textbook/p0091_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0091_01.png.c4698a90ea63.webp",
+    "width": 2048,
+    "height": 656,
+    "originalWidth": 2827,
+    "originalHeight": 905
+  },
+  "/images/biochemistry/textbook/p0097_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0097_02.png.184615aba803.webp",
+    "width": 2048,
+    "height": 1042,
+    "originalWidth": 3119,
+    "originalHeight": 1587
+  },
+  "/images/biochemistry/textbook/p0101_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0101_01.png.0980342c58da.webp",
+    "width": 2048,
+    "height": 1215,
+    "originalWidth": 2563,
+    "originalHeight": 1521
+  },
+  "/images/biochemistry/textbook/p0102_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0102_02.png.d8e6d04c30de.webp",
+    "width": 2048,
+    "height": 1042,
+    "originalWidth": 3401,
+    "originalHeight": 1731
+  },
+  "/images/biochemistry/textbook/p0103_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0103_01.png.fedc6992cb1e.webp",
+    "width": 2048,
+    "height": 535,
+    "originalWidth": 3266,
+    "originalHeight": 853
+  },
+  "/images/biochemistry/textbook/p0107_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0107_01.png.ae0e101be87a.webp",
+    "width": 2048,
+    "height": 1312,
+    "originalWidth": 3131,
+    "originalHeight": 2006
+  },
+  "/images/biochemistry/textbook/p0122_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0122_02.png.c7d2c110497b.webp",
+    "width": 2048,
+    "height": 874,
+    "originalWidth": 3334,
+    "originalHeight": 1423
+  },
+  "/images/biochemistry/textbook/p0124_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0124_01.png.dc32c1c28244.webp",
+    "width": 2048,
+    "height": 466,
+    "originalWidth": 2849,
+    "originalHeight": 648
+  },
+  "/images/biochemistry/textbook/p0127_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0127_01.png.09856e87aafb.webp",
+    "width": 2048,
+    "height": 712,
+    "originalWidth": 2938,
+    "originalHeight": 1022
+  },
+  "/images/biochemistry/textbook/p0127_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0127_02.png.625ef866869f.webp",
+    "width": 2048,
+    "height": 778,
+    "originalWidth": 2428,
+    "originalHeight": 922
+  },
+  "/images/biochemistry/textbook/p0128_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0128_01.png.0a46a54521e9.webp",
+    "width": 2048,
+    "height": 661,
+    "originalWidth": 3075,
+    "originalHeight": 992
+  },
+  "/images/biochemistry/textbook/p0129_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0129_01.png.dc184a8d9567.webp",
+    "width": 2048,
+    "height": 1097,
+    "originalWidth": 3107,
+    "originalHeight": 1665
+  },
+  "/images/biochemistry/textbook/p0130_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0130_01.png.c7ddc0dcc673.webp",
+    "width": 2048,
+    "height": 682,
+    "originalWidth": 2439,
+    "originalHeight": 812
+  },
+  "/images/biochemistry/textbook/p0131_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0131_01.png.54e41ee4d9f0.webp",
+    "width": 2048,
+    "height": 1689,
+    "originalWidth": 2882,
+    "originalHeight": 2377
+  },
+  "/images/biochemistry/textbook/p0138_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0138_01.png.0f0ac49d1a6d.webp",
+    "width": 1902,
+    "height": 2048,
+    "originalWidth": 3562,
+    "originalHeight": 3835
+  },
+  "/images/biochemistry/textbook/p0141_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0141_01.png.46f912052c47.webp",
+    "width": 2048,
+    "height": 1111,
+    "originalWidth": 3433,
+    "originalHeight": 1863
+  },
+  "/images/biochemistry/textbook/p0142_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0142_01.png.3df087e9961e.webp",
+    "width": 2048,
+    "height": 422,
+    "originalWidth": 2583,
+    "originalHeight": 532
+  },
+  "/images/biochemistry/textbook/p0146_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0146_02.png.6bd03718260d.webp",
+    "width": 2048,
+    "height": 1639,
+    "originalWidth": 3052,
+    "originalHeight": 2443
+  },
+  "/images/biochemistry/textbook/p0148_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0148_01.png.afebfe1bf24f.webp",
+    "width": 2048,
+    "height": 1500,
+    "originalWidth": 2401,
+    "originalHeight": 1759
+  },
+  "/images/biochemistry/textbook/p0154_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0154_01.png.699921dd414e.webp",
+    "width": 2048,
+    "height": 1512,
+    "originalWidth": 3093,
+    "originalHeight": 2283
+  },
+  "/images/biochemistry/textbook/p0155_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0155_01.png.d4fba73f0b5d.webp",
+    "width": 2048,
+    "height": 1360,
+    "originalWidth": 2924,
+    "originalHeight": 1942
+  },
+  "/images/biochemistry/textbook/p0158_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0158_01.png.59f0ef7a0035.webp",
+    "width": 1440,
+    "height": 2048,
+    "originalWidth": 2949,
+    "originalHeight": 4194
+  },
+  "/images/biochemistry/textbook/p0176_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0176_01.png.e9427e3b1efa.webp",
+    "width": 1222,
+    "height": 2048,
+    "originalWidth": 2365,
+    "originalHeight": 3962
+  },
+  "/images/biochemistry/textbook/p0189_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0189_01.png.59bfd7a1f793.webp",
+    "width": 2048,
+    "height": 1732,
+    "originalWidth": 3301,
+    "originalHeight": 2792
+  },
+  "/images/biochemistry/textbook/p0205_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0205_01.png.53a28a92f005.webp",
+    "width": 2048,
+    "height": 1233,
+    "originalWidth": 2714,
+    "originalHeight": 1634
+  },
+  "/images/biochemistry/textbook/p0210_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0210_01.png.8fb1709a8dfd.webp",
+    "width": 2048,
+    "height": 1224,
+    "originalWidth": 2833,
+    "originalHeight": 1693
+  },
+  "/images/biochemistry/textbook/p0213_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0213_01.png.c8a764b7704e.webp",
+    "width": 2048,
+    "height": 1415,
+    "originalWidth": 3215,
+    "originalHeight": 2222
+  },
+  "/images/biochemistry/textbook/p0219_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0219_01.png.ee85cb5be5c5.webp",
+    "width": 2048,
+    "height": 1671,
+    "originalWidth": 2464,
+    "originalHeight": 2010
+  },
+  "/images/biochemistry/textbook/p0227_03.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0227_03.png.eced32fb2b0f.webp",
+    "width": 2048,
+    "height": 716,
+    "originalWidth": 3029,
+    "originalHeight": 1059
+  },
+  "/images/biochemistry/textbook/p0228_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0228_01.png.d61d39799e54.webp",
+    "width": 2048,
+    "height": 1245,
+    "originalWidth": 3356,
+    "originalHeight": 2040
+  },
+  "/images/biochemistry/textbook/p0228_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0228_02.png.f311bb6497b8.webp",
+    "width": 2048,
+    "height": 496,
+    "originalWidth": 2769,
+    "originalHeight": 670
+  },
+  "/images/biochemistry/textbook/p0232_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0232_01.png.a00069a2f8c6.webp",
+    "width": 1561,
+    "height": 2048,
+    "originalWidth": 2066,
+    "originalHeight": 2711
+  },
+  "/images/biochemistry/textbook/p0235_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0235_01.png.fdd8ce473ee7.webp",
+    "width": 2048,
+    "height": 1089,
+    "originalWidth": 3176,
+    "originalHeight": 1689
+  },
+  "/images/biochemistry/textbook/p0235_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0235_02.png.d085ccde3913.webp",
+    "width": 2048,
+    "height": 1045,
+    "originalWidth": 3398,
+    "originalHeight": 1734
+  },
+  "/images/biochemistry/textbook/p0237_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0237_01.png.61238240f115.webp",
+    "width": 2048,
+    "height": 1188,
+    "originalWidth": 3433,
+    "originalHeight": 1992
+  },
+  "/images/biochemistry/textbook/p0238_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0238_01.png.ffae05b0d840.webp",
+    "width": 2048,
+    "height": 1218,
+    "originalWidth": 3402,
+    "originalHeight": 2023
+  },
+  "/images/biochemistry/textbook/p0240_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0240_01.png.0966a30d926b.webp",
+    "width": 2048,
+    "height": 1504,
+    "originalWidth": 2679,
+    "originalHeight": 1968
+  },
+  "/images/biochemistry/textbook/p0249_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0249_01.png.2952dfa12510.webp",
+    "width": 2048,
+    "height": 1244,
+    "originalWidth": 3397,
+    "originalHeight": 2064
+  },
+  "/images/biochemistry/textbook/p0250_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0250_01.png.d26eb284c806.webp",
+    "width": 2048,
+    "height": 1159,
+    "originalWidth": 2939,
+    "originalHeight": 1663
+  },
+  "/images/biochemistry/textbook/p0253_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0253_01.png.e390307a9381.webp",
+    "width": 2048,
+    "height": 503,
+    "originalWidth": 2633,
+    "originalHeight": 647
+  },
+  "/images/biochemistry/textbook/p0254_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0254_02.png.bc1f9c011f87.webp",
+    "width": 1828,
+    "height": 2048,
+    "originalWidth": 2740,
+    "originalHeight": 3069
+  },
+  "/images/biochemistry/textbook/p0260_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0260_01.png.2f50435e0917.webp",
+    "width": 1974,
+    "height": 2048,
+    "originalWidth": 3142,
+    "originalHeight": 3260
+  },
+  "/images/biochemistry/textbook/p0274_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0274_01.png.8b5fe20458ec.webp",
+    "width": 2048,
+    "height": 997,
+    "originalWidth": 2581,
+    "originalHeight": 1257
+  },
+  "/images/biochemistry/textbook/p0275_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0275_01.png.f03448d1e139.webp",
+    "width": 2048,
+    "height": 518,
+    "originalWidth": 3252,
+    "originalHeight": 823
+  },
+  "/images/biochemistry/textbook/p0275_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0275_02.png.5c51d3646aeb.webp",
+    "width": 2048,
+    "height": 1635,
+    "originalWidth": 2601,
+    "originalHeight": 2076
+  },
+  "/images/biochemistry/textbook/p0284_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0284_02.png.fb0307091ead.webp",
+    "width": 2048,
+    "height": 1670,
+    "originalWidth": 2461,
+    "originalHeight": 2007
+  },
+  "/images/biochemistry/textbook/p0288_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0288_01.png.77df6c336be2.webp",
+    "width": 2048,
+    "height": 871,
+    "originalWidth": 2441,
+    "originalHeight": 1038
+  },
+  "/images/biochemistry/textbook/p0292_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0292_02.png.e4e687151e88.webp",
+    "width": 2048,
+    "height": 1040,
+    "originalWidth": 2409,
+    "originalHeight": 1223
+  },
+  "/images/biochemistry/textbook/p0293_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0293_01.png.e900f9e7c713.webp",
+    "width": 2048,
+    "height": 346,
+    "originalWidth": 3319,
+    "originalHeight": 560
+  },
+  "/images/biochemistry/textbook/p0299_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0299_01.png.1de137475418.webp",
+    "width": 2048,
+    "height": 1471,
+    "originalWidth": 2917,
+    "originalHeight": 2095
+  },
+  "/images/biochemistry/textbook/p0306_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0306_02.png.f553a367739c.webp",
+    "width": 2048,
+    "height": 980,
+    "originalWidth": 2639,
+    "originalHeight": 1263
+  },
+  "/images/biochemistry/textbook/p0313_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0313_01.png.68e118c67868.webp",
+    "width": 1525,
+    "height": 2048,
+    "originalWidth": 2253,
+    "originalHeight": 3025
+  },
+  "/images/biochemistry/textbook/p0315_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0315_01.png.d489987eb9e3.webp",
+    "width": 991,
+    "height": 2048,
+    "originalWidth": 1949,
+    "originalHeight": 4027
+  },
+  "/images/biochemistry/textbook/p0316_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0316_01.png.e0e6f4b21584.webp",
+    "width": 2048,
+    "height": 1851,
+    "originalWidth": 2415,
+    "originalHeight": 2183
+  },
+  "/images/biochemistry/textbook/p0318_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0318_01.png.1b77cf8ec458.webp",
+    "width": 2048,
+    "height": 1263,
+    "originalWidth": 3339,
+    "originalHeight": 2059
+  },
+  "/images/biochemistry/textbook/p0319_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0319_01.png.66587ece9bb4.webp",
+    "width": 2048,
+    "height": 1483,
+    "originalWidth": 3276,
+    "originalHeight": 2372
+  },
+  "/images/biochemistry/textbook/p0319_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0319_02.png.de3cb2a17724.webp",
+    "width": 2048,
+    "height": 322,
+    "originalWidth": 3401,
+    "originalHeight": 534
+  },
+  "/images/biochemistry/textbook/p0327_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0327_01.png.772ac438a882.webp",
+    "width": 2048,
+    "height": 954,
+    "originalWidth": 3170,
+    "originalHeight": 1476
+  },
+  "/images/biochemistry/textbook/p0339_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0339_01.png.8611167be9e9.webp",
+    "width": 2048,
+    "height": 425,
+    "originalWidth": 3413,
+    "originalHeight": 708
+  },
+  "/images/biochemistry/textbook/p0349_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0349_01.png.9475d854fd88.webp",
+    "width": 1902,
+    "height": 2048,
+    "originalWidth": 2260,
+    "originalHeight": 2433
+  },
+  "/images/biochemistry/textbook/p0374_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0374_01.png.3bdb3234d32d.webp",
+    "width": 2048,
+    "height": 1575,
+    "originalWidth": 3236,
+    "originalHeight": 2488
+  },
+  "/images/biochemistry/textbook/p0381_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0381_01.png.e4a5ec98dfcd.webp",
+    "width": 2048,
+    "height": 1798,
+    "originalWidth": 3526,
+    "originalHeight": 3096
+  },
+  "/images/biochemistry/textbook/p0382_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0382_02.png.fd872514ac6e.webp",
+    "width": 2048,
+    "height": 1293,
+    "originalWidth": 2696,
+    "originalHeight": 1702
+  },
+  "/images/biochemistry/textbook/p0385_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0385_01.png.8c4c0e8ad89e.webp",
+    "width": 2048,
+    "height": 1489,
+    "originalWidth": 2838,
+    "originalHeight": 2063
+  },
+  "/images/biochemistry/textbook/p0389_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0389_01.png.682086afe06d.webp",
+    "width": 1173,
+    "height": 2048,
+    "originalWidth": 2811,
+    "originalHeight": 4908
+  },
+  "/images/biochemistry/textbook/p0394_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0394_02.png.3e9b223c97fa.webp",
+    "width": 2048,
+    "height": 993,
+    "originalWidth": 2460,
+    "originalHeight": 1193
+  },
+  "/images/biochemistry/textbook/p0398_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0398_01.png.2fea8f7952d2.webp",
+    "width": 2048,
+    "height": 1498,
+    "originalWidth": 2596,
+    "originalHeight": 1899
+  },
+  "/images/biochemistry/textbook/p0401_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0401_01.png.42edfca48e21.webp",
+    "width": 2048,
+    "height": 1781,
+    "originalWidth": 2688,
+    "originalHeight": 2337
+  },
+  "/images/biochemistry/textbook/p0417_02.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0417_02.png.580d9008f886.webp",
+    "width": 2048,
+    "height": 913,
+    "originalWidth": 2616,
+    "originalHeight": 1166
+  },
+  "/images/biochemistry/textbook/p0438_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0438_01.png.408a5d78932f.webp",
+    "width": 2048,
+    "height": 1371,
+    "originalWidth": 2953,
+    "originalHeight": 1977
+  },
+  "/images/biochemistry/textbook/p0441_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0441_01.png.b44263deb044.webp",
+    "width": 1801,
+    "height": 2048,
+    "originalWidth": 3218,
+    "originalHeight": 3659
+  },
+  "/images/biochemistry/textbook/p0492_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0492_01.png.8261dee56e3c.webp",
+    "width": 2048,
+    "height": 955,
+    "originalWidth": 3591,
+    "originalHeight": 1674
+  },
+  "/images/biochemistry/textbook/p0497_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0497_01.png.3d549260373a.webp",
+    "width": 2048,
+    "height": 625,
+    "originalWidth": 2422,
+    "originalHeight": 739
+  },
+  "/images/biochemistry/textbook/p0503_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0503_01.png.2baca8113788.webp",
+    "width": 1435,
+    "height": 2048,
+    "originalWidth": 2141,
+    "originalHeight": 3056
+  },
+  "/images/biochemistry/textbook/p0504_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0504_01.png.558d91c781f1.webp",
+    "width": 2048,
+    "height": 1727,
+    "originalWidth": 2530,
+    "originalHeight": 2134
+  },
+  "/images/biochemistry/textbook/p0506_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0506_01.png.03660414a7a9.webp",
+    "width": 2048,
+    "height": 1226,
+    "originalWidth": 2497,
+    "originalHeight": 1495
+  },
+  "/images/biochemistry/textbook/p0508_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0508_01.png.4f14abf1af93.webp",
+    "width": 1978,
+    "height": 2048,
+    "originalWidth": 2332,
+    "originalHeight": 2415
+  },
+  "/images/biochemistry/textbook/p0515_03.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0515_03.png.d5320ab76a8f.webp",
+    "width": 1397,
+    "height": 2048,
+    "originalWidth": 2408,
+    "originalHeight": 3530
+  },
+  "/images/biochemistry/textbook/p0534_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0534_01.png.5c43c1bcb248.webp",
+    "width": 2048,
+    "height": 978,
+    "originalWidth": 2865,
+    "originalHeight": 1368
+  },
+  "/images/biochemistry/textbook/p0577_01.png": {
+    "src": "/images-display/v2/biochemistry/textbook/p0577_01.png.770b06936523.webp",
+    "width": 2048,
+    "height": 1357,
+    "originalWidth": 2593,
+    "originalHeight": 1718
+  },
+  "/images/cell-biology/textbook/p0001_01.png": {
+    "src": "/images-display/v2/cell-biology/textbook/p0001_01.png.fb29cfbaf91e.webp",
+    "width": 2048,
+    "height": 1343,
+    "originalWidth": 2575,
+    "originalHeight": 1689
+  },
+  "/images/cell-biology/textbook/p0211_01.png": {
+    "src": "/images-display/v2/cell-biology/textbook/p0211_01.png.4a66763fc9ad.webp",
+    "width": 1442,
+    "height": 2048,
+    "originalWidth": 1850,
+    "originalHeight": 2628
+  },
+  "/images/cell-biology/textbook/p0218_01.png": {
+    "src": "/images-display/v2/cell-biology/textbook/p0218_01.png.134d014a10b8.webp",
+    "width": 2048,
+    "height": 598,
+    "originalWidth": 2589,
+    "originalHeight": 756
+  },
+  "/images/cell-biology/textbook/p0219_01.png": {
+    "src": "/images-display/v2/cell-biology/textbook/p0219_01.png.e3f0d5a1b7c8.webp",
+    "width": 744,
+    "height": 2048,
+    "originalWidth": 1373,
+    "originalHeight": 3780
+  },
+  "/images/cell-biology/textbook/p0308_03.png": {
+    "src": "/images-display/v2/cell-biology/textbook/p0308_03.png.1c2a5b6a3a2b.webp",
+    "width": 2048,
+    "height": 980,
+    "originalWidth": 2523,
+    "originalHeight": 1207
+  },
+  "/images/cell-biology/textbook/p0344_01.png": {
+    "src": "/images-display/v2/cell-biology/textbook/p0344_01.png.525336164c38.webp",
+    "width": 2048,
+    "height": 653,
+    "originalWidth": 2893,
+    "originalHeight": 923
+  },
+  "/images/cell-biology/textbook/p0417_01.png": {
+    "src": "/images-display/v2/cell-biology/textbook/p0417_01.png.fb29cfbaf91e.webp",
+    "width": 2048,
+    "height": 1343,
+    "originalWidth": 2575,
+    "originalHeight": 1689
+  },
+  "/images/chemistry/sum-01/sum-01-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-01/sum-01-img1.jpeg.8df150b38e34.webp",
+    "width": 2048,
+    "height": 2048,
+    "originalWidth": 2560,
+    "originalHeight": 2560
+  },
+  "/images/chemistry/sum-02/sum-02-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-02/sum-02-img1.jpeg.d8833679f5d2.webp",
+    "width": 2048,
+    "height": 1888,
+    "originalWidth": 2560,
+    "originalHeight": 2360
+  },
+  "/images/chemistry/sum-03/sum-03-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-03/sum-03-img1.jpeg.70f1931c5921.webp",
+    "width": 2048,
+    "height": 1350,
+    "originalWidth": 2560,
+    "originalHeight": 1688
+  },
+  "/images/chemistry/sum-04/sum-04-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-04/sum-04-img1.jpeg.0cadbfb06fbb.webp",
+    "width": 2048,
+    "height": 2048,
+    "originalWidth": 2560,
+    "originalHeight": 2560
+  },
+  "/images/chemistry/sum-05/sum-05-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-05/sum-05-img1.jpeg.ec8d01138909.webp",
+    "width": 2048,
+    "height": 1632,
+    "originalWidth": 2560,
+    "originalHeight": 2040
+  },
+  "/images/chemistry/sum-05/sum-05-img2.png": {
+    "src": "/images-display/v2/chemistry/sum-05/sum-05-img2.png.0044a9fa7191.webp",
+    "width": 2048,
+    "height": 951,
+    "originalWidth": 3110,
+    "originalHeight": 1444
+  },
+  "/images/chemistry/sum-06/sum-06-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-06/sum-06-img1.jpeg.2c0a0438ba97.webp",
+    "width": 2048,
+    "height": 1171,
+    "originalWidth": 2560,
+    "originalHeight": 1464
+  },
+  "/images/chemistry/sum-07/sum-07-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-07/sum-07-img1.jpeg.1000469ecf1b.webp",
+    "width": 2048,
+    "height": 1696,
+    "originalWidth": 2560,
+    "originalHeight": 2120
+  },
+  "/images/chemistry/sum-08/sum-08-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-08/sum-08-img1.jpeg.f529022b80ce.webp",
+    "width": 2048,
+    "height": 1683,
+    "originalWidth": 2560,
+    "originalHeight": 2104
+  },
+  "/images/chemistry/sum-09/sum-09-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-09/sum-09-img1.jpeg.b081cbab8660.webp",
+    "width": 2048,
+    "height": 1517,
+    "originalWidth": 2560,
+    "originalHeight": 1896
+  },
+  "/images/chemistry/sum-10/sum-10-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-10/sum-10-img1.jpeg.80d1b24603ab.webp",
+    "width": 2048,
+    "height": 1811,
+    "originalWidth": 2560,
+    "originalHeight": 2264
+  },
+  "/images/chemistry/sum-11/sum-11-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-11/sum-11-img1.jpeg.392eb5cdfe0c.webp",
+    "width": 2048,
+    "height": 1709,
+    "originalWidth": 2560,
+    "originalHeight": 2136
+  },
+  "/images/chemistry/sum-11/sum-11-img4.png": {
+    "src": "/images-display/v2/chemistry/sum-11/sum-11-img4.png.a4b53d0cb7f6.webp",
+    "width": 2048,
+    "height": 1740,
+    "originalWidth": 2800,
+    "originalHeight": 2379
+  },
+  "/images/chemistry/sum-12/sum-12-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-12/sum-12-img1.jpeg.f2fa8f209d89.webp",
+    "width": 2048,
+    "height": 1555,
+    "originalWidth": 2560,
+    "originalHeight": 1944
+  },
+  "/images/chemistry/sum-13/sum-13-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-13/sum-13-img1.jpeg.aa20fd8cafd1.webp",
+    "width": 2048,
+    "height": 1978,
+    "originalWidth": 2560,
+    "originalHeight": 2472
+  },
+  "/images/chemistry/sum-13/sum-13-img2.png": {
+    "src": "/images-display/v2/chemistry/sum-13/sum-13-img2.png.e6af2ab97c00.webp",
+    "width": 2048,
+    "height": 977,
+    "originalWidth": 2864,
+    "originalHeight": 1366
+  },
+  "/images/chemistry/sum-13/sum-13-img3.png": {
+    "src": "/images-display/v2/chemistry/sum-13/sum-13-img3.png.00aff082bd88.webp",
+    "width": 2048,
+    "height": 426,
+    "originalWidth": 4064,
+    "originalHeight": 845
+  },
+  "/images/chemistry/sum-14/sum-14-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-14/sum-14-img1.jpeg.f2283a61f3e1.webp",
+    "width": 2048,
+    "height": 1632,
+    "originalWidth": 2560,
+    "originalHeight": 2040
+  },
+  "/images/chemistry/sum-16/sum-16-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-16/sum-16-img1.jpeg.4bf111a801b4.webp",
+    "width": 2048,
+    "height": 1709,
+    "originalWidth": 2560,
+    "originalHeight": 2136
+  },
+  "/images/chemistry/sum-17/sum-17-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-17/sum-17-img1.jpeg.75a518e6fd5f.webp",
+    "width": 2048,
+    "height": 2048,
+    "originalWidth": 2560,
+    "originalHeight": 2560
+  },
+  "/images/chemistry/sum-18/sum-18-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-18/sum-18-img1.jpeg.b89a90602d24.webp",
+    "width": 2048,
+    "height": 2048,
+    "originalWidth": 2560,
+    "originalHeight": 2560
+  },
+  "/images/chemistry/sum-19/sum-19-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-19/sum-19-img1.jpeg.b4d7a1b293cf.webp",
+    "width": 2048,
+    "height": 1939,
+    "originalWidth": 2560,
+    "originalHeight": 2424
+  },
+  "/images/chemistry/sum-19/sum-19-img2.png": {
+    "src": "/images-display/v2/chemistry/sum-19/sum-19-img2.png.b1edcb46994d.webp",
+    "width": 2048,
+    "height": 1288,
+    "originalWidth": 3118,
+    "originalHeight": 1961
+  },
+  "/images/chemistry/sum-20/sum-20-img1.jpeg": {
+    "src": "/images-display/v2/chemistry/sum-20/sum-20-img1.jpeg.b76a0e0d7758.webp",
+    "width": 2048,
+    "height": 1747,
+    "originalWidth": 2560,
+    "originalHeight": 2184
+  },
+  "/images/chemistry/sum-20/sum-20-img2.png": {
+    "src": "/images-display/v2/chemistry/sum-20/sum-20-img2.png.7c48006be62f.webp",
+    "width": 1223,
+    "height": 2048,
+    "originalWidth": 2450,
+    "originalHeight": 4102
+  },
+  "/images/histology/textbook/p0001_01.png": {
+    "src": "/images-display/v2/histology/textbook/p0001_01.png.882d002c0d1a.webp",
+    "width": 2048,
+    "height": 1327,
+    "originalWidth": 2634,
+    "originalHeight": 1707
+  },
+  "/images/histology/textbook/p0098_02.png": {
+    "src": "/images-display/v2/histology/textbook/p0098_02.png.09eab4ea7a0b.webp",
+    "width": 2048,
+    "height": 1452,
+    "originalWidth": 2662,
+    "originalHeight": 1887
+  },
+  "/images/histology/textbook/p0221_01.png": {
+    "src": "/images-display/v2/histology/textbook/p0221_01.png.b5f4ee5c5fb1.webp",
+    "width": 2048,
+    "height": 1346,
+    "originalWidth": 2589,
+    "originalHeight": 1701
+  },
+  "/images/histology/textbook/p0222_01.png": {
+    "src": "/images-display/v2/histology/textbook/p0222_01.png.084925ae6850.webp",
+    "width": 1480,
+    "height": 2048,
+    "originalWidth": 4883,
+    "originalHeight": 6758
+  },
+  "/images/medical-english/kaoqian-moni/paper.jpg": {
+    "src": "/images-display/v2/medical-english/kaoqian-moni/paper.jpg.71d710fc553b.webp",
+    "width": 1155,
+    "height": 2048,
+    "originalWidth": 1840,
+    "originalHeight": 3264
+  },
+  "/images/medical-statistics/textbook-answers/p004-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p004-01.png.d4efddce2c5d.webp",
+    "width": 1448,
+    "height": 2048,
+    "originalWidth": 1753,
+    "originalHeight": 2479
+  },
+  "/images/medical-statistics/textbook-answers/p023-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p023-01.png.f0a21a023809.webp",
+    "width": 1409,
+    "height": 2048,
+    "originalWidth": 2012,
+    "originalHeight": 2924
+  },
+  "/images/medical-statistics/textbook-answers/p024-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p024-01.png.02c6a4e04d84.webp",
+    "width": 1423,
+    "height": 2048,
+    "originalWidth": 2004,
+    "originalHeight": 2884
+  },
+  "/images/medical-statistics/textbook-answers/p025-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p025-01.png.1efe5ad46e60.webp",
+    "width": 1402,
+    "height": 2048,
+    "originalWidth": 2012,
+    "originalHeight": 2940
+  },
+  "/images/medical-statistics/textbook-answers/p026-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p026-01.png.c623e9aba558.webp",
+    "width": 1423,
+    "height": 2048,
+    "originalWidth": 2004,
+    "originalHeight": 2884
+  },
+  "/images/medical-statistics/textbook-answers/p027-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p027-01.png.e02539f6f9c4.webp",
+    "width": 1399,
+    "height": 2048,
+    "originalWidth": 2008,
+    "originalHeight": 2940
+  },
+  "/images/medical-statistics/textbook-answers/p028-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p028-01.png.537d9ee44c33.webp",
+    "width": 1429,
+    "height": 2048,
+    "originalWidth": 2004,
+    "originalHeight": 2872
+  },
+  "/images/medical-statistics/textbook-answers/p029-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p029-01.png.5daf2d35e0db.webp",
+    "width": 1407,
+    "height": 2048,
+    "originalWidth": 2004,
+    "originalHeight": 2916
+  },
+  "/images/medical-statistics/textbook-answers/p030-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p030-01.png.baab73fdf929.webp",
+    "width": 1505,
+    "height": 2048,
+    "originalWidth": 2008,
+    "originalHeight": 2732
+  },
+  "/images/medical-statistics/textbook-answers/p032-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p032-01.png.7555a39b43d5.webp",
+    "width": 1508,
+    "height": 2048,
+    "originalWidth": 2000,
+    "originalHeight": 2716
+  },
+  "/images/medical-statistics/textbook-answers/p034-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p034-01.png.f1d730c65038.webp",
+    "width": 1509,
+    "height": 2048,
+    "originalWidth": 2016,
+    "originalHeight": 2736
+  },
+  "/images/medical-statistics/textbook-answers/p035-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p035-01.png.6ea016908fc7.webp",
+    "width": 1392,
+    "height": 2048,
+    "originalWidth": 2004,
+    "originalHeight": 2948
+  },
+  "/images/medical-statistics/textbook-answers/p036-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p036-01.png.3fc74c331e70.webp",
+    "width": 1418,
+    "height": 2048,
+    "originalWidth": 2008,
+    "originalHeight": 2900
+  },
+  "/images/medical-statistics/textbook-answers/p038-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p038-01.png.f5e90324bc66.webp",
+    "width": 1476,
+    "height": 2048,
+    "originalWidth": 2004,
+    "originalHeight": 2780
+  },
+  "/images/medical-statistics/textbook-answers/p040-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p040-01.png.193294a77fd4.webp",
+    "width": 1397,
+    "height": 2048,
+    "originalWidth": 2008,
+    "originalHeight": 2944
+  },
+  "/images/medical-statistics/textbook-answers/p041-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p041-01.png.892bd04515bc.webp",
+    "width": 1565,
+    "height": 2048,
+    "originalWidth": 2008,
+    "originalHeight": 2628
+  },
+  "/images/medical-statistics/textbook-answers/p042-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p042-01.png.f16f2d60d478.webp",
+    "width": 1409,
+    "height": 2048,
+    "originalWidth": 2012,
+    "originalHeight": 2924
+  },
+  "/images/medical-statistics/textbook-answers/p043-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p043-01.png.592f8bfa43f2.webp",
+    "width": 1389,
+    "height": 2048,
+    "originalWidth": 2008,
+    "originalHeight": 2960
+  },
+  "/images/medical-statistics/textbook-answers/p044-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p044-01.png.31a42a100ceb.webp",
+    "width": 1411,
+    "height": 2048,
+    "originalWidth": 2004,
+    "originalHeight": 2908
+  },
+  "/images/medical-statistics/textbook-answers/p046-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p046-01.png.40b8f99ec181.webp",
+    "width": 1462,
+    "height": 2048,
+    "originalWidth": 2008,
+    "originalHeight": 2812
+  },
+  "/images/medical-statistics/textbook-answers/p047-01.png": {
+    "src": "/images-display/v2/medical-statistics/textbook-answers/p047-01.png.12ca6292b53f.webp",
+    "width": 1579,
+    "height": 2048,
+    "originalWidth": 2008,
+    "originalHeight": 2604
+  },
+  "/images/physics/智能纪要：大学物理  第20节 2026年5月9日/d44725f540fd3d82107ab1b45c1239f0a710ba97f3f26a7fdc211dc0328856fe.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理  第20节 2026年5月9日/d44725f540fd3d82107ab1b45c1239f0a710ba97f3f26a7fdc211dc0328856fe.jpg.04e0365ba457.webp",
+    "width": 2048,
+    "height": 2048,
+    "originalWidth": 2560,
+    "originalHeight": 2560
+  },
+  "/images/physics/智能纪要：大学物理-第10节 2026年4月3日/b95cb7e06119b7ade95cfd3f2b65f9aca083e72c70630e3b388cb9d26ff5a36e.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第10节 2026年4月3日/b95cb7e06119b7ade95cfd3f2b65f9aca083e72c70630e3b388cb9d26ff5a36e.jpg.f0e4c61ad108.webp",
+    "width": 2048,
+    "height": 1773,
+    "originalWidth": 2560,
+    "originalHeight": 2216
+  },
+  "/images/physics/智能纪要：大学物理-第17节 2026年4月28日/250895d7a9f5d37458fc220a5a27104c6f5771a60dc6a843c907f0937b57e5a4.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第17节 2026年4月28日/250895d7a9f5d37458fc220a5a27104c6f5771a60dc6a843c907f0937b57e5a4.jpg.57aba07173b6.webp",
+    "width": 2048,
+    "height": 1517,
+    "originalWidth": 2560,
+    "originalHeight": 1896
+  },
+  "/images/physics/智能纪要：大学物理-第19节 2026年5月8日/1f1992768c5dbae63b597087aaf4b0774d3d0f5c7c1ca12a5072354a6e7ee4d8.png": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第19节 2026年5月8日/1f1992768c5dbae63b597087aaf4b0774d3d0f5c7c1ca12a5072354a6e7ee4d8.png.43ac074eec37.webp",
+    "width": 2048,
+    "height": 1913,
+    "originalWidth": 2584,
+    "originalHeight": 2414
+  },
+  "/images/physics/智能纪要：大学物理-第19节 2026年5月8日/98146b3eca4a83f69dc1a2bad3a70ba5016006ab7198d257b29db3051310af4b.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第19节 2026年5月8日/98146b3eca4a83f69dc1a2bad3a70ba5016006ab7198d257b29db3051310af4b.jpg.46bfc29f3940.webp",
+    "width": 2048,
+    "height": 1670,
+    "originalWidth": 2560,
+    "originalHeight": 2088
+  },
+  "/images/physics/智能纪要：大学物理-第25节 2026年6月2日/b8980a92f053ea1648b2046657440ebf6eab859157b1257976965ea3718c6a93.png": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第25节 2026年6月2日/b8980a92f053ea1648b2046657440ebf6eab859157b1257976965ea3718c6a93.png.a08f3313a3fa.webp",
+    "width": 1439,
+    "height": 2048,
+    "originalWidth": 2174,
+    "originalHeight": 3095
+  },
+  "/images/physics/智能纪要：大学物理-第25节 2026年6月2日/f115bb9af5622cf3bae6475980a9a16340299433f817a0ef51195c68297e98bc.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第25节 2026年6月2日/f115bb9af5622cf3bae6475980a9a16340299433f817a0ef51195c68297e98bc.jpg.597a009e2619.webp",
+    "width": 2048,
+    "height": 1894,
+    "originalWidth": 2560,
+    "originalHeight": 2368
+  },
+  "/images/physics/智能纪要：大学物理-第一节-导论和力学第一节 2026年3月3日/4913a75a4e18b279a378b8910009922354a7b0660bdec901b8dc4c6c9fc9f102.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第一节-导论和力学第一节 2026年3月3日/4913a75a4e18b279a378b8910009922354a7b0660bdec901b8dc4c6c9fc9f102.jpg.633116fcb648.webp",
+    "width": 2048,
+    "height": 1338,
+    "originalWidth": 2560,
+    "originalHeight": 1672
+  },
+  "/images/physics/智能纪要：大学物理-第一节-导论和力学第一节 2026年3月3日/b51d4f83d5e67c6ade2f90399fd4cb817fc0615d3f894e3e2f139a21f2623b23.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第一节-导论和力学第一节 2026年3月3日/b51d4f83d5e67c6ade2f90399fd4cb817fc0615d3f894e3e2f139a21f2623b23.jpg.9a067dd37709.webp",
+    "width": 2048,
+    "height": 1536,
+    "originalWidth": 2912,
+    "originalHeight": 2184
+  },
+  "/images/physics/智能纪要：大学物理-第七节 2026年3月24日/1625f9478399ad10918c49e2d62a16612a1b291011695558af496491e354ec31.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第七节 2026年3月24日/1625f9478399ad10918c49e2d62a16612a1b291011695558af496491e354ec31.jpg.59f91f9b331c.webp",
+    "width": 2048,
+    "height": 1862,
+    "originalWidth": 2560,
+    "originalHeight": 2328
+  },
+  "/images/physics/智能纪要：大学物理-第九节-分子 2026年3月31日/a28ba32b1de028b3fdd16896f5d61da05dd9e68cd07bcd4b75f414dc843efb1a.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第九节-分子 2026年3月31日/a28ba32b1de028b3fdd16896f5d61da05dd9e68cd07bcd4b75f414dc843efb1a.jpg.487a507f9a49.webp",
+    "width": 2048,
+    "height": 1555,
+    "originalWidth": 2560,
+    "originalHeight": 1944
+  },
+  "/images/physics/智能纪要：大学物理-第二节-运动和牛顿 2026年3月6日/2b4341bc60c8ea4ff2c2fd75a1a81767a92e1a25325bb46ef2cf2788e188feab.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第二节-运动和牛顿 2026年3月6日/2b4341bc60c8ea4ff2c2fd75a1a81767a92e1a25325bb46ef2cf2788e188feab.jpg.ad01fb12144e.webp",
+    "width": 2048,
+    "height": 434,
+    "originalWidth": 4012,
+    "originalHeight": 850
+  },
+  "/images/physics/智能纪要：大学物理-第二节-运动和牛顿 2026年3月6日/412b7a3ce36382492775d72413671c1760b8d25d211588d53ae90763b29a5f6a.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第二节-运动和牛顿 2026年3月6日/412b7a3ce36382492775d72413671c1760b8d25d211588d53ae90763b29a5f6a.jpg.76def91160a0.webp",
+    "width": 2048,
+    "height": 1536,
+    "originalWidth": 4096,
+    "originalHeight": 3072
+  },
+  "/images/physics/智能纪要：大学物理-第二节-运动和牛顿 2026年3月6日/9be0af3d542706aff708f715efa5d7fb50316aef50bc34f2f7a8da555875e1bc.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第二节-运动和牛顿 2026年3月6日/9be0af3d542706aff708f715efa5d7fb50316aef50bc34f2f7a8da555875e1bc.jpg.ec8d99400f73.webp",
+    "width": 2048,
+    "height": 1568,
+    "originalWidth": 2560,
+    "originalHeight": 1960
+  },
+  "/images/physics/智能纪要：大学物理-第二节-运动和牛顿 2026年3月6日/ef5c40f1379168c30608865ca63431ee44de285ef67b0b7ca0c72c599b516903.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第二节-运动和牛顿 2026年3月6日/ef5c40f1379168c30608865ca63431ee44de285ef67b0b7ca0c72c599b516903.jpg.c40278fd8d8c.webp",
+    "width": 2048,
+    "height": 1536,
+    "originalWidth": 4096,
+    "originalHeight": 3072
+  },
+  "/images/physics/智能纪要：大学物理-第八节 2026年3月27日/8a34e27115a239cf549b7106e92b8f071a5e9bd2ba7509b81374c6bacbd74e16.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第八节 2026年3月27日/8a34e27115a239cf549b7106e92b8f071a5e9bd2ba7509b81374c6bacbd74e16.jpg.06123fe17286.webp",
+    "width": 2048,
+    "height": 1517,
+    "originalWidth": 2560,
+    "originalHeight": 1896
+  },
+  "/images/physics/智能纪要：大学物理-第六节 2026年3月20日/ebd82c4472a5c5ca8a17d239a2e2a192db16927c759ce7cc2a03777e4afed960.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第六节 2026年3月20日/ebd82c4472a5c5ca8a17d239a2e2a192db16927c759ce7cc2a03777e4afed960.jpg.1218f862534d.webp",
+    "width": 2048,
+    "height": 2029,
+    "originalWidth": 2560,
+    "originalHeight": 2536
+  },
+  "/images/physics/智能纪要：大学物理-第十三节 2026年4月14日/26accb3eae2e7c6e3452c7e0f434ef50b45d9dd3c9d61f6fd1f146f0b93a5be5.png": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第十三节 2026年4月14日/26accb3eae2e7c6e3452c7e0f434ef50b45d9dd3c9d61f6fd1f146f0b93a5be5.png.578dff46e4eb.webp",
+    "width": 1735,
+    "height": 2048,
+    "originalWidth": 2432,
+    "originalHeight": 2871
+  },
+  "/images/physics/智能纪要：大学物理-第十三节 2026年4月14日/58588e1e66ed9e2fc7fd6d16a9304e137761263c2858daa98442650d1fc4d728.png": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第十三节 2026年4月14日/58588e1e66ed9e2fc7fd6d16a9304e137761263c2858daa98442650d1fc4d728.png.926e682de12d.webp",
+    "width": 2048,
+    "height": 683,
+    "originalWidth": 3368,
+    "originalHeight": 1124
+  },
+  "/images/physics/智能纪要：大学物理-第十三节 2026年4月14日/edd930ba7f03b8efaeadb900ff874dbe30d362c93e96622056c992cd30352de4.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第十三节 2026年4月14日/edd930ba7f03b8efaeadb900ff874dbe30d362c93e96622056c992cd30352de4.jpg.f50d8c8ef06a.webp",
+    "width": 2048,
+    "height": 1632,
+    "originalWidth": 2560,
+    "originalHeight": 2040
+  },
+  "/images/physics/智能纪要：大学物理-第十二节 2026年4月10日/5dd7cad70d638f739188c92b83272436d5d5d68ed65a8196606a6dd795fff46f.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第十二节 2026年4月10日/5dd7cad70d638f739188c92b83272436d5d5d68ed65a8196606a6dd795fff46f.jpg.028ef1e4f5f7.webp",
+    "width": 1982,
+    "height": 2048,
+    "originalWidth": 4320,
+    "originalHeight": 4464
+  },
+  "/images/physics/智能纪要：大学物理-第十六节 2026年4月24日/4a3a8b10e9345ec5cb70ce06419a4421a0317526d519f3ed15d41864326febc4.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第十六节 2026年4月24日/4a3a8b10e9345ec5cb70ce06419a4421a0317526d519f3ed15d41864326febc4.jpg.b1c0f81b23c6.webp",
+    "width": 2048,
+    "height": 440,
+    "originalWidth": 4248,
+    "originalHeight": 913
+  },
+  "/images/physics/智能纪要：大学物理-第十六节 2026年4月24日/75a6ea8c95e3fbc86c2f5c6f3109046dde8a6406bac0096649ca88bff380889a.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第十六节 2026年4月24日/75a6ea8c95e3fbc86c2f5c6f3109046dde8a6406bac0096649ca88bff380889a.jpg.a30b2f106a73.webp",
+    "width": 2048,
+    "height": 1440,
+    "originalWidth": 2560,
+    "originalHeight": 1800
+  },
+  "/images/physics/智能纪要：大学物理-第十六节 2026年4月24日/d854c5f75c20d0e8b18dd63f02574297127ac694179d4e1be621c1be5d9f7724.png": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理-第十六节 2026年4月24日/d854c5f75c20d0e8b18dd63f02574297127ac694179d4e1be621c1be5d9f7724.png.07543550a1d0.webp",
+    "width": 1459,
+    "height": 2048,
+    "originalWidth": 1864,
+    "originalHeight": 2616
+  },
+  "/images/physics/智能纪要：大学物理第11节电场强度及高斯定理讲解 2026年4月7日/4f1d9873b916f3f97c802e793590bb01aa532baca25cda73003969dd7b91ac2f.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理第11节电场强度及高斯定理讲解 2026年4月7日/4f1d9873b916f3f97c802e793590bb01aa532baca25cda73003969dd7b91ac2f.jpg.da3ec4cbcf5b.webp",
+    "width": 2048,
+    "height": 1312,
+    "originalWidth": 2560,
+    "originalHeight": 1640
+  },
+  "/images/physics/智能纪要：大学物理第21节透镜成像原理及应用讲解 2026年5月12日/d6b1283bb1ecbdcb59558453098ce7a93b9303761947a2a9a4a47c3fe227814b.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理第21节透镜成像原理及应用讲解 2026年5月12日/d6b1283bb1ecbdcb59558453098ce7a93b9303761947a2a9a4a47c3fe227814b.jpg.c2bbb29509f8.webp",
+    "width": 2048,
+    "height": 1926,
+    "originalWidth": 2560,
+    "originalHeight": 2408
+  },
+  "/images/physics/智能纪要：大学物理第22节课程知识点讲解 2026年5月15日/04639b003a3caf93bd06b84e8b3380937600b696218ec20353e81d5b1a046c81.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理第22节课程知识点讲解 2026年5月15日/04639b003a3caf93bd06b84e8b3380937600b696218ec20353e81d5b1a046c81.jpg.09f828ae2a8f.webp",
+    "width": 2048,
+    "height": 2003,
+    "originalWidth": 2560,
+    "originalHeight": 2504
+  },
+  "/images/physics/智能纪要：大学物理第22节课程知识点讲解 2026年5月15日/5f7ed0a75796939a85bce144b70bbd2458c427110b9ee588f6ce19162829afaa.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理第22节课程知识点讲解 2026年5月15日/5f7ed0a75796939a85bce144b70bbd2458c427110b9ee588f6ce19162829afaa.jpg.b13c74b8ce44.webp",
+    "width": 2048,
+    "height": 352,
+    "originalWidth": 5308,
+    "originalHeight": 913
+  },
+  "/images/physics/智能纪要：大学物理第23节 2026年5月26日/363930cf4389c275a94777e3e70699a0ea6ab8cd5a43aa50a6cecf41627cc193.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理第23节 2026年5月26日/363930cf4389c275a94777e3e70699a0ea6ab8cd5a43aa50a6cecf41627cc193.jpg.b663cf52ca3b.webp",
+    "width": 2048,
+    "height": 1888,
+    "originalWidth": 2560,
+    "originalHeight": 2360
+  },
+  "/images/physics/智能纪要：大学物理第24节光学与原子物理讲解 2026年5月29日/8ffcc944c374c428f4477a62f9ad4ef0ba0b21a3d7decf5263047a4b95781f94.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理第24节光学与原子物理讲解 2026年5月29日/8ffcc944c374c428f4477a62f9ad4ef0ba0b21a3d7decf5263047a4b95781f94.jpg.c70d5e6a006a.webp",
+    "width": 2048,
+    "height": 1555,
+    "originalWidth": 2560,
+    "originalHeight": 1944
+  },
+  "/images/physics/智能纪要：大学物理第24节光学与原子物理讲解 2026年5月29日/eff15d8007caf3bc68c3e91fd788114d25aaa304f265f2994735b6e45682cf13.png": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理第24节光学与原子物理讲解 2026年5月29日/eff15d8007caf3bc68c3e91fd788114d25aaa304f265f2994735b6e45682cf13.png.d79549ea268c.webp",
+    "width": 2048,
+    "height": 672,
+    "originalWidth": 2574,
+    "originalHeight": 845
+  },
+  "/images/physics/智能纪要：大学物理第三节 2026年3月13日/4449274e8de20187aef3e0547377293bfd2b872cfdc0a50c75c2f619ea4e8df8.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理第三节 2026年3月13日/4449274e8de20187aef3e0547377293bfd2b872cfdc0a50c75c2f619ea4e8df8.jpg.eda96c7784e1.webp",
+    "width": 2048,
+    "height": 1862,
+    "originalWidth": 2560,
+    "originalHeight": 2328
+  },
+  "/images/physics/智能纪要：大学物理第十五节安培环路定理及磁场应用讲解 2026年4月21日/62c924da8096bd28211ae509f10cc1ab66bf7ef14b9a3d800f3d40ea34539695.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理第十五节安培环路定理及磁场应用讲解 2026年4月21日/62c924da8096bd28211ae509f10cc1ab66bf7ef14b9a3d800f3d40ea34539695.jpg.9964f37d1e1f.webp",
+    "width": 2048,
+    "height": 1798,
+    "originalWidth": 2560,
+    "originalHeight": 2248
+  },
+  "/images/physics/智能纪要：大学物理第十四节课程电场磁场知识讲解 2026年4月17日/1702ccde3edb5775b9f7e4c103c39f91dc9f0f0ccd334b02f309e5a3f42b3e5e.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理第十四节课程电场磁场知识讲解 2026年4月17日/1702ccde3edb5775b9f7e4c103c39f91dc9f0f0ccd334b02f309e5a3f42b3e5e.jpg.dd81f36c57a3.webp",
+    "width": 2048,
+    "height": 2048,
+    "originalWidth": 2560,
+    "originalHeight": 2560
+  },
+  "/images/physics/智能纪要：大学物理第四节流体力学与简谐振动讲解 2026年3月17日/1ee7f36c56f15557af8dc965a41b7e928aff80008d0c91470b62109e657ba1d0.jpg": {
+    "src": "/images-display/v2/physics/智能纪要：大学物理第四节流体力学与简谐振动讲解 2026年3月17日/1ee7f36c56f15557af8dc965a41b7e928aff80008d0c91470b62109e657ba1d0.jpg.2635d20210bb.webp",
+    "width": 2048,
+    "height": 928,
+    "originalWidth": 2560,
+    "originalHeight": 1160
+  }
+}

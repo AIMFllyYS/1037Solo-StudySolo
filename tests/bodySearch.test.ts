@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { __resetBodySearchCacheForTests, bodySearchCacheSize, searchSubjectBody } from "@/lib/search/bodySearch";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { __resetBodySearchCacheForTests, bodySearchCacheBytes, bodySearchCacheRevision, bodySearchCacheSize, searchSubjectBody } from "@/lib/search/bodySearch";
 import { buildGlobalSearchIndex } from "@/lib/search/globalSearch";
 import { contentTree } from "@/lib/content-data/manifest";
 
@@ -42,4 +45,26 @@ test("searchSubjectBody 暖查询复用剥好的正文，不再扩缓存", () =>
   assert.ok(warmed > 0);
   searchSubjectBody("histology", "上皮");
   assert.equal(bodySearchCacheSize(), warmed);
+});
+
+test("正文缓存随索引内容修订失效且受字节预算约束", () => {
+  const previous = process.env.SEARCH_INDEX_DIR;
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "body-search-revision-"));
+  const writeRevision = (hash: string) => fs.writeFileSync(path.join(dir, "manifest.json"), JSON.stringify({ version: 2, contentHash: hash }));
+  try {
+    process.env.SEARCH_INDEX_DIR = dir;
+    __resetBodySearchCacheForTests();
+    writeRevision("a".repeat(64));
+    searchSubjectBody("histology", "被覆上皮");
+    assert.equal(bodySearchCacheRevision(), "a".repeat(64));
+    assert.ok(bodySearchCacheSize() > 0);
+    writeRevision("b".repeat(64));
+    searchSubjectBody("probability", "由果溯因");
+    assert.equal(bodySearchCacheRevision(), "b".repeat(64));
+    assert.ok(bodySearchCacheBytes() <= 32 * 1024 * 1024);
+  } finally {
+    if (previous === undefined) delete process.env.SEARCH_INDEX_DIR;
+    else process.env.SEARCH_INDEX_DIR = previous;
+    __resetBodySearchCacheForTests();
+  }
 });

@@ -36,6 +36,12 @@ export default defineConfig([
   // 构建产物与同仓的独立子项目（各自有自己的 lint 配置/锁文件）不纳入根 lint。
   globalIgnores([
     ".next/**",
+    ".next-class-verify/**",
+    ".next-perf-*/**",
+    ".next-desktop-*/**",
+    "dist-desktop-staged-*/**",
+    "artifacts/performance/**",
+    "runtime/search-worker/**",
     ".local-archive/**",
     "1037Solo-Classolo/**",
     "1037Solo-StudySolo/**",

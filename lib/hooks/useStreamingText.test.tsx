@@ -15,3 +15,14 @@ it('bounds long text updates, flushes exact content on stop, and resets for repl
   rerender({ text: 'new', active: true });
   expect(result.current).toBe('new');
 });
+
+it('coalesces short token deltas to a frame and never loses the final text', () => {
+  vi.useFakeTimers();
+  const { result, rerender } = renderHook(({ text, active }) => useStreamingText(text, active), { initialProps: { text: 'a', active: true } });
+  for (let index = 0; index < 100; index++) rerender({ text: 'a' + 'x'.repeat(index + 1), active: true });
+  expect(result.current).toBe('a');
+  act(() => vi.advanceTimersByTime(16));
+  expect(result.current).toBe('a' + 'x'.repeat(100));
+  rerender({ text: 'a' + 'x'.repeat(100) + ' done', active: false });
+  expect(result.current).toBe('a' + 'x'.repeat(100) + ' done');
+});

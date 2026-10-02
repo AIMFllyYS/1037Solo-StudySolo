@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useRef, useEffect, useState, useCallback, useMemo,useSyncExternalStore } from 'react';
 import clsx from 'clsx';
 import { AgentAlertIcon, AgentInfoIcon, AgentPlusIcon } from '@/components/icons/AgentIcons';
 import { clearCloudSyncMessage, useCloudSyncStatus } from '@/lib/sync/status';
@@ -26,6 +26,8 @@ import ChatHistoryOverlay from '@/components/chat/ChatHistoryOverlay';
 import type { ChatContext, ChatOptions } from '@/lib/types/chat';
 import type { SendMessageOptions } from '@/lib/chat/sendMessage';
 import { useT } from '@/lib/i18n';
+import {getSessionWriteFailure,hasDurableSessionRecovery,hydrateSessionRecoveryStatus,retrySessionWrite,subscribeSessionWriteStatus} from '@/lib/storage/chatStorage';
+import {exportSessionRecovery} from '@/lib/chat/exportChats';
 
 interface ChatPanelProps {
   chatContext: ChatContext;
@@ -52,6 +54,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
   const outbound = useStore((s) => s.outbound);
   const clearOutbound = useStore((s) => s.clearOutbound);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
+  const writeFailure=useSyncExternalStore(subscribeSessionWriteStatus,()=>activeSessionId?getSessionWriteFailure(activeSessionId):null,()=>null);
+  useEffect(() => { if (activeSessionId) void hydrateSessionRecoveryStatus(activeSessionId); }, [activeSessionId]);
   const startNewChat = useChatHistory((s) => s.startNewChat);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -246,8 +250,9 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
         onOpenSettings={openAgentSettings}
         onComposerInsetChange={setComposerInset}
         focusSignal={focusSignal}
-        notice={(showWarning || cloudSync.message || blankHint) ? (
+        notice={(showWarning || cloudSync.message || blankHint || writeFailure) ? (
           <>
+            {writeFailure&&<div role="alert" className="mb-2 flex items-center gap-2 rounded-lg bg-[var(--md-sys-color-error-container)] px-3 py-2 text-xs text-[var(--md-sys-color-on-error-container)]"><AgentAlertIcon size={14}/><span className="flex-1">{writeFailure==='checkpoint_conflict'?(activeSessionId&&hasDurableSessionRecovery(activeSessionId)?'本地会话与其他写入发生版本冲突，草稿已另存本机恢复副本；请导出核对。':'本地会话发生版本冲突，草稿只在当前标签保留；请立即导出。'):'本地会话保存未完成，旧记录仍可读取；请检查存储空间后重试。'}</span>{writeFailure==='checkpoint_conflict'&&activeSessionId&&<button type="button" className="underline" onClick={()=>void exportSessionRecovery(activeSessionId)}>导出草稿</button>}{writeFailure!=='checkpoint_conflict'&&activeSessionId&&<button type="button" className="underline" onClick={()=>void retrySessionWrite(activeSessionId)}>重试保存</button>}</div>}
             {blankHint ? (
               <div
                 role="status"

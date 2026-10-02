@@ -24,6 +24,7 @@ import { SCHEMA_SYNC_KINDS, type ChatProjectSyncPayload, type ChatSessionSyncPay
 import { __setSyncLimitsForTests } from "./payload.ts";
 import { setCloudSyncEnabled, isCloudSyncEnabled } from "./schedule.ts";
 import { markSessionStreaming } from "./streamingSessions.ts";
+import { activateStorageOwner, getStorageOwner } from "@/lib/storage/ownerScope";
 
 function msg(id: string, text: string, extra?: Partial<ChatMessage>): ChatMessage {
   return {
@@ -288,6 +289,169 @@ describe("cloud sync engine", { concurrency: false }, () => {
     enqueueUpsert("chat-session", "s1");
     await flushCloudSyncForTests();
     assert.equal(api.upserts.length, first);
+  });
+
+  test("1000 updates during one slow upload retain one latest pending job", async () => {
+    const memory = createMemoryStores();
+    const base = createMemorySyncClient();
+    let releaseFirst!: () => void;
+    let started!: () => void;
+    const firstStarted = new Promise<void>((resolve) => { started = resolve; });
+    const gate = new Promise<void>((resolve) => { releaseFirst = resolve; });
+    let uploads = 0;
+    const api = {
+      ...base,
+      async upsert(row: Parameters<typeof base.upsert>[0]) {
+        uploads++;
+        if (uploads === 1) { started(); await gate; }
+        return base.upsert(row);
+      },
+    };
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests(api);
+    memory.artifacts.set("slow", { id: "slow", title: "v0", html: "<p>v0</p>", status: "done" });
+    enqueueUpsert("artifact", "slow");
+    await firstStarted;
+    for (let index = 1; index <= 1000; index++) {
+      memory.artifacts.set("slow", { id: "slow", title: `v${index}`, html: `<p>${index}</p>`, status: "done" });
+      enqueueUpsert("artifact", "slow");
+    }
+    releaseFirst();
+    await flushCloudSyncForTests();
+    assert.equal(uploads, 2);
+    assert.equal((base.rows.get("artifact:slow")?.payload as Artifact).title, "v1000");
+  });
+
+  test("pull applies completed pages only and resumes after page two fails", async () => {
+    const local = createMemoryStores();
+    const remote = createMemorySyncClient();
+    for (let index = 0; index < 101; index++) {
+      await remote.upsert({ kind: "user-note", client_id: `n${index}`, payload: {
+        id: `n${index}`, title: `note ${index}`, markdown: "body", subjectId: null, createdAt: 1, updatedAt: 2,
+      }, deleted: false });
+    }
+    __setCloudSyncStoresForTests(local.stores);
+    __setSyncClientForTests({ ...remote, async listPage(kinds, cursor) {
+      if (cursor === "1") return { data: [], nextCursor: null, error: { message: "page two unavailable" } };
+      return remote.listPage!(kinds, cursor);
+    } });
+    await pullAndPushAll();
+    assert.equal(local.notes.size, 100);
+    assert.equal(getCloudSyncStatus().phase, "error");
+    __setSyncClientForTests(remote);
+    await pullAndPushAll();
+    assert.equal(local.notes.size, 101);
+  });
+
+  test("owner switch discards a late A upload before it can write B", async () => {
+    const previous = getStorageOwner();
+    const previousStorage = globalThis.localStorage;
+    const lightJobs = new Map<string, string>();
+    (globalThis as { localStorage?: Storage }).localStorage = {
+      getItem: (key) => lightJobs.get(key) ?? null,
+      setItem: (key, value) => { lightJobs.set(key, value); },
+      removeItem: (key) => { lightJobs.delete(key); },
+      clear: () => lightJobs.clear(), key: (index) => [...lightJobs.keys()][index] ?? null,
+      get length() { return lightJobs.size; },
+    } as Storage;
+    try {
+      const memory = createMemoryStores();
+      const a = createMemorySyncClient(), b = createMemorySyncClient();
+      let release!: () => void, started!: () => void;
+      const blocked = new Promise<void>((resolve) => { release = resolve; });
+      const entered = new Promise<void>((resolve) => { started = resolve; });
+      const slowA = { ...a, async get(kind: Parameters<typeof a.get>[0], id: string) {
+        started(); await blocked; return a.get(kind, id);
+      } };
+      __setCloudSyncStoresForTests(memory.stores);
+      activateStorageOwner("owner-A");
+      __setSyncClientForTests(slowA);
+      memory.artifacts.set("shared", { id: "shared", title: "A", html: "<p>A</p>", status: "done" });
+      enqueueUpsert("artifact", "shared");
+      await entered;
+      activateStorageOwner("owner-B");
+      __setSyncClientForTests(b);
+      memory.artifacts.set("shared", { id: "shared", title: "B", html: "<p>B</p>", status: "done" });
+      enqueueUpsert("artifact", "shared");
+      release();
+      await flushCloudSyncForTests();
+      assert.equal(a.upserts.length, 0);
+      assert.equal((b.rows.get("artifact:shared")?.payload as Artifact).title, "B");
+      assert.match(lightJobs.get("ss-sync-jobs:owner-A") ?? "", /"clientId":"shared"/);
+    } finally {
+      activateStorageOwner(previous);
+      if (previousStorage === undefined) delete (globalThis as { localStorage?: Storage }).localStorage;
+      else globalThis.localStorage = previousStorage;
+    }
+  });
+
+  test("failed upload persists only a light owner job and resumes after re-entry", async () => {
+    const previousOwner = getStorageOwner();
+    const saved = new Map<string, string>();
+    const previousStorage = globalThis.localStorage;
+    (globalThis as { localStorage?: Storage }).localStorage = {
+      getItem: (key) => saved.get(key) ?? null,
+      setItem: (key, value) => { saved.set(key, value); },
+      removeItem: (key) => { saved.delete(key); },
+      clear: () => saved.clear(),
+      key: (index) => [...saved.keys()][index] ?? null,
+      get length() { return saved.size; },
+    } as Storage;
+    try {
+      const memory = createMemoryStores();
+      const base = createMemorySyncClient();
+      const failing = { ...base, async upsert() { return { data: null, error: { message: "temporary network error" } }; } };
+      __setCloudSyncStoresForTests(memory.stores);
+      __setSyncClientForTests(failing);
+      activateStorageOwner("retry-owner-A");
+      memory.artifacts.set("retry", { id: "retry", title: "retained", html: "<p>private body</p>", status: "done" });
+      enqueueUpsert("artifact", "retry");
+      await flushCloudSyncForTests();
+      const durable = saved.get("ss-sync-jobs:retry-owner-A") ?? "";
+      assert.match(durable, /"clientId":"retry"/);
+      assert.doesNotMatch(durable, /private body|retained|html/);
+      activateStorageOwner(null);
+      __resetCloudSyncForTests();
+      __setCloudSyncStoresForTests(memory.stores);
+      __setSyncClientForTests(base);
+      activateStorageOwner("retry-owner-A");
+      await flushCloudSyncForTests();
+      assert.equal((base.rows.get("artifact:retry")?.payload as Artifact).title, "retained");
+      assert.equal(saved.get("ss-sync-jobs:retry-owner-A"), "[]");
+    } finally {
+      activateStorageOwner(previousOwner);
+      if (previousStorage === undefined) delete (globalThis as { localStorage?: Storage }).localStorage;
+      else globalThis.localStorage = previousStorage;
+    }
+  });
+
+  test("failed tombstone blocks stale cloud pull until deletion is committed", async () => {
+    const memory = createMemoryStores();
+    const remote = createMemorySyncClient();
+    await remote.upsert({ kind: "artifact", client_id: "gone", payload: { id: "gone", title: "old", html: "<p>old</p>" }, deleted: false });
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests({ ...remote, async upsert() { return { data: null, error: { message: "temporary network error" } }; } });
+    enqueueTombstone("artifact", "gone");
+    await flushCloudSyncForTests();
+    await pullAndPushAll();
+    assert.equal(memory.artifacts.has("gone"), false);
+    __setSyncClientForTests(remote);
+    await pullAndPushAll();
+    assert.equal(remote.rows.get("artifact:gone")?.deleted, true);
+    assert.equal(memory.artifacts.has("gone"), false);
+  });
+
+  test("missing partitioned artifact body never becomes a cloud tombstone", async () => {
+    const memory = createMemoryStores();
+    const api = createMemorySyncClient();
+    memory.artifacts.set("missing-body", { id: "missing-body", title: "保留记录", html: "", status: "done" });
+    memory.stores.getArtifact = async () => { throw new Error("artifact_body_missing"); };
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests(api);
+    enqueueUpsert("artifact", "missing-body");
+    await flushCloudSyncForTests();
+    assert.equal(api.upserts.length, 0);
+    assert.equal(getCloudSyncStatus().phase, "error");
   });
 
   test("pullAndPushAll skips a session that is still streaming", async () => {

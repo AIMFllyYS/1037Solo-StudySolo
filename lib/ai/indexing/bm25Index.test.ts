@@ -36,8 +36,11 @@ test("buildCompactBm25Index + parseBm25Index：标题词可被检索", () => {
   assert.equal(compact.ids.length, 2);
   const runtime = parseBm25Index(compact);
   assert.ok(runtime);
+  assert.equal(runtime!.format,'compact');
+  if(runtime?.format!=='compact')return;
   assert.ok(runtime!.invertedIndex["绪论"]);
-  assert.ok(runtime!.invertedIndex["绪论"].postings.some((p) => p.id.includes("cell-biology")));
+  assert.ok(runtime.invertedIndex["绪论"].postings instanceof Uint32Array);
+  assert.ok([...runtime.invertedIndex["绪论"].postings].some((index,position)=>position%2===0&&runtime.ids[index].includes("cell-biology")));
 });
 
 test("parseBm25Index：兼容旧版字符串 posting", () => {
@@ -48,5 +51,6 @@ test("parseBm25Index：兼容旧版字符串 posting", () => {
     invertedIndex: { 力: { df: 1, postings: [{ id: "probability/detail/1.1#0", tf: 2 }] } },
     docLengths: { "probability/detail/1.1#0": 10 },
   });
-  assert.equal(runtime?.invertedIndex["力"].postings[0].id, "probability/detail/1.1#0");
+  assert.equal(runtime?.format,'legacy');
+  if(runtime?.format==='legacy')assert.equal(runtime.invertedIndex["力"].postings[0].id, "probability/detail/1.1#0");
 });

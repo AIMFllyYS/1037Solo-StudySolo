@@ -43,17 +43,18 @@ export class SiliconFlowEmbedding implements EmbeddingProvider {
     return !!(this.baseUrl && this.apiKey);
   }
 
-  async embed(text: string): Promise<number[]> {
-    const [result] = await this.embedBatch([text]);
+  async embed(text: string, signal?: AbortSignal): Promise<number[]> {
+    const [result] = await this.embedBatch([text], signal);
     return result;
   }
 
-  async embedBatch(texts: string[]): Promise<number[][]> {
+  async embedBatch(texts: string[], signal?: AbortSignal): Promise<number[][]> {
     if (!texts.length) return [];
 
     const results: number[][] = new Array(texts.length);
 
     for (let i = 0; i < texts.length; i += BATCH_SIZE) {
+      signal?.throwIfAborted();
       const batch = texts.slice(i, i + BATCH_SIZE);
       const resp = await billableJsonFetch(`${this.baseUrl}/embeddings`, {
         method: 'POST',
@@ -62,6 +63,7 @@ export class SiliconFlowEmbedding implements EmbeddingProvider {
           Authorization: `Bearer ${this.apiKey}`,
         },
         body: JSON.stringify({ model: this.model, input: batch }),
+        signal,
       }, { model: this.model, kind: "embedding", byok: !this.usedPlatformCredentials });
 
       if (!resp.ok) {
@@ -112,17 +114,18 @@ export class ZhipuEmbedding implements EmbeddingProvider {
     return !!(this.baseUrl && this.apiKey);
   }
 
-  async embed(text: string): Promise<number[]> {
-    const [result] = await this.embedBatch([text]);
+  async embed(text: string, signal?: AbortSignal): Promise<number[]> {
+    const [result] = await this.embedBatch([text], signal);
     return result;
   }
 
-  async embedBatch(texts: string[]): Promise<number[][]> {
+  async embedBatch(texts: string[], signal?: AbortSignal): Promise<number[][]> {
     if (!texts.length) return [];
 
     const results: number[][] = new Array(texts.length);
 
     for (let i = 0; i < texts.length; i += ZHIPU_BATCH_SIZE) {
+      signal?.throwIfAborted();
       const batch = texts.slice(i, i + ZHIPU_BATCH_SIZE);
       const resp = await billableJsonFetch(`${this.baseUrl}/embeddings`, {
         method: 'POST',
@@ -131,6 +134,7 @@ export class ZhipuEmbedding implements EmbeddingProvider {
           Authorization: `Bearer ${this.apiKey}`,
         },
         body: JSON.stringify({ model: this.model, input: batch }),
+        signal,
       }, { model: this.model, kind: "embedding" });
 
       if (!resp.ok) {

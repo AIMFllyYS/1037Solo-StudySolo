@@ -5,16 +5,15 @@ import Link from "next/link";
 import { GraduationCap, BookOpenCheck } from "lucide-react";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { openNoteLibrary } from "@/lib/notes/openUserNote";
-import { contentTree } from "@/lib/content-data/manifest";
-import { firstLearnHref } from "@/lib/content-data";
+import homeSubjects from "@/lib/content-data/home.generated.json";
+import { filterRuntimeSubjects } from "@/lib/content/offlineSubjects";
 import { subjectColor } from "@/lib/content-data/subjects.registry";
 import SubjectIcon from "@/components/shared/SubjectIcon";
 import { BOOKSHELF_GRID_COLUMNS, BOOKSHELF_GRID_GAP, filterSubjectsByYear } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
-import type { Subject } from "@/lib/types/content";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
 
-export { firstLearnHref };
+type HomeSubject = (typeof homeSubjects)[number];
 
 function overlayBtn(primary: boolean): React.CSSProperties {
   return {
@@ -34,9 +33,9 @@ function overlayBtn(primary: boolean): React.CSSProperties {
   };
 }
 
-function BookCard({ subject }: { subject: Subject }) {
-  const learnHref = firstLearnHref(subject);
-  const chapterCount = subject.categories.reduce((n, c) => n + c.items.length, 0);
+function BookCard({ subject }: { subject: HomeSubject }) {
+  const learnHref = subject.learnHref;
+  const chapterCount = subject.chapterCount;
   const color = subjectColor(subject.id);
 
   return (
@@ -89,7 +88,7 @@ function BookCard({ subject }: { subject: Subject }) {
             {subject.name}
           </div>
           <div style={{ fontSize: 12, color: "var(--ink-faint)", marginTop: 3 }}>
-            {subject.categories.length} 个板块 · {chapterCount} 项
+            {subject.categoryCount} 个板块 · {chapterCount} 项
           </div>
         </div>
         <div
@@ -141,7 +140,7 @@ export default function HomeBookshelf() {
     hydrate();
   }, [hydrate]);
 
-  const subjects = filterSubjectsByYear(contentTree.subjects, year);
+  const subjects = filterSubjectsByYear(filterRuntimeSubjects(homeSubjects), year);
 
   return (
     <div className="scroll-y" style={{ height: "100%", background: "var(--bg-app)" }}>

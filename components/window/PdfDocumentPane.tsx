@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import DocumentWorkspace, { type DocumentOutlineItem } from "@/components/window/DocumentWorkspace";
@@ -9,6 +9,7 @@ import { useElementWidth } from "@/lib/hooks/useElementWidth";
 import { scrollToElementTop } from "@/lib/window/scrollToElementTop";
 import { translate, translateNow, useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/stores/settings";
+import {DEFAULT_RESOURCE_BUDGETS} from '@/lib/performance/budgets';
 
 type PdfjsModule = typeof import("pdfjs-dist/legacy/build/pdf.mjs");
 type PdfDocumentProxy = Awaited<ReturnType<PdfjsModule["getDocument"]>["promise"]>;
@@ -20,12 +21,12 @@ async function loadPdfjs() {
   return pdfjs;
 }
 
-async function sourceToData(src: string): Promise<Uint8Array | { url: string }> {
+async function sourceToData(src: string,signal?:AbortSignal): Promise<Uint8Array | { url: string }> {
   if (src.startsWith("blob:") || src.startsWith("http://") || src.startsWith("https://")) {
     return { url: src };
   }
   if (src.startsWith("data:")) {
-    const response = await fetch(src);
+    const response = await fetch(src,{signal});
     return new Uint8Array(await response.arrayBuffer());
   }
   throw new Error(translateNow("panel.pdf.readFailed"));
@@ -108,6 +109,7 @@ const MAX_MOUNTED_PAGES = 24;
 const SCROLL_TOP_OFFSET = 8;
 /** 尺寸抖动小于 1% 就当没变，避免每次缩放都重渲染整条页流。 */
 const SIZE_EPSILON = 0.01;
+function fallbackPages(anchor:number,count:number){return new Set(Array.from({length:Math.min(count,anchor+3)-Math.max(1,anchor-2)+1},(_,index)=>Math.max(1,anchor-2)+index))}
 
 export default function PdfDocumentPane({ src, name }: { src: string; name: string }) {
   const t = useT();
@@ -118,10 +120,15 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
   const [outline, setOutline] = useState<DocumentOutlineItem[]>([]);
   const [zoom, setZoom] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const currentPageRef = useRef(currentPage);
+  useLayoutEffect(() => { currentPageRef.current = currentPage; }, [currentPage]);
   const [pageSizes, setPageSizes] = useState<Record<number, PageSize>>({});
   const [mountedPages, setMountedPages] = useState<ReadonlySet<number>>(() => new Set<number>());
   const [failedPages, setFailedPages] = useState<Record<number, string>>({});
   const pdfRef = useRef<PdfDocumentProxy | null>(null);
+  const loadingTaskRef=useRef<ReturnType<PdfjsModule['getDocument']>|null>(null);
+  const loadGeneration=useRef(0);
+  const bitmapBytesRef=useRef(new Map<number,number>());
   const slotsRef = useRef({ active: 0, queue: [] as Array<() => void> });
 
   // 工具栏的百分比就是这个值的产物：屏幕上的实际宽度 ÷ 原始页宽。
@@ -130,8 +137,11 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
 
   useEffect(() => {
     let cancelled = false;
-    pdfRef.current?.destroy().catch(() => {});
-    pdfRef.current = null;
+    const generation=++loadGeneration.current,controller=new AbortController();
+    let loadingTask:ReturnType<PdfjsModule['getDocument']>|null=null;
+    let loadedPdf:PdfDocumentProxy|null=null;
+    bitmapBytesRef.current.clear();
+    const current=()=>!cancelled&&loadGeneration.current===generation;
 
     void (async () => {
       // 换源先把上一份的状态清干净，否则旧页码 / 旧尺寸会串到新文档上。
@@ -144,27 +154,34 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
       setFailedPages({});
       try {
         const pdfjs = await loadPdfjs();
-        const input = await sourceToData(src);
+        if(!current())return;
+        const input = await sourceToData(src,controller.signal);
+        if(!current())return;
         const task = pdfjs.getDocument(
           input instanceof Uint8Array
             ? { data: input, cMapUrl: "/pdfjs/cmaps/", cMapPacked: true, standardFontDataUrl: "/pdfjs/standard_fonts/" }
             : { url: input.url, cMapUrl: "/pdfjs/cmaps/", cMapPacked: true, standardFontDataUrl: "/pdfjs/standard_fonts/" },
         );
+        loadingTask=task;loadingTaskRef.current=task;
         const pdf = await task.promise;
-        if (cancelled) {
-          await pdf.destroy();
+        if (!current()) {
+          await task.destroy().catch(()=>{});
           return;
         }
+        loadingTask=null;if(loadingTaskRef.current===task)loadingTaskRef.current=null;
+        loadedPdf=pdf;
         pdfRef.current = pdf;
 
         // 首页比例是后面所有占位高度的基准，所以先量它再宣布就绪。
         const base = (await pdf.getPage(1)).getViewport({ scale: 1 });
         const items = await flattenOutline(await pdf.getOutline(), pdf);
-        if (cancelled) return;
+        if (!current()) return;
         setDoc({ pdf, numPages: pdf.numPages, baseWidth: base.width, baseHeight: base.height });
         setOutline(items);
       } catch (err) {
-        if (cancelled) return;
+        if (!current()) return;
+        if(loadingTask){await loadingTask.destroy().catch(()=>{});if(loadingTaskRef.current===loadingTask)loadingTaskRef.current=null;loadingTask=null}
+        if(loadedPdf){await loadedPdf.destroy().catch(()=>{});if(pdfRef.current===loadedPdf)pdfRef.current=null;loadedPdf=null}
         // 加密 PDF 由 pdfjs 抛 PasswordException，给一句人能看懂的说明。
         setError({
           message: err instanceof Error ? err.message : translateNow("panel.pdf.openFailed"),
@@ -175,8 +192,9 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
 
     return () => {
       cancelled = true;
-      pdfRef.current?.destroy().catch(() => {});
-      pdfRef.current = null;
+      controller.abort();
+      if(loadingTask){void loadingTask.destroy().catch(()=>{});if(loadingTaskRef.current===loadingTask)loadingTaskRef.current=null}
+      if(loadedPdf){void loadedPdf.destroy().catch(()=>{});if(pdfRef.current===loadedPdf)pdfRef.current=null}
     };
   }, [src]);
 
@@ -221,6 +239,21 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
     console.error(`[PdfDocumentPane] 第 ${pageNumber} 页渲染失败`, err);
     setFailedPages((prev) => (prev[pageNumber] === message ? prev : { ...prev, [pageNumber]: message }));
   }, []);
+  const handleBitmapBytes=useCallback((pdf:PdfDocumentProxy,pageNumber:number,bytes:number)=>{
+    if(pdfRef.current!==pdf)return
+    if(bytes>0)bitmapBytesRef.current.set(pageNumber,bytes);else bitmapBytesRef.current.delete(pageNumber)
+    const total=[...bitmapBytesRef.current.values()].reduce((sum,value)=>sum+value,0)
+    if(total<=DEFAULT_RESOURCE_BUDGETS.pdfBitmapBytes)return
+    setMountedPages(previous=>{
+      const next=new Set(previous)
+      let remaining=total
+      for(const page of [...next].filter(page=>page!==currentPageRef.current&&!visiblePagesRef.current.has(page)).sort((a,b)=>Math.abs(b-currentPageRef.current)-Math.abs(a-currentPageRef.current))){
+        if(remaining<=DEFAULT_RESOURCE_BUDGETS.pdfBitmapBytes)break
+        next.delete(page);remaining-=bitmapBytesRef.current.get(page)??0
+      }
+      return next.size===previous.size?previous:next
+    })
+  },[]);
 
   // 进过视口的页才挂画布；挂载数有界——远离视口的页摘回占位（位图+textLayer 随组件卸载释放，
   // 长 PDF 的内存占用不再随页数线性增长，d5/B5-1）。可见页永不摘，避免视口里留白洞。
@@ -229,10 +262,9 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
     if (!doc) return;
     const body = bodyRef.current;
     const nodes = body ? Array.from(body.querySelectorAll<HTMLElement>("[data-pdf-page]")) : [];
-    const mountAll = () => setMountedPages(new Set(Array.from({ length: doc.numPages }, (_, index) => index + 1)));
-    // jsdom / 老内核没有 IntersectionObserver：全部挂上，宁可慢也不能白屏。
+    // Without IntersectionObserver keep a small current-page window, not every bitmap in a long PDF.
     if (!body || typeof IntersectionObserver === "undefined" || nodes.length === 0) {
-      mountAll();
+      setMountedPages(fallbackPages(currentPageRef.current,doc.numPages));
       return;
     }
     const visible = visiblePagesRef.current;
@@ -294,6 +326,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
         best = Number(page.dataset.pdfPage) || best;
       }
       setCurrentPage((prev) => (prev === best ? prev : best));
+      if(typeof IntersectionObserver==='undefined')setMountedPages(fallbackPages(best,doc.numPages));
     };
     const onScroll = () => {
       if (frame) return;
@@ -313,7 +346,8 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
     scrollToElementTop(body, target, SCROLL_TOP_OFFSET);
     // 滚动事件要等下一帧，先给工具栏一个即时反馈。
     setCurrentPage(pageNumber);
-  }, []);
+    if(doc&&typeof IntersectionObserver==='undefined')setMountedPages(fallbackPages(pageNumber,doc.numPages));
+  }, [doc]);
 
   if (error) {
     return (
@@ -416,6 +450,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
                     onError={handlePageError}
                     acquireSlot={acquireSlot}
                     releaseSlot={releaseSlot}
+                    onBitmapBytes={(page,bytes)=>handleBitmapBytes(doc.pdf,page,bytes)}
                   />
                 ) : null}
               </div>

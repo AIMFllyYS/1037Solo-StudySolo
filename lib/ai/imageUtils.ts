@@ -6,6 +6,7 @@
  */
 
 import type { ChatAttachment, ChatDocumentMimeType } from "@/lib/types/chat";
+import {createObjectUrlLease} from '@/lib/resources/objectUrl'
 
 /** 单图最大体积（2 MB），超过则触发 Canvas 压缩。 */
 export const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
@@ -27,6 +28,8 @@ export const LONG_PASTE_DOCUMENT_THRESHOLD = 1_000;
 export interface FileAttachmentOptions {
   /** 覆盖默认的对话附件体积上限；仅应由本地预览入口使用。 */
   maxFileSize?: number;
+  /** Text-only extraction has no preview consumer and must not create a blob URL. */
+  includePreviewUrl?:boolean;
 }
 
 /**
@@ -194,11 +197,7 @@ export async function fileToDocumentAttachment(file: File, options: FileAttachme
       throw new Error(`${file.name} 提取后超过 20 万字，请拆分后再上传`);
     }
     let previewUrl: string | undefined;
-    try {
-      previewUrl = URL.createObjectURL(file);
-    } catch {
-      previewUrl = undefined;
-    }
+    if(options.includePreviewUrl!==false)try{previewUrl = URL.createObjectURL(file)}catch{previewUrl=undefined}
     return { type: "document", file, mimeType, name: file.name, size: file.size, text, characterCount, previewUrl };
   } else {
     text = await readFileAsText(file);
@@ -243,24 +242,26 @@ export async function fileToLocalPreviewAttachment(file: File, options: FileAtta
 export function compressImage(file: File, maxDim = COMPRESS_MAX_DIM): Promise<string> {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    const url = URL.createObjectURL(file);
+    const lease=createObjectUrlLease(file)
     img.onload = () => {
-      URL.revokeObjectURL(url);
-      let { width, height } = img;
-      if (width > maxDim || height > maxDim) {
-        const scale = maxDim / Math.max(width, height);
-        width = Math.round(width * scale);
-        height = Math.round(height * scale);
-      }
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext("2d")!;
-      ctx.drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL("image/jpeg", COMPRESS_QUALITY));
+      try{
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          const scale = maxDim / Math.max(width, height);
+          width = Math.round(width * scale);
+          height = Math.round(height * scale);
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if(!ctx)throw new Error('Canvas unavailable')
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", COMPRESS_QUALITY));
+      }catch(error){reject(error)}finally{lease.release()}
     };
-    img.onerror = reject;
-    img.src = url;
+    img.onerror = ()=>{lease.release();reject(new Error('图片解码失败'))};
+    try{img.src = lease.url}catch(error){lease.release();reject(error)}
   });
 }
 

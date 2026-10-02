@@ -1,4 +1,5 @@
-export { contentTree } from './manifest';
+// Shared/client metadata entry: never import the full build-time manifest here.
+export { navTree as contentTree } from './nav';
 /** @public 内容树类型的兼容入口。 */
 export type {
   ContentTree,
@@ -10,7 +11,7 @@ export type {
   RenderType,
 } from '@/lib/types/content';
 
-import { contentTree } from './manifest';
+import { navTree as contentTree } from './nav';
 import type {
   Subject,
   Category,

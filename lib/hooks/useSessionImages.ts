@@ -29,12 +29,18 @@ export function useSessionImages(enabled = true): AgentImageItem[] {
     if (!enabled) return EMPTY_IMAGES;
     const base = collectMessageImages(messages.flatMap((message) => message.parts));
     const generated: GeneratedImage[] = [];
+    const placeholders: AgentImageItem[] = [];
     for (const message of messages) {
       for (const part of getToolPartsByName({ parts: message.parts }, "generateImage")) {
         if (part.state !== "output-available" || !part.output?.imageGenId) continue;
         const session = sessions[part.output.imageGenId];
         // 批准之前生图会话里没有图；只有真正出图了才算「这个对话有这张图」。
-        if (!session || session.status !== "done" || session.images.length === 0) continue;
+        if (!session || session.status !== "done") continue;
+        if (session.bodyRef && session.images.length === 0) {
+          for (let index = 0; index < Math.max(1, session.count); index++) placeholders.push({ id: `gen:${session.id}:${index}`, kind: "generated", imageGenId: session.id, src: "", title: session.title, alt: session.prompt });
+          continue;
+        }
+        if (session.images.length === 0) continue;
         generated.push({
           imageGenId: session.id,
           title: session.title,
@@ -43,6 +49,6 @@ export function useSessionImages(enabled = true): AgentImageItem[] {
         });
       }
     }
-    return mergeGeneratedImages(base, generated);
-  }, [messages, sessions]);
+    return [...mergeGeneratedImages(base, generated), ...placeholders];
+  }, [messages, sessions, enabled]);
 }

@@ -21,14 +21,26 @@ function asRow(value: unknown): SyncDocumentRow | null {
 }
 
 export function createSupabaseSyncClient(client: SupabaseClient, userId: string): SyncDocumentsApi {
+  const listPage: NonNullable<SyncDocumentsApi["listPage"]> = async (kinds, cursor) => {
+    if (cursor && !/^[0-9a-f-]{36}$/i.test(cursor)) return { data: [], nextCursor: null, error: { message: "同步分页游标无效" } };
+    const query = client.from(SYNC_TABLE).select("id, kind, client_id, payload, deleted, updated_at").eq("user_id", userId).in("kind", [...kinds]).order("id").range(0, 99);
+    const { data, error } = await (cursor ? query.gt("id", cursor) : query);
+    if (error) return { data: [], nextCursor: null, error: { message: error.message } };
+    const last = data?.at(-1) as { id?: unknown } | undefined;
+    if ((data?.length ?? 0) === 100 && typeof last?.id !== "string") return { data: [], nextCursor: null, error: { message: "同步分页缺少稳定 id 游标" } };
+    return { data: (data ?? []).map(asRow).filter((row): row is SyncDocumentRow => row !== null), nextCursor: (data?.length ?? 0) === 100 ? last!.id as string : null, error: null };
+  };
   return {
+    listPage,
     async list(kinds) {
       const rows:SyncDocumentRow[]=[];
+      let cursor: string | undefined;
       for(let page=0;page<100;page++){
-        const {data,error}=await client.from(SYNC_TABLE).select("kind, client_id, payload, deleted, updated_at").eq("user_id",userId).in("kind",[...kinds]).order("id").range(page*100,page*100+99);
+        const {data,error,nextCursor}=await listPage(kinds,cursor);
         if(error)return {data:[],error:{message:error.message}};
-        rows.push(...(data??[]).map(asRow).filter((row):row is SyncDocumentRow=>row!==null));
-        if((data?.length??0)<100)return {data:rows,error:null};
+        rows.push(...data);
+        if(!nextCursor)return {data:rows,error:null};
+        cursor=nextCursor;
       }
       return {data:[],error:{message:"同步文档数量超过当前批量读取上限，请分项目导出；未应用不完整数据"}};
     },
@@ -68,6 +80,14 @@ export function createMemorySyncClient(): SyncDocumentsApi & {
   return {
     rows,
     upserts,
+    async listPage(kinds, cursor) {
+      const page = cursor === undefined ? 0 : Number(cursor);
+      if (!Number.isInteger(page) || page < 0) return { data: [], nextCursor: null, error: { message: "invalid_cursor" } };
+      const allow = new Set<string>(kinds);
+      const matching = [...rows.values()].filter((row) => allow.has(row.kind));
+      const data = matching.slice(page * 100, page * 100 + 100);
+      return { data, nextCursor: (page + 1) * 100 < matching.length ? String(page + 1) : null, error: null };
+    },
     async list(kinds) {
       const allow = new Set<string>(kinds);
       return {

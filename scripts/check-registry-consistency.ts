@@ -7,6 +7,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { contentTree } from '../lib/content-data/manifest';
+import { firstLearnHref } from '../lib/content-data';
 import { SUBJECT_REGISTRY, SUBJECT_BY_ID, getSubjectMeta } from '../lib/content-data/subjects.registry';
 import { isSubjectIconName } from '../lib/ui/subjectIcons';
 import { ACADEMIC_YEAR_IDS } from '../lib/constants/academic-year';
@@ -263,6 +264,18 @@ for (const subject of contentTree.subjects) {
     } else {
       err('nav.stale', 'lib/content-data/nav.generated.json 与 manifest 不一致，请运行 pnpm gen-nav');
     }
+  }
+  const homePath = path.join(ROOT, 'lib', 'content-data', 'home.generated.json');
+  const expectedHome = JSON.stringify(contentTree.subjects.map((subject) => ({
+    id: subject.id, name: subject.name, icon: subject.icon,
+    categoryCount: subject.categories.length,
+    chapterCount: subject.categories.reduce((total, category) => total + category.items.length, 0),
+    learnHref: firstLearnHref(subject),
+  })));
+  const actualHome = fs.existsSync(homePath) ? JSON.stringify(JSON.parse(fs.readFileSync(homePath, 'utf8'))) : '';
+  if (actualHome !== expectedHome) {
+    if (fixNav) regen();
+    else err('home.stale', 'lib/content-data/home.generated.json 与 manifest 不一致，请运行 pnpm gen-nav');
   }
 }
 

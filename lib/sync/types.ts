@@ -77,6 +77,12 @@ export interface SyncDocumentRow {
 }
 
 export interface SyncDocumentsApi {
+  /** Optional page API for bounded pull. Legacy adapters may still expose list only. */
+  listPage?: (kinds: readonly CloudSyncKind[], cursor?: string) => Promise<{
+    data: SyncDocumentRow[];
+    nextCursor: string | null;
+    error: { message: string } | null;
+  }>;
   list: (kinds: readonly CloudSyncKind[]) => Promise<{
     data: SyncDocumentRow[];
     error: { message: string } | null;

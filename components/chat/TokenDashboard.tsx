@@ -30,6 +30,7 @@ import { ContextUsageRing } from '@/components/chat/ContextUsageRing';
 import { ACCOUNT_USAGE_CHANGED, notifyAccountUsageChanged } from '@/lib/billing/quotaView';
 import { compactActiveSession } from '@/lib/context/compactChatSession';
 import { translateNow, useT } from "@/lib/i18n";
+import { loadSessionSummary, type SessionSummary } from "@/lib/storage/sessionSummary";
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -88,6 +89,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   const [pinned, setPinned] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [compacting, setCompacting] = useState(false);
+  const [summary, setSummary] = useState<SessionSummary | null>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -172,13 +174,17 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
       const newTokens = estimateTokens(newText);
       setCurrentContext(displayBase + newTokens);
     } else {
+      const windowStart = st.sessionWindowById[sid ?? '']?.startTurn ?? 0;
+      const prefixTokens = open && summary?.sessionId === sid
+        ? summary.turnTokenEstimates.slice(0, windowStart).reduce((total, value) => total + value, 0)
+        : 0;
       const text = msgs
         .map((m) => getMessageText(m))
         .join('');
-      const est = estimateTokens(text) + FIRST_TURN_OVERHEAD_TOKENS;
+      const est = prefixTokens + estimateTokens(text) + FIRST_TURN_OVERHEAD_TOKENS;
       setCurrentContext(est);
     }
-  }, [floatingSessionId, modelId]);
+  }, [floatingSessionId, modelId, summary, open]);
 
   const runCompact = useCallback(async () => {
     if (compacting) return;
@@ -191,22 +197,25 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     }
   }, [compacting, floatingSessionId, recompute]);
 
-  // 面板打开 = 用户明确要看全量上下文：物化整段会话，估算才覆盖更早轮次。
+  // Build a bounded derived estimate on demand; keep the authoritative body windowed.
   useEffect(() => {
     if (!open) return;
     const sid = floatingSessionId ?? useChatHistory.getState().activeSessionId;
-    if (sid) void useChatHistory.getState().ensureSessionFullyLoaded(sid).then(recompute);
-  }, [open, floatingSessionId, recompute]);
+    if (!sid) return;
+    const controller = new AbortController();
+    void loadSessionSummary(sid, controller.signal).then((value) => {
+      if (!controller.signal.aborted && value) setSummary(value);
+    }).catch(() => { if (!controller.signal.aborted) setSummary(null); });
+    return () => controller.abort();
+  }, [open, floatingSessionId, activeSessionId]);
 
-  // 始终定时刷新上下文估算（面板开关均运行），确保按钮数字实时更新。
+  // Closed panels do not scan/join the chat every five seconds.
   useEffect(() => {
     recompute();
-    const interval = open ? 2500 : 5000;
-    const id = setInterval(() => {
-      recompute();
-    }, interval);
+    if (!open) return;
+    const id = setInterval(recompute, 2500);
     return () => clearInterval(id);
-  }, [open, recompute]);
+  }, [open, recompute, activeSessionId, isLoading]);
 
   useEffect(() => {
     if (!open) return;

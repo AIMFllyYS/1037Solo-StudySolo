@@ -21,7 +21,7 @@
 独立构建入口：
 
 - `build-index.ts` — 语义检索索引（`pnpm build-index`）
-- `build-desktop.mjs` — Electron 桌面包（`pnpm desktop:build`）
+- `performance/build-desktop-staging.mjs` — 当前 Electron 桌面包（`pnpm desktop:build`，每次新暂存与新输出、不发布）；`build-desktop.mjs` 为默认禁用的旧实现
 - `gen-icon.mjs` — 桌面图标生成
 - `run-all-tests.mjs` — `pnpm test`：代码单测 + vitest，取最差退出码（`--include-content` 时含内容校验）
 

@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { Share2 } from "lucide-react";
 import ShareDialog from "@/components/share/ShareDialog";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
-import { useArtifacts } from "@/lib/stores/artifacts";
+import { loadArtifactFull } from "@/lib/stores/artifacts";
 import { useChatHistory } from "@/lib/stores/chatHistory";
 import { loadSessionMessages } from "@/lib/storage/chatStorage";
 import { useToast } from "@/lib/stores/toast";
@@ -13,10 +13,10 @@ import type { SharedArtifact } from "@/lib/share/types";
 import { useT } from "@/lib/i18n";
 
 /** 从会话元信息 + 本机 artifacts 拼出要上传的快照。抽出来是因为它要读 store 的当前值。 */
-function collectArtifacts(artifactIds: string[]): SharedArtifact[] {
-  const byId = useArtifacts.getState().byId;
-  return artifactIds
-    .map((id) => byId[id])
+async function collectArtifacts(artifactIds: string[]): Promise<SharedArtifact[]> {
+  const artifacts = await Promise.all(artifactIds.map(loadArtifactFull));
+  if (artifacts.some((artifact) => !artifact)) throw new Error("artifact_body_unavailable");
+  return artifacts
     .filter((art): art is NonNullable<typeof art> => Boolean(art))
     .map((art) => ({ id: art.id, title: art.title, html: art.html, status: art.status }));
 }
@@ -67,7 +67,7 @@ export default function ShareButton() {
     const payload = buildSharedSnapshot({
       meta,
       messages,
-      artifacts: collectArtifacts(meta.artifactIds),
+      artifacts: await collectArtifacts(meta.artifactIds),
     });
     const response = await fetch("/api/share", {
       method: "POST",

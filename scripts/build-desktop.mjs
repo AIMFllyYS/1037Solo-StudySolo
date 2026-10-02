@@ -6,6 +6,11 @@
 //   3. Run electron-builder to produce the portable .exe + NSIS installer.
 //
 // Run via: pnpm run desktop:build
+// Archived legacy implementation. The package entry now uses the verified
+// non-destructive staging builder; accidental direct runs must not clear old packages.
+if (!process.argv.includes("--legacy-destructive")) {
+  throw new Error("Legacy desktop builder is disabled. Use npm run desktop:build for isolated staging.");
+}
 import { execSync, spawn } from "node:child_process";
 import { existsSync, readdirSync, rmSync, cpSync, readFileSync } from "node:fs";
 import net from "node:net";
@@ -222,6 +227,7 @@ function resolveSigning() {
 //    `next build` directly, so run them explicitly here): script-id manifest + app icons.
 run("npx tsx scripts/gen-nav-manifest.ts");
 run("npx tsx scripts/check-registry-consistency.ts");
+run("pnpm run compile:search-worker");
 run("node scripts/gen-script-ids.mjs");
 run("node scripts/gen-icon.mjs");
 
@@ -255,6 +261,7 @@ if (!existsSync(`${SA}/server.js`)) {
 copyInto(".next/static", ".next\\standalone\\.next\\static");
 copyInto("public", ".next\\standalone\\public");
 copyInto("content", ".next\\standalone\\content");
+copyInto("runtime/search-worker", ".next\\standalone\\runtime\\search-worker");
 
 // 2a. Prune directories Next's NFT trace may have pulled into standalone that must NOT
 //     ship in the exe (dist-desktop prior artifacts, .git, caches, manim render output).

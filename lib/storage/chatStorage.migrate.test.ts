@@ -1,15 +1,17 @@
+import 'fake-indexeddb/auto';
+import {clear as idbClear,createStore} from 'idb-keyval';
 import { activateStorageOwner, ownedStorageKey } from "@/lib/storage/ownerScope";
 import assert from "node:assert/strict";
 import { test, beforeEach, afterEach } from "node:test";
-import { PERSIST_KEYS } from "./idbStorage.ts";
+import { PERSIST_KEYS,idbStorage } from "./idbStorage.ts";
 
 const storage = new Map<string, string>();
+const testStore=createStore('gailvlun-db','keyval');
 let failSetItemForPrefix: string | null = null;
 
 function installBrowserMocks() {
   activateStorageOwner("fixture-user");
   (globalThis as { window?: unknown }).window = {};
-  (globalThis as { indexedDB?: object }).indexedDB = {};
   (globalThis as { localStorage?: Storage }).localStorage = {
     get length() {
       return storage.size;
@@ -39,7 +41,8 @@ const fixtureSet = (key: string, value: string) => storage.set(physical(key), va
 const fixtureGet = (key: string) => storage.get(physical(key));
 
 
-beforeEach(() => {
+beforeEach(async () => {
+  await idbClear(testStore);
   storage.clear();
   failSetItemForPrefix = null;
   installBrowserMocks();
@@ -47,7 +50,6 @@ beforeEach(() => {
 
 afterEach(() => {
   delete (globalThis as { window?: unknown }).window;
-  delete (globalThis as { indexedDB?: object }).indexedDB;
   delete (globalThis as { localStorage?: Storage }).localStorage;
 });
 
@@ -116,13 +118,15 @@ test("migrateFromV1IfNeeded：v2 写入失败时保留 legacy 以便重试", asy
   const legacyRaw = JSON.stringify(v1);
   fixtureSet(PERSIST_KEYS.chatHistory, legacyRaw);
   failSetItemForPrefix = "chat-s3:";
+  const original=IDBObjectStore.prototype.put;
+  IDBObjectStore.prototype.put=function(value,key){if(typeof key==='string'&&key.startsWith(physical('chat-s3:')))throw new DOMException('synthetic quota','QuotaExceededError');return original.call(this,value,key)};
 
   const { migrateFromV1IfNeeded, loadManifest } = await import("./chatStorage.ts");
-
-  const migrated = await migrateFromV1IfNeeded();
+  let migrated=false;
+  try{migrated = await migrateFromV1IfNeeded();}finally{IDBObjectStore.prototype.put=original}
 
   assert.equal(migrated, false);
-  assert.equal(fixtureGet(PERSIST_KEYS.chatHistory), legacyRaw);
+  assert.equal(await idbStorage.getItem(PERSIST_KEYS.chatHistory), legacyRaw);
   assert.equal(await loadManifest(), null);
 });
 

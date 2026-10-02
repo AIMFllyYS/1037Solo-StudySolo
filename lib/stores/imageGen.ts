@@ -3,6 +3,9 @@ import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { createPersistedStore } from "@/lib/stores/_persist";
 import { stripOpenIds } from "@/lib/stores/windowPersist";
+import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
+import { readOwnedStorageItem, writeOwnedStorageItem } from "@/lib/storage/idbStorage";
+import { registerResourceMetrics } from "@/lib/performance/resourceMetrics";
 
 export type ImageGenStatus = "idle" | "loading" | "done" | "error";
 
@@ -35,6 +38,95 @@ export interface ImageGenSession {
    * 「开始生成」按钮，绝不因为"打开看了一眼"就扣费。
    */
   autoStart?: boolean;
+  /** Generated image payloads live in a separate owner-scoped IDB row. */
+  bodyRef?: true;
+}
+
+const imageLeases = new Map<string, number>();
+let residentOwner: string | null = null;
+onStorageOwnerChange(() => { imageLeases.clear(); residentOwner = null; });
+function bodyKey(id: string) { return `image-gen-body:${id}`; }
+function coldSession(session: ImageGenSession): ImageGenSession { return session.bodyRef ? { ...session, images: [] } : session; }
+
+export async function loadImageGenSessionFull(id: string): Promise<ImageGenSession | null> {
+  const owner = getStorageOwner(), epoch = getOwnerEpoch();
+  if (!owner || residentOwner !== owner) return null;
+  const session = useImageGen.getState().sessions[id];
+  if (!session) return null;
+  if (!session.bodyRef || session.images.length) return session;
+  const raw = await readOwnedStorageItem(owner, bodyKey(id));
+  if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch || !raw) return null;
+  try {
+    const images = JSON.parse(raw) as ImageGenImage[];
+    return Array.isArray(images) ? { ...session, images } : null;
+  } catch { return null; }
+}
+
+export async function hydrateImageGenImages(id: string): Promise<boolean> {
+  if (!imageLeases.has(id) && !useImageGen.getState().openIds.includes(id)) return false;
+  const owner = getStorageOwner(), epoch = getOwnerEpoch();
+  const full = await loadImageGenSessionFull(id);
+  if (!full || getStorageOwner() !== owner || getOwnerEpoch() !== epoch) return false;
+  useImageGen.setState((state) => {
+    const current = state.sessions[id];
+    if (!current?.bodyRef || current.images.length) return state;
+    return { sessions: { ...state.sessions, [id]: { ...current, images: full.images } } };
+  });
+  return true;
+}
+
+export function acquireImageGenLease(id: string) {
+  const owner = getStorageOwner(), epoch = getOwnerEpoch();
+  imageLeases.set(id, (imageLeases.get(id) ?? 0) + 1);
+  let released = false;
+  return () => {
+    if (released) return;
+    released = true;
+    if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch) return;
+    const count = (imageLeases.get(id) ?? 1) - 1;
+    if (count > 0) { imageLeases.set(id, count); return; }
+    imageLeases.delete(id);
+    useImageGen.setState((state) => {
+      const row = state.sessions[id];
+      return row?.bodyRef && row.images.length ? { sessions: { ...state.sessions, [id]: coldSession(row) } } : state;
+    });
+  };
+}
+
+async function persistAndCool(id: string): Promise<void> {
+  const owner = getStorageOwner(), epoch = getOwnerEpoch();
+  const snapshot = useImageGen.getState().sessions[id];
+  if (!owner || !snapshot?.images.length) return;
+  const saved = await writeOwnedStorageItem(owner, bodyKey(id), JSON.stringify(snapshot.images));
+  if (!saved || getStorageOwner() !== owner || getOwnerEpoch() !== epoch) return;
+  useImageGen.setState((state) => {
+    const current = state.sessions[id];
+    if (!current || current.images !== snapshot.images) return state;
+    const row = { ...current, bodyRef: true as const };
+    return { sessions: { ...state.sessions, [id]: imageLeases.has(id) || state.openIds.includes(id) ? row : coldSession(row) } };
+  });
+}
+
+async function migrateLegacyImages(): Promise<void> {
+  const owner = getStorageOwner(), epoch = getOwnerEpoch();
+  if (!owner) return;
+  const upgraded = new Map<string, ImageGenImage[]>();
+  for (const row of Object.values(useImageGen.getState().sessions)) {
+    if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch) return;
+    if (row.bodyRef || !row.images.length) continue;
+    if (await writeOwnedStorageItem(owner, bodyKey(row.id), JSON.stringify(row.images))) upgraded.set(row.id, row.images);
+  }
+  if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch || !upgraded.size) return;
+  useImageGen.setState((state) => {
+    const sessions = { ...state.sessions };
+    for (const [id, images] of upgraded) {
+      const row = sessions[id];
+      if (!row || row.images !== images) continue;
+      const saved = { ...row, bodyRef: true as const };
+      sessions[id] = imageLeases.has(id) ? saved : coldSession(saved);
+    }
+    return { sessions };
+  });
 }
 
 export interface ImageGenSessionInit {
@@ -96,6 +188,7 @@ export const useImageGen = createPersistedStore<ImageGenState>(
       _setHasHydrated: (v) => set({ _hasHydrated: v }),
 
       openViewer: (init, options) => {
+        residentOwner = getStorageOwner();
         const id = init.id;
         const existing = get().sessions[id];
         const isAlreadyOpen = get().openIds.includes(id);
@@ -137,6 +230,9 @@ export const useImageGen = createPersistedStore<ImageGenState>(
         useWindowManager.getState().closeWindow(imageGenWindowId(id));
         set((state) => ({
           openIds: state.openIds.filter((oid) => oid !== id),
+          sessions: state.sessions[id]?.bodyRef && !imageLeases.has(id)
+            ? { ...state.sessions, [id]: coldSession(state.sessions[id]) }
+            : state.sessions,
         }));
       },
 
@@ -186,14 +282,16 @@ export const useImageGen = createPersistedStore<ImageGenState>(
           };
         }),
 
-      updateSession: (id, patch) =>
+      updateSession: (id, patch) => {
         set((state) => {
           const cur = state.sessions[id];
           if (!cur) return state;
           return {
-            sessions: { ...state.sessions, [id]: { ...cur, ...patch } },
+            sessions: { ...state.sessions, [id]: { ...cur, ...patch, ...(patch.images ? { bodyRef: undefined } : {}) } },
           };
-        }),
+        });
+        if (patch.images?.length) void persistAndCool(id);
+      },
 
       removeSession: (id) =>
         set((state) => {
@@ -209,7 +307,7 @@ export const useImageGen = createPersistedStore<ImageGenState>(
     {
       name: PERSIST_KEYS.imageGen,
       storage: "idb",
-      partialize: (s) => ({ sessions: s.sessions }),
+      partialize: (s) => ({ sessions: Object.fromEntries(Object.entries(s.sessions).map(([id, row]) => [id, coldSession(row)])) }),
       onRehydrateStorage: () => (state) => {
         if (state) {
           stripOpenIds(state);
@@ -222,9 +320,16 @@ export const useImageGen = createPersistedStore<ImageGenState>(
             }
           }
         }
-        state?._setHasHydrated(true);
+        const owner = getStorageOwner(), epoch = getOwnerEpoch();
+        void migrateLegacyImages().finally(() => {
+          if (owner === getStorageOwner() && epoch === getOwnerEpoch()) {
+            residentOwner = owner;
+            state?._setHasHydrated(true);
+          }
+        });
       },
     },
 );
+registerResourceMetrics(() => ({ imageGenBodyEstimatedBytes: Object.values(useImageGen.getState().sessions).reduce((sum, session) => sum + session.images.reduce((total, image) => total + (image.b64_json?.length ?? 0) * 2, 0), 0) }));
 
 export { imageGenWindowId };

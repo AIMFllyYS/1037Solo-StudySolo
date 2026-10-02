@@ -8,6 +8,7 @@ import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
 import { navTree } from "@/lib/content-data/nav";
 import { filterSubjectsByYear } from "@/lib/constants/academic-year";
+import { filterRuntimeSubjects } from "@/lib/content/offlineSubjects";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import SubjectIcon from "@/components/shared/SubjectIcon";
 import type { ContentItem } from "@/lib/types/content";
@@ -28,7 +29,7 @@ export default function SubjectFolderTree({
   const academicYear = useAcademicYear((s) => s.year);
   const hydrateYear = useAcademicYear((s) => s.hydrate);
   const visibleSubjects = useMemo(
-    () => filterSubjectsByYear(navTree.subjects, academicYear),
+    () => filterSubjectsByYear(filterRuntimeSubjects(navTree.subjects), academicYear),
     [academicYear],
   );
 

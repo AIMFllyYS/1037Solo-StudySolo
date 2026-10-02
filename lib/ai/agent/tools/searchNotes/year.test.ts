@@ -94,3 +94,24 @@ test("searchNotes：学年内无命中且跨学年也空 → 未检索到", asyn
   assert.match(result.text, /未检索到相关内容/);
   assert.equal(result.hits.length, 0);
 });
+
+test("searchNotes：并发请求只使用各自检索返回的诊断", async (t) => {
+  t.mock.method(searchNotesIo, "getIndexHealth", () => ({
+    ok: true, reason: "", manifest: null, contentHashMatch: null, embeddingReachable: null,
+  }));
+  t.mock.method(searchNotesIo, "findContentItem", () => undefined);
+  let releaseFirst!: () => void;
+  const gate = new Promise<void>((resolve) => { releaseFirst = resolve; });
+  t.mock.method(searchNotesIo, "searchAllContent", async (query: string, opts: { onDiagnostics?: (value: unknown) => void }) => {
+    if (query === "first") await gate;
+    opts.onDiagnostics?.({ mode: "keyword", bm25Hits: query === "first" ? 11 : 22, vecHits: 0, merged: 1, reranked: 0, final: 1, filter: {}, ms: 3 });
+    return [hit];
+  });
+  const first = createSearchNotesTool(ctx, createToolRuntime()).execute!({ query: "first", crossYear: true }, execOpts);
+  const second = createSearchNotesTool(ctx, createToolRuntime()).execute!({ query: "second", crossYear: true }, execOpts);
+  const secondResult = await second as SearchNotesOutput;
+  releaseFirst();
+  const firstResult = await first as SearchNotesOutput;
+  assert.equal(firstResult.diagnostics?.bm25Hits, 11);
+  assert.equal(secondResult.diagnostics?.bm25Hits, 22);
+});

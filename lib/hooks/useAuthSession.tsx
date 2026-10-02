@@ -124,7 +124,7 @@ export function AuthProvider({
     if(value.status==="loading")return;
     setCloudSyncEnabled(false);
     const previous=getStorageOwner();
-    if(previous&&previous!==value.userId){flushPendingWrites();window.location.reload();return;}
+    if(previous&&previous!==value.userId){flushPendingWrites();activateStorageOwner(null);window.location.reload();return;}
     activateStorageOwner(value.userId);
     let active=true;
     void hydrateOwnerStores().then(()=>{if(active)setReadyOwner(value.userId);});

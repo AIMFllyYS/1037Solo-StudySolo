@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { X, ZoomIn, ZoomOut, RotateCcw, Download } from "lucide-react";
 import { useLightbox } from "@/lib/stores/lightbox";
 import { safeImageSrc } from "@/components/browser/safeUrl";
+import { createObjectUrlLease } from "@/lib/resources/objectUrl";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useT } from "@/lib/i18n";
 
@@ -158,10 +159,12 @@ export function ImageLightbox() {
       const res = await fetch(src, { mode: "cors" });
       if (!res.ok) throw new Error(String(res.status));
       const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      triggerAnchorDownload(url, name);
-      // 立刻 revoke 会让下载拿不到数据，留一段时间再回收。
-      window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
+      const lease = createObjectUrlLease(blob);
+      try { triggerAnchorDownload(lease.url, name); }
+      finally {
+        // 立刻 revoke 会让下载拿不到数据，留一段时间再回收。
+        window.setTimeout(() => lease.release(), 10_000);
+      }
     } catch {
       // 跨域拿不到 blob 时不要静默失败：退化成新标签页打开，用户还能自己右键保存。
       const safeSrc = safeImageSrc(src);

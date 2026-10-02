@@ -1,8 +1,9 @@
-import { act, cleanup, render, waitFor } from "@testing-library/react";
+import { act, cleanup, render,screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { strToU8, zipSync } from "fflate";
 import PptxDocumentPane from "./PptxDocumentPane";
 import { useAppMode } from "@/lib/stores/appMode";
+import {getActiveObjectUrlCount} from '@/lib/resources/objectUrl';
 
 /** 假库的状态与调用记录：断言「用哪个 API、传了什么 options」靠它。 */
 const harness = vi.hoisted(() => ({
@@ -15,6 +16,9 @@ const harness = vi.hoisted(() => ({
   deckHeight: 720,
   renderedIndexes: [] as number[],
   failSlideIndexes: new Set<number>(),
+  mediaUrl:null as string|null,
+  deferLoad:false,
+  releaseLoad:null as null|(()=>void),
 }));
 
 vi.mock("pptx-preview", () => ({ init: harness.init }));
@@ -23,6 +27,7 @@ interface FakeDeck {
   width: number;
   height: number;
   slides: unknown[];
+  medias?:Record<string,string>;
 }
 
 interface FakePreviewer {
@@ -110,21 +115,28 @@ class FakeIntersectionObserver {
     }
   }
 
+  static showIndexes(indexes:readonly number[]){
+    const visible=new Set(indexes)
+    for(const instance of FakeIntersectionObserver.instances){
+      if(!instance.targets.size)continue
+      const entries=[...instance.targets].map((target,index)=>({target,isIntersecting:visible.has(index)}) as unknown as IntersectionObserverEntry)
+      instance.callback(entries,instance as unknown as IntersectionObserver)
+    }
+  }
+
   static reset() {
     FakeIntersectionObserver.instances = [];
   }
 }
 
-function pptxFixture(): ArrayBuffer {
-  const archive = zipSync({
-    "ppt/slides/slide1.xml": strToU8("<p:sld><a:t>第一页标题</a:t></p:sld>"),
-    "ppt/slides/slide2.xml": strToU8("<p:sld><a:t>第二页标题</a:t></p:sld>"),
-    "ppt/slides/slide3.xml": strToU8("<p:sld><a:t>第三页标题</a:t></p:sld>"),
-  });
+function pptxFixture(count=3): ArrayBuffer {
+  const names=['第一页标题','第二页标题','第三页标题']
+  const files:Record<string,Uint8Array>={}
+  for(let number=1;number<=count;number++)files[`ppt/slides/slide${number}.xml`]=strToU8(`<p:sld><a:t>${names[number-1]??`第${number}页标题`}</a:t></p:sld>`)
+  const archive = zipSync(files);
   return archive.buffer.slice(archive.byteOffset, archive.byteOffset + archive.byteLength) as ArrayBuffer;
 }
 
-const deckBuffer = pptxFixture();
 
 function renderPane() {
   return render(<PptxDocumentPane src="blob:pptx-fixture" name="重点.pptx" />);
@@ -147,6 +159,7 @@ describe("PptxDocumentPane", () => {
     harness.slideCount = 3;
     harness.renderedIndexes = [];
     harness.failSlideIndexes.clear();
+    harness.mediaUrl=null;harness.deferLoad=false;harness.releaseLoad=null;
     FakeResizeObserver.reset();
     FakeIntersectionObserver.reset();
     useAppMode.setState({ mode: "studio", lastStudioPath: "/", hydrated: true });
@@ -155,7 +168,7 @@ describe("PptxDocumentPane", () => {
     vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => ({ arrayBuffer: async () => deckBuffer })),
+      vi.fn(async () => ({ arrayBuffer: async () => pptxFixture(harness.slideCount) })),
     );
 
     harness.init.mockImplementation((host: HTMLElement) => {
@@ -176,10 +189,12 @@ describe("PptxDocumentPane", () => {
         async load() {
           harness.loadCalls += 1;
           if (harness.loadThrows) throw new Error("课件解析失败");
+          if(harness.deferLoad)await new Promise<void>(resolve=>{harness.releaseLoad=resolve})
           instance.pptx = {
             width: harness.deckWidth,
             height: harness.deckHeight,
             slides: Array.from({ length: harness.slideCount }, (_, index) => ({ index })),
+            medias:harness.mediaUrl?{slide:harness.mediaUrl}:{},
           };
           return instance.pptx;
         },
@@ -315,4 +330,43 @@ describe("PptxDocumentPane", () => {
     expect(calls[1][1].width).not.toBe(renderW);
     await waitForSlots(container);
   });
+  it('keeps a 200-slide deck to a bounded rendered DOM while revisiting distant slides',async()=>{
+    harness.slideCount=200
+    const {container}=renderPane()
+    await waitForSlots(container,200)
+    await act(async()=>{FakeIntersectionObserver.showIndexes([0,1,2])})
+    for(let start=3;start<198;start+=3){
+      await act(async()=>{FakeIntersectionObserver.showIndexes([start,start+1,start+2])})
+      expect(container.querySelectorAll('.pptx-preview-slide-wrapper').length).toBeLessThanOrEqual(12)
+    }
+    await act(async()=>{FakeIntersectionObserver.showIndexes([0,1,2])})
+    expect(container.querySelectorAll('.pptx-preview-slide-wrapper').length).toBeLessThanOrEqual(12)
+    expect(harness.loadCalls).toBe(1)
+  })
+  it('opens a distant slide without an observer while keeping only a small slide window',async()=>{
+    vi.stubGlobal('IntersectionObserver',undefined)
+    harness.slideCount=200
+    const {container}=renderPane()
+    await waitForSlots(container,200)
+    expect(container.querySelectorAll('.pptx-preview-slide-wrapper').length).toBeLessThanOrEqual(4)
+    const target=container.querySelector<HTMLElement>('.pptx-page-slot[data-pptx-page="200"]')
+    expect(target).not.toBeNull()
+    await waitFor(()=>expect(screen.getByText('1 / 200')).toBeVisible())
+    await act(async()=>screen.getByRole('button',{name:/第200页标题/}).click())
+    await waitFor(()=>expect(target?.querySelector('.pptx-preview-slide-wrapper-199')).not.toBeNull())
+    expect(container.querySelectorAll('.pptx-preview-slide-wrapper').length).toBeLessThanOrEqual(12)
+  })
+  it('releases a media URL created by a PPTX load that finishes after unmount',async()=>{
+    harness.mediaUrl='blob:late-pptx-media';harness.deferLoad=true
+    const original=Object.getOwnPropertyDescriptor(URL,'revokeObjectURL'),revoke=vi.fn()
+    Object.defineProperty(URL,'revokeObjectURL',{configurable:true,value:revoke})
+    try{
+      const {unmount}=renderPane()
+      await waitFor(()=>expect(harness.releaseLoad).not.toBeNull())
+      unmount()
+      await act(async()=>{harness.releaseLoad?.();await Promise.resolve()})
+      expect(revoke).toHaveBeenCalledExactlyOnceWith('blob:late-pptx-media')
+      expect(getActiveObjectUrlCount()).toBe(0)
+    }finally{if(original)Object.defineProperty(URL,'revokeObjectURL',original);else delete (URL as {revokeObjectURL?:unknown}).revokeObjectURL}
+  })
 });

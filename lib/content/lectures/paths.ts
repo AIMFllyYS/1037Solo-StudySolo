@@ -22,7 +22,7 @@ export function lectureLessonDirAbs(subjectId: string, lessonId: string): string
   if (!isValidLessonId(lessonId)) {
     throw new Error(`非法 lessonId：${lessonId}`);
   }
-  const dir = path.join(CONTENT_ROOT, subjectId, "lectures", lessonId);
+  const dir = path.join(/* turbopackIgnore: true */ CONTENT_ROOT, subjectId, "lectures", lessonId);
   if (!isResolvedPathInside(dir, CONTENT_ROOT)) {
     throw new Error("课节目录越界");
   }
@@ -37,7 +37,7 @@ export function resolveLectureFile(
   const ref = getLectureArticleForSubject(subjectId, articleId);
   if (!ref) return null;
   const dir = lectureLessonDirAbs(subjectId, ref.entry.lessonId);
-  const absPath = path.join(dir, ref.material.file);
+  const absPath = path.join(/* turbopackIgnore: true */ dir, ref.material.file);
   if (!isResolvedPathInside(absPath, dir)) {
     throw new Error("课堂材料路径越界");
   }
@@ -61,7 +61,7 @@ export function readLectureArticle(
 ): LectureArticleContent | null {
   const file = resolveLectureFile(subjectId, articleId);
   if (!file) return null;
-  if (!fs.existsSync(file.absPath)) return null;
-  const raw = fs.readFileSync(file.absPath, "utf8");
+  if (!fs.existsSync(/* turbopackIgnore: true */ file.absPath)) return null;
+  const raw = fs.readFileSync(/* turbopackIgnore: true */ file.absPath, "utf8");
   return { ...file, raw };
 }

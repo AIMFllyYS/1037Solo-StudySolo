@@ -20,7 +20,7 @@ export interface IndexHealth {
 }
 
 let cached: IndexHealth | null = null;
-let hashComputed: { hash: string } | null = null;
+let cachedSignature = "";
 
 const REQUIRED_FILES = [
   INDEX_FILES.manifest,
@@ -32,11 +32,18 @@ const REQUIRED_FILES = [
 
 export function resetIndexHealthCache(): void {
   cached = null;
-  hashComputed = null;
+  cachedSignature = "";
 }
 
 function missingFiles(): string[] {
   return REQUIRED_FILES.filter((name) => !fs.existsSync(localIndexFile(name)));
+}
+
+function indexSignature(): string {
+  return [getLocalIndexDir(), process.env.AI_EMBEDDING_MODEL ?? "", ...REQUIRED_FILES.map((name) => {
+    try { const stat = fs.statSync(localIndexFile(name)); return `${name}:${stat.size}:${stat.mtimeMs}`; }
+    catch { return `${name}:missing`; }
+  })].join("|");
 }
 
 function inspectVectors(manifest: SearchIndexManifest): string | null {
@@ -56,12 +63,14 @@ function inspectVectors(manifest: SearchIndexManifest): string | null {
   return null;
 }
 
-function currentContentHash(): string | null {
-  if (hashComputed) return hashComputed.hash;
+/** Explicit build/audit gate. Never call from request readiness. */
+export function verifyIndexContentFreshness(): boolean | null {
   try {
-    const hash = contentHashOf(generateChunks());
-    hashComputed = { hash };
-    return hash;
+    const manifest = parseManifest(readLocalIndexFile(INDEX_FILES.manifest));
+    if (!manifest) return null;
+    const selected = manifest.subjectScope?.length ? new Set(manifest.subjectScope) : null;
+    const hash = contentHashOf(selected ? generateChunks().filter((chunk) => selected.has(chunk.subjectId)) : generateChunks());
+    return hash === manifest.contentHash;
   } catch (err) {
     searchLog.warn("search.index.hash_error", { message: String((err as Error).message) });
     return null;
@@ -69,7 +78,9 @@ function currentContentHash(): string | null {
 }
 
 export function getIndexHealth(force = false): IndexHealth {
-  if (cached && !force) return cached;
+  const signature = indexSignature();
+  if (cached && !force && signature === cachedSignature) return cached;
+  cachedSignature = signature;
 
   const dir = getLocalIndexDir();
   const missing = missingFiles();
@@ -95,18 +106,19 @@ export function getIndexHealth(force = false): IndexHealth {
     return cached;
   }
 
-  let contentHashMatch: boolean | null = null;
-  if (process.env.SEARCH_SKIP_CONTENT_HASH !== "1") {
-    const hash = currentContentHash();
-    if (hash) {
-      contentHashMatch = hash === manifest.contentHash;
-      if (!contentHashMatch) {
-        searchLogOnce("warn", "search.index.stale", "索引落后于内容，请重建", {
-          manifestHash: manifest.contentHash,
-          contentHash: hash,
-        });
-      }
-    }
+  if (!/^[a-f0-9]{64}$/i.test(manifest.contentHash ?? "")) {
+    const reason = "manifest.json 缺少有效内容摘要";
+    cached = { ok: false, reason, manifest, contentHashMatch: null, embeddingReachable: null };
+    return cached;
+  }
+  // Request readiness deliberately does not read or chunk article bodies.
+  // The build-index pipeline computes contentHash; verifyIndexContentFreshness is an explicit deep gate.
+  const contentHashMatch: null = null;
+  if (manifest.vectorCount < manifest.chunkCount) {
+    searchLogOnce("warn", "search.index.partial_vectors", `${manifest.chunkCount - manifest.vectorCount} chunks 暂无向量；关键词检索仍覆盖全文`, {
+      chunkCount: manifest.chunkCount,
+      vectorCount: manifest.vectorCount,
+    });
   }
 
   searchLogOnce("info", "search.index.loaded", `检索索引就绪：${manifest.chunkCount} chunks / ${manifest.vectorCount} vectors`, {
