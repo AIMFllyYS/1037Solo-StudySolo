@@ -15,6 +15,9 @@ import { useElementWidth } from "@/lib/hooks/useElementWidth";
 import { scrollToElementTop } from "@/lib/window/scrollToElementTop";
 import { translate, translateNow, useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/stores/settings";
+import {disposePptxPreviewer,trackPptxMedia} from '@/lib/resources/pptxPreviewLease';
+import {registerResourceMetrics} from '@/lib/performance/resourceMetrics';
+import {DEFAULT_RESOURCE_BUDGETS} from '@/lib/performance/budgets';
 
 /** 首帧 / 没有 ResizeObserver 时的兜底可用宽度。 */
 const FALLBACK_WIDTH = 720;
@@ -35,6 +38,7 @@ interface PptxDeck {
   width: number;
   height: number;
   slides: unknown[];
+  medias?:Record<string,string>;
 }
 
 /** pptx-preview 1.0.7 里我们真正用到的那几个成员（发行包类型没有描述完整形状）。 */
@@ -47,7 +51,7 @@ interface PptxPreviewer {
   destroy: () => void;
 }
 
-async function sourceToBuffer(src: string): Promise<ArrayBuffer> {
+async function sourceToBuffer(src: string,signal?:AbortSignal): Promise<ArrayBuffer> {
   if (
     src.startsWith("data:") ||
     src.startsWith("blob:") ||
@@ -55,7 +59,7 @@ async function sourceToBuffer(src: string): Promise<ArrayBuffer> {
     src.startsWith("https://")
   ) {
     // data: 也走 fetch：几十兆的课件同步 atob 解码会把主线程卡住几百毫秒。
-    const response = await fetch(src);
+    const response = await fetch(src,src.startsWith('data:')?undefined:{signal});
     return response.arrayBuffer();
   }
   throw new Error(translateNow("panel.pptx.readFailed"));
@@ -88,6 +92,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
   const slotsRef = useRef<HTMLElement[]>([]);
   /** 已渲染成功的下标：IntersectionObserver 会反复回调，同一页不能渲染两次。 */
   const renderedRef = useRef<Set<number>>(new Set());
+  const mountSlideRef=useRef<((index:number)=>void)|null>(null);
   /** 上一次真正建过预览器的宽度（含抖动过滤）。 */
   const widthRef = useRef(FALLBACK_WIDTH - PAGES_GUTTER * 2);
   /** 预览器实例的渲染宽：渲染一次后固定，resize 只改 CSS scale。 */
@@ -152,10 +157,13 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
     if (!host || !pages) return;
 
     let cancelled = false;
+    const controller=new AbortController();
     let observer: IntersectionObserver | null = null;
     let previewer: PptxPreviewer | null = null;
     const rendered = renderedRef.current;
     rendered.clear();
+    const visible=new Set<number>();
+    const unregister=registerResourceMetrics(()=>({mountedPptxSlides:rendered.size}));
     // 重建（分栏拖拽 / 右栏展开）后要滚回原来那一页，否则用户会被甩到第 1 页。
     const restoring = slotsRef.current.length > 0;
     const restoreIndex = restoring ? topmostSlotIndex(slotsRef.current, body?.scrollTop ?? 0) : 0;
@@ -172,7 +180,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
     void (async () => {
       let buffer: ArrayBuffer;
       try {
-        buffer = await sourceToBuffer(src);
+        buffer = await sourceToBuffer(src,controller.signal);
       } catch (err) {
         if (cancelled) return;
         setStatus(null);
@@ -213,13 +221,29 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
         slide.style.transform = `scale(${displayWidthRef.current / renderW})`;
       };
 
+      const enforceSlideBudget=(slots:HTMLElement[],metrics:PptxSlideMetrics)=>{
+        if(rendered.size<=DEFAULT_RESOURCE_BUDGETS.mountedPptxSlides)return
+        const anchor=topmostSlotIndex(slots,body?.scrollTop??0)
+        const candidates=[...rendered].filter(index=>index!==anchor&&!visible.has(index)).sort((a,b)=>Math.abs(b-anchor)-Math.abs(a-anchor))
+        for(const index of candidates){
+          if(rendered.size<=DEFAULT_RESOURCE_BUDGETS.mountedPptxSlides)break
+          const slot=slots[index]
+          const media=slot?.querySelectorAll<HTMLMediaElement>('video,audio')??[]
+          if(slot?.contains(document.activeElement)||[...media].some(item=>!item.paused||document.pictureInPictureElement===item))continue
+          slot.replaceChildren();slot.classList.remove('is-text')
+          slot.style.height=`${slideDisplayHeight(metrics.deckWidth,metrics.deckHeight,displayWidthRef.current)}px`
+          rendered.delete(index)
+        }
+      }
+
       // A：list 模式只 load，不渲染；每一页等滚到附近再 renderSlide 进自己的槽。
       try {
         host.replaceChildren();
         const instance: PptxPreviewer = init(host, { width: renderW, mode: "list" });
         previewer = instance;
         const deck = await instance.load(buffer);
-        if (cancelled) return;
+        trackPptxMedia(instance)
+        if (cancelled){disposePptxPreviewer(instance);return;}
 
         const metrics = deckMetrics(deck);
         metricsRef.current = metrics;
@@ -242,17 +266,22 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
             rendered.add(index);
             renderTextFallback(slots[index], index + 1, textOf(index + 1));
           }
+          enforceSlideBudget(slots,metrics)
         };
+        mountSlideRef.current=mountSlot
 
         if (typeof IntersectionObserver === "undefined") {
-          // jsdom / 老浏览器：没有观察者就一次性全挂上，懒渲染只是优化、不是正确性前提。
-          for (let index = 0; index < slots.length; index += 1) mountSlot(index);
+          // No observer: keep initial pages readable and mount later pages on navigation/scroll.
+          for (let index = 0; index < Math.min(slots.length,4); index += 1) mountSlot(index);
         } else {
           observer = new IntersectionObserver(
             (entries) => {
               for (const entry of entries) {
-                if (entry.isIntersecting) mountSlot(slots.indexOf(entry.target as HTMLElement));
+                const index=slots.indexOf(entry.target as HTMLElement)
+                if(index<0)continue
+                if(entry.isIntersecting){visible.add(index);mountSlot(index)}else visible.delete(index)
               }
+              enforceSlideBudget(slots,metrics)
             },
             { root: body ?? null, rootMargin: PRELOAD_MARGIN },
           );
@@ -268,16 +297,20 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
       } catch {
         observer?.disconnect();
         observer = null;
+        if(previewer)disposePptxPreviewer(previewer)
+        if(cancelled)return
       }
 
       // B：A 挂了（解析失败 / 读不出页几何）就退回库的全量渲染，仍然是 list 模式。
       try {
-        previewer?.destroy();
+        if(previewer)disposePptxPreviewer(previewer)
+        if(titles.length>DEFAULT_RESOURCE_BUDGETS.mountedPptxSlides)throw new Error('large deck uses text fallback after partial render failure')
         host.replaceChildren();
         const instance: PptxPreviewer = init(host, { width: renderW, mode: "list" });
         previewer = instance;
         await instance.preview(buffer);
-        if (cancelled) return;
+        trackPptxMedia(instance)
+        if (cancelled){disposePptxPreviewer(instance);return;}
 
         const deck = instance.pptx;
         if (!deck?.slides.length) throw new Error("没有可渲染的幻灯片");
@@ -299,8 +332,9 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
         if (restoring) scrollToSlide(restoreIndex);
         return;
       } catch {
-        previewer?.destroy();
+        if(previewer)disposePptxPreviewer(previewer)
         previewer = null;
+        if(cancelled)return
         host.replaceChildren();
       }
 
@@ -318,11 +352,14 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
 
     return () => {
       cancelled = true;
+      controller.abort();
       observer?.disconnect();
       observer = null;
-      previewer?.destroy();
+      if(previewer)disposePptxPreviewer(previewer)
       previewer = null;
       rendered.clear();
+      mountSlideRef.current=null
+      unregister()
     };
   }, [src, name, rebuildToken, scrollToSlide]);
 
@@ -335,7 +372,9 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
       frame = 0;
       const slots = slotsRef.current;
       if (!slots.length) return;
-      setCurrent(topmostSlotIndex(slots, body.scrollTop));
+      const index=topmostSlotIndex(slots, body.scrollTop)
+      if(typeof IntersectionObserver==='undefined'){for(let item=Math.max(0,index-1);item<=Math.min(slots.length-1,index+2);item++)mountSlideRef.current?.(item)}
+      setCurrent(index);
     };
     const onScroll = () => {
       if (frame) return;
@@ -352,6 +391,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
   const goToSlide = useCallback(
     (index: number) => {
       const target = Math.max(0, Math.min(count - 1, index));
+      if(typeof IntersectionObserver==='undefined'){for(let item=Math.max(0,target-1);item<=Math.min(count-1,target+2);item++)mountSlideRef.current?.(item)}
       // 页列模式滚动到位；文字模式没有槽位，滚动是空操作，直接切页。
       scrollToSlide(target);
       setCurrent(target);

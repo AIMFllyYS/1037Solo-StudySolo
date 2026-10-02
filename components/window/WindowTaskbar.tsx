@@ -11,7 +11,7 @@ import { createAndOpenNote, openArtifactImportPicker, openDocumentImportPicker, 
 import OverflowMenu from "@/components/window/OverflowMenu";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
 import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
-import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
+import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments,revokeAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
 import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 import { localPathOf, recordImport } from "@/lib/stores/imports";
@@ -151,6 +151,8 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
         file: attachment.file,
       });
     });
+    // The window receives File and creates its own short-lived URL; taskbar's conversion URLs have no viewer owner.
+    revokeAttachments(attachments);
     if (errors.length > 0) setFileError(errors[0]);
     setOpen(false);
   };

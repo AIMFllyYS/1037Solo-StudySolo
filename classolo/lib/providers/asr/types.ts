@@ -29,9 +29,12 @@ export interface ASRConfig {
   model: string
   sampleRate: number // 默认 16000
   hotwords?: string[] // 预置学科热词 + 用户自定义（ADR-0004）
+  hotwordPrompt?: string // 课前显示的有界上下文，和实际请求保持一致
 }
 
 export interface ASRSegment {
+  id?:string
+  seq?:number
   text: string
   isFinal: boolean
   startMs?: number

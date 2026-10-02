@@ -6,7 +6,7 @@
 //   npx tsx scripts/build-index.ts --publish    # 构建后显式上传到 COS 制品库
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { buildCompactBm25Index } from '../lib/ai/indexing/bm25Index';
 import { contentHashOf } from '../lib/ai/indexing/contentHash';
 
@@ -20,7 +20,8 @@ function loadEnvFile(filePath: string) {
       const eqIdx = trimmed.indexOf('=');
       if (eqIdx < 0) continue;
       const key = trimmed.slice(0, eqIdx).trim();
-      const val = trimmed.slice(eqIdx + 1).trim();
+      let val = trimmed.slice(eqIdx + 1).trim();
+      if((val.startsWith("'")&&val.endsWith("'"))||(val.startsWith('"')&&val.endsWith('"')))val=val.slice(1,-1);
       if (!process.env[key]) {
         process.env[key] = val;
       }
@@ -193,7 +194,9 @@ async function main() {
   const { generateChunks } = await import('../lib/ai/indexing/chunker');
   const { SiliconFlowEmbedding } = await import('../lib/ai/embedding');
 
-  const indexDir = path.join(process.cwd(), 'content', '.index');
+  const requestedDir=process.argv.find(arg=>arg.startsWith('--index-dir='))?.slice('--index-dir='.length);
+  const indexDir=requestedDir?path.resolve(requestedDir):path.join(process.cwd(),'content','.index');
+  if(requestedDir&&!indexDir.startsWith(path.resolve('artifacts/performance')+path.sep))throw new Error('index stage must stay under artifacts/performance');
   if (!fs.existsSync(indexDir)) {
     fs.mkdirSync(indexDir, { recursive: true });
   }
@@ -238,11 +241,7 @@ async function main() {
 
   const contentHash = contentHashOf(chunks);
   const skipVectors = process.argv.includes('--bm25-only');
-  const staleJson = path.join(indexDir, 'vectors.json');
-  if (fs.existsSync(staleJson)) {
-    fs.unlinkSync(staleJson);
-    console.log('   → Removed legacy vectors.json (改用 vectors.bin，避免与 BM25 混代)');
-  }
+  // Legacy files are ignored by the v2 manifest; keep them for recovery.
 
   if (skipVectors) {
     const cache = loadEmbedCache(indexDir);
@@ -282,6 +281,10 @@ async function main() {
   console.log(
     `   → Cached vectors: ${cache.vectors.size}; reused without hash: ${reusedWithoutHash}; to embed: ${missing.length}`,
   );
+  const accountId=process.argv.find(arg=>arg.startsWith('--account-id='))?.slice('--account-id='.length);
+  if(missing.length&&!/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(accountId??''))throw new Error('embedding requires --account-id=<dedicated test account UUID>');
+  const {runPaidContext}=await import('../lib/billing/paidContext');
+  const {runWithLedgerContext}=await import('../lib/billing/usageLedger');
 
   const batchSize = 32;
   let embedded = 0;
@@ -290,7 +293,9 @@ async function main() {
     const batch = missing.slice(i, i + batchSize);
     const texts = batch.map((c) => c.contextPrefix + '\n' + c.text);
     try {
-      const vectors = await embedBatchWithRetry(embedding, texts);
+      const vectors = await runPaidContext({userId:accountId!,requestId:randomUUID(),route:'/ops/build-index',sequence:0,reservedCny:0,budgetCny:5},
+        ()=>runWithLedgerContext({userId:accountId,route:'/ops/build-index',mainUsedPlatformCredentials:true},
+          ()=>embedBatchWithRetry(embedding,texts)));
       if (!cache.dimension && vectors[0]?.length) cache.dimension = vectors[0].length;
       for (let j = 0; j < batch.length; j++) {
         if (!vectors[j]?.length) continue;
@@ -326,11 +331,6 @@ async function main() {
     ? (fs.statSync(vectorBinPath).size / 1024 / 1024).toFixed(2)
     : '0';
   console.log(`   → Vector index written to ${vectorBinPath} (${vectorSize} MB, ${vectorCount} vectors)`);
-
-  for (const leftover of ['embed-cache.bin', 'embed-cache.ids.json', 'embed-cache.meta.json']) {
-    const p = path.join(indexDir, leftover);
-    if (fs.existsSync(p) && vectorCount === chunks.length) fs.unlinkSync(p);
-  }
 
   console.log('\n✅ Index build complete!');
   console.log(`   Chunks: ${chunks.length}`);

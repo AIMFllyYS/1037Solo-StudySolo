@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
+import { createHash } from "node:crypto";
 import { isSubjectId } from "@/lib/types/content";
+import { isSubjectInRuntime } from "@/lib/content/offlineSubjects";
 import type { ContentItem } from "@/lib/types/content";
-import { contentTree, getContentItem, getSubject, getCategory } from "@/lib/content-data";
+import { contentTree, getContentItem, getSubject, getCategory } from "@/lib/content-data/server";
 import { readContent, readExamples } from "@/lib/content/loader";
 import { deriveExampleKeyFor } from "@/lib/content/categoryKeys";
 import { normalizeDirectiveLabels } from "@/lib/markdown/normalizeDirectiveLabels";
@@ -18,6 +20,7 @@ interface PageProps {
 export async function generateStaticParams() {
   const params: { subject: string; category: string; id: string }[] = [];
   for (const subject of contentTree.subjects) {
+    if (!isSubjectInRuntime(subject.id)) continue;
     for (const category of subject.categories) {
       const walk = (items: ContentItem[]) => {
         for (const item of items) {
@@ -43,7 +46,7 @@ export default async function ContentPage({ params }: PageProps) {
   const { subject, category, id } = await params;
 
   // 科目做运行时类型守卫；分类由 manifest 动态查找校验（彻底解耦后 CategoryId 不再是固定联合类型）。
-  if (!isSubjectId(subject)) {
+  if (!isSubjectId(subject) || !isSubjectInRuntime(subject)) {
     notFound();
   }
 
@@ -65,11 +68,14 @@ export default async function ContentPage({ params }: PageProps) {
   const renderType = item?.renderType ?? 'markdown';
   const rawContent = readContent(subject, category, id, renderType);
   const normalizedContent = (rawContent && renderType === 'markdown') ? normalizeDirectiveLabels(rawContent) : rawContent;
+  const sourceBytes = normalizedContent ? Buffer.byteLength(normalizedContent, "utf8") : 0;
+  const deferredLimit = category === "kaoqian-moni" || category === "shizhan-yanlian" ? 20 * 1024 : 35 * 1024;
+  const deferredMarkdown = renderType === "markdown" && sourceBytes > deferredLimit;
 
   // 正文 markdown 在服务端/构建期渲染为 React 树，作为插槽下传给客户端外壳；
   // 浏览器只做协调 + 交互岛水合，不再在客户端跑 react-markdown + KaTeX + 高亮。
   const renderedNote =
-    (normalizedContent && renderType === 'markdown')
+    (normalizedContent && renderType === 'markdown' && !deferredMarkdown)
       ? <NoteRendererServer content={normalizedContent} />
       : null;
 
@@ -82,7 +88,12 @@ export default async function ContentPage({ params }: PageProps) {
       ? deriveExampleKeyFor(categoryData, id)
       : { chapterId: "", sectionId: "" };
   const initialExamples =
-    chapterId && sectionId ? readExamples(subject, chapterId, sectionId) : [];
+    chapterId && sectionId ? readExamples(subject, chapterId, sectionId).map((example, index) =>
+      index === 0 ? example : { ...example, content: "" },
+    ) : [];
+  const contentRevision = normalizedContent
+    ? createHash("sha256").update(normalizedContent).digest("hex").slice(0, 16)
+    : "empty";
 
   const profile = resolveLayoutProfile(categoryData, item);
   const flags = layoutFlags(profile, categoryData, item);
@@ -92,7 +103,11 @@ export default async function ContentPage({ params }: PageProps) {
       subjectId={subject}
       categoryId={category}
       itemId={id}
-      initialContent={normalizedContent}
+      initialContent={renderType === "markdown" ? null : normalizedContent}
+      hasInitialContent={Boolean(normalizedContent)}
+      contentRevision={contentRevision}
+      deferredMarkdown={deferredMarkdown}
+      contentBytes={sourceBytes}
       renderedNote={renderedNote}
       initialExamples={initialExamples}
       sectionId={sectionId}

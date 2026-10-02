@@ -7,8 +7,11 @@ import { CLASS_OUTPUT_TOKENS } from '@/classolo/lib/ai/budget'
  * 校验后 upsert 到对应面板，可锚定到文稿片段。每次投递做去重与节流。
  */
 import { getNotesPublic, getTranscriptPublic } from '@/classolo/lib/session'
+import {getClassUserId,getLocalClassSnapshot} from '@/classolo/lib/db'
+import {classCourseProfileSchema,classSubjectLabel,reviewSubjectForClass} from '@/classolo/lib/course/profile'
 import { upsertRenderMessage } from '@/classolo/lib/session/writes/render'
 import { createModel, generateText, stepCountIs } from '@/classolo/lib/ai'
+import { searchClassroomImage } from '@/classolo/features/render-modules/image/search'
 
 import {
   buildSilentTools,
@@ -20,7 +23,7 @@ import {
 export const SILENT_RENDER_PREFIX = 'silent-agent'
 export const SILENT_STATUS_ID = 'silent-agent-status'
 
-let running = false
+const running = new Set<string>()
 let tick = 0
 
 const SYSTEM_PROMPT = [
@@ -28,6 +31,7 @@ const SYSTEM_PROMPT = [
   '你必须且只能通过工具调用来产出内容，不要直接输出正文。',
   '每次最多产出 2 个渲染卡片：优先补充关键概念（render_rich_text）或提出一道自测题（render_ai_ask）；',
   '当概念适合配图时用 render_image；需要结构化要点时用 render_gen_ui。',
+  '抽象概念可用 render_visual 画 SVG、函数图或 SMILES 分子结构；示意图不能冒充真实资料。',
   '区分“文稿事实”与“你的补充说明”，不要编造来源。如果引用了具体文稿，请在 transcriptAnchor 填入 [segmentId] 中的 id。',
 ].join('\n')
 
@@ -75,14 +79,18 @@ export function buildSilentPrompt(): string {
   const outline = getNotesPublic()
     .outlineDigest.map((n) => n.title)
     .join('、')
-  return `已有提纲：${outline || '（尚无）'}\n最近文稿（含片段 id）：\n${evidence}`
+  const stored=snapshot.sessionId?getLocalClassSnapshot(snapshot.sessionId)?.session.profile:undefined
+  const course=classCourseProfileSchema.safeParse(stored)
+  return `课堂学科：${course.success?classSubjectLabel(course.data):'未分类'}。学科只提示术语，课内事实以文稿为准。\n已有提纲：${outline || '（尚无）'}\n最近文稿（含片段 id）：\n${evidence}`
 }
 
-export async function deliverSilentRender(): Promise<void> {
-  if (running) return
-  running = true
+export async function deliverSilentRender(signal?:AbortSignal): Promise<void> {
   const snapshot = getTranscriptPublic()
   const session = snapshot.sessionId
+  const owner=getClassUserId(),scope=`${owner}:${session}`
+  if(running.has(scope)||signal?.aborted)return
+  running.add(scope)
+  const current=()=>!signal?.aborted&&getClassUserId()===owner&&getTranscriptPublic().sessionId===session
   try {
     const recent = snapshot.committed.slice(-8)
     if (recent.length === 0) return
@@ -98,6 +106,7 @@ export async function deliverSilentRender(): Promise<void> {
     })
     const run = () =>
       generateText({
+        abortSignal:signal,
         model: createModel({ baseUrl: '', model: 'classroom' }),
         system: SYSTEM_PROMPT,
         prompt: buildSilentPrompt(),
@@ -108,19 +117,29 @@ export async function deliverSilentRender(): Promise<void> {
       })
     // 瞬时失败（429 / 连接阶段 503）由课堂 transport 统一退避重试，这里不再二次重试，避免结果未知时重复计费。
     const result = await run()
-    if (getTranscriptPublic().sessionId !== session) return
+    if (!current()) return
     const calls = collectToolCalls(result).slice(0, 3)
     let produced = 0
-    calls.forEach((call, index) => {
+    for (const [index, call] of calls.entries()) {
       const mapped = silentToolToRender(call, {
         id: `${SILENT_RENDER_PREFIX}-${batch}-${index}`,
         source: 'silent-agent',
       })
       if (mapped.ok) {
-        upsertRenderMessage(mapped.message)
+        if (mapped.message.module === 'image') {
+          const query = (mapped.message.props as {query:string}).query
+          const profile=classCourseProfileSchema.safeParse(getLocalClassSnapshot(session!)?.session.profile)
+          const imageResult = await searchClassroomImage(query,profile.success?reviewSubjectForClass(profile.data):undefined)
+          if (!current()) return
+          upsertRenderMessage({...mapped.message,props:{...(mapped.message.props as object),result:imageResult}})
+        } else if(mapped.message.module==='visual') {
+          const props=mapped.message.props as Record<string,unknown>
+          const source=typeof mapped.message.meta.transcriptAnchor==='string'?snapshot.committed.find(row=>row.id===mapped.message.meta.transcriptAnchor):undefined
+          upsertRenderMessage({...mapped.message,props:{...props,...(source?{sourceSegmentId:source.id,sourceRevision:source.correctionRevision??0}:{})}})
+        } else upsertRenderMessage(mapped.message)
         produced += 1
       }
-    })
+    }
     upsertRenderMessage({
       id: SILENT_STATUS_ID,
       module: 'agent-status',
@@ -136,7 +155,7 @@ export async function deliverSilentRender(): Promise<void> {
       meta: { createdAt: Date.now(), source: 'silent-agent' },
     })
   } catch {
-    if (getTranscriptPublic().sessionId === session) {
+    if (current()) {
       upsertRenderMessage({
         id: SILENT_STATUS_ID,
         module: 'agent-status',
@@ -150,6 +169,6 @@ export async function deliverSilentRender(): Promise<void> {
       })
     }
   } finally {
-    running = false
+    running.delete(scope)
   }
 }

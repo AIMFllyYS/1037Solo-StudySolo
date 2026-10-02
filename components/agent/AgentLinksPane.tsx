@@ -9,6 +9,8 @@ import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
 import { useStore } from "@/lib/stores/ui";
 import { useT } from "@/lib/i18n";
 import { sourceRoundLabelKey } from "./sourceRoundLabel";
+import type { SummaryUnknownToolRef } from "@/lib/storage/sessionSummary";
+import UnknownToolSourceCard from "./UnknownToolSourceCard";
 
 /**
  * 「来源」页签：这条对话检索过的**所有轮次**，每轮带着它的搜索词。
@@ -19,9 +21,13 @@ import { sourceRoundLabelKey } from "./sourceRoundLabel";
 export default function AgentLinksPane({
   rounds,
   sources,
+  sessionId,
+  unknownTools = [],
 }: {
   rounds: SourceRound[];
   sources: TraceSource[];
+  sessionId?: string | null;
+  unknownTools?: SummaryUnknownToolRef[];
 }) {
   const t = useT();
   const setAgentDockCollapsed = useStore((state) => state.setAgentDockCollapsed);
@@ -36,7 +42,7 @@ export default function AgentLinksPane({
     [rounds, setAgentDockCollapsed, sources],
   );
 
-  if (rounds.length === 0) {
+  if (rounds.length === 0 && unknownTools.length === 0) {
     return (
       <div className="flex h-full items-center justify-center px-6 text-center" data-testid="agent-links-empty">
         <p className="max-w-[320px] text-[13px] leading-relaxed text-[var(--ink-soft)]">{t("agent.links.empty")}</p>
@@ -121,6 +127,10 @@ export default function AgentLinksPane({
             })()}
           </section>
         ))}
+        {sessionId && unknownTools.length ? <section className="flex flex-col gap-2" aria-label="其他工具原始记录">
+          <h3 className="text-[12px] font-semibold text-[var(--ink)]">其他工具原始记录</h3>
+          {unknownTools.map((item) => <UnknownToolSourceCard key={`${item.messageId}:${item.partIndex}`} sessionId={sessionId} item={item} />)}
+        </section> : null}
       </div>
     </div>
   );

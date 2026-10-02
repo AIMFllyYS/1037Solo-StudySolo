@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useCallback } from "react";
 import { Download, ImagePlus, RefreshCw, Loader, AlertTriangle, Check as AgentCheckIcon } from "lucide-react";
-import { useImageGen, imageGenWindowId, type ImageGenImage } from "@/lib/hooks/useImageGen";
+import { useImageGen, imageGenWindowId, acquireImageGenLease, hydrateImageGenImages, type ImageGenImage } from "@/lib/hooks/useImageGen";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStore";
 import { useLightbox } from "@/lib/stores/lightbox";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { safeImageSrc } from "@/components/browser/safeUrl";
+import { createObjectUrlLease } from "@/lib/resources/objectUrl";
 import { formatImageGenError, imageGenErrorHeading } from "@/lib/ai/imageGenError";
 import { capabilityNeedsForImageGen, selectCapabilityEndpointsForRequest } from "@/lib/ai/capabilityEndpoints";
 import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from "@/lib/ai/models";
@@ -23,6 +24,11 @@ function imageSrc(img: ImageGenImage): string {
 }
 
 function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
+  useEffect(() => {
+    const release = acquireImageGenLease(sessionId);
+    void hydrateImageGenImages(sessionId);
+    return release;
+  }, [sessionId]);
   const session = useImageGen((s) => s.sessions[sessionId] ?? null);
   const closeViewer = useImageGen((s) => s.closeViewer);
   const startLoading = useImageGen((s) => s.startLoading);
@@ -186,14 +192,13 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
       }
       const res = await fetch(src);
       const blob = await res.blob();
-      const objUrl = URL.createObjectURL(blob);
+      const lease = createObjectUrlLease(blob);
       const a = document.createElement("a");
-      a.href = objUrl;
+      a.href = lease.url;
       a.download = `${session.title || "image"}-${idx + 1}.png`;
       document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(objUrl), 60000);
+      try { a.click(); }
+      finally { document.body.removeChild(a); setTimeout(() => lease.release(), 10_000); }
     } catch {
       const safeSrc = safeImageSrc(src);
       if (safeSrc) window.open(safeSrc, "_blank", "noopener");

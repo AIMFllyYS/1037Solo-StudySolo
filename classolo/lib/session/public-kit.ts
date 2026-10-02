@@ -15,6 +15,7 @@ import {
 import type { NotesPublic, SettingsPublic, TranscriptPublic } from './types'
 
 const requiredTranscriptKeys = [
+  'autoOrganize',
   'sessionId',
   'recordingStatus',
   'committed',
@@ -23,6 +24,10 @@ const requiredTranscriptKeys = [
 ] as const satisfies readonly (keyof TranscriptPublic)[]
 
 const requiredNotesKeys = [
+  'processedSegments',
+  'organizerStatus',
+  'organizerError',
+  'organizedAt',
   'outlineVersion',
   'outlineDigest',
 ] as const satisfies readonly (keyof NotesPublic)[]
@@ -61,6 +66,9 @@ type SettingsComplete = MissingKeys<
 const slicesComplete: TranscriptComplete & NotesComplete & SettingsComplete =
   true
 void slicesComplete
+void requiredTranscriptKeys
+void requiredNotesKeys
+void requiredSettingsKeys
 
 /**
  * P0-INF-02 public kit. Missing a slice getter fails `pnpm tsc --noEmit`.

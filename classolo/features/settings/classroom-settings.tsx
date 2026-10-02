@@ -1,6 +1,5 @@
 'use client'
 
-import { useSyncExternalStore } from 'react'
 import { CheckCircle2, XCircle } from 'lucide-react'
 
 import {
@@ -10,21 +9,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/classolo/components/ui/dialog'
-import {
-  getCustomHotwordText,
-  getSelectedHotwordPackId,
-  listHotwordPacks,
-  parseCustomHotwordText,
-  selectHotwordPack,
-  setCustomHotwords,
-  subscribeCustomHotwords,
-  subscribeHotwordPack,
-} from '@/classolo/lib/providers/asr'
+import type {ClassCourseProfile} from '@/classolo/lib/course/profile'
+import {ClassroomCourseForm} from './classroom-course-form'
 
 export interface ClassroomSettingsProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   capabilities: { ai: boolean; asr: boolean; image: boolean } | null
+  profile:ClassCourseProfile
+  sessionId?:string|null
+  recording:boolean
+  onSaveProfile:(profile:ClassCourseProfile)=>void
 }
 
 function CapabilityRow({ label, ok }: { label: string; ok: boolean }) {
@@ -47,23 +42,14 @@ export function ClassroomSettings({
   open,
   onOpenChange,
   capabilities,
+  profile,
+  sessionId,
+  recording,
+  onSaveProfile,
 }: ClassroomSettingsProps) {
-  const packId = useSyncExternalStore(
-    subscribeHotwordPack,
-    getSelectedHotwordPackId,
-    () => 'physics',
-  )
-  const customText = useSyncExternalStore(
-    subscribeCustomHotwords,
-    getCustomHotwordText,
-    () => '',
-  )
-
-  const packs = listHotwordPacks()
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-h-[min(90dvh,780px)] max-w-md overflow-y-auto">
         <DialogHeader>
           <DialogTitle>课堂设置</DialogTitle>
           <DialogDescription>
@@ -80,47 +66,7 @@ export function ClassroomSettings({
           </div>
         </section>
 
-        <section className="space-y-2">
-          <h3 className="text-[13px] font-medium text-[color:var(--ink)]">热词包</h3>
-          <div className="flex flex-wrap gap-2">
-            {packs.map((pack) => {
-              const active = pack.id === packId
-              return (
-                <button
-                  key={pack.id}
-                  type="button"
-                  onClick={() => selectHotwordPack(pack.id)}
-                  className={[
-                    'rounded-lg border px-3 py-1.5 text-[13px]',
-                    active
-                      ? 'border-[color:var(--accent)] bg-[color:var(--accent-weak)] text-[color:var(--accent-ink)]'
-                      : 'border-[color:var(--line-soft)] text-[color:var(--ink-soft)] hover:bg-[color:var(--bg-muted)]',
-                  ].join(' ')}
-                >
-                  {pack.label}
-                </button>
-              )
-            })}
-          </div>
-          <p className="text-[11px] text-[color:var(--ink-faint)]">
-            热词包提升该学科专有名词的识别准确率。
-          </p>
-        </section>
-
-        <section className="space-y-2">
-          <h3 className="text-[13px] font-medium text-[color:var(--ink)]">自定义热词</h3>
-          <textarea
-            key={open ? 'open' : 'closed'}
-            defaultValue={customText}
-            onBlur={(e) => setCustomHotwords(parseCustomHotwordText(e.target.value))}
-            placeholder="每行一个，或用逗号/分号分隔"
-            aria-label="自定义热词"
-            className="h-24 w-full rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-app)] p-2.5 text-[13px] text-[color:var(--ink)] outline-none placeholder:text-[color:var(--ink-faint)]"
-          />
-          <p className="text-[11px] text-[color:var(--ink-faint)]">
-            自定义热词会与所选热词包合并，下次录音生效。
-          </p>
-        </section>
+        <ClassroomCourseForm key={sessionId??'next-class'} profile={profile} recording={recording} onSave={value=>{onSaveProfile(value);onOpenChange(false)}}/>
       </DialogContent>
     </Dialog>
   )

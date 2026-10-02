@@ -12,12 +12,12 @@ import {
   mergeArtifactIds,
   loadManifest,
   saveManifest,
-  loadSessionMessages,
   loadSessionWindow,
   loadTurnsBefore,
   appendSessionMessages,
   writeSessionMessage,
   dropSessionTailCache,
+  hasSessionWriteLease,
   saveSessionMessages,
   migrateFromV1IfNeeded,
   deleteSessionData,
@@ -36,9 +36,47 @@ import { getMessageText } from '@/lib/chat/messageParts';
 import { mergeRememberedSlices } from '@/lib/project/sessionSlices';
 import { scheduleCloudTombstone, scheduleCloudUpsert } from '@/lib/sync/schedule';
 import { useSessionRuns } from '@/lib/stores/sessionRuns';
+import {registerResourceMetrics} from '@/lib/performance/resourceMetrics';
+import {DEFAULT_RESOURCE_BUDGETS} from '@/lib/performance/budgets';
+import {getOwnerEpoch,getStorageOwner,onStorageOwnerChange} from '@/lib/storage/ownerScope';
 
-const MAX_LOADED_SESSIONS = 3;
 const MAX_SESSIONS = 50;
+type LeaseReason='visible'|'stream'|'write'|'explicit-pin'
+const sessionLeases=new Map<string,Map<LeaseReason,number>>()
+const legacyPins=new Map<string,number>()
+const residentEstimates=new Map<string,{messages:ChatMessage[];bytes:number}>()
+let pinnedPressureBytes=0
+export function getHotSessionPressureBytes(){return pinnedPressureBytes}
+export function acquireSessionLease(sessionId:string,reason:LeaseReason){
+  const reasons=sessionLeases.get(sessionId)??new Map<LeaseReason,number>()
+  reasons.set(reason,(reasons.get(reason)??0)+1);sessionLeases.set(sessionId,reasons)
+  let released=false
+  return {sessionId,reason,release(){if(released)return;released=true;const current=sessionLeases.get(sessionId);if(!current)return;const count=(current.get(reason)??1)-1;if(count>0)current.set(reason,count);else current.delete(reason);if(!current.size)sessionLeases.delete(sessionId);useChatHistory.setState(state=>applySessionWindow(state,state.messagesById,state.sessionWindowById,state.loadedSessionIds,state.sessionLoadState))}}
+}
+export function enforceHotSessionBudget(){useChatHistory.setState(state=>applySessionWindow(state,state.messagesById,state.sessionWindowById,state.loadedSessionIds,state.sessionLoadState))}
+
+function estimateHotValueBytes(value:unknown):number{
+  if(typeof value==='string')return value.length*2
+  if(typeof value==='number'||typeof value==='boolean')return 8
+  if(!value||typeof value!=='object')return 0
+  if(ArrayBuffer.isView(value))return value.byteLength+32
+  if(value instanceof ArrayBuffer)return value.byteLength+32
+  if(typeof Blob!=='undefined'&&value instanceof Blob)return value.size+32
+  if(Array.isArray(value))return 24+value.reduce((sum:number,item:unknown)=>sum+estimateHotValueBytes(item),0)
+  return 32+Object.entries(value).reduce((sum,[key,item])=>sum+key.length*2+estimateHotValueBytes(item),0)
+}
+function estimateResident(id:string,messages:ChatMessage[]){
+  const found=residentEstimates.get(id)
+  if(found?.messages===messages)return found.bytes
+  const bytes=estimateHotValueBytes(messages)
+  residentEstimates.set(id,{messages,bytes})
+  return bytes
+}
+function updateResidentEstimate(id:string,before:ChatMessage[],after:ChatMessage[],oldMessage?:ChatMessage,newMessage?:ChatMessage){
+  const previous=estimateResident(id,before)
+  const bytes=oldMessage&&newMessage?Math.max(0,previous+estimateHotValueBytes(newMessage)-estimateHotValueBytes(oldMessage)):estimateHotValueBytes(after)
+  residentEstimates.set(id,{messages:after,bytes})
+}
 
 export interface ChatSession {
   id: string;
@@ -113,7 +151,7 @@ interface ChatHistoryState {
   deleteSession: (id: string) => void;
   switchSession: (id: string) => void;
   addMessage: (sessionId: string, message: ChatMessage) => void;
-  replaceMessages: (sessionId: string, messages: ChatMessage[]) => void;
+  replaceMessages: (sessionId: string, messages: ChatMessage[], baseMessages?: ChatMessage[]) => void;
   updateMessage: (sessionId: string, messageId: string, updates: Partial<ChatMessage>) => void;
   updateSessionTitle: (sessionId: string, title: string) => void;
   /** 归档 / 取消归档；归档不删除消息，只是从默认列表移出。 */
@@ -189,19 +227,32 @@ function pruneArtifactsFromMetas(metas: SessionMeta[]): void {
   }
 }
 
-function evictLoadedSessions(
-  state: ChatHistoryState,
-  keepIds: Set<string>,
-): Pick<ChatHistoryState, 'messagesById' | 'sessionWindowById'> {
-  const next = { ...state.messagesById };
-  const nextWindows = { ...state.sessionWindowById };
-  for (const id of state.loadedSessionIds) {
-    if (keepIds.has(id)) continue;
-    delete next[id];
-    delete nextWindows[id];
-    dropSessionTailCache(id);
+function applySessionWindow(
+  state:ChatHistoryState,
+  messages:Record<string,ChatMessage[]>,
+  windows:Record<string,SessionWindowMeta|undefined>,
+  lru:string[],
+  loadState:ChatHistoryState['sessionLoadState'],
+  protectId?:string,
+):Pick<ChatHistoryState,'messagesById'|'sessionWindowById'|'loadedSessionIds'|'sessionLoadState'>{
+  const messagesById={...messages},sessionWindowById={...windows},sessionLoadState={...loadState}
+  const keys=Object.keys(messagesById),keySet=new Set(keys)
+  const order=[...lru.filter(id=>keySet.has(id)),...keys.filter(id=>!lru.includes(id))]
+  const protectedIds=new Set([state.activeSessionId,protectId,...state.pinnedSessionIds].filter(Boolean) as string[])
+  for(const id of keys)if(sessionLeases.has(id)||useSessionRuns.getState().byId[id]?.phase==='running'||hasSessionWriteLease(id))protectedIds.add(id)
+  let totalBytes=keys.reduce((sum,id)=>sum+estimateResident(id,messagesById[id]),0)
+  let inactive=keys.filter(id=>!protectedIds.has(id)).length
+  for(const id of order){
+    if(inactive<=DEFAULT_RESOURCE_BUDGETS.inactiveHotSessions&&totalBytes<=DEFAULT_RESOURCE_BUDGETS.hotMessageEstimatedBytes)break
+    if(protectedIds.has(id))continue
+    totalBytes-=residentEstimates.get(id)?.bytes??0;inactive--
+    delete messagesById[id];delete sessionWindowById[id];residentEstimates.delete(id)
+    sessionLoadState[id]='idle';dropSessionTailCache(id)
   }
-  return { messagesById: next, sessionWindowById: nextWindows };
+  for(const id of Object.keys(sessionWindowById))if(!messagesById[id])delete sessionWindowById[id]
+  for(const id of residentEstimates.keys())if(!messagesById[id])residentEstimates.delete(id)
+  pinnedPressureBytes=Math.max(0,totalBytes-DEFAULT_RESOURCE_BUDGETS.hotMessageEstimatedBytes)
+  return {messagesById,sessionWindowById,loadedSessionIds:order.filter(id=>messagesById[id]!==undefined),sessionLoadState}
 }
 
 function windowMetaFromLoad(load: SessionWindowLoad): SessionWindowMeta {
@@ -284,6 +335,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   },
 
   pinSession: (id) => {
+    legacyPins.set(id,(legacyPins.get(id)??0)+1)
     set((state) => ({
       pinnedSessionIds: state.pinnedSessionIds.includes(id)
         ? state.pinnedSessionIds
@@ -292,12 +344,18 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   },
 
   unpinSession: (id) => {
-    set((state) => ({
-      pinnedSessionIds: state.pinnedSessionIds.filter((x) => x !== id),
-    }));
+    const remaining=Math.max(0,(legacyPins.get(id)??1)-1)
+    if(remaining){legacyPins.set(id,remaining);return}
+    legacyPins.delete(id)
+    set((state) => {
+      const pinnedSessionIds=state.pinnedSessionIds.filter(x=>x!==id)
+      return {pinnedSessionIds,...applySessionWindow({...state,pinnedSessionIds},state.messagesById,state.sessionWindowById,state.loadedSessionIds,state.sessionLoadState)}
+    });
   },
 
   ensureSessionLoaded: async (sessionId) => {
+    const ownerId=getStorageOwner(),epoch=getOwnerEpoch();if(!ownerId)return;
+    const current=()=>getStorageOwner()===ownerId&&getOwnerEpoch()===epoch;
     const state = get();
     if (state.messagesById[sessionId]) {
       set((s) => ({
@@ -310,6 +368,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     }));
     // 窗口读：只取最近若干轮 + 全量 spine；更早的轮次留在 chunk 里按需回读。
     const window = await loadSessionWindow(sessionId);
+    if(!current())return;
     if (!window) {
       set((s) => ({
         sessionLoadState: { ...s.sessionLoadState, [sessionId]: 'error' },
@@ -317,51 +376,31 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       return;
     }
     set((s) => {
-      const keep = new Set([
-        sessionId,
-        s.activeSessionId,
-        ...s.pinnedSessionIds,
-      ].filter(Boolean) as string[]);
-      let loadedSessionIds = [...s.loadedSessionIds.filter((x) => x !== sessionId), sessionId];
-      while (loadedSessionIds.length > MAX_LOADED_SESSIONS) {
-        const candidate = loadedSessionIds.find((x) => !keep.has(x));
-        if (!candidate) break;
-        loadedSessionIds = loadedSessionIds.filter((x) => x !== candidate);
-        keep.add(sessionId);
-      }
+      if(!current()||!s.sessionsMeta.some(meta=>meta.id===sessionId))return s;
       const messagesById = { ...s.messagesById, [sessionId]: window.messages };
       const sessionWindowById = { ...s.sessionWindowById, [sessionId]: windowMetaFromLoad(window) };
-      const evictKeep = new Set([...loadedSessionIds, ...s.pinnedSessionIds, s.activeSessionId].filter(Boolean) as string[]);
-      const pruned = evictLoadedSessions({ ...s, messagesById, sessionWindowById, loadedSessionIds }, evictKeep);
-      return {
-        messagesById: pruned.messagesById,
-        sessionWindowById: pruned.sessionWindowById,
-        loadedSessionIds,
-        sessionLoadState: { ...s.sessionLoadState, [sessionId]: 'loaded' },
-      };
+      const loadedSessionIds = [...s.loadedSessionIds.filter((x) => x !== sessionId), sessionId];
+      return applySessionWindow(s,messagesById,sessionWindowById,loadedSessionIds,{...s.sessionLoadState,[sessionId]:'loaded'})
     });
   },
 
   loadEarlierTurns: async (sessionId, count = EARLIER_TURNS_BATCH) => {
+    const ownerId=getStorageOwner(),epoch=getOwnerEpoch();if(!ownerId)return 0;
     const window = get().sessionWindowById[sessionId];
     const loaded = get().messagesById[sessionId];
     if (!window || !loaded || window.startTurn <= 0) return 0;
     const range = await loadTurnsBefore(sessionId, window.startTurn, count);
+    if(getStorageOwner()!==ownerId||getOwnerEpoch()!==epoch)return 0;
     if (!range || range.fromTurn >= window.startTurn) return 0;
     set((state) => {
+      if(getStorageOwner()!==ownerId||getOwnerEpoch()!==epoch)return state;
       const current = state.sessionWindowById[sessionId];
       const existing = state.messagesById[sessionId];
       if (!current || !existing) return state;
       // 重复调用/并发时按 id 去重：轮次区间本不该重叠，但 stream 落尾可能让边界相交。
       const seen = new Set(existing.map((message) => message.id));
       const prepend = range.messages.filter((message) => !seen.has(message.id));
-      return {
-        messagesById: { ...state.messagesById, [sessionId]: [...prepend, ...existing] },
-        sessionWindowById: {
-          ...state.sessionWindowById,
-          [sessionId]: { ...current, startTurn: range.fromTurn, startIndex: range.startIndex },
-        },
-      };
+      return applySessionWindow(state,{...state.messagesById,[sessionId]:[...prepend,...existing]},{...state.sessionWindowById,[sessionId]:{...current,startTurn:range.fromTurn,startIndex:range.startIndex}},state.loadedSessionIds,state.sessionLoadState,sessionId)
     });
     return window.startTurn - range.fromTurn;
   },
@@ -381,18 +420,13 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   },
 
   ensureSessionFullyLoaded: async (sessionId) => {
+    const ownerId=getStorageOwner(),epoch=getOwnerEpoch();if(!ownerId)return;
     const window = get().sessionWindowById[sessionId];
     if (window && window.startTurn === 0 && get().messagesById[sessionId]) return;
     // tailTurns=Infinity：窗口起点拉到 0，等于全量装配。
     const full = await loadSessionWindow(sessionId, Number.MAX_SAFE_INTEGER);
-    if (!full) return;
-    set((state) => ({
-      messagesById: { ...state.messagesById, [sessionId]: full.messages },
-      sessionWindowById: { ...state.sessionWindowById, [sessionId]: windowMetaFromLoad(full) },
-      loadedSessionIds: state.loadedSessionIds.includes(sessionId)
-        ? state.loadedSessionIds
-        : [...state.loadedSessionIds, sessionId],
-    }));
+    if (!full||getStorageOwner()!==ownerId||getOwnerEpoch()!==epoch) return;
+    set((state) => getStorageOwner()!==ownerId||getOwnerEpoch()!==epoch?state:applySessionWindow(state,{...state.messagesById,[sessionId]:full.messages},{...state.sessionWindowById,[sessionId]:windowMetaFromLoad(full)},[...state.loadedSessionIds.filter(id=>id!==sessionId),sessionId],{...state.sessionLoadState,[sessionId]:'loaded'},sessionId));
   },
 
   createSession: (context, kind, folderId) => {
@@ -418,9 +452,11 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       const dropped = sessionsMeta.length > MAX_SESSIONS ? sessionsMeta.slice(MAX_SESSIONS) : [];
       const droppedIds = new Set(dropped.map((d) => d.id));
       if (dropped.length > 0) {
+        const ownerId=getStorageOwner(),epoch=getOwnerEpoch();
         for (const d of dropped) {
           void (async () => {
             const blobIds = await listBlobIdsForSession(d.id);
+            if(getStorageOwner()!==ownerId||getOwnerEpoch()!==epoch)return;
             await deleteSessionData(d.id, blobIds);
             scheduleOrphanChatGc();
           })();
@@ -440,13 +476,14 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         state,
         manifestOf(state, { activeSessionId: claimActive ? id : state.activeSessionId, sessions: capped }),
       );
+      residentEstimates.delete(id)
+      for(const dropId of droppedIds)residentEstimates.delete(dropId)
+      const nextActive=claimActive?id:state.activeSessionId
+      const resident=applySessionWindow({...state,activeSessionId:nextActive},messagesById,sessionWindowById,[...state.loadedSessionIds.filter(x=>x!==id&&!droppedIds.has(x)),id],{...state.sessionLoadState,[id]:'loaded'},id)
       return {
         sessionsMeta: capped,
-        messagesById,
-        sessionWindowById,
-        loadedSessionIds: [...state.loadedSessionIds.filter((x) => x !== id && !droppedIds.has(x)), id],
-        activeSessionId: claimActive ? id : state.activeSessionId,
-        sessionLoadState: { ...state.sessionLoadState, [id]: 'loaded' },
+        ...resident,
+        activeSessionId:nextActive,
         _activeMessagesReady: claimActive ? true : state._activeMessagesReady,
       };
     });
@@ -457,13 +494,14 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
 
   startNewChat: (context, projectId) => {
     const state = get();
+    const ownerId=getStorageOwner(),epoch=getOwnerEpoch();
     const targetProjectId = projectId === undefined ? state.activeProjectId : projectId;
     // 还没水合：此刻的 sessionsMeta 是空数组，任何「新建」都会把盘上的真实列表覆盖掉。
     // 等水合完再按当时的真实列表决定，期间返回 null（调用方都不依赖返回值）。
     if (!state._hasHydrated) {
       void ensureChatHistoryBootstrap()
         .then(() => {
-          get().startNewChat(context, projectId);
+          if(getStorageOwner()===ownerId&&getOwnerEpoch()===epoch)get().startNewChat(context, projectId);
         })
         .catch(() => {
           // 水合失败就什么都不做：宁可这次点击没反应，也不能基于空列表落盘
@@ -490,17 +528,13 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       (blank.folderId ?? null) === nextFolderId
         ? state.sessionsMeta
         : state.sessionsMeta.map((meta) => (meta.id === blank.id ? { ...meta, folderId: nextFolderId } : meta));
+    const resident=applySessionWindow({...state,activeSessionId:blank.id},state.messagesById[blank.id]
+      ?state.messagesById:{...state.messagesById,[blank.id]:[]},state.sessionWindowById[blank.id]
+      ?state.sessionWindowById:{...state.sessionWindowById,[blank.id]:{...EMPTY_WINDOW}},[...state.loadedSessionIds.filter(id=>id!==blank.id),blank.id],{...state.sessionLoadState,[blank.id]:'loaded'},blank.id)
     set({
       sessionsMeta,
       activeSessionId: blank.id,
-      messagesById: state.messagesById[blank.id]
-        ? state.messagesById
-        : { ...state.messagesById, [blank.id]: [] },
-      sessionWindowById: state.sessionWindowById[blank.id]
-        ? state.sessionWindowById
-        : { ...state.sessionWindowById, [blank.id]: { ...EMPTY_WINDOW } },
-      sessionLoadState: { ...state.sessionLoadState, [blank.id]: 'loaded' },
-      loadedSessionIds: [...state.loadedSessionIds.filter((id) => id !== blank.id), blank.id],
+      ...resident,
       _activeMessagesReady: true,
     });
     persistManifest(state, manifestOf(state, { activeSessionId: blank.id, sessions: sessionsMeta }));
@@ -530,27 +564,29 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       dropSessionTailCache(id);
       pruneArtifactsFromMetas(sessionsMeta);
       persistManifest(state, manifestOf(state, { activeSessionId: newActiveId, sessions: sessionsMeta }));
+      const ownerId=getStorageOwner(),epoch=getOwnerEpoch();
       void (async () => {
         const blobIds = await listBlobIdsForSession(id);
+        if(getStorageOwner()!==ownerId||getOwnerEpoch()!==epoch)return;
         await deleteSessionData(id, blobIds);
         scheduleOrphanChatGc();
       })();
       scheduleCloudTombstone('chat-session', id);
+      residentEstimates.delete(id)
+      const resident=applySessionWindow({...state,activeSessionId:newActiveId},messagesById,sessionWindowById,state.loadedSessionIds.filter(x=>x!==id),{...state.sessionLoadState,[id]:'idle'})
       return {
         sessionsMeta,
-        messagesById,
-        sessionWindowById,
+        ...resident,
         activeSessionId: newActiveId,
-        loadedSessionIds: state.loadedSessionIds.filter((x) => x !== id),
-        sessionLoadState: { ...state.sessionLoadState, [id]: 'idle' },
         _activeMessagesReady: deletedActive ? newActiveId === null : state._activeMessagesReady,
       };
     });
     if (nextActiveToLoad) {
+      const ownerId=getStorageOwner(),epoch=getOwnerEpoch();
       // 删除后自动落到下一条会话 = 用户在看它，顺手消掉未读徽标。
       useSessionRuns.getState().markViewed(nextActiveToLoad);
       void get().ensureSessionLoaded(nextActiveToLoad).then(() => {
-        if (get().activeSessionId === nextActiveToLoad) {
+        if (getStorageOwner()===ownerId&&getOwnerEpoch()===epoch&&get().activeSessionId === nextActiveToLoad) {
           get()._setActiveMessagesReady(true);
         }
       });
@@ -558,10 +594,11 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   },
 
   switchSession: (id) => {
-    set({ activeSessionId: id, _activeMessagesReady: false });
+    const ownerId=getStorageOwner(),epoch=getOwnerEpoch();
+    set(state=>({activeSessionId:id,_activeMessagesReady:false,...applySessionWindow({...state,activeSessionId:id},state.messagesById,state.sessionWindowById,state.loadedSessionIds,state.sessionLoadState,id)}));
     useSessionRuns.getState().markViewed(id);
     void get().ensureSessionLoaded(id).then(() => {
-      if (get().activeSessionId === id) {
+      if (getStorageOwner()===ownerId&&getOwnerEpoch()===epoch&&get().activeSessionId === id) {
         get()._setActiveMessagesReady(true);
       }
     });
@@ -603,15 +640,15 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       const sessionWindowById = nextWindow
         ? { ...state.sessionWindowById, [sessionId]: nextWindow }
         : state.sessionWindowById;
+      updateResidentEstimate(sessionId,prev,messages)
       return {
-        messagesById: { ...state.messagesById, [sessionId]: messages },
-        sessionWindowById,
+        ...applySessionWindow(state,{...state.messagesById,[sessionId]:messages},sessionWindowById,[...state.loadedSessionIds.filter(id=>id!==sessionId),sessionId],state.sessionLoadState,sessionId),
         sessionsMeta,
       };
     });
   },
 
-  replaceMessages: (sessionId, messages) => {
+  replaceMessages: (sessionId, messages, baseMessages) => {
     set((state) => {
       if (!state.sessionsMeta.some((s) => s.id === sessionId)) return state;
       const stored = messages.map((message) => persistInlineAttachments(message));
@@ -628,14 +665,14 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
             }
           : s,
       );
-      saveSessionMessages(sessionId, stored);
+      saveSessionMessages(sessionId, stored, baseMessages);
       persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
       scheduleCloudUpsert("chat-session", sessionId);
       // 整段替换后窗口重置为新的尾部窗口（compact / 云拉取都走这里）。
       const sliced = tailWindowSlice(stored);
+      residentEstimates.set(sessionId,{messages:sliced.messages,bytes:estimateHotValueBytes(sliced.messages)})
       return {
-        messagesById: { ...state.messagesById, [sessionId]: sliced.messages },
-        sessionWindowById: {
+        ...applySessionWindow(state,{...state.messagesById,[sessionId]:sliced.messages},{
           ...state.sessionWindowById,
           [sessionId]: {
             startTurn: sliced.startTurn,
@@ -644,7 +681,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
             messageCount: stored.length,
             spine: sliced.spine,
           },
-        },
+        },[...state.loadedSessionIds.filter(id=>id!==sessionId),sessionId],state.sessionLoadState,sessionId),
         sessionsMeta,
       };
     });
@@ -694,9 +731,9 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
           sessionWindowById = { ...sessionWindowById, [sessionId]: { ...window, spine } };
         }
       }
+      updateResidentEstimate(sessionId,prev,messages,target,updated)
       return {
-        messagesById: { ...state.messagesById, [sessionId]: messages },
-        sessionWindowById,
+        ...applySessionWindow(state,{...state.messagesById,[sessionId]:messages},sessionWindowById,state.loadedSessionIds,state.sessionLoadState,sessionId),
         sessionsMeta,
       };
     });
@@ -840,13 +877,43 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   },
 }));
 
+registerResourceMetrics(()=>{
+  const state=useChatHistory.getState()
+  return {loadedSessionCount:Object.keys(state.messagesById).length,pinnedSessionCount:state.pinnedSessionIds.length,hotMessageEstimatedBytes:[...residentEstimates.values()].reduce((sum,item)=>sum+item.bytes,0)}
+})
+
+/** Cloud pull joins the same real-residency LRU path as local window loads. */
+export function applyCloudSessionWindow(meta:SessionMeta,messages:ChatMessage[],sessionsMeta:SessionMeta[]):void{
+  const sliced=tailWindowSlice(messages)
+  useChatHistory.setState(state=>{
+    const windows={...state.sessionWindowById,[meta.id]:{
+      startTurn:sliced.startTurn,startIndex:sliced.startIndex,turnCount:sliced.spine.length,messageCount:messages.length,spine:sliced.spine,
+    }}
+    return {
+      sessionsMeta,
+      ...applySessionWindow({...state,sessionsMeta},{...state.messagesById,[meta.id]:sliced.messages},windows,[...state.loadedSessionIds.filter(id=>id!==meta.id),meta.id],{...state.sessionLoadState,[meta.id]:'loaded'},meta.id),
+    }
+  })
+}
+onStorageOwnerChange((previous,next)=>{
+  if(previous===next)return
+  bootstrapPromise=null
+  sessionLeases.clear();residentEstimates.clear();pinnedPressureBytes=0
+  legacyPins.clear()
+  useChatHistory.setState({sessionsMeta:[],folders:[],activeProjectId:null,messagesById:{},sessionWindowById:{},activeSessionId:null,sessionLoadState:{},loadedSessionIds:[],pinnedSessionIds:[],_hasHydrated:false,_activeMessagesReady:false})
+})
+
 /** 启动时迁移 + 加载 manifest 与当前会话（幂等）。 */
 export async function ensureChatHistoryBootstrap(): Promise<void> {
   if (bootstrapPromise) return bootstrapPromise;
+  const ownerId=getStorageOwner(),epoch=getOwnerEpoch();
+  const current=()=>ownerId!==null&&getStorageOwner()===ownerId&&getOwnerEpoch()===epoch;
   bootstrapPromise = (async () => {
     if (typeof window === 'undefined') return;
     await migrateFromV1IfNeeded();
+    if(!current())return;
     const manifest = await loadManifest();
+    if(!current())return;
     const store = useChatHistory.getState();
     if (manifest) {
       const folders = manifest.folders ?? [];
@@ -867,6 +934,7 @@ export async function ensureChatHistoryBootstrap(): Promise<void> {
       useChatHistory.getState().ensureDefaultProjects();
       if (manifest.activeSessionId) {
         await store.ensureSessionLoaded(manifest.activeSessionId);
+        if(!current())return;
         useChatHistory.getState()._setActiveMessagesReady(true);
       } else {
         useChatHistory.getState()._setActiveMessagesReady(true);
@@ -875,6 +943,7 @@ export async function ensureChatHistoryBootstrap(): Promise<void> {
       useChatHistory.setState({ _hasHydrated: true, _activeMessagesReady: true });
       useChatHistory.getState().ensureDefaultProjects();
     }
+    if(!current())return;
     // 运行状态记录是本地副产物：别的设备删掉的会话、被淘汰的会话，徽标一并清。
     useSessionRuns.getState().prune(new Set(useChatHistory.getState().sessionsMeta.map((s) => s.id)));
     scheduleOrphanChatGc();

@@ -4,6 +4,7 @@ import { useMemo, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import {
   Archive,
+  ArrowLeftRight,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -37,6 +38,7 @@ export interface SessionSidebarProps {
   /** 导入已有文稿（与新录音分开：+ 是开一节新课，不是导入）。 */
   onImport?: () => void
   onOpenSettings?: () => void
+  onFlipToNotes?: () => void
   onRename: (id: string, title: string) => void
   onArchive: (id: string) => void
 }
@@ -53,6 +55,7 @@ export function SessionSidebar({
   onNew,
   onImport,
   onOpenSettings,
+  onFlipToNotes,
   onRename,
   onArchive,
 }: SessionSidebarProps) {
@@ -69,7 +72,7 @@ export function SessionSidebar({
   const rail = (inner: ReactNode) => (
     <div
       data-class-sidebar
-      className={`ss-rail h-full border-r border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] ${collapsed ? 'w-11 min-w-11' : 'w-64 min-w-64'}`}
+      className={`ss-class-side-rail h-full ${collapsed ? 'is-collapsed' : ''}`}
     >
       {inner}
     </div>
@@ -86,6 +89,7 @@ export function SessionSidebar({
         >
           <ChevronRight className="size-4" />
         </button>
+        {onFlipToNotes?<button type="button" aria-label="切换到笔记侧栏" title="切换到笔记侧栏" onClick={onFlipToNotes}><ArrowLeftRight className="size-4"/></button>:null}
         <button
           type="button"
           aria-label="新建课堂"
@@ -100,11 +104,12 @@ export function SessionSidebar({
   }
 
   return rail(
-    <div className="flex h-full w-64 min-w-64 flex-col">
+    <div className="flex h-full w-full min-w-0 flex-col">
       <div className="flex items-center gap-2 px-3 py-2.5">
         <span className="mr-auto text-[13px] font-medium text-[color:var(--ink)]">
           课堂记录
         </span>
+        {onFlipToNotes?<button type="button" aria-label="切换到笔记侧栏" title="切换到笔记侧栏" className="rounded-lg p-1.5 text-[color:var(--ink-soft)] hover:bg-[color:var(--bg-muted)]" onClick={onFlipToNotes}><ArrowLeftRight className="size-4"/></button>:null}
         <button
           type="button"
           aria-label="新建课堂"
@@ -191,10 +196,10 @@ export function SessionSidebar({
                 ) : (
                   <div
                     className={[
-                      'group flex items-center gap-1 rounded-lg px-2 py-1.5',
+                      'group flex items-center gap-1 rounded-lg border px-2 py-1.5',
                       active
-                        ? 'bg-[color:var(--accent-weak)] text-[color:var(--accent-ink)]'
-                        : 'text-[color:var(--ink-soft)] hover:bg-[color:var(--bg-muted)]',
+                        ? 'border-[color:var(--accent)] bg-[color:var(--bg-panel)] text-[color:var(--ink)]'
+                        : 'border-transparent text-[color:var(--ink-soft)] hover:border-[color:var(--line-soft)] hover:bg-[color:var(--bg-muted)]',
                     ].join(' ')}
                   >
                     <button

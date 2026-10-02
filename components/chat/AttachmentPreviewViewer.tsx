@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import clsx from "clsx";
 import { Download, Globe, GlobeLock, Presentation } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
@@ -17,6 +17,7 @@ import { ARTIFACT_IFRAME_SANDBOX, injectOpaqueOriginStorageShim } from "@/lib/sa
 import { downloadHtmlFile } from "@/lib/utils/downloadHtml";
 import { openHtmlInNewTab } from "@/lib/utils/openHtmlInNewTab";
 import { useT } from "@/lib/i18n";
+import {useObjectUrl} from '@/lib/resources/useObjectUrl';
 
 
 /**
@@ -108,14 +109,9 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
   // 自建 object URL，窗口卸载即释放——不再借用上游 URL（借据模型，修 object URL 泄漏）。
   const rawContent = data?.content ?? "";
   const file = data?.file;
-  const ownedUrl = useMemo(
-    () => (file && rawContent.startsWith("blob:") ? URL.createObjectURL(file) : null),
-    [file, rawContent],
-  );
-  useEffect(() => () => {
-    if (ownedUrl) URL.revokeObjectURL(ownedUrl);
-  }, [ownedUrl]);
-  const content = ownedUrl ?? rawContent;
+  const needsOwnedUrl=!!file&&rawContent.startsWith('blob:');
+  const ownedUrl=useObjectUrl(needsOwnedUrl?file:null,needsOwnedUrl);
+  const content = needsOwnedUrl?(ownedUrl??''):rawContent;
   // 联网开关放在窗口这一层：最小化会卸载 children，状态留在子组件里就会被重置回「仅本地」。
   const [network, setNetwork] = useState(false);
   const localHtml = useMemo(
@@ -177,7 +173,7 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
       bodyClassName="flex min-h-0 flex-1 overflow-hidden bg-[var(--bg-panel)]"
       unmountWhenMinimized
     >
-      {kind === "image" ? (
+      {needsOwnedUrl&&!ownedUrl?<div role="status" className="p-4 text-sm">正在准备本地预览…</div>:kind === "image" ? (
         // eslint-disable-next-line @next/next/no-img-element -- local data URLs are intentionally kept out of remote loaders.
         <img src={content} alt={data.name} className="h-full w-full object-contain p-4" />
       ) : kind === "pdf" ? (

@@ -5,11 +5,11 @@ export function useStreamingText(content: string, streaming: boolean): string {
   const latest = useRef(content);
   useEffect(() => { latest.current = content; }, [content]);
   const [display, setDisplay] = useState(content);
-  const interval = content.length > 40_000 ? 200 : content.length > 8_000 ? 100 : 0;
+  const interval = content.length > 40_000 ? 200 : content.length > 8_000 ? 100 : 16;
   useEffect(() => {
-    if (!streaming || !interval) return;
+    if (!streaming) return;
     const timer = setInterval(() => setDisplay(latest.current), interval);
     return () => clearInterval(timer);
   }, [streaming, interval]);
-  return streaming && interval && content.startsWith(display) ? display : content;
+  return streaming && content.startsWith(display) ? display : content;
 }

@@ -6,22 +6,15 @@ import {
   INDEX_FILES,
   parseManifest,
   readLocalIndexFile,
+  getChunkMetadataIndex,type SearchChunkMeta,
 } from "./indexIo";
 import { searchLogOnce } from "./searchLog";
+import {createIndexLoader} from './indexLoader';
+import {scoreVectorCore} from './worker/core.mjs';
 
 export type { ScoredChunk } from "./vectorStoreTypes";
 
-interface ChunkRow {
-  id: string;
-  path: string;
-  subjectId: string;
-  subjectName: string;
-  categoryId: string;
-  itemId: string;
-  title: string;
-  chunkIndex: number;
-  text: string;
-}
+type ChunkRow=SearchChunkMeta
 
 interface VectorIndex {
   model: string;
@@ -29,6 +22,8 @@ interface VectorIndex {
   ids: string[];
   metaById: Map<string, ChunkRow>;
   matrix: Float32Array;
+  /** Keeps a shared Buffer alive when matrix is a zero-copy aligned view. */
+  sourceBuffer?:Buffer;
   /** 每行向量的预计算范数（√Σy²），避免检索时对 4 万行逐行重算。 */
   norms: Float32Array;
   /** 与 ids 平行的 meta 数组，热循环免 Map 查找。 */
@@ -53,8 +48,6 @@ function finalizeIndex(index: Omit<VectorIndex, "norms" | "metaList">): VectorIn
   return { ...index, norms, metaList };
 }
 
-let _vectorIndex: VectorIndex | null = null;
-let _loadAttempted = false;
 
 export function cosineSimilarity(a: ArrayLike<number>, b: ArrayLike<number>): number {
   let dot = 0;
@@ -92,75 +85,12 @@ export function cosineSimilarityRow(
   return denom === 0 ? 0 : dot / denom;
 }
 
-/** size-K 最小堆：单遍扫描保留 top-K，避免全量 sort。 */
-class TopKMinHeap {
-  private readonly maxSize: number;
-  private heap: ScoredChunk[] = [];
-
-  constructor(maxSize: number) {
-    this.maxSize = maxSize;
-  }
-
-  push(item: ScoredChunk): void {
-    if (this.heap.length < this.maxSize) {
-      this.heap.push(item);
-      this.bubbleUp(this.heap.length - 1);
-      return;
-    }
-    if (item.score <= this.heap[0].score) return;
-    this.heap[0] = item;
-    this.bubbleDown(0);
-  }
-
-  toSortedDesc(): ScoredChunk[] {
-    return [...this.heap].sort((a, b) => b.score - a.score);
-  }
-
-  private bubbleUp(i: number): void {
-    while (i > 0) {
-      const parent = Math.floor((i - 1) / 2);
-      if (this.heap[parent].score <= this.heap[i].score) break;
-      [this.heap[parent], this.heap[i]] = [this.heap[i], this.heap[parent]];
-      i = parent;
-    }
-  }
-
-  private bubbleDown(i: number): void {
-    const n = this.heap.length;
-    while (true) {
-      let smallest = i;
-      const left = 2 * i + 1;
-      const right = 2 * i + 2;
-      if (left < n && this.heap[left].score < this.heap[smallest].score) smallest = left;
-      if (right < n && this.heap[right].score < this.heap[smallest].score) smallest = right;
-      if (smallest === i) break;
-      [this.heap[smallest], this.heap[i]] = [this.heap[i], this.heap[smallest]];
-      i = smallest;
-    }
-  }
-}
-
-function parseChunkRows(raw: Buffer | null): ChunkRow[] {
-  if (!raw) return [];
-  try {
-    const parsed = JSON.parse(raw.toString("utf8"));
-    const chunks = Array.isArray(parsed?.chunks) ? parsed.chunks : Array.isArray(parsed) ? parsed : [];
-    return chunks.filter((c: ChunkRow) => c?.id);
-  } catch {
-    return [];
-  }
-}
-
-function metaMapFromRows(rows: ChunkRow[]): Map<string, ChunkRow> {
-  const map = new Map<string, ChunkRow>();
-  for (const row of rows) map.set(row.id, row);
-  return map;
-}
-
-function float32FromBuffer(buf: Buffer): Float32Array {
-  const copy = new Uint8Array(buf.byteLength);
-  copy.set(buf);
-  return new Float32Array(copy.buffer);
+export function float32ViewFromBuffer(buf:Buffer):{matrix:Float32Array;borrowed:boolean}{
+  if(buf.byteLength%4!==0)throw new Error('vector byte length must be divisible by four')
+  const littleEndian=new Uint8Array(new Uint32Array([1]).buffer)[0]===1
+  if(littleEndian&&buf.byteOffset%4===0)return {matrix:new Float32Array(buf.buffer,buf.byteOffset,buf.byteLength/4),borrowed:true}
+  const copy=new Uint8Array(buf.byteLength);copy.set(buf)
+  return {matrix:new Float32Array(copy.buffer),borrowed:false}
 }
 
 function loadBinaryIndex(bin: Buffer, idsRaw: Buffer, metaById: Map<string, ChunkRow>): VectorIndex | null {
@@ -171,7 +101,9 @@ function loadBinaryIndex(bin: Buffer, idsRaw: Buffer, metaById: Map<string, Chun
     return null;
   }
   if (!Array.isArray(ids) || ids.length === 0) return null;
-  const matrix = float32FromBuffer(bin);
+  let view:{matrix:Float32Array;borrowed:boolean}
+  try{view=float32ViewFromBuffer(bin)}catch{return null}
+  const matrix=view.matrix;
   const dimension = Math.floor(matrix.length / ids.length);
   if (dimension < 8 || dimension * ids.length !== matrix.length) {
     searchLogOnce("error", "search.index.missing", `vectors.bin 长度与 ids 不对齐（ids=${ids.length}, floats=${matrix.length}），跳过向量索引`);
@@ -184,6 +116,7 @@ function loadBinaryIndex(bin: Buffer, idsRaw: Buffer, metaById: Map<string, Chun
     ids,
     metaById,
     matrix,
+    ...(view.borrowed?{sourceBuffer:bin}:{}),
   });
 }
 
@@ -245,47 +178,45 @@ function loadLegacyJsonIndex(raw: Buffer, localMeta: Map<string, ChunkRow>): Vec
   }
 }
 
-async function loadIndexAsync(): Promise<VectorIndex | null> {
-  if (_loadAttempted) return _vectorIndex;
-  _loadAttempted = true;
-
-  const metaRows = parseChunkRows(readLocalIndexFile(INDEX_FILES.chunksMeta));
-  const metaById = metaMapFromRows(metaRows);
+function loadIndexOnce(): VectorIndex | null {
+  const metaById = getChunkMetadataIndex().byId;
 
   const localBin = readLocalIndexFile(INDEX_FILES.vectorsBin);
   const localIds = readLocalIndexFile(INDEX_FILES.vectorsIds);
   if (localBin && localIds) {
-    _vectorIndex = loadBinaryIndex(localBin, localIds, metaById);
-    if (_vectorIndex) {
+    const binary=loadBinaryIndex(localBin, localIds, metaById);
+    if (binary) {
       searchLogOnce(
         "info",
         "search.index.loaded",
-        `向量索引 vectors.bin 已加载：${_vectorIndex.ids.length} 条 × ${_vectorIndex.dimension} 维`,
-        { file: INDEX_FILES.vectorsBin, count: _vectorIndex.ids.length, dimension: _vectorIndex.dimension },
+        `向量索引 vectors.bin 已加载：${binary.ids.length} 条 × ${binary.dimension} 维`,
+        { file: INDEX_FILES.vectorsBin, count: binary.ids.length, dimension: binary.dimension },
       );
-      return _vectorIndex;
+      return binary;
     }
   }
 
   const legacy = readLocalIndexFile(INDEX_FILES.vectorsJson);
   if (legacy) {
-    _vectorIndex = loadLegacyJsonIndex(legacy, metaById);
-    if (_vectorIndex) {
-      searchLogOnce("info", "search.index.loaded", `向量索引 vectors.json（旧格式）已加载：${_vectorIndex.ids.length} 条`);
-      return _vectorIndex;
+    const parsed=loadLegacyJsonIndex(legacy, metaById);
+    if (parsed) {
+      searchLogOnce("info", "search.index.loaded", `向量索引 vectors.json（旧格式）已加载：${parsed.ids.length} 条`);
+      return parsed;
     }
   }
 
   searchLogOnce("error", "search.index.missing", "本地无可用向量索引（缺 vectors.bin）。请运行 pnpm build-index。");
   return null;
 }
+const indexLoader=createIndexLoader(loadIndexOnce)
+export function retryVectorIndexLoad(){indexLoader.reset()}
 
 export async function vectorSearch(
   queryEmbedding: number[],
   topK: number,
   filter?: SearchFilter,
 ): Promise<ScoredChunk[]> {
-  const index = await loadIndexAsync();
+  const index = await indexLoader.load();
   if (!index || !index.ids.length) return [];
   if (queryEmbedding.length !== index.dimension) {
     searchLogOnce(
@@ -296,49 +227,14 @@ export async function vectorSearch(
     return [];
   }
 
-  const heap = new TopKMinHeap(topK);
-  const { ids, matrix, dimension, norms, metaList } = index;
-  // 查询范数只算一次；行范数装载时已预算，内层只剩点积。
-  let qNorm = 0;
-  for (let i = 0; i < dimension; i++) {
-    const q = queryEmbedding[i];
-    qNorm += q * q;
-  }
-  qNorm = Math.sqrt(qNorm);
-  for (let i = 0; i < ids.length; i++) {
-    const meta = metaList[i];
-    if (!meta || !chunkInScope(meta.subjectId, filter)) continue;
-    const denom = qNorm * norms[i];
-    let score = 0;
-    if (denom !== 0) {
-      const off = i * dimension;
-      let dot = 0;
-      for (let j = 0; j < dimension; j++) {
-        dot += queryEmbedding[j] * matrix[off + j];
-      }
-      score = dot / denom;
-    }
-    heap.push({
-      id: meta.id,
-      path: meta.path,
-      subjectId: meta.subjectId,
-      subjectName: meta.subjectName,
-      categoryId: meta.categoryId,
-      itemId: meta.itemId,
-      title: meta.title,
-      chunkIndex: meta.chunkIndex,
-      text: meta.text,
-      score,
-    });
-  }
-  return heap.toSortedDesc();
+  return scoreVectorCore(index,queryEmbedding,topK,subjectId=>chunkInScope(subjectId,filter));
 }
 
 export async function isVectorIndexLoaded(): Promise<boolean> {
-  return (await loadIndexAsync()) !== null;
+  return (await indexLoader.load()) !== null;
 }
 
 export async function getVectorIndexModel(): Promise<string | null> {
-  const index = await loadIndexAsync();
+  const index = await indexLoader.load();
   return index?.model ?? null;
 }

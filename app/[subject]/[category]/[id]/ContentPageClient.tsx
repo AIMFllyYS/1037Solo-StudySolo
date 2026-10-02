@@ -24,6 +24,7 @@ import { useContentTabs } from "@/lib/stores/contentTabs";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
 const ExampleTab = dynamic(() => import("@/components/examples/ExampleTab"), { ssr: false });
+const DeferredNoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), { ssr: false, loading: () => <p className="py-6 text-sm text-[var(--ink-faint)]">正在排版全文…</p> });
 
 type ContentTab = "content" | "examples" | "quiz";
 
@@ -37,8 +38,13 @@ interface ContentPageClientProps {
   subjectId: SubjectId;
   categoryId: string;
   itemId: string;
-  /** 服务端 SSR 注入的正文 markdown 原文；html/component 类型与「新标签打开」仍需要原文字符串 */
+  /** HTML/text 原文；Markdown 已由服务端渲染，不再重复下传。 */
   initialContent: string | null;
+  hasInitialContent?: boolean;
+  contentRevision?: string;
+  /** Large Markdown travels as a validated contentRef rather than a full RSC tree. */
+  deferredMarkdown?: boolean;
+  contentBytes?: number;
   /** 服务端/构建期预渲染好的正文 React 树（仅 markdown 类型非空）；客户端不再解析 markdown */
   renderedNote?: React.ReactNode;
   /** 服务端 SSR 注入的例题（含正文，随路由变化重新下发） */
@@ -77,6 +83,10 @@ export default function ContentPageClient({
   categoryId,
   itemId,
   initialContent,
+  hasInitialContent,
+  contentRevision,
+  deferredMarkdown = false,
+  contentBytes = 0,
   renderedNote,
   initialExamples,
   sectionId,
@@ -141,18 +151,41 @@ export default function ContentPageClient({
   if (tabMotion.index !== tabIndex) setTabMotion({ index: tabIndex, dir: tabIndex >= tabMotion.index ? 1 : -1 });
   const tabDirection = tabMotion.dir;
 
-  // 正文由服务端 SSR 注入（initialContent）。客户端切换路由时 page.tsx 会重新做
+  // 正文由服务端 SSR 注入。客户端切换路由时 page.tsx 会重新做
   // 服务端渲染并以新 prop 下发，无需再 fetch /api/section，消除瀑布与骨架闪烁。
   const content = initialContent;
+  const hasContent = hasInitialContent ?? Boolean(initialContent);
+  const pageKey = `${subjectId}/${categoryId}/${itemId}:${contentRevision ?? ""}`;
+  const [deferredLoad, setDeferredLoad] = useState<{ key: string; status: "idle" | "loading" | "loaded" | "error"; markdown: string }>({ key: "", status: "idle", markdown: "" });
+  const activeDeferred = deferredLoad.key === pageKey ? deferredLoad : { key: pageKey, status: "idle" as const, markdown: "" };
+  const deferredAbort = useRef<AbortController | null>(null);
+  useEffect(() => () => { deferredAbort.current?.abort(); }, [pageKey]);
+  const loadDeferred = useCallback(async () => {
+    if (!deferredMarkdown) return;
+    deferredAbort.current?.abort();
+    const controller = new AbortController();
+    deferredAbort.current = controller;
+    setDeferredLoad({ key: pageKey, status: "loading", markdown: "" });
+    try {
+      const params = new URLSearchParams({ subjectId, categoryId, itemId });
+      const response = await fetch(`/api/section?${params}`, { signal: controller.signal });
+      if (!response.ok) throw new Error(`section_${response.status}`);
+      const value = await response.json() as { content?: unknown; format?: unknown };
+      if (typeof value.content !== "string" || value.format !== "markdown") throw new Error("section_format_mismatch");
+      if (!controller.signal.aborted) setDeferredLoad({ key: pageKey, status: "loaded", markdown: value.content });
+    } catch {
+      if (!controller.signal.aborted) setDeferredLoad({ key: pageKey, status: "error", markdown: "" });
+    }
+  }, [deferredMarkdown, pageKey, subjectId, categoryId, itemId]);
 
   // 路由→store 的同步已上移到 AppShell（覆盖所有分类），此处不再处理。
 
   // TOC 提取：仅在正文 Tab 且档位允许目录时扫描 DOM 标题
   useToc(
     containerRef,
-    resolvedTab === "content" && flags.showToc,
+    resolvedTab === "content" && flags.showToc && (!deferredMarkdown || activeDeferred.status === "loaded"),
     itemId,
-    initialContent ?? "",
+    `${contentRevision ?? initialContent ?? ""}:${activeDeferred.status}`,
   );
 
   const switchToContentTab = useCallback(() => setActiveTab("content"), [setActiveTab]);
@@ -264,7 +297,7 @@ export default function ContentPageClient({
                   )}
                 </div>
 
-                {content ? (
+                {hasContent ? (
                   renderType === 'html' ? (
                     <div key={itemId} className="animate-fade-in relative h-full">
                       {/* HTML 工具组件操作栏：全屏 + 新页面展开，仅作用于 iframe */}
@@ -285,7 +318,7 @@ export default function ContentPageClient({
                         </button>
                       </div>
                       <iframe
-                        srcDoc={content}
+                        srcDoc={content ?? ""}
                         sandbox={htmlSandbox}
                         className="h-full min-h-[60vh] w-full rounded-lg border border-[var(--line)]"
                         title={itemTitle}
@@ -297,7 +330,20 @@ export default function ContentPageClient({
                     </div>
                   ) : renderType === 'text' ? (
                     <div key={itemId} className="animate-fade-in">
-                      <PlainTextReader content={content} />
+                      <PlainTextReader content={content ?? ""} />
+                    </div>
+                  ) : deferredMarkdown ? (
+                    <div key={itemId} className="prose-notes animate-fade-in">
+                      {activeDeferred.status === "loaded" ? <DeferredNoteRenderer content={activeDeferred.markdown} /> : (
+                        <div className="rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-muted)] p-6 text-center">
+                          <p className="text-sm font-medium text-[var(--ink)]">这份资料篇幅较大，正文按需加载</p>
+                          <p className="mt-2 text-xs text-[var(--ink-soft)]">约 {Math.max(1, Math.round(contentBytes / 1024))} KB 原文。打开后可阅读全文、公式和引用。</p>
+                          <button type="button" onClick={() => void loadDeferred()} disabled={activeDeferred.status === "loading"} className="press mt-4 rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">
+                            {activeDeferred.status === "loading" ? "正在加载全文…" : activeDeferred.status === "error" ? "重试加载全文" : "加载完整资料"}
+                          </button>
+                          {activeDeferred.status === "error" ? <p role="alert" className="mt-2 text-xs text-[var(--md-sys-color-error)]">加载失败，请重试。</p> : null}
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <div key={itemId} className="prose-notes animate-fade-in">

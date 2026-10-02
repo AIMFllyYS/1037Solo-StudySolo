@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import {registerResourceMetrics} from '@/lib/performance/resourceMetrics';
 
 type PdfjsModule = typeof import("pdfjs-dist/legacy/build/pdf.mjs");
 type PdfDocumentProxy = Awaited<ReturnType<PdfjsModule["getDocument"]>["promise"]>;
@@ -27,6 +28,7 @@ interface Props {
   /** 并发闸门：渲染前 await acquireSlot()，渲染结束（含失败/取消）releaseSlot() */
   acquireSlot: () => Promise<void>;
   releaseSlot: () => void;
+  onBitmapBytes?: (pageNumber:number,bytes:number)=>void;
 }
 
 /**
@@ -43,6 +45,7 @@ export default function PdfPageCanvas({
   onError,
   acquireSlot,
   releaseSlot,
+  onBitmapBytes,
 }: Props) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -51,9 +54,9 @@ export default function PdfPageCanvas({
   const textLayerHostRef = useRef<HTMLDivElement | null>(null);
 
   // 回调每次渲染都是新身份，进了依赖数组就会把整页渲染打成死循环；用 ref 取最新值。
-  const callbacksRef = useRef({ acquireSlot, releaseSlot, onMeasured, onError });
+  const callbacksRef = useRef({ acquireSlot, releaseSlot, onMeasured, onError,onBitmapBytes });
   useEffect(() => {
-    callbacksRef.current = { acquireSlot, releaseSlot, onMeasured, onError };
+    callbacksRef.current = { acquireSlot, releaseSlot, onMeasured, onError,onBitmapBytes };
   });
 
   useEffect(() => {
@@ -63,6 +66,7 @@ export default function PdfPageCanvas({
 
     let cancelled = false;
     let holdingSlot = false;
+    const unregister=registerResourceMetrics(()=>({mountedPdfPages:1,pdfBitmapBytes:canvas.width*canvas.height*4}));
 
     void (async () => {
       const { acquireSlot: acquire, releaseSlot: release, onMeasured: measured, onError: failed } = callbacksRef.current;
@@ -81,6 +85,7 @@ export default function PdfPageCanvas({
 
         canvas.width = Math.max(1, Math.floor(viewport.width * dpr));
         canvas.height = Math.max(1, Math.floor(viewport.height * dpr));
+        callbacksRef.current.onBitmapBytes?.(pageNumber,canvas.width*canvas.height*4);
         canvas.style.width = `${viewport.width}px`;
         canvas.style.height = `${viewport.height}px`;
 
@@ -134,6 +139,9 @@ export default function PdfPageCanvas({
       textLayerRef.current = null;
       textLayerHostRef.current?.remove();
       textLayerHostRef.current = null;
+      canvas.width=0;canvas.height=0;
+      callbacksRef.current.onBitmapBytes?.(pageNumber,0);
+      unregister();
     };
   }, [pdf, pageNumber, displayWidth]);
 

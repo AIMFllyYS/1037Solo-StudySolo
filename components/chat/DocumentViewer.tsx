@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { FileText, FileDigit, LoaderCircle } from "lucide-react";
-import { useDocuments, getDocumentMarkdown } from "@/lib/hooks/useDocuments";
+import { useDocuments, getDocumentMarkdown, acquireDocumentBodyLease, hydrateDocumentBody, loadDocumentFull } from "@/lib/hooks/useDocuments";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { assembleDocumentMarkdown } from "@/lib/documents/types";
 import { MessageContent } from "@/components/chat/MessageContent";
@@ -21,6 +21,13 @@ export default function DocumentViewerLayer() {
     viewerId ? s.windows.find((win) => win.id === documentWindowId(viewerId))?.title : undefined,
   );
   const t = useT();
+
+  useEffect(() => {
+    if (!viewerId) return;
+    const release = acquireDocumentBodyLease(viewerId);
+    void hydrateDocumentBody(viewerId);
+    return release;
+  }, [viewerId]);
 
   if (!viewerId) return null;
 
@@ -66,7 +73,9 @@ function DocumentViewerSingle({ documentId }: { documentId: string }) {
       <button
         type="button"
         data-no-drag
-        onClick={() => downloadAsMarkdown(markdown, doc.spec.title)}
+        onClick={() => void loadDocumentFull(documentId).then((full) => {
+          if (full) downloadAsMarkdown(assembleDocumentMarkdown(full), full.spec.title);
+        }).catch(() => {})}
         title={t("window.common.downloadMarkdown")}
         className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]"
       >

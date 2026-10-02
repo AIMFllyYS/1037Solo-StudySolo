@@ -22,6 +22,8 @@ export interface ReviewCardContext {
   itemId?: string;
   /** 人类可读出处，如「大学物理 / 详解 / 1.1 质点运动学」。 */
   sourceLabel: string;
+  classSessionId?: string;
+  sourceSegmentIds?: string[];
 }
 
 /** /api/record 返回的成卡结果（不含出处，由前端合并）。 */

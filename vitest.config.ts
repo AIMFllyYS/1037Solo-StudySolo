@@ -11,7 +11,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     include: ["**/*.test.tsx"],
-    exclude: [".local-archive/**", "1037Solo-Classolo/**", "1037Solo-StudySolo/**", "node_modules/**", ".next/**", "build/**", "dist/**", "dist-desktop/**"],
+    exclude: [".local-archive/**", "1037Solo-Classolo/**", "1037Solo-StudySolo/**", "node_modules/**", ".next/**", ".next-class-verify/**", ".next-desktop-*/**", ".next-perf-*/**", "artifacts/performance/**", "runtime/search-worker/**", "build/**", "dist/**", "dist-desktop/**", "dist-desktop-staged-*/**"],
     setupFiles: ["./tests/helpers/vitest-setup.ts"],
     globals: true,
   },

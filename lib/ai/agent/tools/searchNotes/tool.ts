@@ -2,7 +2,7 @@ import { tool } from "ai";
 import { z } from "zod";
 import { findContentItem, searchAllContent, type ContentSearchScope } from "@/lib/content/loader";
 import { getIndexHealth } from "@/lib/ai/search/indexHealth";
-import { getLastSearchDiagnostics } from "@/lib/ai/search/hybridSearch";
+import type { SearchDiagnostics } from "@/lib/ai/search/hybridSearch";
 import {
   SEARCH_NOTES_HIT_LIMIT,
   type SearchHit,
@@ -151,6 +151,7 @@ async function searchClassNotes(
   query: string,
   crossYear?: boolean,
   subjectId?: string,
+  signal?: AbortSignal,
 ): Promise<SearchNotesOutput> {
   const health = searchNotesIo.getIndexHealth();
   if (!health.ok) {
@@ -161,6 +162,7 @@ async function searchClassNotes(
     ? `${found.subjectName} ${found.parentTitle ?? ""} ${found.item.title}`.replace(/\s+/g, " ").trim()
     : undefined;
   const yearScope: ContentSearchScope = crossYear ? "all" : ctx.academicYear;
+  const requestDiagnostics: { value: SearchDiagnostics | null } = { value: null };
   const run = (year: ContentSearchScope) =>
     searchNotesIo.searchAllContent(query, {
       limit: SEARCH_NOTES_HIT_LIMIT,
@@ -168,6 +170,8 @@ async function searchClassNotes(
       subjectId: subjectId || undefined,
       preferSubjectId: subjectId ? undefined : ctx.subjectId,
       queryContext,
+      signal,
+      onDiagnostics: (value) => { requestDiagnostics.value = value; },
     });
   let hits = await run(yearScope);
   let widened = false;
@@ -175,7 +179,7 @@ async function searchClassNotes(
     hits = await run("all");
     widened = hits.length > 0;
   }
-  const diag = getLastSearchDiagnostics();
+  const diag = requestDiagnostics.value;
   const diagnostics = diag
     ? {
         bm25Hits: diag.bm25Hits,
@@ -246,7 +250,7 @@ export function createSearchNotesTool(ctx: StudyToolContext, runtime: StudyToolR
       crossYear: z.boolean().optional().describe("true 时跨学年检索课堂笔记。医学基础常与大一化学/物理交叉，此时应打开。"),
       subjectId: z.string().optional().describe("限定科目 id，如 histology、biochemistry、anatomy。课堂与个人笔记都生效。"),
     }),
-    execute: async ({ query, id, scope, crossYear, subjectId }): Promise<SearchNotesOutput> => {
+    execute: async ({ query, id, scope, crossYear, subjectId }, { abortSignal }): Promise<SearchNotesOutput> => {
       const resolvedScope: SearchNotesScope = scope ?? "all";
       const noteId = id?.trim();
       if (noteId) {
@@ -272,7 +276,7 @@ export function createSearchNotesTool(ctx: StudyToolContext, runtime: StudyToolR
         return { text: "请提供检索短语（如「核糖体」），或 searchNotes(scope=\"personal\") 列出个人笔记。", hits: [] };
       }
 
-      const classOut = wantClass ? await searchClassNotes(ctx, runtime, q, crossYear, subjectId) : null;
+      const classOut = wantClass ? await searchClassNotes(ctx, runtime, q, crossYear, subjectId, abortSignal) : null;
       if (classOut && classOut.text.startsWith("检索索引未加载") && !wantPersonal) return classOut;
 
       const personalOut = wantPersonal ? searchPersonalNotes(ctx, runtime, q, subjectId) : null;

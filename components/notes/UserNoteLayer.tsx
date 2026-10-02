@@ -1,10 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
 import { useUserNotes } from "@/lib/stores/userNotes";
-import { useChatHistory } from "@/lib/stores/chatHistory";
-import { useNoteChangeProposals } from "@/lib/stores/noteChangeProposals";
-import { collectNoteChangeProposals } from "@/lib/notes/noteChangeProposal";
 import UserNoteEditorWindow from "@/components/notes/UserNoteEditorWindow";
 import ClassroomNoteWindow from "@/components/notes/ClassroomNoteWindow";
 import NoteLibraryWindow from "@/components/notes/NoteLibraryWindow";
@@ -22,17 +18,6 @@ function OpenNoteWindow({ noteId }: { noteId: string }) {
 export default function UserNoteLayer() {
   const openEditorIds = useUserNotes((s) => s.openEditorIds);
   const libraryOpen = useUserNotes((s) => s.libraryOpen);
-  const messagesById = useChatHistory((s) => s.messagesById);
-  const ingestAll = useNoteChangeProposals((s) => s.ingestAll);
-
-  // 只登记候选稿到收件箱（幂等，已应用/已取消的只恢复状态）。
-  // 真正的写入在用户点确认卡时发生，见 lib/stores/noteChangeProposals.ts。
-  useEffect(() => {
-    for (const [sessionId, messages] of Object.entries(messagesById)) {
-      if (!messages.length) continue;
-      ingestAll(collectNoteChangeProposals(messages, sessionId));
-    }
-  }, [messagesById, ingestAll]);
 
   return (
     <>

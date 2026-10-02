@@ -1,6 +1,7 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import UserNoteLayer from "./UserNoteLayer";
+import UserNoteProposalRuntime from './UserNoteProposalRuntime';
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { useChatHistory } from "@/lib/stores/chatHistory";
@@ -151,7 +152,7 @@ describe("personal note windows", () => {
     const id = createAndOpenNote("anatomy", { title: "被覆上皮", markdown: "旧稿" });
     const sessionId = useUserNotes.getState().ensureNoteAgentSession(id);
     expect(sessionId).toBeTruthy();
-    render(<UserNoteLayer />);
+    render(<><UserNoteProposalRuntime/><UserNoteLayer /></>);
 
     act(() => {
       useChatHistory.setState({

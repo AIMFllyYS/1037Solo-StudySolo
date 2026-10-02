@@ -20,6 +20,7 @@ export type SilentToolName =
   | 'render_ai_ask'
   | 'render_gen_ui'
   | 'render_agent_status'
+  | 'render_visual'
 
 /** 工具名 -> 渲染模块名。 */
 export const SILENT_TOOL_TO_MODULE: Readonly<Record<SilentToolName, string>> = {
@@ -28,6 +29,7 @@ export const SILENT_TOOL_TO_MODULE: Readonly<Record<SilentToolName, string>> = {
   render_ai_ask: 'ai-ask',
   render_gen_ui: 'gen-ui',
   render_agent_status: 'agent-status',
+  render_visual: 'visual',
 }
 
 /** 工具名 -> 默认投递目标（未显式指定 target 时生效）。 */
@@ -39,6 +41,7 @@ export const SILENT_TOOL_DEFAULT_TARGET: Readonly<
   render_ai_ask: 'transcript',
   render_gen_ui: 'notes',
   render_agent_status: 'notes',
+  render_visual: 'notes',
 }
 
 const targetSchema = z
@@ -81,6 +84,14 @@ export const silentToolInputSchemas = {
     detail: z.string().optional(),
     target: targetSchema.default('notes'),
     transcriptAnchor: anchorSchema,
+  }),
+  render_visual:z.object({
+    kind:z.enum(['svg','plot','molecule']).describe('svg=完整SVG，plot=函数表达式，molecule=SMILES'),
+    title:z.string().min(1).max(160),
+    content:z.string().min(1).max(30000),
+    plot:z.object({xmin:z.number().optional(),xmax:z.number().optional()}).optional(),
+    target:targetSchema.default('notes'),
+    transcriptAnchor:anchorSchema,
   }),
 } as const
 
@@ -148,7 +159,7 @@ export function silentToolToRender(
     module: moduleName,
     version: mod.version,
     target,
-    props: parsed.data,
+    props: moduleName==='ai-ask'?{...(parsed.data as {choices?:string[]}),assessmentId:ctx.id,questionType:(parsed.data as {choices?:string[]}).choices?.length?'choice':'open'}:parsed.data,
     meta: {
       createdAt: ctx.createdAt ?? Date.now(),
       source: ctx.source ?? 'silent-agent',
@@ -188,6 +199,11 @@ export function buildSilentTools() {
       description: '汇报静默 Agent 当前的分析状态。target 默认 notes。',
       inputSchema: silentToolInputSchemas.render_agent_status,
       execute: async (input) => ({ ok: true, ...input }),
+    }),
+    render_visual:tool({
+      description:'创建一张固定的 AI 示意图。SVG 要有完整 <svg> 根；函数用 plot 和表达式；分子只用 SMILES。只画可核对内容，不当作真实照片。',
+      inputSchema:silentToolInputSchemas.render_visual,
+      execute:async input=>({ok:true,...input}),
     }),
   }
 }

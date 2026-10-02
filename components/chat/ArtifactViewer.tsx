@@ -7,6 +7,8 @@
  * 完整链路见 lib/ai/agent/tools/renderInteractive/tool.ts 的路径地图。
  */
 import { Download, LoaderCircle, MonitorPlay } from "lucide-react";
+import { useEffect } from "react";
+import { acquireArtifactBodyLease, hydrateArtifactBody } from "@/lib/stores/artifacts";
 import { useArtifacts } from "@/lib/hooks/useArtifacts";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
@@ -30,13 +32,20 @@ export default function ArtifactViewer() {
   );
   const t = useT();
 
+  useEffect(() => {
+    if (!viewerId) return;
+    const release = acquireArtifactBodyLease(viewerId);
+    void hydrateArtifactBody(viewerId);
+    return release;
+  }, [viewerId]);
+
   if (!viewerId) return null;
 
   /**
    * 产物还没落盘（正在生成 / 生成失败 / 数据被清掉）：窗口照样开出来，画一张说明卡。
    * 以前这里直接 `return null`，于是从参考列点「演示」在生成完成前是一片空白 —— 看起来像坏了。
    */
-  if (!art) {
+  if (!art?.html) {
     return (
       <ManagedWindow
         windowId={artifactWindowId(viewerId)}

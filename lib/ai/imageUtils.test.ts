@@ -99,6 +99,16 @@ test("文档附件：DOCX 通过解析器提取正文，而不是只接受文件
   assert.equal(attachment.mimeType, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 });
 
+test("文档纯文本抽取不创建无人接管的预览 URL",async(t)=>{
+  const document=new Document({sections:[{children:[new Paragraph('仅索引正文')]}]})
+  const file=new File([Uint8Array.from(await Packer.toBuffer(document))],'index.docx',{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})
+  const create=t.mock.method(URL,'createObjectURL',()=>{throw new Error('text-only extraction must not create a URL')})
+  const attachment=await fileToDocumentAttachment(file,{includePreviewUrl:false})
+  assert.match(attachment.text,/仅索引正文/)
+  assert.equal(attachment.previewUrl,undefined)
+  assert.equal(create.mock.callCount(),0)
+})
+
 test("revokeAttachments：释放图片预览时不抛异常", () => {
   const previews: AttachmentPreview[] = [
     {

@@ -63,6 +63,8 @@ export interface StoredDocument {
   modelId?: string;
   createdAt: number;
   updatedAt: number;
+  /** Sections with Markdown are durably stored in a separate owner-scoped key. */
+  bodyRef?: true;
 }
 
 // ─── /api/document 请求 / 事件契约 ────────────────────────────────────────

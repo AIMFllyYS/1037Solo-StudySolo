@@ -69,6 +69,8 @@ export default function InlinePlayer({ video, onPip, startTime }: InlinePlayerPr
     <div className="relative h-full w-full">
       <MediaPlayer
         ref={ref}
+        load={startTime ? "eager" : "play"}
+        preload="metadata"
         src={resolveVideoSrc(video.src)}
         poster={poster || undefined}
         title={video.title}

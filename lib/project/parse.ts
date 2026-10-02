@@ -53,7 +53,7 @@ export async function extractFileText(file: File): Promise<string> {
     const slides = parsePptxSlideBytes(new Uint8Array(await file.arrayBuffer()));
     return slides.map((slide) => `## 第 ${slide.number} 页\n\n${slide.text}`).join("\n\n");
   }
-  const attachment = await fileToDocumentAttachment(file);
+  const attachment = await fileToDocumentAttachment(file,{includePreviewUrl:false});
   return HTML_EXTENSIONS.has(extension) ? htmlToPlainText(attachment.text) : attachment.text;
 }
 

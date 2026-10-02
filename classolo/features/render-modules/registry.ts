@@ -4,6 +4,8 @@ import { genUiModule } from './gen-ui'
 import { imageModule } from './image'
 import type { RenderModuleRegistry } from './manifest'
 import { richTextModule } from './rich-text'
+import {formulaModule} from './formula'
+import {visualModule} from './visual'
 
 /**
  * P0 模块逐步注册（image / rich-text / ai-ask / gen-ui / agent-status）。
@@ -15,4 +17,6 @@ export const renderModuleRegistry = {
   'agent-status': agentStatusModule,
   'ai-ask': aiAskModule,
   'gen-ui': genUiModule,
+  formula:formulaModule,
+  visual:visualModule,
 } as RenderModuleRegistry

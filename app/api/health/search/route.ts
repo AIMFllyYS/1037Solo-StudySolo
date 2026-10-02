@@ -12,6 +12,8 @@ export async function GET() {
     builtAt: manifest?.builtAt ?? null,
     chunkCount: manifest?.chunkCount ?? null,
     vectorCount: manifest?.vectorCount ?? null,
+    vectorCoverage: manifest?.chunkCount ? manifest.vectorCount / manifest.chunkCount : null,
+    partialVectorIndex: manifest ? manifest.vectorCount < manifest.chunkCount : null,
     model: manifest?.embeddingModel ?? null,
     dimension: manifest?.dimension ?? null,
     contentHash: manifest?.contentHash ?? null,

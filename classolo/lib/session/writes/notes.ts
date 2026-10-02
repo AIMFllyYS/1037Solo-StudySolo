@@ -5,15 +5,15 @@ export function patchNotesPublic(patch: Partial<NotesPublic>): void {
   notesPublicStore.setState((state) => {
     const nextDigest = patch.outlineDigest ?? state.outlineDigest
     const digestChanged = nextDigest !== state.outlineDigest
+    const progressChanged=patch.processedSegments!==undefined&&patch.processedSegments!==state.processedSegments
     return {
+      ...state,...patch,
       outlineDigest: nextDigest,
-      outlineVersion: digestChanged
-        ? state.outlineVersion + 1
-        : (patch.outlineVersion ?? state.outlineVersion),
+      outlineVersion: patch.outlineVersion ?? (digestChanged||progressChanged ? state.outlineVersion + 1 : state.outlineVersion),
     }
   })
 }
 
 export function resetNotesPublic(): void {
-  notesPublicStore.setState(initialNotesPublic)
+  notesPublicStore.setState(initialNotesPublic,true)
 }

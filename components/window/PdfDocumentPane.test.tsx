@@ -2,6 +2,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-libra
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import PdfDocumentPane from "./PdfDocumentPane";
 import { useAppMode } from "@/lib/stores/appMode";
+import {getResourceSnapshot} from '@/lib/performance/resourceMetrics';
 
 const pdfState = vi.hoisted(() => ({
   numPages: 4,
@@ -10,6 +11,9 @@ const pdfState = vi.hoisted(() => ({
   renders: 0,
   renderScales: [] as number[],
   rejectWith: null as { name: string; message: string } | null,
+  pendingLoad:false,
+  loadingDestroyed:0,
+  loadingStarted:0,
 }));
 
 vi.mock("pdfjs-dist/legacy/build/pdf.mjs", () => {
@@ -32,11 +36,14 @@ vi.mock("pdfjs-dist/legacy/build/pdf.mjs", () => {
   return {
     GlobalWorkerOptions: { workerSrc: "" },
     getDocument: () => {
+      pdfState.loadingStarted+=1;
+      if(pdfState.pendingLoad)return {promise:new Promise(()=>{}),destroy:()=>{pdfState.loadingDestroyed+=1;return Promise.resolve()}};
       if (pdfState.rejectWith) {
         const failure = Object.assign(new Error(pdfState.rejectWith.message), { name: pdfState.rejectWith.name });
-        return { promise: Promise.reject(failure) };
+        return { promise: Promise.reject(failure),destroy:()=>{pdfState.loadingDestroyed+=1;return Promise.resolve()} };
       }
       return {
+        destroy:()=>{pdfState.loadingDestroyed+=1;return Promise.resolve()},
         promise: Promise.resolve({
           numPages: pdfState.numPages,
           getPage: () => Promise.resolve(makePage()),
@@ -133,9 +140,11 @@ describe("PdfDocumentPane", () => {
     useAppMode.setState({ mode: "studio", lastStudioPath: "/", hydrated: true });
     FakeIntersectionObserver.instances = [];
     pdfState.numPages = 4;
+    pdfState.baseWidth=600;pdfState.baseHeight=800;
     pdfState.renders = 0;
     pdfState.renderScales = [];
     pdfState.rejectWith = null;
+    pdfState.pendingLoad=false;pdfState.loadingDestroyed=0;pdfState.loadingStarted=0;
   });
 
   afterEach(() => {
@@ -143,11 +152,19 @@ describe("PdfDocumentPane", () => {
     vi.unstubAllGlobals();
   });
 
+  it('destroys a still-loading PDF task when the viewer closes',async()=>{
+    pdfState.pendingLoad=true;
+    const {unmount}=render(<PdfDocumentPane src={SOURCE} name="pending.pdf"/>);
+    await waitFor(()=>expect(pdfState.loadingStarted).toBe(1));
+    unmount();
+    expect(pdfState.loadingDestroyed).toBe(1);
+  });
+
   it("连续页流：一次铺出全部页，每页各自挂一块画布", async () => {
     await renderPane();
 
     expect(screen.queryByText("正在载入 PDF…")).toBeNull();
-    // jsdom 没有 IntersectionObserver：走「全部挂载」兜底，宁可慢也不能白屏。
+    // Small PDFs fit within the no-IntersectionObserver current-page window.
     expect(document.querySelectorAll(".pdf-page-canvas")).toHaveLength(4);
     expect(pageElement(1)?.style.width).toBe(pageElement(4)?.style.width);
     expect(pdfState.renders).toBe(4);
@@ -231,4 +248,22 @@ describe("PdfDocumentPane", () => {
     expect(pageElement(2)?.querySelector(".pdf-page-canvas")).not.toBeNull();
     expect(pageElement(1)?.querySelector(".pdf-page-canvas")).toBeNull();
   });
+  it('keeps a 300-page PDF readable without mounting 300 bitmaps when IntersectionObserver is absent',async()=>{
+    pdfState.numPages=300;
+    await renderPane({waitForPages:false});
+    expect(document.querySelectorAll('[data-pdf-page]')).toHaveLength(300)
+    expect(document.querySelectorAll('.pdf-page-canvas').length).toBeLessThanOrEqual(4)
+    fireEvent.click(screen.getByRole('button',{name:'第 300 页'}))
+    await waitFor(()=>expect(pageElement(300)?.querySelector('.pdf-page-canvas')).not.toBeNull())
+    expect(document.querySelectorAll('.pdf-page-canvas').length).toBeLessThanOrEqual(6)
+  })
+  it('evicts far bitmaps when high-DPR pages exceed the per-reader byte target',async()=>{
+    pdfState.numPages=20;pdfState.baseWidth=1000;pdfState.baseHeight=1500;
+    Object.defineProperty(window,'devicePixelRatio',{configurable:true,value:3});
+    try{
+      await renderPane();
+      await waitFor(()=>expect(getResourceSnapshot().pdfBitmapBytes).toBeLessThanOrEqual(96*1024*1024));
+      expect(document.querySelectorAll('.pdf-page-canvas').length).toBeLessThanOrEqual(4)
+    }finally{delete (window as {devicePixelRatio?:number}).devicePixelRatio}
+  })
 });

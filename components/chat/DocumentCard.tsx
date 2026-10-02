@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useDocuments, getDocumentMarkdown } from '@/lib/hooks/useDocuments';
+import { useDocuments, getDocumentMarkdown, acquireDocumentBodyLease, hydrateDocumentBody } from '@/lib/hooks/useDocuments';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
@@ -40,6 +40,11 @@ interface DocumentCardProps {
 }
 
 export default function DocumentCard({ documentId, spec, modelId, unsupportedReason, autoStart = false, silent = false }: DocumentCardProps) {
+  useEffect(() => {
+    const release = acquireDocumentBodyLease(documentId);
+    void hydrateDocumentBody(documentId);
+    return release;
+  }, [documentId]);
   const doc = useDocuments((s) => s.byId[documentId]);
   const { create, openViewer, setSections, setSectionStatus, setSectionMarkdown, setStatus } = useDocuments();
   const [reasoning, setReasoning] = useState('');

@@ -3,61 +3,18 @@ import { parseBm25Index, tokenize, type RuntimeBm25Index } from "@/lib/ai/indexi
 import type { ScoredChunk } from "./vectorStoreTypes";
 import type { SearchFilter } from "./searchScope";
 import { chunkInScope } from "./searchScope";
-import { INDEX_FILES, readLocalIndexFile } from "./indexIo";
+import { INDEX_FILES, readLocalIndexFile,getChunkMetadataIndex,type SearchChunkMeta } from "./indexIo";
 import { searchLog, searchLogOnce } from "./searchLog";
+import {createIndexLoader} from './indexLoader';
+import {scoreBm25Core} from './worker/core.mjs';
 
 export { tokenize };
 
-interface ChunkMeta {
-  id: string;
-  path: string;
-  subjectId: string;
-  subjectName: string;
-  categoryId: string;
-  itemId: string;
-  title: string;
-  chunkIndex: number;
-  text: string;
-}
-
-let _bm25Index: RuntimeBm25Index | null = null;
-let _chunkMeta: Map<string, ChunkMeta> | null = null;
-let _loadAttempted = false;
-let _builtAt = "";
+interface LoadedBm25{index:RuntimeBm25Index;metaById:Map<string,SearchChunkMeta>}
 
 const MAX_JSON_CHARS = 400 * 1024 * 1024;
 
-function parseChunkMeta(raw: Buffer | null): Map<string, ChunkMeta> | null {
-  if (!raw) return null;
-  try {
-    const parsed = JSON.parse(raw.toString("utf8"));
-    const chunks = Array.isArray(parsed?.chunks) ? parsed.chunks : Array.isArray(parsed) ? parsed : [];
-    const map = new Map<string, ChunkMeta>();
-    for (const chunk of chunks) {
-      if (!chunk?.id) continue;
-      map.set(chunk.id, {
-        id: chunk.id,
-        path: chunk.path,
-        subjectId: chunk.subjectId,
-        subjectName: chunk.subjectName,
-        categoryId: chunk.categoryId,
-        itemId: chunk.itemId,
-        title: chunk.title,
-        chunkIndex: chunk.chunkIndex,
-        text: chunk.text,
-      });
-    }
-    return map;
-  } catch (err) {
-    searchLog.error("search.index.parse_error", { file: INDEX_FILES.chunksMeta, message: String((err as Error).message) });
-    return null;
-  }
-}
-
-async function loadIndexAsync(): Promise<RuntimeBm25Index | null> {
-  if (_loadAttempted) return _bm25Index;
-  _loadAttempted = true;
-
+function loadIndexOnce(): LoadedBm25 | null {
   const bm25Buf = readLocalIndexFile(INDEX_FILES.bm25);
   if (!bm25Buf) {
     searchLogOnce("error", "search.index.missing", "本地无 bm25.json", { file: INDEX_FILES.bm25 });
@@ -74,86 +31,36 @@ async function loadIndexAsync(): Promise<RuntimeBm25Index | null> {
   const started = Date.now();
   try {
     const parsed = JSON.parse(bm25Buf.toString("utf8"));
-    _bm25Index = parseBm25Index(parsed);
+    const index=parseBm25Index(parsed);
+    if(!index){searchLog.error("search.index.parse_error",{file:INDEX_FILES.bm25,message:"无法识别 BM25 索引格式"});return null}
+    const metaById=getChunkMetadataIndex().byId
+    searchLogOnce("info", "search.index.loaded", `BM25 已加载：${index.docCount} docs`, {
+      file: INDEX_FILES.bm25,bytes:bm25Buf.length,count:index.docCount,ms:Date.now()-started,
+    });
+    return {index,metaById}
   } catch (err) {
     searchLog.error("search.index.parse_error", { file: INDEX_FILES.bm25, message: String((err as Error).message) });
     return null;
   }
-  if (!_bm25Index) {
-    searchLog.error("search.index.parse_error", { file: INDEX_FILES.bm25, message: "无法识别 BM25 索引格式" });
-    return null;
-  }
-  _builtAt = _bm25Index.builtAt;
-  _chunkMeta = parseChunkMeta(readLocalIndexFile(INDEX_FILES.chunksMeta));
-
-  searchLogOnce("info", "search.index.loaded", `BM25 已加载：${_bm25Index.docCount} docs`, {
-    file: INDEX_FILES.bm25,
-    bytes: bm25Buf.length,
-    count: _bm25Index.docCount,
-    ms: Date.now() - started,
-  });
-  return _bm25Index;
 }
-
-const K1 = 1.5;
-const B = 0.75;
+const indexLoader=createIndexLoader(loadIndexOnce)
+export function retryBM25IndexLoad(){indexLoader.reset()}
 
 export async function bm25Search(
   query: string,
   topK: number,
   filter?: SearchFilter,
 ): Promise<ScoredChunk[]> {
-  const index = await loadIndexAsync();
-  if (!index) return [];
-
-  const queryTerms = tokenize(query);
-  if (!queryTerms.length) return [];
-
-  const scores: Record<string, number> = {};
-  const { avgDocLen, docCount, invertedIndex, docLengths } = index;
-
-  for (const term of queryTerms) {
-    const entry = invertedIndex[term];
-    if (!entry) continue;
-
-    const idf = Math.log((docCount - entry.df + 0.5) / (entry.df + 0.5) + 1);
-
-    for (const posting of entry.postings) {
-      const meta = _chunkMeta?.get(posting.id);
-      if (filter && !chunkInScope(meta?.subjectId ?? "", filter)) continue;
-      const docLen = docLengths[posting.id] || 1;
-      const tf = posting.tf;
-      const tfNorm = (tf * (K1 + 1)) / (tf + K1 * (1 - B + B * (docLen / avgDocLen)));
-      scores[posting.id] = (scores[posting.id] || 0) + idf * tfNorm;
-    }
-  }
-
-  const sortedIds = Object.entries(scores)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, topK);
-
-  return sortedIds.map(([id, score]) => {
-    const meta = _chunkMeta?.get(id);
-    return {
-      id,
-      path: meta?.path ?? id.split("#")[0],
-      subjectId: meta?.subjectId ?? "",
-      subjectName: meta?.subjectName ?? "",
-      categoryId: meta?.categoryId ?? "",
-      itemId: meta?.itemId ?? "",
-      title: meta?.title ?? "",
-      chunkIndex: meta?.chunkIndex ?? 0,
-      text: meta?.text ?? "",
-      score,
-    };
-  });
+  const loaded=await indexLoader.load();
+  if (!loaded) return [];
+  const {index,metaById}=loaded
+  return scoreBm25Core(index,metaById,query,topK,subjectId=>chunkInScope(subjectId,filter));
 }
 
 export async function isBM25IndexLoaded(): Promise<boolean> {
-  return (await loadIndexAsync()) !== null;
+  return (await indexLoader.load()) !== null;
 }
 
 export async function getBm25BuiltAt(): Promise<string> {
-  await loadIndexAsync();
-  return _builtAt;
+  return (await indexLoader.load())?.index.builtAt??'';
 }

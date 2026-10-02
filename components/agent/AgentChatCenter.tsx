@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import ChatPanel from "@/components/chat/ChatPanel";
 import AgentLinksPane from "@/components/agent/AgentLinksPane";
@@ -15,6 +15,29 @@ import { useSessionDerivedTotals } from "@/lib/hooks/useSessionDerivedTotals";
 import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useStore } from "@/lib/stores/ui";
+import { loadSessionSummary, type SessionSummary } from "@/lib/storage/sessionSummary";
+import { traceSourceKey, type SourceRound, type TraceSource } from "@/lib/chat/traceSources";
+import { mergeGeneratedImages, type AgentImageItem, type GeneratedImage } from "@/lib/agent/sessionImages";
+import { useImageGen } from "@/lib/stores/imageGen";
+
+function mergeRounds(older: SourceRound[], current: SourceRound[], offset: number): { rounds: SourceRound[]; sources: TraceSource[] } {
+  const seen = new Set<string>();
+  const rounds: SourceRound[] = [];
+  for (const [fromWindow, group] of [[false, older], [true, current]] as const) {
+    for (const round of group) {
+      const id = fromWindow ? round.id.replace(/^(\d+):/, (_, raw: string) => `${Number(raw) + offset}:`) : round.id;
+      const sources = round.sources.filter((source) => {
+        const key = traceSourceKey(source);
+        if (!key) return true;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      }).map((source) => ({ ...source, roundId: id }));
+      if (sources.length) rounds.push({ ...round, id, sources });
+    }
+  }
+  return { rounds, sources: rounds.flatMap((round) => round.sources) };
+}
 
 /**
  * Agent 中央对话（`/agent` 的内容）。左栏与右侧工作区分别由 AgentShell / AppShell 承载。
@@ -33,6 +56,9 @@ export default function AgentChatCenter() {
   const dockCollapsed = useStore((state) => state.agentDockCollapsed);
   const isMobile = useIsMobile();
   const activeSessionId = useChatHistory((state) => state.activeSessionId);
+  const windowStartIndex = useChatHistory((state) => activeSessionId ? state.sessionWindowById[activeSessionId]?.startIndex ?? 0 : 0);
+  const generatedSessions = useImageGen((state) => state.sessions);
+  const [summary, setSummary] = useState<SessionSummary | null>(null);
   // 「还有没有在窗口外的来源/产物」看 spine 合计：sources.length 只覆盖已加载窗口。
   const totals = useSessionDerivedTotals();
 
@@ -49,21 +75,50 @@ export default function AgentChatCenter() {
 
   const showSourcesPanel =
     !isMobile && dockCollapsed && sourcesPanelOpen && centerTab === "answer" && (totals.sources > 0 || totals.products > 0);
+  const wantsSummary = centerTab === "links" || centerTab === "images" || showSourcesPanel;
+  const visibleSummary = wantsSummary && summary?.sessionId === activeSessionId ? summary : null;
 
   // 明细清单只在对应视图开着时才扫消息：流式期 messages 每 tick 换新引用，
   // 三个 hook 无条件扫 = 每 tick 全量税（d2-P1-3）。开关用 spine 合计驱动，不吃这套扫描。
-  const { rounds, sources } = useSessionSourceRounds(undefined, centerTab === "links" || showSourcesPanel);
-  const products = useSessionProducts(undefined, showSourcesPanel);
-  const images = useSessionImages(centerTab === "images");
+  const currentSources = useSessionSourceRounds(undefined, centerTab === "links" || showSourcesPanel);
+  const currentProducts = useSessionProducts(undefined, showSourcesPanel);
+  const currentImages = useSessionImages(centerTab === "images");
 
-  // 「链接 / 图片 / 来源列」这类全量清单视图需要窗口外的轮次：
-  // 用户点开它们才物化整段会话（窗口化的「加载更多」同一套按需语义）。
   useEffect(() => {
-    const wantsFull = centerTab === "links" || centerTab === "images" || showSourcesPanel;
-    if (wantsFull && activeSessionId) {
-      void useChatHistory.getState().ensureSessionFullyLoaded(activeSessionId);
+    if (!wantsSummary || !activeSessionId) return;
+    const controller = new AbortController();
+    void loadSessionSummary(activeSessionId, controller.signal).then((value) => {
+      if (!controller.signal.aborted) setSummary(value);
+    }).catch(() => { if (!controller.signal.aborted) setSummary(null); });
+    return () => controller.abort();
+  }, [wantsSummary, activeSessionId]);
+
+  const { rounds, sources } = useMemo(() => mergeRounds(
+    visibleSummary?.sourceRefs.filter((ref) => ref.messageIndex < windowStartIndex).map((ref) => ref.round) ?? [],
+    currentSources.rounds,
+    windowStartIndex,
+  ), [visibleSummary, currentSources.rounds, windowStartIndex]);
+  const products = useMemo(() => {
+    const older = visibleSummary?.productRefs.filter((ref) => ref.messageIndex < windowStartIndex) ?? [];
+    const seen = new Set(older.map((item) => `${item.kind}:${item.id}`));
+    return [...older, ...currentProducts.filter((item) => !seen.has(`${item.kind}:${item.id}`))];
+  }, [visibleSummary, currentProducts, windowStartIndex]);
+  const images = useMemo(() => {
+    const older = visibleSummary?.imageRefs.filter((ref) => ref.messageIndex < windowStartIndex).map((ref) => ref.item) ?? [];
+    const seen = new Set(older.map((item) => item.src));
+    const base: AgentImageItem[] = [...older, ...currentImages.filter((item) => !seen.has(item.src))];
+    const generated: GeneratedImage[] = [];
+    const placeholders: AgentImageItem[] = [];
+    for (const ref of visibleSummary?.productRefs ?? []) {
+      if (ref.kind !== "image" || ref.messageIndex >= windowStartIndex) continue;
+      const session = generatedSessions[ref.id];
+      if (session?.status !== "done") continue;
+      if (session.bodyRef && !session.images.length) {
+        for (let index = 0; index < Math.max(1, session.count); index++) placeholders.push({ id: `gen:${session.id}:${index}`, kind: "generated", imageGenId: session.id, src: "", title: session.title, alt: session.prompt });
+      } else if (session.images.length) generated.push({ imageGenId: session.id, title: session.title, prompt: session.prompt, images: session.images });
     }
-  }, [centerTab, showSourcesPanel, activeSessionId]);
+    return [...mergeGeneratedImages(base, generated), ...placeholders].filter((item, index, all) => all.findIndex((other) => (other.src || other.id) === (item.src || item.id)) === index);
+  }, [visibleSummary, windowStartIndex, currentImages, generatedSessions]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -82,11 +137,11 @@ export default function AgentChatCenter() {
         <div className={clsx("h-full min-h-0", centerTab !== "answer" && "hidden")} data-testid="agent-center-answer">
           <ChatPanel chatContext={chatContext} hideHeader emptyLayout="agent" />
         </div>
-        {centerTab === "links" ? <AgentLinksPane rounds={rounds} sources={sources} /> : null}
+        {centerTab === "links" ? <AgentLinksPane rounds={rounds} sources={sources} sessionId={activeSessionId} unknownTools={visibleSummary?.unknownToolRefs} /> : null}
         {centerTab === "images" ? <AgentImagesPane images={images} /> : null}
       </div>
       {/* 常驻（不是条件渲染）：宽度过渡才能跑起来，见 AgentSourcePanel 的 open。 */}
-      <AgentSourcePanel rounds={rounds} sources={sources} products={products} open={showSourcesPanel} />
+      <AgentSourcePanel sessionId={activeSessionId} rounds={rounds} sources={sources} products={products} open={showSourcesPanel} />
     </div>
   );
 }

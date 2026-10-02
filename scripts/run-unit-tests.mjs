@@ -26,6 +26,8 @@ const SKIP_DIRS = new Set([
 ]);
 
 const SKIP_PATH_PREFIXES = [
+  "artifacts/performance",
+  "runtime/search-worker",
   "docs/refer/dist",
   // 原独立 Classolo 源码只读归档在仓库内（gitignored），不属于本项目测试面。
   "1037Solo-Classolo",
@@ -34,7 +36,7 @@ const SKIP_PATH_PREFIXES = [
 function shouldSkipDir(path) {
   const normalized = relative(".", path).replace(/\\/g, "/");
   const name = normalized.split("/").pop();
-  return SKIP_DIRS.has(name) || SKIP_PATH_PREFIXES.some((prefix) => normalized === prefix || normalized.startsWith(`${prefix}/`));
+  return SKIP_DIRS.has(name) || name.startsWith(".next-") || name.startsWith("dist-desktop-staged-") || SKIP_PATH_PREFIXES.some((prefix) => normalized === prefix || normalized.startsWith(`${prefix}/`));
 }
 
 function findTestFiles(dir, out = []) {

@@ -34,6 +34,11 @@ async function run(tool: ReturnType<typeof createSearchClassTranscriptTool>, inp
 afterEach(() => Object.assign(classTranscriptIo, realIo));
 
 describe("searchClassTranscript", () => {
+  test('uses the live tail when cloud reads fail and explicitly identifies that source',async()=>{
+    classTranscriptIo.loadSegments=async()=>{throw new Error('synthetic cloud outage')};
+    const out=await run(createSearchClassTranscriptTool(ctx(),createToolRuntime()),{query:'可导 连续'});
+    assert.equal(out.hits[0]?.segmentId,'live-1');assert.match(out.text,/本机实时文稿/);
+  });
   test("merges stored rows with the live tail so just-spoken segments are searchable", async () => {
     classTranscriptIo.loadSegments = async () => new Map([[CURRENT, [{ id: "db-1", seq: 1, text: "导数描述瞬时变化率。" }]]]);
     const out = await run(createSearchClassTranscriptTool(ctx(), createToolRuntime()), { query: "可导 连续" });

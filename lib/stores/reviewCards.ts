@@ -62,6 +62,8 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
           categoryId: ctx.categoryId,
           itemId: ctx.itemId,
           sourceLabel: ctx.sourceLabel,
+          classSessionId:ctx.classSessionId,
+          sourceSegmentIds:ctx.sourceSegmentIds,
           originalText,
           cardType: "qa",
           front: "",

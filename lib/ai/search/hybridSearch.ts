@@ -1,7 +1,6 @@
 import { billableJsonFetch } from "@/lib/billing/billableFetch";
 // 混合检索 + Rerank：并行 BM25 + 向量 → RRF 合并 → rerank API 精排 → MultiSearchHit[]
-import { bm25Search, getBm25BuiltAt, isBM25IndexLoaded } from "./bm25Store";
-import { vectorSearch, isVectorIndexLoaded, getVectorIndexModel } from "./vectorStore";
+import {searchLocalIndex,localSearchAvailability,localVectorModel,localIndexBuiltAt} from './searchService';
 import type { ScoredChunk } from "./vectorStoreTypes";
 import { getQueryEmbeddingClient } from "@/lib/ai/embedding";
 import { mainUsedPlatformCredentials, settleUsage } from "@/lib/billing/usageLedger";
@@ -15,10 +14,21 @@ import { normalizeSearchQuery } from "./queryNormalize";
 import { shortTitleForIndex } from "@/lib/ai/indexing/bm25Index";
 import type { SearchFilter } from "./searchScope";
 import { searchLog } from "./searchLog";
+import {INDEX_FILES,parseManifest,readLocalIndexFile} from './indexIo';
 
 export type { SearchFilter } from "./searchScope";
 
 type SearchMode = "hybrid" | "vector" | "keyword";
+const bm25Search=(query:string,topK:number,filter:SearchFilter,signal?:AbortSignal)=>searchLocalIndex({mode:'keyword',query,topK,filter,signal})
+const vectorSearch=(vector:number[],topK:number,filter:SearchFilter,signal?:AbortSignal)=>searchLocalIndex({mode:'vector',query:'',queryVector:vector,topK,filter,signal})
+const isBM25IndexLoaded=async()=>localSearchAvailability('keyword')
+const isVectorIndexLoaded=async()=>localSearchAvailability('vector')
+const getVectorIndexModel=async()=>localVectorModel()
+const getBm25BuiltAt=async()=>localIndexBuiltAt()??''
+function indexBuiltAtFor(mode:SearchMode):Promise<string|undefined>{
+  if(mode==='vector')return Promise.resolve(parseManifest(readLocalIndexFile(INDEX_FILES.manifest))?.builtAt)
+  return getBm25BuiltAt().then(value=>value||undefined)
+}
 
 const PREFER_SUBJECT_MIN_HITS = 3;
 const SNIPPET_CHARS = 400;
@@ -37,10 +47,8 @@ export interface SearchDiagnostics {
   rerankError?: string;
 }
 
-let lastDiagnostics: SearchDiagnostics | null = null;
-
-export function getLastSearchDiagnostics(): SearchDiagnostics | null {
-  return lastDiagnostics;
+function throwIfAborted(signal?: AbortSignal): void {
+  if (signal?.aborted) throw Object.assign(new Error("Search cancelled"), { name: "AbortError" });
 }
 
 function getSearchMode(): SearchMode {
@@ -53,17 +61,19 @@ export interface HybridSearchOptions extends SearchFilter {
   topK?: number;
   /** 当前页面标题，用于短查询向量扩展（不拼入 BM25）。 */
   queryContext?: string;
+  signal?: AbortSignal;
 }
 
 function resolveOptions(
   topKOrOpts?: number | HybridSearchOptions,
-): { topK: number; filter: SearchFilter; queryContext?: string } {
+): { topK: number; filter: SearchFilter; queryContext?: string; signal?: AbortSignal } {
   if (typeof topKOrOpts === "number" || topKOrOpts === undefined) {
     return { topK: topKOrOpts ?? 5, filter: {} };
   }
   return {
     topK: topKOrOpts.topK ?? 5,
     queryContext: topKOrOpts.queryContext,
+    signal: topKOrOpts.signal,
     filter: {
       academicYear: topKOrOpts.academicYear,
       subjectId: topKOrOpts.subjectId,
@@ -131,6 +141,7 @@ async function rerank(
   query: string,
   documents: string[],
   topN: number,
+  signal?: AbortSignal,
 ): Promise<Array<{ index: number; relevance_score: number }>> {
   const ep = getCapabilityEndpoints();
   const resolved = resolveCapabilityEndpoint({
@@ -159,7 +170,7 @@ async function rerank(
         top_n: topN,
         return_documents: false,
       }),
-      signal: AbortSignal.timeout(RERANK_TIMEOUT_MS),
+      signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(RERANK_TIMEOUT_MS)]) : AbortSignal.timeout(RERANK_TIMEOUT_MS),
     }, { model, kind: "rerank", byok: !resolved.usedPlatformCredentials });
 
     if (!resp.ok) {
@@ -170,6 +181,7 @@ async function rerank(
     await settleRerankUsage(json, model, documents.length, "siliconflow", resolved.usedPlatformCredentials);
     return json.results ?? [];
   } catch (err) {
+    throwIfAborted(signal);
     if (!resolved.usedPlatformCredentials) throw err;
     const zhipuBaseUrl = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
     const zhipuKey = process.env.ZHIPU_API_KEY || "";
@@ -188,7 +200,7 @@ async function rerank(
           top_n: topN,
           return_documents: false,
         }),
-        signal: AbortSignal.timeout(RERANK_TIMEOUT_MS),
+        signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(RERANK_TIMEOUT_MS)]) : AbortSignal.timeout(RERANK_TIMEOUT_MS),
       }, { model: zhipuModel, kind: "rerank" });
 
       if (!resp.ok) {
@@ -230,8 +242,13 @@ async function retrieve(
   topK: number,
   filter: SearchFilter,
   mode: SearchMode,
+  signal?: AbortSignal,
 ): Promise<{ hits: MultiSearchHit[]; diagnostics: Omit<SearchDiagnostics, "ms" | "filter" | "mode"> }> {
-  const [hasVectorIndex, hasBM25Index] = await Promise.all([isVectorIndexLoaded(), isBM25IndexLoaded()]);
+  throwIfAborted(signal);
+  const [hasVectorIndex, hasBM25Index] = await Promise.all([
+    mode==='keyword'?Promise.resolve(false):isVectorIndexLoaded(),
+    mode==='vector'?Promise.resolve(false):isBM25IndexLoaded(),
+  ]);
   if (!hasVectorIndex && !hasBM25Index) {
     return {
       hits: [],
@@ -259,21 +276,23 @@ async function retrieve(
     ? (async () => {
         const indexModel = await getVectorIndexModel();
         const embeddingClient = getQueryEmbeddingClient(indexModel);
-        return embeddingClient.embed(vectorQuery);
+        throwIfAborted(signal);
+        return embeddingClient.embed(vectorQuery, signal);
       })()
     : null;
   const vecSearch = (f: SearchFilter) =>
-    embedOnce!.then((q) => vectorSearch(q, 40, f)).then(
+    embedOnce!.then((q) => { throwIfAborted(signal); return vectorSearch(q, 40, f, signal); }).then(
       (results) => ({ ok: true as const, results }),
       (error: unknown) => ({ ok: false as const, error }),
     );
 
   const [bm25Results, prefBm25, vecOutcome, prefVecOutcome] = await Promise.all([
-    mode !== "vector" && hasBM25Index ? bm25Search(retrievalQuery, 40, filter) : Promise.resolve(null),
-    mode !== "vector" && hasBM25Index && prefFilter ? bm25Search(retrievalQuery, 40, prefFilter) : Promise.resolve(null),
+    mode !== "vector" && hasBM25Index ? bm25Search(retrievalQuery, 40, filter, signal) : Promise.resolve(null),
+    mode !== "vector" && hasBM25Index && prefFilter ? bm25Search(retrievalQuery, 40, prefFilter, signal) : Promise.resolve(null),
     wantVector ? vecSearch(filter) : Promise.resolve(null),
     wantVector && prefFilter ? vecSearch(prefFilter) : Promise.resolve(null),
   ]);
+  throwIfAborted(signal);
 
   if (bm25Results) {
     bm25Hits = bm25Results.length;
@@ -283,6 +302,7 @@ async function retrieve(
 
   const vecError = vecOutcome && !vecOutcome.ok ? vecOutcome.error : prefVecOutcome && !prefVecOutcome.ok ? prefVecOutcome.error : null;
   if (vecError != null) {
+    throwIfAborted(signal);
     embedError = vecError instanceof Error ? vecError.message : String(vecError);
     const statusMatch = embedError.match(/\b(\d{3})\b/);
     searchLog.error("search.embed.error", {
@@ -307,7 +327,7 @@ async function retrieve(
         merged: 0,
         reranked: 0,
         final: 0,
-        indexBuiltAt: await getBm25BuiltAt(),
+        indexBuiltAt: await indexBuiltAtFor(mode),
         embedError,
       },
     };
@@ -335,17 +355,21 @@ async function retrieve(
 
   if (mode !== "keyword") {
     try {
+      throwIfAborted(signal);
       const rerankResults = await rerank(
         retrievalQuery,
         candidates.map((c) => `${shortTitleForIndex(c.title)}\n${c.text}`),
         preferSubject ? Math.max(topK, 8) * 2 : Math.max(topK, 8),
+        signal,
       );
+      throwIfAborted(signal);
       scoredPool = rerankResults.map((r) => ({
         ...candidates[r.index],
         score: r.relevance_score,
       }));
       reranked = scoredPool.length;
     } catch (err) {
+      throwIfAborted(signal);
       rerankError = err instanceof Error ? err.message : String(err);
       const statusMatch = rerankError.match(/\b(\d{3})\b/);
       searchLog.error("search.rerank.error", {
@@ -377,28 +401,29 @@ async function retrieve(
       merged: merged.length,
       reranked,
       final: hits.length,
-      indexBuiltAt: await getBm25BuiltAt(),
+      indexBuiltAt: await indexBuiltAtFor(mode),
       embedError,
       rerankError,
     },
   };
 }
 
-export async function hybridSearch(
+export async function hybridSearchWithDiagnostics(
   query: string,
   topKOrOpts: number | HybridSearchOptions = 5,
-): Promise<MultiSearchHit[]> {
+): Promise<{ hits: MultiSearchHit[]; diagnostics: SearchDiagnostics }> {
   const started = Date.now();
-  const { topK, filter, queryContext } = resolveOptions(topKOrOpts);
+  const { topK, filter, queryContext, signal } = resolveOptions(topKOrOpts);
+  throwIfAborted(signal);
   const mode = getSearchMode();
   const retrievalQuery = normalizeSearchQuery(query);
   const vectorQuery = expandShortQuery(retrievalQuery, queryContext);
 
-  const run = (nextFilter: SearchFilter) => retrieve(retrievalQuery, vectorQuery, topK, nextFilter, mode);
+  const run = (nextFilter: SearchFilter) => retrieve(retrievalQuery, vectorQuery, topK, nextFilter, mode, signal);
 
   const result = await run(filter);
 
-  lastDiagnostics = {
+  const diagnostics: SearchDiagnostics = {
     mode,
     filter,
     ms: Date.now() - started,
@@ -406,15 +431,19 @@ export async function hybridSearch(
   };
   searchLog.info("search.query", {
     mode,
-    bm25Hits: lastDiagnostics.bm25Hits,
-    vecHits: lastDiagnostics.vecHits,
-    merged: lastDiagnostics.merged,
-    reranked: lastDiagnostics.reranked,
-    final: lastDiagnostics.final,
+    bm25Hits: diagnostics.bm25Hits,
+    vecHits: diagnostics.vecHits,
+    merged: diagnostics.merged,
+    reranked: diagnostics.reranked,
+    final: diagnostics.final,
     filter,
-    ms: lastDiagnostics.ms,
-    embedError: lastDiagnostics.embedError,
-    rerankError: lastDiagnostics.rerankError,
+    ms: diagnostics.ms,
+    embedError: diagnostics.embedError,
+    rerankError: diagnostics.rerankError,
   });
-  return result.hits;
+  return { hits: result.hits, diagnostics };
+}
+
+export async function hybridSearch(query: string, topKOrOpts: number | HybridSearchOptions = 5): Promise<MultiSearchHit[]> {
+  return (await hybridSearchWithDiagnostics(query, topKOrOpts)).hits;
 }

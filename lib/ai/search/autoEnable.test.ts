@@ -29,6 +29,11 @@ describe("shouldAutoEnableSearch：需要搜索就自动联网", () => {
     }
   });
 
+  test("明确要求图片检索时为本轮开放联网工具", () => {
+    assert.equal(shouldAutoEnableSearch("请调用 imageSearch 检索图片并解释第一心音"), true);
+    assert.equal(shouldAutoEnableSearch("搜索图片来说明瓣膜位置"), true);
+  });
+
   test("含「最新」但其实是讲解的，排除", () => {
     assert.equal(shouldAutoEnableSearch("讲讲最新的研究进展是什么"), false);
     assert.equal(shouldAutoEnableSearch("讲解一下这个机制"), false);

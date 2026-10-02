@@ -8,6 +8,7 @@
 
 | 计划 | 说明 |
 |---|---|
+| [`2026-10-02-class-systematic-repair.md`](./2026-10-02-class-systematic-repair.md) | Class全链路修复执行计划：可靠录音与保存、增量导图、学科公式、题答视觉、笔记和移动工作台（进行中） |
 | [`2026-10-02-memory-performance-optimization-spec.md`](./2026-10-02-memory-performance-optimization-spec.md) | 系统内存与性能优化执行规格：会话/存储/资源/检索Worker/同步/内容边界及验收（待实施） |
 | [`agent-right-panel-unification.md`](./agent-right-panel-unification.md) | 右栏统一：现状分析与选型（改造前快照） |
 | [`agent-right-panel-unification.execution.md`](./agent-right-panel-unification.execution.md) | 右栏统一的落地记录（含附一～附十一） |
