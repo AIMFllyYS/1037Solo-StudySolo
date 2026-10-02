@@ -1,39 +1,47 @@
 'use client'
 
 import {useEffect,useRef,useState,type ReactNode} from 'react'
+import {Map,MessageCircleQuestion,NotebookPen,ScrollText} from 'lucide-react'
+import {Panel,PanelGroup,PanelResizeHandle} from 'react-resizable-panels'
 import {AppActivityBar} from './app-activity-bar'
 import {AppNavbar} from './app-navbar'
 
-export type ClassWorkspaceTab='notes'|'transcript'|'map'|'resources'|'ask'
 export interface WorkbenchShellProps{
-  nav?:ReactNode
-  note?:ReactNode
   transcript?:ReactNode
-  notes?:ReactNode
-  transcriptRender?:ReactNode
-  notesRender?:ReactNode
+  mindmap?:ReactNode
+  materials?:ReactNode
   ask?:ReactNode
+  askOpen?:boolean
+  onAskOpenChange?:(value:boolean)=>void
+  onOpenNotes?:()=>void
   chrome?:boolean
-  selected?:ClassWorkspaceTab
-  onSelect?:(tab:ClassWorkspaceTab)=>void
 }
-const tabs:{id:ClassWorkspaceTab;label:string}[]=[{id:'notes',label:'笔记'},{id:'transcript',label:'文稿'},{id:'map',label:'导图'},{id:'resources',label:'资料'}]
 
-/** One focused workspace; width is measured from its container, not the browser window. */
-export function WorkbenchShell({note,transcript,notes,transcriptRender,notesRender,ask,chrome=true,selected='transcript',onSelect}:WorkbenchShellProps){
+/** Transcript, map and materials share one surface; resizing never hides their state. */
+export function WorkbenchShell({transcript,mindmap,materials,ask,askOpen=false,onAskOpenChange,onOpenNotes,chrome=true}:WorkbenchShellProps){
   const host=useRef<HTMLDivElement>(null)
   const [compact,setCompact]=useState(false)
-  const [compareOpen,setCompareOpen]=useState(false)
   useEffect(()=>{
     const element=host.current;if(!element)return
-    const observer=new ResizeObserver(entries=>setCompact((entries[0]?.contentRect.width??element.clientWidth)<720))
+    const observer=new ResizeObserver(entries=>setCompact((entries[0]?.contentRect.width??element.clientWidth)<740))
     observer.observe(element);return()=>observer.disconnect()
   },[])
-  const content=selected==='notes'?note:selected==='transcript'?transcript:selected==='map'?notes:selected==='resources'?<div className="grid min-h-0 gap-5 overflow-auto p-4"><section aria-label="课堂练习与文稿补充"><h2 className="mb-2 text-xs font-semibold text-[color:var(--ink-soft)]">课堂练习与文稿补充</h2>{transcriptRender}</section><section aria-label="资料与解析"><h2 className="mb-2 text-xs font-semibold text-[color:var(--ink-soft)]">资料与解析</h2>{notesRender}</section></div>:ask
-  const workspace=<div ref={host} className="flex h-full min-h-0 w-full flex-col bg-[color:var(--bg-panel)]" data-slot="workbench-shell" data-compact={compact}>
-    <div role="tablist" aria-label="课堂工作区" className="hidden shrink-0 gap-1 border-b border-[color:var(--line-soft)] px-3 py-2 md:flex">{tabs.map(tab=><button key={tab.id} role="tab" aria-selected={selected===tab.id} type="button" className={`rounded-md px-3 py-1.5 text-[12px] ${selected===tab.id?'bg-[color:var(--accent-weak)] font-semibold text-[color:var(--accent-ink)]':'text-[color:var(--ink-soft)] hover:bg-[color:var(--bg-muted)]'}`} onClick={()=>onSelect?.(tab.id)}>{tab.label}</button>)}{selected!=='transcript'&&selected!=='ask'&&<button type="button" className="ml-auto rounded-md px-2 text-[11px] text-[color:var(--ink-soft)] hover:bg-[color:var(--bg-muted)]" onClick={()=>setCompareOpen(value=>!value)}>{compareOpen?'关闭对照':'对照文稿'}</button>}</div>
-    <div role="tabpanel" className="flex min-h-0 flex-1 overflow-hidden"><div className="min-w-0 flex-1 overflow-hidden">{content}</div>{compareOpen&&selected!=='transcript'&&selected!=='ask'&&<aside aria-label="临时文稿对照" className="hidden w-[38%] min-w-64 border-l border-[color:var(--line-soft)] md:block"><div className="h-full p-3">{transcript}</div></aside>}</div>
-    <nav aria-label="手机课堂导航" className="grid shrink-0 grid-cols-4 border-t border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] pb-[env(safe-area-inset-bottom)] md:hidden">{[...tabs.filter(tab=>tab.id!=='resources'),{id:'ask' as const,label:'提问'}].map(tab=><button key={tab.id} type="button" aria-current={selected===tab.id?'page':undefined} onClick={()=>onSelect?.(tab.id)} className={`min-h-12 text-[12px] ${selected===tab.id?'font-semibold text-[color:var(--accent)]':'text-[color:var(--ink-soft)]'}`}>{tab.label}</button>)}</nav>
+  const jump=(id:string)=>document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})
+  const workspace=<div ref={host} data-slot="workbench-shell" data-compact={compact} className="relative flex h-full min-h-0 w-full flex-col bg-[color:var(--bg-panel)]">
+    {compact?<div className="ss-class-mobile-stack min-h-0 flex-1 overflow-auto">
+      <section id="class-transcript-panel" aria-label="课堂文稿" className="ss-class-transcript-panel min-h-[48vh]">{transcript}</section>
+      <section id="class-map-panel" aria-label="课堂导图" className="ss-class-map-panel min-h-[48vh]"><header><Map className="size-3.5"/><strong>课堂导图</strong><span>可拖动、缩放和回跳文稿</span></header><div className="min-h-[40vh] flex-1">{mindmap}</div></section>
+      <div className="ss-class-mobile-material">{materials}</div>
+    </div>:<div className="relative min-h-0 flex-1">
+      <PanelGroup direction="vertical" autoSaveId="ss-class-main-v4" className="h-full min-h-0">
+        <Panel defaultSize={40} minSize={25} className="min-h-0"><section id="class-transcript-panel" aria-label="课堂文稿" className="ss-class-transcript-panel h-full min-h-0">{transcript}</section></Panel>
+        <PanelResizeHandle className="ss-class-split-handle" aria-label="调整文稿与导图高度"/>
+        <Panel defaultSize={60} minSize={23} className="min-h-0"><section id="class-map-panel" aria-label="课堂导图" className="ss-class-map-panel h-full min-h-0"><header><Map className="size-3.5"/><strong>课堂导图</strong><span>可拖动、缩放和回跳文稿</span></header><div className="min-h-0 flex-1">{mindmap}</div></section></Panel>
+      </PanelGroup>
+      {materials}
+    </div>}
+    {compact?<nav aria-label="课堂快速操作" className="ss-class-quick-actions"><button type="button" onClick={()=>jump('class-transcript-panel')}><ScrollText className="size-4"/>文稿</button><button type="button" onClick={()=>jump('class-map-panel')}><Map className="size-4"/>导图</button><button type="button" onClick={onOpenNotes}><NotebookPen className="size-4"/>笔记</button><button type="button" onClick={()=>onAskOpenChange?.(true)}><MessageCircleQuestion className="size-4"/>提问</button></nav>:null}
+    {compact&&askOpen?<div className="ss-class-ask-overlay" role="dialog" aria-label="课堂助教"><button type="button" className="ss-class-ask-close" onClick={()=>onAskOpenChange?.(false)}>返回课堂</button><div className="min-h-0 flex-1">{ask}</div></div>:null}
   </div>
   if(!chrome)return workspace
   return <div className="flex h-screen min-h-0 w-full flex-col bg-background"><AppNavbar/><div className="flex min-h-0 flex-1"><AppActivityBar/><div className="min-h-0 min-w-0 flex-1">{workspace}</div></div></div>

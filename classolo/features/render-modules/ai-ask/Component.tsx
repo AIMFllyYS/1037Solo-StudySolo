@@ -29,11 +29,11 @@ export function AiAskModule({ props, message, onAnchorClick }: { props: Props; m
   const transcript = getTranscriptPublic()
   const sourceChanged = last?.evidenceIds.some(id => transcript.committed.find(row => row.id === id)?.correctionRevision !== last.sourceRevisions[id]) ?? false
 
-  async function submit() {
-    if (busy.current || (choices.length > 0 && picked === null) || (choices.length === 0 && !response.trim())) return
+  async function submit(reveal=false) {
+    if (busy.current || (!reveal && ((choices.length > 0 && picked === null) || (choices.length === 0 && !response.trim())))) return
     const owner = getClassUserId(), sessionId = transcript.sessionId
     if (!owner || !sessionId) return
-    const studentResponse = choices.length > 0 ? `${String.fromCharCode(65 + picked!)}. ${choices[picked!]}` : response.trim()
+    const studentResponse = reveal?'（未作答，直接查看参考答案）':choices.length > 0 ? `${String.fromCharCode(65 + picked!)}. ${choices[picked!]}` : response.trim()
     const sources = questionEvidence(transcript.committed, message.meta.transcriptAnchor)
     busy.current = true; setWorking(true); setPartial(''); setError('')
     try {
@@ -58,9 +58,9 @@ export function AiAskModule({ props, message, onAnchorClick }: { props: Props; m
     <p className="font-medium text-[color:var(--ink)]">随堂提问</p>
     <MarkdownStream markdown={props.question} className="mt-1 text-[color:var(--ink)]" />
     {choices.length ? <div role="radiogroup" aria-label="选项" className="mt-2 flex flex-col gap-1.5">{choices.map((choice,index)=><button key={`${index}-${choice}`} type="button" role="radio" aria-checked={picked===index} onClick={()=>setPicked(index)} className={`flex items-start gap-2 rounded-md border px-2.5 py-1.5 text-left ${picked===index?'border-[color:var(--accent)] bg-[color:var(--accent-weak)]':'border-[color:var(--line-soft)]'}`}><span className="font-mono text-[11px]">{String.fromCharCode(65+index)}</span><MarkdownStream markdown={choice} className="min-w-0 flex-1 [&_p]:my-0"/></button>)}</div> : <textarea aria-label="我的回答" value={response} onChange={event=>setResponse(event.target.value)} maxLength={4000} className="mt-2 min-h-16 w-full rounded-md border border-[color:var(--line-soft)] bg-[color:var(--bg-app)] p-2" placeholder="写下你的理解，再查看参考答案"/>}
-    <button type="button" disabled={working || (choices.length>0?picked===null:!response.trim())} onClick={()=>void submit()} className="mt-2 rounded-md bg-[color:var(--accent)] px-2.5 py-1.5 text-[12px] text-[color:var(--md-sys-color-on-primary)] disabled:opacity-40">{working?'正在结合文稿回答…':last?'再次作答':'提交并查看答案'}</button>
+    <div className="mt-2 flex flex-wrap gap-1.5"><button type="button" disabled={working || (choices.length>0?picked===null:!response.trim())} onClick={()=>void submit()} className="ss-tool">{working?'正在结合文稿回答…':last?'再次作答':'提交并查看答案'}</button>{!last&&<button type="button" disabled={working} onClick={()=>void submit(true)} className="ss-tool">直接看参考答案</button>}</div>
     {error&&<p role="alert" className="mt-2 text-[color:var(--error)]">{error}</p>}
     {working&&partial&&<div role="status" className="mt-3 rounded-md bg-[color:var(--bg-muted)] p-2"><MarkdownStream markdown={partial}/></div>}
-    {last&&<section className="mt-3 rounded-md border border-[color:var(--line-soft)] p-2" aria-label="本题答案"><p className="text-[11px] text-[color:var(--ink-faint)]">最近作答：{last.response}</p><MarkdownStream markdown={last.answer} className="mt-1"/>{sourceChanged&&<p role="status" className="text-[11px]">文稿已更正，请重新核对本题解释。</p>}{last.evidenceIds.length?<div className="mt-2 flex flex-wrap gap-2 text-[11px]">依据文稿：{last.evidenceIds.map(id=><button type="button" key={id} className="underline" onClick={()=>onAnchorClick?.(id)}>{id.slice(0,8)}</button>)}</div>:<p className="mt-2 text-[11px] text-[color:var(--ink-faint)]">本题没有可核对的文稿引用；解释属于助教补充。</p>}<button type="button" className="mt-2 text-[11px] underline" onClick={followUp}>向课堂助教追问</button></section>}
+    {last&&<section className="mt-3 rounded-md border border-[color:var(--line-soft)] p-2" aria-label="本题答案"><p className="text-[11px] text-[color:var(--ink-faint)]">最近作答：{last.response}</p><MarkdownStream markdown={last.answer} className="mt-1"/>{sourceChanged&&<p role="status" className="text-[11px]">文稿已更正，请重新核对本题解释。</p>}{last.evidenceIds.length?<div className="mt-2 flex flex-wrap items-center gap-2 text-[11px]">依据文稿：{last.evidenceIds.map(id=><button type="button" key={id} className="ss-tool" onClick={()=>onAnchorClick?.(id)}>{id.slice(0,8)}</button>)}</div>:<p className="mt-2 text-[11px] text-[color:var(--ink-faint)]">本题没有可核对的文稿引用；解释属于助教补充。</p>}<button type="button" className="ss-tool mt-2" onClick={followUp}>向课堂助教追问</button></section>}
   </div>
 }

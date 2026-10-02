@@ -41,22 +41,23 @@ export function buildClassNoteMarkdown(input:{sessionId:string;title:string;tran
 }
 
 /** Stable one-note linkage. Edited generated text is never silently overwritten. */
-export function saveClassNote(input:{ownerId:string;sessionId:string;noteId?:string;title:string;subjectId:string;markdown:string}):{id:string;status:'created'|'updated'|'proposal'|'unchanged'}{
+export function saveClassNote(input:{ownerId:string;sessionId:string;noteId?:string;title:string;subjectId:string;markdown:string;openEditor?:boolean}):{id:string;status:'created'|'updated'|'proposal'|'unchanged'}{
   const notes=useUserNotes.getState()
+  const open=(id:string)=>{if(input.openEditor!==false)notes.openEditor(id)}
   if(!notes._hasHydrated)throw new Error('笔记库正在恢复，请稍后再保存')
   const owned=Object.values(notes.byId).filter(note=>note.source?.kind==='class'&&note.source.sessionId===input.sessionId&&note.source.ownerId===input.ownerId)
   const existing=(input.noteId?notes.byId[input.noteId]:undefined)
   const note=existing?.source?.ownerId===input.ownerId&&existing.source.sessionId===input.sessionId?existing:owned[0]
   const hash=fingerprint(input.markdown),generated=`${START}\n${input.markdown}\n${END}`
-  if(!note){const id=notes.createNote(input.subjectId,{title:input.title,markdown:`${generated}\n\n## 我的补充\n`,source:{kind:'class',label:input.title,sessionId:input.sessionId,ownerId:input.ownerId,generatedHash:hash}});notes.openEditor(id);return {id,status:'created'}}
+  if(!note){const id=notes.createNote(input.subjectId,{title:input.title,markdown:`${generated}\n\n## 我的补充\n`,source:{kind:'class',label:input.title,sessionId:input.sessionId,ownerId:input.ownerId,generatedHash:hash}});open(id);return {id,status:'created'}}
   const start=note.markdown.indexOf(START),end=note.markdown.indexOf(END)
   const current=start>=0&&end>start?note.markdown.slice(start+START.length+1,end-1):''
-  if(fingerprint(current)===hash){notes.openEditor(note.id);return {id:note.id,status:'unchanged'}}
+  if(fingerprint(current)===hash){open(note.id);return {id:note.id,status:'unchanged'}}
   if(start>=0&&end>start&&fingerprint(current)===note.source?.generatedHash){
     notes.updateNote(note.id,{markdown:note.markdown.slice(0,start)+generated+note.markdown.slice(end+END.length),source:{...note.source,generatedHash:hash,proposalHash:undefined}})
-    notes.openEditor(note.id);return {id:note.id,status:'updated'}
+    open(note.id);return {id:note.id,status:'updated'}
   }
-  if(note.source?.ignoredHash===hash){notes.openEditor(note.id);return {id:note.id,status:'unchanged'}}
+  if(note.source?.ignoredHash===hash){open(note.id);return {id:note.id,status:'unchanged'}}
   // A student edited the generated block. Place a single replaceable proposal after it.
   const proposalMarker='<!-- class-proposal:start -->',proposalEnd='<!-- class-proposal:end -->'
   const pStart=note.markdown.indexOf(proposalMarker),pEnd=note.markdown.indexOf(proposalEnd)
@@ -65,7 +66,7 @@ export function saveClassNote(input:{ownerId:string;sessionId:string;noteId?:str
     const next=pStart>=0&&pEnd>pStart?note.markdown.slice(0,pStart)+proposal+note.markdown.slice(pEnd+proposalEnd.length):`${note.markdown}\n\n${proposal}`
     notes.updateNote(note.id,{markdown:next,source:{...note.source!,proposalHash:hash}})
   }
-  notes.openEditor(note.id);return {id:note.id,status:'proposal'}
+  open(note.id);return {id:note.id,status:'proposal'}
 }
 
 export function resolveClassNoteProposal(note:UserNote,choice:'accept'|'ignore'):{markdown:string;source:NonNullable<UserNote['source']>}|null{

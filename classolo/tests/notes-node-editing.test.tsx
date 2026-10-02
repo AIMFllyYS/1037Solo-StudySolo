@@ -12,6 +12,6 @@ describe('student mindmap edits',()=>{
   it('saves and locks a changed title without changing its identity or provenance',()=>{
     render(<NotesPane/>);fireEvent.click(screen.getByText('选择节点'));fireEvent.change(screen.getByLabelText('导图节点标题'),{target:{value:'学生补充的主题'}});fireEvent.click(screen.getByText('保存并固定'))
     expect(getNotesPublic().outlineDigest[0]).toMatchObject({id:'node',title:'学生补充的主题',sourceSegmentIds:['source'],origin:'manual',locked:true})
-    fireEvent.click(screen.getByText('允许AI整理'));expect(getNotesPublic().outlineDigest[0]).toMatchObject({origin:'ai',locked:false})
+    fireEvent.click(screen.getByText('允许 AI 整理'));expect(getNotesPublic().outlineDigest[0]).toMatchObject({origin:'ai',locked:false})
   })
 })

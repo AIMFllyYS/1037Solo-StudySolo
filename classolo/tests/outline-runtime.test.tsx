@@ -1,7 +1,7 @@
 import {afterEach,beforeEach,describe,expect,it,vi} from 'vitest'
 const ai=vi.hoisted(()=>({generate:vi.fn()}))
 vi.mock('@/classolo/lib/ai',()=>({generateText:ai.generate,createModel:vi.fn()}))
-import {startOutlineOrganizer,requestOutlineRefresh,OutlineModelUnavailable} from '@/classolo/features/notes/organizer'
+import {startOutlineOrganizer,requestOutlineRefresh,runOutlineRefreshNow,OutlineModelUnavailable} from '@/classolo/features/notes/organizer'
 import {resetNotesPublic,patchNotesPublic} from '@/classolo/lib/session/writes/notes'
 import {resetTranscriptPublic,appendCommitted,patchTranscriptPublic,hydrateTranscriptPublic} from '@/classolo/lib/session/writes/transcript'
 import {getNotesPublic} from '@/classolo/lib/session'
@@ -35,5 +35,13 @@ describe('real organizer state and progress integration',()=>{
     patchNotesPublic({outlineDigest:[{id:'old',title:'保留内容'}]});let commit!:()=>void
     stop=startOutlineOrganizer({generate,readTexts:()=>['新文稿'],subscribeCommitted:cb=>{commit=cb;return()=>{}}})
     commit();await vi.advanceTimersByTimeAsync(60000);expect(generate).toHaveBeenCalledOnce();expect(getNotesPublic().outlineDigest[0].title).toBe('保留内容')
+  })
+  it('finishes an imported transcript outline immediately before its deep link is published',async()=>{
+    patchTranscriptPublic({sessionId:'imported-lesson',autoOrganize:true});stop=startOutlineOrganizer()
+    appendCommitted({id:'imported-segment',seq:1,text:'窦房结与房室结的传导顺序',startMs:0,endMs:1000})
+    await runOutlineRefreshNow(true)
+    expect(ai.generate).toHaveBeenCalledOnce()
+    expect(getNotesPublic().outlineDigest[0]?.sourceSegmentIds).toContain('imported-segment')
+    expect(Object.keys(getNotesPublic().processedSegments??{})).toContain('imported-segment')
   })
 })

@@ -26,10 +26,14 @@ const NEEDS_SEARCH_RE = new RegExp(
 
 /** 学习场景里的常见问答不需要联网，即使含"最新"这类词也应排除（如"最新研究进展"其实是讲解）。 */
 const EXPLAIN_ONLY_RE = /讲解|讲讲|是什么|为什么|怎么理解|推导|证明|复习|总结一下这一章/;
+const EXPLICIT_IMAGE_SEARCH_RE = /imageSearch|图片检索|检索图片|搜索图片|搜图|联网图片/i;
 
 export function shouldAutoEnableSearch(text: string): boolean {
   const trimmed = text.trim();
   if (!trimmed) return false;
+  // An explicit tool request takes precedence over the lecture/explanation
+  // heuristic; otherwise the model is asked to use a tool it cannot see.
+  if (EXPLICIT_IMAGE_SEARCH_RE.test(trimmed)) return true;
   // 太长的一般是"讲解/写作"类请求，交给模型按需调用即可，不必默认开联网。
   if (trimmed.length > 300) return false;
   if (!NEEDS_SEARCH_RE.test(trimmed)) return false;

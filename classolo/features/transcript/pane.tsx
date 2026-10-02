@@ -3,11 +3,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {useVirtualizer} from '@tanstack/react-virtual'
 import { useStore } from 'zustand'
-import { Mic, Pause, Play, Square } from 'lucide-react'
+import { Mic, Pause, Play, ScrollText, Square } from 'lucide-react'
 
 import { getTranscriptPublic,subscribeCommands,useTranscriptPublic } from '@/classolo/lib/session'
 
 import {
+  cancelSessionStart,
   pauseSession,
   resumeSession,
   startSession,
@@ -100,18 +101,22 @@ export function TranscriptPane({ enabled = true,profile,onAddTerm }: { enabled?:
   const idle = status === 'idle' || status === 'stopped'
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-3 text-[13px]">
-      <div className="flex flex-wrap items-center gap-2">
+    <div className="ss-class-transcript flex h-full min-h-0 flex-col text-[13px]">
+      <div className="ss-class-transcript-toolbar">
+        <span className="ss-class-transcript-heading"><ScrollText className="size-3.5"/> 课堂文稿</span>
         {idle ? (
+          <>
           <button
             type="button"
             onClick={() => void startSession()}
             disabled={!enabled||transitioning}
-            className="press inline-flex items-center gap-1.5 rounded-lg transition-colors duration-[var(--duration-fast)] bg-[color:var(--accent)] px-3 py-1.5 text-[13px] font-medium text-[color:var(--md-sys-color-on-primary)] disabled:opacity-40"
+            className="ss-class-record-button press inline-flex items-center gap-1.5 disabled:opacity-40"
           >
             <Mic className="size-4" />
             {lifecycle==='starting'?'正在启动…':'开始录音'}
           </button>
+          {lifecycle==='starting'&&<button type="button" onClick={()=>void cancelSessionStart()} className="ss-tool press">取消启动</button>}
+          </>
         ) : (
           <>
             <button
@@ -120,7 +125,7 @@ export function TranscriptPane({ enabled = true,profile,onAddTerm }: { enabled?:
               onClick={() =>
                 void (status === 'paused' ? resumeSession() : pauseSession())
               }
-              className="press inline-flex items-center gap-1.5 rounded-lg transition-colors duration-[var(--duration-fast)] border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] px-3 py-1.5 text-[13px] text-[color:var(--ink)] hover:bg-[color:var(--bg-muted)]"
+              className="ss-tool press"
             >
               {status === 'paused' ? (
                 <>
@@ -138,7 +143,7 @@ export function TranscriptPane({ enabled = true,profile,onAddTerm }: { enabled?:
               type="button"
               disabled={transitioning}
               onClick={() => void stopSession().catch(()=>{})}
-              className="press inline-flex items-center gap-1.5 rounded-lg transition-colors duration-[var(--duration-fast)] border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] px-3 py-1.5 text-[13px] text-[color:var(--ink)] hover:bg-[color:var(--bg-muted)]"
+              className="ss-tool press"
             >
               <Square className="size-4" />
               {lifecycle==='stopping'?'正在保存尾段…':'结束'}
@@ -146,13 +151,13 @@ export function TranscriptPane({ enabled = true,profile,onAddTerm }: { enabled?:
           </>
         )}
 
-        <div className="ml-auto flex items-center gap-2 text-[12px] text-[color:var(--ink-soft)]">
+        <div className="ml-auto flex items-center gap-2 text-[11px] text-[color:var(--ink-soft)]">
           <span
             className={[
-              'inline-flex items-center gap-1 rounded-full px-2 py-0.5',
+              'inline-flex items-center gap-1 rounded-full border border-[color:var(--line-soft)] px-2 py-0.5',
               recording
-                ? 'bg-[color:var(--accent-weak)] text-[color:var(--accent-ink)]'
-                : 'bg-[color:var(--bg-muted)] text-[color:var(--ink-soft)]',
+                ? 'text-[color:var(--accent-ink)]'
+                : 'text-[color:var(--ink-soft)]',
             ].join(' ')}
           >
             {recording ? (
@@ -167,11 +172,11 @@ export function TranscriptPane({ enabled = true,profile,onAddTerm }: { enabled?:
         </div>
       </div>
 
-      {!idle ? <MicLevel/> : null}
+      {!idle ? <div className="px-3 pt-2"><MicLevel/></div> : null}
 
       {error ? (
         <p
-          className="rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-muted)] px-3 py-2 text-[12px] text-[color:var(--md-sys-color-error,#b42318)]"
+          className="mx-3 mt-2 rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-muted)] px-3 py-2 text-[12px] text-[color:var(--md-sys-color-error,#b42318)]"
           data-slot="capture-error"
           role="alert"
         >
@@ -182,11 +187,11 @@ export function TranscriptPane({ enabled = true,profile,onAddTerm }: { enabled?:
       ) : null}
 
       <AudioRecoveryPanel/>
-      {!following&&newCount>0&&<button type="button" className="self-end rounded-md bg-[color:var(--accent-weak)] px-2 py-1 text-[11px]" onClick={()=>{setFollowing(true);setNewCount(0);virtualizer.scrollToIndex(committed.length+(partial?1:0)-1,{align:'end'})}}>新增 {newCount} 段，回到实时文稿</button>}
+      {!following&&newCount>0&&<button type="button" className="self-end rounded-md border border-[color:var(--line-soft)] px-2 py-1 text-[11px]" onClick={()=>{setFollowing(true);setNewCount(0);virtualizer.scrollToIndex(committed.length+(partial?1:0)-1,{align:'end'})}}>新增 {newCount} 段，回到实时文稿</button>}
       <div
         ref={scrollRef}
         onScroll={onScroll}
-        className="min-h-0 flex-1 overflow-auto"
+        className="min-h-0 flex-1 overflow-auto px-3 py-2"
         data-slot="transcript-stream"
       >
         {committed.length === 0 && !partial ? (
@@ -196,7 +201,7 @@ export function TranscriptPane({ enabled = true,profile,onAddTerm }: { enabled?:
           </div>
         ) : <div style={{height:virtualizer.getTotalSize(),position:'relative'}}>{virtualizer.getVirtualItems().map(item=>{
           const segment=committed[item.index]
-          return <div key={item.key} data-index={item.index} ref={virtualizer.measureElement} style={{position:'absolute',top:0,left:0,width:'100%',transform:`translateY(${item.start}px)`,paddingBottom:6}}>{segment?<TranscriptSegmentLine segment={segment} sessionId={sessionId} terms={terms} highlighted={highlightId===segment.id} onAddTerm={onAddTerm}/>:<p className="px-2 py-1 italic text-[color:var(--ink-faint)]" data-slot="transcript-partial">{partial}</p>}</div>
+          return <div key={item.key} data-index={item.index} ref={virtualizer.measureElement} style={{position:'absolute',top:0,left:0,width:'100%',transform:`translateY(${item.start}px)`,paddingBottom:6}}>{segment?<TranscriptSegmentLine segment={segment} sessionId={sessionId} terms={terms} highlighted={highlightId===segment.id} onAddTerm={onAddTerm}/>:<div className="px-2 py-1 text-[color:var(--ink-faint)]" data-slot="transcript-partial"><time className="mr-2 font-mono text-[10px] tabular-nums">实时 {formatElapsed(elapsed)}</time><span className="italic">{partial}</span></div>}</div>
         })}</div>}
       </div>
     </div>

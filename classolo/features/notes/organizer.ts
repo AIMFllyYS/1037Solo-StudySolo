@@ -34,8 +34,12 @@ export interface OutlineOrganizerOptions {
 let generateCalls = 0
 let runId = 0
 let stopCurrent: (() => void) | null = null
-let refreshCurrent:((rebuild:boolean)=>void)|null=null
+let refreshCurrent:((rebuild:boolean,immediate?:boolean)=>Promise<void>|void)|null=null
 export function requestOutlineRefresh(rebuild=false){refreshCurrent?.(rebuild)}
+export async function runOutlineRefreshNow(rebuild=false):Promise<void>{
+  if(!refreshCurrent)throw new Error('课堂导图整理器尚未就绪')
+  await refreshCurrent(rebuild,true)
+}
 
 function defaultReadTexts(): string[] {
   return getTranscriptPublic().committed.map((segment) => segment.text)
@@ -184,10 +188,11 @@ export function startOutlineOrganizer(
     patchNotesPublic({organizerStatus:'queued'})
     scheduler.schedule()
   }
-  const refresh=(rebuild:boolean)=>{
+  const refresh=(rebuild:boolean,immediate=false)=>{
     force=true;runId++;scheduler.reset();retried=false
     if(rebuild)patchNotesPublic({processedSegments:{}})
     schedule()
+    if(immediate)return scheduler.flushNow()
   }
   refreshCurrent=refresh
 

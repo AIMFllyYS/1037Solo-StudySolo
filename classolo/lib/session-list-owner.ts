@@ -19,6 +19,7 @@ export async function releaseClassOwnerIfCurrent(options: {
   cleanupGeneration: number;
   owner: string | null;
   currentOwner: () => string | null;
+  authenticatedOwner: () => string | null;
   stop: () => Promise<unknown>;
   clear: () => void;
 }): Promise<void> {
@@ -26,5 +27,5 @@ export async function releaseClassOwnerIfCurrent(options: {
   if (options.generation.current !== options.cleanupGeneration) return;
   try { await options.stop(); }
   catch { /* still release this owner on unmount */ }
-  if (options.generation.current === options.cleanupGeneration && options.currentOwner() === options.owner) options.clear();
+  if (options.generation.current === options.cleanupGeneration && options.currentOwner() === options.owner && options.authenticatedOwner() !== options.owner) options.clear();
 }

@@ -23,4 +23,10 @@ describe('bounded classroom background work',()=>{
     task.schedule();await vi.advanceTimersByTimeAsync(10);task.reset();expect(signal.aborted).toBe(true)
     task.schedule();task.stop();await vi.advanceTimersByTimeAsync(100);expect(vi.getTimerCount()).toBe(0)
   })
+  it('can finish a newly imported document before route hydration replaces its owner',async()=>{
+    vi.useFakeTimers();const run=vi.fn(async()=>{})
+    const task=createBoundedScheduler({delayMs:4000,maxWaitMs:10000,run})
+    task.schedule();await task.flushNow()
+    expect(run).toHaveBeenCalledOnce();expect(vi.getTimerCount()).toBe(0);task.stop()
+  })
 })

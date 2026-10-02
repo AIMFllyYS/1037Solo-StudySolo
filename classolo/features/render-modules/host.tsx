@@ -10,12 +10,18 @@ import type { RenderMessage } from './types'
 export function RenderHost({
   target,
   onAnchorClick,
+  limit,
+  compact = false,
+  modules,
 }: {
   target: RenderMessage['target']
   onAnchorClick?: (segmentId: string) => void
+  limit?: number
+  compact?: boolean
+  modules?: readonly string[]
 }) {
   const projection=useRenderProjection(state=>state.byId)
-  const messages = getRenderMessages(target)
+  const messages = getRenderMessages(target).filter(message=>!modules||modules.includes(message.module))
   void projection
 
   if (messages.length === 0) {
@@ -28,13 +34,15 @@ export function RenderHost({
     )
   }
 
+  const visible = limit ? messages.slice(-limit) : messages
   return (
     <ul className="space-y-2">
-      {messages.map((message) => (
+      {visible.map((message) => (
         <li key={message.id}>
           <RenderMessageView
             message={message}
             onAnchorClick={onAnchorClick}
+            compact={compact}
           />
         </li>
       ))}
@@ -45,9 +53,11 @@ export function RenderHost({
 function RenderMessageView({
   message,
   onAnchorClick,
+  compact,
 }: {
   message: RenderMessage
   onAnchorClick?: (segmentId: string) => void
+  compact?: boolean
 }) {
   const resolved = resolveRenderView(message, renderModuleRegistry)
   if (!resolved.ok) {
@@ -61,7 +71,7 @@ function RenderMessageView({
   const anchor = message.meta.transcriptAnchor
   return (
     <div
-      className="rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] p-2.5 text-[13px] text-[color:var(--ink)]"
+      className={`rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] text-[color:var(--ink)] ${compact?'p-2 text-[11px] leading-[1.45]':'p-2.5 text-[13px]'}`}
       data-slot="render-message"
       data-module={message.module}
     >
@@ -73,7 +83,7 @@ function RenderMessageView({
       {anchor ? (
         <button
           type="button"
-          className="mt-2 text-[11px] text-[color:var(--accent)] hover:underline"
+          className="ss-tool mt-2"
           onClick={() => onAnchorClick?.(anchor)}
         >
           回跳文稿

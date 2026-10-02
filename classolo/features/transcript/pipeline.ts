@@ -65,6 +65,13 @@ export function startSession(): Promise<void> {
   return startTask
 }
 
+export async function cancelSessionStart():Promise<void>{
+  if(!startTask)return
+  runtimeGeneration++
+  await stopCapture(false)
+  await startTask
+}
+
 async function startSessionRuntime():Promise<void>{
   const generation=++runtimeGeneration
   const previous=getTranscriptPublic()

@@ -21,7 +21,7 @@ const buttonVariants = cva(
           'rounded-lg bg-secondary text-secondary-foreground hover:brightness-95',
         ghost:
           'rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground',
-        link: 'rounded-none text-primary underline-offset-4 hover:underline',
+        link: 'rounded-md border border-[color:var(--line-soft)] bg-transparent px-2 text-[color:var(--accent-ink)] hover:bg-[color:var(--bg-muted)]',
       },
       size: {
         default: 'h-9 px-4 py-1.5 text-sm',

@@ -43,7 +43,7 @@ test("a return to the same Class owner cannot accept a previous login epoch's ro
 test("a replacement Class owner effect cancels the previous cleanup before it stops capture", async () => {
   const generation = { current: 2 };
   let stops = 0, clears = 0;
-  const release = releaseClassOwnerIfCurrent({ generation, cleanupGeneration: 2, owner: "A", currentOwner: () => "A", stop: async () => { stops++; }, clear: () => { clears++; } });
+  const release = releaseClassOwnerIfCurrent({ generation, cleanupGeneration: 2, owner: "A", currentOwner: () => "A", authenticatedOwner: () => "B", stop: async () => { stops++; }, clear: () => { clears++; } });
   generation.current = 3;
   await release;
   assert.equal(stops, 0);
@@ -54,7 +54,7 @@ test("a late Class cleanup cannot erase the new owner after stop completes", asy
   const generation = { current: 2 };
   let owner: string | null = "A", clears = 0, started = false;
   const stopping = deferred<void>();
-  const release = releaseClassOwnerIfCurrent({ generation, cleanupGeneration: 2, owner: "A", currentOwner: () => owner, stop: () => { started = true; return stopping.promise; }, clear: () => { clears++; } });
+  const release = releaseClassOwnerIfCurrent({ generation, cleanupGeneration: 2, owner: "A", currentOwner: () => owner, authenticatedOwner: () => owner, stop: () => { started = true; return stopping.promise; }, clear: () => { clears++; } });
   await new Promise<void>((resolve) => setTimeout(resolve, 0));
   assert.equal(started, true);
   generation.current = 3;
@@ -67,6 +67,13 @@ test("a late Class cleanup cannot erase the new owner after stop completes", asy
 test("an actual Class unmount stops capture and clears its own owner", async () => {
   const generation = { current: 2 };
   const events: string[] = [];
-  await releaseClassOwnerIfCurrent({ generation, cleanupGeneration: 2, owner: "A", currentOwner: () => "A", stop: async () => { events.push("stop"); }, clear: () => { events.push("clear"); } });
+  await releaseClassOwnerIfCurrent({ generation, cleanupGeneration: 2, owner: "A", currentOwner: () => "A", authenticatedOwner: () => null, stop: async () => { events.push("stop"); }, clear: () => { events.push("clear"); } });
   assert.deepEqual(events, ["stop", "clear"]);
+});
+
+test("a same-account Class route remount keeps the verified owner", async () => {
+  const generation = { current: 2 };
+  const events: string[] = [];
+  await releaseClassOwnerIfCurrent({ generation, cleanupGeneration: 2, owner: "A", currentOwner: () => "A", authenticatedOwner: () => "A", stop: async () => { events.push("stop"); }, clear: () => { events.push("clear"); } });
+  assert.deepEqual(events, ["stop"]);
 });

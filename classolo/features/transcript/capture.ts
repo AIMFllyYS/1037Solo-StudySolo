@@ -38,6 +38,8 @@ let node: AudioWorkletNode | null = null
 let pcmHandler: PcmFrameHandler | null = null
 let onDeviceEnded:(()=>void)|null=null
 let captureGeneration=0
+let cancelPendingOpen:(()=>void)|null=null
+const MICROPHONE_OPEN_TIMEOUT_MS=15_000
 
 export function onCaptureEnded(handler:(()=>void)|null){onDeviceEnded=handler}
 
@@ -54,13 +56,35 @@ export async function startCapture(deps: CaptureDeps = defaultDeps()): Promise<b
   const generation=++captureGeneration
   patchTranscriptPrivate({ error: null })
   try {
-    const opened = await deps.getUserMedia({
+    let timedOut=false
+    let timeout:ReturnType<typeof setTimeout>|null=null
+    const opening=deps.getUserMedia({
       audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true },
     })
+    // A browser permission prompt can remain unresolved indefinitely. Keep the
+    // late stream under our control so a later grant cannot start a recording.
+    const guarded=opening.then(opened=>{
+      if(timedOut||generation!==captureGeneration)opened.getTracks().forEach(track=>track.stop())
+      return opened
+    })
+    const cancelled=new Promise<never>((_,reject)=>{
+      cancelPendingOpen=()=>reject(new DOMException('Recording start cancelled','AbortError'))
+    })
+    const expired=new Promise<never>((_,reject)=>{
+      timeout=setTimeout(()=>{timedOut=true;reject(new DOMException('Microphone prompt timed out','TimeoutError'))},MICROPHONE_OPEN_TIMEOUT_MS)
+    })
+    let opened:MediaStream
+    try{opened=await Promise.race([guarded,cancelled,expired])}
+    finally{if(timeout)clearTimeout(timeout);cancelPendingOpen=null}
     if(generation!==captureGeneration){opened.getTracks().forEach(track=>track.stop());return false}
     stream=opened
   } catch (error) {
-    const name = error instanceof Error ? error.name : ''
+    const name = error && typeof error==='object' && 'name' in error ? String(error.name) : ''
+    if(name==='AbortError')return false
+    if(name==='TimeoutError'){
+      fail('麦克风授权等待超时。请检查浏览器权限提示和输入设备后重试')
+      return false
+    }
     if (name === 'NotAllowedError' || name === 'PermissionDeniedError') {
       fail('麦克风权限被拒绝')
       return false
@@ -132,6 +156,8 @@ export async function resumeCapture(): Promise<void> {
 
 export async function stopCapture(publishStopped=true): Promise<void> {
   captureGeneration++
+  cancelPendingOpen?.()
+  cancelPendingOpen=null
   node?.port.close()
   node?.disconnect()
   node = null
