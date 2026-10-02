@@ -195,7 +195,7 @@ export function ExportSection() {
         <button
           onClick={() => {
             void exportAllChats().then((r) => {
-              setExportMsg(r.ok ? t("settings.data.export.done", { count: r.count }) : t("settings.data.export.empty"));
+              setExportMsg(r.ok ? t("settings.data.export.done", { count: r.count }) : r.reason === "cancelled" ? "" : t(r.reason === "empty" ? "settings.data.export.empty" : "settings.data.export.failed"));
             });
           }}
           className="press flex items-center gap-1.5 self-start rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)]"

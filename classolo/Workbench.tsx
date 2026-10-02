@@ -3,6 +3,7 @@ import {useCallback,useEffect,useMemo,useRef,useState,useSyncExternalStore} from
 import {get} from 'idb-keyval';
 import {Download,FileText,Import,Menu,PanelRightOpen,Settings2,Sparkles,X} from 'lucide-react';
 import {useAuthSession} from '@/lib/hooks/useAuthSession';
+import {getOwnerEpoch} from '@/lib/storage/ownerScope';
 import {redirectAccount} from '@/lib/auth/account';
 import {WorkbenchShell,type ClassWorkspaceTab} from './components/layout/workbench-shell';
 import {TranscriptPane} from './features/transcript/pane';
@@ -22,6 +23,7 @@ import {getClassOutlineConflict,resolveClassOutlineConflict,getClassCorrectionCo
 import {outlineSchema} from './lib/session/outline-schema';
 import {SessionSidebar} from './features/session-library/sidebar';
 import {startClassLiveSync} from './features/session-library/live-sync';
+import {listSessionsForCurrentClassOwner,releaseClassOwnerIfCurrent} from './lib/session-list-owner';
 import {refreshClassSession} from './lib/db';
 import {hydrateClassSnapshot} from './features/session-library/hydrate';
 import {getTranscriptPrivate} from './features/transcript/private-store';
@@ -66,22 +68,35 @@ export default function Workbench(){
   const [showSettings,setShowSettings]=useState(false);
   const [toast,setToast]=useState('');
   const initialized=useRef<string|null>(null);
-  const refreshSessions=useCallback(()=>{if(getClassUserId())void getDb().then(listSessions).then(rows=>{if(getClassUserId())setSessions(rows);}).catch(()=>{});},[]);
+  const ownerEffectGeneration=useRef(0);
+  const refreshSessions=useCallback(()=>{const requestedOwner=getClassUserId();if(requestedOwner)void listSessionsForCurrentClassOwner(requestedOwner,getClassUserId,getDb,listSessions,getOwnerEpoch).then(rows=>{if(rows)setSessions(rows);}).catch(()=>{});},[]);
   useEffect(()=>{
     let active=true;
+    const generationRef=ownerEffectGeneration;
+    ++generationRef.current;
     // Keep the old verified owner long enough to save its local tail; the auth/owner guard hides it.
     void stopSession().finally(()=>{
       if(!active)return;
       resetTranscriptPublic();resetNotesPublic();resetRenderProjection();
       setClassUserId(auth.userId);initialized.current=null;
-      if(auth.userId)void getDb().then(listSessions).then(rows=>{if(active)setSessions(rows);}).catch(e=>{if(active)setError(String(e));});
+      if(auth.userId)void listSessionsForCurrentClassOwner(auth.userId,getClassUserId,getDb,listSessions,getOwnerEpoch).then(rows=>{if(active&&rows)setSessions(rows);}).catch(e=>{if(active&&getClassUserId()===auth.userId)setError(String(e));});
     }).catch(()=>{});
-    return()=>{active=false;void stopSession().finally(()=>{if(!active)setClassUserId(null);}).catch(()=>{});};
+    return()=>{
+      active=false;
+      const cleanupGeneration=++generationRef.current;
+      // A replacement owner effect stops the old capture itself. Its setup
+      // must win over a late cleanup from the previous account.
+      void releaseClassOwnerIfCurrent({
+        generation:generationRef,cleanupGeneration,owner:auth.userId,
+        currentOwner:getClassUserId,stop:stopSession,clear:()=>setClassUserId(null),
+      });
+    };
   },[auth.userId]);
   useEffect(()=>{
     if(!owner||owner!==auth.userId)return;
     const db={userId:owner};
-    void fetch("/api/class/capabilities",{credentials:"include"}).then(async response=>{if(response.ok&&getClassUserId()===owner)setCapabilities(await response.json());}).catch(()=>{});
+    const controller=new AbortController();
+    void fetch("/api/class/capabilities",{credentials:"include",signal:controller.signal}).then(async response=>{if(!response.ok)return;const data=await response.json();if(!controller.signal.aborted&&getClassUserId()===owner)setCapabilities(data);}).catch(()=>{});
     const persistOutline=async()=>{
       const id=getTranscriptPublic().sessionId;if(!id||isClassHydrating())return;
       await transcriptFlusher.flush(true);
@@ -96,11 +111,11 @@ export default function Workbench(){
     const render=subscribeRenderProjection(s=>s.byId,(next,prev)=>{
       const id=getTranscriptPublic().sessionId;if(!id||isClassHydrating())return;
       for(const [key,value] of Object.entries(next)){if(value===prev[key])continue;
-        void insertRenderMessage(db,{id:value.id,sessionId:id,module:value.module,version:value.version,target:value.target,props:value.props as Record<string,unknown>,source:value.meta.source,transcriptAnchor:value.meta.transcriptAnchor,createdAt:new Date(value.meta.createdAt).toISOString()}).catch(e=>setError(String(e)));
+        void insertRenderMessage(db,{id:value.id,sessionId:id,module:value.module,version:value.version,target:value.target,props:value.props as Record<string,unknown>,source:value.meta.source,transcriptAnchor:value.meta.transcriptAnchor,createdAt:new Date(value.meta.createdAt).toISOString()}).catch(e=>{if(getClassUserId()===db.userId)setError(String(e));});
       }
     });
     const sync=()=>{void persistOutline().then(()=>flushClassPending(db)).catch(e=>{if(getClassUserId()===db.userId)setError(String(e));});};window.addEventListener('online',sync);const syncTimer=setInterval(sync,10000);
-    return()=>{notes();render();clearInterval(syncTimer);window.removeEventListener('online',sync);};
+    return()=>{controller.abort();notes();render();clearInterval(syncTimer);window.removeEventListener('online',sync);};
   },[owner,auth.userId]);
   useEffect(()=>{if(owner&&owner===auth.userId&&sessionId)refreshSessions();},[owner,auth.userId,sessionId,recordingStatus,refreshSessions]);
   useEffect(()=>{

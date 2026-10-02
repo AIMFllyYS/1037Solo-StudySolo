@@ -18,6 +18,7 @@ if (mode === 'node') {
   run(process.execPath, ['--import', 'tsx', 'scripts/check-index-freshness.ts']);
   run(process.execPath, ['--import', 'tsx', '--test',
     'lib/storage/chatStorage.atomic.test.ts',
+    'classolo/tests/session-list-owner.test.ts',
     'lib/storage/chatStorage.queue.test.ts',
     'lib/storage/chatStorage.owner-epoch.test.ts',
     'lib/storage/sessionSummary.test.ts',
@@ -45,6 +46,8 @@ if (mode === 'node') {
     'components/agent/AgentSourcePanel.test.tsx',
     'components/agent/AgentImagesPane.lifecycle.test.tsx',
     'components/agent/UnknownToolSourceCard.test.tsx',
+    'lib/chat/exportChats.streaming.test.tsx',
+    'lib/hooks/useAuthSession.test.tsx',
     'components/shared/ContentImage.test.tsx',
     'lib/stores/artifacts.partition.test.tsx',
     'lib/stores/documents.partition.test.tsx',
