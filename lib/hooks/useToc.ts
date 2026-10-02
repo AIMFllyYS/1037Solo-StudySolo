@@ -83,6 +83,7 @@ export function useToc(
 
     const root: HTMLElement = container;
     let observer: IntersectionObserver | null = null;
+    let mountObserver: MutationObserver | null = null;
     let retryTimer: ReturnType<typeof setTimeout> | null = null;
     let rafId: number | null = null;
     let cancelled = false;
@@ -96,6 +97,15 @@ export function useToc(
       );
 
       if (headingEls.length === 0) {
+        if (!mountObserver && typeof MutationObserver !== "undefined") {
+          mountObserver = new MutationObserver(() => {
+            if (cancelled || !root.querySelector("article h1, article h2, article h3, article h4")) return;
+            mountObserver?.disconnect();
+            mountObserver = null;
+            scanHeadings(0);
+          });
+          mountObserver.observe(root, { childList: true, subtree: true });
+        }
         // 重试：最多 1 次，间隔 50ms
         if (attempt < 1) {
           retryTimer = setTimeout(() => scanHeadings(attempt + 1), 50);
@@ -134,6 +144,8 @@ export function useToc(
       }
 
       const tocTree = buildTocTree(headings);
+      mountObserver?.disconnect();
+      mountObserver = null;
 
       // IntersectionObserver：跟踪当前可见标题（rAF 节流）
       const obs = new IntersectionObserver(
@@ -179,6 +191,7 @@ export function useToc(
         if (rafId !== null) cancelAnimationFrame(rafId);
         if (retryTimer) clearTimeout(retryTimer);
         observer?.disconnect();
+        mountObserver?.disconnect();
       };
     }
     rafId = requestAnimationFrame(() => scanHeadings(0));
@@ -188,6 +201,7 @@ export function useToc(
       if (rafId !== null) cancelAnimationFrame(rafId);
       if (retryTimer) clearTimeout(retryTimer);
       observer?.disconnect();
+      mountObserver?.disconnect();
       // 不清空 TOC：保留旧目录直到新页面 hook 重建，避免闪烁
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

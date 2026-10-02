@@ -92,3 +92,22 @@ test("indexHealth：模型不符", () => {
   if (prevModel === undefined) delete process.env.AI_EMBEDDING_MODEL;
   else process.env.AI_EMBEDDING_MODEL = prevModel;
 });
+
+test("indexHealth：有效索引的请求检查只看元数据，不做全文分块", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "search-index-light-"));
+  const manifest = {
+    version: 2, builtAt: "2026-10-02T00:00:00Z",
+    embeddingModel: process.env.AI_EMBEDDING_MODEL || "BAAI/bge-m3",
+    dimension: 4, chunkCount: 1, vectorCount: 1,
+    contentHash: "a".repeat(64), files: [],
+  };
+  fs.writeFileSync(path.join(dir, "manifest.json"), JSON.stringify(manifest));
+  for (const file of ["bm25.json", "chunks-meta.json", "vectors.ids.json"]) fs.writeFileSync(path.join(dir, file), "{}");
+  fs.writeFileSync(path.join(dir, "vectors.bin"), Buffer.alloc(16));
+  withIndexDir(dir, () => {
+    delete process.env.SEARCH_SKIP_CONTENT_HASH;
+    const health = getIndexHealth(true);
+    assert.equal(health.ok, true);
+    assert.equal(health.contentHashMatch, null);
+  });
+});

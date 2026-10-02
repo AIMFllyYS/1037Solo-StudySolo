@@ -3,6 +3,7 @@
 import { Streamdown, defaultRehypePlugins, defaultRemarkPlugins } from 'streamdown'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
+import 'katex/contrib/mhchem'
 
 import { cn } from '@/classolo/lib/utils'
 

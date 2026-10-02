@@ -1,5 +1,20 @@
 # SOP 06 — 桌面端打包与 Release 发布
 
+> 2026-10-02 当前构建入口已换成 `scripts/performance/build-desktop-staging.mjs`。
+> 每次创建独立的 `.next-desktop-*`、`artifacts/performance/desktop-stage-*` 与
+> `dist-desktop-staged-*`；旧 `scripts/build-desktop.mjs` 需要显式危险参数才可运行，
+> 不再是默认入口。下文涉及旧 `dist-desktop/` 和旧脚本的历史事故分析可作排障参考；
+> 产物路径、命令与验收以本节及当前 `package.json` 为准。
+
+当前在线档：`pnpm run desktop:build` 会完成独立 Next 构建、资源白名单复制、pnpm 依赖实体化、
+`electron-builder --win --publish never` 和包内静态资源/EXE SHA-256 核对。
+离线学科档先执行 `pnpm run desktop:build:staged -- --offline --subjects=probability`，
+确认暂存报告与专属索引后，用报告给出的私有 YAML 配置执行不发布打包。
+离线档只预渲染选定学科，复制其正文、图片、已登记本地视频，并从全局索引离线裁出对应学科的
+BM25/向量；未选学科路由、正文与导航入口不可用。构建不复制 `.env*`、embed-cache、旧项目或旧安装包。
+打包完成仍须在允许启动桌面程序的环境里验证实际 Electron 启动、离线播放、公式与交互；
+本机结构检查不能替代这一步。
+
 ## 适用场景
 
 将「期末复习工作站」打包为 **Windows 桌面 exe**，并**发布或更新** GitHub Release。适用于：新功能/新内容上线、紧急 bug 修复热更、正式里程碑发版。
@@ -10,7 +25,7 @@
 
 - **运行模型**：Electron 主进程 `spawn` 内置的 Next standalone 服务（`ELECTRON_RUN_AS_NODE=1`，用 Electron 自带 Node 跑 `server.js`），再开 BrowserWindow 指向 `127.0.0.1:PORT`。
 - **密钥模型**：3 个 API Key（硅基流动必填、小米/智谱可选）**用户首启填写**，`safeStorage`(Windows DPAPI) 加密存 `userData/keys.enc`，**绝不进包**；非密配置（BASE_URL/模型名/CDN）烘焙在 `electron/config.js`。
-- **关键文件**：`scripts/build-desktop.mjs`(构建编排)、`electron-builder.yml`(打包配置)、`electron/main.js`(主进程)、`electron/config.js`(烘焙非密配置)、`next.config.mjs`(`BUILD_STANDALONE` 开关)。
+- **关键文件**：`scripts/performance/build-desktop-staging.mjs`(当前构建编排)、`scripts/performance/runtime-asset-inventory.ts`(白名单)、`electron-builder.yml`(模板)、`electron/main.js`(主进程)、`electron/config.js`(烘焙非密配置)、`next.config.mjs`(`BUILD_STANDALONE` 开关)。
 
 ## 输入物料
 
@@ -39,13 +54,13 @@
        to: standalone/node_modules
    ```
 2. **pnpm 的 standalone node_modules 是符号链接农场**：顶层 `next`/`react` 是指向仓库 `.pnpm` 的**绝对** symlink，Windows 复制不可靠；而 `cpSync(dereference)` 拍平又会**破坏 pnpm 解析**（包依赖在 `.pnpm/<pkg>/node_modules/` 下是**兄弟**非嵌套，拍平顶层 `next` 后找不到兄弟 `@swc/helpers` → `Cannot find module '@swc/helpers'`）。
-   → `build-desktop.mjs` 的 `materializeNodeModules()` 把 `.pnpm` **各主包 hoist 成顶层真实文件**再删 `.pnpm`（扁平解析、~18MB），**不可改回 deref**。
+   → 当前 staging builder 从 traced `.pnpm` 将各主包复制到**新的**顶层真实目录，原输出与旧包均不删除；不可只拍平少数顶层 symlink。
 
 ### 不变量 2：两道护栏，绝不跳过
 
-`build-desktop.mjs` 内置且必须保留：
-- **打包前冒烟测试** `smokeTestStandalone()`：用系统 `node server.js` 起服并轮询 `/` 期望 HTTP 200，失败即 `exit 1`（系统 node 与 Electron-as-Node 等价，能复现缺/坏 node_modules）。
-- **打包后断言** `assertPackagedDeps()`：断言 `dist-desktop/win-unpacked/resources/standalone/node_modules/next/package.json` 存在（正是它抓出了 electron-builder 剔除 node_modules 这层坑）。
+当前 staging builder 在打包前核对 `server.js`、实体化 `node_modules/next`、Worker 与索引，
+打包后由 `perf:package-check` 核对实际 `win-unpacked/resources/standalone/` 和两个 EXE 的 SHA-256。
+**发布前还必须实际启动打包后的程序并检查 `/` 与离线功能**；结构断言不证明运行成功。
 
 ### 不变量 3：密钥绝不进包，公开发布前必扫描
 
@@ -71,23 +86,18 @@ npx tsc --noEmit                    # 必须 0 错误
 ```bash
 pnpm run desktop:build
 ```
-脚本顺序：`gen-script-ids` → `next build`(BUILD_STANDALONE=1) → robocopy `static/public/content` 进 standalone → `stripSegmentCaches` → **`materializeNodeModules`(hoist)** → **`smokeTestStandalone`** → `electron-builder --win`(portable+nsis) → **`assertPackagedDeps`**。
+脚本顺序：Worker/内容/索引闸门 → 隔离 `next build`(BUILD_STANDALONE=1) → 严格白名单暂存静态资源与正文 → 在新目录实体化 `.pnpm` 依赖 → `electron-builder --win --publish never`(portable+nsis) → 实际包内依赖与 SHA-256 静态检查。不会触碰旧 `dist-desktop/`。
 
-**必须看到这四行 marker，缺一即停**：
-```
-[build-desktop] hoisted N packages; node_modules is now flat real files.
-[build-desktop] smoke test passed — standalone serves / OK.
-[build-desktop] post-pack check OK — packaged standalone has real node_modules/next.
-[build-desktop] done. Artifacts in dist-desktop/.
-```
-构建约 8–12 分钟。建议 `run_in_background` 跑，完成通知。
+必须保存输出 JSON 的 `stageRoot`、`packageDir`、`fileCount`，以及
+`artifacts/performance/package-online-check.json` 或 `package-offline-check.json`。
+`packaged=true` 且 `perf:package-check` 退出 0 才是包内结构通过；真实启动仍单独验收。
 
 ### Step 2 — 产物定身验证（最确凿）
 ```bash
-ls -la dist-desktop/*.exe           # 时间戳应为刚构建
+ls -la dist-desktop-staged-<id>/*.exe           # 使用刚返回的 packageDir
 # 直接启动「打包产物」里的 standalone，确认能服务：
-node -e '...spawn dist-desktop/win-unpacked/resources/standalone/server.js, 轮询 / 期望 200...'
-ls dist-desktop/win-unpacked/resources/standalone/node_modules/next/package.json   # 应存在
+node -e '...spawn <packageDir>/win-unpacked/resources/standalone/server.js, 轮询 / 期望 200...'
+ls <packageDir>/win-unpacked/resources/standalone/node_modules/next/package.json   # 应存在
 ```
 > 经验：仅验源 standalone 不够——一定要验**打包后**那份（exe 里真正要跑的），本会话两次靠它发现问题。
 
@@ -163,7 +173,8 @@ gh release view vX.Y.Z --json assets -q '.assets[] | "\(.name) \(.size) \(.updat
 
 | 文件 | 角色 |
 |------|------|
-| `scripts/build-desktop.mjs` | 端到端构建（hoist + 冒烟 + 断言 + 段缓存裁剪） |
+| `scripts/performance/build-desktop-staging.mjs` | 当前端到端构建（新stage、白名单、实体依赖、包内静态检查） |
+| `scripts/build-desktop.mjs` | 旧实现，默认禁用；保留供历史事故对照 |
 | `electron-builder.yml` | **extraResources 两条目（关键）**、portable+nsis target、asar |
 | `electron/main.js` | spawn standalone、首启密钥门、`webviewTag`、启动诊断（子进程提前退出带 stderr 立即 reject） |
 | `electron/config.js` | 烘焙非密配置（改端点/模型在此，**勿放密钥**） |
@@ -174,7 +185,7 @@ gh release view vX.Y.Z --json assets -q '.assets[] | "\(.name) \(.size) \(.updat
 - [00-infrastructure.md](./00-infrastructure.md) — 环境变量规范
 - [05-content-integration.md](./05-content-integration.md) — 打包前内容须先注册并验证
 - `electron/README.md` — 桌面架构与本地构建/使用说明
-- `scripts/build-desktop.mjs` / `electron-builder.yml` / `electron/main.js` — 实现真相源
+- `scripts/performance/build-desktop-staging.mjs` / `electron-builder.yml` / `electron/main.js` — 当前实现真相源
 
 ---
 

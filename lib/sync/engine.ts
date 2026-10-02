@@ -1,5 +1,7 @@
 ﻿import { tryGetBrowserDataClient } from "@/lib/auth/browserClient";
 import { getBrowserSession } from "@/lib/auth/browserSession";
+import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
+import { registerResourceMetrics } from "@/lib/performance/resourceMetrics";
 import {
   deleteSessionData,
   isSystemProject,
@@ -7,13 +9,14 @@ import {
   loadSessionMessages,
   manifestFrom,
   saveManifest,
-  saveSessionMessages,
+  saveManifestCommitted,
+  saveSessionMessagesCommitted,
   type ChatFolder,
   type SessionMeta,
 } from "@/lib/storage/chatStorage";
-import { useArtifacts, type Artifact } from "@/lib/stores/artifacts";
-import { ensureChatHistoryBootstrap, useChatHistory } from "@/lib/stores/chatHistory";
-import { useDocuments } from "@/lib/stores/documents";
+import { loadArtifactFull, persistArtifactBody, useArtifacts, type Artifact } from "@/lib/stores/artifacts";
+import { applyCloudSessionWindow, ensureChatHistoryBootstrap, useChatHistory } from "@/lib/stores/chatHistory";
+import { loadDocumentFull, persistDocumentBody, useDocuments } from "@/lib/stores/documents";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useReviewCards } from "@/lib/stores/reviewCards";
 import type { StoredDocument } from "@/lib/documents/types";
@@ -23,7 +26,7 @@ import type { ChatMessage } from "@/lib/types/chat";
 import { createSupabaseSyncClient } from "./client";
 import { isRemoteNewer, mergeChatSessionPayloads } from "./merge";
 import { compactStudyMessages } from "@/lib/chat/compactStudyParts";
-import { tailWindowSlice } from "@/lib/chat/turnSpine";
+import { htmlToSummary } from "@/lib/context/compactArtifacts";
 import {
   buildArtifactPayload,
   buildChatProjectPayload,
@@ -50,6 +53,8 @@ import { isSessionStreaming, __resetStreamingSessionsForTests } from "./streamin
 import { getCloudSyncStatus, setCloudRowKeys, setCloudSyncStatus } from "./status";
 import {
   CLOUD_SYNC_KINDS,
+  isCloudSyncKind,
+  KIND_SIZE_LIMIT,
   type ChatProjectSyncPayload,
   type ChatSessionSyncPayload,
   type CloudSyncKind,
@@ -68,20 +73,20 @@ const DEFAULT_DEBOUNCE_MS = 2000;
 const MAX_LOCAL_SESSIONS = 50;
 
 type JobOp = "upsert" | "tombstone";
-type Job = { op: JobOp; kind: CloudSyncKind; clientId: string };
+type Job = { op: JobOp; kind: CloudSyncKind; clientId: string; ownerId: string | null; epoch: number };
 
 export interface CloudSyncStores {
   listSessionMetas: () => SessionMeta[];
   loadSession: (id: string) => Promise<{ meta: SessionMeta; messages: ChatMessage[] } | null>;
-  applySession: (payload: ChatSessionSyncPayload) => void;
-  forgetSession: (id: string) => void;
+  applySession: (payload: ChatSessionSyncPayload) => void | Promise<void>;
+  forgetSession: (id: string) => void | Promise<void>;
   listArtifactIds: () => string[];
-  getArtifact: (id: string) => Artifact | null;
-  applyArtifact: (artifact: Artifact) => void;
+  getArtifact: (id: string) => Artifact | null | Promise<Artifact | null>;
+  applyArtifact: (artifact: Artifact) => void | Promise<void>;
   forgetArtifact: (id: string) => void;
   listDocumentIds: () => string[];
-  getDocument: (id: string) => StoredDocument | null;
-  applyDocument: (doc: StoredDocument) => void;
+  getDocument: (id: string) => StoredDocument | null | Promise<StoredDocument | null>;
+  applyDocument: (doc: StoredDocument) => void | Promise<void>;
   forgetDocument: (id: string) => void;
   listNoteIds: () => string[];
   getNote: (id: string) => UserNote | null;
@@ -111,11 +116,11 @@ function createDefaultStores(): CloudSyncStores {
     applySession: applyChatPayloadToZustand,
     forgetSession: forgetLocalSessionInZustand,
     listArtifactIds: () => useArtifacts.getState().order,
-    getArtifact: (id) => useArtifacts.getState().byId[id] ?? null,
+    getArtifact: loadArtifactFull,
     applyArtifact: applyArtifactToZustand,
     forgetArtifact: forgetArtifactInZustand,
     listDocumentIds: () => Object.keys(useDocuments.getState().byId),
-    getDocument: (id) => useDocuments.getState().byId[id] ?? null,
+    getDocument: loadDocumentFull,
     applyDocument: applyDocumentToZustand,
     forgetDocument: forgetDocumentInZustand,
     listNoteIds: () => useUserNotes.getState().order,
@@ -154,11 +159,66 @@ const lastPushedHash = new Map<string, string>();
 let remoteBytesByKey = new Map<string, number>();
 let remoteBytesReady = false;
 let chain: Promise<void> = Promise.resolve();
+let drainScheduled = false;
+let inFlightJob: Job | null = null;
+let retryTimer: ReturnType<typeof setTimeout> | null = null;
+let retryAttempt = 0;
+registerResourceMetrics(() => ({ syncPendingKeys: pending.size, syncInFlightJobs: inFlightJob ? 1 : 0 }));
 let pagehideBound = false;
 
 function jobKey(kind: CloudSyncKind, clientId: string): string {
   return `${kind}:${clientId}`;
 }
+
+function ownerStillCurrent(ownerId: string | null, epoch: number): boolean {
+  return getStorageOwner() === ownerId && getOwnerEpoch() === epoch;
+}
+
+function retryStorageKey(ownerId: string): string { return `ss-sync-jobs:${ownerId}`; }
+function persistLightJobs(ownerId: string | null): void {
+  if (!ownerId || typeof localStorage === "undefined") return;
+  const jobs = [...(inFlightJob?.ownerId === ownerId ? [inFlightJob] : []), ...pending.values()]
+    .filter((job) => job.ownerId === ownerId)
+    .map(({ kind, clientId, op }) => ({ kind, clientId, op }));
+  try { localStorage.setItem(retryStorageKey(ownerId), JSON.stringify(jobs)); } catch { /* memory queue remains */ }
+}
+function restoreLightJobs(ownerId: string | null): void {
+  if (!ownerId || typeof localStorage === "undefined") return;
+  try {
+    const parsed = JSON.parse(localStorage.getItem(retryStorageKey(ownerId)) ?? "[]") as unknown;
+    if (!Array.isArray(parsed)) return;
+    for (const candidate of parsed.slice(0, 10_000)) {
+      if (!candidate || typeof candidate !== "object") continue;
+      const row = candidate as Record<string, unknown>;
+      if (typeof row.kind !== "string" || !isCloudSyncKind(row.kind) || typeof row.clientId !== "string" || !row.clientId || row.clientId.length > 200 || (row.op !== "upsert" && row.op !== "tombstone")) continue;
+      const job: Job = { kind: row.kind, clientId: row.clientId, op: row.op, ownerId, epoch: getOwnerEpoch() };
+      pending.set(jobKey(job.kind, job.clientId), job);
+    }
+  } catch { /* malformed derived queue is ignored; authoritative local objects remain */ }
+}
+function queueRetry(): void {
+  if (retryTimer || typeof window === "undefined") return;
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return;
+  const delay = Math.min(60_000, 1_000 * 2 ** Math.min(retryAttempt++, 6));
+  retryTimer = setTimeout(() => { retryTimer = null; void flushPendingJobs(); }, Math.round(delay * (0.8 + Math.random() * 0.4)));
+}
+
+onStorageOwnerChange((previous, next) => {
+  persistLightJobs(previous);
+  if (retryTimer) clearTimeout(retryTimer);
+  retryTimer = null; retryAttempt = 0;
+  for (const timer of timers.values()) clearTimeout(timer);
+  timers.clear();
+  pending.clear();
+  baseline.clear();
+  lastOkBytes.clear();
+  lastPushedHash.clear();
+  remoteBytesByKey.clear();
+  remoteBytesReady = false;
+  setCloudRowKeys(null);
+  restoreLightJobs(next);
+  if (pending.size) void flushPendingJobs();
+});
 
 export function __setCloudSyncStoresForTests(next: CloudSyncStores | null): void {
   stores = next ?? createDefaultStores();
@@ -182,6 +242,9 @@ export function __resetCloudSyncForTests(): void {
   for (const timer of timers.values()) clearTimeout(timer);
   timers.clear();
   pending.clear();
+  inFlightJob = null;
+  if (retryTimer) clearTimeout(retryTimer);
+  retryTimer = null; retryAttempt = 0;
   baseline.clear();
   lastOkBytes.clear();
   lastPushedHash.clear();
@@ -189,6 +252,7 @@ export function __resetCloudSyncForTests(): void {
   remoteBytesReady = false;
   setCloudRowKeys(null);
   chain = Promise.resolve();
+  drainScheduled = false;
   unknownKindWarned.clear();
   __setSyncLimitsForTests(null);
   __resetStreamingSessionsForTests();
@@ -274,6 +338,7 @@ function bindPagehideFlush(): void {
     void flushPendingJobs();
   };
   window.addEventListener("pagehide", flush);
+  window.addEventListener("online", () => { if (retryTimer) clearTimeout(retryTimer); retryTimer = null; retryAttempt = 0; void flushPendingJobs(); });
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") flush();
   });
@@ -283,6 +348,7 @@ function enqueue(job: Job): void {
   bindPagehideFlush();
   const key = jobKey(job.kind, job.clientId);
   pending.set(key, job);
+  persistLightJobs(job.ownerId);
   const existing = timers.get(key);
   if (existing) clearTimeout(existing);
   if (debounceMs <= 0) {
@@ -300,25 +366,52 @@ function enqueue(job: Job): void {
 }
 
 export function enqueueUpsert(kind: CloudSyncKind, clientId: string): void {
-  enqueue({ op: "upsert", kind, clientId });
+  enqueue({ op: "upsert", kind, clientId, ownerId: getStorageOwner(), epoch: getOwnerEpoch() });
 }
 
 export function enqueueTombstone(kind: CloudSyncKind, clientId: string): void {
-  enqueue({ op: "tombstone", kind, clientId });
+  enqueue({ op: "tombstone", kind, clientId, ownerId: getStorageOwner(), epoch: getOwnerEpoch() });
 }
 
 async function flushPendingJobs(): Promise<void> {
-  const jobs = [...pending.values()];
-  pending.clear();
-  if (jobs.length === 0) return;
-  chain = chain.then(async () => {
-    const api = await resolveClient();
-    if (!api) return;
-    for (const job of jobs) {
-      if (job.op === "tombstone") await pushTombstone(api, job.kind, job.clientId);
-      else await pushOne(api, job.kind, job.clientId);
+  if (drainScheduled || pending.size === 0) return chain;
+  drainScheduled = true;
+  chain = chain.catch(() => {}).then(async () => {
+    // Pending stores only kind/id/owner. Each iteration loads at most one full payload;
+    // updates during an in-flight upload replace the one pending job for that key.
+    while (pending.size > 0) {
+      const first = pending.entries().next().value as [string, Job] | undefined;
+      if (!first) break;
+      const [key, job] = first;
+      if (!ownerStillCurrent(job.ownerId, job.epoch)) { pending.delete(key); continue; }
+      if (typeof navigator !== "undefined" && navigator.onLine === false) break;
+      const api = await resolveClient();
+      if (!api) break;
+      if (!ownerStillCurrent(job.ownerId, job.epoch)) { pending.delete(key); continue; }
+      pending.delete(key);
+      inFlightJob = job;
+      persistLightJobs(job.ownerId);
+      try {
+        const committed = job.op === "tombstone"
+          ? await pushTombstone(api, job.kind, job.clientId, job)
+          : await pushOne(api, job.kind, job.clientId, job);
+        if (!committed && ownerStillCurrent(job.ownerId, job.epoch)) {
+          if (!pending.has(key)) pending.set(key, job);
+          if (getCloudSyncStatus().message?.startsWith("云端同步失败")) queueRetry();
+          break;
+        }
+        retryAttempt = 0;
+      } catch (error) {
+        if (ownerStillCurrent(job.ownerId, job.epoch) && !pending.has(key)) pending.set(key, job);
+        reportError(`云端同步失败：${error instanceof Error ? error.message : "未知错误"}`);
+        queueRetry();
+        break;
+      } finally {
+        if (inFlightJob === job) inFlightJob = null;
+        if (ownerStillCurrent(job.ownerId, job.epoch)) persistLightJobs(job.ownerId);
+      }
     }
-  });
+  }).finally(() => { drainScheduled = false; });
   await chain;
 }
 
@@ -427,11 +520,11 @@ async function loadLocalPayload(kind: CloudSyncKind, clientId: string): Promise<
     return session ? buildChatSessionPayload(session.meta, session.messages) : null;
   }
   if (kind === "artifact") {
-    const artifact = stores.getArtifact(clientId);
+    const artifact = await stores.getArtifact(clientId);
     return artifact ? buildArtifactPayload(artifact) : null;
   }
   if (kind === "document") {
-    const doc = stores.getDocument(clientId);
+    const doc = await stores.getDocument(clientId);
     return doc ? buildDocumentPayload(doc) : null;
   }
   if (kind === "user-note") {
@@ -487,9 +580,12 @@ function cachedPoolBytes(pool: SyncQuotaPool, skipKind: CloudSyncKind, skipId: s
   return bytes;
 }
 
-function payloadFingerprint(payload: unknown): string {
+async function payloadFingerprint(payload: unknown): Promise<string> {
   try {
-    return JSON.stringify(payload);
+    if (!globalThis.crypto?.subtle) return "";
+    const bytes = new TextEncoder().encode(JSON.stringify(payload));
+    const digest = await crypto.subtle.digest("SHA-256", bytes);
+    return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
   } catch {
     return "";
   }
@@ -499,10 +595,12 @@ async function remoteUserBytes(
   api: SyncDocumentsApi,
   skipKind: CloudSyncKind,
   skipId: string,
+  job?: Job,
 ): Promise<{ bytes: number; error: string | null }> {
   const cached = cachedUserBytes(skipKind, skipId);
   if (cached != null) return { bytes: cached, error: null };
   const { data, error } = await api.list(CLOUD_SYNC_KINDS);
+  if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return { bytes: 0, error: "sync_owner_changed" };
   if (error) return { bytes: 0, error: error.message };
   rememberRemoteBytesFromRows(data);
   return { bytes: cachedUserBytes(skipKind, skipId) ?? 0, error: null };
@@ -533,34 +631,39 @@ function reportUnknownKindOnce(kind: CloudSyncKind): void {
   reportError(`云端还不认识「${label}」这类同步数据，已改为只保留本机；云端升级后会自动补传。`);
 }
 
-async function pushTombstone(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: string): Promise<void> {
+async function pushTombstone(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: string, job?: Job): Promise<boolean> {
+  if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   const { data, error } = await api.upsert({
     kind,
     client_id: clientId,
     payload: {},
     deleted: true,
   });
+  if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (error) {
     reportError(`云端同步失败：${error.message}`);
-    return;
+    return false;
   }
   rememberBaseline(kind, clientId, data?.updated_at);
   noteRemoteBytes(kind, clientId, 0, true);
   lastPushedHash.delete(jobKey(kind, clientId));
   lastOkBytes.delete(jobKey(kind, clientId));
+  return true;
 }
 
-async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: string): Promise<void> {
+async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: string, job?: Job): Promise<boolean> {
+  if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   const local = await loadLocalPayload(kind, clientId);
+  if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (!local) {
-    await pushTombstone(api, kind, clientId);
-    return;
+    return pushTombstone(api, kind, clientId, job);
   }
 
   const { data: remote, error: getError } = await api.get(kind, clientId);
+  if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (getError) {
     reportError(`云端同步失败：${getError.message}`);
-    return;
+    return false;
   }
 
   let toUpload: unknown = local;
@@ -568,11 +671,13 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     const localNote = asUserNote(local);
     const remoteNote = asUserNote(remote.payload);
     if (localNote && remoteNote && remoteNote.updatedAt > localNote.updatedAt) {
+      const remoteHash = await payloadFingerprint(remote.payload);
+      if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
       stores.applyNote(remoteNote);
       rememberBaseline(kind, clientId, remote.updated_at);
-      lastPushedHash.set(jobKey(kind, clientId), payloadFingerprint(remote.payload));
+      lastPushedHash.set(jobKey(kind, clientId), remoteHash);
       noteRemoteBytes(kind, clientId, payloadByteSize(remote.payload), false);
-      return;
+      return true;
     }
   }
   if (kind === "review-card" && remote && !remote.deleted) {
@@ -583,11 +688,13 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     // 这个分支过去不存在，于是只要本机对同一张卡有任何改动（哪怕只是换科目），
     // 就会无条件把本机副本 upsert 上去，静默覆盖别处（如 Platform Wiki）的编辑。
     if (localCard && remoteCard && cardVersion(remoteCard) > cardVersion(localCard)) {
+      const remoteHash = await payloadFingerprint(remote.payload);
+      if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
       stores.applyCard(remoteCard);
       rememberBaseline(kind, clientId, remote.updated_at);
-      lastPushedHash.set(jobKey(kind, clientId), payloadFingerprint(remote.payload));
+      lastPushedHash.set(jobKey(kind, clientId), remoteHash);
       noteRemoteBytes(kind, clientId, payloadByteSize(remote.payload), false);
-      return;
+      return true;
     }
   }
   if (kind === "chat-project" && remote && !remote.deleted) {
@@ -595,11 +702,13 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     const remoteProject = asChatProject(remote.payload);
     // 项目没有正文可合并：谁的 updatedAt 新听谁的。
     if (localProject && remoteProject && remoteProject.updatedAt > localProject.updatedAt) {
+      const remoteHash = await payloadFingerprint(remote.payload);
+      if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
       stores.applyProject(remoteProject);
       rememberBaseline(kind, clientId, remote.updated_at);
-      lastPushedHash.set(jobKey(kind, clientId), payloadFingerprint(remote.payload));
+      lastPushedHash.set(jobKey(kind, clientId), remoteHash);
       noteRemoteBytes(kind, clientId, payloadByteSize(remote.payload), false);
-      return;
+      return true;
     }
   }
   if (kind === "chat-session" && remote && !remote.deleted) {
@@ -610,7 +719,8 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
       if (localPayload && remotePayload) {
         const merged = mergeChatSessionPayloads(localPayload, remotePayload);
         toUpload = merged.payload;
-        stores.applySession(merged.payload);
+        await stores.applySession(merged.payload);
+        if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
         if (merged.added > 0) reportMerged();
       }
     }
@@ -623,34 +733,36 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     } else {
       reportError("同步内容含图片或密钥，已跳过上传。本机仍保留。");
     }
-    return;
+    return false;
   }
 
-  const hash = payloadFingerprint(prepared.payload);
-  const remoteHash = remote && !remote.deleted ? payloadFingerprint(remote.payload) : "";
+  const hash = await payloadFingerprint(prepared.payload);
+  const remoteHash = remote && !remote.deleted ? await payloadFingerprint(remote.payload) : "";
+  if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (hash && (lastPushedHash.get(jobKey(kind, clientId)) === hash || remoteHash === hash)) {
     rememberBaseline(kind, clientId, remote?.updated_at);
     lastPushedHash.set(jobKey(kind, clientId), hash);
     lastOkBytes.set(jobKey(kind, clientId), prepared.bytes);
     noteRemoteBytes(kind, clientId, prepared.bytes, false);
-    return;
+    return true;
   }
 
-  const total = await remoteUserBytes(api, kind, clientId);
+  const total = await remoteUserBytes(api, kind, clientId, job);
+  if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (total.error) {
     reportError(`云端同步失败：${total.error}`);
-    return;
+    return false;
   }
   if (total.bytes + prepared.bytes > effectiveUserLimit()) {
     reportError(formatUserLimitMessage(effectiveUserLimit()));
-    return;
+    return false;
   }
   const pool = quotaPoolForKind(kind);
   if (pool) {
     const poolBytes = cachedPoolBytes(pool, kind, clientId);
     if (poolBytes + prepared.bytes > effectivePoolLimit(pool)) {
       reportError(formatPoolLimitMessage(pool, effectivePoolLimit(pool)));
-      return;
+      return false;
     }
   }
 
@@ -660,6 +772,7 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     payload: prepared.payload,
     deleted: false,
   });
+  if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (error) {
     if (isSyncKindLimitError(error.message)) {
       reportError(formatKindLimitMessage(kind, prepared.bytes, prepared.bytes, lastOkBytes.get(jobKey(kind, clientId))));
@@ -673,12 +786,13 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     } else {
       reportError(`云端同步失败：${error.message}`);
     }
-    return;
+    return false;
   }
   rememberBaseline(kind, clientId, data?.updated_at);
   lastPushedHash.set(jobKey(kind, clientId), hash);
   lastOkBytes.set(jobKey(kind, clientId), prepared.bytes);
   noteRemoteBytes(kind, clientId, prepared.bytes, false);
+  return true;
 }
 
 function capSessions(metas: SessionMeta[]): SessionMeta[] {
@@ -690,44 +804,34 @@ async function applyChatPayloadToZustand(payload: ChatSessionSyncPayload): Promi
   // 先等本地水合：未水合时 sessionsMeta 是空的，据此写 manifest 会把盘上真实的会话列表
   // 覆盖成「只剩云端这一条」。等水合完再合并，顺带也保证拉取不会白跑。
   await ensureChatHistoryBootstrap().catch(() => {});
-  withLocalApply(() => {
-    const { meta, messages } = payload;
-    const state = useChatHistory.getState();
-    if (!state._hasHydrated) return;
-    const sessionsMeta = capSessions([
-      meta,
-      ...state.sessionsMeta.filter((item) => item.id !== meta.id),
-    ]);
-    saveSessionMessages(meta.id, messages);
-    // 走 manifestFrom 统一构造：手写字段漏掉 folders 会把用户的对话项目整批清空
-    // （2026-09-20 核实：云端拉取一次就丢一次，会话的 folderId 全变悬空）。
-    saveManifest(manifestFrom(state, { activeSessionId: state.activeSessionId ?? meta.id, sessions: sessionsMeta }));
-    // 拉取只入尾部窗口 + 登记 loadedSessionIds：
-    // 以前整段正文进 messagesById 且永不进 LRU，长会话 pull 一次就永久占内存。
-    const sliced = tailWindowSlice(messages);
-    const nextWindows = { ...state.sessionWindowById };
-    nextWindows[meta.id] = {
-      startTurn: sliced.startTurn,
-      startIndex: sliced.startIndex,
-      turnCount: sliced.spine.length,
-      messageCount: messages.length,
-      spine: sliced.spine,
-    };
-    useChatHistory.setState({
-      sessionsMeta,
-      messagesById: { ...state.messagesById, [meta.id]: sliced.messages },
-      sessionWindowById: nextWindows,
-      loadedSessionIds: [
-        ...state.loadedSessionIds.filter((item) => item !== meta.id),
-        meta.id,
-      ],
-    });
-  });
+  const { meta, messages } = payload;
+  const initial = useChatHistory.getState();
+  if (!initial._hasHydrated) throw new Error("chat_history_not_hydrated");
+  const ownerId = getStorageOwner(), epoch = getOwnerEpoch();
+  await saveSessionMessagesCommitted(meta.id, messages);
+  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
+  const state = useChatHistory.getState();
+  const sessionsMeta = capSessions([meta, ...state.sessionsMeta.filter((item) => item.id !== meta.id)]);
+  // The page checkpoint advances only after both content and its manifest are durable.
+  await saveManifestCommitted(manifestFrom(state, { activeSessionId: state.activeSessionId ?? meta.id, sessions: sessionsMeta }));
+  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
+  withLocalApply(() => applyCloudSessionWindow(meta, messages, sessionsMeta));
 }
 
 async function forgetLocalSessionInZustand(id: string): Promise<void> {
   // 同上：等水合完再按本地真实列表重写 manifest。
   await ensureChatHistoryBootstrap().catch(() => {});
+  const ownerId = getStorageOwner(), epoch = getOwnerEpoch();
+  const blobIds = await listBlobIdsForSession(id);
+  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
+  await deleteSessionData(id, blobIds);
+  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
+  const before = useChatHistory.getState();
+  if (!before._hasHydrated) throw new Error("chat_history_not_hydrated");
+  const retained = before.sessionsMeta.filter((item) => item.id !== id);
+  const nextActive = before.activeSessionId === id ? retained[0]?.id ?? null : before.activeSessionId;
+  await saveManifestCommitted(manifestFrom(before, { activeSessionId: nextActive, sessions: retained }));
+  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
   withLocalApply(() => {
     const state = useChatHistory.getState();
     if (!state._hasHydrated) return;
@@ -740,7 +844,6 @@ async function forgetLocalSessionInZustand(id: string): Promise<void> {
     delete sessionLoadState[id];
     const deletedActive = state.activeSessionId === id;
     const activeSessionId = deletedActive ? sessionsMeta[0]?.id ?? null : state.activeSessionId;
-    saveManifest(manifestFrom(state, { activeSessionId, sessions: sessionsMeta }));
     useChatHistory.setState({
       sessionsMeta,
       messagesById,
@@ -749,17 +852,16 @@ async function forgetLocalSessionInZustand(id: string): Promise<void> {
       activeSessionId,
       loadedSessionIds: state.loadedSessionIds.filter((item) => item !== id),
     });
-    void (async () => {
-      const blobIds = await listBlobIdsForSession(id);
-      await deleteSessionData(id, blobIds);
-    })();
   });
 }
 
-function applyArtifactToZustand(artifact: Artifact): void {
+async function applyArtifactToZustand(artifact: Artifact): Promise<void> {
+  const ownerId = getStorageOwner(), epoch = getOwnerEpoch();
+  if (!await persistArtifactBody(artifact)) throw new Error("artifact_body_checkpoint_failed");
+  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
   withLocalApply(() => {
     useArtifacts.setState((state) => ({
-      byId: { ...state.byId, [artifact.id]: artifact },
+      byId: { ...state.byId, [artifact.id]: { ...artifact, bodyRef: true, html: "", summary: artifact.summary ?? htmlToSummary(artifact.html) } },
       order: state.order.includes(artifact.id) ? state.order : [...state.order, artifact.id],
     }));
   });
@@ -775,10 +877,13 @@ function forgetArtifactInZustand(id: string): void {
   });
 }
 
-function applyDocumentToZustand(doc: StoredDocument): void {
+async function applyDocumentToZustand(doc: StoredDocument): Promise<void> {
+  const ownerId = getStorageOwner(), epoch = getOwnerEpoch();
+  if (!await persistDocumentBody(doc)) throw new Error("document_body_checkpoint_failed");
+  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
   withLocalApply(() => {
     useDocuments.setState((state) => ({
-      byId: { ...state.byId, [doc.id]: doc },
+      byId: { ...state.byId, [doc.id]: { ...doc, bodyRef: true, sections: doc.sections.map((section) => ({ ...section, markdown: undefined })) } },
     }));
   });
 }
@@ -888,8 +993,7 @@ function forgetCardInZustand(id: string): void {
 
 async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
   if (row.deleted) {
-    rememberBaseline(row.kind, row.client_id, row.updated_at);
-    if (row.kind === "chat-session") stores.forgetSession(row.client_id);
+    if (row.kind === "chat-session") await stores.forgetSession(row.client_id);
     else if (row.kind === "artifact") stores.forgetArtifact(row.client_id);
     else if (row.kind === "document") stores.forgetDocument(row.client_id);
     else if (row.kind === "user-note") stores.forgetNote(row.client_id);
@@ -901,7 +1005,6 @@ async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
   // 尤其对 chat-session 免去全量装配 + 合并 + v3 全量重写。
   const known = baseline.get(jobKey(row.kind, row.client_id));
   if (known && !isRemoteNewer(row.updated_at, known)) return;
-  rememberBaseline(row.kind, row.client_id, row.updated_at);
   if (row.kind === "chat-session") {
     const remote = asChatPayload(row.payload);
     if (!remote) return;
@@ -913,22 +1016,22 @@ async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
       );
       // 字节相等短路：合并结果与本地一致时跳过全量落盘 + 窗口/派生重算。
       if (JSON.stringify(merged.payload) !== JSON.stringify({ v: 1, meta: local.meta, messages: local.messages })) {
-        stores.applySession(merged.payload);
+        await stores.applySession(merged.payload);
       }
       if (merged.added > 0) reportMerged();
     } else {
-      stores.applySession(remote);
+      await stores.applySession(remote);
     }
     return;
   }
   if (row.kind === "artifact") {
     const artifact = asArtifact(row.payload);
-    if (artifact) stores.applyArtifact(artifact);
+    if (artifact) await stores.applyArtifact(artifact);
     return;
   }
   if (row.kind === "document") {
     const doc = asDocument(row.payload);
-    if (doc) stores.applyDocument(doc);
+    if (doc) await stores.applyDocument(doc);
     return;
   }
   if (row.kind === "user-note") {
@@ -951,54 +1054,95 @@ async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
   stores.applyProject(project);
 }
 
-async function pullFromCloud(api: SyncDocumentsApi): Promise<void> {
-  const { data, error } = await api.list(CLOUD_SYNC_KINDS);
-  if (error) {
-    reportError(`云端同步失败：${error.message}`);
-    return;
+async function pullFromCloud(api: SyncDocumentsApi, ownerId: string | null, epoch: number): Promise<boolean> {
+  remoteBytesByKey = new Map();
+  remoteBytesReady = false;
+  let cursor: string | undefined;
+  // listPage is bounded for the canonical client; legacy injected clients remain a single array adapter.
+  for (let pageNumber = 0; pageNumber < 100; pageNumber++) {
+    if (!ownerStillCurrent(ownerId, epoch)) return false;
+    const page = api.listPage
+      ? await api.listPage(CLOUD_SYNC_KINDS, cursor)
+      : { ...(await api.list(CLOUD_SYNC_KINDS)), nextCursor: null };
+    if (!ownerStillCurrent(ownerId, epoch)) return false;
+    if (page.error) { reportError(`云端同步失败：${page.error.message}`); return false; }
+    for (const row of page.data) {
+      if (!row.deleted) remoteBytesByKey.set(jobKey(row.kind, row.client_id), payloadByteSize(row.payload));
+    }
+    for (const deleted of [true, false]) {
+      for (const row of page.data) {
+        if (row.deleted !== deleted) continue;
+        if (!ownerStillCurrent(ownerId, epoch)) return false;
+        try {
+          await applyRemoteRow(row);
+          if (!ownerStillCurrent(ownerId, epoch)) return false;
+          rememberBaseline(row.kind, row.client_id, row.updated_at);
+        } catch (error) {
+          reportError(`云端第 ${pageNumber + 1} 页应用失败：${error instanceof Error ? error.message : "未知错误"}`);
+          return false;
+        }
+      }
+    }
+    if (!page.nextCursor) {
+      remoteBytesReady = true;
+      setCloudRowKeys(remoteBytesByKey.keys());
+      return true;
+    }
+    cursor = page.nextCursor;
   }
-  rememberRemoteBytesFromRows(data);
-  const tombstones = data.filter((row) => row.deleted);
-  const live = data.filter((row) => !row.deleted);
-  for (const row of tombstones) await applyRemoteRow(row);
-  for (const row of live) await applyRemoteRow(row);
+  reportError("云端同步分页超过安全上限；未应用不完整快照作为全量结果");
+  return false;
 }
 
 const PUSH_CONCURRENCY = 6;
+const PUSH_PAYLOAD_BUDGET = 6 * 1024 * 1024;
 
-async function pushAllLocal(api: SyncDocumentsApi): Promise<void> {
-  // 每条 pushOne 内含一次 api.get：串行时 N 条 = N 个 RTT。并发池压到 ≤6。
-  const jobs: Array<() => Promise<void>> = [
+async function pushAllLocal(api: SyncDocumentsApi, ownerId: string | null, epoch: number): Promise<void> {
+  const push = (kind: CloudSyncKind, id: string) => pushOne(api, kind, id, { op: "upsert", kind, clientId: id, ownerId, epoch });
+  // Reserve each kind's maximum payload before loading it. Six large sessions
+  // must never be materialized at the same time merely because HTTP permits six requests.
+  const jobs: Array<{ kind: CloudSyncKind; run: () => Promise<boolean> }> = [
     ...stores.listSessionMetas()
       .filter((meta) => !isSessionStreaming(meta.id))
-      .map((meta) => () => pushOne(api, "chat-session", meta.id)),
-    ...stores.listArtifactIds().map((id) => () => pushOne(api, "artifact", id)),
-    ...stores.listDocumentIds().map((id) => () => pushOne(api, "document", id)),
-    ...stores.listNoteIds().map((id) => () => pushOne(api, "user-note", id)),
-    ...stores.listCardIds().map((id) => () => pushOne(api, "review-card", id)),
-    ...stores.listProjectIds().map((id) => () => pushOne(api, "chat-project", id)),
+      .map((meta) => ({ kind: "chat-session" as const, run: () => push("chat-session", meta.id) })),
+    ...stores.listArtifactIds().map((id) => ({ kind: "artifact" as const, run: () => push("artifact", id) })),
+    ...stores.listDocumentIds().map((id) => ({ kind: "document" as const, run: () => push("document", id) })),
+    ...stores.listNoteIds().map((id) => ({ kind: "user-note" as const, run: () => push("user-note", id) })),
+    ...stores.listCardIds().map((id) => ({ kind: "review-card" as const, run: () => push("review-card", id) })),
+    ...stores.listProjectIds().map((id) => ({ kind: "chat-project" as const, run: () => push("chat-project", id) })),
   ];
   let next = 0;
-  const workers = Array.from({ length: Math.min(PUSH_CONCURRENCY, jobs.length) }, async () => {
-    while (next < jobs.length) {
-      const job = jobs[next++];
-      await job();
+  while (next < jobs.length && ownerStillCurrent(ownerId, epoch)) {
+    const batch: typeof jobs = [];
+    let reservedBytes = 0;
+    while (next < jobs.length && batch.length < PUSH_CONCURRENCY) {
+      const job = jobs[next];
+      const weight = KIND_SIZE_LIMIT[job.kind];
+      if (batch.length && reservedBytes + weight > PUSH_PAYLOAD_BUDGET) break;
+      batch.push(job); reservedBytes += weight; next++;
     }
-  });
-  await Promise.all(workers);
+    await Promise.all(batch.map((job) => job.run()));
+  }
 }
 
 export async function pullAndPushAll(): Promise<void> {
+  const ownerId = getStorageOwner(), epoch = getOwnerEpoch();
   const api = await resolveClient();
-  if (!api) return;
+  if (!api || !ownerStillCurrent(ownerId, epoch)) return;
+  await flushPendingJobs();
+  if (!ownerStillCurrent(ownerId, epoch)) return;
+  // A failed local tombstone must not be undone by pulling the still-live remote row.
+  if ([...pending.values()].some((job) => job.ownerId === ownerId && job.op === "tombstone")) return;
   setCloudSyncStatus({ phase: "syncing", message: null });
-  chain = chain.then(async () => {
-    await pullFromCloud(api);
-    await pushAllLocal(api);
+  chain = chain.catch(() => {}).then(async () => {
+    const complete = await pullFromCloud(api, ownerId, epoch);
+    if (!complete || !ownerStillCurrent(ownerId, epoch)) return;
+    await pushAllLocal(api, ownerId, epoch);
+    if (!ownerStillCurrent(ownerId, epoch)) return;
     const current = getCloudSyncStatus();
     if (current.phase === "syncing") {
       setCloudSyncStatus({ phase: "idle", message: current.message });
     }
-  });
+  }).catch((error) => { reportError(`云端同步失败：${error instanceof Error ? error.message : "未知错误"}`); });
   await chain;
 }

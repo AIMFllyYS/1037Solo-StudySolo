@@ -1,6 +1,7 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { LayoutFlags } from "@/lib/content/layoutProfile";
 import { useStore } from "@/lib/stores/ui";
 
@@ -106,5 +107,22 @@ describe("ContentPageClient layout flags", () => {
       layoutFlags: { ...flagsArticle, rightTabs: ["ai"], defaultRightCollapsed: false },
     });
     expect(screen.getByTestId("selection-popover")).toBeInTheDocument();
+  });
+
+  it("large article loads its validated full Markdown only after an explicit request, with retry", async () => {
+    const user = userEvent.setup();
+    const fetcher = vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(null, { status: 503 }))
+      .mockResolvedValueOnce(Response.json({ content: "## 全文\n\n$E=mc^2$", format: "markdown" }));
+    try {
+      renderPage({ initialContent: null, hasInitialContent: true, renderedNote: null, deferredMarkdown: true, contentBytes: 100_000 });
+      expect(fetcher).not.toHaveBeenCalled();
+      await user.click(screen.getByRole("button", { name: "加载完整资料" }));
+      await screen.findByRole("button", { name: "重试加载全文" });
+      await user.click(screen.getByRole("button", { name: "重试加载全文" }));
+      await waitFor(() => expect(screen.queryByRole("button", { name: "加载完整资料" })).not.toBeInTheDocument());
+      expect(fetcher).toHaveBeenCalledTimes(2);
+      expect(String(fetcher.mock.calls[0][0])).toContain("subjectId=physics");
+    } finally { fetcher.mockRestore(); }
   });
 });

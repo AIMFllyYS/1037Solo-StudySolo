@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { cosineSimilarity, cosineSimilarityRow } from "./vectorStore.ts";
+import { cosineSimilarity, cosineSimilarityRow,float32ViewFromBuffer } from "./vectorStore.ts";
 
 test("cosineSimilarity：相同向量返回 1", () => {
   const v = [1, 2, 3];
@@ -39,3 +39,19 @@ test("cosineSimilarityRow：从矩阵中取一行与 cosineSimilarity 一致", (
   assert.equal(cosineSimilarityRow([1, 0], matrix, 2, 2), 0);
   assert.ok(Math.abs(cosineSimilarityRow([1, 1], matrix, 0, 2) - Math.SQRT1_2) < 1e-6);
 });
+
+test('aligned vector Buffer can be borrowed, while an unaligned slice is copied once',()=>{
+  const aligned=Buffer.allocUnsafeSlow(16)
+  aligned.writeFloatLE(1.25,0);aligned.writeFloatLE(2.5,4);aligned.writeFloatLE(3.75,8);aligned.writeFloatLE(4.5,12)
+  const direct=float32ViewFromBuffer(aligned)
+  assert.equal(direct.matrix.length,4)
+  assert.equal(direct.matrix[0],1.25)
+  if(direct.borrowed){aligned.writeFloatLE(9,0);assert.equal(direct.matrix[0],9)}
+  const unaligned=Buffer.allocUnsafeSlow(17).subarray(1)
+  unaligned.writeFloatLE(7.5,0)
+  const copied=float32ViewFromBuffer(unaligned)
+  assert.equal(copied.borrowed,false)
+  assert.equal(copied.matrix[0],7.5)
+  unaligned.writeFloatLE(8.5,0)
+  assert.equal(copied.matrix[0],7.5)
+})

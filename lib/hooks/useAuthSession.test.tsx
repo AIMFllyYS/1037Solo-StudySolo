@@ -101,4 +101,27 @@ describe("useAuthSessionController", () => {
     expect(result.current.status).toBe("signedOut");
     expect(result.current.email).toBeNull();
   });
+
+  it("stops periodic Account reads after sign-out while retaining focus reconciliation", async () => {
+    const client = mockClient({ id: "u1", email: "ada@example.com" });
+    let tick: () => void = () => {};
+    const realInterval = globalThis.setInterval;
+    const interval = vi.spyOn(globalThis, "setInterval").mockImplementation((handler, delay, ...args) => {
+      if (delay !== 300_000) return Reflect.apply(realInterval, globalThis, [handler, delay, ...args]) as ReturnType<typeof setInterval>;
+      tick = handler as () => void;
+      return 42 as unknown as ReturnType<typeof setInterval>;
+    });
+    const { result, unmount } = renderHook(() => useAuthSessionController(client));
+    await waitFor(() => expect(result.current.status).toBe("signedIn"));
+    try {
+      await act(async () => { tick(); await Promise.resolve(); });
+      expect(client.getSessionCalls).toBe(2);
+      await act(async () => { await result.current.signOut(); });
+      await act(async () => { tick(); await Promise.resolve(); });
+      expect(client.getSessionCalls).toBe(2);
+      act(() => window.dispatchEvent(new Event("focus")));
+      await act(async () => { await Promise.resolve(); });
+      expect(client.getSessionCalls).toBe(3);
+    } finally { unmount(); interval.mockRestore(); }
+  });
 });

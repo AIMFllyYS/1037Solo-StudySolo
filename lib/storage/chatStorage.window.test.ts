@@ -1,8 +1,9 @@
+import 'fake-indexeddb/auto';
+import {clear as idbClear,createStore,get as idbGet,keys as idbKeys} from 'idb-keyval';
 import { activateStorageOwner, ownedStorageKey } from "@/lib/storage/ownerScope";
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, test } from "node:test";
 import {
-  CHAT_SESSION_KEY_PREFIX,
   __resetIdbStoragePendingForTests,
   chatSessionKey,
   flushPendingWrites,
@@ -11,11 +12,11 @@ import type { ChatMessage } from "@/lib/types/chat";
 import { INITIAL_WINDOW_TURNS, TURNS_PER_CHUNK } from "@/lib/chat/turnSpine.ts";
 
 const storage = new Map<string, string>();
+const testStore=createStore('gailvlun-db','keyval');
 
 function installBrowserMocks() {
   activateStorageOwner("fixture-user");
   (globalThis as { window?: unknown }).window = { addEventListener: () => {} };
-  (globalThis as { indexedDB?: object }).indexedDB = {};
   (globalThis as { localStorage?: Storage }).localStorage = {
     get length() {
       return storage.size;
@@ -39,7 +40,7 @@ function installBrowserMocks() {
 }
 const physical = (key: string) => ownedStorageKey(key)!;
 const fixtureSet = (key: string, value: string) => storage.set(physical(key), value);
-const fixtureGet = (key: string) => storage.get(physical(key));
+const fixtureGet = async(key: string) => (await idbGet<string>(physical(key),testStore))??storage.get(physical(key));
 
 
 function msg(id: string, role: "user" | "assistant", text = id): ChatMessage {
@@ -63,7 +64,8 @@ async function saveAndWait(sessionId: string, messages: ChatMessage[]) {
 }
 
 describe("chatStorage v3 windowed session", { concurrency: false }, () => {
-  beforeEach(() => {
+  beforeEach(async () => {
+    await idbClear(testStore);
     storage.clear();
     __resetIdbStoragePendingForTests();
     installBrowserMocks();
@@ -74,7 +76,6 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
     __resetSessionV3ForTests();
     __resetIdbStoragePendingForTests();
     delete (globalThis as { window?: unknown }).window;
-    delete (globalThis as { indexedDB?: object }).indexedDB;
     delete (globalThis as { localStorage?: Storage }).localStorage;
   });
 
@@ -83,11 +84,11 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
     const messages = sessionOf(TURNS_PER_CHUNK + 3);
     await saveAndWait("s1", messages);
 
-    assert.ok(fixtureGet("chat-s3:s1:h"), "head key 应存在");
-    assert.ok(fixtureGet("chat-s3:s1:c:0"), "chunk0 应存在");
-    assert.ok(fixtureGet("chat-s3:s1:c:1"), "chunk1 应存在");
-    assert.equal(fixtureGet("chat-s3:s1:c:2"), undefined);
-    assert.equal(fixtureGet(chatSessionKey("s1")), undefined, "v2 键不应写入");
+    assert.ok(await fixtureGet("chat-s3:s1:h"), "head key 应存在");
+    assert.ok(await fixtureGet("chat-s3:s1:c:0"), "chunk0 应存在");
+    assert.ok(await fixtureGet("chat-s3:s1:c:1"), "chunk1 应存在");
+    assert.equal(await fixtureGet("chat-s3:s1:c:2"), undefined);
+    assert.equal(await fixtureGet(chatSessionKey("s1")), undefined, "v2 键不应写入");
 
     const loaded = await loadSessionMessages("s1");
     assert.deepEqual(loaded?.map((m) => m.id), messages.map((m) => m.id));
@@ -120,11 +121,12 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
   });
 
   test("appendSessionMessages：尾部追加 + spine 增长", async () => {
-    const { appendSessionMessages, loadSessionMessages, loadSessionSpine } = await import("./chatStorage.ts");
+    const { appendSessionMessages, flushPendingSessionCheckpoints,loadSessionMessages, loadSessionSpine } = await import("./chatStorage.ts");
     await saveAndWait("s4", sessionOf(3));
 
     appendSessionMessages("s4", [msg("u3", "user", "新轮"), msg("a3", "assistant")]);
     flushPendingWrites();
+    await flushPendingSessionCheckpoints();
 
     const loaded = await loadSessionMessages("s4");
     assert.equal(loaded!.length, 8);
@@ -135,24 +137,26 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
   });
 
   test("append 跨块：第 8 轮后再追加开新 chunk", async () => {
-    const { appendSessionMessages, loadSessionMessages } = await import("./chatStorage.ts");
+    const { appendSessionMessages,flushPendingSessionCheckpoints, loadSessionMessages } = await import("./chatStorage.ts");
     await saveAndWait("s5", sessionOf(TURNS_PER_CHUNK));
 
     appendSessionMessages("s5", [msg("u8", "user"), msg("a8", "assistant")]);
     flushPendingWrites();
+    await flushPendingSessionCheckpoints();
 
-    assert.ok(fixtureGet("chat-s3:s5:c:1"), "应产生 chunk1");
+    assert.ok(await fixtureGet("chat-s3:s5:c:1"), "应产生 chunk1");
     const loaded = await loadSessionMessages("s5");
     assert.equal(loaded!.length, (TURNS_PER_CHUNK + 1) * 2);
     assert.equal(loaded![TURNS_PER_CHUNK * 2].id, "u8");
   });
 
   test("writeSessionMessage：流式更新只动消息内容", async () => {
-    const { writeSessionMessage, loadSessionMessages } = await import("./chatStorage.ts");
+    const { writeSessionMessage,flushPendingSessionCheckpoints, loadSessionMessages } = await import("./chatStorage.ts");
     await saveAndWait("s6", sessionOf(2));
 
     writeSessionMessage("s6", msg("a1", "assistant", "流式更新后的回答"));
     flushPendingWrites();
+    await flushPendingSessionCheckpoints();
 
     const loaded = await loadSessionMessages("s6");
     const target = loaded!.find((m) => m.id === "a1");
@@ -168,8 +172,8 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
     const window = await loadSessionWindow("s7");
     assert.ok(window);
     assert.equal(window!.turnCount, 6);
-    assert.ok(fixtureGet("chat-s3:s7:h"), "迁移后应写 v3 head");
-    assert.equal(fixtureGet(chatSessionKey("s7")), undefined, "v2 键应被清除");
+    assert.ok(await fixtureGet("chat-s3:s7:h"), "迁移后应写 v3 head");
+    assert.equal(await fixtureGet(chatSessionKey("s7")), undefined, "v2 键应被清除");
 
     const loaded = await loadSessionMessages("s7");
     assert.equal(loaded!.length, 12);
@@ -182,6 +186,7 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
     for (const key of [...storage.keys()]) {
       assert.ok(!key.startsWith("chat-s3:s8:"), `残留 v3 键: ${key}`);
     }
+    assert.ok((await idbKeys<string>(testStore)).every(key=>!key.startsWith(physical('chat-s3:s8:'))));
     assert.equal(await loadSessionMessages("s8"), null);
   });
 
@@ -226,6 +231,6 @@ describe("chatStorage v3 windowed session", { concurrency: false }, () => {
     for (const key of [...storage.keys()]) {
       assert.ok(!key.startsWith("chat-s3:orphan:"));
     }
-    assert.ok(fixtureGet("chat-s3:keep:h"), "存活会话的 head 不应被删");
+    assert.ok(await fixtureGet("chat-s3:keep:h"), "存活会话的 head 不应被删");
   });
 });

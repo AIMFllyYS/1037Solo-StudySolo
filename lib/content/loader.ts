@@ -18,11 +18,12 @@ import {
   isSafeContentSegment,
 } from "@/lib/content/contentPathGuard";
 import { normalizeSearchQuery } from "@/lib/ai/search/queryNormalize";
+import { isSubjectInRuntime } from "@/lib/content/offlineSubjects";
 import { readLectureArticle } from "@/lib/content/lectures/paths";
 import { extractHtmlText } from "@/lib/content/lectures/extractHtml";
 import type { LectureMaterialRole } from "@/lib/content/lectures/roles";
 
-const CONTENT_ROOT = path.join(process.cwd(), "content");
+const CONTENT_ROOT = path.join(/* turbopackIgnore: true */ process.cwd(), "content");
 
 /**
  * 课堂材料优先读取：命中 lectures 生成目录则返回受控文件，否则返回 null（走旧路径回退）。
@@ -61,7 +62,7 @@ export function readSectionMarkdown(
     findContentItem("probability", "detail", sectionId) ??
     findContentItem("probability", "detail", chapterId);
   if (!inTree) return null;
-  const file = path.join(LEGACY_CHAPTERS_ROOT, chapterId, `${sectionId}.md`);
+  const file = path.join(/* turbopackIgnore: true */ LEGACY_CHAPTERS_ROOT, chapterId, `${sectionId}.md`);
   return readAuthorizedFile(file, LEGACY_CHAPTERS_ROOT);
 }
 
@@ -196,7 +197,7 @@ export function readContent(
 // 例题读取（与正文一致走服务端 SSR；/api/examples 仅作客户端回退/兼容）
 // ─────────────────────────────────────────────────────────────
 
-const EXAMPLES_ROOT = path.join(process.cwd(), "content", "examples");
+const EXAMPLES_ROOT = path.join(/* turbopackIgnore: true */ process.cwd(), "content", "examples");
 
 export interface ExampleListItem {
   id: string;
@@ -236,8 +237,8 @@ function examplesDir(subjectId: string, chapterId: string, sectionId: string): s
   if (subjectId && !isSafeContentSegment(subjectId)) return null;
   if (!isSafeContentSegment(chapterId) || !isSafeContentSegment(sectionId)) return null;
   return subjectId && subjectId !== "probability"
-    ? path.join(EXAMPLES_ROOT, subjectId, chapterId, sectionId)
-    : path.join(EXAMPLES_ROOT, chapterId, sectionId);
+    ? path.join(/* turbopackIgnore: true */ EXAMPLES_ROOT, subjectId, chapterId, sectionId)
+    : path.join(/* turbopackIgnore: true */ EXAMPLES_ROOT, chapterId, sectionId);
 }
 
 /** 仅返回例题 id/title（SSR 列表用，不含正文）。 */
@@ -250,12 +251,12 @@ export function readExamplesMeta(
   if (!dir) return [];
   let files: string[];
   try {
-    files = fs.readdirSync(dir).filter((f) => f.endsWith(".md")).sort();
+    files = fs.readdirSync(/* turbopackIgnore: true */ dir).filter((f) => f.endsWith(".md")).sort();
   } catch {
     return [];
   }
   return files.map((file) => {
-    const content = fs.readFileSync(path.join(dir, file), "utf8");
+    const content = fs.readFileSync(/* turbopackIgnore: true */ path.join(/* turbopackIgnore: true */ dir, file), "utf8");
     return {
       id: file.replace(/\.md$/, ""),
       title: exampleTitleFromContent(content, file),
@@ -272,9 +273,9 @@ export function readExampleById(
 ): ExampleDetail | null {
   const dir = examplesDir(subjectId, chapterId, sectionId);
   if (!dir || !isSafeExampleId(exampleId)) return null;
-  const filePath = path.join(dir, `${exampleId}.md`);
+  const filePath = path.join(/* turbopackIgnore: true */ dir, `${exampleId}.md`);
   try {
-    const content = fs.readFileSync(filePath, "utf8");
+    const content = fs.readFileSync(/* turbopackIgnore: true */ filePath, "utf8");
     return {
       id: exampleId,
       title: exampleTitleFromContent(content, `${exampleId}.md`),
@@ -304,7 +305,7 @@ export function readExamples(
 // 由 /api/quiz 客户端读取；非 .md 文件，不走 readContentMarkdown。
 // ─────────────────────────────────────────────────────────────
 
-const QUIZ_ROOT = path.join(process.cwd(), "content", "quiz");
+const QUIZ_ROOT = path.join(/* turbopackIgnore: true */ process.cwd(), "content", "quiz");
 
 /**
  * 读取某章节的题目测试 JSON（学科命名空间，防多科 chapterId 冲突）：
@@ -317,9 +318,9 @@ export function readQuiz(subjectId: string, chapterId: string): unknown | null {
   if (!/^[a-zA-Z0-9_-]+$/.test(subjectId) || !/^[a-zA-Z0-9_-]+$/.test(chapterId)) {
     return null;
   }
-  const file = path.join(QUIZ_ROOT, subjectId, `${chapterId}.json`);
+  const file = path.join(/* turbopackIgnore: true */ QUIZ_ROOT, subjectId, `${chapterId}.json`);
   try {
-    return JSON.parse(fs.readFileSync(file, "utf8"));
+    return JSON.parse(fs.readFileSync(/* turbopackIgnore: true */ file, "utf8"));
   } catch {
     return null;
   }
@@ -341,6 +342,7 @@ export function findContentItem(
   itemId: string,
 ): { subjectName: string; categoryName: string; item: ContentItem; parentTitle?: string } | undefined {
   for (const subject of contentTree.subjects) {
+    if (!isSubjectInRuntime(subject.id)) continue;
     if (subject.id !== subjectId) continue;
     for (const cat of subject.categories) {
       if (cat.id !== categoryId) continue;
@@ -367,6 +369,7 @@ export function getMultiSubjectOutline(scope: ContentSearchScope = "all"): strin
   const lines: string[] = [];
 
   for (const subject of contentTree.subjects) {
+    if (!isSubjectInRuntime(subject.id)) continue;
     if (subject.id === "other") continue;
     if (!subjectVisibleToAgent(subject.id, scope)) continue;
     lines.push(`\n=== ${subject.name} (${subject.id}) ===`);
@@ -475,6 +478,7 @@ function substringSearch(
   limit = 8,
   scope: ContentSearchScope = "all",
   subjectId?: string,
+  signal?: AbortSignal,
 ): MultiSearchHit[] {
   const q = query.trim();
   if (!q) return [];
@@ -485,6 +489,8 @@ function substringSearch(
   const otherHits: MultiSearchHit[] = [];
 
   for (const subject of contentTree.subjects) {
+    signal?.throwIfAborted();
+    if (!isSubjectInRuntime(subject.id)) continue;
     if (subject.id === "other") continue;
     if (subjectId && subject.id !== subjectId) continue;
     if (!subjectVisibleToAgent(subject.id, scope)) continue;
@@ -509,6 +515,7 @@ function substringSearch(
       }
 
       for (const { item, parentTitle } of leafItems) {
+        signal?.throwIfAborted();
         if (item.status === "stub") continue;
         // 课堂 HTML 笔记走受控文本提取，其余维持 markdown 读取。
         const searched = readContentSearchText(subject.id, cat.id, item.id);
@@ -568,38 +575,46 @@ export interface SearchAllContentOptions {
    * 测试可显式设为 false，证明 hybrid/BM25 索引本身能检索大二教材。
    */
   allowSubstring?: boolean;
+  signal?: AbortSignal;
+  onDiagnostics?: (diagnostics: import("@/lib/ai/search/hybridSearch").SearchDiagnostics) => void;
 }
 
 /**
  * 在全部科目中做语义+关键词混合检索。
  * 索引存在时使用 hybridSearch（BM25 + 向量 + rerank），否则 fallback 到子串匹配。
  */
-export async function searchAllContent(
+export async function searchAllContentResult(
   query: string,
   limitOrOpts: number | SearchAllContentOptions = 8,
-): Promise<MultiSearchHit[]> {
+): Promise<{ hits: MultiSearchHit[]; diagnostics: import("@/lib/ai/search/hybridSearch").SearchDiagnostics | null }> {
   const q = normalizeSearchQuery(query.trim()) || query.trim();
-  if (!q) return [];
+  if (!q) return { hits: [], diagnostics: null };
   const opts: SearchAllContentOptions =
     typeof limitOrOpts === "number" ? { limit: limitOrOpts } : limitOrOpts;
   const limit = opts.limit ?? 8;
   const scope: ContentSearchScope = opts.academicYear ?? "all";
+  opts.signal?.throwIfAborted();
+  let diagnostics: import("@/lib/ai/search/hybridSearch").SearchDiagnostics | null = null;
 
   try {
-    const { hybridSearch } = await import('@/lib/ai/search/hybridSearch');
-    const results = await hybridSearch(q, {
+    const { hybridSearchWithDiagnostics } = await import('@/lib/ai/search/hybridSearch');
+    const result = await hybridSearchWithDiagnostics(q, {
       topK: Math.max(limit * 3, 16),
       academicYear: scope,
       subjectId: opts.subjectId,
       preferSubjectId: opts.preferSubjectId,
       queryContext: opts.queryContext,
+      signal: opts.signal,
     });
-    const filtered = results.filter((hit) => {
+    diagnostics = result.diagnostics;
+    opts.onDiagnostics?.(diagnostics);
+    const filtered = result.hits.filter((hit) => {
       if (opts.subjectId && hit.subjectId !== opts.subjectId) return false;
       return subjectVisibleToAgent(hit.subjectId, scope);
     });
-    if (filtered.length > 0) return filtered.slice(0, limit);
+    if (filtered.length > 0) return { hits: filtered.slice(0, limit), diagnostics };
   } catch (err) {
+    opts.signal?.throwIfAborted();
     const { searchLog } = await import('@/lib/ai/search/searchLog');
     searchLog.error('search.query', { message: String((err as Error).message), query: q.slice(0, 80) });
   }
@@ -608,11 +623,16 @@ export async function searchAllContent(
   if (!allowSubstring) {
     const { searchLog } = await import('@/lib/ai/search/searchLog');
     searchLog.warn('search.fallback.disabled', { env: process.env.NODE_ENV, query: q.slice(0, 80) });
-    return [];
+    return { hits: [], diagnostics };
   }
+  opts.signal?.throwIfAborted();
   const { searchLog } = await import('@/lib/ai/search/searchLog');
   searchLog.info('search.fallback.substring', { env: process.env.NODE_ENV, query: q.slice(0, 80) });
-  return substringSearch(q, limit, scope, opts.subjectId);
+  return { hits: substringSearch(q, limit, scope, opts.subjectId, opts.signal), diagnostics };
+}
+
+export async function searchAllContent(query: string, limitOrOpts: number | SearchAllContentOptions = 8): Promise<MultiSearchHit[]> {
+  return (await searchAllContentResult(query, limitOrOpts)).hits;
 }
 
 function substringSearchAllowed(): boolean {

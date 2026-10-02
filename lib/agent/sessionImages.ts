@@ -22,6 +22,7 @@ export interface AgentImageItem {
   author?: string;
   /** 这一张属于哪一轮检索（分组用）。 */
   query?: string;
+  imageGenId?: string;
 }
 
 function normalize(
@@ -93,6 +94,7 @@ export function mergeGeneratedImages(
       out = normalize(out, {
         id: `gen:${session.imageGenId}:${index}`,
         kind: "generated",
+        imageGenId: session.imageGenId,
         src,
         title: session.title || session.prompt,
         alt: session.prompt,

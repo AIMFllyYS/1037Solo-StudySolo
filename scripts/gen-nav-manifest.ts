@@ -3,6 +3,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { contentTree } from '../lib/content-data/manifest';
+import { firstLearnHref } from '../lib/content-data';
 import type { ContentItem } from '@/lib/types/content';
 
 function slimItem(item: ContentItem): ContentItem {
@@ -45,3 +46,17 @@ const nav = {
 const outPath = path.join(process.cwd(), 'lib/content-data/nav.generated.json');
 fs.writeFileSync(outPath, JSON.stringify(nav, null, 2));
 console.log(`Wrote ${outPath}`);
+
+// Home renders a few fields per course; its client chunk must not import the
+// 376 KB navigation tree merely to display a bookshelf card.
+const home = contentTree.subjects.map((subject) => ({
+  id: subject.id,
+  name: subject.name,
+  icon: subject.icon,
+  categoryCount: subject.categories.length,
+  chapterCount: subject.categories.reduce((total, category) => total + category.items.length, 0),
+  learnHref: firstLearnHref(subject),
+}));
+const homePath = path.join(process.cwd(), 'lib/content-data/home.generated.json');
+fs.writeFileSync(homePath, JSON.stringify(home, null, 2));
+console.log(`Wrote ${homePath}`);

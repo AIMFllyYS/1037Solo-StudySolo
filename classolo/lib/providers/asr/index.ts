@@ -41,12 +41,12 @@ export {
 
 export function withHotwordPack(config: ASRConfig): ASRConfig {
   const packTerms =
-    config.hotwords && config.hotwords.length > 0
+    config.hotwords !== undefined
       ? config.hotwords
       : [...resolveHotwordPack(getSelectedHotwordPackId())]
   return {
     ...config,
-    hotwords: mergeHotwords(packTerms, getCustomHotwords()),
+    hotwords: mergeHotwords(packTerms,config.hotwords===undefined?getCustomHotwords():[]),
   }
 }
 

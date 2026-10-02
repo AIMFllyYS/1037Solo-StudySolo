@@ -186,6 +186,8 @@ export default function PipPlayerInner() {
       <div style={{ height: height - 32 }}>
         <MediaPlayer
           ref={playerRef}
+          load="eager"
+          preload="metadata"
           src={resolveVideoSrc(video.src)}
           poster={poster || undefined}
           title={video.title}

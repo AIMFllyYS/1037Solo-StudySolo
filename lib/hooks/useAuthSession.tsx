@@ -2,7 +2,7 @@
 
 import {getStorageOwner,activateStorageOwner,hydrateOwnerStores} from "@/lib/storage/ownerScope";
 import {flushPendingWrites} from "@/lib/storage/idbStorage";
-import { createContext, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { restoreAccountSession, logoutAccount, redirectAccount, SIGNED_IN_EVENT } from "@/lib/auth/account";
 import { freshAccessToken, onBrowserSessionChange } from "@/lib/auth/browserSession";
 import {
@@ -60,17 +60,20 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
   const [client] = useState<AuthRuntimeClient | null>(() => injected !== undefined ? injected : null);
   const [status,setStatus]=useState<AuthStatus>("loading");
   const [session,setSession]=useState<AuthSession|null>(null);
+  const signedInRef=useRef(false);
   useEffect(()=>{
     let active=true;
     let revision=0;
-    const apply=(next:AuthSession|null)=>{if(active){setSession(next);setStatus(next?"signedIn":"signedOut");}};
+    const apply=(next:AuthSession|null)=>{if(active){signedInRef.current=!!next;setSession(next);setStatus(next?"signedIn":"signedOut");}};
     const restore=async()=>{const started=revision;try{const next=injected!==undefined && client ? await readPersistedSession(client) : await restoreAccountSession();if(started===revision)apply(next);}catch{if(active&&started===revision)setStatus(current=>current==="loading"?"signedOut":current);}};
     const unsubscribe=client?subscribeAuthSession(client,(next,event)=>{if(event==='INITIAL_SESSION'&&revision>0)return;revision++;apply(next);})
       :onBrowserSessionChange((next)=>{revision++;apply(next?snapshotAuthSession(next.user,null):null);});
     void restore();
     const focus=()=>{if(document.visibilityState!=="hidden")void restore();};
     const signedIn=()=>void restore();
-    const timer=setInterval(()=>void restore(),300000);
+    // A signed-out page can still reconcile on focus or the sign-in event,
+    // but must not keep polling the Account endpoint in the background.
+    const timer=setInterval(()=>{if(signedInRef.current)void restore();},300000);
     window.addEventListener("focus",focus);
     window.addEventListener(SIGNED_IN_EVENT,signedIn);
     return ()=>{active=false;clearInterval(timer);unsubscribe();window.removeEventListener("focus",focus);window.removeEventListener(SIGNED_IN_EVENT,signedIn);};
@@ -84,7 +87,7 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
     requestOtp:async()=>redirectResult("login"),verifyOtp:async()=>redirectResult("login"),
     signInWithPassword:async()=>redirectResult("login"),signUpWithPassword:async()=>redirectResult("register"),
     requestPasswordReset:async()=>redirectResult("forgot-password"),updatePassword:async()=>redirectResult("update-password"),
-    signOut:async()=>{await logoutAccount();setSession(null);setStatus("signedOut");},
+    signOut:async()=>{signedInRef.current=false;try{await logoutAccount();setSession(null);setStatus("signedOut");}catch(error){signedInRef.current=!!session;throw error;}},
   };
 }
 
@@ -124,7 +127,7 @@ export function AuthProvider({
     if(value.status==="loading")return;
     setCloudSyncEnabled(false);
     const previous=getStorageOwner();
-    if(previous&&previous!==value.userId){flushPendingWrites();window.location.reload();return;}
+    if(previous&&previous!==value.userId){flushPendingWrites();activateStorageOwner(null);window.location.reload();return;}
     activateStorageOwner(value.userId);
     let active=true;
     void hydrateOwnerStores().then(()=>{if(active)setReadyOwner(value.userId);});

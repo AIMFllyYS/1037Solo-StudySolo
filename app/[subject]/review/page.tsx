@@ -12,6 +12,7 @@ import { useRecordPreviews } from "@/lib/hooks/useRecordPreviews";
 import { useStore } from "@/lib/store";
 import { getSubject, firstLearnHref } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
+import { isSubjectInRuntime } from "@/lib/content/offlineSubjects";
 import { retryRecord } from "@/lib/review/startRecord";
 import type { ReviewCard } from "@/lib/review/types";
 import FlipCard from "@/components/review/FlipCard";
@@ -35,7 +36,7 @@ function downloadJSON(obj: unknown, filename: string) {
 export default function ReviewBoardPage() {
   const params = useParams();
   const subjectParam = String(params?.subject ?? "");
-  const subjectId = isSubjectId(subjectParam) ? subjectParam : null;
+  const subjectId = isSubjectId(subjectParam) && isSubjectInRuntime(subjectParam) ? subjectParam : null;
 
   const setActiveSubject = useStore((s) => s.setActiveSubject);
   const hydrated = useReviewCards((s) => s._hasHydrated);

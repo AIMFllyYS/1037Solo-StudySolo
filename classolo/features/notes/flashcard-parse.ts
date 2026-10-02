@@ -3,6 +3,7 @@ import { z } from 'zod'
 export interface FlashcardDraft {
   front: string
   back: string
+  sourceSegmentIds?:string[]
 }
 
 const cardSchema = z.object({
@@ -11,6 +12,7 @@ const cardSchema = z.object({
       z.object({
         front: z.string().min(1),
         back: z.string().min(1),
+        sourceSegmentIds:z.array(z.string().min(1).max(150)).max(10).optional(),
       }),
     )
     .max(20),
@@ -27,7 +29,7 @@ export function parseFlashcards(text: string): FlashcardDraft[] {
       JSON.parse(trimmed.slice(jsonStart, jsonEnd + 1)),
     )
     if (!parsed.success) return []
-    return parsed.data.cards.map((c) => ({ front: c.front, back: c.back }))
+    return parsed.data.cards.map((c) => ({ front: c.front, back: c.back,...(c.sourceSegmentIds?{sourceSegmentIds:c.sourceSegmentIds}:{}) }))
   } catch {
     return []
   }

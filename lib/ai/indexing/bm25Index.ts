@@ -60,13 +60,23 @@ export interface CompactBm25Index {
   docLengths: number[];
 }
 
-export interface RuntimeBm25Index {
+interface RuntimeBm25Base {
   builtAt: string;
   avgDocLen: number;
   docCount: number;
+}
+export interface CompactRuntimeBm25Index extends RuntimeBm25Base {
+  format:'compact';
+  ids:string[];
+  invertedIndex:Record<string,{df:number;postings:Uint32Array}>;
+  docLengths:Uint32Array;
+}
+export interface LegacyRuntimeBm25Index extends RuntimeBm25Base {
+  format:'legacy';
   invertedIndex: Record<string, { df: number; postings: Array<{ id: string; tf: number }> }>;
   docLengths: Record<string, number>;
 }
+export type RuntimeBm25Index=CompactRuntimeBm25Index|LegacyRuntimeBm25Index;
 
 export function buildCompactBm25Index(
   chunks: Array<{ id: string; title: string; text: string }>,
@@ -109,34 +119,34 @@ export function parseBm25Index(raw: unknown): RuntimeBm25Index | null {
   const obj = raw as Record<string, unknown>;
   if (obj.version === 3 && Array.isArray(obj.ids)) {
     const compact = obj as unknown as CompactBm25Index;
-    const invertedIndex: RuntimeBm25Index["invertedIndex"] = {};
+    if(!compact.ids.every(id=>typeof id==='string'&&id.length>0)||!Array.isArray(compact.docLengths)||compact.docLengths.length!==compact.ids.length)return null;
+    const invertedIndex: CompactRuntimeBm25Index["invertedIndex"] = {};
     for (const [term, entry] of Object.entries(compact.invertedIndex ?? {})) {
-      const postings: Array<{ id: string; tf: number }> = [];
       const p = entry.p ?? [];
+      if(!Array.isArray(p)||p.length%2!==0||!Number.isSafeInteger(entry.df)||entry.df<0)continue;
+      const values:number[]=[];
       for (let i = 0; i + 1 < p.length; i += 2) {
-        const id = compact.ids[p[i]];
-        if (!id) continue;
-        postings.push({ id, tf: p[i + 1] });
+        const index=p[i],tf=p[i+1];
+        if(!Number.isSafeInteger(index)||index<0||index>=compact.ids.length||!Number.isSafeInteger(tf)||tf<=0)continue;
+        values.push(index,tf);
       }
-      invertedIndex[term] = { df: entry.df, postings };
+      invertedIndex[term] = { df: entry.df, postings:Uint32Array.from(values) };
     }
-    const docLengths: Record<string, number> = {};
-    compact.ids.forEach((id, i) => {
-      docLengths[id] = compact.docLengths[i] ?? 1;
-    });
     return {
+      format:'compact',ids:compact.ids,
       builtAt: compact.builtAt,
       avgDocLen: compact.avgDocLen,
       docCount: compact.docCount,
       invertedIndex,
-      docLengths,
+      docLengths:Uint32Array.from(compact.docLengths.map(value=>Number.isSafeInteger(value)&&value>0?value:1)),
     };
   }
 
-  const inverted = obj.invertedIndex as RuntimeBm25Index["invertedIndex"] | undefined;
+  const inverted = obj.invertedIndex as LegacyRuntimeBm25Index["invertedIndex"] | undefined;
   const docLengths = obj.docLengths as Record<string, number> | undefined;
   if (!inverted || !docLengths) return null;
   return {
+    format:'legacy',
     builtAt: typeof obj.builtAt === "string" ? obj.builtAt : "",
     avgDocLen: Number(obj.avgDocLen) || 0,
     docCount: Number(obj.docCount) || 0,

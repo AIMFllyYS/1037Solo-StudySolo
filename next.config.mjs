@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
+const isolatedDistDir = process.env.STUDYSOLO_BUILD_DIR;
+if (isolatedDistDir && !/^\.next-(?:class-verify|perf-[a-z0-9-]+|desktop-[a-z0-9-]+)$/.test(isolatedDistDir)) {
+  throw new Error("STUDYSOLO_BUILD_DIR must be an isolated .next-perf-* or .next-desktop-* directory");
+}
 const nextConfig = {
   reactStrictMode: true,
+  // Verification builds use a separate output directory so an active dev server keeps its .next state.
+  ...(isolatedDistDir ? { distDir: isolatedDistDir } : {}),
   // Next 16 默认拦截跨源访问 dev 资源（/_next/webpack-hmr、__nextjs_font 等）。
   // 经反向代理/IDE 预览（如 127.0.0.1 的预览端口）访问时，HMR 会 502、字体 403，
   // 进而导致页面无法水合。放行本机来源即可正常开发。
@@ -10,13 +16,23 @@ const nextConfig = {
   ...(process.env.BUILD_STANDALONE === "1"
     ? { output: "standalone", images: { unoptimized: true } }
     : {}),
-  // content/ 下的笔记与检索索引随 standalone 落盘（自托管 / 桌面）。
-  // _raw 与 examples 仍排除以控制体积。
+  // Runtime assets are explicit: dynamic fs paths carry turbopackIgnore and
+  // no longer cause NFT to pull the checkout root (including .env/old EXEs).
   outputFileTracingIncludes: {
-    "/api/**": ["./content/**/*", "./lib/ai/prompts/**/*"],
+    "/api/**": [
+      "./content/*/**/*", "./content/chapters/**/*", "./content/examples/**/*", "./content/quiz/**/*",
+      "./content/.index/manifest.json", "./content/.index/bm25.json", "./content/.index/chunks-meta.json",
+      "./content/.index/vectors.bin", "./content/.index/vectors.ids.json",
+      "./lib/ai/prompts/**/*", "./runtime/search-worker/**/*",
+    ],
   },
   outputFileTracingExcludes: {
-    "/api/**": ["./content/_raw/**/*", "./content/examples/**/*"],
+    "/*": [
+      "./.env*", "./**/.env*", "./content/_raw/**/*", "./content/_raw-src/**/*",
+      "./content/.index/embed-cache*", "./1037Solo-Classolo/**/*", "./dist-desktop/**/*",
+      "./dist-desktop-staged-*/**/*", "./artifacts/**/*", "./.local-archive/**/*",
+      "./docs/**/*", "./tmp/**/*", "./manim/**/*", "./.next-class-verify/**/*",
+    ],
   },
   // 重型依赖按需加载，减少首屏 bundle 体积。lucide-react 有 18 处具名图标导入，
   // 加入后 Next 会把 barrel 导入改写为按图标深层导入，显著减小图标库体积。

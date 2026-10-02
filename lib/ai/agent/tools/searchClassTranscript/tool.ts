@@ -28,19 +28,21 @@ export const classTranscriptIo = {
     const out = new Map<string, TranscriptSegmentLike[]>();
     if (!sessionIds.length) return out;
     const db = createServiceAuthClient();
-    const result = await db
+    const [result,corrections] = await Promise.all([db
       .from("ss_class_transcripts")
       .select("session_id,seq,payload")
       .eq("user_id", userId)
       .in("session_id", [...sessionIds])
       .order("seq")
-      .limit(MAX_ROWS);
-    if (result.error) throw result.error;
+      .limit(MAX_ROWS),db.from('ss_class_corrections').select('segment_id,payload').eq('user_id',userId).in('session_id',[...sessionIds]).limit(MAX_ROWS)]);
+    if (result.error||corrections.error) throw result.error||corrections.error;
+    const corrected=new Map((corrections.data??[]).map(row=>[String(row.segment_id),(row.payload as {correctedText?:unknown})?.correctedText]));
     for (const row of result.data ?? []) {
       const payload = (row.payload ?? {}) as { id?: string; text?: string };
       if (typeof payload.text !== "string" || !payload.text.trim()) continue;
       const list = out.get(row.session_id as string) ?? [];
-      list.push({ id: payload.id ?? `${row.session_id}:${row.seq}`, seq: Number(row.seq) || 0, text: payload.text });
+      const id=payload.id ?? `${row.session_id}:${row.seq}`,text=corrected.get(id);
+      list.push({ id, seq: Number(row.seq) || 0, text: typeof text==='string'?text:payload.text });
       out.set(row.session_id as string, list);
     }
     return out;
@@ -103,7 +105,9 @@ export function createSearchClassTranscriptTool(ctx: StudyToolContext, runtime: 
       const already = runtime.loadedContextKeys.has(contextKey);
       try {
         if (resolved === "current") {
-          const stored = (await classTranscriptIo.loadSegments(ctx.userId, [cls.sessionId])).get(cls.sessionId) ?? [];
+          let stored:TranscriptSegmentLike[]=[],liveOnly=false;
+          try{stored=(await classTranscriptIo.loadSegments(ctx.userId,[cls.sessionId])).get(cls.sessionId)??[];}
+          catch(error){if(!cls.recent.length)throw error;liveOnly=true;}
           const ranked = rankTranscriptSegments(query, mergeLive(stored, cls.recent), MAX_HITS);
           if (!ranked.length) {
             return { text: "本节课文稿里没有检索到相关片段，可换个关键词再试。", hits: [], scope: resolved, contextKey };
@@ -113,7 +117,7 @@ export function createSearchClassTranscriptTool(ctx: StudyToolContext, runtime: 
             ranked.map((hit) => ({ sessionId: cls.sessionId, sessionTitle: cls.title || "本节课", segmentId: hit.segmentId, text: hit.text })),
             already,
           );
-          return dedupeByContextKey(runtime, "searchClassTranscript", { text: render(hits, resolved), hits, scope: resolved, contextKey });
+          return dedupeByContextKey(runtime, "searchClassTranscript", { text:(liveOnly?'云端文稿暂不可读，以下引用来自本机实时文稿。\n':'')+render(hits, resolved), hits, scope: resolved, contextKey });
         }
         const sessions = (await classTranscriptIo.listSessions(ctx.userId))
           .filter((session) => session.id !== cls.sessionId)

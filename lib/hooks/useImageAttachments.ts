@@ -25,6 +25,8 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import { getModelInfoWithCustom, modelAcceptsImageInput } from "@/lib/ai/models";
 import { localPathOf, recordImport, type ImportSource } from "@/lib/stores/imports";
 import type { ChatAttachment } from "@/lib/types/chat";
+import {adoptObjectUrl} from '@/lib/resources/objectUrl'
+import {getOwnerEpoch,getStorageOwner,onStorageOwnerChange} from '@/lib/storage/ownerScope'
 
 export interface UseImageAttachmentsResult {
   /** 当前附件预览列表（含 blob URL）。 */
@@ -59,6 +61,8 @@ export interface UseImageAttachmentsResult {
   clearError: () => void;
 }
 
+function attachmentObjectUrl(attachment:AttachmentPreview){return attachment.type==='document'?attachment.previewUrl:attachment.type==='local-file'?attachment.dataUrl:attachment.previewUrl}
+
 /**
  * @param options.importSource 记「本地导入记录」时标注来源（我的资产 → 文件/网址）。
  *   只记非图片：图片是对话附件，记进来会把资产页刷满。
@@ -70,6 +74,16 @@ export function useImageAttachments(options?: { importSource?: ImportSource }): 
   const [info, setInfo] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const dragCounter = useRef(0);
+  const live=useRef<AttachmentPreview[]>([])
+  const leases=useRef(new Map<AttachmentPreview,()=>void>())
+  const mounted=useRef(false),generation=useRef(0)
+  const dropControllers=useRef(new Set<AbortController>())
+  const disposeLive=useCallback(()=>{
+    for(const release of leases.current.values())release()
+    leases.current.clear();live.current=[]
+    for(const controller of dropControllers.current)controller.abort()
+    dropControllers.current.clear()
+  },[])
 
   // 错误 3 秒自动清除
   useEffect(() => {
@@ -83,15 +97,13 @@ export function useImageAttachments(options?: { importSource?: ImportSource }): 
     return () => clearTimeout(t);
   }, [info]);
 
-  // 组件卸载时释放所有 blob URL
+  // Committed resources belong to this mounted hook, not to a React state updater after unmount.
   useEffect(() => {
-    return () => {
-      setAttachments((prev) => {
-        revokeAttachments(prev);
-        return [];
-      });
-    };
-  }, []);
+    mounted.current=true;generation.current++
+    const generationRef=generation
+    const unsubscribe=onStorageOwnerChange(()=>{generation.current++;disposeLive();if(mounted.current)setAttachments([])})
+    return () => {mounted.current=false;generationRef.current++;unsubscribe();disposeLive()};
+  }, [disposeLive]);
 
   /** 检查当前模型是否支持 vision，不支持则设置错误并返回 false。 */
   const checkVisionSupport = useCallback((): boolean => {
@@ -104,15 +116,18 @@ export function useImageAttachments(options?: { importSource?: ImportSource }): 
 
   const addFiles = useCallback(
     async (files: File[]) => {
-      if (files.length === 0) return;
+      if (files.length === 0||!mounted.current) return;
+      const started=generation.current,owner=getStorageOwner(),epoch=getOwnerEpoch()
       const imageFiles = files.filter((file) => file.type.startsWith("image/"));
       const otherFiles = files.filter((file) => !file.type.startsWith("image/"));
       const acceptedFiles = imageFiles.length > 0 && !checkVisionSupport() ? otherFiles : files;
       if (acceptedFiles.length === 0) return;
       const { attachments: newOnes, errors } = await filesToAttachments(acceptedFiles);
+      if(!mounted.current||generation.current!==started||getStorageOwner()!==owner||getOwnerEpoch()!==epoch){revokeAttachments(newOnes);return}
       if (errors.length > 0) setError(errors[0]);
       if (newOnes.length > 0) {
-        setAttachments((prev) => [...prev, ...newOnes]);
+        for(const attachment of newOnes){const url=attachmentObjectUrl(attachment);if(url?.startsWith('blob:'))leases.current.set(attachment,adoptObjectUrl(url).release)}
+        live.current=[...live.current,...newOnes];setAttachments(live.current)
       }
       // 本地导入记录：只存路径与元数据，资产页「文件 / 网址」两栏据此显示（不上云）。
       for (const file of acceptedFiles) {
@@ -131,27 +146,15 @@ export function useImageAttachments(options?: { importSource?: ImportSource }): 
   );
 
   const remove = useCallback((idx: number) => {
-    setAttachments((prev) => {
-      const attachment = prev[idx];
-      if (attachment) {
-        const url =
-          attachment.type === "document"
-            ? attachment.previewUrl
-            : attachment.type === "local-file"
-              ? attachment.dataUrl
-              : attachment.previewUrl;
-        if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
-      }
-      return prev.filter((_, i) => i !== idx);
-    });
+    const attachment=live.current[idx]
+    if(!attachment)return
+    leases.current.get(attachment)?.();leases.current.delete(attachment)
+    live.current=live.current.filter((_,i)=>i!==idx);if(mounted.current)setAttachments(live.current)
   }, []);
 
   const clear = useCallback(() => {
-    setAttachments((prev) => {
-      revokeAttachments(prev);
-      return [];
-    });
-  }, []);
+    generation.current++;disposeLive();if(mounted.current)setAttachments([])
+  }, [disposeLive]);
 
   const toChatFormat = useCallback((): ChatAttachment[] | undefined => {
     if (attachments.length === 0) return undefined;
@@ -208,19 +211,23 @@ export function useImageAttachments(options?: { importSource?: ImportSource }): 
       if (urls.length === 0) return;
       if (!checkVisionSupport()) return;
       void (async () => {
+        const started=generation.current,controller=new AbortController();dropControllers.current.add(controller)
         for (const url of urls) {
+          if(!mounted.current||generation.current!==started||controller.signal.aborted)break
           try {
-            const resp = await fetch(url);
+            const resp = await fetch(url,{signal:controller.signal});
             if (!resp.ok) continue;
             const blob = await resp.blob();
+            if(!mounted.current||generation.current!==started||controller.signal.aborted)break
             if (!blob.type.startsWith("image/")) continue;
             const filename = url.split("/").pop()?.split("?")[0] || "image.jpg";
             const file = new File([blob], filename, { type: blob.type });
             await addFiles([file]);
           } catch {
-            setError("无法获取图片，请检查网络或图片地址");
+            if(mounted.current&&generation.current===started&&!controller.signal.aborted)setError("无法获取图片，请检查网络或图片地址");
           }
         }
+        dropControllers.current.delete(controller)
       })();
     },
     [addFiles, checkVisionSupport, endDrag],

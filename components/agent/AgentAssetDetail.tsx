@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Copy, ExternalLink, FolderOpen, PenLine, Quote, Trash2 } from "lucide-react";
@@ -11,8 +11,9 @@ import { useAgentAssets } from "@/lib/hooks/useAgentAssets";
 import { useMinimumSkeleton } from "@/lib/hooks/useMinimumSkeleton";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useReviewCards } from "@/lib/stores/reviewCards";
-import { useDocuments } from "@/lib/stores/documents";
+import { acquireDocumentBodyLease, hydrateDocumentBody, loadDocumentFull, useDocuments } from "@/lib/stores/documents";
 import { useArtifacts } from "@/lib/stores/artifacts";
+import { acquireArtifactBodyLease, hydrateArtifactBody } from "@/lib/stores/artifacts";
 import { useImports } from "@/lib/stores/imports";
 import { isElectronDesktop } from "@/lib/stores/apiSecrets";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";
@@ -37,7 +38,19 @@ export default function AgentAssetDetail({ kind, id }: { kind: AssetKind; id: st
   const note = useUserNotes((s) => s.byId[id]);
   const card = useReviewCards((s) => s.byId[id]);
   const doc = useDocuments((s) => s.byId[id]);
+  useEffect(() => {
+    if (kind !== "document") return;
+    const release = acquireDocumentBodyLease(id);
+    void hydrateDocumentBody(id);
+    return release;
+  }, [kind, id]);
   const artifact = useArtifacts((s) => s.byId[id]);
+  useEffect(() => {
+    if (kind !== "artifact") return;
+    const release = acquireArtifactBodyLease(id);
+    void hydrateArtifactBody(id);
+    return release;
+  }, [kind, id]);
   const importRecord = useImports((s) => s.byId[id]);
   const [flipped, setFlipped] = useState(false);
   const [confirming, setConfirming] = useState(false);
@@ -112,7 +125,9 @@ export default function AgentAssetDetail({ kind, id }: { kind: AssetKind; id: st
       <button key="open" type="button" className={ACTION_CLASS} onClick={() => useDocuments.getState().openViewer(doc.id)}>
         <FolderOpen size={14} /> 打开长文窗
       </button>,
-      <button key="copy" type="button" className={ACTION_CLASS} onClick={() => void copy("markdown", assembleDocumentMarkdown(doc))}>
+      <button key="copy" type="button" className={ACTION_CLASS} onClick={() => void loadDocumentFull(doc.id).then((full) => {
+        if (full) void copy("markdown", assembleDocumentMarkdown(full));
+      }).catch(() => {})}>
         <Copy size={14} /> {copied === "markdown" ? "已复制" : "复制 Markdown"}
       </button>,
     );

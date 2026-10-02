@@ -14,6 +14,10 @@ import WebSourceCarousel from "@/components/chat/WebSourceCarousel";
 import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
 import { webSourceHost } from "@/lib/chat/webSearchDisplay";
 import type { AgentProductItem, AgentProductKind } from "@/lib/chat/sessionProducts";
+import { collectSessionProducts } from "@/lib/chat/sessionProducts";
+import type { SummaryProductRef } from "@/lib/storage/sessionSummary";
+import { loadTurnsBefore } from "@/lib/storage/chatStorage";
+import { getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
 import { openAgentQuiz } from "@/lib/quiz-dock/open";
 import { useArtifacts } from "@/lib/stores/artifacts";
@@ -24,6 +28,7 @@ import { SOURCES_PANEL_INSET as INSET, clampSourcesPanelSize, useAgentCenter } f
 import { useT } from "@/lib/i18n";
 
 type ResizeAxes = "x" | "y" | "xy";
+type DisplayProduct = AgentProductItem | SummaryProductRef;
 
 /** 参考列里各产物板块的展示顺序：来源之外，出题 → 演示 → 生图 → 文档，同级并列。 */
 const PRODUCT_SECTIONS: readonly AgentProductKind[] = ["quiz", "interactive", "image", "document"];
@@ -59,7 +64,7 @@ function productHint(t: ReturnType<typeof useT>, kind: AgentProductKind): string
 function railTitle(
   t: ReturnType<typeof useT>,
   sources: TraceSource[],
-  products: AgentProductItem[],
+  products: DisplayProduct[],
 ): string {
   const kinds = productKinds(sources, products);
   if (kinds.length <= 1) {
@@ -71,7 +76,7 @@ function railTitle(
 }
 
 /** 当前面板里实际出现的类别（按展示顺序），用于决定要不要出小节标题。 */
-function productKinds(sources: TraceSource[], products: AgentProductItem[]): string[] {
+function productKinds(sources: TraceSource[], products: DisplayProduct[]): string[] {
   const kinds = PRODUCT_SECTIONS.filter((kind) => products.some((item) => item.kind === kind));
   return sources.length ? ["sources", ...kinds] : kinds;
 }
@@ -80,8 +85,8 @@ function ProductRows({
   items,
   onOpen,
 }: {
-  items: readonly AgentProductItem[];
-  onOpen: (item: AgentProductItem) => void;
+  items: readonly DisplayProduct[];
+  onOpen: (item: DisplayProduct) => void;
 }) {
   const t = useT();
   return (
@@ -137,14 +142,16 @@ function SectionLabel({ children }: { children: string }) {
  * 现在不只放来源：出题 / 演示 / 文档也从中间聊天迁到这里，点卡片再交给右侧统一面板细看。
  */
 export default function AgentSourcePanel({
+  sessionId,
   rounds,
   sources,
   products = [],
   open,
 }: {
+  sessionId?: string | null;
   rounds: SourceRound[];
   sources: TraceSource[];
-  products?: AgentProductItem[];
+  products?: DisplayProduct[];
   /**
    * 是否展开。**不卸载**：列常驻、宽度在 0 ↔ 满宽之间过渡，
    * 这样「拉开 / 收起」才能复用全局面板那条横向缓动（见 globals.css 的 .agent-source-column）。
@@ -175,14 +182,21 @@ export default function AgentSourcePanel({
   );
 
   const openProduct = useCallback(
-    (item: AgentProductItem) => {
-      if (item.kind === "quiz") openAgentQuiz(item.payload);
+    async (item: DisplayProduct) => {
+      let full: AgentProductItem | null = "payload" in item ? item as AgentProductItem : null;
+      if (!full && (item.kind === "quiz" || item.kind === "image") && sessionId && "turn" in item) {
+        const owner = getStorageOwner(), epoch = getOwnerEpoch();
+        const window = await loadTurnsBefore(sessionId, item.turn + 1, 1);
+        if (owner !== getStorageOwner() || epoch !== getOwnerEpoch()) return;
+        full = collectSessionProducts(window?.messages ?? []).find((candidate) => candidate.kind === item.kind && candidate.id === item.id) ?? null;
+      }
+      if (item.kind === "quiz") { if (full?.kind !== "quiz") return; openAgentQuiz(full.payload); }
       else if (item.kind === "interactive") openArtifact(item.id, item.title);
-      else if (item.kind === "image") openImageGen(item.payload);
+      else if (item.kind === "image") { if (full?.kind !== "image") return; openImageGen(full.payload); }
       else openDocument(item.id, item.title);
       expandDock();
     },
-    [expandDock, openArtifact, openDocument, openImageGen],
+    [expandDock, openArtifact, openDocument, openImageGen, sessionId],
   );
 
   /**

@@ -7,7 +7,7 @@
 // 3. SSR 安全：所有方法在 typeof window === "undefined" 时降级返回 null/no-op。
 // 4. 隐私模式/禁用 IndexedDB 时降级为 no-op，内存态仍可用（同 localStorage 失败行为）。
 
-import {ownedStorageKey,getStorageOwner} from "./ownerScope";
+import {ownedStorageKey,ownedStorageKeyFor,getStorageOwner} from "./ownerScope";
 import { createStore, get as idbGet, set as idbSet, del as idbDel, keys as idbKeys } from "idb-keyval";
 
 // ── 常量（单一真相源）────────────────────────────────────────────
@@ -49,6 +49,57 @@ export function chatBlobKey(blobId: string): string {
 // 专属 IDB store 实例（非默认 keyval-store 库）
 const idbStore = createStore(DB_NAME, STORE_NAME);
 
+export type AtomicCheckpointResult={status:'saved';revision:number}|{status:'conflict';revision:number}|{status:'unavailable';reason:string};
+
+/** One native IDB transaction: compare the head revision, then commit every chunk and head together. */
+export async function commitSessionCheckpoint(input:{ownerId?:string;headKey:string;expectedRevision:number;entries:readonly [string,string][]}):Promise<AtomicCheckpointResult>{
+  const ownerId=input.ownerId??getStorageOwner()
+  if(!isBrowser()||typeof indexedDB.open!=='function'||!ownerId)return {status:'unavailable',reason:'indexeddb_unavailable'}
+  const headKey=ownedStorageKeyFor(ownerId,input.headKey)
+  const entries=input.entries.map(([name,value])=>[ownedStorageKeyFor(ownerId,name),value] as const)
+  if(!headKey||entries.some(([name])=>!name))return {status:'unavailable',reason:'owner_unavailable'}
+  try{
+    return await idbStore('readwrite',store=>new Promise<AtomicCheckpointResult>(resolve=>{
+      const tx=store.transaction
+      let conflict:number|null=null
+      let failure='transaction_aborted'
+      tx.oncomplete=()=>resolve({status:'saved',revision:input.expectedRevision+1})
+      tx.onabort=()=>resolve(conflict!==null?{status:'conflict',revision:conflict}:{status:'unavailable',reason:failure})
+      tx.onerror=()=>{failure=tx.error?.name??'transaction_error'}
+      const request=store.get(headKey)
+      request.onerror=()=>{failure=request.error?.name??'head_read_error';tx.abort()}
+      request.onsuccess=()=>{
+        let current=0
+        try{const value=request.result;if(typeof value==='string')current=Number((JSON.parse(value) as {contentRevision?:unknown}).contentRevision??0)}
+        catch{failure='invalid_head';tx.abort();return}
+        if(!Number.isSafeInteger(current)||current<0){failure='invalid_revision';tx.abort();return}
+        if(current!==input.expectedRevision){conflict=current;tx.abort();return}
+        try{for(const [name,value] of entries)store.put(value,name!)}
+        catch(error){failure=error instanceof Error?error.name:'write_error';tx.abort()}
+      }
+    }))
+  }catch(error){return {status:'unavailable',reason:error instanceof Error?error.name:'storage_error'}}
+}
+
+/** Read a captured owner's committed value; used only by in-flight work already scoped to that owner. */
+export async function readOwnedStorageItem(ownerId:string,name:string):Promise<string|null>{
+  if(!isBrowser())return null
+  const key=ownedStorageKeyFor(ownerId,name)
+  try{return (await idbGet<string>(key,idbStore))??localStorage.getItem(key)}
+  catch{try{return localStorage.getItem(key)}catch{return null}}
+}
+/** Captured-owner recovery writes never fall through to a newly active account. */
+export async function writeOwnedStorageItem(ownerId:string,name:string,value:string):Promise<boolean>{
+  if(!isBrowser())return false
+  try{await idbSet(ownedStorageKeyFor(ownerId,name),value,idbStore);return true}catch{return false}
+}
+export async function removeOwnedStorageItem(ownerId:string,name:string):Promise<void>{
+  if(!isBrowser())return
+  const key=ownedStorageKeyFor(ownerId,name)
+  try{await idbDel(key,idbStore)}catch{}
+  try{localStorage.removeItem(key)}catch{}
+}
+
 // ── SSR / 环境守卫 ──────────────────────────────────────────────
 function isBrowser(): boolean {
   return typeof window !== "undefined" && typeof indexedDB !== "undefined";
@@ -65,6 +116,8 @@ export const WRITE_DEBOUNCE_MS = 800;
 type PendingValue = string | (() => string);
 const pendingValues = new Map<string, PendingValue>();
 const pendingTimers = new Map<string, ReturnType<typeof setTimeout>>();
+const flushHandlers=new Set<()=>void>();
+export function registerStorageFlushHandler(handler:()=>void):()=>void{flushHandlers.add(handler);return()=>flushHandlers.delete(handler)}
 
 async function writeNow(name: string, value: string): Promise<boolean> {
   try {
@@ -95,6 +148,7 @@ function flushKey(name: string): void {
 /** 立即落盘所有挂起的写（卸载/隐藏/清空时调用）。 */
 export function flushPendingWrites(): void {
   for (const name of [...pendingValues.keys()]) flushKey(name);
+  for(const handler of flushHandlers)handler();
 }
 
 /** 立即写入并等待完成；用于迁移这类必须知道成功/失败的数据安全路径。 */
@@ -207,6 +261,9 @@ export const idbStorage = {
 
 /** 枚举 IDB + 未落盘 pending + localStorage 兜底键，供 GC 使用。 */
 export async function listPersistedKeys(): Promise<string[]> {
+  const owner=getStorageOwner();return owner?listPersistedKeysForOwner(owner):[]
+}
+export async function listPersistedKeysForOwner(owner:string):Promise<string[]>{
   const found = new Set<string>(pendingValues.keys());
   if (!isBrowser()) return [...found];
   try {
@@ -226,7 +283,6 @@ export async function listPersistedKeys(): Promise<string[]> {
   } catch {
     // ignore
   }
-  const owner=getStorageOwner();if(!owner)return [];
   const prefix=`ss-user:${owner}:`;
   return [...found].filter(key=>key.startsWith(prefix)).map(key=>key.slice(prefix.length));
 }

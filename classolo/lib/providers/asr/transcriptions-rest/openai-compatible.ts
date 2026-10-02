@@ -1,4 +1,4 @@
-import { set, update } from 'idb-keyval'
+import {persistAudioJob,patchAudioJob,readAudioJobBytes} from '@/classolo/features/transcript/audio-jobs'
 import { getClassUserId } from '@/classolo/lib/db'
 import { getTranscriptPublic } from '@/classolo/lib/session'
 import { resolveSecret } from '@/classolo/lib/providers/secrets'
@@ -12,6 +12,11 @@ export const REST_SLICE_MS = 8000
 export interface TranscriptionsRequest {
   ownerId?:string
   sessionId?:string
+  requestId?:string
+  audioKey?:string
+  startMs?:number
+  endMs?:number
+  seq?:number
   url: string
   apiKey: string
   model: string
@@ -73,13 +78,14 @@ export function buildHotwordPrompt(words: readonly string[] | undefined): string
   return out.length ? `本节课可能出现的专有名词：${out.join('、')}` : undefined
 }
 
-async function defaultFetch(request: TranscriptionsRequest): Promise<string> {
+export class ASRRequestError extends Error {
+  constructor(message:string,readonly outcome:'retryable'|'uncertain'){super(message)}
+}
+export async function defaultTranscriptionsFetch(request: TranscriptionsRequest): Promise<string> {
   const owner=request.ownerId||getClassUserId(); const sessionId=request.sessionId||getTranscriptPublic().sessionId;
   if(!owner||!sessionId)throw new Error('课堂账号或会话已失效');
-  const requestId=crypto.randomUUID();
-  const audioKey=`ss-class-audio:${owner}:${sessionId}:${requestId}`;
-  await set(audioKey,request.wav);
-  await update<{key:string;sessionId:string;bytes:number;createdAt:number}[]>(`ss-class-audio-index:${owner}`,rows=>[...(rows||[]),{key:audioKey,sessionId,bytes:request.wav.byteLength,createdAt:Date.now()}]);
+  const requestId=request.requestId||crypto.randomUUID();
+  const audioKey=request.audioKey||await persistAudioJob({ownerId:owner,sessionId,requestId,wav:request.wav,startMs:request.startMs||0,endMs:request.endMs||0,seq:request.seq,prompt:request.prompt});
   if(getClassUserId()!==owner||getTranscriptPublic().sessionId!==sessionId)throw new Error('课堂账号已切换');
   const form = new FormData()
   form.append(
@@ -90,6 +96,8 @@ async function defaultFetch(request: TranscriptionsRequest): Promise<string> {
   form.append('model', request.model)
   form.append('response_format', 'json')
   if (request.prompt) form.append('prompt', request.prompt)
+  await patchAudioJob(owner,audioKey,{status:'processing',requestId,error:undefined});
+  try{
   const response = await fetch(request.url, {
     method: 'POST',
     credentials: 'include',
@@ -97,14 +105,20 @@ async function defaultFetch(request: TranscriptionsRequest): Promise<string> {
     body: form,
   })
   if (!response.ok) {
-    throw new Error(`ASR REST ${response.status}`)
+    const body=await response.json().catch(()=>({}));
+    const outcome=body.outcome==='retryable'||[400,401,402,403,404,413,422,429].includes(response.status)?'retryable':'uncertain';
+    throw new ASRRequestError(typeof body.error==='string'?body.error:`ASR REST ${response.status}`,outcome)
   }
   const body: unknown = await response.json()
   if (typeof body === 'object' && body !== null && 'text' in body) {
     const text = (body as { text: unknown }).text
-    if (typeof text === 'string') return text
+    if (typeof text === 'string') {await patchAudioJob(owner,audioKey,{status:'complete',text}).catch(()=>{});return text}
   }
   throw new Error('ASR REST 响应缺少 text')
+  }catch(error){
+    await patchAudioJob(owner,audioKey,{status:error instanceof ASRRequestError?error.outcome:'uncertain',error:error instanceof Error?error.message:'转写结果未知'}).catch(()=>{});
+    throw error
+  }
 }
 
 export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
@@ -119,6 +133,9 @@ export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
   private samples = 0
   private sliceStartMs = 0
   private inflight: Promise<void> | null = null
+  private readonly jobs:{pcm:Int16Array|null;startMs:number;endMs:number;requestId:string;seq:number;persisted:Promise<string|undefined>}[]=[]
+  private jobSequence=0
+  private durableError=false
   private running = false
   private ownerId:string|undefined
   private sessionId:string|undefined
@@ -129,7 +146,7 @@ export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
 
   constructor(
     private readonly config: ASRConfig,
-    private readonly transcribe: TranscriptionsFetch = defaultFetch,
+    private readonly transcribe: TranscriptionsFetch = defaultTranscriptionsFetch,
   ) {}
 
   async start(): Promise<void> {
@@ -146,7 +163,8 @@ export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
     if (!this.config.sampleRate) {
       throw new Error('缺 ASR 采样率：必须显式配置')
     }
-    this.prompt = buildHotwordPrompt(hotwordsForStart(this.capabilities, this.config.hotwords))
+    if(this.config.hotwordPrompt&&this.config.hotwordPrompt.length>HOTWORD_PROMPT_MAX)throw new Error('课堂热词上下文超出服务端限制')
+    this.prompt = this.config.hotwordPrompt??buildHotwordPrompt(hotwordsForStart(this.capabilities, this.config.hotwords))
     this.ownerId=getClassUserId()||undefined
     this.sessionId=getTranscriptPublic().sessionId||undefined
     if(!this.ownerId||!this.sessionId)throw new Error("请先登录并创建课堂")
@@ -154,6 +172,9 @@ export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
     this.sliceStartMs = 0
     this.chunks.length = 0
     this.samples = 0
+    this.jobs.length=0
+    this.durableError=false
+    this.jobSequence=0
   }
 
   sendAudio(chunk: ArrayBuffer): void {
@@ -162,15 +183,22 @@ export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
     this.chunks.push(pcm)
     this.samples += pcm.length
     const threshold = Math.floor((this.config.sampleRate * REST_SLICE_MS) / 1000)
-    if (this.samples >= threshold) {
-      void this.enqueueFlush()
-    }
+    while(this.samples>=threshold)this.queueSlice(threshold)
+    if(!this.inflight&&this.jobs.length&&!this.durableError)void this.drain()
   }
 
   async stop(): Promise<void> {
     this.running = false
-    await this.enqueueFlush()
-    if(this.samples>0)await this.enqueueFlush()
+    if(this.samples>0)this.queueSlice(this.samples)
+    if(this.durableError){
+      this.durableError=false
+      for(const job of this.jobs)if(job.pcm&&!(await job.persisted)){
+        const pcm=job.pcm
+        job.persisted=persistAudioJob({ownerId:this.ownerId!,sessionId:this.sessionId!,requestId:job.requestId,wav:pcm16ToWav(pcm,this.config.sampleRate),startMs:job.startMs,endMs:job.endMs,seq:job.seq,prompt:this.prompt}).then(key=>{job.pcm=null;return key}).catch(()=>{this.durableError=true;return undefined})
+      }
+    }
+    await this.drain()
+    if(this.durableError)throw new Error('音频未能保存到本机，请重试保存，暂勿关闭页面')
   }
 
   onPartial(cb: (segment: ASRSegment) => void): void {
@@ -185,33 +213,49 @@ export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
     this.errorListeners.add(cb)
   }
 
-  private concatPcm(): Int16Array {
-    const out = new Int16Array(this.samples)
+  private takePcm(length:number): Int16Array {
+    const out = new Int16Array(length)
     let offset = 0
-    for (const part of this.chunks) {
-      out.set(part, offset)
-      offset += part.length
+    while(offset<length){
+      const part=this.chunks[0],count=Math.min(part.length,length-offset)
+      out.set(part.subarray(0,count),offset);offset+=count
+      if(count===part.length)this.chunks.shift();else this.chunks[0]=part.subarray(count)
     }
-    this.chunks.length = 0
-    this.samples = 0
+    this.samples -= length
     return out
   }
 
-  private enqueueFlush(): Promise<void> {
-    if (this.inflight) return this.inflight
-    this.inflight = this.flushSlice().finally(() => {
-      this.inflight = null
-    })
-    return this.inflight
-  }
-
-  private async flushSlice(): Promise<void> {
-    if (this.samples === 0) return
-    const pcm = this.concatPcm()
+  private queueSlice(length:number){
+    const pcm=this.takePcm(length)
     const startMs = this.sliceStartMs
     const durationMs = Math.round((pcm.length / this.config.sampleRate) * 1000)
     this.sliceStartMs = startMs + durationMs
-    const wav = pcm16ToWav(pcm, this.config.sampleRate)
+    const requestId=crypto.randomUUID(),endMs=startMs+durationMs
+    // Persist queued audio immediately, before a slow previous provider call can finish.
+    const job={pcm:pcm as Int16Array|null,startMs,endMs,requestId,seq:++this.jobSequence,persisted:Promise.resolve<string|undefined>(undefined)}
+    if(this.transcribe===defaultTranscriptionsFetch)job.persisted=persistAudioJob({ownerId:this.ownerId!,sessionId:this.sessionId!,requestId,wav:pcm16ToWav(pcm,this.config.sampleRate),startMs,endMs,seq:job.seq,prompt:this.prompt}).then(key=>{job.pcm=null;return key}).catch(()=>{this.durableError=true;this.emitError(new Error('本机音频空间不足，请暂停录音并导出'));return undefined})
+    this.jobs.push(job)
+  }
+
+  private async drain():Promise<void>{
+    if(this.inflight){await this.inflight;if(this.jobs.length&&!this.durableError)await this.drain();return}
+    if(!this.jobs.length)return
+    this.inflight=(async()=>{
+      while(this.jobs.length){
+        const job=this.jobs[0],audioKey=await job.persisted
+        if(this.durableError)return
+        await this.transcribeSlice(job,audioKey)
+        if(this.durableError)return
+        this.jobs.shift()
+      }
+    })().catch(error=>{this.durableError=true;this.emitError(error instanceof Error?error:new Error('本机音频队列读取失败'))}).finally(()=>{this.inflight=null})
+    return this.inflight
+  }
+
+  private async transcribeSlice(job:{pcm:Int16Array|null;startMs:number;endMs:number;requestId:string;seq:number},audioKey?:string): Promise<void> {
+    const {pcm,startMs,endMs,requestId}=job
+    const wav = pcm?pcm16ToWav(pcm, this.config.sampleRate):audioKey?await readAudioJobBytes(audioKey):undefined
+    if(!wav){this.durableError=true;this.emitError(new Error('本机音频分段不可读，请从录音备份恢复'));return}
     const secret = resolveSecret('asr')
     if (secret.value === null) {
       this.emitError(new MissingAsrSecretError())
@@ -221,20 +265,21 @@ export class OpenAiCompatibleTranscriptionsProvider implements ASRProvider {
       text: '准实时转写中…',
       isFinal: false,
       startMs,
-      endMs: startMs + durationMs,
+      endMs,
     })
     try {
       const text = await this.transcribe({
         url: transcriptionsUrl(this.config.baseUrl),
         apiKey: secret.value,
         model: this.config.model,
-        wav,ownerId:this.ownerId,sessionId:this.sessionId,prompt:this.prompt,
+        wav,ownerId:this.ownerId,sessionId:this.sessionId,prompt:this.prompt,requestId,audioKey,startMs,endMs,seq:job.seq,
       })
       const segment: ASRSegment = {
+        id:requestId,seq:job.seq,
         text,
         isFinal: true,
         startMs,
-        endMs: startMs + durationMs,
+        endMs,
       }
       for (const listener of this.finalListeners) listener(segment)
     } catch (error) {

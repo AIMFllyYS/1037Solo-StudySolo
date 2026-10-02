@@ -5,6 +5,7 @@ node_modules/
 
 # next.js
 .next/
+.next-class-verify/
 out/
 next-env.d.ts
 
@@ -107,6 +108,11 @@ content/_raw/
 
 # plan verification artifacts (screenshots, probe dumps)
 docs/plans/**/verify/
+/artifacts/performance/
+/runtime/search-worker/
+/.next-perf-*/
+/.next-desktop-*/
+/dist-desktop-staged-*/
 
 # local lecture-ingest visual acceptance screenshots (never committed)
 .accept_shots/

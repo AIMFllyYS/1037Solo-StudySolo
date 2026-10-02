@@ -99,17 +99,7 @@ export function diffOutlineLayout(
   nextNodes: readonly OutlineTreeNode[],
 ): { graph: LaidOutGraph; enteredIds: readonly string[] } {
   const fresh = layoutOutlineTree(nextNodes)
-  const prevById = new Map(
-    previous.map((node) => [node.id, node.position] as const),
-  )
-  const enteredIds: string[] = []
-  const nodes = fresh.nodes.map((node) => {
-    const kept = prevById.get(node.id)
-    if (kept) {
-      return { ...node, position: kept }
-    }
-    enteredIds.push(node.id)
-    return node
-  })
-  return { graph: { nodes, edges: fresh.edges }, enteredIds }
+  const previousIds=new Set(previous.map(node=>node.id))
+  // All coordinates belong to the same layout pass; mixing passes can overlap new siblings.
+  return {graph:fresh,enteredIds:fresh.nodes.filter(node=>!previousIds.has(node.id)).map(node=>node.id)}
 }

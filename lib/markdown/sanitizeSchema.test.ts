@@ -171,6 +171,17 @@ test("管线：KaTeX 仍渲染公式", () => {
   assert.ok(katex, "expected .katex node");
 });
 
+test("显式语言高亮、未知语言纯文本及 mhchem 化学式保持可读", () => {
+  const markdown = "```python\nprint(1)\n```\n\n```unknown-study-lang\na < b\n```\n\n$\\ce{H2O}$";
+  const tree = toHast(markdown);
+  const code = elements(tree).filter((node) => node.tagName === "code");
+  assert.equal(code.length, 2);
+  assert.ok(elements(code[0]).some((node) => classList(node.properties).some((name) => name.startsWith("hljs-"))));
+  assert.match(collectText(code[1]), /a < b/);
+  assert.ok(elements(tree).some((node) => classList(node.properties).includes("katex")));
+  assert.match(collectText(tree), /H₂O|H2O/);
+});
+
 test("管线：::figure 仍转为 figuremedia", () => {
   const tree = toHast("::figure{src=/img.png alt=demo caption=cap}");
   const figure = elements(tree).find((n) => n.tagName === "figuremedia");

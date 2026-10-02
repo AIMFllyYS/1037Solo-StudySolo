@@ -112,7 +112,7 @@ export function formatArtifactCatalog(items: ArtifactCatalogItem[]): string {
 
 export function collectRequestArtifacts(
   messages: Array<{ parts: Array<{ type: string; state?: string; output?: unknown }> }>,
-  store: { order: string[]; byId: Record<string, { id: string; title: string; html: string }> },
+  store: { order: string[]; byId: Record<string, { id: string; title: string; html: string; summary?: string }> },
 ): ArtifactCatalogItem[] {
   const ids: string[] = [];
   const seen = new Set<string>();
@@ -136,7 +136,7 @@ export function collectRequestArtifacts(
     return {
       id: artifact.id,
       title: artifact.title,
-      summary: htmlToSummary(artifact.html),
+      summary: artifact.summary ?? htmlToSummary(artifact.html),
     };
   });
 }

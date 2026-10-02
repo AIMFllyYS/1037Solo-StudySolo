@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { contentTree } from "@/lib/content-data";
+import { filterRuntimeSubjects } from "@/lib/content/offlineSubjects";
 import { academicYearOfSubject, type AcademicYearId } from "@/lib/constants/academic-year";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useReviewCards } from "@/lib/stores/reviewCards";
@@ -27,7 +28,7 @@ export function useProgressiveGlobalSearch(
   kind: GlobalSearchSectionId | null = null,
 ) {
   const query = rawQuery.trim();
-  const titleIndex = useMemo(() => buildGlobalSearchIndex(contentTree), []);
+  const titleIndex = useMemo(() => buildGlobalSearchIndex({ subjects: filterRuntimeSubjects(contentTree.subjects) }), []);
   const chapterHits = useMemo(
     () => (query && (!kind || kind === "body") ? chapterHitsFromIndex(titleIndex, query, TITLE_LIMIT) : []),
     [kind, query, titleIndex],
@@ -106,7 +107,7 @@ export function useProgressiveGlobalSearch(
     if (!query || !wantBody) return;
 
     const ac = new AbortController();
-    const shards = listBodySearchShards(contentTree, preferYear);
+    const shards = listBodySearchShards({ subjects: filterRuntimeSubjects(contentTree.subjects) }, preferYear);
     const preferredCount = preferYear
       ? shards.filter((subjectId) => academicYearOfSubject(subjectId) === preferYear).length
       : shards.length;

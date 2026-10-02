@@ -140,7 +140,16 @@ export function buildArtifactPayload(artifact: ArtifactSyncPayload): ArtifactSyn
 }
 
 export function buildDocumentPayload(doc: DocumentSyncPayload): DocumentSyncPayload {
-  return stripForbiddenFields(doc) as DocumentSyncPayload;
+  return stripForbiddenFields({
+    id: doc.id,
+    spec: doc.spec,
+    sections: doc.sections,
+    status: doc.status,
+    error: doc.error,
+    modelId: doc.modelId,
+    createdAt: doc.createdAt,
+    updatedAt: doc.updatedAt,
+  }) as DocumentSyncPayload;
 }
 
 export function buildUserNotePayload(note: UserNoteSyncPayload): UserNoteSyncPayload {

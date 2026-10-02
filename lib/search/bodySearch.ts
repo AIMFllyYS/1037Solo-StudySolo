@@ -2,6 +2,8 @@
 import { contentTree } from "@/lib/content-data/manifest";
 import { readContentMarkdown } from "@/lib/content/loader";
 import { isSubjectId } from "@/lib/types/content";
+import { isSubjectInRuntime } from "@/lib/content/offlineSubjects";
+import { INDEX_FILES, parseManifest, readLocalIndexFile } from "@/lib/ai/search/indexIo";
 import {
   buildGlobalSearchIndex,
   clampSearchQuery,
@@ -12,9 +14,32 @@ import {
 } from "@/lib/search/globalSearch";
 
 const SUBJECT_BODY_LIMIT = 16;
+const CACHE_BYTES = 32 * 1024 * 1024;
+const CACHE_ENTRIES = 1024;
+const BODY_TTL_MS = 5 * 60_000;
+const NEGATIVE_TTL_MS = 15_000;
 
 let entriesBySubject: Map<string, GlobalSearchEntry[]> | null = null;
-const strippedByEntryId = new Map<string, string>();
+let cacheRevision = "";
+let cacheBytes = 0;
+const strippedByEntryId = new Map<string, { body: string; bytes: number; expiresAt: number }>();
+
+function synchronizeRevision(): void {
+  const revision = parseManifest(readLocalIndexFile(INDEX_FILES.manifest))?.contentHash ?? "unindexed";
+  if (revision === cacheRevision) return;
+  cacheRevision = revision;
+  cacheBytes = 0;
+  strippedByEntryId.clear();
+}
+
+function trimCache(): void {
+  while (cacheBytes > CACHE_BYTES || strippedByEntryId.size > CACHE_ENTRIES) {
+    const oldest = strippedByEntryId.keys().next().value;
+    if (oldest === undefined) break;
+    cacheBytes -= strippedByEntryId.get(oldest)!.bytes;
+    strippedByEntryId.delete(oldest);
+  }
+}
 
 function subjectEntries(subjectId: string): GlobalSearchEntry[] {
   if (!entriesBySubject) {
@@ -30,10 +55,20 @@ function subjectEntries(subjectId: string): GlobalSearchEntry[] {
 
 function preparedBodyFor(entry: GlobalSearchEntry): string | null {
   const cached = strippedByEntryId.get(entry.id);
-  if (cached !== undefined) return cached || null;
+  if (cached && cached.expiresAt > Date.now()) {
+    strippedByEntryId.delete(entry.id);
+    strippedByEntryId.set(entry.id, cached);
+    return cached.body || null;
+  }
+  if (cached) { cacheBytes -= cached.bytes; strippedByEntryId.delete(entry.id); }
   const raw = readContentMarkdown(entry.subjectId, entry.categoryId, entry.itemId);
   const stripped = raw ? stripForSearch(raw) : "";
-  strippedByEntryId.set(entry.id, stripped);
+  const bytes = Buffer.byteLength(stripped, "utf8");
+  if (bytes <= CACHE_BYTES) {
+    strippedByEntryId.set(entry.id, { body: stripped, bytes, expiresAt: Date.now() + (stripped ? BODY_TTL_MS : NEGATIVE_TTL_MS) });
+    cacheBytes += bytes;
+    trimCache();
+  }
   return stripped || null;
 }
 
@@ -42,8 +77,18 @@ export function bodySearchCacheSize(): number {
   return strippedByEntryId.size;
 }
 
+export function bodySearchCacheBytes(): number {
+  return cacheBytes;
+}
+
+export function bodySearchCacheRevision(): string {
+  return cacheRevision;
+}
+
 export function __resetBodySearchCacheForTests(): void {
   entriesBySubject = null;
+  cacheRevision = "";
+  cacheBytes = 0;
   strippedByEntryId.clear();
 }
 
@@ -53,7 +98,8 @@ export function searchSubjectBody(
   limit = SUBJECT_BODY_LIMIT,
 ): GlobalSearchHit[] {
   const query = clampSearchQuery(rawQuery);
-  if (!query || !isSubjectId(subjectId)) return [];
+  if (!query || !isSubjectId(subjectId) || !isSubjectInRuntime(subjectId)) return [];
+  synchronizeRevision();
 
   const hits: GlobalSearchHit[] = [];
   for (const entry of subjectEntries(subjectId)) {

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "probability",
+    "name": "概率论与数理统计",
+    "icon": "Calculator",
+    "categoryCount": 6,
+    "chapterCount": 77,
+    "learnHref": "/probability/textbook/main-textbook"
+  },
+  {
+    "id": "physics",
+    "name": "大学物理",
+    "icon": "Atom",
+    "categoryCount": 6,
+    "chapterCount": 71,
+    "learnHref": "/physics/textbook/main"
+  },
+  {
+    "id": "chemistry",
+    "name": "有机化学",
+    "icon": "FlaskConical",
+    "categoryCount": 6,
+    "chapterCount": 67,
+    "learnHref": "/chemistry/textbook/main"
+  },
+  {
+    "id": "modern-history",
+    "name": "中国近现代史纲要",
+    "icon": "BookOpen",
+    "categoryCount": 6,
+    "chapterCount": 50,
+    "learnHref": "/modern-history/textbook/tb-toc"
+  },
+  {
+    "id": "maogai",
+    "name": "毛泽东思想和中国特色社会主义理论体系概论",
+    "icon": "Scale",
+    "categoryCount": 6,
+    "chapterCount": 64,
+    "learnHref": "/maogai/textbook/ch00-1"
+  },
+  {
+    "id": "medical-english",
+    "name": "医学英语",
+    "icon": "Languages",
+    "categoryCount": 6,
+    "chapterCount": 23,
+    "learnHref": "/medical-english/textbook/ch01"
+  },
+  {
+    "id": "instrumental-analysis",
+    "name": "仪器分析",
+    "icon": "ScanLine",
+    "categoryCount": 6,
+    "chapterCount": 37,
+    "learnHref": "/instrumental-analysis/textbook/ch01-1"
+  },
+  {
+    "id": "anatomy",
+    "name": "系统解剖学",
+    "icon": "Bone",
+    "categoryCount": 6,
+    "chapterCount": 43,
+    "learnHref": "/anatomy/textbook/ch00-1"
+  },
+  {
+    "id": "medical-statistics",
+    "name": "医学统计学",
+    "icon": "ChartColumn",
+    "categoryCount": 6,
+    "chapterCount": 6,
+    "learnHref": "/medical-statistics/textbook/main"
+  },
+  {
+    "id": "cell-biology-lab",
+    "name": "细胞生物学实验",
+    "icon": "ScrollText",
+    "categoryCount": 6,
+    "chapterCount": 17,
+    "learnHref": "/cell-biology-lab/textbook/ch01"
+  },
+  {
+    "id": "cell-biology",
+    "name": "医学细胞生物学",
+    "icon": "Microscope",
+    "categoryCount": 6,
+    "chapterCount": 40,
+    "learnHref": "/cell-biology/textbook/ch01-1"
+  },
+  {
+    "id": "histology",
+    "name": "组织学与胚胎学",
+    "icon": "Layers",
+    "categoryCount": 6,
+    "chapterCount": 55,
+    "learnHref": "/histology/textbook/ch01-1"
+  },
+  {
+    "id": "biochemistry",
+    "name": "生物化学与分子生物学",
+    "icon": "Dna",
+    "categoryCount": 6,
+    "chapterCount": 71,
+    "learnHref": "/biochemistry/textbook/ch00-1"
+  },
+  {
+    "id": "other",
+    "name": "其他",
+    "icon": "FolderOpen",
+    "categoryCount": 4,
+    "chapterCount": 11,
+    "learnHref": "/other/english/unit-1"
+  }
+]

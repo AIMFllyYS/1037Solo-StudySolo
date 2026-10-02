@@ -1,0 +1,37 @@
+/** Extract a desktop offline subject index without decoding or recomputing vectors. */
+import * as fs from "node:fs";
+import * as path from "node:path";
+import { buildCompactBm25Index } from "../../lib/ai/indexing/bm25Index";
+import { contentHashOf } from "../../lib/ai/indexing/contentHash";
+import { INDEX_FILES, parseManifest, type SearchChunkMeta } from "../../lib/ai/search/indexIo";
+import { SUBJECT_REGISTRY } from "../../lib/content-data/subjects.registry";
+
+const selected = [...new Set((process.argv.find((arg) => arg.startsWith("--subjects="))?.slice(11) ?? "").split(",").filter(Boolean))].sort();
+const outputArg = process.argv.find((arg) => arg.startsWith("--out="))?.slice(6);
+if (!selected.length || !outputArg) throw new Error("Usage: --subjects=id,id --out=artifacts/performance/index-scope-...");
+const allowed = new Set<string>(SUBJECT_REGISTRY.map((subject) => subject.id));
+if (selected.some((id) => !allowed.has(id))) throw new Error("unknown_subject_in_scope");
+const root = process.cwd(), output = path.resolve(outputArg), safeRoot = path.resolve(root, "artifacts/performance");
+if (!output.startsWith(safeRoot + path.sep) || fs.existsSync(output)) throw new Error("unsafe_or_existing_scoped_index");
+const source = path.resolve(root, "content/.index");
+const manifest = parseManifest(fs.readFileSync(path.join(source, INDEX_FILES.manifest)));
+if (!manifest) throw new Error("global_index_manifest_invalid");
+const rows = (JSON.parse(fs.readFileSync(path.join(source, INDEX_FILES.chunksMeta), "utf8")) as { chunks: SearchChunkMeta[] }).chunks.filter((row) => selected.includes(row.subjectId));
+if (!rows.length) throw new Error("scoped_index_empty");
+const keep = new Set(rows.map((row) => row.id));
+const ids = JSON.parse(fs.readFileSync(path.join(source, INDEX_FILES.vectorsIds), "utf8")) as string[];
+const bin = fs.readFileSync(path.join(source, INDEX_FILES.vectorsBin));
+const rowBytes = manifest.dimension * 4;
+if (bin.length !== ids.length * rowBytes) throw new Error("global_vector_matrix_invalid");
+const kept: Array<{ id: string; index: number }> = [];
+for (let index = 0; index < ids.length; index++) if (keep.has(ids[index])) kept.push({ id: ids[index], index });
+const scopedBin = Buffer.allocUnsafe(kept.length * rowBytes);
+for (let index = 0; index < kept.length; index++) bin.copy(scopedBin, index * rowBytes, kept[index].index * rowBytes, (kept[index].index + 1) * rowBytes);
+fs.mkdirSync(output, { recursive: true });
+fs.writeFileSync(path.join(output, INDEX_FILES.bm25), JSON.stringify(buildCompactBm25Index(rows)));
+fs.writeFileSync(path.join(output, INDEX_FILES.chunksMeta), JSON.stringify({ builtAt: new Date().toISOString(), chunks: rows }));
+fs.writeFileSync(path.join(output, INDEX_FILES.vectorsBin), scopedBin);
+fs.writeFileSync(path.join(output, INDEX_FILES.vectorsIds), JSON.stringify(kept.map((entry) => entry.id)));
+const scopedManifest = { version: 2 as const, builtAt: new Date().toISOString(), embeddingModel: manifest.embeddingModel, dimension: manifest.dimension, chunkCount: rows.length, vectorCount: kept.length, contentHash: contentHashOf(rows), subjectScope: selected, files: [INDEX_FILES.bm25, INDEX_FILES.chunksMeta, INDEX_FILES.vectorsBin, INDEX_FILES.vectorsIds, INDEX_FILES.manifest] };
+fs.writeFileSync(path.join(output, INDEX_FILES.manifest), JSON.stringify(scopedManifest, null, 2));
+process.stdout.write(JSON.stringify({ output, subjects: selected, chunks: rows.length, vectors: kept.length, bytes: fs.readdirSync(output).reduce((sum, name) => sum + fs.statSync(path.join(output, name)).size, 0), paidCalls: 0 }) + "\n");

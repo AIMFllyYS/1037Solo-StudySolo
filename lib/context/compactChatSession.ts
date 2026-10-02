@@ -68,7 +68,7 @@ export async function compactActiveSession(sessionId?: string | null): Promise<{
   const messages = (await loadSessionMessages(sid)) ?? [];
   const result = compactChatMessages(messages);
   if (!result.compacted) return { compacted: false };
-  useChatHistory.getState().replaceMessages(sid, result.messages);
+  useChatHistory.getState().replaceMessages(sid, result.messages, messages);
   useTokenTracker.setState({
     contextWarning: translateNow("trace.panel.manualCompacted"),
   });

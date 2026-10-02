@@ -34,7 +34,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    ".next-class-verify/types/**/*.ts",
+    ".next-class-verify/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
@@ -43,6 +45,10 @@
     "showroom",
     "exhibition-hall",
     "dist-desktop",
+    "dist-desktop-staged-*",
+    "artifacts/performance",
+    ".next-desktop-*",
+    ".next-perf-*",
     "scripts/one-off",
     ".local-archive",
     "1037Solo-Classolo",

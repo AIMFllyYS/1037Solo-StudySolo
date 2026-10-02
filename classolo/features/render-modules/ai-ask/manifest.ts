@@ -10,4 +10,4 @@ export const aiAskModule = {
   description: '在文稿渲染区展示 AI 主动提出的随堂思考题',
   propsSchema: aiAskPropsSchema,
   Component: AiAskModule,
-} satisfies RenderModuleManifest<{ question: string; choices?: string[] }>
+} satisfies RenderModuleManifest<import('zod').infer<typeof aiAskPropsSchema>>

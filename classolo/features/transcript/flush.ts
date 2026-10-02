@@ -32,25 +32,8 @@ export function overflowStorageKey(sessionId: string): string {
 export function mergeForFlush(
   rows: readonly FlushSegment[],
 ): FlushSegment[] {
-  const out: FlushSegment[] = []
-  for (const row of rows) {
-    const prev = out[out.length - 1]
-    if (
-      prev &&
-      row.startMs - prev.endMs < MERGE_GAP_MS &&
-      prev.text.length < MERGE_SHORT_CHARS &&
-      prev.text.length + row.text.length <= MERGE_MAX_CHARS
-    ) {
-      out[out.length - 1] = {
-        ...prev,
-        endMs: row.endMs,
-        text: `${prev.text}${row.text}`,
-      }
-      continue
-    }
-    out.push({ ...row })
-  }
-  return out
+  // Permanent IDs are used by citations and mindmap provenance. Merge only in display views.
+  return rows.map(row => ({ ...row }))
 }
 
 function charCount(rows: readonly FlushSegment[]): number {
@@ -99,7 +82,19 @@ export function createTranscriptFlusher(options: {
   const buffer: FlushSegment[] = []
   let sessionId: string | null = null
   let lastFlushAt = 0
-  let flushing = false
+  let active: Promise<boolean> | null = null
+  let timer: ReturnType<typeof setTimeout> | null = null
+
+  function clearTimer() { if (timer) clearTimeout(timer); timer = null }
+  function armTimer() {
+    if (timer || !buffer.length) return
+    timer = setTimeout(() => {
+      timer = null
+      void flush(true).finally(() => { if (buffer.length) armTimer() })
+    }, FLUSH_INTERVAL_MS)
+    // Tests/Node imports should not be kept alive by a browser persistence timer.
+    ;(timer as unknown as { unref?: () => void }).unref?.()
+  }
 
   function shouldFlush(force: boolean): boolean {
     if (buffer.length === 0) return false
@@ -112,36 +107,44 @@ export function createTranscriptFlusher(options: {
   }
 
   async function flush(force = false): Promise<boolean> {
-    if (!sessionId || flushing || !shouldFlush(force)) return false
-    flushing = true
-    const batch = buffer.splice(0, buffer.length)
-    const merged = mergeForFlush(batch)
-    try {
-      const ok = await persistWithRetry(
-        options.persist,
-        sessionId,
-        merged,
-        sleep,
-      )
+    if (active) {
+      const ok = await active
+      if (!ok) return false
+      return force && buffer.length ? flush(true) : ok
+    }
+    if (!sessionId || !shouldFlush(force)) return false
+    clearTimer()
+    const targetSession = sessionId
+    const batch = mergeForFlush(buffer.slice(0, 100))
+    active = (async () => {
+      const ok = await persistWithRetry(options.persist, targetSession, batch, sleep)
       if (!ok) {
-        options.overflow?.(sessionId, merged)
+        try { options.overflow?.(targetSession, batch) } catch { /* retain the in-memory originals */ }
         return false
       }
+      const ids = new Set(batch.map(row => row.id))
+      for (let i=buffer.length-1;i>=0;i--) if (ids.has(buffer[i].id)) buffer.splice(i,1)
       lastFlushAt = now()
       return true
-    } finally {
-      flushing = false
-    }
+    })()
+    let ok: boolean
+    try { ok = await active } finally { active = null }
+    if (ok && force && buffer.length) return flush(true)
+    armTimer()
+    return ok
   }
 
   return {
     attach(nextSessionId: string): void {
+      if (active || buffer.length) throw new Error('上一节课的文稿尚未保存，请重试保存后再开始新课')
+      clearTimer()
       sessionId = nextSessionId
-      buffer.length = 0
       lastFlushAt = now()
     },
     enqueue(segment: FlushSegment): void {
+      if (buffer.some(row => row.id === segment.id)) return
       buffer.push(segment)
+      armTimer()
     },
     pendingCount(): number {
       return buffer.length

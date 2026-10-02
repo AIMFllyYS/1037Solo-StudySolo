@@ -3,6 +3,10 @@ import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { createPersistedStore } from "@/lib/stores/_persist";
 import { scheduleCloudTombstone, scheduleCloudUpsert } from "@/lib/sync/schedule";
 import { stripViewerId } from "@/lib/stores/windowPersist";
+import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
+import { readOwnedStorageItem, writeOwnedStorageItem } from "@/lib/storage/idbStorage";
+import { htmlToSummary } from "@/lib/context/compactArtifacts";
+import { registerResourceMetrics } from "@/lib/performance/resourceMetrics";
 
 /**
  * HTML 演示（Artifact）store。链路：tools.ts renderInteractive → ArtifactCard → 本 store → ArtifactViewer。
@@ -17,6 +21,86 @@ export interface Artifact {
   status: "done";
   /** 生成时的思考过程，刷新后仍要能展开查看。 */
   reasoning?: string;
+  /** Body is durably stored under an owner-scoped per-artifact key. */
+  bodyRef?: true;
+  summary?: string;
+}
+
+const bodyLeases = new Map<string, number>();
+let residentOwner: string | null = null;
+onStorageOwnerChange(() => { bodyLeases.clear(); residentOwner = null; });
+function bodyKey(id: string) { return `artifact-body:${id}`; }
+function coldArtifact(artifact: Artifact): Artifact { return artifact.bodyRef ? { ...artifact, html: "" } : artifact; }
+
+export async function loadArtifactFull(id: string): Promise<Artifact | null> {
+  const owner = getStorageOwner(), epoch = getOwnerEpoch();
+  const artifact = useArtifacts.getState().byId[id];
+  if (!artifact) return null;
+  if (!owner || residentOwner !== owner) throw new Error("artifact_owner_not_ready");
+  if (artifact.html || !artifact.bodyRef) return artifact;
+  const html = await readOwnedStorageItem(owner, bodyKey(id));
+  if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch) throw new Error("artifact_owner_changed");
+  if (html === null) throw new Error("artifact_body_missing");
+  return { ...artifact, html };
+}
+
+export async function persistArtifactBody(artifact: Artifact): Promise<boolean> {
+  const owner = getStorageOwner();
+  const saved = owner ? await writeOwnedStorageItem(owner, bodyKey(artifact.id), artifact.html) : false;
+  if (saved && owner === getStorageOwner()) residentOwner = owner;
+  return saved;
+}
+
+export async function hydrateArtifactBody(id: string): Promise<boolean> {
+  if (!bodyLeases.has(id) && useArtifacts.getState().viewerId !== id) return false;
+  const owner = getStorageOwner(), epoch = getOwnerEpoch();
+  const full = await loadArtifactFull(id).catch(() => null);
+  if (!full || !full.html || getStorageOwner() !== owner || getOwnerEpoch() !== epoch) return false;
+  useArtifacts.setState((state) => {
+    const current = state.byId[id];
+    if (!current || current.html) return state;
+    return { byId: { ...state.byId, [id]: { ...current, html: full.html } } };
+  });
+  return true;
+}
+
+export function acquireArtifactBodyLease(id: string) {
+  const owner = getStorageOwner(), epoch = getOwnerEpoch();
+  bodyLeases.set(id, (bodyLeases.get(id) ?? 0) + 1);
+  let released = false;
+  return () => {
+    if (released) return;
+    released = true;
+    if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch) return;
+    const remaining = (bodyLeases.get(id) ?? 1) - 1;
+    if (remaining > 0) { bodyLeases.set(id, remaining); return; }
+    bodyLeases.delete(id);
+    useArtifacts.setState((state) => {
+      const row = state.byId[id];
+      return row?.bodyRef && row.html ? { byId: { ...state.byId, [id]: coldArtifact(row) } } : state;
+    });
+  };
+}
+
+async function migrateLegacyBodies(): Promise<void> {
+  const owner = getStorageOwner(), epoch = getOwnerEpoch();
+  if (!owner) return;
+  const upgraded = new Map<string, string>();
+  for (const row of Object.values(useArtifacts.getState().byId)) {
+    if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch) return;
+    if (row.bodyRef || !row.html) continue;
+    if (await writeOwnedStorageItem(owner, bodyKey(row.id), row.html)) upgraded.set(row.id, row.html);
+  }
+  if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch || !upgraded.size) return;
+  useArtifacts.setState((state) => {
+    const byId = { ...state.byId };
+    for (const [id, html] of upgraded) {
+      const row = byId[id];
+      if (!row || row.html !== html) continue;
+      byId[id] = { ...row, bodyRef: true, summary: row.summary ?? htmlToSummary(html), html: bodyLeases.has(id) ? html : "" };
+    }
+    return { byId };
+  });
 }
 
 interface ArtifactsState {
@@ -59,7 +143,8 @@ export const useArtifacts = createPersistedStore<ArtifactsState>(
       _hasHydrated: false,
       _setHasHydrated: (v) => set({ _hasHydrated: v }),
 
-      saveDone: (id, title, html, reasoning) =>
+      saveDone: (id, title, html, reasoning) => {
+        residentOwner = getStorageOwner();
         set((s) => {
           const exists = s.byId[id];
           const order = exists ? s.order : [...s.order, id];
@@ -75,10 +160,22 @@ export const useArtifacts = createPersistedStore<ArtifactsState>(
                 html,
                 status: "done",
                 reasoning: reasoning || prev?.reasoning || "",
+                summary: htmlToSummary(html),
+                bodyRef: undefined,
               },
             },
           };
-        }),
+        });
+        const owner = getStorageOwner(), epoch = getOwnerEpoch();
+        if (owner) void writeOwnedStorageItem(owner, bodyKey(id), html).then((saved) => {
+          if (!saved || getStorageOwner() !== owner || getOwnerEpoch() !== epoch) return;
+          useArtifacts.setState((state) => {
+            const row = state.byId[id];
+            if (!row || row.html !== html) return state;
+            return { byId: { ...state.byId, [id]: { ...row, bodyRef: true, html: bodyLeases.has(id) || state.viewerId === id ? html : "" } } };
+          });
+        });
+      },
 
       /**
        * 打开（或复用）演示浮窗。
@@ -140,10 +237,17 @@ export const useArtifacts = createPersistedStore<ArtifactsState>(
     {
       name: PERSIST_KEYS.artifacts,
       storage: "idb",
-      partialize: (s) => ({ order: s.order, byId: s.byId }),
+      partialize: (s) => ({ order: s.order, byId: Object.fromEntries(Object.entries(s.byId).map(([id, row]) => [id, coldArtifact(row)])) }),
       onRehydrateStorage: () => (state) => {
         if (state) stripViewerId(state);
-        state?._setHasHydrated(true);
+        const owner = getStorageOwner(), epoch = getOwnerEpoch();
+        void migrateLegacyBodies().finally(() => {
+          if (owner === getStorageOwner() && epoch === getOwnerEpoch()) {
+            residentOwner = owner;
+            state?._setHasHydrated(true);
+          }
+        });
       },
     },
 );
+registerResourceMetrics(() => ({ artifactBodyEstimatedBytes: Object.values(useArtifacts.getState().byId).reduce((sum, row) => sum + row.html.length * 2, 0) }));

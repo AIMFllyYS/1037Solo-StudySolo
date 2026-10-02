@@ -434,4 +434,64 @@ SS17贯穿；SS18最终闭环
 
 ## 9 执行记录
 
-尚未执行本规格；此处由实现 Agent按真实结果填写。创建文档本身不代表任何SS工单已实现或性能目标达成。
+2026-10-02 启动记录：在Class修复提交 `441c6f77e6e10a31363eb2837535b2245a9545df` 后开始，`git status --short`为空；此处测量的是该HEAD加本轮逐步修改的工作树。Node v24.15.0，已安装Next 16.2.9、React 19.2.7、Zustand 5.0.14、AI SDK 7.0.85；锁文件和依赖后续保持原主要版本。RootSolo约束不启动dev server/浏览器实测，浏览器采集脚本交付后仍需在用户环境执行。上一轮Class日志不是本轮SS00基线，不能据其推断性能收益。
+
+| 工单 | 当前状态 | 本轮证据/边界 |
+|---|---|---|
+| SS00 | 本机结构完成/浏览器待验 | S1真实IDB前后、S2构建RSC、S3/S4文档资源测试、S5真实Worker合成、S6展示图与产物正文、S7慢网同键同步均有固定fixture/数值或结构证据；数字getter与预算已建。真实浏览器retained heap、long task与Electron RSS因RootSolo限制未采 |
+| SS01 | 进行中 | 真正的resident LRU、32MiB软预算、活动/运行/写入/窗口lease及释放收敛已落；云pull也走同一applySessionWindow，100会话逐页入窗后metadata保留、实际resident/window keys≤5；长课/跨设备浏览器场景仍待验 |
+| SS02 | 本机结构完成/浏览器待验 | 可重建的sessionSummary按8轮读取，source/product/image refs与逐轮Token估算随contentRevision失效；Agent/Token侧栏不再调用full-load，历史quiz/image点击按轮回读；未知工具part保留来源入口、展开时只回读归属轮原始记录；聊天完整备份按8轮读取，支持文件流时逐段写出，账号或会话revision变化则中止不提交；旧浏览器Blob下载仍会驻留输出字节。1000轮测试不物化messagesById，真实浏览器内存待验 |
+| SS03 | 本机结构完成/多标签验收待做 | full与tail已改为head/chunks单事务CAS；1000次完整checkpoint合并、失败保旧/显式重试、删除tombstone和owner命名空间测试通过；含共同基线的full冲突三方合并与尾部纯append冲突回放经真实IDB竞态验证；同ID分歧不猜测覆盖而另存owner-scoped草稿，刷新后可见恢复入口并导出。真实双标签浏览器竞态待验 |
+| SS04 | 进行中 | owner epoch/AbortSignal与会话/存储、同步推拉、附件、文档、摘要任务迟到结果隔离已接入；完整备份和冲突草稿导出增加owner快照校验，账号切换时中止文件流；登出停止Account五分钟轮询，focus/登录事件仍校验；Class侧栏异步读取复查owner+epoch、capabilities请求可取消，旧effect清理不再清掉新owner。其他异步任务仍需清点 |
+| SS05 | 本机结构完成/浏览器待验 | 19层改为实际打开才挂载，后台笔记候选/记忆收件箱移到轻runtime；50次开关后挂载viewer归零，真实chunk请求/快捷键回归待浏览器验收 |
+| SS06 | 本机结构完成/浏览器待验 | Blob URL lease、附件迟到转换/StrictMode、任务栏遗留URL、DOCX纯文本抽取、图片解码失败及下载URL回收已处理；真实retained URL数待浏览器验收 |
+| SS07 | 进行中 | PDF loadingTask取消、300页fallback窗口、位图字节预算/卸载归零已接入；真实浏览器选区与缩放待验 |
+| SS08 | 进行中 | PPTX媒体URL回收、200页DOM上限/无IO入口、DOCX串行离屏渲染/迟到结果隔离已接入；真实多媒体课件待验 |
+| SS09 | 本机索引完整/部署待验 | 模式专属加载、v3数值posting、共享metadata、对齐向量Buffer借用及重试状态机已实现；用户授权后以专用测试账号补齐1228向量，当前45845/45845，深哈希与Worker双模式各8命中，39批中央账本结算0 microcredits；COS/线上尚未更新 |
+| SS10 | 本机结构完成/运行待验 | 单Worker持索引、16job/4MiB队列、取消/退出重建、shared core及真实线程测试已落；Web/online/offline路径与包内Worker实体核对通过，实际Electron启动/进程内存待验 |
+| SS11 | 本机结构完成/真实provider待验 | health仅stat/manifest并保留显式深检及prebuild闸门；旧索引过期已离线重建，当前contentHash深检通过且API显式报告vectorCoverage；正文fallback有revision/TTL/32MiB LRU，诊断随请求返回、abort贯通，取消rerank不会调用备用计费端点的测试通过；真实供应商取消/结算待集成验收 |
+| SS12 | 进行中 | 同键single-drain、稳定id分页、逐页应用/页失败不推进、owner隔离、6MiB加权push、只持久化key的失败重试与SHA-256短指纹已实现；1000次慢上传、分页失败、A/B账号、失败tombstone防复活测试通过；跨设备大payload仍需审查 |
+| SS13 | 进行中 | 首页改用生成学科摘要；共享客户端getter改用无正文导航，文章服务端走full manifest；Markdown不重复下传原文、例题只预载首题；超大正文提供受控contentRef点击加载/失败重试，TOC等异步渲染后补建。1430条Web RSC产物总量635.5→318.9MiB，同一路由普通小节188.3→188.4KiB；浏览器划词/可读性仍待验 |
+| SS14 | 进行中 | 流式短文本按约16ms合批，停止立即显示全文；显式高亮grammar/aliases和mhchem/sanitize回归通过；artifact/document/imageGen正文迁到owner-scoped逐件IDB，旧根blob确认另存后才缩成metadata，查看窗口lease释放正文，分享/同步按需读完整权威对象且缺正文不误发tombstone；图库生成图按可见tile租约读取。大量卡片DOM/真实堆验收仍待处理 |
+| SS15 | 进行中 | 默认desktop:build已切安全staging+package入口，不删除旧产物；online暂存含181展示图；offline-probability档只预渲染该科内容、选科正文/154视频/17MB专属索引且无环境副本。Electron Builder非发布打出portable+NSIS，win-unpacked依赖/Worker/索引及SHA256检查通过；真实Electron启动/浏览器离线验收仍待用户环境，旧破坏性脚本未运行 |
+| SS16 | 进行中 | 视频仅点击后挂载；inline播放触发加载、PiP独立eager lease；181张大图衍生2048长边WebP共23.5MiB，原图可点开、失败回退。理论RGBA由3912MiB降为1885MiB（并非同时驻留）；真实病理字迹/滚动解码待浏览器验收 |
+| SS17 | 本机生产构建完成/HMR待验 | perf:node/perf:contracts/perf:assets/perf:images/perf:web稳定入口已落；Turbopack宽追踪警告16→10→3→0，最终Web隔离构建status=0、约171秒，online/offline desktop stage与离线Electron包通过。不同源版本耗时不可当受控加速结论，HMR/峰值RSS因RootSolo禁dev server未采 |
+| SS18 | 本机门禁完成/部分浏览器端测 | 原始阶段Node1872通过/1可选跳过、React992通过、内容2311；本轮新增Class/索引后隔离Web build通过，完整测试及性能门禁的最终数值见文末补充。Codex浏览器已验证Class单页、题答、图片检索和跨学年Agent；真实ASR、普通Agent SVG、多设备、PDF/PPTX/视频、Electron运行及内存指标仍待验 |
+
+SS00首批基线：`scripts/performance/run-node-memory.mjs`以100个合成会话、每课2条混合消息、先warm5再轮换100的S1固定fixture运行3次（commit均为`441c6f77`、fixture hash `b08bd1ed123b4ffc82e68194ce7c27f4324b81f38b59e95f60575865744ddbc4`，数据在忽略目录`artifacts/performance/`）。三次最终真实`messagesById` resident均为100，`loadedSessionIds`却只有3，`tailCache`为100；这直接确认E01，不以RSS波动推断泄漏大小。Node `--expose-gc`下最终heapUsed约27.66–27.93MiB，RSS约123–140MiB，仅代表本合成localStorage-fallback进程，不是浏览器/生产基线；arrayBuffers包含于external，未相加。数字getter和20次资源注册/释放测试通过；浏览器collector已准备但未执行。S2–S7及真实IDB/浏览器/桌面数值场景随对应工单补充。
+
+SS03修复前回归：`lib/storage/chatStorage.atomic.test.ts`使用fake-indexeddb 6.2.5模拟第二块写入QuotaExceeded，旧会话预期20条，当前实现只能恢复前16条，测试按预期失败；这证明现有先删旧块再写入的路径可损坏权威内容。依赖已精确固定至devDependency并更新lockfile。修复后必须用同一测试证明旧数据完整且新数据仅在事务complete后可见。
+
+阶段性修复证据：同一失败测试现在旧20条/`contentRevision=1`保持可读，显式重试后22条完整；尾段新chunk失败时旧head仍指向16条，重试后18条完整。`chatStorage.queue.test.ts`验证drop不断写链、删除后晚写不复活、1000次完整checkpoint只执行至多一个在途加一个最新快照且registry归零。`chatStorage.owner-epoch.test.ts`验证A排队追加在切B后落回A命名空间。相关老v2/v3测试已改用fake-indexeddb的真实事务替身，Node代码单测在首次原子修复后为1828通过/1可选跳过；后续新改动仍需阶段全量复跑。
+
+SS01结构结果：修复前`chatHistory.lru.test.ts`实际resident 4而LRU仅3，预期失败；修复后以真实keys驱逐并保留IDB全文。初始S1在localStorage fallback里轮换100后resident=100、LRU=3；同fixture改用fake-indexeddb后、修SS01前仍为resident=100。当前策略上限为活动会话+3个非活动窗口（另有显式lease），复测100轮可收敛到4；字节预算保护活动/写入/可见内容，lease释放后压力消退。两套存储后端的heap/RSS不能交叉算百分比，且RSS仍受allocator高水位影响，数值结论待同模式三轮median。
+
+资源生命周期阶段：`ObjectUrlLease`提供refcount与幂等释放，预览组件不再在render/useMemo创建URL；附件hook以当前已接管附件ref为owner，卸载/clear/账号切换释放，迟到转换直接回收。DOCX仅抽文字时不建预览URL，图片解码失败也回收临时URL。PDF当前loadingTask可在换源/关闭时destroy；300页无IntersectionObserver仍只挂当前页窗口，高DPR位图超96MiB时先淘汰不可见远页，canvas卸载归零。PPTX 1.0.7的`pptx.medias` Blob URL由adapter显式回收，200页滚动DOM仍≤12页，迟到load媒体同样回收；DOCX fetch带signal，renderAsync经离屏host和单队列防A/B串写。上述为JSDOM/模拟件结构验收，真PDF选区、真实课件音视频和浏览器retained heap尚未采集。
+
+2026-10-02中途证据（最终结果见末尾）：`perf:contracts`当时编译真实Worker并运行Node 53/53、Vitest 40/40；早期`npm test`为Node1853通过/1可选跳过、React969通过。该阶段`lint:eslint`为0 error/18存量warning，`lint:secrets`对当时2539个tracked文件通过，`check:registry`为0 error/94存量warning。`perf:node`同fixture轮换100会话后resident=4；S5 Worker合成2000行cold约155ms、warm约3ms，RSS从约145MB到185MB；Worker线程成本不能误称RSS优化。所有JSON在ignored `artifacts/performance/`，不含真实付费请求。
+
+构建追踪事件：首轮Next编译/静态页完成，但NFT把仓库根、旧包和一份`.env.production`副本带进standalone；复制到2.8GB时主动中止。仅对本轮生成的两份环境文件副本覆写脱敏，原项目环境文件未动。第二/三轮把dynamic fs标注并改用严格白名单暂存，第三轮online stage完成（当时清单11321文件/约958MB），staging根只有8项、无`.env*`、旧包、旧项目、embed-cache或本地视频。第三轮报告`artifacts/performance/desktop-stage-2026-10-01t23-22-06-390z/build-report.json`。这些数字是打包/构建证据，不是运行时堆。未运行Electron或浏览器，也未声称离线档已通过启动验收。
+
+第四轮追踪补完`lib/content/lectures/paths.ts`后Turbopack宽追踪警告为0；在线stage见`artifacts/performance/desktop-stage-2026-10-01t23-48-14-438z/build-report.json`，Next构建130665ms、总173085ms，清单11502文件/约982MB，含181张展示图。Next原始standalone仍自动带一份`.env.production`，脚本即时将本轮生成副本脱敏且严格白名单不把它复制到stage；原项目环境文件未改。stage核验：无`.env*`、旧Classolo、旧安装包、embed-cache与本地视频，Worker/index/181展示图齐全。相比第三轮Next构建162319ms/总223725ms有改善，但源码和生成资产同时变化，不能据两次值断言一般性提速；缺乏同mode三轮median及峰值RSS。旧失败暂存留在ignored目录，v1展示图移入`.local-archive`，均未删除用户文件。
+
+离线概率论档全链路证据：`desktop:build:staged -- --offline --subjects=probability`独立构建成功，133静态页中概率论内容112、解剖学0；stage约967MB，资源白名单经专属索引替换后约391MB。`content/.index/manifest.json`只含probability，2523 chunks/2523向量（约17MB），Worker关键词/向量各8命中；stage有154个登记视频、无其他学科正文或`.env*`。随后在同一stage上运行`electron-builder --win --publish never`退出0，产出便携EXE约370MB、NSIS约631MB。`perf:package-check`核对`win-unpacked`内server.js/实体Next依赖/Worker/专属索引、127预渲染路由及无环境文件，记录两个EXE的SHA256在ignored `artifacts/performance/package-offline-check.json`。未运行真实Electron进程或浏览器，因此不能声称离线启动、播放与交互验收完成。
+
+SS13正文传输实测：两次`perf:web`均从同一工作树采用独立`.next-perf-web-*`输出且均构建成功。原阈值版本（只延迟>50KiB）对1430个非segment RSC文件合计481.1MiB，最终阈值（考前模拟/实战>20KiB，其他>35KiB）为318.9MiB；与本轮改动前同模式完整页面输出635.5MiB比较，静态RSC总字节减少约49.8%。代表路由`probability/shizhan-yanlian/real-02`从13547.9KiB到29KiB、`real-07`从7684.5KiB到29KiB、`probability/kaoqian-moni/exam-05`从5195.5KiB到29KiB；普通`probability/detail/1.1`为188.3→188.4KiB。此统计是构建产物同路由文件之和，不代表单个用户一次下载318.9MiB；大正文用户点击后仍需从受控`/api/section`取原文并在客户端渲染，必须在浏览器验证首屏/划词/公式与滚动体验。
+
+索引新鲜度闸门先报旧manifest与当前内容不一致。只读cache覆盖核对为45845 chunks、44617已有向量、1228新增无向量、已有向量哈希变化0。`scripts/performance/rebuild-index-offline.ts`只重建BM25/metadata并原样复用逐一验证过的向量，未调用供应商；stage经深度hash、健康文件stat、Worker关键词/向量各8命中通过后，将旧`content/.index`完整移入`.local-archive/index-before-offline-refresh-2026-10-02`，新索引移入原路径。默认`check:index-freshness`现通过，prebuild/staging也包含此门禁。当前`vectorCoverage=44617/45845≈97.32%`，1228新增chunk仅关键词检索可命中；不可宣称全量语义向量完成，未来增量embed是可能计费的独立工作。
+
+SS14对象驻留合成S6：`scripts/performance/run-product-memory.mjs`用固定fixture 50件HTML演示、20篇长文、10次base64生图，save/IDB确认后`artifactBodyEstimatedBytes=documentBodyEstimatedBytes=imageGenBodyEstimatedBytes=0`（fixture hash与RSS在`artifacts/performance/product-memory.json`）。fake IDB仍在该Node进程里持有持久化替身字节，所以该结果只证明Zustand热对象释放，不推断浏览器或Electron进程RSS百分比。迁移测试验证旧根blob在逐件正文确认落盘前不被缩减，viewer/detail/图库的lease释放后恢复为metadata；真实图片滚动与持久恢复待浏览器验收。
+
+SS05/09阶段：DeferredWindowLayers移除idle后全部挂载，按管理窗类型及各store的原始布尔状态条件挂对应dynamic组件；笔记候选与记忆收件箱的后台effect独立常驻，关闭可卸载viewer。关键词检索不触发向量/embedding，向量检索不触发BM25（含diagnostics）；v3 BM25解析保留`Uint32Array`数值posting和docLengths，topK堆/过滤与旧格式同fixture分数一致。BM25/向量共用按文件revision缓存的metadata Map，向量Buffer在对齐/长度/端序允许时零拷贝借用，否则复制一次；加载器支持cold/loading/ready/failed、单飞行与受控重试。S5合成2000行、8维索引首轮主线程基线与迁移后Worker同fixture hit ID完全一致，关键词/向量cold/warm没有调用付费provider；Worker cold启动与线程RSS成本已一并记录。
+
+最终本机验收：最新`npm test`为Node1866通过/1可选跳过、Vitest986通过；`test:content`2311通过；最新`perf:contracts`为Node75与Vitest56通过，包含真实Worker、三方CAS、100页云pull、逐件正文迁移、延迟图库、未知工具按轮回读、rerank取消与大型RSC门禁。`typecheck`与`lint:eslint`退出0（17条存量warning），`check:encoding`3651篇合法UTF-8、`check:lectures`56节、`check:registry`0 error/94存量warning、`check:display-images`181对和`check:index-freshness`深度哈希均通过。最终`perf:web`隔离构建status=0、用时165123ms、不启动服务；其1430条非segment RSC合计318.9MiB。`perf:package-check`离线概率论便携版/NSIS实包结构与SHA256通过。最终staged文件密钥扫描（2611个tracked文件）与`git diff --cached --check`均通过，提交钩子复扫171个代码文件也通过。所有未运行的浏览器/进程级验收、未补齐的1228向量及构建耗时不可比的限制仍按上表保留，不将其写成通过。
+
+14dda6ac提交后的完成度复核：发现`exportAllChats`仍一次装配所有会话及附件，且导出期间账号切换可能得到跨owner的混合JSON；已改为按8轮读取并逐段序列化，浏览器支持File System Access时直写用户选择的文件，owner或会话revision变化就abort部分文件。无该API时仍使用Blob下载，逐轮读取但输出字节必须留在内存，不能称为完全流式写盘。冲突草稿导出也做owner epoch复查。另发现`useAuthSession`在登出后仍每5分钟POST账号会话接口，现只在已登录时轮询；focus和登录事件仍可重建会话。新增4个导出回归、1个登出轮询回归；最新`npm test`为Node1866通过/1跳过、Vitest991通过，`perf:contracts`为Node75+Vitest66通过，typecheck与ESLint退出0（17条既有warning）。这轮尚需当前源码的Web构建和最终暂存扫描，真实浏览器/生产级验收限制不变。
+
+同轮后续收口：Class Workbench的旧owner侧栏读取原先只在完成时检查“当前是否有任意owner”，可把A的课程列表写回B；现每次捕获owner与owner epoch，数据库打开后及查询完成后均复查。capabilities请求换号时abort且解析后再复查owner；旧effect的迟到清理不再停止或清空新owner，真正卸载时仍停止采集并清理本账号。`classolo/tests/session-list-owner.test.ts`以延迟数据库打开、延迟查询、A→B→A epoch变化、旧清理迟到及真实卸载6个场景验证。聊天导出另区分用户取消文件选择、无数据和真实失败，设置页不再把版本冲突误报为“暂无数据”。当前源码`npm test`为Node1872通过/1可选跳过、Vitest992通过，`perf:contracts`为Node81+Vitest67通过；typecheck与ESLint退出0（17条既有warning）。最终隔离Web build status=0、用时222039ms、不启动服务，1430个非segment RSC文件合计318.9MiB。未执行真实浏览器/Electron、多账号云端联调与1228个可能计费的增量向量，仍属待验/待授权项；无这些证据不能标记整个目标完成。
+
+2026-10-02 Codex 补充验收（覆盖上表旧状态，不改写历史测量）：用户明确授权浏览器端测和专用测试账号调用模型。Class 导入→自动导图→刷新持久、单页桌面/390×844 小屏、笔记保存、自动出题与参考答案、课堂 Agent 引用本课文稿，以及跨学年 `getOutline`/`getSection` 真实工具调用均通过。显式 `imageSearch` 在修复自动联网判定后实际返回图片与来源；相关性仍需优化。普通 Agent 一次 SVG 请求输出字面工具调用文本，未形成图；真实麦克风授权在 Codex in-app browser 悬置，ASR 端到端未通过，已修复无法取消的启动状态。SS09 的 1228 条缺失向量在独立 stage 经专用账号中央账本 39 批调用补齐，结算 0 microcredits；深哈希、Worker 双模式各 8 命中后本地归档旧索引并提升新索引。当前为 45845/45845、缺失/变化哈希均 0。完整端测与未验边界见 `docs/analysis/class-audit-2026-10-02/E2E-CLOSEOUT.md`。Electron 真实运行、跨设备同步、浏览器 retained heap 与长课性能仍未有数值证据。
+
+该补充的自动门禁：在新增课堂可视化回退后，`npm test` Node1877通过/1可选跳过、Vitest1002通过；`perf:contracts` Node82+Vitest67、`test:content`2311、typecheck、index深哈希与密钥扫描通过；ESLint 0 error/17 条既有 warning。含可视化回退与单行笔记菜单的最终隔离Web构建status=0、350592ms、`serverStarted=false`；这些耗时不能与旧源码直接计算优化收益。
+
+Class 可视化收口：普通 Agent 的一次 `drawDiagram` 请求仍被所选模型写成字面工具文本；课堂左栏新增受控“生成可视化说明”，若供应商未返回合法工具结果，则把当前 AI 导图节点 XML 转义后转绘为有来源的 SVG，右下资料框可展开显示。真实浏览器已看到该回退图。此回退保证课堂有可读示意，不等同于模型直出图示成功，也不能替代医学图示准确性审查。
