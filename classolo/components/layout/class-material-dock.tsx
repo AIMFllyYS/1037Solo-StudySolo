@@ -19,11 +19,13 @@ export function ClassMaterialDock({onAnchorClick,compact=false}:{onAnchorClick?:
   const total=counts.transcript+counts.notes
   const [open,setOpen]=useState(true),[expanded,setExpanded]=useState(false),[unread,setUnread]=useState(0)
   const previous=useRef({total,nodes:nodes.length})
+  const bodyRef=useRef<HTMLDivElement>(null)
   useEffect(()=>{
     const added=Math.max(0,total-previous.current.total)+Math.max(0,nodes.length-previous.current.nodes)
     if(added&&!open){setUnread(value=>value+added);setOpen(true)}
     previous.current={total,nodes:nodes.length}
   },[total,nodes.length,open])
+  useEffect(()=>{if(!open||!total)return;const frame=requestAnimationFrame(()=>{if(bodyRef.current)bodyRef.current.scrollTop=bodyRef.current.scrollHeight});return()=>cancelAnimationFrame(frame)},[open,total])
   const toggle=()=>{setOpen(value=>!value);setUnread(0)}
   return <aside data-slot="class-material-dock" data-open={open} data-expanded={expanded} data-has-material={total>0} className={`ss-material-dock ${compact?'ss-material-dock--mobile':''} ${expanded?'ss-material-dock--expanded':''}`} aria-label="课堂资料框">
     <div className="ss-material-head">
@@ -33,11 +35,11 @@ export function ClassMaterialDock({onAnchorClick,compact=false}:{onAnchorClick?:
       {open?<button type="button" aria-label={expanded?'缩小资料框':'扩大资料框'} onClick={()=>setExpanded(value=>!value)}>{expanded?<Minimize2 className="size-3.5"/>:<Expand className="size-3.5"/>}</button>:null}
       <button type="button" aria-label={open?'收起资料框':'展开资料框'} aria-expanded={open} onClick={toggle}>{open?<ChevronDown className="size-3.5"/>:<ChevronUp className="size-3.5"/>}</button>
     </div>
-    {open?<div className="ss-material-body">
+    {open?<div ref={bodyRef} className="ss-material-body">
       {total===0&&!nodes.length?<p className="ss-material-empty">配图、公式、讲解和题卡出现后会留在这里，听课时不必切换页面。</p>:null}
+      {nodes.length?<section aria-label="导图缩览" className="ss-material-outline"><div className="ss-material-section-label"><Network className="size-3"/> 导图缩览 · {nodes.length} 个节点</div><div className="ss-material-node-list">{nodes.slice(0,expanded?18:2).map(node=><button type="button" key={node.id} onClick={()=>publishOutlineJump(node.id)} title={node.title}>{node.title}</button>)}</div></section>:null}
       {counts.transcript?<section aria-label="文稿补充"><RenderHost target="transcript" modules={['image','formula','rich-text','gen-ui','visual']} compact limit={expanded?undefined:3} onAnchorClick={onAnchorClick}/></section>:null}
       {counts.notes?<section aria-label="笔记补充"><RenderHost target="notes" modules={['image','formula','rich-text','gen-ui','visual']} compact limit={expanded?undefined:2} onAnchorClick={onAnchorClick}/></section>:null}
-      {nodes.length?<section aria-label="导图缩览" className="ss-material-outline"><div className="ss-material-section-label"><Network className="size-3"/> 导图缩览 · {nodes.length} 个节点</div><div className="ss-material-node-list">{nodes.slice(0,expanded?18:2).map(node=><button type="button" key={node.id} onClick={()=>publishOutlineJump(node.id)} title={node.title}>{node.title}</button>)}</div></section>:null}
     </div>:null}
   </aside>
 }

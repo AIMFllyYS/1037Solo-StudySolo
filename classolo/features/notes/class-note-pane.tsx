@@ -4,6 +4,7 @@ import {useEffect,useRef,useState} from 'react'
 import {useUserNotes} from '@/lib/stores/userNotes'
 import type {UserNote} from '@/lib/notes/userNote'
 import {MarkdownStream} from '@/classolo/components/markdown'
+import {MoreHorizontal} from 'lucide-react'
 import {resolveClassNoteProposal} from './class-note'
 
 export function ClassNotePane({sessionId,noteId,ownerId,onOrganize}:{sessionId:string|null;noteId?:string;ownerId:string|null;onOrganize:()=>void}){
@@ -30,11 +31,12 @@ export function ClassNotePane({sessionId,noteId,ownerId,onOrganize}:{sessionId:s
 
 function ClassNoteEditor({note,onOrganize,preview,onPreviewChange}:{note:UserNote;onOrganize:()=>void;preview:boolean;onPreviewChange:(value:boolean)=>void}){
   const [draft,setDraft]=useState(note.markdown),[saved,setSaved]=useState(true)
+  const [moreOpen,setMoreOpen]=useState(false)
   const draftRef=useRef(draft),savedRef=useRef(note.markdown)
   useEffect(()=>()=>{if(draftRef.current!==savedRef.current)useUserNotes.getState().updateNote(note.id,{markdown:draftRef.current})},[note.id])
   function save(){if(draft===savedRef.current)return;useUserNotes.getState().updateNote(note.id,{markdown:draft});savedRef.current=draft;setSaved(true)}
   return <div className="flex h-full min-h-0 flex-col bg-[color:var(--bg-panel)]">
-    <div className="flex flex-wrap items-center gap-2 border-b border-[color:var(--line-soft)] px-4 py-2"><strong className="mr-auto truncate text-[13px]">{note.title}</strong><span role="status" className="text-[11px] text-[color:var(--ink-faint)]">{saved?'已保存':'有未保存编辑'}</span><button type="button" className="ss-tool" onClick={()=>{save();onPreviewChange(!preview)}}>{preview?'编辑':'预览'}</button><button type="button" className="ss-tool" onClick={save}>保存</button><button type="button" className="ss-tool" onClick={()=>{save();onOrganize()}}>更新课堂整理</button><button type="button" className="ss-tool" onClick={()=>{save();useUserNotes.getState().openEditor(note.id)}}>完整编辑器</button></div>
+    <div className="ss-class-note-toolbar"><strong className="mr-auto min-w-0 truncate text-[12px]">{note.title}</strong><span role="status" className="text-[10px] text-[color:var(--ink-faint)]">{saved?'已保存':'待保存'}</span><button type="button" className="ss-tool" onClick={()=>{save();onPreviewChange(!preview)}}>{preview?'编辑':'预览'}</button><button type="button" className="ss-class-icon-button" aria-label="笔记操作" aria-expanded={moreOpen} onClick={()=>setMoreOpen(value=>!value)}><MoreHorizontal className="size-3.5"/></button>{moreOpen&&<div className="ss-class-note-menu" role="menu" aria-label="笔记操作"><button type="button" role="menuitem" onClick={()=>{save();setMoreOpen(false)}}>保存笔记</button><button type="button" role="menuitem" onClick={()=>{save();onOrganize();setMoreOpen(false)}}>更新课堂整理</button><button type="button" role="menuitem" onClick={()=>{save();useUserNotes.getState().openEditor(note.id);setMoreOpen(false)}}>打开完整编辑器</button></div>}</div>
     {preview?<div className="ss-class-note-preview min-h-0 flex-1 overflow-auto p-4"><MarkdownStream markdown={draft}/></div>:<textarea aria-label="本课笔记" value={draft} onChange={event=>{draftRef.current=event.target.value;setDraft(event.target.value);setSaved(false)}} onBlur={save} spellCheck={false} className="min-h-0 flex-1 resize-none bg-transparent p-4 font-mono text-[13px] leading-6 text-[color:var(--ink)] outline-none"/>}
   </div>
 }

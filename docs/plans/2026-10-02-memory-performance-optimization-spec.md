@@ -492,4 +492,6 @@ SS05/09阶段：DeferredWindowLayers移除idle后全部挂载，按管理窗类�
 
 2026-10-02 Codex 补充验收（覆盖上表旧状态，不改写历史测量）：用户明确授权浏览器端测和专用测试账号调用模型。Class 导入→自动导图→刷新持久、单页桌面/390×844 小屏、笔记保存、自动出题与参考答案、课堂 Agent 引用本课文稿，以及跨学年 `getOutline`/`getSection` 真实工具调用均通过。显式 `imageSearch` 在修复自动联网判定后实际返回图片与来源；相关性仍需优化。普通 Agent 一次 SVG 请求输出字面工具调用文本，未形成图；真实麦克风授权在 Codex in-app browser 悬置，ASR 端到端未通过，已修复无法取消的启动状态。SS09 的 1228 条缺失向量在独立 stage 经专用账号中央账本 39 批调用补齐，结算 0 microcredits；深哈希、Worker 双模式各 8 命中后本地归档旧索引并提升新索引。当前为 45845/45845、缺失/变化哈希均 0。完整端测与未验边界见 `docs/analysis/class-audit-2026-10-02/E2E-CLOSEOUT.md`。Electron 真实运行、跨设备同步、浏览器 retained heap 与长课性能仍未有数值证据。
 
-该补充的最终自动门禁：`npm test` Node1877通过/1可选跳过、Vitest1001通过；`perf:contracts` Node82+Vitest67、`test:content`2311、typecheck、index深哈希、密钥扫描与隔离`perf:web`构建均通过；ESLint 0 error/17 条既有 warning。Web构建用时406089ms且`serverStarted=false`，不能与旧源码构建用时直接计算优化收益。
+该补充的自动门禁：在新增课堂可视化回退后，`npm test` Node1877通过/1可选跳过、Vitest1002通过；`perf:contracts` Node82+Vitest67、`test:content`2311、typecheck、index深哈希与密钥扫描通过；ESLint 0 error/17 条既有 warning。含可视化回退与单行笔记菜单的最终隔离Web构建status=0、350592ms、`serverStarted=false`；这些耗时不能与旧源码直接计算优化收益。
+
+Class 可视化收口：普通 Agent 的一次 `drawDiagram` 请求仍被所选模型写成字面工具文本；课堂左栏新增受控“生成可视化说明”，若供应商未返回合法工具结果，则把当前 AI 导图节点 XML 转义后转绘为有来源的 SVG，右下资料框可展开显示。真实浏览器已看到该回退图。此回退保证课堂有可读示意，不等同于模型直出图示成功，也不能替代医学图示准确性审查。

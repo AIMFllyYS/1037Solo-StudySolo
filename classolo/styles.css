@@ -8,6 +8,8 @@
 .ss-class-workbench .ss-tool:disabled{opacity:.4;cursor:not-allowed;}
 .ss-class-workbench .ss-source-link{display:inline-flex;align-items:center;border:1px solid var(--line-soft);border-radius:6px;padding:2px 6px;color:var(--accent-ink);text-decoration:none;}
 .ss-class-workbench .ss-source-link:hover{background:var(--bg-muted);border-color:var(--line);}
+.ss-class-workbench button.underline{display:inline-flex;align-items:center;border:1px solid var(--line-soft);border-radius:5px;padding:1px 5px;background:var(--bg-panel);color:var(--accent-ink);font-size:11px;text-decoration:none!important;}
+.ss-class-workbench button.underline:hover{border-color:var(--line);background:var(--bg-muted);text-decoration:none!important;}
 .ss-class-workbench .glass-panel{background:var(--bg-panel);border:1px solid var(--line-soft);box-shadow:0 8px 32px #00000015;}
 .ss-class-workbench .node-paper-bg{background:var(--bg-panel);}
 .ss-class-workbench :focus-visible{outline:2px solid var(--md-sys-color-primary);outline-offset:2px;}
@@ -59,6 +61,10 @@
 .ss-class-workbench .ss-class-thinking-body p,.ss-class-workbench .ss-class-question-body>p{margin:0;}
 .ss-class-workbench .ss-class-question-body [data-slot="ai-ask"]{font-size:11px;}
 .ss-class-workbench .ss-class-question-body [data-slot="ai-ask"] .ss-tool{font-size:10px;}
+.ss-class-workbench .ss-class-note-toolbar{position:relative;display:flex;min-height:42px;align-items:center;gap:6px;border-bottom:1px solid var(--line-soft);padding:5px 9px;}
+.ss-class-workbench .ss-class-note-menu{position:absolute;top:38px;right:8px;z-index:25;display:grid;width:170px;gap:2px;border:1px solid var(--line-soft);border-radius:9px;padding:5px;background:var(--bg-panel);box-shadow:0 12px 30px #00000018;}
+.ss-class-workbench .ss-class-note-menu button{border-radius:5px;padding:7px;text-align:left;font-size:11px;color:var(--ink-soft);}
+.ss-class-workbench .ss-class-note-menu button:hover{background:var(--bg-muted);color:var(--ink);}
 .ss-class-workbench .ss-class-note-preview a{border:1px solid var(--line-soft);border-radius:5px;padding:1px 4px;color:var(--accent-ink);text-decoration:none;white-space:nowrap;}
 .ss-class-workbench .ss-class-note-preview a:hover{background:var(--bg-muted);border-color:var(--line);text-decoration:none;}
 .ss-class-workbench .ss-class-top-actions{display:flex;align-items:center;gap:5px;}
