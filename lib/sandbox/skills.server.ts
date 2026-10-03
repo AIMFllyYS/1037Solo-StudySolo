@@ -35,16 +35,27 @@ export async function installedPackages(scope: SandboxScope, store: ExecutionSto
   assertSandboxScope(scope);
   return (await store.owned<SkillInstallation>("skill", scope.owner)).filter(item => item.owner === scope.owner && item.active && catalog.packages.some(pack => pack.id === item.packageId && pack.digest === item.digest));
 }
-export async function skillsForAgent(scope: SandboxScope | undefined, incoming: Skill[]) {
+export async function skillsForAgent(scope: SandboxScope | undefined, incoming: Skill[], store?: ExecutionStore) {
   if (!scope) return incoming;
-  const installed = await installedPackages(scope);
+  const installed = await installedPackages(scope, store);
   const skills = incoming.filter(skill => !catalog.packages.some(pack => pack.id === skill.sourceId));
+  const usedIds = new Set(skills.map(skill => skill.id));
   for (const item of installed) {
     const files = await skillPackageFiles(item.packageId);
     const source = files.find(file => file.path === "SKILL.md")!.bytes.toString("utf8");
     const adapter = files.find(file => file.path === "references/studysolo-runtime.md")!.bytes.toString("utf8");
     const parsed = parseSkillMarkdown(source, "SKILL.md");
-    skills.push({ id: `package:${item.packageId}`, name: parsed.name, description: parsed.description, content: `${adapter}\n\n${parsed.content}`, pinned: incoming.find(skill => skill.sourceId === item.packageId)?.pinned === true, createdAt: item.installedAt, sourceId: item.packageId, sourceVersion: item.version });
+    const selected = incoming.find(skill => skill.sourceId === item.packageId);
+    // Client IDs are composer references, not installation authority. Keep a
+    // valid selected reference while replacing all executable content from the
+    // verified Account installation, or skill:<client-id> loses its selection.
+    const clientId = selected?.id;
+    let id = clientId && /^[A-Za-z0-9_.:-]{1,160}$/.test(clientId) && !usedIds.has(clientId)
+      ? clientId : `package:${item.packageId}`;
+    let suffix = 0;
+    while (usedIds.has(id)) id = `package:${item.packageId}:${item.id}:${++suffix}`;
+    usedIds.add(id);
+    skills.push({ id, name: parsed.name, description: parsed.description, content: `${adapter}\n\n${parsed.content}`, pinned: selected?.pinned === true, createdAt: item.installedAt, sourceId: item.packageId, sourceVersion: item.version });
   }
   return skills;
 }

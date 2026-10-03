@@ -4,6 +4,7 @@ import { authorizeSkillInstaller } from "@/lib/sandbox/actor.server";
 import { installedPackages, manageSkillPackage, skillRuntimeReady } from "@/lib/sandbox/skills.server";
 import { sandboxFailure, SandboxError } from "@/lib/sandbox/config.server";
 import { desktopCloudBridgeEnabled, forwardDesktopAgentRequest } from "@/lib/sandbox/desktop-bridge.server";
+import { readSandboxJson } from "@/lib/sandbox/request.server";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const schema = z.object({ packageId: z.enum(["notes-to-handbook", "gb-standard-docx-pdf"]), action: z.enum(["install", "uninstall"]) }).strict();
@@ -18,9 +19,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     if (desktopCloudBridgeEnabled()) return await forwardDesktopAgentRequest(request);
-    const scope = await authorizeSkillInstaller(request), raw = await request.text();
-    if (Buffer.byteLength(raw) > 2000) throw new SandboxError("SANDBOX_REQUEST_TOO_LARGE", 413);
-    const parsed = schema.safeParse(JSON.parse(raw));
+    const scope = await authorizeSkillInstaller(request);
+    const parsed = schema.safeParse(await readSandboxJson(request, 2000));
     if (!parsed.success) throw new SandboxError("SKILL_PACKAGE_REQUEST_INVALID");
     return Response.json(await manageSkillPackage(scope, parsed.data.packageId, parsed.data.action === "install"), { headers });
   } catch (error) { return sandboxFailure(error); }
