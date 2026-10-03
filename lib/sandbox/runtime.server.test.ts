@@ -17,7 +17,7 @@ import type { SandboxCommand, SandboxSession, SandboxInput } from "./types";
 import { MockLanguageModelV4, convertArrayToReadableStream, convertReadableStreamToArray } from "ai/test";
 import type { LanguageModelV4StreamPart } from "@ai-sdk/provider";
 import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
-import { installedPackages, manageSkillPackage, skillPackageFiles, SKILL_RUNTIME_VERSION } from "./skills.server";
+import { installedPackages, manageSkillPackage, skillPackageFiles, skillsForAgent, SKILL_RUNTIME_VERSION } from "./skills.server";
 
 const owner = "20000000-0000-4000-8000-000000000001", other = "20000000-0000-4000-8000-000000000002";
 function configure() {
@@ -178,6 +178,16 @@ test("complete packages require a verified runtime and remain Account-owned", as
     assert.equal((await installedPackages(foreign, store)).length, 0);
     assert.equal((await installedPackages(scope, store)).length, 1);
     assert.ok((await skillPackageFiles("gb-standard-docx-pdf")).some(file => file.path === "scripts/render_pdf_pages.py"));
+    const clientSkill = { id: "1700000000000-42", name: "Local label", description: "Local label", content: "forged-package-content", pinned: true, createdAt: 1, sourceId: "notes-to-handbook" };
+    const loaded = await skillsForAgent(scope, [clientSkill], store);
+    assert.equal(loaded[0].id, clientSkill.id);
+    assert.equal(loaded[0].pinned, true);
+    assert.ok(loaded[0].content.includes("完整原始技能包"));
+    assert.ok(!loaded[0].content.includes("forged-package-content"));
+    assert.equal((await skillsForAgent(foreign, [clientSkill], store)).length, 0);
+    const custom = { ...clientSkill, sourceId: undefined };
+    const collided = await skillsForAgent(scope, [custom, clientSkill], store);
+    assert.equal(new Set(collided.map(skill => skill.id)).size, collided.length);
     await manageSkillPackage(scope, "notes-to-handbook", false, store);
     assert.equal((await installedPackages(scope, store)).length, 0);
   } finally {

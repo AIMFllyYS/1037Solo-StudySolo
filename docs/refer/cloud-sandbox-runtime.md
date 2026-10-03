@@ -10,7 +10,7 @@
 | 执行隔离 | 宿主普通 UID10001映射、控制文件拒绝、root信号拒绝、本机控制API隔离、取消/超时/日志限制/后台进程清理/越界文件拒绝通过 | 持续供应商安全更新、生产实例验收 |
 | Agent 模型调用 | 真实 GLM 模型通过原生学习连接器查询 PubMed，并 open→exec→poll(exit0)→close，最终回答通过 | 新生产环境完整验收 |
 | 原生连接器 | Notion、Todoist、GitHub、Google、Zotero、PubMed、Crossref 的开发账号真实读取通过 | 正式回调登记、多用户授权、Google Testing/验证边界、生产配置 |
-| Skills 完整包 | Notes to Handbook 9 文件、GB 文档包17文件、完整性检查、安装记录；预装镜像的中文HTML/PDF、DOCX转换、页面渲染和父视觉检查通过 | 阿里云模板要求registry凭据；真实namespace环境验收及安装门禁仍未开放 |
+| Skills 完整包 | Notes to Handbook 9 文件、GB 文档包17文件；真实OCI模板7项隔离、namespace内中文HTML/PDF、DOCX/PDF预检及页面渲染通过，父已查看实际PNG；开发Account真实安装和读回两包通过 | 生产配置/部署和正式用户安装；每篇文稿仍需自身视觉与标准验收 |
 | Electron 接入 | 固定线上 Agent 转发、用户 Account/BYOK保留、操作者凭证剥离代码和协议测试通过 | 真正打包、线上和安装包验收 |
 
 上述连接器通过网站服务端调用获授权的 HTTP/MCP 接口；云沙箱承担命令与文件生成，Agent 将两条能力串联。微软按用户要求暂不处理。市场仅列已实现服务，原来的通用 stdio/CLI 配置项已移出公开目录。
@@ -24,6 +24,8 @@
 当前提供者拒绝重挂 proc，因此保留单租户沙箱的配对 PID/proc视图，避免破坏 ps/psutil等通用工具；对宿主 root进程的信号仍受 UID权限拒绝，已实测。这里不声称获得了独立 proc 视图。no_new_privs、进程数/文件描述符/单文件/日志上限、固定实例生命周期进一步收紧运行。
 
 操作者云API key、Account token、Supabase service key、MCP授权均不注入任务环境。命令、文件、工具结果和技能说明是数据，不授予第三方写入权限。邮件发送、日历/Notion/Todoist操作仍生成固定候选，用户确认后由独立服务端幂等执行。测试未对第三方实际写入或发送邮件。
+
+文件元数据检查与监督进程也属于控制面：它们用root受信shell和绝对系统解释器`/usr/bin/python3 -I`启动，避免在任务网络命名空间外加载用户可写的Python启动模块或shell profile。真实回归在新沙箱里放置用户启动文件，再检查读/写/列目录与后续命令；未执行任务外启动代码，路径越界被拒绝，实例关闭。HTTP命令/技能JSON在读取过程中按实际字节限制，超限即取消流，不能在完整分配`request.text()`之后才拒绝。
 
 ## 能力与资源边界
 
@@ -47,9 +49,9 @@ Supabase继续承担 PostgreSQL状态、权限、预算与私有产物存储。�
 
 两份用户 My-Skills包的脚本、模板、引用全部保留，额外提供本平台的能力适配说明，并按逐文件SHA256固定完整性。没有复制不可再分发的 Codex专有 companion材料。安装记录是账号服务端记录；开启会话时才把完整包放进不可写的 `/opt/studysolo/skills`，输出写到用户工作区。仅导入 SKILL.md不冒充脚本依赖已经安装。
 
-阿里云 MicroVM模板 `studysolo-skills-v2-20261004` 的构建已失败，尚未获得可运行的完整渲染环境。E2B 2.31的 Template.build 默认代际不接受 startCmd；直接控制台二代构建也未通过。因此保持 CLOUD_SANDBOX_SKILLS_VERSION/TEMPLATE为空，市场隐藏两项云技能。`scripts/sandbox/prepare-template.ts`、固定依赖安装脚本、Dockerfile和手动触发的镜像构建流程已准备；预装镜像需通过真实CLI/中文字体/HTML→PDF/DOCX→PDF/页面检查后才能启用。
+较早的阿里云 MicroVM模板 `studysolo-skills-v2-20261004` 构建失败：E2B 2.31的 Template.build 默认代际不接受 startCmd，控制台二代构建也未通过。当时曾保持Skills门禁为空。后来改用已经验收的预装OCI镜像，成功结果见本节最后的最新记录，不能继续把此前失败当作当前状态。
 
-GB原始包要求按文稿类型选标准、选择工具链、Word/WPS最终验收与逐页视觉检查。云端可提供 LibreOffice转换和结构/PDF检查；要求Word/WPS时仍需对应应用验收，不能承诺自动国标认证。当前未宣称两份技能已经能完成真实文档交付。
+GB原始包要求按文稿类型选标准、选择工具链、Word/WPS最终验收与逐页视觉检查。云端已实际提供LibreOffice转换和结构/PDF检查；要求Word/WPS时仍需对应应用验收，不能承诺自动国标认证。合成文稿的可运行验收不替代用户具体文稿的排版、引用和权利核对。
 
 镜像准备流程限制 Docker 上下文，只传依赖脚本与技能资源，不发送本机环境、日志、源码归档或账号数据。构建后用普通UID10001、无网络、无额外capabilities运行合成中文文稿的HTML→PDF、DOCX→PDF、A4/全文预检与页面渲染；这些检查和云端namespace验收各自必要，不能相互替代。合成PDF与PNG作为构建证据保留。
 
@@ -61,11 +63,15 @@ GitHub仓库公开不等于容器镜像自动公开：[官方Container registry�
 
 从公开OCI镜像提交的一代模板 `studysolo-skills-oci-728b17fb` 构建返回“registry credentials are required”；[阿里云镜像模板文档](https://help.aliyun.com/zh/agent-sandbox/build-a-custom-image-template)说明非官方源默认需注入依赖并推送目标镜像，不能把公开源等同于无需构建凭据。GitHub最小package长期凭据准备页需要用户个人Passkey，未绕过验证。
 
-准备另一条不依赖个人长期registry凭据的构建路径：`.github/workflows/sandbox-template.yml`使用本仓库构建任务的临时`GITHUB_TOKEN`向阿里云提交镜像拉取/推送权限，任务结束后失效。该任务只能选固定StudySolo仓库的精确digest，提交一次，九分钟等待边界；失败或创建结果不确定时必须先核对Team再重跑，不盲目重复创建。只导出模板引用，不导出供应商错误正文、构建日志或凭据。新构建环境`studysolo-sandbox-build`仅允许本轮工作分支和master，环境级加密Secret名为`STUDYSOLO_SANDBOX_BUILD_API_KEY`，复用原服务端阿里云密钥；没有改变原密钥及永不过期设置。该操作没有修改Windows全局环境或生产服务进程。新workflow必须合入默认分支后才可首次派发；本报告记录时尚未成功创建完整云模板，Skills门禁仍为空。没有将个人广泛repo token发给阿里云，也没有将registry凭据注入用户命令环境。
+最终采用不依赖个人长期registry凭据的构建路径：`.github/workflows/sandbox-template.yml`使用本仓库构建任务的临时`GITHUB_TOKEN`向阿里云提交镜像拉取/推送权限，任务结束后失效。该任务只能选固定StudySolo仓库的精确digest，提交一次，九分钟等待边界；失败或创建结果不确定时必须先核对Team再重跑，不盲目重复创建。只导出模板引用，不导出供应商错误正文、构建日志或凭据。新构建环境`studysolo-sandbox-build`仅允许本轮工作分支和master，环境级加密Secret名为`STUDYSOLO_SANDBOX_BUILD_API_KEY`，复用原服务端阿里云密钥；没有改变原密钥及永不过期设置。该操作没有修改Windows全局环境或生产服务进程。workflow先合入默认分支，再首次派发并获得以下实际结果。没有将个人广泛repo token发给阿里云，也没有将registry凭据注入用户命令环境。
+
+最新实际结果：默认分支工作流37156486665成功，模板`studysolo-skills-oci-10d47cda032a`返回ready。该模板已通过7项真实隔离检查；完整两包实际安装后，在用户namespace里执行原包脚本，生成中文HTML/PDF、DOCX/PDF及两份PDF的实际页面PNG，结构预检PASS，主智能体查看了真实图片，未发现缺字/明显截断。实例均已关闭。开发Account随后通过真实项目安装API保存9/17文件两包，并通过GET读回确认。故本机开发Skills门禁现已开放；生产总开关仍关闭。
 
 ## 环境与客户端
 
 本机 `.env.local`启用基础开发运行；本机 `.env.production`仅准备配置、仍关闭。新增/管理的名称为 CLOUD_SANDBOX_ENABLED、REGION、DOMAIN、API_URL、API_KEY、TEMPLATE、APP_ORIGIN、ENCRYPTION_KEY、MONTHLY_BUDGET_CNY、RUN_BUDGET_CNY、BUDGET_RUN_ID、FIXED_COST_CNY、SKILLS_VERSION、SKILLS_TEMPLATE（均带 CLOUD_SANDBOX_前缀）。没有更新 Windows全局环境或远端进程环境，未在报告里记录任何值。
+
+真实OCI验收后，仅将本项目两个env文件中的`CLOUD_SANDBOX_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_VERSION`更新为已验收组合。无关变量逐项保持，旧文件留在受限备份目录；原API key及加密key没有旋转，生产开关保持false。GitHub构建环境Secret是另一受限服务端配置，不是Windows全局变量或EXE内置凭据。
 
 Electron本机服务不会携带操作者密钥。主 Agent请求、命令、产物、Skills及连接操作通过固定受信线上服务处理，仅传当前用户Account authority；用户已选择的BYOK参数保留，桌面配置的用户模型转为同等自备配置。回环/私网自定义模型地址不转发到云端。授权回调在正式网站完成，避免把共享OAuth应用secret塞进EXE。其他模式的常规请求保留既有路径。
 

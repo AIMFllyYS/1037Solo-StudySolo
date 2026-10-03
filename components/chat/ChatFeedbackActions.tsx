@@ -106,6 +106,9 @@ export default function ChatFeedbackActions({
   useEffect(() => {
     if (!dialog) return;
     const frame = window.requestAnimationFrame(() => {
+      // A user may begin typing before this deferred autofocus runs. Never
+      // steal focus from a field they have already chosen inside the dialog.
+      if (dialogRootRef.current?.contains(document.activeElement)) return;
       const target = dialog.kind === "report"
         ? reportReasonRef.current
         : dialog.stale ? staleCloseRef.current : voteExcerptRef.current;

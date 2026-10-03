@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ChatFeedbackActions from "./ChatFeedbackActions";
 
@@ -12,6 +12,23 @@ const failed = (code: string) => ({ ok: false, json: async () => ({ code }) });
 afterEach(() => vi.unstubAllGlobals());
 
 describe("ChatFeedbackActions", () => {
+  it("deferred autofocus cannot steal a field after the user starts typing", async () => {
+    const user = userEvent.setup();
+    const frames: FrameRequestCallback[] = [];
+    vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => { frames.push(callback); return frames.length; });
+    vi.stubGlobal("cancelAnimationFrame", vi.fn());
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(success("like")));
+    render(<ChatFeedbackActions sessionId="session-focus" messageId="message-focus" answerText="Public synthetic response" />);
+    await user.click(screen.getByTestId("chat-feedback-like"));
+    await screen.findByRole("dialog", { name: "补充回答反馈" });
+    const textarea = screen.getByTestId("chat-feedback-textarea");
+    await user.type(textarea, "已经开始输入");
+    act(() => { for (const callback of frames.splice(0)) callback(0); });
+    expect(textarea).toHaveFocus();
+    await user.type(textarea, "，不能抢走焦点。");
+    expect(textarea).toHaveValue("已经开始输入，不能抢走焦点。");
+  });
+
   it("records a vote before opening the optional excerpt dialog and sends the excerpt only after opt-in", async () => {
     const user = userEvent.setup();
     let resolveVote: ((result: ReturnType<typeof success>) => void) | undefined;
