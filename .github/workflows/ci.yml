@@ -72,6 +72,9 @@ jobs:
       - name: Unit tests (code, node:test)
         run: pnpm test:unit
 
+      - name: Web archive security and identity tests
+        run: python3 -m unittest discover -s scripts/deploy -p 'test_*.py'
+
       - name: Content tests (node:test)
         run: pnpm test:content
 

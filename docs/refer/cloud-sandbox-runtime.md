@@ -8,7 +8,7 @@
 |---|---|---|
 | 独立 Agent 通用命令 | 真实 Account → 项目接口 → 阿里云创建、文件、执行、轮询、产物鉴权下载、关闭通过 | 远端部署和费用账单核对 |
 | 执行隔离 | 宿主普通 UID10001映射、控制文件拒绝、root信号拒绝、本机控制API隔离、取消/超时/日志限制/后台进程清理/越界文件拒绝通过 | 持续供应商安全更新、生产实例验收 |
-| Agent 模型调用 | 真实 GLM 模型通过原生学习连接器查询 PubMed，并 open→exec→poll(exit0)→close，最终回答通过 | 新生产环境完整验收 |
+| Agent 模型调用 | 真实 GLM 通过PubMed+通用CLI循环；另以选中Notes技能实际load→open→原脚本render→publish→鉴权PDF下载→close，一页A4和完整原文核对通过 | 新生产环境完整验收 |
 | 原生连接器 | Notion、Todoist、GitHub、Google、Zotero、PubMed、Crossref 的开发账号真实读取通过 | 正式回调登记、多用户授权、Google Testing/验证边界、生产配置 |
 | Skills 完整包 | Notes to Handbook 9 文件、GB 文档包17文件；真实OCI模板7项隔离、namespace内中文HTML/PDF、DOCX/PDF预检及页面渲染通过，父已查看实际PNG；开发Account真实安装和读回两包通过 | 生产配置/部署和正式用户安装；每篇文稿仍需自身视觉与标准验收 |
 | Electron 接入 | 固定线上 Agent 转发、用户 Account/BYOK保留、操作者凭证剥离代码和协议测试通过 | 真正打包、线上和安装包验收 |
@@ -67,6 +67,8 @@ GitHub仓库公开不等于容器镜像自动公开：[官方Container registry�
 
 最新实际结果：默认分支工作流37156486665成功，模板`studysolo-skills-oci-10d47cda032a`返回ready。该模板已通过7项真实隔离检查；完整两包实际安装后，在用户namespace里执行原包脚本，生成中文HTML/PDF、DOCX/PDF及两份PDF的实际页面PNG，结构预检PASS，主智能体查看了真实图片，未发现缺字/明显截断。实例均已关闭。开发Account随后通过真实项目安装API保存9/17文件两包，并通过GET读回确认。故本机开发Skills门禁现已开放；生产总开关仍关闭。
 
+模型实际调用也已完成：使用输入框“选中技能”的相同引用协议，真实GLM调用useSkill、云沙箱open/exec/poll/write、原包render_pdf.js、publish和close；下载再次通过Account验证。按toolCallId与commandId配对确认渲染退出码0，下载内容是真实PDF。文稿为公开合成三段文本，一页A4，预检在NFKC归一化后确认标题与全部正文（PDF字体映射含康熙部首兼容码位）；主智能体查看实际页面无缺字/明显截断。较早只返回计划的一轮和达到12步上限未发布的一轮均未计为成功；完整执行使用现有20步设置，没有提高运营金额或资源上限。
+
 ## 环境与客户端
 
 本机 `.env.local`启用基础开发运行；本机 `.env.production`仅准备配置、仍关闭。新增/管理的名称为 CLOUD_SANDBOX_ENABLED、REGION、DOMAIN、API_URL、API_KEY、TEMPLATE、APP_ORIGIN、ENCRYPTION_KEY、MONTHLY_BUDGET_CNY、RUN_BUDGET_CNY、BUDGET_RUN_ID、FIXED_COST_CNY、SKILLS_VERSION、SKILLS_TEMPLATE（均带 CLOUD_SANDBOX_前缀）。没有更新 Windows全局环境或远端进程环境，未在报告里记录任何值。
@@ -75,4 +77,4 @@ GitHub仓库公开不等于容器镜像自动公开：[官方Container registry�
 
 Electron本机服务不会携带操作者密钥。主 Agent请求、命令、产物、Skills及连接操作通过固定受信线上服务处理，仅传当前用户Account authority；用户已选择的BYOK参数保留，桌面配置的用户模型转为同等自备配置。回环/私网自定义模型地址不转发到云端。授权回调在正式网站完成，避免把共享OAuth应用secret塞进EXE。其他模式的常规请求保留既有路径。
 
-发布前仍需完成原生服务正式回调、生产secret注入、真实渲染镜像、完整质量门禁、跨仓提交/依赖固定、部署与各客户端实际下载验收。不能把本机配置、真实开发调用或准备好的代码说成已上线。
+发布前仍需完成原生服务正式回调、生产secret注入、最终版本的完整质量门禁、跨仓提交/依赖固定、部署与各客户端实际下载验收。真实渲染镜像、云模板和开发账号的模型调用已完成上述验收。不能把本机配置、真实开发调用或准备好的代码说成已上线。
