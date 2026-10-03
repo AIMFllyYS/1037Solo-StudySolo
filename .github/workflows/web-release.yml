@@ -1,0 +1,48 @@
+name: Prepare standalone Web release
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: studysolo-web-release-build
+  cancel-in-progress: false
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build-index --bm25-only
+      - run: pnpm typecheck
+      - run: pnpm lint:secrets
+      - name: Build clean production Web runtime
+        env:
+          STUDYSOLO_WEB_STANDALONE: '1'
+          NEXT_TELEMETRY_DISABLED: '1'
+          NEXT_PUBLIC_APP_URL: https://studysolo.1037solo.com
+          CLOUD_SANDBOX_ENABLED: 'false'
+          CONNECTORS_PRODUCTION_ENABLED: 'false'
+        run: pnpm build
+      - name: Package only the traced runtime and public assets
+        env:
+          STUDYSOLO_RELEASE_OUTPUT: ${{ runner.temp }}/web-release
+        run: |
+          mkdir -p "$STUDYSOLO_RELEASE_OUTPUT"
+          node scripts/deploy/pack-web-release.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: studysolo-web-release-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/web-release/*.tar.gz
+            ${{ runner.temp }}/web-release/*.sha256
+            ${{ runner.temp }}/web-release/release-reference.json
+          if-no-files-found: error
+          retention-days: 14

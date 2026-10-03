@@ -18,6 +18,11 @@ const nextConfig = {
   ...(process.env.BUILD_STANDALONE === "1"
     ? { output: "standalone", images: { unoptimized: true } }
     : {}),
+  // Server release bundles use Next's normal Web image handling. They never
+  // enable the Electron execution bridge or package operator configuration.
+  ...(process.env.STUDYSOLO_WEB_STANDALONE === "1"
+    ? { output: "standalone" }
+    : {}),
   // Runtime assets are explicit: dynamic fs paths carry turbopackIgnore and
   // no longer cause NFT to pull the checkout root (including .env/old EXEs).
   outputFileTracingIncludes: {

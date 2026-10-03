@@ -10,7 +10,7 @@
 | 执行隔离 | 宿主普通 UID10001映射、控制文件拒绝、root信号拒绝、本机控制API隔离、取消/超时/日志限制/后台进程清理/越界文件拒绝通过 | 持续供应商安全更新、生产实例验收 |
 | Agent 模型调用 | 真实 GLM 模型通过原生学习连接器查询 PubMed，并 open→exec→poll(exit0)→close，最终回答通过 | 新生产环境完整验收 |
 | 原生连接器 | Notion、Todoist、GitHub、Google、Zotero、PubMed、Crossref 的开发账号真实读取通过 | 正式回调登记、多用户授权、Google Testing/验证边界、生产配置 |
-| Skills 完整包 | Notes to Handbook 9 文件、GB 文档包17文件、完整性检查、账号安装记录、服务端加载与部署门禁已实现 | 预装 Chromium/LibreOffice 的环境和真实文档渲染 |
+| Skills 完整包 | Notes to Handbook 9 文件、GB 文档包17文件、完整性检查、安装记录；预装镜像的中文HTML/PDF、DOCX转换、页面渲染和父视觉检查通过 | 阿里云模板要求registry凭据；真实namespace环境验收及安装门禁仍未开放 |
 | Electron 接入 | 固定线上 Agent 转发、用户 Account/BYOK保留、操作者凭证剥离代码和协议测试通过 | 真正打包、线上和安装包验收 |
 
 上述连接器通过网站服务端调用获授权的 HTTP/MCP 接口；云沙箱承担命令与文件生成，Agent 将两条能力串联。微软按用户要求暂不处理。市场仅列已实现服务，原来的通用 stdio/CLI 配置项已移出公开目录。
@@ -54,6 +54,14 @@ GB原始包要求按文稿类型选标准、选择工具链、Word/WPS最终验�
 镜像准备流程限制 Docker 上下文，只传依赖脚本与技能资源，不发送本机环境、日志、源码归档或账号数据。构建后用普通UID10001、无网络、无额外capabilities运行合成中文文稿的HTML→PDF、DOCX→PDF、A4/全文预检与页面渲染；这些检查和云端namespace验收各自必要，不能相互替代。合成PDF与PNG作为构建证据保留。
 
 GitHub仓库公开不等于容器镜像自动公开：[官方Container registry说明](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)指出首次发布默认private。完成镜像构建后仍须核对可见性与阿里云的实际拉取能力；不能把GITHUB_TOKEN放进运行模板。镜像只含已批准公开的运行依赖和技能文件；若使用公开拉取，先核对无秘密与许可证，再处理镜像可见性。
+
+后续实际验证：镜像 `ghcr.io/aimfllyys/studysolo-skills:728b17fb62d307c500a1006a2b19ae684c2f50a9` 已构建并发布，digest `sha256:10d47cda032a1543deb7bfa2ef8e9d6e3d0f37320e3e84be390dc5cc546a477a`。GitHub页面实际显示Public。以该digest重新运行的验证流程37151028376成功，合成中文HTML/PDF与DOCX/PDF均通过结构、空白页和页面渲染检查，主智能体已查看两张实际页面PNG，文字无缺字/明显截断。
+
+首次构建捕获了跨目录Python symlink绕过venv配置的问题，已改为解释器wrapper。另一处证据上传错误由Office profile权限引起，现只导出合成文档/JSON/PNG，不上传应用私有profile。此前失败不冒充成功。
+
+从公开OCI镜像提交的一代模板 `studysolo-skills-oci-728b17fb` 构建返回“registry credentials are required”；[阿里云镜像模板文档](https://help.aliyun.com/zh/agent-sandbox/build-a-custom-image-template)说明非官方源默认需注入依赖并推送目标镜像，不能把公开源等同于无需构建凭据。GitHub最小package长期凭据准备页需要用户个人Passkey，未绕过验证。
+
+准备另一条不依赖个人长期registry凭据的构建路径：`.github/workflows/sandbox-template.yml`使用本仓库构建任务的临时`GITHUB_TOKEN`向阿里云提交镜像拉取/推送权限，任务结束后失效。该任务只能选固定StudySolo仓库的精确digest，提交一次，九分钟等待边界；失败或创建结果不确定时必须先核对Team再重跑，不盲目重复创建。只导出模板引用，不导出供应商错误正文、构建日志或凭据。新构建环境`studysolo-sandbox-build`仅允许本轮工作分支和master，环境级加密Secret名为`STUDYSOLO_SANDBOX_BUILD_API_KEY`，复用原服务端阿里云密钥；没有改变原密钥及永不过期设置。该操作没有修改Windows全局环境或生产服务进程。新workflow必须合入默认分支后才可首次派发；本报告记录时尚未成功创建完整云模板，Skills门禁仍为空。没有将个人广泛repo token发给阿里云，也没有将registry凭据注入用户命令环境。
 
 ## 环境与客户端
 
