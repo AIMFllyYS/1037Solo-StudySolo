@@ -37,6 +37,8 @@ describe("tool registry", () => {
 
   it("lists the result cards in current chat order", () => {
     expect(TOOL_RESULT_CARDS.map((c) => c.name)).toEqual([
+      "learningConnectors",
+      "kitSolo",
       "searchNotes",
       "webSearch",
       "renderInteractive",
