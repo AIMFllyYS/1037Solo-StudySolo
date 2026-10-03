@@ -1,0 +1,21 @@
+# StudySolo 网站发布准备
+
+2026-10-04 实查：`studysolo.1037solo.com` 经代理 VPS 的专属 Nginx 站点转发到本机 `41349`，此端口属于来自执行盒子的反向 SSH 隧道，盒子再提供 Next `35349`。代理 VPS 不是已经确认的应用源；合并 GitHub 主分支不会自动改变盒子中的运行版本。现有转发保留，未更改隧道、Nginx、VPN 或其他站点。
+
+StudySolo 独立于 RootSolo 的八仓库发布列车。Landing 后台仍需和 Account、Platform、StudyFlow、ChatSolo、KitSolo、Docs、Shared 一起以现行 SOP 的固定提交发布；不能只替换 Landing 服务或把其他仓库的未验收改动带入该发布。
+
+## 可复现服务器归档
+
+`.github/workflows/web-release.yml` 是手动触发的干净 Linux 构建，不注入生产密钥，不启动服务。它先生成无外部模型调用的 BM25 索引，再通过类型、凭证扫描和项目既有 prebuild 闸门构建。`STUDYSOLO_WEB_STANDALONE=1` 仅打开 Web standalone 输出，保留 Web 正常图片处理，不打开 Electron 执行转发。
+
+`scripts/deploy/pack-web-release.mjs` 把已追踪的运行依赖、静态产物和公开资源装入以完整 commit 命名的独立归档。它拒绝环境文件、原始导入资料、私密归档、Git 目录、特殊文件和越界符号链接；核对搜索 worker、内容索引、完整技能 catalog 等实际运行资源。归档附 SHA256、版本和 Next BUILD_ID，不凭分支名猜版本。
+
+生产配置仍由操作者通过受限服务端文件注入；不放进 GitHub 构建产物。阿里云、连接器、Account 与存储配置须使用当前正式 profile，开发授权记录不能冒充正式用户授权。Cloud/Skills 及连接器生产门禁只有在各自实际验收通过后才启用。
+
+## 部署与验收边界
+
+真正部署前，必须实时确认目标主机、项目目录、空闲回环端口、磁盘、内存、守护方式和旧版本回退点。先把确切 SHA 的归档部署为独立预检实例，再检查真实登录、Agent 命令与产物、MCP 回调、Review 恢复、JS/CSS MIME、图片、内容检索和移动布局；通过后才切换正式专属站点。不能用停止未知进程、改 VPN 或重启整机代替发布。
+
+发布后可通过 `/studysolo-release.json` 核对实际站点返回的 commit、version 和 BUILD_ID；这些字段没有用户或运营者配置。旧站点缺少该文件时不能据此声称已运行新版本。
+
+本记录时只有打包代码、合成归档与环境文件拒绝检查通过，真实干净服务器归档、预检实例、正式切换和浏览器多用户验收仍待完成。桌面安装包和手机壳另有发布流程，不能把网站归档当作 EXE/APK。

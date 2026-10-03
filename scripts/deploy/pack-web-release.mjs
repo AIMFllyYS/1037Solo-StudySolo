@@ -52,6 +52,12 @@ for (const path of ["server.js", ".next/BUILD_ID", "node_modules/next/package.js
 const packageInfo = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
 const metadata = { schemaVersion: 1, product: "StudySolo", target: "linux-amd64-web", commit, version: packageInfo.version, buildId: (await readFile(join(stage, ".next/BUILD_ID"), "utf8")).trim(), files, bytes, operatorEnvironmentIncluded: false, serviceStarted: false };
 await writeFile(join(stage, "studysolo-release.json"), JSON.stringify(metadata, null, 2));
+// Public deployment identity makes the actually served build verifiable without
+// revealing operator configuration, filesystem paths, or provider credentials.
+await writeFile(join(stage, "public/studysolo-release.json"), JSON.stringify({
+  schemaVersion: 1, product: metadata.product, target: metadata.target,
+  commit, version: metadata.version, buildId: metadata.buildId,
+}, null, 2));
 const archive = join(output, `studysolo-web-${commit}.tar.gz`);
 execFileSync("tar", ["-czf", archive, "-C", stage, "."], { stdio: ["ignore", "ignore", "pipe"] });
 const digest = createHash("sha256");
