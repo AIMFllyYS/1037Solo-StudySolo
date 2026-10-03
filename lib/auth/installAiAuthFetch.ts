@@ -1,6 +1,7 @@
 import { isPaidAiApiPath, normalizeApiPathname } from "./paidAiRoutes.ts";
 
 const ACCOUNT_PATHS = new Set(['/api/quota', '/api/usage', '/api/redeem', '/api/profile']);
+const REVIEW_PROGRESS_PATH = '/api/review/progress';
 
 /** Never attach our session token to third-party APIs, even when their path matches ours. */
 export function isAuthenticatedAppUrl(input: RequestInfo | URL, origin: string): boolean {
@@ -8,7 +9,7 @@ export function isAuthenticatedAppUrl(input: RequestInfo | URL, origin: string):
   try {
     const url = new URL(raw, origin);
     return url.origin === new URL(origin).origin
-      && (isPaidAiApiPath(url.pathname) || url.pathname.startsWith('/api/agent/sandbox/') || normalizeApiPathname(url.pathname) === '/api/agent/skills' || normalizeApiPathname(url.pathname) === '/api/feedback/chat' || ACCOUNT_PATHS.has(normalizeApiPathname(url.pathname)));
+      && (isPaidAiApiPath(url.pathname) || url.pathname.startsWith('/api/agent/sandbox/') || normalizeApiPathname(url.pathname) === '/api/agent/skills' || normalizeApiPathname(url.pathname) === '/api/feedback/chat' || normalizeApiPathname(url.pathname) === REVIEW_PROGRESS_PATH || ACCOUNT_PATHS.has(normalizeApiPathname(url.pathname)));
   } catch { return false; }
 }
 

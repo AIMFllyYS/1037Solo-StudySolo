@@ -33,6 +33,10 @@ export const PERSIST_KEYS = {
   noteChangeProposals: "note-change-proposals",
   /** Agent 定时任务定义与运行历史（不上云）。 */
   scheduledTasks: "scheduled-tasks",
+  /** Review 每次答题的答案、逐题结果与可恢复状态。 */
+  reviewQuizAttempts: "review-quiz-attempts",
+  /** Review 不可变题组快照（同题组多次作答只存一份）。 */
+  reviewQuizSets: "review-quiz-sets",
 } as const;
 
 export const CHAT_SESSION_KEY_PREFIX = "chat-session:";

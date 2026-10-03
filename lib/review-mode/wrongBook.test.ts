@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { buildReinforcePrompt, describeCorrect, readWrongBook, recordWrongQuestions, sourceHref } from "./wrongBook.ts";
+import { buildReinforcePrompt, describeCorrect, readWrongBook, recordQuestionOutcomes, recordWrongQuestions, sourceHref } from "./wrongBook.ts";
 import type { QuizQuestion } from "../quiz/types.ts";
 
 function memory() {
@@ -48,4 +48,24 @@ test("reinforce prompt is grounded on real wrong questions", () => {
   assert.ok(prompt && prompt.includes("【课堂 · 导数】可导与连续的关系？"));
   assert.ok(prompt.includes("正确答案：A. 甲"));
   assert.equal(buildReinforcePrompt([]), null);
+});
+
+test("stable question outcome keeps historical misses, dedupes one attempt, and tracks a later correct answer", () => {
+  const s = memory();
+  const src = { subjectId: "chemistry", chapterId: "ch01", categoryId: "detail", label: "化学 · 氧化还原", quizId: "quiz-1" };
+  const item = q("氧化数升高表示？", 1);
+  recordQuestionOutcomes([{ question: item, correct: false, answer: 0 }], src, "a".repeat(64), "attempt-a", new Date("2026-10-01T00:00:00Z"), s, "owner");
+  recordQuestionOutcomes([{ question: item, correct: false, answer: 0 }], src, "a".repeat(64), "attempt-a", new Date("2026-10-01T01:00:00Z"), s, "owner");
+  let entry = readWrongBook(s, "owner")[0];
+  assert.equal(entry.misses, 1);
+  assert.equal(entry.lastWrongAnswer, 0);
+  recordQuestionOutcomes([{ question: item, correct: true, answer: 1 }], { ...src, attemptId: "attempt-b" }, "a".repeat(64), "attempt-b", new Date("2026-10-02T00:00:00Z"), s, "owner");
+  entry = readWrongBook(s, "owner")[0];
+  assert.equal(entry.latestCorrect, true);
+  assert.equal(entry.misses, 1, "a later success keeps the historical miss but is no longer a current weak point");
+  assert.equal(buildReinforcePrompt([entry]), null);
+  recordQuestionOutcomes([{ question: item, correct: false, answer: 0 }], src, "a".repeat(64), "attempt-c", new Date("2026-10-03T00:00:00Z"), s, "owner");
+  entry = readWrongBook(s, "owner")[0];
+  assert.equal(entry.latestCorrect, false);
+  assert.equal(entry.misses, 2);
 });

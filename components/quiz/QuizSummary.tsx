@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { RotateCcw, ArrowLeft, Trophy, Check } from "lucide-react";
 import { useQuizStore, computeBreakdown } from "@/lib/quiz-store";
-import { getChapterProgress } from "@/lib/quiz-progress";
+import { getChapterProgress, objectiveBestOf } from "@/lib/quiz-progress";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 import { useT, type Translate } from "@/lib/i18n";
 
@@ -102,12 +102,15 @@ export default function QuizSummary() {
   const backToScoring = useQuizStore((s) => s.backToScoring);
   const subjectId = useQuizStore((s) => s.subjectId);
   const chapterId = useQuizStore((s) => s.chapterId);
+  const categoryId = useQuizStore((s) => s.categoryId);
+  const reviewAttempt = useQuizStore((s) => s.reviewAttempt);
   const breakdown = computeBreakdown(results);
   const grade = gradeOf(breakdown.percent, t);
 
   // finishScoring 已把成绩写入 localStorage；mounted 后读回展示「已保存 + 历史最佳」。
   const mounted = useIsClient();
-  const best = mounted ? getChapterProgress(subjectId, chapterId)?.best ?? null : null;
+  const progress = mounted ? getChapterProgress(subjectId, chapterId, categoryId) : null;
+  const best = progress ? objectiveBestOf(progress) : null;
 
   return (
     <div className="mx-auto w-full max-w-3xl px-8 py-10">
@@ -124,6 +127,11 @@ export default function QuizSummary() {
       >
         <Check size={15} />
         {t("window.quiz.summary.savedLocally")}
+        {reviewAttempt && (
+          <span style={{ color: "var(--md-sys-color-on-surface-variant)", fontWeight: 500 }}>
+            {t(`window.quiz.summary.sync.${reviewAttempt.syncState}`)}
+          </span>
+        )}
         {best !== null && (
           <span style={{ color: "var(--md-sys-color-on-surface-variant)", fontWeight: 500 }}>
             {t("window.quiz.summary.bestPrefix")}{best}{t("window.quiz.summary.bestSuffix")}

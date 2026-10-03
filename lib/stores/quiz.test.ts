@@ -15,7 +15,7 @@ function makeQuestion(id: string, points: number): QuizQuestion {
   } as QuizQuestion;
 }
 
-function makeState(results: { awarded: number; max: number; correct: boolean; objective: boolean; q: QuizQuestion }[], hintsUsed: string[] = []): QuizState {
+function makeState(results: { awarded: number; max: number; correct: boolean; objective: boolean; selfScored?: boolean; q: QuizQuestion }[], hintsUsed: string[] = []): QuizState {
   return {
     status: "ready",
     data: null,
@@ -34,6 +34,7 @@ function makeState(results: { awarded: number; max: number; correct: boolean; ob
       max: r.max,
       correct: r.correct,
       objective: r.objective,
+      selfScored: r.selfScored ?? !r.objective,
     })),
     load: async () => {},
     reset: () => {},
@@ -50,12 +51,13 @@ function makeState(results: { awarded: number; max: number; correct: boolean; ob
   } as unknown as QuizState;
 }
 
-test("buildAttempt：空 results 返回零分", () => {
+test("buildAttempt：空 results 没有可计算的百分比", () => {
   const state = makeState([]);
   const attempt = buildAttempt(state, "submitted");
   assert.equal(attempt.earned, 0);
   assert.equal(attempt.max, 0);
-  assert.equal(attempt.percent, 0);
+  assert.equal(attempt.percent, null);
+  assert.equal(attempt.objectiveAccuracy, null);
   assert.equal(attempt.hintsUsed, 0);
   assert.deepEqual(attempt.perQuestion, []);
 });
@@ -81,6 +83,23 @@ test("buildAttempt：多题聚合分", () => {
   assert.equal(attempt.max, 30);
   // 23/30 = 0.7666... → round(76.66... * 10) / 10 = 76.7
   assert.equal(attempt.percent, 76.7);
+  assert.equal(attempt.objectiveCount, 1);
+  assert.equal(attempt.objectiveAccuracy, 0);
+  assert.equal(attempt.scoredCount, 2);
+});
+
+test("buildAttempt：未自评的主观题不计总分或客观掌握度", () => {
+  const state = makeState([
+    { awarded: 10, max: 10, correct: true, objective: true, q: makeQuestion("q1", 10) },
+    { awarded: 0, max: 20, correct: false, objective: false, selfScored: false, q: makeQuestion("q2", 20) },
+  ]);
+  const attempt = buildAttempt(state, "submitted");
+  assert.equal(attempt.earned, 10);
+  assert.equal(attempt.max, 10);
+  assert.equal(attempt.percent, 100);
+  assert.equal(attempt.objectiveAccuracy, 100);
+  assert.equal(attempt.scoredCount, 1);
+  assert.equal(attempt.perQuestion?.[1].correct, null);
 });
 
 test("buildAttempt：hintsUsed 计数", () => {

@@ -13,10 +13,18 @@ import {
   saveSession,
   getSession,
   clearSession,
+  getLegacyLocalProgress,
+  beginLegacyImport,
+  completeLegacyImport,
+  importLegacyProgressLocally,
+  getLegacyImportState,
+  getOwnerLegacyImportedProgress,
+  saveOwnerLegacyImportedSummary,
   type ProgressEntry,
   type QuizAttempt,
   type QuizSession,
 } from "./quiz-progress.ts";
+import { activateStorageOwner } from "./storage/ownerScope.ts";
 
 // ── 纯函数（不依赖 localStorage）──────────────────────────────
 
@@ -81,12 +89,12 @@ test("getGlobalSummary：多章聚合", () => {
     {
       subjectId: "physics",
       chapterId: "ch01",
-      progress: { best: 90, last: makeAttempt(90), attempts: 2 },
+      progress: { best: 90, objectiveBest: 90, objectiveAttempts: 2, last: makeAttempt(90), attempts: 2 },
     },
     {
       subjectId: "physics",
       chapterId: "ch02",
-      progress: { best: 70, last: makeAttempt(70), attempts: 1 },
+      progress: { best: 70, objectiveBest: 70, objectiveAttempts: 1, last: makeAttempt(70), attempts: 1 },
     },
   ];
   const summary = getGlobalSummary(entries);
@@ -101,17 +109,17 @@ test("getGlobalSummary：avgBest 保留一位小数", () => {
     {
       subjectId: "a",
       chapterId: "ch01",
-      progress: { best: 85, last: makeAttempt(85), attempts: 1 },
+      progress: { best: 85, objectiveBest: 85, objectiveAttempts: 1, last: makeAttempt(85), attempts: 1 },
     },
     {
       subjectId: "a",
       chapterId: "ch02",
-      progress: { best: 72, last: makeAttempt(72), attempts: 1 },
+      progress: { best: 72, objectiveBest: 72, objectiveAttempts: 1, last: makeAttempt(72), attempts: 1 },
     },
     {
       subjectId: "a",
       chapterId: "ch03",
-      progress: { best: 90, last: makeAttempt(90), attempts: 1 },
+      progress: { best: 90, objectiveBest: 90, objectiveAttempts: 1, last: makeAttempt(90), attempts: 1 },
     },
   ];
   // (85+72+90)/3 = 82.333... → 82.3
@@ -127,6 +135,11 @@ function makeAttempt(percent: number, stage: "submitted" | "final" = "final"): Q
     percent,
     completedAt: "2025-01-01T00:00:00Z",
     stage,
+    attemptId: `attempt-${percent}-${stage}`,
+    objectiveCount: 1,
+    correctCount: percent === 100 ? 1 : 0,
+    objectiveAccuracy: percent,
+    perQuestion: [{ id: "q1", awarded: percent, max: 100, correct: percent === 100 }],
   };
 }
 
@@ -144,10 +157,11 @@ function setupLocalStorage() {
   } as Storage;
   (globalThis as unknown as { localStorage: Storage }).localStorage = ls;
   // quiz-progress 用 typeof window === "undefined" 做 SSR 守卫，需同时 mock window
-  (globalThis as unknown as { window: unknown }).window = {};
+  (globalThis as unknown as { window: unknown }).window = new EventTarget();
 }
 
 function teardownLocalStorage() {
+  activateStorageOwner(null);
   delete (globalThis as unknown as { localStorage?: Storage }).localStorage;
   delete (globalThis as unknown as { window?: unknown }).window;
 }
@@ -189,6 +203,64 @@ test("saveAttempt：submitted 阶段不增加 attempts", () => {
     saveAttempt("physics", "ch01", makeAttempt(60, "submitted"));
     const progress = getChapterProgress("physics", "ch01");
     assert.equal(progress!.attempts, 0);
+  } finally {
+    teardownLocalStorage();
+  }
+});
+
+test("repeated final stage for the same attempt is idempotent", () => {
+  setupLocalStorage();
+  try {
+    const attempt = makeAttempt(80);
+    saveAttempt("physics", "ch01", attempt);
+    saveAttempt("physics", "ch01", attempt);
+    assert.equal(getChapterProgress("physics", "ch01")?.attempts, 1);
+    assert.equal(getChapterProgress("physics", "ch01")?.objectiveAttempts, 1);
+  } finally {
+    teardownLocalStorage();
+  }
+});
+
+test("owner progress is scoped; legacy v1 scores stay local until explicitly imported", () => {
+  setupLocalStorage();
+  try {
+    saveAttempt("physics", "ch01", makeAttempt(70));
+    assert.equal(getLegacyLocalProgress().length, 1);
+
+    const ownerA = "11111111-1111-4111-8111-111111111111";
+    const ownerB = "22222222-2222-4222-8222-222222222222";
+    activateStorageOwner(ownerA);
+    assert.equal(getChapterProgress("physics", "ch01"), null);
+    const pending = beginLegacyImport(ownerA);
+    assert.ok(pending);
+    assert.equal(getLegacyImportState(ownerA)?.status, "pending");
+    assert.equal(importLegacyProgressLocally(ownerA), true);
+    assert.equal(getChapterProgress("physics", "ch01"), null, "legacy summaries stay separate from current objective mastery");
+    assert.equal(getOwnerLegacyImportedProgress(ownerA)[0]?.progress.last.percent, 70);
+    assert.equal(importLegacyProgressLocally(ownerA), true, "replaying the same import is idempotent");
+    assert.equal(completeLegacyImport(ownerA, pending!.importId), true);
+    assert.equal(getLegacyImportState(ownerA)?.status, "complete");
+
+    activateStorageOwner(ownerB);
+    assert.equal(getChapterProgress("physics", "ch01"), null);
+    assert.equal(getLegacyLocalProgress().length, 1);
+  } finally {
+    teardownLocalStorage();
+  }
+});
+
+test("compact server legacy summaries hydrate as separate history and never enter mastery statistics", () => {
+  setupLocalStorage();
+  try {
+    const owner = "33333333-3333-4333-8333-333333333333";
+    activateStorageOwner(owner);
+    assert.equal(saveOwnerLegacyImportedSummary({
+      ownerId: owner, subjectId: "physics", categoryId: "detail", chapterId: "ch02",
+      best: 75, attempts: 3, lastPercent: 60, completedAt: "2026-10-03T00:00:00Z", stage: "final",
+    }), true);
+    assert.equal(getOwnerLegacyImportedProgress(owner).length, 1);
+    assert.equal(getAllProgress().length, 0);
+    assert.deepEqual(getGlobalSummary(), { chapters: 0, avgBest: 0, totalAttempts: 0, bestEver: 0 });
   } finally {
     teardownLocalStorage();
   }

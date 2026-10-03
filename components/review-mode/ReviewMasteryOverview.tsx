@@ -6,9 +6,13 @@ import { useReviewCards } from "@/lib/stores/reviewCards";
 import { useReviewSchedule } from "@/lib/review-mode/scheduleStore";
 import { useUserNotes, selectLibraryNotes } from "@/lib/stores/userNotes";
 import { getAllProgress } from "@/lib/quiz-progress";
+import { useQuizProgressRevision } from "@/lib/hooks/useQuizProgressRevision";
 import { summarizeWrongQuestions } from "@/lib/review-mode/wrongQuestions";
 import { subjectLabel } from "@/lib/notes/userNote";
 import { useT } from "@/lib/i18n";
+import { useAuthSession } from "@/lib/hooks/useAuthSession";
+import { getLegacyImportState, getOwnerLegacyImportedProgress, hasLegacyLocalProgress } from "@/lib/quiz-progress";
+import { importLegacyLocalHistory } from "@/lib/review-mode/progressSync";
 
 function StatCard({ icon: Icon, label, value }: { icon: typeof Layers; label: string; value: string | number }) {
   return (
@@ -33,6 +37,10 @@ export default function ReviewMasteryOverview() {
   const notesById = useUserNotes((s) => s.byId);
   const notesOrder = useUserNotes((s) => s.order);
   const [now] = useState(() => Date.now());
+  const progressRevision = useQuizProgressRevision();
+  const { status: authStatus, userId } = useAuthSession();
+  const [importBusy, setImportBusy] = useState(false);
+  const [importError, setImportError] = useState(false);
 
   const dueCount = useMemo(() => {
     return cardOrder
@@ -44,13 +52,22 @@ export default function ReviewMasteryOverview() {
       }).length;
   }, [cardsById, cardOrder, scheduleByCard, now]);
 
-  const overview = useMemo(() => summarizeWrongQuestions(getAllProgress()), []);
+  const overview = useMemo(() => {
+    void progressRevision;
+    return summarizeWrongQuestions(getAllProgress());
+  }, [progressRevision]);
+  const legacyHistory = useMemo(() => {
+    void progressRevision;
+    return getOwnerLegacyImportedProgress(userId);
+  }, [progressRevision, userId]);
+  const legacyAvailable = hasLegacyLocalProgress() && authStatus === "signedIn" && !!userId
+    && getLegacyImportState(userId)?.status !== "complete";
   const notesCount = useMemo(
     () => selectLibraryNotes(notesById, notesOrder, null, { includeExample: false }).length,
     [notesById, notesOrder],
   );
 
-  const hasData = dueCount > 0 || overview.chapters > 0 || notesCount > 0;
+  const hasData = dueCount > 0 || overview.chapters > 0 || notesCount > 0 || legacyHistory.length > 0;
 
   return (
     <div className="mx-auto max-w-3xl p-6" data-testid="review-overview">
@@ -93,6 +110,34 @@ export default function ReviewMasteryOverview() {
             </div>
           )}
         </>
+      )}
+      {(legacyAvailable || legacyHistory.length > 0 || importError) && (
+        <section className="mt-4 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-4" aria-live="polite">
+          {legacyAvailable ? (
+            <>
+              <p className="text-[12.5px] leading-relaxed text-[var(--ink-soft)]">{t("review.overview.legacyLocal")}</p>
+              <button
+                type="button"
+                disabled={importBusy}
+                onClick={() => {
+                  if (!userId || importBusy) return;
+                  setImportBusy(true);
+                  setImportError(false);
+                  void importLegacyLocalHistory(userId)
+                    .catch(() => setImportError(true))
+                    .finally(() => { setImportBusy(false); });
+                }}
+                className="mt-3 rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-60"
+              >
+                {importBusy ? t("review.overview.legacyImporting") : t("review.overview.legacyImport")}
+              </button>
+            </>
+          ) : null}
+          {legacyHistory.length > 0 ? (
+            <p className="text-[12.5px] leading-relaxed text-[var(--ink-soft)]">{t("review.overview.legacyImported", { count: legacyHistory.length })}</p>
+          ) : null}
+          {importError ? <p className="mt-2 text-[12.5px] text-[var(--md-sys-color-error)]">{t("review.overview.legacyImportFailed")}</p> : null}
+        </section>
       )}
     </div>
   );

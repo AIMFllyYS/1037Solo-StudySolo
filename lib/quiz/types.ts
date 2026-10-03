@@ -179,6 +179,14 @@ export function isObjective(type: QuestionType): boolean {
   return OBJECTIVE_TYPES.includes(type);
 }
 
+/** Composite reading/cloze questions are objective only when they contain gradable children. */
+export function isObjectivelyGradableQuestion(question: Pick<QuizQuestion, "type" | "subQuestions" | "blanks">): boolean {
+  if (isObjective(question.type)) return true;
+  if (question.type === "reading") return (question.subQuestions?.length ?? 0) > 0;
+  if (question.type === "cloze") return (question.blanks?.length ?? 0) > 0;
+  return false;
+}
+
 /** 题型默认显示名（label 缺省时使用）。 */
 export const TYPE_LABELS: Record<QuestionType, string> = {
   single_choice: "单选题",

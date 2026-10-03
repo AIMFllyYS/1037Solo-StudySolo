@@ -11,6 +11,7 @@ import { chapterLabel } from "@/lib/quiz-progress";
 /** 一个薄弱知识点条目（章节粒度）。 */
 export interface WeakPoint {
   subjectId: string;
+  categoryId?: string;
   chapterId: string;
   /** 人类可读章节名，如「第 7 章」。 */
   chapterLabel: string;
@@ -29,20 +30,39 @@ export interface WeakPoint {
 /** 判定「值得加固」的阈值：最近得分低于此值即视为薄弱。 */
 export const WEAK_PERCENT_THRESHOLD = 80;
 
+function objectiveScores(entry: ProgressEntry): { total: number; correct: number } {
+  const attempt = entry.progress.last;
+  const per = attempt?.perQuestion ?? [];
+  const scored = per.filter((question) => question.correct !== null);
+  const total = attempt?.objectiveCount ?? scored.length;
+  if (!total) return { total: 0, correct: 0 };
+  if (scored.length) return { total: scored.length, correct: scored.filter((question) => question.correct === true).length };
+  return { total, correct: attempt?.correctCount ?? 0 };
+}
+
+export function hasObjectiveAttempt(entry: ProgressEntry): boolean {
+  return objectiveScores(entry).total > 0;
+}
+
 /** 单条成绩档案 → 薄弱统计（不做阈值过滤，过滤在 selectWeakPoints 里做）。 */
 export function toWeakPoint(entry: ProgressEntry): WeakPoint {
-  const { subjectId, chapterId, progress } = entry;
+  const { subjectId, categoryId, chapterId, progress } = entry;
   const per = progress.last?.perQuestion ?? [];
   const objective = per.filter((q) => q.correct !== null);
-  const wrongCount = objective.filter((q) => q.correct === false).length;
-  const answeredCount = objective.length;
-  const lastPercent = progress.last?.percent ?? 0;
+  const stats = objectiveScores(entry);
+  const wrongCount = objective.length
+    ? objective.filter((q) => q.correct === false).length
+    : Math.max(0, stats.total - stats.correct);
+  const answeredCount = stats.total;
+  const lastPercent = progress.last?.objectiveAccuracy
+    ?? (stats.total > 0 ? Math.round((stats.correct / stats.total) * 1000) / 10 : 0);
   // weakness：得分越低越薄弱（1 - percent/100），错题占比作为加权微调。
   const scoreGap = Math.max(0, 1 - lastPercent / 100);
   const wrongRatio = answeredCount > 0 ? wrongCount / answeredCount : scoreGap;
   const weakness = Math.round((scoreGap * 0.7 + wrongRatio * 0.3) * 100) / 100;
   return {
     subjectId,
+    ...(categoryId ? { categoryId } : {}),
     chapterId,
     chapterLabel: chapterLabel(chapterId),
     lastPercent,
@@ -61,7 +81,7 @@ export interface SelectWeakPointsOptions {
 }
 
 function hasAnswered(entry: ProgressEntry): boolean {
-  return (entry.progress.last?.percent ?? 0) > 0 || (entry.progress.last?.perQuestion?.length ?? 0) > 0;
+  return hasObjectiveAttempt(entry);
 }
 
 /**
@@ -101,7 +121,7 @@ export function summarizeWrongQuestions(
   const answered = entries.filter(hasAnswered);
   const weakPoints = selectWeakPoints(entries, options);
   const recentAccuracy = answered.length
-    ? Math.round((answered.reduce((sum, e) => sum + (e.progress.last?.percent ?? 0), 0) / answered.length) * 10) / 10
+    ? Math.round((answered.reduce((sum, entry) => sum + toWeakPoint(entry).lastPercent, 0) / answered.length) * 10) / 10
     : 0;
   return {
     chapters: answered.length,
@@ -112,12 +132,12 @@ export function summarizeWrongQuestions(
 }
 
 /**
- * 把薄弱章节拼成给 Agent 的一段出题指令（错题智能出题）。
- * 明确要求按薄弱章节命中知识点，意图为 diagnose。
+ * Describe legacy chapter-level summaries without presenting them as recoverable wrong questions.
+ * The typed Review generation API still requires original question snapshots for diagnosis.
  */
 export function buildWrongQuestionPrompt(weakPoints: WeakPoint[], subjectName?: (id: string) => string): string {
   if (weakPoints.length === 0) {
-    return "请针对我最近做错较多的知识点，出一套 5 道左右的综合诊断题（intent 用 diagnose），题型可混合单选/多选/判断/填空，覆盖易错概念并配解析。";
+    return "目前没有可恢复的原题或章节资料，不能据此诊断错题。请先提供具体题目快照，或选择章节并读取该章节的真实学习资料。";
   }
   const lines = weakPoints.map((w) => {
     const name = subjectName ? subjectName(w.subjectId) : w.subjectId;
@@ -128,9 +148,9 @@ export function buildWrongQuestionPrompt(weakPoints: WeakPoint[], subjectName?: 
     return `- ${name} · ${w.chapterLabel}${gap}`;
   });
   return (
-    "以下是我最近成绩偏弱、错题偏多的章节，请针对这些薄弱知识点做系统性加固：\n" +
+    "以下只是章节级成绩摘要，不含原题题干、选项或回答，不能据此声称掌握具体错题。" +
+    "请先读取所选章节的真实学习资料；若没有资料，不要按章节名猜题：\n" +
     lines.join("\n") +
-    "\n\n请出一套 6–8 道的诊断题（intent=diagnose），优先覆盖上面章节的核心易错点，" +
-    "题型混合单选/多选/判断/填空，每题都要给出解析，帮助我把这些漏洞补上。"
+    "\n\n有实际资料后，出一套有出处的练习题，每题注明资料依据并提供解析。"
   );
 }
