@@ -35,6 +35,11 @@ export async function forwardDesktopAgentRequest(request: NextRequest): Promise<
   const token = extractAccessToken(request.headers);
   if (!token) throw new SandboxError("SIGN_IN_REQUIRED", 401);
   const headers = new Headers({ Authorization: `Bearer ${token}`, Origin: cloudOrigin, Referer: cloudOrigin + pathname });
+  if (reviewProgressRoute && request.method === "POST") {
+    const binding = request.headers.get("x-studysolo-owner-binding");
+    if (!binding || !/^[a-f0-9]{64}$/.test(binding)) throw new SandboxError("REVIEW_OWNER_CHANGED", 409);
+    headers.set("X-StudySolo-Owner-Binding", binding);
+  }
   const key = request.headers.get("idempotency-key");
   if (key && /^[A-Za-z0-9_-]{1,128}$/.test(key)) headers.set("Idempotency-Key", key);
   let body: string | undefined;
@@ -51,10 +56,11 @@ export async function forwardDesktopAgentRequest(request: NextRequest): Promise<
   }
   const target = new URL(targetPath + "/", cloudOrigin);
   if (reviewProgressRoute && request.method === "GET") {
-    const allowed = new Set(["view", "subjectId", "chapterId", "attemptId", "cursor", "limit"]);
+    const allowed = new Set(["view", "sourceKind", "subjectId", "categoryId", "chapterId", "attemptId", "cursor", "limit"]);
     if (request.nextUrl.search.length > 2000) throw new SandboxError("SANDBOX_REQUEST_INVALID");
     for (const [name, value] of request.nextUrl.searchParams) {
       if (!allowed.has(name) || target.searchParams.has(name)) throw new SandboxError("SANDBOX_REQUEST_INVALID");
+      if (name === "sourceKind" && !["static", "review-wrong", "review-chapter", "classroom", "legacy-import"].includes(value)) throw new SandboxError("SANDBOX_REQUEST_INVALID");
       target.searchParams.set(name, value);
     }
   }

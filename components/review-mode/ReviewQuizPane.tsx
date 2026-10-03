@@ -1,21 +1,25 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { Sparkles, BookOpen, Loader2, RotateCcw } from "lucide-react";
 import QuizQuestion from "@/components/quiz/QuizQuestion";
-import type { QuizQuestion as Q, UserAnswer } from "@/lib/quiz/types";
-import { autoGrade, isObjective, maxPointsOf } from "@/lib/quiz/types";
+import type { QuizData, QuizQuestion as Q, UserAnswer } from "@/lib/quiz/types";
+import { autoGrade, isObjectivelyGradableQuestion, maxPointsOf } from "@/lib/quiz/types";
 import type { QuestionResult } from "@/lib/quiz-store";
 import { getAllProgress, saveAttempt, type QuestionScore } from "@/lib/quiz-progress";
-import { buildWrongQuestionPrompt, selectWeakPoints } from "@/lib/review-mode/wrongQuestions";
+import { selectWeakPoints } from "@/lib/review-mode/wrongQuestions";
 import { getSubject } from "@/lib/content-data";
 import { SUBJECT_REGISTRY, type SubjectId } from "@/lib/content-data/subjects.registry";
 import { subjectLabel } from "@/lib/notes/userNote";
 import { useT } from "@/lib/i18n";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
-import { listClassSources, loadClassQuizPrompt, type ClassSourceSession } from "@/lib/review-mode/classSources";
-import { buildReinforcePrompt, markReinforced, readWrongBook, recordWrongQuestions, sourceHref, type WrongEntry } from "@/lib/review-mode/wrongBook";
+import { listClassSources, type ClassSourceSession } from "@/lib/review-mode/classSources";
+import { markReinforced, readWrongBook, recordQuestionOutcomes, sourceHref, type WrongEntry } from "@/lib/review-mode/wrongBook";
+import { createQuizSetIdentity } from "@/lib/review-mode/quizSnapshot";
+import { createAndCheckpointReviewAttempt, loadNewestReviewAttempt, loadWrongAttemptIdsFromAccount, prepareReviewAttemptCheckpoint, retryReviewAttemptSync, savePreparedReviewAttempt } from "@/lib/review-mode/progressSync";
+import type { ReviewQuizAttempt, ReviewQuizSet } from "@/lib/review-mode/attemptTypes";
+import { getStorageOwner } from "@/lib/storage/ownerScope";
 
 /** 下拉里「课堂记录」这一来源的值：Class 模式的课当作章节。 */
 const CLASS_SOURCE = "__class__";
@@ -28,6 +32,25 @@ interface GeneratedQuiz {
   intent?: string;
   questions: Q[];
   droppedCount: number;
+  quizData: QuizData;
+  attempt: ReviewQuizAttempt;
+  contextCoverage?: {
+    includedQuestions: number;
+    totalQuestions: number;
+    omittedQuestions: number;
+    includedMaterials: number;
+    totalMaterials: number;
+    omittedMaterials: number;
+    estimatedInputTokens: number;
+    maxInputTokens: number;
+    estimate: string;
+    omittedClientAttemptIds?: number;
+    omittedClientLocalQuestions?: number;
+    omittedClientWeakPoints?: number;
+    unavailableOwnerAttemptIds?: number;
+    hasUnscannedAttemptRecords?: boolean;
+    includedQuestionKeys?: string[];
+  };
   /** 记录归属（chapter 模式带 subject/chapter；wrong 模式记到虚拟章节）。 */
   subjectId: string;
   chapterId: string;
@@ -42,32 +65,75 @@ interface GeneratedQuiz {
  * 客观题即时判分，交卷后把成绩写回 quiz-progress（saveAttempt），
  * 让这次结果计入后续「错题智能出题」的薄弱点分析。
  */
-function EmbeddedRunner({ quiz, onRecorded }: { quiz: GeneratedQuiz; onRecorded?: () => void }) {
+function EmbeddedRunner({ quiz, onAttemptChange, onRecorded }: { quiz: GeneratedQuiz; onAttemptChange: (attempt: ReviewQuizAttempt) => void; onRecorded?: () => void }) {
   const t = useT();
-  const [answers, setAnswers] = useState<Record<string, UserAnswer>>({});
-  const [revealed, setRevealed] = useState<Record<string, boolean>>({});
-  const [recorded, setRecorded] = useState(false);
-  const [wrongRecorded, setWrongRecorded] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, UserAnswer>>(quiz.attempt.answers);
+  const [revealed, setRevealed] = useState<Record<string, boolean>>(() => Object.fromEntries(quiz.attempt.revealedQuestionIds.map((id) => [id, true])));
+  const [recorded, setRecorded] = useState(quiz.attempt.phase === "summary");
+  const [wrongRecorded, setWrongRecorded] = useState(quiz.attempt.questionResults.filter((result) => result.correct === false).length);
+  const [retryingSync, setRetryingSync] = useState(false);
+  const [persistenceWarning, setPersistenceWarning] = useState<string | null>(null);
+  const attemptRef = useRef(quiz.attempt);
 
-  const reveal = (id: string) => setRevealed((p) => (p[id] ? p : { ...p, [id]: true }));
+  useEffect(() => {
+    if (quiz.attempt.attemptId === attemptRef.current.attemptId && quiz.attempt.revision >= attemptRef.current.revision) {
+      attemptRef.current = quiz.attempt;
+    }
+  }, [quiz.attempt]);
+
+  useEffect(() => {
+    const sync = (event: Event) => {
+      const detail = (event as CustomEvent<Pick<ReviewQuizAttempt, "attemptId" | "syncState" | "revision" | "serverRevision" | "syncedRevision">>).detail;
+      const current = attemptRef.current;
+      if (!detail || detail.attemptId !== current.attemptId || detail.revision !== current.revision) return;
+      const next = { ...current, syncState: detail.syncState, serverRevision: detail.serverRevision, syncedRevision: detail.syncedRevision };
+      attemptRef.current = next;
+      onAttemptChange(next);
+    };
+    window.addEventListener("studysolo:review-attempt-sync", sync);
+    return () => window.removeEventListener("studysolo:review-attempt-sync", sync);
+  }, [onAttemptChange]);
+
+  const checkpoint = (patch: Partial<ReviewQuizAttempt>) => {
+    const current = attemptRef.current;
+    try {
+      const next = prepareReviewAttemptCheckpoint({ ...current, ...patch }, current.ownerId);
+      attemptRef.current = next;
+      onAttemptChange(next);
+      void savePreparedReviewAttempt(next, current.ownerId).then(() => setPersistenceWarning(null)).catch((error: unknown) => {
+        setPersistenceWarning(error instanceof Error && error.message === "REVIEW_OWNER_CHANGED" ? t("review.quiz.accountChanged") : t("review.quiz.localSaveFailed"));
+      });
+    } catch (error) {
+      // Keep the answer in the component state; an owner switch must not write it under a new account.
+      setPersistenceWarning(error instanceof Error && error.message === "REVIEW_OWNER_CHANGED" ? t("review.quiz.accountChanged") : t("review.quiz.localSaveFailed"));
+    }
+  };
+
+  const reveal = (id: string) => {
+    if (revealed[id]) return;
+    const next = { ...revealed, [id]: true };
+    setRevealed(next);
+    checkpoint({ revealedQuestionIds: Object.keys(next) });
+  };
 
   const results = useMemo(() => {
     const map: Record<string, QuestionResult> = {};
     for (const q of quiz.questions) {
       if (!revealed[q.id]) continue;
       const max = maxPointsOf(q);
-      if (isObjective(q.type)) {
+      if (isObjectivelyGradableQuestion(q)) {
         const [awarded, correct] = autoGrade(q, answers[q.id] ?? null);
-        map[q.id] = { question: q, answer: answers[q.id] ?? null, awarded, max, correct, objective: true };
+        map[q.id] = { question: q, answer: answers[q.id] ?? null, awarded, max, correct, objective: true, selfScored: false };
       } else {
-        map[q.id] = { question: q, answer: answers[q.id] ?? null, awarded: 0, max, correct: false, objective: false };
+        map[q.id] = { question: q, answer: answers[q.id] ?? null, awarded: 0, max, correct: false, objective: false, selfScored: false };
       }
     }
     return map;
   }, [quiz.questions, answers, revealed]);
 
   const recordAttempt = () => {
-    const objective = quiz.questions.filter((q) => isObjective(q.type));
+    if (attemptRef.current.phase === "summary") return;
+    const objective = quiz.questions.filter((q) => isObjectivelyGradableQuestion(q));
     if (objective.length === 0) {
       setRecorded(true);
       return;
@@ -82,30 +148,77 @@ function EmbeddedRunner({ quiz, onRecorded }: { quiz: GeneratedQuiz; onRecorded?
       max += qMax;
       perQuestion.push({ id: q.id, awarded, max: qMax, correct });
     }
-    const percent = max > 0 ? Math.round((earned / max) * 1000) / 10 : 0;
-    // 答错的客观题进错题本（带出处），供「错题智能出题」按真实错题加固、并可跳回知识点。
-    const wrong = objective.filter((q) => revealed[q.id] && !autoGrade(q, answers[q.id] ?? null)[1]);
-    recordWrongQuestions(wrong, {
+    const outcomes = objective.map((question) => ({ question, correct: autoGrade(question, answers[question.id] ?? null)[1], answer: answers[question.id] ?? null }));
+    const wrong = outcomes.filter((entry) => !entry.correct);
+    const current = attemptRef.current;
+    recordQuestionOutcomes(outcomes, {
       subjectId: quiz.subjectId,
       chapterId: quiz.chapterId,
       categoryId: quiz.categoryId,
       label: quiz.title,
-    });
+      quizId: quiz.quizId,
+      attemptId: current.attemptId,
+      contentHash: current.contentHash ?? undefined,
+    }, current.contentHash ?? "", current.attemptId);
     setWrongRecorded(wrong.length);
-    onRecorded?.();
+    if (typeof window !== "undefined") window.dispatchEvent(new Event("studysolo:review-wrong-book-change"));
+    const completedAt = new Date().toISOString();
+    const questionResults = quiz.questions.map((question) => {
+      const objectiveQuestion = isObjectivelyGradableQuestion(question);
+      const maxScore = maxPointsOf(question);
+      if (objectiveQuestion) {
+        const [awarded, correct] = autoGrade(question, answers[question.id] ?? null);
+        return {
+          id: question.id,
+          questionKey: `ssq-v1:${current.contentHash}:${encodeURIComponent(question.id)}`,
+          awarded, max: maxScore, correct, objective: true, scored: true,
+        };
+      }
+      return {
+        id: question.id,
+        questionKey: `ssq-v1:${current.contentHash}:${encodeURIComponent(question.id)}`,
+        awarded: 0, max: maxScore, correct: null, objective: false, scored: false,
+      };
+    });
+    const attemptScore = {
+      earned,
+      max,
+      percent: max > 0 ? Math.round((earned / max) * 1000) / 10 : null,
+      objectiveCount: objective.length,
+      correctCount: objective.filter((question) => autoGrade(question, answers[question.id] ?? null)[1]).length,
+      scoredCount: objective.length,
+    };
     saveAttempt(quiz.subjectId, quiz.chapterId, {
       earned,
       max,
-      percent,
-      completedAt: new Date().toISOString(),
+      percent: attemptScore.percent,
+      completedAt,
       stage: "final",
+      attemptId: current.attemptId,
+      quizId: quiz.quizId,
+      categoryId: quiz.categoryId,
+      sourceKind: current.sourceKind,
+      objectiveCount: objective.length,
+      correctCount: attemptScore.correctCount,
+      scoredCount: objective.length,
+      objectiveAccuracy: objective.length ? Math.round((attemptScore.correctCount / objective.length) * 1000) / 10 : null,
       perQuestion,
     });
+    checkpoint({
+      phase: "summary",
+      stage: "final",
+      answers,
+      revealedQuestionIds: quiz.questions.filter((question) => isObjectivelyGradableQuestion(question)).map((question) => question.id),
+      questionResults,
+      score: attemptScore,
+      completedAt,
+    });
     setRecorded(true);
+    onRecorded?.();
   };
 
-  const objectiveCount = quiz.questions.filter((q) => isObjective(q.type)).length;
-  const answeredObjective = quiz.questions.filter((q) => isObjective(q.type) && revealed[q.id]).length;
+  const objectiveCount = quiz.questions.filter((q) => isObjectivelyGradableQuestion(q)).length;
+  const answeredObjective = quiz.questions.filter((q) => isObjectivelyGradableQuestion(q) && revealed[q.id]).length;
   const allAnswered = objectiveCount > 0 && answeredObjective === objectiveCount;
 
   return (
@@ -122,7 +235,9 @@ function EmbeddedRunner({ quiz, onRecorded }: { quiz: GeneratedQuiz; onRecorded?
               mode={open ? "review" : "answer"}
               answer={answers[q.id] ?? null}
               onChange={(a) => {
-                setAnswers((prev) => ({ ...prev, [q.id]: a }));
+                const nextAnswers = { ...answers, [q.id]: a };
+                setAnswers(nextAnswers);
+                checkpoint({ answers: nextAnswers, currentIndex: i });
                 if (!needsConfirm) reveal(q.id);
               }}
               result={results[q.id]}
@@ -161,6 +276,23 @@ function EmbeddedRunner({ quiz, onRecorded }: { quiz: GeneratedQuiz; onRecorded?
           {wrongRecorded > 0 ? ` ${t("review.quiz.wrongRecorded", { count: wrongRecorded })}` : ""}
         </p>
       )}
+      {persistenceWarning ? <p className="text-[12px] text-[var(--md-sys-color-error)]" role="alert">{persistenceWarning}</p> : null}
+      <div className="flex flex-wrap items-center gap-2 text-[11.5px] text-[var(--ink-faint)]" role="status" aria-live="polite">
+        <span>{t(`review.quiz.sync.${quiz.attempt.syncState}`)}</span>
+        {quiz.attempt.syncState === "pending" && (
+          <button
+            type="button"
+            disabled={retryingSync}
+            onClick={() => {
+              setRetryingSync(true);
+              void retryReviewAttemptSync(attemptRef.current).catch(() => {}).finally(() => setRetryingSync(false));
+            }}
+            className="rounded-md border border-[var(--line)] px-2 py-0.5 text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-50"
+          >
+            {retryingSync ? t("review.quiz.sync.retrying") : t("review.quiz.sync.retry")}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
@@ -191,12 +323,15 @@ export default function ReviewQuizPane() {
   const [quiz, setQuiz] = useState<GeneratedQuiz | null>(null);
 
   const [bookVersion, setBookVersion] = useState(0);
+  const [accountWrongIndex, setAccountWrongAttempts] = useState<{ attemptIds: string[]; hasMoreAttemptRecords: boolean; ownerId: string | null }>({ attemptIds: [], hasMoreAttemptRecords: false, ownerId: null });
+  const accountWrongAttempts = accountWrongIndex.ownerId === auth.userId ? accountWrongIndex : { attemptIds: [], hasMoreAttemptRecords: false, ownerId: null };
   // 交卷会写入 quiz-progress：随新题目刷新薄弱点，而不是只在挂载时算一次。
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const weakPoints = useMemo(() => selectWeakPoints(getAllProgress()), [quiz, bookVersion]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const wrongBook: WrongEntry[] = useMemo(() => readWrongBook(), [bookVersion, auth.userId]);
-  const canDiagnose = wrongBook.length > 0 || weakPoints.length > 0;
+  const activeWrongEntries = wrongBook.filter((entry) => entry.latestCorrect !== true);
+  const canDiagnose = activeWrongEntries.some((entry) => !!entry.question || !!entry.attemptIds?.length) || accountWrongAttempts.attemptIds.length > 0;
 
   const chapters = useMemo(() => {
     if (!subjectId) return [];
@@ -213,13 +348,57 @@ export default function ReviewQuizPane() {
     return (subject?.categories.find((c) => c.id === "detail") ?? subject?.categories[0])?.id;
   }, [subjectId]);
 
+  useEffect(() => {
+    let active = true;
+    void loadNewestReviewAttempt(getStorageOwner()).then((resumable) => {
+      if (!active || !resumable) return;
+      const { attempt, set } = resumable;
+      if (attempt.sourceKind !== "review-wrong" && attempt.sourceKind !== "review-chapter" && attempt.sourceKind !== "classroom") return;
+      setMode(attempt.sourceKind === "review-wrong" ? "wrong" : "chapter");
+      if (attempt.sourceKind === "classroom") setSubjectId(CLASS_SOURCE);
+      else if (attempt.sourceKind === "review-chapter" && SUBJECT_REGISTRY.some((subject) => subject.id === attempt.subjectId)) {
+        setSubjectId(attempt.subjectId as SubjectId);
+        setChapterId(attempt.chapterId);
+      }
+      setQuiz({
+        quizId: attempt.quizId,
+        title: attempt.title,
+        questions: set.quizData.questions,
+        droppedCount: 0,
+        subjectId: attempt.subjectId,
+        chapterId: attempt.chapterId,
+        categoryId: attempt.categoryId ?? undefined,
+        quizData: set.quizData,
+        attempt,
+      });
+    }).catch(() => {});
+    return () => { active = false; };
+  }, [auth.userId]);
+
+  useEffect(() => {
+    const refreshWrongBook = () => setBookVersion((version) => version + 1);
+    window.addEventListener("studysolo:review-wrong-book-change", refreshWrongBook);
+    return () => window.removeEventListener("studysolo:review-wrong-book-change", refreshWrongBook);
+  }, []);
+
+  useEffect(() => {
+    if (auth.status !== "signedIn" || !auth.userId) return;
+    let active = true;
+    void loadWrongAttemptIdsFromAccount(getStorageOwner()).then((value) => {
+      if (active) setAccountWrongAttempts({ ...value, ownerId: auth.userId! });
+    }).catch(() => {
+      if (active) setAccountWrongAttempts({ attemptIds: [], hasMoreAttemptRecords: false, ownerId: auth.userId! });
+    });
+    return () => { active = false; };
+  }, [auth.status, auth.userId, bookVersion]);
+
   async function generate(
-    instruction: string,
-    title: string,
+    source: Record<string, unknown>,
     recordSubject: string,
     recordChapter: string,
-    extra: { categoryId?: string; reinforcing?: string[] } = {},
+    extra: { categoryId?: string; reinforcing?: string[]; sourceKind: ReviewQuizSet["sourceKind"] } = { sourceKind: "review-chapter" },
   ) {
+    const capturedOwner = getStorageOwner();
     setBusy(true);
     setError(null);
     setQuiz(null);
@@ -227,11 +406,14 @@ export default function ReviewQuizPane() {
       const res = await fetch("/api/review/quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json", "idempotency-key": crypto.randomUUID() },
-        body: JSON.stringify({ instruction, title, mode }),
+        body: JSON.stringify({ source }),
       });
       const data = await res.json();
-      if (!res.ok || data.error === "quota") {
-        setError(t("review.quiz.quotaError"));
+      if (!res.ok || data.error) {
+        setError(data.error === "quota" ? t("review.quiz.quotaError")
+          : data.error === "REVIEW_NO_WRONG_CONTEXT" ? t("review.quiz.noWrongContext")
+            : data.error === "REVIEW_SOURCE_MATERIAL_UNAVAILABLE" || data.error === "REVIEW_CLASSROOM_MATERIAL_UNAVAILABLE" ? t("review.quiz.sourceMissing")
+              : t("review.quiz.error"));
         return;
       }
       const questions: Q[] = Array.isArray(data.questions) ? data.questions : [];
@@ -239,20 +421,61 @@ export default function ReviewQuizPane() {
         setError(t("review.quiz.error"));
         return;
       }
+      if (typeof data.quizId !== "string" || !data.quizId) {
+        setError(t("review.quiz.error"));
+        return;
+      }
+      if (getStorageOwner() !== capturedOwner) {
+        setError(t("review.quiz.accountChanged"));
+        return;
+      }
+      const quizId = data.quizId;
+      const title = typeof data.title === "string" && data.title ? data.title : t("review.quiz.title");
+      const quizData: QuizData = {
+        subjectId: recordSubject,
+        chapterId: recordChapter,
+        generatedAt: new Date().toISOString(),
+        examConfig: { source: title, totalPoints: questions.reduce((sum, question) => sum + maxPointsOf(question), 0) },
+        questions,
+      };
+      const identity = await createQuizSetIdentity({
+        sourceKind: extra.sourceKind,
+        subjectId: recordSubject,
+        categoryId: extra.categoryId ?? null,
+        chapterId: recordChapter,
+        quizId,
+        title,
+        quizData,
+      });
+      const quizSet: ReviewQuizSet = {
+        ...identity,
+        sourceKind: extra.sourceKind,
+        subjectId: recordSubject,
+        categoryId: extra.categoryId ?? null,
+        chapterId: recordChapter,
+        quizId,
+        title,
+        quizData,
+      };
+      const attempt = await createAndCheckpointReviewAttempt(quizSet, capturedOwner);
+      if (getStorageOwner() !== capturedOwner) {
+        setError(t("review.quiz.accountChanged"));
+        return;
+      }
       setQuiz({
-        quizId: data.quizId ?? `review_${Date.now()}`,
-        title: data.title ?? title,
+        quizId,
+        title,
         intent: data.intent,
         questions,
         droppedCount: data.droppedCount ?? 0,
         subjectId: recordSubject,
         chapterId: recordChapter,
-        ...extra,
+        categoryId: extra.categoryId,
+        quizData,
+        attempt,
+        contextCoverage: data.contextCoverage,
+        reinforcing: extra.reinforcing,
       });
-      if (extra.reinforcing?.length) {
-        markReinforced(extra.reinforcing);
-        setBookVersion((v) => v + 1);
-      }
     } catch {
       setError(t("review.quiz.error"));
     } finally {
@@ -261,15 +484,45 @@ export default function ReviewQuizPane() {
   }
 
   const onWrong = () => {
-    const reinforce = buildReinforcePrompt(wrongBook);
-    if (reinforce) {
-      generate(reinforce, t("review.quiz.wrong.title"), "review", "wrong-questions", {
-        reinforcing: wrongBook.slice(0, 8).map((e) => e.id),
-      });
-      return;
+    const attempts = [...new Set([...activeWrongEntries.flatMap((entry) => entry.attemptIds ?? []), ...accountWrongAttempts.attemptIds])];
+    const attemptIds = attempts.slice(0, 1000);
+    const localCandidates = activeWrongEntries.filter((entry) => entry.question).map((entry) => ({
+      key: entry.questionKey ?? entry.id,
+      title: entry.source.label,
+      quizId: entry.source.quizId ?? entry.source.chapterId,
+      misses: Math.max(1, entry.misses),
+      latestAttemptAt: entry.createdAt,
+      question: entry.question!,
+    }));
+    const localQuestions: typeof localCandidates = [];
+    let localBytes = 0;
+    for (const entry of localCandidates) {
+      const bytes = new TextEncoder().encode(JSON.stringify(entry)).byteLength;
+      if (localQuestions.length >= 20) break;
+      if (localBytes + bytes > 110_000) continue;
+      localBytes += bytes;
+      localQuestions.push(entry);
     }
-    const prompt = buildWrongQuestionPrompt(weakPoints, (id) => subjectLabel(id));
-    generate(prompt, t("review.quiz.wrong.title"), "review", "wrong-questions");
+    const scopedWeakPoints = weakPoints.filter((point) => point.categoryId).map((point) => ({
+      subjectId: point.subjectId,
+      categoryId: point.categoryId!,
+      chapterId: point.chapterId,
+      accuracy: point.lastPercent,
+      wrongCount: point.wrongCount,
+      answeredCount: point.answeredCount,
+    }));
+    generate({
+      kind: "wrong",
+      attemptIds,
+      hasMoreAttemptRecords: attempts.length > attemptIds.length || accountWrongAttempts.hasMoreAttemptRecords,
+      localQuestions,
+      omittedLocalQuestionCount: Math.max(0, localCandidates.length - localQuestions.length),
+      weakPoints: scopedWeakPoints.slice(0, 20),
+      omittedWeakPointCount: Math.max(0, scopedWeakPoints.length - 20),
+    }, "review", "wrong-questions", {
+      sourceKind: "review-wrong",
+      reinforcing: activeWrongEntries.map((entry) => entry.id),
+    });
   };
 
   const onChapter = () => {
@@ -277,24 +530,14 @@ export default function ReviewQuizPane() {
     if (subjectId === CLASS_SOURCE) {
       const session = classSessions.find((s) => s.id === chapterId);
       if (!session || !auth.userId) return;
-      const name = `课堂 · ${session.title || "课堂"}`;
-      setBusy(true);
-      setError(null);
-      loadClassQuizPrompt(auth.userId, session)
-        .then((prompt) => generate(prompt, name, "classroom", session.id))
-        .catch(() => {
-          setError(t("review.quiz.error"));
-          setBusy(false);
-        });
+      generate({ kind: "classroom", sessionId: session.id }, "classroom", session.id, { sourceKind: "classroom" });
       return;
     }
-    const subject = getSubject(subjectId as SubjectId);
-    const item = chapters.find((c) => c.id === chapterId);
-    const name = `${subject?.name ?? subjectId} · ${item?.title ?? chapterId}`;
-    const prompt =
-      `请针对「${name}」这一章节的核心知识点，出一套 6–8 道练习题（intent=practice），` +
-      `题型混合单选/多选/判断/填空，覆盖重点概念、公式与易错点，每题都给出解析。`;
-    generate(prompt, name, subjectId, chapterId, { categoryId: detailCategoryId });
+    if (!detailCategoryId) return;
+    generate({ kind: "chapter", subjectId, categoryId: detailCategoryId, chapterId }, subjectId, chapterId, {
+      categoryId: detailCategoryId,
+      sourceKind: "review-chapter",
+    });
   };
 
   return (
@@ -314,13 +557,13 @@ export default function ReviewQuizPane() {
               {t("review.quiz.wrong.title")}
             </div>
             <p className="mb-3 text-[12.5px] leading-relaxed text-[var(--ink-soft)]">{t("review.quiz.wrong.hint")}</p>
-            {wrongBook.length > 0 ? (
+            {activeWrongEntries.length > 0 ? (
               <>
                 <p className="mb-1 text-[11.5px] font-medium text-[var(--ink-soft)]">
-                  {t("review.quiz.wrong.bookList", { count: wrongBook.length })}
+                  {t("review.quiz.wrong.bookList", { count: activeWrongEntries.length })}
                 </p>
                 <ul className="mb-3 space-y-1 text-[11.5px] text-[var(--ink-faint)]" data-testid="review-wrong-book">
-                  {wrongBook.slice(0, 4).map((w) => {
+                  {activeWrongEntries.slice(0, 4).map((w) => {
                     const href = sourceHref(w.source);
                     return (
                       <li key={w.id} className="flex min-w-0 items-baseline gap-1.5">
@@ -356,6 +599,12 @@ export default function ReviewQuizPane() {
                   ))}
                 </ul>
               </>
+            )}
+            {!canDiagnose && weakPoints.length > 0 && (
+              <p className="mb-3 text-[12px] leading-relaxed text-[var(--ink-faint)]">{t("review.quiz.noWrongContext")}</p>
+            )}
+            {!canDiagnose && accountWrongAttempts.hasMoreAttemptRecords && (
+              <p className="mb-3 text-[12px] leading-relaxed text-[var(--ink-faint)]" role="status">{t("review.quiz.wrong.historyIndexIncomplete")}</p>
             )}
             <button
               type="button"
@@ -469,7 +718,35 @@ export default function ReviewQuizPane() {
                 <RotateCcw size={13} /> {t("review.quiz.regenerate")}
               </button>
             </div>
-            <EmbeddedRunner quiz={quiz} onRecorded={() => setBookVersion((v) => v + 1)} />
+            {quiz.contextCoverage && (
+              <p className="mb-3 rounded-lg border border-[var(--line)] bg-[var(--bg-panel)] px-3 py-2 text-[11.5px] leading-relaxed text-[var(--ink-soft)]" data-testid="review-context-coverage">
+                {t("review.quiz.contextCoverage", {
+                  questions: quiz.contextCoverage.includedQuestions,
+                  totalQuestions: quiz.contextCoverage.totalQuestions,
+                  omittedQuestions: quiz.contextCoverage.omittedQuestions,
+                  materials: quiz.contextCoverage.includedMaterials,
+                  totalMaterials: quiz.contextCoverage.totalMaterials,
+                  omittedMaterials: quiz.contextCoverage.omittedMaterials,
+                  tokens: quiz.contextCoverage.estimatedInputTokens,
+                  limit: quiz.contextCoverage.maxInputTokens,
+                  unavailableAttempts: quiz.contextCoverage.unavailableOwnerAttemptIds ?? 0,
+                })}
+                {quiz.contextCoverage.hasUnscannedAttemptRecords ? ` ${t("review.quiz.moreAttemptsUnscanned")}` : ""}
+              </p>
+            )}
+            <EmbeddedRunner
+              key={quiz.attempt.attemptId}
+              quiz={quiz}
+              onAttemptChange={(attempt) => setQuiz((current) => current?.attempt.attemptId === attempt.attemptId ? { ...current, attempt } : current)}
+              onRecorded={() => {
+                if (quiz.reinforcing?.length) {
+                  const includedKeys = new Set(quiz.contextCoverage?.includedQuestionKeys ?? []);
+                  const includedWrongIds = wrongBook.filter((entry) => entry.questionKey && includedKeys.has(entry.questionKey)).map((entry) => entry.id);
+                  markReinforced(includedWrongIds);
+                }
+                setBookVersion((version) => version + 1);
+              }}
+            />
           </div>
         ) : (
           <div className="flex items-center justify-center py-12 text-center">

@@ -41,6 +41,9 @@ import {
   chapterLabel,
   compareChapter,
   scoreGrade,
+  objectiveAccuracyOf,
+  objectiveAttemptsOf,
+  objectiveBestOf,
   type ProgressEntry,
 } from "@/lib/quiz-progress";
 import AppearanceSettingsControls, { APPEARANCE_LABEL_KEYS } from "./AppearanceSettingsControls";
@@ -78,8 +81,10 @@ function groupBySubject(entries: ProgressEntry[]): SubjectGroup[] {
   });
   return ids.map((id) => {
     const items = (byId.get(id) ?? []).slice().sort((a, b) => compareChapter(a.chapterId, b.chapterId));
-    const avgBest =
-      Math.round((items.reduce((acc, e) => acc + e.progress.best, 0) / items.length) * 10) / 10;
+    const objectiveBests = items.map((entry) => objectiveBestOf(entry.progress)).filter((value): value is number => value !== null);
+    const avgBest = objectiveBests.length
+      ? Math.round((objectiveBests.reduce((acc, value) => acc + value, 0) / objectiveBests.length) * 10) / 10
+      : 0;
     return {
       id,
       name: SUBJECT_NAME[id] ?? id,
@@ -533,6 +538,9 @@ export default function GlobalSettings({
                         >
                           {g.items.map((e, i) => {
                             const route = findChapterRoute(e.subjectId, e.chapterId);
+                            const objectiveAccuracy = objectiveAccuracyOf(e.progress);
+                            const objectiveAttempts = objectiveAttemptsOf(e.progress);
+                            const objectiveBest = objectiveBestOf(e.progress) ?? objectiveAccuracy;
                             return (
                               <div
                                 key={e.chapterId}
@@ -554,9 +562,13 @@ export default function GlobalSettings({
                                   {chapterLabel(e.chapterId)}
                                 </span>
                                 <span className="shrink-0 text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                                  {t("settings.scores.lastAttempt", { percent: e.progress.last.percent, attempts: e.progress.attempts })}
+                                  {objectiveAccuracy == null
+                                    ? t("settings.scores.lastUnscored")
+                                    : t("settings.scores.lastAttempt", { percent: objectiveAccuracy, attempts: objectiveAttempts })}
                                 </span>
-                                <ScoreBadge percent={e.progress.best} />
+                                {objectiveAttempts === 0
+                                  ? <span className="shrink-0 text-[11px] text-[var(--ink-faint)]">{t("settings.scores.lastUnscored")}</span>
+                                  : <ScoreBadge percent={objectiveBest ?? 0} />}
                               </div>
                             );
                           })}

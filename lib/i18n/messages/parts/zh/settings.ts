@@ -495,6 +495,7 @@ export const settingsZh = {
     chapterCount: "{count} 章",
     avgBestShort: "平均最佳",
     lastAttempt: "上次 {percent} · {attempts} 次",
+    lastUnscored: "暂无客观计分",
     clear: "清空全部成绩",
     clearDesc: "仅清除本机保存的测验成绩，不影响题目本身。",
     clearConfirm: "确认清空",

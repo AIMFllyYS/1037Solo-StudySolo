@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import type { QuestionType, QuizQuestion as Q, UserAnswer } from '@/lib/quiz/types';
-import { autoGrade, isObjective, maxPointsOf } from '@/lib/quiz/types';
+import { autoGrade, isObjectivelyGradableQuestion, maxPointsOf } from '@/lib/quiz/types';
 import type { QuestionResult } from '@/lib/quiz-store';
 import QuizQuestion from '@/components/quiz/QuizQuestion';
 import { useT, type Translate } from '@/lib/i18n';
@@ -49,11 +49,11 @@ function isAnswered(answer: UserAnswer | undefined): boolean {
 
 function resultOf(q: Q, answer: UserAnswer): QuestionResult {
   const max = maxPointsOf(q);
-  if (isObjective(q.type)) {
+  if (isObjectivelyGradableQuestion(q)) {
     const [awarded, correct] = autoGrade(q, answer);
-    return { question: q, answer, awarded, max, correct, objective: true };
+    return { question: q, answer, awarded, max, correct, objective: true, selfScored: false };
   }
-  return { question: q, answer, awarded: 0, max, correct: false, objective: false };
+  return { question: q, answer, awarded: 0, max, correct: false, objective: false, selfScored: false };
 }
 
 function revealLabel(t: Translate, type: QuestionType): string {
