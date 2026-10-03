@@ -1,5 +1,6 @@
 # Official compatible headless runtime: no tenant data or credentials in this image.
 FROM fc-e2b-registry.cn-hangzhou.cr.aliyuncs.com/runtime/base:v0.0.49
+LABEL org.opencontainers.image.source="https://github.com/AIMFllyYS/Notebook-MedFreshman"
 USER root
 COPY scripts/sandbox/template-dependencies.sh /opt/studysolo-build/template-dependencies.sh
 RUN bash /opt/studysolo-build/template-dependencies.sh

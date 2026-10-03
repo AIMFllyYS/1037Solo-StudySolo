@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
@@ -41,19 +41,27 @@ export function AgentMenuSurface({
 
   useOverlayRegistration({ id, open: true, onClose: closeAndRestoreFocus, priority: 72 });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const menu = menuRef.current;
     if (!menu) return;
-
-    const placeAndFocus = () => {
-      const rect = menu.getBoundingClientRect();
-      setPosition({
-        left: Math.max(8, Math.min(x, window.innerWidth - rect.width - 8)),
-        top: Math.max(8, Math.min(y, window.innerHeight - rect.height - 8)),
-      });
-      menu.querySelector<HTMLElement>('[role="menuitem"]:not([disabled])')?.focus({ preventScroll: true });
+    const rect = menu.getBoundingClientRect();
+    const next = {
+      left: Math.max(8, Math.min(x, window.innerWidth - rect.width - 8)),
+      top: Math.max(8, Math.min(y, window.innerHeight - rect.height - 8)),
     };
-    const frame = window.requestAnimationFrame(placeAndFocus);
+    setPosition(previous => previous?.left === next.left && previous.top === next.top ? previous : next);
+  }, [x, y, children]);
+
+  useLayoutEffect(() => {
+    // Focus only after React has committed visibility:visible. Focusing the
+    // hidden measurement frame silently fails in a real browser.
+    const menu = menuRef.current;
+    if (position && menu && !menu.contains(document.activeElement)) {
+      menu.querySelector<HTMLElement>('[role="menuitem"]:not([disabled])')?.focus({ preventScroll: true });
+    }
+  }, [position]);
+
+  useEffect(() => {
     const dismissOutside = (event: PointerEvent) => {
       if (!menuRef.current?.contains(event.target as Node)) onClose(false);
     };
@@ -67,7 +75,6 @@ export function AgentMenuSurface({
     document.addEventListener("scroll", dismissOnViewportChange, true);
     window.addEventListener("resize", dismissOnViewportChange);
     return () => {
-      window.cancelAnimationFrame(frame);
       document.removeEventListener("pointerdown", dismissOutside, true);
       document.removeEventListener("scroll", dismissOnViewportChange, true);
       window.removeEventListener("resize", dismissOnViewportChange);

@@ -51,6 +51,10 @@ Supabase继续承担 PostgreSQL状态、权限、预算与私有产物存储。�
 
 GB原始包要求按文稿类型选标准、选择工具链、Word/WPS最终验收与逐页视觉检查。云端可提供 LibreOffice转换和结构/PDF检查；要求Word/WPS时仍需对应应用验收，不能承诺自动国标认证。当前未宣称两份技能已经能完成真实文档交付。
 
+镜像准备流程限制 Docker 上下文，只传依赖脚本与技能资源，不发送本机环境、日志、源码归档或账号数据。构建后用普通UID10001、无网络、无额外capabilities运行合成中文文稿的HTML→PDF、DOCX→PDF、A4/全文预检与页面渲染；这些检查和云端namespace验收各自必要，不能相互替代。合成PDF与PNG作为构建证据保留。
+
+GitHub仓库公开不等于容器镜像自动公开：[官方Container registry说明](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)指出首次发布默认private。完成镜像构建后仍须核对可见性与阿里云的实际拉取能力；不能把GITHUB_TOKEN放进运行模板。镜像只含已批准公开的运行依赖和技能文件；若使用公开拉取，先核对无秘密与许可证，再处理镜像可见性。
+
 ## 环境与客户端
 
 本机 `.env.local`启用基础开发运行；本机 `.env.production`仅准备配置、仍关闭。新增/管理的名称为 CLOUD_SANDBOX_ENABLED、REGION、DOMAIN、API_URL、API_KEY、TEMPLATE、APP_ORIGIN、ENCRYPTION_KEY、MONTHLY_BUDGET_CNY、RUN_BUDGET_CNY、BUDGET_RUN_ID、FIXED_COST_CNY、SKILLS_VERSION、SKILLS_TEMPLATE（均带 CLOUD_SANDBOX_前缀）。没有更新 Windows全局环境或远端进程环境，未在报告里记录任何值。

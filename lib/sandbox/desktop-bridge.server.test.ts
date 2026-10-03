@@ -36,6 +36,28 @@ test("Electron environment never inherits operator cloud or connector secrets", 
   const stripped = withoutOperatorCredentials({ PATH: "fixture-path", AI_API_KEY: "fixture-user-key", CLOUD_SANDBOX_API_KEY: "private-operator-key", E2B_API_KEY: "private-operator-key", GOOGLE_CONNECTOR_CLIENT_SECRET: "private-operator-secret", SUPABASE_SERVICE_ROLE_KEY: "test", CONNECTOR_TOKEN_ENCRYPTION_KEY: "private-encryption-key" });
   assert.deepEqual(stripped, { PATH: "fixture-path", AI_API_KEY: "fixture-user-key" });
 });
+
+test("desktop feedback forwards from other modes without granting them command access", async t => {
+  const env = process.env as Record<string, string | undefined>, before = { NODE_ENV: env.NODE_ENV, STUDYSOLO_DESKTOP_RUNTIME: env.STUDYSOLO_DESKTOP_RUNTIME };
+  env.NODE_ENV = "production"; env.STUDYSOLO_DESKTOP_RUNTIME = "true";
+  try {
+    let requests = 0;
+    t.mock.method(globalThis, "fetch", async (target: string | URL | Request, init?: RequestInit) => {
+      requests++; assert.equal(String(target), "https://studysolo.1037solo.com/api/feedback/chat/");
+      const headers = new Headers(init?.headers);
+      assert.equal(headers.get("authorization"), "Bearer fixture-account-access");
+      assert.equal(headers.get("cookie"), null);
+      assert.equal(headers.get("referer"), "https://studysolo.1037solo.com/review");
+      return Response.json({ code: "RATE_LIMITED" }, { status: 429, headers: { "Retry-After": "30" } });
+    });
+    const make = (path = "/api/feedback/chat/", origin = "http://127.0.0.1:35349") => new NextRequest(`http://127.0.0.1:35349${path}`, { method: "POST", headers: { Host: "127.0.0.1:35349", Origin: origin, Referer: "http://127.0.0.1:35349/review", Cookie: "ss_access_token=fixture-account-access" }, body: JSON.stringify({ action: "vote", vote: "like", sessionId: "s", messageId: "m" }) });
+    const response = await forwardDesktopAgentRequest(make());
+    assert.equal(response.status, 429); assert.equal(response.headers.get("retry-after"), "30");
+    await assert.rejects(() => forwardDesktopAgentRequest(make("/api/agent/sandbox/")), /AGENT_SURFACE_REQUIRED/);
+    await assert.rejects(() => forwardDesktopAgentRequest(make("/api/feedback/chat/", "https://evil.example")), /SANDBOX_ORIGIN_REJECTED/);
+    assert.equal(requests, 1);
+  } finally { for (const [key, value] of Object.entries(before)) if (value === undefined) delete env[key]; else env[key] = value; }
+});
 test("desktop model forwarding preserves BYOK and excludes infrastructure secrets", () => {
   const body = desktopModelRequest({ modelId: "custom-openai" }, { RELAY_BASE_URL: "https://provider.example/v1", RELAY_API_KEY: "fixture-user-relay", RELAY_MODEL_ID: "fixture-tool-model", CLOUD_SANDBOX_API_KEY: "must-not-leave-desktop", SUPABASE_SERVICE_ROLE_KEY: "test" });
   assert.equal((body.customApiGroups as { apiKey: string }[])[0].apiKey, "fixture-user-relay");
