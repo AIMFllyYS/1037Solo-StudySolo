@@ -53,6 +53,23 @@ export const panelZh = {
     untitled: "新对话",
   },
 
+  // Agent 中央对话里的欢迎建议和输入框快捷提示。
+  agentWelcome: {
+    examplesTitle: "试试这样问我",
+    description: {
+      outline: "按核心概念搭出清晰的章节框架",
+      flashcards: "整理成便于记忆和自测的卡片",
+      demo: "把抽象过程变成可操作的小演示",
+      brief: "先查证资料，再汇总关键结论",
+    },
+  },
+  agentComposer: {
+    hintsAria: "输入框快捷提示",
+    enterToSend: "发送",
+    shiftEnterForLineBreak: "换行",
+    sendWithButton: "点击发送按钮提交",
+  },
+
   // 窗口 chrome（红绿灯 / 标题 / 外链 / 缩放）与右栏标签条
   window: {
     minimize: "最小化",
@@ -63,6 +80,16 @@ export const panelZh = {
     tabsAria: "工作区标签",
     openTab: "打开 {title}",
     closeTab: "关闭 {title}",
+    tabActions: "{title} 的更多操作",
+    tabMenuAria: "{title} 的工作区标签操作",
+    overflowMenuAria: "更多工作区窗口",
+    moreTabs: "另外 {count} 个窗口",
+    copyTitle: "复制标题",
+    closeTabAction: "关闭此窗口",
+    closeOthers: "关闭其他窗口",
+    closeAll: "关闭全部窗口",
+    untitledTab: "未命名窗口",
+    minimizedShort: "已收起",
   },
 
   // 加号菜单：右栏「＋」与右栏空态共用同一批入口
@@ -104,7 +131,41 @@ export const panelZh = {
     hiddenTitle: "窗口都收起来了",
     emptyTitle: "工作区还没有内容",
     hiddenHint: "点上方的标签可以再打开它们。",
-    emptyHint: "从下面选一个开始，或用右上角 ＋ 添加文件、网址。",
+    emptyHint: "从下面选一个开始，或使用上方 ＋ 添加文件、网址。",
+  },
+
+  chatFeedback: {
+    actionsAria: "回答反馈操作",
+    copy: "复制回答",
+    copied: "已复制",
+    copyFailed: "复制失败，请重试。",
+    like: "点赞",
+    dislike: "点踩",
+    report: "举报",
+    voteSaved: "评价已记录。你可以选择附上一小段已脱敏的回答摘录。",
+    reportTitle: "举报这个回答",
+    voteDetailsTitle: "补充回答反馈",
+    reportHint: "请选择最符合情况的原因。",
+    excerptLabel: "附上回答摘录（最多 600 字）",
+    excerptPrivacy: "仅在勾选后提交这段已脱敏预览。请检查并确认不含私人内容；不会提交你的提问、对话历史或工具内容。",
+    reason: "举报原因",
+    inaccurate: "内容不准确",
+    unsafe: "不安全或有害",
+    privacy: "泄露隐私或敏感信息",
+    other: "其他问题",
+    cancel: "暂不补充",
+    submitExcerpt: "提交补充",
+    submitReport: "提交举报",
+    submitting: "正在提交…",
+    reportSaved: "举报已记录。",
+    loginRequired: "请登录后再提交反馈。",
+    mfaRequired: "请先完成账号两步验证。",
+    accountUnavailable: "账号服务暂不可用，请稍后重试。",
+    migrationPending: "反馈服务尚未完成部署，请稍后重试。",
+    rateLimited: "提交过于频繁，请稍后重试。",
+    stale: "这条评价已在其他位置更新。请关闭弹窗后重新选择评价。",
+    staleClose: "关闭并重新评价",
+    submitFailed: "反馈暂时未能保存，请重试。",
   },
 
   // 加号菜单末尾的「打开网址」输入条

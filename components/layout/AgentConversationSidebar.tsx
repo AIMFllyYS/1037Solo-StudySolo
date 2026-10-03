@@ -27,6 +27,7 @@ interface PanelMenuState {
   x: number;
   y: number;
   target: AgentMenuTarget;
+  returnFocusElement: HTMLElement;
 }
 
 /**
@@ -105,28 +106,21 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
   const [recentsExpanded, setRecentsExpanded] = useState(true);
   const [collapsedProjects, setCollapsedProjects] = useState<Record<string, boolean>>({});
   const settingsBtnRef = useRef<HTMLButtonElement>(null);
+  const menuReturnFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     void ensureChatHistoryBootstrap();
   }, []);
 
-  useEffect(() => {
-    if (!menu) return;
-    const close = () => {
-      setMenu(null);
-      setPendingDeleteId(null);
-      setPendingDeleteProjectId(null);
-    };
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") close();
-    };
-    document.addEventListener("pointerdown", close);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("pointerdown", close);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [menu]);
+  const closeMenu = useCallback((restoreFocus = true) => {
+    setMenu(null);
+    setPendingDeleteId(null);
+    setPendingDeleteProjectId(null);
+    const target = menuReturnFocusRef.current;
+    if (restoreFocus && target?.isConnected) {
+      window.requestAnimationFrame(() => target.focus({ preventScroll: true }));
+    }
+  }, []);
 
   const projects = useMemo(() => buildProjectViews(folders, sessionsMeta), [folders, sessionsMeta]);
   const userProjects = useMemo(() => projects.filter((project) => !project.system).map((project) => ({ id: project.id, name: project.name, createdAt: project.updatedAt })), [projects]);
@@ -181,7 +175,11 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
     event.stopPropagation();
     setPendingDeleteId(null);
     setPendingDeleteProjectId(null);
-    setMenu({ x: event.clientX, y: event.clientY, target });
+    const eventTarget = event.target instanceof Element ? event.target : null;
+    const returnFocusElement = eventTarget?.closest<HTMLElement>("button, a, [tabindex]")
+      ?? event.currentTarget as HTMLElement;
+    menuReturnFocusRef.current = returnFocusElement;
+    setMenu({ x: event.clientX, y: event.clientY, target, returnFocusElement });
   };
 
   const handleCreateProject = () => {
@@ -217,6 +215,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
   return (
     <aside
       data-testid="agent-conversation-sidebar"
+      tabIndex={-1}
       className="flex h-full flex-col"
       style={{
         // 深色下由 CSS 变量改成「中间那一档」（B-A-A 配色）；浅色保持原样。
@@ -466,11 +465,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
           onRequestDeleteProject={setPendingDeleteProjectId}
           onConfirmDeleteProject={handleDeleteProject}
           onCancelDeleteProject={() => setPendingDeleteProjectId(null)}
-          close={() => {
-            setMenu(null);
-            setPendingDeleteId(null);
-            setPendingDeleteProjectId(null);
-          }}
+          close={closeMenu}
+          returnFocusElement={menu.returnFocusElement}
           actions={{
             newChat: () => handleNewChat(activeProjectId),
             newProject: handleCreateProject,

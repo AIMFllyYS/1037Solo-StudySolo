@@ -76,6 +76,10 @@ describe('Agent 空对话欢迎页', () => {
     expect(container.querySelector('.chat-panel--welcome')).toBeTruthy();
     expect(screen.getByTestId('agent-welcome-greeting')).toBeInTheDocument();
     expect(screen.getByTestId('agent-welcome-examples')).toBeInTheDocument();
+    expect(screen.getByLabelText('试试这样问我')).toBeInTheDocument();
+    expect(screen.getByTestId('agent-welcome-example-outline')).toHaveTextContent('按核心概念搭出清晰的章节框架');
+    expect(screen.getByTestId('agent-composer-hints')).toHaveTextContent('Enter');
+    expect(screen.getByTestId('agent-composer-hints')).toHaveTextContent('发送');
     expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', '输入问题、引用笔记、计划或工具');
   });
 
@@ -90,6 +94,7 @@ describe('Agent 空对话欢迎页', () => {
     expect(container.querySelector('.chat-panel--welcome')).toBeNull();
     expect(screen.queryByTestId('agent-welcome-examples')).toBeNull();
     expect(screen.queryByTestId('agent-welcome-greeting')).toBeNull();
+    expect(screen.getByTestId('agent-composer-hints')).toBeInTheDocument();
     const after = screen.getByRole('textbox') as HTMLTextAreaElement;
     expect(after).toBe(textbox);
     expect(after.value).toBe('我自己敲了一半的草稿');
@@ -120,6 +125,7 @@ describe('Agent 空对话欢迎页', () => {
     await settle();
     expect(container.querySelector('.chat-panel--welcome')).toBeNull();
     expect(screen.queryByTestId('agent-welcome-examples')).toBeNull();
+    expect(screen.queryByTestId('agent-composer-hints')).toBeNull();
     expect(screen.getByTestId('chat-empty-state')).toBeInTheDocument();
   });
 });

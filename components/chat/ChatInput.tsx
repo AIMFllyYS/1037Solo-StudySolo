@@ -710,6 +710,22 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
         </button>
         </div>
       </div>
+      {showProjectPicker ? (
+        <div
+          className="chat-input-hints"
+          data-testid="agent-composer-hints"
+          aria-label={t("panel.agentComposer.hintsAria")}
+        >
+          {sendShortcutEnabled ? (
+            <>
+              <span className="chat-input-hint"><kbd>Enter</kbd><span>{t("panel.agentComposer.enterToSend")}</span></span>
+              <span className="chat-input-hint"><kbd>Shift + Enter</kbd><span>{t("panel.agentComposer.shiftEnterForLineBreak")}</span></span>
+            </>
+          ) : (
+            <span className="chat-input-hint">{t("panel.agentComposer.sendWithButton")}</span>
+          )}
+        </div>
+      ) : null}
       <ComposerPalette
         open={palette !== null}
         anchorRef={palette === "slash" && paletteAnchor === "plus" ? plusRef : textareaRef}

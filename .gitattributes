@@ -17,3 +17,6 @@
 *.png  binary
 *.webp binary
 *.svg  binary
+
+# User-provided skill references intentionally use Markdown two-space hard breaks.
+lib/sandbox/skill-packs/**/*.md whitespace=-blank-at-eol
