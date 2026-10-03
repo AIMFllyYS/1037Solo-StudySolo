@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
 
 const mocks = vi.hoisted(() => ({
@@ -71,6 +71,7 @@ function authenticated() {
 
 describe("POST /api/feedback/chat", () => {
   beforeEach(() => {
+    vi.stubEnv("APP_URL", "https://studysolo.1037solo.com");
     vi.clearAllMocks();
     mocks.from.mockReturnValue(mocks.query);
     mocks.query.update.mockReturnValue(mocks.query);
@@ -80,6 +81,7 @@ describe("POST /api/feedback/chat", () => {
     mocks.rpc.mockResolvedValue({ data: { id: FEEDBACK_UUID, feedback_type: "like", revision: 1, status: "open" }, error: null });
     mocks.desktopBridgeEnabled.mockReturnValue(false);
   });
+  afterEach(() => { vi.unstubAllEnvs(); });
 
   it("fails closed without an Account session", async () => {
     mocks.verifyAccount.mockResolvedValue({ kind: "signed-out", code: "SESSION_INVALID" });
@@ -121,6 +123,18 @@ describe("POST /api/feedback/chat", () => {
       headers: { host: "127.0.0.1:35349", origin: "http://127.0.0.1:35349" },
     }));
     expect(response.status).toBe(200);
+  });
+
+  it("accepts configured public Host and Origin behind an internal Next bind URL", async () => {
+    vi.stubEnv("APP_URL", "https://studysolo.1037solo.com");
+    try {
+      authenticated();
+      const response = await POST(request({ action: "vote", sessionId: "session-a", messageId: "message-a", vote: "like" }, {
+        url: "http://127.0.0.1:35349/api/feedback/chat/",
+        headers: { host: "studysolo.1037solo.com", origin: "https://studysolo.1037solo.com", "x-forwarded-host": "attacker.invalid" },
+      }));
+      expect(response.status).toBe(200);
+    } finally { vi.unstubAllEnvs(); }
   });
 
   it("rejects a cross-site Origin or Host mismatch before Account or storage access", async () => {

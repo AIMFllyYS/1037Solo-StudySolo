@@ -137,8 +137,7 @@ function isLocalFeedbackHost(host: string): boolean {
 
 function assertSameOrigin(request: NextRequest) {
   const hostHeader = request.headers.get("host")?.trim();
-  const urlHost = request.nextUrl.host;
-  if (!hostHeader || normalizeLocalHost(hostHeader) !== normalizeLocalHost(urlHost)) {
+  if (!hostHeader) {
     throw new FeedbackError(403, "ORIGIN_REJECTED");
   }
 
@@ -155,7 +154,8 @@ function assertSameOrigin(request: NextRequest) {
   }
 
   if (isLocalFeedbackHost(hostHeader)) {
-    if (request.nextUrl.protocol !== "http:" || normalizeLocalHost(parsedOrigin.host) !== normalizeLocalHost(hostHeader)
+    if (process.env.NODE_ENV === "production" || request.nextUrl.protocol !== "http:" || normalizeLocalHost(request.nextUrl.host) !== normalizeLocalHost(hostHeader)
+      || normalizeLocalHost(parsedOrigin.host) !== normalizeLocalHost(hostHeader)
       || parsedOrigin.protocol !== "http:") throw new FeedbackError(403, "ORIGIN_REJECTED");
   } else {
     let expected: URL;
@@ -165,7 +165,7 @@ function assertSameOrigin(request: NextRequest) {
       throw new FeedbackError(503, "FEEDBACK_ORIGIN_UNCONFIGURED");
     }
     if (normalizeLocalHost(hostHeader) !== normalizeLocalHost(expected.host)
-      || parsedOrigin.origin !== expected.origin || request.nextUrl.protocol !== expected.protocol) {
+      || parsedOrigin.origin !== expected.origin) {
       throw new FeedbackError(403, "ORIGIN_REJECTED");
     }
   }
