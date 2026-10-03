@@ -76,6 +76,15 @@ test("native authorization, refresh, action replay and export contracts", async 
       assert.throws(() => validateArguments({ type: "object" }, { access_token: "fixture" }), /INVALID_ARGUMENTS/);
       assert.throws(() => validateArguments({ type: "object", required: ["id"], properties: { id: { type: "string" } } }, {}), /INVALID_ARGUMENTS/);
     });
+    await t.test("official MCP JSON Schema dialects preserve constraints and fail closed", () => {
+      const schema = { $schema: "https://json-schema.org/draft/2020-12/schema", type: "object", properties: { title: { type: "string" }, mode: { enum: Array.from({ length: 101 }, (_, i) => `mode-${i}`) } }, required: ["title", "mode"], additionalProperties: false };
+      validateArguments(schema, { title: "study", mode: "mode-100" });
+      assert.throws(() => validateArguments(schema, { title: 3, mode: "mode-100" }), /INVALID_ARGUMENTS/);
+      assert.throws(() => validateArguments(schema, { title: "study", mode: "unknown" }), /INVALID_ARGUMENTS/);
+      assert.throws(() => validateArguments({ $schema: "https://untrusted.example/schema", type: "object" }, {}), /PROVIDER_SCHEMA_UNSUPPORTED/);
+      assert.throws(() => validateArguments({ $ref: "https://untrusted.example/remote" }, {}), /PROVIDER_SCHEMA_UNSUPPORTED/);
+      validateArguments({ $schema: "https://json-schema.org/draft/2019-09/schema", type: "object", unevaluatedProperties: false }, {});
+    });
     await t.test("email headers cannot be injected; calendar duration and timezone are checked", () => {
       assert.throws(() => gmailMime({ to: "recipient@example.test\r\nBcc: other@example.test", subject: "fixture", body: "" }), /INVALID_EMAIL/);
       assert.throws(() => gmailMime({ to: "recipient@example.test", subject: "x\r\nBcc: other@example.test", body: "" }), /INVALID_EMAIL/);

@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-export function KitSoloConnectButton({ english = false }: { english?: boolean }) {
+export function KitSoloConnectButton({ english = false, compact = false }: { english?: boolean; compact?: boolean }) {
   const [status, setStatus] = useState<"loading" | "connected" | "none" | "unavailable">("loading"), [notice, setNotice] = useState("");
   const popup = useRef<Window | null>(null), timer = useRef<ReturnType<typeof setInterval> | null>(null);
   const request = useRef<AbortController | null>(null);
@@ -23,8 +23,8 @@ export function KitSoloConnectButton({ english = false }: { english?: boolean })
     timer.current = setInterval(() => { if (popup.current?.closed) { if (timer.current) clearInterval(timer.current); timer.current = null; void check(); } }, 500);
   }
   return <div className="flex flex-wrap items-center gap-2 text-xs" data-testid="kitsolo-connect">
-    <button type="button" className="rounded-lg border border-current px-3 py-2" onClick={connect} disabled={status === "loading"}>{status === "connected" ? (english ? "KitSolo connected · Relink" : "KitSolo 已关联 · 重新关联") : english ? "Connect KitSolo tools" : "关联 KitSolo 工具"}</button>
-    <button type="button" className="rounded-lg px-2 py-2 opacity-70" onClick={() => void check()}>{english ? "Refresh status" : "刷新状态"}</button>
+    <button type="button" className="rounded-lg border border-current px-3 py-2" onClick={connect} disabled={status === "loading"}>{status === "connected" ? (english ? "Connected · Reconnect" : "已连接 · 重新连接") : english ? "Connect" : "连接"}</button>
+    {!compact && <button type="button" className="rounded-lg px-2 py-2 opacity-70" onClick={() => void check()}>{english ? "Refresh status" : "刷新状态"}</button>}
     {status === "unavailable" && <span role="status">{english ? "Service unavailable" : "暂时无法查询关联状态"}</span>}
     {notice && <span className="w-full" role="status">{notice} <a href="/api/kitsolo/connect/" target="_blank" rel="noopener noreferrer" className="underline">{english ? "Open connection page" : "打开关联页面"}</a></span>}
   </div>;

@@ -21,6 +21,7 @@ import type {
 } from "@/lib/ai/agent/tools/projectFiles/types";
 
 export interface ChatRequestBodySettings {
+  agentMain?: boolean;
   customApiGroups: CustomApiGroup[];
   customBaseUrl: string;
   customApiKey: string;
@@ -52,6 +53,7 @@ export interface ChatRequestBodySettings {
 
 /** 发给 /api/chat 的 body（messages 由 transport 另传）。字段须与 chatRequestSchema 对齐。 */
 export interface ChatRequestBody {
+  agentMain?: boolean;
   modelId: string;
   customApiGroups: CustomApiGroup[];
   customProvider?: { baseUrl: string; apiKey: string; model: string };
@@ -144,6 +146,7 @@ export function buildChatRequestBody(
     memoryCommit: settings.memoryCommit,
     editingUserNote: settings.editingUserNote,
     noteWindowAgent: settings.noteWindowAgent,
+    agentMain: settings.agentMain === true,
     userNotes: settings.userNotes ?? [],
     flashcards: settings.flashcards ?? [],
     projectFiles: settings.projectFiles ?? [],

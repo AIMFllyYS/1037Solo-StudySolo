@@ -135,7 +135,7 @@ export default function AgentChatCenter() {
     <div className="flex h-full min-h-0" data-testid="agent-chat-center">
       <div className="relative min-h-0 min-w-0 flex-1">
         <div className={clsx("h-full min-h-0", centerTab !== "answer" && "hidden")} data-testid="agent-center-answer">
-          <ChatPanel chatContext={chatContext} hideHeader emptyLayout="agent" />
+          <ChatPanel chatContext={chatContext} hideHeader emptyLayout="agent" agentMain />
         </div>
         {centerTab === "links" ? <AgentLinksPane rounds={rounds} sources={sources} sessionId={activeSessionId} unknownTools={visibleSummary?.unknownToolRefs} /> : null}
         {centerTab === "images" ? <AgentImagesPane images={images} /> : null}

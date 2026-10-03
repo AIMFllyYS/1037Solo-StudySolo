@@ -19,6 +19,7 @@ const net = require("node:net");
 const http = require("node:http");
 const BAKED = require("./config");
 const { normalizeOpenAIBaseUrl } = require("./openaiBaseUrl");
+const { withoutOperatorCredentials } = require("./serverEnvironment");
 
 // 自由中转 = 用户自填的 OpenAI 兼容端点（URL + API Key + 模型 ID），不必使用项目中转站。
 // SiliconFlow / MiMo / Zhipu / Unsplash 仍为可选。
@@ -195,7 +196,7 @@ async function startServer(keys) {
     throw new Error(`未找到 standalone server.js：${serverJs}\n请先运行桌面构建。`);
   }
   const env = {
-    ...process.env,
+    ...withoutOperatorCredentials(process.env),
     ...BAKED,
     RELAY_BASE_URL: keys.RELAY_BASE_URL || "",
     RELAY_API_KEY: keys.RELAY_API_KEY || "",
@@ -209,6 +210,11 @@ async function startServer(keys) {
     NODE_ENV: "production",
     ELECTRON_RUN_AS_NODE: "1", // run server.js with Electron's bundled Node
     ELECTRON_USER_DATA: app.getPath("userData"),
+    STUDYSOLO_DESKTOP_RUNTIME: "true",
+    CLOUD_SANDBOX_ENABLED: "false",
+    CLOUD_SANDBOX_API_KEY: "",
+    CLOUD_SANDBOX_ENCRYPTION_KEY: "",
+    CONNECTOR_ALLOW_PRODUCTION: "false",
   };
   const proc = spawn(process.execPath, [serverJs], { cwd: dir, env, stdio: ["ignore", "pipe", "pipe"] });
   serverProc = proc;

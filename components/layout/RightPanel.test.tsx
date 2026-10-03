@@ -5,6 +5,7 @@ import userEvent from "@testing-library/user-event";
 import { useStore } from "@/lib/stores/ui";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { useChatHistory } from "@/lib/stores/chatHistory";
+import { translate } from "@/lib/i18n";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/",
@@ -131,5 +132,7 @@ describe("RightPanel — Agent dock (unchanged)", () => {
     expect(screen.queryByRole("button", { name: "浏览器设置" })).not.toBeInTheDocument();
     expect(screen.getByTestId("window-taskbar-host")).toHaveTextContent("right-panel");
     expect(screen.getByRole("button", { name: "收起右侧面板" })).toBeInTheDocument();
+    expect(screen.getByText("从下面选一个开始，或使用上方 ＋ 添加文件、网址。")).toBeInTheDocument();
+    expect(translate("en", "panel.dockEmpty.emptyHint")).toBe("Pick one below, or use the ＋ above to add a file or URL.");
   });
 });

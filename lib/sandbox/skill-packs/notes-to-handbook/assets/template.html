@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!--
+  notes-to-handbook starter template.
+
+  How to use:
+  1. Copy this file into your working directory and rename it.
+  2. Rewrite the :root token block below to fit THIS document's design
+     system (see references/design-tokens-playbook.md for how to derive it
+     from the subject matter — don't just keep these placeholder colors).
+  3. Duplicate the "CHAPTER PATTERN" block once per chapter, filling in real
+     content. Every component below (card, pullquote, diagram frame,
+     checklist) is optional per-chapter — use only what the content calls for.
+  4. Render with scripts/render_pdf.js and validate with
+     scripts/check_pdf_pages.py before delivering.
+
+  Page size: A4 (210mm x 297mm). For US Letter, change PAGE_W/PAGE_H below
+  and pass "Letter" as the render_pdf.js format argument.
+-->
+<head>
+<meta charset="UTF-8">
+<title>DOCUMENT TITLE</title>
+<style>
+  :root{
+    /* ============ TOKEN SYSTEM — replace all of these ============ */
+    /* Paper / ink: avoid pure white/black. See playbook for palette logic. */
+    --paper:      #F0EDE4;   /* page background */
+    --paper-card: #FAF8F2;   /* card / diagram-frame background, slightly lighter than paper */
+    --ink:        #1C1B17;   /* primary text */
+    --ink-soft:   #5A564C;   /* secondary / body-soft text */
+    --ink-faint:  #8B8676;   /* tertiary / metadata text */
+    --rule:       #CFC9B5;   /* hairlines, table borders */
+
+    /* Category accents — pick 3-4, give each a semantic role, and reuse the
+       SAME color for the same category everywhere (card tabs, diagram fills,
+       pull-quote borders). Don't let these be arbitrary decoration. */
+    --accent-a:      #2B4A6F; --accent-a-soft: #DDE4EA;  /* e.g. "methodology" */
+    --accent-b:      #B0812A; --accent-b-soft: #F1E4C6;  /* e.g. "tooling" */
+    --accent-c:      #A23C2C; --accent-c-soft: #F2DDD6;  /* e.g. "problem/critique" */
+    --accent-d:      #59714C; --accent-d-soft: #E1E8D9;  /* e.g. "collaboration" */
+
+    /* Type pairing — verify CJK fonts are actually installed with
+       `fc-list :lang=zh` before assuming availability. */
+    --display: 'Noto Serif CJK SC','Noto Serif CJK SC','CJKSerif',serif;
+    --body:    'Noto Sans CJK SC','Noto Sans CJK SC','CJKSans',sans-serif;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--paper);}  /* NOT a dark color — see render_pdf.js note on why overflow must blend with paper, not stand out as a dark sliver */
+  body{font-family:var(--body); color:var(--ink); font-size:9.8pt; line-height:1.62;}
+
+  /* ============ PAGE GEOMETRY ============
+     IMPORTANT: min-height, not height — never clip content. Overflow simply
+     flows onto the next physical PDF page, which is correct behavior. Keep
+     Playwright margins at 0 (see scripts/render_pdf.js) so this 297mm figure
+     matches the PDF's actual usable page height exactly. */
+  .page{
+    width:210mm; min-height:297mm; background:var(--paper);
+    position:relative; overflow:hidden;
+    padding:17mm 18mm 15mm 18mm;
+    page-break-after:always;
+  }
+  .page:last-child{page-break-after:auto;}
+
+  /* ============ RUNNING HEADER (inside content pages) ============ */
+  .running{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:7.6pt; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-faint);
+    border-bottom:1px solid var(--rule); padding-bottom:3mm; margin-bottom:9mm;
+  }
+  .running .tag{color:var(--accent-c); font-weight:700;}
+
+  /* ============ COVER ============ */
+  .cover{ background:var(--ink); color:var(--paper); padding:0; }
+  .cover .inner{ position:relative; height:100%; padding:26mm 18mm 18mm 18mm; display:flex; flex-direction:column; justify-content:space-between; min-height:257mm;}
+  .cover .eyebrow{ font-family:var(--body); font-size:8.5pt; letter-spacing:0.32em; text-transform:uppercase; color:var(--accent-b-soft); display:flex; align-items:center; gap:8px;}
+  .cover .eyebrow::before{content:""; width:22px; height:2px; background:var(--accent-b); display:inline-block;}
+  .cover h1.title{ font-family:var(--display); font-weight:900; color:var(--paper); font-size:56pt; line-height:1.0; margin-top:14mm; letter-spacing:-0.01em;}
+  .cover h1.title small{ display:block; font-size:16pt; font-weight:500; color:var(--accent-b-soft); margin-top:8mm;}
+  .cover .subtitle{ font-family:var(--display); font-size:12pt; color:#C9C4B3; margin-top:10mm; max-width:120mm; line-height:1.7; font-weight:500;}
+  .cover .meta{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:6mm; border-top:1px solid #4d4b42; padding-top:6mm; margin-top:14mm;}
+  .cover .meta div .k{font-size:7.6pt; letter-spacing:0.18em; color:var(--ink-faint); text-transform:uppercase;}
+  .cover .meta div .v{font-family:var(--display); font-size:11pt; color:var(--paper); margin-top:2mm;}
+
+  /* ============ TOC ============ */
+  .toc-title{font-family:var(--display); font-size:26pt; font-weight:800; margin-bottom:3mm;}
+  .toc-sub{color:var(--ink-soft); font-size:9.7pt; max-width:150mm; margin-bottom:10mm; line-height:1.8;}
+  table.toc{width:100%; border-collapse:collapse; font-size:9.3pt;}
+  table.toc th{ text-align:left; font-size:7.6pt; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-faint); border-bottom:1px solid var(--ink); padding:0 3mm 2.5mm 0; font-weight:600;}
+  table.toc td{padding:4.2mm 3mm 4.2mm 0; border-bottom:1px solid var(--rule); vertical-align:top;}
+  table.toc .num{font-family:var(--display); font-weight:800; color:var(--accent-c); font-size:11pt; white-space:nowrap;}
+  table.toc .ch{font-family:var(--display); font-weight:700; font-size:10.3pt;}
+  table.toc .desc{color:var(--ink-soft);}
+
+  /* ============ CHAPTER OPENER ============ */
+  .tc-big{ font-family:var(--display); font-weight:900; font-size:15pt; color:var(--ink-faint); letter-spacing:0.06em;}
+  .tc-big .num{ color:var(--accent-c); }
+  h2.ch-title{ font-family:var(--display); font-weight:900; font-size:26pt; line-height:1.15; margin-top:3mm; max-width:150mm;}
+  .thesis{ font-family:var(--display); font-weight:600; font-size:11.5pt; color:var(--accent-a); border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); padding:4mm 0; margin:6mm 0 6.5mm 0; line-height:1.6;}
+
+  /* ============ SECTION HEAD ============ */
+  h3.sec{ font-family:var(--display); font-weight:800; font-size:12pt; margin:5mm 0 2.2mm 0; color:var(--ink); display:flex; align-items:center; gap:3mm;}
+  h3.sec .dot{width:2.6mm; height:2.6mm; background:var(--accent-c); border-radius:50%; display:inline-block;}
+
+  /* ============ BODY TEXT ============ */
+  p{margin-bottom:2.2mm; color:var(--ink); text-align:justify;}
+  p.lead{font-size:10.6pt; color:var(--ink-soft);}
+  ul.plain{margin:2mm 0 4mm 0; padding-left:0; list-style:none;}
+  ul.plain li{padding-left:5mm; position:relative; margin-bottom:1.5mm; text-align:justify;}
+  ul.plain li::before{content:"—"; position:absolute; left:0; color:var(--accent-b); font-weight:700;}
+  b, strong{font-weight:700; color:var(--ink);}
+
+  /* ============ CARDS ============ */
+  .cardgrid{ display:grid; grid-template-columns:1fr 1fr; gap:4mm; margin:3.5mm 0 5mm 0; }
+  .cardgrid.single{grid-template-columns:1fr;}
+  .card{ background:var(--paper-card); border:1px solid var(--rule); position:relative; padding:5mm 5.5mm 5mm 5.5mm; break-inside:avoid;}
+  .card .tab{ position:absolute; top:0; left:0; right:0; height:2.2mm;}
+  /* one modifier class per accent — extend if you defined more than 4 */
+  .card.a .tab{background:var(--accent-a);} .card.a .label{color:var(--accent-a);}
+  .card.b .tab{background:var(--accent-b);} .card.b .label{color:var(--accent-b);}
+  .card.c .tab{background:var(--accent-c);} .card.c .label{color:var(--accent-c);}
+  .card.d .tab{background:var(--accent-d);} .card.d .label{color:var(--accent-d);}
+  .card .label{font-size:7.3pt; letter-spacing:0.14em; text-transform:uppercase; font-weight:700; margin-top:2mm;}
+  .card h4{font-family:var(--display); font-size:11.3pt; font-weight:800; margin:2mm 0 2.4mm 0; line-height:1.35;}
+  .card p{font-size:8.9pt; color:var(--ink-soft); margin-bottom:0; line-height:1.7;}
+
+  /* ============ PULL QUOTE ============ */
+  .pullquote{ margin:4mm 0; padding:3mm 0 3mm 7mm; border-left:3px solid var(--accent-c); font-family:var(--display); font-size:11.5pt; font-weight:600; color:var(--ink); line-height:1.55;}
+  .pullquote .attr{display:block; margin-top:2.5mm; font-family:var(--body); font-size:8pt; font-weight:600; color:var(--ink-faint); letter-spacing:0.06em;}
+
+  /* ============ DIAGRAM FRAME ============
+     Put your inline <svg> inside .diagram. Use var(--accent-*) for fill/stroke
+     so it stays in sync with the token system automatically. */
+  .diagram{ margin:3.5mm 0 5mm 0; background:var(--paper-card); border:1px solid var(--rule); padding:4mm; }
+  .diagram svg{width:100%; height:auto; display:block;}
+  .diagram .cap{font-size:7.8pt; letter-spacing:0.1em; color:var(--ink-faint); text-transform:uppercase; margin-top:3mm; text-align:center;}
+
+  /* ============ CHECKLIST (for closing action items) ============ */
+  .checklist{list-style:none; margin:3mm 0 6mm 0;}
+  .checklist li{ display:flex; gap:3.5mm; padding:2.4mm 0; border-bottom:1px solid var(--rule); align-items:flex-start;}
+  .checklist li .box{width:3.6mm; height:3.6mm; border:1.3px solid var(--ink); margin-top:1mm; flex-shrink:0;}
+  .checklist li .t{font-size:9.3pt;}
+  .checklist li .t b{display:block; font-family:var(--display); font-size:9.6pt; margin-bottom:0.6mm;}
+
+  /* ============ FOOTER WAYFINDING ============ */
+  .footdate{position:absolute; bottom:12mm; left:18mm; right:18mm; display:flex; justify-content:space-between; font-size:7.4pt; color:var(--ink-faint); letter-spacing:0.1em; text-transform:uppercase; border-top:1px solid var(--rule); padding-top:2.5mm;}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ COVER ============================================================ -->
+<div class="page cover">
+  <div class="inner">
+    <div>
+      <div class="eyebrow">DOC CATEGORY · ENGLISH SUBLABEL</div>
+      <h1 class="title">TITLE<small>SUBTITLE / one-line framing of what this document is and why it exists</small></h1>
+      <div class="subtitle">Two or three sentences setting up how this document was made and what makes it worth reading — not a summary of contents, a pitch for why the restructuring was necessary.</div>
+    </div>
+    <div class="meta">
+      <div><div class="k">Date</div><div class="v">YYYY · MM · DD</div></div>
+      <div><div class="k">Source</div><div class="v">…</div></div>
+      <div><div class="k">Doc type</div><div class="v">…</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ TOC ============================================================ -->
+<div class="page">
+  <div class="running"><span>DOC TITLE <span class="tag">·</span> SUBLABEL</span><span>目录</span></div>
+  <div class="toc-title">TOC HEADING</div>
+  <div class="toc-sub">One or two sentences explaining the restructuring principle used for this document (mirrors Phase 1 of the skill — tell the reader you organized by problem, not by timeline).</div>
+  <table class="toc">
+    <tr><th>No.</th><th>Chapter</th><th>One-line thesis</th></tr>
+    <tr><td class="num">01</td><td class="ch">Chapter title</td><td class="desc">The single-sentence claim this chapter exists to support.</td></tr>
+    <!-- duplicate this <tr> per chapter -->
+  </table>
+</div>
+
+<!-- ============================================================ CHAPTER PATTERN — duplicate this whole .page per chapter ============================================================ -->
+<div class="page">
+  <div class="running"><span>Chapter label <span class="tag">·</span> Section</span><span>01</span></div>
+  <div class="tc-big"><span class="num">01</span> / N</div>
+  <h2 class="ch-title">Chapter Title</h2>
+  <div class="thesis">The one-sentence thesis this entire chapter supports.</div>
+
+  <p class="lead">Opening context paragraph — set up why this question matters before diving in.</p>
+
+  <h3 class="sec"><span class="dot"></span>A sub-section</h3>
+  <p>Prose explanation. Default to this — most of the document should be paragraphs, not cards.</p>
+  <ul class="plain">
+    <li><b>Point one.</b> Elaboration.</li>
+    <li><b>Point two.</b> Elaboration.</li>
+  </ul>
+
+  <div class="pullquote">"An exact, minimally-cleaned excerpt from the source — never a paraphrase in quotation marks."<span class="attr">— attribution, soft if speaker is ambiguous</span></div>
+
+  <!-- Diagram: replace the placeholder rect/text below with a real inline SVG.
+       Keep it to a handful of labeled shapes + arrows; caption it below. -->
+  <div class="diagram">
+    <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="30" width="200" height="80" fill="var(--accent-a-soft)" stroke="var(--accent-a)" stroke-width="1.4"/>
+      <text x="120" y="75" text-anchor="middle" font-family="Noto Sans CJK SC" font-size="10" fill="var(--accent-a)">node label</text>
+    </svg>
+    <div class="cap">图 1.1 — diagram caption</div>
+  </div>
+
+  <h3 class="sec"><span class="dot"></span>Parallel concepts worth comparing</h3>
+  <div class="cardgrid">
+    <div class="card a"><div class="tab"></div><div class="label">category label</div><h4>Card title</h4><p>Short elaboration, 2-3 sentences max.</p></div>
+    <div class="card b"><div class="tab"></div><div class="label">category label</div><h4>Card title</h4><p>Short elaboration, 2-3 sentences max.</p></div>
+  </div>
+
+  <div class="footdate"><span>DOC TITLE · Chapter name</span><span>01 / N</span></div>
+</div>
+
+<!-- ============================================================ CLOSING / ACTION ITEMS PATTERN (optional, if the content warrants it) ============================================================ -->
+<div class="page">
+  <div class="running"><span>Closing <span class="tag">·</span> Next steps</span><span>N / N</span></div>
+  <h2 class="ch-title">Action items</h2>
+  <ul class="checklist">
+    <li><div class="box"></div><div class="t"><b>Actionable item</b>One-line elaboration of what doing this actually involves.</div></li>
+  </ul>
+  <div class="footdate"><span>DOC TITLE · 全文完</span><span>N / N</span></div>
+</div>
+
+</body>
+</html>

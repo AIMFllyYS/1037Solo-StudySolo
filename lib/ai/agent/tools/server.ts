@@ -3,6 +3,8 @@
 
 import type { ToolSet } from "ai";
 import { createLearningConnectorsTool } from "@/lib/ai/agent/tools/learningConnectors/tool";
+import { createCloudSandboxTool } from "@/lib/ai/agent/tools/cloudSandbox/tool";
+import type { SandboxScope } from "@/lib/sandbox/actor.server";
 import { createKitSoloTool } from "@/lib/ai/agent/tools/kitSolo/tool";
 import type { StudyToolName } from "@/lib/ai/agent/tools/names";
 import {
@@ -46,6 +48,7 @@ export {
 } from "@/lib/ai/agent/tools/_shared";
 
 export interface BuildStudyToolsOptions {
+  cloudSandboxScope?: SandboxScope;
   /** Account introspection UUID; never supplied by chat request JSON. */
   connectorOwner?: string;
   kitSoloAccessToken?: string;
@@ -100,6 +103,7 @@ export function buildStudyTools(
   const menuSkillNames = menuSkillNamesOf(ctx.skills);
 
   const all = {
+    cloudSandbox: createCloudSandboxTool(opts.cloudSandboxScope),
     learningConnectors: createLearningConnectorsTool(opts.connectorOwner, ctx.flashcards, !opts.planMode && !opts.noteWindowAgent),
     kitSolo: createKitSoloTool(opts.kitSoloAccessToken ?? ""),
     getCurrentPage: createGetCurrentPageTool(ctx, runtime),
@@ -148,6 +152,7 @@ export function buildStudyTools(
   ];
   if (opts.memoryCommit === "note") names.push("commitNotes");
   if (opts.connectorOwner) names.push("learningConnectors");
+  if (opts.cloudSandboxScope && !opts.noteWindowAgent && !opts.planMode) names.push("cloudSandbox");
   if (opts.kitSoloAccessToken && !opts.noteWindowAgent) names.push("kitSolo");
   if (opts.memoryCommit === "flashcards") names.push("commitFlashcards");
   // 课堂文稿只在 Class 模式（请求带了课堂上下文且已登录）时出现。

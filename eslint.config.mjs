@@ -12,6 +12,11 @@ export default defineConfig([
   ...nextCoreWebVitals,
   ...nextTypeScript,
   {
+    // Complete user-provided skill scripts run as isolated CommonJS CLIs.
+    files: ["lib/sandbox/skill-packs/**/*.js"],
+    rules: { "@typescript-eslint/no-require-imports": "off" },
+  },
+  {
     // 持久化 store（settings / appMode …）在首帧仍是默认值，本机值只在水合之后可用。
     // 用 useState 初始化器取值会永久停在默认值，也会让首屏 DOM 与服务端不一致（React Hydration failed）。
     files: ["components/**/*.tsx", "app/**/*.tsx"],

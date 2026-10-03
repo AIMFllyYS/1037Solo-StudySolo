@@ -12,6 +12,17 @@ import {
 
 const pageText = "【细胞生物学 > 教材 > 第一章】\n\n" + "线粒体是细胞的能量工厂。".repeat(40);
 
+test("cloud logs stay bounded while protocol IDs and completed outcome survive history compaction", () => {
+  const output = { sessionId: "fixture-session", commandId: "fixture-command", conversationId: "fixture-conversation", state: "completed", exitCode: 0, stdout: "start:" + "x".repeat(200000) + ":end", stderr: "", text: "x".repeat(200000), artifact: { id: "fixture-artifact", filename: "answer.pdf", downloadUrl: "/api/agent/sandbox/artifacts/fixture" } };
+  for (const mode of ["persist", "sync", "ui-request"] as const) {
+    const parts = compactStudyParts([toolPart("cloudSandbox", output)], mode);
+    const actual = (parts[0] as unknown as { output: typeof output & { logsTruncated: boolean } }).output;
+    assert.equal(actual.sessionId, output.sessionId); assert.equal(actual.commandId, output.commandId); assert.equal(actual.exitCode, 0);
+    assert.equal(actual.artifact.id, "fixture-artifact"); assert.ok(actual.stdout.startsWith("start:")); assert.ok(actual.stdout.endsWith(":end"));
+    assert.equal(actual.logsTruncated, true); assert.ok(JSON.stringify(actual).length < 20000);
+  }
+});
+
 function toolPart(name: string, output: Record<string, unknown>, input: Record<string, unknown> = {}): ChatMessagePart {
   return {
     type: `tool-${name}`,

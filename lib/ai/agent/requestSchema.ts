@@ -57,6 +57,8 @@ const skillSchema = z
     content: z.string().max(REQUEST_LIMITS.skillContentChars).optional(),
     pinned: z.boolean().optional(),
     createdAt: z.number().optional(),
+    sourceId: z.string().max(128).optional(),
+    sourceVersion: z.string().max(64).optional(),
   })
   .transform((s) => ({
     id: String(s.id ?? ""),
@@ -65,6 +67,8 @@ const skillSchema = z
     content: String(s.content ?? ""),
     pinned: s.pinned === true,
     createdAt: Number(s.createdAt ?? 0),
+    sourceId: s.sourceId,
+    sourceVersion: s.sourceVersion,
   }));
 
 /** 客户端 UIMessage（只校验最外层，parts 由 convertToModelMessages 再做严格校验）。 */
@@ -139,6 +143,8 @@ export const chatRequestSchema = z.object({
     .default([]),
   /** DefaultChatTransport 的 chatId，用作 usage_ledger.session_id。 */
   id: z.string().optional(),
+  /** Positive independent-Agent surface; execution still requires its dedicated API and server authorization. */
+  agentMain: z.boolean().optional().default(false),
   modelId: z.string().optional(),
   /** 兼容旧式 model:'flash'/'pro'（如划词浮窗早期版本）。 */
   model: z.enum(["flash", "pro"]).optional(),

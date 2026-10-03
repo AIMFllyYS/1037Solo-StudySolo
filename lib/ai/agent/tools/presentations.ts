@@ -1,6 +1,7 @@
 import type { StudyToolName } from "@/lib/ai/agent/tools/names";
 import { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";
 import type { ToolPresentation } from "@/lib/ai/agent/tools/registry";
+import { presentation as cloudSandbox } from "@/lib/ai/agent/tools/cloudSandbox/presentation";
 import type { I18nKey } from "@/lib/i18n";
 import { presentation as learningConnectors } from "@/lib/ai/agent/tools/learningConnectors/presentation";
 import { presentation as kitSolo } from "@/lib/ai/agent/tools/kitSolo/presentation";
@@ -28,6 +29,7 @@ import { presentation as readProjectSlices } from "@/lib/ai/agent/tools/readProj
 import { presentation as searchClassTranscript } from "@/lib/ai/agent/tools/searchClassTranscript/presentation";
 
 export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
+  cloudSandbox,
   learningConnectors,
   kitSolo,
   getCurrentPage,

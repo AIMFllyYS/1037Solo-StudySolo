@@ -1030,6 +1030,20 @@ mark.citation-flash {
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent), 0 0 14px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent);
 }
 
+@media (hover: none) {
+  .agent-dock-tab-action,
+  .agent-dock-tab-close {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-dock-tab-action,
+  .agent-dock-tab-close {
+    transition: none;
+  }
+}
+
 .window-taskbar-add-menu {
   transform-origin: top right;
   animation: window-taskbar-add-in 120ms var(--ease-out);

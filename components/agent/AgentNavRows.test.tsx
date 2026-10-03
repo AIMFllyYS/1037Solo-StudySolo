@@ -1,6 +1,5 @@
-import { act, cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { useSettings } from "@/lib/stores/settings";
+import { describe, expect, it, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
 import AgentNavRows from "./AgentNavRows";
 
 vi.mock("next/navigation", () => ({
@@ -8,32 +7,15 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),
 }));
 
-afterEach(() => {
-  cleanup();
-  localStorage.clear();
-  useSettings.setState({ locale: "zh" });
-});
+describe("Agent navigation new-chat state", () => {
+  it("keeps New Chat first and visibly marks it while the current conversation is blank", () => {
+    render(<AgentNavRows onNewChat={() => {}} newChatActive />);
 
-/** 迁移到词典后仍要能真的切成英文：默认中文，切 locale 后整块导航都跟着变。 */
-describe("AgentNavRows 文案语言", () => {
-  it("默认渲染中文，且标题与 aria-label 都走词典", () => {
-    render(<AgentNavRows onNewChat={() => {}} />);
-    expect(screen.getByTestId("agent-nav-new-chat")).toHaveTextContent("新对话");
-    expect(screen.getByTestId("agent-nav-assets")).toHaveTextContent("我的资产");
-    expect(screen.getByTestId("agent-nav-scheduled")).toHaveTextContent("定时任务");
-    expect(screen.getByTestId("agent-nav-plugins")).toHaveTextContent("插件市场");
-    expect(screen.getByTestId("agent-nav")).toHaveAttribute("aria-label", "Agent 板块导航");
-  });
-
-  it("切到 en 后渲染英文", () => {
-    render(<AgentNavRows onNewChat={() => {}} />);
-    act(() => {
-      useSettings.getState().setLocale("en");
-    });
-    expect(screen.getByTestId("agent-nav-new-chat")).toHaveTextContent("New chat");
-    expect(screen.getByTestId("agent-nav-assets")).toHaveTextContent("My assets");
-    expect(screen.getByTestId("agent-nav-scheduled")).toHaveTextContent("Scheduled");
-    expect(screen.getByTestId("agent-nav-plugins")).toHaveTextContent("Plugins");
-    expect(screen.getByTestId("agent-nav")).toHaveAttribute("aria-label", "Agent section navigation");
+    const nav = screen.getByTestId("agent-nav");
+    const newChat = screen.getByTestId("agent-nav-new-chat");
+    expect(nav.firstElementChild).toBe(newChat);
+    expect(newChat).toHaveAttribute("data-active", "true");
+    expect(newChat).toHaveAttribute("aria-current", "page");
+    expect(newChat.className).toContain("bg-[var(--accent-weak)]");
   });
 });

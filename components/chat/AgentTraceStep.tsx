@@ -51,7 +51,7 @@ export const AgentTraceStep = React.memo(function AgentTraceStep({ id, kind, tit
         aria-expanded={expanded}
         aria-controls={contentId}
         onClick={() => setExpanded((open) => !open)}
-        className={`flex min-h-10 w-full min-w-0 items-center gap-2 rounded-md py-2 text-left text-[13px] leading-5 transition-colors hover:text-[var(--md-sys-color-on-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--md-sys-color-primary)] motion-reduce:transition-none ${active ? 'text-[var(--md-sys-color-on-surface)]' : 'text-[var(--md-sys-color-on-surface-variant)]'}`}
+        className={`flex min-h-9 w-full min-w-0 items-center gap-2 rounded-md py-1.5 text-left text-[13px] leading-5 transition-colors hover:text-[var(--md-sys-color-on-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--md-sys-color-primary)] motion-reduce:transition-none ${active ? 'text-[var(--md-sys-color-on-surface)]' : 'text-[var(--md-sys-color-on-surface-variant)]'}`}
       >
         <motion.span
           aria-hidden="true"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
@@ -76,7 +76,13 @@ function AddMenuDivider() {
   return <div className="my-1 border-t border-[var(--line)]" data-menu-divider="" />;
 }
 
-export function AddContentButton({ showUrlField = true }: { showUrlField?: boolean } = {}) {
+export function AddContentButton({
+  showUrlField = true,
+  buttonFocusRef,
+}: {
+  showUrlField?: boolean;
+  buttonFocusRef?: MutableRefObject<HTMLButtonElement | null>;
+} = {}) {
   const t = useT();
   const agentMode = useAppMode((s) => s.mode === "agent");
   const [open, setOpen] = useState(false);
@@ -88,6 +94,10 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const attachButtonRef = useCallback((node: HTMLButtonElement | null) => {
+    buttonRef.current = node;
+    if (buttonFocusRef) buttonFocusRef.current = node;
+  }, [buttonFocusRef]);
 
   const updateMenuPosition = () => {
     const button = buttonRef.current;
@@ -179,11 +189,12 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
   return (
     <div ref={rootRef} className="relative shrink-0">
       <button
-        ref={buttonRef}
+        ref={attachButtonRef}
         type="button"
         aria-label={t("panel.addMenu.addContent")}
         aria-expanded={open}
         title={t("panel.addMenu.addContentHint")}
+        data-testid="window-taskbar-add-content"
         onClick={() => {
           setOpen((value) => {
             const next = !value;
@@ -361,6 +372,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
   );
   const { minimizeWindow, restoreWindow } = useWindowManager();
   const ref = useRef<HTMLDivElement | null>(null);
+  const dockAddButtonRef = useRef<HTMLButtonElement | null>(null);
   const [width, setWidth] = useState(0);
   const [tooltip, setTooltip] = useState<TaskbarTooltip | null>(null);
 
@@ -396,7 +408,13 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
   const activeTooltip = tooltip && windows.some((win) => win.id === tooltip.win.id) ? tooltip : null;
 
   if (host === "right-panel") {
-    return <AgentDockTabs windows={dockWindows} addContent={<AddContentButton />} />;
+    return (
+      <AgentDockTabs
+        windows={dockWindows}
+        addContent={<AddContentButton buttonFocusRef={dockAddButtonRef} />}
+        addContentFocusRef={dockAddButtonRef}
+      />
+    );
   }
 
   return (

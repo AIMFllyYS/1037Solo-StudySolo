@@ -251,7 +251,7 @@ describe('ordered AgentTrace', () => {
     for (const status of screen.getAllByText('已完成')) expect(status).toHaveClass('sr-only');
   });
 
-  it('indents ordered sibling steps and their real detail hierarchy without inventing tool parentage', () => {
+  it('keeps ordered activity steps flat without connector lines or invented tool parentage', () => {
     mountMessageLayoutStyles();
     const trace = buildTrace(message([
       { type: 'reasoning', text: '先分析内容', state: 'done' },
@@ -262,17 +262,17 @@ describe('ordered AgentTrace', () => {
     const { container } = render(<AgentTrace trace={trace} />);
     fireEvent.click(screen.getByRole('button', { name: '处理完成' }));
     const list = screen.getByRole('list', { name: '按执行顺序排列的步骤' });
-    expect(getComputedStyle(list).paddingLeft).toBe('12px');
+    expect(getComputedStyle(list).paddingLeft).toBe('0px');
     expect(Array.from(list.children, (element) => element.getAttribute('data-trace-kind'))).toEqual(['reasoning', 'text', 'tool', 'tool']);
     expect(list.querySelectorAll(':scope > li')).toHaveLength(4);
     expect(list.querySelector('li li')).toBeNull();
     expect(getComputedStyle(list.querySelector('[data-trace-kind="reasoning"]')!).marginLeft).toBe('0px');
-    for (const toolRow of list.querySelectorAll(':scope > [data-trace-kind="tool"]')) {
-      expect(getComputedStyle(toolRow).marginLeft).toBe('12px');
+    for (const row of list.querySelectorAll(':scope > li')) {
+      expect(getComputedStyle(row).marginLeft).toBe('0px');
     }
     const commentary = container.querySelector('.agent-trace-commentary')!;
     expect(getComputedStyle(commentary).paddingLeft).toBe('28px');
-    expect(getComputedStyle(commentary).marginTop).toBe('2px');
+    expect(getComputedStyle(commentary).marginTop).toBe('0px');
     fireEvent.click(screen.getByRole('button', { name: /读取笔记章节 已完成/ }));
     const body = container.querySelector('[data-trace-id="tool:nested-detail"] .agent-trace-step-body')!;
     expect(getComputedStyle(body).paddingLeft).toBe('28px');

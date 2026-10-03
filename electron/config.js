@@ -11,6 +11,8 @@ module.exports = {
   // 旧数据被永久孤立（这正是"重启后记录全没"的根因）。须与 package.json 的
   // dev/start 脚本（next -p 35349）保持一致，让网页端与桌面端同源。
   APP_PORT: 35349,
+  ACCOUNT_BACKEND_URL: "https://account.1037solo.com",
+  ACCOUNT_URL: "https://account.1037solo.com",
   AI_BASE_URL: "https://api.siliconflow.cn/v1",
   AI_MODEL_PRO: "Qwen/Qwen3.8-27B",
   AI_MODEL_FLASH: "z-ai/glm-5.3-flash",

@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import clsx from "clsx";
 import { AgentAssetsIcon, AgentComposeIcon, AgentPluginsIcon, AgentScheduleIcon } from "@/components/icons/AgentIcons";
 import { useT, type I18nKey } from "@/lib/i18n";
 
@@ -38,8 +39,9 @@ export default function AgentNavRows({ onNewChat, newChatActive = false }: { onN
         type="button"
         data-testid="agent-nav-new-chat"
         data-active={newChatActive || undefined}
+        aria-current={newChatActive ? "page" : undefined}
         onClick={onNewChat}
-        className={ROW_CLASS}
+        className={clsx(ROW_CLASS, newChatActive && "bg-[var(--accent-weak)] text-[var(--accent-ink)]")}
       >
         <span className="inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center text-[var(--md-sys-color-primary)]">
           <AgentComposeIcon size={16} />

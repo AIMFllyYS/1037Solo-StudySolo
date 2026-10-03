@@ -4,6 +4,7 @@ import { test } from "node:test";
 import { join } from "node:path";
 import { parseMarketManifest } from "../lib/plugins/market.ts";
 import { parseSkillMarkdown } from "../lib/utils/skillFrontmatter.ts";
+import { CONNECTOR_IDS, CONNECTOR_REGISTRY } from "../lib/connectors/registry.ts";
 
 const root = process.cwd();
 
@@ -11,9 +12,9 @@ const manifest = parseMarketManifest(
   JSON.parse(readFileSync(join(root, "public/plugins/market.json"), "utf8")),
 );
 
-test("插件市场 manifest：三板块非空、id 全局唯一、必填字段齐备", () => {
-  assert.ok(manifest.mcp.length >= 8, "MCP 至少收录 8 个");
-  assert.ok(manifest.cli.length >= 8, "CLI + Skills 至少收录 8 个");
+test("插件市场 manifest：实际连接器齐备、无未接入 CLI、id 唯一与必填字段齐备", () => {
+  assert.deepEqual(manifest.mcp.map((entry) => entry.id).sort(), ["kitsolo", ...CONNECTOR_IDS].sort());
+  assert.deepEqual(manifest.cli, [], "尚未实现的 CLI 安装目录不展示");
   assert.ok(manifest.skills.length >= 2, "官方 skills 至少 2 个");
 
   const all = [...manifest.mcp, ...manifest.cli, ...manifest.skills];
@@ -30,9 +31,14 @@ test("插件市场 manifest：三板块非空、id 全局唯一、必填字段�
   }
 });
 
-test("MCP 条目：stdio 有 command+args，远端有 url；env 必填项带说明", () => {
+test("连接器条目：原生 API/导出有实现绑定，远程 MCP 有实际 endpoint", () => {
   for (const entry of manifest.mcp) {
-    if (entry.transport === "stdio") {
+    if (entry.connector) {
+      assert.equal(entry.id, entry.connector);
+      const binding = CONNECTOR_REGISTRY[entry.connector];
+      if (binding.kind === "mcp") assert.equal(entry.url, binding.endpoint);
+      else assert.equal(entry.url, undefined, `${entry.id} 不虚构远程 MCP 地址`);
+    } else if (entry.transport === "stdio") {
       assert.ok(entry.command, `${entry.id} stdio 缺 command`);
       assert.ok(entry.args && entry.args.length > 0, `${entry.id} stdio 缺 args`);
     } else {

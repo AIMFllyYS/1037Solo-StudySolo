@@ -33,8 +33,10 @@ import {
   type FlashcardCatalogItem,
   type UserNoteCatalogItem,
 } from "@/lib/ai/agent/tools/memoryCatalog";
+import type { SandboxScope } from "@/lib/sandbox/actor.server";
 
 export interface StudyAgentInput {
+  cloudSandboxScope?: SandboxScope;
   /** Server-derived canonical Account UUID for native learning connector execution. */
   connectorOwner?: string;
   /** Server-derived, prior-consent KitSolo credential. Never comes from request JSON. */
@@ -214,6 +216,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
           enableSearch: options.enableSearch ?? false,
           kitSoloAccessToken: isImageMode ? undefined : input.kitSoloAccessToken,
           connectorOwner: isImageMode ? undefined : input.connectorOwner,
+          cloudSandboxScope: isImageMode || noteWindowAgent || planMode ? undefined : input.cloudSandboxScope,
           disabled: disabledTools,
           artifacts,
           memoryCommit,
@@ -250,7 +253,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     return {};
   };
 
-  const lifecycle = createAgentLifecycleHooks({ metadataOnly: !!input.connectorOwner });
+  const lifecycle = createAgentLifecycleHooks({ metadataOnly: !!input.connectorOwner || !!input.cloudSandboxScope });
   const observedModel = wrapLanguageModel({
     model,
     middleware: lifecycle.modelMiddleware,
