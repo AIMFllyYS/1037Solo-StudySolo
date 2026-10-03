@@ -46,7 +46,7 @@ describe("QuizQuestion 深度解析卡片", () => {
         total={1}
         mode="review"
         answer={1}
-        result={{ question, answer: 1, awarded: 1, max: 1, correct: true, objective: true }}
+        result={{ question, answer: 1, awarded: 1, max: 1, correct: true, objective: true, selfScored: false }}
       />,
     );
     const card = screen.getByTestId("quiz-explain-card");

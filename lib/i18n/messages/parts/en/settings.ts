@@ -493,6 +493,7 @@ export const settingsEn = {
     chapterCount: "{count} chapters",
     avgBestShort: "Avg best",
     lastAttempt: "Last {percent} · {attempts} attempts",
+    lastUnscored: "No objective score",
     clear: "Clear all scores",
     clearDesc: "Removes only the test scores saved on this device; the questions themselves are untouched.",
     clearConfirm: "Confirm clear",

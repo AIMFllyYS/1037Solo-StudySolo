@@ -6,34 +6,38 @@ import { ClipboardCheck, ChevronLeft, ChevronRight, CheckCircle2, AlertCircle, H
 import { useStore } from "@/lib/store";
 import { useQuizStore } from "@/lib/quiz-store";
 import type { UserAnswer } from "@/lib/quiz/types";
-import { getChapterProgress, getSession, type ChapterProgress, type QuizSession } from "@/lib/quiz-progress";
+import { getChapterProgress, getSession, objectiveAccuracyOf, objectiveAttemptsOf, objectiveBestOf, type ChapterProgress, type QuizSession } from "@/lib/quiz-progress";
 import QuizQuestion from "./QuizQuestion";
 import QuizScoring from "./QuizScoring";
 import QuizSummary from "./QuizSummary";
 import { useT } from "@/lib/i18n";
 
 /** 客户端读取本地历史成绩（mounted 后再读，避免 hydration 抖动）。 */
-function useChapterProgress(subjectId: string, chapterId: string, deps: unknown[] = []) {
+function useChapterProgress(subjectId: string, chapterId: string, categoryId: string, deps: unknown[] = []) {
   const [progress, setProgress] = useState<ChapterProgress | null>(null);
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setProgress(getChapterProgress(subjectId, chapterId));
+    setProgress(getChapterProgress(subjectId, chapterId, categoryId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subjectId, chapterId, ...deps]);
+  }, [subjectId, chapterId, categoryId, ...deps]);
   return progress;
 }
 
 /** 历史成绩横幅（上次 / 最佳 + 答题恢复提示）。 */
-function HistoryBanner({ subjectId, chapterId }: { subjectId: string; chapterId: string }) {
+function HistoryBanner({ subjectId, chapterId, categoryId }: { subjectId: string; chapterId: string; categoryId: string }) {
   const t = useT();
-  const progress = useChapterProgress(subjectId, chapterId);
+  const progress = useChapterProgress(subjectId, chapterId, categoryId);
   const [session, setSession] = useState<QuizSession | null>(null);
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSession(getSession(subjectId, chapterId));
-  }, [subjectId, chapterId]);
+    setSession(getSession(subjectId, chapterId, categoryId));
+  }, [subjectId, chapterId, categoryId]);
 
   if (!progress && !session) return null;
+
+  const objectiveBest = progress ? objectiveBestOf(progress) : null;
+  const objectiveAccuracy = progress ? objectiveAccuracyOf(progress) : null;
+  const objectiveAttempts = progress ? objectiveAttemptsOf(progress) : 0;
 
   const sessionLabel = session
     ? session.phase === "answering"
@@ -67,9 +71,10 @@ function HistoryBanner({ subjectId, chapterId }: { subjectId: string; chapterId:
       {progress && (
         <span>
           {sessionLabel && <span style={{ margin: "0 8px", opacity: 0.5 }}>·</span>}
-          {t("window.quiz.tab.bestPrefix")}<strong style={{ color: "var(--md-sys-color-primary)" }}>{progress.best}{t("window.quiz.tab.bestSuffix")}</strong>
-          <span style={{ margin: "0 8px", opacity: 0.5 }}>·</span>
-          {t("window.quiz.tab.lastAttempt", { percent: progress.last.percent, count: progress.attempts })}
+          {objectiveBest !== null ? <>{t("window.quiz.tab.bestPrefix")}<strong style={{ color: "var(--md-sys-color-primary)" }}>{objectiveBest}{t("window.quiz.tab.bestSuffix")}</strong><span style={{ margin: "0 8px", opacity: 0.5 }}>·</span></> : null}
+          {objectiveAccuracy == null
+            ? t("window.quiz.tab.lastUnscored")
+            : t("window.quiz.tab.lastAttempt", { percent: objectiveAccuracy, count: objectiveAttempts })}
         </span>
       )}
     </div>
@@ -133,6 +138,7 @@ function AnsweringView() {
   const data = useQuizStore((s) => s.data)!;
   const subjectId = useQuizStore((s) => s.subjectId);
   const chapterId = useQuizStore((s) => s.chapterId);
+  const categoryId = useQuizStore((s) => s.categoryId);
   const currentIndex = useQuizStore((s) => s.currentIndex);
   const answers = useQuizStore((s) => s.answers);
   const setAnswer = useQuizStore((s) => s.setAnswer);
@@ -182,7 +188,7 @@ function AnsweringView() {
       </div>
 
       {/* 历史成绩 */}
-      <HistoryBanner subjectId={subjectId} chapterId={chapterId} />
+      <HistoryBanner subjectId={subjectId} chapterId={chapterId} categoryId={categoryId} />
 
       {/* 题号导航 */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
@@ -331,14 +337,16 @@ export default function QuizTab() {
   const t = useT();
   const subjectId = useStore((s) => s.activeSubjectId);
   const chapterId = useStore((s) => s.activeChapterId);
+  const categoryId = useStore((s) => s.activeCategoryId);
   const status = useQuizStore((s) => s.status);
   const phase = useQuizStore((s) => s.phase);
+  const persistenceError = useQuizStore((s) => s.persistenceError);
   const load = useQuizStore((s) => s.load);
 
   // 路由切换到新章节时加载对应题目（store 内部做去重与竞态保护）。
   useEffect(() => {
-    load(subjectId, chapterId);
-  }, [subjectId, chapterId, load]);
+    load(subjectId, chapterId, categoryId);
+  }, [subjectId, chapterId, categoryId, load]);
 
   if (status === "loading" || status === "idle") {
     return (
@@ -379,6 +387,11 @@ export default function QuizTab() {
   // status === "ready"
   return (
     <div className="scroll-y h-full">
+      {persistenceError && (
+        <div className="mx-auto mt-3 max-w-3xl rounded-lg border border-[var(--md-sys-color-error)]/40 bg-[var(--md-sys-color-error-container)]/30 px-3 py-2 text-[12.5px] text-[var(--md-sys-color-error)]" role="alert">
+          {t(persistenceError === "owner-changed" ? "window.quiz.tab.ownerChanged" : "window.quiz.tab.localSaveFailed")}
+        </div>
+      )}
       <AnimatePresence mode="wait">
         <motion.div
           key={phase}

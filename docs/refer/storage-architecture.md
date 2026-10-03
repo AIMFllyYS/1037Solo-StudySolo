@@ -16,7 +16,7 @@
 │  ├─ STORE_NAME = "keyval"                                      │
 │  ├─ PERSIST_KEYS = { chatHistory, chatManifest, artifacts,     │
 │  │     skills, reviewCards, imageGen, billingHistory,          │
-│  │     documents }                                             │
+│  │     documents, reviewQuizAttempts, reviewQuizSets }         │
 │  ├─ idbStorage (StateStorage 适配器)                            │
 │  │   └─ getItem: 先读 IndexedDB → 回退 localStorage → 播种迁移  │
 │  ├─ estimateSize(key)                                          │
@@ -70,6 +70,8 @@
 | `PERSIST_KEYS.documents` | `documents` | AI 撰写文档持久化 key |
 | `chat-session:{id}` | per-session | 单会话消息数组 |
 | `chat-blob:{id}` | per-blob | 图片附件 data-url |
+| `review-quiz-attempts:{id}` | per-attempt | 本机答案、逐题评分、未同步状态与恢复位置 |
+| `review-quiz-sets:{hash}` | per-question-set | 题干/选项/答案/解析/材料定位快照，重复作答复用 |
 
 ### 2.2 StateStorage 接口
 
@@ -147,7 +149,7 @@ artifact 随会话产生但分属不同 store。删除会话时需联动清理�
 | `useAcademicYear` | `gailvlun-academic-year` | 学年选择 |
 | `useStore`（`lib/stores/ui.ts`，经 `lib/store.ts` 转发） | `gailvlun-sidebar-collapsed` / `gailvlun-topbar-collapsed` | 侧栏/顶栏折叠态 |
 | `useKeyboardSettings` | `gailvlun-disabled-shortcuts` | 禁用的快捷键 |
-| `quiz-progress`（经 `useQuizStore` / `lib/quiz-progress.ts`） | `gailvlun-quiz-progress-v1` | ~2-20KB，成绩记录 |
+| `quiz-progress`（经 `useQuizStore` / `lib/quiz-progress.ts`） | guest `gailvlun-quiz-progress-v1`；Account owner `ss-user:{uuid}:review-quiz-progress-v2` | 每章即时汇总。旧 v1 无 owner 的数据继续作为本机历史，只有用户明确导入后才绑定账号；完整 attempt 与题组快照在 IndexedDB。 |
 
 ---
 

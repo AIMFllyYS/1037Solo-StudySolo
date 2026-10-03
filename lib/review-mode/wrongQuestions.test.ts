@@ -29,6 +29,12 @@ function entry(
         completedAt: new Date().toISOString(),
         stage: "final",
         perQuestion: perQuestion?.map((q, i) => ({ id: `q${i}`, awarded: 0, max: 1, correct: q.correct })),
+        objectiveCount: perQuestion ? perQuestion.filter((q) => q.correct !== null).length : 1,
+        objectiveAccuracy: perQuestion
+          ? perQuestion.some((q) => q.correct !== null)
+            ? Math.round((perQuestion.filter((q) => q.correct === true).length / perQuestion.filter((q) => q.correct !== null).length) * 1000) / 10
+            : null
+          : percent,
       },
     },
   };
@@ -42,7 +48,7 @@ test("toWeakPoint 统计错题数与答题数（忽略主观题 null）", () => 
   assert.equal(w.chapterLabel, "第 1 章");
   assert.equal(w.wrongCount, 2);
   assert.equal(w.answeredCount, 3); // null 的主观题不计
-  assert.equal(w.lastPercent, 40);
+  assert.equal(w.lastPercent, 33.3, "objective mastery ignores subjective items and uses the objective result snapshot");
   assert.ok(w.weakness > 0.5, "低分应有较高薄弱度");
 });
 
@@ -80,21 +86,22 @@ test("summarizeWrongQuestions 汇总平均正确率与薄弱章数", () => {
   const overview = summarizeWrongQuestions(entries);
   assert.equal(overview.chapters, 3);
   assert.equal(overview.weakChapters, 2); // ch01, ch02 < 80
-  // (40+60+100)/3 = 66.7
-  assert.equal(overview.recentAccuracy, 66.7);
+  // Objective snapshots are 0%, 50%, and 100%; overall percentages cannot include subjective items.
+  assert.equal(overview.recentAccuracy, 50);
 });
 
 test("空数据：概览全 0，prompt 走兜底", () => {
   const overview = summarizeWrongQuestions([]);
   assert.deepEqual(overview, { chapters: 0, weakChapters: 0, recentAccuracy: 0, weakPoints: [] });
   const prompt = buildWrongQuestionPrompt([]);
-  assert.match(prompt, /诊断题/);
+  assert.match(prompt, /不能据此诊断错题/);
 });
 
-test("buildWrongQuestionPrompt 列出薄弱章节与错题数，含 diagnose", () => {
+test("buildWrongQuestionPrompt labels chapter scores as summaries without inventing original wrong questions", () => {
   const weak = selectWeakPoints([entry("physics", "ch01", 30, [{ correct: false }, { correct: false }])]);
   const prompt = buildWrongQuestionPrompt(weak, (id) => (id === "physics" ? "大学物理" : id));
   assert.match(prompt, /大学物理 · 第 1 章/);
   assert.match(prompt, /2\/2 题答错/);
-  assert.match(prompt, /diagnose/);
+  assert.match(prompt, /不含原题题干/);
+  assert.match(prompt, /真实学习资料/);
 });

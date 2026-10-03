@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   isObjective,
+  isObjectivelyGradableQuestion,
   isComposite,
   displayLabel,
   maxPointsOf,
@@ -53,6 +54,14 @@ test("isComposite：reading / cloze / translation 为 true", () => {
 test("isComposite：非复合题为 false", () => {
   assert.equal(isComposite("single_choice"), false);
   assert.equal(isComposite("essay"), false);
+});
+
+test("isObjectivelyGradableQuestion：reading/cloze require gradable child snapshots", () => {
+  assert.equal(isObjectivelyGradableQuestion(makeQ({ type: "reading", subQuestions: [{ id: "s1", type: "single_choice", stem: "s", answer: 0, options: ["A", "B"], points: 1 }] })), true);
+  assert.equal(isObjectivelyGradableQuestion(makeQ({ type: "reading", subQuestions: [] })), false);
+  assert.equal(isObjectivelyGradableQuestion(makeQ({ type: "cloze", blanks: [{ id: "b1", options: ["A", "B"], answer: 0, points: 1 }] })), true);
+  assert.equal(isObjectivelyGradableQuestion(makeQ({ type: "cloze", blanks: [] })), false);
+  assert.equal(isObjectivelyGradableQuestion(makeQ({ type: "essay" })), false);
 });
 
 test("OBJECTIVE_TYPES / SUBJECTIVE_TYPES / COMPOSITE_TYPES 不重叠", () => {

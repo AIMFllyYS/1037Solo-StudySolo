@@ -82,6 +82,28 @@ test("desktop Review progress preserves bounded query selectors without forwardi
     assert.equal((await forwardDesktopAgentRequest(make("view=summary&limit=25"))).status, 200);
     await assert.rejects(() => forwardDesktopAgentRequest(make("view=summary&user_id=other")), /SANDBOX_REQUEST_INVALID/);
     await assert.rejects(() => forwardDesktopAgentRequest(make("view=summary&view=attempts")), /SANDBOX_REQUEST_INVALID/);
+    await assert.rejects(() => forwardDesktopAgentRequest(make("view=summary&sourceKind=unregistered")), /SANDBOX_REQUEST_INVALID/);
+    assert.equal(requests, 1);
+  } finally { for (const [key, value] of Object.entries(before)) if (value === undefined) delete env[key]; else env[key] = value; }
+});
+
+test("desktop Review writes forward only the captured owner consistency binding", async t => {
+  const env = process.env as Record<string, string | undefined>, before = { NODE_ENV: env.NODE_ENV, STUDYSOLO_DESKTOP_RUNTIME: env.STUDYSOLO_DESKTOP_RUNTIME };
+  env.NODE_ENV = "production"; env.STUDYSOLO_DESKTOP_RUNTIME = "true";
+  try {
+    const binding = "a".repeat(64);
+    let requests = 0;
+    t.mock.method(globalThis, "fetch", async (_target: string | URL | Request, init?: RequestInit) => {
+      requests++;
+      const headers = new Headers(init?.headers);
+      assert.equal(headers.get("x-studysolo-owner-binding"), binding);
+      assert.equal(headers.get("x-user-id"), null);
+      assert.equal(headers.get("cookie"), null);
+      return Response.json({ status: "saved" });
+    });
+    const make = (value?: string) => new NextRequest("http://127.0.0.1:35349/api/review/progress/", { method: "POST", headers: { Host: "127.0.0.1:35349", Origin: "http://127.0.0.1:35349", Referer: "http://127.0.0.1:35349/review", Cookie: "ss_access_token=fixture-account-access", "x-user-id": "must-not-forward", ...(value ? { "x-studysolo-owner-binding": value } : {}) }, body: "{}" });
+    assert.equal((await forwardDesktopAgentRequest(make(binding))).status, 200);
+    await assert.rejects(() => forwardDesktopAgentRequest(make()), /REVIEW_OWNER_CHANGED/);
     assert.equal(requests, 1);
   } finally { for (const [key, value] of Object.entries(before)) if (value === undefined) delete env[key]; else env[key] = value; }
 });
