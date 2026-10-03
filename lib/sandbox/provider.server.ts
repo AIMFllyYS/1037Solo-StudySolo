@@ -36,7 +36,10 @@ class AlibabaProviderSession implements ProviderSession {
   private async path(path: string) {
     const relative = safeRelativePath(path);
     const check = "import os,sys; base=sys.argv[1]; p=os.path.realpath(os.path.join(base,sys.argv[2])); assert os.path.commonpath([base,p])==base; print(p)";
-    const result = await this.sandbox.commands.run(`python3 -c ${quote(check)} ${quote(workspace)} ${quote(relative)}`, { user: executionUser, timeoutMs: 5000 }).catch(() => { throw new SandboxError("SANDBOX_PATH_INVALID"); });
+    // This is control-plane metadata, not tenant execution. A normal user's
+    // Python startup/sitecustomize or shell profile must never run outside the
+    // task's network namespace. Use trusted root and an isolated system Python.
+    const result = await this.sandbox.commands.run(`/usr/bin/python3 -I -c ${quote(check)} ${quote(workspace)} ${quote(relative)}`, { user: "root", timeoutMs: 5000 }).catch(() => { throw new SandboxError("SANDBOX_PATH_INVALID"); });
     if (result.exitCode !== 0) throw new SandboxError("SANDBOX_PATH_INVALID");
     return result.stdout.trim();
   }
@@ -63,11 +66,11 @@ for entry in pathlib.Path('/proc').iterdir():
    if entry.stat().st_uid==0 and any(arg==b'jupyter' or arg.endswith(b'/jupyter') or arg.endswith(b'/docker-entrypoint.sh') and b'.jupyter' in arg for arg in args): sys.exit(1)
   except (FileNotFoundError,ProcessLookupError,PermissionError): pass
 `;
-    const checked = await this.sandbox.commands.run(`python3 -c ${quote(preflight)}`, { user: "root", timeoutMs: 5000 });
+    const checked = await this.sandbox.commands.run(`/usr/bin/python3 -I -c ${quote(preflight)}`, { user: "root", timeoutMs: 5000 });
     if (checked.exitCode !== 0) throw new SandboxError("SANDBOX_HEADLESS_TEMPLATE_REQUIRED", 503);
     const namespaceSource = await readFile(resolve(process.cwd(), "lib/sandbox/assets/namespace.py"), "utf8");
     await this.sandbox.files.write(`${jobsRoot}/namespace.py`, namespaceSource, { user: "root" });
-    const namespace = await this.sandbox.commands.run(`chmod 0600 ${quote(`${jobsRoot}/namespace.py`)} && setpriv --no-new-privs python3 -I ${quote(`${jobsRoot}/namespace.py`)} /bin/true`, { user: "root", timeoutMs: 10000 }).catch(error => {
+    const namespace = await this.sandbox.commands.run(`chmod 0600 ${quote(`${jobsRoot}/namespace.py`)} && setpriv --no-new-privs /usr/bin/python3 -I ${quote(`${jobsRoot}/namespace.py`)} /bin/true`, { user: "root", timeoutMs: 10000 }).catch(error => {
       if (error instanceof Error && error.constructor.name === "CommandExitError") throw new SandboxError("SANDBOX_NAMESPACE_ISOLATION_REQUIRED", 503);
       throw new SandboxError("SANDBOX_INITIALIZATION_UNCERTAIN", 503);
     });
@@ -94,7 +97,7 @@ for entry in pathlib.Path('/proc').iterdir():
     const path = await this.path(cwd), job = this.job(id);
     await this.sandbox.commands.run(`install -d -m 0700 -o root -g root ${quote(job)}`, { user: "root", timeoutMs: 5000 });
     await this.sandbox.files.write(`${job}/request.json`, JSON.stringify({ command, cwd: path, timeout: seconds }), { user: "root" });
-    const process = await this.sandbox.commands.run(`python3 ${quote(`${jobsRoot}/worker.py`)} ${quote(job)}`, { user: "root", background: true, timeoutMs: (seconds + 10) * 1000 });
+    const process = await this.sandbox.commands.run(`/usr/bin/python3 -I ${quote(`${jobsRoot}/worker.py`)} ${quote(job)}`, { user: "root", background: true, timeoutMs: (seconds + 10) * 1000 });
     const pid = process.pid;
     await process.disconnect();
     return pid;
