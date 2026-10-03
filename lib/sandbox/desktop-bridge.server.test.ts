@@ -66,3 +66,22 @@ test("desktop model forwarding preserves BYOK and excludes infrastructure secret
   const supplied = { modelId: "custom:fixture", customApiGroups: [{ apiKey: "already-selected" }] };
   assert.equal(desktopModelRequest(supplied, { RELAY_API_KEY: "other" }), supplied);
 });
+
+test("desktop Review progress preserves bounded query selectors without forwarding authority fields", async t => {
+  const env = process.env as Record<string, string | undefined>, before = { NODE_ENV: env.NODE_ENV, STUDYSOLO_DESKTOP_RUNTIME: env.STUDYSOLO_DESKTOP_RUNTIME };
+  env.NODE_ENV = "production"; env.STUDYSOLO_DESKTOP_RUNTIME = "true";
+  try {
+    let requests = 0;
+    t.mock.method(globalThis, "fetch", async (target: string | URL | Request, init?: RequestInit) => {
+      requests++;
+      assert.equal(String(target), "https://studysolo.1037solo.com/api/review/progress/?view=summary&limit=25");
+      assert.equal(new Headers(init?.headers).get("cookie"), null);
+      return Response.json({ attempts: [] });
+    });
+    const make = (query: string) => new NextRequest(`http://127.0.0.1:35349/api/review/progress/?${query}`, { headers: { Host: "127.0.0.1:35349", Referer: "http://127.0.0.1:35349/review", Cookie: "ss_access_token=fixture-account-access" } });
+    assert.equal((await forwardDesktopAgentRequest(make("view=summary&limit=25"))).status, 200);
+    await assert.rejects(() => forwardDesktopAgentRequest(make("view=summary&user_id=other")), /SANDBOX_REQUEST_INVALID/);
+    await assert.rejects(() => forwardDesktopAgentRequest(make("view=summary&view=attempts")), /SANDBOX_REQUEST_INVALID/);
+    assert.equal(requests, 1);
+  } finally { for (const [key, value] of Object.entries(before)) if (value === undefined) delete env[key]; else env[key] = value; }
+});

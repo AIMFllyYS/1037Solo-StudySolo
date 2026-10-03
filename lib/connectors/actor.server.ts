@@ -7,7 +7,10 @@ export class ConnectorError extends Error { constructor(readonly code: string, r
 export function requireConnectorOrigin(request: NextRequest, mutation = false): string {
   if (process.env.NODE_ENV === "production" && process.env.CONNECTOR_ALLOW_PRODUCTION !== "true") throw new ConnectorError("CONNECTOR_PRODUCTION_DISABLED", 403);
   const origin = connectorOrigin();
-  if (request.nextUrl.origin !== origin || request.headers.get("host") !== new URL(origin).host || mutation && request.headers.get("origin") !== origin) throw new ConnectorError("ORIGIN_REJECTED", 403);
+  // A self-hosted Next server constructs nextUrl using its internal bind host.
+  // Authenticate the actual Host against the configured public origin instead;
+  // never let a caller-controlled forwarded host determine that origin.
+  if (request.headers.get("host")?.trim().toLowerCase() !== new URL(origin).host || mutation && request.headers.get("origin") !== origin) throw new ConnectorError("ORIGIN_REJECTED", 403);
   return origin;
 }
 export async function connectorOwner(request: NextRequest, sensitive = false): Promise<string> {

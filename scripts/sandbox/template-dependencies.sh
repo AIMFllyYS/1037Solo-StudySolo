@@ -7,6 +7,7 @@ export PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT=60000
 export PIP_DISABLE_PIP_VERSION_CHECK=1
 mkdir -p /opt/studysolo/bin
 for source in /etc/apt/sources.list /etc/apt/sources.list.d/*.sources; do
+  if test "${STUDYSOLO_APT_MIRROR:-aliyun}" != aliyun; then continue; fi
   if test -f "$source"; then
     sed -i -e 's|http://deb.debian.org/debian|https://mirrors.aliyun.com/debian|g' \
       -e 's|http://security.debian.org/debian-security|https://mirrors.aliyun.com/debian-security|g' \
@@ -26,7 +27,13 @@ python3 -m venv /opt/studysolo/venv
   numpy==2.5.3 pdf2image==1.17.0 reportlab==5.0.1 pdfplumber==0.11.10
 npm install --prefix /opt/studysolo --ignore-scripts --no-audit --no-fund playwright@1.63.0 docx@9.8.1
 /opt/studysolo/node_modules/.bin/playwright install --with-deps chromium
-ln -sf /opt/studysolo/venv/bin/python3 /opt/studysolo/bin/python3
-ln -sf /opt/studysolo/venv/bin/python /opt/studysolo/bin/python
+# Python discovers pyvenv.cfg relative to the invocation path. A symlink in a
+# different bin directory can silently use the system prefix and lose packages.
+# Publish a wrapper atomically so an older alias is never followed/overwritten.
+for interpreter in python python3; do
+  printf '#!/bin/sh\nexec /opt/studysolo/venv/bin/%s "$@"\n' "$interpreter" > "/opt/studysolo/bin/$interpreter.next"
+  chmod 0755 "/opt/studysolo/bin/$interpreter.next"
+  mv -f "/opt/studysolo/bin/$interpreter.next" "/opt/studysolo/bin/$interpreter"
+done
 chmod -R a+rX /opt/studysolo
 printf '{"version":"skills-runtime-v1-20261004","renderer":"LibreOffice","wordWpsVerified":false}\n' > /opt/studysolo/runtime-ready.json
