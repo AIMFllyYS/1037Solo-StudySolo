@@ -25,7 +25,7 @@ python3 -m venv /opt/studysolo/venv
   python-docx==1.2.0 pypdf==6.19.0 pypdfium2==5.13.0 Pillow==12.3.0 \
   numpy==2.5.3 pdf2image==1.17.0 reportlab==5.0.1 pdfplumber==0.11.10
 npm install --prefix /opt/studysolo --ignore-scripts --no-audit --no-fund playwright@1.63.0 docx@9.8.1
-/opt/studysolo/node_modules/.bin/playwright install chromium
+/opt/studysolo/node_modules/.bin/playwright install --with-deps chromium
 ln -sf /opt/studysolo/venv/bin/python3 /opt/studysolo/bin/python3
 ln -sf /opt/studysolo/venv/bin/python /opt/studysolo/bin/python
 chmod -R a+rX /opt/studysolo

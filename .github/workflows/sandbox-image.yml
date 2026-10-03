@@ -15,6 +15,9 @@ jobs:
           IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/studysolo-skills:${GITHUB_SHA}"
           docker build -f scripts/sandbox/Dockerfile -t "$IMAGE" .
           docker run --rm --entrypoint /bin/bash "$IMAGE" -c 'test -f /opt/studysolo/runtime-ready.json && /opt/studysolo/bin/python3 -c "import docx,pypdf,pypdfium2,PIL,numpy,pdf2image,reportlab,pdfplumber" && NODE_PATH=/opt/studysolo/node_modules node -e "require(\"playwright\"); require(\"docx\")" && command -v pdftoppm && command -v libreoffice'
+          mkdir -p "$RUNNER_TEMP/sandbox-renderer-qa"
+          chmod 0777 "$RUNNER_TEMP/sandbox-renderer-qa"
+          docker run --rm --network none --cap-drop ALL --security-opt no-new-privileges --user 10001:10001 --entrypoint /bin/bash -v "$RUNNER_TEMP/sandbox-renderer-qa:/tmp/studysolo-qa" "$IMAGE" /opt/studysolo/verify-renderers.sh /tmp/studysolo-qa
           printf 'IMAGE=%s\n' "$IMAGE" >> "$GITHUB_ENV"
       - name: Publish immutable image
         env:
@@ -24,3 +27,9 @@ jobs:
           docker push "$IMAGE"
       - name: Record image reference
         run: printf 'Verified dependency image `%s`. Template/runtime QA still required.\n' "$IMAGE" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sandbox-renderer-qa
+          path: ${{ runner.temp }}/sandbox-renderer-qa
+          if-no-files-found: ignore

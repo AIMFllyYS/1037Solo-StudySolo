@@ -1,0 +1,11 @@
+# Sandbox builds accept only these approved source assets, even from a local checkout.
+**
+!scripts/
+!scripts/sandbox/
+!scripts/sandbox/Dockerfile
+!scripts/sandbox/template-dependencies.sh
+!scripts/sandbox/verify-renderers.sh
+!lib/
+!lib/sandbox/
+!lib/sandbox/skill-packs/
+!lib/sandbox/skill-packs/**
