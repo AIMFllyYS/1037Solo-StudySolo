@@ -38,8 +38,8 @@ const nextConfig = {
   },
   outputFileTracingExcludes: {
       "**/*": [
-      "./.env*", "./**/.env*", "./content/_raw/**/*", "./content/_raw-src/**/*",
-      "./.git/**/*", "./**/.git/**/*", "./.mcp*",
+      "./.env*", "./**/.env*", "./content/_raw", "./content/_raw/**/*", "./content/_raw-src", "./content/_raw-src/**/*",
+      "./.git", "./.git/**/*", "./**/.git/**/*", "./.mcp*",
       "./content/.index/embed-cache*", "./1037Solo-Classolo/**/*", "./dist-desktop/**/*",
       "./dist-desktop-staged-*/**/*", "./artifacts/**/*", "./.local-archive/**/*",
       "./docs/**/*", "./tmp/**/*", "./manim/**/*", "./.next-class-verify/**/*",

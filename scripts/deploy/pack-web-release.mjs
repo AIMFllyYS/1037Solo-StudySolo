@@ -12,7 +12,14 @@ const commit = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).
 if (!/^[a-f0-9]{40}$/.test(commit)) throw new Error("release_commit_invalid");
 const stage = join(output, `studysolo-web-${commit}`);
 await mkdir(stage, { recursive: false });
-await cp(join(root, ".next/standalone"), stage, { recursive: true, verbatimSymlinks: true });
+const standalone = join(root, ".next/standalone");
+await cp(standalone, stage, {
+  recursive: true,
+  verbatimSymlinks: true,
+  // Traces can retain the parent directory of excluded raw files. Raw inputs
+  // are never runtime assets; skip them before copying, without deleting source.
+  filter: source => !relative(standalone, source).split(/[\\/]/).some(part => part === "_raw" || part === "_raw-src"),
+});
 await cp(join(root, ".next/static"), join(stage, ".next/static"), { recursive: true });
 await cp(join(root, "public"), join(stage, "public"), { recursive: true });
 
