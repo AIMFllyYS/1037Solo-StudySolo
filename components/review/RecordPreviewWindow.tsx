@@ -23,7 +23,8 @@ import QuizMarkdown from "@/components/quiz/QuizMarkdown";
 import type { RecordMode, ReviewCard } from "@/lib/review/types";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
 import { formatFlashcardQuote, subjectLabel } from "@/lib/notes/userNote";
-import { downloadFlashcardMarkdown, downloadFlashcardsCsv } from "@/lib/review/exportCards";
+import { downloadFlashcardMarkdown, downloadFlashcardsCsv, downloadFlashcardsAnki } from "@/lib/review/exportCards";
+import { useT } from "@/lib/i18n";
 
 // 统一设计 token
 const BOX = {
@@ -661,6 +662,7 @@ function PreviewMoreMenuBody({
   close: () => void;
 }) {
   const [pane, setPane] = useState<"root" | "export">("root");
+  const t = useT();
 
   if (pane === "export") {
     return (
@@ -689,6 +691,9 @@ function PreviewMoreMenuBody({
         >
           <span className="app-menu-check"><Download size={13} /></span>
           <span>下载 CSV<small>表格，可导入其他复习软件</small></span>
+        </button>
+        <button type="button" role="menuitem" className="app-menu-item" data-testid="record-preview-download-anki" disabled={card.status !== "ready"} onClick={() => { void downloadFlashcardsAnki([card]); close(); }}>
+          <span className="app-menu-check"><Download size={13} /></span><span>{t("trace.tool.learningConnectors.download")}<small>{t("trace.tool.learningConnectors.exportHint")}</small></span>
         </button>
       </>
     );

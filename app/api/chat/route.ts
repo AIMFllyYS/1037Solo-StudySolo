@@ -38,6 +38,9 @@ import { runWithCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { capabilitySecretValues } from "@/lib/ai/capabilityEndpoints";
 import { carryNotice, summarizeCarry } from "@/lib/project/catalog";
 import { shouldAutoEnableSearch } from "@/lib/ai/search/autoEnable";
+import { kitSoloAccess } from "@/lib/plugins/kitsolo-oauth-client";
+import { requestToken } from "@/lib/auth/sign-in/account-verify";
+import { connectorOwner } from "@/lib/connectors/actor.server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -243,7 +246,15 @@ async function handlePOST(req: NextRequest) {
       const contextBudget = Math.min(ctxResult.maxTokens, candidateLimit,
         requestedBudget != null && requestedBudget > 0 ? requestedBudget : ctxResult.maxTokens);
 
+      // The server-written hint avoids a remote lookup for uninstalled plugins.
+      // It grants no access: KitSolo still verifies Account UUID and live consent.
+      const installed = (req.headers.get("cookie") ?? "").split(";").some(part => part.trim() === "kitsolo_connected_studysolo=1");
+      const accountToken = userId && installed && !isImageMode && !body.noteWindowAgent && !body.disabledTools.includes("kitSolo") ? requestToken(req.headers) : null;
+      const kitSoloAccessToken = accountToken ? await kitSoloAccess(accountToken, "studysolo") : null;
+      const canonicalConnectorOwner = await connectorOwner(req).catch(() => undefined);
       const bundleInput = (truncated: boolean, referenceContext: string): StudyAgentInput => ({
+        connectorOwner: canonicalConnectorOwner,
+        kitSoloAccessToken: kitSoloAccessToken ?? undefined,
         model: resolved.model,
         chatCtx,
         options,

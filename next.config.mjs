@@ -5,6 +5,8 @@ if (isolatedDistDir && !/^\.next-(?:class-verify|perf-[a-z0-9-]+|desktop-[a-z0-9
 }
 const nextConfig = {
   reactStrictMode: true,
+  // OAuth callback queries contain short-lived credentials. Never print them in dev logs.
+  logging: { incomingRequests: { ignore: [/^\/api\/connectors\/[^/]+\/callback\/?(?:\?|$)/] } },
   // Verification builds use a separate output directory so an active dev server keeps its .next state.
   ...(isolatedDistDir ? { distDir: isolatedDistDir } : {}),
   // Next 16 默认拦截跨源访问 dev 资源（/_next/webpack-hmr、__nextjs_font 等）。
@@ -24,6 +26,7 @@ const nextConfig = {
       "./content/.index/manifest.json", "./content/.index/bm25.json", "./content/.index/chunks-meta.json",
       "./content/.index/vectors.bin", "./content/.index/vectors.ids.json",
       "./lib/ai/prompts/**/*", "./runtime/search-worker/**/*",
+      "./node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs",
     ],
   },
   outputFileTracingExcludes: {

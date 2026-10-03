@@ -325,6 +325,8 @@ export function createAgentLifecycleHooks(options?: {
   write?: AgentLogWriter;
   now?: AgentLogClock;
   slowToolMs?: number;
+  /** Connected private content must not be copied into diagnostic logs. */
+  metadataOnly?: boolean;
 }): {
   onStepStart: (event: unknown) => void;
   onStepEnd: (event: unknown) => void;
@@ -345,7 +347,12 @@ export function createAgentLifecycleHooks(options?: {
 
   const safeWrite = (hook: string, data: unknown): void => {
     try {
-      write(hook, data);
+      if (options?.metadataOnly && isRecord(data)) {
+        const numericOnly = (value: unknown): unknown => typeof value === "number" || typeof value === "boolean" ? value : isRecord(value) ? Object.fromEntries(Object.entries(value).map(([key, item]) => [key, numericOnly(item)]).filter(([, item]) => item !== undefined)) : undefined;
+        const metadata = Object.fromEntries(["stepNumber", "durationMs", "responseTimeMs", "stepTimeMs", "toolExecutionMs", "slow", "success", "reasoningTokens"].filter(key => typeof data[key] === "number" || typeof data[key] === "boolean").map(key => [key, data[key]]));
+        const toolName = extractToolName(data), toolCallId = extractToolCallId(data), callId = extractCallId(data);
+        write(hook, { ...metadata, ...(toolName ? { toolName } : {}), ...(toolCallId ? { toolCallId } : {}), ...(callId ? { callId } : {}), ...(data.usage ? { usage: numericOnly(data.usage) } : {}) });
+      } else write(hook, data);
     } catch {
       // 日志失败不得打断对话
     }
@@ -479,6 +486,7 @@ export function createAgentLifecycleHooks(options?: {
     modelMiddleware,
     telemetry: {
       isEnabled: true,
+      ...(options?.metadataOnly ? { recordInputs: false, recordOutputs: false } : {}),
       functionId: "study-tutor",
       integrations: [
         {

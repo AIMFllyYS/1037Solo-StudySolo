@@ -34,7 +34,9 @@ describe("WindowTaskbar add content", () => {
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
   });
 
-  it("keeps a glowing plus slot available and opens a URL as a taskbar window", () => {
+  it("keeps a glowing plus slot available and opens a URL as a taskbar window", async () => {
+    const fetchIcon = vi.fn().mockResolvedValue(new Response("", { status: 404 }));
+    vi.stubGlobal("fetch", fetchIcon);
     render(<WindowTaskbar host="topbar" />);
     fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
     const menu = screen.getByRole("menu", { name: "添加内容" });
@@ -50,6 +52,7 @@ describe("WindowTaskbar add content", () => {
     expect(preview?.title).toBe("网址 · example.com");
     expect(preview?.data).toMatchObject({ url: "https://example.com/course" });
     expect(screen.getByRole("button", { name: "添加内容" })).toBeVisible();
+    await waitFor(() => expect(fetchIcon).toHaveBeenCalledWith("https://example.com/course", expect.objectContaining({ credentials: "omit" })));
   });
 
   it("groups plus menu items with the same dividers as add-file used to have", () => {

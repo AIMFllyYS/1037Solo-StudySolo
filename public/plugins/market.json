@@ -2,6 +2,33 @@
   "version": 1,
   "mcp": [
     {
+      "id": "kitsolo",
+      "section": "mcp",
+      "name": "KitSolo",
+      "nameEn": "KitSolo",
+      "tagline": "你的 AI 文本与数据工具箱",
+      "taglineEn": "Text and data tools for your AI agent",
+      "desc": "使用统一账号弹窗关联后，StudySolo Agent 可直接检索工具、处理 JSON、编码、哈希和时间戳；结果以卡片反馈并提供工作台入口。",
+      "descEn": "Connect using your 1037Solo account in a popup. StudySolo Agent can search tools and process JSON, encoding, hashes and timestamps, with result cards and workspace links.",
+      "notes": "此插件有原生 Agent 接入。点击关联后，下一轮对话自动启用；其他 MCP 条目仍由外部宿主执行。输入发送至 KitSolo 进行本次计算，不保存。可在 KitSolo 关联管理页撤销。",
+      "notesEn": "Native Agent integration. Connect to enable it in the next turn; other MCP entries still run in external hosts. Inputs are sent to KitSolo for transient processing and are not stored. Revoke access from KitSolo connection settings.",
+      "version": "1.0.0",
+      "author": "1037Solo",
+      "source": "official",
+      "homepage": "https://kitsolo.1037solo.com/connect/",
+      "docs": "https://kitsolo.1037solo.com/connect/",
+      "tags": [
+        "1037Solo",
+        "KitSolo",
+        "文本",
+        "JSON",
+        "编码"
+      ],
+      "transport": "http",
+      "url": "https://kitsolo.1037solo.com/mcp/",
+      "env": []
+    },
+    {
       "id": "filesystem",
       "section": "mcp",
       "name": "Filesystem",
@@ -15,10 +42,18 @@
       "source": "official",
       "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem",
       "docs": "https://modelcontextprotocol.io",
-      "tags": ["文件", "files", "local"],
+      "tags": [
+        "文件",
+        "files",
+        "local"
+      ],
       "transport": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "${FILESYSTEM_DIR}"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${FILESYSTEM_DIR}"
+      ],
       "env": [
         {
           "name": "FILESYSTEM_DIR",
@@ -40,36 +75,38 @@
       "source": "official",
       "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/fetch",
       "docs": "https://modelcontextprotocol.io",
-      "tags": ["网页", "fetch", "web"],
+      "tags": [
+        "网页",
+        "fetch",
+        "web"
+      ],
       "transport": "stdio",
       "command": "uvx",
-      "args": ["mcp-server-fetch"]
+      "args": [
+        "mcp-server-fetch"
+      ]
     },
     {
       "id": "github",
       "section": "mcp",
       "name": "GitHub",
-      "tagline": "查仓库、issue、PR，直接在对话里操作",
-      "taglineEn": "Browse repos, issues and PRs; act on them from chat",
-      "desc": "官方 MCP server：检索代码与文档、看 issue/PR、创建分支与提交。学习项目放 GitHub 上时最顺手。",
-      "descEn": "Official MCP server: search code, read issues/PRs, create branches and commits — great when your study projects live on GitHub.",
-      "author": "Model Context Protocol",
+      "tagline": "只读仓库、代码、Issue 与 PR 学习资料",
+      "taglineEn": "Read repositories, code, issues and PRs for study",
+      "desc": "GitHub 官方远程 MCP：检索仓库、代码、Issue 和 PR。本产品的学习连接默认只读，账号授权由学习服务连接管理完成。",
+      "descEn": "Official GitHub remote MCP for repositories, code, issues and pull requests. Native learning connections are read-only and use account authorization.",
+      "author": "GitHub",
       "source": "official",
-      "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/github",
-      "docs": "https://modelcontextprotocol.io",
-      "tags": ["github", "代码", "code"],
-      "transport": "stdio",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": [
-        {
-          "name": "GITHUB_PERSONAL_ACCESS_TOKEN",
-          "required": true,
-          "desc": "GitHub 个人访问令牌（建议 fine-grained，只给目标仓库权限）。",
-          "descEn": "GitHub personal access token (prefer fine-grained, scoped to the repos you need).",
-          "keyUrl": "https://github.com/settings/tokens"
-        }
-      ]
+      "homepage": "https://github.com/github/github-mcp-server",
+      "docs": "https://github.com/github/github-mcp-server/blob/main/docs/host-integration.md",
+      "tags": [
+        "github",
+        "代码",
+        "code"
+      ],
+      "transport": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "notes": "本产品可在学习服务连接管理中关联 GitHub。其他客户端需要支持远程 MCP 与对应授权；本项目的用户凭证不会复制到客户端配置。",
+      "notesEn": "Connect GitHub in native learning connection settings. Other clients need remote MCP and authorization support; StudySolo user credentials are not exported."
     },
     {
       "id": "puppeteer",
@@ -83,10 +120,17 @@
       "source": "official",
       "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer",
       "docs": "https://modelcontextprotocol.io",
-      "tags": ["浏览器", "browser", "自动化"],
+      "tags": [
+        "浏览器",
+        "browser",
+        "自动化"
+      ],
       "transport": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ]
     },
     {
       "id": "brave-search",
@@ -100,10 +144,17 @@
       "source": "official",
       "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search",
       "docs": "https://modelcontextprotocol.io",
-      "tags": ["搜索", "search", "web"],
+      "tags": [
+        "搜索",
+        "search",
+        "web"
+      ],
       "transport": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
       "env": [
         {
           "name": "BRAVE_API_KEY",
@@ -126,10 +177,17 @@
       "source": "official",
       "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/memory",
       "docs": "https://modelcontextprotocol.io",
-      "tags": ["记忆", "memory", "知识图谱"],
+      "tags": [
+        "记忆",
+        "memory",
+        "知识图谱"
+      ],
       "transport": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
     },
     {
       "id": "sequential-thinking",
@@ -143,10 +201,17 @@
       "source": "official",
       "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking",
       "docs": "https://modelcontextprotocol.io",
-      "tags": ["推理", "reasoning", "thinking"],
+      "tags": [
+        "推理",
+        "reasoning",
+        "thinking"
+      ],
       "transport": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
     },
     {
       "id": "time",
@@ -160,10 +225,17 @@
       "source": "official",
       "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/time",
       "docs": "https://modelcontextprotocol.io",
-      "tags": ["时间", "time", "timezone"],
+      "tags": [
+        "时间",
+        "time",
+        "timezone"
+      ],
       "transport": "stdio",
       "command": "uvx",
-      "args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"]
+      "args": [
+        "mcp-server-time",
+        "--local-timezone=Asia/Shanghai"
+      ]
     },
     {
       "id": "postgres",
@@ -177,10 +249,18 @@
       "source": "official",
       "homepage": "https://github.com/modelcontextprotocol/servers-archived/tree/main/src/postgres",
       "docs": "https://modelcontextprotocol.io",
-      "tags": ["数据库", "postgres", "sql"],
+      "tags": [
+        "数据库",
+        "postgres",
+        "sql"
+      ],
       "transport": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres", "${DATABASE_URL}"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${DATABASE_URL}"
+      ],
       "env": [
         {
           "name": "DATABASE_URL",
@@ -202,10 +282,19 @@
       "source": "community",
       "homepage": "https://github.com/modelcontextprotocol/servers-archived/tree/main/src/sqlite",
       "docs": "https://modelcontextprotocol.io",
-      "tags": ["数据库", "sqlite", "sql", "local"],
+      "tags": [
+        "数据库",
+        "sqlite",
+        "sql",
+        "local"
+      ],
       "transport": "stdio",
       "command": "uvx",
-      "args": ["mcp-server-sqlite", "--db-path", "${SQLITE_DB_PATH}"],
+      "args": [
+        "mcp-server-sqlite",
+        "--db-path",
+        "${SQLITE_DB_PATH}"
+      ],
       "env": [
         {
           "name": "SQLITE_DB_PATH",
@@ -227,10 +316,17 @@
       "source": "official",
       "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/everart",
       "docs": "https://modelcontextprotocol.io",
-      "tags": ["生图", "image", "everart"],
+      "tags": [
+        "生图",
+        "image",
+        "everart"
+      ],
       "transport": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-everart"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-everart"
+      ],
       "env": [
         {
           "name": "EVERART_API_KEY",
@@ -253,7 +349,11 @@
       "source": "community",
       "homepage": "https://github.com/upstash/context7",
       "docs": "https://context7.com",
-      "tags": ["文档", "docs", "remote"],
+      "tags": [
+        "文档",
+        "docs",
+        "remote"
+      ],
       "transport": "http",
       "url": "https://mcp.context7.com/mcp",
       "env": [
@@ -278,10 +378,17 @@
       "source": "community",
       "homepage": "https://github.com/tavily-ai/tavily-mcp",
       "docs": "https://docs.tavily.com",
-      "tags": ["搜索", "search", "web"],
+      "tags": [
+        "搜索",
+        "search",
+        "web"
+      ],
       "transport": "stdio",
       "command": "npx",
-      "args": ["-y", "tavily-mcp@latest"],
+      "args": [
+        "-y",
+        "tavily-mcp@latest"
+      ],
       "env": [
         {
           "name": "TAVILY_API_KEY",
@@ -304,10 +411,17 @@
       "source": "community",
       "homepage": "https://github.com/exa-labs/exa-mcp-server",
       "docs": "https://docs.exa.ai",
-      "tags": ["搜索", "search", "semantic"],
+      "tags": [
+        "搜索",
+        "search",
+        "semantic"
+      ],
       "transport": "stdio",
       "command": "npx",
-      "args": ["-y", "exa-mcp-server"],
+      "args": [
+        "-y",
+        "exa-mcp-server"
+      ],
       "env": [
         {
           "name": "EXA_API_KEY",
@@ -333,7 +447,11 @@
       "source": "official",
       "homepage": "https://docs.astral.sh/uv/",
       "install": "curl -LsSf https://astral.sh/uv/install.sh | sh",
-      "tags": ["python", "uvx", "mcp"]
+      "tags": [
+        "python",
+        "uvx",
+        "mcp"
+      ]
     },
     {
       "id": "claude-code",
@@ -348,7 +466,11 @@
       "source": "official",
       "homepage": "https://docs.anthropic.com/en/docs/claude-code",
       "install": "npm install -g @anthropic-ai/claude-code",
-      "tags": ["agent", "cli", "mcp"]
+      "tags": [
+        "agent",
+        "cli",
+        "mcp"
+      ]
     },
     {
       "id": "codex-cli",
@@ -363,7 +485,11 @@
       "source": "official",
       "homepage": "https://github.com/openai/codex",
       "install": "npm install -g @openai/codex",
-      "tags": ["agent", "cli", "mcp"]
+      "tags": [
+        "agent",
+        "cli",
+        "mcp"
+      ]
     },
     {
       "id": "gemini-cli",
@@ -378,7 +504,11 @@
       "source": "official",
       "homepage": "https://github.com/google-gemini/gemini-cli",
       "install": "npm install -g @google/gemini-cli",
-      "tags": ["agent", "cli", "mcp"]
+      "tags": [
+        "agent",
+        "cli",
+        "mcp"
+      ]
     },
     {
       "id": "ffmpeg",
@@ -393,7 +523,11 @@
       "source": "community",
       "homepage": "https://ffmpeg.org",
       "install": "brew install ffmpeg  # macOS；apt install ffmpeg  # Ubuntu",
-      "tags": ["音视频", "media", "转码"]
+      "tags": [
+        "音视频",
+        "media",
+        "转码"
+      ]
     },
     {
       "id": "pandoc",
@@ -408,7 +542,11 @@
       "source": "community",
       "homepage": "https://pandoc.org",
       "install": "brew install pandoc  # macOS；apt install pandoc  # Ubuntu",
-      "tags": ["文档", "pandoc", "导出"]
+      "tags": [
+        "文档",
+        "pandoc",
+        "导出"
+      ]
     },
     {
       "id": "imagemagick",
@@ -423,7 +561,11 @@
       "source": "community",
       "homepage": "https://imagemagick.org",
       "install": "brew install imagemagick  # macOS；apt install imagemagick  # Ubuntu",
-      "tags": ["图像", "image", "批处理"]
+      "tags": [
+        "图像",
+        "image",
+        "批处理"
+      ]
     },
     {
       "id": "ripgrep",
@@ -438,7 +580,11 @@
       "source": "community",
       "homepage": "https://github.com/BurntSushi/ripgrep",
       "install": "brew install ripgrep  # macOS；apt install ripgrep  # Ubuntu",
-      "tags": ["搜索", "search", "cli"]
+      "tags": [
+        "搜索",
+        "search",
+        "cli"
+      ]
     },
     {
       "id": "yt-dlp",
@@ -453,7 +599,11 @@
       "source": "community",
       "homepage": "https://github.com/yt-dlp/yt-dlp",
       "install": "pipx install yt-dlp  # 或 brew install yt-dlp",
-      "tags": ["视频", "字幕", "下载"]
+      "tags": [
+        "视频",
+        "字幕",
+        "下载"
+      ]
     },
     {
       "id": "anthropic-skills",
@@ -470,7 +620,11 @@
       "source": "official",
       "homepage": "https://github.com/anthropics/skills",
       "install": "git clone --depth 1 https://github.com/anthropics/skills.git",
-      "tags": ["skills", "skill包", "官方"]
+      "tags": [
+        "skills",
+        "skill包",
+        "官方"
+      ]
     },
     {
       "id": "superpowers",
@@ -487,7 +641,11 @@
       "source": "community",
       "homepage": "https://github.com/obra/Superpowers",
       "install": "git clone --depth 1 https://github.com/obra/Superpowers.git",
-      "tags": ["skills", "工作流", "tdd"]
+      "tags": [
+        "skills",
+        "工作流",
+        "tdd"
+      ]
     },
     {
       "id": "awesome-agent-skills",
@@ -502,7 +660,11 @@
       "source": "community",
       "homepage": "https://github.com/VoltAgent/awesome-agent-skills",
       "install": "git clone --depth 1 https://github.com/VoltAgent/awesome-agent-skills.git",
-      "tags": ["skills", "清单", "awesome"]
+      "tags": [
+        "skills",
+        "清单",
+        "awesome"
+      ]
     },
     {
       "id": "skills-sh",
@@ -517,7 +679,11 @@
       "source": "community",
       "homepage": "https://skills.sh",
       "install": "npx skills add <owner>/<repo>",
-      "tags": ["skills", "注册表", "registry"]
+      "tags": [
+        "skills",
+        "注册表",
+        "registry"
+      ]
     }
   ],
   "skills": [
@@ -534,7 +700,12 @@
       "author": "StudySolo",
       "source": "official",
       "path": "/skills/latex-formula-check/SKILL.md",
-      "tags": ["latex", "公式", "katex", "校对"]
+      "tags": [
+        "latex",
+        "公式",
+        "katex",
+        "校对"
+      ]
     },
     {
       "id": "exam-question-analysis",
@@ -549,7 +720,12 @@
       "author": "StudySolo",
       "source": "official",
       "path": "/skills/exam-question-analysis/SKILL.md",
-      "tags": ["考研", "真题", "解析", "错题"]
+      "tags": [
+        "考研",
+        "真题",
+        "解析",
+        "错题"
+      ]
     },
     {
       "id": "note-organizer",
@@ -564,7 +740,12 @@
       "author": "StudySolo",
       "source": "official",
       "path": "/skills/note-organizer/SKILL.md",
-      "tags": ["笔记", "整理", "大纲", "复习"]
+      "tags": [
+        "笔记",
+        "整理",
+        "大纲",
+        "复习"
+      ]
     }
   ]
 }

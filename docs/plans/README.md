@@ -8,6 +8,8 @@
 
 | 计划 | 说明 |
 |---|---|
+| [`2026-10-03-learning-connectors-integration-execution.md`](./2026-10-03-learning-connectors-integration-execution.md) | 第一、二批原生接入实施：连接管理、刷新、MCP/API 执行、确认卡、Anki 导出；代码与回归完成，真实账号端到端验收待本机服务恢复 |
+| [`2026-10-03-learning-connectors-preparation-spec.md`](./2026-10-03-learning-connectors-preparation-spec.md) | 学习连接器准备：选型、公开协议与五个提供者本机 OAuth 认证完成；Notion / Todoist / GitHub 真实 MCP 初始化与列表验收通过，生产 vault / Agent 工具待实施；[认证记录](../refer/learning-connector-authentication.md) |
 | [`2026-10-02-class-systematic-repair.md`](./2026-10-02-class-systematic-repair.md) | Class全链路修复执行计划：可靠录音与保存、增量导图、学科公式、题答视觉、笔记和移动工作台（进行中） |
 | [`2026-10-02-memory-performance-optimization-spec.md`](./2026-10-02-memory-performance-optimization-spec.md) | 系统内存与性能优化执行规格：会话/存储/资源/检索Worker/同步/内容边界及验收（待实施） |
 | [`agent-right-panel-unification.md`](./agent-right-panel-unification.md) | 右栏统一：现状分析与选型（改造前快照） |
