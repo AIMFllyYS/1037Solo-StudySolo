@@ -9,6 +9,7 @@ const state = {
   dockGlobal: false,
   activeWindowId: null as string | null,
   pathname: "/agent",
+  userCollapsedPreference: false,
 };
 
 const setCollapsed = vi.fn((value: boolean) => {
@@ -27,8 +28,9 @@ vi.mock("@/lib/hooks/useChatHistory", () => ({
     selector({ activeSessionId: state.sessionId }),
 }));
 vi.mock("@/lib/stores/ui", () => ({
+  readAgentDockCollapsedPreference: () => state.userCollapsedPreference,
   useStore: (selector: (s: Record<string, unknown>) => unknown) =>
-    selector({ agentDockCollapsed: state.collapsed, setAgentDockCollapsed: setCollapsed }),
+    selector({ agentDockCollapsed: state.collapsed, setAgentDockCollapsedTransient: setCollapsed }),
 }));
 vi.mock("@/lib/hooks/useWindowManager", () => ({
   useWindowManager: (selector: (s: Record<string, unknown>) => unknown) =>
@@ -53,6 +55,7 @@ beforeEach(() => {
   state.dockGlobal = false;
   state.activeWindowId = null;
   state.pathname = "/agent";
+  state.userCollapsedPreference = false;
 });
 
 afterEach(() => {
@@ -61,7 +64,15 @@ afterEach(() => {
 });
 
 describe("useAgentDockPerSession", () => {
-  it("新对话（没有记忆）→ 默认收起右栏", () => {
+  it("新对话（没有记忆或显式偏好）→ 默认展开右栏", () => {
+    state.collapsed = true;
+    render(<Harness />);
+    expect(setCollapsed).toHaveBeenCalledWith(false);
+    expect(state.collapsed).toBe(false);
+  });
+
+  it("新对话尊重新版用户明确的收起偏好", () => {
+    state.userCollapsedPreference = true;
     state.collapsed = false;
     render(<Harness />);
     expect(setCollapsed).toHaveBeenCalledWith(true);
@@ -77,10 +88,10 @@ describe("useAgentDockPerSession", () => {
     state.activeWindowId = "document-viewer:d1";
     view.rerender(<Harness />);
 
-    // 切到 B：B 没有记忆 → 收起，且不带 A 的窗口
+    // 切到 B：B 没有记忆 → 默认展开，但不带 A 的窗口
     state.sessionId = "s2";
     view.rerender(<Harness />);
-    expect(state.collapsed).toBe(true);
+    expect(state.collapsed).toBe(false);
     expect(state.activeWindowId).toBeNull();
 
     // 切回 A：恢复 A 的展开状态与窗口
