@@ -1,5 +1,6 @@
 import {hasAccessTokenCookie} from "@/lib/auth/sessionCookie";
-import {canonicalUrlFor,isLegacyHost} from "@/lib/auth/authMode";
+import {canonicalUrlFor,isLegacyHost,authModeForRequest,accountBackendUrl} from "@/lib/auth/authMode";
+import { renewIfNeeded, downstreamHeaders, forwardCookies, isOutage, type RenewalResult } from "@/lib/auth/sign-in/session-refresh";
 import { NextResponse, type NextRequest } from "next/server";
 import { decideAiGate, TRUSTED_PROXY_USER_HEADER } from "@/lib/auth/aiGate";
 
@@ -41,21 +42,28 @@ export async function proxy(request: NextRequest) {
     if(process.env.NODE_ENV!=="production"){configured.add("http://localhost:35349");configured.add("http://127.0.0.1:35349");}
     if(!origin || !configured.has(origin))return NextResponse.json({error:"Trusted request origin required"},{status:403});
   }
+  let renewal: RenewalResult | null = null;
+  const mode = authModeForRequest(request);
+  if ((request.nextUrl.pathname.startsWith("/api/connectors") || request.nextUrl.pathname === "/api/chat") && ["account-local", "account-shared"].includes(mode) && !request.headers.get("authorization")) {
+    renewal = await renewIfNeeded({ accountBackendUrl: accountBackendUrl(mode), cookieHeader: request.headers.get("cookie") ?? "", origin: request.nextUrl.origin, forwardedFor: request.headers.get("x-forwarded-for"), pathname: request.nextUrl.pathname });
+    if (isOutage(renewal)) return NextResponse.json({ code: "ACCOUNT_UNAVAILABLE" }, { status: 503, headers: { "Retry-After": "5" } });
+  }
+  const incoming = downstreamHeaders(request.headers, renewal) ?? request.headers;
   const decision = await decideAiGate({
     pathname: request.nextUrl.pathname,
     method: request.method,
-    headers: request.headers,
+    headers: incoming,
   });
   if (decision.action === "next") {
-    const headers = new Headers(request.headers);
+    const headers = new Headers(incoming);
     headers.delete(TRUSTED_PROXY_USER_HEADER);
     if (decision.userId) headers.set(TRUSTED_PROXY_USER_HEADER, decision.userId);
-    return NextResponse.next({ request: { headers } });
+    return forwardCookies(NextResponse.next({ request: { headers } }), renewal);
   }
-  return NextResponse.json(decision.body, {
+  return forwardCookies(NextResponse.json(decision.body, {
     status: decision.status,
     headers: decision.headers,
-  });
+  }), renewal);
 }
 
 export default proxy;

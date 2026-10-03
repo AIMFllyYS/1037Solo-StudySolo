@@ -11,7 +11,7 @@
     "electron-builder",
     "@types/mdast"
   ],
-  "ignoreBinaries": ["robocopy"],
+  "ignoreBinaries": ["robocopy", "whoami.exe", "icacls.exe"],
   "ignoreMembers": ["default"],
   "ignoreExportsUsedInFile": true,
   "ignoreIssues": {

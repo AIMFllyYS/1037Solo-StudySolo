@@ -20,9 +20,13 @@ import type { UpdateUserNoteInput, UpdateUserNoteOutput } from "@/lib/ai/agent/t
 import type { GetProjectFilesInput, GetProjectFilesOutput } from "@/lib/ai/agent/tools/getProjectFiles/types";
 import type { ReadProjectSlicesInput, ReadProjectSlicesOutput } from "@/lib/ai/agent/tools/readProjectSlices/types";
 import type { SearchClassTranscriptInput, SearchClassTranscriptOutput } from "@/lib/ai/agent/tools/searchClassTranscript/types";
+import type { LearningConnectorInput, LearningConnectorOutput } from "@/lib/ai/agent/tools/learningConnectors/types";
+import type { KitSoloInput, KitSoloOutput } from "@/lib/ai/agent/tools/kitSolo/types";
 
 /** 供 UIMessage<…, StudyTools> 使用的 UITools 形状（type alias 才能满足 Record 约束）。 */
 export type StudyTools = {
+  learningConnectors: { input: LearningConnectorInput; output: LearningConnectorOutput };
+  kitSolo: { input: KitSoloInput; output: KitSoloOutput };
   getCurrentPage: { input: GetCurrentPageInput; output: GetCurrentPageOutput };
   getOutline: { input: GetOutlineInput; output: GetOutlineOutput };
   getSection: { input: GetSectionInput; output: GetSectionOutput };
@@ -50,6 +54,8 @@ export type StudyTools = {
 export type StudyToolName = keyof StudyTools;
 
 export const STUDY_TOOL_NAMES: readonly StudyToolName[] = [
+  "learningConnectors",
+  "kitSolo",
   "getCurrentPage",
   "getOutline",
   "getSection",

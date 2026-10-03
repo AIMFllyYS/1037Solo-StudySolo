@@ -1,5 +1,6 @@
 import { downloadAsMarkdown } from "@/lib/documents/export";
 import type { ReviewCard } from "@/lib/review/types";
+import { ankiTsv } from "@/lib/connectors/anki";
 
 function csvCell(value: string): string {
   const text = value.replace(/\r\n/g, "\n");
@@ -56,4 +57,11 @@ export function flashcardToMarkdown(card: ReviewCard): string {
 
 export function downloadFlashcardMarkdown(card: ReviewCard): void {
   downloadAsMarkdown(flashcardToMarkdown(card), card.front || card.sourceLabel || "复习闪卡");
+}
+
+export async function downloadFlashcardsAnki(cards: ReviewCard[]): Promise<void> {
+  const content = await ankiTsv(cards);
+  const url = URL.createObjectURL(new Blob([content], { type: "text/tab-separated-values;charset=utf-8" }));
+  const anchor = document.createElement("a"); anchor.href = url; anchor.download = "StudySolo-Anki.tsv"; anchor.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }

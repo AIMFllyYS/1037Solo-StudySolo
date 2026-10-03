@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import PluginEntryCard from "./PluginEntryCard";
+import LearningConnectionsPanel from "@/components/plugins/LearningConnectionsPanel";
 import {
   filterMarketEntries,
   useMarketManifest,
@@ -126,6 +127,7 @@ export default function AgentPluginsPage() {
       </p>
 
       <div data-testid="plugins-body" className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+        {tab === "mcp" && <LearningConnectionsPanel />}
         {loading ? (
           <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4" role="status" aria-label={t("agent.market.loading")}>
             {Array.from({ length: 6 }, (_, index) => (

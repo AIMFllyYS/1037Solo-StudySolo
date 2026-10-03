@@ -1,0 +1,9 @@
+import type { NextRequest } from "next/server";
+import { connectorOwner, connectorFailure, requireConnectorOrigin } from "@/lib/connectors/actor.server";
+import { getAction } from "@/lib/connectors/service.server";
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export async function GET(request: NextRequest, context: { params: Promise<{ actionId: string }> }) {
+  try { requireConnectorOrigin(request); const owner = await connectorOwner(request); return Response.json(await getAction(owner, (await context.params).actionId), { headers: { "Cache-Control": "private, no-store", Vary: "Cookie, Authorization" } }); }
+  catch (error) { return connectorFailure(error); }
+}

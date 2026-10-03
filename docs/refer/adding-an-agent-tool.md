@@ -130,3 +130,7 @@ export default function ExampleResultCard({ part }: ResultCardProps<"exampleTool
 ```
 
 然后把它挂进 `components/chat/toolCards/registry.tsx` 的 `TOOL_REGISTRY` 与 `RESULT_CARD_ORDER`。`ChatMessage.tsx` 会经 `ToolResultCards` 自动渲染，不用再写 `getToolPartsByName(message, 'exampleTool')`。
+
+## KitSolo 的远端注册表
+
+内置 `kitSolo` 是通用 MCP 桥接工具。KitSolo 新增工具后从远端注册表披露能力与参数，不要在 StudySolo 重复声明每一个 KitSolo 工具。原生安装、身份校验和结果卡说明见 [kitsolo-mcp.md](kitsolo-mcp.md)。

@@ -35,6 +35,10 @@ import {
 } from "@/lib/ai/agent/tools/memoryCatalog";
 
 export interface StudyAgentInput {
+  /** Server-derived canonical Account UUID for native learning connector execution. */
+  connectorOwner?: string;
+  /** Server-derived, prior-consent KitSolo credential. Never comes from request JSON. */
+  kitSoloAccessToken?: string;
   model: LanguageModelV4;
   chatCtx: ChatContext & { academicYear: AcademicYearId };
   options: ChatOptions;
@@ -208,6 +212,8 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
         runtime,
         {
           enableSearch: options.enableSearch ?? false,
+          kitSoloAccessToken: isImageMode ? undefined : input.kitSoloAccessToken,
+          connectorOwner: isImageMode ? undefined : input.connectorOwner,
           disabled: disabledTools,
           artifacts,
           memoryCommit,
@@ -244,7 +250,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     return {};
   };
 
-  const lifecycle = createAgentLifecycleHooks();
+  const lifecycle = createAgentLifecycleHooks({ metadataOnly: !!input.connectorOwner });
   const observedModel = wrapLanguageModel({
     model,
     middleware: lifecycle.modelMiddleware,

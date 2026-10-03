@@ -51,6 +51,11 @@ export const traceZh = {
   },
   // 工具步骤的摘要与兜底文案
   tool: {
+    learningConnectors: {
+      label: "学习服务", settingsLabel: "学习连接器", description: "读取已关联的笔记、待办、课件、日历、邮件与文献；外部写入须确认。",
+      manage: "管理学习服务连接", manageHint: "关联你的账号后，助教可以使用你允许的学习资料。", connect: "关联账号", reconnect: "重新授权", disconnect: "断开连接", disconnectConfirm: "确定断开这个学习服务？新的读取与写入将停止。", refresh: "刷新状态", signIn: "请先登录", failed: "学习服务操作未完成", scopes: "选择允许助教使用的功能", googleFiles: "读取云盘课件", googleCalendar: "读取日历", googleCalendarWrite: "创建学习日程", googleMailRead: "读取课程邮件", googleMailSend: "发送已确认邮件", googleContacts: "查找联系人", connected: "已关联", disconnected: "未关联", available: "可直接使用", reauth: "需要重新授权", api: "官方 API", mcp: "官方 MCP", local: "本地导出", result: "学习服务结果", proposal: "请检查这次外部操作", parameters: "具体目标与内容", approve: "确认执行", reject: "取消", proposed: "等待确认", executing: "正在执行", succeeded: "已完成", cancelled: "已取消", uncertain: "结果需要核对，请勿重复执行", expired: "候选已过期，请重新生成", download: "下载 Anki 闪卡", exportHint: "导出完整复习卡片；导入时保留已有复习记录。", accountChanged: "账号已切换，请在当前账号重新生成导出。", fullParameters: "查看完整参数", source: "查看来源", scopeRequired: "需要补充授权，请在连接管理中选择对应功能。", readOnly: "只读操作", writeCandidate: "候选操作，确认后才写入",
+    },
+    kitSolo: { label: "KitSolo 工具箱", settingsLabel: "KitSolo 工具", description: "关联后检索并调用文本、编码和数据工具。", open: "打开工具工作台", copy: "复制结果", failed: "工具调用失败" },
     callAria: "工具调用",
     denied: "此次工具调用未获批准",
     runFailed: "运行失败",

@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 1,
+  "preparedDate": "2026-10-03",
+  "purpose": "implementation preparation, not a runtime connection registry",
+  "priorityBasis": "StudySolo learning scenarios; not measured adoption statistics",
+  "commonRuntimeImplemented": true,
+  "publicDiscoveryEvidence": "artifacts/connector-analysis-2026-10-03/hosted-mcp-discovery.json",
+  "environmentVariablesChangedInThisAudit": true,
+  "providers": [
+    {
+      "id": "notion",
+      "priority": "P0",
+      "kind": "official-hosted-mcp",
+      "learningCapabilities": [
+        "course-outline",
+        "notes",
+        "reading-material",
+        "confirmed-study-page-write"
+      ],
+      "endpoint": "https://mcp.notion.com/mcp",
+      "trustedOrigins": [
+        "https://mcp.notion.com"
+      ],
+      "auth": {
+        "type": "oauth-discovery-pkce",
+        "registration": [
+          "dynamic-client-registration",
+          "client-id-metadata-document"
+        ],
+        "staticApplicationSecretRequiredInitially": false,
+        "tokens": "server-encrypted-owner-and-workspace-scoped"
+      },
+      "plannedCallbackPath": "/api/connectors/notion/callback/",
+      "readiness": {
+        "documentationVerified": true,
+        "publicDiscoveryVerified": true,
+        "clientRegistered": true,
+        "userConnected": true,
+        "nativeIntegrated": false,
+        "authenticatedMcpVerified": true
+      },
+      "defaultWritePolicy": "user-confirmed-proposal-only",
+      "specialRequirements": [
+        "tool-access-and-plan-check",
+        "content-is-untrusted",
+        "explicit-course-or-page-selection"
+      ],
+      "sources": [
+        "https://developers.notion.com/guides/mcp/overview",
+        "https://developers.notion.com/guides/mcp/build-mcp-client",
+        "https://developers.notion.com/guides/mcp/mcp-supported-tools",
+        "https://developers.notion.com/guides/mcp/mcp-security-best-practices"
+      ]
+    },
+    {
+      "id": "todoist",
+      "priority": "P0",
+      "kind": "official-hosted-mcp",
+      "learningCapabilities": [
+        "study-task",
+        "assignment-deadline",
+        "revision-plan",
+        "confirmed-task-completion"
+      ],
+      "endpoint": "https://ai.todoist.net/mcp",
+      "trustedOrigins": [
+        "https://ai.todoist.net",
+        "https://todoist.com",
+        "https://app.todoist.com",
+        "https://api.todoist.com"
+      ],
+      "auth": {
+        "type": "oauth-discovery-pkce",
+        "registration": [
+          "dynamic-client-registration",
+          "client-id-metadata-document"
+        ],
+        "hostedScope": "data:read_write",
+        "staticApplicationSecretRequiredInitially": false,
+        "tokens": "server-encrypted-owner-and-provider-account-scoped"
+      },
+      "plannedCallbackPath": "/api/connectors/todoist/callback/",
+      "readiness": {
+        "documentationVerified": true,
+        "publicDiscoveryVerified": true,
+        "clientRegistered": true,
+        "userConnected": true,
+        "nativeIntegrated": false,
+        "authenticatedMcpVerified": true
+      },
+      "defaultWritePolicy": "host-enforced-readonly-until-confirmation",
+      "specialRequirements": [
+        "due-date-is-not-study-time",
+        "optional-expiry-and-refresh-fields",
+        "tool-errors-may-use-http-200",
+        "no-global-personal-api-token-for-all-users"
+      ],
+      "sources": [
+        "https://developer.todoist.com/",
+        "https://developer.todoist.com/api/v1/",
+        "https://www.todoist.com/da/help/todoist/todoist-and-ai/connect-todoist-to-an-ai-assistant-xMSzFfHng",
+        "https://github.com/Doist/todoist-mcp/blob/main/docs/mcp-server.md"
+      ]
+    },
+    {
+      "id": "google-drive",
+      "priority": "P0",
+      "kind": "official-api-adapter-with-preview-mcp-alternative",
+      "credentialFamily": "google",
+      "learningCapabilities": [
+        "selected-course-files",
+        "documents",
+        "slides",
+        "spreadsheet-material"
+      ],
+      "stableApiBase": "https://www.googleapis.com/drive/v3",
+      "previewMcpEndpoint": "https://drivemcp.googleapis.com/mcp/v1",
+      "previewServiceName": "drivemcp.googleapis.com",
+      "currentApprovedScope": "https://www.googleapis.com/auth/drive.readonly",
+      "proposedSelectedFilesScope": "https://www.googleapis.com/auth/drive.file",
+      "proposedScopeRequiresSeparateApproval": true,
+      "readiness": {
+        "apiEnabled": true,
+        "applicationCredentialsConfigured": true,
+        "userConnected": true,
+        "nativeIntegrated": false,
+        "previewEligibilityVerified": false,
+        "previewServiceEnabled": false
+      },
+      "defaultWritePolicy": "readonly-currently",
+      "sources": [
+        "https://developers.google.com/workspace/drive/api/guides/api-specific-auth",
+        "https://developers.google.com/workspace/drive/api/guides/configure-mcp-server",
+        "https://developers.google.com/workspace/preview"
+      ]
+    },
+    {
+      "id": "google-calendar",
+      "priority": "P0",
+      "kind": "official-api-adapter-with-preview-mcp-alternative",
+      "credentialFamily": "google",
+      "learningCapabilities": [
+        "timetable",
+        "availability",
+        "candidate-study-slots"
+      ],
+      "stableApiBase": "https://www.googleapis.com/calendar/v3",
+      "previewMcpEndpoint": "https://calendarmcp.googleapis.com/mcp/v1",
+      "previewServiceName": "calendarmcp.googleapis.com",
+      "currentApprovedScope": "https://www.googleapis.com/auth/calendar.readonly",
+      "proposedApiWriteScope": "https://www.googleapis.com/auth/calendar.events",
+      "proposedScopeRequiresSeparateApproval": true,
+      "readiness": {
+        "apiEnabled": true,
+        "applicationCredentialsConfigured": true,
+        "userConnected": true,
+        "nativeIntegrated": false,
+        "previewEligibilityVerified": false,
+        "previewServiceEnabled": false
+      },
+      "defaultWritePolicy": "readonly-currently",
+      "sources": [
+        "https://developers.google.com/workspace/calendar/api/auth",
+        "https://developers.google.com/workspace/guides/configure-mcp-servers",
+        "https://developers.google.com/workspace/preview"
+      ]
+    },
+    {
+      "id": "zotero",
+      "priority": "P1",
+      "kind": "official-api-adapter",
+      "learningCapabilities": [
+        "paper-library",
+        "collections",
+        "citation-metadata",
+        "optional-private-notes"
+      ],
+      "apiBase": "https://api.zotero.org",
+      "auth": {
+        "type": "oauth-1.0a-key-exchange-or-user-scoped-key",
+        "defaultLibraryAccess": "read",
+        "privateNotes": "explicit-consent",
+        "groupLibraries": "explicit-consent",
+        "tokens": "server-encrypted-owner-and-library-scoped"
+      },
+      "readiness": {
+        "documentationVerified": true,
+        "officialHostedMcpVerified": false,
+        "applicationRegistered": true,
+        "userConnected": true,
+        "nativeIntegrated": false,
+        "operatorReadonlyKeyVerified": true
+      },
+      "sources": [
+        "https://www.zotero.org/support/dev/web_api/v3/oauth",
+        "https://www.zotero.org/support/dev/web_api/v3/basics"
+      ]
+    },
+    {
+      "id": "pubmed",
+      "priority": "P1",
+      "kind": "official-public-api-adapter",
+      "learningCapabilities": [
+        "medical-paper-search",
+        "pmid-verification",
+        "citation-metadata"
+      ],
+      "apiBase": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/",
+      "auth": {
+        "type": "public-with-optional-application-quota-key",
+        "userPrivateDataAuthorization": false
+      },
+      "readiness": {
+        "documentationVerified": true,
+        "nativeIntegrated": false,
+        "newQuotaKeyCreated": true,
+        "publicApiCredentialVerified": true
+      },
+      "specialRequirements": [
+        "global-provider-rate-limit",
+        "batch-and-cache",
+        "metadata-does-not-guarantee-fulltext"
+      ],
+      "sources": [
+        "https://support.nlm.nih.gov/kbArticle/?pn=KA-05510",
+        "https://www.ncbi.nlm.nih.gov/books/NBK25497/?report=reader"
+      ]
+    },
+    {
+      "id": "crossref",
+      "priority": "P1",
+      "kind": "official-public-api-adapter",
+      "learningCapabilities": [
+        "doi-verification",
+        "bibliographic-metadata"
+      ],
+      "apiBase": "https://api.crossref.org",
+      "auth": {
+        "type": "public",
+        "registrationRequired": false,
+        "politeContact": "administrator-approved-business-contact-only"
+      },
+      "readiness": {
+        "documentationVerified": true,
+        "nativeIntegrated": false,
+        "publicApiVerified": true
+      },
+      "specialRequirements": [
+        "response-rate-and-concurrency-headers",
+        "batch-and-cache",
+        "metadata-does-not-guarantee-fulltext"
+      ],
+      "sources": [
+        "https://www.crossref.org/documentation/retrieve-metadata/rest-api/access-and-authentication/",
+        "https://www.crossref.org/documentation/retrieve-metadata/rest-api/"
+      ]
+    },
+    {
+      "id": "anki",
+      "priority": "P1",
+      "kind": "export-then-community-local-bridge",
+      "learningCapabilities": [
+        "confirmed-flashcard-export",
+        "existing-user-review-workflow"
+      ],
+      "preferredFirstStep": "tsv-export",
+      "runtime": "user-device",
+      "readiness": {
+        "officialImportDocumentationVerified": true,
+        "officialHostedMcpVerified": false,
+        "deviceBridgeImplemented": false,
+        "nativeIntegrated": false
+      },
+      "defaultWritePolicy": "confirmed-new-cards-only-preserve-existing-review-history",
+      "sources": [
+        "https://docs.ankiweb.net/importing/text-files.html",
+        "https://github.com/FooSoft/anki-connect"
+      ]
+    },
+    {
+      "id": "github",
+      "priority": "P1-specialized",
+      "kind": "official-hosted-mcp",
+      "learningCapabilities": [
+        "programming-course",
+        "repository-reference",
+        "issue-and-pr-reading"
+      ],
+      "endpoint": "https://api.githubcopilot.com/mcp/",
+      "readiness": {
+        "applicationCredentialsConfigured": true,
+        "applicationIdentityVerified": true,
+        "appInstalled": true,
+        "nativeIntegrated": false,
+        "userConnected": true,
+        "authenticatedMcpVerified": true
+      },
+      "defaultWritePolicy": "readonly-currently",
+      "sources": [
+        "https://github.com/github/github-mcp-server/blob/main/docs/host-integration.md"
+      ]
+    },
+    {
+      "id": "gmail",
+      "priority": "P1",
+      "kind": "official-api-adapter-with-preview-mcp-alternative",
+      "credentialFamily": "google",
+      "learningCapabilities": [
+        "course-mail",
+        "assignment-requirement-extraction",
+        "candidate-email"
+      ],
+      "previewMcpEndpoint": "https://gmailmcp.googleapis.com/mcp/v1",
+      "previewServiceName": "gmailmcp.googleapis.com",
+      "readiness": {
+        "apiEnabled": true,
+        "applicationCredentialsConfigured": true,
+        "userConnected": true,
+        "nativeIntegrated": false,
+        "previewEligibilityVerified": false,
+        "previewServiceEnabled": false
+      },
+      "defaultWritePolicy": "separate-mail-read-and-send-consent-plus-action-confirmation",
+      "sources": [
+        "https://developers.google.com/workspace/guides/configure-mcp-servers",
+        "https://developers.google.com/workspace/gmail/api/auth/scopes"
+      ]
+    },
+    {
+      "id": "obsidian",
+      "priority": "P2",
+      "kind": "community-local-mcp",
+      "learningCapabilities": [
+        "local-markdown-vault"
+      ],
+      "runtime": "user-device",
+      "readiness": {
+        "communityMaintainerDocumentationVerified": true,
+        "officialCloudMcpVerified": false,
+        "deviceBridgeImplemented": false,
+        "nativeIntegrated": false
+      },
+      "specialRequirements": [
+        "explicit-vault-selection",
+        "device-key-storage",
+        "certificate-trust-without-disabling-verification"
+      ],
+      "sources": [
+        "https://community.obsidian.md/plugins/obsidian-local-rest-api"
+      ]
+    },
+    {
+      "id": "feishu",
+      "priority": "candidate",
+      "kind": "requires-specialist-api-and-mcp-review",
+      "learningCapabilities": [
+        "domestic-cloud-documents",
+        "study-group-material"
+      ],
+      "readiness": {
+        "officialHostedMcpVerified": false,
+        "registrationEligibilityVerified": false,
+        "userConnected": false,
+        "nativeIntegrated": false
+      },
+      "sources": [
+        "https://open.feishu.cn/document"
+      ],
+      "note": "Candidate only; this audit does not establish a hosted MCP endpoint or app registration requirements."
+    },
+    {
+      "id": "microsoft",
+      "priority": "paused-by-user",
+      "kind": "not-in-current-preparation-scope",
+      "readiness": {
+        "nativeIntegrated": false
+      },
+      "sources": []
+    }
+  ],
+  "developmentAuthorizationImplemented": true,
+  "authenticatedUserScope": "operator-local-development-account",
+  "authenticationEvidence": "artifacts/connector-auth-2026-10-03/authentication-summary.json",
+  "runtimeImplementationEvidence": "docs/refer/learning-connector-runtime.md",
+  "nativeRuntimeLiveAcceptanceComplete": false
+}

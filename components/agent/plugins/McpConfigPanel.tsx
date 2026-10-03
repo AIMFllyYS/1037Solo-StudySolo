@@ -7,13 +7,14 @@ import { pluginSecretsFor, pluginSecretKey, usePluginSecrets } from "@/lib/store
 import { buildMcpConfigSnippet, missingRequiredEnv, pickL10n, type McpEntry } from "@/lib/plugins/market";
 import { useLocale, useT } from "@/lib/i18n";
 import { inputCls, labelCls } from "@/components/chat/settings/_shared";
+import { KitSoloConnectButton } from "@/components/plugins/KitSoloConnectButton";
 
 /**
  * MCP 详情页的「凭证 + 配置」面板：
  * 1. env 逐项填写 → pluginSecrets（localStorage 轻混淆，本机保留）
  * 2. 实时预览标准 mcpServers 配置 JSON
  * 3. 一键复制 → 粘到宿主 Agent 的 MCP 配置里
- * 这就是本应用里的接入闭环——MCP 运行时由宿主 Agent 拉起，不归本站执行。
+ * KitSolo 提供原生 Agent 关联；其他条目的 MCP 运行时由外部宿主拉起。
  */
 export default function McpConfigPanel({ entry }: { entry: McpEntry }) {
   const t = useT();
@@ -37,6 +38,12 @@ export default function McpConfigPanel({ entry }: { entry: McpEntry }) {
       window.setTimeout(() => setCopied(false), 1600);
     }
   };
+
+  if (entry.id === "kitsolo") return <div className="flex flex-col gap-3" data-testid="mcp-config-panel">
+    <KitSoloConnectButton english={locale === "en"}/>
+    <a href={entry.homepage} target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--accent)] underline">{locale === "en" ? "Manage or revoke connection" : "管理或撤销关联"} ↗</a>
+    <details className="rounded-xl border border-[var(--line-soft)] p-3 text-xs"><summary>{locale === "en" ? "Configuration for other MCP hosts" : "其他 MCP 宿主配置"}</summary><p className="my-2">{locale === "en" ? "The host must support OAuth with PKCE and have its callback registered by the administrator." : "宿主需要支持 OAuth 与 PKCE，并先由管理员登记回调地址。"}</p><pre className="max-h-60 overflow-auto whitespace-pre-wrap">{snippet}</pre><button type="button" className="mt-2 rounded-lg border border-[var(--line-soft)] px-3 py-2" onClick={() => void copy()}>{t(copied ? "agent.market.action.copied" : "agent.market.action.copyConfig")}</button></details>
+  </div>;
 
   return (
     <div className="flex flex-col gap-3" data-testid="mcp-config-panel">
