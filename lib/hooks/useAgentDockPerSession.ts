@@ -1,19 +1,20 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
-import { useStore } from "@/lib/stores/ui";
+import { readAgentDockCollapsedPreference, useStore } from "@/lib/stores/ui";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
-import { readAgentDockState, rememberAgentDockState } from "@/lib/window/agentDockSession";
+import { readAgentDockState, rememberAgentDockState, resolveAgentDockCollapsed } from "@/lib/window/agentDockSession";
 
 /**
  * 右侧工作区的「一个对话一份记忆」。
  *
  * 规则（用户口径）：
  * - 每个对话各自记住自己离开时右栏是开是关、开的是哪个窗口、是不是「接管工作区」的全屏态；
- * - 切回某个对话 → 按它的记忆恢复；没有记忆（新对话 / 刷新后）→ **默认收起**；
+ * - 切回某个对话 → 按它的内存记忆恢复；没有记忆（新对话 / 刷新后）→ 使用新版显式用户偏好，
+ *   没有偏好时右栏默认展开；
  * - 我的资产 / 定时任务 / 插件市场这些非对话页 → 默认收起，且**不覆盖**对话的记忆
  *   （从资产页回到对话时，看到的是你离开那个对话时的样子）。
  *
@@ -26,7 +27,7 @@ export function useAgentDockPerSession(): void {
   const onChatRoute = pathname === "/agent" || Boolean(pathname?.startsWith("/c/"));
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
   const collapsed = useStore((s) => s.agentDockCollapsed);
-  const setCollapsed = useStore((s) => s.setAgentDockCollapsed);
+  const setCollapsed = useStore((s) => s.setAgentDockCollapsedTransient);
   const dockGlobal = useAgentDockRuntime((s) => s.dockGlobal);
   const setDockGlobal = useAgentDockRuntime((s) => s.setDockGlobal);
   const activeWindowId = useWindowManager((s) => s.activeWindowId);
@@ -51,8 +52,8 @@ export function useAgentDockPerSession(): void {
     wasOnChatRouteRef.current = onChatRoute;
   });
 
-  // 2) 会话或路由变化：摆上目标状态（无记忆 = 收起）。
-  useEffect(() => {
+  // 2) 会话或路由变化：摆上目标状态（无会话记忆 = 新版显式偏好，未设置时展开）。
+  useLayoutEffect(() => {
     if (!onChatRoute) {
       setCollapsed(true);
       setDockGlobal(false);
@@ -60,7 +61,7 @@ export function useAgentDockPerSession(): void {
       return;
     }
     const restored = readAgentDockState(activeSessionId);
-    setCollapsed(restored ? restored.collapsed : true);
+    setCollapsed(resolveAgentDockCollapsed(restored, readAgentDockCollapsedPreference()));
     setDockGlobal(Boolean(restored?.global));
     setActiveWindow(restored?.activeWindowId ?? null);
   }, [activeSessionId, onChatRoute, setActiveWindow, setCollapsed, setDockGlobal]);

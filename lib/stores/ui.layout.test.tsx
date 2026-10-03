@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { useStore } from "@/lib/stores/ui";
+import { readAgentDockCollapsedPreference, useStore } from "@/lib/stores/ui";
+import { resolveAgentDockCollapsed, type AgentDockSessionState } from "@/lib/window/agentDockSession";
 
 const DEFAULT_RIGHT = { full: false, article: true, reference: false } as const;
 
@@ -7,6 +8,7 @@ function resetLayout() {
   useStore.setState({
     sidebarCollapsed: false,
     topBarCollapsed: false,
+    agentDockCollapsed: false,
     rightCollapsedByProfile: { ...DEFAULT_RIGHT },
   });
   document.documentElement.removeAttribute("data-sidebar-collapsed");
@@ -14,8 +16,12 @@ function resetLayout() {
   document.documentElement.removeAttribute("data-right-collapsed-full");
   document.documentElement.removeAttribute("data-right-collapsed-article");
   document.documentElement.removeAttribute("data-right-collapsed-reference");
+  document.documentElement.removeAttribute("data-agent-dock-collapsed");
+  localStorage.removeItem("gailvlun-agent-dock-collapsed-v2");
   localStorage.setItem("gailvlun-sidebar-collapsed", "true");
   localStorage.setItem("gailvlun-topbar-collapsed", "true");
+  // The old unversioned value cannot distinguish the previous default from a manual choice.
+  localStorage.setItem("gailvlun-agent-dock-collapsed", "true");
   localStorage.setItem(
     "gailvlun-right-collapsed-by-profile",
     JSON.stringify({ full: true, article: false, reference: true }),
@@ -30,20 +36,55 @@ describe("layout persist contract", () => {
   it("init / 重置后不读 LS，保持默认展开契约", () => {
     expect(useStore.getState().sidebarCollapsed).toBe(false);
     expect(useStore.getState().topBarCollapsed).toBe(false);
+    expect(useStore.getState().agentDockCollapsed).toBe(false);
     expect(useStore.getState().rightCollapsedByProfile).toEqual(DEFAULT_RIGHT);
   });
 
   it("hydrateLayout 从 data 属性回填，缺属性保持默认", () => {
     document.documentElement.setAttribute("data-sidebar-collapsed", "true");
     document.documentElement.setAttribute("data-right-collapsed-full", "true");
+    document.documentElement.setAttribute("data-agent-dock-collapsed", "true");
     useStore.getState().hydrateLayout();
     expect(useStore.getState().sidebarCollapsed).toBe(true);
     expect(useStore.getState().topBarCollapsed).toBe(false);
+    expect(useStore.getState().agentDockCollapsed).toBe(true);
     expect(useStore.getState().rightCollapsedByProfile).toEqual({
       full: true,
       article: true,
       reference: false,
     });
+  });
+
+  it("旧无版本Agent收起值不压过展开新默认，其他布局偏好照常水合", () => {
+    document.documentElement.setAttribute("data-sidebar-collapsed", "true");
+    expect(readAgentDockCollapsedPreference()).toBe(false);
+    useStore.getState().hydrateLayout();
+    expect(useStore.getState().agentDockCollapsed).toBe(false);
+    expect(useStore.getState().sidebarCollapsed).toBe(true);
+  });
+
+  it("手动收起写入v2显式偏好，transient路由收起不写偏好", () => {
+    useStore.getState().setAgentDockCollapsed(true);
+    expect(localStorage.getItem("gailvlun-agent-dock-collapsed-v2")).toBe("true");
+    expect(readAgentDockCollapsedPreference()).toBe(true);
+    expect(localStorage.getItem("gailvlun-agent-dock-collapsed")).toBe("true");
+    useStore.setState({ agentDockCollapsed: false });
+    useStore.getState().hydrateLayout();
+    expect(useStore.getState().agentDockCollapsed).toBe(true);
+
+    localStorage.removeItem("gailvlun-agent-dock-collapsed-v2");
+    useStore.getState().setAgentDockCollapsedTransient(true);
+    expect(useStore.getState().agentDockCollapsed).toBe(true);
+    expect(document.documentElement.getAttribute("data-agent-dock-collapsed")).toBe("true");
+    expect(localStorage.getItem("gailvlun-agent-dock-collapsed-v2")).toBeNull();
+  });
+
+  it("无会话记忆时展开，已记忆会话优先于新版全局偏好", () => {
+    expect(resolveAgentDockCollapsed(null, false)).toBe(false);
+    expect(resolveAgentDockCollapsed(null, true)).toBe(true);
+    const remembered: AgentDockSessionState = { collapsed: true, global: false, activeWindowId: null };
+    expect(resolveAgentDockCollapsed(remembered, false)).toBe(true);
+    expect(resolveAgentDockCollapsed({ ...remembered, collapsed: false }, true)).toBe(false);
   });
 
   it("setRightCollapsedForProfile 同步 data 属性", () => {

@@ -14,9 +14,11 @@ import clsx from "clsx";
 import { PanelTopClose, PanelTopOpen, PanelRightOpen, Maximize, Minimize } from "lucide-react";
 import { useStore } from "@/lib/stores/ui";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import { DURATION } from "@/lib/motion";
+import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
 import { setWindowSessionProvider } from "@/lib/stores/windowManager";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
-import { PANEL_PRESETS } from "@/lib/constants/panelPresets";
+import { expandAgentDockIfCollapsed, PANEL_PRESETS } from "@/lib/constants/panelPresets";
 import AgentDockColumn from "./AgentDockColumn";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
@@ -244,7 +246,7 @@ function TopBar({
             aria-label={dockOpen ? t("app.topbar.collapseDock") : t("app.topbar.expandDock")}
             aria-pressed={dockOpen}
             data-testid="agent-dock-toggle"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+            className="relative z-10 flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
           >
             <PanelRightOpen size={18} />
           </button>
@@ -304,6 +306,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
    * 用户不可能在 500ms 内拖动分隔线，所以先关掉回写窗口，等布局稳定再接受面板事件。
    */
   const dockPersistReadyRef = useRef(false);
+  /** Programmatic per-session/route restores must not become a new shared user preference. */
+  const suppressDockPanelPersistenceRef = useRef(false);
   /**
    * 右栏宽度正在变化（拖拽 / 收起展开动画）。
    * 窄宽度下右栏的标签与业务正文会被响应式压成竖排单字，很难看；这期间盖一层骨架屏，
@@ -311,6 +315,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
    */
   const [dockBusy, setDockBusy] = useState(false);
   const dockBusyTimerRef = useRef<number | null>(null);
+  const reducedMotion = useUiReducedMotion();
+  const modeShellRef = useRef<HTMLDivElement>(null);
+  const modeTransitionTimerRef = useRef<number | null>(null);
+  const previousRouteModeRef = useRef<ReturnType<typeof appModeFromPathname>>(null);
   const markDockBusy = useCallback((ms: number) => {
     if (dockBusyTimerRef.current !== null) window.clearTimeout(dockBusyTimerRef.current);
     setDockBusy(true);
@@ -333,15 +341,59 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     ? PANEL_PRESETS[`studio:${routeLayout.profile}` as "studio:full" | "studio:article" | "studio:reference"]
     : PANEL_PRESETS["studio:no-right"];
 
+  useLayoutEffect(() => {
+    const nextMode = appModeFromPathname(pathname);
+    const previousMode = previousRouteModeRef.current;
+    previousRouteModeRef.current = nextMode;
+    const shell = modeShellRef.current;
+
+    // Stop a transition as soon as another route, a resize, or reduced-motion takes over.
+    if (modeTransitionTimerRef.current !== null) {
+      window.clearTimeout(modeTransitionTimerRef.current);
+      modeTransitionTimerRef.current = null;
+    }
+    shell?.removeAttribute("data-mode-entering");
+
+    if (!shell || !previousMode || !nextMode || previousMode === nextMode || reducedMotion || isResizing || dockBusy) {
+      return undefined;
+    }
+
+    // Animate only the single committed shell. CSS handles reduced-motion and resize cancellation.
+    shell.setAttribute("data-mode-entering", "true");
+    modeTransitionTimerRef.current = window.setTimeout(() => {
+      modeTransitionTimerRef.current = null;
+      shell.removeAttribute("data-mode-entering");
+    }, DURATION.fast * 1000);
+
+    return () => {
+      if (modeTransitionTimerRef.current !== null) {
+        window.clearTimeout(modeTransitionTimerRef.current);
+        modeTransitionTimerRef.current = null;
+      }
+      shell.removeAttribute("data-mode-entering");
+    };
+  }, [pathname, reducedMotion, isResizing, dockBusy]);
+
   // 顶栏开关 / 面板自身收起按钮改的是 store，这里把它同步到分栏面板上。
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isAgentRoute) return;
     const panel = agentDockRef.current;
     if (!panel) return;
     try {
-      if (agentDockCollapsed && !panel.isCollapsed()) panel.collapse();
-      if (!agentDockCollapsed && panel.isCollapsed()) panel.expand();
+      if (agentDockCollapsed && !panel.isCollapsed()) {
+        suppressDockPanelPersistenceRef.current = true;
+        panel.collapse();
+        suppressDockPanelPersistenceRef.current = false;
+      }
+      // A panel first mounted collapsed has no remembered expanded width yet; seed its first
+      // restore with the current default. Existing user-resized widths still win inside expand().
+      if (!agentDockCollapsed && panel.isCollapsed()) {
+        suppressDockPanelPersistenceRef.current = true;
+        expandAgentDockIfCollapsed(panel);
+        suppressDockPanelPersistenceRef.current = false;
+      }
     } catch {
+      suppressDockPanelPersistenceRef.current = false;
       // 首帧还没有几何信息
     }
   }, [agentDockCollapsed, isAgentRoute, markDockBusy]);
@@ -471,7 +523,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   if (isMobile) {
     return (
       <KeyboardShortcutProvider>
-      <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]" data-app-mode={resolvedMode} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT} data-mobile-sidebar={mobileSidebarOpen || undefined}>
+      <div ref={modeShellRef} className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]" data-app-mode={resolvedMode} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT} data-mobile-sidebar={mobileSidebarOpen || undefined}>
         <div className="relative min-h-0 flex-1 overflow-hidden">
           {studioChrome && <MobileSidebarDrawer />}
           <div
@@ -546,8 +598,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     return (
       <KeyboardShortcutProvider>
       {/* Agent 外壳不挂 `data-layout-profile`：那是 Studio 内容页档位的语义，右栏开合有自己的 data 属性。 */}
-      <div className="flex h-screen overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-panels-ready={panelMotionReady || undefined} data-app-mode={resolvedMode} data-subject={activeSubjectId} data-agent-global={agentDockGlobal ? "true" : undefined} data-agent-shell>
-        <PanelGroup direction="horizontal" autoSaveId="studysolo-agent-shell-v1" className="h-full min-h-0 w-full">
+      <div ref={modeShellRef} className="flex h-screen overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-panels-ready={panelMotionReady || undefined} data-app-mode={resolvedMode} data-subject={activeSubjectId} data-agent-global={agentDockGlobal ? "true" : undefined} data-agent-shell>
+        {/* v2 starts from the new 60% default; v1's old 37% layout remains untouched but is no longer loaded. */}
+        <PanelGroup direction="horizontal" autoSaveId="studysolo-agent-shell-v2" className="h-full min-h-0 w-full">
           <Panel id="agent-shell-main" order={1} defaultSize={100 - PANEL_PRESETS.agent.right} minSize={36}>
             <div className="flex h-full min-h-0 flex-col">
               <TopBar
@@ -583,15 +636,19 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             collapsedSize={0}
             defaultSize={agentDockCollapsed ? 0 : PANEL_PRESETS.agent.right}
             minSize={20}
-            maxSize={58}
+            maxSize={64}
             onCollapse={() => {
-              markDockBusy(paneDurationMs() + 80);
+              // Ignore the panel library's first-layout callback; initial open should not show
+              // a resize skeleton or rewrite the preference before the saved state is settled.
               if (!dockPersistReadyRef.current) return;
+              markDockBusy(paneDurationMs() + 80);
+              if (suppressDockPanelPersistenceRef.current) return;
               setAgentDockCollapsed(true);
             }}
             onExpand={() => {
-              markDockBusy(paneDurationMs() + 80);
               if (!dockPersistReadyRef.current) return;
+              markDockBusy(paneDurationMs() + 80);
+              if (suppressDockPanelPersistenceRef.current) return;
               setAgentDockCollapsed(false);
             }}
           >
@@ -616,7 +673,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // ── Desktop layout (unchanged) ─────────────────────────────
   return (
     <KeyboardShortcutProvider>
-    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-panels-ready={panelMotionReady || undefined} data-app-mode={resolvedMode} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT} data-layout-profile={routeLayout.profile}>
+    <div ref={modeShellRef} className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-panels-ready={panelMotionReady || undefined} data-app-mode={resolvedMode} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT} data-layout-profile={routeLayout.profile}>
       <TopBar
         subjectId={route?.subjectId ?? DEFAULT_SUBJECT}
         categoryId={route?.categoryId ?? "detail"}
