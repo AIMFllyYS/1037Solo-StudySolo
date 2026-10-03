@@ -1,0 +1,41 @@
+name: Build cloud template from verified learning image
+on:
+  workflow_dispatch:
+    inputs:
+      verified_image:
+        description: 'Renderer-verified StudySolo image with exact sha256 digest'
+        required: true
+permissions:
+  contents: read
+  packages: write
+concurrency:
+  group: studysolo-cloud-template-build
+  cancel-in-progress: false
+jobs:
+  template:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: studysolo-sandbox-build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Submit once and wait for provider build
+        env:
+          STUDYSOLO_VERIFIED_IMAGE: ${{ inputs.verified_image }}
+          STUDYSOLO_SANDBOX_BUILD_API_KEY: ${{ secrets.STUDYSOLO_SANDBOX_BUILD_API_KEY }}
+          STUDYSOLO_REGISTRY_JOB_TOKEN: ${{ github.token }}
+          STUDYSOLO_TEMPLATE_EVIDENCE_DIR: ${{ runner.temp }}/template-evidence
+        run: node scripts/sandbox/build-verified-template.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sandbox-template-reference
+          path: ${{ runner.temp }}/template-evidence/template-build.json
+          if-no-files-found: ignore
