@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
 import { orderAgentDockWindows, splitAgentDockWindows } from "./agentDockTabs";
 
@@ -21,7 +22,7 @@ describe("Agent resource tabs", () => {
   it("keeps the active window first and sorts the rest by their most recent activation", () => {
     const windows = [dockWindow("older", 2), dockWindow("newest", 8), dockWindow("middle", 5)];
 
-    expect(orderAgentDockWindows(windows, "middle").map((window) => window.id)).toEqual([
+    assert.deepEqual(orderAgentDockWindows(windows, "middle").map((window) => window.id), [
       "middle",
       "newest",
       "older",
@@ -32,8 +33,8 @@ describe("Agent resource tabs", () => {
     const windows = [dockWindow("a", 1), dockWindow("b", 2), dockWindow("c", 3), dockWindow("d", 4), dockWindow("e", 5)];
     const result = splitAgentDockWindows(windows, "e");
 
-    expect(result.visible.map((window) => window.id)).toEqual(["e", "d", "c"]);
-    expect(result.overflow.map((window) => window.id)).toEqual(["b", "a"]);
-    expect(windows).toHaveLength(5);
+    assert.deepEqual(result.visible.map((window) => window.id), ["e", "d", "c"]);
+    assert.deepEqual(result.overflow.map((window) => window.id), ["b", "a"]);
+    assert.equal(windows.length, 5);
   });
 });
