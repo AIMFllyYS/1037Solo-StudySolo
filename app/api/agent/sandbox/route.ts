@@ -4,6 +4,7 @@ import { authorizeSandbox } from "@/lib/sandbox/actor.server";
 import { sandboxFailure, SandboxError } from "@/lib/sandbox/config.server";
 import { SandboxService } from "@/lib/sandbox/service.server";
 import { desktopCloudBridgeEnabled, forwardDesktopAgentRequest } from "@/lib/sandbox/desktop-bridge.server";
+import { readSandboxJson } from "@/lib/sandbox/request.server";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const schema = z.object({
@@ -15,9 +16,7 @@ const schema = z.object({
 export async function POST(request: NextRequest) {
   try {
     if (desktopCloudBridgeEnabled()) return await forwardDesktopAgentRequest(request);
-    const raw = await request.text();
-    if (Buffer.byteLength(raw) > 400000) throw new SandboxError("SANDBOX_REQUEST_TOO_LARGE", 413);
-    const parsed = schema.safeParse(JSON.parse(raw));
+    const parsed = schema.safeParse(await readSandboxJson(request, 400000));
     if (!parsed.success) throw new SandboxError("SANDBOX_REQUEST_INVALID");
     const { conversationId, ...input } = parsed.data;
     const scope = await authorizeSandbox(request, conversationId, !["status", "poll", "read", "list"].includes(input.action));

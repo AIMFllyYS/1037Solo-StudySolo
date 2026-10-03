@@ -25,7 +25,7 @@ async function check(directory) {
     const components = rel.split("/");
     if (components.some(part => /^\.env(?:\.|$)/.test(part)
       || [".local-archive", ".git", "dist-desktop", "_raw", "_raw-src"].includes(part))) {
-      throw new Error("private_or_raw_release_asset_forbidden");
+      throw new Error(`private_or_raw_release_asset_forbidden:${JSON.stringify(rel)}`);
     }
     const stat = await lstat(path);
     if (stat.isSymbolicLink()) {
