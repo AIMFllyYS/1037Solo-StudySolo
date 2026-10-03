@@ -79,7 +79,7 @@ test("删除项目同样二次确认（与删除对话一致）", () => {
   assert.match(sidebar, /onRequestDeleteProject=\{setPendingDeleteProjectId\}/);
 });
 
-test("右栏按对话隔离：窗口带 sessionId，四处一致筛选，默认收起", () => {
+test("右栏按对话隔离：窗口带 sessionId，四处一致筛选，新默认展开与显式偏好分开", () => {
   const manager = readFile("lib/stores/windowManager.ts");
   assert.match(manager, /sessionId\?: string \| null;/);
   assert.match(manager, /export function setWindowSessionProvider\(provider: \(\(\) => string \| null\) \| null\): void \{/);
@@ -95,10 +95,12 @@ test("右栏按对话隔离：窗口带 sessionId，四处一致筛选，默认�
   assert.match(readFile("components/window/WindowTaskbar.tsx"), /filterWindowsForSession\(windows, activeSessionId\)/);
   assert.match(readFile("components/window/AgentDockHost.tsx"), /filterWindowsForSession\(windows, activeSessionId\)/);
 
-  // 默认收起，且不再从 localStorage 恢复
+  // 新默认展开；仅新版显式偏好由 bootstrap/hydrate 恢复。
   const ui = readFile("lib/stores/ui.ts");
-  assert.match(ui, /agentDockCollapsed: true,/);
-  assert.doesNotMatch(ui, /updates\.agentDockCollapsed = agentDock;/);
+  assert.match(ui, /agentDockCollapsed: false,/);
+  assert.match(ui, /updates\.agentDockCollapsed = agentDock;/);
+  assert.match(ui, /gailvlun-agent-dock-collapsed-v2/);
+  assert.match(readFile("lib/hooks/useAgentDockPerSession.ts"), /setAgentDockCollapsedTransient/);
   // 每个对话一份记忆的钩子挂在 AgentShell 上
   assert.match(readFile("components/layout/AgentShell.tsx"), /useAgentDockPerSession\(\);/);
   assert.match(readFile("lib/hooks/useAgentDockPerSession.ts"), /rememberAgentDockState\(previous, snapshotRef\.current\)/);

@@ -43,8 +43,7 @@ function mountDockHost() {
   host.dataset.testid = "agent-dock-content";
   document.body.appendChild(host);
   useAgentDockRuntime.setState({ contentHost: host });
-  // 右栏现在**默认收起**（产品口径：Agent 打开时不先弹一块面板）。
-  // 这里要验的是「停靠形态怎么渲染」，所以显式把右栏打开。
+  // 明确设置此 fixture 的停靠状态，避免依赖其他用例留下的 UI 偏好。
   useStore.setState({ agentDockCollapsed: false });
   return host;
 }
@@ -54,7 +53,7 @@ afterEach(() => {
   useAppMode.setState({ mode: "studio", lastStudioPath: "/", hydrated: true });
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
   useAgentDockRuntime.setState({ contentHost: null, openRequest: 0, dockGlobal: false });
-  // 回到产品默认：右栏收起。
+  // 重置为此测试套件的收起基线；不是产品的新默认值。
   useStore.setState({ agentDockCollapsed: true });
   useOverlayStack.setState({ stack: [] });
   document.getElementById(NOTES_PANEL_ID)?.remove();

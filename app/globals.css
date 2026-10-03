@@ -933,6 +933,67 @@ html[data-panels-ready] [data-panel] {
   }
 }
 
+/* Agent 会话标题在状态slot前右侧柔和收边，保留文字起始且不使用省略号。 */
+.agent-session-title-fade {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 0.75rem), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 0.75rem), transparent 100%);
+}
+
+/* A short composited entrance after mode route commits; no previous shell stays mounted. */
+@keyframes ss-mode-enter {
+  from { opacity: 0.96; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+[data-mode-entering="true"] {
+  animation: ss-mode-enter var(--duration-fast) var(--ease-out) both;
+}
+[data-resizing="true"][data-mode-entering="true"] {
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-mode-entering="true"] { animation: none !important; }
+}
+html[data-reduce-motion="true"] [data-mode-entering="true"] {
+  animation: none !important;
+}
+
+[data-agent-sidebar-container] {
+  container-name: agent-sidebar;
+  container-type: inline-size;
+}
+header[data-agent-bar="true"] {
+  container-name: agent-topbar;
+  container-type: inline-size;
+}
+@container agent-topbar (max-width: 560px) {
+  [data-agent-shell] [data-agent-bar="true"] .agent-center-tabs-overlay {
+    right: calc(var(--agent-sources-width, 0px) + 9.5rem);
+  }
+  [data-agent-shell] .agent-center-tabs-overlay [data-testid="agent-center-tabs"] {
+    gap: 0.125rem;
+    padding: 0.125rem;
+  }
+  [data-agent-shell] .agent-center-tabs-overlay [data-testid="agent-center-tabs"] [role="tab"] {
+    gap: 0;
+    padding-inline: 0.25rem;
+  }
+  [data-agent-shell] .agent-center-tabs-overlay .agent-center-tab-label,
+  [data-agent-shell] .agent-center-tabs-overlay .agent-center-tab-count {
+    display: none;
+  }
+}
+@container agent-sidebar (max-width: 220px) {
+  /* Preserve the status dot and accessible label while returning scarce width to the title. */
+  .agent-session-run-label {
+    display: none;
+  }
+}
+
 /* Agent「全局」态：右栏铺满左侧对话栏之外的全部区域（中央对话与顶栏让位，左栏宽度由 --agent-left-width 提供）。 */
 [data-agent-global] [data-topbar] {
   display: none;

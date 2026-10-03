@@ -48,6 +48,7 @@ export default function AgentCenterTabs({
             key={tab.id}
             type="button"
             role="tab"
+            aria-label={tab.label}
             aria-selected={active}
             data-testid={`agent-center-tab-${tab.id}`}
             onClick={() => setCenterTab(tab.id)}
@@ -59,11 +60,11 @@ export default function AgentCenterTabs({
             )}
           >
             {tab.icon}
-            {tab.label}
+            <span className="agent-center-tab-label">{tab.label}</span>
             {tab.count > 0 ? (
               <span
                 className={clsx(
-                  "rounded-full px-1.5 text-[11px] leading-4 tabular-nums",
+                  "agent-center-tab-count rounded-full px-1.5 text-[11px] leading-4 tabular-nums",
                   active ? "bg-[var(--accent)]/15 text-[var(--accent-ink)]" : "bg-[var(--bg-muted)] text-[var(--ink-faint)]",
                 )}
               >

@@ -11,6 +11,9 @@ export default function FolderTreeRow({
   isExpanded = false,
   isSelected = false,
   icon,
+  endAdornment,
+  ariaDescribedBy,
+  fadeTitle = false,
   onClick,
   onMouseEnter,
   onMouseLeave,
@@ -38,6 +41,11 @@ export default function FolderTreeRow({
   onBlur?: (event: FocusEvent<HTMLButtonElement>) => void;
   titleAttr?: string;
   ariaLabel?: string;
+  ariaDescribedBy?: string;
+  /** Fade the title at its right edge without adding an ellipsis. */
+  fadeTitle?: boolean;
+  /** Optional row-end status/action, kept in the same line as the title. */
+  endAdornment?: ReactNode;
   fontWeight?: number;
   draggable?: boolean;
   onDragStart?: (event: DragEvent<HTMLButtonElement>) => void;
@@ -51,6 +59,7 @@ export default function FolderTreeRow({
       data-no-drag
       title={titleAttr ?? title}
       aria-label={ariaLabel}
+      aria-describedby={ariaDescribedBy}
       aria-current={isSelected ? "true" : undefined}
       aria-expanded={isFolder ? isExpanded : undefined}
       onClick={onClick}
@@ -104,9 +113,10 @@ export default function FolderTreeRow({
       <span className="inline-flex shrink-0 items-center justify-center" style={{ width: 18, height: 18 }}>
         {icon}
       </span>
-      <span className="truncate" style={{ fontSize: 13 }}>
+      <span className={fadeTitle || endAdornment ? "agent-session-title-fade" : "truncate"} style={{ fontSize: 13 }}>
         {title}
       </span>
+      {endAdornment}
     </button>
   );
 }

@@ -31,24 +31,24 @@ interface PanelMenuState {
 }
 
 /**
- * 项目折叠时看不出里面有没有会话在跑/跑完：把成员会话的运行态聚成一条徽标。
- * 优先级与 Codex 一致：running > 未读错误 > 未读完成。
+ * 项目折叠时把成员会话的真实运行态聚成一条徽标。
+ * 优先级为 running > 未读错误 > 未读完成；没有未读结果时保留最新终态的淡提示。
  */
 function aggregateProjectRun(
   sessions: SessionMeta[],
   byId: Record<string, SessionRunRecord>,
 ): SessionRunRecord | undefined {
   const runs = sessions.map((s) => byId[s.id]).filter(Boolean) as SessionRunRecord[];
-  if (runs.some((r) => r.phase === "running")) {
-    return { phase: "running", unseen: false, startedAt: 0, updatedAt: 0 };
-  }
-  if (runs.some((r) => r.unseen && (r.phase === "error" || r.phase === "interrupted"))) {
-    return { phase: "error", unseen: true, startedAt: 0, updatedAt: 0 };
-  }
-  if (runs.some((r) => r.unseen && r.phase === "done")) {
-    return { phase: "done", unseen: true, startedAt: 0, updatedAt: 0 };
-  }
-  return undefined;
+  const latest = (candidates: SessionRunRecord[]) =>
+    candidates.reduce<SessionRunRecord | undefined>(
+      (current, run) => !current || run.startedAt > current.startedAt ? run : current,
+      undefined,
+    );
+  return latest(runs.filter((run) => run.phase === "running"))
+    ?? latest(runs.filter((run) => run.unseen && (run.phase === "error" || run.phase === "interrupted")))
+    ?? latest(runs.filter((run) => run.unseen && run.phase === "done"))
+    // When the group is collapsed, retain the newest real terminal state in a faint tone too.
+    ?? latest(runs.filter((run) => run.phase !== "running"));
 }
 
 /**
@@ -305,7 +305,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                   onClick={handleCreateProject}
                   title={t("agent.sidebar.newProject")}
                   aria-label={t("agent.sidebar.newProject")}
-                  className="flex h-6 w-6 items-center justify-center rounded-md text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
+                  className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
                 >
                   <Plus size={14} />
                 </button>
