@@ -24,13 +24,14 @@ export function validateDesktopAgentRequest(request: NextRequest) { return valid
 /** Fixed destination, Account token only. Cloud/MCP operator keys stay on the website. */
 export async function forwardDesktopAgentRequest(request: NextRequest): Promise<Response> {
   const targetPath = request.nextUrl.pathname.replace(/\/$/, "");
-  // Feedback is available throughout the product. This exception authorizes only
-  // its exact endpoint; command and connector routes still require the Agent UI.
+  // Feedback and Review progress are available throughout the product. Only
+  // these exact data endpoints bypass the Agent surface requirement.
   const feedbackRoute = targetPath === "/api/feedback/chat" && request.method === "POST";
-  const pathname = validateDesktopRequest(request, !feedbackRoute);
+  const reviewProgressRoute = targetPath === "/api/review/progress" && ["GET", "POST"].includes(request.method);
+  const pathname = validateDesktopRequest(request, !(feedbackRoute || reviewProgressRoute));
   const agentRoute = /^\/api\/agent\/(?:chat|skills|sandbox(?:\/artifacts\/[a-f0-9-]{36})?)$/.test(targetPath);
   const connectorRoute = /^\/api\/connectors(?:\/inspect|\/actions\/[a-f0-9-]{36}(?:\/(?:confirm|cancel))?|\/(?:notion|todoist|google|github|zotero)\/disconnect)?$/.test(targetPath);
-  if (!agentRoute && !connectorRoute && !feedbackRoute) throw new SandboxError("DESKTOP_AGENT_BRIDGE_REJECTED", 403);
+  if (!agentRoute && !connectorRoute && !feedbackRoute && !reviewProgressRoute) throw new SandboxError("DESKTOP_AGENT_BRIDGE_REJECTED", 403);
   const token = extractAccessToken(request.headers);
   if (!token) throw new SandboxError("SIGN_IN_REQUIRED", 401);
   const headers = new Headers({ Authorization: `Bearer ${token}`, Origin: cloudOrigin, Referer: cloudOrigin + pathname });
@@ -39,7 +40,7 @@ export async function forwardDesktopAgentRequest(request: NextRequest): Promise<
   let body: string | undefined;
   if (request.method !== "GET") {
     body = await request.text();
-    if (Buffer.byteLength(body) > (feedbackRoute ? 8192 : 800 * 1024)) throw new SandboxError("SANDBOX_REQUEST_TOO_LARGE", 413);
+    if (Buffer.byteLength(body) > (feedbackRoute ? 8192 : reviewProgressRoute ? 512 * 1024 : 800 * 1024)) throw new SandboxError("SANDBOX_REQUEST_TOO_LARGE", 413);
     if (targetPath === "/api/agent/chat") {
       let parsed: Record<string, unknown>;
       try { parsed = JSON.parse(body); } catch { throw new SandboxError("SANDBOX_REQUEST_INVALID"); }
@@ -49,6 +50,14 @@ export async function forwardDesktopAgentRequest(request: NextRequest): Promise<
     headers.set("Content-Type", "application/json");
   }
   const target = new URL(targetPath + "/", cloudOrigin);
+  if (reviewProgressRoute && request.method === "GET") {
+    const allowed = new Set(["view", "subjectId", "chapterId", "attemptId", "cursor", "limit"]);
+    if (request.nextUrl.search.length > 2000) throw new SandboxError("SANDBOX_REQUEST_INVALID");
+    for (const [name, value] of request.nextUrl.searchParams) {
+      if (!allowed.has(name) || target.searchParams.has(name)) throw new SandboxError("SANDBOX_REQUEST_INVALID");
+      target.searchParams.set(name, value);
+    }
+  }
   if (targetPath.includes("/artifacts/")) {
     const conversation = request.nextUrl.searchParams.get("conversation");
     if (!conversation || !/^[A-Za-z0-9_.:-]{1,100}$/.test(conversation)) throw new SandboxError("SANDBOX_CONVERSATION_REQUIRED");

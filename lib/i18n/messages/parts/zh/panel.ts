@@ -146,6 +146,8 @@ export const panelZh = {
     reportTitle: "举报这个回答",
     voteDetailsTitle: "补充回答反馈",
     reportHint: "请选择最符合情况的原因。",
+    feedbackText: "补充说明",
+    feedbackTextPrivacy: "最多 1,000 字。请勿填写姓名、联系方式或凭证；常见联系方式和凭证格式会先脱敏。",
     excerptLabel: "附上回答摘录（最多 600 字）",
     excerptPrivacy: "仅在勾选后提交这段已脱敏预览。请检查并确认不含私人内容；不会提交你的提问、对话历史或工具内容。",
     reason: "举报原因",
