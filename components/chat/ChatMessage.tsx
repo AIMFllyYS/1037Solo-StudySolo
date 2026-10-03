@@ -16,6 +16,7 @@ import { extractFollowUpQuestionsFromContent } from '@/lib/chat/rendering/parseC
 import { collectCitationCatalog } from '@/lib/chat/citationCatalog';
 import { collectMessageSources } from '@/lib/chat/traceSources';
 import { ToolResultCards } from '@/components/chat/toolCards/ToolResultCards';
+import ChatFeedbackActions from '@/components/chat/ChatFeedbackActions';
 import { useT } from '@/lib/i18n';
 import { useReincludedAttachments } from '@/lib/stores/reincludedAttachments';
 
@@ -181,6 +182,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
             <ToolResultCards message={message} isStreaming={isStreaming} />
             {showFollowUps && revealFollowups && !isStreaming && (followUpQuestions.length > 0 || traceSources.length > 0) ? (
               <FollowUpQuestions questions={followUpQuestions} onSelect={onFollowUpSelect} sources={traceSources} />
+            ) : null}
+            {!isStreaming && sessionId && trace.answerText.trim() ? (
+              <ChatFeedbackActions sessionId={sessionId} messageId={message.id} answerText={trace.answerText} />
             ) : null}
           </>
         )}

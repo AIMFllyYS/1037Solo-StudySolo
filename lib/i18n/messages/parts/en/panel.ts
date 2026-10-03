@@ -147,6 +147,8 @@ export const panelEn = {
     reportTitle: "Report this answer",
     voteDetailsTitle: "Add answer feedback",
     reportHint: "Choose the reason that best describes the issue.",
+    feedbackText: "Additional details",
+    feedbackTextPrivacy: "Up to 1,000 characters. Do not include names, contact details, or credentials; common contact and credential patterns are redacted.",
     excerptLabel: "Attach an answer excerpt (up to 600 characters)",
     excerptPrivacy: "Only this redacted preview is sent when checked. Review it for private details; your prompt, chat history, and tool data are not included.",
     reason: "Report reason",

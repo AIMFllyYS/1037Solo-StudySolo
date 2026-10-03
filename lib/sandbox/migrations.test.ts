@@ -12,13 +12,21 @@ test("Shared execution fixtures preserve canonical source and PostgreSQL ACL/bud
   for (const fixture of fixtures) {
     assert.equal(createHash("sha256").update(fixture.sql).digest("hex"), fixture.sha256);
     const canonical = resolve(dirname(fileURLToPath(import.meta.url)), "../../../1037Solo-Shared/supabase/migrations", fixture.name);
-    if (existsSync(canonical)) assert.equal(createHash("sha256").update(readFileSync(canonical)).digest("hex"), fixture.sha256, "Refresh only test fixtures after reviewing the Shared source");
+    if (existsSync(canonical)) assert.equal(createHash("sha256").update(readFileSync(canonical, "utf8").replaceAll("\r\n", "\n")).digest("hex"), fixture.sha256, "Review canonical Shared SQL using consistent LF line endings");
   }
   const db = await PGlite.create({ extensions: { pgcrypto } });
   const a = "20000000-0000-4000-8000-000000000001", b = "20000000-0000-4000-8000-000000000002";
   try {
     await db.exec(`create role anon; create role authenticated; create role service_role bypassrls; create schema auth; create table auth.users(id uuid primary key); create schema storage; create table storage.buckets(id text primary key,name text,public boolean); insert into auth.users values('${a}'),('${b}');`);
+    // Supabase can supply default privileges that a fresh PostgreSQL fixture
+    // lacks. Explicit grants must override them instead of silently retaining
+    // TRUNCATE or content deletion permissions.
+    await db.exec("alter default privileges in schema public grant all on tables to service_role");
     for (const fixture of fixtures) await db.exec(fixture.sql);
+    const privileges = await db.query<{ relname: string; can_delete: boolean; can_truncate: boolean }>("select c.relname,has_table_privilege('service_role',c.oid,'DELETE') as can_delete,has_table_privilege('service_role',c.oid,'TRUNCATE') as can_truncate from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relkind='r' and (c.relname like 'ss_agent_execution_%' or c.relname like 'ss_connector_%' or c.relname='ss_chat_feedback')");
+    assert.equal(privileges.rows.length, 7);
+    assert.ok(privileges.rows.every(row => !row.can_truncate));
+    assert.ok(privileges.rows.every(row => row.can_delete === ["ss_connector_leases", "ss_agent_execution_locks"].includes(row.relname)), "Only coordination leases require deletion");
     const tables = await db.query<{ relname: string; relrowsecurity: boolean; comment: string }>("select c.relname,c.relrowsecurity,obj_description(c.oid) as comment from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and (c.relname like 'ss_agent_execution_%' or c.relname like 'ss_connector_%') and c.relkind='r'");
     assert.equal(tables.rows.length, 6); assert.ok(tables.rows.every(row => row.relrowsecurity && row.comment.startsWith("【ss_ StudySolo】")));
     await db.exec("grant authenticated,service_role to postgres; set role authenticated");
