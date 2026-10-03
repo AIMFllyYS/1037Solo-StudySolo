@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, ExternalLink, Globe, Package, TerminalSquare } from "lucide-react";
 import McpConfigPanel from "./McpConfigPanel";
+import { LearningConnectionsProvider } from "@/components/plugins/LearningConnectionsContext";
+import LearningConnectionsPanel from "@/components/plugins/LearningConnectionsPanel";
+import LearningConnectorControl from "@/components/plugins/LearningConnectorControl";
+import { CONNECTOR_REGISTRY } from "@/lib/connectors/registry";
 import SkillInstallButton from "./SkillInstallButton";
+import { SkillPackagesProvider } from "./SkillPackagesContext";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";
 import { findMarketEntry, pickL10n, useMarketManifest, type MarketEntry, type MarketSection } from "@/lib/plugins/market";
 import { useLocale, useT } from "@/lib/i18n";
@@ -60,6 +65,10 @@ function SkillPreview({ path }: { path: string }) {
  * 头部元信息（版本/来源/接入方式/链接）+ 长描述 + 推荐理由 + 各板块专属操作区。
  */
 export default function PluginDetail({ section, id }: { section: MarketSection; id: string }) {
+  return <LearningConnectionsProvider><SkillPackagesProvider><DetailContents section={section} id={id} /></SkillPackagesProvider></LearningConnectionsProvider>;
+}
+
+function DetailContents({ section, id }: { section: MarketSection; id: string }) {
   const t = useT();
   const locale = useLocale();
   const { manifest, loading, error } = useMarketManifest();
@@ -140,7 +149,7 @@ export default function PluginDetail({ section, id }: { section: MarketSection; 
         <div className="grid grid-cols-2 gap-3 rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4 sm:grid-cols-4">
           {entry.version ? <Field label={t("agent.market.field.version")}>v{entry.version}</Field> : null}
           {entry.author ? <Field label={t("agent.market.field.author")}>{entry.author}</Field> : null}
-          {entry.section === "mcp" ? <Field label={t("agent.market.field.transport")}>{entry.transport}</Field> : null}
+          {entry.section === "mcp" ? <Field label={t("agent.market.field.transport")}>{entry.connector ? t(`trace.tool.learningConnectors.${CONNECTOR_REGISTRY[entry.connector].kind === "mcp" ? "mcp" : CONNECTOR_REGISTRY[entry.connector].kind === "api" ? "api" : "local"}`) : entry.transport}</Field> : null}
           {entry.section === "skills" ? <Field label={t("agent.market.field.path")}>{entry.path}</Field> : null}
         </div>
 
@@ -184,7 +193,7 @@ export default function PluginDetail({ section, id }: { section: MarketSection; 
               <p className="rounded-xl border border-[var(--line-soft)] bg-[var(--bg-muted)] px-3.5 py-2.5 text-[12px] leading-relaxed text-[var(--ink-soft)]">
                 {entry.id === "kitsolo" ? pickL10n(entry, "notes", locale) : t("agent.market.mcp.note")}
               </p>
-              <McpConfigPanel entry={entry} />
+              {entry.connector ? <><LearningConnectionsPanel /><LearningConnectorControl provider={entry.connector} /></> : <McpConfigPanel entry={entry} />}
             </div>
           ) : null}
 

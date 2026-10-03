@@ -54,6 +54,23 @@ export const panelEn = {
     untitled: "New chat",
   },
 
+  // Welcome prompts and keyboard hints for the Agent's central conversation.
+  agentWelcome: {
+    examplesTitle: "Try asking me",
+    description: {
+      outline: "Build a clear outline from the core ideas",
+      flashcards: "Turn the material into cards for recall and self-testing",
+      demo: "Make an abstract process easier to explore",
+      brief: "Check the sources, then summarize the key points",
+    },
+  },
+  agentComposer: {
+    hintsAria: "Composer keyboard hints",
+    enterToSend: "Send",
+    shiftEnterForLineBreak: "New line",
+    sendWithButton: "Use the send button to submit",
+  },
+
   // Window chrome (traffic lights / title / external link / resize) and the dock tab strip.
   window: {
     minimize: "Minimize",
@@ -64,6 +81,16 @@ export const panelEn = {
     tabsAria: "Workspace tabs",
     openTab: "Open {title}",
     closeTab: "Close {title}",
+    tabActions: "More actions for {title}",
+    tabMenuAria: "Workspace tab actions for {title}",
+    overflowMenuAria: "More workspace windows",
+    moreTabs: "{count} more windows",
+    copyTitle: "Copy title",
+    closeTabAction: "Close this window",
+    closeOthers: "Close other windows",
+    closeAll: "Close all windows",
+    untitledTab: "Untitled window",
+    minimizedShort: "Minimized",
   },
 
   // Add menu: the panel "+" button and the empty state share these entries.
@@ -105,7 +132,41 @@ export const panelEn = {
     hiddenTitle: "All windows are tucked away",
     emptyTitle: "Nothing in the workspace yet",
     hiddenHint: "Click a tab above to reopen them.",
-    emptyHint: "Pick one below, or add a file or URL with ＋ at the top right.",
+    emptyHint: "Pick one below, or use the ＋ above to add a file or URL.",
+  },
+
+  chatFeedback: {
+    actionsAria: "Answer feedback actions",
+    copy: "Copy answer",
+    copied: "Copied",
+    copyFailed: "Copy failed. Try again.",
+    like: "Like",
+    dislike: "Dislike",
+    report: "Report",
+    voteSaved: "Your vote was recorded. You can optionally attach a short redacted excerpt.",
+    reportTitle: "Report this answer",
+    voteDetailsTitle: "Add answer feedback",
+    reportHint: "Choose the reason that best describes the issue.",
+    excerptLabel: "Attach an answer excerpt (up to 600 characters)",
+    excerptPrivacy: "Only this redacted preview is sent when checked. Review it for private details; your prompt, chat history, and tool data are not included.",
+    reason: "Report reason",
+    inaccurate: "Inaccurate content",
+    unsafe: "Unsafe or harmful",
+    privacy: "Privacy or sensitive information",
+    other: "Other issue",
+    cancel: "Not now",
+    submitExcerpt: "Submit details",
+    submitReport: "Submit report",
+    submitting: "Submitting…",
+    reportSaved: "Your report was recorded.",
+    loginRequired: "Sign in to submit feedback.",
+    mfaRequired: "Complete account two-step verification first.",
+    accountUnavailable: "Account service is unavailable. Try again later.",
+    migrationPending: "Feedback storage is not deployed yet. Try again later.",
+    rateLimited: "Too many submissions. Try again later.",
+    stale: "This vote changed elsewhere. Close this dialog and choose again.",
+    staleClose: "Close and vote again",
+    submitFailed: "Feedback was not saved. Try again.",
   },
 
   // The "open a URL" field at the end of the add menu.

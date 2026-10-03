@@ -4,9 +4,9 @@ import { REQUEST_TOO_LARGE_MESSAGE } from '@/lib/chat/requestBudget';
 import type { ChatMessage, ChatMessagePart, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
 
 /** SDK 负责 SSE/UTF-8 解码；只在原始字节层观察活动，注释心跳也能续期。 */
-export function createStudyChatTransport(onActivity: () => void) {
+export function createStudyChatTransport(onActivity: () => void, agentMain = false) {
   return new DefaultChatTransport<RequestMessage>({
-    api: '/api/chat',
+    api: agentMain ? '/api/agent/chat' : '/api/chat',
     fetch: async (input, init) => {
       const response = await fetch(input, init);
       if (!response.ok) {

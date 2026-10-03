@@ -6,6 +6,7 @@
   "author": "Gailvlun",
   "main": "electron/main.js",
   "scripts": {
+    "sandbox:reap": "node --import tsx scripts/sandbox/reap.ts",
     "connectors:configure": "node scripts/connectors/configure-env.mjs",
     "connectors:check": "node --import tsx scripts/connectors/check-env.ts",
     "typecheck": "tsc --noEmit --incremental false",
@@ -78,6 +79,7 @@
     "docx": "9.7.1",
     "docx-preview": "^0.4.0",
     "dompurify": "^3.4.11",
+    "e2b": "2.31.0",
     "fflate": "^0.8.3",
     "framer-motion": "^11.18.0",
     "highlight.js": "11.11.1",

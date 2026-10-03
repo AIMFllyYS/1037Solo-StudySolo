@@ -52,10 +52,13 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
   modelId?: string;
   /** 窗内笔记对话锁定这篇笔记；主对话不传，仍读 cite 写入的 agentEditingNoteId。 */
   editingUserNoteId?: string;
+  /** Only supplied by the independent Agent center; all embedded/scheduled callers default false. */
+  agentMain?: boolean;
 }) {
   const ovSessionId = overrides?.sessionId;
   const ovModelId = overrides?.modelId;
   const ovEditingUserNoteId = overrides?.editingUserNoteId;
+  const ovAgentMain = overrides?.agentMain === true;
   const resolvedSessionId = useChatHistory((s) => ovSessionId ?? s.activeSessionId);
   const messages = useChatHistory((s) => {
     const sid = ovSessionId ?? s.activeSessionId;
@@ -196,6 +199,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
               memoryCommit: sendOptions?.memoryCommit,
               editingUserNote: selectEditingUserNote(ovEditingUserNoteId) ?? undefined,
               noteWindowAgent: isNoteWindow,
+              agentMain: ovAgentMain && !ovSessionId && !isNoteWindow,
               userNotes,
               flashcards,
               projectFiles,
@@ -270,6 +274,6 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
       }
     })();
     return true;
-  }, [chatContext, options, ovSessionId, ovModelId, ovEditingUserNoteId]);
+  }, [chatContext, options, ovSessionId, ovModelId, ovEditingUserNoteId, ovAgentMain]);
   return { messages, isLoading, error, info, sendMessage, stopGeneration, clearError, clearInfo, sessionId: resolvedSessionId };
 }

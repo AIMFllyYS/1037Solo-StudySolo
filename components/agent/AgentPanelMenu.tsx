@@ -1,9 +1,9 @@
 "use client";
 
-import { createPortal } from "react-dom";
 import { Archive, ChevronRight, Folder, FolderPlus, PenLine, Trash2 } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import type { ChatFolder, SessionMeta } from "@/lib/storage/chatStorage";
+import { AGENT_MENU_ITEM_CLASS, AgentMenuSurface } from "./AgentMenuSurface";
 
 export type AgentMenuTarget =
   | { kind: "panel" }
@@ -20,8 +20,7 @@ export interface AgentPanelMenuActions {
   newChatInProject: (id: string) => void;
 }
 
-const ITEM_CLASS =
-  "flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12.5px] text-[var(--ink)] hover:bg-[var(--bg-muted)]";
+const ITEM_CLASS = AGENT_MENU_ITEM_CLASS;
 
 /**
  * 左栏右键菜单。删除走「菜单里就地问一次」：先点删除，再点确认，确认才真的落 deleteSession
@@ -41,6 +40,7 @@ export default function AgentPanelMenu({
   onConfirmDeleteProject,
   onCancelDeleteProject,
   close,
+  returnFocusElement,
   actions,
 }: {
   x: number;
@@ -56,23 +56,23 @@ export default function AgentPanelMenu({
   onRequestDeleteProject: (id: string) => void;
   onConfirmDeleteProject: (id: string) => void;
   onCancelDeleteProject: () => void;
-  close: () => void;
+  close: (restoreFocus?: boolean) => void;
+  returnFocusElement?: HTMLElement | null;
   actions: AgentPanelMenuActions;
 }) {
-  // hook 必须在提前 return 之前调用，渲染路径不同时 hook 顺序也要一致。
   const t = useT();
-  if (typeof document === "undefined") return null;
   const session = target.kind === "session" ? target.session : null;
   const systemSession = session?.kind === "note" || session?.kind === "floating" || session?.kind === "scheduled";
 
-  return createPortal(
-    <div
-      role="menu"
-      aria-label={t("agent.menu.aria")}
-      data-testid="agent-panel-menu"
-      style={{ position: "fixed", left: x, top: y }}
-      className="z-[12000] w-56 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-1.5 shadow-xl"
-      onPointerDown={(event) => event.stopPropagation()}
+  return (
+    <AgentMenuSurface
+      id="agent-panel-menu"
+      x={x}
+      y={y}
+      label={t("agent.menu.aria")}
+      testId="agent-panel-menu"
+      onClose={close}
+      returnFocusElement={returnFocusElement}
     >
       {target.kind === "panel" && (
         <>
@@ -229,7 +229,6 @@ export default function AgentPanelMenu({
           {t("agent.menu.deleteSession")}
         </button>
       ) : null}
-    </div>,
-    document.body,
+    </AgentMenuSurface>
   );
 }

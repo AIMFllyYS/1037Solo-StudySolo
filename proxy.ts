@@ -44,7 +44,7 @@ export async function proxy(request: NextRequest) {
   }
   let renewal: RenewalResult | null = null;
   const mode = authModeForRequest(request);
-  if ((request.nextUrl.pathname.startsWith("/api/connectors") || request.nextUrl.pathname === "/api/chat") && ["account-local", "account-shared"].includes(mode) && !request.headers.get("authorization")) {
+  if ((request.nextUrl.pathname.startsWith("/api/connectors") || request.nextUrl.pathname.startsWith("/api/agent/") || request.nextUrl.pathname === "/api/chat") && ["account-local", "account-shared"].includes(mode) && !request.headers.get("authorization")) {
     renewal = await renewIfNeeded({ accountBackendUrl: accountBackendUrl(mode), cookieHeader: request.headers.get("cookie") ?? "", origin: request.nextUrl.origin, forwardedFor: request.headers.get("x-forwarded-for"), pathname: request.nextUrl.pathname });
     if (isOutage(renewal)) return NextResponse.json({ code: "ACCOUNT_UNAVAILABLE" }, { status: 503, headers: { "Retry-After": "5" } });
   }

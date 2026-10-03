@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import PluginEntryCard from "./PluginEntryCard";
 import LearningConnectionsPanel from "@/components/plugins/LearningConnectionsPanel";
+import { LearningConnectionsProvider } from "@/components/plugins/LearningConnectionsContext";
+import { SkillPackagesProvider, useSkillPackages } from "./SkillPackagesContext";
 import {
   filterMarketEntries,
   useMarketManifest,
@@ -15,15 +17,20 @@ import { useLocale, useT } from "@/lib/i18n";
 
 type CliFilter = "all" | CliEntry["kind"];
 
-const TAB_ORDER: readonly MarketSection[] = ["mcp", "cli", "skills"];
+const TAB_ORDER: readonly MarketSection[] = ["mcp", "skills"];
 
 /**
  * 插件市场（/agent/plugins）：三板块 tab + 搜索 + 卡片网格。
  * 数据来自 public/plugins/market.json（useMarketManifest 模块级缓存一次请求）。
  */
 export default function AgentPluginsPage() {
+  return <LearningConnectionsProvider><SkillPackagesProvider><MarketContents /></SkillPackagesProvider></LearningConnectionsProvider>;
+}
+
+function MarketContents() {
   const t = useT();
   const locale = useLocale();
+  const packages = useSkillPackages();
   const { manifest, loading, error } = useMarketManifest();
   const [tab, setTab] = useState<MarketSection>("mcp");
   const [query, setQuery] = useState("");
@@ -32,21 +39,23 @@ export default function AgentPluginsPage() {
 
   const counts = useMemo(
     () => ({
-      mcp: manifest?.mcp.length ?? 0,
+      mcp: manifest?.mcp.filter(entry => entry.connector || entry.id === "kitsolo").length ?? 0,
       cli: manifest?.cli.length ?? 0,
-      skills: manifest?.skills.length ?? 0,
+      skills: manifest?.skills.filter(entry => entry.runtime !== "cloud" || packages.ready).length ?? 0,
     }),
-    [manifest],
+    [manifest, packages.ready],
   );
 
   const visible = useMemo(() => {
     if (!manifest) return [];
     let entries = manifest[tab] as MarketEntry[];
+    if (tab === "mcp") entries = manifest.mcp.filter(entry => entry.connector || entry.id === "kitsolo");
+    if (tab === "skills") entries = manifest.skills.filter(entry => entry.runtime !== "cloud" || packages.ready);
     if (tab === "cli" && cliKind !== "all") {
       entries = (entries as CliEntry[]).filter((e) => e.kind === cliKind);
     }
     return filterMarketEntries(entries, query);
-  }, [manifest, tab, cliKind, query]);
+  }, [manifest, tab, cliKind, query, packages.ready]);
 
   const total = tab === "cli" && cliKind !== "all" ? visible.length : counts[tab];
 

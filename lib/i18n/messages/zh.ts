@@ -33,15 +33,15 @@ export const zh = {
     // 插件市场（app/agent/plugins + components/agent/plugins/*）
     market: {
       title: "插件市场",
-      subtitle: "把 Agent 的能力按需装上去：MCP 工具、CLI 与技能包、官方技能。",
+      subtitle: "连接学习服务，导入技能，让助教按你的学习任务调用工具。",
       tabs: {
-        mcp: "MCP 插件",
-        cli: "CLI + Skills",
-        skills: "官方 Skills",
+        mcp: "MCP 与学习服务",
+        cli: "工具 + Skills",
+        skills: "Skills",
       },
       tabHint: {
-        mcp: "选好 server → 填凭证 → 复制配置，粘进 Claude Desktop / Cursor / Codex 的 MCP 配置即生效。",
-        cli: "值得装的命令行工具与社区技能包：复制命令自行安装，或克隆后挑 SKILL.md 导入技能库。",
+        mcp: "点击「连接」完成账号授权；关联成功后，助教可以在对话中使用这些服务。公开检索与闪卡导出无需第三方授权。",
+        cli: "技能描述任务步骤，MCP 提供实际工具。需要本机命令或渲染程序的技能，只有执行环境就绪后才可安装运行。",
         skills: "官方上架的技能包：点「导入」写进你的技能库，Agent 按名称与描述按需调用。",
       },
       search: "搜索名称、用途或标签",
@@ -61,6 +61,7 @@ export const zh = {
         skillPack: "Skill 包",
       },
       action: {
+        connect: "连接",
         copyConfig: "复制配置",
         copyCommand: "复制命令",
         copied: "已复制",
@@ -88,12 +89,20 @@ export const zh = {
         path: "文件路径",
       },
       mcp: {
-        // 闭环说明：本应用不内嵌 MCP 运行时，闭环=收凭证→导出标准配置→粘到宿主 Agent。
-        note: "MCP server 由宿主 Agent（Claude Desktop / Cursor / Codex 等）拉起；这里负责收集凭证并导出标准配置。桌面端后续可直接内嵌 stdio MCP。",
+        note: "连接记录归属于你的账号。助教只使用已授权的权限；修改任务、写入笔记或发送邮件前，会先展示候选内容并等待确认。",
         noEnv: "此插件无需凭证。",
         pasteHint: "粘贴位置：Claude Desktop 的 claude_desktop_config.json、Cursor 的 ~/.cursor/mcp.json，或 Codex 的 ~/.codex/config.toml。",
         envSaved: "凭证只保存在这台设备（localStorage，轻混淆存储），不会上传。",
         missingEnv: "还有未填的必填凭证，复制出的配置里会是占位符。",
+      },
+      connection: {
+        unavailable: "连接状态暂不可用",
+        productionDisabled: "当前站点尚未启用学习服务连接。需要管理员完成服务端配置后才能授权；这不是你的账号问题。",
+        failed: "暂时无法查询连接状态，请刷新重试。",
+        accountUnavailable: "账号服务暂时不可用，请稍后重试。",
+        originRejected: "当前站点的连接回调配置尚未就绪，请联系管理员。",
+        reauth: "请先在账号中心完成身份验证，再刷新连接状态。",
+        publicHint: "在对话中告诉助教检索什么，即可使用；无需申请第三方账号。",
       },
       cli: {
         packHint: "Skill 包是仓库资源：克隆后挑单个 SKILL.md，到「设置 → 技能库」导入即可。",

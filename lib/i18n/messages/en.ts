@@ -31,15 +31,15 @@ export const en = {
     // Plugin market (app/agent/plugins + components/agent/plugins/*)
     market: {
       title: "Plugin market",
-      subtitle: "Bolt capabilities onto your Agent: MCP tools, CLIs and skill packs, plus official skills.",
+      subtitle: "Connect learning services and import skills so your tutor can use tools for your tasks.",
       tabs: {
-        mcp: "MCP plugins",
-        cli: "CLI + Skills",
-        skills: "Official skills",
+        mcp: "MCP & learning services",
+        cli: "Tools + Skills",
+        skills: "Skills",
       },
       tabHint: {
-        mcp: "Pick a server → fill credentials → copy the config, then paste it into Claude Desktop / Cursor / Codex MCP settings.",
-        cli: "CLI tools and community skill packs worth having: copy the install command, or clone and import a SKILL.md.",
+        mcp: "Connect and authorize your account to use services in chat. Public search and flashcard export need no third-party authorization.",
+        cli: "Skills describe task steps; MCP supplies the tools. Skills that need local commands or rendering programs require a working execution environment before installation.",
         skills: "Officially published skill packs: import them into your skill library; the agent calls them by name and description.",
       },
       search: "Search name, purpose or tags",
@@ -59,6 +59,7 @@ export const en = {
         skillPack: "Skill pack",
       },
       action: {
+        connect: "Connect",
         copyConfig: "Copy config",
         copyCommand: "Copy command",
         copied: "Copied",
@@ -86,11 +87,20 @@ export const en = {
         path: "Path",
       },
       mcp: {
-        note: "MCP servers are launched by a host agent (Claude Desktop / Cursor / Codex). This page collects credentials and exports a standard config; a future desktop build can embed stdio MCP directly.",
+        note: "Connections belong to your account and use only authorized permissions. Task updates, note writes and email sends require your confirmation of the proposed content.",
         noEnv: "This plugin needs no credentials.",
         pasteHint: "Paste into claude_desktop_config.json (Claude Desktop), ~/.cursor/mcp.json (Cursor), or ~/.codex/config.toml (Codex).",
         envSaved: "Credentials stay on this device only (localStorage, lightly obfuscated) — never uploaded.",
         missingEnv: "Required credentials are missing — placeholders will be copied instead.",
+      },
+      connection: {
+        unavailable: "Connection status unavailable",
+        productionDisabled: "Learning service connections are not enabled on this site yet. An administrator must complete server configuration before authorization; this is not an account problem.",
+        failed: "Cannot check connections right now. Refresh and try again.",
+        accountUnavailable: "Account service unavailable. Try again later.",
+        originRejected: "Connection callbacks are not configured for this site. Contact the administrator.",
+        reauth: "Complete identity verification in Account, then refresh connections.",
+        publicHint: "Ask your tutor to search in chat. No third-party account is required.",
       },
       cli: {
         packHint: "Skill packs ship as repos: clone, pick a SKILL.md, then import it under Settings → Skills.",

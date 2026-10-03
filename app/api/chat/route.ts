@@ -41,6 +41,8 @@ import { shouldAutoEnableSearch } from "@/lib/ai/search/autoEnable";
 import { kitSoloAccess } from "@/lib/plugins/kitsolo-oauth-client";
 import { requestToken } from "@/lib/auth/sign-in/account-verify";
 import { connectorOwner } from "@/lib/connectors/actor.server";
+import { sandboxScopeForChat } from "@/lib/sandbox/actor.server";
+import { skillsForAgent } from "@/lib/sandbox/skills.server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -252,14 +254,17 @@ async function handlePOST(req: NextRequest) {
       const accountToken = userId && installed && !isImageMode && !body.noteWindowAgent && !body.disabledTools.includes("kitSolo") ? requestToken(req.headers) : null;
       const kitSoloAccessToken = accountToken ? await kitSoloAccess(accountToken, "studysolo") : null;
       const canonicalConnectorOwner = await connectorOwner(req).catch(() => undefined);
+      const cloudSandboxScope = !isImageMode ? await sandboxScopeForChat(req, body) : undefined;
+      const agentSkills = await skillsForAgent(cloudSandboxScope, body.skills);
       const bundleInput = (truncated: boolean, referenceContext: string): StudyAgentInput => ({
         connectorOwner: canonicalConnectorOwner,
+        cloudSandboxScope,
         kitSoloAccessToken: kitSoloAccessToken ?? undefined,
         model: resolved.model,
         chatCtx,
         options,
         disabledTools: body.disabledTools,
-        skills: body.skills,
+        skills: agentSkills,
         globalContext: body.globalContext.trim(),
         referenceContext,
         contextTruncated: truncated,

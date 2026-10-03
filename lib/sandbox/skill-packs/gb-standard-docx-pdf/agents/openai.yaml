@@ -1,0 +1,4 @@
+interface:
+  display_name: "国标 Word/PDF 文稿封装（无 Shell）"
+  short_description: "无 PowerShell/Shell 的标准化中文文稿排版：先商定工具链，双格式验收，可选有声版"
+  default_prompt: "Use $gb-standard-docx-pdf to package this Chinese manuscript with the no-shell Word/WPS workflow and matching PDF."

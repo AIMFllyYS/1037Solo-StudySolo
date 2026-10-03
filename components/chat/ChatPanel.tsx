@@ -41,16 +41,17 @@ interface ChatPanelProps {
    * 'agent' 走 Agent 的欢迎页：问候语在上、输入框居中、示例清单在下，输入框不贴底。
    */
   emptyLayout?: 'classic' | 'agent';
+  agentMain?: boolean;
 }
 
-const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, emptyLayout = 'classic' }) => {
+const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, emptyLayout = 'classic', agentMain = false }) => {
   const t = useT();
   const [chatOptions] = useState<ChatOptions>({
     enableThinking: false,
     enableSearch: false,
     contextMode: 'full',
   });
-  const { messages, isLoading, error, info, sendMessage, stopGeneration, clearError, clearInfo, sessionId } = useChat(chatContext, chatOptions);
+  const { messages, isLoading, error, info, sendMessage, stopGeneration, clearError, clearInfo, sessionId } = useChat(chatContext, chatOptions, { agentMain });
   const outbound = useStore((s) => s.outbound);
   const clearOutbound = useStore((s) => s.clearOutbound);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);

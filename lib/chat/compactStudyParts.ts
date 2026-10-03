@@ -91,8 +91,27 @@ function compactToolOutput(
   name: string,
   output: Record<string, unknown>,
   input: Record<string, unknown> | null,
+  mode: CompactStudyMode,
 ): Record<string, unknown> {
   const rec = { ...output };
+  if (name === "cloudSandbox") {
+    const excerpt = (value: unknown, limit: number) => typeof value === "string" && value.length > limit ? `${value.slice(0, limit / 2)}\n[中间日志已省略，可通过结果卡刷新查询完整日志]\n${value.slice(-limit / 2)}` : value;
+    rec.stdout = excerpt(rec.stdout, 16000);
+    rec.stderr = excerpt(rec.stderr, 8000);
+    if (rec.stdout !== output.stdout || rec.stderr !== output.stderr) rec.logsTruncated = true;
+    // Never keep a second serialized copy of the same logs in the history.
+    if (output.stdout || output.stderr) rec.text = `云端命令状态：${String(rec.state ?? "unknown")}；退出码：${String(rec.exitCode ?? "尚未退出")}`;
+    else if (typeof rec.text === "string" && rec.text.length > 16000) { rec.text = truncateText(rec.text, 16000); rec.logsTruncated = true; }
+  }
+  if (name === "learningConnectors" && mode === "ui-request") {
+    // The current UI retains its structured response. History sent to the model
+    // only needs the bounded result and action identity, not duplicate full data.
+    delete rec.data;
+    delete rec.download;
+    if (typeof rec.text === "string" && rec.text.length > 16000) rec.text = truncateText(rec.text, 16000);
+    const action = recordOf(rec.action);
+    if (action) { const summary = { ...action }; delete summary.arguments; delete summary.result; rec.action = summary; }
+  }
 
   if (name === "renderInteractive") {
     const compacted = compactUiParts([{
@@ -173,7 +192,7 @@ function compactPart(part: ChatMessagePart, mode: CompactStudyMode): ChatMessage
   return {
     ...toolPart,
     input: compactToolInput(name, toolPart.input),
-    output: compactToolOutput(name, output, input),
+    output: compactToolOutput(name, output, input, mode),
   } as ChatMessagePart;
 }
 

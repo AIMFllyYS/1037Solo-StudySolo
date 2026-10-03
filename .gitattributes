@@ -6,6 +6,7 @@
 *.tsx  text eol=lf
 *.js   text eol=lf
 *.mjs  text eol=lf
+*.sh   text eol=lf
 *.json text eol=lf
 *.md   text eol=lf
 *.css  text eol=lf
@@ -17,3 +18,6 @@
 *.png  binary
 *.webp binary
 *.svg  binary
+
+# User-provided skill references intentionally use Markdown two-space hard breaks.
+lib/sandbox/skill-packs/**/*.md whitespace=-blank-at-eol
