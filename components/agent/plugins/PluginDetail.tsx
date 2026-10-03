@@ -182,7 +182,7 @@ export default function PluginDetail({ section, id }: { section: MarketSection; 
           {entry.section === "mcp" ? (
             <div className="flex flex-col gap-3">
               <p className="rounded-xl border border-[var(--line-soft)] bg-[var(--bg-muted)] px-3.5 py-2.5 text-[12px] leading-relaxed text-[var(--ink-soft)]">
-                {t("agent.market.mcp.note")}
+                {entry.id === "kitsolo" ? pickL10n(entry, "notes", locale) : t("agent.market.mcp.note")}
               </p>
               <McpConfigPanel entry={entry} />
             </div>

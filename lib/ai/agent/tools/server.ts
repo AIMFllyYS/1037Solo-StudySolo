@@ -2,6 +2,8 @@
 // 不要从客户端（components、lib/hooks、tools/index）导入本文件或各工具的 tool.ts。
 
 import type { ToolSet } from "ai";
+import { createLearningConnectorsTool } from "@/lib/ai/agent/tools/learningConnectors/tool";
+import { createKitSoloTool } from "@/lib/ai/agent/tools/kitSolo/tool";
 import type { StudyToolName } from "@/lib/ai/agent/tools/names";
 import {
   menuSkillNamesOf,
@@ -44,6 +46,9 @@ export {
 } from "@/lib/ai/agent/tools/_shared";
 
 export interface BuildStudyToolsOptions {
+  /** Account introspection UUID; never supplied by chat request JSON. */
+  connectorOwner?: string;
+  kitSoloAccessToken?: string;
   enableSearch: boolean;
   disabled?: string[];
   /** 请求携带的演示目录（html 只给 getArtifact，不进 prompt）。始终暴露该工具，避免工具 schema 随有无产物 bust。 */
@@ -95,6 +100,8 @@ export function buildStudyTools(
   const menuSkillNames = menuSkillNamesOf(ctx.skills);
 
   const all = {
+    learningConnectors: createLearningConnectorsTool(opts.connectorOwner, ctx.flashcards, !opts.planMode && !opts.noteWindowAgent),
+    kitSolo: createKitSoloTool(opts.kitSoloAccessToken ?? ""),
     getCurrentPage: createGetCurrentPageTool(ctx, runtime),
     getOutline: createGetOutlineTool(ctx, runtime),
     getSection: createGetSectionTool(ctx, runtime),
@@ -140,6 +147,8 @@ export function buildStudyTools(
     "readProjectSlices",
   ];
   if (opts.memoryCommit === "note") names.push("commitNotes");
+  if (opts.connectorOwner) names.push("learningConnectors");
+  if (opts.kitSoloAccessToken && !opts.noteWindowAgent) names.push("kitSolo");
   if (opts.memoryCommit === "flashcards") names.push("commitFlashcards");
   // 课堂文稿只在 Class 模式（请求带了课堂上下文且已登录）时出现。
   if (ctx.classContext && ctx.userId) names.push("searchClassTranscript");

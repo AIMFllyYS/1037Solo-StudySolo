@@ -109,6 +109,8 @@ content/_raw/
 # plan verification artifacts (screenshots, probe dumps)
 docs/plans/**/verify/
 /artifacts/performance/
+/artifacts/connector-analysis-*/
+/artifacts/connector-auth-*/
 /runtime/search-worker/
 /.next-perf-*/
 /.next-desktop-*/
