@@ -1,5 +1,7 @@
 import { Client, StreamableHTTPClientTransport, type CallToolResult } from "@modelcontextprotocol/client";
 import Ajv from "ajv";
+import Ajv2020 from "ajv/dist/2020";
+import Ajv2019 from "ajv/dist/2019";
 import { activeGrant } from "./connections.server";
 import { CONNECTOR_REGISTRY, type ConnectorOperation } from "./registry";
 import { ConnectorError } from "./actor.server";
@@ -14,14 +16,21 @@ export const MCP_TOOL_POLICY: Record<McpProvider, { read: readonly string[]; wri
 };
 export function allowedMcpTool(provider: McpProvider, name: string, write: boolean) { return MCP_TOOL_POLICY[provider][write ? "write" : "read"].includes(name); }
 function safeSchema(value: unknown, depth = 0): unknown {
-  if (depth > 12) return {};
-  if (Array.isArray(value)) return value.slice(0, 100).map(item => safeSchema(item, depth + 1));
-  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).filter(([key]) => !["description", "title", "examples", "$comment", "default"].includes(key)).map(([key, item]) => [key, safeSchema(item, depth + 1)]));
+  // Never silently remove validation constraints, enum members or property names.
+  // Tool descriptions are replaced separately; schema annotations grant no authority.
+  if (depth > 40) throw new ConnectorError("PROVIDER_SCHEMA_UNSUPPORTED", 502);
+  if (Array.isArray(value)) return value.map(item => safeSchema(item, depth + 1));
+  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, safeSchema(item, depth + 1)]));
   return value;
 }
 export function validateArguments(schema: Record<string, unknown>, args: Record<string, unknown>) {
   if (JSON.stringify(args).length > 32000 || !secretFreeArguments(args)) throw new ConnectorError("INVALID_ARGUMENTS");
-  try { if (!new Ajv({ strict: false, allErrors: false, validateFormats: false }).compile(schema)(args)) throw new ConnectorError("INVALID_ARGUMENTS"); }
+  try {
+    if (JSON.stringify(schema).length > 128000) throw new ConnectorError("PROVIDER_SCHEMA_UNSUPPORTED", 502);
+    const dialect = schema.$schema;
+    const Validator = dialect === "https://json-schema.org/draft/2020-12/schema" ? Ajv2020 : dialect === "https://json-schema.org/draft/2019-09/schema" ? Ajv2019 : Ajv;
+    if (!new Validator({ strict: false, allErrors: false, validateFormats: false }).compile(schema)(args)) throw new ConnectorError("INVALID_ARGUMENTS");
+  }
   catch (error) { if (error instanceof ConnectorError) throw error; throw new ConnectorError("PROVIDER_SCHEMA_UNSUPPORTED", 502); }
 }
 async function withMcp<T>(owner: string, provider: McpProvider, signal: AbortSignal | undefined, work: (client: Client) => Promise<T>): Promise<T> {

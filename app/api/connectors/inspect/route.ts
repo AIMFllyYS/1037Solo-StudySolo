@@ -1,3 +1,5 @@
+import { desktopCloudBridgeEnabled, forwardDesktopAgentRequest } from "@/lib/sandbox/desktop-bridge.server";
+import { sandboxFailure } from "@/lib/sandbox/config.server";
 import type { NextRequest } from "next/server";
 import { connectorOwner, connectorFailure, requireConnectorOrigin, ConnectorError } from "@/lib/connectors/actor.server";
 import { connectorId } from "@/lib/connectors/registry";
@@ -5,6 +7,7 @@ import { connectorOperations, readConnector, proposeAction } from "@/lib/connect
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export async function POST(request: NextRequest) {
+  if (desktopCloudBridgeEnabled()) return forwardDesktopAgentRequest(request).catch(sandboxFailure);
   try {
     requireConnectorOrigin(request, true); const owner = await connectorOwner(request);
     const raw = await request.text(); if (raw.length > 36000) throw new ConnectorError("REQUEST_TOO_LARGE", 413);

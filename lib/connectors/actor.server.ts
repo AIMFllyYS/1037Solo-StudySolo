@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { accountBackendUrl, authModeForRequest } from "@/lib/auth/authMode";
-import { requestToken, verifyAccount, verifiedRecently, failureStatus } from "@/lib/auth/sign-in/account-verify";
+import { verifyAccount, verifiedRecently, failureStatus } from "@/lib/auth/sign-in/account-verify";
+import { extractAccessToken } from "@/lib/auth/sessionCookie";
 import { connectorOrigin } from "./config.server";
 export class ConnectorError extends Error { constructor(readonly code: string, readonly status = 400) { super(code); } }
 export function requireConnectorOrigin(request: NextRequest, mutation = false): string {
@@ -10,7 +11,7 @@ export function requireConnectorOrigin(request: NextRequest, mutation = false): 
   return origin;
 }
 export async function connectorOwner(request: NextRequest, sensitive = false): Promise<string> {
-  const result = await verifyAccount(requestToken(request.headers), { accountBackendUrl: accountBackendUrl(authModeForRequest(request)), live: true });
+  const result = await verifyAccount(extractAccessToken(request.headers), { accountBackendUrl: accountBackendUrl(authModeForRequest(request)), live: true });
   if (result.kind !== "ok") throw new ConnectorError(result.kind === "unavailable" ? "ACCOUNT_UNAVAILABLE" : result.code, failureStatus(result));
   const identity = result.identity;
   if (identity.mfa_required) throw new ConnectorError("MFA_REQUIRED", 403);

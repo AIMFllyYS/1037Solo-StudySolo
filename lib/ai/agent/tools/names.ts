@@ -1,4 +1,5 @@
 import type { GetCurrentPageInput, GetCurrentPageOutput } from "@/lib/ai/agent/tools/getCurrentPage/types";
+import type { CloudSandboxInput, CloudSandboxOutput } from "@/lib/ai/agent/tools/cloudSandbox/types";
 import type { GetOutlineInput, GetOutlineOutput } from "@/lib/ai/agent/tools/getOutline/types";
 import type { GetSectionInput, GetSectionOutput } from "@/lib/ai/agent/tools/getSection/types";
 import type { SearchNotesInput, SearchNotesOutput } from "@/lib/ai/agent/tools/searchNotes/types";
@@ -25,6 +26,7 @@ import type { KitSoloInput, KitSoloOutput } from "@/lib/ai/agent/tools/kitSolo/t
 
 /** 供 UIMessage<…, StudyTools> 使用的 UITools 形状（type alias 才能满足 Record 约束）。 */
 export type StudyTools = {
+  cloudSandbox: { input: CloudSandboxInput; output: CloudSandboxOutput };
   learningConnectors: { input: LearningConnectorInput; output: LearningConnectorOutput };
   kitSolo: { input: KitSoloInput; output: KitSoloOutput };
   getCurrentPage: { input: GetCurrentPageInput; output: GetCurrentPageOutput };
@@ -54,6 +56,7 @@ export type StudyTools = {
 export type StudyToolName = keyof StudyTools;
 
 export const STUDY_TOOL_NAMES: readonly StudyToolName[] = [
+  "cloudSandbox",
   "learningConnectors",
   "kitSolo",
   "getCurrentPage",

@@ -7,6 +7,7 @@ import { useHydrated } from "@/lib/hooks/useHydrated";
 import { MAX_SKILLS, useSkills } from "@/lib/stores/skills";
 import { useT } from "@/lib/i18n";
 import type { SkillMarketEntry } from "@/lib/plugins/market";
+import { useSkillPackages } from "./SkillPackagesContext";
 
 type InstallState = "idle" | "busy" | "added" | "updated" | "full" | "failed";
 
@@ -18,20 +19,22 @@ type InstallState = "idle" | "busy" | "added" | "updated" | "full" | "failed";
 export default function SkillInstallButton({ entry, compact = false }: { entry: SkillMarketEntry; compact?: boolean }) {
   const t = useT();
   const hydrated = useHydrated(useSkills);
-  const installed = useSkills((s) => s.skills.find((sk) => sk.sourceId === entry.id));
+  const localInstalled = useSkills((s) => s.skills.find((sk) => sk.sourceId === entry.id));
+  const packages = useSkillPackages();
+  const installed = entry.runtime === "cloud" ? packages.installed.find(item => item.packageId === entry.id) : localInstalled;
   const installSkill = useSkills((s) => s.installSkill);
   const deleteSkill = useSkills((s) => s.deleteSkill);
   const [state, setState] = useState<InstallState>("idle");
 
-  const hasUpdate = Boolean(installed && entry.version && installed.sourceVersion !== entry.version);
+  const hasUpdate = Boolean(installed && entry.version && ("version" in installed ? installed.version : installed.sourceVersion) !== entry.version);
 
   const install = async () => {
     if (state === "busy" || !hydrated) return;
     setState("busy");
     try {
-      const res = await fetch(entry.path);
+      const res = entry.runtime === "cloud" ? await fetch("/api/agent/skills/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ packageId: entry.id, action: "install" }) }) : await fetch(entry.path);
       if (!res.ok) throw new Error(String(res.status));
-      const parsed = parseSkillMarkdown(await res.text(), "SKILL.md");
+      const parsed = parseSkillMarkdown(entry.runtime === "cloud" ? (await res.json()).content : await res.text(), "SKILL.md");
       const result = installSkill({
         name: parsed.name,
         description: parsed.description,
@@ -40,6 +43,7 @@ export default function SkillInstallButton({ entry, compact = false }: { entry: 
         sourceVersion: entry.version,
       });
       setState(result === "full" ? "full" : result);
+      if (entry.runtime === "cloud") await packages.refresh();
     } catch {
       setState("failed");
     } finally {
@@ -47,13 +51,20 @@ export default function SkillInstallButton({ entry, compact = false }: { entry: 
     }
   };
 
-  const uninstall = () => {
+  const uninstall = async () => {
     if (!installed) return;
-    deleteSkill(installed.id);
-    setState("idle");
+    try {
+      if (entry.runtime === "cloud") {
+        const response = await fetch("/api/agent/skills/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ packageId: entry.id, action: "uninstall" }) });
+        if (!response.ok) throw new Error();
+        await packages.refresh();
+      }
+      if (localInstalled) deleteSkill(localInstalled.id);
+      setState("idle");
+    } catch { setState("failed"); }
   };
 
-  const busy = state === "busy" || !hydrated;
+  const busy = state === "busy" || !hydrated || entry.runtime === "cloud" && !packages.ready;
   const btnBase = compact
     ? "press flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[12px] font-medium"
     : "press flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-medium";

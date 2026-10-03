@@ -11,6 +11,7 @@
 import { useEffect, useState } from "react";
 import type { Locale } from "@/lib/i18n";
 import type { MarketSection } from "./market-section";
+import { connectorId, type ConnectorId } from "@/lib/connectors/registry";
 
 export const MARKET_MANIFEST_URL = "/plugins/market.json";
 
@@ -54,6 +55,8 @@ export interface McpEnvVar {
 }
 
 export interface McpEntry extends EntryBase {
+  /** Native runtime binding; arbitrary catalog URLs never grant execution. */
+  connector?: ConnectorId;
   section: "mcp";
   /** stdio = 本地命令拉起；http/sse = 远端服务直连。 */
   transport: "stdio" | "http" | "sse";
@@ -77,6 +80,7 @@ export interface SkillMarketEntry extends EntryBase {
   section: "skills";
   /** 仓库内静态路径，如 /skills/latex-formula-check/SKILL.md。 */
   path: string;
+  runtime?: "cloud";
 }
 
 export type MarketEntry = McpEntry | CliEntry | SkillMarketEntry;
@@ -153,6 +157,7 @@ function normalizeEntry(section: MarketSection, raw: unknown): MarketEntry | nul
       ...base,
       section,
       transport,
+      connector: connectorId(r.connector) ?? undefined,
       command: str(r.command),
       args: strArray(r.args),
       url: str(r.url),
@@ -169,7 +174,7 @@ function normalizeEntry(section: MarketSection, raw: unknown): MarketEntry | nul
   }
   const path = str(r.path);
   if (!path) return null;
-  return { ...base, section, path };
+  return { ...base, section, path, ...(r.runtime === "cloud" ? { runtime: "cloud" as const } : {}) };
 }
 
 /** 宽松校验：坏条目丢弃而不是整个 manifest 判死（与 requestSchema 同口径）。 */
@@ -197,7 +202,7 @@ let manifestPromise: Promise<MarketManifest> | null = null;
 
 export function fetchMarketManifest(): Promise<MarketManifest> {
   if (!manifestPromise) {
-    manifestPromise = fetch(MARKET_MANIFEST_URL)
+    manifestPromise = fetch(MARKET_MANIFEST_URL, { cache: "no-store" })
       .then((res) => {
         if (!res.ok) throw new Error(`market manifest ${res.status}`);
         return res.json();

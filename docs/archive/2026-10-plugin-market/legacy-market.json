@@ -1,0 +1,751 @@
+{
+  "version": 1,
+  "mcp": [
+    {
+      "id": "kitsolo",
+      "section": "mcp",
+      "name": "KitSolo",
+      "nameEn": "KitSolo",
+      "tagline": "你的 AI 文本与数据工具箱",
+      "taglineEn": "Text and data tools for your AI agent",
+      "desc": "使用统一账号弹窗关联后，StudySolo Agent 可直接检索工具、处理 JSON、编码、哈希和时间戳；结果以卡片反馈并提供工作台入口。",
+      "descEn": "Connect using your 1037Solo account in a popup. StudySolo Agent can search tools and process JSON, encoding, hashes and timestamps, with result cards and workspace links.",
+      "notes": "此插件有原生 Agent 接入。点击关联后，下一轮对话自动启用；其他 MCP 条目仍由外部宿主执行。输入发送至 KitSolo 进行本次计算，不保存。可在 KitSolo 关联管理页撤销。",
+      "notesEn": "Native Agent integration. Connect to enable it in the next turn; other MCP entries still run in external hosts. Inputs are sent to KitSolo for transient processing and are not stored. Revoke access from KitSolo connection settings.",
+      "version": "1.0.0",
+      "author": "1037Solo",
+      "source": "official",
+      "homepage": "https://kitsolo.1037solo.com/connect/",
+      "docs": "https://kitsolo.1037solo.com/connect/",
+      "tags": [
+        "1037Solo",
+        "KitSolo",
+        "文本",
+        "JSON",
+        "编码"
+      ],
+      "transport": "http",
+      "url": "https://kitsolo.1037solo.com/mcp/",
+      "env": []
+    },
+    {
+      "id": "filesystem",
+      "section": "mcp",
+      "name": "Filesystem",
+      "tagline": "让 Agent 读写你指定的本地目录",
+      "taglineEn": "Read/write local files inside directories you allow",
+      "desc": "官方 MCP server：把本机目录安全地开放给 Agent——读课件、整理导出文件、批量改名都在许可目录内完成。",
+      "descEn": "Official MCP server: securely exposes chosen local directories to the agent — read courseware, organize exports, batch-rename files.",
+      "notes": "最实用的本地能力扩展：配合允许目录白名单使用，Agent 只能碰你授权的文件夹。",
+      "notesEn": "The most practical local capability: agents only touch whitelisted folders.",
+      "author": "Model Context Protocol",
+      "source": "official",
+      "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem",
+      "docs": "https://modelcontextprotocol.io",
+      "tags": [
+        "文件",
+        "files",
+        "local"
+      ],
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${FILESYSTEM_DIR}"
+      ],
+      "env": [
+        {
+          "name": "FILESYSTEM_DIR",
+          "required": true,
+          "desc": "允许访问的目录绝对路径（可重复多个参数）。",
+          "descEn": "Absolute path of the directory to expose (repeatable for multiple dirs)."
+        }
+      ]
+    },
+    {
+      "id": "fetch",
+      "section": "mcp",
+      "name": "Fetch",
+      "tagline": "抓取网页正文并转成 Markdown",
+      "taglineEn": "Fetch a URL and return its content as Markdown",
+      "desc": "官方 MCP server：给一个网址就拉回正文，自动清洗成 Markdown，适合查资料、读文档、核对引用。",
+      "descEn": "Official MCP server: fetches a URL and returns cleaned Markdown — handy for research, docs and citation checks.",
+      "author": "Model Context Protocol",
+      "source": "official",
+      "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/fetch",
+      "docs": "https://modelcontextprotocol.io",
+      "tags": [
+        "网页",
+        "fetch",
+        "web"
+      ],
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ]
+    },
+    {
+      "id": "github",
+      "section": "mcp",
+      "name": "GitHub",
+      "tagline": "只读仓库、代码、Issue 与 PR 学习资料",
+      "taglineEn": "Read repositories, code, issues and PRs for study",
+      "desc": "GitHub 官方远程 MCP：检索仓库、代码、Issue 和 PR。本产品的学习连接默认只读，账号授权由学习服务连接管理完成。",
+      "descEn": "Official GitHub remote MCP for repositories, code, issues and pull requests. Native learning connections are read-only and use account authorization.",
+      "author": "GitHub",
+      "source": "official",
+      "homepage": "https://github.com/github/github-mcp-server",
+      "docs": "https://github.com/github/github-mcp-server/blob/main/docs/host-integration.md",
+      "tags": [
+        "github",
+        "代码",
+        "code"
+      ],
+      "transport": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "notes": "本产品可在学习服务连接管理中关联 GitHub。其他客户端需要支持远程 MCP 与对应授权；本项目的用户凭证不会复制到客户端配置。",
+      "notesEn": "Connect GitHub in native learning connection settings. Other clients need remote MCP and authorization support; StudySolo user credentials are not exported."
+    },
+    {
+      "id": "puppeteer",
+      "section": "mcp",
+      "name": "Puppeteer",
+      "tagline": "让 Agent 开浏览器：截图、填表、抓动态页",
+      "taglineEn": "Browser automation: screenshots, form fills, dynamic pages",
+      "desc": "官方 MCP server：起一个真实 Chromium 做页面操作——截图、点按钮、抓 SPA 渲染后的内容。",
+      "descEn": "Official MCP server: drives a real Chromium — screenshots, clicks, scraping JS-rendered pages.",
+      "author": "Model Context Protocol",
+      "source": "official",
+      "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer",
+      "docs": "https://modelcontextprotocol.io",
+      "tags": [
+        "浏览器",
+        "browser",
+        "自动化"
+      ],
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ]
+    },
+    {
+      "id": "brave-search",
+      "section": "mcp",
+      "name": "Brave Search",
+      "tagline": "隐私友好的全网搜索 API",
+      "taglineEn": "Privacy-friendly web search API",
+      "desc": "官方 MCP server：接 Brave Search API 做网页/本地搜索，结果干净无广告，适合给 Agent 加联网检索。",
+      "descEn": "Official MCP server on the Brave Search API — clean web/local search results for agent lookups.",
+      "author": "Model Context Protocol",
+      "source": "official",
+      "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search",
+      "docs": "https://modelcontextprotocol.io",
+      "tags": [
+        "搜索",
+        "search",
+        "web"
+      ],
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": [
+        {
+          "name": "BRAVE_API_KEY",
+          "required": true,
+          "desc": "Brave Search API 密钥（免费档每月 2000 次）。",
+          "descEn": "Brave Search API key (free tier: 2,000 queries/month).",
+          "keyUrl": "https://brave.com/search/api/"
+        }
+      ]
+    },
+    {
+      "id": "memory",
+      "section": "mcp",
+      "name": "Memory",
+      "tagline": "跨对话记住知识图谱式的长期记忆",
+      "taglineEn": "Knowledge-graph long-term memory across chats",
+      "desc": "官方 MCP server：把实体—关系存成知识图谱，Agent 每轮可查可写，适合累积错题本、术语表、学习画像。",
+      "descEn": "Official MCP server: persists entities and relations as a knowledge graph — good for accumulating mistakes, glossaries and learner profiles.",
+      "author": "Model Context Protocol",
+      "source": "official",
+      "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/memory",
+      "docs": "https://modelcontextprotocol.io",
+      "tags": [
+        "记忆",
+        "memory",
+        "知识图谱"
+      ],
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    },
+    {
+      "id": "sequential-thinking",
+      "section": "mcp",
+      "name": "Sequential Thinking",
+      "tagline": "把大问题拆成可修订的思考链",
+      "taglineEn": "Break hard problems into revisable thinking steps",
+      "desc": "官方 MCP server：给 Agent 一个显式的「分步推理」工具——假设、修正、分支、结论逐条推进，适合复杂分析题。",
+      "descEn": "Official MCP server: gives the agent an explicit stepwise-reasoning tool — hypotheses, revisions, branches, conclusions.",
+      "author": "Model Context Protocol",
+      "source": "official",
+      "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking",
+      "docs": "https://modelcontextprotocol.io",
+      "tags": [
+        "推理",
+        "reasoning",
+        "thinking"
+      ],
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    {
+      "id": "time",
+      "section": "mcp",
+      "name": "Time",
+      "tagline": "时区换算与当前时间查询",
+      "taglineEn": "Timezone conversion and current time",
+      "desc": "官方 MCP server：给出准确当前时间与任意时区换算，排复习计划、定时任务排期都用得上。",
+      "descEn": "Official MCP server: exact current time and timezone conversion — useful for study plans and schedules.",
+      "author": "Model Context Protocol",
+      "source": "official",
+      "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/time",
+      "docs": "https://modelcontextprotocol.io",
+      "tags": [
+        "时间",
+        "time",
+        "timezone"
+      ],
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-server-time",
+        "--local-timezone=Asia/Shanghai"
+      ]
+    },
+    {
+      "id": "postgres",
+      "section": "mcp",
+      "name": "Postgres",
+      "tagline": "只读 SQL 查询你的数据库",
+      "taglineEn": "Read-only SQL queries against your database",
+      "desc": "官方存档 MCP server：对 PostgreSQL 跑只读 SELECT，查自建题库、学习记录库很方便。连接串里含库密码，注意保管。",
+      "descEn": "Official (archived) MCP server: read-only SELECTs on PostgreSQL — handy for a self-hosted question bank. The connection string carries credentials; keep it safe.",
+      "author": "Model Context Protocol",
+      "source": "official",
+      "homepage": "https://github.com/modelcontextprotocol/servers-archived/tree/main/src/postgres",
+      "docs": "https://modelcontextprotocol.io",
+      "tags": [
+        "数据库",
+        "postgres",
+        "sql"
+      ],
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${DATABASE_URL}"
+      ],
+      "env": [
+        {
+          "name": "DATABASE_URL",
+          "required": true,
+          "desc": "形如 postgresql://user:pass@host:5432/db 的连接串。",
+          "descEn": "A connection string like postgresql://user:pass@host:5432/db."
+        }
+      ]
+    },
+    {
+      "id": "sqlite",
+      "section": "mcp",
+      "name": "SQLite",
+      "tagline": "查本地 SQLite 库（自建题库/卡片库）",
+      "taglineEn": "Query local SQLite databases (question banks, decks)",
+      "desc": "社区维护的 MCP server：直接读写一个本地 .db 文件，做自建题库、实验数据记录很合适。",
+      "descEn": "Community MCP server: reads/writes a local .db file — good for self-built question banks and experiment logs.",
+      "author": "社区",
+      "source": "community",
+      "homepage": "https://github.com/modelcontextprotocol/servers-archived/tree/main/src/sqlite",
+      "docs": "https://modelcontextprotocol.io",
+      "tags": [
+        "数据库",
+        "sqlite",
+        "sql",
+        "local"
+      ],
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-server-sqlite",
+        "--db-path",
+        "${SQLITE_DB_PATH}"
+      ],
+      "env": [
+        {
+          "name": "SQLITE_DB_PATH",
+          "required": true,
+          "desc": "本地 .db 文件的绝对路径。",
+          "descEn": "Absolute path to a local .db file."
+        }
+      ]
+    },
+    {
+      "id": "everart",
+      "section": "mcp",
+      "name": "EverArt",
+      "tagline": "多模型图片生成（医学插图、示意图）",
+      "taglineEn": "Multi-model image generation (illustrations, diagrams)",
+      "desc": "官方 MCP server：调 EverArt 的多个生图模型产示意图，配合本应用的生成图片资产流使用。",
+      "descEn": "Official MCP server: EverArt's image models for illustrations — pairs well with this app's generated-image asset flow.",
+      "author": "Model Context Protocol",
+      "source": "official",
+      "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/everart",
+      "docs": "https://modelcontextprotocol.io",
+      "tags": [
+        "生图",
+        "image",
+        "everart"
+      ],
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-everart"
+      ],
+      "env": [
+        {
+          "name": "EVERART_API_KEY",
+          "required": true,
+          "desc": "EverArt API 密钥（需注册账号）。",
+          "descEn": "EverArt API key (account signup required).",
+          "keyUrl": "https://www.everart.ai"
+        }
+      ]
+    },
+    {
+      "id": "context7",
+      "section": "mcp",
+      "name": "Context7",
+      "tagline": "实时拉官方库文档进上下文（远端直连）",
+      "taglineEn": "Live library docs in context (remote endpoint)",
+      "desc": "Upstash 出品的远端 MCP：不用本地起进程，直接 HTTP 接入，给 Agent 喂最新版库的官方文档。",
+      "descEn": "A remote MCP by Upstash — no local process, plain HTTP — feeding up-to-date official library docs to the agent.",
+      "author": "Upstash",
+      "source": "community",
+      "homepage": "https://github.com/upstash/context7",
+      "docs": "https://context7.com",
+      "tags": [
+        "文档",
+        "docs",
+        "remote"
+      ],
+      "transport": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "env": [
+        {
+          "name": "CONTEXT7_API_KEY",
+          "required": false,
+          "desc": "可选：绑定账号提升限额；不填也能匿名用。",
+          "descEn": "Optional: bind an account for higher rate limits; anonymous use works.",
+          "keyUrl": "https://context7.com/dashboard"
+        }
+      ]
+    },
+    {
+      "id": "tavily",
+      "section": "mcp",
+      "name": "Tavily",
+      "tagline": "为 Agent 优化的搜索与网页抓取 API",
+      "taglineEn": "Search + extraction API built for agents",
+      "desc": "社区常用的搜索 MCP：结果为 RAG 场景优化（带摘要、可抓取正文），Brave 之外的另一路联网检索。",
+      "descEn": "A popular search MCP: results tuned for RAG (with summaries and page extraction) — an alternative to Brave.",
+      "author": "Tavily",
+      "source": "community",
+      "homepage": "https://github.com/tavily-ai/tavily-mcp",
+      "docs": "https://docs.tavily.com",
+      "tags": [
+        "搜索",
+        "search",
+        "web"
+      ],
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "tavily-mcp@latest"
+      ],
+      "env": [
+        {
+          "name": "TAVILY_API_KEY",
+          "required": true,
+          "desc": "Tavily API 密钥（注册即送免费额度）。",
+          "descEn": "Tavily API key (free tier on signup).",
+          "keyUrl": "https://app.tavily.com"
+        }
+      ]
+    },
+    {
+      "id": "exa",
+      "section": "mcp",
+      "name": "Exa",
+      "tagline": "语义搜索引擎，找论文与资料更准",
+      "taglineEn": "Semantic search — sharper for papers and references",
+      "desc": "社区常用的语义搜索 MCP：按意思而不是关键词找内容，查文献、找相似资料比关键词搜索更贴。",
+      "descEn": "A popular semantic-search MCP: matches by meaning rather than keywords — better for literature and lookalike sources.",
+      "author": "Exa",
+      "source": "community",
+      "homepage": "https://github.com/exa-labs/exa-mcp-server",
+      "docs": "https://docs.exa.ai",
+      "tags": [
+        "搜索",
+        "search",
+        "semantic"
+      ],
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "exa-mcp-server"
+      ],
+      "env": [
+        {
+          "name": "EXA_API_KEY",
+          "required": true,
+          "desc": "Exa API 密钥（有免费额度）。",
+          "descEn": "Exa API key (free credits on signup).",
+          "keyUrl": "https://dashboard.exa.ai"
+        }
+      ]
+    }
+  ],
+  "cli": [
+    {
+      "id": "uv",
+      "section": "cli",
+      "kind": "cli",
+      "name": "uv",
+      "tagline": "Python 包与工具极速管理器（mcp-server-* 的 uvx 都靠它）",
+      "taglineEn": "Fast Python package/tool runner — powers the uvx-based MCP servers",
+      "desc": "Astral 出品的 Python 工具链：一行装好就有 uv/uvx。Fetch、Time、SQLite 这几个 MCP 都以 uvx 形式跑。",
+      "descEn": "Astral's Python toolchain: one install gives you uv/uvx — the runtime for the Fetch, Time and SQLite MCP servers.",
+      "author": "Astral",
+      "source": "official",
+      "homepage": "https://docs.astral.sh/uv/",
+      "install": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+      "tags": [
+        "python",
+        "uvx",
+        "mcp"
+      ]
+    },
+    {
+      "id": "claude-code",
+      "section": "cli",
+      "kind": "cli",
+      "name": "Claude Code",
+      "tagline": "Anthropic 官方终端 Agent",
+      "taglineEn": "Anthropic's official terminal agent",
+      "desc": "终端里的编码/资料整理 Agent，原生支持 MCP 与 SKILL.md——从本市场复制的 MCP 配置可直接喂给它。",
+      "descEn": "Anthropic's terminal agent for coding and research; natively supports MCP and SKILL.md — configs copied here plug straight in.",
+      "author": "Anthropic",
+      "source": "official",
+      "homepage": "https://docs.anthropic.com/en/docs/claude-code",
+      "install": "npm install -g @anthropic-ai/claude-code",
+      "tags": [
+        "agent",
+        "cli",
+        "mcp"
+      ]
+    },
+    {
+      "id": "codex-cli",
+      "section": "cli",
+      "kind": "cli",
+      "name": "Codex CLI",
+      "tagline": "OpenAI 官方终端编码 Agent",
+      "taglineEn": "OpenAI's official terminal coding agent",
+      "desc": "OpenAI 的终端 Agent：跑任务、改代码、调 MCP 工具都行，配置文件是 ~/.codex/config.toml。",
+      "descEn": "OpenAI's terminal agent: run tasks, edit code, call MCP tools; config lives in ~/.codex/config.toml.",
+      "author": "OpenAI",
+      "source": "official",
+      "homepage": "https://github.com/openai/codex",
+      "install": "npm install -g @openai/codex",
+      "tags": [
+        "agent",
+        "cli",
+        "mcp"
+      ]
+    },
+    {
+      "id": "gemini-cli",
+      "section": "cli",
+      "kind": "cli",
+      "name": "Gemini CLI",
+      "tagline": "Google 官方终端 Agent",
+      "taglineEn": "Google's official terminal agent",
+      "desc": "Google 的终端 Agent，免费额度大，支持 MCP 与自定义指令文件（GEMINI.md）。",
+      "descEn": "Google's terminal agent with a generous free tier; supports MCP and a GEMINI.md instruction file.",
+      "author": "Google",
+      "source": "official",
+      "homepage": "https://github.com/google-gemini/gemini-cli",
+      "install": "npm install -g @google/gemini-cli",
+      "tags": [
+        "agent",
+        "cli",
+        "mcp"
+      ]
+    },
+    {
+      "id": "ffmpeg",
+      "section": "cli",
+      "kind": "cli",
+      "name": "FFmpeg",
+      "tagline": "音视频转码/剪辑/抽帧的事实标准",
+      "taglineEn": "The standard for audio/video transcode, trim, frame extraction",
+      "desc": "处理录课音频、抽视频关键帧、转格式都靠它；Agent 多媒体管线的基础件。",
+      "descEn": "The workhorse for lecture audio, keyframe extraction and format conversion — a base piece of any agent media pipeline.",
+      "author": "FFmpeg 社区",
+      "source": "community",
+      "homepage": "https://ffmpeg.org",
+      "install": "brew install ffmpeg  # macOS；apt install ffmpeg  # Ubuntu",
+      "tags": [
+        "音视频",
+        "media",
+        "转码"
+      ]
+    },
+    {
+      "id": "pandoc",
+      "section": "cli",
+      "kind": "cli",
+      "name": "Pandoc",
+      "tagline": "文档互转瑞士刀（md↔docx↔pdf↔epub）",
+      "taglineEn": "Universal document converter (md ↔ docx ↔ pdf ↔ epub)",
+      "desc": "笔记导出 Word/PDF、把课件 docx 转回 Markdown 喂给 AI，都是一行命令的事。",
+      "descEn": "Export notes to Word/PDF or turn courseware docx back into Markdown for the AI — one command either way.",
+      "author": "Pandoc 社区",
+      "source": "community",
+      "homepage": "https://pandoc.org",
+      "install": "brew install pandoc  # macOS；apt install pandoc  # Ubuntu",
+      "tags": [
+        "文档",
+        "pandoc",
+        "导出"
+      ]
+    },
+    {
+      "id": "imagemagick",
+      "section": "cli",
+      "kind": "cli",
+      "name": "ImageMagick",
+      "tagline": "批量图像处理：缩放/裁剪/拼接/转格式",
+      "taglineEn": "Batch image ops: resize, crop, montage, convert",
+      "desc": "整理病理/组胚图谱时批量裁图、压图、拼版都靠它；配合 Agent 可一句话跑完一套处理。",
+      "descEn": "Batch crop/compress/montage for pathology and histology atlases — the agent can run a whole pipeline in one line.",
+      "author": "ImageMagick 社区",
+      "source": "community",
+      "homepage": "https://imagemagick.org",
+      "install": "brew install imagemagick  # macOS；apt install imagemagick  # Ubuntu",
+      "tags": [
+        "图像",
+        "image",
+        "批处理"
+      ]
+    },
+    {
+      "id": "ripgrep",
+      "section": "cli",
+      "kind": "cli",
+      "name": "ripgrep",
+      "tagline": "毫秒级全文搜索，找笔记/代码必备",
+      "taglineEn": "Millisecond full-text search for notes and code",
+      "desc": "在本地 Markdown 库、导出的课件里秒级定位关键词；Agent 做本地检索时最常用的底层工具。",
+      "descEn": "Instant keyword hits across Markdown libraries and exported courseware — the go-to local search tool for agents.",
+      "author": "Andrew Gallant",
+      "source": "community",
+      "homepage": "https://github.com/BurntSushi/ripgrep",
+      "install": "brew install ripgrep  # macOS；apt install ripgrep  # Ubuntu",
+      "tags": [
+        "搜索",
+        "search",
+        "cli"
+      ]
+    },
+    {
+      "id": "yt-dlp",
+      "section": "cli",
+      "kind": "cli",
+      "name": "yt-dlp",
+      "tagline": "抓公开课视频与字幕，喂给笔记流水线",
+      "taglineEn": "Grab lecture videos and subtitles for your notes pipeline",
+      "desc": "下载教学视频与字幕轨（需自行确认版权许可），转给转写/笔记工具链做结构化摘要。",
+      "descEn": "Download lecture videos and subtitle tracks (check licensing first) to feed transcription and note pipelines.",
+      "author": "yt-dlp 社区",
+      "source": "community",
+      "homepage": "https://github.com/yt-dlp/yt-dlp",
+      "install": "pipx install yt-dlp  # 或 brew install yt-dlp",
+      "tags": [
+        "视频",
+        "字幕",
+        "下载"
+      ]
+    },
+    {
+      "id": "anthropic-skills",
+      "section": "cli",
+      "kind": "skill-pack",
+      "name": "Anthropic Skills",
+      "tagline": "Anthropic 官方 Agent Skills 示例库",
+      "taglineEn": "Anthropic's official Agent Skills collection",
+      "desc": "官方维护的 SKILL.md 集合：PDF/DOCX/XLSX/PPTX 文档技能、网页测试、MCP 生成等。每个 skill 一个目录，拷出单个 SKILL.md 即可导入本应用技能库。",
+      "descEn": "The official SKILL.md collection: document skills (PDF/DOCX/XLSX/PPTX), web testing, MCP generation and more — copy any single SKILL.md into this app's skill library.",
+      "notes": "看官方怎么写 frontmatter 与正文结构，是自建 skill 最好的参照。",
+      "notesEn": "The best reference for writing your own skills: official frontmatter and body structure.",
+      "author": "Anthropic",
+      "source": "official",
+      "homepage": "https://github.com/anthropics/skills",
+      "install": "git clone --depth 1 https://github.com/anthropics/skills.git",
+      "tags": [
+        "skills",
+        "skill包",
+        "官方"
+      ]
+    },
+    {
+      "id": "superpowers",
+      "section": "cli",
+      "kind": "skill-pack",
+      "name": "Superpowers",
+      "tagline": "社区最火的 Agent 工作流技能库（TDD/调试/规划）",
+      "taglineEn": "The community's most popular agent-workflow skill library (TDD, debugging, planning)",
+      "desc": "obra/Superpowers：一整套可组合的工程方法论 skills——头脑风暴、系统化调试、TDD、代码评审。Claude Code 可插件安装，其余 Agent 可拷 SKILL.md 导入。",
+      "descEn": "obra/Superpowers: a composable engineering-methodology skill set — brainstorming, systematic debugging, TDD, code review. Installable as a Claude Code plugin, or copy SKILL.md files into this app.",
+      "notes": "在 Claude Code 里装插件最省事；本应用则挑单个 SKILL.md 导入。",
+      "notesEn": "Easiest as a plugin inside Claude Code; for this app, import individual SKILL.md files.",
+      "author": "Jesse Vincent (obra)",
+      "source": "community",
+      "homepage": "https://github.com/obra/Superpowers",
+      "install": "git clone --depth 1 https://github.com/obra/Superpowers.git",
+      "tags": [
+        "skills",
+        "工作流",
+        "tdd"
+      ]
+    },
+    {
+      "id": "awesome-agent-skills",
+      "section": "cli",
+      "kind": "skill-pack",
+      "name": "Awesome Agent Skills",
+      "tagline": "按厂商/团队分类的官方 Skills 大清单",
+      "taglineEn": "A huge curated index of official skills by vendor and team",
+      "desc": "VoltAgent 维护的收录清单：Anthropic、Google Labs、Vercel、Stripe、Cloudflare 等官方 skill 全在里面，兼容 Claude Code / Codex / Gemini CLI / Cursor 等。逛清单→挑单个 skill→导入本应用。",
+      "descEn": "VoltAgent's curated index of 1000+ official skills — Anthropic, Google Labs, Vercel, Stripe, Cloudflare and more — compatible with Claude Code, Codex, Gemini CLI, Cursor. Browse, pick, import.",
+      "author": "VoltAgent",
+      "source": "community",
+      "homepage": "https://github.com/VoltAgent/awesome-agent-skills",
+      "install": "git clone --depth 1 https://github.com/VoltAgent/awesome-agent-skills.git",
+      "tags": [
+        "skills",
+        "清单",
+        "awesome"
+      ]
+    },
+    {
+      "id": "skills-sh",
+      "section": "cli",
+      "kind": "skill-pack",
+      "name": "skills.sh",
+      "tagline": "Agent Skills 注册表：按热度发现可装的 skill",
+      "taglineEn": "The Agent Skills registry — discover skills by install count",
+      "desc": "skills.sh 是 Agent Skills 的公共注册表与安装排行：看哪些 skill 真有人在用，直接给出 npx skills add 的安装命令。",
+      "descEn": "skills.sh is the public registry and install leaderboard for Agent Skills — see what's actually used, and get an npx skills add command per skill.",
+      "author": "Vercel",
+      "source": "community",
+      "homepage": "https://skills.sh",
+      "install": "npx skills add <owner>/<repo>",
+      "tags": [
+        "skills",
+        "注册表",
+        "registry"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "latex-formula-check",
+      "section": "skills",
+      "name": "LaTeX 公式检查",
+      "nameEn": "LaTeX Formula Check",
+      "tagline": "核对笔记/回答里的 KaTeX 公式能否正确渲染",
+      "taglineEn": "Verify KaTeX formulas in notes and answers actually render",
+      "desc": "让 Agent 在写公式前后自查：定界符配对、命令合法性、KaTeX 支持范围（本应用用 KaTeX 渲染，不支持 \\ce、\\pu 等需宏扩展的命令会提前提示替代写法）。",
+      "descEn": "Makes the agent self-check formulas before writing: delimiter pairing, command validity and KaTeX coverage (this app renders via KaTeX — unsupported macros like \\ce/\\pu get flagged with alternatives up front).",
+      "version": "1.0.0",
+      "author": "StudySolo",
+      "source": "official",
+      "path": "/skills/latex-formula-check/SKILL.md",
+      "tags": [
+        "latex",
+        "公式",
+        "katex",
+        "校对"
+      ]
+    },
+    {
+      "id": "exam-question-analysis",
+      "section": "skills",
+      "name": "考研真题解析模板",
+      "nameEn": "Exam Question Analysis",
+      "tagline": "五段式拆真题：考点→题眼→步骤→易错→变式",
+      "taglineEn": "Five-part exam breakdown: topic → trigger → steps → traps → variants",
+      "desc": "把一道真题按「考点定位 / 题眼拆解 / 规范解题 / 易错警示 / 变式练习」五段展开，输出一致格式的解析，适合刷题后沉淀错题本。",
+      "descEn": "Expands one real exam question into a fixed five-part analysis — topic mapping, stem reading, model solution, common traps, variant drills — ideal for building a mistake notebook.",
+      "version": "1.0.0",
+      "author": "StudySolo",
+      "source": "official",
+      "path": "/skills/exam-question-analysis/SKILL.md",
+      "tags": [
+        "考研",
+        "真题",
+        "解析",
+        "错题"
+      ]
+    },
+    {
+      "id": "note-organizer",
+      "section": "skills",
+      "name": "笔记整理助手",
+      "nameEn": "Note Organizer",
+      "tagline": "把零散记录收成层级大纲 + 术语表 + 自检问题",
+      "taglineEn": "Turn scattered notes into an outline, glossary and self-quiz",
+      "desc": "让 Agent 把课堂速记/划线摘录整理成：层级大纲（≤3 级）、术语速查表、每条主干的「一句话总结」、末尾附 3-5 个自检问题，可直接粘回笔记。",
+      "descEn": "Reshapes raw class notes and highlights into: a ≤3-level outline, a quick glossary, one-line takeaways per branch, and 3–5 self-check questions — ready to paste back into your notes.",
+      "version": "1.0.0",
+      "author": "StudySolo",
+      "source": "official",
+      "path": "/skills/note-organizer/SKILL.md",
+      "tags": [
+        "笔记",
+        "整理",
+        "大纲",
+        "复习"
+      ]
+    }
+  ]
+}

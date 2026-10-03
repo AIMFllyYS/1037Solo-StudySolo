@@ -26,11 +26,13 @@ const nextConfig = {
       "./content/.index/manifest.json", "./content/.index/bm25.json", "./content/.index/chunks-meta.json",
       "./content/.index/vectors.bin", "./content/.index/vectors.ids.json",
       "./lib/ai/prompts/**/*", "./runtime/search-worker/**/*",
-      "./node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs",
+        "./node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs",
+        "./lib/sandbox/assets/**/*",
+        "./lib/sandbox/skill-packs/**/*",
     ],
   },
   outputFileTracingExcludes: {
-    "/*": [
+      "/*": [
       "./.env*", "./**/.env*", "./content/_raw/**/*", "./content/_raw-src/**/*",
       "./content/.index/embed-cache*", "./1037Solo-Classolo/**/*", "./dist-desktop/**/*",
       "./dist-desktop-staged-*/**/*", "./artifacts/**/*", "./.local-archive/**/*",

@@ -16,6 +16,7 @@ import ImageSearchResultCard from "@/components/chat/toolCards/imageSearchCard";
 import NoteChangeConsentCard from "@/components/notes/NoteChangeConsentCard";
 import KitSoloCard from "@/components/chat/toolCards/kitSoloCard";
 import LearningConnectorsCard from "@/components/chat/toolCards/learningConnectorsCard";
+import CloudSandboxCard from "@/components/chat/toolCards/cloudSandboxCard";
 
 function moduleOf<N extends StudyToolName>(
   name: N,
@@ -25,6 +26,7 @@ function moduleOf<N extends StudyToolName>(
 }
 
 export const TOOL_REGISTRY = {
+  cloudSandbox: moduleOf("cloudSandbox", { ResultCard: CloudSandboxCard }),
   learningConnectors: moduleOf("learningConnectors", { ResultCard: LearningConnectorsCard, resultKey: part => part.state === "output-available" ? part.output.action?.id ?? null : null }),
   kitSolo: moduleOf("kitSolo", { ResultCard: KitSoloCard }),
   getCurrentPage: moduleOf("getCurrentPage"),
@@ -112,6 +114,7 @@ export const THREAD_SILENT_TOOLS = ["proposeMemory", "commitNotes", "commitFlash
 
 /** 现网 ChatMessage 卡片顺序（不是 STUDY_TOOL_NAMES）。imageSearch 追加在末尾，与收回前的气泡顺序一致。 */
 export const RESULT_CARD_ORDER = [
+  "cloudSandbox",
   "learningConnectors",
   "kitSolo",
   "searchNotes",

@@ -63,7 +63,7 @@ export async function executeChatRequest(input: {
     const fitted = fitChatRequest(built, body as unknown as Record<string, unknown>);
     if (fitted.info) input.onInfo(fitted.info);
     watchdog = createStallWatchdog(input.onStall, { maxWaitMs: input.maxWaitMs });
-    const stream = await createStudyChatTransport(() => { watchdog?.touch(); }).sendMessages({
+    const stream = await createStudyChatTransport(() => { watchdog?.touch(); }, input.body.agentMain === true).sendMessages({
       chatId: input.sessionId, trigger: "submit-message", messageId: input.userMessageId,
       messages: fitted.messages, abortSignal: input.abortSignal, body: fitted.body,
     });

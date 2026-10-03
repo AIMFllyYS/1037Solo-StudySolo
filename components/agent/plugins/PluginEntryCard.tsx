@@ -3,10 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Copy, ExternalLink, KeyRound, Package, Plug, ScrollText, TerminalSquare } from "lucide-react";
+import LearningConnectorControl from "@/components/plugins/LearningConnectorControl";
+import { KitSoloConnectButton } from "@/components/plugins/KitSoloConnectButton";
 import SkillInstallButton from "./SkillInstallButton";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";
-import { pluginSecretsFor, usePluginSecrets } from "@/lib/stores/pluginSecrets";
-import { buildMcpConfigSnippet, pickL10n, type MarketEntry } from "@/lib/plugins/market";
+import { pickL10n, type MarketEntry } from "@/lib/plugins/market";
 import { useSkills } from "@/lib/stores/skills";
 import { useT, type Locale } from "@/lib/i18n";
 
@@ -37,7 +38,6 @@ function Badge({ children, tone = "default" }: { children: React.ReactNode; tone
 export default function PluginEntryCard({ entry, locale }: { entry: MarketEntry; locale: Locale }) {
   const t = useT();
   const [copied, setCopied] = useState(false);
-  const secretValues = usePluginSecrets((s) => s.values);
   const installed = useSkills((s) => (entry.section === "skills" ? s.skills.find((sk) => sk.sourceId === entry.id) : undefined));
 
   const Icon = SECTION_ICON[entry.section];
@@ -56,18 +56,8 @@ export default function PluginEntryCard({ entry, locale }: { entry: MarketEntry;
 
   const primary = (() => {
     if (entry.section === "mcp") {
-      const snippet = buildMcpConfigSnippet(entry, pluginSecretsFor(secretValues, entry.id, (entry.env ?? []).map((e) => e.name)));
-      return (
-        <button
-          type="button"
-          data-testid={`plugins-copy-${entry.id}`}
-          onClick={() => void copy(snippet)}
-          className="press flex items-center gap-1.5 rounded-lg bg-[var(--md-sys-color-primary)] px-2.5 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-primary)]"
-        >
-          <Copy size={12} />
-          {copied ? t("agent.market.action.copied") : t("agent.market.action.copyConfig")}
-        </button>
-      );
+      if (entry.id === "kitsolo") return <KitSoloConnectButton english={locale === "en"} compact />;
+      return entry.connector ? <LearningConnectorControl provider={entry.connector} /> : null;
     }
     if (entry.section === "cli") {
       return entry.install ? (

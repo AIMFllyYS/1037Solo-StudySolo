@@ -1,0 +1,126 @@
+{
+  "packages": [
+    {
+      "id": "notes-to-handbook",
+      "version": "2026.10.04",
+      "runtime": "skills-runtime-v1-20261004",
+      "source": "My-Skills user-owned package",
+      "digest": "92cd824bf9c14580915bf0339141d603543ecac60266a0b2ea2062020d330490",
+      "files": [
+        {
+          "path": "assets/interactive-nav.html",
+          "sha256": "3b4551ad6616501b5683e067b62df36910edb492e953c24095faa0f20cf3da6d"
+        },
+        {
+          "path": "assets/template.html",
+          "sha256": "678282c2cd36d4b3409d5365876fad671b6db6809c09e1cf36d702e0363cd1f7"
+        },
+        {
+          "path": "references/advanced-techniques.md",
+          "sha256": "a7bfc0c716acb14d820f1e65517302c5ded814377aa70352f83fed5480529f05"
+        },
+        {
+          "path": "references/design-tokens-playbook.md",
+          "sha256": "c508085c24168ebe736173bd265fae27d3e7192b05b631ec1d349b1c533d0d5c"
+        },
+        {
+          "path": "references/studysolo-runtime.md",
+          "sha256": "70c3bdb3ff1ce28bff06a78f2465437979f66cd32bfcd2c3c66dec8875015287"
+        },
+        {
+          "path": "scripts/check_pdf_pages.py",
+          "sha256": "f374ff1367c4ec891a51fb6668c4be22a9d7a94a532dfd678c3c7d03bc92352d"
+        },
+        {
+          "path": "scripts/render_pdf.js",
+          "sha256": "6efa2480f9ef65a0aa10122c7c95b159ce2e87eec9e33e7722f7a43e0f6fd793"
+        },
+        {
+          "path": "scripts/svg_diagrams.py",
+          "sha256": "d6b16e3f5458c52bb6997e56c3893626f6b6823c42bdccc315b82eba7f779761"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "85cb8c82edd7d0626612b501adc3d7de8d4fa02a8b568246f4d6fb5b25d2801e"
+        }
+      ]
+    },
+    {
+      "id": "gb-standard-docx-pdf",
+      "version": "2026.10.04",
+      "runtime": "skills-runtime-v1-20261004",
+      "source": "My-Skills user-owned package",
+      "digest": "abccab5cd475efd4434e29ca1ee8e6c33a1ea84075daa006eed2cd543aa1c15c",
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "sha256": "c2fea61c79246ba0cea13009a24b91dd51690a2e2cecb97c9e44ac2f51d16c41"
+        },
+        {
+          "path": "references/audio-readout.md",
+          "sha256": "0be350013ca24213e53bb7afc665598fab5166765ce357990a555baacdc8e3c7"
+        },
+        {
+          "path": "references/citations-figures-and-rights.md",
+          "sha256": "df8e4c5d6d8cc6649e2f7e9d1b324c68ec932c6dca746571064e1f6420dcef49"
+        },
+        {
+          "path": "references/component-catalog.md",
+          "sha256": "42d675eccdedd707cd8a431d1474c6753d7f3d3de7b7748ae6c8a0a5e225de41"
+        },
+        {
+          "path": "references/docx-pdf-production.md",
+          "sha256": "9b072b9eb725b0ba263e4df6b0d3160b0632968f2ec2d821c49f68ce4d08bf3a"
+        },
+        {
+          "path": "references/manuscript-structure.md",
+          "sha256": "44b47edefb7284b00551d0990f23b4c60e78e85f0ce4affa7c1306ac44a01ea7"
+        },
+        {
+          "path": "references/qa-and-acceptance.md",
+          "sha256": "da3aeeaa0e4486e127767aacb731c242f596c0739de91c6ffeafe801099d6104"
+        },
+        {
+          "path": "references/source-register.md",
+          "sha256": "1cdcebfa96b794862d0a704711813463604d63e13e625c24f77ecd0b52fcb06f"
+        },
+        {
+          "path": "references/standards-routing.md",
+          "sha256": "81a0a024b0638abb62b482358a1d1f3ca711b3989c569b2518c12367f363e353"
+        },
+        {
+          "path": "references/studysolo-runtime.md",
+          "sha256": "fb70a86e9628633b670b43a7cc8c481d155a12de58a769b16838aec64801eff1"
+        },
+        {
+          "path": "references/toolchain-selection.md",
+          "sha256": "ae8ec2085326dd66ac2cb8bfaf33e6d50e262bec4a92cb8e61ee0acb15b23166"
+        },
+        {
+          "path": "references/typography-and-layout.md",
+          "sha256": "6a15f1091e0d8259999a2501b4fcbfd1cd42ff4a0a5319977ef99130d82820a0"
+        },
+        {
+          "path": "scripts/document_preflight.py",
+          "sha256": "cd89f24f534d3c4431b44281289248f3f833e25de648744eb5db03dab3733956"
+        },
+        {
+          "path": "scripts/export_office.md",
+          "sha256": "4130f1d89f1435f139184d989ab605afe9088d91c7e689c995e9d786ee72bba3"
+        },
+        {
+          "path": "scripts/render_pdf_pages.py",
+          "sha256": "1daa751a39e8733b1c17ba6557f4382e39fe661243d059a15b7aa09b8fec3f9a"
+        },
+        {
+          "path": "scripts/test_helpers.py",
+          "sha256": "0e560dc074efafb6597d53892d854c0e120284fed7d4bb21318174492f514593"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "1b0ba4d181ed134799e75572dbb964c35de229cbd320c742c67bb89dacfc43ec"
+        }
+      ]
+    }
+  ]
+}
