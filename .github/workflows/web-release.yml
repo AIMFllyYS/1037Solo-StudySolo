@@ -37,6 +37,8 @@ jobs:
         run: |
           mkdir -p "$STUDYSOLO_RELEASE_OUTPUT"
           node scripts/deploy/pack-web-release.mjs
+          python3 -m unittest discover -s scripts/deploy -p 'test_*.py'
+          python3 scripts/deploy/verify-web-archive.py --reference "$STUDYSOLO_RELEASE_OUTPUT/release-reference.json" --expected-commit "$GITHUB_SHA"
       - uses: actions/upload-artifact@v4
         with:
           name: studysolo-web-release-${{ github.sha }}
