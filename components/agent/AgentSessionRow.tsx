@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2, MessageSquare } from "lucide-react";
+import { useId } from "react";
 import FolderTreeRow from "@/components/layout/FolderTreeRow";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
@@ -30,44 +31,51 @@ export function sessionPreview(session: SessionMeta): string {
 }
 
 /**
- * 会话行的运行态徽标（Codex 式）：跑着呢转圈；跑完/出错且用户还没看过 → 蓝点/红点；
- * 打开过（markViewed）就熄。数据源是本地 sessionRuns store，不上云。
+ * 会话行运行状态只来自真实 sessionRuns：运行中/终态都保留短标签；未读终态加重，
+ * markViewed 后保留淡显。数据源是本地 sessionRuns store，不上云。
  */
-export function SessionRunBadge({ run }: { run: SessionRunRecord | undefined }) {
+export function SessionRunBadge({ run, id }: { run: SessionRunRecord | undefined; id?: string }) {
   const t = useT();
   if (!run) return null;
-  if (run.phase === "running") {
-    return (
-      <span
-        className="mr-1.5 inline-flex h-4 w-4 shrink-0 items-center justify-center"
-        title={t("agent.session.run.running")}
-        aria-label={t("agent.session.run.running")}
-        data-testid="session-run-running"
-      >
-        <Loader2 size={12} className="animate-spin text-[var(--md-sys-color-primary)]" />
-      </span>
-    );
-  }
-  if (!run.unseen) return null;
-  if (run.phase === "error" || run.phase === "interrupted") {
-    return (
-      <span
-        className="mr-2.5 inline-flex h-2 w-2 shrink-0 rounded-full"
-        style={{ background: "var(--md-sys-color-error)" }}
-        title={run.phase === "error" ? t("agent.session.run.error") : t("agent.session.run.interrupted")}
-        aria-label={run.phase === "error" ? t("agent.session.run.error") : t("agent.session.run.interrupted")}
-        data-testid="session-run-error"
-      />
-    );
-  }
+  const labelKey = run.phase === "running"
+    ? "runningShort"
+    : run.phase === "done"
+      ? "doneShort"
+      : run.phase === "error"
+        ? "errorShort"
+        : "interruptedShort";
+  const accessibleKey = run.phase === "done" && run.unseen ? "doneUnread" : run.phase;
+  const isActive = run.phase === "running";
+  const isError = run.phase === "error" || run.phase === "interrupted";
+  const emphasized = isActive || run.unseen;
+  const testId = run.phase === "running"
+    ? "session-run-running"
+    : run.phase === "done"
+      ? "session-run-done"
+      : run.phase === "error"
+        ? "session-run-error"
+        : "session-run-interrupted";
   return (
     <span
-      className="mr-2.5 inline-flex h-2 w-2 shrink-0 rounded-full"
-      style={{ background: "var(--md-sys-color-primary)" }}
-      title={t("agent.session.run.doneUnread")}
-      aria-label={t("agent.session.run.doneUnread")}
-      data-testid="session-run-done"
-    />
+      id={id}
+      className={`inline-flex min-w-0 max-w-[5rem] shrink-0 items-center gap-1 rounded px-0.5 text-[10px] leading-4 ${emphasized ? "opacity-100" : "opacity-50"} ${isError ? "text-[var(--md-sys-color-error)]" : emphasized ? "text-[var(--md-sys-color-primary)]" : "text-[var(--ink-faint)]"}`}
+      title={t(`agent.session.run.${accessibleKey}`)}
+      aria-label={t(`agent.session.run.${accessibleKey}`)}
+      data-run-phase={run.phase}
+      data-run-unseen={run.unseen ? "true" : "false"}
+      data-testid={testId}
+    >
+      {isActive ? (
+        <Loader2 size={11} className="shrink-0 animate-spin" aria-hidden />
+      ) : (
+        <span
+          className="h-1.5 w-1.5 shrink-0 rounded-full"
+          style={{ background: isError ? "var(--md-sys-color-error)" : "var(--md-sys-color-primary)" }}
+          aria-hidden
+        />
+      )}
+      <span className="agent-session-run-label truncate">{t(`agent.session.run.${labelKey}`)}</span>
+    </span>
   );
 }
 
@@ -93,6 +101,7 @@ export default function AgentSessionRow({
 }) {
   // hook 必须在 renaming 的提前 return 之前调用：两条渲染路径的 hook 顺序要一致。
   const t = useT();
+  const runStatusId = useId();
   const title = session.title || t("agent.session.untitled");
   const run = useSessionRuns((state) => state.byId[session.id]);
   if (renaming) {
@@ -124,10 +133,12 @@ export default function AgentSessionRow({
           icon={sessionIcon(session)}
           titleAttr={sessionPreview(session)}
           ariaLabel={title}
+          ariaDescribedBy={run ? runStatusId : undefined}
+          fadeTitle
+          endAdornment={run ? <SessionRunBadge run={run} id={runStatusId} /> : undefined}
           onClick={onSelect}
         />
       </div>
-      <SessionRunBadge run={run} />
     </div>
   );
 }

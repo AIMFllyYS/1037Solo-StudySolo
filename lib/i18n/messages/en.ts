@@ -148,9 +148,14 @@ export const en = {
       messageCount: "{count} messages",
       run: {
         running: "Running",
+        runningShort: "Running",
+        done: "Finished",
+        doneShort: "Done",
         doneUnread: "Finished (unread)",
         error: "Run failed",
+        errorShort: "Failed",
         interrupted: "Interrupted",
+        interruptedShort: "Stopped",
       },
     },
     menu: {

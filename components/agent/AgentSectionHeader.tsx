@@ -36,7 +36,7 @@ export default function AgentSectionHeader({
         </span>
       </button>
       {action ? (
-        <div className="shrink-0 opacity-0 transition-opacity group-hover/section:opacity-100 focus-within:opacity-100">
+        <div className="shrink-0 opacity-60 transition-opacity group-hover/section:opacity-100 focus-within:opacity-100">
           {action}
         </div>
       ) : null}

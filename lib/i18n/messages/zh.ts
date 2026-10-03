@@ -150,9 +150,14 @@ export const zh = {
       messageCount: "{count} 条消息",
       run: {
         running: "正在运行",
+        runningShort: "运行中",
+        done: "已完成",
+        doneShort: "已完成",
         doneUnread: "已完成（未读）",
         error: "运行出错",
+        errorShort: "出错",
         interrupted: "已中断",
+        interruptedShort: "中断",
       },
     },
     menu: {

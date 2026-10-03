@@ -54,6 +54,7 @@ describe("AgentShell", () => {
     // 收起不再卸载面板：分栏库要留着它才能在展开时还原用户上次拖到的宽度。
     const conversations = document.querySelector('[data-agent-slot="conversations"]');
     expect(conversations).not.toBeNull();
+    expect(conversations).toHaveAttribute("data-agent-sidebar-container");
     expect(conversations).toHaveAttribute("data-collapsed", "true");
     expect(document.querySelector('[data-agent-slot="main"]')).not.toBeNull();
     // 展开只有顶栏那一个入口（AppShell TopBar 的 sidebar-toggle，与 Studio 同款）；

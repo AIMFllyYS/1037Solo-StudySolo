@@ -126,12 +126,29 @@ describe("AgentConversationSidebar（项目 + 最近）", () => {
     // 系统项目：笔记记录 / 划词摘录
     expect(screen.getByLabelText("笔记记录")).toBeInTheDocument();
     expect(screen.getByLabelText("划词摘录")).toBeInTheDocument();
+    expect(screen.queryByTestId("session-run-running")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("session-run-done")).not.toBeInTheDocument();
     expect(screen.getByText("被覆上皮")).toBeInTheDocument();
     expect(screen.getByText("解释线粒体")).toBeInTheDocument();
+    expect(screen.getByLabelText("细胞生物学复习").querySelector(".agent-session-title-fade")).toBeInTheDocument();
     // 用户项目里的会话与 Recents 里的会话
     expect(screen.getByText("组胚复习")).toBeInTheDocument();
     expect(screen.getByText("细胞生物学复习")).toBeInTheDocument();
     expect(screen.getByTestId("left-dock")).toBeInTheDocument();
+  });
+
+  it("Projects 折叠标题右侧的新建项目入口始终可见，焦点和悬停时增强", () => {
+    render(<AgentConversationSidebar chatContext={ctx} />);
+    const addProject = screen.getByTestId("agent-project-add");
+    expect(addProject).toBeVisible();
+    const action = addProject.parentElement;
+    expect(addProject).toHaveClass("h-7", "w-7");
+    expect(action?.className).toContain("opacity-60");
+    expect(action?.className).toContain("group-hover/section:opacity-100");
+    expect(action?.className).toContain("focus-within:opacity-100");
+    fireEvent.click(screen.getByLabelText("项目"));
+    expect(screen.getByLabelText("项目")).toHaveAttribute("aria-expanded", "false");
+    expect(addProject).toBeVisible();
   });
 
   it("我的资产走路由跳转（不再是弹窗）", () => {
@@ -168,7 +185,7 @@ describe("AgentConversationSidebar（项目 + 最近）", () => {
     expect(historyState.switchSession).not.toHaveBeenCalled();
   });
 
-  it("会话行运行态徽标：running 转圈 / 未读完成蓝点 / 未读错误红点 / 已读不亮", () => {
+  it("会话标题旁按真实run显示状态，已读终态保留淡指示", () => {
     seedSessions();
     useSessionRuns.setState({
       byId: {
@@ -179,9 +196,18 @@ describe("AgentConversationSidebar（项目 + 最近）", () => {
       },
     });
     render(<AgentConversationSidebar chatContext={ctx} />);
-    expect(screen.getAllByTestId("session-run-running")).toHaveLength(1);
-    expect(screen.getAllByTestId("session-run-done")).toHaveLength(1);
+    const running = screen.getByTestId("session-run-running");
+    const doneBadges = screen.getAllByTestId("session-run-done");
+    expect(running).toBeInTheDocument();
+    expect(doneBadges).toHaveLength(2);
     expect(screen.getAllByTestId("session-run-error")).toHaveLength(1);
+    expect(running.closest("button")).toHaveAttribute("aria-describedby", running.id);
+    expect(doneBadges.find((element) => element.getAttribute("data-run-unseen") === "true")).toBeInTheDocument();
+    expect(doneBadges.find((element) => element.getAttribute("data-run-unseen") === "true")?.querySelector(".agent-session-run-label")).toHaveTextContent("已完成");
+    expect(doneBadges.find((element) => element.getAttribute("data-run-unseen") === "true")).toHaveAttribute("aria-label", "已完成（未读）");
+    const readDone = doneBadges.find((element) => element.getAttribute("data-run-unseen") === "false");
+    expect(readDone).toHaveClass("opacity-50");
+    expect(readDone).toHaveTextContent("已完成");
   });
 
   it("项目折叠时把成员会话运行态聚成一颗徽标", () => {
@@ -194,6 +220,17 @@ describe("AgentConversationSidebar（项目 + 最近）", () => {
     fireEvent.click(screen.getByLabelText("组胚"));
     const projectRow = screen.getByLabelText("组胚").closest("div")!.parentElement!;
     expect(within(projectRow).getByTestId("session-run-running")).toBeInTheDocument();
+  });
+
+  it("项目折叠后保留最新已读完成态的淡提示", () => {
+    seedSessions();
+    useSessionRuns.setState({
+      byId: { "proj-1": { phase: "done", unseen: false, startedAt: 10, updatedAt: 20 } },
+    });
+    render(<AgentConversationSidebar chatContext={ctx} />);
+    fireEvent.click(screen.getByLabelText("组胚"));
+    const projectRow = screen.getByLabelText("组胚").closest("div")!.parentElement!;
+    expect(within(projectRow).getByTestId("session-run-done")).toHaveClass("opacity-50");
   });
 
   it("默认一次 10 条，续载后放出其余", () => {

@@ -197,7 +197,8 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
 
   return (
     <div className="h-full min-h-0" data-agent-workspace>
-      <PanelGroup direction="horizontal" autoSaveId="studysolo-agent-layout-v2" data-pane-snap={snapping || undefined}>
+      {/* v3 applies the new 35/65 default without removing the existing v2 user layout. */}
+      <PanelGroup direction="horizontal" autoSaveId="studysolo-agent-layout-v3" data-pane-snap={snapping || undefined}>
         <Panel
           ref={leftPanelRef}
           id="agent-conversations"
@@ -215,6 +216,7 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
           <aside
             ref={conversationsRef}
             data-agent-slot="conversations"
+            data-agent-sidebar-container
             data-collapsed={sidebarCollapsed || undefined}
             // overflow-hidden + 内容定宽（--agent-left-content-width）：收起时把左栏裁成一条缝，
             // 内容不重排、不缩放；也正因此不再需要拖拽期的骨架屏遮挡。

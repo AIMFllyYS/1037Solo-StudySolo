@@ -44,8 +44,8 @@ export interface OutboundMessage {
 const LS_KEY_SIDEBAR = "gailvlun-sidebar-collapsed";
 const LS_KEY_TOPBAR = "gailvlun-topbar-collapsed";
 const LS_KEY_RIGHT_COLLAPSED = "gailvlun-right-collapsed-by-profile";
-/** Agent 右栏（通顶工作区）折叠状态：不跟 Studio 的三档右栏共用，避免两个模式互相改对方的开合。 */
-const LS_KEY_AGENT_DOCK = "gailvlun-agent-dock-collapsed";
+/** Agent 右栏新版显式用户偏好；旧无标记 key 保留但不再用于默认值判定。 */
+const LS_KEY_AGENT_DOCK_V2 = "gailvlun-agent-dock-collapsed-v2";
 
 const DEFAULT_RIGHT_COLLAPSED: Record<LayoutProfile, boolean> = {
   full: false,
@@ -72,6 +72,16 @@ function writeBoolean(key: string, value: boolean): void {
     localStorage.setItem(key, String(value));
   } catch {
     /* ignore */
+  }
+}
+
+/** Missing v2 preference means the independent Agent work area starts expanded. */
+export function readAgentDockCollapsedPreference(): boolean {
+  if (typeof localStorage === "undefined") return false;
+  try {
+    return localStorage.getItem(LS_KEY_AGENT_DOCK_V2) === "true";
+  } catch {
+    return false;
   }
 }
 
@@ -138,7 +148,10 @@ interface AppState {
   setRightCollapsedForProfile: (profile: LayoutProfile, collapsed: boolean) => void;
   /** Agent 右栏（通顶工作区）是否收起。与 Studio 的档位右栏互不影响。 */
   agentDockCollapsed: boolean;
+  /** 显式用户操作：更新当前值并保存为新版本偏好。 */
   setAgentDockCollapsed: (collapsed: boolean) => void;
+  /** 路由/会话恢复用：只改当前开合，不把程序状态写成新的用户偏好。 */
+  setAgentDockCollapsedTransient: (collapsed: boolean) => void;
 
   /** 页面正中的 Agent 设置层（左下角与 AI 助教共用）。 */
   agentSettingsOpen: boolean;
@@ -264,9 +277,11 @@ export const useStore = create<AppState>((set) => ({
   hydrateLayout: () => {
     const topBar = domBoolean("data-topbar-collapsed");
     const sidebar = domBoolean("data-sidebar-collapsed");
+    const agentDock = domBoolean("data-agent-dock-collapsed");
     const updates: Partial<AppState> = {};
     if (topBar !== null) updates.topBarCollapsed = topBar;
     if (sidebar !== null) updates.sidebarCollapsed = sidebar;
+    if (agentDock !== null) updates.agentDockCollapsed = agentDock;
     const right = { ...DEFAULT_RIGHT_COLLAPSED };
     let hasRightAttr = false;
     for (const profile of RIGHT_COLLAPSE_PROFILES) {
@@ -277,8 +292,6 @@ export const useStore = create<AppState>((set) => ({
       }
     }
     if (hasRightAttr) updates.rightCollapsedByProfile = right;
-    // 右栏开合不在这里恢复：它现在跟着对话走（见 useAgentDockPerSession），
-    // 恢复上次的全局值会违背「新对话默认不打开右栏」。
     if (Object.keys(updates).length > 0) set(updates);
   },
 
@@ -325,15 +338,14 @@ export const useStore = create<AppState>((set) => ({
       return { rightCollapsedByProfile: next };
     }),
 
-  /**
-   * 右侧工作区当前是否收起。
-   * **默认收起**：Agent 打开时不该先弹一块面板（用户口径）。
-   * 真正的「每个对话各自记一份」由 `useAgentDockPerSession` 在 AgentShell 里摆平，
-   * 所以这里不再从 localStorage 恢复上次的值——那会让「默认收起」在新会话里失效。
-   */
-  agentDockCollapsed: true,
+  /** 全新账号默认展开 Agent 工作区；v2 中的显式偏好由 hydrateLayout 回填。 */
+  agentDockCollapsed: false,
   setAgentDockCollapsed: (collapsed) => {
-    writeBoolean(LS_KEY_AGENT_DOCK, collapsed);
+    writeBoolean(LS_KEY_AGENT_DOCK_V2, collapsed);
+    setLayoutAttr("data-agent-dock-collapsed", collapsed);
+    set({ agentDockCollapsed: collapsed });
+  },
+  setAgentDockCollapsedTransient: (collapsed) => {
     setLayoutAttr("data-agent-dock-collapsed", collapsed);
     set({ agentDockCollapsed: collapsed });
   },
