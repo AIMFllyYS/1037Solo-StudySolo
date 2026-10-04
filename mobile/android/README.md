@@ -16,6 +16,8 @@ Requirements: JDK 17, Android SDK platform 35, and Gradle 8.13.
 
 The version name and code are derived from the StudySolo root `package.json` version. The application ID is `com.solo1037.studysolo`.
 
+The Android 8.1+ light navigation-bar flag is isolated in the `values-v27` theme resource. API 26 keeps a dark navigation bar so its light system icons remain visible; the minimum SDK stays at 26.
+
 ## Verification boundaries
 
 The app launches `https://studysolo.1037solo.com/` in the user's system browser. No native sign-in state or cookies are exchanged. TWA/DAL is future work and must not be described as enabled until a release-signed app and production association have both been verified.
