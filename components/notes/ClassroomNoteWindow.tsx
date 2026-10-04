@@ -1,17 +1,20 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { StickyNote, Trash2 } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
+import YearSubjectFolderTree from "@/components/layout/YearSubjectFolderTree";
+import ReviewNoteWorkspace from "@/components/review-mode/ReviewNoteWorkspace";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { userNoteWindowId } from "@/lib/notes/userNote";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { shouldMountHeavyEditor } from "@/lib/window/heavyEditor";
 import { useManagedWindowSurface } from "@/lib/window/useManagedWindowSurface";
 import { useT } from "@/lib/i18n";
+import { captureReviewEditorOwner } from "@/lib/notes/reviewEditorOwner";
 
 /** dynamic 的 loading 需要是组件（拿不到调用方的 t），单独包一层。 */
 function CrepeLoading() {
@@ -30,6 +33,7 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
   const updateNote = useUserNotes((s) => s.updateNote);
   const removeNote = useUserNotes((s) => s.removeNote);
   const closeEditor = useUserNotes((s) => s.closeEditor);
+  const hydratedOwnerEpoch = useUserNotes((s) => s._hydratedOwnerEpoch);
   const windowId = userNoteWindowId(noteId);
   const activeWindowId = useWindowManager((s) => s.activeWindowId);
   const { presentation, visible } = useManagedWindowSurface(windowId);
@@ -51,11 +55,30 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
   );
 
   const noteMarkdown = note?.markdown ?? "";
+  const isReviewSelection = note?.kind === "classroom" && note.source?.kind === "review";
+  const reviewSubjectId = note?.subjectId ?? null;
+  const reviewOwner = useMemo(
+    () => captureReviewEditorOwner(noteId, hydratedOwnerEpoch),
+    [noteId, hydratedOwnerEpoch],
+  );
+  const reviewNavigation = useMemo(
+    () => isReviewSelection ? (
+      <YearSubjectFolderTree
+        key={reviewSubjectId ?? "unfiled"}
+        selectedId={reviewSubjectId}
+        onSelect={(subjectId) => {
+          if (reviewOwner.isCurrent()) updateNote(noteId, { subjectId });
+        }}
+      />
+    ) : null,
+    [isReviewSelection, reviewSubjectId, noteId, reviewOwner, updateNote],
+  );
   useEffect(() => {
+    if (isReviewSelection) return;
     if (noteMarkdown === lastEmitted.current) return;
     lastEmitted.current = noteMarkdown;
     setEditorRev((n) => n + 1);
-  }, [noteMarkdown]);
+  }, [isReviewSelection, noteMarkdown]);
 
   if (!note) return null;
 
@@ -66,11 +89,11 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
       icon={<StickyNote size={15} />}
       onClose={handleClose}
       fullscreenTarget="notes"
-      minSize={{ minW: 280, minH: 220 }}
+      minSize={isReviewSelection ? { minW: 280, minH: 240 } : { minW: 280, minH: 220 }}
       overlayId={`classroom-note-${noteId}`}
       bodyClassName="flex min-h-0 min-w-0 flex-1 overflow-hidden"
       unmountWhenMinimized
-      actions={
+      actions={!isReviewSelection ? (
         <button
           type="button"
           data-no-drag
@@ -81,8 +104,17 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
         >
           <Trash2 size={14} />
         </button>
-      }
+      ) : null}
     >
+      {isReviewSelection ? (
+        <ReviewNoteWorkspace
+          noteId={noteId}
+          navigation={reviewNavigation}
+          onRootClick={handleClose}
+          rootLabel={t("review.notes.selectionRoot")}
+          mountRichEditor={isFront}
+        />
+      ) : (
       <div className="classroom-note">
         <blockquote className="classroom-note-quote">
           <div className="classroom-note-quote-label">{t("window.note.classroom.quoteLabel")}</div>
@@ -116,6 +148,7 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
           />
         )}
       </div>
+      )}
 
       {confirmDelete && typeof document !== "undefined" ? (
         <DeleteStickyDialog
