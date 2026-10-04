@@ -3,6 +3,7 @@ import { PersistentExecutionStore, type ExecutionStore } from "./store.server";
 import { AlibabaExecutionProvider, type ExecutionProvider } from "./provider.server";
 import { closeExecution } from "./cleanup.server";
 import type { SandboxCommand, SandboxSession } from "./types";
+import { isExecutionCommand, type SandboxAuthRetry } from "./types";
 
 export async function maintainExecutions(store: ExecutionStore = new PersistentExecutionStore(), provider: ExecutionProvider = new AlibabaExecutionProvider()) {
   const config = sandboxConfiguration();
@@ -18,7 +19,7 @@ export async function maintainExecutions(store: ExecutionStore = new PersistentE
         return;
       }
       if (record.state !== "active" || !record.providerId) return;
-      const commands = (await store.owned<SandboxCommand>("command", record.owner)).filter(command => command.sessionId === record.id && command.state !== "completed");
+      const commands = (await store.owned<SandboxCommand | SandboxAuthRetry>("command", record.owner)).filter(isExecutionCommand).filter(command => command.sessionId === record.id && command.state !== "completed");
       if (!commands.length) return;
       const connection = await provider.connect(record.providerId, record.expiresAt - Date.now());
       for (const command of commands) {

@@ -33,7 +33,9 @@
 
 默认应用同时一个活跃实例，每用户24小时最多10次新建；实例15分钟、单命令10分钟、日志256KiB。预算先保守预留，关闭只释放容量，不抹去已预留费用。45秒可续租的服务端锁与写入围栏防止旧租约覆盖新结果；本机锁原子发布完整内容，异常和租约文件留档。
 
-server instrumentation每15秒捕获运行结果并处理回收队列；已释放 reservation不再堵住批次。close先捕获最终日志再终止，创建超时按固定元数据核对，不盲目重建。提供者 TTL是独立停止后盾；服务端完全不可用时仍不能承诺保存最终一行日志。更换 Team/API key/template必须核对旧记录，不跨绑定盲连。
+server instrumentation每15秒捕获运行结果并处理回收队列；已释放 reservation不再堵住批次。当前close直接终止精确已知实例，不用会自动resume的SDK connect为抓日志唤醒paused实例；保留已持久日志，销毁前未落盘的最终输出不保证可取。创建超时按完整running/paused列表与固定元数据核对，不connect恢复、不盲目重建；空列表或本地TTL不足以宣称未知创建已停止。提供者TTL是独立停止后盾，更换Team/API key/template仍必须核对旧记录，不跨绑定盲连。
+
+2026-10-05联合CORE修复把普通独立Agent上下文与实际风险动作分开：普通聊天/MCP先live核验Account身份（未完成MFA仍拒绝登录），每次open/exec/write/publish及技能安装/卸载单独保持近期验证。本人已有cancel/close用live身份止损。明确前置REAUTH拒绝通过加密短期auth-retry票据保存原请求；结果卡先读真实状态，固定候选确认后继续，started/uncertain不重复执行。read/poll/cancel的运行态检查与供应商SDK connect之间仍有外部并发pause窗口，不能宣称原子no-resume；本轮不引入private SDK认证耦合。
 
 ## 平台与费用
 
@@ -42,6 +44,8 @@ server instrumentation每15秒捕获运行结果并处理回收队列；已释�
 阿里云[官方计费概述](https://help.aliyun.com/zh/agent-sandbox/product-overview/billing-overview)支持秒级按量计费。按文档中国内地 default价格，2CPU/2GiB、15GiB活跃磁盘的计算估算约0.234元/小时，10分钟约0.039元，15分钟约0.0585元。其他存储、快照、网络、日志由各产品规则决定；这些是估算，不是已读取的账单金额。
 
 用户授权本轮新增累计≤100元、月预算≤100元。应用配置不能提高到此上限以上，另默认保留30元准备/存储余量，计算预留使用余下70元；每个15分钟会话按最高1元/小时再加0.05元余量保守预留0.30元。实际账单仍要核对；不把预留视为用户钱包收费或 measured成本。
+
+同一provider绑定的开发file账本与生产DB账本原来独立。当前真实环境新create要求shared预算authority、准确RootSolo与已审查legacy marker；新增reconciled RPC候选在原capacity事务锁内检查marker和所有unreleased占位。local1.8与shared.3的只读对账不是invoice，不搬开发用户/会话/grant、不删除旧reserve。新RPC/import/env尚待父审和实际账单核查，未准备时fail closed，不能退回第二份本地预算。精确候选和实时schema/history证据见[联合CORE报告](../handoff/workstreams/core-sandbox-2026-10-05.md)。本轮runId保持原10/04，不因午夜重置。
 
 Supabase继续承担 PostgreSQL状态、权限、预算与私有产物存储。它没有承担任意命令进程的执行。已将 Shared三份连接器/执行/技能安装迁移经当前 Supabase MCP应用到 RootSolo，ACL、不可变owner、围栏、预算在 PostgreSQL/PGlite验证。PGlite为单连接验证，不代表多连接生产压测。
 
