@@ -20,4 +20,4 @@ The Android 8.1+ light navigation-bar flag is isolated in the `values-v27` theme
 
 ## Verification boundaries
 
-The app launches `https://studysolo.1037solo.com/` in the user's system browser. No native sign-in state or cookies are exchanged. TWA/DAL is future work and must not be described as enabled until a release-signed app and production association have both been verified.
+The app launches `https://studysolo.1037solo.com/` through AndroidX Custom Tabs. Instrumentation captures and blocks the real outbound `ACTION_VIEW` so it can verify the exact HTTPS URL without requiring Chrome in the emulator; it does not claim a browser actually opened or a user signed in. No native sign-in state or cookies are exchanged. TWA/DAL is future work and must not be described as enabled until a release-signed app and production association have both been verified.
