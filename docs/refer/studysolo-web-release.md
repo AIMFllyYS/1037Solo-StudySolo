@@ -1,5 +1,7 @@
 # StudySolo 网站发布准备
 
+> 当前部署/任务状态以[交接](../handoff/studysolo-unattended-handoff.md)和[账本](../handoff/studysolo-workstreams.json)为准。旧归档构建与私有预检记录不是当前上线状态；VPN预检已撤回，禁止重用。
+
 2026-10-04 实查：`studysolo.1037solo.com` 经代理 VPS 的专属 Nginx 站点转发到本机 `41349`，此端口属于来自执行盒子的反向 SSH 隧道，盒子再提供 Next `35349`。代理 VPS 不是已经确认的应用源；合并 GitHub 主分支不会自动改变盒子中的运行版本。现有转发保留，未更改隧道、Nginx、VPN 或其他站点。
 
 StudySolo 独立于 RootSolo 的八仓库发布列车。Landing 后台仍需和 Account、Platform、StudyFlow、ChatSolo、KitSolo、Docs、Shared 一起以现行 SOP 的固定提交发布；不能只替换 Landing 服务或把其他仓库的未验收改动带入该发布。

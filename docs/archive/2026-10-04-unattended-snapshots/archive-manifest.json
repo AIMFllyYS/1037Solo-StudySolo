@@ -1,0 +1,71 @@
+{
+  "archivedDate": "2026-10-04",
+  "authority": "docs/handoff/studysolo-workstreams.json",
+  "files": [
+    {
+      "source": "docs/plans/2026-10-04-unattended-platform-polish.md",
+      "archive": "docs/archive/2026-10-04-unattended-snapshots/plans/2026-10-04-unattended-platform-polish.md",
+      "reason": "旧分阶段日志混合历史/当前验收，不能继续调度",
+      "original_body_sha256": "d1ace96d952a4302c6ef38561ed210b790c8e404ec041ae9c08b324bac4d2451",
+      "original_body_preserved": true,
+      "normalized_lf_body_sha256": "dca20d6a23e653e57f0db2976dafeef1ddc019ab833ee94a52e93f7fc29b224b"
+    },
+    {
+      "source": "docs/plans/2026-10-04-current-status-and-deployment-handoff.md",
+      "archive": "docs/archive/2026-10-04-unattended-snapshots/plans/2026-10-04-current-status-and-deployment-handoff.md",
+      "reason": "旧移交含过时SHA/预检路线及相互冲突状态",
+      "original_body_sha256": "b959e02b31b0d743dca36088bbff14bf24d3ae0c075b725b786e3b1bb7a228ea",
+      "original_body_preserved": true,
+      "normalized_lf_body_sha256": "7593b333792cc4a0c6ab658d2ba77ee714404902abba4c13dd5b0a2e920358c7"
+    },
+    {
+      "source": "docs/plans/2026-10-03-learning-connectors-integration-execution.md",
+      "archive": "docs/archive/2026-10-04-unattended-snapshots/plans/2026-10-03-learning-connectors-integration-execution.md",
+      "reason": "旧实施快照仍称未迁移，与实际历史证据冲突",
+      "original_body_sha256": "9ddd30238e3b86702102a3de5b7bd4c75cb8f3f0a4b3c51840d303e12dc7b107",
+      "original_body_preserved": true,
+      "normalized_lf_body_sha256": "9ddd30238e3b86702102a3de5b7bd4c75cb8f3f0a4b3c51840d303e12dc7b107"
+    },
+    {
+      "source": "docs/plans/2026-10-03-learning-connectors-preparation-spec.md",
+      "archive": "docs/archive/2026-10-04-unattended-snapshots/plans/2026-10-03-learning-connectors-preparation-spec.md",
+      "reason": "早期准备规格不能代表已实现代码或正式用户可用",
+      "original_body_sha256": "3e6f2bd2a19712b1196e7140ebc375973572addecb1a92438c2607aaa1484089",
+      "original_body_preserved": true,
+      "normalized_lf_body_sha256": "3e6f2bd2a19712b1196e7140ebc375973572addecb1a92438c2607aaa1484089"
+    },
+    {
+      "source": "docs/plans/2026-10-03-learning-connectors-catalog.json",
+      "archive": "docs/archive/2026-10-04-unattended-snapshots/plans/2026-10-03-learning-connectors-catalog.json",
+      "reason": "只用于早期准备，非代码运行注册表",
+      "original_body_sha256": "643bc4b85b70a320e936924a551e862f17bb6598c1f3f4b8d60411dee872c4d0",
+      "original_body_preserved": true,
+      "normalized_lf_body_sha256": "643bc4b85b70a320e936924a551e862f17bb6598c1f3f4b8d60411dee872c4d0"
+    },
+    {
+      "source": "docs/refer/learning-connector-authentication.md",
+      "archive": "docs/archive/2026-10-04-unattended-snapshots/refer/learning-connector-authentication.md",
+      "reason": "2026-10-03开发认证快照混有过时未实现描述",
+      "original_body_sha256": "0502f6a447b3f9080a7518ad922e23156c43764858627ac2140fdbb1767920bb",
+      "original_body_preserved": true,
+      "normalized_lf_body_sha256": "0502f6a447b3f9080a7518ad922e23156c43764858627ac2140fdbb1767920bb"
+    },
+    {
+      "source": "docs/analysis/2026-10-03-agent-connectors-integration.md",
+      "archive": "docs/archive/2026-10-04-unattended-snapshots/analysis/2026-10-03-agent-connectors-integration.md",
+      "reason": "早期选型分析，已被当前交接与代码参考取代",
+      "original_body_sha256": "3828c20f8f379e1f2f28bc9a9fbbf9a05b52d43b913ab7a28c6eb14af379d0ac",
+      "original_body_preserved": true,
+      "normalized_lf_body_sha256": "3828c20f8f379e1f2f28bc9a9fbbf9a05b52d43b913ab7a28c6eb14af379d0ac"
+    },
+    {
+      "source": "docs/analysis/2026-10-04-cloud-skill-execution.md",
+      "archive": "docs/archive/2026-10-04-unattended-snapshots/analysis/2026-10-04-cloud-skill-execution.md",
+      "reason": "资源选择与早期实现报告，非当前交付状态",
+      "original_body_sha256": "63a818929eb49819b84a2c3234eec91ec809ee0a08e59825fb860303800fa50c",
+      "original_body_preserved": true,
+      "normalized_lf_body_sha256": "63a818929eb49819b84a2c3234eec91ec809ee0a08e59825fb860303800fa50c"
+    }
+  ],
+  "source_commit": "f746fd3bd6b69ea906480e20bbfc80c889275302"
+}

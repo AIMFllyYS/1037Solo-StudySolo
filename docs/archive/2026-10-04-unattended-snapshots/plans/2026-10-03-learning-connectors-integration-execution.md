@@ -1,3 +1,5 @@
+> **已归档：2026-10-04。** 旧实施快照仍称未迁移，与实际历史证据冲突。正文保留为历史快照，其中“完成/待办/已父验收”不得作为当前事实或派遣依据。当前入口：[完整交接](../../../handoff/studysolo-unattended-handoff.md)。
+
 # 学习连接器完整接入执行记录
 
 状态：原生接入代码与本地回归已完成，真实账号端到端验收进行中。更新日期：2026-10-04。范围：Notion、Todoist、Google Drive/Calendar/Gmail/Contacts、GitHub、Zotero、PubMed、Crossref、Anki 导出。Microsoft 暂停，Obsidian/飞书不在本轮范围。

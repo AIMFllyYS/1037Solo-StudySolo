@@ -1,12 +1,12 @@
 # 云端命令与学习连接器接入报告
 
-日期：2026-10-04。云沙箱与 MCP 的决策、实现和验收由主智能体完成；普通产品修复每次只有一个 GPT-6 Luna Max 子智能体。
+日期：2026-10-04。用户反馈整体不可用；当前范围和用户验收只看[交接](../handoff/studysolo-unattended-handoff.md)与[账本](../handoff/studysolo-workstreams.json)。云沙箱与 MCP 的决策、实现和验收由主智能体完成；普通产品修复每次只有一个 GPT-6 Luna Max 子智能体。
 
-## 当前实际状态
+## 已有代码与历史局部证据（不代表用户交付）
 
 | 能力 | 验证结果 | 尚未完成 |
 |---|---|---|
-| 独立 Agent 通用命令 | 真实 Account → 项目接口 → 阿里云创建、文件、执行、轮询、产物鉴权下载、关闭通过 | 新服务器认证链路验收、正式启用和费用账单核对 |
+| 独立 Agent 通用命令 | 真实 Account → 项目接口 → 阿里云创建、文件、执行、轮询、产物鉴权下载、关闭通过 | 实际正式服务正常账号链路验收、正式启用和费用账单核对 |
 | 执行隔离 | 宿主普通 UID10001映射、控制文件拒绝、root信号拒绝、本机控制API隔离、取消/超时/日志限制/后台进程清理/越界文件拒绝通过 | 持续供应商安全更新、生产实例验收 |
 | Agent 模型调用 | 真实 GLM 通过PubMed+通用CLI循环；另以选中Notes技能实际load→open→原脚本render→publish→鉴权PDF下载→close，一页A4和完整原文核对通过 | 新生产环境完整验收 |
 | 原生连接器 | Notion、Todoist、GitHub、Google、Zotero、PubMed、Crossref 的开发账号真实读取通过；Google与GitHub正式回调均已保存并刷新读回，保留localhost与原范围 | 其他服务正式来源登记、多用户授权、Google Testing/验证边界、生产配置 |
@@ -73,7 +73,7 @@ GitHub仓库公开不等于容器镜像自动公开：[官方Container registry�
 
 本机 `.env.local`启用基础开发运行；本机 `.env.production`已按用户要求完成待部署配置校验，CLOUD_SANDBOX_ENABLED/CONNECTOR_ALLOW_PRODUCTION为true；尚未更新远端，不能当作生产验收通过。新增/管理的名称为 CLOUD_SANDBOX_ENABLED、REGION、DOMAIN、API_URL、API_KEY、TEMPLATE、APP_ORIGIN、ENCRYPTION_KEY、MONTHLY_BUDGET_CNY、RUN_BUDGET_CNY、BUDGET_RUN_ID、FIXED_COST_CNY、SKILLS_VERSION、SKILLS_TEMPLATE（均带 CLOUD_SANDBOX_前缀）。初次开发配置未更新Windows全局或远端进程环境；随后新增的服务器预检配置见下一段。密钥值不在报告中记录。
 
-2026-10-04用户指出预检VPS承担VPN后，该私有预检已撤回：专属进程/daemon/SSH forward停止，配置日志本机受限备份后移除仅本轮两个新增目录，释放3.98GiB。正式网站未切换，禁止再次在VPN VPS部署。候选环境与完整Web归档仍保存在本机；正式部署使用用户指定Grok BOT / Notebook Agent，详情见[当前交接](../plans/2026-10-04-current-status-and-deployment-handoff.md)。阿里云沙箱的实际运行不发生在该VPS。Google与GitHub正式回调已现场确认保存并刷新读回，现有callback origin匹配；五项Google scope/Testing、GitHub原权限/密钥不变，两条GitHub回调通配均关闭。
+2026-10-04用户指出预检VPS承担VPN后，该私有预检已撤回：专属进程/daemon/SSH forward停止，配置日志本机受限备份后移除仅本轮两个新增目录，释放3.98GiB。正式网站未切换，禁止再次在VPN VPS部署。候选环境与完整Web归档仍保存在本机；正式网页按用户现有master/dev推送触发部署；必要时才按准确Grok BOT / Notebook Agent协作，详情见[当前交接](../handoff/studysolo-unattended-handoff.md)。阿里云沙箱的实际运行不发生在该VPS。Google与GitHub正式回调已现场确认保存并刷新读回，现有callback origin匹配；五项Google scope/Testing、GitHub原权限/密钥不变，两条GitHub回调通配均关闭。
 
 真实OCI验收后，仅将本项目两个env文件中的`CLOUD_SANDBOX_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_VERSION`更新为已验收组合。无关变量逐项保持，旧文件留在受限备份目录；原API key及加密key没有旋转，生产开关保持false。GitHub构建环境Secret是另一受限服务端配置，不是Windows全局变量或EXE内置凭据。
 
