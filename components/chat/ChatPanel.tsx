@@ -18,6 +18,7 @@ import { subjectShortName } from '@/lib/content-data/subjects.registry';
 import SelectionPopover from '@/components/notes/SelectionPopover';
 import ChatThread from '@/components/chat/ChatThread';
 import ChatInput from '@/components/chat/ChatInput';
+import ChatAccessNotice from '@/components/chat/ChatAccessNotice';
 import { ImageLightbox } from '@/components/shared/ImageLightbox';
 import ChatPanelHeader from '@/components/chat/ChatPanelHeader';
 import ChatEmptyState from '@/components/chat/ChatEmptyState';
@@ -26,6 +27,8 @@ import ChatHistoryOverlay from '@/components/chat/ChatHistoryOverlay';
 import type { ChatContext, ChatOptions } from '@/lib/types/chat';
 import type { SendMessageOptions } from '@/lib/chat/sendMessage';
 import { useT } from '@/lib/i18n';
+import { useAuthSession } from '@/lib/hooks/useAuthSession';
+import { getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
 import {getSessionWriteFailure,hasDurableSessionRecovery,hydrateSessionRecoveryStatus,retrySessionWrite,subscribeSessionWriteStatus} from '@/lib/storage/chatStorage';
 import {exportSessionRecovery} from '@/lib/chat/exportChats';
 
@@ -54,6 +57,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
   const { messages, isLoading, error, info, sendMessage, stopGeneration, clearError, clearInfo, sessionId } = useChat(chatContext, chatOptions, { agentMain });
   const outbound = useStore((s) => s.outbound);
   const clearOutbound = useStore((s) => s.clearOutbound);
+  const openLoginOverlay = useStore((s) => s.openLoginOverlay);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
   const writeFailure=useSyncExternalStore(subscribeSessionWriteStatus,()=>activeSessionId?getSessionWriteFailure(activeSessionId):null,()=>null);
   useEffect(() => { if (activeSessionId) void hydrateSessionRecoveryStatus(activeSessionId); }, [activeSessionId]);
@@ -70,6 +74,26 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
   const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
   const selectedModelId = useSettings((s) => s.selectedModelId);
   const chatReady = useChatReady();
+  const auth = useAuthSession();
+  const ownerId = getStorageOwner();
+  const ownerEpoch = getOwnerEpoch();
+  const isCapturedOwnerCurrent = useCallback(() => ownerId !== null
+    && getStorageOwner() === ownerId
+    && getOwnerEpoch() === ownerEpoch, [ownerId, ownerEpoch]);
+  const canUseChat = auth.status === 'signedIn' && ownerId !== null && auth.userId === ownerId && chatReady;
+  const outboundOwnerMatches = !!outbound && outbound.ownerId === ownerId && outbound.ownerEpoch === ownerEpoch;
+  const accessGateContent = auth.status === 'signedOut'
+    ? <ChatAccessNotice status="signedOut" onOpenLogin={openLoginOverlay} />
+    : auth.status === 'loading' || ownerId === null || auth.userId !== ownerId
+      ? <ChatAccessNotice status="checking" onOpenLogin={openLoginOverlay} />
+      : undefined;
+  const disabledReason = auth.status === 'signedOut'
+    ? t('menu.chatInput.placeholder.signInRequired')
+    : auth.status === 'loading' || ownerId === null || auth.userId !== ownerId
+      ? t('menu.chatInput.placeholder.checkingAccount')
+      : !chatReady
+        ? t('menu.chatInput.placeholder.historyLoading')
+        : undefined;
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -88,6 +112,10 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
   useEffect(() => {
     useTokenTracker.getState().resetSession();
   }, [activeSessionId]);
+
+  useEffect(() => {
+    if (outbound && !outboundOwnerMatches && useStore.getState().outbound === outbound) clearOutbound();
+  }, [clearOutbound, outbound, outboundOwnerMatches]);
 
   /**
    * 不在卸载时 stopGeneration：离开对话页/切路由不杀运行中的生成
@@ -121,21 +149,25 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
   }, []);
 
   useEffect(() => {
-    if (!chatReady || isLoading || !outbound?.content.trim()) return;
+    if (!canUseChat || !outboundOwnerMatches || isLoading || !outbound?.content.trim()) return;
     let cancelled = false;
     queueMicrotask(() => {
-      if (cancelled || useStore.getState().outbound !== outbound) return;
+      if (cancelled || !isCapturedOwnerCurrent() || outbound.ownerId !== ownerId || outbound.ownerEpoch !== ownerEpoch
+        || useStore.getState().outbound !== outbound) return;
       // busy/hydration 的同步门控可能在 effect 排队后变化；被拒绝的项仍等待下一次就绪。
       if (sendMessage(outbound.content, { memoryCommit: outbound.memoryCommit }) && useStore.getState().outbound === outbound) clearOutbound();
     });
     return () => { cancelled = true; };
-  }, [outbound, sendMessage, clearOutbound, chatReady, isLoading]);
+  }, [outbound, sendMessage, clearOutbound, canUseChat, outboundOwnerMatches, isLoading, ownerId, ownerEpoch, isCapturedOwnerCurrent]);
 
   const handleSend = (content: string, options?: SendMessageOptions) => {
+    if (!canUseChat || !isCapturedOwnerCurrent()) return;
     sendMessage(content, options);
   };
 
-  const handleFollowUpClick = useCallback((question: string) => sendMessage(question), [sendMessage]);
+  const handleFollowUpClick = useCallback((question: string) => {
+    if (canUseChat && isCapturedOwnerCurrent()) sendMessage(question);
+  }, [canUseChat, sendMessage, isCapturedOwnerCurrent]);
   const handleNewChat = () => {
     // 不 stopGeneration：新对话另开跑道，当前这条继续在后台跑（Codex 式并行）。
     startNewChat(chatContext);
@@ -152,7 +184,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
    * 卸载再挂载会让 SelectionPopover 的 effect 错过新节点，Agent 里就再也选不中文字了。
    */
   const showAgentWelcome = emptyLayout === 'agent'
-    && chatReady
+    && canUseChat
     && !isLoading
     && !messages.some((m) => m.role === 'user' || m.role === 'assistant');
   const headerPinned = pinChatHeader || showHistory;
@@ -221,6 +253,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
         onClearInfo={clearInfo}
         onFollowUpClick={handleFollowUpClick}
         hydrated={chatReady}
+        accessGateContent={accessGateContent}
         fontScale={fontScale}
         bottomInset={composerInset}
         scrollContainerRef={scrollContainerRef}
@@ -243,7 +276,9 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
       <ChatInput
         onSend={handleSend}
         onStop={stopGeneration}
-        isLoading={isLoading || !chatReady}
+        isLoading={isLoading}
+        disabled={!canUseChat}
+        disabledReason={disabledReason}
         sessionId={sessionId ?? undefined}
         chatContext={chatContext}
         // 只有 Agent 中央对话给「对话所属项目」这个入口（划词浮窗 / 题目解析 / 手机迷你聊天都不给）。

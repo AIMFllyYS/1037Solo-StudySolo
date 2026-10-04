@@ -111,8 +111,21 @@ export const menuEn = {
     },
     placeholder: {
       disabled: "Input disabled",
+      signInRequired: "Sign in to use AI chat",
+      checkingAccount: "Checking account…",
+      historyLoading: "Restoring chat history…",
       queued: "Keep typing — messages queue after sending…",
       default: "Ask a question, quote a note, or pick a plan or tool",
+    },
+    access: {
+      signedOutTitle: "Sign in to continue chatting",
+      signedOutBody: "Chat history is separated by account. Sign in to ask a question or restore your history.",
+      checkingTitle: "Checking account status",
+      checkingBody: "This area will show the current account's conversations after verification.",
+      ownerChangedTitle: "Account changed",
+      ownerChangedBody: "This floating chat belongs to another account. Close it and reopen it in the current account to protect conversation privacy.",
+      signIn: "Sign in",
+      closeWindow: "Close floating chat",
     },
     autoPrompt: {
       files: "Please read these notes",

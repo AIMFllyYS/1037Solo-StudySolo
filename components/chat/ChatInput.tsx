@@ -450,8 +450,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
   const inputDisabled = !!externalDisabled;
   // 队列按会话过滤展示：切到别的会话时不把那边排队的消息摆在这里。
   const visibleQueuedMessages = queuedMessages.filter((item) => item.sessionId === sessionId);
-  const sendDisabled = !!externalDisabled || (!isLoading && (overLimit || (!input.trim() && attachments.length === 0 && attachedFiles.length === 0)));
-  const showStopButton = isLoading && !input.trim() && attachments.length === 0 && attachedFiles.length === 0;
+  const composerEmpty = !input.trim() && attachments.length === 0 && attachedFiles.length === 0;
+  const showStopButton = isLoading && (inputDisabled || composerEmpty);
+  // An access/readiness gate blocks new sends but must not hide the real abort
+  // action for a run that was already in progress.
+  const sendDisabled = showStopButton
+    ? false
+    : !!externalDisabled || overLimit || (!input.trim() && attachments.length === 0 && attachedFiles.length === 0);
   const thinkingProps = {
     enabled: effectiveEnableThinking, effort: displayEffort, supported: thinkingSupported,
     disabled: inputDisabled, levels: thinkingLevels, allowOff: thinkingAllowOff,
