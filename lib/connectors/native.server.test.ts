@@ -5,8 +5,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { NextRequest } from "next/server";
 import { readRecord, readVersionedRecord, compareRecord, writeRecord, acquireLease } from "./persistence.server";
-import { activeGrant, readGrant, disconnectConnector } from "./connections.server";
-import { proposeAction, confirmAction, getAction, cancelAction } from "./service.server";
+import { activeGrant, readGrant, disconnectConnector, connectionStatus } from "./connections.server";
+import { proposeAction, confirmAction, getAction, cancelAction, connectorOperations, readConnector } from "./service.server";
 import { gmailMime, eventBody } from "./api.server";
 import { allowedMcpTool, validateArguments } from "./mcp.server";
 import { connectorOwner } from "./actor.server";
@@ -70,6 +70,45 @@ test("native authorization, refresh, action replay and export contracts", async 
     await t.test("disconnect is authoritative locally even if remote revocation fails", async st => {
       st.mock.method(globalThis, "fetch", async () => { await assert.rejects(activeGrant(owner, "google"), /CONNECTION_REQUIRED/); throw new Error("network"); });
       await disconnectConnector(owner, "google"); await assert.rejects(activeGrant(owner, "google"), /CONNECTION_REQUIRED/); st.mock.restoreAll();
+    });
+    await t.test("status isolates a broken grant and renews another provider without broadening discovery", async st => {
+      await writeRecord(`grant:${owner}:google`, grant("google", "https://www.googleapis.com/auth/gmail.send", Date.now() - 1000));
+      await writeRecord(`grant:${owner}:todoist`, { ...grant("todoist", "data:read_write"), owner: other });
+      let refreshes = 0;
+      st.mock.method(globalThis, "fetch", async () => { refreshes++; return Response.json({ access_token: "fixture-status-rotated", token_type: "Bearer", expires_in: 3600 }); });
+      const status = await connectionStatus(owner);
+      assert.equal(status.find(item => item.provider === "google")?.state, "connected");
+      assert.equal(status.find(item => item.provider === "todoist")?.state, "unavailable");
+      assert.equal(status.find(item => item.provider === "pubmed")?.state, "available");
+      assert.equal(refreshes, 1);
+      assert.deepEqual((await connectorOperations(owner, "google")).map(item => item.name), ["gmail_send"]);
+      await writeRecord(`grant:${owner}:google`, grant("google", "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.readonly"));
+      assert.deepEqual((await connectorOperations(owner, "google")).map(item => item.name), ["calendar_list_events"]);
+      st.mock.restoreAll();
+    });
+    await t.test("a provider-expired credential becomes reauthorization-required and retains local disconnect", async st => {
+      await writeRecord(`grant:${owner}:google`, grant("google", "https://www.googleapis.com/auth/gmail.readonly"));
+      st.mock.method(globalThis, "fetch", async () => Response.json({ error: "fixture-expired" }, { status: 401 }));
+      await assert.rejects(readConnector(owner, "google", "gmail_search", { query: "fixture" }), /PROVIDER_AUTHORIZATION_EXPIRED/);
+      const state = (await connectionStatus(owner)).find(item => item.provider === "google");
+      assert.equal(state?.state, "reauthorization_required"); assert.equal(state?.canDisconnect, true);
+      st.mock.restoreAll();
+    });
+    await t.test("opaque grant version is stable across token renewal and changes with a real binding or scope change", async st => {
+      const initial = grant("google", "https://www.googleapis.com/auth/calendar.readonly", Date.now() + 3600000);
+      await writeRecord(`grant:${owner}:google`, initial);
+      const before = (await connectionStatus(owner)).find(item => item.provider === "google")!;
+      assert.match(before.grantVersion!, /^[a-f0-9]{64}$/); assert.ok(!JSON.stringify(before).includes(initial.accessToken));
+      await writeRecord(`grant:${owner}:google`, { ...initial, expiresAt: Date.now() - 1000 });
+      st.mock.method(globalThis, "fetch", async () => Response.json({ access_token: "fixture-version-renewed", token_type: "Bearer", expires_in: 3600 }));
+      await activeGrant(owner, "google");
+      assert.equal((await connectionStatus(owner)).find(item => item.provider === "google")!.grantVersion, before.grantVersion);
+      await writeRecord(`grant:${owner}:google`, { ...initial, createdAt: "2026-10-04T11:00:00Z" });
+      assert.notEqual((await connectionStatus(owner)).find(item => item.provider === "google")!.grantVersion, before.grantVersion);
+      await writeRecord(`grant:${owner}:google`, { ...initial, scope: "https://www.googleapis.com/auth/gmail.readonly" });
+      assert.notEqual((await connectionStatus(owner)).find(item => item.provider === "google")!.grantVersion, before.grantVersion);
+      assert.deepEqual((await connectorOperations(owner, "google")).map(item => item.name), ["gmail_search", "gmail_read"]);
+      st.mock.restoreAll();
     });
     await t.test("unknown/destructive MCP tools and secret-shaped arguments are denied", () => {
       assert.equal(allowedMcpTool("todoist", "delete-tasks", true), false); assert.equal(allowedMcpTool("github", "create_issue", true), false); assert.equal(allowedMcpTool("notion", "unknown-new-tool", false), false);

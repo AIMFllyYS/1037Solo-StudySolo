@@ -2,7 +2,7 @@ import { Client, StreamableHTTPClientTransport, type CallToolResult } from "@mod
 import Ajv from "ajv";
 import Ajv2020 from "ajv/dist/2020";
 import Ajv2019 from "ajv/dist/2019";
-import { activeGrant } from "./connections.server";
+import { activeGrant, requireGrantReauthorization } from "./connections.server";
 import { CONNECTOR_REGISTRY, type ConnectorOperation } from "./registry";
 import { ConnectorError } from "./actor.server";
 import { secretFreeArguments } from "./http.server";
@@ -45,6 +45,11 @@ async function withMcp<T>(owner: string, provider: McpProvider, signal: AbortSig
       const requested = new URL(typeof input === "string" ? input : input.href);
       if (requested.origin !== new URL(endpoint).origin || requested.pathname !== new URL(endpoint).pathname) throw new ConnectorError("UNTRUSTED_PROVIDER_URL", 403);
       const response = await fetch(input, { ...init, redirect: "error", signal: cleaning ? AbortSignal.timeout(5000) : AbortSignal.any([requestSignal, ...(init?.signal ? [init.signal] : [])]) });
+      if (response.status === 401 && !cleaning) {
+        await response.body?.cancel();
+        await requireGrantReauthorization(owner, provider, grant.accessToken);
+        throw new ConnectorError("PROVIDER_AUTHORIZATION_EXPIRED", 403);
+      }
       if (!response.body) return response;
       let bytes = 0;
       const stream = response.body.pipeThrough(new TransformStream<Uint8Array, Uint8Array>({ transform(chunk, controller) { bytes += chunk.byteLength; if (bytes > 2097152) throw new ConnectorError("PROVIDER_RESPONSE_TOO_LARGE", 502); controller.enqueue(chunk); } }));

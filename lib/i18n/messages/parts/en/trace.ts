@@ -49,6 +49,22 @@ export const traceEn = {
   // Tool step summaries and fallbacks.
   tool: {
     learningConnectors: {
+      authorizationSaved: "{provider} is connected. You can use it in a conversation.",
+      verifyAccount: "Verify your identity in Account",
+      grantedScopes: "Saved authorization: {scopes}",
+      noGrantedScopes: "No learning service capabilities granted",
+      nextAuthorizationScopes: "Choose capabilities for the next authorization",
+      connectionAccountChanged: "Account changed. Refresh connection status.",
+      scopeDraftHint: "Selections apply to the next authorization; current capabilities follow the saved grant.",
+      accountDisabled: "Your Account is unavailable. Contact the account administrator; reconnecting a learning service will not remove this restriction.",
+      emailUnverified: "Verify your email in Account before connecting learning services.",
+      authorizationCancelled: "Authorization was cancelled. You can connect again when needed.",
+      authorizationRetry: "Authorization did not complete or expired. Connect again with the current account.",
+      selectApprovedScopes: "Select at least one approved Google capability.",
+      configurationRequired: "Service connection configuration is not ready. Contact the administrator before retrying.",
+      rateLimited: "The provider is limiting requests. Refresh the status later.",
+      disconnectedRevoked: "Disconnected from this app and revoked provider authorization.",
+      disconnectedLocal: "Disconnected from this app. Provider authorization has not been confirmed revoked; review the provider settings.",
       label: "Learning services", settingsLabel: "Learning connectors", description: "Read connected notes, tasks, files, calendars, mail and references. External writes require confirmation.",
       manage: "Manage learning connections", manageHint: "Connect your accounts so the assistant can use the learning materials you authorize.", connect: "Connect account", reconnect: "Authorize again", disconnect: "Disconnect", disconnectConfirm: "Disconnect this learning service? New reads and writes will stop.", refresh: "Refresh status", signIn: "Please sign in", failed: "Learning service request did not complete", scopes: "Choose the capabilities to authorize", googleFiles: "Read course files", googleCalendar: "Read calendars", googleCalendarWrite: "Create study events", googleMailRead: "Read course mail", googleMailSend: "Send confirmed mail", googleContacts: "Find contacts", connected: "Connected", disconnected: "Not connected", available: "Available", reauth: "Authorization required", api: "Official API", mcp: "Official MCP", local: "Local export", result: "Learning service result", proposal: "Review this external action", parameters: "Target and content", approve: "Confirm and execute", reject: "Cancel", proposed: "Awaiting confirmation", executing: "Executing", succeeded: "Completed", cancelled: "Cancelled", uncertain: "Outcome needs review. Do not repeat this action.", expired: "Proposal expired. Create a new one.", download: "Download Anki cards", exportHint: "Export complete review cards while preserving existing review history on import.", accountChanged: "Account changed. Generate this export again for the current account.", fullParameters: "Show full parameters", source: "Open source", scopeRequired: "Additional authorization is required. Select the capability in connection settings.", readOnly: "Read operation", writeCandidate: "Proposed action; writes only after confirmation",
     },

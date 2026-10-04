@@ -10,6 +10,7 @@ import {
   hrefForMobileAppMode,
   isAppMode,
   isAppModePath,
+  isAgentPluginsPath,
   isAuthPath,
   isRememberableStudioPath,
   parseAppMode,
@@ -106,6 +107,18 @@ test("resolveAppMode：URL 优先，登录页当 Studio 壳", () => {
   assert.equal(resolveAppMode("/class", "studio"), "class");
   assert.equal(resolveAppMode("/", "agent"), "studio");
   assert.equal(resolveAppMode("/login", "agent"), "studio");
+});
+
+test("mobile plugin account management is a precise exception to the Studio shell", () => {
+  for (const path of ["/agent/plugins", "/agent/plugins/", "/agent/plugins/mcp/google"]) {
+    assert.equal(isAgentPluginsPath(path), true);
+    assert.equal(usesMobileStudioChrome(path), false);
+    assert.equal(resolveMobileAppMode(path, "studio"), "agent");
+  }
+  for (const path of ["/agent/pluginsevil", "/agent/plugins-other", "/agent", "/agent/assets", "/agent/scheduled"]) {
+    assert.equal(isAgentPluginsPath(path), false);
+    assert.equal(usesMobileStudioChrome(path), true);
+  }
 });
 
 test("resolveMobileAppMode：Studio 路由可保留 persist 的 Agent", () => {

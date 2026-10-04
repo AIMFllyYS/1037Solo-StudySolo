@@ -6,7 +6,8 @@ import { ChevronDown, Menu, Sun, Moon } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
-import { appModeFromPathname, usesMobileStudioChrome } from "@/lib/constants/app-mode";
+import { appModeFromPathname, usesMobileStudioChrome, isAgentPluginsPath } from "@/lib/constants/app-mode";
+import ModeSwitcher from "./ModeSwitcher";
 import { getContentItem } from "@/lib/content-data";
 import { subjectShortName } from "@/lib/content-data/subjects.registry";
 import SubjectIcon from "@/components/shared/SubjectIcon";
@@ -79,6 +80,8 @@ export default function MobileTopBar() {
         <span className="truncate text-[13px] font-medium">{sectionLabel}</span>
         <ChevronDown size={14} className="ml-auto shrink-0 text-[var(--ink-faint)]" />
       </button>
+      ) : isAgentPluginsPath(pathname) ? (
+        <div className="min-w-0 flex-1"><ModeSwitcher compact stayOnStudioForAgent /></div>
       ) : (
         <div className="min-w-0 flex-1" />
       )}

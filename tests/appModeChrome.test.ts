@@ -32,7 +32,8 @@ test("顶栏与壳走 StudySolo 三模式，不再写期末复习工作站", () 
   assert.match(mobile, /const showSidebarToggle = studioChrome \|\| modeOwnsSidebar;/);
   assert.match(mobile, /\{studioChrome \? \(\s*<button[\s\S]*?data-testid="mobile-chapter-trigger"/);
   assert.match(mobile, /usesMobileStudioChrome/);
-  assert.doesNotMatch(mobile, /from "\.\/ModeSwitcher"/);
+  // 手机 Studio 保留章节标题；仅插件管理路由可复用模式菜单返回 Studio。
+  // 导入本身不决定可见性，路由行为由 MobileTopBar.test.tsx / app-mode.test.ts 保护。
   assert.doesNotMatch(mobile, /from "\.\/BrandLogo"/);
 
   const drawer = readWorkspaceFile("components/layout/MobileSidebarDrawer.tsx");

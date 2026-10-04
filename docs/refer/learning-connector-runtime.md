@@ -17,12 +17,12 @@
 | Notion | 官方 hosted MCP：检索、读取、权限/成员/评论等审查名单；新建学习页面和追加内容走确认。整页覆盖、删除、未知新工具不自动开放 |
 | Todoist | 官方 hosted MCP：任务、项目、集合与概览读取；新增、更新、完成任务走确认。更新/完成的明确任务 ID 在候选创建和执行前做状态摘要比对 |
 | GitHub | 官方 remote MCP，仓库、代码、Issue、PR 只读；发送 readonly header，写工具不开放 |
-| Google | 官方 API：资料搜索、选定文档/表格/幻灯片/文本/PDF、日历事件读取、课程邮件检索/正文、联系人查找；日历创建和单收件人纯文本邮件发送走确认 |
+| Google | 官方 API：资料搜索、选定文档/表格/幻灯片/文本/PDF、日历事件读取、课程邮件检索/正文、联系人查找；已批准范围内的单收件人纯文本邮件发送走确认。日历写入未获本轮授权，不在当前工具发现或连接选择中开放 |
 | Zotero | 官方 API：当前个人库文献、条目、集合；不绕过私人笔记、群组或写权限 |
 | PubMed / Crossref | 官方公开元数据/摘要/DOI；批量与分页有界，PubMed key 只作为公开检索配额；不自动传递私人账号邮箱 |
 | Anki | 既有闪卡 TSV 导出，保留来源 GUID 和完整本机内容；不安装桥接、不修改复习调度。聊天中的导出在点击时复核当前账号绑定 |
 
-Google 连接选择功能范围，默认资料库/日历读取；请求所选范围及基本 OpenID/email 身份。现有开发五项授权继续兼容。Calendar 创建需要额外 `calendar.events`；不把 readonly token 当作写入凭证。Gmail 发件人来自提供者确认的账号标识，不能由模型自填；收件人、主题、正文在确认卡展示。MIME 处理 UTF-8、base64URL、行折叠与头注入检查。HTML 邮件只提取文字，PDF 不运行脚本，资料结果超限会明确提示分页或缩小范围。
+Google 连接选择功能范围，默认资料库/日历读取；请求所选范围及基本 OpenID/email 身份。前后端共享 `google-scopes.ts` 的五项已批准服务范围，服务端拒绝表单扩大到 `calendar.events` 等新权限。工具发现只披露当前 grant 具备且仍在已批准名单内的 Google 能力；保留日历创建适配器代码，不因此授予当前用户日历写权限。现有开发五项授权继续兼容。Gmail 发件人来自提供者确认的账号标识，不能由模型自填；收件人、主题、正文在确认卡展示。MIME 处理 UTF-8、base64URL、行折叠与头注入检查。HTML 邮件只提取文字，PDF 不运行脚本，资料结果超限会明确提示分页或缩小范围。
 
 文档/PDF/幻灯片默认按范围读取。Drive 不支持的二进制格式明确返回导入提示；不声称已解析图片、音频或任意附件。Google Workspace MCP Developer Preview 未启用。
 
@@ -32,7 +32,9 @@ Google 连接选择功能范围，默认资料库/日历读取；请求所选范
 
 每个连接以 Account UUID / provider 归属，包含提供者账号、issuer/resource、callback、实际 scopes、可选有效期和加密 access / refresh token。AES-256-GCM 使用归属上下文 AAD。来源错配拒绝读取；密文不能复制到另一用户上下文使用。
 
-访问凭证即将到期时刷新；每连接使用跨进程租约，旧值/新值通过版本条件更新。轮换结果先加密保留，再替换当前记录。刷新不确定或已失效时要求重新授权；限流不隐式轮换。断连先阻止本地新请求，再尝试远端撤销；Google 有撤销接口，其余返回需在提供者侧核对的明确状态。旧加密记录归档保留，不把断连误报为远端一定已撤销。
+访问凭证即将到期时，状态刷新和实际调用都使用原有跨进程租约续期，旧值/新值通过版本条件更新。轮换结果先加密保留，再替换当前记录。刷新不确定或已失效时要求重新授权；限流不隐式轮换。明确的提供者 401 会将同一当前凭证标记为需重新授权，迟到的旧请求不能撤销重新绑定后的新凭证。单个提供者读取/续期故障返回局部 `unavailable`，其他服务状态仍可查询；Account 整体身份失败仍由接口返回原状态码。
+
+断连先阻止本地新请求，再尝试远端撤销；Google 有撤销接口，其余返回需在提供者侧核对的明确状态。界面通过共享 `ConfirmDialog` 和现有 ToastHost/store 确认与提示，分别说明本地断连和远端撤销是否确认。服务器明确保留的过期 grant 也可通过 `canDisconnect` 主动断开；未知不可用状态不假定存在可断开的 grant。旧加密记录归档保留，不把断连误报为远端一定已撤销。
 
 当前 RootSolo 数据库的连接器及执行相关迁移已经应用并核对权限。Google、GitHub 的正式 HTTPS callback 已经保存并刷新读回；Google 保持 Testing，原五项权限没有扩大。Zotero 正式应用检查仍等待本人登录。独立环境密钥、提供者资格/审核与实际发布验收仍是生产门槛。本机准备文件`CONNECTOR_ALLOW_PRODUCTION=true`；最新一次正式匿名连接入口为401/SESSION_MISSING，已越过生产关闭检查但不证明账号已连接。实际服务配置仍需核对；健康接口的 `authorizationImplemented` / `nativeAgentIntegrationImplemented` 指代码实现，`productionVerificationComplete=false` 指尚未完成生产验收，不能据此推断任何个人账号连接状态。
 
@@ -49,6 +51,7 @@ OAuth JSON 与 Zotero token／权限响应按实际接收字节设限，包含�
 ## API 与界面
 
 - `/agent/plugins`：原生连接管理；与静态外部宿主配置目录区分。
+- 手机仅为 `/agent/plugins` 及其详情子路由开放管理页面，直接复用现有 AgentShell 中央插槽和 MobileTopBar/ModeSwitcher；其他 Agent 路由及云命令条件保持原合同。
 - `GET /api/connectors`：当前用户状态，不返回 token 或提供者私有标识。
 - `POST /api/connectors/[provider]/connect`、callback、disconnect：关联与断连。
 - `POST /api/connectors/inspect`：认证后的同一执行器接口；不接受请求中的用户归属。
@@ -56,3 +59,5 @@ OAuth JSON 与 Zotero token／权限响应按实际接收字节设限，包含�
 - `/api/connectors/development/native-check`：仅本机的真实读取验收，报告不保存私人材料。
 
 所有远程执行固定于提供者审查过的 HTTPS 地址；不接受任意 MCP URL、stdio 命令、额外授权 header 或模型给的 token。`readOnlyHint` 只是提供者描述，不授予调用权限；未知工具默认不披露和不执行。
+
+浏览器表单/回调失败在固定配置 origin 上以白名单错误 code 返回插件市场，JSON/API 调用仍保留错误状态码与响应。页面完成实际状态查询后才消费回站提示；`connected` 查询参数不能建立授权，也不能绕过当前用户状态。一次提示、URL 清理与 Toast 在同一个可取消提交中执行，支持 StrictMode。实际环境、用户授权和页面端测证据见本包[工作报告](../handoff/workstreams/core-mcp-2026-10-04.md)。
