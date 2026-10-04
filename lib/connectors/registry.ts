@@ -15,6 +15,7 @@ export function connectorId(value: unknown): ConnectorId | null { return typeof 
 export function oauthConnectorId(value: unknown): OAuthConnectorId | null { const id = connectorId(value); return id && !["pubmed", "crossref", "anki"].includes(id) ? id as OAuthConnectorId : null; }
 
 export interface ConnectorOperation { name: string; description: string; write: boolean; inputSchema: Record<string, unknown>; scope?: string }
+export interface ConnectorConnectionStatus { provider: ConnectorId; name: string; kind: "mcp" | "api" | "export"; state: "available" | "connected" | "disconnected" | "reauthorization_required" | "unavailable"; writable: boolean; scopes?: string[]; canDisconnect?: boolean; grantVersion?: string; expiresAt?: number | null; error?: string }
 export interface ConnectorResult { text: string; provider: ConnectorId; operation: string; data?: unknown; sourceUrls?: string[]; error?: string; action?: ExternalActionView; exportCardIds?: string[]; ownerBinding?: string; download?: { filename: string; content: string; mediaType: string } }
 export interface ExternalActionView { id: string; provider: ConnectorId; operation: string; status: "proposed" | "executing" | "succeeded" | "failed" | "uncertain" | "cancelled"; arguments: Record<string, unknown>; expiresAt: number; result?: ConnectorResult; error?: string }
 export interface LearningConnectorInput { action: "status" | "discover" | "read" | "propose" | "export"; provider?: ConnectorId; operation?: string; arguments?: Record<string, unknown>; cardIds?: string[] }

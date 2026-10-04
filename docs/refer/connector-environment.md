@@ -63,6 +63,8 @@ npm run connectors:check -- --live-github
 
 `check` 按 Next 文档中的优先级合并环境文件与当前进程环境，只输出非敏感状态。`--live-github` 使用 App JWT 调用 GitHub `GET /app` 验证身份，不创建安装 token，不读取仓库文件。JWT、Client Secret、完整响应体均不写日志。
 
+`check --production` 仍按此加载优先级，不是 `.env.production` 单文件审计；开发用 `.env.local` 的生产关闭值可能覆盖准备文件。本包另以单文件解析完成非敏感配置检查，不更新环境值，也不将本机准备文件当作当前正式进程环境。当前验证边界见[工作报告](../handoff/workstreams/core-mcp-2026-10-04.md)。
+
 服务端可复用 `lib/connectors/config.server.ts` 的 GitHub / Google 配置读取。`GET /api/health/connectors` 返回只包含可用状态与错误类别的投影，响应禁止缓存，不返回 Client Secret、私钥、加密密钥或文件路径。2026-10-04 起 `authorizationImplemented=true`、`authorizationScope=runtime_implementation`、`nativeAgentIntegrationImplemented=true` 表示代码已实现；`productionVerificationComplete=false` 表示生产验收未完成，不能推断任何个人账号已授权。当前原生合同见 [运行时](learning-connector-runtime.md)。
 
 ## 历史应用准备证据（不是用户交付验收）

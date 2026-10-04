@@ -89,13 +89,18 @@ export function usesStudioChrome(pathname: string): boolean {
   return !isAppModePath(pathname);
 }
 
+/** Plugin account management is available on mobile without the Agent workspace. */
+export function isAgentPluginsPath(pathname: string): boolean {
+  return pathname === "/agent/plugins" || pathname.startsWith("/agent/plugins/");
+}
+
 /**
  * 手机壳：Agent 仍用最初 Studio 五段底栏，不套桌面左对话+右侧窗。
  * `/c/<id>` 与 `/agent` 同口径（都算 Agent）；Class / Review 继续独立页（各自的移动布局）。
  */
 export function usesMobileStudioChrome(pathname: string): boolean {
   const first = firstSegment(pathname);
-  return first !== "class" && first !== "review";
+  return first !== "class" && first !== "review" && !isAgentPluginsPath(pathname);
 }
 
 export function resolveAppMode(pathname: string, persisted: AppMode): AppMode {

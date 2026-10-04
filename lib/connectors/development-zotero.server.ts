@@ -4,8 +4,9 @@ import { NextResponse, type NextRequest } from "next/server";
 import { digest, equalDigest, ownerOf, requireDevelopment, developmentAuthorizationPage, type DevelopmentGrant } from "./development-oauth.server";
 import { readRecord, writeRecord, claimRecord } from "./development-vault.server";
 import { withLease } from "./persistence.server";
-import { requireConnectorOrigin, ConnectorError, connectorFailure } from "./actor.server";
+import { requireConnectorOrigin } from "./actor.server";
 import { connectorResponseText, connectorResponseJson } from "./response.server";
+import { connectorBrowserFailure } from "./browser-result.server";
 const callbackPath = "/api/connectors/zotero/callback/";
 const cookie = "connector_dev_zotero";
 const headers = { "Cache-Control": "private, no-store", "Referrer-Policy": "no-referrer", "X-Content-Type-Options": "nosniff" };
@@ -50,12 +51,11 @@ export async function zoteroDevelopmentConnect(request: NextRequest) {
     response.cookies.set(cookie, binding, { httpOnly: true, sameSite: "lax", secure: origin.startsWith("https:"), path: "/api/connectors/zotero/", maxAge: 600 });
     for (const [key, value] of Object.entries(headers)) response.headers.set(key, value);
     return response;
-  } catch (cause) { return cause instanceof Response ? cause : cause instanceof ConnectorError ? connectorFailure(cause) : failure("ZOTERO_PREPARATION_FAILED", 503); }
+  } catch (cause) { return connectorBrowserFailure(request, "zotero", cause, "ZOTERO_PREPARATION_FAILED"); }
 }
 
 export async function zoteroDevelopmentCallback(request: NextRequest) {
   let result: Response;
-  let phase = "state";
   try {
     const origin = requireConnectorOrigin(request), state = request.nextUrl.searchParams.get("state") ?? "";
     if (!/^[A-Za-z0-9_-]{43}$/.test(state)) throw failure("OAUTH_STATE_INVALID");
@@ -63,12 +63,10 @@ export async function zoteroDevelopmentCallback(request: NextRequest) {
     const token = request.nextUrl.searchParams.get("oauth_token") ?? "";
     const verifier = request.nextUrl.searchParams.get("oauth_verifier") ?? "";
     if (!pending || !equalDigest(digest(pending.token), digest(token)) || pending.expiresAt <= Date.now() || !equalDigest(pending.bindingHash, digest(request.cookies.get(cookie)?.value ?? ""))) throw failure("OAUTH_STATE_INVALID");
-    phase = "account";
     const owner = await ownerOf(request);
     if (owner !== pending.owner) throw failure("OAUTH_OWNER_CHANGED", 403);
     if (!verifier || verifier.length > 4096 || /[\r\n\0]/.test(verifier)) throw failure("OAUTH_VERIFIER_INVALID");
     if (!await claimRecord(`pending:${state}`)) throw failure("OAUTH_ALREADY_CONSUMED");
-    phase = "exchange";
     const tokens = await exchange("https://www.zotero.org/oauth/access", { oauth_token: token, oauth_verifier: verifier }, pending.secret);
     // OAuth 1.0a credentials can differ; keep both candidates encrypted until verified.
     let accessToken = tokens.get("oauth_token");
@@ -76,7 +74,6 @@ export async function zoteroDevelopmentCallback(request: NextRequest) {
     if (!accessToken || !accountId) throw new Error("zotero_access_key_missing");
     // Retain an encrypted candidate before scope validation; never expose/use it as a grant yet.
     await writeRecord(`candidate:${owner}:zotero`, { owner, accessToken, tokenSecret: tokens.get("oauth_token_secret"), accountId, state, createdAt: new Date().toISOString() });
-    phase = "identity";
     const identityFor = async (key: string) => {
       const response = await fetch("https://api.zotero.org/keys/current", { headers: { "Zotero-API-Key": key, "Zotero-API-Version": "3" }, redirect: "error", cache: "no-store", signal: AbortSignal.timeout(15000) });
       return { ok: response.ok, identity: await connectorResponseJson(response, 16384).catch(() => null) as KeyIdentity | null };
@@ -93,14 +90,10 @@ export async function zoteroDevelopmentCallback(request: NextRequest) {
     const groups = Object.values(identity.access?.groups ?? {}) as { library?: boolean; write?: boolean }[];
     if (String(identity.userID) !== accountId || user?.library !== true || user?.notes || user?.write || groups.some(group => group.library || group.write)) throw failure("ZOTERO_SCOPE_MISMATCH_REVIEW_PROVIDER_KEY", 403);
     const grant: DevelopmentGrant = { owner, provider: "zotero", accountId, accessToken, expiresAt: null, scope: "library:read notes:none write:none groups:none", issuer: "https://www.zotero.org", resource: "https://api.zotero.org", callback: `${origin}${callbackPath}`, createdAt: new Date().toISOString(), defaultWritePolicy: "disabled" };
-    phase = "storage";
     await withLease(`refresh:${owner}:zotero`, () => writeRecord(`grant:${owner}:zotero`, grant));
     result = NextResponse.redirect(`${origin}/agent/plugins?connected=zotero`, 303);
   } catch (cause) {
-    const code = cause instanceof Response ? (await cause.json().catch(() => null))?.code : `ZOTERO_OAUTH_FAILED_${phase.toUpperCase()}`;
-    const safeCode = typeof code === "string" && /^[A-Z_]{1,100}$/.test(code) ? code : "ZOTERO_OAUTH_FAILED";
-    // This browser result is explicitly unsuccessful; do not turn a failed JSON navigation into a blank browser error.
-    result = new NextResponse(`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>Zotero 开发认证未完成</title><h1>Zotero 开发认证未完成</h1><p>${safeCode}</p><p>没有将本次授权标记为可用。</p><a href="/api/connectors/development">回到开发认证入口</a></html>`, { headers: { ...headers, "Content-Type": "text/html; charset=utf-8", "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'; base-uri 'none'" } });
+    result = await connectorBrowserFailure(request, "zotero", cause, "ZOTERO_OAUTH_FAILED");
   }
   for (const [key, value] of Object.entries(headers)) result.headers.set(key, value);
   if (result instanceof NextResponse) result.cookies.set(cookie, "", { httpOnly: true, sameSite: "lax", secure: request.nextUrl.protocol === "https:", path: "/api/connectors/zotero/", maxAge: 0 });
