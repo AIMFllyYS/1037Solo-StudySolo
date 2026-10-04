@@ -6,14 +6,19 @@ import { ChevronDown, Menu, Sun, Moon } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
-import { usesMobileStudioChrome } from "@/lib/constants/app-mode";
+import { appModeFromPathname, usesMobileStudioChrome } from "@/lib/constants/app-mode";
 import { getContentItem } from "@/lib/content-data";
 import { subjectShortName } from "@/lib/content-data/subjects.registry";
 import SubjectIcon from "@/components/shared/SubjectIcon";
+import { useT } from "@/lib/i18n";
 
 export default function MobileTopBar() {
   const pathname = usePathname() ?? "/";
+  const t = useT();
   const studioChrome = usesMobileStudioChrome(pathname);
+  const mode = appModeFromPathname(pathname);
+  const modeOwnsSidebar = mode === "class" || mode === "review";
+  const showSidebarToggle = studioChrome || modeOwnsSidebar;
   const subjectId = useStore((s) => s.activeSubjectId);
   const categoryId = useStore((s) => s.activeCategoryId);
   const itemId = useStore((s) => s.activeItemId);
@@ -41,13 +46,15 @@ export default function MobileTopBar() {
         paddingTop: "env(safe-area-inset-top, 0px)",
       }}
     >
-      {studioChrome ? (
+      {showSidebarToggle ? (
       <button
         type="button"
         onClick={toggleSidebar}
-        aria-label={sidebarOpen ? "关闭侧栏" : "打开侧栏"}
+        id={modeOwnsSidebar ? "mode-mobile-sidebar-toggle" : undefined}
+        aria-label={sidebarOpen ? t("app.topbar.collapseNav") : t("app.topbar.expandNav")}
+        title={sidebarOpen ? t("app.topbar.collapseNav") : t("app.topbar.expandNav")}
         aria-expanded={sidebarOpen}
-        data-testid="mobile-sidebar-toggle"
+        data-testid={modeOwnsSidebar ? "mode-mobile-sidebar-toggle" : "mobile-sidebar-toggle"}
         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] active:bg-[var(--bg-muted)]"
       >
         <Menu size={18} />

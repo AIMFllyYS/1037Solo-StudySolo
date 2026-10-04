@@ -8,6 +8,9 @@ import { useStore } from '@/lib/store';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/sessionRuns';
 import { getMessageText } from '@/lib/chat/messageParts';
+import { activateStorageOwner, getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
+
+const authState = vi.hoisted(() => ({ status: "signedIn" as "loading" | "signedOut" | "signedIn", userId: "test-owner" as string | null }));
 
 vi.mock('@/lib/storage/idbStorage', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/lib/storage/idbStorage')>(),
@@ -17,13 +20,14 @@ vi.mock('@/lib/hooks/useChatHistory', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/lib/hooks/useChatHistory')>(),
   ensureChatHistoryBootstrap: vi.fn(async () => {}),
 }));
+vi.mock('@/lib/hooks/useAuthSession', () => ({ useAuthSession: () => authState }));
 vi.mock('@/lib/hooks/useAutoHideChatHeader', () => ({ useAutoHideChatHeader: () => ({ autoHideEnabled: false, headerCollapsed: false }) }));
-vi.mock('@/components/chat/ChatThread', () => ({ default: ({ isLoading, info, onClearInfo }: {
-  isLoading: boolean; info: string | null; onClearInfo: () => void;
-}) => <div><span data-testid="loading">{String(isLoading)}</span><span data-testid="info">{info}</span><button onClick={onClearInfo}>清除提示</button></div> }));
-vi.mock('@/components/chat/ChatInput', () => ({ default: ({ onSend, onStop }: {
-  onSend: (text: string) => void; onStop: () => void;
-}) => <div><button onClick={() => onSend('手动问题')}>手动发送</button><button onClick={onStop}>停止</button></div> }));
+vi.mock('@/components/chat/ChatThread', () => ({ default: ({ isLoading, info, onClearInfo, accessGateContent }: {
+  isLoading: boolean; info: string | null; onClearInfo: () => void; accessGateContent?: React.ReactNode;
+}) => <div><span data-testid="loading">{String(isLoading)}</span><span data-testid="info">{info}</span>{accessGateContent}<button onClick={onClearInfo}>清除提示</button></div> }));
+vi.mock('@/components/chat/ChatInput', () => ({ default: ({ onSend, onStop, isLoading, disabled, disabledReason }: {
+  onSend: (text: string) => void; onStop: () => void; isLoading: boolean; disabled?: boolean; disabledReason?: string;
+}) => <div><span data-testid="chat-disabled">{String(!!disabled)}</span><span data-testid="chat-disabled-reason">{disabledReason}</span><button disabled={disabled && !isLoading} onClick={() => onSend('手动问题')}>手动发送</button><button disabled={disabled && !isLoading} onClick={onStop}>停止</button></div> }));
 vi.mock('@/components/notes/SelectionPopover', () => ({ default: () => null }));
 vi.mock('@/components/shared/ImageLightbox', () => ({ ImageLightbox: () => null }));
 vi.mock('@/components/chat/ChatSettings', () => ({ default: () => null }));
@@ -33,6 +37,7 @@ vi.mock('@/components/chat/ChatHistoryOverlay', () => ({ default: () => null }))
 
 const context = { subjectId: 'cell-biology', categoryId: 'textbook', itemId: 'ch01', currentTopic: '细胞' };
 let requests: Array<Record<string, unknown>>;
+let ownerBeforeTest: string | null = null;
 function responseControl() {
   let controller: ReadableStreamDefaultController<Uint8Array>;
   const cancel = vi.fn();
@@ -60,9 +65,13 @@ const users = () => useChatHistory.getState().messagesById.main.filter((m) => m.
 
 beforeEach(() => {
   vi.useFakeTimers();
+  ownerBeforeTest = getStorageOwner();
+  activateStorageOwner("chat-panel-test-owner");
+  authState.status = "signedIn";
+  authState.userId = "chat-panel-test-owner";
   vi.spyOn(console, 'error').mockImplementation(() => {});
   requests = [];
-  useStore.setState({ outbound: null });
+  useStore.setState({ outbound: null, loginOverlayOpen: false });
   useSettings.setState({ selectedModelId: 'mimo-v2.5', customApiGroups: [] });
   useChatHistory.setState({ activeSessionId: 'main', _hasHydrated: true, _activeMessagesReady: true,
     messagesById: { main: [] }, sessionLoadState: { main: 'loaded' },
@@ -75,9 +84,108 @@ beforeEach(() => {
 afterEach(async () => {
   cleanup(); await vi.advanceTimersByTimeAsync(0);
   vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals();
+  activateStorageOwner(ownerBeforeTest);
 });
 
 describe('ChatPanel outbound lifecycle with real useChat', () => {
+  it('keeps history hydration separate from generation while an owner-scoped session loads', () => {
+    useChatHistory.setState({ _hasHydrated: false, _activeMessagesReady: false, sessionLoadState: {} });
+    render(<ChatPanel chatContext={context} />);
+
+    expect(screen.getByTestId("loading")).toHaveTextContent("false");
+    expect(screen.getByTestId("chat-disabled")).toHaveTextContent("true");
+    expect(screen.getByTestId("chat-disabled-reason")).toHaveTextContent("正在恢复对话历史");
+    expect(screen.queryByRole("button", { name: "登录统一账号" })).toBeNull();
+  });
+
+  it('guest history readiness is not generation loading and a pending selection never crosses into a signed-in owner', async () => {
+    const previousOwner = getStorageOwner();
+    try {
+      activateStorageOwner(null);
+      authState.status = "signedOut";
+      authState.userId = null;
+      useChatHistory.setState({
+        activeSessionId: "guest-main",
+        _hasHydrated: false,
+        _activeMessagesReady: false,
+        messagesById: { "guest-main": [] },
+        sessionLoadState: {},
+        sessionsMeta: [],
+        loadedSessionIds: [],
+        pinnedSessionIds: [],
+      });
+      useStore.getState().sendToChat("guest selection must stay local");
+      mockFetch();
+      const view = render(<ChatPanel chatContext={context} />);
+      await settle();
+
+      expect(screen.getByTestId("loading")).toHaveTextContent("false");
+      expect(screen.getByTestId("chat-disabled")).toHaveTextContent("true");
+      expect(screen.getByTestId("chat-disabled-reason")).toHaveTextContent("登录后即可使用 AI 对话");
+      expect(screen.getByTestId("chat-access-notice")).toBeInTheDocument();
+      expect(requests).toHaveLength(0);
+
+      fireEvent.click(screen.getByRole("button", { name: "登录统一账号" }));
+      expect(useStore.getState().loginOverlayOpen).toBe(true);
+
+      act(() => {
+        authState.status = "signedIn";
+        authState.userId = "new-owner";
+        activateStorageOwner("new-owner");
+        useChatHistory.setState({
+          activeSessionId: "new-owner-main",
+          _hasHydrated: true,
+          _activeMessagesReady: true,
+          messagesById: { "new-owner-main": [] },
+          sessionLoadState: { "new-owner-main": "loaded" },
+          sessionsMeta: [{ id: "new-owner-main", title: "main", createdAt: 1, updatedAt: 1, messageCount: 0, artifactIds: [] }],
+          loadedSessionIds: ["new-owner-main"],
+          pinnedSessionIds: [],
+        });
+      });
+      await settle();
+
+      expect(useStore.getState().outbound).toBeNull();
+      expect(useChatHistory.getState().messagesById["new-owner-main"]).toEqual([]);
+      expect(requests).toHaveLength(0);
+      view.unmount();
+    } finally {
+      activateStorageOwner(previousOwner);
+    }
+  });
+
+  it('drops an outbound microtask when the owner changes before React can commit the new owner', async () => {
+    const previousOwner = getStorageOwner();
+    const previousEpoch = getOwnerEpoch();
+    useStore.getState().sendToChat('old-owner queued selection');
+    expect(useStore.getState().outbound).toMatchObject({ ownerId: previousOwner, ownerEpoch: previousEpoch });
+    mockFetch();
+    render(<ChatPanel chatContext={context} />);
+
+    act(() => {
+      authState.status = 'signedIn';
+      authState.userId = 'chat-panel-next-owner';
+      activateStorageOwner('chat-panel-next-owner');
+      // Model the new owner's colliding session id becoming active before the old
+      // component render has committed its cleanup.
+      useChatHistory.setState({
+        activeSessionId: 'main',
+        _hasHydrated: true,
+        _activeMessagesReady: true,
+        messagesById: { main: [] },
+        sessionLoadState: { main: 'loaded' },
+        sessionsMeta: [{ id: 'main', title: 'new owner main', createdAt: 2, updatedAt: 2, messageCount: 0, artifactIds: [] }],
+        loadedSessionIds: ['main'],
+      });
+      // Drain only after the imperative owner switch and before act flushes React.
+      vi.runAllTicks();
+    });
+    await settle();
+
+    expect(requests).toHaveLength(0);
+    expect(useChatHistory.getState().messagesById.main).toEqual([]);
+  });
+
   it('StrictMode 挂载时已有 outbound 只发送一次，不在 cleanup 时丢掉请求，info props 保留', async () => {
     useStore.getState().sendToChat('来自选区的问题');
     mockFetch();

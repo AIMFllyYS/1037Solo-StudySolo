@@ -3,6 +3,7 @@ import { useStore } from "@/lib/store";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useSettings } from "@/lib/hooks/useSettings";
+import { getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
 import type { ChatContext } from "@/lib/types/chat";
 
 /** 划词助手浮窗的回退默认模型（当用户未在设置中指定时使用）。 */
@@ -18,6 +19,9 @@ export type SeedMode = "explain" | "example" | "ask";
 export interface FloatingWin {
   id: string;
   sessionId: string;
+  /** Non-authoritative snapshot used only to reject stale UI callbacks after an owner switch. */
+  ownerId: string | null;
+  ownerEpoch: number;
   modelId: string;
   seedText: string;
   seedMode: SeedMode;
@@ -32,8 +36,8 @@ interface OpenOpts {
 
 interface FloatingChatsState {
   windows: FloatingWin[];
-  openWindow: (opts: OpenOpts) => string;
-  openBlankWindow: () => string;
+  openWindow: (opts: OpenOpts) => string | null;
+  openBlankWindow: () => string | null;
   restoreWindow: (sessionId: string) => void;
   closeWindow: (id: string) => void;
   updateWindow: (id: string, patch: Partial<FloatingWin>) => void;
@@ -96,6 +100,12 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
   windows: [],
 
   openWindow: (opts) => {
+    const ownerId = getStorageOwner();
+    if (ownerId === null) {
+      useStore.getState().openLoginOverlay();
+      return null;
+    }
+    const ownerEpoch = getOwnerEpoch();
     const sessionId = useChatHistory.getState().createSession(currentChatContext(), "floating");
     const title = floatingTitle(opts.seedMode, opts.seedText);
     if (opts.seedText.trim()) {
@@ -106,6 +116,8 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
     const floatingWin: FloatingWin = {
       id,
       sessionId,
+      ownerId,
+      ownerEpoch,
       modelId: floatingModelId(),
       seedText: opts.seedText,
       seedMode: opts.seedMode,
@@ -125,6 +137,12 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
   },
 
   openBlankWindow: () => {
+    const ownerId = getStorageOwner();
+    if (ownerId === null) {
+      useStore.getState().openLoginOverlay();
+      return null;
+    }
+    const ownerEpoch = getOwnerEpoch();
     const vw = typeof window !== "undefined" ? window.innerWidth : 1440;
     const vh = typeof window !== "undefined" ? window.innerHeight : 900;
     const sessionId = useChatHistory.getState().createSession(currentChatContext(), "floating");
@@ -135,6 +153,8 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
     const floatingWin: FloatingWin = {
       id,
       sessionId,
+      ownerId,
+      ownerEpoch,
       modelId: floatingModelId(),
       seedText: "",
       seedMode: "ask",
@@ -154,6 +174,12 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
   },
 
   restoreWindow: (sessionId) => {
+    const ownerId = getStorageOwner();
+    if (ownerId === null) {
+      useStore.getState().openLoginOverlay();
+      return;
+    }
+    const ownerEpoch = getOwnerEpoch();
     const existing = get().windows.find((win) => win.sessionId === sessionId);
     if (existing) {
       useWindowManager.getState().restoreWindow(existing.id);
@@ -165,6 +191,8 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
     const floatingWin: FloatingWin = {
       id,
       sessionId,
+      ownerId,
+      ownerEpoch,
       modelId: floatingModelId(),
       seedText: "",
       seedMode: "ask",
@@ -185,10 +213,12 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
   },
 
   closeWindow: (id) => {
-    const sessionId = get().windows.find((win) => win.id === id)?.sessionId ?? null;
+    const win = get().windows.find((item) => item.id === id);
+    const sessionId = win?.sessionId ?? null;
+    const sameOwner = !!win && win.ownerId === getStorageOwner() && win.ownerEpoch === getOwnerEpoch();
     useWindowManager.getState().closeWindow(id);
     set((state) => ({ windows: state.windows.filter((win) => win.id !== id) }));
-    if (sessionId) {
+    if (sessionId && sameOwner) {
       const meta = useChatHistory.getState().sessionsMeta.find((item) => item.id === sessionId);
       const msgs = useChatHistory.getState().messagesById[sessionId];
       const empty = meta && (meta.messageCount === 0 || (msgs && msgs.length === 0));

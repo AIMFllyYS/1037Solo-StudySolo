@@ -1,7 +1,7 @@
 "use client";
-import {useCallback,useEffect,useMemo,useRef,useState,useSyncExternalStore} from 'react';
+import {useCallback,useEffect,useId,useMemo,useRef,useState,useSyncExternalStore} from 'react';
 import {get} from 'idb-keyval';
-import {Download,FileText,Import,Menu,MoreHorizontal,PanelRightOpen,Settings2,Sparkles,X} from 'lucide-react';
+import {Download,FileText,Import,MoreHorizontal,PanelRightOpen,Settings2,Sparkles,X} from 'lucide-react';
 import {useAuthSession} from '@/lib/hooks/useAuthSession';
 import {getOwnerEpoch,getStorageOwner} from '@/lib/storage/ownerScope';
 import {redirectAccount} from '@/lib/auth/account';
@@ -14,6 +14,7 @@ import {NotesPane} from './features/notes/pane';
 import {ClassNotePane} from './features/notes/class-note-pane';
 import StudioAgentPanel from '@/components/layout/StudioAgentPanel';
 import {useStore as useUiStore} from '@/lib/stores/ui';
+import {useOverlayRegistration} from '@/lib/keyboard/useOverlayRegistration';
 import {useChatHistory} from '@/lib/stores/chatHistory';
 import {useUserNotes} from '@/lib/stores/userNotes';
 import {useAcademicYear} from '@/lib/hooks/useAcademicYear';
@@ -67,17 +68,29 @@ export default function Workbench(){
   const [draft,setDraft]=useState('');const [showDraft,setShowDraft]=useState(false);
   const [railMode,setRailMode]=useState<'sessions'|'notes'>('sessions');
   const [mobileAskOpen,setMobileAskOpen]=useState(false);
-  const [libraryOpen,setLibraryOpen]=useState(false);
+  const mobileSidebarOpen=useUiStore(s=>s.mobileSidebarOpen);
+  const setMobileSidebarOpen=useUiStore(s=>s.setMobileSidebarOpen);
   const [moreOpen,setMoreOpen]=useState(false);
   const [isMobile,setIsMobile]=useState(false);
   useEffect(()=>{const media=window.matchMedia('(max-width: 767px)');const update=()=>setIsMobile(media.matches);update();media.addEventListener('change',update);return()=>media.removeEventListener('change',update)},[]);
   useEffect(()=>startOutlineOrganizer(),[]);
-  const [sidebarCollapsed,setSidebarCollapsed]=useState(false);
+  const sidebarCollapsed=useUiStore(s=>s.sidebarCollapsed);
+  const setSidebarCollapsed=useUiStore(s=>s.setSidebarCollapsed);
+  const mobileSidebarOverlayId=useId();
+  const sidebarRef=useRef<HTMLDivElement|null>(null);
   const [agentCollapsed,setAgentCollapsed]=useState(true);
   const previousRecording=useRef(false);
-  useEffect(()=>{const recording=recordingStatus==='recording';if(recording&&!previousRecording.current){setSidebarCollapsed(true);setAgentCollapsed(true)}previousRecording.current=recording},[recordingStatus]);
+  useEffect(()=>{const recording=recordingStatus==='recording';if(recording&&!previousRecording.current){setSidebarCollapsed(true);setAgentCollapsed(true)}previousRecording.current=recording},[recordingStatus,setSidebarCollapsed]);
   const [showSettings,setShowSettings]=useState(false);
   const [toast,setToast]=useState('');
+  const closeMobileSidebar=useCallback(()=>{
+    setMobileSidebarOpen(false);
+    document.getElementById('mode-mobile-sidebar-toggle')?.focus({preventScroll:true});
+  },[setMobileSidebarOpen]);
+  useOverlayRegistration({id:`class-mobile-sidebar-${mobileSidebarOverlayId}`,open:isMobile&&mobileSidebarOpen,onClose:closeMobileSidebar,priority:31});
+  useEffect(()=>{
+    if(isMobile&&mobileSidebarOpen)sidebarRef.current?.querySelector<HTMLElement>('button:not(:disabled)')?.focus({preventScroll:true});
+  },[isMobile,mobileSidebarOpen]);
   const initialized=useRef<string|null>(null);
   const outlinePersistTask=useRef<Promise<void>|null>(null);
   const refreshSessions=useCallback(()=>{const requestedOwner=getClassUserId();if(requestedOwner)void listSessionsForCurrentClassOwner(requestedOwner,getClassUserId,getDb,listSessions,getOwnerEpoch).then(rows=>{if(rows)setSessions(rows);}).catch(()=>{});},[]);
@@ -362,11 +375,10 @@ export default function Workbench(){
   if(!auth.userId)return <section className="m-6 rounded-2xl border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] p-8"><h1 className="text-2xl font-semibold text-[color:var(--ink)]">课堂工作台</h1><p className="my-4 text-[color:var(--ink-soft)]">登录后录音、整理笔记与课堂提问，课堂产物随账号同步。</p><button className="rounded-xl border border-[color:var(--line)] px-5 py-3 text-[color:var(--ink)] hover:bg-[color:var(--bg-muted)]" onClick={()=>redirectAccount()}>登录统一账号</button></section>;
   if(owner!==auth.userId)return <div className="p-8 text-sm text-[color:var(--ink-soft)]">正在安全切换课堂空间…</div>;
   return <div className="ss-class-workbench relative flex h-full min-h-0 w-full overflow-hidden" key={owner}>
-    {libraryOpen&&<button type="button" aria-label="关闭课堂侧栏" className="absolute inset-0 z-30 bg-black/30 md:hidden" onClick={()=>setLibraryOpen(false)}/>}
-    <div className={`${libraryOpen?'absolute inset-y-0 left-0 z-40':'hidden'} md:relative md:z-auto md:block`}>{railMode==='sessions'?<SessionSidebar sessions={sessions} currentId={sessionId} liveStatus={recordingStatus==='recording'||recordingStatus==='paused'?recordingStatus:undefined} collapsed={isMobile?false:sidebarCollapsed} pendingCount={getPendingCount()} busy={busy} onToggle={()=>isMobile?setLibraryOpen(false):setSidebarCollapsed(v=>!v)} onFlipToNotes={()=>{setRailMode('notes');setSidebarCollapsed(false)}} onOpen={id=>{setLibraryOpen(false);void open(id)}} onNew={()=>{setLibraryOpen(false);void newClass()}} onImport={()=>{setLibraryOpen(false);setShowDraft(true)}} onOpenSettings={()=>{setLibraryOpen(false);setShowSettings(true)}} onRename={(id,t)=>void rename(id,t)} onArchive={id=>void archive(id)}/>:<ClassNoteRail note={<ClassNotePane sessionId={sessionId} noteId={currentSession?.noteId} ownerId={owner} onOrganize={()=>void exportNote()}/>} collapsed={isMobile?false:sidebarCollapsed} onToggle={()=>isMobile?setLibraryOpen(false):setSidebarCollapsed(value=>!value)} onFlip={()=>{setRailMode('sessions');setSidebarCollapsed(false)}} onAsk={()=>{setLibraryOpen(false);openClassAsk()}}/>}</div>
+    {isMobile&&mobileSidebarOpen&&<button type="button" aria-label="关闭课堂侧栏" className="absolute inset-0 z-30 bg-black/30" onClick={closeMobileSidebar}/>}
+    <div ref={sidebarRef} className={`${isMobile?(mobileSidebarOpen?'absolute inset-y-0 left-0 z-40':'hidden'):'hidden md:relative md:z-auto md:block'}`} onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closeMobileSidebar()}}}>{railMode==='sessions'?<SessionSidebar sessions={sessions} currentId={sessionId} liveStatus={recordingStatus==='recording'||recordingStatus==='paused'?recordingStatus:undefined} collapsed={isMobile?false:sidebarCollapsed} pendingCount={getPendingCount()} busy={busy} onToggle={()=>isMobile?closeMobileSidebar():setSidebarCollapsed(!sidebarCollapsed)} onFlipToNotes={()=>{setRailMode('notes');setSidebarCollapsed(false)}} onOpen={id=>{if(isMobile)closeMobileSidebar();void open(id)}} onNew={()=>{if(isMobile)closeMobileSidebar();void newClass()}} onImport={()=>{if(isMobile)closeMobileSidebar();setShowDraft(true)}} onOpenSettings={()=>{if(isMobile)closeMobileSidebar();setShowSettings(true)}} onRename={(id,t)=>void rename(id,t)} onArchive={(id)=>void archive(id)}/>:<ClassNoteRail note={<ClassNotePane sessionId={sessionId} noteId={currentSession?.noteId} ownerId={owner} onOrganize={()=>void exportNote()}/>} collapsed={isMobile?false:sidebarCollapsed} onToggle={()=>isMobile?closeMobileSidebar():setSidebarCollapsed(!sidebarCollapsed)} onFlip={()=>{setRailMode('sessions');setSidebarCollapsed(false)}} onAsk={()=>{if(isMobile)closeMobileSidebar();openClassAsk()}}/>}</div>
     <div className="flex min-h-0 min-w-0 flex-1 flex-col">
       <header className="ss-class-topbar">
-        <button type="button" className="ss-class-icon-button md:hidden" aria-label="打开课堂侧栏" onClick={()=>setLibraryOpen(true)}><Menu className="size-4"/></button>
         <div className="ss-class-title-block">
           <p className="truncate text-[13px] font-semibold text-[color:var(--ink)]">{sessionId?(sessions.find(s=>s.id===sessionId)?.title||'课堂'):'课堂工作台'}</p>
           <div className="ss-class-title-meta"><button onClick={()=>setShowSettings(true)} aria-label="选择课堂学科">{profile?classSubjectLabel(profile):'旧课堂 · 未分类'}</button><span aria-hidden>·</span><span>{recordingStatus==='recording'?'正在录音':recordingStatus==='paused'?'录音已暂停':getPendingCount()?'待同步':sessionId?'已保存':'等待开始'}</span></div>
@@ -389,7 +401,7 @@ export default function Workbench(){
         ask={isMobile?<StudioAgentPanel chatContext={agentContext} onCollapse={()=>setMobileAskOpen(false)}/>:undefined}
         askOpen={isMobile&&mobileAskOpen}
         onAskOpenChange={open=>{if(open)openClassAsk();else if(isMobile)setMobileAskOpen(false);else setAgentCollapsed(true)}}
-        onOpenNotes={()=>{setRailMode('notes');setSidebarCollapsed(false);setLibraryOpen(true)}}
+        onOpenNotes={()=>{setRailMode('notes');setSidebarCollapsed(false);if(isMobile)setMobileSidebarOpen(true)}}
       /></div>
     </div>
     {/* Agent 栏：和 Studio 右栏同一个面板、同一条横向缓动；收起时保持挂载（对话流与草稿不丢）。 */}

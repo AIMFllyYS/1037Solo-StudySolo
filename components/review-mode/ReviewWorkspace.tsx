@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ReviewSidebar, { type ReviewSection } from "./ReviewSidebar";
 import { ReviewNotesList, ReviewNoteEditor } from "./ReviewNotesPane";
@@ -9,6 +9,9 @@ import ReviewQuizPane from "./ReviewQuizPane";
 import ReviewMasteryOverview from "./ReviewMasteryOverview";
 import { useReviewCards } from "@/lib/stores/reviewCards";
 import { useReviewSchedule } from "@/lib/review-mode/scheduleStore";
+import { useStore } from "@/lib/stores/ui";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 /**
  * Review 复习模式工作区（/review 的中心区）。
@@ -43,12 +46,36 @@ export default function ReviewWorkspace() {
   // 板块与当前笔记写进 URL（?section=&note=）：刷新 / 分享链接 / 从 Class「存为笔记」跳来都能回到原处。
   const params = useSearchParams();
   const [section, setSectionState] = useState<ReviewSection>(() => parseSection(params.get("section")));
-  const [collapsed, setCollapsed] = useState(false);
+  const collapsed = useStore((state) => state.sidebarCollapsed);
+  const toggleSidebar = useStore((state) => state.toggleSidebar);
+  const mobileSidebarOpen = useStore((state) => state.mobileSidebarOpen);
+  const setMobileSidebarOpen = useStore((state) => state.setMobileSidebarOpen);
+  const isMobile = useIsMobile();
+  const sidebarOverlayId = useId();
+  const closeMobileSidebar = useCallback(() => {
+    setMobileSidebarOpen(false);
+    document.getElementById("mode-mobile-sidebar-toggle")?.focus({ preventScroll: true });
+  }, [setMobileSidebarOpen]);
+  useOverlayRegistration({
+    id: `review-mobile-sidebar-${sidebarOverlayId}`,
+    open: isMobile && mobileSidebarOpen,
+    onClose: closeMobileSidebar,
+    priority: 31,
+  });
+  useEffect(() => {
+    if (isMobile && mobileSidebarOpen) {
+      document.querySelector<HTMLElement>("[data-review-sidebar] button:not(:disabled)")?.focus({ preventScroll: true });
+    }
+  }, [isMobile, mobileSidebarOpen]);
   const [activeNoteId, setActiveNoteState] = useState<string | null>(() => params.get("note"));
   const setSection = useCallback((next: ReviewSection) => {
     setSectionState(next);
     writeUrl({ section: next === "notes" ? null : next });
   }, []);
+  const selectSection = useCallback((next: ReviewSection) => {
+    setSection(next);
+    if (isMobile) closeMobileSidebar();
+  }, [closeMobileSidebar, isMobile, setSection]);
   const setActiveNoteId = useCallback((id: string | null) => {
     setActiveNoteState(id);
     writeUrl({ note: id });
@@ -76,16 +103,28 @@ export default function ReviewWorkspace() {
     ) : null;
 
   return (
-    <div className="flex h-full min-h-0 w-full bg-[var(--bg-app)]" data-review-workspace>
+    <div className="relative flex h-full min-h-0 w-full bg-[var(--bg-app)]" data-review-workspace data-mobile-sidebar-open={isMobile && mobileSidebarOpen || undefined}>
       <ReviewSidebar
         active={section}
-        onSelect={setSection}
-        collapsed={collapsed}
-        onToggleCollapse={() => setCollapsed((c) => !c)}
+        onSelect={selectSection}
+        collapsed={isMobile ? false : collapsed}
+        onToggleCollapse={toggleSidebar}
         dueCount={dueCount}
+        mobile={isMobile}
+        mobileOpen={mobileSidebarOpen}
+        onMobileClose={closeMobileSidebar}
       >
         {sidebarChildren}
       </ReviewSidebar>
+      {isMobile && mobileSidebarOpen ? (
+        <button
+          type="button"
+          className="review-mobile-sidebar-backdrop"
+          aria-label="关闭侧栏"
+          data-testid="review-mobile-sidebar-backdrop"
+          onClick={closeMobileSidebar}
+        />
+      ) : null}
 
       <main className="min-h-0 min-w-0 flex-1 overflow-hidden">
         {/* 换板块时整块内容淡入微移（与 Studio / Class / Agent 同一套 .ss-view-enter）。 */}

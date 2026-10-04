@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { NotebookPen, Layers, ListChecks, Gauge, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { NotebookPen, Layers, ListChecks, Gauge, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
 import { useT } from "@/lib/i18n";
 
 export type ReviewSection = "notes" | "flashcards" | "quiz" | "overview";
@@ -26,6 +26,9 @@ export default function ReviewSidebar({
   onToggleCollapse,
   dueCount,
   children,
+  mobile = false,
+  mobileOpen = false,
+  onMobileClose,
 }: {
   active: ReviewSection;
   onSelect: (section: ReviewSection) => void;
@@ -34,22 +37,44 @@ export default function ReviewSidebar({
   dueCount: number;
   /** 展开态时，选中板块的辅助列表（当前用于闪卡学科）。 */
   children?: React.ReactNode;
+  mobile?: boolean;
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
 }) {
   const t = useT();
 
   return (
     <aside
       data-review-sidebar
+      data-mobile-open={mobileOpen || undefined}
       className={clsx(
         "ss-rail flex h-full flex-col border-r border-[var(--line-soft)] bg-[var(--bg-panel)]",
         collapsed ? "w-14 min-w-14" : "w-64 min-w-64",
       )}
+      onKeyDown={(event) => {
+        if (mobile && mobileOpen && event.key === "Escape") {
+          event.preventDefault();
+          event.stopPropagation();
+          onMobileClose?.();
+        }
+      }}
     >
       <div className="flex items-center justify-between px-2 py-2">
         {!collapsed && (
           <span className="px-2 text-[13px] font-semibold text-[var(--ink)]">{t("review.title")}</span>
         )}
+        {mobile ? (
         <button
+          type="button"
+          onClick={onMobileClose}
+          title={t("panel.common.close")}
+          aria-label={t("panel.common.close")}
+          data-testid="review-mobile-sidebar-close"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+        >
+          <X size={17} />
+        </button>
+        ) : <button
           type="button"
           onClick={onToggleCollapse}
           title={collapsed ? t("review.sidebar.expand") : t("review.sidebar.collapse")}
@@ -58,7 +83,7 @@ export default function ReviewSidebar({
           className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
         >
           {collapsed ? <PanelLeftOpen size={17} /> : <PanelLeftClose size={17} />}
-        </button>
+        </button>}
       </div>
 
       <nav className="flex flex-col gap-0.5 px-2" aria-label={t("review.title")}>

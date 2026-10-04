@@ -371,8 +371,11 @@ export const windowEn = {
   // Built-in browser (address bar / start page / bookmarks and settings).
   browser: {
     embedBlockedTitle: "This page cannot be embedded",
+    embedProbeNetworkTitle: "This network cannot safely check embedding",
+    pageControls: "Page controls",
     openOriginal: "Open original page",
     embedBlockedBody: "refuses to display in this window (security policy or restricted access). Open the original site to keep full functionality.",
+    embedProbeNetworkBody: "The current network could not safely verify whether this address allows embedding. Open it in the system browser or explicitly try embedding it.",
     forceEmbed: "Try embedding anyway (may render blank)",
     loadFailedWithCode: "{message} ({code})",
     rendererGone: "The page renderer exited. Please retry.",
@@ -381,6 +384,9 @@ export const windowEn = {
     back: "Back",
     forward: "Forward",
     refresh: "Reload",
+    zoomIn: "Zoom in",
+    zoomOut: "Zoom out",
+    zoomReset: "Reset to 100%",
     addressPlaceholder: "Enter a URL or search…",
     go: "Go",
     viewMobileHint: "Mobile view (click for desktop)",

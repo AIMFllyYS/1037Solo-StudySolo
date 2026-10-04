@@ -373,8 +373,11 @@ export const windowZh = {
   // 内置浏览器（地址栏 / 起始页 / 收藏与设置）
   browser: {
     embedBlockedTitle: "无法内嵌该页面",
+    embedProbeNetworkTitle: "当前网络无法安全预检",
+    pageControls: "网页控制",
     openOriginal: "打开原页面",
     embedBlockedBody: "拒绝在当前窗口中显示（安全策略或访问受限）。请到原网站查看，以保留完整功能。",
+    embedProbeNetworkBody: "当前网络无法安全确认该地址是否允许内嵌。你可以在系统浏览器打开，或明确尝试内嵌。",
     forceEmbed: "仍要尝试内嵌（可能显示空白）",
     loadFailedWithCode: "{message}（{code}）",
     rendererGone: "页面渲染进程已退出，请重试。",
@@ -383,6 +386,9 @@ export const windowZh = {
     back: "后退",
     forward: "前进",
     refresh: "刷新",
+    zoomIn: "放大",
+    zoomOut: "缩小",
+    zoomReset: "重置为 100%",
     addressPlaceholder: "输入网址或搜索内容…",
     go: "访问",
     viewMobileHint: "当前：手机视图（点击切桌面）",
