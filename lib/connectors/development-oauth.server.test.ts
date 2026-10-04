@@ -51,3 +51,17 @@ test("production, cross-origin, signed-out and forged callback requests stop bef
     if (originalOrigin === undefined) delete process.env.CONNECTOR_DEV_CALLBACK_ORIGIN; else process.env.CONNECTOR_DEV_CALLBACK_ORIGIN = originalOrigin;
   }
 });
+
+test("a forged Google form cannot request unapproved calendar write scope", async t => {
+  const env = process.env as Record<string, string | undefined>;
+  const keys = ["NODE_ENV", "CONNECTOR_DEV_CALLBACK_ORIGIN", "CONNECTOR_DEV_TOKEN_ENCRYPTION_KEY", "GOOGLE_CONNECTOR_CLIENT_ID", "GOOGLE_CONNECTOR_CLIENT_SECRET", "GOOGLE_CONNECTOR_SCOPES"];
+  const saved = Object.fromEntries(keys.map(key => [key, env[key]]));
+  Object.assign(env, { NODE_ENV: "test", CONNECTOR_DEV_CALLBACK_ORIGIN: "http://localhost:35349", CONNECTOR_DEV_TOKEN_ENCRYPTION_KEY: Buffer.alloc(32, 9).toString("base64"), GOOGLE_CONNECTOR_CLIENT_ID: "fixture.apps.googleusercontent.com", GOOGLE_CONNECTOR_CLIENT_SECRET: "fixture-secret", GOOGLE_CONNECTOR_SCOPES: "https://www.googleapis.com/auth/calendar.readonly" });
+  let calls = 0;
+  t.mock.method(globalThis, "fetch", async (url: string | URL | Request) => { calls++; assert.ok(String(url).includes("/api/v1/introspect")); return Response.json({ active: true, user_id: "10000000-0000-4000-8000-000000000001", mfa_required: false, mfa_enrolled: false }); });
+  try {
+    const request = new NextRequest("http://localhost:35349/api/connectors/google/connect", { method: "POST", headers: { host: "localhost:35349", origin: "http://localhost:35349", authorization: "Bearer account-fixture" }, body: new URLSearchParams({ scope_selection: "1", scope: "https://www.googleapis.com/auth/calendar.events" }) });
+    const response = await developmentConnect(request, "google");
+    assert.equal(response.status, 403); assert.equal((await response.json()).code, "UNAPPROVED_GOOGLE_SCOPE"); assert.equal(calls, 1);
+  } finally { t.mock.restoreAll(); for (const key of keys) { if (saved[key] === undefined) delete env[key]; else env[key] = saved[key]; } }
+});

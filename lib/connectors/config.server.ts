@@ -1,19 +1,14 @@
 /** Application credentials only. Never import this module into browser code. */
 import { createPrivateKey, createPublicKey, createHash, type KeyObject } from "node:crypto";
 import { readFileSync, statSync } from "node:fs";
+import { GOOGLE_CONNECTOR_SCOPES } from "./google-scopes";
+export { GOOGLE_CONNECTOR_SCOPES } from "./google-scopes";
 
 type Env = Partial<NodeJS.ProcessEnv>;
 function rejectPublicCredentials(env: Env) {
   const name = Object.keys(env).find(key => /^NEXT_PUBLIC_.*(?:CONNECTOR|GITHUB|GOOGLE).*(?:SECRET|PRIVATE_KEY|ENCRYPTION_KEY)(?:_[A-Z0-9]+)?$/i.test(key) && env[key]);
   if (name) throw new ConnectorConfigurationError("public_credential_forbidden", [name]);
 }
-export const GOOGLE_CONNECTOR_SCOPES = [
-  "https://www.googleapis.com/auth/gmail.readonly",
-  "https://www.googleapis.com/auth/gmail.send",
-  "https://www.googleapis.com/auth/drive.readonly",
-  "https://www.googleapis.com/auth/calendar.readonly",
-  "https://www.googleapis.com/auth/contacts.readonly",
-] as const;
 
 export class ConnectorConfigurationError extends Error {
   constructor(readonly code: string, readonly variables: readonly string[] = []) {

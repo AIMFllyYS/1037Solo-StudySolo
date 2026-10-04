@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
   "updated_date": "2026-10-04",
-  "current_phase": "documentation_only",
-  "phase_status": "ready_for_handoff",
+  "current_phase": "implementation",
+  "phase_status": "running",
   "authoritative_status_document": "docs/handoff/studysolo-workstreams.json",
   "context_document": "docs/handoff/studysolo-unattended-handoff.md",
-  "latest_user_directive": "最新补充：MCP和云沙箱也交给子智能体；每个板块强制GPT-6.1 Sol High。按完整大板块、最多一子执行，主负责上下文协调审查验收整合。当前仍整理文档，不启动实现。此前UI与业务要求保持。",
-  "current_action": "文档整理完成，本阶段不启动产品实现；后续人类任务明确切换执行范围后更新current_phase再派遣。",
-  "next_workstream": null,
+  "latest_user_directive": "2026-10-04人类正式恢复无人值守实现，六个大板块包括MCP和云沙箱全部由GPT-6.1 Sol High子智能体执行，最多一子，主审查真实验收整合。最新补充仅记UI-DIALOGUE待办、现在不插队：Studio右侧Agent顶部会话tab默认最近5条，新建对话固定最左或顶部右侧菜单区，复用现有右键菜单Close Other/Close All；本机登录已由用户完成。此前业务/保护边界保持。",
+  "current_action": "CORE-MCP worker代码和定向检查完成；主实页复现并验收第一跳Origin修正、MFA恢复、390市场/详情及无效回调恢复，已到真实Google Testing提示并等待本人继续。冻结本包diff准备干净master基线PR/CI，正式授权/模型读取/发布仍pending；其他包排队。",
+  "next_workstream": "CORE-MCP",
   "implementation_recommendation": "CORE-MCP先分析正常账号/接口/布局，再CORE-SANDBOX最小生产路径；普通模块按完整包排队，不原子化。",
   "max_concurrent_subagents": 1,
   "subagent_policy": {
@@ -26,6 +26,19 @@
     ]
   },
   "delivery_status": "user_reported_unusable_not_accepted",
+  "execution_start_snapshot": {
+    "date": "2026-10-04",
+    "source_branch": "codex/unattended-agent-platform-2026-10-04",
+    "source_head": "0dfee111eb7412940da310f2e1389a62c281212c",
+    "master": "b8a054fa317b211acf94002cc281e436ce501c51",
+    "dev": "50cefd106d100ef2a34c8a0dfd2c1da49f5f1707",
+    "active_subagents_before_dispatch": 0,
+    "local_studysolo_http": "ECONNREFUSED",
+    "production_release_marker_http": 404,
+    "production_source_sha_verified": false,
+    "protected_dirty_domains": ["StudySolo membership/quota/i18n", "Landing membership", "Shared membership", "Accounts membership"],
+    "not_delivery_acceptance": true
+  },
   "verified_source_snapshot": {
     "master": "b9264be04884b59df71c8adc452dccfed3f4fc9f",
     "dev": "48b2f83186e5e558aeaee192f2291b884e917683",
@@ -90,9 +103,9 @@
       "title": "连接器/MCP完整接入与市场基础布局",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "needs_analysis_and_rework",
+      "status": "primary_acceptance_in_progress",
       "user_acceptance": "reported_not_usable_or_not_completed",
-      "assigned_agent": null,
+      "assigned_agent": "/root/core_mcp_sol_high",
       "scope": "本包子智能体负责认证、运行时、连接器前端与正式模型调用及溢出修复，允许核心实现和已授权配置；主审查与验收",
       "code_entrypoints": [
         "lib/connectors",
@@ -121,7 +134,21 @@
         "不改服务器/VPN"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "文档阶段结束并收到执行指示后，先复现正常账号连接路径和溢出位置，形成同包根因图",
+      "next_step": "主冻结本包已测试diff到干净master基线PR并跑规定CI；用户完成当前Google Testing安全提示后，继续正常账号真实授权/回站/模型读取/刷新/断连。若有新具体回归交回同一worker；未过真实链不得closed。",
+      "implementation_report": "docs/handoff/workstreams/core-mcp-2026-10-04.md",
+      "partial_acceptance": {
+        "node_targeted_tests": 52,
+        "react_targeted_tests": 22,
+        "typecheck": "passed",
+        "scoped_eslint": "passed",
+        "parent_iab_visitor_market_390": "no_overflow",
+        "parent_iab_visitor_google_detail_390": "no_overflow",
+        "parent_invalid_callback_recovery": "fixed_market_notice_and_query_cleared",
+        "parent_authenticated_local_google_start": "reached_Google_Testing_warning_after_user_reverification",
+        "private_user_grant_verified": false,
+        "production_deployment_verified": false,
+        "not_closed": true
+      },
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
       "acceptance_evidence": [],
@@ -191,7 +218,8 @@
       ],
       "requirements": [
         "Studio右Agent真正顶部会话tab补右键，不能用AgentDockTabs资源菜单代替",
-        "最近3项/刷新/历史恢复/新对话位置按实际入口核对；关tab不删除用户历史",
+        "Studio右侧Agent顶部会话tab默认只加载最近5条记录（最新用户补充）；独立资源窗口条的最近3项为另一对象，不能混改；刷新/历史恢复真实可用，关tab不删除用户历史",
+        "Studio新建对话入口固定在tab栏最左或顶部右侧菜单区，不被tab横向滚动挤走；复用既有右键菜单支持Close Other/Close All，用户要求先记清单、到本包再做",
         "独立Agent案例恢复本轮修改前认可设计，不保留本轮新SVG风格",
         "从原案例样式维护共享引导组件，供Studio等复用，场景差异只在数据与回调",
         "菜单/通知/主题直接复用现有基础；输入提示/初始与回答后追问语义区分",
@@ -210,7 +238,7 @@
         "不同时改Review业务或反馈生命周期"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "确认四种tab不是同一对象；对照7be363e基线与现有菜单/Toast分析，整包实施基础修正",
+      "next_step": "轮到本包再实施：确认四种tab对象，Studio会话tab最近5项/固定新建入口/复用右键菜单；对照7be363e恢复原案例并共享引导，整包修正基础设计。当前不插队实施。",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
       "acceptance_evidence": [],

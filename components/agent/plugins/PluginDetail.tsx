@@ -19,7 +19,7 @@ const ACTION_CLASS =
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-0.5">
+    <div className="flex min-w-0 flex-col gap-0.5 break-words [overflow-wrap:anywhere]">
       <span className="text-[10.5px] uppercase tracking-wide text-[var(--ink-faint)]">{label}</span>
       <span className="text-[12.5px] text-[var(--ink)]">{children}</span>
     </div>
@@ -118,16 +118,16 @@ function DetailContents({ section, id }: { section: MarketSection; id: string })
   };
 
   return (
-    <section data-testid="plugin-detail" data-plugin-id={entry.id} className="flex h-full min-h-0 flex-col overflow-y-auto">
+    <section data-testid="plugin-detail" data-plugin-id={entry.id} className="flex h-full min-h-0 min-w-0 flex-col overflow-y-auto">
       <div className="flex shrink-0 items-center gap-2 border-b border-[var(--line-soft)] px-5 py-3">
         {back}
         <span className="text-[11.5px] text-[var(--ink-faint)]">{t(`agent.market.tabs.${section}`)}</span>
       </div>
 
-      <div className="mx-auto flex w-full max-w-[760px] flex-col gap-5 px-5 py-5">
+      <div className="mx-auto flex min-w-0 w-full max-w-[760px] flex-col gap-5 break-words px-3 py-5 sm:px-5 [overflow-wrap:anywhere]">
         <div className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-[18px] font-semibold text-[var(--ink)]">{pickL10n(entry, "name", locale)}</h1>
+            <h1 className="min-w-0 max-w-full text-[18px] font-semibold text-[var(--ink)]">{pickL10n(entry, "name", locale)}</h1>
             <span
               className={`rounded-full px-2 py-0.5 text-[10.5px] font-medium ${
                 entry.source === "official"

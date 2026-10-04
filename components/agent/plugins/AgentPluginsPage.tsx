@@ -62,13 +62,13 @@ function MarketContents() {
   return (
     <section
       data-testid="agent-plugins-page"
-      className="flex h-full min-h-0 flex-col bg-[var(--agent-content-bg,var(--md-sys-color-surface-container-low))]"
+      className="flex h-full min-h-0 min-w-0 flex-col bg-[var(--agent-content-bg,var(--md-sys-color-surface-container-low))]"
     >
       <header className="flex shrink-0 flex-wrap items-center gap-2 border-b border-[var(--line-soft)] px-4 py-2.5">
         <h1 className="text-[15px] font-semibold text-[var(--ink)]">{t("agent.market.title")}</h1>
         <span className="text-[11.5px] text-[var(--ink-faint)]">{t("agent.market.subtitle")}</span>
-        <div className="ml-auto flex items-center gap-1.5">
-          <label className="flex h-8 items-center gap-1.5 rounded-lg border border-[var(--line-soft)] px-2">
+        <div className="ml-auto flex min-w-0 max-w-full items-center gap-1.5">
+          <label className="flex h-8 min-w-0 max-w-full items-center gap-1.5 rounded-lg border border-[var(--line-soft)] px-2">
             <Search size={14} className="shrink-0 text-[var(--ink-faint)]" />
             <input
               data-testid="plugins-search"
@@ -76,7 +76,7 @@ function MarketContents() {
               onChange={(event) => setQuery(event.target.value)}
               placeholder={t("agent.market.search")}
               aria-label={t("agent.market.search")}
-              className="w-[190px] bg-transparent text-[12.5px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)]"
+              className="min-w-0 w-[190px] max-w-full bg-transparent text-[12.5px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)]"
             />
           </label>
         </div>
@@ -135,10 +135,10 @@ function MarketContents() {
         {t(`agent.market.tabHint.${tab}`)}
       </p>
 
-      <div data-testid="plugins-body" className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+      <div data-testid="plugins-body" className="min-h-0 min-w-0 flex-1 overflow-y-auto px-3 py-4 sm:px-5">
         {tab === "mcp" && <LearningConnectionsPanel />}
         {loading ? (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4" role="status" aria-label={t("agent.market.loading")}>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,280px),1fr))] gap-4" role="status" aria-label={t("agent.market.loading")}>
             {Array.from({ length: 6 }, (_, index) => (
               <div key={index} className="flex h-[150px] flex-col gap-2.5 rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4">
                 <div className="h-9 w-9 animate-shimmer rounded-xl bg-[var(--bg-muted)]" />
@@ -159,7 +159,7 @@ function MarketContents() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4" data-testid="plugins-grid">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,280px),1fr))] gap-4" data-testid="plugins-grid">
             {visible.map((entry) => (
               <PluginEntryCard key={entry.id} entry={entry} locale={locale} />
             ))}
