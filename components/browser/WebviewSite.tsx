@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type MutableRefObject } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type MutableRefObject } from "react";
 import { ExternalLink, Loader2, RotateCw, ShieldAlert } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { safeHttpUrl } from "@/components/browser/safeUrl";
@@ -11,6 +11,7 @@ export interface WebviewEl extends HTMLElement {
   goBack(): void;
   goForward(): void;
   getURL(): string;
+  setZoomFactor?(factor: number): void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,11 +24,14 @@ const Webview: any = "webview";
 export default function WebviewSite({
   url,
   nonce = 0,
+  zoomFactor,
   webviewRef,
   onUrlChange,
 }: {
   url: string;
   nonce?: number;
+  /** Omitted shared viewers keep Electron's existing per-webContents zoom untouched. */
+  zoomFactor?: number;
   webviewRef?: MutableRefObject<WebviewEl | null>;
   onUrlChange?: (url: string) => void;
 }) {
@@ -41,21 +45,32 @@ export default function WebviewSite({
   const firstNonce = useRef(nonce);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const zoomFactorRef = useRef(zoomFactor);
+  useLayoutEffect(() => {
+    zoomFactorRef.current = zoomFactor;
+  }, [zoomFactor]);
 
   useEffect(() => {
     const wv = localRef.current;
     if (!wv) return;
+    const applyZoom = () => {
+      const factor = zoomFactorRef.current;
+      if (factor === undefined || !Number.isFinite(factor)) return;
+      try { wv.setZoomFactor?.(factor); } catch { /* webview may not have a live guest yet */ }
+    };
     const onNav = (event: Event) => {
       const next = (event as unknown as { url?: string }).url || wv.getURL?.();
       if (next) onUrlChange?.(next);
+      applyZoom();
     };
     const onStart = () => {
       setError(null);
       setLoading(true);
     };
-    const onStop = () => setLoading(false);
+    const onStop = () => { applyZoom(); setLoading(false); };
     const onReady = () => {
       setLoading(false);
+      applyZoom();
       try {
         const current = wv.getURL?.();
         if ((!current || current === "about:blank") && initialUrl) wv.loadURL(initialUrl).catch(() => {});
@@ -92,6 +107,11 @@ export default function WebviewSite({
       wv.removeEventListener("render-process-gone", onGone);
     };
   }, [initialUrl, onUrlChange, t]);
+
+  useEffect(() => {
+    if (zoomFactor === undefined || !Number.isFinite(zoomFactor)) return;
+    try { localRef.current?.setZoomFactor?.(zoomFactor); } catch { /* webview may not have a live guest yet */ }
+  }, [zoomFactor]);
 
   useEffect(() => {
     const wv = localRef.current;

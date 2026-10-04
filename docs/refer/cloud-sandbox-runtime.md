@@ -6,10 +6,10 @@
 
 | 能力 | 验证结果 | 尚未完成 |
 |---|---|---|
-| 独立 Agent 通用命令 | 真实 Account → 项目接口 → 阿里云创建、文件、执行、轮询、产物鉴权下载、关闭通过 | 远端部署和费用账单核对 |
+| 独立 Agent 通用命令 | 真实 Account → 项目接口 → 阿里云创建、文件、执行、轮询、产物鉴权下载、关闭通过 | 新服务器认证链路验收、正式启用和费用账单核对 |
 | 执行隔离 | 宿主普通 UID10001映射、控制文件拒绝、root信号拒绝、本机控制API隔离、取消/超时/日志限制/后台进程清理/越界文件拒绝通过 | 持续供应商安全更新、生产实例验收 |
 | Agent 模型调用 | 真实 GLM 通过PubMed+通用CLI循环；另以选中Notes技能实际load→open→原脚本render→publish→鉴权PDF下载→close，一页A4和完整原文核对通过 | 新生产环境完整验收 |
-| 原生连接器 | Notion、Todoist、GitHub、Google、Zotero、PubMed、Crossref 的开发账号真实读取通过 | 正式回调登记、多用户授权、Google Testing/验证边界、生产配置 |
+| 原生连接器 | Notion、Todoist、GitHub、Google、Zotero、PubMed、Crossref 的开发账号真实读取通过；Google与GitHub正式回调均已保存并刷新读回，保留localhost与原范围 | 其他服务正式来源登记、多用户授权、Google Testing/验证边界、生产配置 |
 | Skills 完整包 | Notes to Handbook 9 文件、GB 文档包17文件；真实OCI模板7项隔离、namespace内中文HTML/PDF、DOCX/PDF预检及页面渲染通过，父已查看实际PNG；开发Account真实安装和读回两包通过 | 生产配置/部署和正式用户安装；每篇文稿仍需自身视觉与标准验收 |
 | Electron 接入 | 固定线上 Agent 转发、用户 Account/BYOK保留、操作者凭证剥离代码和协议测试通过 | 真正打包、线上和安装包验收 |
 
@@ -71,7 +71,9 @@ GitHub仓库公开不等于容器镜像自动公开：[官方Container registry�
 
 ## 环境与客户端
 
-本机 `.env.local`启用基础开发运行；本机 `.env.production`仅准备配置、仍关闭。新增/管理的名称为 CLOUD_SANDBOX_ENABLED、REGION、DOMAIN、API_URL、API_KEY、TEMPLATE、APP_ORIGIN、ENCRYPTION_KEY、MONTHLY_BUDGET_CNY、RUN_BUDGET_CNY、BUDGET_RUN_ID、FIXED_COST_CNY、SKILLS_VERSION、SKILLS_TEMPLATE（均带 CLOUD_SANDBOX_前缀）。没有更新 Windows全局环境或远端进程环境，未在报告里记录任何值。
+本机 `.env.local`启用基础开发运行；本机 `.env.production`仅准备配置、仍关闭。新增/管理的名称为 CLOUD_SANDBOX_ENABLED、REGION、DOMAIN、API_URL、API_KEY、TEMPLATE、APP_ORIGIN、ENCRYPTION_KEY、MONTHLY_BUDGET_CNY、RUN_BUDGET_CNY、BUDGET_RUN_ID、FIXED_COST_CNY、SKILLS_VERSION、SKILLS_TEMPLATE（均带 CLOUD_SANDBOX_前缀）。初次开发配置未更新Windows全局或远端进程环境；随后新增的服务器预检配置见下一段。密钥值不在报告中记录。
+
+随后用户批准的服务器私有预检已启动，详情见[网站发布记录](studysolo-web-release.md)。仅新建该实例的`/opt/studysolo-preview/config/runtime.env`公共/门禁配置，Cloud与productionConnectors仍false，没有复制运营密钥，正式网站没有切换。Google与GitHub正式回调均经用户现场确认保存并刷新读回，不要求另改本项目env：现有`CONNECTOR_CALLBACK_ORIGIN`与正式域名、`CONNECTOR_DEV_CALLBACK_ORIGIN`与localhost均已核对匹配；Google五项scope与Testing、GitHub原权限与密钥保持，GitHub两条回调的通配匹配均关闭。
 
 真实OCI验收后，仅将本项目两个env文件中的`CLOUD_SANDBOX_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_VERSION`更新为已验收组合。无关变量逐项保持，旧文件留在受限备份目录；原API key及加密key没有旋转，生产开关保持false。GitHub构建环境Secret是另一受限服务端配置，不是Windows全局变量或EXE内置凭据。
 

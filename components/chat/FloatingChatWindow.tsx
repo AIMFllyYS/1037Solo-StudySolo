@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo } from "react";
 import {
   useFloatingChats,
   persistFloatingSize,
@@ -13,6 +13,7 @@ import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useStore } from "@/lib/store";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { useFloatingTokenTracker } from "@/lib/hooks/useFloatingTokenTracker";
+import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import FloatingChatBody from "@/components/chat/FloatingChatBody";
 import ManagedWindow from "@/components/window/ManagedWindow";
@@ -20,6 +21,7 @@ import { NOTES_PANEL_ID } from "@/lib/constants/layout";
 import { useIsAgentSurface } from "@/lib/window/useManagedWindowSurface";
 import { translate } from "@/lib/i18n";
 import { useSettings } from "@/lib/stores/settings";
+import { getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
 
 export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
   const managed = useWindowManager((state) => state.windows.find((item) => item.id === win.id));
@@ -29,6 +31,13 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
   const sessionTitle = useChatHistory(
     (state) => state.sessionsMeta.find((item) => item.id === win.sessionId)?.title,
   );
+  const auth = useAuthSession();
+  const currentOwner = getStorageOwner();
+  const ownerScopeMatches = win.ownerId === currentOwner && win.ownerEpoch === getOwnerEpoch();
+  const authOwnerMatches = auth.status === "signedIn"
+    ? auth.userId === currentOwner
+    : auth.status === "signedOut" && currentOwner === null;
+  const ownerMatches = ownerScopeMatches && authOwnerMatches;
   const isAgentSurface = useIsAgentSurface();
   const locale = useSettings((state) => state.locale);
 
@@ -47,8 +56,9 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
     [activeSubjectId, activeCategoryId, activeItemId, academicYear],
   );
 
-  const baseTitle =
-    sessionTitle && sessionTitle !== "新对话"
+  const baseTitle = !ownerMatches
+    ? translate(locale, "menu.chatInput.access.ownerChangedTitle")
+    : sessionTitle && sessionTitle !== "新对话"
       ? sessionTitle
       : win.seedMode === "explain"
         ? "AI 解释"
@@ -62,7 +72,7 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
     ? translate(locale, "agent.selection.title", { snippet: baseTitle })
     : baseTitle;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // 标签条读的是窗口标题：这里必须写 titleLabel，写回 sessionTitle 会把「划词 ·」前缀冲掉。
     if (managed && managed.title !== titleLabel) {
       updateManagedWindow(win.id, { title: titleLabel });
@@ -94,7 +104,7 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
   if (!managed) return null;
 
   function handleClose() {
-    useFloatingTokenTracker.getState().resetSession(win.sessionId);
+    if (ownerScopeMatches) useFloatingTokenTracker.getState().resetSession(win.sessionId);
     closeFloatingWindow(win.id);
   }
 

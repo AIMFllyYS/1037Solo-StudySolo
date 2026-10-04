@@ -10,6 +10,19 @@ export interface Bookmark {
 /** 渲染视图模式：mobile=模拟手机视口并缩放贴合；desktop=按面板原宽 1:1。 */
 export type ViewMode = "mobile" | "desktop";
 
+export const DEFAULT_BROWSER_ZOOM_PERCENT = 100;
+export const MIN_BROWSER_ZOOM_PERCENT = 50;
+export const MAX_BROWSER_ZOOM_PERCENT = 200;
+
+export function parseBrowserViewMode(value: unknown): ViewMode {
+  return value === "mobile" ? "mobile" : "desktop";
+}
+
+export function clampBrowserZoomPercent(value: number): number {
+  if (!Number.isFinite(value)) return DEFAULT_BROWSER_ZOOM_PERCENT;
+  return Math.min(MAX_BROWSER_ZOOM_PERCENT, Math.max(MIN_BROWSER_ZOOM_PERCENT, Math.round(value)));
+}
+
 /** 通用浏览器（搜索/自由浏览）这一标签的内部标识；与书签 id 区分。 */
 export const BROWSE_TAB = "__browse__";
 
@@ -22,6 +35,7 @@ interface BrowserPersist {
   /** 通用浏览器标签当前页面（与书签标签分开记忆）；空 → 显示必应搜索起始页。 */
   browseUrl: string;
   viewMode: ViewMode;
+  zoomPercent: number;
 }
 
 interface BrowserState extends BrowserPersist {
@@ -43,6 +57,7 @@ interface BrowserState extends BrowserPersist {
   removeBookmark: (id: string) => void;
   setHomeUrl: (url: string) => void;
   setViewMode: (m: ViewMode) => void;
+  setZoomPercent: (percent: number) => void;
 }
 
 const LS_KEY = "gailvlun-browser-v1";
@@ -52,32 +67,43 @@ const DEFAULT_BOOKMARKS: Bookmark[] = [
   { id: "bm-bili-course", name: "B站课程", url: "https://search.bilibili.com/all?keyword=大学课程" },
 ];
 
-function loadPersist(): BrowserPersist {
-  const fallback: BrowserPersist = {
+const FALLBACK_BROWSER_PERSIST: BrowserPersist = {
     bookmarks: DEFAULT_BOOKMARKS,
     homeUrl: "",
     browseUrl: "",
-    viewMode: "mobile",
-  };
-  if (typeof window === "undefined") return fallback;
+    viewMode: "desktop",
+    zoomPercent: DEFAULT_BROWSER_ZOOM_PERCENT,
+};
+
+export function parseBrowserPersist(raw: string | null | undefined): BrowserPersist {
+  if (!raw) return { ...FALLBACK_BROWSER_PERSIST };
   try {
-    const raw = localStorage.getItem(LS_KEY);
-    if (!raw) return fallback;
-    const p = JSON.parse(raw);
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
     return {
-      bookmarks: Array.isArray(p.bookmarks) ? p.bookmarks : DEFAULT_BOOKMARKS,
-      homeUrl: typeof p.homeUrl === "string" ? p.homeUrl : "",
+      bookmarks: Array.isArray(parsed.bookmarks) ? parsed.bookmarks as Bookmark[] : DEFAULT_BOOKMARKS,
+      homeUrl: typeof parsed.homeUrl === "string" ? parsed.homeUrl : "",
       // 兼容旧版（曾用 currentUrl 持久化通用浏览器页面）
       browseUrl:
-        typeof p.browseUrl === "string"
-          ? p.browseUrl
-          : typeof p.currentUrl === "string"
-            ? p.currentUrl
+        typeof parsed.browseUrl === "string"
+          ? parsed.browseUrl
+          : typeof parsed.currentUrl === "string"
+            ? parsed.currentUrl
             : "",
-      viewMode: p.viewMode === "desktop" ? "desktop" : "mobile",
+      // Keep an explicit legacy mobile preference, while new installations use desktop.
+      viewMode: parseBrowserViewMode(parsed.viewMode),
+      zoomPercent: clampBrowserZoomPercent(typeof parsed.zoomPercent === "number" ? parsed.zoomPercent : DEFAULT_BROWSER_ZOOM_PERCENT),
     };
   } catch {
-    return fallback;
+    return { ...FALLBACK_BROWSER_PERSIST };
+  }
+}
+
+function loadPersist(): BrowserPersist {
+  if (typeof window === "undefined") return parseBrowserPersist(null);
+  try {
+    return parseBrowserPersist(localStorage.getItem(LS_KEY));
+  } catch {
+    return parseBrowserPersist(null);
   }
 }
 
@@ -91,6 +117,7 @@ function save(state: BrowserPersist) {
         homeUrl: state.homeUrl,
         browseUrl: state.browseUrl,
         viewMode: state.viewMode,
+        zoomPercent: state.zoomPercent,
       }),
     );
   } catch {
@@ -190,6 +217,13 @@ export const useBrowser = create<BrowserState>((set, get) => ({
 
   setViewMode: (m) => {
     set({ viewMode: m });
+    save({ ...get() });
+  },
+
+  setZoomPercent: (percent) => {
+    const zoomPercent = clampBrowserZoomPercent(percent);
+    if (zoomPercent === get().zoomPercent) return;
+    set({ zoomPercent });
     save({ ...get() });
   },
 }));
