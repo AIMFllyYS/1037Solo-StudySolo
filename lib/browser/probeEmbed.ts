@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { checkCustomBaseUrl } from "@/lib/ai/customBaseUrl";
+import { BlockedProbeNetworkError, fetchProbeHeaders, resolveProbeAddresses, type ProbeHeadersResponse, type ProbeResolver } from "./probeNetwork.server";
 
 
 
@@ -71,17 +72,23 @@ export function judge(headers: Headers, origin?: string): { embeddable: boolean;
 /** 复用 #58 字面主机校验：只允许 http(s)，拒绝回环与私网。 */
 export function guardProbeUrl(raw: string): ProbeUrlGuard {
   const check = checkCustomBaseUrl(raw);
-  if (check.ok) return { ok: true, url: new URL(check.url) };
+  if (check.ok) {
+    const url = new URL(check.url);
+    if (url.username || url.password) return { ok: false, reason: "bad-url" };
+    return { ok: true, url };
+  }
   if (check.reason === "private") return { ok: false, reason: "blocked-private" };
   if (check.reason === "protocol") return { ok: false, reason: "non-http" };
   return { ok: false, reason: "bad-url" };
 }
 
-function blockedJson(reason: "blocked-private" | "blocked-redirect") {
+function blockedJson(reason: "blocked-private" | "blocked-redirect" | "blocked-probe-network") {
   return NextResponse.json({ embeddable: false, reason });
 }
 
-export async function GET(req: NextRequest) {
+/** Injectable DNS only for trusted server tests; request data cannot replace it. */
+export function createProbeHandler(resolver: ProbeResolver = resolveProbeAddresses) {
+return async function GET(req: NextRequest) {
   const url = new URL(req.url).searchParams.get("url");
   if (!url) return NextResponse.json({ embeddable: true, reason: "no-url" });
 
@@ -95,17 +102,10 @@ export async function GET(req: NextRequest) {
   const timer = setTimeout(() => ctrl.abort(), 8000);
   try {
     let current = first.url;
-    let res: Response | undefined;
+    let res: ProbeHeadersResponse | undefined;
 
     for (let hops = 0; hops <= MAX_PROBE_REDIRECTS; hops++) {
-      res = await fetch(current.toString(), {
-        method: "GET",
-        redirect: "manual",
-        signal: ctrl.signal,
-        headers: PROBE_HEADERS,
-      });
-      // 只需响应头，丢弃响应体避免下载整页
-      res.body?.cancel().catch(() => {});
+      res = await fetchProbeHeaders(current, ctrl.signal, PROBE_HEADERS, resolver);
 
       if (!REDIRECT_STATUS.has(res.status)) break;
       const location = res.headers.get("location");
@@ -148,13 +148,17 @@ export async function GET(req: NextRequest) {
     const verdict = judge(res.headers, origin);
     return NextResponse.json({ ...verdict, status: res.status, finalUrl: current.toString() });
   } catch (e) {
+    if (e instanceof BlockedProbeNetworkError) return blockedJson("blocked-probe-network");
     // 抓取失败（网络/被服务端拦截）→ 不武断阻断，允许前端尝试内嵌
     return NextResponse.json({
       embeddable: true,
       reason: "probe-failed",
-      error: String((e as Error)?.message ?? e),
+      error: "network-unavailable",
     });
   } finally {
     clearTimeout(timer);
   }
+};
 }
+
+export const GET = createProbeHandler();
