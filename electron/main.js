@@ -38,7 +38,10 @@ const KEY_NAMES = [
 // Keep the shipped storage directory when the product display name changes.
 // Set it before resolving secret paths or creating any Chromium session; the
 // same directory retains DPAPI files, IndexedDB and browser partitions.
-app.setPath("userData", path.join(app.getPath("appData"), "Gailvlun"));
+const legacyUserData = path.join(app.getPath("appData"), "Gailvlun");
+fs.mkdirSync(legacyUserData, { recursive: true, mode: 0o700 });
+app.setPath("userData", legacyUserData);
+app.setPath("sessionData", legacyUserData);
 const KEYS_FILE = path.join(app.getPath("userData"), "keys.enc");
 const CUSTOM_SECRETS_FILE = path.join(app.getPath("userData"), "custom-api-secrets.enc");
 
