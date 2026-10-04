@@ -25,7 +25,7 @@ after(()=>{for(const [k,v] of Object.entries(saved)){if(v===undefined)delete pro
 beforeEach(t=>{
   // Provider HTTP is intercepted below. Resolve synthetic public names without
   // touching the machine's DNS; literal/private addresses still fail preflight.
-  t.mock.method(dns.promises, "lookup", async () => [{ address: "8.8.8.8", family: 4 }]);
+  (t as TestContext).mock.method(dns.promises, "lookup", async () => [{ address: "8.8.8.8", family: 4 }]);
   fixtureLedger.available=100000000;fixtureLedger.events.length=0;fixtureLedger.seen.clear();fixtureLedger.active=true;fixtureLedger.factors=[];
   invalidateQuotaCache(fixtureUser);
   mockPaidFetch(t as TestContext,async()=>{throw new Error("Provider fetch must be explicitly mocked");});
