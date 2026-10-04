@@ -8,6 +8,19 @@ import type { ConnectorResult, ExternalActionView } from "@/lib/connectors/regis
 const message = { id: "fixture", role: "assistant", parts: [] } as unknown as ChatMessage;
 const action: ExternalActionView = { id: "30000000-0000-4000-8000-000000000001", provider: "todoist", operation: "add-tasks", status: "proposed", arguments: { tasks: [{ content: "Study fixture" }] }, expiresAt: Date.now() + 900000 };
 const part = (output: ConnectorResult): ToolPart<"learningConnectors"> => ({ type: "tool-learningConnectors", toolCallId: "fixture", state: "output-available", input: { action: "propose", provider: "todoist" }, output });
+it("keeps raw read/status/discovery JSON inside an actually closed detail with a short completed summary", () => {
+  for (const action of ["status", "discover", "read"] as const) {
+    const data = { privateResultMarker: "large-json-fixture".repeat(120), results: [{ title: "fixture" }] };
+    const p: ToolPart<"learningConnectors"> = { ...part({ provider: "pubmed", operation: action, text: JSON.stringify(data), data, sourceUrls: ["https://pubmed.ncbi.nlm.nih.gov/42825759/"] }), input: { action, provider: "pubmed" } };
+    const { container, unmount } = render(<LearningConnectorsCard part={p} message={message} isStreaming={false} ctx={{ isStreaming: false }}/>);
+    const detail = container.querySelector("details")!;
+    expect(detail.open).toBe(false); expect(detail).toHaveTextContent("large-json-fixture");
+    expect([...container.querySelectorAll("p")].every(paragraph => !paragraph.textContent?.includes("large-json-fixture"))).toBe(true);
+    expect(container.querySelector("pre")?.closest("details")).toBe(detail);
+    expect(screen.getByRole("link", { name: /查看来源/ })).toHaveAttribute("href", "https://pubmed.ncbi.nlm.nih.gov/42825759/");
+    unmount();
+  }
+});
 beforeEach(() => { vi.stubGlobal("fetch", vi.fn(async () => Response.json(action))); });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 it("does not write on render and confirms only the fixed server action id", async () => {

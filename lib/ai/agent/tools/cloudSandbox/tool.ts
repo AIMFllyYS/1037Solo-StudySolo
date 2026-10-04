@@ -3,6 +3,7 @@ import { type SandboxScope } from "@/lib/sandbox/actor.server";
 import { SandboxService } from "@/lib/sandbox/service.server";
 import { SandboxError } from "@/lib/sandbox/config.server";
 import type { SandboxInput, SandboxOutput } from "@/lib/sandbox/types";
+import { createHash } from "node:crypto";
 
 export function createCloudSandboxTool(scope: SandboxScope | undefined, service = new SandboxService()) {
   return tool({
@@ -12,15 +13,28 @@ export function createCloudSandboxTool(scope: SandboxScope | undefined, service 
       sessionId: { type: "string", format: "uuid" }, commandId: { type: "string", format: "uuid" },
       command: { type: "string", maxLength: 32000 }, path: { type: "string", maxLength: 256 }, content: { type: "string", maxLength: 262144 }, timeoutSeconds: { type: "integer", minimum: 1, maximum: 600 },
     }, required: ["action"], additionalProperties: false }),
-    execute: async (input): Promise<SandboxOutput> => {
-      try { if (!scope) throw new SandboxError("AGENT_EXECUTION_NOT_AUTHORIZED", 403); return { ...await service.operate(scope, input), conversationId: scope.conversationId }; }
-      catch (error) { const code = error instanceof SandboxError ? error.code : "SANDBOX_UNAVAILABLE"; return { error: code, text: `云端命令操作未完成：${code}。不要声称命令已运行、文件已生成或环境已安装。` }; }
+    execute: async (input, options): Promise<SandboxOutput> => {
+      let operated = false;
+      try {
+        if (!scope) throw new SandboxError("AGENT_EXECUTION_NOT_AUTHORIZED", 403);
+        const current = scope.authorizeOperation ? await scope.authorizeOperation(input.action) : scope;
+        operated = true;
+        return { ...await service.operate(current, input), conversationId: scope.conversationId };
+      } catch (error) {
+        const code = error instanceof SandboxError ? error.code : "SANDBOX_UNAVAILABLE";
+        // These failures happen before operate/provider effects. Only they may
+        // offer a user-initiated retry after Account verification.
+        const blocked = !operated && code === "REAUTH_REQUIRED";
+        const retryId = blocked && scope ? await service.prepareAuthRetry(scope, input, options.toolCallId).catch(() => undefined) : undefined;
+        return { error: code, ...(scope ? { conversationId: scope.conversationId } : {}), ...(retryId && scope ? { authenticationBlocked: true, retryId, ownerBinding: createHash("sha256").update(scope.owner).digest("hex") } : {}), text: `云端命令操作未完成：${code}。不要声称命令已运行、文件已生成或环境已安装。${retryId ? "等待用户在原结果卡验证后主动继续，不要自动重发。" : ""}` };
+      }
     },
     // Session/command/artifact IDs are part of the protocol, not just UI metadata.
     // The next tool step needs them to poll, publish and close the same resource.
     toModelOutput: ({ output }) => {
+      const modelOutput = { ...output }; delete modelOutput.ownerBinding; delete modelOutput.retryId;
       const excerpt = (value: string, limit: number) => value.length <= limit ? value : `${value.slice(0, limit / 2)}\n[中间日志已截断；结果卡保留完整日志]\n${value.slice(-limit / 2)}`;
-      return { type: "text", value: JSON.stringify({ ...output, text: output.stdout || output.stderr ? `命令状态：${output.state}；退出码：${output.exitCode ?? "尚未退出"}` : output.text.slice(0, 16000), ...(output.stdout ? { stdout: excerpt(output.stdout, 16000) } : {}), ...(output.stderr ? { stderr: excerpt(output.stderr, 8000) } : {}) }) };
+      return { type: "text", value: JSON.stringify({ ...modelOutput, text: output.stdout || output.stderr ? `命令状态：${output.state}；退出码：${output.exitCode ?? "尚未退出"}` : output.text.slice(0, 16000), ...(output.stdout ? { stdout: excerpt(output.stdout, 16000) } : {}), ...(output.stderr ? { stderr: excerpt(output.stderr, 8000) } : {}) }) };
     },
   });
 }

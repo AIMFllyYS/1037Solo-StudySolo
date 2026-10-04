@@ -30,15 +30,15 @@ export async function forwardDesktopAgentRequest(request: NextRequest): Promise<
   const feedbackRoute = targetPath === "/api/feedback/chat" && request.method === "POST";
   const reviewProgressRoute = targetPath === "/api/review/progress" && ["GET", "POST"].includes(request.method);
   const pathname = validateDesktopRequest(request, !(feedbackRoute || reviewProgressRoute));
-  const agentRoute = /^\/api\/agent\/(?:chat|skills|sandbox(?:\/artifacts\/[a-f0-9-]{36})?)$/.test(targetPath);
+  const agentRoute = /^\/api\/agent\/(?:chat|skills|sandbox(?:\/(?:artifacts|retry)\/[a-f0-9-]{36})?)$/.test(targetPath);
   const connectorRoute = /^\/api\/connectors(?:\/inspect|\/actions\/[a-f0-9-]{36}(?:\/(?:confirm|cancel))?|\/(?:notion|todoist|google|github|zotero)\/disconnect)?$/.test(targetPath);
   if (!agentRoute && !connectorRoute && !feedbackRoute && !reviewProgressRoute) throw new SandboxError("DESKTOP_AGENT_BRIDGE_REJECTED", 403);
   const token = extractAccessToken(request.headers);
   if (!token) throw new SandboxError("SIGN_IN_REQUIRED", 401);
   const headers = new Headers({ Authorization: `Bearer ${token}`, Origin: cloudOrigin, Referer: cloudOrigin + pathname });
-  if (reviewProgressRoute && request.method === "POST") {
+  if (reviewProgressRoute && request.method === "POST" || /^\/api\/agent\/sandbox\/retry\//.test(targetPath) || targetPath === "/api/agent/skills" && request.headers.has("x-studysolo-owner-binding")) {
     const binding = request.headers.get("x-studysolo-owner-binding");
-    if (!binding || !/^[a-f0-9]{64}$/.test(binding)) throw new SandboxError("REVIEW_OWNER_CHANGED", 409);
+    if (!binding || !/^[a-f0-9]{64}$/.test(binding)) throw new SandboxError(reviewProgressRoute ? "REVIEW_OWNER_CHANGED" : "ACCOUNT_CHANGED", 409);
     headers.set("X-StudySolo-Owner-Binding", binding);
   }
   const key = request.headers.get("idempotency-key");
@@ -64,7 +64,7 @@ export async function forwardDesktopAgentRequest(request: NextRequest): Promise<
       target.searchParams.set(name, value);
     }
   }
-  if (targetPath.includes("/artifacts/")) {
+  if (targetPath.includes("/artifacts/") || targetPath.includes("/retry/") && request.method === "GET") {
     const conversation = request.nextUrl.searchParams.get("conversation");
     if (!conversation || !/^[A-Za-z0-9_.:-]{1,100}$/.test(conversation)) throw new SandboxError("SANDBOX_CONVERSATION_REQUIRED");
     target.searchParams.set("conversation", conversation);

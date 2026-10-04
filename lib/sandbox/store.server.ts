@@ -3,6 +3,7 @@ import { mkdir, readFile, rename, writeFile, link } from "node:fs/promises";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { resolve } from "node:path";
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
+import { resolveServiceAuthEnv } from "@/lib/auth/env";
 import { seal, unseal } from "@/lib/connectors/vault-crypto.server";
 import { sandboxConfiguration, SandboxError } from "./config.server";
 
@@ -24,6 +25,16 @@ const currentLease = new AsyncLocalStorage<{ key: string; id: string; lost: bool
 
 export class PersistentExecutionStore implements ExecutionStore {
   private db() { sandboxConfiguration(); return createServiceAuthClient(); }
+  private sharedBudget() { return process.env.CLOUD_SANDBOX_BUDGET_AUTHORITY === "shared"; }
+  private async authorizedBudgetDb() {
+    if (!this.sharedBudget() || new URL(resolveServiceAuthEnv().supabaseUrl).hostname !== "zizaonaxfguvlzdcbxzw.supabase.co") throw new SandboxError("SANDBOX_BUDGET_NOT_RECONCILED", 503);
+    const fingerprint = process.env.CLOUD_SANDBOX_BUDGET_IMPORT_FINGERPRINT;
+    if (!fingerprint || !/^[a-f0-9]{64}$/.test(fingerprint)) throw new SandboxError("SANDBOX_BUDGET_NOT_RECONCILED", 503);
+    const db = this.db();
+    const marker = await db.from("ss_agent_execution_budgets").select("reserved_micro_cny,cap_micro_cny").eq("period_key", `legacy:${fingerprint}`).maybeSingle();
+    if (marker.error || !marker.data || Number(marker.data.reserved_micro_cny) !== 1800000 || Number(marker.data.cap_micro_cny) !== 1800000) throw new SandboxError("SANDBOX_BUDGET_NOT_RECONCILED", 503);
+    return db;
+  }
   async read<T>(kind: RecordKind, id: string, owner: string): Promise<T | null> {
     let ciphertext: string;
     if (process.env.NODE_ENV === "production") {
@@ -61,9 +72,15 @@ export class PersistentExecutionStore implements ExecutionStore {
   async owned<T>(kind: RecordKind, owner: string): Promise<T[]> {
     let ids: string[];
     if (process.env.NODE_ENV === "production") {
-      const result = await this.db().from("ss_agent_execution_records").select("id").eq("kind", kind).eq("owner_uuid", owner).order("updated_at", { ascending: false }).limit(50);
-      if (result.error) throw new SandboxError("SANDBOX_STORAGE_UNAVAILABLE", 503);
-      ids = result.data.map(item => item.id);
+      ids = [];
+      // Limits/cleanup must include older records; a newest-50 window can hide
+      // reserved artifacts or a still unresolved creation from the same owner.
+      for (let offset = 0; ; offset += 100) {
+        const result = await this.db().from("ss_agent_execution_records").select("id").eq("kind", kind).eq("owner_uuid", owner).order("id").range(offset, offset + 99);
+        if (result.error) throw new SandboxError("SANDBOX_STORAGE_UNAVAILABLE", 503);
+        ids.push(...result.data.map(item => item.id));
+        if (result.data.length < 100) break;
+      }
     } else {
       try { ids = JSON.parse(await readFile(resolve(root(), `${hash(`index:${kind}:${owner}`)}.index`), "utf8")); } catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw new SandboxError("SANDBOX_STORAGE_UNAVAILABLE", 503); ids = []; }
     }
@@ -115,9 +132,13 @@ export class PersistentExecutionStore implements ExecutionStore {
   async reserve(id: string, owner: string, amount: number, expiresAt: number) {
     if (!Number.isSafeInteger(amount) || amount <= 0 || amount > 10_000_000 || expiresAt <= Date.now() || expiresAt > Date.now() + 1800000) throw new SandboxError("SANDBOX_BUDGET_INVALID");
     const config = sandboxConfiguration(), month = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit" }).format(new Date());
-    if (process.env.NODE_ENV === "production") {
-      const result = await this.db().rpc("ss_agent_execution_reserve", { p_id: id, p_owner: owner, p_micro_cny: amount, p_month: month, p_run: config.runId, p_month_cap: config.monthlyMicroCny, p_run_cap: config.runMicroCny, p_expires_at: new Date(expiresAt).toISOString() });
-      if (result.error || result.data !== true) throw new SandboxError("SANDBOX_BUDGET_OR_CAPACITY_EXCEEDED", 429);
+    if (process.env.NODE_ENV !== "test" || this.sharedBudget()) {
+      const db = await this.authorizedBudgetDb();
+      // Marker and unreleased barriers are rechecked under the RPC's same
+      // capacity transaction lock. A JS pre-query is not admission authority.
+      const result = await db.rpc("ss_agent_execution_reserve_reconciled", { p_id: id, p_owner: owner, p_micro_cny: amount, p_month: month, p_run: config.runId, p_month_cap: config.monthlyMicroCny, p_run_cap: config.runMicroCny, p_expires_at: new Date(expiresAt).toISOString(), p_import_fingerprint: process.env.CLOUD_SANDBOX_BUDGET_IMPORT_FINGERPRINT });
+      if (result.error) throw new SandboxError("SANDBOX_BUDGET_NOT_RECONCILED", 503);
+      if (result.data !== true) throw new SandboxError("SANDBOX_BUDGET_OR_CAPACITY_EXCEEDED", 429);
       return;
     }
     await this.lock("global-budget", async () => {
@@ -134,7 +155,7 @@ export class PersistentExecutionStore implements ExecutionStore {
     });
   }
   async release(id: string, owner: string) {
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "production" || this.sharedBudget()) {
       const result = await this.db().rpc("ss_agent_execution_release", { p_id: id, p_owner: owner });
       if (result.error) throw new SandboxError("SANDBOX_STORAGE_UNAVAILABLE", 503);
       return;
@@ -148,7 +169,7 @@ export class PersistentExecutionStore implements ExecutionStore {
     });
   }
   async maintenanceSessions() {
-    if (process.env.NODE_ENV !== "production") {
+    if (process.env.NODE_ENV !== "production" && !this.sharedBudget()) {
       try {
         const rows: { id: string; owner: string; released?: boolean }[] = JSON.parse(await readFile(resolve(root(), "operator-reservations.json"), "utf8"));
         return rows.filter(row => !row.released).slice(0, 100).map(row => ({ id: row.id, owner: row.owner }));

@@ -255,7 +255,9 @@ async function handlePOST(req: NextRequest) {
       const kitSoloAccessToken = accountToken ? await kitSoloAccess(accountToken, "studysolo") : null;
       const canonicalConnectorOwner = await connectorOwner(req).catch(() => undefined);
       const cloudSandboxScope = !isImageMode ? await sandboxScopeForChat(req, body) : undefined;
-      const agentSkills = await skillsForAgent(cloudSandboxScope, body.skills);
+      const agentSkills = await skillsForAgent(cloudSandboxScope, body.skills, undefined, () => {
+        writer.write({ type: "data-info", data: { message: "云端技能包状态暂时不可用；本次对话仍可继续。云端操作会单独检查运行环境与账号验证。" }, transient: true });
+      });
       const bundleInput = (truncated: boolean, referenceContext: string): StudyAgentInput => ({
         connectorOwner: canonicalConnectorOwner,
         cloudSandboxScope,
