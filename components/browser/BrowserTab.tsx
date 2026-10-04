@@ -1,30 +1,36 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { Home, RotateCw, ArrowRight, ArrowLeft, ExternalLink, Globe, Search, Smartphone, Monitor } from "lucide-react";
+import { Home, RotateCw, ArrowRight, ArrowLeft, ExternalLink, Globe, Search, Smartphone, Monitor, MoreHorizontal, ZoomIn, ZoomOut } from "lucide-react";
 import EmbedFallback from "@/components/browser/EmbedFallback";
 import WebviewSite, { type WebviewEl } from "@/components/browser/WebviewSite";
+import AnchoredMenu from "@/components/ui/AnchoredMenu";
 import { safeHttpUrl } from "@/components/browser/safeUrl";
-import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
+import { useBrowser, MOBILE_LOGICAL_WIDTH, MAX_BROWSER_ZOOM_PERCENT, MIN_BROWSER_ZOOM_PERCENT, type ViewMode } from "@/lib/hooks/useBrowser";
 import { useEmbeddable } from "@/lib/hooks/useEmbeddable";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { computeIframeZoomLayout } from "@/lib/browser/iframeZoom";
 import { useT } from "@/lib/i18n";
 
 /** 右侧面板内置浏览器：地址栏 + 自适应（手机视口模拟）iframe。本地使用，仅做基础 sandbox 安全。 */
 export default function BrowserTab() {
+  const zoomStep = 10;
   const isPhone = useIsMobile();
   const currentUrl = useBrowser((s) => s.currentUrl);
   const reloadNonce = useBrowser((s) => s.reloadNonce);
   const viewMode = useBrowser((s) => s.viewMode);
+  const zoomPercent = useBrowser((s) => s.zoomPercent);
   const navigate = useBrowser((s) => s.navigate);
   const reload = useBrowser((s) => s.reload);
   const goHome = useBrowser((s) => s.goHome);
   const setViewMode = useBrowser((s) => s.setViewMode);
+  const setZoomPercent = useBrowser((s) => s.setZoomPercent);
   const frameMode: ViewMode = isPhone ? "desktop" : viewMode;
   const t = useT();
 
   const [addr, setAddr] = useState(currentUrl);
   const [prevUrl, setPrevUrl] = useState(currentUrl);
+  const pageControlsTriggerRef = useRef<HTMLButtonElement | null>(null);
   if (currentUrl !== prevUrl) {
     setPrevUrl(currentUrl);
     setAddr(currentUrl);
@@ -115,6 +121,60 @@ export default function BrowserTab() {
           {viewMode === "mobile" ? <Smartphone size={15} /> : <Monitor size={15} />}
         </button>
         )}
+        <AnchoredMenu
+          label={t("window.browser.pageControls")}
+          width={210}
+          placement="bottom"
+          testId="browser-page-controls"
+          triggerRef={pageControlsTriggerRef}
+          className="press flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+          trigger={<MoreHorizontal size={16} />}
+        >
+          {(close) => (
+            <div className="flex flex-col gap-1 p-1">
+              <button
+                type="button"
+                role="menuitem"
+                disabled={zoomPercent <= MIN_BROWSER_ZOOM_PERCENT}
+                onClick={() => { setZoomPercent(zoomPercent - zoomStep); close(); pageControlsTriggerRef.current?.focus({ preventScroll: true }); }}
+                className="flex min-h-9 items-center gap-2 rounded-lg px-2 text-left text-[12.5px] text-[var(--ink)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
+                data-testid="browser-zoom-out"
+              >
+                <ZoomOut size={15} /> <span className="flex-1">{t("window.browser.zoomOut")}</span><span>{zoomPercent}%</span>
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                disabled={zoomPercent >= MAX_BROWSER_ZOOM_PERCENT}
+                onClick={() => { setZoomPercent(zoomPercent + zoomStep); close(); pageControlsTriggerRef.current?.focus({ preventScroll: true }); }}
+                className="flex min-h-9 items-center gap-2 rounded-lg px-2 text-left text-[12.5px] text-[var(--ink)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
+                data-testid="browser-zoom-in"
+              >
+                <ZoomIn size={15} /> <span className="flex-1">{t("window.browser.zoomIn")}</span><span>{zoomPercent}%</span>
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                disabled={zoomPercent === 100}
+                onClick={() => { setZoomPercent(100); close(); pageControlsTriggerRef.current?.focus({ preventScroll: true }); }}
+                className="flex min-h-9 items-center justify-between rounded-lg px-2 text-left text-[12.5px] text-[var(--ink)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
+                data-testid="browser-zoom-reset"
+              >
+                <span>{t("window.browser.zoomReset")}</span><span>100%</span>
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                disabled={!currentUrl}
+                onClick={() => { reload(); close(); pageControlsTriggerRef.current?.focus({ preventScroll: true }); }}
+                className="flex min-h-9 items-center gap-2 rounded-lg px-2 text-left text-[12.5px] text-[var(--ink)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
+                data-testid="browser-menu-refresh"
+              >
+                <RotateCw size={15} /> {t("window.browser.refresh")}
+              </button>
+            </div>
+          )}
+        </AnchoredMenu>
         <a
           href={safeUrl || undefined}
           target="_blank"
@@ -137,6 +197,7 @@ export default function BrowserTab() {
             <WebviewSite
               url={safeUrl}
               nonce={reloadNonce}
+              zoomFactor={zoomPercent / 100}
               webviewRef={webviewRef}
               onUrlChange={setAddr}
             />
@@ -149,7 +210,7 @@ export default function BrowserTab() {
               actionLabel={t("window.browser.openInNewTab")}
             />
           ) : (
-            <FramedSite url={safeUrl} nonce={reloadNonce} viewMode={frameMode} />
+            <FramedSite url={safeUrl} nonce={reloadNonce} viewMode={frameMode} zoomPercent={zoomPercent} />
           )
         ) : (
           <BingStartPage onSearch={navigate} />
@@ -163,7 +224,7 @@ export default function BrowserTab() {
  * 自适应 iframe：手机视图下以固定逻辑视口宽（414px）渲染，再 transform 缩放贴合面板宽，
  * 让所有站点都拿到"手机视口"并完整放进右侧窄面板（无横向溢出）；桌面视图按面板原宽 1:1。
  */
-function FramedSite({ url, nonce, viewMode }: { url: string; nonce: number; viewMode: ViewMode }) {
+function FramedSite({ url, nonce, viewMode, zoomPercent }: { url: string; nonce: number; viewMode: ViewMode; zoomPercent: number }) {
   const t = useT();
   const wrapRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
@@ -180,8 +241,12 @@ function FramedSite({ url, nonce, viewMode }: { url: string; nonce: number; view
   }, []);
 
   const logicalW = viewMode === "mobile" ? MOBILE_LOGICAL_WIDTH : size.w;
-  const scale = size.w > 0 && logicalW > 0 ? size.w / logicalW : 1;
-  const logicalH = scale > 0 ? size.h / scale : size.h;
+  const frame = computeIframeZoomLayout({
+    containerWidth: size.w,
+    containerHeight: size.h,
+    logicalWidth: logicalW,
+    zoomFactor: zoomPercent / 100,
+  });
 
   return (
     <div ref={wrapRef} className="relative h-full w-full overflow-hidden bg-white">
@@ -191,9 +256,12 @@ function FramedSite({ url, nonce, viewMode }: { url: string; nonce: number; view
           src={url}
           title={t("window.browser.builtInBrowser")}
           style={{
-            width: logicalW,
-            height: logicalH,
-            transform: `scale(${scale})`,
+            position: "absolute",
+            left: frame.offsetLeft,
+            top: 0,
+            width: frame.iframeWidth,
+            height: frame.iframeHeight,
+            transform: `scale(${frame.renderScale})`,
             transformOrigin: "top left",
             border: 0,
           }}
@@ -247,5 +315,3 @@ function BingStartPage({ onSearch }: { onSearch: (q: string) => void }) {
     </div>
   );
 }
-
-

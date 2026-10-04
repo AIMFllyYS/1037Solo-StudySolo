@@ -97,6 +97,23 @@ describe('ChatThread virtualizer', () => {
     expect(container.querySelector('.lucide')).toBeNull();
   });
 
+  it('honors an account gate before rendering any hydrated transcript rows', () => {
+    const { container, getByTestId, queryByText } = render(
+      <ChatThread
+        messages={makeMessages(2)}
+        isLoading={false}
+        error={null}
+        onClearError={() => {}}
+        onFollowUpClick={() => {}}
+        hydrated
+        accessGateContent={<div data-testid="account-gate">Sign in required</div>}
+      />,
+    );
+    expect(getByTestId('account-gate')).toBeInTheDocument();
+    expect(container.querySelectorAll('.chat-message')).toHaveLength(0);
+    expect(queryByText('Message 0')).toBeNull();
+  });
+
   it('announces a handled request failure as an alert with an accessible dismiss action', () => {
     const clear = vi.fn();
     const { getByRole } = render(<ChatThread messages={[]} isLoading={false} error="请求连接失败，请重试。"

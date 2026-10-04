@@ -11,6 +11,9 @@ import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
 import { useFloatingTokenTracker } from '@/lib/hooks/useFloatingTokenTracker';
 import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/sessionRuns';
 import { getMessageText } from '@/lib/chat/messageParts';
+import { activateStorageOwner, getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
+
+const authState = vi.hoisted(() => ({ status: "signedIn" as "loading" | "signedOut" | "signedIn", userId: "test-owner" as string | null }));
 
 vi.mock('@/lib/storage/idbStorage', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/lib/storage/idbStorage')>(),
@@ -20,17 +23,19 @@ vi.mock('@/lib/hooks/useChatHistory', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/lib/hooks/useChatHistory')>(),
   ensureChatHistoryBootstrap: vi.fn(async () => {}),
 }));
-vi.mock('@/components/chat/ChatThread', () => ({ default: ({ isLoading, info, onClearInfo }: {
-  isLoading: boolean; info: string | null; onClearInfo: () => void;
-}) => <div><span data-testid="loading">{String(isLoading)}</span><span data-testid="info">{info}</span><button onClick={onClearInfo}>清除提示</button></div> }));
-vi.mock('@/components/chat/ChatInput', () => ({ default: ({ onSend, onStop }: {
-  onSend: (text: string) => void; onStop: () => void;
-}) => <div><button onClick={() => onSend('手动输入')}>手动发送</button><button onClick={onStop}>停止</button></div> }));
+vi.mock('@/lib/hooks/useAuthSession', () => ({ useAuthSession: () => authState }));
+vi.mock('@/components/chat/ChatThread', () => ({ default: ({ isLoading, info, onClearInfo, accessGateContent }: {
+  isLoading: boolean; info: string | null; onClearInfo: () => void; accessGateContent?: React.ReactNode;
+}) => <div><span data-testid="loading">{String(isLoading)}</span><span data-testid="info">{info}</span>{accessGateContent}<button onClick={onClearInfo}>清除提示</button></div> }));
+vi.mock('@/components/chat/ChatInput', () => ({ default: ({ onSend, onStop, isLoading, disabled, disabledReason }: {
+  onSend: (text: string) => void; onStop: () => void; isLoading: boolean; disabled?: boolean; disabledReason?: string;
+}) => <div><span data-testid="chat-disabled">{String(!!disabled)}</span><span data-testid="chat-disabled-reason">{disabledReason}</span><button disabled={disabled && !isLoading} onClick={() => onSend('手动输入')}>手动发送</button><button disabled={disabled && !isLoading} onClick={onStop}>停止</button></div> }));
 
 const context = { subjectId: 'cell-biology', categoryId: 'textbook', itemId: 'ch01', currentTopic: '细胞' };
 const initialSettings = useSettings.getState();
-const seed = (mode: SeedMode = 'explain') => ({ id: 'window', sessionId: 'floating', modelId: 'Qwen/Qwen3.8-27B', seedMode: mode, seedText: '被选中的教材原文', seedNonce: 1 });
+const seed = (mode: SeedMode = 'explain') => ({ id: 'window', sessionId: 'floating', ownerId: getStorageOwner(), ownerEpoch: getOwnerEpoch(), modelId: 'Qwen/Qwen3.8-27B', seedMode: mode, seedText: '被选中的教材原文', seedNonce: 1 });
 let requests: Array<Record<string, unknown>>;
+let ownerBeforeTest: string | null = null;
 
 function Host({ visible = true }: { visible?: boolean }) {
   const win = useFloatingChats((s) => s.windows[0]);
@@ -69,6 +74,10 @@ const floatingMessages = () => useChatHistory.getState().messagesById.floating;
 
 beforeEach(() => {
   vi.useFakeTimers();
+  ownerBeforeTest = getStorageOwner();
+  activateStorageOwner("floating-test-owner");
+  authState.status = "signedIn";
+  authState.userId = "floating-test-owner";
   vi.spyOn(console, 'error').mockImplementation(() => {});
   requests = [];
   useChatHistory.setState({ activeSessionId: 'main', _hasHydrated: true, _activeMessagesReady: true,
@@ -89,9 +98,88 @@ afterEach(async () => {
   cleanup();
   await vi.advanceTimersByTimeAsync(0);
   vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals();
+  activateStorageOwner(ownerBeforeTest);
 });
 
 describe('FloatingChatBody automatic seed lifecycle with real useChat', () => {
+  it('shows signed-out status instead of fake Stop and rejects a seed across owner switches', async () => {
+    authState.status = "signedOut";
+    authState.userId = null;
+    activateStorageOwner(null);
+    useFloatingChats.setState({ windows: [seed()] });
+    useChatHistory.setState({
+      activeSessionId: "floating",
+      _hasHydrated: false,
+      _activeMessagesReady: false,
+      messagesById: {},
+      sessionLoadState: {},
+      sessionsMeta: [],
+      loadedSessionIds: [],
+      pinnedSessionIds: [],
+    });
+    mockFetch();
+    render(<Host />);
+    await settle();
+
+    expect(screen.getByTestId("loading")).toHaveTextContent("false");
+    expect(screen.getByTestId("chat-disabled")).toHaveTextContent("true");
+    expect(screen.getByTestId("chat-access-notice")).toHaveTextContent("登录后继续对话");
+    expect(useFloatingChats.getState().windows[0]?.seedNonce).toBe(1);
+    expect(requests).toHaveLength(0);
+
+    act(() => {
+      authState.status = "signedIn";
+      authState.userId = "floating-new-owner";
+      activateStorageOwner("floating-new-owner");
+      useChatHistory.setState({
+        activeSessionId: "floating",
+        _hasHydrated: true,
+        _activeMessagesReady: true,
+        messagesById: { floating: [] },
+        sessionLoadState: { floating: "loaded" },
+        sessionsMeta: [{ id: "floating", title: "current owner session", createdAt: 1, updatedAt: 1, messageCount: 0, artifactIds: [] }],
+        loadedSessionIds: ["floating"],
+        pinnedSessionIds: [],
+      });
+    });
+    await settle();
+
+    expect(screen.getByTestId("chat-access-notice")).toHaveTextContent("账号已切换");
+    expect(useFloatingChats.getState().windows[0]?.seedNonce).toBe(1);
+    expect(requests).toHaveLength(0);
+    fireEvent.click(screen.getByRole("button", { name: "关闭浮窗" }));
+    expect(useChatHistory.getState().sessionsMeta.some((session) => session.id === "floating")).toBe(true);
+  });
+
+  it('drops a queued seed when the owner changes before React can commit the new owner', async () => {
+    mockFetch();
+    render(<Host />);
+
+    act(() => {
+      authState.status = "signedIn";
+      authState.userId = "floating-next-owner";
+      activateStorageOwner("floating-next-owner");
+      // The new owner can have the same local session id; a queued callback from
+      // the previous render must not seed this colliding session.
+      useChatHistory.setState({
+        activeSessionId: "floating",
+        _hasHydrated: true,
+        _activeMessagesReady: true,
+        messagesById: { main: [], floating: [] },
+        sessionLoadState: { main: "loaded", floating: "loaded" },
+        sessionsMeta: [{ id: "floating", title: "next owner session", createdAt: 2, updatedAt: 2, messageCount: 0, artifactIds: [] }],
+        loadedSessionIds: ["main", "floating"],
+        pinnedSessionIds: [],
+      });
+      vi.runAllTicks();
+    });
+    await settle();
+
+    expect(requests).toHaveLength(0);
+    expect(useChatHistory.getState().messagesById.floating).toEqual([]);
+    expect(useFloatingChats.getState().windows[0]?.seedNonce).toBe(1);
+  });
+
   it.each(['explain', 'example'] as const)('StrictMode %s 首次挂载只发送一次，保留浮窗模型/会话/计费与 info props', async (mode) => {
     useFloatingChats.setState({ windows: [seed(mode)] });
     mockFetch();
@@ -123,6 +211,8 @@ describe('FloatingChatBody automatic seed lifecycle with real useChat', () => {
     expect(requests).toHaveLength(0);
     expect(floatingMessages()).toEqual([]);
     expect(useFloatingChats.getState().windows[0].seedNonce).toBe(1);
+    expect(screen.getByTestId("loading")).toHaveTextContent("false");
+    expect(screen.getByTestId("chat-disabled")).toHaveTextContent("true");
     act(() => useChatHistory.setState({ _hasHydrated: true }));
     await settle();
     expect(requests).toHaveLength(1);

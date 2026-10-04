@@ -5,8 +5,9 @@ import { useStore } from "@/lib/stores/ui";
 import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
 import { useTheme } from "@/lib/hooks/useTheme";
 
+const pathnameState = vi.hoisted(() => ({ value: "/" }));
 vi.mock("next/navigation", () => ({
-  usePathname: () => "/",
+  usePathname: () => pathnameState.value,
 }));
 
 vi.mock("@/lib/content-data", async (importOriginal) => {
@@ -27,6 +28,7 @@ vi.mock("@/lib/content-data/subjects.registry", async (importOriginal) => {
 
 describe("MobileTopBar", () => {
   beforeEach(() => {
+    pathnameState.value = "/";
     useTheme.setState({
       theme: "light",
       hydrated: true,
@@ -44,7 +46,7 @@ describe("MobileTopBar", () => {
 
   it("hides the mode switcher and only shows a human chapter title", () => {
     render(<MobileTopBar />);
-    expect(screen.getByTestId("mobile-sidebar-toggle")).toHaveAccessibleName("打开侧栏");
+    expect(screen.getByTestId("mobile-sidebar-toggle")).toHaveAccessibleName("展开导航");
     expect(screen.queryByTestId("app-mode-switcher")).not.toBeInTheDocument();
     expect(screen.getByTestId("mobile-chapter-trigger")).toHaveTextContent("课堂原文 · 第1-2节");
     expect(screen.getByTestId("mobile-chapter-trigger")).not.toHaveTextContent("rec-2026");
@@ -54,5 +56,18 @@ describe("MobileTopBar", () => {
     render(<MobileTopBar />);
     fireEvent.click(screen.getByTestId("mobile-sidebar-toggle"));
     expect(useStore.getState().mobileSidebarOpen).toBe(true);
+  });
+
+  it.each(["/class", "/review"])("shows one mode-owned navigation toggle on %s", (path) => {
+    pathnameState.value = path;
+    render(<MobileTopBar />);
+
+    const toggle = screen.getByTestId("mode-mobile-sidebar-toggle");
+    expect(toggle).toHaveAccessibleName("展开导航");
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByTestId("mobile-sidebar-toggle")).not.toBeInTheDocument();
+    fireEvent.click(toggle);
+    expect(useStore.getState().mobileSidebarOpen).toBe(true);
+    expect(screen.getByTestId("mode-mobile-sidebar-toggle")).toHaveAttribute("aria-expanded", "true");
   });
 });

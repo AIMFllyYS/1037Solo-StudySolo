@@ -37,6 +37,27 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
 describe('floating transparent composer', () => {
+  it('disables an unready idle composer without inventing a Stop action', () => {
+    const { getByRole, queryByTitle } = render(
+      <ChatInput {...props} disabled disabledReason="登录后即可使用 AI 对话" />,
+    );
+    expect(getByRole('textbox')).toBeDisabled();
+    expect(queryByTitle('停止生成')).toBeNull();
+  });
+
+  it('keeps the real Stop action available when an access gate blocks new input', () => {
+    const onStop = vi.fn();
+    const view = render(<ChatInput {...props} onStop={onStop} />);
+    fireEvent.change(view.getByRole('textbox'), { target: { value: 'draft before auth expired' } });
+    view.rerender(<ChatInput {...props} isLoading disabled disabledReason="登录后即可使用 AI 对话" onStop={onStop} />);
+    const { getByRole, getByTitle } = view;
+    expect(getByRole('textbox')).toBeDisabled();
+    const stop = getByTitle('停止生成');
+    expect(stop).toBeEnabled();
+    fireEvent.click(stop);
+    expect(onStop).toHaveBeenCalledOnce();
+  });
+
   it('keeps all four controls before the textbox in DOM order, with measured notices/previews in the same dock', () => {
     callbacks.quotedText = '教材原文';
     callbacks.attachment = true;

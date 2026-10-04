@@ -6,6 +6,9 @@ import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useSkills } from '@/lib/hooks/useSkills';
 import { useStore } from '@/lib/store';
+import { activateStorageOwner, getStorageOwner } from '@/lib/storage/ownerScope';
+
+const authState = vi.hoisted(() => ({ status: "signedIn" as "loading" | "signedOut" | "signedIn", userId: "test-owner" as string | null }));
 
 vi.mock('@/lib/storage/idbStorage', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/lib/storage/idbStorage')>(),
@@ -15,6 +18,7 @@ vi.mock('@/lib/hooks/useChatHistory', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/lib/hooks/useChatHistory')>(),
   ensureChatHistoryBootstrap: vi.fn(async () => {}),
 }));
+vi.mock('@/lib/hooks/useAuthSession', () => ({ useAuthSession: () => authState }));
 vi.mock('@/lib/hooks/useAutoHideChatHeader', () => ({ useAutoHideChatHeader: () => ({ autoHideEnabled: false, headerCollapsed: false }) }));
 vi.mock('@/components/chat/ChatThread', () => ({
   default: ({ emptyState }: { emptyState?: React.ReactNode }) => <div data-testid="chat-thread">{emptyState}</div>,
@@ -35,6 +39,7 @@ vi.mock('@/lib/hooks/useImageAttachments', () => ({ useImageAttachments: () => (
 
 /** Agent 的上下文不绑定章节：分类 / 内容项都空。 */
 const agentContext = { subjectId: 'probability', categoryId: '', itemId: '', currentTopic: '' };
+let ownerBeforeTest: string | null = null;
 const settle = async () => { await act(async () => { await vi.advanceTimersByTimeAsync(0); }); };
 
 function mockChatStream() {
@@ -53,8 +58,12 @@ function mockChatStream() {
 
 beforeEach(() => {
   vi.useFakeTimers();
+  ownerBeforeTest = getStorageOwner();
+  activateStorageOwner("chat-panel-welcome-test-owner");
+  authState.status = "signedIn";
+  authState.userId = "chat-panel-welcome-test-owner";
   vi.spyOn(console, 'error').mockImplementation(() => {});
-  useStore.setState({ outbound: null });
+  useStore.setState({ outbound: null, loginOverlayOpen: false });
   useSettings.setState({ selectedModelId: 'mimo-v2.5', customApiGroups: [], defaultThinking: false, defaultSearch: false });
   useSkills.setState({ skills: [] });
   useChatHistory.setState({ activeSessionId: 'main', _hasHydrated: true, _activeMessagesReady: true,
@@ -66,6 +75,7 @@ beforeEach(() => {
 afterEach(async () => {
   cleanup(); await vi.advanceTimersByTimeAsync(0);
   vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals();
+  activateStorageOwner(ownerBeforeTest);
 });
 
 describe('Agent 空对话欢迎页', () => {

@@ -24,6 +24,8 @@ interface ChatThreadProps {
   onFollowUpClick: (question: string) => void;
   /** IndexedDB 水合完成标志；false 时显示加载占位。默认 true。 */
   hydrated?: boolean;
+  /** Explicit account gate content; keeps hydrated=false and never renders another owner's messages. */
+  accessGateContent?: React.ReactNode;
   /** 水合后消息为空时展示（主面板传 ChatEmptyState；划词浮窗传简短提示）。 */
   emptyState?: React.ReactNode;
   /** 对话字号缩放（写入 --chat-fs）。默认 1。 */
@@ -56,6 +58,7 @@ export default function ChatThread({
   onClearInfo,
   onFollowUpClick,
   hydrated = true,
+  accessGateContent,
   emptyState,
   fontScale = 1,
   bottomInset = 0,
@@ -316,7 +319,7 @@ export default function ChatThread({
           overflowAnchor: 'none',
         } as React.CSSProperties}
       >
-        {!hydrated ? (
+        {accessGateContent !== undefined ? accessGateContent : !hydrated ? (
           <div className="chat-loading">
             <AgentLoopIcon size={16} className="animate-pulse motion-reduce:animate-none" style={{ color: 'var(--ink-soft)' }} />
             <span className="chat-loading-text">{t('trace.thread.loadingHistory')}</span>

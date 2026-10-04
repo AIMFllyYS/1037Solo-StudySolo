@@ -18,7 +18,10 @@ export default function EmbedFallback({
   actionLabel?: string;
 }) {
   const t = useT();
-  const titleText = title ?? t("window.browser.embedBlockedTitle");
+  const probeNetworkBlocked = reason === "blocked-probe-network";
+  const titleText = probeNetworkBlocked
+    ? t("window.browser.embedProbeNetworkTitle")
+    : title ?? t("window.browser.embedBlockedTitle");
   const actionText = actionLabel ?? t("window.browser.openOriginal");
 
   let host = url;
@@ -36,9 +39,9 @@ export default function EmbedFallback({
       <p className="text-[15px] font-semibold text-[var(--ink)]">{titleText}</p>
       <p className="mt-1 max-w-[320px] text-[12px] leading-relaxed text-[var(--ink-soft)]">
         <span className="font-medium text-[var(--ink)]">{host}</span>{" "}
-        {t("window.browser.embedBlockedBody")}
+        {t(probeNetworkBlocked ? "window.browser.embedProbeNetworkBody" : "window.browser.embedBlockedBody")}
       </p>
-      {reason ? (
+      {reason && !probeNetworkBlocked ? (
         <p className="mt-2 max-w-[320px] text-[11px] leading-relaxed text-[var(--ink-faint)]">{reason}</p>
       ) : null}
 

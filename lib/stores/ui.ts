@@ -7,6 +7,7 @@ import { deriveActiveKeys } from "@/lib/content/categoryKeys";
 import { layoutFlags, resolveLayoutProfile } from "@/lib/content/layoutProfile";
 import type { LayoutRightTab } from "@/lib/content/layoutProfile";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
+import { getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
 
 // 派生而非重复声明：`layoutProfile.ts` 决定每个档位显示哪些右栏 tab，但它不能 import 本文件
 // （会成环 ui → layoutProfile → ui），所以类型的真相源放在那边、这里派生回来。
@@ -36,6 +37,9 @@ export interface OutboundMessage {
   content: string;
   /** 触发发送的递增序号；ChatPanel 监听其变化以发起请求 */
   nonce: number;
+  /** Consistency binding only: a queued selection must not cross an Account owner switch. */
+  ownerId: string | null;
+  ownerEpoch: number;
   /** 记忆闭环第二步：确认后才把 commit 工具交给模型。 */
   memoryCommit?: "note" | "flashcards";
 }
@@ -359,14 +363,17 @@ export const useStore = create<AppState>((set) => ({
   closeLoginOverlay: () => set({ loginOverlayOpen: false }),
 
   outbound: null,
-  sendToChat: (content, opts) =>
+  sendToChat: (content, opts) => {
+    const ownerId = getStorageOwner();
+    const ownerEpoch = getOwnerEpoch();
     set((s) => ({
       rightTab: "ai",
       // 划词 / 建议追问：AI 常驻右栏，中间回到笔记，让用户对照原文看回答。
       centerTab: "notes",
       mobileTab: "ai",
-      outbound: { content, nonce: (s.outbound?.nonce ?? 0) + 1, memoryCommit: opts?.memoryCommit },
-    })),
+      outbound: { content, nonce: (s.outbound?.nonce ?? 0) + 1, ownerId, ownerEpoch, memoryCommit: opts?.memoryCommit },
+    }));
+  },
   clearOutbound: () => set({ outbound: null }),
 
   mobileTab: "detail",
