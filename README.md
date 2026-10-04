@@ -1,5 +1,7 @@
 # 期末复习工作站 · 多学科辅助学习应用
 
+> **当前无人值守上下文与返工交接：** [docs/handoff/README.md](docs/handoff/README.md)。本轮先整理文档；任务按2项主智能体核心＋4项大板块子任务组织，旧技术验收不代表用户可用。
+
 <div align="center">
 
 **由课堂录音逐字稿驱动的深度学习助手**
@@ -9,7 +11,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
 [快速开始](#快速开始) • [功能特性](#功能特性) • [项目架构](#项目架构) • [开发指南](#开发指南) • [贡献指南](#贡献指南)
 
@@ -295,7 +297,7 @@ AI_MODEL_PRO=你的模型id
 
 ## 许可证
 
-本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
+本项目说明采用 MIT 许可证；仓库根目录的许可证原文文件尚缺，待维护者补齐。
 
 ## 致谢
 

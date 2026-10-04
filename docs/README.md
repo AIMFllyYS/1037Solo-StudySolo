@@ -2,9 +2,11 @@
 
 > 本文件是 `docs/` 全站文档的唯一入口。任何人或 AI 智能体想知道"这份东西该写在哪、该去哪找"，先看这一页。
 >
-> **读文档前先分清两类**：本页「现行文档」下的内容是**现在仍然成立**的规范与现状说明，可以直接照做；本页「归档区（RETIRED）」下的内容描述的是**已经不存在的系统**，只能当历史看，**不得当成现状**。
+> **读文档前先分清两类**：本页「现行文档」下的参考仍须与代码和当前交接核实；本轮任务状态只看`handoff/studysolo-workstreams.json`；本页「归档区（RETIRED）」下的内容描述的是**已经不存在的系统**，只能当历史看，**不得当成现状**。
 >
-> 判断某份文档是否已过时，以 [`plans/archive/00-execution-contract.md`](./plans/archive/00-execution-contract.md) 第六节「既成不变量」为准。本轮 Agent 整改入口是 [`plans/Agent-refactor/00-loop-map.md`](./plans/Agent-refactor/00-loop-map.md)。
+> **当前无人值守唯一交接入口：** [`handoff/README.md`](./handoff/README.md)，完整上下文与6个大板块状态见该目录。用户最新反馈优先于旧计划完成标记；当前阶段仅文档整理。
+>
+> 历史工程不变量参考： [`plans/archive/00-execution-contract.md`](./plans/archive/00-execution-contract.md) 第六节「既成不变量」为准。2026-09 Agent工程基线入口是 [`plans/Agent-refactor/00-loop-map.md`](./plans/Agent-refactor/00-loop-map.md)。
 
 ---
 
@@ -12,6 +14,7 @@
 
 | 我想... | 去哪 |
 |---|---|
+| 继续当前无人值守任务、盘点问题、派遣大板块子智能体 | [`handoff/`](./handoff/README.md)，只用当前机器账本判断任务状态 |
 | 了解现在的架构/约定是什么、有哪些不能踩的红线 | [`plans/archive/00-execution-contract.md`](./plans/archive/00-execution-contract.md) 第六节 |
 | 看这一轮 Agent 平台整改做了什么、按哪个 loop 跑 | [`plans/Agent-refactor/00-loop-map.md`](./plans/Agent-refactor/00-loop-map.md) |
 | 按 SOP 生产内容（教材/详解/录音/题目/新学科接入…） | [`sop/`](./sop/README.md) |
@@ -29,6 +32,7 @@
 ```
 docs/
 ├── README.md          ← 你在这里
+├── handoff/              当前完整上下文、唯一任务账本与大板块派遣模板
 ├── plans/                执行计划：Agent-refactor/（现行 loop）+ archive/（历史计划 01–25）
 ├── refer/                权威参考手册（活文档，须与代码一致）
 ├── sop/                  标准操作流程（活文档，13 篇编号 SOP + 新学科接入 + 索引）
@@ -80,7 +84,7 @@ docs/
 
 存放"做一件事的完整任务书"。
 
-- [`Agent-refactor/`](./plans/Agent-refactor/) —— **本轮 Agent 平台整改（现行）**。入口 [`00-loop-map.md`](./plans/Agent-refactor/00-loop-map.md)，可投喂的提示词 [`99-goal-mode-prompt.md`](./plans/Agent-refactor/99-goal-mode-prompt.md)，模型清单 [`MODELS.md`](./plans/Agent-refactor/MODELS.md)（文首标注了部分过时项）。
+- [`Agent-refactor/`](./plans/Agent-refactor/) —— **2026-09 Agent工程基线（本轮不按其旧队列调度）**。入口 [`00-loop-map.md`](./plans/Agent-refactor/00-loop-map.md)，可投喂的提示词 [`99-goal-mode-prompt.md`](./plans/Agent-refactor/99-goal-mode-prompt.md)，模型清单 [`MODELS.md`](./plans/Agent-refactor/MODELS.md)（文首标注了部分过时项）。
 - [`archive/`](./plans/archive/) —— 已完成/被取代的计划与审计（`01`–`25`）。**历史记录，正文里的"过时路径"是历史该有的样子，不要改写**；[`archive/00-execution-contract.md`](./plans/archive/00-execution-contract.md) 第六节是唯一权威的「既成不变量」汇总，**仍然是现行的**。
 - 其余散文件：右栏统一、Agent 左栏与资产、文档阅读器重建、Agent UX 收尾、笔记/闪卡云同步（0005）、昵称（0006）、Classolo/Review 目标进度、登录与人机验证面板改版规划——索引见 [`plans/README.md`](./plans/README.md)。
 
