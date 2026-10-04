@@ -1,0 +1,339 @@
+{
+  "schema_version": 1,
+  "updated_date": "2026-10-04",
+  "current_phase": "documentation_only",
+  "phase_status": "ready_for_handoff",
+  "authoritative_status_document": "docs/handoff/studysolo-workstreams.json",
+  "context_document": "docs/handoff/studysolo-unattended-handoff.md",
+  "latest_user_directive": "今天先整理正确上下文/文档/盘点；未来按大板块派子。Studio顶tab缺右键、原Agent案例须还原、共享引导基于原样式、Review业务/前端接口未通、连接器溢出、基础规范复用优先，暂不打磨UX。",
+  "current_action": "文档整理完成，本阶段不启动产品实现；后续人类任务明确切换执行范围后更新current_phase再派遣。",
+  "next_workstream": null,
+  "implementation_recommendation": "CORE-MCP先分析正常账号/接口/布局，再CORE-SANDBOX最小生产路径；普通模块按完整包排队，不原子化。",
+  "max_concurrent_subagents": 1,
+  "subagent_policy": {
+    "model": "gpt-6-luna",
+    "reasoning_effort": "max",
+    "same_workstream_same_agent_for_fixes": true,
+    "new_agent_only_after_primary_acceptance_of_prior_workstream": true,
+    "core_mcp_and_sandbox_written_by_primary_only": true
+  },
+  "delivery_status": "user_reported_unusable_not_accepted",
+  "verified_source_snapshot": {
+    "master": "b9264be04884b59df71c8adc452dccfed3f4fc9f",
+    "dev": "48b2f83186e5e558aeaee192f2291b884e917683",
+    "tree_equal_when_verified": true,
+    "ci_184": 37181933034,
+    "ci_master": 37182351713,
+    "ci_result": "success",
+    "not_production_acceptance": true
+  },
+  "retained_partial_evidence": [
+    {
+      "scope": "Review一级目录位置",
+      "local_only": true,
+      "source_pr": 184,
+      "does_not_prove": "编辑保存/同步/完整业务",
+      "rework_policy": "保留正确位置，不因整包未过就重建"
+    }
+  ],
+  "credential_audit_snapshot": {
+    "date": "2026-10-04",
+    "github_apps_observed": 1,
+    "github_secrets_observed": 2,
+    "github_private_keys_observed": 3,
+    "extra_consumers_mapped": false,
+    "google_clients_observed": [
+      {
+        "name": "RootSolo",
+        "created_date_shown": "2026-03-29",
+        "existing_before_this_work": true
+      },
+      {
+        "name": "1037Solo Connectors Dev Web",
+        "created_date_shown": "2026-10-03",
+        "new_connector_client": true
+      }
+    ],
+    "no_secret_values_in_ledger": true
+  },
+  "runtime_evidence_snapshot": {
+    "date": "2026-10-04",
+    "connector_health_http": 200,
+    "connection_entry_http": 401,
+    "connection_entry_code": "SESSION_MISSING",
+    "production_verification_complete": false,
+    "inference": "已到登录检查，不代表用户授权成功"
+  },
+  "protected_boundaries": {
+    "vpn_vps_no_deploy_or_changes": "38.47.118.246",
+    "alibaba_budget_total_cny": 100,
+    "alibaba_budget_monthly_cny": 100,
+    "alibaba_api_key_expiry_preserve": "never",
+    "cloud_cli_modes_allowed": [
+      "standalone_agent"
+    ],
+    "preserve_unrelated_dirty_work": true,
+    "no_secret_or_user_content_logs": true,
+    "no_server_or_env_mutations_in_documentation_phase": true
+  },
+  "workstreams": [
+    {
+      "id": "CORE-MCP",
+      "title": "连接器/MCP完整接入与市场基础布局",
+      "owner": "primary",
+      "execution_unit": "whole_workstream",
+      "status": "needs_analysis_and_rework",
+      "user_acceptance": "reported_not_usable_or_not_completed",
+      "assigned_agent": null,
+      "scope": "主本人负责认证、运行时、连接器前端及正式模型调用，包含用户明确反馈的溢出；不得委派核心实现",
+      "code_entrypoints": [
+        "lib/connectors",
+        "app/api/connectors",
+        "app/agent/plugins",
+        "components/agent/plugins",
+        "components/plugins"
+      ],
+      "requirements": [
+        "保留已批准七类服务和Anki导出，Microsoft暂不做；不支持服务不列市场",
+        "同一GitHub App的2个Secret/3把Key需映射实际使用者后收敛，不盲删；Google旧RootSolo与新客户端分清",
+        "正常用户连接按钮/回调/状态/刷新/断连真实可用；不复制开发grant冒充生产",
+        "Agent实际调用官方MCP或原生API，已批准操作范围、权限、确认及幂等链完整",
+        "连接器市场/详情/错误状态长文案、按钮和窄屏无布局溢出，复用现有基础组件",
+        "核查Account身份、生产vault与续期、Zotero正式配置、GoogleTesting边界"
+      ],
+      "acceptance_criteria": [
+        "正常正式账号从连接按钮完成授权并回站显示已连接",
+        "真实Agent最小读取有结果与来源，刷新可继续；无越权",
+        "断连与失效/错误状态明确，确认链可审核",
+        "连接器实际页面基础样式统一且无溢出"
+      ],
+      "excluded_scope": [
+        "不新增未授权提供者/权限",
+        "不让子写核心",
+        "不变更未知旧RootSolo使用者",
+        "不改服务器/VPN"
+      ],
+      "technical_evidence_is_delivery_proof": false,
+      "next_step": "文档阶段结束并收到执行指示后，先复现正常账号连接路径和溢出位置，形成同包根因图",
+      "accepted_source_commit": null,
+      "accepted_runtime_version": null,
+      "acceptance_evidence": []
+    },
+    {
+      "id": "CORE-SANDBOX",
+      "title": "阿里云通用命令、Skills与回收",
+      "owner": "primary",
+      "execution_unit": "whole_workstream",
+      "status": "needs_analysis_and_rework",
+      "user_acceptance": "reported_not_usable_or_not_completed",
+      "assigned_agent": null,
+      "scope": "主本人负责云资源、控制面、隔离、费用、实际Skills和独立Agent生产链",
+      "code_entrypoints": [
+        "lib/sandbox",
+        "app/api/agent",
+        "scripts/sandbox",
+        "instrumentation.ts"
+      ],
+      "requirements": [
+        "仅独立Agent执行，Studio嵌入及其他模式禁止",
+        "正常账号命令与完整Skills实际安装/执行/产物下载闭环",
+        "隔离、用户/对话归属、取消/超时/回收及不确定状态正确",
+        "实际Linux CLI/网络/依赖兼容边界说明，不宣称任意工具皆可",
+        "阿里云本轮/月各100元上限与实际账单核对，永不过期密钥保留"
+      ],
+      "acceptance_criteria": [
+        "正式账号独立Agent实际命令与技能返回可下载产物",
+        "Studio及其他模式执行被拒绝",
+        "用户互不访问控制面/凭证/文件，超时取消与结束回收可核对",
+        "账单和资源归属有可核对证据，非仅结构预算"
+      ],
+      "excluded_scope": [
+        "不委派核心实现",
+        "不连接VPN VPS运行应用",
+        "不放云/账号/数据库/MCP秘密到任务环境",
+        "不超过预算"
+      ],
+      "technical_evidence_is_delivery_proof": false,
+      "next_step": "先核对生产用户身份/模板/接口并选一条最小真实命令和技能流程，保留已正确控制面",
+      "accepted_source_commit": null,
+      "accepted_runtime_version": null,
+      "acceptance_evidence": []
+    },
+    {
+      "id": "UI-DIALOGUE",
+      "title": "共享对话与Agent基础设计统一",
+      "owner": "subagent_gpt-6-luna_max",
+      "execution_unit": "whole_workstream",
+      "status": "needs_analysis_and_rework",
+      "user_acceptance": "reported_not_usable_or_not_completed",
+      "assigned_agent": null,
+      "scope": "同一worker处理共享对话/Studio/独立Agent相关布局和组件，完整保留模块上下文",
+      "code_entrypoints": [
+        "components/workspace/RightAgentHeader.tsx",
+        "components/layout/StudioAgentPanel.tsx",
+        "components/layout/RightPanel.tsx",
+        "components/chat",
+        "components/window",
+        "components/agent",
+        "app/styles/chat-tools.css"
+      ],
+      "requirements": [
+        "Studio右Agent真正顶部会话tab补右键，不能用AgentDockTabs资源菜单代替",
+        "最近3项/刷新/历史恢复/新对话位置按实际入口核对；关tab不删除用户历史",
+        "独立Agent案例恢复本轮修改前认可设计，不保留本轮新SVG风格",
+        "从原案例样式维护共享引导组件，供Studio等复用，场景差异只在数据与回调",
+        "菜单/通知/主题直接复用现有基础；输入提示/初始与回答后追问语义区分",
+        "Agent项目加号、状态点/文字与默认右栏60%基础正确；高级UX/渐变/新动画延期"
+      ],
+      "acceptance_criteria": [
+        "用户指定Studio tab右键操作实际存在且语义正确",
+        "独立Agent原案例还原，Studio同标准组件而非另一套风格",
+        "桌面/窄屏/错误状态基础布局统一，无重复导航或溢出",
+        "正常新对话/切换/关闭/刷新核心流程可用"
+      ],
+      "excluded_scope": [
+        "不重设计用户认可案例",
+        "不改MCP/沙箱核心",
+        "不新造平行菜单/通知系统",
+        "不同时改Review业务或反馈生命周期"
+      ],
+      "technical_evidence_is_delivery_proof": false,
+      "next_step": "确认四种tab不是同一对象；对照7be363e基线与现有菜单/Toast分析，整包实施基础修正",
+      "accepted_source_commit": null,
+      "accepted_runtime_version": null,
+      "acceptance_evidence": []
+    },
+    {
+      "id": "REVIEW-NOTES",
+      "title": "Review完整业务、沉淀/出题和笔记",
+      "owner": "subagent_gpt-6-luna_max",
+      "execution_unit": "whole_workstream",
+      "status": "needs_analysis_and_rework",
+      "user_acceptance": "reported_not_usable_or_not_completed",
+      "assigned_agent": null,
+      "scope": "完整业务和相关笔记/题目模块归同一worker，不能把前端/存储/生成分到不同worker",
+      "code_entrypoints": [
+        "components/review-mode",
+        "lib/review-mode",
+        "components/notes",
+        "components/quiz",
+        "components/chat/ChatQuizCard.tsx",
+        "components/chat/toolCards/createQuizCard.tsx",
+        "lib/stores/userNotes.ts",
+        "lib/stores/noteChangeProposals.ts",
+        "app/api/review"
+      ],
+      "requirements": [
+        "笔记/闪卡/答题/掌握度正常账号完整业务，真实保存与恢复",
+        "分数/原题/错题ID保存，较新正确答案纠正旧错题",
+        "错题诊断/章节题使用实际上下文，自动沉淀/自动出题前端接口真的接上",
+        "一级Sidebar掌握度下笔记树，中心Markdown/右TOC；保留浮窗自有导航",
+        "选区弹窗不透明、面包屑/层级/目录/富文本完整，保存与同步正确",
+        "Class/Review左导航统一，基础设计复用；性能不凭感觉夸大"
+      ],
+      "acceptance_criteria": [
+        "真实出题→答题→评分/错题保存→刷新恢复→掌握度→诊断/章节题",
+        "模型沉淀/出题卡片到实际请求/数据/Review消费可追踪",
+        "真实笔记编辑→保存→刷新/重开→恢复，账号隔离",
+        "目录位置/窄屏/菜单通知符合既有规范，无新平行样式"
+      ],
+      "excluded_scope": [
+        "不新加第二导航",
+        "不全盘重建已正确编辑器",
+        "不改Cloud/MCP核心",
+        "不编辑已应用006迁移或自动导入旧无主数据"
+      ],
+      "technical_evidence_is_delivery_proof": false,
+      "next_step": "画出Review所有入口、实际请求与状态流，复现用户不可用处；保留已修好的一级目录位置",
+      "accepted_source_commit": null,
+      "accepted_runtime_version": null,
+      "acceptance_evidence": []
+    },
+    {
+      "id": "FEEDBACK-ADMIN",
+      "title": "消息反馈与官网主要后台闭环",
+      "owner": "subagent_gpt-6-luna_max",
+      "execution_unit": "whole_workstream",
+      "status": "needs_analysis_and_rework",
+      "user_acceptance": "reported_not_usable_or_not_completed",
+      "assigned_agent": null,
+      "scope": "一worker保留点赞/点踩/举报、前端接口、数据库和Landing管理消费上下文",
+      "code_entrypoints": [
+        "components/chat/ChatFeedbackActions.tsx",
+        "app/api/feedback/chat",
+        "lib/chat",
+        "../1037Solo-LandingPage/app/api/admin/feedback",
+        "../1037Solo-LandingPage/lib",
+        "../1037Solo-LandingPage/frontend"
+      ],
+      "requirements": [
+        "输出复制/点赞/点踩/举报基础动作",
+        "点赞/点踩先记录再弹说明，举报原因提交",
+        "复用现有菜单/弹窗/通知、前端网络接口完整",
+        "正式后台能看到同一用户提交，Account admin权限正确",
+        "跨仓发布需父审，不单发Landing服务器"
+      ],
+      "acceptance_criteria": [
+        "正常消息反馈到真实请求/保存/后台同条记录可见",
+        "非管理员不能读管理记录，用户不能覆盖他人反馈",
+        "取消/重复点击/失败状态正确，基础UI统一",
+        "正式页面端测与实际运行版本对应"
+      ],
+      "excluded_scope": [
+        "不另造菜单/通知",
+        "不修改Landing会员/定价在途内容",
+        "不操作服务器或自行发布",
+        "不改连接器授权核心"
+      ],
+      "technical_evidence_is_delivery_proof": false,
+      "next_step": "核对StudySolo提交和Landing管理adapter实际字段/路由/身份，复现缺失链再整包修复",
+      "accepted_source_commit": null,
+      "accepted_runtime_version": null,
+      "acceptance_evidence": []
+    },
+    {
+      "id": "BROWSER-CLIENTS",
+      "title": "浏览器基础控制与客户端/下载发行",
+      "owner": "subagent_gpt-6-luna_max",
+      "execution_unit": "whole_workstream",
+      "status": "needs_analysis_and_rework",
+      "user_acceptance": "reported_not_usable_or_not_completed",
+      "assigned_agent": null,
+      "scope": "一worker保留Web/native浏览器、手机壳、Electron、签名/发布与Landing下载的完整链",
+      "code_entrypoints": [
+        "components/browser",
+        "electron",
+        "mobile/android",
+        "scripts/performance",
+        "scripts/release",
+        ".github/workflows/client-ci.yml",
+        ".github/workflows/client-release.yml",
+        "../1037Solo-LandingPage/frontend/downloads.ts"
+      ],
+      "requirements": [
+        "浏览器缩放/复位/刷新实际各端生效，不能只看按钮数值",
+        "最新手机外部Web壳真实安装和登录",
+        "最新Electron正常启动、旧数据兼容、用户配置正确",
+        "Windows health timeout先定位真实根因，不延长超时或跳过端测冒充成功",
+        "签名/版本/哈希与真实GitHubRelease、落地页下载、下载后安装闭环"
+      ],
+      "acceptance_criteria": [
+        "实际包启动和关闭重开成功、浏览器native缩放/刷新/复位有证据",
+        "手机安装后正常打开网站和登录",
+        "公开Release与下载页版本/hash/字节一致，下载安装通过",
+        "不含操作者/Provider/Account/OAuth秘密"
+      ],
+      "excluded_scope": [
+        "不修改产品安全保护来迎合测试",
+        "不伪造native/浏览器成功",
+        "不发布失败包",
+        "不改Landing反馈/会员域或Cloud/MCP核心"
+      ],
+      "technical_evidence_is_delivery_proof": false,
+      "next_step": "网页基本业务优先后，沿PR183诊断Windows启动；保留已过Android证据并核对新基线",
+      "accepted_source_commit": null,
+      "accepted_runtime_version": null,
+      "acceptance_evidence": []
+    }
+  ]
+}
