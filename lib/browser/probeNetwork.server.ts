@@ -18,7 +18,12 @@ for (const [address, bits] of [
   ["192.0.0.0", 24], ["192.0.2.0", 24], ["198.18.0.0", 15],
   ["198.51.100.0", 24], ["203.0.113.0", 24], ["224.0.0.0", 4], ["240.0.0.0", 4],
 ] as const) RESERVED.addSubnet(address, bits, "ipv4");
-RESERVED.addSubnet("2001:db8::", 32, "ipv6");
+// Non-global/deprecated special-purpose prefixes (IANA IPv6 registry).
+for (const [address, bits] of [
+  ["64:ff9b:1::", 48], ["100::", 64], ["100:0:0:1::", 64],
+  ["2001:2::", 48], ["2001:10::", 28], ["2001:db8::", 32],
+  ["3fff::", 20], ["5f00::", 16], ["fec0::", 10],
+] as const) RESERVED.addSubnet(address, bits, "ipv6");
 
 export function isPublicProbeAddress(address: string): boolean {
   const version = isIP(address);
