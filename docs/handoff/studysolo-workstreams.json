@@ -5,8 +5,18 @@
   "phase_status": "running",
   "authoritative_status_document": "docs/handoff/studysolo-workstreams.json",
   "context_document": "docs/handoff/studysolo-unattended-handoff.md",
+  "global_memory": {
+    "browser_routing": {
+      "user_confirmed_date": "2026-10-05",
+      "chrome": ["Supabase", "all MCP providers and their authentication/management"],
+      "edge": ["Alibaba Cloud including sandbox and billing", "Baota panel", "RootSolo"],
+      "applies_to": ["primary", "all subagents", "unattended automation", "context recovery"],
+      "replaces": "Earlier Alibaba Cloud on Chrome assumption",
+      "connection_rule": "Resolve family/name/extension identity in each agent's current browser session; numeric browser IDs are not portable between agent sessions; reuse existing signed-in profiles, do not substitute another browser or duplicate authentication."
+    }
+  },
   "latest_user_directive": "2026-10-04人类正式恢复无人值守实现，六个大板块包括MCP和云沙箱全部由GPT-6.1 Sol High子智能体执行，最多一子，主审查真实验收整合。最新补充仅记UI-DIALOGUE待办、现在不插队：Studio右侧Agent顶部会话tab默认最近5条，新建对话固定最左或顶部右侧菜单区，复用现有右键菜单Close Other/Close All；本机登录已由用户完成。此前业务/保护边界保持。",
-  "current_action": "CORE-INTEGRATION代码/本机MCP技术主验收已过：PR187完整CI通过，master ae0b0230/dev b182dd22一致；Shared新canonical合ae63874a。只读live schema/history/budget已核，原允许测试用户7服务native和模型读取过。两本机env仅新增2预算变量，93项production完整文件已准备并主独立parse；DB RPC/import/invoice/真实CLI/正式验收仍pending，不closed。最新人类自行部署，不索要Grok入口；正式健康与marker由502转404未验新版本。按用户外部受阻不阻塞独立任务原则，代码主验收后将下一名SolHigh派UI-DIALOGUE整包，CORE原worker空闲保留，若需恢复核心配置先确保UI停止/完成，最多一子执行。",
+  "current_action": "UI-DIALOGUE同SolHigh worker已实现18文件候选，React36/Node30/模式11/types/相关lint过；原4行案例共享还原、Studio真实会话5/新建固定/菜单/owner隔离与50会话自动删除安全修复等待真实端测和主验，不closed。parent/worker浏览器session的数字ID与tab控制归属不通用，需按自身实时family绑定。主已纠正错误健康URL：源码真实/api/health/connectors/本机及正式均200，正式production/GitHubGoogle配置有效；旧/api/connectors/health/404不作版本或故障证据，release-marker404仍不能核精确SHA。用户自行部署，不索要Grok入口。CORE代码已合/本机7服务模型读取过、93项production env文件准备过，invoice/RPC独立import/真实CLI及正式用户验收pending。最新全局分工：Supabase/MCP用Chrome，阿里/宝塔/RootSolo用Edge；旧Chrome阿里登录要求作废。",
   "next_workstream": "UI-DIALOGUE",
   "implementation_recommendation": "CORE-MCP先分析正常账号/接口/布局，再CORE-SANDBOX最小生产路径；普通模块按完整包排队，不原子化。",
   "max_concurrent_subagents": 1,
@@ -214,7 +224,7 @@
         "不超过预算"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "33文件修复/Node30/React32/types/lint和精确完整CI均已过并合主/dev，停止重做3项修复。下一步：Chrome阿里费用登录完成后核真实invoice/Team/角色/永久key/预算余量；同原CORE worker按已审canonical和独立import候选完善配置，执行前核Shared元数据前提、只应用本次新RPC并准确登记actual history，不重放旧迁移；再配置两新增budget变量并做正常账号CLI/9+17完整Skills/产物鉴权下载/取消超时回收及正式验收。RootSolo live schema/history/budget已核，旧Management403不是当前全面阻碍。invoice未核不新VM/购买，原runId不重置。",
+      "next_step": "33文件修复及完整CI已过并合主/dev，不重做。两budget变量在本机env文件已准备、主单文件parse通过，不重复新增。按最新浏览器规则先在Edge复用已登录阿里云，核真实invoice/Team/角色/永久key/预算余量；旧Chrome费用登录请求已被此规定取代，不要求用户为了阿里云在Chrome重新登录。Supabase只用Chrome，同原core worker恢复时确保单子执行，按审查附录核治理元数据/现场snapshot，再只应用本次新RPC、独立旧reserve导入和准确history，不重放旧迁移；随后正常账号真实CLI/完整9+17 Skills/下载取消超时回收与正式验收。invoice未核不新VM/购买，原runId不重置。",
       "implementation_report": "docs/handoff/workstreams/core-sandbox-2026-10-05.md",
       "candidate_source_commit": "abd46ac89d37d59009a6ee3ecfb147a545f9a940",
       "candidate_pull_request": "https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/187",
