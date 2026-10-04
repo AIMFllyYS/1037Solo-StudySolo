@@ -7,6 +7,7 @@ const read = (path) => readFileSync(resolve(path), "utf8");
 
 test("Android launcher delegates the HTTPS site to Custom Tabs without embedding web auth", () => {
   const activity = read("mobile/android/app/src/main/java/com/solo1037/studysolo/MainActivity.java");
+  const instrumentation = read("mobile/android/app/src/androidTest/java/com/solo1037/studysolo/CustomTabsLaunchTest.java");
   const site = read("mobile/android/app/src/main/java/com/solo1037/studysolo/StudySoloSite.java");
   const manifest = read("mobile/android/app/src/main/AndroidManifest.xml");
   const gradle = read("mobile/android/app/build.gradle");
@@ -24,6 +25,13 @@ test("Android launcher delegates the HTTPS site to Custom Tabs without embedding
   assert.doesNotMatch(baseTheme, /windowLightNavigationBar/);
   assert.match(api27Theme, /style name="AppTheme" parent="AppTheme\.Base"/);
   assert.match(api27Theme, /android:windowLightNavigationBar/);
+  assert.match(instrumentation, /extends Instrumentation\.ActivityMonitor/);
+  assert.match(instrumentation, /instrumentation\.addMonitor\(monitor\)/);
+  assert.match(instrumentation, /capturedIntent = new Intent\(intent\)/);
+  assert.match(instrumentation, /Intent\.ACTION_VIEW\.equals\(intent\.getAction\(\)\)/);
+  assert.match(instrumentation, /StudySoloSite\.START_URL/);
+  assert.doesNotMatch(instrumentation, /new Intent\(Intent\.ACTION_VIEW/);
+  assert.doesNotMatch(`${gradle}\n${instrumentation}`, /espresso-intents|IntentsTestRule/);
 });
 
 test("client CI stays secretless and release signing remains isolated from source builds", () => {
@@ -31,6 +39,7 @@ test("client CI stays secretless and release signing remains isolated from sourc
   const release = read(".github/workflows/client-release.yml");
   const smoke = read("scripts/performance/smoke-packaged-desktop.mjs");
   const tagGuard = read("scripts/release/create-client-release-tag.mjs");
+  const packageJson = JSON.parse(read("package.json"));
   const signStart = release.indexOf("  android-sign:");
   const publishStart = release.indexOf("  upload-draft:");
   assert.ok(signStart >= 0 && publishStart > signStart, "separate signing and upload jobs are required");
@@ -83,17 +92,36 @@ test("client CI stays secretless and release signing remains isolated from sourc
   assert.equal(setupAndroidCount, 3);
   assert.equal(setupAndroidPlatformToolsCount, setupAndroidCount);
 
-  assert.match(smoke, /_electron as electron/);
-  assert.match(smoke, /executablePath:\s*executable/);
-  assert.match(smoke, /getByTestId\("chat-access-notice"\)/);
-  assert.match(smoke, /getByTestId\("center-tab-browser"\)/);
+  assert.equal(packageJson.devDependencies["playwright-core"], undefined);
+  assert.match(smoke, /packaged_desktop_smoke_ci_only/);
+  assert.match(smoke, /spawn\(executable, \["--inspect=0"\]/);
+  assert.match(smoke, /INSPECTOR_URL_RE = \/Debugger listening on \(ws:\\\/\\\/127/);
+  assert.match(smoke, /new WebSocket\(url\)/);
+  assert.match(smoke, /new BoundedLineCollector/);
+  assert.match(smoke, /https\?|wss\?/);
+  assert.match(smoke, /NodeInspectorClient\.connect\(inspectorUrl\)/);
+  assert.doesNotMatch(smoke, /remote-debugging-port|Get-Process|process\.kill/);
+  assert.doesNotMatch(smoke, /net\.createServer|\/json\/version|\/json\/list/);
+  assert.match(smoke, /webContents\.fromId\(/);
+  assert.match(smoke, /executeJavaScript\(/);
+  assert.match(smoke, /Input\.dispatchMouseEvent/);
+  assert.match(smoke, /center-tab-browser/);
+  assert.match(smoke, /chat-access-notice/);
   assert.match(smoke, /getZoomFactor\(\)/);
   assert.match(smoke, /browser-menu-refresh/);
   assert.match(smoke, /browser-zoom-reset/);
-  assert.match(smoke, /\.screenshot\(/);
+  assert.match(smoke, /capturePage\(\)/);
   assert.match(smoke, /app\.quit\(\)/);
+  const stopStart = smoke.indexOf("async function stopOwnedApplication(");
+  const stopEnd = smoke.indexOf("async function runSmoke(", stopStart);
+  const stopBody = smoke.slice(stopStart, stopEnd);
+  const quitAck = stopBody.indexOf("setImmediate(()=>electron.app.quit());return true;");
+  const disconnect = stopBody.indexOf("await inspector.close()", quitAck);
+  const exitWait = stopBody.indexOf("await waitForProcessExit(child, SHUTDOWN_TIMEOUT_MS)");
+  assert.ok(quitAck >= 0 && quitAck < disconnect && disconnect < exitWait, "quit must be acknowledged, debugger disconnected, then exit awaited");
   assert.match(smoke, /const secondRun = await runSmoke\(/);
   assert.match(smoke, /waitForLocalStatus\(null/);
   assert.match(smoke, /taskkill\.exe.*child\.pid/s);
   assert.match(smoke, /userDataPath\.toLowerCase\(\).*expectedUserData\.toLowerCase\(\)/);
+  assert.doesNotMatch(smoke, /playwright-core|electron\.launch\(/);
 });

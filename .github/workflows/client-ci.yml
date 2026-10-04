@@ -9,6 +9,7 @@ on:
       - "scripts/performance/build-desktop-staging.mjs"
       - "scripts/performance/verify-packaged-desktop.mjs"
       - "scripts/performance/smoke-packaged-desktop.mjs"
+      - "scripts/performance/smoke-packaged-desktop.test.mjs"
       - "scripts/release/**"
       - "electron-builder.yml"
       - "electron/README.md"
@@ -25,6 +26,7 @@ on:
       - "scripts/performance/build-desktop-staging.mjs"
       - "scripts/performance/verify-packaged-desktop.mjs"
       - "scripts/performance/smoke-packaged-desktop.mjs"
+      - "scripts/performance/smoke-packaged-desktop.test.mjs"
       - "scripts/release/**"
       - "electron-builder.yml"
       - "electron/README.md"
@@ -65,6 +67,9 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Test packaged UI harness and release contracts
+        run: node --test scripts/performance/smoke-packaged-desktop.test.mjs scripts/release/create-client-build-manifest.test.mjs scripts/release/create-client-release-tag.test.mjs scripts/release/client-source-contract.test.mjs
+
       - name: Build offline search index (BM25)
         run: pnpm build-index --bm25-only
 
@@ -88,9 +93,6 @@ jobs:
           path: artifacts/performance/client-ui-smoke/*
           if-no-files-found: warn
           retention-days: 7
-
-      - name: Test release manifest validation
-        run: node --test scripts/release/create-client-build-manifest.test.mjs scripts/release/create-client-release-tag.test.mjs scripts/release/client-source-contract.test.mjs
 
   android-custom-tabs:
     runs-on: ubuntu-latest

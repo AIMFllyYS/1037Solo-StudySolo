@@ -132,7 +132,6 @@
     "jsdom": "^26.0.0",
     "knip": "^6.34.0",
     "postcss": "^8.5.1",
-    "playwright-core": "1.63.0",
     "remark-rehype": "11.1.2",
     "sharp": "0.34.5",
     "tailwindcss": "^4.0.0",

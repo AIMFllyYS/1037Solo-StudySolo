@@ -46,7 +46,7 @@ pnpm run desktop:dev    # electron . —— 使用当前开发目录打开桌面
 
 ## 备注
 
-- Client CI uses Playwright's Electron API to launch the actual `win-unpacked/StudySolo.exe` under a temporary profile, check guest login and Agent layout, exercise BrowserTab's native webview zoom/reset/refresh against a local StudySolo route, capture screenshots, then close and reopen the app. This verifies the packaged UI and local webview controls; it does not certify compatibility with every public website.
+- Client CI uses a CI-only Node inspector harness to launch the actual `win-unpacked/StudySolo.exe --inspect=0` under a temporary profile. The harness connects only to the loopback inspector URL emitted by that child process, checks guest login and Agent layout, exercises BrowserTab native webview zoom/reset/refresh against local StudySolo content, captures screenshots, then gracefully closes and reopens the app. This verifies the packaged UI and local webview controls; it does not certify compatibility with every public website.
 - Windows CI generates the exact checkout's BM25-only search index before packaging. Offline keyword search is available; no semantic vectors are preinstalled (`vectorCount` is zero). The step uses no embedding/provider key and does not claim vector or hybrid search readiness.
 - Windows EXE 尚未进行代码签名，系统可能提示未知发布者。请只从官方 Release 获取，并核对该 Release 中的 SHA-256；本文不指导绕过系统安全提示。
 - 图标可选：放 `build/icon.ico` 后在 `electron-builder.yml` 取消 `icon` 注释。
