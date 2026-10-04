@@ -123,29 +123,38 @@ export default function MilkdownNoteEditor({
   onChange,
   compact = false,
   onQuote,
+  onChangeGuard,
 }: {
   value: string;
   onChange: (markdown: string) => void;
   compact?: boolean;
   /** 提供时在划词工具栏追加「引用」按钮，参数为当前选中文本。 */
   onQuote?: (text: string) => void;
+  /** Captured when this editor mounts; stale async callbacks must not cross owners. */
+  onChangeGuard?: () => boolean;
 }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const onChangeRef = useRef(onChange);
   const onQuoteRef = useRef(onQuote);
+  const onChangeGuardRef = useRef(onChangeGuard);
+  // The source-mode fallback belongs to the same editor mount as Crepe. Keep
+  // its guard stable if an owner changes before the parent can replace it.
+  const fallbackGuardRef = useRef(onChangeGuard);
   const [failed, setFailed] = useState(false);
   const t = useT();
 
   useEffect(() => {
     onChangeRef.current = onChange;
     onQuoteRef.current = onQuote;
-  }, [onChange, onQuote]);
+    onChangeGuardRef.current = onChangeGuard;
+  }, [onChange, onQuote, onChangeGuard]);
 
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
     let cancelled = false;
     let crepe: Crepe | null = null;
+    const editorGuard = onChangeGuardRef.current;
 
     const boot = async () => {
       try {
@@ -195,7 +204,7 @@ export default function MilkdownNoteEditor({
         });
         crepe.on((listener) => {
           listener.markdownUpdated((_ctx, markdown) => {
-            if (cancelled) return;
+            if (cancelled || (editorGuard && !editorGuard())) return;
             onChangeRef.current(markdown);
           });
         });
@@ -228,7 +237,10 @@ export default function MilkdownNoteEditor({
         value={value}
         spellCheck={false}
         aria-label={t("window.note.common.markdownBody")}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) => {
+          if (fallbackGuardRef.current && !fallbackGuardRef.current()) return;
+          onChange(event.target.value);
+        }}
         onKeyDown={(event: KeyboardEvent<HTMLTextAreaElement>) => keepEditorShortcut(event)}
       />
     );

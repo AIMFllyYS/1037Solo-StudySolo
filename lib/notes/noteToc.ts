@@ -14,21 +14,40 @@ export function parseNoteToc(markdown: string): NoteTocItem[] {
   const items: NoteTocItem[] = [];
   const seen = new Map<string, number>();
   const lines = markdown.split(/\r?\n/);
-  for (let i = 0; i < lines.length; i++) {
-    const match = HEADING_RE.exec(lines[i]);
-    if (!match) continue;
-    const title = stripMdInline(match[2]);
-    if (!title) continue;
-    const level = match[1].length as 1 | 2 | 3;
-    const base = slugHeading(title) || `h${i}`;
+  let fence: { marker: "`" | "~"; length: number } | null = null;
+
+  const pushHeading = (rawTitle: string, level: 1 | 2 | 3, line: number) => {
+    const title = stripMdInline(rawTitle);
+    if (!title) return;
+    const base = slugHeading(title) || `h${line}`;
     const count = (seen.get(base) ?? 0) + 1;
     seen.set(base, count);
-    items.push({
-      id: count === 1 ? base : `${base}-${count}`,
-      level,
-      title,
-      line: i,
-    });
+    items.push({ id: count === 1 ? base : `${base}-${count}`, level, title, line });
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const fenceMatch = /^\s{0,3}(`{3,}|~{3,})/.exec(lines[i]);
+    if (fenceMatch) {
+      const marker = fenceMatch[1][0] as "`" | "~";
+      if (!fence) fence = { marker, length: fenceMatch[1].length };
+      else if (marker === fence.marker && fenceMatch[1].length >= fence.length) fence = null;
+      continue;
+    }
+    if (fence) continue;
+
+    const match = HEADING_RE.exec(lines[i]);
+    if (match) {
+      pushHeading(match[2], match[1].length as 1 | 2 | 3, i);
+      continue;
+    }
+
+    // CommonMark setext headings are also rendered as h1/h2 in the editor.
+    const next = lines[i + 1]?.trim();
+    const setextLevel = next && /^=+\s*$/.test(next) ? 1 : next && /^-+\s*$/.test(next) ? 2 : null;
+    const rawTitle = lines[i].trim();
+    if (setextLevel && rawTitle && !/^[-*_]{3,}$/.test(rawTitle)) {
+      pushHeading(rawTitle, setextLevel, i);
+    }
   }
   return items;
 }
@@ -63,14 +82,18 @@ export function focusMarkdownLine(el: HTMLTextAreaElement, line: number): void {
 }
 
 /** 渲染编辑：按标题文本滚到 Crepe 里对应的 h1–h3。 */
-export function scrollCrepeHeading(root: HTMLElement | null, title: string): boolean {
+export function scrollCrepeHeading(root: HTMLElement | null, title: string, occurrence = 0): boolean {
   if (!root) return false;
-  const headings = root.querySelectorAll("h1, h2, h3");
+  const matches: HTMLElement[] = [];
+  const headings = root.querySelectorAll<HTMLElement>("h1, h2, h3");
   for (const node of headings) {
     if (stripMdInline(node.textContent ?? "") === title) {
-      node.scrollIntoView({ block: "start", behavior: "smooth" });
-      return true;
+      matches.push(node);
     }
   }
-  return false;
+  const target = matches[occurrence];
+  if (!target) return false;
+  const reduceMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  target.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" });
+  return true;
 }
