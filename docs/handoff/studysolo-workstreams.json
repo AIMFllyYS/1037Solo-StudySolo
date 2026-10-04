@@ -143,7 +143,7 @@
         "不改服务器/VPN"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "source06b42d9e的scope修复及CI合同已主审查；更新PR186精确head重跑CI。原worker继续完整CORE-SANDBOX/共享聊天认证联调后，主再验正确5scope授权/模型/刷新断连和正式部署；未完成不closed。",
+      "next_step": "PR186已合master/dev且精确CI及master CI37199394239成功，不重跑旧候选。普通已登录账号独立Agent真实PubMed模型调用已过，原worker补真实工具结果卡JSON外露并继续完整Cloud包；正确5scope私人授权/刷新断连与正式部署仍待验。正式两公开探测目前502，不能当上线。",
       "implementation_report": "docs/handoff/workstreams/core-mcp-2026-10-04.md",
       "candidate_source_commit": "c94778768418355222f0ec92fd112dfa99d76b54",
       "scope_draft_source_commit": "06b42d9e",
@@ -163,7 +163,7 @@
         "parent_invalid_callback_recovery": "fixed_market_notice_and_query_cleared",
         "parent_authenticated_local_google_start": "reached_Google_Testing_warning_after_user_reverification",
         "parent_authenticated_native_public_read": { "pubmed": "passed_with_source", "crossref": "passed_with_source", "not_model_orchestration_proof": true },
-        "parent_authenticated_standalone_model_public_read": "blocked_before_model_by_eager_cloud_REAUTH_REQUIRED",
+        "parent_authenticated_standalone_model_public_read": "passed_after_lazy_action_auth_in_current_uncommitted_source; DeepSeek V4.1 Flash status/discovery/public read returned PMID42825759 and source; web search off/noCLI/no private read; not formal deployment",
         "google_five_scope_draft_after_mfa": "fixed_source_06b42d9e_real_same_account_refresh_reload_new_tab_all_five_preserved_not_second_real_MFA_or_saved_grant",
         "private_user_grant_verified": false,
         "production_deployment_verified": false,
@@ -213,7 +213,7 @@
         "不超过预算"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "整包方案已主审查：非敏感工具装配/按风险动作lazy身份验证、已有资源停止可用、固定产物pending/ready/uncertain和限额、共享预算。worker先可逆代码；统一预算的精确SQL/变量/旧reserve衔接需再给候选，账单未读到前不新建VM或购买，原runId不重置。",
+      "next_step": "原worker完成3项：已知paused不resume、reconciled预算RPC同capacity锁、MCP结果摘要卡；定向测试及报告后主审。DML/env尚未批准。用户纠正MCP/Supabase等已登录在Chrome，RootSolo才用Edge；Cua仅Edge3，直接Chrome unavailable，已请求用户连接Chrome扩展，不再要求Edge重新登录。Edge旧库视图与Ali空壳不是Chrome账号权限/账单证据。Management只读403；账单/schema未核前不新VM/购买，原runId不重置。",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
       "acceptance_evidence": [],
