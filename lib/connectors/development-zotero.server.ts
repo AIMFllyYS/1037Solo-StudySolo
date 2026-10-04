@@ -5,6 +5,7 @@ import { digest, equalDigest, ownerOf, requireDevelopment, developmentAuthorizat
 import { readRecord, writeRecord, claimRecord } from "./development-vault.server";
 import { withLease } from "./persistence.server";
 import { requireConnectorOrigin, ConnectorError, connectorFailure } from "./actor.server";
+import { connectorResponseText, connectorResponseJson } from "./response.server";
 const callbackPath = "/api/connectors/zotero/callback/";
 const cookie = "connector_dev_zotero";
 const headers = { "Cache-Control": "private, no-store", "Referrer-Policy": "no-referrer", "X-Content-Type-Options": "nosniff" };
@@ -12,6 +13,7 @@ const random = () => randomBytes(32).toString("base64url");
 const failure = (code: string, status = 400) => NextResponse.json({ code }, { status, headers });
 const encode = (value: string) => encodeURIComponent(value).replace(/[!'()*]/g, char => `%${char.charCodeAt(0).toString(16).toUpperCase()}`);
 type Pending = { owner: string; state: string; token: string; secret: string; bindingHash: string; expiresAt: number; callback: string };
+type KeyIdentity = { userID?: unknown; access?: { user?: { library?: boolean; notes?: boolean; write?: boolean }; groups?: Record<string, { library?: boolean; write?: boolean }> } };
 
 export function oauth1Header(url: string, clientKey: string, clientSecret: string, extra: Record<string, string>, tokenSecret = "", nonce = random(), timestamp = String(Math.floor(Date.now() / 1000))) {
   const params: Record<string, string> = { oauth_consumer_key: clientKey, oauth_nonce: nonce, oauth_signature_method: "HMAC-SHA1", oauth_timestamp: timestamp, oauth_version: "1.0", ...extra };
@@ -29,8 +31,7 @@ function application() {
 async function exchange(url: string, extras: Record<string, string>, tokenSecret = "") {
   const app = application();
   const response = await fetch(url, { method: "POST", headers: { Authorization: oauth1Header(url, app.key, app.secret, extras, tokenSecret), "Content-Type": "application/x-www-form-urlencoded" }, body: "", redirect: "error", cache: "no-store", signal: AbortSignal.timeout(15000) });
-  if (!response.ok || Number(response.headers.get("content-length") ?? 0) > 16384) throw new Error("zotero_exchange_failed");
-  const raw = await response.text(); if (raw.length > 16384) throw new Error("zotero_exchange_failed");
+  const raw = await connectorResponseText(response, 16384);
   return new URLSearchParams(raw);
 }
 
@@ -44,7 +45,7 @@ export async function zoteroDevelopmentConnect(request: NextRequest) {
     if (!token || !secret || tokens.get("oauth_callback_confirmed") !== "true") throw new Error("zotero_request_token_invalid");
     await writeRecord(`pending:${state}`, { owner, state, token, secret, bindingHash: digest(binding), expiresAt: Date.now() + 600000, callback } satisfies Pending);
     const url = new URL("https://www.zotero.org/oauth/authorize");
-    url.search = new URLSearchParams({ oauth_token: token, name: "1037Solo StudySolo Development", library_access: "1", notes_access: "0", write_access: "0", all_groups: "none" }).toString();
+    url.search = new URLSearchParams({ oauth_token: token, name: origin.startsWith("https:") ? "1037Solo StudySolo" : "1037Solo StudySolo Development", library_access: "1", notes_access: "0", write_access: "0", all_groups: "none" }).toString();
     const response = developmentAuthorizationPage(url, "zotero");
     response.cookies.set(cookie, binding, { httpOnly: true, sameSite: "lax", secure: origin.startsWith("https:"), path: "/api/connectors/zotero/", maxAge: 600 });
     for (const [key, value] of Object.entries(headers)) response.headers.set(key, value);
@@ -78,7 +79,7 @@ export async function zoteroDevelopmentCallback(request: NextRequest) {
     phase = "identity";
     const identityFor = async (key: string) => {
       const response = await fetch("https://api.zotero.org/keys/current", { headers: { "Zotero-API-Key": key, "Zotero-API-Version": "3" }, redirect: "error", cache: "no-store", signal: AbortSignal.timeout(15000) });
-      return { ok: response.ok, identity: await response.json().catch(() => null) };
+      return { ok: response.ok, identity: await connectorResponseJson(response, 16384).catch(() => null) as KeyIdentity | null };
     };
     let checked = await identityFor(accessToken);
     const tokenSecret = tokens.get("oauth_token_secret");
@@ -114,7 +115,7 @@ export async function zoteroDevelopmentReview(request: NextRequest) {
     if (!candidate || candidate.owner !== owner) throw failure("ZOTERO_NO_CANDIDATE", 404);
     const inspect = async (key: string) => {
       const response = await fetch("https://api.zotero.org/keys/current", { headers: { "Zotero-API-Key": key, "Zotero-API-Version": "3" }, redirect: "error", cache: "no-store", signal: AbortSignal.timeout(15000) });
-      return response.ok ? response.json().catch(() => null) : null;
+      return await connectorResponseJson(response, 16384).catch(() => null) as KeyIdentity | null;
     };
     let identity = await inspect(candidate.accessToken);
     if (!identity && candidate.tokenSecret && candidate.tokenSecret !== candidate.accessToken) identity = await inspect(candidate.tokenSecret);
