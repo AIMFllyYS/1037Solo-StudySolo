@@ -1,6 +1,6 @@
 # 期末复习工作站 · 多学科辅助学习应用
 
-> **当前无人值守上下文与返工交接：** [docs/handoff/README.md](docs/handoff/README.md)。本轮先整理文档；任务按2项主智能体核心＋4项大板块子任务组织，旧技术验收不代表用户可用。
+> **当前无人值守上下文与返工交接：** [docs/handoff/README.md](docs/handoff/README.md)。本轮先整理文档；任务按6项大板块均由GPT-6.1 Sol High子智能体执行，主智能体统筹与验收组织，旧技术验收不代表用户可用。
 
 <div align="center">
 

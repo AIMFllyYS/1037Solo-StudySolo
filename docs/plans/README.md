@@ -11,8 +11,8 @@
 | 计划 | 说明 |
 |---|---|
 | [`../handoff/studysolo-unattended-handoff.md`](../handoff/studysolo-unattended-handoff.md) | 当前完整上下文、最新用户要求、代码/接口/复用与边界；不另维护完成表 |
-| [`../handoff/studysolo-workstreams.json`](../handoff/studysolo-workstreams.json) | 唯一当前状态：2项主核心＋4项大板块，现为需返工/未完成用户验收 |
-| [`../handoff/unattended-workstream-template.md`](../handoff/unattended-workstream-template.md) | 一大板块一名Luna Max，完整分析/实施/必要自测/主验收后下一包 |
+| [`../handoff/studysolo-workstreams.json`](../handoff/studysolo-workstreams.json) | 唯一当前状态：6项大板块，统一GPT-6.1 Sol High，现为需返工/未完成用户验收 |
+| [`../handoff/unattended-workstream-template.md`](../handoff/unattended-workstream-template.md) | 一大板块一名GPT-6.1 Sol High，完整分析/实施/必要自测/主验收后下一包 |
 | [`2026-10-02-class-systematic-repair.md`](./2026-10-02-class-systematic-repair.md) | Class全链路修复执行计划：可靠录音与保存、增量导图、学科公式、题答视觉、笔记和移动工作台（进行中） |
 | [`2026-10-02-memory-performance-optimization-spec.md`](./2026-10-02-memory-performance-optimization-spec.md) | 系统内存与性能优化执行规格：会话/存储/资源/检索Worker/同步/内容边界及验收（待实施） |
 | [`agent-right-panel-unification.md`](./agent-right-panel-unification.md) | 右栏统一：现状分析与选型（改造前快照） |
