@@ -37,13 +37,17 @@ python3 scripts/deploy/verify-web-archive.py --reference /private/release-refere
 
 该归档是云运行核心的冻结快照，不包含随后合并的Agent布局，以及还在验收的笔记和客户端修改。最终发布须重新构建最终commit，不能称这份较早归档为全部最新功能。
 
-用户随后确认了独立预检路线。当前已在现有代理VPS的`/opt/studysolo-preview/`上传、二次校验并解包该归档，使用官方SHA验证的独立Node22和项目专用PM2 7.0.4。服务以无交互登录的`studysolo-preview`系统账号运行，只监听`127.0.0.1:35359`；PM2使用独立目录，没有接管其他进程或注册全局启动服务。
+## 已撤回的预检历史
+
+2026-10-04 用户明确该VPS承担VPN且不适合运行应用。专属StudySolo进程、PM2 daemon和SSH forward已停止，配置/日志备份到本机受限目录后，仅本轮新增的`/opt/studysolo-preview`与`/opt/studysolo-runtime`已移除，释放3.98GiB，剩余8.85GiB。VPN/nginx配置未变；active/端口监听不能证明用户VPN客户端可用。禁止再次向此VPS上传、部署或启动StudySolo；后续走用户指定Grok BOT / Notebook Agent，准确网页入口待提供。完整归档与候选配置仍在本机受限目录，正式网站没有切换。以下是撤回前的历史证据，不能作为当前实例运行状态。
+
+曾在现有代理VPS的`/opt/studysolo-preview/`上传、二次校验并解包该归档，使用官方SHA验证的独立Node22和项目专用PM2 7.0.4。服务曾以无交互登录的`studysolo-preview`系统账号运行，只监听`127.0.0.1:35359`；PM2使用独立目录，没有接管其他进程或注册全局启动服务。
 
 实际服务器HTTP验收通过：public版本标记返回上述commit/BUILD_ID，Agent HTML与JS/CSS均200且MIME正确。监听与进程UID核对通过，启动后RSS约153MiB，剩余磁盘约5.61GiB；这些是单次检查，不是并发或性能压测。通过严格SSH的本机回环转发，浏览器也实际渲染了页面。Nginx和sing-box保持active，正式StudySolo站点文件SHA256仍为`7d30ece15c25889e578ad8ad1dc978c9f4a16dc6b6203e96d64e3728a5962dba`，没有正式切换、新增购买或更改反向隧道。
 
 仅新增预检专属`/opt/studysolo-preview/config/runtime.env`：`NODE_ENV`、`NEXT_PUBLIC_APP_URL`、`ACCOUNT_BACKEND_URL`、`ACCOUNT_URL`、`CLOUD_SANDBOX_ENABLED`、`CONNECTOR_ALLOW_PRODUCTION`。当前没有复制运营密钥，两个能力开关为false。初次整段部署脚本被自动策略阻止、没有执行，随后采用独立解包/配置/启动步骤完成；启动时修复了服务账号无法使用root工作目录的问题，没有改成以root运行应用。
 
-预检证明了运行链路，不能当作最终界面发布或认证后的MCP/云执行验收。最终功能提交仍须重新构建、在本实例复验，并在正式切换前核对生产配置与回退点。
+旧预检曾证明该快照的运行链路，不能当作最终界面发布或认证后的MCP/云执行验收。最终功能提交须使用用户既有部署路线验证，并在正式切换前核对生产配置与回退点；不再使用这个已撤回实例。
 
 最终运行配置的候选文件已按白名单准备，数据库固定为当前 RootSolo，Account 与 callback 固定正式 HTTPS 地址，GitHub 私钥使用原有 base64 配置而不携带 Windows 路径。候选只包含数据库、连接器、沙箱和公开地址所需变量，不包含个人开发 grant、AI 运营 key、SMTP 或管理 token。经实时主机／专属站点预检后，已加密传到 `/opt/studysolo-preview/config/runtime-candidate.env`，校验文件一致，root 所有、服务组只读、0640。当前运行的 `runtime.env` 字节保持不变，没有重启或激活；候选 Cloud 与 productionConnector 门禁也仍为 false，没有修改 Windows 全局环境；原有云密钥及永不过期设置保持。
 

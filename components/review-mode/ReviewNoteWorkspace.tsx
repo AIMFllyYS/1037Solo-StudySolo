@@ -222,9 +222,9 @@ function ReviewNoteWorkspace({
           {navigation ? (
             <div className="review-note-empty-toolbar">
               <button
-              type="button"
-              ref={navigationToggleRef}
-              className="review-note-mobile-toggle is-navigation"
+                type="button"
+                ref={navigationToggleRef}
+                className="review-note-mobile-toggle is-navigation"
                 aria-label={navigationOpen ? t("review.notes.hideNavigation") : t("review.notes.showNavigation")}
                 title={navigationOpen ? t("review.notes.hideNavigation") : t("review.notes.showNavigation")}
                 aria-expanded={navigationOpen}
@@ -309,20 +309,22 @@ function ReviewNoteWorkspace({
 
       <section className="review-note-editor-pane" data-testid="review-note-editor">
         <div className="review-note-toolbar">
-          <button
-            type="button"
-            ref={navigationToggleRef}
-            className="review-note-mobile-toggle is-navigation"
-            aria-label={navigationOpen ? t("review.notes.hideNavigation") : t("review.notes.showNavigation")}
-            title={navigationOpen ? t("review.notes.hideNavigation") : t("review.notes.showNavigation")}
-            aria-expanded={navigationOpen}
-            onClick={() => {
-              setTocDrawerOpen(false);
-              setNavigationOpen((open) => !open);
-            }}
-          >
-            <PanelLeft size={15} />
-          </button>
+          {navigation ? (
+            <button
+              type="button"
+              ref={navigationToggleRef}
+              className="review-note-mobile-toggle is-navigation"
+              aria-label={navigationOpen ? t("review.notes.hideNavigation") : t("review.notes.showNavigation")}
+              title={navigationOpen ? t("review.notes.hideNavigation") : t("review.notes.showNavigation")}
+              aria-expanded={navigationOpen}
+              onClick={() => {
+                setTocDrawerOpen(false);
+                setNavigationOpen((open) => !open);
+              }}
+            >
+              <PanelLeft size={15} />
+            </button>
+          ) : null}
           <nav className="review-note-breadcrumb" aria-label={t("review.notes.breadcrumb")}>
             <button
               type="button"
