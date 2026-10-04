@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { before, beforeEach, after, test as nodeTest, type TestContext, type TestOptions } from "node:test";
 import { generateKeyPairSync, sign } from "node:crypto";
+import dns from "node:dns";
 import { runPaidContext } from "@/lib/billing/paidContext";
 import { invalidateQuotaCache } from "@/lib/billing/quotaGate";
 export const fixtureUser = "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee";
@@ -22,6 +23,9 @@ before(async()=>{
 });
 after(()=>{for(const [k,v] of Object.entries(saved)){if(v===undefined)delete process.env[k];else process.env[k]=v;}});
 beforeEach(t=>{
+  // Provider HTTP is intercepted below. Resolve synthetic public names without
+  // touching the machine's DNS; literal/private addresses still fail preflight.
+  t.mock.method(dns.promises, "lookup", async () => [{ address: "8.8.8.8", family: 4 }]);
   fixtureLedger.available=100000000;fixtureLedger.events.length=0;fixtureLedger.seen.clear();fixtureLedger.active=true;fixtureLedger.factors=[];
   invalidateQuotaCache(fixtureUser);
   mockPaidFetch(t as TestContext,async()=>{throw new Error("Provider fetch must be explicitly mocked");});

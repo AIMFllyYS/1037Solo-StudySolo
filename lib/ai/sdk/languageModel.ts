@@ -44,6 +44,7 @@ import {
 } from "@/lib/ai/models";
 import { createFailoverLanguageModel, type FailoverCandidate } from "@/lib/ai/sdk/failoverModel";
 import { createReasoningNormalizingFetch } from "@/lib/ai/sdk/reasoningNormalizer";
+import { createPublicModelFetch } from "./publicModelFetch.server";
 import { repairTextValues } from '@/lib/utils/unicode';
 
 /** openai-compatible 实例统一用这个名字，providerOptions 也用同一个 key（无需按上游区分）。 */
@@ -100,8 +101,12 @@ export function normalizeAnthropicBaseUrl(baseUrl: string): string {
 }
 
 function buildBaseModel(p: ResolvedProvider): LanguageModelV4 {
+  // Website BYOK cannot use DNS rebinding or redirects to reach infrastructure.
+  // The desktop's local server contains user keys only and retains local proxy compatibility.
+  const publicFetch = p.isCustom && process.env.STUDYSOLO_DESKTOP_RUNTIME !== "true"
+    ? createPublicModelFetch(p.baseUrl, p.timeoutMs) : undefined;
   if (p.apiProtocol === "anthropic") {
-    const anthropic = createAnthropic({ baseURL: normalizeAnthropicBaseUrl(p.baseUrl), apiKey: p.apiKey });
+    const anthropic = createAnthropic({ baseURL: normalizeAnthropicBaseUrl(p.baseUrl), apiKey: p.apiKey, ...(publicFetch ? { fetch: publicFetch } : {}) });
     // Anthropic の prompt cache は明示的な cache_control マーカが無いと cache_read が常に 0。
     // トップレベル cache_control は「最後の cacheable ブロックまで」に breakpoint を打つ
     // API 仕様で、system + tools の大きな共有 prefix を吸収する。
@@ -136,7 +141,7 @@ function buildBaseModel(p: ResolvedProvider): LanguageModelV4 {
     includeUsage: true,
     // The built-in gateway is the standard OpenAI-compatible path. Legacy/vendor
     // response normalization belongs only to user-configured direct connections.
-    ...(p.gatewayDefaults ? {} : { fetch: createReasoningNormalizingFetch(p.reasoningField) }),
+    ...(p.gatewayDefaults ? (publicFetch ? { fetch: publicFetch } : {}) : { fetch: createReasoningNormalizingFetch(p.reasoningField, publicFetch) }),
   });
   if (p.gatewayDefaults) return upstream(p.apiModelId);
   return wrapLanguageModel({
