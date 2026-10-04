@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand">#D9542C</color>
+    <color name="ink">#24211F</color>
+    <color name="ink_soft">#655D57</color>
+    <color name="ink_faint">#827A72</color>
+</resources>

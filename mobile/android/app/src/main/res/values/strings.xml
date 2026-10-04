@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StudySolo</string>
+    <string name="open_studysolo">在浏览器中打开 StudySolo</string>
+    <string name="browser_handoff_status">正在使用系统浏览器打开 StudySolo</string>
+    <string name="browser_unavailable_status">无法打开系统浏览器，请安装或启用浏览器后重试。</string>
+    <string name="invalid_site_configuration">站点地址配置无效，无法安全打开。</string>
+    <string name="browser_data_note">登录与学习数据由 StudySolo 网站和系统浏览器处理。应用不会读取或复制浏览器 Cookie、登录令牌或学习资料。</string>
+</resources>

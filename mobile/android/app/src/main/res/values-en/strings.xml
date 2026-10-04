@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StudySolo</string>
+    <string name="open_studysolo">Open StudySolo in your browser</string>
+    <string name="browser_handoff_status">Opening StudySolo in the system browser</string>
+    <string name="browser_unavailable_status">A system browser is unavailable. Install or enable a browser and try again.</string>
+    <string name="invalid_site_configuration">The site address is invalid and cannot be opened safely.</string>
+    <string name="browser_data_note">Sign-in and learning data stay with the StudySolo website and system browser. This app does not read or copy browser cookies, login tokens, or study content.</string>
+</resources>

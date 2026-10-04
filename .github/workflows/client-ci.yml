@@ -1,0 +1,143 @@
+name: StudySolo client CI
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "electron/**"
+      - "mobile/android/**"
+      - "scripts/performance/build-desktop-staging.mjs"
+      - "scripts/performance/verify-packaged-desktop.mjs"
+      - "scripts/performance/smoke-packaged-desktop.mjs"
+      - "scripts/release/**"
+      - "electron-builder.yml"
+      - "electron/README.md"
+      - "docs/sop/06-desktop-packaging-release.md"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/client-ci.yml"
+      - ".github/workflows/client-release.yml"
+  pull_request:
+    branches: [master]
+    paths:
+      - "electron/**"
+      - "mobile/android/**"
+      - "scripts/performance/build-desktop-staging.mjs"
+      - "scripts/performance/verify-packaged-desktop.mjs"
+      - "scripts/performance/smoke-packaged-desktop.mjs"
+      - "scripts/release/**"
+      - "electron-builder.yml"
+      - "electron/README.md"
+      - "docs/sop/06-desktop-packaging-release.md"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/client-ci.yml"
+      - ".github/workflows/client-release.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: studysolo-client-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows-desktop:
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build and statically verify Windows packages
+        run: pnpm run desktop:build
+
+      - name: Verify packaged UI, guest state, BrowserTab zoom, close, and reopen
+        shell: pwsh
+        run: |
+          $report = Get-ChildItem -Path artifacts/performance/desktop-stage-*/build-report.json -File |
+            Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          if (-not $report) { throw "Desktop staging report was not produced" }
+          $packageDir = (Get-Content -LiteralPath $report.FullName -Raw | ConvertFrom-Json).packageDir
+          if (-not $packageDir) { throw "Desktop packageDir missing from staging report" }
+          node scripts/performance/smoke-packaged-desktop.mjs "--root=$packageDir/win-unpacked"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: StudySolo-Desktop-UI-Smoke-${{ github.run_id }}
+          path: artifacts/performance/client-ui-smoke/*
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Test release manifest validation
+        run: node --test scripts/release/create-client-build-manifest.test.mjs scripts/release/create-client-release-tag.test.mjs scripts/release/client-source-contract.test.mjs
+
+  android-custom-tabs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - uses: android-actions/setup-android@v3
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Install Android SDK platform and build tools
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Run Android lint, unit tests, and unsigned release build
+        working-directory: mobile/android
+        run: ./gradlew --no-daemon lint testDebugUnitTest assembleRelease
+
+      - name: Run Custom Tabs intent instrumentation on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          script: cd mobile/android && ./gradlew --no-daemon connectedDebugAndroidTest
+
+      - name: Prepare unsigned Android release artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./package.json').version")"
+          source_sha="$(git rev-parse HEAD)"
+          artifact_dir="$RUNNER_TEMP/studysolo-android"
+          mkdir -p "$artifact_dir"
+          cp "mobile/android/app/build/outputs/apk/release/app-release-unsigned.apk" \
+            "$artifact_dir/StudySolo-android-${version}-unsigned.apk"
+          node scripts/release/create-client-build-manifest.mjs \
+            --platform android --version "$version" --source-sha "$source_sha" --artifact-dir "$artifact_dir"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: StudySolo-Android-unsigned-${{ github.sha }}
+          path: ${{ runner.temp }}/studysolo-android/*
+          if-no-files-found: error
+          retention-days: 7

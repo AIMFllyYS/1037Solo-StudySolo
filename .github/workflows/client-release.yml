@@ -1,0 +1,369 @@
+name: StudySolo client release (draft)
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Release source branch (protected signing environment permits master)
+        type: choice
+        options: [master]
+        default: master
+        required: true
+      release_version:
+        description: Must match package.json at the selected source commit
+        type: string
+        default: "0.6.0"
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: studysolo-client-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    if: github.ref == 'refs/heads/master' && inputs.source_ref == 'master'
+    runs-on: ubuntu-latest
+    outputs:
+      source_sha: ${{ steps.metadata.outputs.source_sha }}
+      version: ${{ steps.metadata.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Validate release source and version
+        id: metadata
+        shell: bash
+        env:
+          EXPECTED_RELEASE_VERSION: ${{ inputs.release_version }}
+        run: |
+          set -euo pipefail
+          source_sha="$(git rev-parse HEAD)"
+          version="$(node -p "require('./package.json').version")"
+          [[ "$source_sha" == "$GITHUB_SHA" ]]
+          [[ "$version" == "$EXPECTED_RELEASE_VERSION" ]]
+          echo "source_sha=$source_sha" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+  windows-build:
+    needs: preflight
+    if: github.ref == 'refs/heads/master' && inputs.source_ref == 'master'
+    runs-on: windows-latest
+    timeout-minutes: 120
+    outputs:
+      source_sha: ${{ needs.preflight.outputs.source_sha }}
+      version: ${{ needs.preflight.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.preflight.outputs.source_sha }}
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install locked dependencies (no release or provider secrets)
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build and statically verify Windows packages
+        run: pnpm run desktop:build
+
+      - name: Smoke packaged app UI, guest state, BrowserTab zoom, close, and reopen
+        shell: pwsh
+        run: |
+          $report = Get-ChildItem -Path artifacts/performance/desktop-stage-*/build-report.json -File |
+            Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          if (-not $report) { throw "Desktop staging report was not produced" }
+          $packageDir = (Get-Content -LiteralPath $report.FullName -Raw | ConvertFrom-Json).packageDir
+          if (-not $packageDir) { throw "Desktop packageDir missing from staging report" }
+          node scripts/performance/smoke-packaged-desktop.mjs "--root=$packageDir/win-unpacked"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: StudySolo-Desktop-UI-Smoke-${{ github.run_id }}
+          path: artifacts/performance/client-ui-smoke/*
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Create versioned Windows build artifact and manifest
+        id: artifact
+        shell: pwsh
+        env:
+          BUILD_VERSION: ${{ needs.preflight.outputs.version }}
+          BUILD_SOURCE_SHA: ${{ needs.preflight.outputs.source_sha }}
+        run: |
+          $version = (node -p "require('./package.json').version").Trim()
+          $sourceSha = (git rev-parse HEAD).Trim()
+          if ($version -ne $env:BUILD_VERSION -or $sourceSha -ne $env:BUILD_SOURCE_SHA) {
+            throw "Windows build source metadata changed after release preflight"
+          }
+          $report = Get-ChildItem -Path artifacts/performance/desktop-stage-*/build-report.json -File |
+            Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          $packageDir = (Get-Content -LiteralPath $report.FullName -Raw | ConvertFrom-Json).packageDir
+          $artifactDir = Join-Path $env:RUNNER_TEMP "studysolo-windows"
+          New-Item -ItemType Directory -Path $artifactDir -Force | Out-Null
+          Copy-Item -LiteralPath (Join-Path $packageDir "StudySolo-setup-$version.exe") -Destination $artifactDir
+          Copy-Item -LiteralPath (Join-Path $packageDir "StudySolo-portable-$version.exe") -Destination $artifactDir
+          node scripts/release/create-client-build-manifest.mjs --platform windows --version $version --source-sha $sourceSha --artifact-dir $artifactDir
+          "source_sha=$sourceSha" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: StudySolo-Windows-${{ steps.artifact.outputs.source_sha }}
+          path: ${{ runner.temp }}/studysolo-windows/*
+          if-no-files-found: error
+          retention-days: 7
+
+  android-build:
+    needs: preflight
+    if: github.ref == 'refs/heads/master' && inputs.source_ref == 'master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    outputs:
+      source_sha: ${{ needs.preflight.outputs.source_sha }}
+      version: ${{ needs.preflight.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.preflight.outputs.source_sha }}
+          persist-credentials: false
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - uses: android-actions/setup-android@v3
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Install Android SDK platform and build tools
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Build and test unsigned Android APK
+        working-directory: mobile/android
+        run: ./gradlew --no-daemon lint testDebugUnitTest assembleRelease
+
+      - name: Run Custom Tabs intent instrumentation on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          script: cd mobile/android && ./gradlew --no-daemon connectedDebugAndroidTest
+
+      - name: Create versioned unsigned APK and manifest
+        id: artifact
+        shell: bash
+        env:
+          BUILD_VERSION: ${{ needs.preflight.outputs.version }}
+          BUILD_SOURCE_SHA: ${{ needs.preflight.outputs.source_sha }}
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./package.json').version")"
+          source_sha="$(git rev-parse HEAD)"
+          [[ "$version" == "$BUILD_VERSION" ]]
+          [[ "$source_sha" == "$BUILD_SOURCE_SHA" ]]
+          artifact_dir="$RUNNER_TEMP/studysolo-android-unsigned"
+          mkdir -p "$artifact_dir"
+          cp "mobile/android/app/build/outputs/apk/release/app-release-unsigned.apk" \
+            "$artifact_dir/StudySolo-android-${version}-unsigned.apk"
+          node scripts/release/create-client-build-manifest.mjs \
+            --platform android --version "$version" --source-sha "$source_sha" --artifact-dir "$artifact_dir"
+          echo "source_sha=$source_sha" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: StudySolo-Android-unsigned-${{ steps.artifact.outputs.source_sha }}
+          path: ${{ runner.temp }}/studysolo-android-unsigned/*
+          if-no-files-found: error
+          retention-days: 7
+
+  android-sign:
+    needs: [preflight, android-build]
+    if: github.ref == 'refs/heads/master' && inputs.source_ref == 'master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: studysolo-client-release
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      source_sha: ${{ steps.signed-metadata.outputs.source_sha }}
+      version: ${{ steps.signed-metadata.outputs.version }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: StudySolo-Android-unsigned-${{ needs.android-build.outputs.source_sha }}
+          path: ${{ runner.temp }}/studysolo-android-unsigned
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install only pinned Android SDK signing tools
+        run: sdkmanager "build-tools;35.0.0"
+
+      - name: Verify source metadata, align, sign, and verify APK
+        id: signed-metadata
+        shell: bash
+        env:
+          EXPECTED_SOURCE_SHA: ${{ needs.preflight.outputs.source_sha }}
+          EXPECTED_VERSION: ${{ needs.preflight.outputs.version }}
+          REQUESTED_VERSION: ${{ inputs.release_version }}
+          STUDYSOLO_ANDROID_KEYSTORE_BASE64: ${{ secrets.STUDYSOLO_ANDROID_KEYSTORE_BASE64 }}
+          STUDYSOLO_ANDROID_STORE_PASSWORD: ${{ secrets.STUDYSOLO_ANDROID_STORE_PASSWORD }}
+          STUDYSOLO_ANDROID_KEY_ALIAS: ${{ secrets.STUDYSOLO_ANDROID_KEY_ALIAS }}
+          STUDYSOLO_ANDROID_KEY_PASSWORD: ${{ secrets.STUDYSOLO_ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          unsigned_dir="$RUNNER_TEMP/studysolo-android-unsigned"
+          manifest="$unsigned_dir/client-build-manifest.json"
+          jq -e --arg sha "$EXPECTED_SOURCE_SHA" --arg version "$EXPECTED_VERSION" \
+            '.platform == "android" and .signed == false and .sourceSha == $sha and .version == $version' \
+            "$manifest" >/dev/null
+          [[ "$EXPECTED_SOURCE_SHA" == "$GITHUB_SHA" ]]
+          [[ "$EXPECTED_VERSION" == "$REQUESTED_VERSION" ]]
+          apk_name="StudySolo-android-${EXPECTED_VERSION}-unsigned.apk"
+          expected_sha="$(jq -r --arg name "$apk_name" '.artifacts[] | select(.name == $name) | .sha256' "$manifest")"
+          actual_sha="$(sha256sum "$unsigned_dir/$apk_name" | cut -d' ' -f1)"
+          [[ -n "$expected_sha" && "$actual_sha" == "$expected_sha" ]]
+
+          sdk_root="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}"
+          [[ -n "$sdk_root" ]]
+          build_tools="$sdk_root/build-tools/35.0.0"
+          keystore="$RUNNER_TEMP/studysolo-release.p12"
+          printf '%s' "$STUDYSOLO_ANDROID_KEYSTORE_BASE64" | base64 --decode > "$keystore"
+          chmod 600 "$keystore"
+          aligned_apk="$RUNNER_TEMP/StudySolo-android-aligned.apk"
+          signed_dir="$RUNNER_TEMP/studysolo-android-signed"
+          mkdir -p "$signed_dir"
+          signed_apk="$signed_dir/StudySolo-android-${EXPECTED_VERSION}.apk"
+          "$build_tools/zipalign" -f -v 4 "$unsigned_dir/$apk_name" "$aligned_apk" >/dev/null
+          "$build_tools/apksigner" sign \
+            --ks "$keystore" \
+            --ks-key-alias "$STUDYSOLO_ANDROID_KEY_ALIAS" \
+            --ks-pass env:STUDYSOLO_ANDROID_STORE_PASSWORD \
+            --key-pass env:STUDYSOLO_ANDROID_KEY_PASSWORD \
+            --out "$signed_apk" "$aligned_apk"
+          "$build_tools/apksigner" verify --verbose "$signed_apk" >/dev/null
+          "$build_tools/zipalign" -c -v 4 "$signed_apk" >/dev/null
+          signed_sha="$(sha256sum "$signed_apk" | cut -d' ' -f1)"
+          signed_bytes="$(stat -c '%s' "$signed_apk")"
+          signed_name="StudySolo-android-${EXPECTED_VERSION}.apk"
+          [[ "$signed_bytes" -gt 0 && "$signed_bytes" -lt 2147483648 ]]
+          [[ "$(basename "$signed_apk")" == "$signed_name" ]]
+          jq --arg name "$(basename "$signed_apk")" --arg sha "$signed_sha" --argjson bytes "$signed_bytes" \
+            '.signed = true | .artifacts = [{name: $name, bytes: $bytes, sha256: $sha}]' \
+            "$manifest" > "$signed_dir/client-build-manifest.json"
+          apk_count="$(find "$signed_dir" -maxdepth 1 -type f -name '*.apk' | wc -l)"
+          [[ "$apk_count" -eq 1 ]]
+          jq -e --arg sha "$EXPECTED_SOURCE_SHA" --arg version "$EXPECTED_VERSION" \
+            --arg name "$signed_name" --arg digest "$signed_sha" --argjson bytes "$signed_bytes" \
+            '.signed == true and .sourceSha == $sha and .version == $version and (.artifacts | length) == 1 and .artifacts[0].name == $name and .artifacts[0].sha256 == $digest and .artifacts[0].bytes == $bytes' \
+            "$signed_dir/client-build-manifest.json" >/dev/null
+          echo "source_sha=$EXPECTED_SOURCE_SHA" >> "$GITHUB_OUTPUT"
+          echo "version=$EXPECTED_VERSION" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: StudySolo-Android-signed-${{ steps.signed-metadata.outputs.source_sha }}
+          path: ${{ runner.temp }}/studysolo-android-signed/*
+          if-no-files-found: error
+          retention-days: 7
+
+  upload-draft:
+    needs: [preflight, windows-build, android-build, android-sign]
+    if: github.ref == 'refs/heads/master' && inputs.source_ref == 'master'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: StudySolo-Windows-${{ needs.windows-build.outputs.source_sha }}
+          path: ${{ runner.temp }}/studysolo-windows
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: StudySolo-Android-signed-${{ needs.android-sign.outputs.source_sha }}
+          path: ${{ runner.temp }}/studysolo-android-signed
+
+      - name: Validate release manifests and create a draft only
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREFLIGHT_SOURCE_SHA: ${{ needs.preflight.outputs.source_sha }}
+          WINDOWS_SOURCE_SHA: ${{ needs.windows-build.outputs.source_sha }}
+          WINDOWS_VERSION: ${{ needs.windows-build.outputs.version }}
+          ANDROID_SOURCE_SHA: ${{ needs.android-sign.outputs.source_sha }}
+          ANDROID_VERSION: ${{ needs.android-sign.outputs.version }}
+          REQUESTED_VERSION: ${{ inputs.release_version }}
+        run: |
+          set -euo pipefail
+          [[ "$PREFLIGHT_SOURCE_SHA" == "$GITHUB_SHA" ]]
+          [[ "$WINDOWS_SOURCE_SHA" == "$PREFLIGHT_SOURCE_SHA" ]]
+          [[ "$ANDROID_SOURCE_SHA" == "$PREFLIGHT_SOURCE_SHA" ]]
+          [[ "$WINDOWS_VERSION" == "$ANDROID_VERSION" ]]
+          [[ "$WINDOWS_VERSION" == "$REQUESTED_VERSION" ]]
+          windows_dir="$RUNNER_TEMP/studysolo-windows"
+          android_dir="$RUNNER_TEMP/studysolo-android-signed"
+          windows_manifest="$windows_dir/client-build-manifest.json"
+          android_manifest="$android_dir/client-build-manifest.json"
+          jq -e --arg sha "$PREFLIGHT_SOURCE_SHA" --arg version "$REQUESTED_VERSION" \
+            '.platform == "windows" and .sourceSha == $sha and .version == $version and .signed == false' \
+            "$windows_manifest" >/dev/null
+          jq -e --arg sha "$PREFLIGHT_SOURCE_SHA" --arg version "$REQUESTED_VERSION" \
+            '.platform == "android" and .sourceSha == $sha and .version == $version and .signed == true' \
+            "$android_manifest" >/dev/null
+
+          windows_assets=()
+          while IFS= read -r name; do
+            expected="$(jq -r --arg name "$name" '.artifacts[] | select(.name == $name) | .sha256' "$windows_manifest")"
+            actual="$(sha256sum "$windows_dir/$name" | cut -d' ' -f1)"
+            [[ -n "$expected" && "$actual" == "$expected" ]]
+            windows_assets+=("$windows_dir/$name")
+          done < <(jq -r '.artifacts[].name' "$windows_manifest")
+          android_name="$(jq -r '.artifacts[0].name' "$android_manifest")"
+          android_expected_sha="$(jq -r '.artifacts[0].sha256' "$android_manifest")"
+          android_actual_sha="$(sha256sum "$android_dir/$android_name" | cut -d' ' -f1)"
+          [[ "$android_actual_sha" == "$android_expected_sha" ]]
+
+          tag="v$REQUESTED_VERSION"
+          node scripts/release/create-client-release-tag.mjs
+
+          notes="$RUNNER_TEMP/StudySolo-RELEASE_NOTES.md"
+          {
+            printf '# StudySolo client v%s\n\n' "$REQUESTED_VERSION"
+            printf 'Source commit: `%s`\n\n' "$PREFLIGHT_SOURCE_SHA"
+            printf 'Android is a Custom Tabs system-browser launcher. It does not claim TWA/DAL verification.\n\n'
+            printf 'First launch does not require an AI Provider key. AI requests need user configuration; cloud features need network access. Windows EXEs are unsigned; verify hashes from this Release and follow local security policy.\n\n'
+            printf '## SHA-256\n\n'
+            jq -r '.artifacts[] | "- \(.name): `\(.sha256)`"' "$windows_manifest"
+            jq -r '.artifacts[] | "- \(.name): `\(.sha256)`"' "$android_manifest"
+          } > "$notes"
+          gh release create "$tag" --repo "$GITHUB_REPOSITORY" --verify-tag \
+            --draft --title "StudySolo client v$REQUESTED_VERSION" --notes-file "$notes" \
+            "${windows_assets[@]}" "$android_dir/$android_name"
