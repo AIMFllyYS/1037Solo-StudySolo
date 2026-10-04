@@ -143,7 +143,7 @@
         "不改服务器/VPN"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "PR186已合master/dev且精确CI及master CI37199394239成功，不重跑旧候选。普通已登录账号独立Agent真实PubMed模型调用已过，原worker补真实工具结果卡JSON外露并继续完整Cloud包；正确5scope私人授权/刷新断连与正式部署仍待验。正式两公开探测目前502，不能当上线。",
+      "next_step": "PR186和PR187均已合，JSON常驻结果卡已修、七服务本机原批准测试账号native和真实model read都过，不重做这些项/不重复OAuth。等人类正式部署完成后核版本和准确API，再核正式常用账号授权/续期/刷新断连；需新增grant才准备同原范围的授权。额外GitHub keys消费者映射仍待审，不能盲撤销。主当前正式接口404，不作已上线。",
       "implementation_report": "docs/handoff/workstreams/core-mcp-2026-10-04.md",
       "candidate_source_commit": "c94778768418355222f0ec92fd112dfa99d76b54",
       "scope_draft_source_commit": "06b42d9e",
@@ -181,7 +181,7 @@
       "title": "阿里云通用命令、Skills与回收",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "candidate_frozen_awaiting_full_ci_and_runtime_acceptance",
+      "status": "code_merged_awaiting_external_configuration_and_runtime_acceptance",
       "user_acceptance": "reported_not_usable_or_not_completed",
       "assigned_agent": "/root/core_mcp_sol_high",
       "scope": "本包子智能体负责云资源、控制面、隔离、费用、实际Skills与独立Agent生产链，允许核心实现和已授权配置；主审查与验收",
@@ -213,7 +213,7 @@
         "不超过预算"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "原worker完成3项：knownID close直接terminate保留durablelog、reconciled预算RPC同capacity锁、MCP结果摘要卡；定向测试/报告后主审，DML/env未执行。Chrome4已恢复，主已在正确RootSolo Pro SQL编辑器只读核对4表RLS/实际ACL/5RPC/7条history和预算：run/month各.3元reserve、70元cap、1条历史reserve/0unreleased、artifact桶private。证据core-sandbox-live-schema/history/budget-2026-10-05.json。旧Management403不是当前全面受阻；不重放旧迁移。Chrome阿里费用入口需本人登录，已请求；invoice尚未核，不新VM/购买，原runId不重置。",
+      "next_step": "33文件修复/Node30/React32/types/lint和精确完整CI均已过并合主/dev，停止重做3项修复。下一步：Chrome阿里费用登录完成后核真实invoice/Team/角色/永久key/预算余量；同原CORE worker按已审canonical和独立import候选完善配置，执行前核Shared元数据前提、只应用本次新RPC并准确登记actual history，不重放旧迁移；再配置两新增budget变量并做正常账号CLI/9+17完整Skills/产物鉴权下载/取消超时回收及正式验收。RootSolo live schema/history/budget已核，旧Management403不是当前全面阻碍。invoice未核不新VM/购买，原runId不重置。",
       "implementation_report": "docs/handoff/workstreams/core-sandbox-2026-10-05.md",
       "candidate_source_commit": "abd46ac89d37d59009a6ee3ecfb147a545f9a940",
       "candidate_pull_request": "https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/187",
