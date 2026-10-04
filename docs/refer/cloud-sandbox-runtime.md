@@ -73,10 +73,10 @@ GitHub仓库公开不等于容器镜像自动公开：[官方Container registry�
 
 本机 `.env.local`启用基础开发运行；本机 `.env.production`仅准备配置、仍关闭。新增/管理的名称为 CLOUD_SANDBOX_ENABLED、REGION、DOMAIN、API_URL、API_KEY、TEMPLATE、APP_ORIGIN、ENCRYPTION_KEY、MONTHLY_BUDGET_CNY、RUN_BUDGET_CNY、BUDGET_RUN_ID、FIXED_COST_CNY、SKILLS_VERSION、SKILLS_TEMPLATE（均带 CLOUD_SANDBOX_前缀）。初次开发配置未更新Windows全局或远端进程环境；随后新增的服务器预检配置见下一段。密钥值不在报告中记录。
 
-随后用户批准的服务器私有预检已启动，详情见[网站发布记录](studysolo-web-release.md)。运行中的`/opt/studysolo-preview/config/runtime.env`只含公共/门禁配置，Cloud与productionConnectors仍false，正式网站没有切换。后续已把严格白名单的密钥候选配置加密传输到独立`runtime-candidate.env`，root所有、服务组只读、0640，校验一致；没有替换当前环境或重启，候选门禁也保持false。Google与GitHub正式回调均经用户现场确认保存并刷新读回，不要求另改本项目env：现有`CONNECTOR_CALLBACK_ORIGIN`与正式域名、`CONNECTOR_DEV_CALLBACK_ORIGIN`与localhost均已核对匹配；Google五项scope与Testing、GitHub原权限与密钥保持，GitHub两条回调的通配匹配均关闭。
+2026-10-04用户指出预检VPS承担VPN后，该私有预检已撤回：专属进程/daemon/SSH forward停止，配置日志本机受限备份后移除仅本轮两个新增目录，释放3.98GiB。正式网站未切换，禁止再次在VPN VPS部署。候选环境与完整Web归档仍保存在本机；正式部署使用用户指定Grok BOT / Notebook Agent，详情见[当前交接](../plans/2026-10-04-current-status-and-deployment-handoff.md)。阿里云沙箱的实际运行不发生在该VPS。Google与GitHub正式回调已现场确认保存并刷新读回，现有callback origin匹配；五项Google scope/Testing、GitHub原权限/密钥不变，两条GitHub回调通配均关闭。
 
 真实OCI验收后，仅将本项目两个env文件中的`CLOUD_SANDBOX_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_VERSION`更新为已验收组合。无关变量逐项保持，旧文件留在受限备份目录；原API key及加密key没有旋转，生产开关保持false。GitHub构建环境Secret是另一受限服务端配置，不是Windows全局变量或EXE内置凭据。
 
 Electron本机服务不会携带操作者密钥。主 Agent请求、命令、产物、Skills及连接操作通过固定受信线上服务处理，仅传当前用户Account authority；用户已选择的BYOK参数保留，桌面配置的用户模型转为同等自备配置。回环/私网自定义模型地址不转发到云端。授权回调在正式网站完成，避免把共享OAuth应用secret塞进EXE。其他模式的常规请求保留既有路径。
 
-发布前仍需完成原生服务正式回调、生产secret注入、最终版本的完整质量门禁、跨仓提交/依赖固定、部署与各客户端实际下载验收。真实渲染镜像、云模板和开发账号的模型调用已完成上述验收。不能把本机配置、真实开发调用或准备好的代码说成已上线。
+发布前仍需完成Zotero正式配置核查、生产secret注入、最终版本质量门禁、跨仓固定、部署及正式每用户授权/调用和客户端下载验收。Google/GitHub正式回调、真实渲染镜像、云模板和开发账号模型调用已经验证。不能把本机配置、真实开发调用或准备好的代码说成已上线。

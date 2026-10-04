@@ -1,6 +1,6 @@
 # 连接器服务端环境配置
 
-更新：2026-10-03。本页说明应用级凭证与运行时环境的配置。环境就绪不等于用户 OAuth 已关联，也不等于 Agent 已获得工具。
+更新：2026-10-04。本页说明应用级凭证与运行时环境的配置。环境就绪不等于用户 OAuth 已关联，也不等于 Agent 已获得工具。当前部署交接与剩余验收见[当前状态](../plans/2026-10-04-current-status-and-deployment-handoff.md)。
 
 后续学习服务选型见 [学习连接器准备规格](../plans/2026-10-03-learning-connectors-preparation-spec.md)。Google 官方也有 Workspace MCP，但当前是有资格与公开使用限制的 Developer Preview；本页配置的是普通 API/OAuth 应用，不能据此声称对应 MCP 组件已启用。Notion / Todoist 官方托管 MCP 的动态注册与用户 token 不要求先加全局个人 API key。
 
@@ -42,7 +42,7 @@ GitHub 私钥同时保留文件备份，环境使用 base64 形式，避免把 W
 
 开发入口：`http://localhost:35349/api/connectors/development/`。需由 RootSolo 启动 Account 与 StudySolo 并登录项目账号。Notion / Todoist 第一次发起授权时按已核实且固定的官方 metadata/DCR 端点注册本机客户端；注册结果加密保存并复用，无需新增全局 token 环境变量。Google / GitHub 复用已有应用环境变量。回调检查 HttpOnly 浏览器绑定、10 分钟 state 有效期、Account UUID 一致性；持久单次消费标记防止重放。令牌只保存于服务端，不进入 HTML、localStorage、工具历史或日志；Next 开发日志忽略带授权码的 callback 请求。
 
-此入口只完成开发认证准备，不包含 Agent 工具调用、自动刷新、生产部署。状态按 access token 是否过期显示；过期需重新授权。续期凭证如 provider 返回则加密保存，尚不自动使用。开发凭证只访问提供者身份信息进行归属确认，不读取笔记、任务、邮件正文或仓库内容。
+开发授权入口负责授权与身份绑定；原生 Agent 工具执行和用户凭证续期由独立运行时负责。`connections.server.ts` 在提供者返回可用 refresh token 时以用户/provider租约续期，缺少续期凭证或提供者拒绝时要求重新授权。身份回调不读取学习正文；随后七类服务已执行最小真实开发读取验收，没有发送邮件或修改真实任务。生产部署和正式用户授权仍未验收。
 
 2026-10-03：Notion、Todoist、Google、GitHub、Zotero 的真实开发回调均已完成，Notion / Todoist / GitHub 的官方 MCP 初始化与工具列表验收通过。当前完整阶段、三个新增变量和限制见 [学习连接器开发认证记录](learning-connector-authentication.md)。
 
@@ -73,7 +73,7 @@ npm run connectors:check -- --live-github
 - GitHub 实际 `GET /app` 返回 200，App ID 与当前登记一致。
 - 35 项相关测试通过，类型检查及新增代码的 ESLint 通过；没有把这些结果当作完整用户 OAuth 或生产部署验证。
 
-当前生产检查返回 `production_not_enabled` 是预期行为。本机开发回调已实现并完成真实授权，但生产启用前还要登记对应 HTTPS callback、准备独立生产应用与数据库 vault、自动续期和 Agent 接入并做生产验收。不能只把开关改为 true 就宣称上线可用。
+2026-10-04 实查正式网站 `/api/connectors` 返回403 / `CONNECTOR_PRODUCTION_DISABLED`。Google与GitHub正式精确HTTPS回调已保存，生产vault、续期及Agent接入代码已实现；这些不等于正式用户授权。Zotero正式配置核查仍待本人登录；Notion/Todoist需正式callback对应的首次DCR及用户授权，Google仍Testing。正式部署、用户登录/连接/最小调用验收未完成，不能只把开关改为true就宣称上线。
 
 已运行的开发服务可能自动重新加载 env；其他运行方式更改 env 后需重启或重新部署。浏览器使用的 `NEXT_PUBLIC_*` 变量会在构建时固化，所以秘密从一开始就不得放进这类变量。
 
