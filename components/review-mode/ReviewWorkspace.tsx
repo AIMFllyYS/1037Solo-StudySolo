@@ -98,9 +98,24 @@ export default function ReviewWorkspace() {
       }).length;
   }, [cardsById, cardOrder, scheduleByCard, now]);
 
-  const sidebarChildren = section === "flashcards" ? (
-      <ReviewFlashcardDecks activeSubject={deckSubject} onSelect={setDeckSubject} />
-    ) : null;
+  const selectNote = useCallback((id: string | null) => {
+    // The library tree remains available below the Review section rail, so a
+    // selection from any section must first return the center pane to notes.
+    setSection("notes");
+    setActiveNoteId(id);
+    if (isMobile) closeMobileSidebar();
+  }, [closeMobileSidebar, isMobile, setActiveNoteId, setSection]);
+
+  const sidebarChildren = (
+    <div className="review-sidebar-library-content" data-testid="review-sidebar-content">
+      <ReviewNotesList activeId={activeNoteId} onSelect={selectNote} />
+      {section === "flashcards" ? (
+        <div className="review-sidebar-decks" data-testid="review-sidebar-decks">
+          <ReviewFlashcardDecks activeSubject={deckSubject} onSelect={setDeckSubject} />
+        </div>
+      ) : null}
+    </div>
+  );
 
   return (
     <div className="relative flex h-full min-h-0 w-full bg-[var(--bg-app)]" data-review-workspace data-mobile-sidebar-open={isMobile && mobileSidebarOpen || undefined}>
@@ -132,7 +147,6 @@ export default function ReviewWorkspace() {
           {section === "notes" && (
             <ReviewNoteEditor
               noteId={activeNoteId}
-              navigation={<ReviewNotesList activeId={activeNoteId} onSelect={setActiveNoteId} />}
               onDeleted={() => setActiveNoteId(null)}
               onCreated={setActiveNoteId}
               onRootClick={() => setActiveNoteId(null)}

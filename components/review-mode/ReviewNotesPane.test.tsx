@@ -120,6 +120,7 @@ describe("ReviewNoteEditor", () => {
       markdown: "# Original body",
     });
     render(<ReviewNoteEditor noteId={id} onDeleted={() => {}} />);
+    expect(screen.queryByRole("button", { name: "显示学科笔记树" })).toBeNull();
     const oldEditor = editorHarness.instances.at(-1);
     expect(oldEditor?.value).toBe("# Original body");
 
