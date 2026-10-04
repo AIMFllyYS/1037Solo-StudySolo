@@ -33,8 +33,8 @@ test("desktop main Agent forwards only Account authority to the fixed online ser
 test("Electron environment never inherits operator cloud or connector secrets", () => {
   const require = createRequire(import.meta.url);
   const { withoutOperatorCredentials } = require("../../electron/serverEnvironment.js") as { withoutOperatorCredentials: (env: Record<string, string>) => Record<string, string> };
-  const stripped = withoutOperatorCredentials({ PATH: "fixture-path", AI_API_KEY: "fixture-user-key", CLOUD_SANDBOX_API_KEY: "private-operator-key", E2B_API_KEY: "private-operator-key", GOOGLE_CONNECTOR_CLIENT_SECRET: "private-operator-secret", SUPABASE_SERVICE_ROLE_KEY: "test", CONNECTOR_TOKEN_ENCRYPTION_KEY: "private-encryption-key" });
-  assert.deepEqual(stripped, { PATH: "fixture-path", AI_API_KEY: "fixture-user-key" });
+  const stripped = withoutOperatorCredentials({ PATH: "fixture-path", AI_API_KEY: "inherited-operator-key", QINIU_API_KEY: "inherited-operator-key", AWS_ACCESS_KEY_ID: "inherited-operator-key", GITHUB_TOKEN: "inherited-token", CLOUD_SANDBOX_API_KEY: "private-operator-key", E2B_API_KEY: "private-operator-key", GOOGLE_CONNECTOR_CLIENT_SECRET: "private-operator-secret", SUPABASE_SERVICE_ROLE_KEY: "test", CONNECTOR_TOKEN_ENCRYPTION_KEY: "private-encryption-key" });
+  assert.deepEqual(stripped, { PATH: "fixture-path" });
 });
 
 test("desktop feedback forwards from other modes without granting them command access", async t => {
