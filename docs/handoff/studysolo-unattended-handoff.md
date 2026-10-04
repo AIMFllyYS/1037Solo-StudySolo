@@ -12,7 +12,7 @@
 
 | 用户明确问题 | 必须落实的范围 |
 |---|---|
-| Studio/主项目右侧Agent顶部tab没有右键菜单 | `StudioAgentPanel` → `RightAgentHeader` 的实际会话条；不是只改独立Agent资源窗口 |
+| Studio/主项目右侧Agent顶部tab显示和菜单 | 最新补充：实际会话条默认仅最近5条，新建对话固定最左或顶部右侧菜单区，复用菜单支持Close Other/Close All；`StudioAgentPanel` → `RightAgentHeader`，不是独立Agent资源窗口。先记录，轮到UI-DIALOGUE再实施 |
 | 独立Agent输入框下的原案例被改坏 | 恢复本轮修改前认可的样式与行为，不再新增SVG卡片等新风格 |
 | Studio新对话指导可以复用 | 从原独立Agent新对话案例样式提取/维护共享组件；场景只更换数据和回调，不能反过来重设计独立Agent |
 | Review/复习业务都未完整跑通 | 笔记、闪卡、答题、掌握度、错题诊断、章节出题逐条完成真实用户业务闭环 |
