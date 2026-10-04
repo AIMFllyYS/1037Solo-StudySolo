@@ -1,6 +1,6 @@
 # 云端命令与学习连接器接入报告
 
-日期：2026-10-04。用户反馈整体不可用；当前范围和用户验收只看[交接](../handoff/studysolo-unattended-handoff.md)与[账本](../handoff/studysolo-workstreams.json)。云沙箱与 MCP 的决策、实现和验收由主智能体完成；普通产品修复每次只有一个 GPT-6 Luna Max 子智能体。
+日期：2026-10-04。用户反馈整体不可用；当前范围和用户验收只看[交接](../handoff/studysolo-unattended-handoff.md)与[账本](../handoff/studysolo-workstreams.json)。此前技术实现由主智能体完成。后续包括MCP与云沙箱的所有板块，统一派GPT-6.1 Sol High子智能体；主智能体统筹与验收，最多一名子执行。
 
 ## 已有代码与历史局部证据（不代表用户交付）
 

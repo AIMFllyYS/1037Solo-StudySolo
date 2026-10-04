@@ -1,21 +1,29 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "updated_date": "2026-10-04",
   "current_phase": "documentation_only",
   "phase_status": "ready_for_handoff",
   "authoritative_status_document": "docs/handoff/studysolo-workstreams.json",
   "context_document": "docs/handoff/studysolo-unattended-handoff.md",
-  "latest_user_directive": "今天先整理正确上下文/文档/盘点；未来按大板块派子。Studio顶tab缺右键、原Agent案例须还原、共享引导基于原样式、Review业务/前端接口未通、连接器溢出、基础规范复用优先，暂不打磨UX。",
+  "latest_user_directive": "最新补充：MCP和云沙箱也交给子智能体；每个板块强制GPT-6.1 Sol High。按完整大板块、最多一子执行，主负责上下文协调审查验收整合。当前仍整理文档，不启动实现。此前UI与业务要求保持。",
   "current_action": "文档整理完成，本阶段不启动产品实现；后续人类任务明确切换执行范围后更新current_phase再派遣。",
   "next_workstream": null,
   "implementation_recommendation": "CORE-MCP先分析正常账号/接口/布局，再CORE-SANDBOX最小生产路径；普通模块按完整包排队，不原子化。",
   "max_concurrent_subagents": 1,
   "subagent_policy": {
-    "model": "gpt-6-luna",
-    "reasoning_effort": "max",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high",
     "same_workstream_same_agent_for_fixes": true,
     "new_agent_only_after_primary_acceptance_of_prior_workstream": true,
-    "core_mcp_and_sandbox_written_by_primary_only": true
+    "mandatory_for_every_workstream": true,
+    "core_mcp_and_sandbox_delegated": true,
+    "fallback_model_allowed": false,
+    "primary_responsibilities": [
+      "上下文与范围协调",
+      "派遣与方案审查",
+      "独立验收",
+      "跨包整合与发布管理"
+    ]
   },
   "delivery_status": "user_reported_unusable_not_accepted",
   "verified_source_snapshot": {
@@ -80,12 +88,12 @@
     {
       "id": "CORE-MCP",
       "title": "连接器/MCP完整接入与市场基础布局",
-      "owner": "primary",
+      "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
       "status": "needs_analysis_and_rework",
       "user_acceptance": "reported_not_usable_or_not_completed",
       "assigned_agent": null,
-      "scope": "主本人负责认证、运行时、连接器前端及正式模型调用，包含用户明确反馈的溢出；不得委派核心实现",
+      "scope": "本包子智能体负责认证、运行时、连接器前端与正式模型调用及溢出修复，允许核心实现和已授权配置；主审查与验收",
       "code_entrypoints": [
         "lib/connectors",
         "app/api/connectors",
@@ -109,7 +117,6 @@
       ],
       "excluded_scope": [
         "不新增未授权提供者/权限",
-        "不让子写核心",
         "不变更未知旧RootSolo使用者",
         "不改服务器/VPN"
       ],
@@ -117,17 +124,20 @@
       "next_step": "文档阶段结束并收到执行指示后，先复现正常账号连接路径和溢出位置，形成同包根因图",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
-      "acceptance_evidence": []
+      "acceptance_evidence": [],
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "high",
+      "reviewer": "primary"
     },
     {
       "id": "CORE-SANDBOX",
       "title": "阿里云通用命令、Skills与回收",
-      "owner": "primary",
+      "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
       "status": "needs_analysis_and_rework",
       "user_acceptance": "reported_not_usable_or_not_completed",
       "assigned_agent": null,
-      "scope": "主本人负责云资源、控制面、隔离、费用、实际Skills和独立Agent生产链",
+      "scope": "本包子智能体负责云资源、控制面、隔离、费用、实际Skills与独立Agent生产链，允许核心实现和已授权配置；主审查与验收",
       "code_entrypoints": [
         "lib/sandbox",
         "app/api/agent",
@@ -148,7 +158,6 @@
         "账单和资源归属有可核对证据，非仅结构预算"
       ],
       "excluded_scope": [
-        "不委派核心实现",
         "不连接VPN VPS运行应用",
         "不放云/账号/数据库/MCP秘密到任务环境",
         "不超过预算"
@@ -157,12 +166,15 @@
       "next_step": "先核对生产用户身份/模板/接口并选一条最小真实命令和技能流程，保留已正确控制面",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
-      "acceptance_evidence": []
+      "acceptance_evidence": [],
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "high",
+      "reviewer": "primary"
     },
     {
       "id": "UI-DIALOGUE",
       "title": "共享对话与Agent基础设计统一",
-      "owner": "subagent_gpt-6-luna_max",
+      "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
       "status": "needs_analysis_and_rework",
       "user_acceptance": "reported_not_usable_or_not_completed",
@@ -201,12 +213,15 @@
       "next_step": "确认四种tab不是同一对象；对照7be363e基线与现有菜单/Toast分析，整包实施基础修正",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
-      "acceptance_evidence": []
+      "acceptance_evidence": [],
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "high",
+      "reviewer": "primary"
     },
     {
       "id": "REVIEW-NOTES",
       "title": "Review完整业务、沉淀/出题和笔记",
-      "owner": "subagent_gpt-6-luna_max",
+      "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
       "status": "needs_analysis_and_rework",
       "user_acceptance": "reported_not_usable_or_not_completed",
@@ -247,12 +262,15 @@
       "next_step": "画出Review所有入口、实际请求与状态流，复现用户不可用处；保留已修好的一级目录位置",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
-      "acceptance_evidence": []
+      "acceptance_evidence": [],
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "high",
+      "reviewer": "primary"
     },
     {
       "id": "FEEDBACK-ADMIN",
       "title": "消息反馈与官网主要后台闭环",
-      "owner": "subagent_gpt-6-luna_max",
+      "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
       "status": "needs_analysis_and_rework",
       "user_acceptance": "reported_not_usable_or_not_completed",
@@ -289,12 +307,15 @@
       "next_step": "核对StudySolo提交和Landing管理adapter实际字段/路由/身份，复现缺失链再整包修复",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
-      "acceptance_evidence": []
+      "acceptance_evidence": [],
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "high",
+      "reviewer": "primary"
     },
     {
       "id": "BROWSER-CLIENTS",
       "title": "浏览器基础控制与客户端/下载发行",
-      "owner": "subagent_gpt-6-luna_max",
+      "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
       "status": "needs_analysis_and_rework",
       "user_acceptance": "reported_not_usable_or_not_completed",
@@ -333,7 +354,11 @@
       "next_step": "网页基本业务优先后，沿PR183诊断Windows启动；保留已过Android证据并核对新基线",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
-      "acceptance_evidence": []
+      "acceptance_evidence": [],
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "high",
+      "reviewer": "primary"
     }
-  ]
+  ],
+  "policy_override": "2026-10-04人类最新指示取代主本人实现CORE及Luna Max的旧规定；归档历史不生效。"
 }
