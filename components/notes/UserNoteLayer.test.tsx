@@ -38,6 +38,7 @@ describe("personal note windows", () => {
     useUserNotes.setState({
       byId: {},
       order: [],
+      libraryRevision: 0,
       openEditorIds: [],
       agentEditingNoteId: null,
       noteAgentOpenIds: [],
@@ -321,6 +322,34 @@ describe("personal note windows", () => {
     fireEvent.click(screen.getByRole("button", { name: "引用到对话" }));
     expect(useChatUI.getState().quotedText).toMatch(/【课堂笔记/);
     expect(useChatUI.getState().quotedText).toMatch(/泊松分布的均值等于方差/);
+  });
+
+  it("opens Review-origin selection notes in the shared tree, editor and outline workspace", () => {
+    const id = createAndOpenClassroomNote({
+      quote: "公开合成 Review 选区",
+      sourceKind: "review",
+      subjectId: "anatomy",
+    });
+    expect(id).toBeTruthy();
+    render(<UserNoteLayer />);
+
+    expect(screen.getByTestId("review-note-workspace")).toBeInTheDocument();
+    expect(screen.getByTestId("year-subject-folder-tree")).toBeInTheDocument();
+    expect(screen.getByTestId("review-note-toc")).toBeInTheDocument();
+    expect(screen.getAllByText("公开合成 Review 选区").length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("keeps Class classroom notes in the compact sticky surface", () => {
+    createAndOpenClassroomNote({
+      quote: "公开合成 Class 课堂摘录",
+      sourceKind: "class",
+      subjectId: "anatomy",
+    });
+    render(<UserNoteLayer />);
+
+    expect(screen.getAllByText("公开合成 Class 课堂摘录").length).toBeGreaterThanOrEqual(2);
+    expect(document.querySelector(".classroom-note")).toBeInTheDocument();
+    expect(screen.queryByTestId("review-note-workspace")).toBeNull();
   });
 
   it("cites a user note into the chat quote tray from the library", () => {

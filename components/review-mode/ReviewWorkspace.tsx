@@ -71,10 +71,7 @@ export default function ReviewWorkspace() {
       }).length;
   }, [cardsById, cardOrder, scheduleByCard, now]);
 
-  const sidebarChildren =
-    section === "notes" ? (
-      <ReviewNotesList activeId={activeNoteId} onSelect={setActiveNoteId} />
-    ) : section === "flashcards" ? (
+  const sidebarChildren = section === "flashcards" ? (
       <ReviewFlashcardDecks activeSubject={deckSubject} onSelect={setDeckSubject} />
     ) : null;
 
@@ -93,7 +90,15 @@ export default function ReviewWorkspace() {
       <main className="min-h-0 min-w-0 flex-1 overflow-hidden">
         {/* 换板块时整块内容淡入微移（与 Studio / Class / Agent 同一套 .ss-view-enter）。 */}
         <div key={section} className="ss-view-enter h-full min-h-0">
-          {section === "notes" && <ReviewNoteEditor noteId={activeNoteId} onDeleted={() => setActiveNoteId(null)} onCreated={setActiveNoteId} />}
+          {section === "notes" && (
+            <ReviewNoteEditor
+              noteId={activeNoteId}
+              navigation={<ReviewNotesList activeId={activeNoteId} onSelect={setActiveNoteId} />}
+              onDeleted={() => setActiveNoteId(null)}
+              onCreated={setActiveNoteId}
+              onRootClick={() => setActiveNoteId(null)}
+            />
+          )}
           {section === "flashcards" && <ReviewFlashcardSession subjectId={deckSubject} />}
           {section === "quiz" && <ReviewQuizPane />}
           {section === "overview" && <ReviewMasteryOverview />}

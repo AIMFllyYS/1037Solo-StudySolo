@@ -11,6 +11,7 @@ interface SubjectPickerMenuProps {
   /** 笔记可回到未归档；闪卡 subjectId 必填，不提供此项。 */
   allowUnfiled?: boolean;
   className?: string;
+  disabled?: boolean;
 }
 
 /** 加号 / 思考菜单同款 AnchoredMenu：点学科标签更换这篇笔记或这张卡的科目。 */
@@ -19,6 +20,7 @@ export default function SubjectPickerMenu({
   onChange,
   allowUnfiled = false,
   className = "user-note-editor-subject",
+  disabled = false,
 }: SubjectPickerMenuProps) {
   const groups = listFlashcardSubjectGroups();
   return (
@@ -27,6 +29,7 @@ export default function SubjectPickerMenu({
       role="menu"
       width={260}
       className={className}
+      disabled={disabled}
       testId="subject-picker"
       triggerData={{ "data-no-drag": "" }}
       trigger={<>{subjectLabel(value)}</>}

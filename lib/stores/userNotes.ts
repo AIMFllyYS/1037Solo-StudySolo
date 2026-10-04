@@ -1,4 +1,5 @@
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
+import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
 import { createPersistedStore } from "@/lib/stores/_persist";
 import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useWindowManager } from "@/lib/stores/windowManager";
@@ -17,6 +18,7 @@ import {
   type UserNoteKind,
 } from "@/lib/notes/userNote";
 import { notifyUserNoteChanged } from "@/lib/notes/userNoteSync";
+import { carryUserNoteSearchFields } from "@/lib/notes/userNoteSearch";
 import { stripUserNoteWindowState } from "@/lib/stores/windowPersist";
 import { useToast } from "@/lib/stores/toast";
 
@@ -28,6 +30,7 @@ import { useToast } from "@/lib/stores/toast";
 // 刷新后重开窗口比恢复一堆空壳窗口更符合预期。
 
 const genId = () => Math.random().toString(36).slice(2, 11);
+const NOTE_LIBRARY_REFRESH_MS = 500;
 
 /** 笔记正文/标题/学科的增量补丁。 */
 export interface UserNotePatch {
@@ -59,6 +62,8 @@ interface UserNotesState {
   byId: Record<string, UserNote>;
   /** 创建顺序（旧 → 新）。 */
   order: string[];
+  /** Non-persistent list/search revision; content edits are throttled to keep the tree responsive. */
+  libraryRevision: number;
   /** 已打开的编辑器窗口对应的笔记 id（可多开）。 */
   openEditorIds: string[];
   /** 本轮打开期间改过标题/正文/学科的编辑窗。不持久化；关窗时提示一次。 */
@@ -80,6 +85,9 @@ interface UserNotesState {
   /** IndexedDB 异步水合完成标志。 */
   _hasHydrated: boolean;
   _setHasHydrated: (v: boolean) => void;
+  /** Non-persistent owner epoch whose note partition finished hydration. */
+  _hydratedOwnerEpoch: number;
+  _setHydratedOwnerEpoch: (epoch: number) => void;
 
   /** 新建一篇笔记（不开窗），返回笔记 id。可带入 Agent 沉淀的短提纲。无 init 时正文空白。 */
   createNote: (subjectId: string | null, init?: CreateUserNoteInit) => string;
@@ -150,6 +158,22 @@ function stickyNoteGeometry(anchor?: { x: number; y: number }) {
   return { pos: { x, y }, size: { width, height } };
 }
 
+/** Review-origin classroom notes use the full workspace; other classroom notes remain sticky. */
+function reviewSelectionNoteGeometry(anchor?: { x: number; y: number }) {
+  if (typeof window === "undefined") {
+    return { pos: { x: 40, y: 48 }, size: { width: 1120, height: 760 } };
+  }
+  const width = Math.max(240, Math.min(1240, window.innerWidth - 32));
+  const height = Math.max(240, Math.min(820, window.innerHeight - 32));
+  const x = anchor
+    ? Math.min(Math.max(Math.round(anchor.x - width / 2), 16), Math.max(16, window.innerWidth - width - 16))
+    : Math.max(16, Math.floor((window.innerWidth - width) / 2));
+  const y = anchor
+    ? Math.min(Math.max(Math.round(anchor.y - height * 0.42), 16), Math.max(16, window.innerHeight - height - 16))
+    : Math.max(16, Math.floor((window.innerHeight - height) / 2));
+  return { pos: { x, y }, size: { width, height } };
+}
+
 function editorWindowGeometry(openCount: number) {
   if (typeof window === "undefined") {
     return { pos: { x: 40, y: 72 }, size: { width: 900, height: 680 } };
@@ -190,6 +214,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
   (set, get) => ({
     byId: {},
     order: [],
+    libraryRevision: 0,
     openEditorIds: [],
     dirtyEditorIds: [],
     agentEditingNoteId: null,
@@ -227,6 +252,8 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     librarySubjectId: null,
     _hasHydrated: false,
     _setHasHydrated: (v) => set({ _hasHydrated: v }),
+    _hydratedOwnerEpoch: -1,
+    _setHydratedOwnerEpoch: (epoch) => set({ _hydratedOwnerEpoch: epoch }),
 
     createNote: (subjectId, init) => {
       const id = genId();
@@ -246,7 +273,11 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
         quote,
         source: init?.source,
       };
-      set((s) => ({ byId: { ...s.byId, [id]: note }, order: [...s.order, id] }));
+      set((s) => ({
+        byId: { ...s.byId, [id]: note },
+        order: [...s.order, id],
+        libraryRevision: s.libraryRevision + 1,
+      }));
       notifyUserNoteChanged(id, "upsert");
       return id;
     },
@@ -254,7 +285,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     ensureExampleNote: () => {
       const seeded = seedExampleNoteIfEmpty(get().byId, get().order);
       if (!seeded) return get().byId[EXAMPLE_USER_NOTE_ID]?.id ?? null;
-      set(seeded);
+      set((s) => ({ ...seeded, libraryRevision: s.libraryRevision + 1 }));
       notifyUserNoteChanged(EXAMPLE_USER_NOTE_ID, "upsert");
       return EXAMPLE_USER_NOTE_ID;
     },
@@ -284,9 +315,13 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
         return;
       }
 
-      const next: UserNote = { ...prev, title, markdown, subjectId, quote, source, updatedAt: Date.now() };
+      const now = Date.now();
+      const next: UserNote = { ...prev, title, markdown, subjectId, quote, source, updatedAt: now };
+      carryUserNoteSearchFields(prev, next);
+      const forceLibraryRefresh = patch.title !== undefined || subjectId !== prev.subjectId;
       set((s) => ({
         byId: { ...s.byId, [id]: next },
+        ...(forceLibraryRefresh ? { libraryRevision: s.libraryRevision + 1 } : {}),
         dirtyEditorIds:
           s.openEditorIds.includes(id) && !(s.dirtyEditorIds ?? []).includes(id)
             ? [...(s.dirtyEditorIds ?? []), id]
@@ -314,6 +349,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
         return {
           byId,
           order: s.order.filter((x) => x !== id),
+          libraryRevision: s.libraryRevision + 1,
           openEditorIds: s.openEditorIds.filter((x) => x !== id),
           dirtyEditorIds: (s.dirtyEditorIds ?? []).filter((x) => x !== id),
           noteAgentOpenIds: s.noteAgentOpenIds.filter((x) => x !== id),
@@ -334,9 +370,12 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
         else manager.bringToFront(winId);
       } else {
         const classroom = isClassroomNote(note);
-        const { pos, size } = classroom
-          ? stickyNoteGeometry(opts?.anchor)
-          : editorWindowGeometry(get().openEditorIds.length);
+        const reviewSelection = classroom && note.source?.kind === "review";
+        const { pos, size } = reviewSelection
+          ? reviewSelectionNoteGeometry(opts?.anchor)
+          : classroom
+            ? stickyNoteGeometry(opts?.anchor)
+            : editorWindowGeometry(get().openEditorIds.length);
         manager.openWindow({
           id: winId,
           type: "user-note-editor",
@@ -415,7 +454,52 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
       if (!state.noteAgentSessionById) state.noteAgentSessionById = {};
       stripUserNoteWindowState(state);
       state._setHasHydrated(true);
+      state._setHydratedOwnerEpoch(getOwnerEpoch());
       state.ensureExampleNote();
     },
   },
 );
+
+// Keep lists/search results in sync with remote note merges and other store
+// writers, while limiting body-only refreshes to a small cadence during typing.
+let pendingLibraryRefresh: ReturnType<typeof setTimeout> | null = null;
+let pendingLibraryOwnerEpoch: number | null = null;
+let pendingLibraryOwner: string | null = null;
+
+function cancelPendingLibraryRefresh(): void {
+  if (pendingLibraryRefresh) clearTimeout(pendingLibraryRefresh);
+  pendingLibraryRefresh = null;
+  pendingLibraryOwnerEpoch = null;
+  pendingLibraryOwner = null;
+}
+
+function scheduleLibraryRefresh(): void {
+  const owner = getStorageOwner();
+  const ownerEpoch = getOwnerEpoch();
+  if (pendingLibraryRefresh) clearTimeout(pendingLibraryRefresh);
+  pendingLibraryOwner = owner;
+  pendingLibraryOwnerEpoch = ownerEpoch;
+  pendingLibraryRefresh = setTimeout(() => {
+    pendingLibraryRefresh = null;
+    const scheduledOwner = pendingLibraryOwner;
+    const scheduledEpoch = pendingLibraryOwnerEpoch;
+    pendingLibraryOwner = null;
+    pendingLibraryOwnerEpoch = null;
+    if (getStorageOwner() !== scheduledOwner || getOwnerEpoch() !== scheduledEpoch) return;
+    useUserNotes.setState((state) => ({ libraryRevision: state.libraryRevision + 1 }));
+  }, NOTE_LIBRARY_REFRESH_MS);
+}
+
+useUserNotes.subscribe((state, previous) => {
+  if (state.byId === previous.byId) return;
+  if (state.libraryRevision !== previous.libraryRevision) {
+    // A title/subject/create/delete change has already invalidated the list.
+    // Cancel any pending body-only refresh so it cannot cause a duplicate pass.
+    cancelPendingLibraryRefresh();
+    return;
+  }
+  // One trailing timer coalesces local typing and also indexes remote merges.
+  scheduleLibraryRefresh();
+});
+
+onStorageOwnerChange(() => cancelPendingLibraryRefresh());

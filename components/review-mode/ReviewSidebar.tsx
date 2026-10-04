@@ -16,8 +16,8 @@ const SECTION_ORDER: { id: ReviewSection; icon: typeof NotebookPen; labelKey: st
 /**
  * Review 模式左侧栏：与 SubjectSidebar / AgentConversationSidebar 同一套视觉语言
  * （var(--bg-panel) 面板、var(--accent-weak) 选中态、可收起）。
- * 收起后只留图标列；每个板块的二级内容（笔记列表 / 闪卡按科 / 出题入口）由各面板在
- * 中心区自绘，这里只承担一级板块切换 + 待复习计数。
+ * 收起后只留图标列。笔记树属于三栏文档工作区；闪卡的学科列表可通过 children 放在这里。
+ * 这里主要承担一级板块切换 + 待复习计数。
  */
 export default function ReviewSidebar({
   active,
@@ -32,7 +32,7 @@ export default function ReviewSidebar({
   collapsed: boolean;
   onToggleCollapse: () => void;
   dueCount: number;
-  /** 展开态时，选中板块的二级列表（如笔记列表）渲染在导航下方。 */
+  /** 展开态时，选中板块的辅助列表（当前用于闪卡学科）。 */
   children?: React.ReactNode;
 }) {
   const t = useT();
