@@ -24,7 +24,7 @@ BM25/向量；未选学科路由、正文与导航入口不可用。构建不复
 ## 架构速览
 
 - **运行模型**：Electron 主进程 `spawn` 内置的 Next standalone 服务（`ELECTRON_RUN_AS_NODE=1`，用 Electron 自带 Node 跑 `server.js`），再开 BrowserWindow 指向 `127.0.0.1:PORT`。
-- **密钥模型**：3 个 API Key（硅基流动必填、小米/智谱可选）**用户首启填写**，`safeStorage`(Windows DPAPI) 加密存 `userData/keys.enc`，**绝不进包**；非密配置（BASE_URL/模型名/CDN）烘焙在 `electron/config.js`。
+- **配置模型**：首次启动不要求录入 AI Provider 密钥；无 AI 配置时，模型请求显示正常的未配置错误，正文、笔记和 Account 登录不受影响。用户自有配置通过主进程加密保存在固定的历史 Gailvlun userData 路径；构建不得注入 provider/account/运营密钥。云能力由固定远端 bridge 提供并需要网络，不宣称全部离线。
 - **关键文件**：`scripts/performance/build-desktop-staging.mjs`(当前构建编排)、`scripts/performance/runtime-asset-inventory.ts`(白名单)、`electron-builder.yml`(模板)、`electron/main.js`(主进程)、`electron/config.js`(烘焙非密配置)、`next.config.mjs`(`BUILD_STANDALONE` 开关)。
 
 ## 输入物料
@@ -64,8 +64,8 @@ BM25/向量；未选学科路由、正文与导航入口不可用。构建不复
 
 ### 不变量 3：密钥绝不进包，公开发布前必扫描
 
-3 个 API Key 用户首启填、DPAPI 加密存 userData。**发布到公开仓库 Release 前必须**：
-- 扫产物无密钥：`find dist-desktop/win-unpacked -iname "*.env*" -o -iname "keys.enc"`（应空）。
+用户配置只保存在本机 DPAPI 加密数据目录。**发布到公开仓库 Release 前必须**：
+- 扫产物无敏感配置：在 `dist-desktop-staged-<id>/win-unpacked` 中搜索 `*.env*`、`keys.enc` 与 `custom-api-secrets.enc`（应空）。
 - 扫 standalone 无明文密钥：grep `sk-` / `AI_API_KEY=` / `Bearer <token>`（应空）。
 - 确认 `electron/config.js` 只放**非密** URL/模型名。
 
@@ -92,14 +92,13 @@ pnpm run desktop:build
 `artifacts/performance/package-online-check.json` 或 `package-offline-check.json`。
 `packaged=true` 且 `perf:package-check` 退出 0 才是包内结构通过；真实启动仍单独验收。
 
-### Step 2 — 产物定身验证（最确凿）
-```bash
-ls -la dist-desktop-staged-<id>/*.exe           # 使用刚返回的 packageDir
-# 直接启动「打包产物」里的 standalone，确认能服务：
-node -e '...spawn <packageDir>/win-unpacked/resources/standalone/server.js, 轮询 / 期望 200...'
-ls <packageDir>/win-unpacked/resources/standalone/node_modules/next/package.json   # 应存在
-```
-> 经验：仅验源 standalone 不够——一定要验**打包后**那份（exe 里真正要跑的），本会话两次靠它发现问题。
+### Step 2 — 产物定身与真实启动验证（最确凿）
+
+1. 使用构建 JSON 中的 `packageDir` 核对两个 `StudySolo-*.exe`、包内 `server.js`、`node_modules/next/package.json`、Worker 与索引。
+2. 使用 Playwright Electron API 在干净 Windows CI profile 中隔离 `APPDATA`、`LOCALAPPDATA`、`TEMP`，直接启动真实 `win-unpacked/StudySolo.exe`。检查 `/agent` 的登录提示、无 guest Stop 按钮和默认约 60% dock，截图上传为 CI artifact；从 BrowserTab 打开本机 StudySolo 测试路径，验证 Electron `<webview>` 原生缩放、100% 重置和菜单刷新。随后调用 app quit、确认本地端口释放，并以同一隔离 profile 关闭后重开；userData 必须落到临时根下的 `Gailvlun`，不得读取或复制真实用户目录。
+3. 空白 profile 不注入 key；首屏可以打开，AI 未配置时应显示普通配置错误。Provider call、Account operator key 和云凭据均不得进入构建或 smoke job。
+
+仅检查独立 `server.js` 不足以代替这项 Electron 启动测试。
 
 ### Step 3 — 安全扫描（公开发布前强制，见不变量 3）
 
@@ -111,29 +110,24 @@ git push origin master && git push origin vX.Y.Z
 ```
 
 ### Step 5 — 校验值（业界规范）
-```bash
-sha256sum dist-desktop/Gailvlun-setup-X.Y.Z.exe dist-desktop/Gailvlun-portable-X.Y.Z.exe
-```
-记录两个 SHA256，写进 Release notes。
+
+从本次构建 manifest 记录两个 Windows EXE 与 Android APK 的实际字节数和 SHA-256。Android release APK 在隔离签名 job 中完成 `zipalign`/`apksigner` 后重新计算哈希；不要用未签名 APK 的哈希冒充下载资产哈希。
 
 ### Step 6 — Release Notes
-写 `dist-desktop/RELEASE_NOTES.md`（该目录 gitignored），按**附录模板**填：简介 / 下载选择表 / 系统要求 / 首次填 3 密钥(加密本地·不进包) / 未签名 SmartScreen 提示 / 功能亮点 / 修订记录 / SHA256。
+Release job 应先生成待审草稿，按**附录模板**填：简介 / 下载选择表 / 系统要求 / 首启与未配置 AI 的说明 / 未签名校验说明 / 功能亮点 / 修订记录 / SHA256。文件名、大小、哈希必须来自本次构建 manifest。
 
 ### Step 7 — 发布
 ```bash
-# 新建：
-gh release create vX.Y.Z --target master --title "Gailvlun 桌面版 vX.Y.Z（Windows）" --notes-file dist-desktop/RELEASE_NOTES.md
-# 原地更新（已存在的 release）：
-gh release edit vX.Y.Z --notes-file dist-desktop/RELEASE_NOTES.md
-# 上传资源（2.3GB+，务必后台跑）：
-gh release upload vX.Y.Z dist-desktop/Gailvlun-setup-X.Y.Z.exe dist-desktop/Gailvlun-portable-X.Y.Z.exe --clobber
+# v0.6.0 使用新 tag，不覆盖或移动既有 v0.5.1。
+# workflow_dispatch 默认 master；构建产物的 source SHA/version 不一致时拒绝签名或上传。
+# Android 签名与无签名 secret 的 Release 上传分 job；先上传 draft，由发布负责人手动公开。
 ```
 
 ### Step 8 — 发布后验证
 ```bash
 gh release view vX.Y.Z --json assets -q '.assets[] | "\(.name) \(.size) \(.updatedAt)"'
 ```
-确认两个 exe **大小=本地、updatedAt 新**。
+确认两个 EXE 与签名 APK 的资产名称、文件字节数、更新时间和哈希与本次 manifest 一致。Release 发布负责人应把 Windows 安装 EXE 与签名 APK 下载到受限客户端目录并完整复算 SHA-256；不能把 HTTP Range 检查当作完整下载验收。
 
 ---
 
@@ -151,11 +145,12 @@ gh release view vX.Y.Z --json assets -q '.assets[] | "\(.name) \(.size) \(.updat
 
 | 文件 | 路径 | 大小 | 说明 |
 |------|------|------|------|
-| 安装版 | `dist-desktop/Gailvlun-setup-X.Y.Z.exe` | ~1.5 GB | NSIS，装一次秒启，**日常推荐** |
-| 便携版 | `dist-desktop/Gailvlun-portable-X.Y.Z.exe` | ~800 MB | 自解压到 `%TEMP%`，每次启动慢/脆，次选 |
-| 解包目录 | `dist-desktop/win-unpacked/` | — | 验证用，不分发 |
+| 安装版 | `dist-desktop-staged-<id>/StudySolo-setup-X.Y.Z.exe` | 以本次构建 manifest 为准 | NSIS per-user 安装版 |
+| 便携版 | `dist-desktop-staged-<id>/StudySolo-portable-X.Y.Z.exe` | 以本次构建 manifest 为准 | 便携单文件 |
+| Android | `StudySolo-android-X.Y.Z.apk` | 以本次构建 manifest 为准 | Custom Tabs 外部浏览器壳 |
+| 解包目录 | `dist-desktop-staged-<id>/win-unpacked/` | — | 验证用，不分发 |
 
-`dist-desktop/` 已 `.gitignore`，exe 不进 git。
+`dist-desktop-staged-*/` 已 `.gitignore`，安装包不进 git。
 
 ## 常见故障速查（本项目实测）
 
@@ -176,7 +171,7 @@ gh release view vX.Y.Z --json assets -q '.assets[] | "\(.name) \(.size) \(.updat
 | `scripts/performance/build-desktop-staging.mjs` | 当前端到端构建（新stage、白名单、实体依赖、包内静态检查） |
 | `scripts/build-desktop.mjs` | 旧实现，默认禁用；保留供历史事故对照 |
 | `electron-builder.yml` | **extraResources 两条目（关键）**、portable+nsis target、asar |
-| `electron/main.js` | spawn standalone、首启密钥门、`webviewTag`、启动诊断（子进程提前退出带 stderr 立即 reject） |
+| `electron/main.js` | spawn standalone、环境变量隔离、旧 userData 路径兼容、`webviewTag`、启动诊断（子进程提前退出带 stderr 立即 reject） |
 | `electron/config.js` | 烘焙非密配置（改端点/模型在此，**勿放密钥**） |
 | `next.config.mjs` | `BUILD_STANDALONE=1` 才产出 standalone（Web/EdgeOne 构建不受影响） |
 
@@ -192,29 +187,31 @@ gh release view vX.Y.Z --json assets -q '.assets[] | "\(.name) \(.size) \(.updat
 ## 附录：Release Notes 模板
 
 ```markdown
-**Gailvlun · 期末复习工作站** 的 Windows 桌面版。多学科学习应用（笔记/正文、AI 助教、Manim 视频、交互演示、内置浏览器、题库），本地离线使用，功能与网页版一致。
+**StudySolo · 多学科辅助学习** 客户端。正文与本机笔记可使用；AI 请求需有用户配置的 Provider，云能力需联网，不宣称所有能力离线可用。
 
 ## 下载
 | 文件 | 适合 | 大小 |
 |---|---|---|
-| **Gailvlun-setup-X.Y.Z.exe** | 多数用户（安装版，秒启） | ~1.5 GB |
-| **Gailvlun-portable-X.Y.Z.exe** | 免安装（单文件，启动稍慢） | ~800 MB |
+| **StudySolo-setup-X.Y.Z.exe** | 多数 Windows 用户（安装版） | 以 Release 资产为准 |
+| **StudySolo-portable-X.Y.Z.exe** | 免安装 Windows 用户 | 以 Release 资产为准 |
+| **StudySolo-android-X.Y.Z.apk** | Android 用户（系统浏览器壳） | 以 Release 资产为准 |
 
 **系统要求**：Windows 10 / 11（64 位）。
 
 ## 首次运行
-填 3 个 API 密钥：硅基流动（必填）、小米 MiMo / 智谱（可选）。密钥经 Windows DPAPI 加密存本机，**绝不打进安装包、绝不上传**。
+首次启动无需填写 Provider 密钥。未配置 AI 时，相应请求会显示未配置错误；本机用户设置保持在历史 userData 目录并以 DPAPI 加密，**绝不打进安装包、绝不上传**。
 
 ## ⚠️ 未签名说明
-二进制未签名，SmartScreen 可能拦截 → 点「更多信息 → 仍要运行」；介意者用下方 SHA256 校验。
+Windows 二进制尚未代码签名，系统可能显示未知发布者。只从官方 GitHub Release 获取并核对 SHA-256；若系统策略拒绝该文件，请联系发布者，不要绕过警告。
 
 ## 功能亮点 / 修订记录
 - …（本版改了什么）
 
 ## SHA256 校验
 \`\`\`
-<sha256>  Gailvlun-setup-X.Y.Z.exe
-<sha256>  Gailvlun-portable-X.Y.Z.exe
+<sha256>  StudySolo-setup-X.Y.Z.exe
+<sha256>  StudySolo-portable-X.Y.Z.exe
+<sha256>  StudySolo-android-X.Y.Z.apk
 \`\`\`
-校验（PowerShell）：`Get-FileHash .\Gailvlun-setup-X.Y.Z.exe -Algorithm SHA256`
+校验（PowerShell）：`Get-FileHash .\StudySolo-setup-X.Y.Z.exe -Algorithm SHA256`
 ```

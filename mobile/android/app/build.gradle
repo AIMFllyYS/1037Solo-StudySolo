@@ -1,0 +1,51 @@
+plugins {
+    id "com.android.application"
+}
+
+def soloRoot = file("${rootProject.projectDir}/../..")
+def packageJson = new groovy.json.JsonSlurper().parse(new File(soloRoot, "package.json"))
+def releaseVersion = packageJson.version.toString()
+def versionParts = releaseVersion.tokenize(".").collect { it.toInteger() }
+if (versionParts.size() != 3) {
+    throw new GradleException("StudySolo version must use MAJOR.MINOR.PATCH: ${releaseVersion}")
+}
+def releaseVersionCode = versionParts[0] * 1_000_000 + versionParts[1] * 1_000 + versionParts[2]
+
+android {
+    namespace "com.solo1037.studysolo"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.solo1037.studysolo"
+        minSdk 26
+        targetSdk 35
+        versionCode releaseVersionCode.toInteger()
+        versionName releaseVersion
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            // Release signing is deliberately performed by a separate protected
+            // workflow job with Android SDK tools; Gradle never receives keys.
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.browser:browser:1.8.0"
+
+    testImplementation "junit:junit:4.13.2"
+
+    androidTestImplementation "androidx.test:runner:1.6.2"
+    androidTestImplementation "androidx.test.ext:junit:1.2.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:3.6.1"
+}

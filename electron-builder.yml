@@ -1,6 +1,8 @@
+# Keep the existing Windows application ID; electron/main.js pins userData to the
+# legacy Gailvlun profile for upgrade compatibility.
 appId: com.gailvlun.desktop
-productName: Gailvlun
-copyright: Copyright © 2026 Gailvlun
+productName: StudySolo
+copyright: Copyright © 2026 1037Solo
 directories:
   output: dist-desktop
   buildResources: build
@@ -28,13 +30,13 @@ win:
     - portable
     - nsis
 portable:
-  artifactName: Gailvlun-portable-${version}.exe
+  artifactName: StudySolo-portable-${version}.exe
 nsis:
   oneClick: false
   perMachine: false
   allowToChangeInstallationDirectory: true
-  artifactName: Gailvlun-setup-${version}.exe
-  shortcutName: Gailvlun
+  artifactName: StudySolo-setup-${version}.exe
+  shortcutName: StudySolo
   # 安装器自带的精致 LOGO（setup.exe 自身 + 向导）；应用/快捷方式仍用 win.icon（网站图标）。
   installerIcon: build/installer-icon.ico
   installerHeaderIcon: build/installer-icon.ico
