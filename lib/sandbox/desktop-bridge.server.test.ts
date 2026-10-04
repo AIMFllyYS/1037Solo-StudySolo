@@ -116,7 +116,7 @@ test("desktop bridge cancels oversized chunked input before forwarding", async t
   try {
     t.mock.method(globalThis, "fetch", async () => { assert.fail("oversized input must not leave the local server"); });
     const body = new ReadableStream<Uint8Array>({ pull(controller) { pulls++; controller.enqueue(new Uint8Array(8193)); }, cancel() { cancelled = true; } }, { highWaterMark: 0 });
-    const init = { method: "POST", headers: { "Content-Type": "application/json", Host: "127.0.0.1:35349", Origin: "http://127.0.0.1:35349", Referer: "http://127.0.0.1:35349/review", Authorization: "Bearer synthetic-account-token" }, body, duplex: "half" } as RequestInit & { duplex: "half" };
+    const init = { method: "POST", headers: { "Content-Type": "application/json", Host: "127.0.0.1:35349", Origin: "http://127.0.0.1:35349", Referer: "http://127.0.0.1:35349/review", Authorization: "Bearer synthetic-account-token" }, body, duplex: "half" as const };
     await assert.rejects(forwardDesktopAgentRequest(new NextRequest("http://127.0.0.1:35349/api/feedback/chat/", init)), /SANDBOX_REQUEST_TOO_LARGE/);
     assert.equal(cancelled, true);
     assert.equal(pulls, 1);
