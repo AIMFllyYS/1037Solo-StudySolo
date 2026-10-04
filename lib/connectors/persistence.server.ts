@@ -60,6 +60,24 @@ export async function writeRecord(context: string, value: unknown) {
   const path = pathFor(context); await mkdir(resolve(path, ".."), { recursive: true, mode: 0o700 });
   await fileGate(path, async () => { const temporary = `${path}.${randomUUID()}.pending`; await writeFile(temporary, ciphertext, { flag: "wx", mode: 0o600 }); await rename(temporary, path); });
 }
+/** Immutable application registration: a lost lease must never replace the winning client. */
+export async function createRecordOnce(context: string, value: unknown): Promise<boolean> {
+  const ciphertext = seal(value, connectorEncryptionKey(), context);
+  if (production()) {
+    const result = await database().from("ss_connector_records").upsert({ record_key: hash(context), owner_uuid: owner(value), ciphertext }, { onConflict: "record_key", ignoreDuplicates: true }).select("record_key");
+    if (result.error) throw new Error("connector_storage_unavailable");
+    return result.data?.length === 1;
+  }
+  const path = pathFor(context);
+  return fileGate(path, async () => {
+    try { await stat(path); return false; }
+    catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw new Error("connector_storage_unavailable"); }
+    const temporary = `${path}.${randomUUID()}.pending`;
+    await writeFile(temporary, ciphertext, { flag: "wx", mode: 0o600 });
+    await rename(temporary, path);
+    return true;
+  });
+}
 export async function claimRecord(context: string): Promise<boolean> {
   if (production()) {
     const result = await database().rpc("ss_connector_claim", { p_key: hash(`claim:${context}`) });

@@ -1,10 +1,11 @@
-/** Authentication preparation only: no Agent tools, production vault, or automatic refresh. */
+/** Account-bound OAuth handshake; production configuration and the encrypted store remain gated. */
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { connectorOrigin, googleConnectorConfiguration, githubConnectorConfiguration } from "./config.server";
 import { readRecord, writeRecord, claimRecord } from "./development-vault.server";
-import { withLease } from "./persistence.server";
+import { withLease, createRecordOnce } from "./persistence.server";
 import { connectorOwner, requireConnectorOrigin, connectorFailure, ConnectorError } from "./actor.server";
+import { connectorResponseJson } from "./response.server";
 
 export const DEVELOPMENT_PROVIDERS = ["notion", "todoist", "google", "github"] as const;
 export type DevelopmentProvider = typeof DEVELOPMENT_PROVIDERS[number];
@@ -38,17 +39,7 @@ export async function ownerOf(request: NextRequest) {
 
 async function jsonRequest(url: string, init: RequestInit = {}): Promise<Record<string, unknown>> {
   const response = await fetch(url, { ...init, redirect: "error", cache: "no-store", signal: AbortSignal.timeout(15000) });
-  if (!response.ok || !response.body) { await response.body?.cancel(); throw new Error("provider_request_failed"); }
-  const reader = response.body.getReader();
-  const chunks: Buffer[] = []; let size = 0;
-  try {
-    for (;;) {
-      const next = await reader.read(); if (next.done) break;
-      size += next.value.byteLength; if (size > 65536) throw new Error("provider_response_too_large");
-      chunks.push(Buffer.from(next.value));
-    }
-  } finally { await reader.cancel().catch(() => {}); reader.releaseLock(); }
-  return JSON.parse(Buffer.concat(chunks).toString("utf8"));
+  return connectorResponseJson(response);
 }
 
 async function clientFor(provider: DevelopmentProvider, origin: string): Promise<Client> {
@@ -65,21 +56,30 @@ async function clientFor(provider: DevelopmentProvider, origin: string): Promise
     ? { issuer: "https://mcp.notion.com/", authorization: "https://mcp.notion.com/authorize", token: "https://mcp.notion.com/token", register: "https://mcp.notion.com/register", resource: "https://mcp.notion.com/mcp", scope: "default" }
     : { issuer: "https://todoist.com/", authorization: "https://todoist.com/oauth/authorize", token: "https://todoist.com/oauth/access_token", register: "https://todoist.com/oauth/register", resource: "https://ai.todoist.net/mcp", scope: "data:read_write" };
   const context = `client:${provider}:${callback}:v1`;
-  const existing = await readRecord<Client>(context);
-  if (existing) {
-    if (existing.callback !== callback || existing.authorization !== expected.authorization || existing.token !== expected.token || existing.issuer !== expected.issuer || existing.resource !== expected.resource) throw new Error("client_configuration_changed");
-    return existing;
-  }
-  const metadata = await jsonRequest(`${new URL(expected.issuer).origin}/.well-known/oauth-authorization-server`);
-  if (new URL(String(metadata.issuer)).href !== expected.issuer || metadata.authorization_endpoint !== expected.authorization || metadata.token_endpoint !== expected.token || metadata.registration_endpoint !== expected.register || !Array.isArray(metadata.code_challenge_methods_supported) || !metadata.code_challenge_methods_supported.includes("S256")) throw new Error("discovery_changed");
-  const registered = await jsonRequest(expected.register, {
-    method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ client_name: "1037Solo StudySolo Development", client_uri: "https://studysolo.1037solo.com", redirect_uris: [callback], grant_types: ["authorization_code", "refresh_token"], response_types: ["code"], token_endpoint_auth_method: "none" }),
+  // The application client is shared by users of this exact callback. Serialize
+  // first registration and re-read within the lease, or concurrent authorizations
+  // can bind to different clients while refresh later reads only the last one.
+  return withLease(`oauth-client:${provider}:${callback}`, async () => {
+    const existing = await readRecord<Client>(context);
+    if (existing) {
+      if (existing.callback !== callback || existing.authorization !== expected.authorization || existing.token !== expected.token || existing.issuer !== expected.issuer || existing.resource !== expected.resource) throw new Error("client_configuration_changed");
+      return existing;
+    }
+    const metadata = await jsonRequest(`${new URL(expected.issuer).origin}/.well-known/oauth-authorization-server`);
+    if (new URL(String(metadata.issuer)).href !== expected.issuer || metadata.authorization_endpoint !== expected.authorization || metadata.token_endpoint !== expected.token || metadata.registration_endpoint !== expected.register || !Array.isArray(metadata.code_challenge_methods_supported) || !metadata.code_challenge_methods_supported.includes("S256")) throw new Error("discovery_changed");
+    const registered = await jsonRequest(expected.register, {
+      method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ client_name: origin.startsWith("https:") ? "1037Solo StudySolo" : "1037Solo StudySolo Development", client_uri: "https://studysolo.1037solo.com", redirect_uris: [callback], grant_types: ["authorization_code", "refresh_token"], response_types: ["code"], token_endpoint_auth_method: "none" }),
   });
   if (typeof registered.client_id !== "string" || !registered.client_id || registered.token_endpoint_auth_method && registered.token_endpoint_auth_method !== "none") throw new Error("registration_failed");
   const client: Client = { clientId: registered.client_id, callback, authMethod: "none", ...expected };
-  await writeRecord(context, client);
-  return client;
+    await createRecordOnce(context, client);
+    // An expired distributed lease can leave two completed registrations. Only
+    // the first persisted client may authorize users; the other stays unused.
+    const saved = await readRecord<Client>(context);
+    if (!saved || saved.callback !== callback || saved.authorization !== expected.authorization || saved.token !== expected.token || saved.issuer !== expected.issuer || saved.resource !== expected.resource) throw new Error("client_configuration_changed");
+    return saved;
+  });
 }
 
 export async function developmentConnect(request: NextRequest, provider: DevelopmentProvider) {
