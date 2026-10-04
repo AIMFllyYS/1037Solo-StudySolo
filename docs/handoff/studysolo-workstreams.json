@@ -6,7 +6,7 @@
   "authoritative_status_document": "docs/handoff/studysolo-workstreams.json",
   "context_document": "docs/handoff/studysolo-unattended-handoff.md",
   "latest_user_directive": "2026-10-04人类正式恢复无人值守实现，六个大板块包括MCP和云沙箱全部由GPT-6.1 Sol High子智能体执行，最多一子，主审查真实验收整合。最新补充仅记UI-DIALOGUE待办、现在不插队：Studio右侧Agent顶部会话tab默认最近5条，新建对话固定最左或顶部右侧菜单区，复用现有右键菜单Close Other/Close All；本机登录已由用户完成。此前业务/保护边界保持。",
-  "current_action": "CORE-MCP代码已冻结提交c9477876，并按干净master基线创建草稿PR186/head380ed17f，CI37195168964进行中。主实页已验第一跳/MFA恢复/390市场详情/无效回调；当前Google Testing提示已保留待本人继续，grant仍未保存。正式授权/模型读取/刷新断连/发布pending，其他包排队。",
+  "current_action": "CORE-MCP草稿PR186/head380ed17f完整CI37195168964在Node阶段失败1条过期手机导航静态约束（1985pass）；同一Sol High worker正在按插件页精确例外校准，不能合失败CI。主实页已验第一跳/MFA/390市场详情/无效回调，真实执行器PubMed/Crossref各read成功；Google Testing本人授权、模型调用、刷新断连及正式发布pending。",
   "next_workstream": "CORE-MCP",
   "implementation_recommendation": "CORE-MCP先分析正常账号/接口/布局，再CORE-SANDBOX最小生产路径；普通模块按完整包排队，不原子化。",
   "max_concurrent_subagents": 1,
@@ -134,13 +134,13 @@
         "不改服务器/VPN"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "等待并核对PR186精确head完整CI；用户完成Google Testing提示后继续授权/回站/模型读取/刷新/断连和精确生产发布。新具体回归交回同一worker；未过真实链不得closed。",
+      "next_step": "原worker修正tests/appModeChrome.test.ts的旧全局手机菜单禁令，保留非插件场景行为保护，主精确更新PR186并重跑完整CI。本人完成Google Testing后继续真实授权/模型/刷新/断连；未过真实链不得closed。",
       "implementation_report": "docs/handoff/workstreams/core-mcp-2026-10-04.md",
       "candidate_source_commit": "c94778768418355222f0ec92fd112dfa99d76b54",
       "candidate_pull_request": "https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/186",
       "candidate_head": "380ed17fbac240bc5b12e851abfcb6d1b41f04c4",
       "ci_run": 37195168964,
-      "ci_status": "in_progress",
+      "ci_status": "failed_one_stale_navigation_contract",
       "partial_acceptance": {
         "node_targeted_tests": 52,
         "react_targeted_tests": 22,
@@ -150,6 +150,7 @@
         "parent_iab_visitor_google_detail_390": "no_overflow",
         "parent_invalid_callback_recovery": "fixed_market_notice_and_query_cleared",
         "parent_authenticated_local_google_start": "reached_Google_Testing_warning_after_user_reverification",
+        "parent_authenticated_native_public_read": { "pubmed": "passed_with_source", "crossref": "passed_with_source", "not_model_orchestration_proof": true },
         "private_user_grant_verified": false,
         "production_deployment_verified": false,
         "not_closed": true
