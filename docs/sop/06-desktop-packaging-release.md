@@ -95,7 +95,7 @@ pnpm run desktop:build
 ### Step 2 — 产物定身与真实启动验证（最确凿）
 
 1. 使用构建 JSON 中的 `packageDir` 核对两个 `StudySolo-*.exe`、包内 `server.js`、`node_modules/next/package.json`、Worker 与索引。
-2. 使用 Playwright Electron API 在干净 Windows CI profile 中隔离 `APPDATA`、`LOCALAPPDATA`、`TEMP`，直接启动真实 `win-unpacked/StudySolo.exe`。检查 `/agent` 的登录提示、无 guest Stop 按钮和默认约 60% dock，截图上传为 CI artifact；从 BrowserTab 打开本机 StudySolo 测试路径，验证 Electron `<webview>` 原生缩放、100% 重置和菜单刷新。随后调用 app quit、确认本地端口释放，并以同一隔离 profile 关闭后重开；userData 必须落到临时根下的 `Gailvlun`，不得读取或复制真实用户目录。
+2. Windows CI 从同一 source commit 执行 `pnpm build-index --bm25-only`，无需 provider/embedding 凭证，离线关键词检索可用，`vectorCount` 为零且没有预装语义向量；freshness 门禁仍对实际内容摘要执行完整核验。这不代表语义向量或 hybrid 检索通过。随后使用 Playwright Electron API 在干净 CI profile 中隔离 `APPDATA`、`LOCALAPPDATA`、`TEMP`，直接启动真实 `win-unpacked/StudySolo.exe`。检查 `/agent` 的登录提示、无 guest Stop 按钮和默认约 60% dock，截图上传为 CI artifact；从 BrowserTab 打开本机 StudySolo 测试路径，验证 Electron `<webview>` 原生缩放、100% 重置和菜单刷新。随后调用 app quit、确认本地端口释放，并以同一隔离 profile 关闭后重开；userData 必须落到临时根下的 `Gailvlun`，不得读取或复制真实用户目录。
 3. 空白 profile 不注入 key；首屏可以打开，AI 未配置时应显示普通配置错误。Provider call、Account operator key 和云凭据均不得进入构建或 smoke job。
 
 仅检查独立 `server.js` 不足以代替这项 Electron 启动测试。

@@ -10,6 +10,8 @@ test("Android launcher delegates the HTTPS site to Custom Tabs without embedding
   const site = read("mobile/android/app/src/main/java/com/solo1037/studysolo/StudySoloSite.java");
   const manifest = read("mobile/android/app/src/main/AndroidManifest.xml");
   const gradle = read("mobile/android/app/build.gradle");
+  const baseTheme = read("mobile/android/app/src/main/res/values/styles.xml");
+  const api27Theme = read("mobile/android/app/src/main/res/values-v27/styles.xml");
 
   assert.match(activity, /CustomTabsIntent/);
   assert.match(activity, /StudySoloSite\.START_URL/);
@@ -19,6 +21,9 @@ test("Android launcher delegates the HTTPS site to Custom Tabs without embedding
   assert.doesNotMatch(gradle, /signingConfig|storePassword|keyPassword|STUDYSOLO_ANDROID_/);
   assert.doesNotMatch(`${activity}\n${manifest}`, /WebView|JavascriptInterface|CookieManager|android\.webkit/);
   assert.doesNotMatch(manifest, /usesCleartextTraffic="true"/);
+  assert.doesNotMatch(baseTheme, /windowLightNavigationBar/);
+  assert.match(api27Theme, /style name="AppTheme" parent="AppTheme\.Base"/);
+  assert.match(api27Theme, /android:windowLightNavigationBar/);
 });
 
 test("client CI stays secretless and release signing remains isolated from source builds", () => {
@@ -64,6 +69,19 @@ test("client CI stays secretless and release signing remains isolated from sourc
   assert.doesNotMatch(tagGuard, /retry|RETRY/);
   assert.match(ci, /persist-credentials:\s*false/);
   assert.match(release, /persist-credentials:\s*false/);
+  const ciWindows = ci.slice(ci.indexOf("  windows-desktop:"), ci.indexOf("  android-custom-tabs:"));
+  const releaseWindows = release.slice(release.indexOf("  windows-build:"), release.indexOf("  android-build:"));
+  for (const windowsJob of [ciWindows, releaseWindows]) {
+    const typecheck = windowsJob.indexOf("run: pnpm typecheck");
+    const buildIndex = windowsJob.indexOf("run: pnpm build-index --bm25-only");
+    const desktopBuild = windowsJob.indexOf("run: pnpm run desktop:build");
+    assert.ok(typecheck >= 0 && typecheck < buildIndex && buildIndex < desktopBuild, "BM25 index must be built after typecheck and before packaging");
+  }
+  const workflows = ci + "\n" + release;
+  const setupAndroidCount = (workflows.match(/uses: android-actions\/setup-android@v3/g) ?? []).length;
+  const setupAndroidPlatformToolsCount = (workflows.match(/uses: android-actions\/setup-android@v3\s*\n\s*with:\s*\n\s*packages:\s*platform-tools/g) ?? []).length;
+  assert.equal(setupAndroidCount, 3);
+  assert.equal(setupAndroidPlatformToolsCount, setupAndroidCount);
 
   assert.match(smoke, /_electron as electron/);
   assert.match(smoke, /executablePath:\s*executable/);

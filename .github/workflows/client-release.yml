@@ -78,6 +78,9 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Build offline search index (BM25)
+        run: pnpm build-index --bm25-only
+
       - name: Build and statically verify Windows packages
         run: pnpm run desktop:build
 
