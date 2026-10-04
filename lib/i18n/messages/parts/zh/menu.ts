@@ -111,8 +111,21 @@ export const menuZh = {
     },
     placeholder: {
       disabled: "输入已禁用",
+      signInRequired: "登录后即可使用 AI 对话",
+      checkingAccount: "正在验证账号…",
+      historyLoading: "正在恢复对话历史…",
       queued: "继续输入，发送后将排队…",
       default: "输入问题、引用笔记、计划或工具",
+    },
+    access: {
+      signedOutTitle: "登录后继续对话",
+      signedOutBody: "对话历史按登录账号隔离。请先登录，再继续提问或恢复历史记录。",
+      checkingTitle: "正在验证账号状态",
+      checkingBody: "账号验证完成后，这里会显示对应账号的对话。",
+      ownerChangedTitle: "账号已切换",
+      ownerChangedBody: "此浮窗属于另一个账号。为保护对话隔离，请关闭后在当前账号重新打开。",
+      signIn: "登录统一账号",
+      closeWindow: "关闭浮窗",
     },
     autoPrompt: {
       files: "请阅读这些笔记",

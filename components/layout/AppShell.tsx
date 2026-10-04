@@ -21,6 +21,7 @@ import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { expandAgentDockIfCollapsed, PANEL_PRESETS } from "@/lib/constants/panelPresets";
 import AgentDockColumn from "./AgentDockColumn";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { useCloseMobileSidebarOnModeChange } from "@/lib/hooks/useCloseMobileSidebarOnModeChange";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
@@ -141,9 +142,8 @@ function TopBar({
         barCollapsed ? "h-0 border-b-0 py-0" : "h-12 border-b border-[var(--line-soft)]",
       )}
     >
-      {/* 侧边栏开合：Studio 与 Agent 共用一个开关、同一个落点（LOGO 左侧）。
-          Agent 收起后**没有**第二个入口——中间那块不再浮一个「展开对话栏」按钮。 */}
-      {!classMode && !reviewMode && <button
+      {/* 桌面各模式共用一个实际左导航开关与状态；Class / Review 的子工作区订阅同一 store。 */}
+      <button
         onClick={toggleSidebar}
         title={
           sidebarShortcutEnabled
@@ -160,7 +160,7 @@ function TopBar({
           <line x1="3" y1="12" x2="21" y2="12" />
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg>
-      </button>}
+      </button>
       <ModeSwitcher />
       {!agentMode && !classMode && !reviewMode && <div className="ml-2 flex min-w-0 items-center gap-1.5 text-[13px] text-[var(--ink-faint)]">
         {subject && (
@@ -285,6 +285,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   /** 首帧布局写回（档位恢复 / autoSaveId）不算「拉出」，稳定后再让分栏参与缓动。 */
   const [panelMotionReady, setPanelMotionReady] = useState(false);
   const handleDragging = useCallback((dragging: boolean) => setIsResizing(dragging), []);
+
+  useCloseMobileSidebarOnModeChange(resolvedMode, isMobile);
 
   const routeLayout = useMemo(() => resolveRouteLayout(pathname), [pathname]);
   const route = routeLayout.route;
@@ -527,7 +529,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="relative min-h-0 flex-1 overflow-hidden">
           {studioChrome && <MobileSidebarDrawer />}
           <div
-            className={clsx("mobile-shell-page flex h-full min-h-0 flex-col", mobileSidebarOpen && "is-shifted")}
+            className={clsx("mobile-shell-page flex h-full min-h-0 flex-col", studioChrome && mobileSidebarOpen && "is-shifted")}
           >
             <MobileTopBar />
             <div className="relative min-h-0 flex-1 overflow-hidden">
@@ -564,7 +566,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   {studioChrome && <MobileMiniChat chatContext={chatContext} />}
                 </>
               )}
-              {mobileSidebarOpen && (
+              {studioChrome && mobileSidebarOpen && (
                 <button
                   type="button"
                   className="mobile-sidebar-backdrop"

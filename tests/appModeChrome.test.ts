@@ -26,7 +26,11 @@ test("顶栏与壳走 StudySolo 三模式，不再写期末复习工作站", () 
   assert.doesNotMatch(appShell, /期末复习工作站/);
   assert.doesNotMatch(appShell, /from "\.\/BrandLogo"/);
 
-  assert.match(mobile, /打开侧栏/);
+  assert.match(mobile, /t\("app\.topbar\.expandNav"\)/);
+  assert.match(mobile, /t\("app\.topbar\.collapseNav"\)/);
+  assert.match(mobile, /const modeOwnsSidebar = mode === "class" \|\| mode === "review";/);
+  assert.match(mobile, /const showSidebarToggle = studioChrome \|\| modeOwnsSidebar;/);
+  assert.match(mobile, /\{studioChrome \? \(\s*<button[\s\S]*?data-testid="mobile-chapter-trigger"/);
   assert.match(mobile, /usesMobileStudioChrome/);
   assert.doesNotMatch(mobile, /from "\.\/ModeSwitcher"/);
   assert.doesNotMatch(mobile, /from "\.\/BrandLogo"/);
