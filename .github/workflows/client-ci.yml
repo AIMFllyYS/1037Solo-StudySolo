@@ -104,6 +104,8 @@ jobs:
           cache: gradle
 
       - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
 
       - uses: gradle/actions/setup-gradle@v4
 

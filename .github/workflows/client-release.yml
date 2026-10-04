@@ -150,6 +150,8 @@ jobs:
           cache: gradle
 
       - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
 
       - uses: gradle/actions/setup-gradle@v4
 
@@ -221,6 +223,8 @@ jobs:
           java-version: "17"
 
       - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
 
       - name: Install only pinned Android SDK signing tools
         run: sdkmanager "build-tools;35.0.0"
