@@ -5,6 +5,7 @@ import { join, resolve } from "node:path";
 import { randomBytes } from "node:crypto";
 import { NextRequest } from "next/server";
 import { developmentConnect } from "./development-oauth.server";
+import { createRecordOnce, readRecord } from "./persistence.server";
 
 test("concurrent first authorizations cannot replace a shared OAuth client used for refresh", { timeout: 10000 }, async t => {
   const originalDirectory = process.cwd();
@@ -63,5 +64,26 @@ test("concurrent first authorizations cannot replace a shared OAuth client used 
     await first?.catch(() => {});
     process.chdir(originalDirectory);
     for (const name of names) if (original[name] === undefined) delete env[name]; else env[name] = original[name];
+  }
+});
+
+test("late registrations cannot replace a persisted client after losing their lease", async () => {
+  const directory = process.cwd();
+  const env = process.env as Record<string, string | undefined>;
+  const previous = { NODE_ENV: env.NODE_ENV, CONNECTOR_DEV_TOKEN_ENCRYPTION_KEY: env.CONNECTOR_DEV_TOKEN_ENCRYPTION_KEY };
+  const fixture = await mkdtemp(join(resolve(".local-archive/connectors-private"), "oauth-client-once-fixture-"));
+  Object.assign(env, { NODE_ENV: "development", CONNECTOR_DEV_TOKEN_ENCRYPTION_KEY: randomBytes(32).toString("base64") });
+  process.chdir(fixture);
+  try {
+    assert.equal(await createRecordOnce("synthetic-client", { clientId: "winning-client" }), true);
+    assert.equal(await createRecordOnce("synthetic-client", { clientId: "late-client" }), false);
+    assert.deepEqual(await readRecord("synthetic-client"), { clientId: "winning-client" });
+    const outcomes = await Promise.all([createRecordOnce("synthetic-concurrent", { clientId: "candidate-a" }), createRecordOnce("synthetic-concurrent", { clientId: "candidate-b" })]);
+    assert.equal(outcomes.filter(Boolean).length, 1);
+    const winner = await readRecord<{ clientId: string }>("synthetic-concurrent");
+    assert.ok(["candidate-a", "candidate-b"].includes(winner!.clientId));
+  } finally {
+    process.chdir(directory);
+    for (const [name, value] of Object.entries(previous)) if (value === undefined) delete env[name]; else env[name] = value;
   }
 });
