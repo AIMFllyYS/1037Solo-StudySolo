@@ -21,6 +21,7 @@ export const en = {
   app: appEn,
   common: commonEn,
   agent: {
+    conversationTabs: { close: "Close tab", closeOthers: "Close other tabs", closeAll: "Close all tabs" },
     nav: {
       aria: "Agent section navigation",
       newChat: "New chat",

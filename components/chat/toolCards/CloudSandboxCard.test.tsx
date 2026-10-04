@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import CloudSandboxCard from "./cloudSandboxCard";
@@ -9,7 +9,11 @@ const message = { id: "message", role: "assistant", parts: [] } as unknown as Ch
 const retryId = "30000000-0000-5000-a000-000000000001", sessionId = "30000000-0000-4000-8000-000000000002";
 const blocked: SandboxOutput = { text: "pending", error: "REAUTH_REQUIRED", authenticationBlocked: true, retryId, ownerBinding: "a".repeat(64), conversationId: "conversation" };
 const part = (output: SandboxOutput): ToolPart<"cloudSandbox"> => ({ type: "tool-cloudSandbox", toolCallId: "fixture", state: "output-available", input: { action: "exec", sessionId, command: "client altered request" }, output });
-const card = (output: SandboxOutput) => <CloudSandboxCard part={part(output)} message={message} isStreaming={false} ctx={{ isStreaming: false }}/>;
+function Harness({ initial }: { initial: SandboxOutput }) {
+  const [output, setOutput] = useState(initial);
+  return <CloudSandboxCard part={part(output)} message={message} isStreaming={false} ctx={{ isStreaming: false }} onOutputChange={setOutput}/>;
+}
+const card = (output: SandboxOutput) => <Harness initial={output}/>;
 beforeEach(() => { window.history.replaceState(null, "", "/agent"); vi.stubGlobal("fetch", vi.fn(async () => Response.json({ state: "proposed", input: { action: "exec", sessionId, command: "server original request" } }))); });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 it("reads the server ticket on mount and resumes only after reviewing its fixed original request", async () => {

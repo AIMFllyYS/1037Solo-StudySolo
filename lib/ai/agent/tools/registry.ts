@@ -35,6 +35,8 @@ export interface ResultCardProps<N extends StudyToolName = StudyToolName> {
   message: ChatMessage;
   isStreaming: boolean;
   ctx: ResultCardContext;
+  /** Persist follow-up server facts on the original tool part, shared by trace and history. */
+  onOutputChange?: (output: StudyTools[N]['output']) => void;
 }
 
 export interface ToolModule<N extends StudyToolName = StudyToolName> {
@@ -42,6 +44,8 @@ export interface ToolModule<N extends StudyToolName = StudyToolName> {
   presentation: ToolPresentation;
   /** 客户端：把该工具 output-available 的 parts 渲染为结果卡片。缺省表示该工具无卡片。 */
   ResultCard?: ComponentType<ResultCardProps<N>>;
+  /** Native tool row expansion, using the same registry and message fact lifecycle. */
+  StepDetail?: ComponentType<ResultCardProps<N>>;
   /** 结果卡片去重键（renderInteractive / generateImage 按 artifactId / imageGenId 去重）。 */
   resultKey?: (part: ToolPart<N>) => string | null;
   /** 卡片渲染条件（如 hits.length > 0）。缺省 = output-available && !preliminary */

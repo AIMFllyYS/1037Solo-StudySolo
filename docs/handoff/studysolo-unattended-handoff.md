@@ -2,7 +2,7 @@
 
 更新日期：2026-10-05。状态：**用户已明确要求实现三条线计划：简单修复优先，后云沙箱/Skills，再MCP，清理后客户端。本机验收，每包提交任务分支、整线集中CI与同步主/dev；网站用户部署，禁止自行生产端测/运维。执行以[新计划](three-lines-execution-plan.md)与唯一账本为准，旧队列无效；不重开旧定时任务。**
 
-最新范围纠正：后续大多数任务以原有组件和原生Agent机制的前端复用为主；Review重点是既有答题记录增加题目/错题ID持久化及对应prompt/Agent接线，不默认重建业务体系。MCP和云沙箱工具调用必须复用项目原生推理链的样式与UX，不另造独立卡片/状态体系。开发与本机端测、提交推送和用户自行部署分开，不把生产部署/持续生产端测作为默认任务扩展。当前只盘点，不实施这些返工。
+最新范围纠正：后续大多数任务以原有组件和原生Agent机制的前端复用为主；Review重点是既有答题记录的题目/错题ID持久化及对应prompt/Agent接线，不默认重建业务体系。MCP和云沙箱工具调用必须复用项目原生推理链的样式与UX，不另造独立卡片/状态体系。当前已进入用户授权的实现阶段；本机端测、提交推送和用户自行部署分开，不加入生产部署或生产端测。
 
 本文取代本轮旧的阶段日志与移交快照。当前任务状态仅维护在 [studysolo-workstreams.json](studysolo-workstreams.json)；不再在多份说明里分别维护“完成表”。代码存在、技术测试通过、Git合并、正式上线、用户可用必须分开记录。
 
@@ -74,7 +74,7 @@ StudySolo项目列表曾观察到旧`RootSolo`（页面创建日期2026-03-29）
 
 | 目标 | 当前源码入口与必须区分的对象 |
 |---|---|
-| Studio/Class共享右Agent对话顶部 | `components/layout/StudioAgentPanel.tsx` → `components/workspace/RightAgentHeader.tsx` → `components/chat/ChatPanel.tsx`；Header当前MAX_RECENT_TABS=12，没有onContextMenu，用户指出的缺失仍为待办 |
+| Studio/Class共享右Agent对话顶部 | `components/layout/StudioAgentPanel.tsx` → `components/workspace/RightAgentHeader.tsx` → `components/chat/ChatPanel.tsx`；候选已改最近5条、固定新建及原菜单右键。是否验收读取账本，不恢复旧的12条/无菜单快照 |
 | 独立Agent资源窗口条 | `WindowTaskbar.tsx` → `AgentDockTabs.tsx`/`AgentDockTabMenus.tsx`；已有右键与最近3项，但**不能代替上面的会话条** |
 | Studio右侧AI/视频/互动/浏览器切换 | `components/layout/RightPanel.tsx`；也不是会话tab或独立资源窗口条，实际交互须分别确认 |
 | 独立Agent中心tab | `components/agent/AgentCenterTabs.tsx`；不能因为都叫tab就跨模块代替需求 |
@@ -99,7 +99,7 @@ StudySolo项目列表曾观察到旧`RootSolo`（页面创建日期2026-03-29）
 | 链路 | 现有接口/存储候选 | 验收重点 |
 |---|---|---|
 | 连接器 | GET `/api/connectors`；provider connect/callback/disconnect；inspect；固定actions确认/取消 | 正常Account身份→点击连接→提供者同意→返回已连接→实际Agent调用→刷新保留；错误/断连可理解，前端请求实发且作用域正确 |
-| 沙箱/Skills | `/api/agent/chat`、`/api/agent/sandbox`、`/api/agent/skills`、产物路由 | 正式用户命令/技能到实际执行/产物/关闭，Studio等模式拒绝；生产费用有界 |
+| 沙箱/Skills | `/api/agent/chat`、`/api/agent/sandbox`、`/api/agent/skills`、产物路由 | 本机登录账号命令/技能到实际执行/产物/关闭，Studio等模式拒绝；云费用有界 |
 | Review | `/api/review/quiz`、`/api/review/progress`、immutable quiz sets/attempts、wrong context | 出题→答题→分数/错题保存→刷新恢复→掌握度→诊断/章节题；不能只看fixture/空态 |
 | 自动沉淀/自动出题 | `ChatQuizCard`、toolCards/createQuizCard、noteChangeProposals、userNotes/review stores | 实际模型事件→现有卡片→真实确认/保存请求→数据可见→刷新/Review消费；UI与API都要核对 |
 | 反馈/举报 | `/api/feedback/chat`、反馈组件；Landing `/api/admin/feedback`与admin adapter | 先记录操作→说明提交→后台同条数据可查→Account admin隔离；不用新风格弹窗替代现有组件 |
@@ -109,7 +109,7 @@ API源码存在不代表前端接上；HTTP200/401或界面按钮存在也不代
 
 ## 7. 大板块任务与执行顺序
 
-机器账本包含**6项大板块子任务，全部强制GPT-6.1 Sol High**，所有用户细项映射在每个包requirements中；它们不是新的原子派遣单。
+工作包按新计划顺序执行，**全部强制GPT-6.1 Sol High**；浏览器基础操作与最后客户端发行分开，不把客户端故障插入简单修复线。所有细项按相近模块整包处理。
 
 | 包 | 责任 | 完整范围 |
 |---|---|---|
@@ -117,12 +117,13 @@ API源码存在不代表前端接上；HTTP200/401或界面按钮存在也不代
 | CORE-SANDBOX | 一名GPT-6.1 Sol High | 云资源/模板/账单、通用命令、安全隔离、Skills实际安装与模型使用、仅独立Agent、产物/回收 |
 | UI-DIALOGUE | 一名GPT-6.1 Sol High | Studio/独立Agent共享对话、正确顶部tab菜单/最近项/新对话、原案例恢复与共享引导、推理链、Agent项目/状态/布局及共享导航基础统一 |
 | REVIEW-NOTES | 一名GPT-6.1 Sol High | Review全部业务、错题/章节题、自动沉淀/出题前端接口、笔记目录/富文本/TOC/弹窗/保存/同步/性能与Class/Review导航 |
-| FEEDBACK-ADMIN | 一名GPT-6.1 Sol High | 输出反馈动作、记录/弹窗/接口/权限、官网主要后台展示与正式验收，保留完整跨仓链路 |
-| BROWSER-CLIENTS | 一名GPT-6.1 Sol High | 浏览器基本控制及各端、手机外壳、桌面数据兼容/启动/发行、签名/版本/hash和落地页真实下载 |
+| FEEDBACK-ADMIN | 一名GPT-6.1 Sol High | 输出反馈动作、记录/弹窗/接口/权限、本机既有后台展示，保留完整跨仓链路 |
+| BROWSER-BASICS | 一名GPT-6.1 Sol High | 既有浏览器桥接的缩放、复位、刷新、菜单和外部打开 |
+| BROWSER-CLIENTS | 一名GPT-6.1 Sol High | 最后独立收尾手机外壳、桌面启动/发行、版本/hash和落地页下载 |
 
-用户已正式要求重新开始无人值守执行。先核对共同的Account/接口/运行版本问题，建立CORE-MCP与CORE-SANDBOX正常用户的最小成功路径；普通大板块可先做不依赖未就绪服务的分析，但缺真实验收时不能关闭。相关内容一次性交给同一个worker，遇到同模块返工继续原worker，不把同模块上下文拆散。新的大板块只有前一包主验收结束后才开启新worker；最多一名子执行。活动包和状态只维护在机器账本。
+用户要求执行顺序为UI-DIALOGUE→REVIEW-NOTES→FEEDBACK-ADMIN→BROWSER-BASICS，再云沙箱/Skills，再MCP，清理后客户端。每包本机验收后提交任务分支，整线才完整CI与主/dev同步；不做服务器或生产端测。同包返工继续原worker，最多一名子执行，活动状态只维护在机器账本。
 
-2026-10-05主真实模型检查补充：普通PubMed查询未调用任何命令，却被`/api/chat`→`sandboxScopeForChat`提前执行的敏感身份认证挡住，直接出现REAUTH_REQUIRED。这是两CORE共享入口的直接依赖，不能把失败转给无关UI或用关闭Cloud开关冒充通过。因此两项逻辑工作流组成CORE-INTEGRATION，由当前同一Sol High worker先完成MCP草稿修正，再完整分析/实现沙箱及共用认证入口，联合验收；各自状态和未完成条件仍单独记录。其余四个板块等核心组验收后再依次新派，不能并发第二子。
+历史CORE-INTEGRATION曾处理普通查询被云命令提前敏感验证挡住的问题，保留相应修复和证据。这是历史背景，不是当前执行组，不恢复旧的核心优先队列，也不通过关闭Cloud冒充普通查询通过。
 
 用户最新要求已撤销Cloud/MCP必须由主本人写代码的限制；这两个包的分析、决策、核心实现和已授权配置也交给GPT-6.1 Sol High子智能体，主智能体负责范围协调、方案审查、验收和整合。主与子不能同时改相同共享文件。菜单等共享接口先约定；次包消费已稳定接口，不各建平行组件。Feedback可消费Dialogue动作位但自己拥有反馈生命周期；Clients只改Landing下载域，Feedback只改后台域。
 

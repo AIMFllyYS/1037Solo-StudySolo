@@ -27,6 +27,8 @@ const STATUS_KEYS: Record<TraceStatus, I18nKey> = {
   error: 'trace.step.status.error',
   interrupted: 'trace.step.status.interrupted',
   waiting: 'trace.step.status.waiting',
+  unknown: 'trace.tool.learningConnectors.uncertain',
+  cancelled: 'trace.tool.learningConnectors.cancelled',
 };
 
 /** Flat activity row: one semantic glyph, one line of text, details on demand. */
@@ -37,7 +39,7 @@ export const AgentTraceStep = React.memo(function AgentTraceStep({ id, kind, tit
   const active = status === 'running';
   const [expanded, setExpanded] = useProcessingDisclosure(active && expandWhileRunning, status === 'error');
   const isError = status === 'error';
-  const exceptional = isError || status === 'interrupted' || status === 'waiting';
+  const exceptional = isError || status === 'interrupted' || status === 'waiting' || status === 'unknown' || status === 'cancelled';
   const durationLabel = durationMs == null || !Number.isFinite(durationMs) || durationMs < 0
     ? null
     : durationMs < 1000

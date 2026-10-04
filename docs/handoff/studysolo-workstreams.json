@@ -27,11 +27,11 @@
       "connection_rule": "Resolve family/name/extension identity in each agent's current browser session; numeric browser IDs are not portable between agent sessions; reuse existing signed-in profiles, do not substitute another browser or duplicate authentication."
     }
   },
-  "latest_user_directive": "2026-10-05明确IMPLEMENT三条线计划：简单修复→云沙箱/Skills→MCP→清理→客户端；每包本机验后提交任务分支，整线一次CI合主/dev，用户部署；不自动恢复定时任务。每包GPT-6.1 Sol High，最多一子，保留现有候选。",
-  "current_action": "恢复第一条简单线，先核现18文件UI候选并统一MCP/云命令原生推理链UX，交simple_ui_sol_high整包实现和本机端测；不重做已正确项，不动核心资源/环境/生产，不开整线CI直到四包完成。",
+  "latest_user_directive": "2026-10-05用户明确继续：不得因外部受阻自行定义全局停止/目标模式或中断子导致任务失去推进；真实核worker状态，隔离待验与可推进工作。原三条线/模型/顺序/本机交付边界保留。",
+  "current_action": "UI本机关键验收通过，准备精确任务分支提交；持续目标active，随后Review整包，不因偶发浏览器导航超时停止。",
   "next_workstream": "UI-DIALOGUE",
   "stopped_action": "已被用户明确实现新计划取代；此前停止快照仅历史。",
-  "implementation_recommendation": "CORE-MCP先分析正常账号/接口/布局，再CORE-SANDBOX最小生产路径；普通模块按完整包排队，不原子化。",
+  "implementation_recommendation": "执行three-lines-execution-plan：简单四包→沙箱/Skills→MCP→清理→客户端；网站用户部署，本轮仅本机验收。",
   "max_concurrent_subagents": 1,
   "active_execution_group": "UI-DIALOGUE",
   "execution_stop": {
@@ -192,10 +192,10 @@
       "title": "连接器/MCP完整接入与市场基础布局",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "awaiting_joint_core_acceptance",
+      "status": "queued_after_sandbox_existing_partial_evidence",
       "user_acceptance": "reported_not_usable_or_not_completed",
       "assigned_agent": null,
-      "scope": "本包子智能体负责认证、运行时、连接器前端与正式模型调用及溢出修复，允许核心实现和已授权配置；主审查与验收",
+      "scope": "沿用现有应用和grant，在本机核连接、回站、Agent真实读取、刷新及断连失效；不做生产部署/生产端测。",
       "code_entrypoints": [
         "lib/connectors",
         "app/api/connectors",
@@ -212,7 +212,7 @@
         "核查Account身份、生产vault与续期、Zotero正式配置、GoogleTesting边界"
       ],
       "acceptance_criteria": [
-        "正常正式账号从连接按钮完成授权并回站显示已连接",
+        "本机登录账号从连接按钮完成现有授权并回站显示已连接；已有有效grant不重复OAuth",
         "真实Agent最小读取有结果与来源，刷新可继续；无越权",
         "断连与失效/错误状态明确，确认链可审核",
         "连接器实际页面基础样式统一且无溢出"
@@ -223,7 +223,7 @@
         "不改服务器/VPN"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "PR186和PR187均已合，JSON常驻结果卡已修、七服务本机原批准测试账号native和真实model read都过，不重做这些项/不重复OAuth。等人类正式部署完成后核版本和准确API，再核正式常用账号授权/续期/刷新断连；需新增grant才准备同原范围的授权。额外GitHub keys消费者映射仍待审，不能盲撤销。主当前正式接口404，不作已上线。",
+      "next_step": "第三条线才恢复，先GitHub/Google再其余服务，保留既有七服务技术证据；本机实际调用/刷新/断连验收，不注册第二应用、不依赖生产部署。额外key只在消费者映射后处理。",
       "implementation_report": "docs/handoff/workstreams/core-mcp-2026-10-04.md",
       "candidate_source_commit": "c94778768418355222f0ec92fd112dfa99d76b54",
       "scope_draft_source_commit": "06b42d9e",
@@ -283,9 +283,9 @@
       "status": "code_merged_awaiting_external_configuration_and_runtime_acceptance",
       "user_acceptance": "reported_not_usable_or_not_completed",
       "assigned_agent": null,
-      "scope": "本包子智能体负责云资源、控制面、隔离、费用、实际Skills与独立Agent生产链，允许核心实现和已授权配置；主审查与验收",
-      "execution_group": "CORE-INTEGRATION",
-      "start_condition": "先完成当前MCP scope草稿修复，再同worker系统性分析/实施本完整Cloud包；共享入口联合验收，不把MCP失败当其他模式问题散到UI包",
+      "scope": "第二条线复用既有模板/隔离/预算，完成本机独立Agent普通命令、两个完整技能、下载与停止回收；不扩云平台或生产部署。",
+      "execution_group": "CORE-SANDBOX",
+      "start_condition": "简单四包整线验收后启动",
       "code_entrypoints": [
         "lib/sandbox",
         "app/api/agent",
@@ -301,7 +301,7 @@
         "阿里云本轮/月各100元上限与实际账单核对，永不过期密钥保留"
       ],
       "acceptance_criteria": [
-        "正式账号独立Agent实际命令与技能返回可下载产物",
+        "本机登录账号独立Agent实际命令与两个技能返回可下载产物",
         "Studio及其他模式执行被拒绝",
         "用户互不访问控制面/凭证/文件，超时取消与结束回收可核对",
         "账单和资源归属有可核对证据，非仅结构预算"
@@ -312,7 +312,7 @@
         "不超过预算"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "33文件修复及完整CI已过并合主/dev，不重做。两budget变量在本机env文件已准备、主单文件parse通过，不重复新增。按最新浏览器规则先在Edge复用已登录阿里云，核真实invoice/Team/角色/永久key/预算余量；旧Chrome费用登录请求已被此规定取代，不要求用户为了阿里云在Chrome重新登录。Supabase只用Chrome，同原core worker恢复时确保单子执行，按审查附录核治理元数据/现场snapshot，再只应用本次新RPC、独立旧reserve导入和准确history，不重放旧迁移；随后正常账号真实CLI/完整9+17 Skills/下载取消超时回收与正式验收。invoice未核不新VM/购买，原runId不重置。",
+      "next_step": "第二条线开始后先核Edge阿里账单及预算、Chrome数据库所需配置，保留现有修复/模板/永久key；仅应用确实缺少的最小配置，再本机真实命令→完整Skills→下载→回收，不重放旧迁移、不重置runId。",
       "implementation_report": "docs/handoff/workstreams/core-sandbox-2026-10-05.md",
       "candidate_source_commit": "abd46ac89d37d59009a6ee3ecfb147a545f9a940",
       "candidate_pull_request": "https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/187",
@@ -368,8 +368,8 @@
       "title": "共享对话与Agent基础设计统一",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "implementation_in_progress",
-      "user_acceptance": "reported_not_usable_or_not_completed",
+      "status": "locally_accepted_awaiting_task_branch_commit",
+      "user_acceptance": "primary_local_acceptance_passed; user_final_review_not_claimed",
       "assigned_agent": "/root/simple_ui_sol_high",
       "scope": "同一worker处理共享对话/Studio/独立Agent相关布局和组件，完整保留模块上下文",
       "code_entrypoints": [
@@ -404,13 +404,31 @@
         "不同时改Review业务或反馈生命周期"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "同一worker核现候选并修工具原生步骤交互、状态和重复卡片；桌面/窄屏、本机关键流程通过后主验并任务分支commit，再Review。原资源跨刷新扩展不自动插队，保留其明确未完边界。",
+      "next_step": "精确本包文件commit到任务分支；之后Review整包一名Sol6.1High。资源最近3跨刷新不在此包新扩展；云真实执行和MCP全面连接后两线处理。",
       "accepted_source_commit": null,
-      "accepted_runtime_version": null,
-      "acceptance_evidence": [],
+      "accepted_runtime_version": "Local working candidate; 34 exact SHA256 report; no production claim",
+      "acceptance_evidence": [
+        "docs/handoff/workstreams/ui-dialogue-2026-10-05.md",
+        "artifacts/performance/ui-dialogue-2026-10-05/native-public-read.png",
+        "artifacts/performance/ui-dialogue-2026-10-05/native-public-failure.png",
+        "artifacts/performance/ui-dialogue-2026-10-05/studio-authenticated-390.png"
+      ],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "high",
-      "reviewer": "primary"
+      "reviewer": "primary",
+      "implementation_report": "docs/handoff/workstreams/ui-dialogue-2026-10-05.md",
+      "partial_acceptance": {
+        "parent_code_review": "native registry/trace, original-part persistence, owner guard, tab prefs/history and layout restore reviewed",
+        "parent_candidate_hashes": "34 files verified before first freeze; two updated store/lifecycle hashes after real refresh defect fix",
+        "targeted_react": "60 passed (worker)",
+        "targeted_node": "34 passed: buildTrace14 and lifecycle20 (worker)",
+        "scoped_eslint": "32 files passed (worker)",
+        "standard_typecheck": "passed after generated types recovery; no exclusions (worker)",
+        "parent_diff_check": "passed",
+        "actual_guest_layout": "Retained worker actual Agent1280 60% and fold/restore proof plus primary inspected screenshot; primary Chrome mobile390 clean authenticated AI panel screenshot and DOM no overflow. Account-independent layout proof not generalized to all business.",
+        "authenticated_local_flows": "Primary Chrome: 5 own small chats, max5; actual context menu and keyboard; CloseOther target refresh persisted after fix; CloseAll blank refresh; known history reopen; original four 15px cases; shared guide actual submit; desktop no overflow, mobile390 AI panel actual screenshot. Native PubMed read and intentional Crossref failure passed; no CLI/paid VM.",
+        "not_complete_delivery": false
+      }
     },
     {
       "id": "REVIEW-NOTES",
@@ -482,14 +500,14 @@
         "输出复制/点赞/点踩/举报基础动作",
         "点赞/点踩先记录再弹说明，举报原因提交",
         "复用现有菜单/弹窗/通知、前端网络接口完整",
-        "正式后台能看到同一用户提交，Account admin权限正确",
+        "本机既有后台能看到同一用户提交，Account admin权限正确",
         "跨仓发布需父审，不单发Landing服务器"
       ],
       "acceptance_criteria": [
         "正常消息反馈到真实请求/保存/后台同条记录可见",
         "非管理员不能读管理记录，用户不能覆盖他人反馈",
         "取消/重复点击/失败状态正确，基础UI统一",
-        "正式页面端测与实际运行版本对应"
+        "本机页面端测与实际候选源码对应；不做生产端测"
       ],
       "excluded_scope": [
         "不另造菜单/通知",
@@ -650,5 +668,17 @@
     "per_line": "one full CI then sync master/dev",
     "website_deployment": "user owned; no server deployment or production acceptance",
     "automation": "do not recreate/resume old automation"
+  },
+  "continuation_policy": {
+    "user_requested": "Continue; do not infer global stop or interrupt workers merely because one dependency is blocked",
+    "task_status_is_not_worker_runtime": "Check collaboration live status separately",
+    "local_dependency_gate": "Defer affected acceptance only; preserve candidate and advance authorized independent work with one executing worker",
+    "completion": "Only actual delivered acceptance, not idle/interrupted state"
+  },
+  "persistent_goal": {
+    "created_on_user_request": true,
+    "status": "active",
+    "covers": "full three-lines plan plus cleanup and clients",
+    "completion_requires": "all authorized acceptance, not worker idle or one blocked dependency"
   }
 }

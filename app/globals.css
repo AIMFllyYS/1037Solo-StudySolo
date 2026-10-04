@@ -1,4 +1,11 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+/* Scan rendered application/content sources, rather than local build and acceptance artifacts. */
+@source "./";
+@source "../components";
+@source "../lib";
+@source "../content";
+@source "../classolo";
+@source "../public";
 @import "./styles/prose.css";
 @import "./styles/auth.css";
 @import "./styles/callouts.css";

@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
+import { BookOpen, GitMerge, Lightbulb } from 'lucide-react';
+import NewChatSuggestions from '@/components/chat/NewChatSuggestions';
 import { QUICK_PROMPTS } from '@/lib/constants/prompts';
 import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 
@@ -31,9 +32,10 @@ const ChatEmptyState: React.FC<ChatEmptyStateProps> = ({
         </div>
       )}
       <div className="chat-empty-prompts">
-        <FollowUpQuestions
-          title="试试这样问我"
-          questions={QUICK_PROMPTS.map((p) => p.text)}
+        <NewChatSuggestions
+          label="试试这样问我"
+          className="chat-welcome-examples--compact"
+          items={QUICK_PROMPTS.map((prompt, index) => ({ id: prompt.icon, text: prompt.text, icon: [<Lightbulb key="concept" size={15} />, <BookOpen key="quiz" size={15} />, <GitMerge key="formula" size={15} />][index] }))}
           onSelect={onFollowUpClick}
         />
       </div>

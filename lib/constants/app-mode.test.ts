@@ -156,3 +156,11 @@ test("persist JSON 与裸字符串兼容", () => {
   assert.deepEqual(parseAppModePersist("class"), { mode: "class", lastStudioPath: "/" });
   assert.deepEqual(parseAppModePersist("{"), { mode: "studio", lastStudioPath: "/" });
 });
+
+test("mobile Agent return rejects a plugin route stored as lastStudioPath", () => {
+  assert.equal(isRememberableStudioPath('/agent/plugins'), false);
+  const restored = parseAppModePersist(JSON.stringify({ mode: 'agent', lastStudioPath: '/agent/plugins' }));
+  assert.deepEqual(restored, { mode: 'agent', lastStudioPath: '/' });
+  assert.equal(hrefForMobileAppMode('agent', '/agent/plugins'), '/');
+  assert.equal(hrefForMobileAppMode('agent', '/probability/detail/1.1'), '/probability/detail/1.1');
+});
