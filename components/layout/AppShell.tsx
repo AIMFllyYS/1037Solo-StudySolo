@@ -302,15 +302,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const setAgentDockCollapsed = useStore((s) => s.setAgentDockCollapsed);
   const agentDockGlobal = useAgentDockRuntime((s) => s.dockGlobal);
   const agentDockRef = useRef<ImperativePanelHandle>(null);
-  /**
-   * 右栏开合是否允许回写 store / localStorage。
-   * 分栏库在挂载应用「上次保存的收起布局」时，会误报一次 onExpand（实测 ~164ms），
-   * 那一下会把用户上次的「收起」改写成展开，刷新后右栏自己弹回来。
-   * 用户不可能在 500ms 内拖动分隔线，所以先关掉回写窗口，等布局稳定再接受面板事件。
-   */
-  const dockPersistReadyRef = useRef(false);
-  /** Programmatic per-session/route restores must not become a new shared user preference. */
-  const suppressDockPanelPersistenceRef = useRef(false);
+  /** Retained until the panel reports the requested state, including deferred callbacks. */
+  const pendingDockRestoreRef = useRef<boolean | null>(null);
   /**
    * 右栏宽度正在变化（拖拽 / 收起展开动画）。
    * 窄宽度下右栏的标签与业务正文会被响应式压成竖排单字，很难看；这期间盖一层骨架屏，
@@ -384,29 +377,20 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     if (!panel) return;
     try {
       if (agentDockCollapsed && !panel.isCollapsed()) {
-        suppressDockPanelPersistenceRef.current = true;
+        pendingDockRestoreRef.current = true;
         panel.collapse();
-        suppressDockPanelPersistenceRef.current = false;
       }
       // A panel first mounted collapsed has no remembered expanded width yet; seed its first
       // restore with the current default. Existing user-resized widths still win inside expand().
       if (!agentDockCollapsed && panel.isCollapsed()) {
-        suppressDockPanelPersistenceRef.current = true;
+        pendingDockRestoreRef.current = false;
         expandAgentDockIfCollapsed(panel);
-        suppressDockPanelPersistenceRef.current = false;
       }
     } catch {
-      suppressDockPanelPersistenceRef.current = false;
+      pendingDockRestoreRef.current = null;
       // 首帧还没有几何信息
     }
   }, [agentDockCollapsed, isAgentRoute, markDockBusy]);
-
-  useEffect(() => {
-    const persistId = window.setTimeout(() => {
-      dockPersistReadyRef.current = true;
-    }, 500);
-    return () => window.clearTimeout(persistId);
-  }, []);
 
   useEffect(() => {
     const id = window.setTimeout(() => {
@@ -640,19 +624,31 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             defaultSize={agentDockCollapsed ? 0 : PANEL_PRESETS.agent.right}
             minSize={20}
             maxSize={64}
-            onCollapse={() => {
-              // Ignore the panel library's first-layout callback; initial open should not show
-              // a resize skeleton or rewrite the preference before the saved state is settled.
-              if (!dockPersistReadyRef.current) return;
+            onResize={(size, previousSize) => {
+              const collapsed = size === 0;
+              if (previousSize === undefined) {
+                // The saved panel geometry initializes before its imperative handle is ready.
+                // Reconcile afterwards; initialization is never a user preference change.
+                queueMicrotask(() => {
+                  const panel = agentDockRef.current;
+                  if (!panel) return;
+                  try {
+                    const wanted = useStore.getState().agentDockCollapsed;
+                    if (panel.isCollapsed() === wanted) { pendingDockRestoreRef.current = null; return; }
+                    pendingDockRestoreRef.current = wanted;
+                    if (wanted) panel.collapse();
+                    else expandAgentDockIfCollapsed(panel);
+                  } catch { pendingDockRestoreRef.current = null; }
+                });
+                return;
+              }
+              if (pendingDockRestoreRef.current !== null) {
+                if (collapsed === pendingDockRestoreRef.current) pendingDockRestoreRef.current = null;
+                return;
+              }
+              if (collapsed === (previousSize === 0)) return;
               markDockBusy(paneDurationMs() + 80);
-              if (suppressDockPanelPersistenceRef.current) return;
-              setAgentDockCollapsed(true);
-            }}
-            onExpand={() => {
-              if (!dockPersistReadyRef.current) return;
-              markDockBusy(paneDurationMs() + 80);
-              if (suppressDockPanelPersistenceRef.current) return;
-              setAgentDockCollapsed(false);
+              setAgentDockCollapsed(collapsed);
             }}
           >
             <AgentDockColumn busy={dockBusy || isResizing} />

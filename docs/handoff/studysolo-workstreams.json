@@ -1,38 +1,113 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "updated_date": "2026-10-05",
   "current_phase": "implementation",
   "phase_status": "running",
   "authoritative_status_document": "docs/handoff/studysolo-workstreams.json",
   "context_document": "docs/handoff/studysolo-unattended-handoff.md",
-  "latest_user_directive": "2026-10-04人类正式恢复无人值守实现，六个大板块包括MCP和云沙箱全部由GPT-6.1 Sol High子智能体执行，最多一子，主审查真实验收整合。最新补充仅记UI-DIALOGUE待办、现在不插队：Studio右侧Agent顶部会话tab默认最近5条，新建对话固定最左或顶部右侧菜单区，复用现有右键菜单Close Other/Close All；本机登录已由用户完成。此前业务/保护边界保持。",
-  "current_action": "同worker已修过期CI约束和Google五scope草稿，source06b42d9e冻结；主实页确认5项经刷新/reload/新tab恢复。准备更新PR186精确新head重跑CI，原失败不可合。进入同worker完整CORE-SANDBOX及共用认证入口分析，MCP正式授权/模型/刷新断连仍pending，不closed。",
-  "next_workstream": "CORE-SANDBOX",
-  "implementation_recommendation": "CORE-MCP先分析正常账号/接口/布局，再CORE-SANDBOX最小生产路径；普通模块按完整包排队，不原子化。",
+  "global_memory": {
+    "browser_routing": {
+      "user_confirmed_date": "2026-10-05",
+      "chrome": [
+        "Supabase",
+        "all MCP providers and their authentication/management"
+      ],
+      "edge": [
+        "Alibaba Cloud including sandbox and billing",
+        "Baota panel",
+        "RootSolo"
+      ],
+      "applies_to": [
+        "primary",
+        "all subagents",
+        "unattended automation",
+        "context recovery"
+      ],
+      "replaces": "Earlier Alibaba Cloud on Chrome assumption",
+      "connection_rule": "Resolve family/name/extension identity in each agent's current browser session; numeric browser IDs are not portable between agent sessions; reuse existing signed-in profiles, do not substitute another browser or duplicate authentication."
+    }
+  },
+  "latest_user_directive": "2026-10-05用户明确继续：不得因外部受阻自行定义全局停止/目标模式或中断子导致任务失去推进；真实核worker状态，隔离待验与可推进工作。原三条线/模型/顺序/本机交付边界保留。",
+  "current_action": "UI本机关键验收通过，准备精确任务分支提交；持续目标active，随后Review整包，不因偶发浏览器导航超时停止。",
+  "next_workstream": "UI-DIALOGUE",
+  "stopped_action": "已被用户明确实现新计划取代；此前停止快照仅历史。",
+  "implementation_recommendation": "执行three-lines-execution-plan：简单四包→沙箱/Skills→MCP→清理→客户端；网站用户部署，本轮仅本机验收。",
   "max_concurrent_subagents": 1,
-  "active_execution_group": "CORE-INTEGRATION",
+  "active_execution_group": "UI-DIALOGUE",
+  "execution_stop": {
+    "explicit_user_request": false,
+    "superseded_by": "2026-10-05 IMPLEMENT THIS PLAN",
+    "old_automation_resume_authorized": false
+  },
   "execution_groups": [
-    { "id": "CORE-INTEGRATION", "workstreams": ["CORE-MCP", "CORE-SANDBOX"], "assigned_agent": "/root/core_mcp_sol_high", "reason": "真实纯MCP模型查询被共享chat入口的云沙箱提前敏感认证阻断；同模块共用入口需同worker联调，两个逻辑验收项分别保留，不能假closed。" },
-    { "id": "UI-DIALOGUE", "workstreams": ["UI-DIALOGUE"] },
-    { "id": "REVIEW-NOTES", "workstreams": ["REVIEW-NOTES"] },
-    { "id": "FEEDBACK-ADMIN", "workstreams": ["FEEDBACK-ADMIN"] },
-    { "id": "BROWSER-CLIENTS", "workstreams": ["BROWSER-CLIENTS"] }
+    {
+      "id": "UI-DIALOGUE",
+      "workstreams": [
+        "UI-DIALOGUE"
+      ],
+      "assigned_agent": "/root/simple_ui_sol_high"
+    },
+    {
+      "id": "REVIEW-NOTES",
+      "workstreams": [
+        "REVIEW-NOTES"
+      ]
+    },
+    {
+      "id": "FEEDBACK-ADMIN",
+      "workstreams": [
+        "FEEDBACK-ADMIN"
+      ]
+    },
+    {
+      "id": "BROWSER-BASICS",
+      "workstreams": [
+        "BROWSER-BASICS"
+      ]
+    },
+    {
+      "id": "CORE-SANDBOX",
+      "workstreams": [
+        "CORE-SANDBOX"
+      ]
+    },
+    {
+      "id": "CORE-MCP",
+      "workstreams": [
+        "CORE-MCP"
+      ]
+    },
+    {
+      "id": "CLEANUP",
+      "workstreams": [
+        "CORE-SANDBOX",
+        "CORE-MCP"
+      ]
+    },
+    {
+      "id": "BROWSER-CLIENTS",
+      "workstreams": [
+        "BROWSER-CLIENTS"
+      ]
+    }
   ],
   "subagent_policy": {
     "model": "gpt-6.1-sol",
     "reasoning_effort": "high",
     "same_workstream_same_agent_for_fixes": true,
     "new_agent_only_after_primary_acceptance_of_prior_workstream": true,
+    "external_runtime_deferral_after_primary_code_acceptance": "用户允许登录/资源受阻记录后继续独立任务；主技术验收与完整交付分开，不假closed。若恢复原core worker，先让新组停止/完成以保持单子。",
     "mandatory_for_every_workstream": true,
     "core_mcp_and_sandbox_delegated": true,
-    "shared_core_pipeline_same_worker": true,
+    "shared_core_pipeline_same_worker": false,
     "fallback_model_allowed": false,
     "primary_responsibilities": [
       "上下文与范围协调",
       "派遣与方案审查",
       "独立验收",
       "跨包整合与发布管理"
-    ]
+    ],
+    "brief": "five points only: entrance, reuse, behavior, local checks, exclusions; simple package about one hour; no additional frameworks"
   },
   "delivery_status": "user_reported_unusable_not_accepted",
   "execution_start_snapshot": {
@@ -45,7 +120,12 @@
     "local_studysolo_http": "ECONNREFUSED",
     "production_release_marker_http": 404,
     "production_source_sha_verified": false,
-    "protected_dirty_domains": ["StudySolo membership/quota/i18n", "Landing membership", "Shared membership", "Accounts membership"],
+    "protected_dirty_domains": [
+      "StudySolo membership/quota/i18n",
+      "Landing membership",
+      "Shared membership",
+      "Accounts membership"
+    ],
     "not_delivery_acceptance": true
   },
   "verified_source_snapshot": {
@@ -112,10 +192,10 @@
       "title": "连接器/MCP完整接入与市场基础布局",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "awaiting_joint_core_acceptance",
+      "status": "queued_after_sandbox_existing_partial_evidence",
       "user_acceptance": "reported_not_usable_or_not_completed",
-      "assigned_agent": "/root/core_mcp_sol_high",
-      "scope": "本包子智能体负责认证、运行时、连接器前端与正式模型调用及溢出修复，允许核心实现和已授权配置；主审查与验收",
+      "assigned_agent": null,
+      "scope": "沿用现有应用和grant，在本机核连接、回站、Agent真实读取、刷新及断连失效；不做生产部署/生产端测。",
       "code_entrypoints": [
         "lib/connectors",
         "app/api/connectors",
@@ -132,7 +212,7 @@
         "核查Account身份、生产vault与续期、Zotero正式配置、GoogleTesting边界"
       ],
       "acceptance_criteria": [
-        "正常正式账号从连接按钮完成授权并回站显示已连接",
+        "本机登录账号从连接按钮完成现有授权并回站显示已连接；已有有效grant不重复OAuth",
         "真实Agent最小读取有结果与来源，刷新可继续；无越权",
         "断连与失效/错误状态明确，确认链可审核",
         "连接器实际页面基础样式统一且无溢出"
@@ -143,14 +223,26 @@
         "不改服务器/VPN"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "source06b42d9e的scope修复及CI合同已主审查；更新PR186精确head重跑CI。原worker继续完整CORE-SANDBOX/共享聊天认证联调后，主再验正确5scope授权/模型/刷新断连和正式部署；未完成不closed。",
+      "next_step": "第三条线才恢复，先GitHub/Google再其余服务，保留既有七服务技术证据；本机实际调用/刷新/断连验收，不注册第二应用、不依赖生产部署。额外key只在消费者映射后处理。",
       "implementation_report": "docs/handoff/workstreams/core-mcp-2026-10-04.md",
       "candidate_source_commit": "c94778768418355222f0ec92fd112dfa99d76b54",
       "scope_draft_source_commit": "06b42d9e",
       "candidate_pull_request": "https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/186",
-      "candidate_head": "380ed17fbac240bc5b12e851abfcb6d1b41f04c4",
-      "ci_run": 37195168964,
-      "ci_status": "failed_one_stale_navigation_contract",
+      "candidate_head": "3829b9c3fd4972951fec1c7243a2ef1c71604251",
+      "ci_run": 37198234775,
+      "ci_status": "passed_exact_head",
+      "merged_source": {
+        "pr": 186,
+        "master": "889e4c7194a28e1b5b9a6057e899189ff5925459",
+        "dev": "6f43c0a559bfac70be5e444059ae31bd1064af59",
+        "trees_equal": true,
+        "not_production_or_complete_user_acceptance": true
+      },
+      "previous_ci": {
+        "run": 37195168964,
+        "head": "380ed17fbac240bc5b12e851abfcb6d1b41f04c4",
+        "result": "failed_one_stale_navigation_contract_fixed_in_current_candidate"
+      },
       "partial_acceptance": {
         "node_targeted_tests": 52,
         "react_targeted_tests": 22,
@@ -160,10 +252,18 @@
         "parent_iab_visitor_google_detail_390": "no_overflow",
         "parent_invalid_callback_recovery": "fixed_market_notice_and_query_cleared",
         "parent_authenticated_local_google_start": "reached_Google_Testing_warning_after_user_reverification",
-        "parent_authenticated_native_public_read": { "pubmed": "passed_with_source", "crossref": "passed_with_source", "not_model_orchestration_proof": true },
-        "parent_authenticated_standalone_model_public_read": "blocked_before_model_by_eager_cloud_REAUTH_REQUIRED",
+        "parent_authenticated_native_public_read": {
+          "pubmed": "passed_with_source",
+          "crossref": "passed_with_source",
+          "not_model_orchestration_proof": true
+        },
+        "parent_authenticated_standalone_model_public_read": "passed_after_lazy_action_auth_in_current_uncommitted_source; DeepSeek V4.1 Flash status/discovery/public read returned PMID42825759 and source; web search off/noCLI/no private read; not formal deployment",
         "google_five_scope_draft_after_mfa": "fixed_source_06b42d9e_real_same_account_refresh_reload_new_tab_all_five_preserved_not_second_real_MFA_or_saved_grant",
-        "private_user_grant_verified": false,
+        "private_user_grant_verified": {
+          "chrome_original_approved_development_account_existing_five_grants": "seven_service_native_and_real_model_read_passed; no repeated OAuth",
+          "edge_common_account": "not_connected_private_providers",
+          "production_account": "not_verified"
+        },
         "production_deployment_verified": false,
         "not_closed": true
       },
@@ -172,19 +272,20 @@
       "acceptance_evidence": [],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "high",
-      "reviewer": "primary"
+      "reviewer": "primary",
+      "scheduled_after": "SIMPLE"
     },
     {
       "id": "CORE-SANDBOX",
       "title": "阿里云通用命令、Skills与回收",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "analysis_in_progress",
+      "status": "code_merged_awaiting_external_configuration_and_runtime_acceptance",
       "user_acceptance": "reported_not_usable_or_not_completed",
-      "assigned_agent": "/root/core_mcp_sol_high",
-      "scope": "本包子智能体负责云资源、控制面、隔离、费用、实际Skills与独立Agent生产链，允许核心实现和已授权配置；主审查与验收",
-      "execution_group": "CORE-INTEGRATION",
-      "start_condition": "先完成当前MCP scope草稿修复，再同worker系统性分析/实施本完整Cloud包；共享入口联合验收，不把MCP失败当其他模式问题散到UI包",
+      "assigned_agent": null,
+      "scope": "第二条线复用既有模板/隔离/预算，完成本机独立Agent普通命令、两个完整技能、下载与停止回收；不扩云平台或生产部署。",
+      "execution_group": "CORE-SANDBOX",
+      "start_condition": "简单四包整线验收后启动",
       "code_entrypoints": [
         "lib/sandbox",
         "app/api/agent",
@@ -200,7 +301,7 @@
         "阿里云本轮/月各100元上限与实际账单核对，永不过期密钥保留"
       ],
       "acceptance_criteria": [
-        "正式账号独立Agent实际命令与技能返回可下载产物",
+        "本机登录账号独立Agent实际命令与两个技能返回可下载产物",
         "Studio及其他模式执行被拒绝",
         "用户互不访问控制面/凭证/文件，超时取消与结束回收可核对",
         "账单和资源归属有可核对证据，非仅结构预算"
@@ -211,22 +312,65 @@
         "不超过预算"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "同CORE-INTEGRATION worker在MCP草稿已冻结后系统性分析完整Cloud包与共用认证入口，主审查整体方案再实施；核对现有资源/账单/用户身份/模板，保持原预算runId与既有正确隔离，不重复创建资源。",
+      "next_step": "第二条线开始后先核Edge阿里账单及预算、Chrome数据库所需配置，保留现有修复/模板/永久key；仅应用确实缺少的最小配置，再本机真实命令→完整Skills→下载→回收，不重放旧迁移、不重置runId。",
+      "implementation_report": "docs/handoff/workstreams/core-sandbox-2026-10-05.md",
+      "candidate_source_commit": "abd46ac89d37d59009a6ee3ecfb147a545f9a940",
+      "candidate_pull_request": "https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/187",
+      "candidate_head": "e0a8b3ab5fc20b83e20d37ec8200df933d519178",
+      "ci_run": 37201622463,
+      "ci_status": "passed_exact_head",
+      "merged_source": {
+        "master": "ae0b02305593a97448994ed0071459449718143e",
+        "dev": "b182dd2257195c9d7f469ee1fac7cc9624691905",
+        "trees_equal": true,
+        "not_production_or_full_runtime_acceptance": true
+      },
+      "budget_migration_candidate": {
+        "repository": "1037Solo-Shared",
+        "pull_request": "https://github.com/AIMFllyYS/1037Solo-Shared/pull/4",
+        "head": "0eb7d909305075435f2b3513cbc5f8a7b91f9a8b",
+        "merged_main": "ae63874a9e79beec49245dcc4a1d0c3b2e8c3942",
+        "canonical": "supabase/migrations/202610050001_studysolo_reconciled_budget.sql",
+        "same_bytes_as_tested_candidate": true,
+        "applied": false
+      },
+      "deployment_appendix": "docs/handoff/workstreams/core-integration-budget-deployment-2026-10-05.md",
+      "environment_preparation": {
+        "files": [
+          ".env.local",
+          ".env.production"
+        ],
+        "changed_variable_names": [
+          "CLOUD_SANDBOX_BUDGET_AUTHORITY",
+          "CLOUD_SANDBOX_BUDGET_IMPORT_FINGERPRINT"
+        ],
+        "production_parsed_fields": 93,
+        "parent_independent_parse_passed": true,
+        "windows_global_changed": false,
+        "runtime_effective_verified": false,
+        "report": "docs/handoff/workstreams/core-integration-env-preparation-2026-10-05.md"
+      },
+      "technical_parent_acceptance": {
+        "code": "passed_exact_CI_and_review",
+        "local_MCP_model": "passed",
+        "resource_runtime": "deferred_external_login_and_configuration;not_closed"
+      },
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
       "acceptance_evidence": [],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "high",
-      "reviewer": "primary"
+      "reviewer": "primary",
+      "scheduled_after": "SIMPLE"
     },
     {
       "id": "UI-DIALOGUE",
       "title": "共享对话与Agent基础设计统一",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "needs_analysis_and_rework",
-      "user_acceptance": "reported_not_usable_or_not_completed",
-      "assigned_agent": null,
+      "status": "locally_accepted_awaiting_task_branch_commit",
+      "user_acceptance": "primary_local_acceptance_passed; user_final_review_not_claimed",
+      "assigned_agent": "/root/simple_ui_sol_high",
       "scope": "同一worker处理共享对话/Studio/独立Agent相关布局和组件，完整保留模块上下文",
       "code_entrypoints": [
         "components/workspace/RightAgentHeader.tsx",
@@ -244,7 +388,8 @@
         "独立Agent案例恢复本轮修改前认可设计，不保留本轮新SVG风格",
         "从原案例样式维护共享引导组件，供Studio等复用，场景差异只在数据与回调",
         "菜单/通知/主题直接复用现有基础；输入提示/初始与回答后追问语义区分",
-        "Agent项目加号、状态点/文字与默认右栏60%基础正确；高级UX/渐变/新动画延期"
+        "Agent项目加号、状态点/文字与默认右栏60%基础正确；高级UX/渐变/新动画延期",
+        "MCP/云命令统一至原生tool registry→AI SDK parts→buildTrace/ToolTraceStep的同一步展开区；保留确认取消下载、状态真实、无独立卡片/第二状态体系，历史tool IDs不改。"
       ],
       "acceptance_criteria": [
         "用户指定Studio tab右键操作实际存在且语义正确",
@@ -259,13 +404,31 @@
         "不同时改Review业务或反馈生命周期"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "轮到本包再实施：确认四种tab对象，Studio会话tab最近5项/固定新建入口/复用右键菜单；对照7be363e恢复原案例并共享引导，整包修正基础设计。当前不插队实施。",
+      "next_step": "精确本包文件commit到任务分支；之后Review整包一名Sol6.1High。资源最近3跨刷新不在此包新扩展；云真实执行和MCP全面连接后两线处理。",
       "accepted_source_commit": null,
-      "accepted_runtime_version": null,
-      "acceptance_evidence": [],
+      "accepted_runtime_version": "Local working candidate; 34 exact SHA256 report; no production claim",
+      "acceptance_evidence": [
+        "docs/handoff/workstreams/ui-dialogue-2026-10-05.md",
+        "artifacts/performance/ui-dialogue-2026-10-05/native-public-read.png",
+        "artifacts/performance/ui-dialogue-2026-10-05/native-public-failure.png",
+        "artifacts/performance/ui-dialogue-2026-10-05/studio-authenticated-390.png"
+      ],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "high",
-      "reviewer": "primary"
+      "reviewer": "primary",
+      "implementation_report": "docs/handoff/workstreams/ui-dialogue-2026-10-05.md",
+      "partial_acceptance": {
+        "parent_code_review": "native registry/trace, original-part persistence, owner guard, tab prefs/history and layout restore reviewed",
+        "parent_candidate_hashes": "34 files verified before first freeze; two updated store/lifecycle hashes after real refresh defect fix",
+        "targeted_react": "60 passed (worker)",
+        "targeted_node": "34 passed: buildTrace14 and lifecycle20 (worker)",
+        "scoped_eslint": "32 files passed (worker)",
+        "standard_typecheck": "passed after generated types recovery; no exclusions (worker)",
+        "parent_diff_check": "passed",
+        "actual_guest_layout": "Retained worker actual Agent1280 60% and fold/restore proof plus primary inspected screenshot; primary Chrome mobile390 clean authenticated AI panel screenshot and DOM no overflow. Account-independent layout proof not generalized to all business.",
+        "authenticated_local_flows": "Primary Chrome: 5 own small chats, max5; actual context menu and keyboard; CloseOther target refresh persisted after fix; CloseAll blank refresh; known history reopen; original four 15px cases; shared guide actual submit; desktop no overflow, mobile390 AI panel actual screenshot. Native PubMed read and intentional Crossref failure passed; no CLI/paid VM.",
+        "not_complete_delivery": false
+      }
     },
     {
       "id": "REVIEW-NOTES",
@@ -337,14 +500,14 @@
         "输出复制/点赞/点踩/举报基础动作",
         "点赞/点踩先记录再弹说明，举报原因提交",
         "复用现有菜单/弹窗/通知、前端网络接口完整",
-        "正式后台能看到同一用户提交，Account admin权限正确",
+        "本机既有后台能看到同一用户提交，Account admin权限正确",
         "跨仓发布需父审，不单发Landing服务器"
       ],
       "acceptance_criteria": [
         "正常消息反馈到真实请求/保存/后台同条记录可见",
         "非管理员不能读管理记录，用户不能覆盖他人反馈",
         "取消/重复点击/失败状态正确，基础UI统一",
-        "正式页面端测与实际运行版本对应"
+        "本机页面端测与实际候选源码对应；不做生产端测"
       ],
       "excluded_scope": [
         "不另造菜单/通知",
@@ -406,8 +569,116 @@
       "acceptance_evidence": [],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "high",
-      "reviewer": "primary"
+      "reviewer": "primary",
+      "scheduled_after": "CLEANUP"
+    },
+    {
+      "id": "BROWSER-BASICS",
+      "title": "浏览器基础操作",
+      "owner": "subagent_gpt-6.1-sol_high",
+      "status": "queued",
+      "requirements": [
+        "已有桥接的缩放/复位/刷新/菜单及外部打开",
+        "不新代理/不全面重构"
+      ],
+      "acceptance_criteria": [
+        "本机实际比例变化与刷新生效",
+        "桌面窄屏基础布局"
+      ],
+      "assigned_agent": null
     }
   ],
-  "policy_override": "2026-10-04人类最新指示取代主本人实现CORE及Luna Max的旧规定；归档历史不生效。"
+  "policy_override": "2026-10-04人类最新指示取代主本人实现CORE及Luna Max的旧规定；归档历史不生效。",
+  "accepted_execution_plan": "docs/handoff/three-lines-execution-plan.md",
+  "current_line": "SIMPLE",
+  "historical_execution_groups": [
+    {
+      "id": "CORE-INTEGRATION",
+      "workstreams": [
+        "CORE-MCP",
+        "CORE-SANDBOX"
+      ],
+      "assigned_agent": "/root/core_mcp_sol_high",
+      "reason": "真实纯MCP模型查询被共享chat入口的云沙箱提前敏感认证阻断；同模块共用入口需同worker联调，两个逻辑验收项分别保留，不能假closed。"
+    },
+    {
+      "id": "UI-DIALOGUE",
+      "workstreams": [
+        "UI-DIALOGUE"
+      ],
+      "assigned_agent": "/root/ui_dialogue_sol_high"
+    },
+    {
+      "id": "REVIEW-NOTES",
+      "workstreams": [
+        "REVIEW-NOTES"
+      ]
+    },
+    {
+      "id": "FEEDBACK-ADMIN",
+      "workstreams": [
+        "FEEDBACK-ADMIN"
+      ]
+    },
+    {
+      "id": "BROWSER-CLIENTS",
+      "workstreams": [
+        "BROWSER-CLIENTS"
+      ]
+    }
+  ],
+  "execution_lines": [
+    {
+      "id": "SIMPLE",
+      "queue": [
+        "UI-DIALOGUE",
+        "REVIEW-NOTES",
+        "FEEDBACK-ADMIN",
+        "BROWSER-BASICS"
+      ]
+    },
+    {
+      "id": "SANDBOX",
+      "queue": [
+        "CORE-SANDBOX"
+      ]
+    },
+    {
+      "id": "MCP",
+      "queue": [
+        "CORE-MCP"
+      ]
+    },
+    {
+      "id": "CLEANUP",
+      "queue": [
+        "CORE-SANDBOX",
+        "CORE-MCP"
+      ]
+    },
+    {
+      "id": "CLIENTS",
+      "queue": [
+        "BROWSER-CLIENTS"
+      ]
+    }
+  ],
+  "delivery_policy": {
+    "per_workstream": "local acceptance then task-branch commit",
+    "per_line": "one full CI then sync master/dev",
+    "website_deployment": "user owned; no server deployment or production acceptance",
+    "automation": "do not recreate/resume old automation"
+  },
+  "continuation_policy": {
+    "user_requested": "Continue; do not infer global stop or interrupt workers merely because one dependency is blocked",
+    "task_status_is_not_worker_runtime": "Check collaboration live status separately",
+    "local_dependency_gate": "Defer affected acceptance only; preserve candidate and advance authorized independent work with one executing worker",
+    "completion": "Only actual delivered acceptance, not idle/interrupted state"
+  },
+  "persistent_goal": {
+    "created_on_user_request": true,
+    "status": "active",
+    "covers": "full three-lines plan plus cleanup and clients",
+    "completion_requires": "all authorized acceptance, not worker idle or one blocked dependency"
+  }
 }

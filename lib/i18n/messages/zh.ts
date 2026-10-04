@@ -23,6 +23,7 @@ export const zh = {
   app: appZh,
   common: commonZh,
   agent: {
+    conversationTabs: { close: "关闭此标签", closeOthers: "关闭其他标签", closeAll: "关闭全部标签" },
     nav: {
       aria: "Agent 板块导航",
       newChat: "新对话",

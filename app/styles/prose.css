@@ -747,93 +747,47 @@
 }
 .chat-welcome-examples {
   flex-shrink: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 9px;
   width: 100%;
   max-width: 780px;
-  margin: 18px auto auto;
+  margin: 10px auto auto;
   padding: 0 24px 28px;
-}
-.chat-welcome-examples-heading {
   display: flex;
-  grid-column: 1 / -1;
-  align-items: center;
-  gap: 6px;
-  min-height: 18px;
-  margin-bottom: 1px;
-  color: var(--md-sys-color-on-surface-variant);
-  font-size: 11.5px;
-  font-weight: 600;
-}
-.chat-welcome-examples-heading svg {
-  color: var(--md-sys-color-primary);
+  flex-direction: column;
+  gap: 2px;
 }
 .chat-welcome-example {
-  display: grid;
-  grid-template-columns: 58px minmax(0, 1fr);
+  display: flex;
   align-items: center;
-  gap: 11px;
+  gap: 10px;
   width: 100%;
-  min-height: 86px;
   padding: 10px 12px;
-  border: 1px solid var(--line-soft);
-  border-radius: 15px;
-  background: var(--bg-panel);
-  box-shadow: 0 1px 2px color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent);
-  color: var(--md-sys-color-on-surface);
-  font: inherit;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 13.5px;
+  line-height: 1.4;
   text-align: left;
   cursor: pointer;
-  transition: border-color var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+  transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
 }
 .chat-welcome-example:hover {
-  border-color: color-mix(in srgb, var(--md-sys-color-primary) 32%, var(--line-soft));
-  background: color-mix(in srgb, var(--md-sys-color-primary-container) 18%, var(--bg-panel));
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
 }
-.chat-welcome-example-art {
-  display: grid;
-  width: 58px;
-  height: 58px;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 13px;
-  background: var(--accent-weak);
-  color: var(--accent-ink);
+.chat-welcome-example-icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--md-sys-color-outline);
 }
-.chat-welcome-example[data-example-id="flashcards"] .chat-welcome-example-art {
-  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 54%, var(--bg-panel));
-  color: var(--md-sys-color-tertiary);
-}
-.chat-welcome-example[data-example-id="demo"] .chat-welcome-example-art {
-  background: color-mix(in srgb, var(--md-sys-color-secondary-container) 54%, var(--bg-panel));
-  color: var(--md-sys-color-secondary);
-}
-.chat-welcome-example[data-example-id="brief"] .chat-welcome-example-art {
-  background: color-mix(in srgb, var(--md-sys-color-primary-container) 50%, var(--bg-panel));
+.chat-welcome-example:hover .chat-welcome-example-icon {
   color: var(--md-sys-color-primary);
 }
-.chat-welcome-example-copy {
-  display: flex;
+.chat-welcome-example-text {
+  flex: 1;
   min-width: 0;
-  flex-direction: column;
-  gap: 4px;
 }
-.chat-welcome-example-title {
-  display: -webkit-box;
-  overflow: hidden;
-  color: var(--md-sys-color-on-surface);
-  font-size: 12.5px;
-  font-weight: 600;
-  line-height: 1.35;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-.chat-welcome-example-description {
-  color: var(--md-sys-color-on-surface-variant);
-  font-size: 11px;
-  line-height: 1.35;
-}
+.chat-welcome-examples--compact { margin: 0; padding: 0; }
 /* Keyboard hints sit just under the Agent composer and use the same low contrast as its chrome. */
 .chat-input-hints {
   display: flex;
@@ -866,11 +820,6 @@
   white-space: nowrap;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .chat-welcome-example:hover {
-    transform: translateY(-1px);
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   .chat-welcome-example,
   .followup-btn {
@@ -1571,21 +1520,9 @@
     padding: 0 16px;
   }
   .chat-welcome-examples {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-    margin-top: 14px;
     padding: 0 16px 20px;
   }
-  .chat-welcome-example {
-    grid-template-columns: 50px minmax(0, 1fr);
-    min-height: 76px;
-    gap: 9px;
-    padding: 9px;
-  }
-  .chat-welcome-example-art {
-    width: 50px;
-    height: 50px;
-  }
+  .chat-welcome-examples--compact { margin: 0; padding: 0; }
 }
 .chat-input-row {
   position: relative;

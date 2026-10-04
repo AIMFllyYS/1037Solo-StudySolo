@@ -19,6 +19,8 @@ import { ToolResultCards } from '@/components/chat/toolCards/ToolResultCards';
 import ChatFeedbackActions from '@/components/chat/ChatFeedbackActions';
 import { useT } from '@/lib/i18n';
 import { useReincludedAttachments } from '@/lib/stores/reincludedAttachments';
+import { useChatHistory } from '@/lib/hooks/useChatHistory';
+import { getStorageOwner, getOwnerEpoch } from '@/lib/storage/ownerScope';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -94,6 +96,16 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
   const citations = useMemo(() => isUser ? [] : collectCitationCatalog(parts), [isUser, parts]);
   const reincluded = useReincludedAttachments((state) =>
     sessionId ? state.bySession[sessionId]?.includes(message.id) ?? false : false);
+  const owner = getStorageOwner(), epoch = getOwnerEpoch();
+  const onToolOutputChange = (toolCallId: string, output: unknown) => {
+    if (!sessionId || streaming || getStorageOwner() !== owner || getOwnerEpoch() !== epoch) return;
+    const history = useChatHistory.getState();
+    const current = history.messagesById[sessionId]?.find(item => item.id === message.id);
+    if (!current) return;
+    history.updateMessage(sessionId, message.id, { parts: current.parts.map(part =>
+      (part.type.startsWith('tool-') || part.type === 'dynamic-tool') && 'toolCallId' in part && part.toolCallId === toolCallId && part.state === 'output-available'
+        ? { ...part, output } as typeof part : part) });
+  };
 
   return (
     <div className={`chat-message ${isUser ? 'user' : 'assistant'}`} data-message-role={message.role} data-message-id={message.id}>
@@ -156,6 +168,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                     trace={traceFromSteps(block.steps)}
                     isStreaming={isStreaming}
                     summaryMode="process"
+                    toolContext={{ message, isStreaming: streaming, ctx: { isStreaming: streaming }, onToolOutputChange }}
                   />
                 );
               }
