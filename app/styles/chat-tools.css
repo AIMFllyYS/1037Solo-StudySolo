@@ -2549,6 +2549,57 @@ mark.citation-flash {
 .review-note-list-item.is-active { background: var(--accent-weak); color: var(--accent-ink); }
 .review-note-list-empty { margin: 0; padding: 14px 12px; color: var(--ink-faint); font-size: 12px; line-height: 1.6; }
 
+/* The /review library lives below the primary section rail. Keep its folder
+   tree and note list in one constrained column, with scrolling owned by the
+   list itself instead of letting it compress the four primary destinations. */
+.review-sidebar-auxiliary {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.review-sidebar-library-content {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+
+.review-sidebar-note-navigation {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 300px;
+  flex: 1 1 0%;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.review-sidebar-note-navigation .review-note-subject-tree {
+  height: auto;
+  min-height: 112px;
+  flex: 0 1 38%;
+}
+
+.review-sidebar-note-navigation .review-note-list-pane {
+  min-height: 0;
+  flex: 1 1 0%;
+}
+
+.review-sidebar-decks {
+  min-height: 112px;
+  max-height: 240px;
+  flex: 0 0 min(34%, 220px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-top: 1px solid var(--line-soft);
+}
+
 .review-note-editor-pane {
   display: flex;
   flex-direction: column;
