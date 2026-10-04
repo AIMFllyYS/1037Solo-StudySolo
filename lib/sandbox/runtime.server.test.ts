@@ -10,6 +10,7 @@ import { sandboxConfiguration, safeRelativePath, SandboxError } from "./config.s
 import { PersistentExecutionStore, type ExecutionStore, type RecordKind } from "./store.server";
 import { SandboxService } from "./service.server";
 import type { ExecutionProvider, ProviderSession } from "./provider.server";
+import type { ArtifactStorage } from "./artifacts.server";
 import { createCloudSandboxTool } from "@/lib/ai/agent/tools/cloudSandbox/tool";
 import { buildStudyTools, createToolRuntime } from "@/lib/ai/agent/tools/server";
 import { maintainExecutions } from "./maintenance.server";
@@ -43,6 +44,8 @@ class MemoryStore implements ExecutionStore {
 class FakeProvider implements ExecutionProvider {
   creates = 0; executes = 0; kills = 0; connects = 0; uncertain = false; emptyLookup = false;
   files = new Map<string, string>();
+  providerState: "running" | "paused" | "gone" = "running";
+  async getState() { return this.providerState; }
   state = { state: "completed", stdout: "fixture output", stderr: "", exitCode: 0 };
   session: ProviderSession = {
     id: "private-provider-id", initialize: async () => {},
@@ -68,6 +71,119 @@ test("only the actual dedicated main Agent entry mints an execution scope", asyn
     assert.ok(!buildStudyTools(ctx, createToolRuntime(), { enableSearch: false }).cloudSandbox);
     assert.ok(buildStudyTools(ctx, createToolRuntime(), { enableSearch: false, cloudSandboxScope: scope }).cloudSandbox);
     for (const options of [{ noteWindowAgent: true }, { planMode: true }, { disabled: ["cloudSandbox"] }]) assert.ok(!buildStudyTools(ctx, createToolRuntime(), { enableSearch: false, cloudSandboxScope: scope, ...options }).cloudSandbox);
+  } finally { restore(); }
+});
+
+test("stale recent MFA permits ordinary chat and owned stop/read but checks every actual risky operation", async t => {
+  const restore = configure();
+  let identityOwner = owner, recent = false, incomplete = false;
+  t.mock.method(globalThis, "fetch", async () => Response.json({ active: true, user_id: identityOwner, mfa_required: incomplete, mfa_enrolled: true, recent_mfa_at: recent ? Date.now() / 1000 : Date.now() / 1000 - 700, exp: Date.now() / 1000 + 3600 }));
+  try {
+    const scope = (await sandboxScopeForChat(request(), { id: "conversation", agentMain: true }))!;
+    assert.equal(scope.canExecute, false);
+    const store = new MemoryStore(), provider = new FakeProvider(), service = new SandboxService(store, provider), tool = createCloudSandboxTool(scope, service);
+    const execute = (input: SandboxInput) => tool.execute!(input, { toolCallId: "fixture", messages: [], context: {} });
+    const blocked = await execute({ action: "open" }) as { error: string; authenticationBlocked?: boolean };
+    assert.equal(blocked.error, "REAUTH_REQUIRED"); assert.equal(blocked.authenticationBlocked, true); assert.equal(provider.creates, 0);
+    recent = true;
+    const opened = await execute({ action: "open" }) as { sessionId: string };
+    const started = await execute({ action: "exec", sessionId: opened.sessionId, command: "echo fixture" }) as { commandId: string };
+    recent = false;
+    for (const action of ["exec", "write", "publish"] as const) assert.equal((await execute({ action, sessionId: opened.sessionId, command: "echo forbidden", path: "a", content: "b" }) as { error: string }).error, "REAUTH_REQUIRED");
+    assert.equal(provider.executes, 1);
+    assert.ok(!(await execute({ action: "read", sessionId: opened.sessionId, path: "a" }) as { error?: string }).error);
+    assert.ok(["cancelling", "completed"].includes((await execute({ action: "cancel", sessionId: opened.sessionId, commandId: started.commandId }) as { state: string }).state));
+    assert.equal((await execute({ action: "close", sessionId: opened.sessionId }) as { state: string }).state, "closed");
+    identityOwner = other; recent = true;
+    assert.equal((await execute({ action: "open" }) as { error: string; authenticationBlocked?: boolean }).error, "ACCOUNT_CHANGED");
+    assert.equal(provider.creates, 1);
+    identityOwner = owner; incomplete = true;
+    await assert.rejects(() => sandboxScopeForChat(request(), { id: "conversation", agentMain: true }), /MFA_REQUIRED/);
+  } finally { restore(); }
+});
+
+test("a missing VM credential does not block the ordinary scope or pretend cloud packages are installed", async t => {
+  const restore = configure(); authentication(t);
+  try {
+    delete process.env.CLOUD_SANDBOX_API_KEY;
+    const scope = (await sandboxScopeForChat(request(), { id: "conversation", agentMain: true }))!;
+    const custom = { id: "local", name: "Custom", description: "Custom", content: "custom", createdAt: 1, pinned: false };
+    let code = "";
+    const failingStore = new MemoryStore(); t.mock.method(failingStore, "owned", async () => { throw new SandboxError("SANDBOX_CREDENTIALS_MISSING", 503); });
+    const skills = await skillsForAgent(scope, [custom, { ...custom, id: "package", sourceId: "notes-to-handbook" }], failingStore, value => { code = value; });
+    assert.deepEqual(skills, [custom]); assert.equal(code, "SANDBOX_CREDENTIALS_MISSING");
+    assert.equal((await createCloudSandboxTool(scope).execute!({ action: "open" }, { toolCallId: "fixture", messages: [], context: {} }) as { error: string }).error, "SANDBOX_CREDENTIALS_MISSING");
+  } finally { restore(); }
+});
+
+test("artifact upload unknown result reserves one identity, recovers exact content and rejects premature/foreign downloads", async t => {
+  const restore = configure(); authentication(t);
+  try {
+    const scope = await authorizeSandbox(request(), "conversation"), store = new MemoryStore(), provider = new FakeProvider();
+    let uploads = 0, inspectFails = false;
+    const objects = new Map<string, Uint8Array>();
+    const storage: ArtifactStorage = { inspect: async (_path, id) => { if (inspectFails) throw new Error("transport"); return objects.get(id) ?? null; }, upload: async (_path, id, bytes) => { uploads++; objects.set(id, bytes); throw new Error("response lost"); } };
+    const service = new SandboxService(store, provider, storage), opened = await service.operate(scope, { action: "open" });
+    const first = await service.operate(scope, { action: "publish", sessionId: opened.sessionId, path: "result.txt" });
+    assert.equal(first.state, "uncertain"); assert.equal(uploads, 1);
+    const manifests = await store.owned<import("./types").SandboxArtifact>("artifact", owner);
+    assert.equal(manifests.length, 1); assert.equal(manifests[0].state, "uncertain");
+    await assert.rejects(() => service.artifact(scope, manifests[0].id), /SANDBOX_ARTIFACT_NOT_READY/);
+    inspectFails = true;
+    assert.equal((await service.operate(scope, { action: "publish", sessionId: opened.sessionId, path: "result.txt" })).state, "uncertain");
+    assert.equal(uploads, 1);
+    inspectFails = false;
+    const recovered = await service.operate(scope, { action: "publish", sessionId: opened.sessionId, path: "result.txt" });
+    assert.equal(recovered.artifact?.id, manifests[0].id); assert.equal(uploads, 1);
+    assert.equal((await service.operate(scope, { action: "publish", sessionId: opened.sessionId, path: "result.txt" })).artifact?.id, manifests[0].id);
+    assert.equal((await store.owned("artifact", owner)).length, 1);
+    const foreign = await authorizeSandbox(request("/api/agent/chat", "/agent", "other"), "conversation");
+    await assert.rejects(() => service.artifact(foreign, manifests[0].id), /SANDBOX_RECORD_NOT_FOUND/);
+    await service.operate(scope, { action: "close", sessionId: opened.sessionId });
+    assert.equal((await service.artifact(scope, manifests[0].id)).bytes.byteLength, manifests[0].size);
+    objects.set(manifests[0].id, new TextEncoder().encode("corrupt"));
+    await assert.rejects(() => service.artifact(scope, manifests[0].id), /SANDBOX_ARTIFACT_IDENTITY_MISMATCH/);
+  } finally { restore(); }
+});
+
+test("server auth tickets preserve the original request and serialize reload/concurrent retries without executing twice", async t => {
+  const restore = configure(); authentication(t);
+  try {
+    class SerializedStore extends MemoryStore {
+      gates = new Map<string, Promise<void>>();
+      async lock<T>(key: string, work: () => Promise<T>): Promise<T> {
+        const prior = this.gates.get(key) ?? Promise.resolve(); let release!: () => void;
+        const gate = new Promise<void>(resolve => { release = resolve; }); this.gates.set(key, prior.then(() => gate));
+        await prior; try { return await work(); } finally { release(); }
+      }
+    }
+    const scope = await authorizeSandbox(request(), "conversation"), readScope = await authorizeSandbox(request(), "conversation", false), store = new SerializedStore(), provider = new FakeProvider(), service = new SandboxService(store, provider);
+    const opened = await service.operate(scope, { action: "open" });
+    const input: SandboxInput = { action: "exec", sessionId: opened.sessionId, command: "echo original" };
+    const id = await service.prepareAuthRetry(readScope, input, "auth-call");
+    input.command = "echo changed";
+    assert.equal((await service.authRetryStatus(readScope, id)).input.command, "echo original");
+    await assert.rejects(() => service.resumeAuthRetry(readScope, id, async () => { throw new SandboxError("REAUTH_REQUIRED", 403); }), /REAUTH_REQUIRED/);
+    assert.equal((await service.authRetryStatus(readScope, id)).state, "proposed"); assert.equal(provider.executes, 0);
+    const results = await Promise.all([service.resumeAuthRetry(readScope, id, async () => scope), service.resumeAuthRetry(readScope, id, async () => scope)]);
+    assert.equal(results[0].commandId, results[1].commandId); assert.equal(provider.executes, 1);
+    assert.equal((await new SandboxService(store, provider).resumeAuthRetry(readScope, id, async () => { throw new Error("no new authorization needed for an already stored read result"); })).commandId, results[0].commandId);
+    assert.equal(provider.executes, 1);
+    await assert.rejects(() => service.operate(scope, { action: "poll", sessionId: opened.sessionId, commandId: id }), /SANDBOX_RECORD_NOT_FOUND/);
+    const foreign = await authorizeSandbox(request("/api/agent/chat", "/agent", "other"), "conversation");
+    await assert.rejects(() => service.authRetryStatus(foreign, id), /SANDBOX_RECORD_NOT_FOUND/);
+    const wrongConversation = await authorizeSandbox(request(), "wrong");
+    await assert.rejects(() => service.resumeAuthRetry(wrongConversation, id, async () => scope), /SANDBOX_RECORD_NOT_FOUND/);
+    await service.operate(scope, { action: "close", sessionId: opened.sessionId });
+    assert.equal((await service.authRetryStatus(readScope, id)).state, "completed", "cleanup does not mutate ticket as if it were a command");
+    const ticket = (await store.read<import("./types").SandboxAuthRetry>("command", id, owner))!;
+    await store.write("command", id, owner, { ...ticket, expiresAt: Date.now() - 1 });
+    await assert.rejects(() => service.resumeAuthRetry(readScope, id, async () => scope), /SANDBOX_RETRY_EXPIRED/);
+    const next = await service.prepareAuthRetry(readScope, { action: "open" }, "uncertain-call"); provider.uncertain = true;
+    const uncertain = await service.resumeAuthRetry(readScope, next, async () => scope);
+    assert.equal(uncertain.state, "uncertain"); const count = provider.creates;
+    assert.equal((await service.resumeAuthRetry(readScope, next, async () => scope)).state, "uncertain");
+    assert.equal(provider.creates, count);
   } finally { restore(); }
 });
 
@@ -120,7 +236,7 @@ test("budget cap, encrypted AAD and conservative reservations remain authoritati
   } finally { process.chdir(cwd); restore(); }
 });
 
-test("empty uncertain-create discovery retains the reservation until fixed TTL has elapsed", async t => {
+test("empty uncertain-create discovery retains uncertainty even after the estimated TTL", async t => {
   const restore = configure(); authentication(t);
   try {
     const scope = await authorizeSandbox(request(), "conversation"), store = new MemoryStore(), provider = new FakeProvider();
@@ -132,8 +248,8 @@ test("empty uncertain-create discovery retains the reservation until fixed TTL h
     assert.equal(provider.creates, 1);
     const record = (await store.read<SandboxSession>("session", opened.sessionId!, owner))!;
     await store.write("session", record.id, owner, { ...record, expiresAt: Date.now() - 61000 });
-    assert.equal((await maintainExecutions(store, provider)).closed, 1);
-    assert.equal(store.releases, 1);
+    assert.equal((await maintainExecutions(store, provider)).closed, 0);
+    assert.equal(store.releases, 0);
   } finally { restore(); }
 });
 
@@ -154,15 +270,32 @@ test("maintenance captures final logs and cached results survive close and provi
   } finally { restore(); }
 });
 
-test("close captures unpolled completed output before provider termination", async t => {
+test("close directly terminates without pretending unpolled final output was captured", async t => {
   const restore = configure(); authentication(t);
   try {
     const scope = await authorizeSandbox(request(), "conversation"), store = new MemoryStore(), provider = new FakeProvider(), service = new SandboxService(store, provider);
     const opened = await service.operate(scope, { action: "open" });
     const started = await service.operate(scope, { action: "exec", sessionId: opened.sessionId, command: "echo fixture" });
+    const connections = provider.connects;
     await service.operate(scope, { action: "close", sessionId: opened.sessionId });
     const result = await service.operate(scope, { action: "poll", sessionId: opened.sessionId, commandId: started.commandId });
-    assert.equal(result.stdout, "fixture output"); assert.equal(result.exitCode, 0);
+    assert.equal(result.stdout, ""); assert.equal(result.exitCode, undefined); assert.equal(result.reason, "sandbox_closed"); assert.equal(provider.connects, connections);
+  } finally { restore(); }
+});
+
+test("non-recent close never connects to a paused instance just to collect final logs", async t => {
+  const restore = configure(); authentication(t);
+  try {
+    const scope = await authorizeSandbox(request(), "conversation"), readScope = await authorizeSandbox(request(), "conversation", false), store = new MemoryStore(), provider = new FakeProvider(), service = new SandboxService(store, provider);
+    const opened = await service.operate(scope, { action: "open" });
+    const started = await service.operate(scope, { action: "exec", sessionId: opened.sessionId, command: "echo fixture" });
+    const record = (await store.read<SandboxCommand>("command", started.commandId!, owner))!;
+    await store.write("command", record.id, owner, { ...record, result: { state: "running", stdout: "last durable log", stderr: "" } });
+    provider.providerState = "paused"; const connects = provider.connects;
+    assert.equal((await service.operate(readScope, { action: "close", sessionId: opened.sessionId })).state, "closed");
+    assert.equal(provider.connects, connects); assert.equal(provider.kills, 1);
+    const final = await service.operate(readScope, { action: "poll", sessionId: opened.sessionId, commandId: started.commandId });
+    assert.equal(final.stdout, "last durable log"); assert.equal(final.reason, "sandbox_closed");
   } finally { restore(); }
 });
 

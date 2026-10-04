@@ -35,10 +35,17 @@ export async function installedPackages(scope: SandboxScope, store: ExecutionSto
   assertSandboxScope(scope);
   return (await store.owned<SkillInstallation>("skill", scope.owner)).filter(item => item.owner === scope.owner && item.active && catalog.packages.some(pack => pack.id === item.packageId && pack.digest === item.digest));
 }
-export async function skillsForAgent(scope: SandboxScope | undefined, incoming: Skill[], store?: ExecutionStore) {
+export async function skillsForAgent(scope: SandboxScope | undefined, incoming: Skill[], store?: ExecutionStore, unavailable?: (code: string) => void) {
   if (!scope) return incoming;
-  const installed = await installedPackages(scope, store);
   const skills = incoming.filter(skill => !catalog.packages.some(pack => pack.id === skill.sourceId));
+  let installed: SkillInstallation[];
+  try { installed = await installedPackages(scope, store); }
+  catch (error) {
+    // A VM credential/store failure is local to package discovery. Account has
+    // already been verified by the caller; never swallow its identity errors.
+    if (!unavailable || !(error instanceof SandboxError) || !/^SANDBOX_(?:STORAGE_UNAVAILABLE|CONFIGURATION_INVALID|CREDENTIALS_MISSING|TEMPLATE_MISSING|ENCRYPTION_KEY_MISSING|PUBLIC_CREDENTIAL_FORBIDDEN|BUDGET_INVALID|NOT_ENABLED)$/.test(error.code)) throw error;
+    unavailable(error.code); return skills;
+  }
   const usedIds = new Set(skills.map(skill => skill.id));
   for (const item of installed) {
     const files = await skillPackageFiles(item.packageId);

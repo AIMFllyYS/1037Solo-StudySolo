@@ -1,10 +1,11 @@
 import type { NextRequest } from "next/server";
 import { z } from "zod";
-import { authorizeSandbox } from "@/lib/sandbox/actor.server";
+import { authorizeSandbox, sandboxActionRequiresRecentAuth } from "@/lib/sandbox/actor.server";
 import { sandboxFailure, SandboxError } from "@/lib/sandbox/config.server";
 import { SandboxService } from "@/lib/sandbox/service.server";
 import { desktopCloudBridgeEnabled, forwardDesktopAgentRequest } from "@/lib/sandbox/desktop-bridge.server";
 import { readSandboxJson } from "@/lib/sandbox/request.server";
+import { createHash } from "node:crypto";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const schema = z.object({
@@ -19,7 +20,9 @@ export async function POST(request: NextRequest) {
     const parsed = schema.safeParse(await readSandboxJson(request, 400000));
     if (!parsed.success) throw new SandboxError("SANDBOX_REQUEST_INVALID");
     const { conversationId, ...input } = parsed.data;
-    const scope = await authorizeSandbox(request, conversationId, !["status", "poll", "read", "list"].includes(input.action));
+    const scope = await authorizeSandbox(request, conversationId, sandboxActionRequiresRecentAuth(input.action));
+    const expectedOwner = request.headers.get("x-studysolo-owner-binding");
+    if (expectedOwner !== null && expectedOwner !== createHash("sha256").update(scope.owner).digest("hex")) throw new SandboxError("ACCOUNT_CHANGED", 409);
     const output = await new SandboxService().operate(scope, input);
     return Response.json({ ...output, conversationId }, { headers: { "Cache-Control": "private, no-store", Vary: "Cookie, Authorization" } });
   } catch (error) { return sandboxFailure(error); }
