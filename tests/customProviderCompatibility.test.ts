@@ -13,7 +13,8 @@ test("SDK adapter normalizes custom reasoning and builds provider thinking setti
   const source = readWorkspaceFile("lib/ai/sdk/languageModel.ts");
 
   assert.match(source, /extractReasoningMiddleware\(\{ tagName: "think" \}\)/);
-  assert.match(source, /createReasoningNormalizingFetch\(p\.reasoningField\)/);
+  assert.match(source, /createReasoningNormalizingFetch\(p\.reasoningField, publicFetch\)/);
+  assert.match(source, /createPublicModelFetch\(p\.baseUrl, p\.timeoutMs\)/);
   assert.match(source, /buildThinkingSettings\(landed\.provider, effort, landed\.info\)/);
   assert.match(source, /switch \(style\)/);
   assert.doesNotMatch(source, /reqBody\.enable_thinking\s*=\s*true/);

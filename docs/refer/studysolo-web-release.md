@@ -45,6 +45,6 @@ python3 scripts/deploy/verify-web-archive.py --reference /private/release-refere
 
 预检证明了运行链路，不能当作最终界面发布或认证后的MCP/云执行验收。最终功能提交仍须重新构建、在本实例复验，并在正式切换前核对生产配置与回退点。
 
-最终运行配置的本机候选文件已按白名单准备在受限私有目录中，数据库固定为当前 RootSolo，Account 与 callback 固定正式 HTTPS 地址，GitHub 私钥使用原有 base64 配置而不携带 Windows 路径。候选只包含数据库、连接器、沙箱和公开地址所需变量，不包含个人开发 grant、AI 运营 key、SMTP 或管理 token。它尚未传到远端，Cloud 与 productionConnector 门禁仍为 false，没有修改 Windows 全局环境；原有云密钥及永不过期设置保持。
+最终运行配置的候选文件已按白名单准备，数据库固定为当前 RootSolo，Account 与 callback 固定正式 HTTPS 地址，GitHub 私钥使用原有 base64 配置而不携带 Windows 路径。候选只包含数据库、连接器、沙箱和公开地址所需变量，不包含个人开发 grant、AI 运营 key、SMTP 或管理 token。经实时主机／专属站点预检后，已加密传到 `/opt/studysolo-preview/config/runtime-candidate.env`，校验文件一致，root 所有、服务组只读、0640。当前运行的 `runtime.env` 字节保持不变，没有重启或激活；候选 Cloud 与 productionConnector 门禁也仍为 false，没有修改 Windows 全局环境；原有云密钥及永不过期设置保持。
 
 桌面安装包和手机壳另有发布流程，不能把网站归档当作EXE/APK。正式切换和浏览器多用户验收仍待完成。

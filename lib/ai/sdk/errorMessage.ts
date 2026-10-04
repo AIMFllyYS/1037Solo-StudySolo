@@ -13,6 +13,8 @@ export function toChatErrorMessage(error: unknown, secrets: string[] = []): stri
   const code = chain.map((item) => item.code).find((value) => typeof value === 'string')
     ?? messages.match(/\b(EACCES|EPERM|ENOTFOUND|EAI_AGAIN|ECONNREFUSED|ECONNRESET|ETIMEDOUT|UND_ERR_\w*TIMEOUT)\b/)?.[1];
 
+  if (chain.some((item) => item.code === 'CUSTOM_PROVIDER_NETWORK_UNSAFE')) return '自定义模型地址未通过公网连接校验，请检查 API 地址、DNS 或使用正式网站连接。';
+
   if (code === 'EACCES' || code === 'EPERM') {
     return `无法连接模型服务（${code}）：网络访问被系统或启动环境拒绝。请检查开发服务的网络权限与代理，或在普通终端重新启动 pnpm dev。`;
   }

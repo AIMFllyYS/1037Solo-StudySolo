@@ -6,10 +6,11 @@ import { BlockedProbeNetworkError, createPinnedProbeLookup, fetchProbeHeaders, i
 test("probe addresses reject private, metadata, reserved and embedded private IPv4", () => {
   for (const address of ["127.0.0.1", "10.0.0.1", "169.254.169.254", "100.64.0.1",
     "198.18.0.1", "192.0.2.1", "224.0.0.1", "255.255.255.255", "::1", "fc00::1",
-    "fe80::1", "2001:db8::1", "::ffff:127.0.0.1", "64:ff9b::a00:1", "2002:7f00:1::1", "not-an-ip"]) {
+    "fe80::1", "fec0::1", "100::1", "100:0:0:1::1", "64:ff9b:1::808:808",
+    "2001:2::1", "2001:10::1", "3fff::1", "5f00::1", "2001:db8::1", "::ffff:127.0.0.1", "64:ff9b::a00:1", "2002:7f00:1::1", "not-an-ip"]) {
     assert.equal(isPublicProbeAddress(address), false, address);
   }
-  for (const address of ["8.8.8.8", "1.1.1.1", "2606:4700:4700::1111"]) {
+  for (const address of ["8.8.8.8", "1.1.1.1", "2606:4700:4700::1111", "64:ff9b::808:808"]) {
     assert.equal(isPublicProbeAddress(address), true, address);
   }
 });

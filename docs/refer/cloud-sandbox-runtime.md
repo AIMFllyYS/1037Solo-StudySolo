@@ -73,7 +73,7 @@ GitHub仓库公开不等于容器镜像自动公开：[官方Container registry�
 
 本机 `.env.local`启用基础开发运行；本机 `.env.production`仅准备配置、仍关闭。新增/管理的名称为 CLOUD_SANDBOX_ENABLED、REGION、DOMAIN、API_URL、API_KEY、TEMPLATE、APP_ORIGIN、ENCRYPTION_KEY、MONTHLY_BUDGET_CNY、RUN_BUDGET_CNY、BUDGET_RUN_ID、FIXED_COST_CNY、SKILLS_VERSION、SKILLS_TEMPLATE（均带 CLOUD_SANDBOX_前缀）。初次开发配置未更新Windows全局或远端进程环境；随后新增的服务器预检配置见下一段。密钥值不在报告中记录。
 
-随后用户批准的服务器私有预检已启动，详情见[网站发布记录](studysolo-web-release.md)。仅新建该实例的`/opt/studysolo-preview/config/runtime.env`公共/门禁配置，Cloud与productionConnectors仍false，没有复制运营密钥，正式网站没有切换。Google与GitHub正式回调均经用户现场确认保存并刷新读回，不要求另改本项目env：现有`CONNECTOR_CALLBACK_ORIGIN`与正式域名、`CONNECTOR_DEV_CALLBACK_ORIGIN`与localhost均已核对匹配；Google五项scope与Testing、GitHub原权限与密钥保持，GitHub两条回调的通配匹配均关闭。
+随后用户批准的服务器私有预检已启动，详情见[网站发布记录](studysolo-web-release.md)。运行中的`/opt/studysolo-preview/config/runtime.env`只含公共/门禁配置，Cloud与productionConnectors仍false，正式网站没有切换。后续已把严格白名单的密钥候选配置加密传输到独立`runtime-candidate.env`，root所有、服务组只读、0640，校验一致；没有替换当前环境或重启，候选门禁也保持false。Google与GitHub正式回调均经用户现场确认保存并刷新读回，不要求另改本项目env：现有`CONNECTOR_CALLBACK_ORIGIN`与正式域名、`CONNECTOR_DEV_CALLBACK_ORIGIN`与localhost均已核对匹配；Google五项scope与Testing、GitHub原权限与密钥保持，GitHub两条回调的通配匹配均关闭。
 
 真实OCI验收后，仅将本项目两个env文件中的`CLOUD_SANDBOX_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_VERSION`更新为已验收组合。无关变量逐项保持，旧文件留在受限备份目录；原API key及加密key没有旋转，生产开关保持false。GitHub构建环境Secret是另一受限服务端配置，不是Windows全局变量或EXE内置凭据。
 
