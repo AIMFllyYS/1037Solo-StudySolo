@@ -14,11 +14,15 @@ import {
 import { closeManagedWindow } from "@/lib/keyboard/windowActions";
 import { stripUserNoteWindowState } from "@/lib/stores/windowPersist";
 import { SAVED_TOAST_MESSAGE, useToast } from "@/lib/stores/toast";
+import { activateStorageOwner, getStorageOwner } from "@/lib/storage/ownerScope";
+
+const BODY_SEARCH_INDEX_DELAY_MS = 500;
 
 function reset() {
   useUserNotes.setState({
     byId: {},
     order: [],
+    libraryRevision: 0,
     openEditorIds: [],
     dirtyEditorIds: [],
     agentEditingNoteId: null,
@@ -132,6 +136,60 @@ test("updateNote auto-follows heading until the title is edited by hand", () => 
   assert.equal(useUserNotes.getState().byId[id]?.title, "力学笔记");
 });
 
+test("Review library indexing uses one trailing refresh and rejects work from an old owner", (t) => {
+  const previousOwner = getStorageOwner();
+  activateStorageOwner("review-index-owner-a");
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  try {
+    reset();
+    const id = useUserNotes.getState().createNote("probability");
+    const afterCreate = useUserNotes.getState().libraryRevision;
+    useUserNotes.getState().updateNote(id, { markdown: "# A\n\none" });
+    assert.equal(useUserNotes.getState().libraryRevision, afterCreate);
+
+    t.mock.timers.tick(300);
+    useUserNotes.getState().updateNote(id, { markdown: "# AB\n\none" });
+    t.mock.timers.tick(BODY_SEARCH_INDEX_DELAY_MS - 1);
+    assert.equal(useUserNotes.getState().libraryRevision, afterCreate);
+    t.mock.timers.tick(1);
+    const finalLocalRevision = useUserNotes.getState().libraryRevision;
+    assert.equal(finalLocalRevision, afterCreate + 1);
+
+    // A remote merge writes the store directly; the same trailing index update
+    // must make the final body searchable even when no later edit arrives.
+    useUserNotes.setState((state) => ({
+      byId: {
+        ...state.byId,
+        [id]: { ...state.byId[id]!, markdown: "# Remote final body", updatedAt: Date.now() + 1 },
+      },
+    }));
+    t.mock.timers.tick(BODY_SEARCH_INDEX_DELAY_MS);
+    assert.equal(useUserNotes.getState().libraryRevision, finalLocalRevision + 1);
+
+    useUserNotes.setState((state) => ({
+      byId: { ...state.byId, [id]: { ...state.byId[id]!, markdown: "owner A pending" } },
+    }));
+    const beforeOwnerChange = useUserNotes.getState().libraryRevision;
+    activateStorageOwner("review-index-owner-b");
+    t.mock.timers.tick(BODY_SEARCH_INDEX_DELAY_MS);
+    assert.equal(useUserNotes.getState().libraryRevision, beforeOwnerChange);
+
+    reset();
+    const ownerBId = useUserNotes.getState().createNote("anatomy");
+    const beforeOwnerBMerge = useUserNotes.getState().libraryRevision;
+    useUserNotes.setState((state) => ({
+      byId: {
+        ...state.byId,
+        [ownerBId]: { ...state.byId[ownerBId]!, markdown: "owner B remote final" },
+      },
+    }));
+    t.mock.timers.tick(BODY_SEARCH_INDEX_DELAY_MS);
+    assert.equal(useUserNotes.getState().libraryRevision, beforeOwnerBMerge + 1);
+  } finally {
+    activateStorageOwner(previousOwner);
+  }
+});
+
 test("rehydrating old window fields does not keep editors or the library open", () => {
   const id = useUserNotes.getState().createNote("probability");
   useUserNotes.getState().openEditor(id);
@@ -232,6 +290,32 @@ test("classroom notes stay out of the personal library and open as a sticky wind
   assert.equal(win?.type, "user-note-editor");
   assert.ok((win?.size.width ?? 999) <= 380);
   assert.ok((win?.size.height ?? 999) <= 360);
+});
+
+test("Review selection notes open the full workspace without changing other classroom sticky geometry", () => {
+  const reviewNote = useUserNotes.getState().createNote("anatomy", {
+    kind: "classroom",
+    quote: "公开合成 Review 选区",
+    source: { kind: "review", label: "系统解剖学 · 复习板", subjectId: "anatomy" },
+  });
+  useUserNotes.getState().openEditor(reviewNote, { anchor: { x: 400, y: 300 } });
+  const reviewWindow = useWindowManager.getState().windows.find(
+    (item) => item.data && "noteId" in item.data && item.data.noteId === reviewNote,
+  );
+  assert.ok((reviewWindow?.size.width ?? 0) >= 700);
+  assert.ok((reviewWindow?.size.height ?? 0) >= 500);
+
+  const classNote = useUserNotes.getState().createNote("anatomy", {
+    kind: "classroom",
+    quote: "公开合成 Class 选区",
+    source: { kind: "class", label: "系统解剖学 · 课堂", subjectId: "anatomy" },
+  });
+  useUserNotes.getState().openEditor(classNote, { anchor: { x: 400, y: 300 } });
+  const classWindow = useWindowManager.getState().windows.find(
+    (item) => item.data && "noteId" in item.data && item.data.noteId === classNote,
+  );
+  assert.ok((classWindow?.size.width ?? 999) <= 380);
+  assert.ok((classWindow?.size.height ?? 999) <= 360);
 });
 
 test("closing an edited note window toasts once; untouched close stays silent", () => {
