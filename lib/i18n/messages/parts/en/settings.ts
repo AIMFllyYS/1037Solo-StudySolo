@@ -262,7 +262,7 @@ export const settingsEn = {
   capability: {
     title: "Capability endpoints",
     meta: "Image, embedding, search, rerank",
-    desc: "Leave a field empty to use the platform default. With your own key, that capability no longer counts against the platform quota.",
+    desc: "Leave a field empty to use the platform default. Your own key pays the upstream cost of that capability; auxiliary features still provided by the platform (search etc.) use the shared credits.",
     image: "Image",
     modelId: "Model ID",
     platformDefault: "empty = platform default",

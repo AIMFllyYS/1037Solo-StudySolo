@@ -300,7 +300,7 @@ export const panelEn = {
 
   // Account quota (AccountQuota).
   quota: {
-    getMembership: "Get membership",
+    getMembership: "Membership",
     tier: {
       free: "Free",
       plus: "Plus",
@@ -316,6 +316,11 @@ export const panelEn = {
     byokRemaining: "BYO API quota left",
     note: "This auxiliary quota covers platform features such as search; it is not your external API account balance.",
     periodEnd: "The current quota period ends {date}.",
+    sharedAvailable: "Shared credits available",
+    sharedHeld: "In use (reserved)",
+    sharedGrant: "Configured cycle grant",
+    sharedPeriodEnd: "Cycle ends {date}.",
+    sharedNote: "Every 1037Solo product draws from the same credits; amounts are an internal accounting unit, not cash.",
     updatedAt: "Last updated: {time}",
     reading: "Loading quota…",
     unavailable: "Quota unavailable",
@@ -345,13 +350,15 @@ export const panelEn = {
     hintLocal: "Signed out, this estimates what would sync from this device; after signing in it shows your actual cloud usage.",
   },
 
-  // Membership sponsor window (MembershipSponsorWindow).
+  // Membership info window (MembershipSponsorWindow).
   membership: {
-    title: "Get membership",
-    intro: "This site is open source. If you need more quota, contact the maintainer or send an email. And if it genuinely helped your study, a tip is welcome too.",
+    title: "Membership & credits",
+    intro: "Free, Pro, Plus and Ultra are permanent tiers; one credit balance and one storage quota work across every 1037Solo product. Online purchase is not open yet — plans and orders are handled in the unified member center.",
+    loading: "Loading the membership catalog…",
+    unavailable: "The member center is unreachable right now, please try again later.",
+    monthly: "granted every 30 days",
+    openCenter: "Open the member center",
     repo: "GitHub repository",
-    contact: "Contact the maintainer for more quota",
-    qrAlt: "Tip QR code",
-    note: "Glad it really helps — tips are welcome.",
+    contact: "Usage & membership support",
   },
 };

@@ -1,18 +1,26 @@
-import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, it, vi } from 'vitest';
 import { AccountQuota } from './AccountQuota';
 import { fetchQuota } from '@/lib/billing/fetchQuota';
-import { useWindowManager } from '@/lib/hooks/useWindowManager';
+import type { QuotaView } from '@/lib/billing/quotaView';
 
 let userId: string | null = 'one';
 vi.mock('@/lib/hooks/useAuthSession', () => ({ useAuthSession: () => ({ userId, status: userId ? 'signedIn' : 'signedOut' }) }));
 vi.mock('@/lib/billing/fetchQuota', () => ({ fetchQuota: vi.fn() }));
-const value = (id: string) => ({ userId: id, tier: 'plus' as const, periodStart: '2026-09-01T00:00:00Z', periodEnd: '2026-10-01T00:00:00Z', updatedAt: '2026-09-13T00:00:00Z', platform: { cap: 70, used: 2, remaining: 68 }, byok: { cap: 70, used: 1, remaining: 69 } });
+const value = (id: string): QuotaView => ({ userId: id, tier: 'plus' as const, periodStart: '2026-09-01T00:00:00Z', periodEnd: '2026-10-01T00:00:00Z', updatedAt: '2026-09-13T00:00:00Z', platform: { cap: 70, used: 2, remaining: 68 }, byok: { cap: 70, used: 1, remaining: 69 } });
+const sharedValue = (id: string, extra: Partial<QuotaView> = {}): QuotaView => ({
+  userId: id, tier: 'pro_plus' as const, sharedWallet: true, heldCny: 2,
+  periodStart: '2026-09-01T00:00:00Z', periodEnd: '2026-10-01T00:00:00Z', updatedAt: '2026-09-13T00:00:00Z',
+  // Legacy CNY pools — the shared wallet must NOT render remaining/cap as a fraction.
+  platform: { cap: 999, used: 55, remaining: 12 }, byok: { cap: 999, used: 55, remaining: 12 },
+  ...extra,
+});
+const WALLET = { wallet: { available_microcredits: '12000000', held_microcredits: '2000000', charged_microcredits: '55000000' }, monthlyMicrocredits: '50000000' };
+
 afterEach(() => {
   cleanup();
   vi.resetAllMocks();
   userId = 'one';
-  useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
 });
 it('shows both pools and never labels the period as membership expiry', async () => {
   vi.mocked(fetchQuota).mockResolvedValue(value('one'));
@@ -33,8 +41,38 @@ it('reuses the colored usage bar with reversed risk semantics for low remaining 
   expect(progress).toHaveAttribute('aria-valuenow', '7');
   expect(progress).toHaveAttribute('data-risk-level', 'limit');
 });
+it('shared wallet shows exact credits — available/held/configured grant, never the legacy cap', async () => {
+  vi.mocked(fetchQuota).mockResolvedValue(sharedValue('one', WALLET));
+  render(<AccountQuota />);
+  await screen.findByText('共享可用额度');
+  expect(screen.getByText('12')).toBeTruthy();
+  expect(screen.getByText('2')).toBeTruthy();
+  expect(screen.getByText('本期发放标准')).toBeTruthy();
+  expect(screen.getByText('50')).toBeTruthy();
+  expect(screen.queryByText(/999/)).toBeNull();
+  expect(screen.queryByText('自备 API 辅助额度')).toBeNull();
+  expect(screen.queryByRole('progressbar')).toBeNull();
+});
+it('shared wallet without the new fields falls back to legacy remaining + held only', async () => {
+  vi.mocked(fetchQuota).mockResolvedValue(sharedValue('one'));
+  render(<AccountQuota />);
+  await screen.findByText('共享可用额度');
+  expect(screen.getByText(/¥12/)).toBeTruthy();
+  expect(screen.getByText('使用中（预留）')).toBeTruthy();
+  expect(screen.getByText(/¥2/)).toBeTruthy();
+  expect(screen.queryByText('本期发放标准')).toBeNull();
+  expect(screen.queryByText(/999/)).toBeNull();
+});
+it('an older payload without heldCny shows —, never an invented ¥0', async () => {
+  vi.mocked(fetchQuota).mockResolvedValue(sharedValue('one', { heldCny: undefined }));
+  render(<AccountQuota />);
+  await screen.findByText('共享可用额度');
+  expect(screen.getByText('使用中（预留）')).toBeTruthy();
+  expect(screen.getByText('—')).toBeTruthy();
+  expect(screen.queryByText(/¥0/)).toBeNull();
+});
 it('discards a late old-account response and never turns errors into zero balance', async () => {
-  let resolveOld!: (data: ReturnType<typeof value>) => void;
+  let resolveOld!: (data: QuotaView) => void;
   vi.mocked(fetchQuota).mockImplementation((id) => id === 'one' ? new Promise((resolve) => { resolveOld = resolve; }) : Promise.reject(new Error('暂不可用')));
   const view = render(<AccountQuota />);
   userId = 'two'; view.rerender(<AccountQuota />);
@@ -44,12 +82,15 @@ it('discards a late old-account response and never turns errors into zero balanc
   expect(screen.queryByText(/¥0/)).toBeNull();
   userId = null; view.rerender(<AccountQuota />);
   expect(screen.getByText('登录后查看会员与额度')).toBeTruthy();
-  expect(screen.getByRole('button', { name: '获取会员' })).toBeTruthy();
+  expect(screen.getByRole('link', { name: '会员中心' })).toBeTruthy();
 });
-it('puts a get-membership tag beside the tier and opens the Mac sponsor window', async () => {
+it('the membership tag is a plain link into the unified member center', async () => {
   vi.mocked(fetchQuota).mockResolvedValue(value('one'));
   render(<AccountQuota />);
   await screen.findByText('Plus 会员');
-  fireEvent.click(screen.getByRole('button', { name: '获取会员' }));
-  expect(useWindowManager.getState().windows.some((win) => win.type === 'membership-sponsor')).toBe(true);
+  const tag = screen.getByRole('link', { name: '会员中心' });
+  expect(tag).toHaveAttribute('href', expect.stringContaining('/membership?'));
+  expect(tag.getAttribute('href')).toContain('source=studysolo');
+  expect(tag).toHaveAttribute('target', '_blank');
+  expect(tag).toHaveAttribute('rel', expect.stringContaining('noopener'));
 });

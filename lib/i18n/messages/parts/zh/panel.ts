@@ -299,7 +299,7 @@ export const panelZh = {
 
   // 账户额度（AccountQuota）
   quota: {
-    getMembership: "获取会员",
+    getMembership: "会员中心",
     tier: {
       free: "免费会员",
       plus: "Plus 会员",
@@ -315,6 +315,11 @@ export const panelZh = {
     byokRemaining: "自备 API 辅助剩余额度",
     note: "辅助额度用于平台提供的搜索等能力，不是外部 API 账户余额。",
     periodEnd: "当前额度周期截至 {date}。",
+    sharedAvailable: "共享可用额度",
+    sharedHeld: "使用中（预留）",
+    sharedGrant: "本期发放标准",
+    sharedPeriodEnd: "本周期至 {date}。",
+    sharedNote: "所有 1037Solo 产品共用同一份额度；数字为内部计费单位，不代表现金余额。",
     updatedAt: "上次更新：{time}",
     reading: "正在读取额度…",
     unavailable: "额度暂不可用",
@@ -344,13 +349,15 @@ export const panelZh = {
     hintLocal: "未登录时按本机将同步的内容估算，登录后改为云端实际占用。",
   },
 
-  // 获取会员窗（MembershipSponsorWindow）
+  // 会员说明窗（MembershipSponsorWindow）
   membership: {
-    title: "获取会员",
-    intro: "本站开源。需要更多额度时，可以联系站长或发邮件申请；如果学习过程中真的帮到你，也欢迎赞赏。",
+    title: "会员与额度",
+    intro: "Free、Pro、Plus、Ultra 四档长期保留，一份额度与一块存储在所有 1037Solo 产品里通用；在线购买尚未开放，开通与订单都在统一会员中心办理。",
+    loading: "正在读取会员目录…",
+    unavailable: "暂时连不上统一会员中心，稍后再试。",
+    monthly: "每 30 天发放",
+    openCenter: "前往统一会员中心",
     repo: "GitHub 开源仓库",
-    contact: "联系站长获取更多额度",
-    qrAlt: "赞赏码",
-    note: "真实对你有帮助，欢迎来赞赏。",
+    contact: "使用与权益咨询",
   },
 };

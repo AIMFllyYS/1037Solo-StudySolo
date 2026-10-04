@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Heart, Mail } from "lucide-react";
 
 function GithubMark({ size = 22 }: { size?: number }) {
@@ -13,11 +13,19 @@ function GithubMark({ size = 22 }: { size?: number }) {
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useT } from "@/lib/i18n";
+import { accountOrigin } from "@/lib/auth/account";
+import {
+  MEMBERSHIP_PLAN_LABELS,
+  fetchMembershipCatalog,
+  formatMembershipCredits,
+  formatMembershipStorage,
+  type MembershipCatalog,
+} from "@/lib/membership/presentation";
+import { membershipCenterHref } from "@/lib/membership/center";
 import {
   GITHUB_REPO_URL,
   MEMBERSHIP_SPONSOR_WINDOW_ID,
-  SPONSOR_EMAIL,
-  SPONSOR_QR_SRC,
+  SUPPORT_EMAIL,
 } from "@/lib/window/openMembershipSponsor";
 
 export default function MembershipSponsorLayer() {
@@ -26,10 +34,39 @@ export default function MembershipSponsorLayer() {
   return <MembershipSponsorWindow />;
 }
 
+/** The public four-tier catalog inside the info window — real numbers or nothing. */
+function CatalogStrip({ catalog }: { catalog: MembershipCatalog }) {
+  const t = useT();
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {catalog.plans.map((plan) => (
+        <div key={plan.id} className="rounded-xl border border-[var(--line)] bg-[var(--bg-muted)] px-3 py-2.5">
+          <div className="text-[12px] font-semibold text-[var(--ink)]">{MEMBERSHIP_PLAN_LABELS[plan.id]}</div>
+          <div className="mt-1 text-[11px] leading-5 text-[var(--ink-soft)]">
+            {formatMembershipCredits(plan.monthly_microcredits)} credits · {t("panel.membership.monthly")}
+            <br />
+            {formatMembershipStorage(plan.storage_bytes)}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function MembershipSponsorWindow() {
   const t = useT();
   const closeWindow = useWindowManager((state) => state.closeWindow);
   const handleClose = useCallback(() => closeWindow(MEMBERSHIP_SPONSOR_WINDOW_ID), [closeWindow]);
+  const [catalog, setCatalog] = useState<MembershipCatalog | null>(null);
+  const [failed, setFailed] = useState(false);
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    fetchMembershipCatalog(accountOrigin())
+      .then((value) => { if (mounted.current) setCatalog(value); })
+      .catch(() => { if (mounted.current) setFailed(true); });
+    return () => { mounted.current = false; };
+  }, []);
 
   return (
     <ManagedWindow
@@ -49,14 +86,21 @@ function MembershipSponsorWindow() {
           {t("panel.membership.intro")}
         </p>
 
+        {catalog ? (
+          <CatalogStrip catalog={catalog} />
+        ) : (
+          <p className="text-[11px] text-[var(--ink-faint)]" role="status">
+            {t(failed ? "panel.membership.unavailable" : "panel.membership.loading")}
+          </p>
+        )}
+
         <a
-          href="https://1037solo.com/me#data"
+          href={membershipCenterHref()}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-xl border border-[var(--line)] bg-[var(--bg-muted)] px-3.5 py-3 text-[13px] text-[var(--ink)] hover:border-[var(--md-sys-color-primary)]"
+          className="rounded-xl border border-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-primary)] px-3.5 py-3 text-center text-[13px] font-semibold text-white"
         >
-          统一会员与订单中心
-          <span className="mt-1 block text-[11px] text-[var(--ink-soft)]">前往 1037Solo 官网查看会员、额度及测试订单；暂未开放真实收款。</span>
+          {t("panel.membership.openCenter")}
         </a>
 
         <a
@@ -73,27 +117,15 @@ function MembershipSponsorWindow() {
         </a>
 
         <a
-          href={`mailto:${SPONSOR_EMAIL}`}
+          href={`mailto:${SUPPORT_EMAIL}`}
           className="flex items-center gap-3 rounded-xl border border-[var(--line)] bg-[var(--bg-muted)] px-3.5 py-3 text-[var(--ink)] hover:border-[var(--md-sys-color-primary)]"
         >
           <Mail size={20} className="shrink-0" />
           <span className="min-w-0">
             <span className="block text-[12px] font-semibold">{t("panel.membership.contact")}</span>
-            <span className="mt-0.5 block text-[11px] text-[var(--ink-soft)]">{SPONSOR_EMAIL}</span>
+            <span className="mt-0.5 block text-[11px] text-[var(--ink-soft)]">{SUPPORT_EMAIL}</span>
           </span>
         </a>
-
-        <figure className="rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-3 text-center">
-          {/* eslint-disable-next-line @next/next/no-img-element -- local static QR, not a remote CMS image. */}
-          <img
-            src={SPONSOR_QR_SRC}
-            alt={t("panel.membership.qrAlt")}
-            className="mx-auto max-h-[280px] w-auto max-w-full rounded-lg"
-          />
-          <figcaption className="mt-3 text-[12px] leading-6 text-[var(--ink)]">
-            {t("panel.membership.note")}
-          </figcaption>
-        </figure>
       </div>
     </ManagedWindow>
   );

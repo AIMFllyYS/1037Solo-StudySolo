@@ -40,11 +40,22 @@ export interface QuotaPeriod {
   end: Date;
 }
 
+/** Exact microcredits straight from the shared wallet row — decimal strings, never floats. */
+export interface QuotaWalletView {
+  available_microcredits: string;
+  held_microcredits: string;
+  charged_microcredits: string;
+}
+
 export interface QuotaSnapshot {
   userId: string;
   tier: UserTier | "pro_plus" | "ultra";
   sharedWallet?: boolean;
   heldCny?: number;
+  /** Raw shared-wallet amounts when the rows carried them (omitted otherwise). */
+  wallet?: QuotaWalletView;
+  /** The plan's configured 30-day grant in microcredits, when the entitlements row carried it. */
+  monthlyMicrocredits?: string;
   period: QuotaPeriod;
   rolled: boolean;
   cap: Record<UsagePool, number>;
@@ -101,6 +112,8 @@ export interface QuotaGateTestDeps {
   resolveUserId?: (headers: { get(name: string): string | null }) => Promise<string | null>;
   store?: QuotaStore;
   now?: () => Date;
+  /** Test seam for the shared-wallet RPC reads; production always uses the service client. */
+  rpc?: (name: string, params: Record<string, unknown>) => Promise<{ data: unknown; error: unknown }>;
 }
 
 let testDeps: QuotaGateTestDeps | null = null;
@@ -223,16 +236,82 @@ function defaultStore(): QuotaStore {
   throw new Error("Legacy local grants are archival only; use shared credit accounts");
 }
 
+/**
+ * Original microcredit values as decimal strings: null when the field is
+ * absent, throws when present but malformed — never a silently invented zero.
+ */
+const MICRO_MAX = BigInt(Number.MAX_SAFE_INTEGER);
+
+/** Tiers the quota view can display (legacy "plus" alias included). */
+const SNAPSHOT_TIERS = new Set<string>(["free", "plus", "pro", "pro_plus", "ultra"]);
+
+function microAmount(value: unknown): string | null {
+  if (value === null || value === undefined || value === "") return null;
+  if (typeof value === "number" && Number.isSafeInteger(value) && value >= 0) return String(value);
+  if (typeof value === "string" && /^\d+$/.test(value) && BigInt(value) <= MICRO_MAX) return value;
+  throw new Error("Invalid central credit balance");
+}
+
+function firstRow(data: unknown): Record<string, unknown> | null {
+  const row = Array.isArray(data) ? data[0] : data;
+  return row && typeof row === "object" ? (row as Record<string, unknown>) : null;
+}
+
+/**
+ * The exact shared-wallet fields for the quota view, lifted from the raw RPC
+ * rows before the legacy CNY conversion. All-or-nothing: a partial wallet is
+ * more misleading than none. Exported for unit tests.
+ */
+export function sharedWalletFields(
+  balanceData: unknown,
+  membershipData: unknown,
+): { wallet?: QuotaWalletView; monthlyMicrocredits?: string } {
+  const wallet = firstRow(balanceData);
+  const membership = firstRow(membershipData);
+  const monthly = membership ? microAmount(membership.monthly_microcredits) ?? undefined : undefined;
+  if (!wallet) return monthly ? { monthlyMicrocredits: monthly } : {};
+  const available = microAmount(wallet.available_microcredits);
+  const held = microAmount(wallet.held_microcredits);
+  const charged = microAmount(wallet.charged_microcredits);
+  return {
+    ...(available !== null && held !== null && charged !== null
+      ? { wallet: { available_microcredits: available, held_microcredits: held, charged_microcredits: charged } }
+      : {}),
+    ...(monthly ? { monthlyMicrocredits: monthly } : {}),
+  };
+}
+
+const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:?\d{2})?$/;
+
 async function loadSharedSnapshot(userId: string): Promise<QuotaSnapshot> {
-  const client = createServiceAuthClient();
-  const allowance = await client.rpc("ensure_period_credits", { p_user_id: userId });
+  // One service client per load — the three reads below share it instead of
+  // building a fresh client per call.
+  const rpc =
+    testDeps?.rpc ??
+    (() => {
+      const client = createServiceAuthClient();
+      return (name: string, params: Record<string, unknown>) => client.rpc(name, params);
+    })();
+  const allowance = await rpc("ensure_period_credits", { p_user_id: userId });
   if (allowance.error) throw new Error("Shared allowance unavailable");
   const [balance, membership] = await Promise.all([
-    client.rpc("credit_account_summary", { p_user_id: userId }),
-    client.rpc("ecosystem_entitlements", { p_user_id: userId }),
+    rpc("credit_account_summary", { p_user_id: userId }),
+    rpc("ecosystem_entitlements", { p_user_id: userId }),
   ]);
   if (balance.error || membership.error) throw new Error("Shared credit summary unavailable");
-  const wallet = Array.isArray(balance.data) ? balance.data[0] : balance.data;
+  // Exact micro strings are lifted first — a malformed row fails the snapshot
+  // instead of being silently converted to a wrong CNY float below. The live
+  // snapshot requires both the complete wallet row and the configured monthly
+  // grant: a partial or absent shared row fails closed (503) rather than
+  // rendering invented zeros.
+  const exact = sharedWalletFields(balance.data, membership.data);
+  if (!exact.wallet || !exact.monthlyMicrocredits) throw new Error("Shared credit summary unavailable");
+  const membershipRow = firstRow(membership.data);
+  const planId = membershipRow?.plan_id;
+  // An unknown plan id fails closed the same way a missing row does — the
+  // snapshot never invents a tier.
+  if (typeof planId !== "string" || !SNAPSHOT_TIERS.has(planId)) throw new Error("Shared credit summary unavailable");
+  const wallet = firstRow(balance.data);
   const convert = (value: unknown) => {
     const number = Number(value ?? 0);
     const ratio = Number(process.env.ECOSYSTEM_CREDITS_PER_CNY || "1");
@@ -241,13 +320,22 @@ async function loadSharedSnapshot(userId: string): Promise<QuotaSnapshot> {
   };
   const available = convert(wallet?.available_microcredits), held = convert(wallet?.held_microcredits);
   const charged = convert(wallet?.charged_microcredits);
-  const period = Array.isArray(allowance.data) ? allowance.data[0] : allowance.data;
-  const start = new Date(period?.period_start), end = new Date(period?.period_end);
-  if (!Number.isFinite(start.getTime()) || !Number.isFinite(end.getTime())) throw new Error("Shared allowance period unavailable");
+  const period = firstRow(allowance.data);
+  const rawStart = period?.period_start, rawEnd = period?.period_end;
+  // null/booleans/scalars and absent fields fail here — new Date(null) would
+  // silently become the 1970 epoch otherwise.
+  if (typeof rawStart !== "string" || !ISO_TIMESTAMP.test(rawStart)) throw new Error("Shared allowance period unavailable");
+  if (typeof rawEnd !== "string" || !ISO_TIMESTAMP.test(rawEnd)) throw new Error("Shared allowance period unavailable");
+  const start = new Date(rawStart), end = new Date(rawEnd);
+  if (!Number.isFinite(start.getTime()) || !Number.isFinite(end.getTime()) || end.getTime() <= start.getTime()) {
+    throw new Error("Shared allowance period unavailable");
+  }
   const cap = available + held + charged;
-  return { userId, tier: membership.data?.plan_id ?? "free", period: { start, end }, rolled: false,
+  return { userId, tier: planId as QuotaSnapshot["tier"], period: { start, end }, rolled: false,
     cap: { platform: cap, byok: cap }, used: { platform: charged, byok: charged },
-    remaining: { platform: available, byok: available }, sharedWallet: true, heldCny: held };
+    remaining: { platform: available, byok: available }, sharedWallet: true, heldCny: held,
+    wallet: exact.wallet, monthlyMicrocredits: exact.monthlyMicrocredits,
+  };
 }
 
 function store(): QuotaStore {

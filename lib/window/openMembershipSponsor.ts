@@ -4,6 +4,7 @@ import { translateNow } from "@/lib/i18n";
 export const MEMBERSHIP_SPONSOR_WINDOW_ID = "membership-sponsor";
 export const GITHUB_REPO_URL = "https://github.com/AIMFllyYS/Notebook-MedFreshman";
 export const SPONSOR_EMAIL = "contact@yusheng.email";
+export const SUPPORT_EMAIL = "support@1037solo.com";
 export const SPONSOR_QR_SRC = "/images/sponsor-wechat.png";
 
 export function openMembershipSponsor(): void {

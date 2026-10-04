@@ -265,7 +265,7 @@ export const settingsZh = {
   capability: {
     title: "能力端点",
     meta: "生图、向量、搜索与重排",
-    desc: "每一项留空 = 使用平台默认。填写自己的密钥后，该能力不计入平台额度。",
+    desc: "每一项留空 = 使用平台默认。自备密钥支付该能力的上游费用；仍由平台提供的搜索等辅助能力使用共享额度。",
     image: "生图",
     modelId: "模型 ID",
     platformDefault: "留空 = 平台默认",

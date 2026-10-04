@@ -18,6 +18,8 @@ export async function GET(req: Request) {
       updatedAt: new Date().toISOString(),
       platform: { cap: snapshot.cap.platform, used: snapshot.used.platform, remaining: snapshot.remaining.platform },
       byok: { cap: snapshot.cap.byok, used: snapshot.used.byok, remaining: snapshot.remaining.byok },
+      ...(snapshot.wallet ? { wallet: snapshot.wallet } : {}),
+      ...(snapshot.monthlyMicrocredits ? { monthlyMicrocredits: snapshot.monthlyMicrocredits } : {}),
     };
     return Response.json(view, { headers });
   } catch {
