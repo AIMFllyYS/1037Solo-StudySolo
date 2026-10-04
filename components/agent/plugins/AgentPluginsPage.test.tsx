@@ -1,14 +1,127 @@
-import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import rawMarket from "@/public/plugins/market.json";
 import { parseMarketManifest } from "@/lib/plugins/market";
 import AgentPluginsPage from "./AgentPluginsPage";
 import { useToast } from "@/lib/stores/toast";
 import { StrictMode } from "react";
+import { activateStorageOwner, ownedStorageKeyFor } from "@/lib/storage/ownerScope";
+import { setBrowserSession } from "@/lib/auth/browserSession";
+import { useGoogleConnectorScopes } from "@/lib/stores/googleConnectorScopes";
+import { GOOGLE_SCOPE_OPTIONS } from "@/lib/connectors/google-scopes";
+import { createHash, webcrypto } from "node:crypto";
 
 vi.mock("@/lib/plugins/market", async importOriginal => {
   const original = await importOriginal<typeof import("@/lib/plugins/market")>();
   return { ...original, useMarketManifest: () => ({ manifest: original.parseMarketManifest(rawMarket), loading: false, error: false }) };
+});
+
+describe("Google scope draft across Account verification", () => {
+  const ownerA = "10000000-0000-4000-8000-000000000001", ownerB = "10000000-0000-4000-8000-000000000002";
+  const all = GOOGLE_SCOPE_OPTIONS.map(([scope]) => scope), defaults = all.slice(0, 2);
+  const session = (id: string) => ({ accessToken: "synthetic-test-session", expiresAt: 2000000000, user: { id, email: null, user_metadata: {} } });
+  const key = (owner: string) => ownedStorageKeyFor(owner, "google-connector-scope-draft-v1");
+  const google = () => screen.getByTestId("connection-google");
+  const inputs = () => Array.from(google().querySelectorAll<HTMLInputElement>('input[name="scope"]'));
+  const selected = () => inputs().filter(input => input.checked).map(input => input.value);
+  const selectAll = () => { for (const input of inputs()) if (!input.checked) fireEvent.click(input); };
+  const status = (connection = { provider: "google", state: "disconnected", scopes: [] as string[] }) => Response.json({ connections: [connection] });
+  beforeEach(() => {
+    activateStorageOwner(null); localStorage.clear(); activateStorageOwner(ownerA); setBrowserSession(session(ownerA));
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(async url => url === "/api/agent/skills/" ? Response.json({ ready: false, installed: [] }) : status()));
+  });
+  afterEach(() => { cleanup(); activateStorageOwner(null); setBrowserSession(null); localStorage.clear(); useToast.getState().clear(); window.history.replaceState(null, "", "/"); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
+
+  it("keeps five selected scopes through same-owner MFA loading, temporary owner absence and fixed-market reload", async () => {
+    const first = render(<AgentPluginsPage />);
+    await waitFor(() => expect(screen.getByTestId("plugins-connect-google")).toBeEnabled());
+    selectAll(); expect(selected()).toEqual(all);
+    expect(JSON.parse(localStorage.getItem(key(ownerA))!)).toEqual(all);
+    let finish: ((response: Response) => void) | undefined;
+    vi.mocked(fetch).mockImplementationOnce(() => new Promise<Response>(resolve => { finish = resolve; }));
+    act(() => setBrowserSession({ ...session(ownerA), expiresAt: 2100000000 }));
+    expect(screen.getByTestId("plugins-connect-google")).toBeDisabled(); expect(selected()).toEqual(all);
+    await act(async () => finish!(status()));
+    await waitFor(() => expect(screen.getByTestId("plugins-connect-google")).toBeEnabled());
+    expect(selected()).toEqual(all);
+    first.unmount();
+    // Account reverify returns to a new document at the fixed product market.
+    // Re-activate the verified owner and read persisted choices, not old React state.
+    activateStorageOwner(null); setBrowserSession(null); activateStorageOwner(ownerA); setBrowserSession(session(ownerA));
+    window.history.replaceState(null, "", "/agent/plugins");
+    render(<StrictMode><AgentPluginsPage /></StrictMode>);
+    await waitFor(() => expect(screen.getByTestId("plugins-connect-google")).toBeEnabled());
+    expect(selected()).toEqual(all);
+    const form = screen.getByTestId("plugins-connect-google").closest("form")!;
+    expect(new FormData(form).getAll("scope")).toEqual(all);
+    expect(form.querySelector('input[name="owner"],input[name="grantVersion"],input[name="token"]')).toBeNull();
+  });
+
+  it("loads each actual owner's own draft/default and rejects a stale old-owner write", async () => {
+    render(<AgentPluginsPage />); await waitFor(() => expect(screen.getByTestId("plugins-connect-google")).toBeEnabled());
+    selectAll(); const stale = useGoogleConnectorScopes.getState();
+    act(() => { setBrowserSession(session(ownerB)); activateStorageOwner(ownerB); });
+    await waitFor(() => expect(selected()).toEqual(defaults));
+    fireEvent.click(inputs()[0]); fireEvent.click(inputs()[1]); fireEvent.click(inputs()[2]);
+    expect(selected()).toEqual([all[2]]);
+    act(() => { setBrowserSession(session(ownerA)); activateStorageOwner(ownerA); });
+    await waitFor(() => expect(selected()).toEqual(all));
+    act(() => stale.choose(all[0], false, stale.owner, stale.epoch));
+    expect(selected()).toEqual(all); expect(JSON.parse(localStorage.getItem(key(ownerB))!)).toEqual([all[2]]);
+  });
+  it("does not apply another cookie owner's status before the verified owner has changed", async () => {
+    vi.stubGlobal("crypto", webcrypto);
+    render(<AgentPluginsPage />); await waitFor(() => expect(screen.getByTestId("plugins-connect-google")).toBeEnabled()); selectAll();
+    vi.mocked(fetch).mockImplementation(async () => Response.json({ ownerBinding: createHash("sha256").update(ownerB).digest("hex"), connections: [{ provider: "google", state: "connected", scopes: [all[2]], grantVersion: "9".repeat(64) }] }));
+    fireEvent.click(screen.getByRole("button", { name: "刷新状态" }));
+    await waitFor(() => expect(within(screen.getByTestId("learning-connections")).getByRole("alert")).toHaveTextContent("账号已切换"));
+    expect(selected()).toEqual(all); expect(JSON.parse(localStorage.getItem(key(ownerA))!)).toEqual(all);
+    expect(localStorage.getItem(key(ownerB))).toBeNull();
+    expect(screen.getByTestId("plugins-connect-google")).toBeDisabled();
+  });
+  it("applies only this verified owner's cross-tab draft event", async () => {
+    render(<AgentPluginsPage />); await waitFor(() => expect(screen.getByTestId("plugins-connect-google")).toBeEnabled());
+    act(() => window.dispatchEvent(new StorageEvent("storage", { key: key(ownerB), newValue: JSON.stringify(all) })));
+    expect(selected()).toEqual(defaults);
+    act(() => window.dispatchEvent(new StorageEvent("storage", { key: key(ownerA), newValue: JSON.stringify(all) })));
+    expect(selected()).toEqual(all);
+  });
+
+  it("reconciles a new subset grant after callback while keeping desired scopes separate on later reselection", async () => {
+    let version = "1".repeat(64), scopes: string[] = [...defaults];
+    vi.mocked(fetch).mockImplementation(async url => url === "/api/agent/skills/" ? Response.json({ ready: false, installed: [] }) : Response.json({ connections: [{ provider: "google", state: "connected", scopes, grantVersion: version }] }));
+    const first = render(<AgentPluginsPage />); await waitFor(() => expect(screen.getByTestId("plugins-connect-google")).toBeEnabled());
+    selectAll(); expect(selected()).toEqual(all);
+    fireEvent.click(screen.getByRole("button", { name: "刷新状态" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "刷新状态" })).toBeEnabled());
+    expect(selected()).toEqual(all);
+    expect(screen.getByTestId("google-granted-scopes")).not.toHaveTextContent("读取课程邮件");
+    first.unmount(); activateStorageOwner(null); activateStorageOwner(ownerA);
+    version = "2".repeat(64); window.history.replaceState(null, "", "/agent/plugins?connected=google");
+    render(<AgentPluginsPage />); await waitFor(() => expect(selected()).toEqual(defaults));
+    expect(localStorage.getItem(key(ownerA))).toBeNull();
+    selectAll();
+    scopes = [all[2]]; version = "3".repeat(64);
+    fireEvent.click(screen.getByRole("button", { name: "刷新状态" }));
+    await waitFor(() => expect(selected()).toEqual(scopes));
+    expect(screen.getByTestId("google-granted-scopes")).toHaveTextContent("读取课程邮件");
+    expect(screen.getByTestId("google-granted-scopes")).not.toHaveTextContent("发送已确认邮件");
+  });
+
+  it("uses real scopes from an older versionless server and clears a draft only after confirmed local disconnect", async () => {
+    let disconnected = false;
+    vi.mocked(fetch).mockImplementation(async url => {
+      if (url === "/api/agent/skills/") return Response.json({ ready: false, installed: [] });
+      if (url === "/api/connectors/google/disconnect") { disconnected = true; return Response.json({ disconnected: true, remoteRevocation: "unavailable" }); }
+      return Response.json({ connections: [{ provider: "google", state: disconnected ? "disconnected" : "connected", scopes: disconnected ? [] : [all[2]] }] });
+    });
+    render(<AgentPluginsPage />); await waitFor(() => expect(selected()).toEqual([all[2]]));
+    selectAll();
+    fireEvent.click(within(google()).getByRole("button", { name: "断开连接" }));
+    fireEvent.click(within(screen.getByRole("alertdialog")).getByRole("button", { name: "断开连接" }));
+    await waitFor(() => expect(selected()).toEqual(defaults));
+    expect(localStorage.getItem(key(ownerA))).toBeNull();
+  });
 });
 vi.mock("@/components/plugins/KitSoloConnectButton", () => ({ KitSoloConnectButton: () => <button>连接</button> }));
 

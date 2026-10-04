@@ -51,6 +51,11 @@ export const traceEn = {
     learningConnectors: {
       authorizationSaved: "{provider} is connected. You can use it in a conversation.",
       verifyAccount: "Verify your identity in Account",
+      grantedScopes: "Saved authorization: {scopes}",
+      noGrantedScopes: "No learning service capabilities granted",
+      nextAuthorizationScopes: "Choose capabilities for the next authorization",
+      connectionAccountChanged: "Account changed. Refresh connection status.",
+      scopeDraftHint: "Selections apply to the next authorization; current capabilities follow the saved grant.",
       accountDisabled: "Your Account is unavailable. Contact the account administrator; reconnecting a learning service will not remove this restriction.",
       emailUnverified: "Verify your email in Account before connecting learning services.",
       authorizationCancelled: "Authorization was cancelled. You can connect again when needed.",

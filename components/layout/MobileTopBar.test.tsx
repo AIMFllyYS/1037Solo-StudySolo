@@ -32,6 +32,7 @@ describe("MobileTopBar", () => {
   beforeEach(() => {
     pathnameState.value = "/";
     pathnameState.push.mockClear();
+    useAppMode.setState({ mode: "studio", lastStudioPath: "/" });
     useTheme.setState({
       theme: "light",
       hydrated: true,
@@ -47,7 +48,8 @@ describe("MobileTopBar", () => {
   });
   afterEach(cleanup);
 
-  it("hides the mode switcher and only shows a human chapter title", () => {
+  it.each(["/", "/anatomy/detail/1.1", "/agent/pluginsevil"])("keeps the chapter title without a mode switcher on non-plugin route %s", (path) => {
+    pathnameState.value = path;
     render(<MobileTopBar />);
     expect(screen.getByTestId("mobile-sidebar-toggle")).toHaveAccessibleName("展开导航");
     expect(screen.queryByTestId("app-mode-switcher")).not.toBeInTheDocument();
@@ -80,6 +82,9 @@ describe("MobileTopBar", () => {
     expect(toggle).toHaveAccessibleName("展开导航");
     expect(toggle).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByTestId("mobile-sidebar-toggle")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("app-mode-switcher")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("mobile-chapter-trigger")).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: "展开导航" })).toHaveLength(1);
     fireEvent.click(toggle);
     expect(useStore.getState().mobileSidebarOpen).toBe(true);
     expect(screen.getByTestId("mode-mobile-sidebar-toggle")).toHaveAttribute("aria-expanded", "true");
