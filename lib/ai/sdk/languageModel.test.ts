@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { beforeEach, test } from "node:test";
+import { beforeEach, test, type TestContext } from "node:test";
 import dns from "node:dns";
 import {
   normalizeAnthropicBaseUrl,
@@ -14,7 +14,7 @@ import type { LanguageModelV4StreamPart } from "@ai-sdk/provider";
 
 // All provider HTTP in this suite is intercepted. Do not resolve synthetic
 // model hosts through the developer's VPN or a real public DNS server.
-beforeEach(t => { t.mock.method(dns.promises, "lookup", async () => [{ address: "8.8.8.8", family: 4 }]); });
+beforeEach(t => { (t as TestContext).mock.method(dns.promises, "lookup", async () => [{ address: "8.8.8.8", family: 4 }]); });
 
 import { runPaidContext } from "@/lib/billing/paidContext";
 import type { CreditDriver } from "@/lib/billing/providerAdmission";
