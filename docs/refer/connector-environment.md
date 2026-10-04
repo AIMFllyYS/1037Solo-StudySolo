@@ -18,7 +18,7 @@ OAuth Client Secret、GitHub App 私钥及授权记录加密密钥只放服务�
 |---|---|
 | `CONNECTOR_DEV_CALLBACK_ORIGIN` | 开发回调 origin，只接受 HTTP loopback，不接受路径、查询串或用户信息 |
 | `CONNECTOR_CALLBACK_ORIGIN` | 生产回调 origin，只接受非 loopback 的 HTTPS origin |
-| `CONNECTOR_ALLOW_PRODUCTION` | 显式生产启用开关；当前为 false |
+| `CONNECTOR_ALLOW_PRODUCTION` | 显式生产启用开关；本机待部署配置为 true，远端尚未更新 |
 | `CONNECTOR_DEV_TOKEN_ENCRYPTION_KEY` | 独立的开发授权记录加密密钥，32 字节 base64 |
 | `CONNECTOR_TOKEN_ENCRYPTION_KEY` | 独立的生产授权记录加密密钥，32 字节 base64 |
 | `GITHUB_CONNECTOR_APP_ID` | GitHub App 标识 |

@@ -239,3 +239,9 @@
 - 新exacthead普通CI37179807544、nativeCI37179807507实际运行中；Windows job111369902351，Android job111369902301。尚未合并、发布或宣称真实native UI验收成功。
 - 正式网站实时GET /api/health/connectors=200/stage application_credentials/authorizationImplemented true；GET /api/connectors=403/CONNECTOR_PRODUCTION_DISABLED，确认实际正式门禁仍关闭，不由本机env推断。
 - 部署Notebook网页入口仍缺，未向OpenClaw Assistant发送；VPN服务器无进一步访问/上传/部署。更正Web/Cloud/connector文档中的旧预检运行和续期未实现叙述。
+
+## 最新用户更正与当前优先序
+
+用户要求Review笔记目录进入一级Sidebar掌握度下分割线后，主区不再二级导航；唯一Luna按此实施，浮窗独立导航保留。master/dev代码推送触发用户自动部署，不再等待Notebook入口才合代码。
+本机.env.production新增明确ACCOUNT_BACKEND_URL/NEXT_PUBLIC_ACCOUNT_URL，校验全部required/origins/当前数据库/Skill版本与模板/预算通过后将CLOUD_SANDBOX_ENABLED、CONNECTOR_ALLOW_PRODUCTION准备为true。密钥及无关值保留，有受限备份，不入Git。远端仍未更新，不称正式用户已连接；以上较早本机false叙述为历史。
+原PR183真实Android成功、Windows health timeout仍失败；客户端独立推进，网页修复单独冻结PR。6fcd6c8b父修组件测试teardown的库scroll debounce回调，19定向通过。

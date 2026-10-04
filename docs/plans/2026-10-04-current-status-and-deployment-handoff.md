@@ -39,7 +39,7 @@
 
 15分钟 VM TTL、10分钟命令、日志256KiB、单产物20MiB、20件/100MiB、并发1、每用户24h 10次；预算100元中预留准备费用30元，任务准入最多70元。准入预算不是已经收到的阿里云最终账单，仍需账单核对。密钥永不过期保持。
 
-正式网站未启用：本机 .env.production CLOUD_SANDBOX_ENABLED=false；正式站点尚未部署新运行时与完成生产身份/执行验收。沙箱运行发生在阿里云，不发生在 VPN VPS。
+正式网站未启用：本机 .env.production CLOUD_SANDBOX_ENABLED=true（用户最新要求的待部署配置）；正式站点尚未部署新运行时与完成生产身份/执行验收。沙箱运行发生在阿里云，不发生在 VPN VPS。
 
 ## MCP 认证
 
@@ -47,16 +47,24 @@ GitHub、Notion、Todoist、Google、Zotero、PubMed、Crossref 七类服务开�
 
 Google/GitHub 正式精确回调已按确认保存并读回，localhost 保留；Google 仍 Testing，五项既定 scope 不变。Zotero 开发只读和开发应用就绪，正式配置核查仍待本人登录。Notion/Todoist 正式域名首次连接需对应 callback 的 DCR/per-user 授权，开发 grant 不能转作正式 grant。凭证加密绑定 Account UUID，前端和任务环境不获得运营密钥；外部写入仍走具体操作确认与幂等执行，验收没有发送邮件或修改真实任务。
 
-本机 .env.production CONNECTOR_ALLOW_PRODUCTION=false。没有把开发账号真实读取称为所有正式用户已授权。MCP HTTP/API 不依赖云电脑，云 CLI 主要补足 Skills 和通用文件/命令工作。
+本机 .env.production CONNECTOR_ALLOW_PRODUCTION=true（用户最新要求的待部署配置）。没有把开发账号真实读取称为所有正式用户已授权。MCP HTTP/API 不依赖云电脑，云 CLI 主要补足 Skills 和通用文件/命令工作。
 
 ## 给 Notebook Agent 的具体部署交接（未发送）
 
 用户已授权通过你负责部署 StudySolo。请先核对现有 StudySolo 自行部署的实际源、运行进程和发布方式，使用该既有部署路线；禁止在 VPN VPS 38.47.118.246 运行应用、安装运行时、修改 VPN/Nginx 或改其他服务。GitHub 已验收 master e78465e147c5356ae57b100fe0dcbd7d99cd522a 包含 Cloud/MCP 和03–08功能。最新独立 Web 候选来自 PR183 head 5cb21a6bb2a0b389dbdf2944addf8678157a4925，common CI与Web归档成功，native客户端端测尚未通过，不应阻塞已验收网页代码交付。请根据现有发布规则选择并固定可审查源码，先报告变更计划及回滚点，再由既有发布流程部署。
 
-主智能体可提供本机受限 Web 归档、哈希与环境变量名称清单，但不通过聊天发送任何 secret。候选归档 SHA256 fc902cc63f8d04acc544153bc9fbd5566f1b5939365c8218690f78da2d6897d2，785664343 bytes，BUILD_ID FDgI9C-_xu1SeLe0bBgrq；收到后独立验签/成员边界/版本，不能直接沿用旧预检实例。生产 Cloud/MCP 总开关暂保留 false；按正式 Account UUID 登录、回调、连接、最小工具调用、独立Agent技能执行/产物/回收、其他模式执行拒绝验收后分阶段启用。RootSolo 当前数据库迁移已应用，不重复旧 SQL；Landing 后台与下载更新必须遵守其生态发布列车规则。不要覆盖任何仓库既有未提交的会员等改动。
+主智能体可提供本机受限 Web 归档、哈希与环境变量名称清单，但不通过聊天发送任何 secret。候选归档 SHA256 fc902cc63f8d04acc544153bc9fbd5566f1b5939365c8218690f78da2d6897d2，785664343 bytes，BUILD_ID FDgI9C-_xu1SeLe0bBgrq；收到后独立验签/成员边界/版本，不能直接沿用旧预检实例。本机待部署环境已将生产Cloud/MCP开关准备为true，远端环境由用户另行应用；按正式 Account UUID 登录、回调、连接、最小工具调用、独立Agent技能执行/产物/回收、其他模式执行拒绝验收后分阶段启用。RootSolo 当前数据库迁移已应用，不重复旧 SQL；Landing 后台与下载更新必须遵守其生态发布列车规则。不要覆盖任何仓库既有未提交的会员等改动。
 
 桌面/Android0.6.0 PR183与Landing下载PR2还在独立发布门禁，尚无可宣称为新版本的正式安装包链接。先完成网页路径，不将草稿客户端当作公开发布。
 
 ## 05:22续查增量
 
 客户端驱动父审及14定向Node/lint通过，PR183现head3763fb425f884e00e03c4cf1ea84995733c19f4e；普通CI37179807544及nativeCI37179807507运行中，不能宣称native UI成功。正式网站实时连接入口403/CONNECTOR_PRODUCTION_DISABLED，健康接口200/runtime实现true仍不表示个人连接或生产验收。部署入口仍待准确Notebook网页；未再操作VPN VPS。
+
+## 用户最新要求：提交/自动部署、环境及Review一级导航
+
+- 正式发布由master/dev推送触发用户现有自动部署，不再把Notebook网页入口当作代码发布的前置条件；未操作VPN VPS。
+- 本机.env.production补ACCOUNT_BACKEND_URL/NEXT_PUBLIC_ACCOUNT_URL；全部required变量、正式origins、当前RootSolo、GitHub/Google配置、Sandbox加密/模板/Skills版本匹配、100元预算结构校验通过。校验后把CLOUD_SANDBOX_ENABLED、CONNECTOR_ALLOW_PRODUCTION设true，为用户后续应用环境文件准备；保留所有无关值和密钥、受限备份、不入Git。远端未更新，实际正式入口此前仍403，启用配置不等于生产授权/调用验收。
+- PR183 Android真实模拟器已通过，Windows health timeout未通过；客户端发布保持独立，不阻塞Review网页修复。
+- Review笔记目录从主工作区第二列移至一级Sidebar掌握度下分割线后，主区仅编辑器+右TOC，保留浮窗独立导航；唯一Luna实施/定向测试，父审及正式PR进行中。
+- 普通CI1102组件断言均过，但有TanStack fallback debounce在jsdom teardown后触发异常；父6fcd6c8b明确先卸载并在真实测试环境释放延迟回调，19定向tests通过，不忽略异常。

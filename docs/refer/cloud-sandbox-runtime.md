@@ -71,7 +71,7 @@ GitHub仓库公开不等于容器镜像自动公开：[官方Container registry�
 
 ## 环境与客户端
 
-本机 `.env.local`启用基础开发运行；本机 `.env.production`仅准备配置、仍关闭。新增/管理的名称为 CLOUD_SANDBOX_ENABLED、REGION、DOMAIN、API_URL、API_KEY、TEMPLATE、APP_ORIGIN、ENCRYPTION_KEY、MONTHLY_BUDGET_CNY、RUN_BUDGET_CNY、BUDGET_RUN_ID、FIXED_COST_CNY、SKILLS_VERSION、SKILLS_TEMPLATE（均带 CLOUD_SANDBOX_前缀）。初次开发配置未更新Windows全局或远端进程环境；随后新增的服务器预检配置见下一段。密钥值不在报告中记录。
+本机 `.env.local`启用基础开发运行；本机 `.env.production`已按用户要求完成待部署配置校验，CLOUD_SANDBOX_ENABLED/CONNECTOR_ALLOW_PRODUCTION为true；尚未更新远端，不能当作生产验收通过。新增/管理的名称为 CLOUD_SANDBOX_ENABLED、REGION、DOMAIN、API_URL、API_KEY、TEMPLATE、APP_ORIGIN、ENCRYPTION_KEY、MONTHLY_BUDGET_CNY、RUN_BUDGET_CNY、BUDGET_RUN_ID、FIXED_COST_CNY、SKILLS_VERSION、SKILLS_TEMPLATE（均带 CLOUD_SANDBOX_前缀）。初次开发配置未更新Windows全局或远端进程环境；随后新增的服务器预检配置见下一段。密钥值不在报告中记录。
 
 2026-10-04用户指出预检VPS承担VPN后，该私有预检已撤回：专属进程/daemon/SSH forward停止，配置日志本机受限备份后移除仅本轮两个新增目录，释放3.98GiB。正式网站未切换，禁止再次在VPN VPS部署。候选环境与完整Web归档仍保存在本机；正式部署使用用户指定Grok BOT / Notebook Agent，详情见[当前交接](../plans/2026-10-04-current-status-and-deployment-handoff.md)。阿里云沙箱的实际运行不发生在该VPS。Google与GitHub正式回调已现场确认保存并刷新读回，现有callback origin匹配；五项Google scope/Testing、GitHub原权限/密钥不变，两条GitHub回调通配均关闭。
 
