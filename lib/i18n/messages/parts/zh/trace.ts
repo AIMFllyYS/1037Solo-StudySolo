@@ -54,6 +54,11 @@ export const traceZh = {
     learningConnectors: {
       authorizationSaved: "{provider} 已关联，可以回到对话使用。",
       verifyAccount: "前往账号中心验证身份",
+      grantedScopes: "已保存的授权范围：{scopes}",
+      noGrantedScopes: "未授予学习服务功能",
+      nextAuthorizationScopes: "选择下次授权的功能",
+      connectionAccountChanged: "账号已切换，请刷新连接状态。",
+      scopeDraftHint: "勾选项用于下一次授权；当前可用功能以已保存的实际授权为准。",
       accountDisabled: "统一账号当前不可用，请联系账号管理员；重新授权学习服务无法解除限制。",
       emailUnverified: "请先在统一账号完成邮箱验证，再连接学习服务。",
       authorizationCancelled: "本次授权已取消。需要时可以重新连接。",

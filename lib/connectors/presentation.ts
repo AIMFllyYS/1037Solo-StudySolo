@@ -1,5 +1,6 @@
 /** Map server metadata to translated UI; never display provider response text. */
 export function connectorErrorKey(code: string | null | undefined) {
+  if (code === "ACCOUNT_CHANGED") return "trace.tool.learningConnectors.connectionAccountChanged";
   if (code === "SIGN_IN_REQUIRED" || code?.startsWith("SESSION_")) return "trace.tool.learningConnectors.signIn";
   if (code === "MFA_REQUIRED" || code === "REAUTH_REQUIRED") return "agent.market.connection.reauth";
   if (code === "ACCOUNT_UNAVAILABLE") return "agent.market.connection.accountUnavailable";

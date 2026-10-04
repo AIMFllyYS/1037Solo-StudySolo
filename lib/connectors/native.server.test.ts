@@ -94,6 +94,22 @@ test("native authorization, refresh, action replay and export contracts", async 
       assert.equal(state?.state, "reauthorization_required"); assert.equal(state?.canDisconnect, true);
       st.mock.restoreAll();
     });
+    await t.test("opaque grant version is stable across token renewal and changes with a real binding or scope change", async st => {
+      const initial = grant("google", "https://www.googleapis.com/auth/calendar.readonly", Date.now() + 3600000);
+      await writeRecord(`grant:${owner}:google`, initial);
+      const before = (await connectionStatus(owner)).find(item => item.provider === "google")!;
+      assert.match(before.grantVersion!, /^[a-f0-9]{64}$/); assert.ok(!JSON.stringify(before).includes(initial.accessToken));
+      await writeRecord(`grant:${owner}:google`, { ...initial, expiresAt: Date.now() - 1000 });
+      st.mock.method(globalThis, "fetch", async () => Response.json({ access_token: "fixture-version-renewed", token_type: "Bearer", expires_in: 3600 }));
+      await activeGrant(owner, "google");
+      assert.equal((await connectionStatus(owner)).find(item => item.provider === "google")!.grantVersion, before.grantVersion);
+      await writeRecord(`grant:${owner}:google`, { ...initial, createdAt: "2026-10-04T11:00:00Z" });
+      assert.notEqual((await connectionStatus(owner)).find(item => item.provider === "google")!.grantVersion, before.grantVersion);
+      await writeRecord(`grant:${owner}:google`, { ...initial, scope: "https://www.googleapis.com/auth/gmail.readonly" });
+      assert.notEqual((await connectionStatus(owner)).find(item => item.provider === "google")!.grantVersion, before.grantVersion);
+      assert.deepEqual((await connectorOperations(owner, "google")).map(item => item.name), ["gmail_search", "gmail_read"]);
+      st.mock.restoreAll();
+    });
     await t.test("unknown/destructive MCP tools and secret-shaped arguments are denied", () => {
       assert.equal(allowedMcpTool("todoist", "delete-tasks", true), false); assert.equal(allowedMcpTool("github", "create_issue", true), false); assert.equal(allowedMcpTool("notion", "unknown-new-tool", false), false);
       assert.throws(() => validateArguments({ type: "object" }, { access_token: "fixture" }), /INVALID_ARGUMENTS/);

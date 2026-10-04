@@ -9,6 +9,8 @@
 3. 显式指定读取共享文件中的完整上下文。新worker可用`fork_turns=none`并收到完整任务说明和文档路径，不依赖旧聊天摘要；模型覆盖须遵守工具约束。
 4. 将`assigned_agent`、状态与next_step写账本，才开始；需要worktree时按已有附件和仓库规则检查复用，不擅自reset/stash其他工作。
 
+当前真实依赖例外：CORE-MCP和CORE-SANDBOX共享聊天认证入口，由同一CORE-INTEGRATION worker整包联合处理，不另开第二名、不同时改同文件；两项逻辑验收分别保留，联调未过不能closed。先完成账本所列MCP scope草稿，再分析完整沙箱包。新UI等执行组仍须前组主验收后开启。
+
 ## 发给子智能体的正文
 
 你负责 **[WORKSTREAM_ID / 大板块]**，完成该包的整个相关模块，不自行派子，不切换到其他大板块。
