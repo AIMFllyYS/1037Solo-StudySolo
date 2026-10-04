@@ -6,7 +6,7 @@
   "authoritative_status_document": "docs/handoff/studysolo-workstreams.json",
   "context_document": "docs/handoff/studysolo-unattended-handoff.md",
   "latest_user_directive": "2026-10-04人类正式恢复无人值守实现，六个大板块包括MCP和云沙箱全部由GPT-6.1 Sol High子智能体执行，最多一子，主审查真实验收整合。最新补充仅记UI-DIALOGUE待办、现在不插队：Studio右侧Agent顶部会话tab默认最近5条，新建对话固定最左或顶部右侧菜单区，复用现有右键菜单Close Other/Close All；本机登录已由用户完成。此前业务/保护边界保持。",
-  "current_action": "CORE-MCP worker代码和定向检查完成；主实页复现并验收第一跳Origin修正、MFA恢复、390市场/详情及无效回调恢复，已到真实Google Testing提示并等待本人继续。冻结本包diff准备干净master基线PR/CI，正式授权/模型读取/发布仍pending；其他包排队。",
+  "current_action": "CORE-MCP代码已冻结提交c9477876，并按干净master基线创建草稿PR186/head380ed17f，CI37195168964进行中。主实页已验第一跳/MFA恢复/390市场详情/无效回调；当前Google Testing提示已保留待本人继续，grant仍未保存。正式授权/模型读取/刷新断连/发布pending，其他包排队。",
   "next_workstream": "CORE-MCP",
   "implementation_recommendation": "CORE-MCP先分析正常账号/接口/布局，再CORE-SANDBOX最小生产路径；普通模块按完整包排队，不原子化。",
   "max_concurrent_subagents": 1,
@@ -134,8 +134,13 @@
         "不改服务器/VPN"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "主冻结本包已测试diff到干净master基线PR并跑规定CI；用户完成当前Google Testing安全提示后，继续正常账号真实授权/回站/模型读取/刷新/断连。若有新具体回归交回同一worker；未过真实链不得closed。",
+      "next_step": "等待并核对PR186精确head完整CI；用户完成Google Testing提示后继续授权/回站/模型读取/刷新/断连和精确生产发布。新具体回归交回同一worker；未过真实链不得closed。",
       "implementation_report": "docs/handoff/workstreams/core-mcp-2026-10-04.md",
+      "candidate_source_commit": "c94778768418355222f0ec92fd112dfa99d76b54",
+      "candidate_pull_request": "https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/186",
+      "candidate_head": "380ed17fbac240bc5b12e851abfcb6d1b41f04c4",
+      "ci_run": 37195168964,
+      "ci_status": "in_progress",
       "partial_acceptance": {
         "node_targeted_tests": 52,
         "react_targeted_tests": 22,
