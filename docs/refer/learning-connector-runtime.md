@@ -36,7 +36,7 @@ Google 连接选择功能范围，默认资料库/日历读取；请求所选范
 
 当前 RootSolo 数据库的连接器及执行相关迁移已经应用并核对权限。Google、GitHub 的正式 HTTPS callback 已经保存并刷新读回；Google 保持 Testing，原五项权限没有扩大。Zotero 正式应用检查仍等待本人登录。独立环境密钥、提供者资格/审核与实际发布验收仍是生产门槛。`CONNECTOR_ALLOW_PRODUCTION=false` 保持关闭；健康接口的 `authorizationImplemented` / `nativeAgentIntegrationImplemented` 指代码实现，`productionVerificationComplete=false` 指尚未完成生产验收，不能据此推断任何个人账号连接状态。
 
-Notion、Todoist 按精确 callback 共用动态注册客户端。首次注册现在持有持久租约并在锁内重新读取，避免并发授权留下不同 client ID、刷新时却只取得最后一个。开发文件库与正式数据库库分开；正式用户仍须在正式网站授权，不直接复制开发账号 token 作为生产连接。
+Notion、Todoist 按精确 callback 共用动态注册客户端。首次注册持有持久租约并在锁内重新读取，避免正常并发重复注册；客户端记录又使用只允许首次插入的保存方式，并在保存后读取胜出的记录。即使租约续期失败，较晚完成的注册也不能替换已被用户授权使用的 client ID。本地并发／晚到测试与当前 Supabase 的合成加密记录实际插入验证均通过，重复写入被忽略、原客户端保持；真实用户 grant 未改动。开发文件库与正式数据库库分开；正式用户仍须在正式网站授权，不直接复制开发账号 token 作为生产连接。
 
 OAuth JSON 与 Zotero token／权限响应按实际接收字节设限，包含分块传输和不可信 Content-Length。超限立即取消读取并释放 reader；非法 UTF-8、非对象身份响应不能变成可用授权。回归测试使用拦截的合成响应，验证单客户端并发、早取消和非法身份；这些测试不代替提供者正式回调的实际授权验收。
 

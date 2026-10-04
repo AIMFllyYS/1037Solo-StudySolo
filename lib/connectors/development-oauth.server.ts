@@ -3,7 +3,7 @@ import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { connectorOrigin, googleConnectorConfiguration, githubConnectorConfiguration } from "./config.server";
 import { readRecord, writeRecord, claimRecord } from "./development-vault.server";
-import { withLease } from "./persistence.server";
+import { withLease, createRecordOnce } from "./persistence.server";
 import { connectorOwner, requireConnectorOrigin, connectorFailure, ConnectorError } from "./actor.server";
 import { connectorResponseJson } from "./response.server";
 
@@ -73,8 +73,12 @@ async function clientFor(provider: DevelopmentProvider, origin: string): Promise
   });
   if (typeof registered.client_id !== "string" || !registered.client_id || registered.token_endpoint_auth_method && registered.token_endpoint_auth_method !== "none") throw new Error("registration_failed");
   const client: Client = { clientId: registered.client_id, callback, authMethod: "none", ...expected };
-  await writeRecord(context, client);
-  return client;
+    await createRecordOnce(context, client);
+    // An expired distributed lease can leave two completed registrations. Only
+    // the first persisted client may authorize users; the other stays unused.
+    const saved = await readRecord<Client>(context);
+    if (!saved || saved.callback !== callback || saved.authorization !== expected.authorization || saved.token !== expected.token || saved.issuer !== expected.issuer || saved.resource !== expected.resource) throw new Error("client_configuration_changed");
+    return saved;
   });
 }
 
