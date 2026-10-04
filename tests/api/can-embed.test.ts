@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test, type TestContext } from "node:test";
 import type { NextRequest } from "next/server";
-import { GET, guardProbeUrl, judge } from "@/lib/browser/probeEmbed";
+import { createProbeHandler, guardProbeUrl, judge } from "@/lib/browser/probeEmbed";
 import { checkCustomBaseUrl } from "@/lib/ai/customBaseUrl";
 
 function probeReq(url: string | null): NextRequest {
@@ -13,7 +13,8 @@ function probeReq(url: string | null): NextRequest {
 }
 
 async function probeJson(url: string | null) {
-  const res = await GET(probeReq(url));
+  const handler = createProbeHandler(async () => [{ address: "8.8.8.8", family: 4 }]);
+  const res = await handler(probeReq(url));
   return res.json() as Promise<{
     embeddable: boolean;
     reason?: string;
@@ -205,4 +206,40 @@ test("GET：403 不武断阻断，允许前端尝试内嵌", async (t: TestConte
   const body = await probeJson("https://example.com/challenge");
   assert.equal(body.embeddable, true);
   assert.equal(body.status, 403);
+});
+
+test("GET: a public hostname resolving to a private IP never reaches fetch", async t => {
+  const fetchMock = t.mock.method(globalThis, "fetch", async () => { throw new Error("must not fetch"); });
+  const handler = createProbeHandler(async () => [{ address: "127.0.0.1", family: 4 }]);
+  const body = await (await handler(probeReq("https://public.example/"))).json();
+  assert.equal(body.embeddable, false);
+  assert.equal(body.reason, "blocked-probe-network");
+  assert.equal(fetchMock.mock.calls.length, 0);
+});
+
+test("GET: every redirect independently rejects a private DNS answer", async t => {
+  const lookedUp: string[] = [];
+  const handler = createProbeHandler(async hostname => {
+    lookedUp.push(hostname);
+    return [{ address: hostname === "public.example" ? "8.8.8.8" : "10.0.0.1", family: 4 }];
+  });
+  const fetchMock = t.mock.method(globalThis, "fetch", async () => new Response(null, {
+    status: 302, headers: { Location: "https://another.example/" },
+  }));
+  const body = await (await handler(probeReq("https://public.example/"))).json();
+  assert.equal(body.embeddable, false);
+  assert.equal(body.reason, "blocked-probe-network");
+  assert.deepEqual(lookedUp, ["public.example", "another.example"]);
+  assert.equal(fetchMock.mock.calls.length, 1);
+});
+
+test("GET: upstream exceptions are not reflected with private diagnostic data", async t => {
+  t.mock.method(globalThis, "fetch", async () => { throw new Error("synthetic-private-diagnostic"); });
+  const body = await probeJson("https://public.example/");
+  assert.equal(body.error, "network-unavailable");
+  assert.equal(JSON.stringify(body).includes("synthetic-private-diagnostic"), false);
+});
+
+test("guardProbeUrl rejects embedded credentials", () => {
+  assert.deepEqual(guardProbeUrl("https://synthetic:synthetic@example.com/"), { ok: false, reason: "bad-url" });
 });
