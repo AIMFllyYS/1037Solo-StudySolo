@@ -178,7 +178,7 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
       ref={mainRef}
       id={NOTES_PANEL_ID}
       data-agent-slot="main"
-      className="relative h-full min-h-0 overflow-visible"
+      className="relative h-full min-h-0 min-w-0 overflow-visible"
     >
       {children}
       {centerResizing && <ChatSkeleton />}
@@ -189,7 +189,7 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
 
   if (isMobile) {
     return (
-      <div className="h-full min-h-0" data-agent-workspace>
+      <div className="h-full min-h-0 min-w-0" data-agent-workspace>
         {center}
       </div>
     );

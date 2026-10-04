@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState, ty
 import { onBrowserSessionChange } from "@/lib/auth/browserSession";
 import { connectorId, type ConnectorId } from "@/lib/connectors/registry";
 
-export type LearningConnection = { provider: ConnectorId; state: string; scopes?: string[] };
+export type LearningConnection = { provider: ConnectorId; state: string; scopes?: string[]; error?: string; canDisconnect?: boolean };
 type State = { connections: LearningConnection[]; loading: boolean; error: string | null; refresh: () => Promise<void> };
 const Context = createContext<State | null>(null);
 

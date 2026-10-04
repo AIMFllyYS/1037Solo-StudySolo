@@ -4,8 +4,9 @@ import { NextResponse, type NextRequest } from "next/server";
 import { connectorOrigin, googleConnectorConfiguration, githubConnectorConfiguration } from "./config.server";
 import { readRecord, writeRecord, claimRecord } from "./development-vault.server";
 import { withLease, createRecordOnce } from "./persistence.server";
-import { connectorOwner, requireConnectorOrigin, connectorFailure, ConnectorError } from "./actor.server";
+import { connectorOwner, requireConnectorOrigin, connectorFailure } from "./actor.server";
 import { connectorResponseJson } from "./response.server";
+import { connectorBrowserFailure } from "./browser-result.server";
 
 export const DEVELOPMENT_PROVIDERS = ["notion", "todoist", "google", "github"] as const;
 export type DevelopmentProvider = typeof DEVELOPMENT_PROVIDERS[number];
@@ -92,7 +93,7 @@ export async function developmentConnect(request: NextRequest, provider: Develop
       const requested = selected?.getAll("scope").filter((item): item is string => typeof item === "string");
       if (selected?.has("scope_selection") && !requested?.length) throw error("GOOGLE_SCOPE_REQUIRED");
       if (requested?.length) {
-        const allowed = new Set([...googleConnectorConfiguration().scopes, "https://www.googleapis.com/auth/calendar.events", "openid"]);
+        const allowed = new Set(googleConnectorConfiguration().scopes);
         if (requested.some(scope => !allowed.has(scope))) throw error("UNAPPROVED_GOOGLE_SCOPE", 403);
         client.scope = [...new Set(["openid", "https://www.googleapis.com/auth/userinfo.email", ...requested])].join(" ");
       }
@@ -108,7 +109,7 @@ export async function developmentConnect(request: NextRequest, provider: Develop
     for (const [key, value] of Object.entries(headers)) response.headers.set(key, value);
     response.cookies.set(`connector_dev_${provider}`, binding, { httpOnly: true, sameSite: "lax", secure: origin.startsWith("https:"), path: `/api/connectors/${provider}/`, maxAge: 600 });
     return response;
-  } catch (cause) { return cause instanceof Response ? cause : cause instanceof ConnectorError ? connectorFailure(cause) : error("CONNECTOR_PREPARATION_FAILED", 503); }
+  } catch (cause) { return connectorBrowserFailure(request, provider, cause, "CONNECTOR_PREPARATION_FAILED"); }
 }
 
 async function providerAccount(provider: DevelopmentProvider, tokens: Record<string, unknown>): Promise<string> {
@@ -163,7 +164,7 @@ export async function developmentCallback(request: NextRequest, provider: Develo
       await writeRecord(`grant:${owner}:${provider}`, grant);
     });
     result = NextResponse.redirect(`${connectorOrigin()}/agent/plugins?connected=${provider}`, 303);
-  } catch (cause) { result = cause instanceof Response ? cause : cause instanceof ConnectorError ? connectorFailure(cause) : error("OAUTH_NOT_COMPLETED_RETRY_REQUIRED", 503); }
+  } catch (cause) { result = await connectorBrowserFailure(request, provider, cause, "OAUTH_NOT_COMPLETED_RETRY_REQUIRED"); }
   for (const [key, value] of Object.entries(headers)) result.headers.set(key, value);
   if (result instanceof NextResponse) result.cookies.set(`connector_dev_${provider}`, "", { httpOnly: true, sameSite: "lax", secure: request.nextUrl.protocol === "https:", path: `/api/connectors/${provider}/`, maxAge: 0 });
   return result;

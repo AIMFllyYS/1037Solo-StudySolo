@@ -78,14 +78,14 @@ export default function PluginEntryCard({ entry, locale }: { entry: MarketEntry;
   return (
     <div
       data-testid={`plugins-card-${entry.id}`}
-      className="flex flex-col gap-2.5 rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4"
+      className="flex min-w-0 flex-col gap-2.5 rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4"
     >
-      <div className="flex items-center gap-2.5">
+      <div className="flex min-w-0 flex-wrap items-start gap-2.5">
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[var(--line-soft)] bg-[var(--bg-muted)] text-[var(--md-sys-color-primary)]" aria-hidden>
           <Icon size={16} />
         </span>
-        <div className="flex min-w-0 flex-1 items-center gap-1.5">
-          <span className="truncate text-[13.5px] font-semibold text-[var(--ink)]">{pickL10n(entry, "name", locale)}</span>
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
+          <span className="min-w-0 break-words text-[13.5px] font-semibold text-[var(--ink)] [overflow-wrap:anywhere]">{pickL10n(entry, "name", locale)}</span>
           {entry.version ? <span className="shrink-0 text-[10px] text-[var(--ink-faint)]">v{entry.version}</span> : null}
         </div>
         <Badge tone={entry.source === "official" ? "accent" : "default"}>
@@ -120,8 +120,8 @@ export default function PluginEntryCard({ entry, locale }: { entry: MarketEntry;
         ))}
       </div>
 
-      <div className="mt-auto flex items-center gap-1.5 pt-1">
-        {primary}
+      <div className="mt-auto flex min-w-0 flex-wrap items-start gap-2 pt-1">
+        <div className={entry.section === "mcp" && entry.connector ? "min-w-0 w-full" : "min-w-0"}>{primary}</div>
         <Link
           href={href}
           data-testid={`plugins-detail-${entry.id}`}

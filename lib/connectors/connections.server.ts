@@ -14,6 +14,16 @@ export async function readGrant(owner: string, provider: OAuthConnectorId) {
   if (grant && (grant.owner !== owner || grant.provider !== provider)) throw new ConnectorError("CONNECTION_OWNER_MISMATCH", 403);
   return grant;
 }
+/** An invalid provider credential must not leave the UI claiming a usable link. */
+export async function requireGrantReauthorization(owner: string, provider: OAuthConnectorId, accessToken: string) {
+  await withLease(`refresh:${owner}:${provider}`, async () => {
+    const snapshot = await readVersionedRecord<ConnectorGrant>(context(owner, provider));
+    const grant = snapshot?.value;
+    // A late 401 from an old request cannot invalidate a newly rebound account.
+    if (!grant || grant.owner !== owner || grant.provider !== provider || grant.revokedAt || grant.accessToken !== accessToken) return;
+    await compareRecord(context(owner, provider), snapshot!.revision, { ...grant, reauthRequired: true });
+  });
+}
 async function clientFor(provider: OAuthConnectorId): Promise<Client> {
   if (provider === "google") { const config = googleConnectorConfiguration(); return { ...config, authMethod: "client_secret_post", token: "https://oauth2.googleapis.com/token" }; }
   if (provider === "github") { const config = githubConnectorConfiguration(); return { ...config, authMethod: "client_secret_post", token: "https://github.com/login/oauth/access_token" }; }
@@ -62,8 +72,18 @@ export async function connectionStatus(owner: string) {
   return Promise.all(CONNECTOR_IDS.map(async provider => {
     const descriptor = CONNECTOR_REGISTRY[provider];
     if (descriptor.auth === "public" || descriptor.auth === "local") return { provider, name: descriptor.name, kind: descriptor.kind, state: "available", writable: false };
-    const grant = await readGrant(owner, provider as OAuthConnectorId);
-    return { provider, name: descriptor.name, kind: descriptor.kind, state: !grant || grant.revokedAt ? "disconnected" : grant.reauthRequired || grant.expiresAt !== null && grant.expiresAt <= Date.now() && !grant.refreshToken ? "reauthorization_required" : "connected", writable: descriptor.writable, scopes: grant && !grant.revokedAt ? grant.scope.split(/\s+/).filter(Boolean) : [], expiresAt: grant?.expiresAt ?? null };
+    try {
+      let grant = await readGrant(owner, provider as OAuthConnectorId);
+      if (grant && !grant.revokedAt && !grant.reauthRequired && grant.expiresAt !== null && grant.expiresAt <= Date.now() + 60000 && grant.refreshToken) {
+        grant = await activeGrant(owner, provider as OAuthConnectorId);
+      }
+      return { provider, name: descriptor.name, kind: descriptor.kind, state: !grant || grant.revokedAt ? "disconnected" : grant.reauthRequired || grant.expiresAt !== null && grant.expiresAt <= Date.now() && !grant.refreshToken ? "reauthorization_required" : "connected", canDisconnect: !!grant && !grant.revokedAt, writable: descriptor.writable, scopes: grant && !grant.revokedAt ? grant.scope.split(/\s+/).filter(Boolean) : [], expiresAt: grant?.expiresAt ?? null };
+    } catch (cause) {
+      const code = cause instanceof ConnectorError ? cause.code : "CONNECTOR_UNAVAILABLE";
+      const reauth = ["CONNECTION_REQUIRED", "REAUTHORIZATION_REQUIRED", "PROVIDER_AUTHORIZATION_EXPIRED"].includes(code);
+      const current = reauth ? await readGrant(owner, provider as OAuthConnectorId).catch(() => null) : null;
+      return { provider, name: descriptor.name, kind: descriptor.kind, state: reauth ? "reauthorization_required" : "unavailable", canDisconnect: reauth && !!current && !current.revokedAt, writable: false, error: code };
+    }
   }));
 }
 export async function disconnectConnector(owner: string, provider: OAuthConnectorId) {
