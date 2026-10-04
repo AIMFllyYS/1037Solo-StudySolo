@@ -6,6 +6,14 @@ export class SandboxError extends Error {
 
 export const SANDBOX_LIMITS = Object.freeze({ lifetimeSeconds: 900, commandSeconds: 600, outputBytes: 262144, fileBytes: 20 * 1024 * 1024, textBytes: 256 * 1024, monthlyMicroCny: 100_000_000, runMicroCny: 100_000_000, activeSessions: 1, userDailySessions: 10 });
 const REGIONS = ["cn-hangzhou", "cn-shanghai", "cn-beijing", "cn-shenzhen", "cn-hongkong", "ap-southeast-1", "us-east-1", "us-west-1"];
+/** Non-secret surface binding; ordinary chat must not depend on VM credentials. */
+export function sandboxAppOrigin(env: Partial<NodeJS.ProcessEnv> = process.env) {
+  const origin = env.CLOUD_SANDBOX_APP_ORIGIN ?? (env.NODE_ENV === "production" ? "https://studysolo.1037solo.com" : "http://localhost:35349");
+  let parsed: URL;
+  try { parsed = new URL(origin); } catch { throw new SandboxError("SANDBOX_CONFIGURATION_INVALID", 503); }
+  if (parsed.origin !== origin || parsed.username || parsed.password || (env.NODE_ENV === "production" ? parsed.protocol !== "https:" : !["localhost", "127.0.0.1"].includes(parsed.hostname))) throw new SandboxError("SANDBOX_CONFIGURATION_INVALID", 503);
+  return origin;
+}
 export function sandboxConfiguration(env: Partial<NodeJS.ProcessEnv> = process.env) {
   if (Object.keys(env).some(name => /^NEXT_PUBLIC_.*(?:CLOUD_SANDBOX|E2B).*(?:KEY|SECRET|TOKEN)/.test(name) && env[name])) throw new SandboxError("SANDBOX_PUBLIC_CREDENTIAL_FORBIDDEN", 503);
   if (env.CLOUD_SANDBOX_ENABLED !== "true") throw new SandboxError("SANDBOX_NOT_ENABLED", 503);
@@ -19,10 +27,7 @@ export function sandboxConfiguration(env: Partial<NodeJS.ProcessEnv> = process.e
   if (!apiKey || apiKey.length < 25 || apiKey.length > 512 || /[\s\0]/.test(apiKey)) throw new SandboxError("SANDBOX_CREDENTIALS_MISSING", 503);
   const template = env.CLOUD_SANDBOX_TEMPLATE?.trim();
   if (!template || !/^[A-Za-z0-9_.:/-]{1,128}$/.test(template)) throw new SandboxError("SANDBOX_TEMPLATE_MISSING", 503);
-  const origin = env.CLOUD_SANDBOX_APP_ORIGIN ?? (env.NODE_ENV === "production" ? "https://studysolo.1037solo.com" : "http://localhost:35349");
-  let parsed: URL;
-  try { parsed = new URL(origin); } catch { throw new SandboxError("SANDBOX_CONFIGURATION_INVALID", 503); }
-  if (parsed.origin !== origin || parsed.username || parsed.password || (env.NODE_ENV === "production" ? parsed.protocol !== "https:" : !["localhost", "127.0.0.1"].includes(parsed.hostname))) throw new SandboxError("SANDBOX_CONFIGURATION_INVALID", 503);
+  const origin = sandboxAppOrigin(env);
   const key = env.CLOUD_SANDBOX_ENCRYPTION_KEY;
   if (!key || !/^[A-Za-z0-9+/]{43}=$/.test(key) || Buffer.from(key, "base64").length !== 32) throw new SandboxError("SANDBOX_ENCRYPTION_KEY_MISSING", 503);
   // Account-wide infrastructure cap, independent of user credit billing. Cannot be raised past human-approved ¥100.

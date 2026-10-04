@@ -20,8 +20,9 @@ export interface ProviderSession {
 export interface ExecutionProvider {
   create(executionId: string, scopeHash: string): Promise<ProviderSession>;
   connect(id: string, remainingMs: number): Promise<ProviderSession>;
-  find(executionId: string, scopeHash: string, remainingMs: number): Promise<ProviderSession[]>;
+  find(executionId: string, scopeHash: string, remainingMs: number): Promise<{ id: string; kill(): Promise<boolean> }[]>;
   terminate(id: string): Promise<boolean>;
+  getState(id: string): Promise<"running" | "paused" | "gone">;
 }
 export function sandboxScopeHash(owner: string, conversation: string) { return createHash("sha256").update(`${owner}\0${conversation}`).digest("hex"); }
 const executionUser = "studysolo";
@@ -137,16 +138,34 @@ export class AlibabaExecutionProvider implements ExecutionProvider {
   }
   async connect(id: string, remainingMs: number) {
     if (remainingMs <= 0 || remainingMs > SANDBOX_LIMITS.lifetimeSeconds * 1000) throw new SandboxError("SANDBOX_EXPIRED", 409);
-    const sandbox = await Sandbox.connect(id, { ...this.options(), timeoutMs: remainingMs });
+    const deadline = Date.now() + remainingMs;
+    if (await this.getState(id) !== "running") throw new SandboxError("SANDBOX_NOT_RUNNING", 409);
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) throw new SandboxError("SANDBOX_EXPIRED", 409);
+    const sandbox = await Sandbox.connect(id, { ...this.options(), timeoutMs: remaining });
     return new AlibabaProviderSession(sandbox);
   }
+  async getState(id: string): Promise<"running" | "paused" | "gone"> {
+    try {
+      const info = await Sandbox.getInfo(id, this.options());
+      if (info.metadata.application !== "StudySolo" || !["running", "paused"].includes(info.state)) throw new SandboxError("SANDBOX_PROVIDER_STATE_UNAVAILABLE", 503);
+      return info.state;
+    } catch (error) {
+      if (error instanceof Error && ["NotFoundError", "SandboxNotFoundError"].includes(error.constructor.name)) return "gone";
+      throw error;
+    }
+  }
   async find(executionId: string, scopeHash: string, remainingMs: number) {
-    const results: ProviderSession[] = [];
-    const listing = Sandbox.list({ ...this.options(), query: { metadata: { application: "StudySolo", executionId, scope: scopeHash }, state: ["running"] }, limit: 20 });
+    if (!Number.isFinite(remainingMs) || remainingMs <= 0) throw new SandboxError("SANDBOX_EXPIRED", 409);
+    const results: { id: string; kill(): Promise<boolean> }[] = [];
+    const listing = Sandbox.list({ ...this.options(), query: { metadata: { application: "StudySolo", executionId, scope: scopeHash }, state: ["running", "paused"] }, limit: 20 });
     for (let page = 0; listing.hasNext && page < 5; page++) {
       const entries = await listing.nextItems();
-      for (const item of entries) if (item.metadata.executionId === executionId && item.metadata.scope === scopeHash && item.metadata.application === "StudySolo") results.push(await this.connect(item.sandboxId, remainingMs));
+      // connect auto-resumes paused instances. Reconciliation must only reduce
+      // risk/cost; kill the exact listed identity without connecting to it.
+      for (const item of entries) if (item.metadata.executionId === executionId && item.metadata.scope === scopeHash && item.metadata.application === "StudySolo") results.push({ id: item.sandboxId, kill: () => this.terminate(item.sandboxId) });
     }
+    if (listing.hasNext) throw new SandboxError("SANDBOX_DISCOVERY_INCOMPLETE", 503);
     return results;
   }
   async terminate(id: string) {

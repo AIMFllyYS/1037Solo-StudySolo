@@ -8,6 +8,10 @@ import { MAX_SKILLS, useSkills } from "@/lib/stores/skills";
 import { useT } from "@/lib/i18n";
 import type { SkillMarketEntry } from "@/lib/plugins/market";
 import { useSkillPackages } from "./SkillPackagesContext";
+import LearningAccountVerificationLink from "@/components/plugins/LearningAccountVerificationLink";
+import { connectorErrorKey } from "@/lib/connectors/presentation";
+import { captureStorageOperation } from "@/lib/storage/ownerScope";
+import ConfirmDialog from "@/components/shared/ConfirmDialog";
 
 type InstallState = "idle" | "busy" | "added" | "updated" | "full" | "failed";
 
@@ -25,16 +29,25 @@ export default function SkillInstallButton({ entry, compact = false }: { entry: 
   const installSkill = useSkills((s) => s.installSkill);
   const deleteSkill = useSkills((s) => s.deleteSkill);
   const [state, setState] = useState<InstallState>("idle");
+  const [error, setError] = useState<string | null>(null), [confirmUninstall, setConfirmUninstall] = useState(false);
+  const cloudHeaders = async (operation: ReturnType<typeof captureStorageOperation>) => {
+    const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(operation.ownerId));
+    if (!operation.isCurrent()) throw new Error("ACCOUNT_CHANGED");
+    return { "Content-Type": "application/json", "X-StudySolo-Owner-Binding": Array.from(new Uint8Array(bytes), byte => byte.toString(16).padStart(2, "0")).join("") };
+  };
 
   const hasUpdate = Boolean(installed && entry.version && ("version" in installed ? installed.version : installed.sourceVersion) !== entry.version);
 
   const install = async () => {
     if (state === "busy" || !hydrated) return;
-    setState("busy");
+    setState("busy"); setError(null);
     try {
-      const res = entry.runtime === "cloud" ? await fetch("/api/agent/skills/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ packageId: entry.id, action: "install" }) }) : await fetch(entry.path);
-      if (!res.ok) throw new Error(String(res.status));
-      const parsed = parseSkillMarkdown(entry.runtime === "cloud" ? (await res.json()).content : await res.text(), "SKILL.md");
+      const operation = entry.runtime === "cloud" ? captureStorageOperation(entry.id) : null;
+      const res = operation ? await fetch("/api/agent/skills/", { method: "POST", headers: await cloudHeaders(operation), body: JSON.stringify({ packageId: entry.id, action: "install" }), signal: operation.signal }) : await fetch(entry.path);
+      const data = operation ? await res.json() : null;
+      if (!res.ok) throw new Error(data?.code ?? "SKILL_PACKAGE_UNAVAILABLE");
+      if (operation && !operation.isCurrent()) throw new Error("ACCOUNT_CHANGED");
+      const parsed = parseSkillMarkdown(operation ? data.content : await res.text(), "SKILL.md");
       const result = installSkill({
         name: parsed.name,
         description: parsed.description,
@@ -44,7 +57,8 @@ export default function SkillInstallButton({ entry, compact = false }: { entry: 
       });
       setState(result === "full" ? "full" : result);
       if (entry.runtime === "cloud") await packages.refresh();
-    } catch {
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "SKILL_PACKAGE_UNAVAILABLE");
       setState("failed");
     } finally {
       window.setTimeout(() => setState((s) => (s === "busy" ? "idle" : s)), 0);
@@ -52,16 +66,21 @@ export default function SkillInstallButton({ entry, compact = false }: { entry: 
   };
 
   const uninstall = async () => {
-    if (!installed) return;
+    setConfirmUninstall(false);
+    if (!installed || state === "busy") return;
+    setState("busy"); setError(null);
     try {
       if (entry.runtime === "cloud") {
-        const response = await fetch("/api/agent/skills/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ packageId: entry.id, action: "uninstall" }) });
-        if (!response.ok) throw new Error();
+        const operation = captureStorageOperation(entry.id);
+        const response = await fetch("/api/agent/skills/", { method: "POST", headers: await cloudHeaders(operation), body: JSON.stringify({ packageId: entry.id, action: "uninstall" }), signal: operation.signal });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data?.code ?? "SKILL_PACKAGE_UNAVAILABLE");
+        if (!operation.isCurrent()) throw new Error("ACCOUNT_CHANGED");
         await packages.refresh();
       }
       if (localInstalled) deleteSkill(localInstalled.id);
       setState("idle");
-    } catch { setState("failed"); }
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "SKILL_PACKAGE_UNAVAILABLE"); setState("failed"); }
   };
 
   const busy = state === "busy" || !hydrated || entry.runtime === "cloud" && !packages.ready;
@@ -91,7 +110,8 @@ export default function SkillInstallButton({ entry, compact = false }: { entry: 
           <button
             type="button"
             data-testid={`skill-uninstall-${entry.id}`}
-            onClick={uninstall}
+            onClick={() => setConfirmUninstall(true)}
+            disabled={busy}
             title={t("agent.market.action.uninstall")}
             className="press flex items-center gap-1 rounded-lg border border-[var(--line-soft)] px-2.5 py-1.5 text-[12px] text-[var(--ink-soft)] hover:border-[var(--md-sys-color-error)] hover:text-[var(--md-sys-color-error)]"
           >
@@ -115,8 +135,9 @@ export default function SkillInstallButton({ entry, compact = false }: { entry: 
         {state === "added" ? <span className="text-[var(--md-sys-color-primary)]">{t("agent.market.skill.imported")}</span> : null}
         {state === "updated" ? <span className="text-[var(--md-sys-color-primary)]">{t("agent.market.skill.updated")}</span> : null}
         {state === "full" ? <span className="text-[var(--md-sys-color-error)]">{t("agent.market.skill.full", { max: MAX_SKILLS })}</span> : null}
-        {state === "failed" ? <span className="text-[var(--md-sys-color-error)]">{t("agent.market.skill.failed")}</span> : null}
+        {state === "failed" || entry.runtime === "cloud" && packages.error ? <span className="text-[var(--md-sys-color-error)]">{["REAUTH_REQUIRED", "MFA_REQUIRED", "SIGN_IN_REQUIRED", "SESSION_MISSING", "SESSION_INVALID", "SESSION_EXPIRED", "ACCOUNT_CHANGED", "ACCOUNT_UNAVAILABLE"].includes(error ?? packages.error ?? "") ? t(connectorErrorKey(error ?? packages.error)) : t("agent.market.skill.failed")}<LearningAccountVerificationLink code={error ?? packages.error}/>{entry.runtime === "cloud" && <button type="button" className="ml-2 text-[var(--accent)] underline" disabled={state === "busy"} onClick={() => void packages.refresh()}>{t("trace.tool.learningConnectors.refresh")}</button>}</span> : null}
       </span>
+      {confirmUninstall && <ConfirmDialog title={t("agent.market.action.uninstall")} body={entry.name} cancelLabel={t("common.cancel")} confirmLabel={t("agent.market.action.uninstall")} onCancel={() => setConfirmUninstall(false)} onConfirm={() => void uninstall()}/>}
     </span>
   );
 }
