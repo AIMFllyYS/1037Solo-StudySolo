@@ -5,6 +5,7 @@ import { connectorOrigin, googleConnectorConfiguration, githubConnectorConfigura
 import { readRecord, writeRecord, claimRecord } from "./development-vault.server";
 import { withLease } from "./persistence.server";
 import { connectorOwner, requireConnectorOrigin, connectorFailure, ConnectorError } from "./actor.server";
+import { connectorResponseJson } from "./response.server";
 
 export const DEVELOPMENT_PROVIDERS = ["notion", "todoist", "google", "github"] as const;
 export type DevelopmentProvider = typeof DEVELOPMENT_PROVIDERS[number];
@@ -38,17 +39,7 @@ export async function ownerOf(request: NextRequest) {
 
 async function jsonRequest(url: string, init: RequestInit = {}): Promise<Record<string, unknown>> {
   const response = await fetch(url, { ...init, redirect: "error", cache: "no-store", signal: AbortSignal.timeout(15000) });
-  if (!response.ok || !response.body) { await response.body?.cancel(); throw new Error("provider_request_failed"); }
-  const reader = response.body.getReader();
-  const chunks: Buffer[] = []; let size = 0;
-  try {
-    for (;;) {
-      const next = await reader.read(); if (next.done) break;
-      size += next.value.byteLength; if (size > 65536) throw new Error("provider_response_too_large");
-      chunks.push(Buffer.from(next.value));
-    }
-  } finally { await reader.cancel().catch(() => {}); reader.releaseLock(); }
-  return JSON.parse(Buffer.concat(chunks).toString("utf8"));
+  return connectorResponseJson(response);
 }
 
 async function clientFor(provider: DevelopmentProvider, origin: string): Promise<Client> {
