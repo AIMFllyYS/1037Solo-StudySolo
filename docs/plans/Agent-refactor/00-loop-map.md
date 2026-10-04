@@ -1,5 +1,7 @@
 # 00 · Loop 全景与执行契约
 
+> **本轮调度已被最新用户要求覆盖。** 这里的旧Issue/loop队列不能用于2026-10无人值守任务续接。当前入口：[大板块交接](../../handoff/README.md)。保留历史工程基线，阅读时核对代码；不要重新执行旧已关闭事项。
+
 > **重排时间**：2026-09-12 16:45 NZST，在连续跑了 11.6 小时、关掉 #48–#66 共 19 个 Issue 之后
 > **仓库**：[AIMFllyYS/Notebook-MedFreshman](https://github.com/AIMFllyYS/Notebook-MedFreshman) · 集成分支 `refactor/agent-platform-hardening`
 > **问题基线**：`docs/analysis/Agent/00-agent-issues-consolidated.md`（13 P0 + 62 P1，核验过的事实）

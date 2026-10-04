@@ -15,6 +15,7 @@
 
 | 归档路径 | 原位置 | 为何退役 / 被谁取代 |
 |---|---|---|
+| [`2026-10-04-unattended-snapshots/`](2026-10-04-unattended-snapshots/README.md)（8份） | 本轮plans/refer/analysis准备与进度快照 | 包含冲突/过时阶段状态，当前入口统一为[`../handoff/`](../handoff/README.md)，正文保留/hash可查，不再调度 |
 | `2026-09-12-one-issue-per-loop/analysis/Agent/02-goal-mode-prompt.md` | `docs/analysis/Agent/02-goal-mode-prompt.md` | 「一个 Issue = 一个 loop」的旧调度提示词。2026-09-12 16:45 起被 loop 制取代（见 [`docs/plans/Agent-refactor/00-loop-map.md`](../plans/Agent-refactor/00-loop-map.md)），可直接投喂的新版是 [`docs/plans/Agent-refactor/99-goal-mode-prompt.md`](../plans/Agent-refactor/99-goal-mode-prompt.md)。**照它执行会重跑已关闭的 Issue。** |
 | `2026-09-12-classroom-content-draft/2026-09-12-recording-content-pr-loop-analysis.md` | `docs/analysis/Content/2026-09-12-recording-content-pr-loop-analysis.md` | 课堂材料接四类的早期讨论稿（假设音频播放器 / PDF 必交 / PPT 转换）。被 [`2026-09-13-classroom-content-integration-plan.md`](../analysis/Content/2026-09-13-classroom-content-integration-plan.md) 整体取代。*（归档时保持原有目录深度，以便正文里的 `../../../lib/...` 相对链接继续解析）* |
 | `trae-specs/`（6 篇） | `.trae/specs/*/spec.md`（Trae 私有目录，已从 git 索引移除） | 历史内容整合 / 架构升级规格，对应代码多已被计划 `18`–`24` 取代。 |

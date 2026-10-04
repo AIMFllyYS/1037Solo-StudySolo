@@ -1,6 +1,8 @@
 # 执行计划
 
-现行 Agent 重构计划在 [`Agent-refactor/`](./Agent-refactor/)。入口是 [`00-loop-map.md`](./Agent-refactor/00-loop-map.md)，可投喂的目标模式提示词是 [`99-goal-mode-prompt.md`](./Agent-refactor/99-goal-mode-prompt.md)。
+当前无人值守先读 [`../handoff/README.md`](../handoff/README.md)，任务状态只维护在机器账本。当前阶段仅文档整理；按大板块派遣，不使用旧完成表。
+
+2026-09 Agent工程基线在 [`Agent-refactor/`](./Agent-refactor/)。入口是 [`00-loop-map.md`](./Agent-refactor/00-loop-map.md)，可投喂的目标模式提示词是 [`99-goal-mode-prompt.md`](./Agent-refactor/99-goal-mode-prompt.md)。
 
 已完成或被取代的内容计划、工程基线与审计报告在 [`archive/`](./archive/)，仅供历史参考。当前滚动与渲染行为以现行代码及 [`../refer/rendering-architecture.md`](../refer/rendering-architecture.md) 为准。
 
@@ -8,8 +10,9 @@
 
 | 计划 | 说明 |
 |---|---|
-| [`2026-10-03-learning-connectors-integration-execution.md`](./2026-10-03-learning-connectors-integration-execution.md) | 第一、二批原生接入实施：连接管理、刷新、MCP/API 执行、确认卡、Anki 导出；代码与回归完成，真实账号端到端验收待本机服务恢复 |
-| [`2026-10-03-learning-connectors-preparation-spec.md`](./2026-10-03-learning-connectors-preparation-spec.md) | 学习连接器准备：选型、公开协议与五个提供者本机 OAuth 认证完成；Notion / Todoist / GitHub 真实 MCP 初始化与列表验收通过，生产 vault / Agent 工具待实施；[认证记录](../refer/learning-connector-authentication.md) |
+| [`../handoff/studysolo-unattended-handoff.md`](../handoff/studysolo-unattended-handoff.md) | 当前完整上下文、最新用户要求、代码/接口/复用与边界；不另维护完成表 |
+| [`../handoff/studysolo-workstreams.json`](../handoff/studysolo-workstreams.json) | 唯一当前状态：2项主核心＋4项大板块，现为需返工/未完成用户验收 |
+| [`../handoff/unattended-workstream-template.md`](../handoff/unattended-workstream-template.md) | 一大板块一名Luna Max，完整分析/实施/必要自测/主验收后下一包 |
 | [`2026-10-02-class-systematic-repair.md`](./2026-10-02-class-systematic-repair.md) | Class全链路修复执行计划：可靠录音与保存、增量导图、学科公式、题答视觉、笔记和移动工作台（进行中） |
 | [`2026-10-02-memory-performance-optimization-spec.md`](./2026-10-02-memory-performance-optimization-spec.md) | 系统内存与性能优化执行规格：会话/存储/资源/检索Worker/同步/内容边界及验收（待实施） |
 | [`agent-right-panel-unification.md`](./agent-right-panel-unification.md) | 右栏统一：现状分析与选型（改造前快照） |
@@ -23,3 +26,5 @@
 | [`app-users-nickname.md`](./app-users-nickname.md) | 昵称（0006 迁移） |
 | [`classolo-review-goal-20260929.md`](./classolo-review-goal-20260929.md) | Classolo 全量接入 + Review 模式 + Agent UX：可恢复的目标与进度记录（2026-09-29 起，含阶段状态与 Issue 取舍） |
 | [`2026-auth-login-redesign-plan.md`](./2026-auth-login-redesign-plan.md) | 登录注册板块 + 人机验证面板改版：设计与落地规划（**主体已落地**；文首记录了与现状的偏差——登录入口已改为跳转 1037Solo 统一账号中心） |
+
+本轮旧准备/实施/进度快照已移到 [`../archive/2026-10-04-unattended-snapshots/README.md`](../archive/2026-10-04-unattended-snapshots/README.md)。其余Class/性能/内容计划本轮未全量审查，保留作为独立资料，不据此自动启动范围外任务。

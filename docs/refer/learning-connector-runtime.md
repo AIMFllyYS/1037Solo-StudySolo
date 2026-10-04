@@ -1,6 +1,6 @@
 # 学习连接器原生运行时
 
-更新：2026-10-04。本文说明已落地代码，不等同于真实账号端到端验收或生产发布。进度以 [执行记录](../plans/2026-10-03-learning-connectors-integration-execution.md) 为准。
+更新：2026-10-04。本文说明已落地代码，不等同于真实账号端到端验收或生产发布。当前范围/用户验收以[交接](../handoff/studysolo-unattended-handoff.md)和唯一[任务账本](../handoff/studysolo-workstreams.json)为准。用户反馈整体不可用，需要完整正常账号路径返工；本文描述已有代码，不能作为完成表。
 
 ## 接入与调用链
 
@@ -34,7 +34,7 @@ Google 连接选择功能范围，默认资料库/日历读取；请求所选范
 
 访问凭证即将到期时刷新；每连接使用跨进程租约，旧值/新值通过版本条件更新。轮换结果先加密保留，再替换当前记录。刷新不确定或已失效时要求重新授权；限流不隐式轮换。断连先阻止本地新请求，再尝试远端撤销；Google 有撤销接口，其余返回需在提供者侧核对的明确状态。旧加密记录归档保留，不把断连误报为远端一定已撤销。
 
-当前 RootSolo 数据库的连接器及执行相关迁移已经应用并核对权限。Google、GitHub 的正式 HTTPS callback 已经保存并刷新读回；Google 保持 Testing，原五项权限没有扩大。Zotero 正式应用检查仍等待本人登录。独立环境密钥、提供者资格/审核与实际发布验收仍是生产门槛。`CONNECTOR_ALLOW_PRODUCTION=false` 保持关闭；健康接口的 `authorizationImplemented` / `nativeAgentIntegrationImplemented` 指代码实现，`productionVerificationComplete=false` 指尚未完成生产验收，不能据此推断任何个人账号连接状态。
+当前 RootSolo 数据库的连接器及执行相关迁移已经应用并核对权限。Google、GitHub 的正式 HTTPS callback 已经保存并刷新读回；Google 保持 Testing，原五项权限没有扩大。Zotero 正式应用检查仍等待本人登录。独立环境密钥、提供者资格/审核与实际发布验收仍是生产门槛。本机准备文件`CONNECTOR_ALLOW_PRODUCTION=true`；最新一次正式匿名连接入口为401/SESSION_MISSING，已越过生产关闭检查但不证明账号已连接。实际服务配置仍需核对；健康接口的 `authorizationImplemented` / `nativeAgentIntegrationImplemented` 指代码实现，`productionVerificationComplete=false` 指尚未完成生产验收，不能据此推断任何个人账号连接状态。
 
 Notion、Todoist 按精确 callback 共用动态注册客户端。首次注册持有持久租约并在锁内重新读取，避免正常并发重复注册；客户端记录又使用只允许首次插入的保存方式，并在保存后读取胜出的记录。即使租约续期失败，较晚完成的注册也不能替换已被用户授权使用的 client ID。本地并发／晚到测试与当前 Supabase 的合成加密记录实际插入验证均通过，重复写入被忽略、原客户端保持；真实用户 grant 未改动。开发文件库与正式数据库库分开；正式用户仍须在正式网站授权，不直接复制开发账号 token 作为生产连接。
 
