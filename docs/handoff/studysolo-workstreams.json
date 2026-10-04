@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
   "updated_date": "2026-10-04",
-  "current_phase": "documentation_only",
-  "phase_status": "ready_for_handoff",
+  "current_phase": "implementation",
+  "phase_status": "running",
   "authoritative_status_document": "docs/handoff/studysolo-workstreams.json",
   "context_document": "docs/handoff/studysolo-unattended-handoff.md",
-  "latest_user_directive": "最新补充：MCP和云沙箱也交给子智能体；每个板块强制GPT-6.1 Sol High。按完整大板块、最多一子执行，主负责上下文协调审查验收整合。当前仍整理文档，不启动实现。此前UI与业务要求保持。",
-  "current_action": "文档整理完成，本阶段不启动产品实现；后续人类任务明确切换执行范围后更新current_phase再派遣。",
-  "next_workstream": null,
+  "latest_user_directive": "2026-10-04人类正式要求结合交接文档重新开始无人值守任务。六个大板块包括MCP和云沙箱全部由GPT-6.1 Sol High子智能体执行；最多一子执行，主负责上下文协调、方案审查、真实验收和整合。此前UI、业务及保护边界保持。",
+  "current_action": "已核对当前文档、各仓未提交会员改动、远端master/dev和活动智能体；启动CORE-MCP整包分析与返工，其他包排队。",
+  "next_workstream": "CORE-MCP",
   "implementation_recommendation": "CORE-MCP先分析正常账号/接口/布局，再CORE-SANDBOX最小生产路径；普通模块按完整包排队，不原子化。",
   "max_concurrent_subagents": 1,
   "subagent_policy": {
@@ -26,6 +26,19 @@
     ]
   },
   "delivery_status": "user_reported_unusable_not_accepted",
+  "execution_start_snapshot": {
+    "date": "2026-10-04",
+    "source_branch": "codex/unattended-agent-platform-2026-10-04",
+    "source_head": "0dfee111eb7412940da310f2e1389a62c281212c",
+    "master": "b8a054fa317b211acf94002cc281e436ce501c51",
+    "dev": "50cefd106d100ef2a34c8a0dfd2c1da49f5f1707",
+    "active_subagents_before_dispatch": 0,
+    "local_studysolo_http": "ECONNREFUSED",
+    "production_release_marker_http": 404,
+    "production_source_sha_verified": false,
+    "protected_dirty_domains": ["StudySolo membership/quota/i18n", "Landing membership", "Shared membership", "Accounts membership"],
+    "not_delivery_acceptance": true
+  },
   "verified_source_snapshot": {
     "master": "b9264be04884b59df71c8adc452dccfed3f4fc9f",
     "dev": "48b2f83186e5e558aeaee192f2291b884e917683",
@@ -90,9 +103,9 @@
       "title": "连接器/MCP完整接入与市场基础布局",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "needs_analysis_and_rework",
+      "status": "analysis_in_progress",
       "user_acceptance": "reported_not_usable_or_not_completed",
-      "assigned_agent": null,
+      "assigned_agent": "/root/core_mcp_sol_high",
       "scope": "本包子智能体负责认证、运行时、连接器前端与正式模型调用及溢出修复，允许核心实现和已授权配置；主审查与验收",
       "code_entrypoints": [
         "lib/connectors",
@@ -121,7 +134,7 @@
         "不改服务器/VPN"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "文档阶段结束并收到执行指示后，先复现正常账号连接路径和溢出位置，形成同包根因图",
+      "next_step": "worker先核对正常账号连接链、真实工具入口和溢出位置；提交整包根因与实施方案，主审查后继续同worker实施和验收。",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
       "acceptance_evidence": [],
