@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_date": "2026-10-04",
+  "updated_date": "2026-10-05",
   "current_phase": "implementation",
   "phase_status": "running",
   "authoritative_status_document": "docs/handoff/studysolo-workstreams.json",
@@ -10,6 +10,14 @@
   "next_workstream": "CORE-MCP",
   "implementation_recommendation": "CORE-MCP先分析正常账号/接口/布局，再CORE-SANDBOX最小生产路径；普通模块按完整包排队，不原子化。",
   "max_concurrent_subagents": 1,
+  "active_execution_group": "CORE-INTEGRATION",
+  "execution_groups": [
+    { "id": "CORE-INTEGRATION", "workstreams": ["CORE-MCP", "CORE-SANDBOX"], "assigned_agent": "/root/core_mcp_sol_high", "reason": "真实纯MCP模型查询被共享chat入口的云沙箱提前敏感认证阻断；同模块共用入口需同worker联调，两个逻辑验收项分别保留，不能假closed。" },
+    { "id": "UI-DIALOGUE", "workstreams": ["UI-DIALOGUE"] },
+    { "id": "REVIEW-NOTES", "workstreams": ["REVIEW-NOTES"] },
+    { "id": "FEEDBACK-ADMIN", "workstreams": ["FEEDBACK-ADMIN"] },
+    { "id": "BROWSER-CLIENTS", "workstreams": ["BROWSER-CLIENTS"] }
+  ],
   "subagent_policy": {
     "model": "gpt-6.1-sol",
     "reasoning_effort": "high",
@@ -17,6 +25,7 @@
     "new_agent_only_after_primary_acceptance_of_prior_workstream": true,
     "mandatory_for_every_workstream": true,
     "core_mcp_and_sandbox_delegated": true,
+    "shared_core_pipeline_same_worker": true,
     "fallback_model_allowed": false,
     "primary_responsibilities": [
       "上下文与范围协调",
@@ -103,7 +112,7 @@
       "title": "连接器/MCP完整接入与市场基础布局",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "primary_acceptance_in_progress",
+      "status": "implementation_in_progress",
       "user_acceptance": "reported_not_usable_or_not_completed",
       "assigned_agent": "/root/core_mcp_sol_high",
       "scope": "本包子智能体负责认证、运行时、连接器前端与正式模型调用及溢出修复，允许核心实现和已授权配置；主审查与验收",
@@ -134,7 +143,7 @@
         "不改服务器/VPN"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "原worker修正tests/appModeChrome.test.ts的旧全局手机菜单禁令，保留非插件场景行为保护，主精确更新PR186并重跑完整CI。本人完成Google Testing后继续真实授权/模型/刷新/断连；未过真实链不得closed。",
+      "next_step": "原worker完成Google五scope草稿在同账号MFA/新tab/刷新后的保存及跨账号隔离，保留旧CI约束修正；主精确更新PR186新head重跑CI并实页验。随后同worker联调共享Cloud认证入口，修纯MCP被提前敏感认证阻断；两个CORE未过真实链不得closed。",
       "implementation_report": "docs/handoff/workstreams/core-mcp-2026-10-04.md",
       "candidate_source_commit": "c94778768418355222f0ec92fd112dfa99d76b54",
       "candidate_pull_request": "https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/186",
@@ -151,6 +160,8 @@
         "parent_invalid_callback_recovery": "fixed_market_notice_and_query_cleared",
         "parent_authenticated_local_google_start": "reached_Google_Testing_warning_after_user_reverification",
         "parent_authenticated_native_public_read": { "pubmed": "passed_with_source", "crossref": "passed_with_source", "not_model_orchestration_proof": true },
+        "parent_authenticated_standalone_model_public_read": "blocked_before_model_by_eager_cloud_REAUTH_REQUIRED",
+        "google_five_scope_draft_after_mfa": "reproduced_reset_to_two_default_scopes_fix_in_progress_wrong_scope_flow_closed_without_submit",
         "private_user_grant_verified": false,
         "production_deployment_verified": false,
         "not_closed": true
@@ -169,8 +180,10 @@
       "execution_unit": "whole_workstream",
       "status": "needs_analysis_and_rework",
       "user_acceptance": "reported_not_usable_or_not_completed",
-      "assigned_agent": null,
+      "assigned_agent": "/root/core_mcp_sol_high",
       "scope": "本包子智能体负责云资源、控制面、隔离、费用、实际Skills与独立Agent生产链，允许核心实现和已授权配置；主审查与验收",
+      "execution_group": "CORE-INTEGRATION",
+      "start_condition": "先完成当前MCP scope草稿修复，再同worker系统性分析/实施本完整Cloud包；共享入口联合验收，不把MCP失败当其他模式问题散到UI包",
       "code_entrypoints": [
         "lib/sandbox",
         "app/api/agent",
@@ -179,6 +192,7 @@
       ],
       "requirements": [
         "仅独立Agent执行，Studio嵌入及其他模式禁止",
+        "真实发现：sandboxScopeForChat提前authorizeSandbox(sensitive=true)使过期近期MFA的纯MCP/普通独立Agent聊天也被全局拦住；精确修授权时机，保持真正CLI命令的身份/近期验证与模式限制，不临时关Cloud过测",
         "正常账号命令与完整Skills实际安装/执行/产物下载闭环",
         "隔离、用户/对话归属、取消/超时/回收及不确定状态正确",
         "实际Linux CLI/网络/依赖兼容边界说明，不宣称任意工具皆可",
