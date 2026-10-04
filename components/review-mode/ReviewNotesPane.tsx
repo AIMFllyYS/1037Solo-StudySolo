@@ -80,7 +80,12 @@ export function ReviewNotesList({
   const canCreateNote = isReviewNoteOwnerReady(hydratedOwnerEpoch);
 
   return (
-    <div className="review-note-navigation" data-testid="review-note-navigation" role="region" aria-label={t("review.notes.navigation")}>
+    <div
+      className="review-note-navigation review-sidebar-note-navigation"
+      data-testid="review-note-navigation"
+      role="region"
+      aria-label={t("review.notes.navigation")}
+    >
       <div className="review-note-subject-tree">
         <YearSubjectFolderTree selectedId={subjectId} onSelect={handleSubjectSelect} />
       </div>

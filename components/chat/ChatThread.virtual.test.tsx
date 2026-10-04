@@ -462,12 +462,15 @@ describe('ChatThread message dots measured jump', () => {
       proto.scrollTo = prevScrollTo;
     };
 
+    let unmount: (() => void) | undefined;
     try {
-      const { container, getAllByTestId } = render(
+      const rendered = render(
         <div style={{ height: VIEW_PX, display: 'flex', flexDirection: 'column' }}>
           <ChatThread messages={makeMessages(24)} isLoading={false} {...base} />
         </div>,
       );
+      const { container, getAllByTestId } = rendered;
+      unmount = rendered.unmount;
       const viewport = container.querySelector('.chat-messages') as HTMLElement;
       expect(viewport).toBeTruthy();
 
@@ -515,6 +518,10 @@ describe('ChatThread message dots measured jump', () => {
       expect(viewport.scrollTop).toBeLessThan(start + VIEW_PX);
       expect(Math.abs(viewport.scrollTop - start)).toBeLessThan(8);
     } finally {
+      unmount?.();
+      // TanStack's fallback scroll-end debounce outlives its removed listener.
+      // Let it settle while jsdom still exists, before restoring measurements.
+      await act(async () => { await new Promise((resolve) => setTimeout(resolve, 200)); });
       restore();
     }
   });

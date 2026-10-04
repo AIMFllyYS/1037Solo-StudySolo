@@ -16,8 +16,8 @@ const SECTION_ORDER: { id: ReviewSection; icon: typeof NotebookPen; labelKey: st
 /**
  * Review 模式左侧栏：与 SubjectSidebar / AgentConversationSidebar 同一套视觉语言
  * （var(--bg-panel) 面板、var(--accent-weak) 选中态、可收起）。
- * 收起后只留图标列。笔记树属于三栏文档工作区；闪卡的学科列表可通过 children 放在这里。
- * 这里主要承担一级板块切换 + 待复习计数。
+ * 收起后只留图标列。展开时在一级板块切换之后放笔记目录；闪卡学科筛选作为附加列表共存。
+ * 这里承担一级板块切换、待复习计数与 Review 内的轻量资源导航。
  */
 export default function ReviewSidebar({
   active,
@@ -35,7 +35,7 @@ export default function ReviewSidebar({
   collapsed: boolean;
   onToggleCollapse: () => void;
   dueCount: number;
-  /** 展开态时，选中板块的辅助列表（当前用于闪卡学科）。 */
+  /** 展开态时位于一级板块分隔线下方的资源导航。 */
   children?: React.ReactNode;
   mobile?: boolean;
   mobileOpen?: boolean;
@@ -59,7 +59,7 @@ export default function ReviewSidebar({
         }
       }}
     >
-      <div className="flex items-center justify-between px-2 py-2">
+      <div className="flex shrink-0 items-center justify-between px-2 py-2">
         {!collapsed && (
           <span className="px-2 text-[13px] font-semibold text-[var(--ink)]">{t("review.title")}</span>
         )}
@@ -86,7 +86,7 @@ export default function ReviewSidebar({
         </button>}
       </div>
 
-      <nav className="flex flex-col gap-0.5 px-2" aria-label={t("review.title")}>
+      <nav className="flex shrink-0 flex-col gap-0.5 px-2" aria-label={t("review.title")}>
         {SECTION_ORDER.map(({ id, icon: Icon, labelKey }) => {
           const selected = id === active;
           const showBadge = id === "flashcards" && dueCount > 0;
@@ -124,7 +124,12 @@ export default function ReviewSidebar({
       </nav>
 
       {!collapsed && children && (
-        <div className="mt-2 min-h-0 flex-1 overflow-y-auto border-t border-[var(--line-soft)]">{children}</div>
+        <div
+          className="review-sidebar-auxiliary mt-2 min-h-0 flex-1 border-t border-[var(--line-soft)]"
+          data-testid="review-sidebar-auxiliary"
+        >
+          {children}
+        </div>
       )}
     </aside>
   );
