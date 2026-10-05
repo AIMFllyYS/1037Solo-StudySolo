@@ -1,9 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import type { ContentItem } from "@/lib/types/content";
 
 const f = vi.hoisted(() => ({
   auth: { status: "signedIn", userId: "11111111-1111-4111-8111-111111111111" },
   entries: [] as Array<Record<string, unknown>>,
+  contentItems: [] as ContentItem[],
   getAllProgress: vi.fn(() => []),
   saveAttempt: vi.fn(),
   recordQuestionOutcomes: vi.fn(),
@@ -29,7 +31,7 @@ vi.mock("@/lib/review-mode/wrongBook", () => ({
   markReinforced: f.markReinforced,
   sourceHref: () => null,
 }));
-vi.mock("@/lib/review-mode/quizSnapshot", () => ({ createQuizSetIdentity: f.createQuizSetIdentity }));
+vi.mock("@/lib/review-mode/quizSnapshot", async (load) => ({ ...await load<typeof import('@/lib/review-mode/quizSnapshot')>(), createQuizSetIdentity: f.createQuizSetIdentity }));
 vi.mock("@/lib/review-mode/progressSync", () => ({
   createAndCheckpointReviewAttempt: f.createAndCheckpointReviewAttempt,
   loadNewestReviewAttempt: f.loadNewestReviewAttempt,
@@ -40,8 +42,8 @@ vi.mock("@/lib/review-mode/progressSync", () => ({
 }));
 vi.mock("@/lib/review-mode/classSources", () => ({ listClassSources: vi.fn(async () => []) }));
 vi.mock("@/lib/storage/ownerScope", () => ({ getStorageOwner: () => f.auth.status === "signedIn" ? f.auth.userId : null }));
-vi.mock("@/lib/content-data", () => ({ getSubject: () => null }));
-vi.mock("@/lib/content-data/subjects.registry", () => ({ SUBJECT_REGISTRY: [] }));
+vi.mock("@/lib/content-data", () => ({ getSubject: () => ({ categories: [{ id: "detail", items: f.contentItems }] }) }));
+vi.mock("@/lib/content-data/subjects.registry", () => ({ SUBJECT_REGISTRY: [{ id: "probability", name: "Probability" }] }));
 vi.mock("@/lib/notes/userNote", () => ({ subjectLabel: (id: string) => id }));
 vi.mock("@/components/quiz/QuizQuestion", () => ({
   default: ({ question, onChange }: { question: { stem: string }; onChange: (answer: number) => void }) => (
@@ -90,6 +92,7 @@ const attempt = {
 
 describe("ReviewQuizPane attempt workflow", () => {
   beforeEach(() => {
+    f.contentItems = [];
     vi.clearAllMocks();
     f.auth = { status: "signedIn", userId: "11111111-1111-4111-8111-111111111111" };
     f.entries = [{
@@ -106,7 +109,7 @@ describe("ReviewQuizPane attempt workflow", () => {
     f.createQuizSetIdentity.mockResolvedValue({ quizKey: "ss-review-v1|review-wrong|hash", contentHash: "c".repeat(64) });
     f.createAndCheckpointReviewAttempt.mockResolvedValue(attempt);
     f.loadNewestReviewAttempt.mockResolvedValue(null);
-    f.loadWrongAttemptIdsFromAccount.mockResolvedValue({ attemptIds: [], hasMoreAttemptRecords: false });
+    f.loadWrongAttemptIdsFromAccount.mockResolvedValue({ attemptIds: [], hasMoreAttemptRecords: false, wrongQuestionCount: 0 });
     f.prepareReviewAttemptCheckpoint.mockImplementation((value: Record<string, unknown>) => ({
       ...value,
       revision: Number(value.revision ?? 0) + 1,
@@ -164,5 +167,26 @@ describe("ReviewQuizPane attempt workflow", () => {
     );
     expect(f.prepareReviewAttemptCheckpoint).toHaveBeenCalledWith(expect.objectContaining({ phase: "summary", stage: "final" }), attempt.ownerId);
     expect(f.markReinforced).toHaveBeenCalledWith(["wrong-entry-1"]);
+  });
+
+  it("shows real account wrong count without claiming empty when the local book is empty", async () => {
+    f.entries = [];
+    f.loadWrongAttemptIdsFromAccount.mockResolvedValue({ attemptIds: ["public-server-attempt"], hasMoreAttemptRecords: false, wrongQuestionCount: 1 });
+    render(<ReviewQuizPane />);
+    await screen.findByText('review.quiz.wrong.accountSummary {"count":1}');
+    expect(screen.queryByText("review.quiz.wrong.empty")).not.toBeInTheDocument();
+    expect(screen.getByTestId("review-quiz-wrong-cta")).toBeEnabled();
+  });
+
+  it("requests the actual material leaf instead of an unreadable chapter grouping id", async () => {
+    f.contentItems = [{ id: "ch01", title: "分组", type: "section", children: [{ id: "1.1", title: "公开小节", type: "section" }] }];
+    render(<ReviewQuizPane />);
+    fireEvent.change(screen.getByTestId("review-quiz-subject"), { target: { value: "probability" } });
+    expect(screen.getByRole("option", { name: "1.1 分组 / 公开小节" })).toHaveValue("1.1");
+    expect(screen.queryByRole("option", { name: "ch01 分组" })).not.toBeInTheDocument();
+    fireEvent.change(screen.getByTestId("review-quiz-chapter"), { target: { value: "1.1" } });
+    fireEvent.click(screen.getByRole("button", { name: "review.quiz.chapter.cta" }));
+    await waitFor(() => expect(f.fetch).toHaveBeenCalled());
+    expect(JSON.parse(f.fetch.mock.calls[0][1].body as string).source).toEqual({ kind: "chapter", subjectId: "probability", categoryId: "detail", chapterId: "1.1" });
   });
 });

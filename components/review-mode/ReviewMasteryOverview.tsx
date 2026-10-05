@@ -99,7 +99,7 @@ export default function ReviewMasteryOverview() {
                     className="flex items-center justify-between gap-2 text-[12.5px]"
                   >
                     <span className="min-w-0 truncate text-[var(--ink-soft)]">
-                      {subjectLabel(w.subjectId)} · {w.chapterLabel}
+                      {w.subjectId === "review" ? t("review.quiz.agentSource") : subjectLabel(w.subjectId)} · {w.chapterLabel}
                     </span>
                     <span className="shrink-0 font-medium" style={{ color: "var(--md-sys-color-error)" }}>
                       {w.lastPercent}%

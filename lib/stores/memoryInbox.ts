@@ -20,6 +20,7 @@ import { memoryProposalWindowId } from "@/lib/notes/userNote";
 import type { MemoryKind } from "@/lib/ai/agent/tools/proposeMemory/types";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { RecordMode } from "@/lib/review/types";
+import { getOwnerEpoch, onStorageOwnerChange } from "@/lib/storage/ownerScope";
 
 export type MemoryProposalStatus = "proposed" | "committing" | "done" | "dismissed";
 
@@ -128,8 +129,11 @@ async function startMemoryCommit(id: string): Promise<void> {
 
   memoryCommitAborts.get(id)?.abort();
   const abortController = new AbortController();
+  const ownerEpoch = getOwnerEpoch();
+  const isCurrent = () => !abortController.signal.aborted && ownerEpoch === getOwnerEpoch();
   memoryCommitAborts.set(id, abortController);
   const { sessionId, messages } = await sessionForMessage(prev.messageId, prev.sessionId);
+  if (!isCurrent()) return;
 
   try {
     const result = await runMemoryCommitWithRuntime({
@@ -141,6 +145,7 @@ async function startMemoryCommit(id: string): Promise<void> {
       sessionId: sessionId ?? undefined,
       abortController,
       onWrite: (message) => {
+        if (!isCurrent()) return;
         const live = useMemoryInbox.getState().byId[id];
         if (!live || live.status !== "committing") return;
         useMemoryInbox.setState((s) => ({
@@ -148,7 +153,7 @@ async function startMemoryCommit(id: string): Promise<void> {
         }));
       },
     });
-    if (abortController.signal.aborted || useMemoryInbox.getState().byId[id]?.status !== "committing") return;
+    if (!isCurrent() || useMemoryInbox.getState().byId[id]?.status !== "committing") return;
 
     const { commits } = collectMemoryToolEvents([result]);
     const commit = commits.find((item) => {
@@ -182,7 +187,7 @@ async function startMemoryCommit(id: string): Promise<void> {
       });
     }
   } catch (error) {
-    if (abortController.signal.aborted) return;
+    if (!isCurrent()) return;
     const message = classifySendError(error, { stalled: false, aborted: abortController.signal.aborted });
     useMemoryInbox.setState((s) => {
       const live = s.byId[id];
@@ -335,6 +340,15 @@ export const useMemoryInbox = create<MemoryInboxState>((set, get) => ({
 }));
 
 const acknowledgedSessionIds = new Set<string>();
+
+onStorageOwnerChange(() => {
+  for (const controller of memoryCommitAborts.values()) controller.abort();
+  memoryCommitAborts.clear();
+  const inbox = useMemoryInbox.getState();
+  for (const id of inbox.order) useWindowManager.getState().closeWindow(memoryProposalWindowId(id));
+  useMemoryInbox.setState({ byId: {}, order: [], appliedCommitIds: [], seenProposalIds: [] });
+  acknowledgedSessionIds.clear();
+});
 
 export function resetMemoryInboxSessionAcks(): void {
   acknowledgedSessionIds.clear();

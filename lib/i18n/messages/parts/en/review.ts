@@ -84,9 +84,12 @@ export const reviewEn = {
     },
   },
   quiz: {
+    agentSource: "Agent quiz",
     title: "Quiz",
     wrong: {
       title: "Smart quiz from mistakes",
+      loading: "Loading this account's question results…",
+      accountSummary: "The loaded account records contain {count} current mistakes. Diagnosis will use the original questions.",
       hint: "AI generates a targeted diagnostic quiz from your recent mistakes and weak chapters.",
       cta: "Generate diagnostic quiz",
       empty: "Not enough mistake data yet. Take a few quizzes in Studio and this can target your weak points.",
@@ -120,7 +123,8 @@ export const reviewEn = {
     regenerate: "Regenerate",
     recorded: "Your result is saved and counts toward weak-point analysis.",
     submit: "Submit and record",
-    submitPartial: "Submit (unanswered count as 0)",
+    submitPartial: "Submit answered questions",
+    unscored: "{count} unscored questions are excluded from this score and mistake statistics.",
     progress: "{done}/{total} objective questions answered",
     wrongRecorded: "{count} wrong answers added to your wrong-answer book.",
     sync: {

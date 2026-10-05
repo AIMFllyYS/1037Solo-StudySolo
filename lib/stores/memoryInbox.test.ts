@@ -16,6 +16,7 @@ import { useReviewCards } from "@/lib/stores/reviewCards";
 import { useRecordPreviews } from "@/lib/stores/recordPreviews";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { RecordMode } from "@/lib/review/types";
+import { activateStorageOwner } from "@/lib/storage/ownerScope";
 
 function assistantWithParts(id: string, parts: ChatMessage["parts"], timestamp = 1): ChatMessage {
   return { id, role: "assistant", parts, timestamp };
@@ -60,6 +61,21 @@ function flashcardCommitMessage(mode: RecordMode): ChatMessage {
     ],
   };
 }
+
+test("a delayed note commit cannot write after the storage owner changes", async () => {
+  let finish: ((message: ChatMessage) => void) | undefined;
+  setMemoryCommitRunnerForTests(() => new Promise((resolve) => { finish = resolve; }));
+  useMemoryInbox.getState().ingestProposal({ proposalId: "owner-switch-public", kind: "note", reason: "公开测试", messageId: "m1", toolCallId: "p-owner", sessionId: "main" });
+  useMemoryInbox.getState().confirm("owner-switch-public");
+  await flushAsync();
+  assert.ok(finish);
+  activateStorageOwner("55555555-5555-4555-8555-555555555555");
+  finish(noteCommitMessage("公开测试延迟结果"));
+  await flushAsync();
+  assert.equal(useUserNotes.getState().order.length, 0);
+  assert.equal(useMemoryInbox.getState().order.length, 0);
+  activateStorageOwner(null);
+});
 
 beforeEach(() => {
   useMemoryInbox.setState({ byId: {}, order: [], appliedCommitIds: [], seenProposalIds: [] });

@@ -64,7 +64,7 @@ export function toWeakPoint(entry: ProgressEntry): WeakPoint {
     subjectId,
     ...(categoryId ? { categoryId } : {}),
     chapterId,
-    chapterLabel: chapterLabel(chapterId),
+    chapterLabel: progress.last?.title || chapterLabel(chapterId),
     lastPercent,
     best: progress.best ?? 0,
     wrongCount,
