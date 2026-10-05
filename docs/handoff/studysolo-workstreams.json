@@ -27,13 +27,13 @@
       "connection_rule": "Resolve family/name/extension identity in each agent's current browser session; numeric browser IDs are not portable between agent sessions; reuse existing signed-in profiles, do not substitute another browser or duplicate authentication."
     }
   },
-  "latest_user_directive": "2026-10-05用户明确继续：不得因外部受阻自行定义全局停止/目标模式或中断子导致任务失去推进；真实核worker状态，隔离待验与可推进工作。原三条线/模型/顺序/本机交付边界保留。",
-  "current_action": "UI本机关键验收通过，准备精确任务分支提交；持续目标active，随后Review整包，不因偶发浏览器导航超时停止。",
-  "next_workstream": "UI-DIALOGUE",
+  "latest_user_directive": "2026-10-05用户明确授权自主CLI恢复RootSolo/任务项目，必要时直接起项目；32GB环境不因本机断开要求用户双击。写.codex全局记忆与项目规范并继续完整目标，旧禁CLI及本机阻塞结论撤销。",
+  "current_action": "已RootSolo CLI恢复受管session43220，仅5a!，复用现Account3040/3041；Study5a ready且connectors health200。恢复原review_notes_sol_high真实本机验收，只一子，不重做候选。",
+  "next_workstream": "REVIEW-NOTES",
   "stopped_action": "已被用户明确实现新计划取代；此前停止快照仅历史。",
   "implementation_recommendation": "执行three-lines-execution-plan：简单四包→沙箱/Skills→MCP→清理→客户端；网站用户部署，本轮仅本机验收。",
   "max_concurrent_subagents": 1,
-  "active_execution_group": "UI-DIALOGUE",
+  "active_execution_group": "REVIEW-NOTES",
   "execution_stop": {
     "explicit_user_request": false,
     "superseded_by": "2026-10-05 IMPLEMENT THIS PLAN",
@@ -51,19 +51,22 @@
       "id": "REVIEW-NOTES",
       "workstreams": [
         "REVIEW-NOTES"
-      ]
+      ],
+      "assigned_agent": "/root/review_notes_sol_high"
     },
     {
       "id": "FEEDBACK-ADMIN",
       "workstreams": [
         "FEEDBACK-ADMIN"
-      ]
+      ],
+      "assigned_agent": "/root/feedback_admin_sol_high"
     },
     {
       "id": "BROWSER-BASICS",
       "workstreams": [
         "BROWSER-BASICS"
-      ]
+      ],
+      "assigned_agent": "/root/browser_basics_sol_high"
     },
     {
       "id": "CORE-SANDBOX",
@@ -89,6 +92,15 @@
       "workstreams": [
         "BROWSER-CLIENTS"
       ]
+    },
+    {
+      "id": "CORE-SANDBOX-PREP",
+      "workstreams": [
+        "CORE-SANDBOX"
+      ],
+      "assigned_agent": "/root/cloud_sandbox_sol_high",
+      "preparation_only": true,
+      "implementation_start_gate": "SIMPLE actual acceptance and line delivery"
     }
   ],
   "subagent_policy": {
@@ -282,7 +294,7 @@
       "execution_unit": "whole_workstream",
       "status": "code_merged_awaiting_external_configuration_and_runtime_acceptance",
       "user_acceptance": "reported_not_usable_or_not_completed",
-      "assigned_agent": null,
+      "assigned_agent": "/root/cloud_sandbox_sol_high",
       "scope": "第二条线复用既有模板/隔离/预算，完成本机独立Agent普通命令、两个完整技能、下载与停止回收；不扩云平台或生产部署。",
       "execution_group": "CORE-SANDBOX",
       "start_condition": "简单四包整线验收后启动",
@@ -361,14 +373,30 @@
       "model": "gpt-6.1-sol",
       "reasoning_effort": "high",
       "reviewer": "primary",
-      "scheduled_after": "SIMPLE"
+      "scheduled_after": "SIMPLE",
+      "preparation": {
+        "status": "read_only_complete_actual_execution_not_verified",
+        "scope": "Current configuration/role/template/budget/invoice facts only; no resource/env/SQL/code mutation or paid command",
+        "implementation_gate": "After SIMPLE real acceptance; same module worker resumes later",
+        "report": "docs/handoff/workstreams/sandbox-readiness-2026-10-05.md",
+        "current_facts": {
+          "observed_utc": "2026-10-04 18:00-18:03",
+          "skills_files": "9 and 17 hashes match",
+          "template": "configured template ready; not VM execution",
+          "key": "one existing row never-expire flag; no credential values",
+          "invoice": "unknown, not zero",
+          "required_rpc": "ss_agent_execution_reserve_reconciled not visible",
+          "canonical_history": "202610050001 not visible",
+          "old_template": "v1 UI building, real job/cost unknown; no stop/delete or reserve release"
+        }
+      }
     },
     {
       "id": "UI-DIALOGUE",
       "title": "共享对话与Agent基础设计统一",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "locally_accepted_awaiting_task_branch_commit",
+      "status": "locally_accepted_task_branch_committed",
       "user_acceptance": "primary_local_acceptance_passed; user_final_review_not_claimed",
       "assigned_agent": "/root/simple_ui_sol_high",
       "scope": "同一worker处理共享对话/Studio/独立Agent相关布局和组件，完整保留模块上下文",
@@ -404,8 +432,8 @@
         "不同时改Review业务或反馈生命周期"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "精确本包文件commit到任务分支；之后Review整包一名Sol6.1High。资源最近3跨刷新不在此包新扩展；云真实执行和MCP全面连接后两线处理。",
-      "accepted_source_commit": null,
+      "next_step": "本包已验并commit；保留，整条简单线结束一次CI后同步主/dev，不重做已通过项。",
+      "accepted_source_commit": "18ce822974c95250b4c7d6128c5fa539c55a3c3f",
       "accepted_runtime_version": "Local working candidate; 34 exact SHA256 report; no production claim",
       "acceptance_evidence": [
         "docs/handoff/workstreams/ui-dialogue-2026-10-05.md",
@@ -435,9 +463,9 @@
       "title": "Review完整业务、沉淀/出题和笔记",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "needs_analysis_and_rework",
+      "status": "real_local_acceptance_resumed",
       "user_acceptance": "reported_not_usable_or_not_completed",
-      "assigned_agent": null,
+      "assigned_agent": "/root/review_notes_sol_high",
       "scope": "完整业务和相关笔记/题目模块归同一worker，不能把前端/存储/生成分到不同worker",
       "code_entrypoints": [
         "components/review-mode",
@@ -471,22 +499,31 @@
         "不编辑已应用006迁移或自动导入旧无主数据"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "画出Review所有入口、实际请求与状态流，复现用户不可用处；保留已修好的一级目录位置",
+      "next_step": "原worker真实出题/成绩ID/刷新/纠错、沉淀、笔记和布局端测；失败最小修复，主验后commit，随后Feedback/Browser。",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
       "acceptance_evidence": [],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "high",
-      "reviewer": "primary"
+      "reviewer": "primary",
+      "current_dispatch_observed_utc": "2026-10-04 16:59:34 UTC",
+      "runtime_dependency": {
+        "observed": "Latest: RootSolo47037 and Account3041 listen; StudySolo35349 absent. Fresh Edge RootSolo shows current panel token missing.",
+        "effect": "True local Review acceptance pending, code checks complete",
+        "user_action_requested_once": "Root terminal open; authenticated page in Edge, no token in chat",
+        "not_global_stop": true
+      },
+      "implementation_report": "docs/handoff/workstreams/review-notes-2026-10-05.md",
+      "technical_parent_review": "Reviewed 20-file scope, existing progressSync and two consumers, authoritative scoring projection, remote scored count, wrong correction, memory owner guard and legacy epoch/error handling; no new API/schema. Not complete local acceptance."
     },
     {
       "id": "FEEDBACK-ADMIN",
       "title": "消息反馈与官网主要后台闭环",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "needs_analysis_and_rework",
+      "status": "technical_candidate_reviewed_local_runtime_acceptance_pending",
       "user_acceptance": "reported_not_usable_or_not_completed",
-      "assigned_agent": null,
+      "assigned_agent": "/root/feedback_admin_sol_high",
       "scope": "一worker保留点赞/点踩/举报、前端接口、数据库和Landing管理消费上下文",
       "code_entrypoints": [
         "components/chat/ChatFeedbackActions.tsx",
@@ -516,13 +553,15 @@
         "不改连接器授权核心"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "核对StudySolo提交和Landing管理adapter实际字段/路由/身份，复现缺失链再整包修复",
+      "next_step": "服务及已有admin账号可用后同feedback_admin_sol_high补真实提交/恢复/后台同条/拒绝/桌面390验收，主通过后两仓仅本包commit；当前不fakeclosed。",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
       "acceptance_evidence": [],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "high",
-      "reviewer": "primary"
+      "reviewer": "primary",
+      "implementation_report": "docs/handoff/workstreams/feedback-admin-2026-10-05.md",
+      "technical_parent_review": "Reviewed six-file candidate, POST state owner/session/message filters, revision+epoch guards, original dialog/toast/POST bridge reuse and existing Landing list updates. Real write/admin consumption pending; no commit."
     },
     {
       "id": "BROWSER-CLIENTS",
@@ -576,7 +615,7 @@
       "id": "BROWSER-BASICS",
       "title": "浏览器基础操作",
       "owner": "subagent_gpt-6.1-sol_high",
-      "status": "queued",
+      "status": "technical_candidate_reviewed_local_runtime_acceptance_pending",
       "requirements": [
         "已有桥接的缩放/复位/刷新/菜单及外部打开",
         "不新代理/不全面重构"
@@ -585,7 +624,10 @@
         "本机实际比例变化与刷新生效",
         "桌面窄屏基础布局"
       ],
-      "assigned_agent": null
+      "assigned_agent": "/root/browser_basics_sol_high",
+      "next_step": "服务恢复后同browser_basics_sol_high实际web缩放/复位/刷新/设置菜单/长URL/桌面390验收；native留后续客户包。未commit，未证明用户缩放过大症状已修。",
+      "implementation_report": "docs/handoff/workstreams/browser-basics-2026-10-05.md",
+      "technical_parent_review": "Reviewed common consumers, original zoom/iframe/native paths retained, AnchoredMenu and input behavior, narrow shrink contract, safe current native URL projection; 6 frozen hashes matched. No real visual root-cause/native claim."
     }
   ],
   "policy_override": "2026-10-04人类最新指示取代主本人实现CORE及Luna Max的旧规定；归档历史不生效。",
@@ -677,8 +719,51 @@
   },
   "persistent_goal": {
     "created_on_user_request": true,
-    "status": "active",
+    "status": "blocked",
     "covers": "full three-lines plan plus cleanup and clients",
-    "completion_requires": "all authorized acceptance, not worker idle or one blocked dependency"
+    "completion_requires": "all authorized acceptance, not worker idle or one blocked dependency",
+    "execution_resume": "Human explicitly resumed work; executing now. Goal tool badge last reported blocked; tools cannot set active, do not let stale badge block authorized execution."
+  },
+  "last_goal_turn_classification": "progress in evidence: timeout treated as inconclusive then OS listeners/process authority verified absent; no independent authorized implementation remains before runtime gate, blocked audit satisfied",
+  "local_acceptance_queue": [
+    "REVIEW-NOTES",
+    "FEEDBACK-ADMIN",
+    "BROWSER-BASICS"
+  ],
+  "last_runtime_revalidation": {
+    "tcp_observations": "timed out, inconclusive",
+    "os_listeners": "47037/35349/3041 none",
+    "rootSolo_main_process": "none, absolute source path matching",
+    "no_cli_or_token_bypass": true
+  },
+  "blocked_audit": {
+    "condition": "Required local services cannot run acceptance through authorized RootSolo/Edge; user recovery needed",
+    "consecutive_goal_turns": 3,
+    "evidence": [
+      "user-triggered goal turn: RootSolo stopped then Edge current panel token missing; Study absent",
+      "automatic continuation 1: same Edge lock after refresh; Root/Account reachable, Study absent; independent Browser candidate and sandbox preparation completed",
+      "automatic continuation 2: connection observations timed out, not treated terminal; OS authoritative no relevant listeners and no RootSolo main process"
+    ],
+    "not_based_on_worker_idle": true,
+    "preserved_scope": "Entire three-lines plan, cleanup and client release",
+    "next_user_action": "Double-click existing RootSolo.cmd and keep terminal open; open authenticated panel in Edge without sending token",
+    "verified_utc": "2026-10-04 18:09:52 UTC",
+    "superseded": "User revoked CLI prohibition; blocker resolved through existing CLI and existing healthy Account; original audit historical only"
+  },
+  "local_recovery_authorization": {
+    "user_date": "2026-10-05",
+    "cli_allowed": true,
+    "direct_task_project_fallback_allowed": true,
+    "old_cli_prohibition_superseded": true,
+    "no_human_double_click_for_routine_recovery": true,
+    "scope": "task-owned local services, not production or unrelated processes",
+    "norm": "../RootSolo/docs/unattended-recovery.md"
+  },
+  "local_runtime_handle": {
+    "root_exec_session": 43220,
+    "command": "node src/main.mjs --no-open 5a!",
+    "health": "/api/health/connectors/ HTTP200",
+    "account": "existing3040/3041 reused, not owned",
+    "liveness_rule": "re-poll actual handle/health; persisted number is not proof"
   }
 }
