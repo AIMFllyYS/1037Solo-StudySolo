@@ -5,6 +5,10 @@ import ChatQuizCard from "@/components/chat/ChatQuizCard";
 import { openAgentQuiz } from "@/lib/quiz-dock/open";
 import { useIsAgentSurface } from "@/lib/window/useManagedWindowSurface";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
+import { agentQuizSet } from "@/lib/review-mode/agentQuizProgress";
+import { getOwnerEpoch } from "@/lib/storage/ownerScope";
+import { useToast } from "@/lib/stores/toast";
+import { translateNow } from "@/lib/i18n";
 
 /**
  * createQuiz 结果卡。
@@ -20,9 +24,12 @@ export default function CreateQuizResultCard({ part }: ResultCardProps<"createQu
 
   useEffect(() => {
     if (!isAgentSurface || !output) return;
-    openAgentQuiz(
+    let active = true;
+    const ownerEpoch = getOwnerEpoch();
+    const isCurrent = () => active && ownerEpoch === getOwnerEpoch();
+    const open = (quizId: string) => isCurrent() && openAgentQuiz(
       {
-        quizId: output.quizId,
+        quizId,
         title: output.title,
         intent: output.intent,
         questions: output.questions,
@@ -30,12 +37,18 @@ export default function CreateQuizResultCard({ part }: ResultCardProps<"createQu
       },
       { auto: true },
     );
+    if (output.quizId) open(output.quizId);
+    else void agentQuizSet(output.title, output.questions, "legacy").then((set) => open(set.quizId)).catch(() => {
+      if (isCurrent()) useToast.getState().show(translateNow("review.quiz.error"));
+    });
+    return () => { active = false; };
   }, [isAgentSurface, output]);
 
   if (!output || isAgentSurface) return null;
 
   return (
     <ChatQuizCard
+      quizId={output.quizId || "legacy"}
       title={output.title}
       questions={output.questions}
       intent={output.intent}

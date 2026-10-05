@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Crepe } from "@milkdown/crepe";
+import "katex/contrib/mhchem";
 import { keepEditorShortcut } from "@/lib/notes/editorShortcuts";
 import { guardListEnterKeydown, type GuardEditorView, type GuardKeyEvent } from "@/lib/notes/milkdownListGuards";
 import { translateNow, useT, type Translate } from "@/lib/i18n";

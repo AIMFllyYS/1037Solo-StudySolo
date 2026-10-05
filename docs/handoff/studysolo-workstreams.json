@@ -28,7 +28,7 @@
     }
   },
   "latest_user_directive": "2026-10-05用户明确授权自主CLI恢复RootSolo/任务项目，必要时直接起项目；32GB环境不因本机断开要求用户双击。写.codex全局记忆与项目规范并继续完整目标，旧禁CLI及本机阻塞结论撤销。",
-  "current_action": "已RootSolo CLI恢复受管session43220，仅5a!，复用现Account3040/3041；Study5a ready且connectors health200。恢复原review_notes_sol_high真实本机验收，只一子，不重做候选。",
+  "current_action": "Review真业务及主独立消费已验：成绩/诊断/章节、笔记及闪卡沉淀/复习；修Crepe与共享KaTeX实例分裂，主同note三处mhchem公式与下标实绘通过。仅5a已主动停止腾内存，让同worker串行最终定向检查/typecheck及23文件报告hash；随后主审提交并自行CLI恢复所需服务，无用户启动依赖。",
   "next_workstream": "REVIEW-NOTES",
   "stopped_action": "已被用户明确实现新计划取代；此前停止快照仅历史。",
   "implementation_recommendation": "执行three-lines-execution-plan：简单四包→沙箱/Skills→MCP→清理→客户端；网站用户部署，本轮仅本机验收。",
@@ -463,8 +463,8 @@
       "title": "Review完整业务、沉淀/出题和笔记",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "real_local_acceptance_resumed",
-      "user_acceptance": "reported_not_usable_or_not_completed",
+      "status": "parent_local_accepted_task_commit_pending",
+      "user_acceptance": "parent_real_local_accepted_not_user_manual_or_production_acceptance",
       "assigned_agent": "/root/review_notes_sol_high",
       "scope": "完整业务和相关笔记/题目模块归同一worker，不能把前端/存储/生成分到不同worker",
       "code_entrypoints": [
@@ -499,22 +499,32 @@
         "不编辑已应用006迁移或自动导入旧无主数据"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "原worker真实出题/成绩ID/刷新/纠错、沉淀、笔记和布局端测；失败最小修复，主验后commit，随后Feedback/Browser。",
+      "next_step": "主验已通过并核23文件冻结SHA无差异；仅本包与当前账本/派遣规范提交，随后原Feedback worker真实验收。不要重做已验Review流程。",
       "accepted_source_commit": null,
-      "accepted_runtime_version": null,
-      "acceptance_evidence": [],
+      "accepted_runtime_version": "Local browser source equals candidate-sha256.json manifest 6a2cfe4565a01ce28f823db591e755b7d10420f0ff9fe7fc00c2d3146f4699d0; not deployment",
+      "acceptance_evidence": [
+        "docs/handoff/workstreams/review-notes-2026-10-05.md",
+        "artifacts/performance/review-notes-2026-10-05/candidate-sha256.json",
+        "artifacts/performance/review-notes-2026-10-05/public-quiz-cloud-metadata.json",
+        "artifacts/performance/review-notes-2026-10-05/public-chapter-cloud-metadata.json",
+        "artifacts/performance/review-notes-2026-10-05/public-note-cloud-metadata.json",
+        "artifacts/performance/review-notes-2026-10-05/public-memory-note-cloud-metadata.json",
+        "artifacts/performance/review-notes-2026-10-05/public-memory-card-cloud-metadata.json",
+        "artifacts/performance/review-notes-2026-10-05/parent-note-390.png",
+        "artifacts/performance/review-notes-2026-10-05/parent-memory-chemistry-fixed.png"
+      ],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "high",
       "reviewer": "primary",
       "current_dispatch_observed_utc": "2026-10-04 16:59:34 UTC",
       "runtime_dependency": {
-        "observed": "Latest: RootSolo47037 and Account3041 listen; StudySolo35349 absent. Fresh Edge RootSolo shows current panel token missing.",
-        "effect": "True local Review acceptance pending, code checks complete",
-        "user_action_requested_once": "Root terminal open; authenticated page in Edge, no token in chat",
+        "observed": "Local acceptance completed with managed RootSolo CLI recovery; 5a intentionally stopped for final serialized checks; all checks now passed; primary resumes service for next package.",
+        "effect": "All required public local Review flows passed, including real database readback and parent note/math/saved-state verification; no server deployment or extra migration.",
+        "user_action_requested_once": "Historical panel request superseded; no routine restart action required from human",
         "not_global_stop": true
       },
       "implementation_report": "docs/handoff/workstreams/review-notes-2026-10-05.md",
-      "technical_parent_review": "Reviewed 20-file scope, existing progressSync and two consumers, authoritative scoring projection, remote scored count, wrong correction, memory owner guard and legacy epoch/error handling; no new API/schema. Not complete local acceptance."
+      "technical_parent_review": "Reviewed exact 23-file candidate, original two consumers/storage/CAS, corrected newest/current wrong/source leaf path, owner guards and native KaTeX/mhchem reuse. Parent real UI and exact public DB metadata passed; final Node25 React15 ESLint22 and standard typecheck passed. No new schema/provider/config secrets."
     },
     {
       "id": "FEEDBACK-ADMIN",
@@ -724,17 +734,19 @@
     "completion_requires": "all authorized acceptance, not worker idle or one blocked dependency",
     "execution_resume": "Human explicitly resumed work; executing now. Goal tool badge last reported blocked; tools cannot set active, do not let stale badge block authorized execution."
   },
-  "last_goal_turn_classification": "progress in evidence: timeout treated as inconclusive then OS listeners/process authority verified absent; no independent authorized implementation remains before runtime gate, blocked audit satisfied",
+  "last_goal_turn_classification": "Human resumed execution and authorized local CLI recovery; RootSolo managed service restored; Review real browser acceptance and minimal persistence fixes are running, no global execution stop.",
   "local_acceptance_queue": [
     "REVIEW-NOTES",
     "FEEDBACK-ADMIN",
     "BROWSER-BASICS"
   ],
   "last_runtime_revalidation": {
-    "tcp_observations": "timed out, inconclusive",
-    "os_listeners": "47037/35349/3041 none",
-    "rootSolo_main_process": "none, absolute source path matching",
-    "no_cli_or_token_bypass": true
+    "rootSolo_session": 43220,
+    "managed_project": "5a StudySolo :35349 ready",
+    "account": "Existing 3040/3041 reused; not task-owned",
+    "health": "connectors health HTTP200; actual public quiz attempts persisted and read back",
+    "observed_memory_gb": "27.7 / 31.2",
+    "execution_rule": "Serialize browser/tests; revalidate live handle; recover locally without human double-click"
   },
   "blocked_audit": {
     "condition": "Required local services cannot run acceptance through authorized RootSolo/Edge; user recovery needed",
@@ -746,7 +758,7 @@
     ],
     "not_based_on_worker_idle": true,
     "preserved_scope": "Entire three-lines plan, cleanup and client release",
-    "next_user_action": "Double-click existing RootSolo.cmd and keep terminal open; open authenticated panel in Edge without sending token",
+    "next_user_action": "None for routine local service recovery; previous double-click request superseded",
     "verified_utc": "2026-10-04 18:09:52 UTC",
     "superseded": "User revoked CLI prohibition; blocker resolved through existing CLI and existing healthy Account; original audit historical only"
   },
@@ -762,7 +774,7 @@
   "local_runtime_handle": {
     "root_exec_session": 43220,
     "command": "node src/main.mjs --no-open 5a!",
-    "health": "/api/health/connectors/ HTTP200",
+    "health": "Last recovery HTTP200 and parent real note/math passed; 5a intentionally stopped now for serialized final checks; primary resumes through 5a! without human restart",
     "account": "existing3040/3041 reused, not owned",
     "liveness_rule": "re-poll actual handle/health; persisted number is not proof"
   }
