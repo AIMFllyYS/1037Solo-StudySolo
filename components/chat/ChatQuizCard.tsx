@@ -8,6 +8,7 @@ import AgentFoldHeader from '@/components/chat/AgentFoldHeader';
 import { useT } from '@/lib/i18n';
 
 interface ChatQuizCardProps {
+  quizId?: string;
   title: string;
   questions: Q[];
   intent?: string;
@@ -19,7 +20,7 @@ interface ChatQuizCardProps {
  * 作答主体见 `@/components/quiz/QuizRunner`——右栏出题窗复用同一份实现。
  * 收起时 QuizRunner 仍挂载（只返回 null），所以折叠再展开不会丢作答进度。
  */
-export default function ChatQuizCard({ title, questions, intent, droppedCount }: ChatQuizCardProps) {
+export default function ChatQuizCard({ quizId, title, questions, intent, droppedCount }: ChatQuizCardProps) {
   const t = useT();
   const [expanded, setExpanded] = useState(false);
 
@@ -44,6 +45,7 @@ export default function ChatQuizCard({ title, questions, intent, droppedCount }:
       />
 
       <QuizRunner
+        quizId={quizId}
         title={title}
         questions={questions}
         intent={intent}

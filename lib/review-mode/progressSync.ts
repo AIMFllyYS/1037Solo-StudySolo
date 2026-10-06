@@ -13,6 +13,7 @@ import {
   saveLocalReviewAttempt,
 } from "./attemptStorage";
 import type { LegacyImportRequest, ReviewQuizAttempt, ReviewQuizSet } from "./attemptTypes";
+import { canonicalJson } from "./quizSnapshot";
 import type { QuizAttempt } from "@/lib/quiz-progress";
 import {
   beginLegacyImport,
@@ -200,7 +201,8 @@ function serverAttempt(value: Record<string, unknown>): ReviewQuizAttempt | null
     questionResults: Array.isArray(value.questionResults) ? value.questionResults as ReviewQuizAttempt["questionResults"] : [],
     score: {
       earned: numeric(score.earned), max: numeric(score.max), percent: typeof score.percent === "number" ? score.percent : null,
-      objectiveCount: numeric(score.objectiveCount), correctCount: numeric(score.correctCount), scoredCount: 0,
+      objectiveCount: numeric(score.objectiveCount), correctCount: numeric(score.correctCount),
+      scoredCount: Array.isArray(value.questionResults) ? value.questionResults.filter((result) => result && typeof result === "object" && result.scored === true).length : 0,
     },
     completedAt: asString(value.completedAt) || null,
     createdAt: asString(value.createdAt, new Date().toISOString()),
@@ -214,9 +216,38 @@ function serverAttempt(value: Record<string, unknown>): ReviewQuizAttempt | null
   };
 }
 
+function queueLocalWrite<T>(ownerId: string | null, attemptId: string, write: () => Promise<T>): Promise<T> {
+  const key = `${ownerId ?? "guest"}:${attemptId}`;
+  const previous = localWriteQueues.get(key) ?? Promise.resolve();
+  const next = previous.catch(() => {}).then(write);
+  localWriteQueues.set(key, next);
+  return next.finally(() => { if (localWriteQueues.get(key) === next) localWriteQueues.delete(key); });
+}
+
+function retainAcknowledgedMetadata(attempt: ReviewQuizAttempt, existing: ReviewQuizAttempt | null): ReviewQuizAttempt {
+  if (!existing) return attempt;
+  return {
+    ...attempt,
+    quizSetId: existing.quizSetId ?? attempt.quizSetId,
+    serverRevision: Math.max(existing.serverRevision, attempt.serverRevision),
+    syncedRevision: Math.max(existing.syncedRevision, attempt.syncedRevision),
+  };
+}
+
 async function saveMetadata(attempt: ReviewQuizAttempt, ownerId: string, isCurrent: () => boolean): Promise<boolean> {
-  if (!isCurrent() || ownerId !== getStorageOwner()) return false;
-  return saveLocalReviewAttempt(attempt, ownerId);
+  return queueLocalWrite(ownerId, attempt.attemptId, async () => {
+    if (!isCurrent() || ownerId !== getStorageOwner()) return false;
+    const existing = await getLocalReviewAttempt(attempt.attemptId, ownerId);
+    if (!isCurrent() || ownerId !== getStorageOwner()) return false;
+    const base = existing && existing.revision > attempt.revision ? existing : attempt;
+    const next = retainAcknowledgedMetadata(base, attempt);
+    const syncedRevision = Math.max(existing?.syncedRevision ?? -1, attempt.syncedRevision);
+    return saveLocalReviewAttempt({
+      ...retainAcknowledgedMetadata(next, existing),
+      syncedRevision,
+      syncState: attempt.syncState === "conflict" ? "conflict" : syncedRevision >= base.revision ? "synced" : "pending",
+    }, ownerId);
+  });
 }
 
 async function syncLatest(ownerId: string, attemptId: string): Promise<void> {
@@ -227,6 +258,30 @@ async function syncLatest(ownerId: string, attemptId: string): Promise<void> {
   for (let pass = 0; pass < 4 && captured.isCurrent(); pass++) {
     const attempt = await getLocalReviewAttempt(attemptId, ownerId);
     if (!attempt || !captured.isCurrent()) return;
+    // A queued duplicate after a successful ACK must not reuse the same operation
+    // with a different expectedRevision (the RPC hashes the complete request).
+    if (attempt.quizSetId && attempt.syncState === "synced" && attempt.syncedRevision >= attempt.revision) return;
+    if (attempt.syncState === "conflict" || attempt.syncedRevision >= attempt.revision) {
+      const value = await getAttempt(attemptId, captured.signal).catch(() => null);
+      if (!value || !captured.isCurrent()) return;
+      const remote = serverAttempt(value);
+      if (!remote) return;
+      const stateOf = (row: ReviewQuizAttempt) => ({
+        ...requestAttempt(row, 0), operationId: null, contentHash: row.contentHash, quizSetId: row.quizSetId,
+        completedAt: row.completedAt ? new Date(row.completedAt).toISOString() : null,
+      });
+      const localState = stateOf(attempt), remoteState = stateOf(remote);
+      if (canonicalJson(localState) === canonicalJson(remoteState)) {
+        const confirmed = { ...attempt, serverRevision: remote.serverRevision, syncedRevision: attempt.revision, syncState: "synced" as const };
+        await saveMetadata(confirmed, ownerId, captured.isCurrent);
+        publish(confirmed);
+      } else if (attempt.syncState !== "conflict") {
+        const conflict = { ...attempt, syncState: "conflict" as const };
+        await saveMetadata(conflict, ownerId, captured.isCurrent);
+        publish(conflict);
+      }
+      return;
+    }
     const set = await getLocalQuizSet(attempt.contentHash ?? "", ownerId);
     if (!set || !captured.isCurrent()) return;
     let current = attempt;
@@ -333,18 +388,15 @@ export function prepareReviewAttemptCheckpoint(attempt: ReviewQuizAttempt, owner
 
 export async function savePreparedReviewAttempt(attempt: ReviewQuizAttempt, ownerId: string | null = attempt.ownerId): Promise<void> {
   if (ownerId !== attempt.ownerId || (ownerId && ownerId !== getStorageOwner())) throw new Error("REVIEW_OWNER_CHANGED");
-  const key = `${ownerId ?? "guest"}:${attempt.attemptId}`;
-  const previous = localWriteQueues.get(key) ?? Promise.resolve();
-  const write = previous.catch(() => {}).then(async () => {
+  const saved = await queueLocalWrite(ownerId, attempt.attemptId, async () => {
     if (ownerId && ownerId !== getStorageOwner()) throw new Error("REVIEW_OWNER_CHANGED");
     const existing = await getLocalReviewAttempt(attempt.attemptId, ownerId);
-    if (existing && existing.revision > attempt.revision) return true;
-    return saveLocalReviewAttempt(attempt, ownerId);
+    if (existing && existing.revision > attempt.revision) return existing;
+    const next = retainAcknowledgedMetadata(attempt, existing);
+    return await saveLocalReviewAttempt(next, ownerId) ? next : null;
   });
-  localWriteQueues.set(key, write);
-  const saved = await write.finally(() => { if (localWriteQueues.get(key) === write) localWriteQueues.delete(key); });
   if (!saved) throw new Error("REVIEW_LOCAL_SAVE_FAILED");
-  publish(attempt);
+  publish(saved);
   if (ownerId) void queueSync(ownerId, attempt.attemptId);
 }
 
@@ -355,7 +407,7 @@ export async function checkpointReviewAttempt(attempt: ReviewQuizAttempt, ownerI
 }
 
 export async function retryReviewAttemptSync(attempt: ReviewQuizAttempt): Promise<void> {
-  if (!attempt.ownerId || attempt.ownerId !== getStorageOwner() || attempt.syncState === "conflict") {
+  if (!attempt.ownerId || attempt.ownerId !== getStorageOwner()) {
     throw new Error("REVIEW_SYNC_RETRY_UNAVAILABLE");
   }
   await queueSync(attempt.ownerId, attempt.attemptId);
@@ -397,14 +449,14 @@ export async function loadReviewAttemptById(attemptId: string, ownerId = getStor
   return { attempt, set };
 }
 
-export async function loadLatestCompletedStaticAttempt(scope: { subjectId: string; categoryId: string | null; chapterId: string }, ownerId = getStorageOwner()) {
+export async function loadLatestCompletedReviewAttempt(scope: { sourceKind: ReviewQuizSet["sourceKind"]; subjectId: string; categoryId: string | null; chapterId: string }, ownerId = getStorageOwner()) {
   if (!ownerId || ownerId !== getStorageOwner()) return null;
   let captured;
   try { captured = captureStorageOperation("review-static-latest"); } catch { return null; }
   let cursor: string | undefined;
   let newest: Record<string, unknown> | null = null;
   for (let page = 0; page < 20 && captured.isCurrent(); page++) {
-    const query = new URLSearchParams({ view: "attempts", sourceKind: "static", subjectId: scope.subjectId, chapterId: scope.chapterId, limit: "50" });
+    const query = new URLSearchParams({ view: "attempts", sourceKind: scope.sourceKind, subjectId: scope.subjectId, chapterId: scope.chapterId, limit: "50" });
     if (scope.categoryId) query.set("categoryId", scope.categoryId);
     if (cursor) query.set("cursor", cursor);
     const response = await fetch(`/api/review/progress?${query.toString()}`, { credentials: "same-origin", cache: "no-store", signal: captured.signal }).catch(() => null);
@@ -413,7 +465,7 @@ export async function loadLatestCompletedStaticAttempt(scope: { subjectId: strin
     if (!payload || typeof payload !== "object") return null;
     const data = payload as { rows?: Array<Record<string, unknown>>; nextCursor?: string | null };
     for (const row of data.rows ?? []) {
-      if (row.attemptKind !== "quiz" || row.phase !== "summary" || row.sourceKind !== "static"
+      if (row.attemptKind !== "quiz" || row.phase !== "summary" || row.sourceKind !== scope.sourceKind
         || row.subjectId !== scope.subjectId || row.chapterId !== scope.chapterId
         || (typeof row.categoryId === "string" ? row.categoryId : null) !== scope.categoryId) continue;
       if (!newest || asString(row.updatedAt) > asString(newest.updatedAt)) newest = row;
@@ -423,6 +475,10 @@ export async function loadLatestCompletedStaticAttempt(scope: { subjectId: strin
   }
   if (!captured.isCurrent() || typeof newest?.attemptId !== "string") return null;
   return loadReviewAttemptById(newest.attemptId, ownerId);
+}
+
+export async function loadLatestCompletedStaticAttempt(scope: { subjectId: string; categoryId: string | null; chapterId: string }, ownerId = getStorageOwner()) {
+  return loadLatestCompletedReviewAttempt({ ...scope, sourceKind: "static" }, ownerId);
 }
 
 export async function loadRemoteResume(
@@ -498,9 +554,9 @@ export async function loadNewestReviewAttempt(ownerId = getStorageOwner()) {
   const reviewSources: ReviewQuizSet["sourceKind"][] = ["review-wrong", "review-chapter", "classroom"];
   const localRows = (await listLocalReviewAttempts(ownerId))
     .filter((attempt) => attempt.attemptKind === "quiz" && reviewSources.includes(attempt.sourceKind as ReviewQuizSet["sourceKind"]))
-    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
-  const pending = localRows.find((attempt) => attempt.syncState === "pending" || attempt.syncState === "conflict");
-  if (pending) {
+    .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+  const pending = localRows[0];
+  if (pending && (pending.syncState === "pending" || pending.syncState === "conflict")) {
     const local = await loadLocalReviewAttemptWithSet(pending.attemptId, ownerId);
     if (local) return local;
   }
@@ -514,9 +570,7 @@ export async function loadNewestReviewAttempt(ownerId = getStorageOwner()) {
   const remote = await Promise.all(reviewSources.map((sourceKind) => loadRemoteResume(ownerId, { sourceKind }).catch(() => null)));
   if (ownerId !== getStorageOwner()) return null;
   const available = remote.filter((value): value is NonNullable<typeof value> => !!value)
-    .sort((a, b) => b.attempt.updatedAt.localeCompare(a.attempt.updatedAt));
-  const newest = available[0];
-  if (newest) return newest;
+    .sort((a, b) => Date.parse(b.attempt.updatedAt) - Date.parse(a.attempt.updatedAt));
 
   let cursor: string | undefined;
   let newestCompleted: Record<string, unknown> | null = null;
@@ -526,20 +580,20 @@ export async function loadNewestReviewAttempt(ownerId = getStorageOwner()) {
     if (getStorageOwner() !== ownerId) return null;
     for (const row of data.rows ?? []) {
       if (row.attemptKind !== "quiz" || row.phase !== "summary" || !reviewSources.includes(row.sourceKind as ReviewQuizSet["sourceKind"])) continue;
-      if (!newestCompleted || asString(row.updatedAt) > asString(newestCompleted.updatedAt)) newestCompleted = row;
+      if (!newestCompleted || Date.parse(asString(row.updatedAt)) > Date.parse(asString(newestCompleted.updatedAt))) newestCompleted = row;
     }
     if (!data.nextCursor || data.nextCursor === cursor) break;
     cursor = data.nextCursor;
   }
   if (typeof newestCompleted?.attemptId === "string") {
     const stored = await loadReviewAttemptById(newestCompleted.attemptId, ownerId).catch(() => null);
-    if (stored) return stored;
+    if (stored) available.push(stored);
   }
-  for (const row of localRows) {
-    const local = await loadLocalReviewAttemptWithSet(row.attemptId, ownerId);
-    if (local) return local;
+  if (localRows[0]) {
+    const local = await loadLocalReviewAttemptWithSet(localRows[0].attemptId, ownerId);
+    if (local) available.push(local);
   }
-  return null;
+  return available.sort((a, b) => Date.parse(b.attempt.updatedAt) - Date.parse(a.attempt.updatedAt))[0] ?? null;
 }
 
 async function requestAttemptsPage(cursor?: string, signal?: AbortSignal) {
@@ -552,27 +606,36 @@ async function requestAttemptsPage(cursor?: string, signal?: AbortSignal) {
   return value as { rows?: Array<Record<string, unknown>>; nextCursor?: string | null };
 }
 
-export async function loadWrongAttemptIdsFromAccount(ownerId = getStorageOwner()): Promise<{ attemptIds: string[]; hasMoreAttemptRecords: boolean }> {
-  if (!ownerId || ownerId !== getStorageOwner()) return { attemptIds: [], hasMoreAttemptRecords: true };
+export async function loadWrongAttemptIdsFromAccount(ownerId = getStorageOwner()): Promise<{ attemptIds: string[]; hasMoreAttemptRecords: boolean; wrongQuestionCount: number }> {
+  if (!ownerId || ownerId !== getStorageOwner()) return { attemptIds: [], hasMoreAttemptRecords: true, wrongQuestionCount: 0 };
   let captured;
-  try { captured = captureStorageOperation("review-wrong-attempt-index"); } catch { return { attemptIds: [], hasMoreAttemptRecords: true }; }
+  try { captured = captureStorageOperation("review-wrong-attempt-index"); } catch { return { attemptIds: [], hasMoreAttemptRecords: true, wrongQuestionCount: 0 }; }
   const attemptIds: string[] = [];
+  const latestOutcomes = new Map<string, { correct: boolean; time: number }>();
+  const result = (hasMoreAttemptRecords: boolean) => ({ attemptIds: [...new Set(attemptIds)], hasMoreAttemptRecords, wrongQuestionCount: [...latestOutcomes.values()].filter((outcome) => !outcome.correct).length });
   let cursor: string | undefined;
   for (let page = 0; page < 20 && captured.isCurrent(); page++) {
     let data: Awaited<ReturnType<typeof requestAttemptsPage>>;
-    try { data = await requestAttemptsPage(cursor, captured.signal); } catch { return { attemptIds, hasMoreAttemptRecords: true }; }
-    if (!captured.isCurrent()) return { attemptIds: [], hasMoreAttemptRecords: false };
+    try { data = await requestAttemptsPage(cursor, captured.signal); } catch { return result(true); }
+    if (!captured.isCurrent()) return { attemptIds: [], hasMoreAttemptRecords: false, wrongQuestionCount: 0 };
     for (const row of data.rows ?? []) {
       if (row.attemptKind !== "quiz" || typeof row.attemptId !== "string") continue;
       const results = Array.isArray(row.questionResults) ? row.questionResults as Array<Record<string, unknown>> : [];
       // Include later correct attempts too: the server needs the newest outcome to
       // distinguish a historical miss from a question the learner has since mastered.
       if (results.some((result) => result.objective === true && typeof result.correct === "boolean")) attemptIds.push(row.attemptId);
+      for (const outcome of results) {
+        if (outcome.objective !== true || typeof outcome.correct !== "boolean" || typeof outcome.id !== "string") continue;
+        const key = typeof outcome.questionKey === "string" ? outcome.questionKey : `${asString(row.quizSetId)}:${outcome.id}`;
+        const time = Date.parse(asString(row.completedAt) || asString(row.updatedAt)) || 0;
+        const existing = latestOutcomes.get(key);
+        if (!existing || time > existing.time) latestOutcomes.set(key, { correct: outcome.correct, time });
+      }
     }
-    if (!data.nextCursor || data.nextCursor === cursor) return { attemptIds: [...new Set(attemptIds)], hasMoreAttemptRecords: false };
+    if (!data.nextCursor || data.nextCursor === cursor) return result(false);
     cursor = data.nextCursor;
   }
-  return { attemptIds: [...new Set(attemptIds)], hasMoreAttemptRecords: !!cursor };
+  return result(!!cursor);
 }
 
 function mergeServerScore(row: Record<string, unknown>, ownerId: string) {
@@ -599,6 +662,7 @@ function mergeServerScore(row: Record<string, unknown>, ownerId: string) {
   const objectiveCount = Number(score.objectiveCount ?? 0);
   const correctCount = Number(score.correctCount ?? 0);
   const attempt: QuizAttempt = {
+    title: asString(row.title),
     attemptId: asString(row.attemptId),
     quizId: asString(row.quizId),
     sourceKind: row.sourceKind as QuizAttempt["sourceKind"],

@@ -1,8 +1,9 @@
-/** @type {import('next').NextConfig} */
+import { fileURLToPath } from "node:url";
 const isolatedDistDir = process.env.STUDYSOLO_BUILD_DIR;
 if (isolatedDistDir && !/^\.next-(?:class-verify|perf-[a-z0-9-]+|desktop-[a-z0-9-]+)$/.test(isolatedDistDir)) {
   throw new Error("STUDYSOLO_BUILD_DIR must be an isolated .next-perf-* or .next-desktop-* directory");
 }
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   // OAuth callback queries contain short-lived credentials. Never print them in dev logs.
@@ -13,6 +14,17 @@ const nextConfig = {
   // 经反向代理/IDE 预览（如 127.0.0.1 的预览端口）访问时，HMR 会 502、字体 403，
   // 进而导致页面无法水合。放行本机来源即可正常开发。
   allowedDevOrigins: ["127.0.0.1", "localhost"],
+  // Crepe's transitive KaTeX version otherwise creates an unpatched instance.
+  // Match the root ESM instance used by katex/contrib/mhchem's relative import.
+  turbopack: { resolveAlias: { katex: "./node_modules/katex/dist/katex.mjs" } },
+  webpack(config) {
+    config.resolve ??= {};
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "katex$": fileURLToPath(new URL("./node_modules/katex/dist/katex.mjs", import.meta.url)),
+    };
+    return config;
+  },
   // 桌面打包(Electron)：仅当 BUILD_STANDALONE=1 时产出自包含 standalone server，
   // 并关闭图片优化(免 sharp 原生依赖，便于离线打包)。Web/本地构建不受影响。
   ...(process.env.BUILD_STANDALONE === "1"

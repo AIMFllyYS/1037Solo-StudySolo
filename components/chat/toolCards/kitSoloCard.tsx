@@ -11,7 +11,7 @@ export default function KitSoloCard({ part }: ResultCardProps<"kitSolo">) {
   if (part.state !== "output-available") return null;
   const { output } = part, data = output.data;
   const items: Record<string, unknown>[] = Array.isArray(data?.tools) ? data.tools.filter(item => item && typeof item === "object") : data ? [data] : [];
-  return <section className="my-3 rounded-xl border border-[var(--line-soft)] bg-[var(--bg-muted)] p-3 text-[12px]" aria-label="KitSolo">
+  return <section className="agent-trace-subdetail min-w-0 space-y-2 text-[12px]" aria-label="KitSolo">
     <strong>KitSolo{output.error ? ` · ${t("trace.tool.kitSolo.failed")}` : ""}</strong>
     {items.map((item, index) => {
       const display = item.display && typeof item.display === "object" ? item.display as Record<string, unknown> : {};

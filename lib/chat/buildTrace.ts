@@ -5,7 +5,7 @@ import { splitThinkContent } from '@/lib/chat/rendering/parseChatContent';
 import { getToolPresentation } from '@/lib/ai/agent/tools/presentations';
 import { translateNow, type Translate } from "@/lib/i18n";
 
-export type TraceStatus = 'running' | 'complete' | 'error' | 'interrupted' | 'waiting';
+export type TraceStatus = 'running' | 'complete' | 'error' | 'interrupted' | 'waiting' | 'unknown' | 'cancelled';
 export type TraceToolPart = ChatToolPart | Extract<ChatMessagePart, { type: 'dynamic-tool' }>;
 
 interface TraceStepBase {
@@ -82,7 +82,20 @@ export function getTraceToolOutput(part: TraceToolPart, t: Translate = translate
 
 export function getTraceToolStatus(part: TraceToolPart, isStreaming: boolean): TraceStatus {
   if (part.state === 'output-error' || part.state === 'output-denied') return 'error';
-  if (part.state === 'output-available' && !part.preliminary) return 'complete';
+  if (part.state === 'output-available' && !part.preliminary) {
+    const output = record(part.output);
+    const action = record(output.action);
+    const state = action.status ?? output.state;
+    if (state === 'uncertain' || state === 'unknown') return 'unknown';
+    if (output.error || action.error || record(action.result).error || state === 'failed' || (typeof output.exitCode === 'number' && output.exitCode !== 0)) return 'error';
+    if (state === 'proposed' && typeof action.expiresAt === 'number' && action.expiresAt <= Date.now()) return 'error';
+    if (state === 'proposed' || state === 'approval_required') return 'waiting';
+    if (['executing', 'starting', 'running', 'creating', 'closing', 'started'].includes(String(state))) return 'running';
+    if (state === 'cancelled') return 'cancelled';
+    if (traceToolName(part) === 'learningConnectors' && output.action && !['succeeded'].includes(String(state))) return 'unknown';
+    if (traceToolName(part) === 'cloudSandbox' && state && !['completed', 'active', 'closed', 'succeeded'].includes(String(state))) return 'unknown';
+    return 'complete';
+  }
   if (part.state === 'approval-requested') return 'waiting';
   if (part.state === 'approval-responded' && !part.approval.approved) return 'error';
   // A saved or aborted incomplete call must never keep a historical message spinning.
@@ -102,7 +115,11 @@ export function buildToolTraceStep(
   const output = part.state === 'output-available' ? record(part.output) : {};
   let summary = '';
 
-  if (status === 'error') {
+  if (status === 'unknown') {
+    summary = t('trace.tool.learningConnectors.uncertain');
+  } else if (status === 'cancelled') {
+    summary = t('trace.tool.learningConnectors.cancelled');
+  } else if (status === 'error') {
     summary = getTraceToolOutput(part, t) || t('trace.tool.denied');
   } else if (status === 'interrupted') {
     summary = t('trace.tool.interrupted');

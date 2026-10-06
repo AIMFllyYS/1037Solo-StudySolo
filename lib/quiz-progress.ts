@@ -27,6 +27,8 @@ export interface QuestionScore {
 
 /** 一次作答记录。 */
 export interface QuizAttempt {
+  /** Human-readable source title; generated quiz namespaces aren't chapter labels. */
+  title?: string;
   earned: number;
   max: number;
   /** 百分制得分（保留一位小数）。 */

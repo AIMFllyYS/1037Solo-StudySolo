@@ -82,9 +82,12 @@ export const reviewZh = {
     },
   },
   quiz: {
+    agentSource: "Agent 出题",
     title: "答题",
     wrong: {
       title: "错题智能出题",
+      loading: "正在读取账号错题记录…",
+      accountSummary: "已读取的账号记录中有 {count} 道当前错题，将根据真实原题生成诊断题。",
       hint: "根据你平时的错题与薄弱章节，AI 统一出一套针对性诊断题。",
       cta: "生成诊断题",
       empty: "还没有足够的错题数据。先在 Studio 里做几套题，这里就能针对薄弱点出题了。",
@@ -118,7 +121,8 @@ export const reviewZh = {
     regenerate: "重新出题",
     recorded: "本次成绩已记录，会计入你的薄弱点分析。",
     submit: "交卷并记录",
-    submitPartial: "交卷（未答题计 0 分）",
+    submitPartial: "交卷并记录已答题",
+    unscored: "{count} 道未评分题不计入本次得分或错题统计。",
     progress: "已作答 {done}/{total} 道客观题",
     wrongRecorded: "{count} 道错题已进错题本。",
     sync: {
