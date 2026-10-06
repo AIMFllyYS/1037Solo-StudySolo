@@ -92,6 +92,6 @@ test("DocumentWorkspace：正文容器可被阅读器接管，分栏布局键按
 
   assert.match(globals, /@import "\.\/styles\/pdf-reader\.css";/);
   assert.match(globals, /@import "\.\/styles\/pptx-reader\.css";/);
-  // Tailwind 必须仍是第一行。
-  assert.match(globals, /^@import "tailwindcss";/);
+  // Tailwind 必须仍是完整第一行；source(none) 只限定扫描来源，不改变 import 顺序。
+  assert.match(globals, /^@import "tailwindcss"(?: source\(none\))?;(?:\r?\n|$)/);
 });

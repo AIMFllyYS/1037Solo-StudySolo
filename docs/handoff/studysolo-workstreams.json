@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_date": "2026-10-05",
+  "updated_date": "2026-10-07",
   "current_phase": "implementation",
   "phase_status": "running",
   "authoritative_status_document": "docs/handoff/studysolo-workstreams.json",
@@ -28,12 +28,12 @@
     }
   },
   "latest_user_directive": "2026-10-05用户明确授权自主CLI恢复RootSolo/任务项目，必要时直接起项目；32GB环境不因本机断开要求用户双击。写.codex全局记忆与项目规范并继续完整目标，旧禁CLI及本机阻塞结论撤销。",
-  "current_action": "Review真业务及主独立消费已验：成绩/诊断/章节、笔记及闪卡沉淀/复习；修Crepe与共享KaTeX实例分裂，主同note三处mhchem公式与下标实绘通过。仅5a已主动停止腾内存，让同worker串行最终定向检查/typecheck及23文件报告hash；随后主审提交并自行CLI恢复所需服务，无用户启动依赖。",
-  "next_workstream": "REVIEW-NOTES",
+  "current_action": "用户要求先推当前StudySolo：干净PR188 head fcf0b08a完整CI37490614184类型/Lint/Secrets已过，Unit唯一旧Tailwind首行断言不接受合法source(none)；原SimpleUI worker同包修该精确合同，主审后重跑对应检查与候选CI并同步master/dev。Browser原6候选未变，本机/agent200但主/子CUA均Chrome缺连接/Edge fetch失败/IAB不可用，已一次请求连接；Feedback桌面提交恢复/后台2行及原非admin门保留，390待接口。指定账号admin10/05已执行且10/07只读复核admin/listed/verifiedFactor1，不重复授权。",
+  "next_workstream": "UI-DIALOGUE-CI then BROWSER-BASICS actual acceptance",
   "stopped_action": "已被用户明确实现新计划取代；此前停止快照仅历史。",
   "implementation_recommendation": "执行three-lines-execution-plan：简单四包→沙箱/Skills→MCP→清理→客户端；网站用户部署，本轮仅本机验收。",
   "max_concurrent_subagents": 1,
-  "active_execution_group": "REVIEW-NOTES",
+  "active_execution_group": "UI-DIALOGUE-CI",
   "execution_stop": {
     "explicit_user_request": false,
     "superseded_by": "2026-10-05 IMPLEMENT THIS PLAN",
@@ -463,7 +463,7 @@
       "title": "Review完整业务、沉淀/出题和笔记",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "parent_local_accepted_task_commit_pending",
+      "status": "parent_local_accepted_committed",
       "user_acceptance": "parent_real_local_accepted_not_user_manual_or_production_acceptance",
       "assigned_agent": "/root/review_notes_sol_high",
       "scope": "完整业务和相关笔记/题目模块归同一worker，不能把前端/存储/生成分到不同worker",
@@ -500,7 +500,7 @@
       ],
       "technical_evidence_is_delivery_proof": false,
       "next_step": "主验已通过并核23文件冻结SHA无差异；仅本包与当前账本/派遣规范提交，随后原Feedback worker真实验收。不要重做已验Review流程。",
-      "accepted_source_commit": null,
+      "accepted_source_commit": "b25388e823b3ccc1a972bdcccdf62faad7bebef7",
       "accepted_runtime_version": "Local browser source equals candidate-sha256.json manifest 6a2cfe4565a01ce28f823db591e755b7d10420f0ff9fe7fc00c2d3146f4699d0; not deployment",
       "acceptance_evidence": [
         "docs/handoff/workstreams/review-notes-2026-10-05.md",
@@ -729,14 +729,13 @@
   },
   "persistent_goal": {
     "created_on_user_request": true,
-    "status": "blocked",
+    "status": "active",
     "covers": "full three-lines plan plus cleanup and clients",
     "completion_requires": "all authorized acceptance, not worker idle or one blocked dependency",
-    "execution_resume": "Human explicitly resumed work; executing now. Goal tool badge last reported blocked; tools cannot set active, do not let stale badge block authorized execution."
+    "execution_resume": "2026-10-07 get_goal confirms active; old blocked audit is historical and does not determine execution."
   },
   "last_goal_turn_classification": "Human resumed execution and authorized local CLI recovery; RootSolo managed service restored; Review real browser acceptance and minimal persistence fixes are running, no global execution stop.",
   "local_acceptance_queue": [
-    "REVIEW-NOTES",
     "FEEDBACK-ADMIN",
     "BROWSER-BASICS"
   ],
@@ -772,10 +771,11 @@
     "norm": "../RootSolo/docs/unattended-recovery.md"
   },
   "local_runtime_handle": {
-    "root_exec_session": 43220,
-    "command": "node src/main.mjs --no-open 5a!",
-    "health": "Last recovery HTTP200 and parent real note/math passed; 5a intentionally stopped now for serialized final checks; primary resumes through 5a! without human restart",
-    "account": "existing3040/3041 reused, not owned",
+    "root_exec_session": 81259,
+    "command": "node src/main.mjs --no-open 1a,1b,5a!",
+    "health": "2026-10-07 old Root handle missing and relevant OS listeners absent; CLI recovered1a/1b/5a, Rootready; HTTP/page health still revalidate",
+    "account": "Current1a/1b recovered through minimal manifest; old external web restarts were previous-turn history",
+    "landing": "Old1037 process no longer listening; not started yet, start only when required for remaining feedback/admin check",
     "liveness_rule": "re-poll actual handle/health; persisted number is not proof"
   }
 }
