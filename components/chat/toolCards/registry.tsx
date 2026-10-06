@@ -26,9 +26,9 @@ function moduleOf<N extends StudyToolName>(
 }
 
 export const TOOL_REGISTRY = {
-  cloudSandbox: moduleOf("cloudSandbox", { ResultCard: CloudSandboxCard }),
-  learningConnectors: moduleOf("learningConnectors", { ResultCard: LearningConnectorsCard, resultKey: part => part.state === "output-available" ? part.output.action?.id ?? null : null }),
-  kitSolo: moduleOf("kitSolo", { ResultCard: KitSoloCard }),
+  cloudSandbox: moduleOf("cloudSandbox", { StepDetail: CloudSandboxCard }),
+  learningConnectors: moduleOf("learningConnectors", { StepDetail: LearningConnectorsCard }),
+  kitSolo: moduleOf("kitSolo", { StepDetail: KitSoloCard }),
   getCurrentPage: moduleOf("getCurrentPage"),
   getOutline: moduleOf("getOutline"),
   getSection: moduleOf("getSection"),
@@ -114,9 +114,6 @@ export const THREAD_SILENT_TOOLS = ["proposeMemory", "commitNotes", "commitFlash
 
 /** 现网 ChatMessage 卡片顺序（不是 STUDY_TOOL_NAMES）。imageSearch 追加在末尾，与收回前的气泡顺序一致。 */
 export const RESULT_CARD_ORDER = [
-  "cloudSandbox",
-  "learningConnectors",
-  "kitSolo",
   "searchNotes",
   "webSearch",
   "renderInteractive",

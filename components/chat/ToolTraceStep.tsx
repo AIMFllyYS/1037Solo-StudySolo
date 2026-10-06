@@ -17,8 +17,11 @@ import { getTraceToolOutput, type TraceToolStep as ToolStep } from '@/lib/chat/b
 import { getToolPresentation, type ToolIconKind } from '@/lib/chat/toolPresentation';
 import { useIsAgentSurface } from '@/lib/window/useManagedWindowSurface';
 import { useT } from '@/lib/i18n';
+import { TOOL_REGISTRY } from '@/components/chat/toolCards/registry';
+import type { ResultCardProps, ToolModule } from '@/lib/ai/agent/tools/registry';
+import type { AgentTraceProps } from '@/components/chat/AgentTrace';
 
-export const ToolTraceStep = React.memo(function ToolTraceStep({ step }: { step: ToolStep }) {
+export const ToolTraceStep = React.memo(function ToolTraceStep({ step, toolContext }: { step: ToolStep; toolContext?: AgentTraceProps['toolContext'] }) {
   const t = useT();
   const { part } = step;
   const input = part.input ?? (part.state === 'output-error' && 'rawInput' in part ? part.rawInput : undefined);
@@ -29,6 +32,8 @@ export const ToolTraceStep = React.memo(function ToolTraceStep({ step }: { step:
   // 已展示同一条走马灯，保持收起避免重复。
   const isWebSearch = step.name === 'webSearch';
   const isAgentSurface = useIsAgentSurface();
+  const toolModule = (TOOL_REGISTRY as Record<string, ToolModule>)[step.name];
+  const StepDetail = toolModule?.StepDetail as React.ComponentType<ResultCardProps> | undefined;
 
   return (
     <AgentTraceStep {...step} icon={<ToolIcon name={step.name} />} expandWhileRunning={isWebSearch && isAgentSurface}>
@@ -44,7 +49,8 @@ export const ToolTraceStep = React.memo(function ToolTraceStep({ step }: { step:
             <pre className="m-0 max-h-40 overflow-auto whitespace-pre-wrap break-words py-1 font-mono text-[11px] leading-relaxed [overflow-wrap:anywhere]">{typeof input === 'string' ? input : JSON.stringify(input, null, 2)}</pre>
           </div>
         ) : null}
-        {output ? (
+        {StepDetail && toolContext ? <StepDetail {...toolContext} part={part as ResultCardProps['part']} onOutputChange={toolContext.onToolOutputChange ? next => toolContext.onToolOutputChange?.(part.toolCallId, next) : undefined} /> : null}
+        {output && !(StepDetail && toolContext && part.state === 'output-available') ? (
           <div className="agent-trace-subdetail">
             <p className={`mb-1 text-[10px] font-medium ${step.status === 'error' ? 'text-[var(--md-sys-color-error)]' : 'text-[var(--md-sys-color-outline)]'}`}>{step.status === 'error' ? t('trace.step.errorOutput') : t('trace.step.output')}</p>
             <pre className={`m-0 max-h-44 overflow-auto whitespace-pre-wrap break-words py-1 font-mono text-[11px] leading-relaxed [overflow-wrap:anywhere] ${step.status === 'error' ? 'text-[var(--md-sys-color-error)]' : ''}`}>{output}</pre>

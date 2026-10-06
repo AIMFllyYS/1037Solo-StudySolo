@@ -9,6 +9,7 @@ import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
 import { useT, type Translate } from '@/lib/i18n';
 import { ToolTraceStep } from '@/components/chat/ToolTraceStep';
 import { ReasoningTraceStep } from '@/components/chat/ReasoningTraceStep';
+import type { ResultCardProps } from '@/lib/ai/agent/tools/registry';
 
 /** 折叠高度过渡时长。ChatMessage 用同一窗口错开 FollowUpQuestions 插入。 */
 export const TRACE_COLLAPSE_MS = 160;
@@ -19,9 +20,13 @@ export interface AgentTraceProps {
   durationMs?: number;
   /** 对话消息已有品牌状态头时，折叠入口只标识内部处理过程。 */
   summaryMode?: 'status' | 'process';
+  toolContext?: Omit<ResultCardProps, 'part' | 'onOutputChange'> & { onToolOutputChange?: (toolCallId: string, output: unknown) => void };
 }
 
 function completedLabel(trace: AgentTraceModel, durationMs: number | undefined, t: Translate): string {
+  if (trace.steps.some(step => step.status === 'running')) return t('trace.summary.working');
+  if (trace.steps.some(step => step.status === 'unknown')) return t('trace.tool.learningConnectors.uncertain');
+  if (trace.steps.some(step => step.status === 'cancelled')) return t('trace.tool.learningConnectors.cancelled');
   if (trace.interruptedCount > 0) return t('trace.summary.stopped');
   if (trace.waitingCount > 0) return t('trace.summary.waiting');
   if (trace.errorCount > 0) return t('trace.summary.partialError');
@@ -48,7 +53,7 @@ export function agentProcessingLabel(
   return t('trace.summary.composing');
 }
 
-export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = false, durationMs, summaryMode = 'status' }: AgentTraceProps) {
+export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = false, durationMs, summaryMode = 'status', toolContext }: AgentTraceProps) {
   const t = useT();
   const contentId = useId();
   const reducedMotion = useUiReducedMotion();
@@ -128,7 +133,7 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
         onClick={() => setExpanded((open) => !open)}
         className="flex min-h-9 max-w-full items-center gap-1 rounded-md py-1.5 text-left text-[13px] leading-5 text-[var(--md-sys-color-on-surface-variant)] transition-colors hover:text-[var(--md-sys-color-on-surface)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--md-sys-color-primary)] motion-reduce:transition-none"
       >
-        {!isStreaming && trace.interruptedCount === 0 && trace.waitingCount === 0 && trace.errorCount === 0 ? (
+        {!isStreaming && trace.steps.every(step => step.status === 'complete') ? (
           <span aria-hidden="true" className="agent-trace-complete-mark"><AgentCheckIcon size={13} /></span>
         ) : null}
         <motion.span
@@ -161,7 +166,7 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
             className="agent-trace-list"
           >
             {trace.steps.map((step) => step.kind === 'tool'
-              ? <ToolTraceStep key={step.id} step={step} />
+              ? <ToolTraceStep key={step.id} step={step} toolContext={toolContext} />
               : <ReasoningTraceStep key={step.id} step={step} />)}
           </motion.ol>
         ) : null}

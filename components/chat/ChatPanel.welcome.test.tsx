@@ -87,7 +87,7 @@ describe('Agent 空对话欢迎页', () => {
     expect(screen.getByTestId('agent-welcome-greeting')).toBeInTheDocument();
     expect(screen.getByTestId('agent-welcome-examples')).toBeInTheDocument();
     expect(screen.getByLabelText('试试这样问我')).toBeInTheDocument();
-    expect(screen.getByTestId('agent-welcome-example-outline')).toHaveTextContent('按核心概念搭出清晰的章节框架');
+    expect(screen.getByTestId('agent-welcome-example-outline')).toHaveTextContent('把今天的课堂笔记整理成复习提纲');
     expect(screen.getByTestId('agent-composer-hints')).toHaveTextContent('Enter');
     expect(screen.getByTestId('agent-composer-hints')).toHaveTextContent('发送');
     expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', '输入问题、引用笔记、计划或工具');

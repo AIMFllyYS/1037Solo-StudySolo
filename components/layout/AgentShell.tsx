@@ -84,50 +84,22 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
   const [snapping, setSnapping] = useState(false);
   const snapTimerRef = useRef<number | null>(null);
   const leftPanelRef = useRef<ImperativePanelHandle>(null);
-  /**
-   * 左栏开合是否允许回写 store。分栏库挂载时会误报一次面板事件（同右栏那个坑），
-   * 用户不可能在 500ms 内拖动，所以先关掉回写窗口。
-   */
-  const leftPersistReadyRef = useRef(false);
-  useEffect(() => {
-    const id = window.setTimeout(() => {
-      leftPersistReadyRef.current = true;
-    }, 500);
-    return () => window.clearTimeout(id);
-  }, []);
+  const pendingLeftSyncRef = useRef<boolean | null>(null);
   // 收起**不再卸载面板**：分栏库要留着这个面板，才能在展开时还原用户上次拖到的宽度。
-  /** 展开时要不要把宽度还原到用户上次拖到的位置（收起那一刻决定）。 */
-  const pendingLeftRestoreRef = useRef(false);
   useEffect(() => {
     const panel = leftPanelRef.current;
     if (!panel) return;
     try {
-      if (sidebarCollapsed && !panel.isCollapsed()) panel.collapse();
-      if (!sidebarCollapsed && panel.isCollapsed()) panel.expand();
-      // 收起动作由顶栏那个开关触发（Agent 中间不再有第二个入口），
-      // 所以「下次展开回到哪儿」只能在这里记。
-      if (sidebarCollapsed) pendingLeftRestoreRef.current = true;
+      if (sidebarCollapsed && !panel.isCollapsed()) { pendingLeftSyncRef.current = true; panel.collapse(); }
+      if (!sidebarCollapsed && panel.isCollapsed()) { pendingLeftSyncRef.current = false; panel.expand(); }
     } catch {
+      pendingLeftSyncRef.current = null;
       // 首帧（或 jsdom）还没有布局信息，分栏库会抛「Panel size not found」，忽略即可
     }
   }, [sidebarCollapsed]);
 
-  // 展开之后再还原宽度：必须排在上面那个「sync 展开」effect 之后，否则面板还是收起的，resize 会被忽略。
-  useEffect(() => {
-    if (sidebarCollapsed || !pendingLeftRestoreRef.current) return;
-    pendingLeftRestoreRef.current = false;
-    const panel = leftPanelRef.current;
-    const group = conversationsRef.current?.closest("[data-panel-group]") as HTMLElement | null;
-    const groupWidth = group?.getBoundingClientRect().width ?? 0;
-    const remembered = lastWideWidthRef.current;
-    if (!panel || groupWidth <= 0 || remembered < 80) return;
-    const percent = Math.min(40, Math.max(14, (remembered / groupWidth) * 100));
-    try {
-      panel.resize(Math.round(percent * 10) / 10);
-    } catch {
-      // 同上：没有布局信息时忽略
-    }
-  }, [sidebarCollapsed]);
+  // The panel library owns saved sizes and expandToSizes. Do not resize again
+  // from a pixel snapshot: that overwrote the user's saved ratio after resize.
 
   const handleAutoCollapse = useCallback(() => {
     setSnapping(true);
@@ -136,7 +108,6 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
       snapTimerRef.current = null;
       setSnapping(false);
     }, 320);
-    if (!leftPersistReadyRef.current) return;
     setSidebarCollapsed(true);
   }, [setSidebarCollapsed]);
   useEffect(() => () => {
@@ -203,14 +174,34 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
           ref={leftPanelRef}
           id="agent-conversations"
           order={1}
-          defaultSize={nestedShares(PANEL_PRESETS.agent).left}
+          defaultSize={sidebarCollapsed ? 0 : nestedShares(PANEL_PRESETS.agent).left}
           minSize={14}
           collapsible
           collapsedSize={0}
           maxSize={40}
-          onCollapse={handleAutoCollapse}
-          onExpand={() => {
-            if (leftPersistReadyRef.current) setSidebarCollapsed(false);
+          onResize={(size, previousSize) => {
+            const collapsed = size === 0;
+            if (previousSize === undefined) {
+              queueMicrotask(() => {
+                const panel = leftPanelRef.current;
+                if (!panel) return;
+                try {
+                  const wanted = useStore.getState().sidebarCollapsed;
+                  if (panel.isCollapsed() === wanted) { pendingLeftSyncRef.current = null; return; }
+                  pendingLeftSyncRef.current = wanted;
+                  if (wanted) panel.collapse();
+                  else panel.expand();
+                } catch { pendingLeftSyncRef.current = null; }
+              });
+              return;
+            }
+            if (pendingLeftSyncRef.current !== null) {
+              if (collapsed === pendingLeftSyncRef.current) pendingLeftSyncRef.current = null;
+              return;
+            }
+            if (collapsed === (previousSize === 0)) return;
+            if (collapsed) handleAutoCollapse();
+            else setSidebarCollapsed(false);
           }}
         >
           <aside

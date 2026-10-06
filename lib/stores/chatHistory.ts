@@ -40,7 +40,6 @@ import {registerResourceMetrics} from '@/lib/performance/resourceMetrics';
 import {DEFAULT_RESOURCE_BUDGETS} from '@/lib/performance/budgets';
 import {getOwnerEpoch,getStorageOwner,onStorageOwnerChange} from '@/lib/storage/ownerScope';
 
-const MAX_SESSIONS = 50;
 type LeaseReason='visible'|'stream'|'write'|'explicit-pin'
 const sessionLeases=new Map<string,Map<LeaseReason,number>>()
 const legacyPins=new Map<string,number>()
@@ -142,7 +141,7 @@ interface ChatHistoryState {
   /**
    * 显式「新建对话」：左栏按钮 / 右键菜单 / 快捷键 / 面板头部都走这里，规则只有一份。
    * 已经站在一条空白新对话里就什么都不做；否则**复用**最新那条空白 main 会话；都没有才真的新建。
-   * 防的是连点：`MAX_SESSIONS` 到顶后每多建一条，最旧的会话会连同消息一起被删掉。
+   * 防的是连点重复创建空白会话。历史 metadata 不设删除上限；热内存由 applySessionWindow 控制。
    * 未水合时返回 null 并等水合完再做（绝不基于空列表落盘）。
    */
   startNewChat: (context?: ChatContext, projectId?: string | null) => string | null;
@@ -448,40 +447,17 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     };
     set((state) => {
       const sessionsMeta = [meta, ...state.sessionsMeta];
-      const capped = sessionsMeta.length > MAX_SESSIONS ? sessionsMeta.slice(0, MAX_SESSIONS) : sessionsMeta;
-      const dropped = sessionsMeta.length > MAX_SESSIONS ? sessionsMeta.slice(MAX_SESSIONS) : [];
-      const droppedIds = new Set(dropped.map((d) => d.id));
-      if (dropped.length > 0) {
-        const ownerId=getStorageOwner(),epoch=getOwnerEpoch();
-        for (const d of dropped) {
-          void (async () => {
-            const blobIds = await listBlobIdsForSession(d.id);
-            if(getStorageOwner()!==ownerId||getOwnerEpoch()!==epoch)return;
-            await deleteSessionData(d.id, blobIds);
-            scheduleOrphanChatGc();
-          })();
-        }
-        pruneArtifactsFromMetas(capped);
-      }
       const messagesById = { ...state.messagesById, [id]: [] };
       const sessionWindowById = { ...state.sessionWindowById, [id]: { ...EMPTY_WINDOW } };
-      for (const dropId of droppedIds) {
-        delete messagesById[dropId];
-        delete sessionWindowById[dropId];
-        dropSessionTailCache(dropId);
-        // 被淘汰的会话可能还在跑：停掉并抹掉运行记录，否则侧栏徽标成孤儿。
-        useSessionRuns.getState().remove(dropId);
-      }
       persistManifest(
         state,
-        manifestOf(state, { activeSessionId: claimActive ? id : state.activeSessionId, sessions: capped }),
+        manifestOf(state, { activeSessionId: claimActive ? id : state.activeSessionId, sessions: sessionsMeta }),
       );
       residentEstimates.delete(id)
-      for(const dropId of droppedIds)residentEstimates.delete(dropId)
       const nextActive=claimActive?id:state.activeSessionId
-      const resident=applySessionWindow({...state,activeSessionId:nextActive},messagesById,sessionWindowById,[...state.loadedSessionIds.filter(x=>x!==id&&!droppedIds.has(x)),id],{...state.sessionLoadState,[id]:'loaded'},id)
+      const resident=applySessionWindow({...state,activeSessionId:nextActive},messagesById,sessionWindowById,[...state.loadedSessionIds.filter(x=>x!==id),id],{...state.sessionLoadState,[id]:'loaded'},id)
       return {
-        sessionsMeta: capped,
+        sessionsMeta,
         ...resident,
         activeSessionId:nextActive,
         _activeMessagesReady: claimActive ? true : state._activeMessagesReady,
@@ -595,7 +571,10 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
 
   switchSession: (id) => {
     const ownerId=getStorageOwner(),epoch=getOwnerEpoch();
-    set(state=>({activeSessionId:id,_activeMessagesReady:false,...applySessionWindow({...state,activeSessionId:id},state.messagesById,state.sessionWindowById,state.loadedSessionIds,state.sessionLoadState,id)}));
+    set(state=>{
+      persistManifest(state, manifestOf(state, { activeSessionId: id }));
+      return {activeSessionId:id,_activeMessagesReady:false,...applySessionWindow({...state,activeSessionId:id},state.messagesById,state.sessionWindowById,state.loadedSessionIds,state.sessionLoadState,id)};
+    });
     useSessionRuns.getState().markViewed(id);
     void get().ensureSessionLoaded(id).then(() => {
       if (getStorageOwner()===ownerId&&getOwnerEpoch()===epoch&&get().activeSessionId === id) {

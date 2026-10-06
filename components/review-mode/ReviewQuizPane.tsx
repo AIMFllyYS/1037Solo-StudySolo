@@ -7,9 +7,11 @@ import QuizQuestion from "@/components/quiz/QuizQuestion";
 import type { QuizData, QuizQuestion as Q, UserAnswer } from "@/lib/quiz/types";
 import { autoGrade, isObjectivelyGradableQuestion, maxPointsOf } from "@/lib/quiz/types";
 import type { QuestionResult } from "@/lib/quiz-store";
-import { getAllProgress, saveAttempt, type QuestionScore } from "@/lib/quiz-progress";
+import { getAllProgress, saveAttempt } from "@/lib/quiz-progress";
+import { completeAgentQuizAttempt } from "@/lib/review-mode/agentQuizProgress";
 import { selectWeakPoints } from "@/lib/review-mode/wrongQuestions";
 import { getSubject } from "@/lib/content-data";
+import type { ContentItem } from "@/lib/types/content";
 import { SUBJECT_REGISTRY, type SubjectId } from "@/lib/content-data/subjects.registry";
 import { subjectLabel } from "@/lib/notes/userNote";
 import { useT } from "@/lib/i18n";
@@ -110,7 +112,7 @@ function EmbeddedRunner({ quiz, onAttemptChange, onRecorded }: { quiz: Generated
   };
 
   const reveal = (id: string) => {
-    if (revealed[id]) return;
+    if (revealed[id] || attemptRef.current.phase === "summary") return;
     const next = { ...revealed, [id]: true };
     setRevealed(next);
     checkpoint({ revealedQuestionIds: Object.keys(next) });
@@ -133,24 +135,12 @@ function EmbeddedRunner({ quiz, onAttemptChange, onRecorded }: { quiz: Generated
 
   const recordAttempt = () => {
     if (attemptRef.current.phase === "summary") return;
-    const objective = quiz.questions.filter((q) => isObjectivelyGradableQuestion(q));
-    if (objective.length === 0) {
-      setRecorded(true);
-      return;
-    }
-    let earned = 0;
-    let max = 0;
-    const perQuestion: QuestionScore[] = [];
-    for (const q of objective) {
-      const [awarded, correct] = autoGrade(q, answers[q.id] ?? null);
-      const qMax = maxPointsOf(q);
-      earned += awarded;
-      max += qMax;
-      perQuestion.push({ id: q.id, awarded, max: qMax, correct });
-    }
-    const outcomes = objective.map((question) => ({ question, correct: autoGrade(question, answers[question.id] ?? null)[1], answer: answers[question.id] ?? null }));
-    const wrong = outcomes.filter((entry) => !entry.correct);
     const current = attemptRef.current;
+    const completed = completeAgentQuizAttempt({ ...current, answers, revealedQuestionIds: Object.keys(revealed) }, quiz.questions);
+    const { questionResults, score: attemptScore, completedAt } = completed;
+    const { earned, max } = attemptScore;
+    const outcomes = questionResults.map((result, index) => ({ question: quiz.questions[index], correct: result.correct, answer: answers[result.id] ?? null }));
+    const wrong = outcomes.filter((entry) => entry.correct === false);
     recordQuestionOutcomes(outcomes, {
       subjectId: quiz.subjectId,
       chapterId: quiz.chapterId,
@@ -162,53 +152,28 @@ function EmbeddedRunner({ quiz, onAttemptChange, onRecorded }: { quiz: Generated
     }, current.contentHash ?? "", current.attemptId);
     setWrongRecorded(wrong.length);
     if (typeof window !== "undefined") window.dispatchEvent(new Event("studysolo:review-wrong-book-change"));
-    const completedAt = new Date().toISOString();
-    const questionResults = quiz.questions.map((question) => {
-      const objectiveQuestion = isObjectivelyGradableQuestion(question);
-      const maxScore = maxPointsOf(question);
-      if (objectiveQuestion) {
-        const [awarded, correct] = autoGrade(question, answers[question.id] ?? null);
-        return {
-          id: question.id,
-          questionKey: `ssq-v1:${current.contentHash}:${encodeURIComponent(question.id)}`,
-          awarded, max: maxScore, correct, objective: true, scored: true,
-        };
-      }
-      return {
-        id: question.id,
-        questionKey: `ssq-v1:${current.contentHash}:${encodeURIComponent(question.id)}`,
-        awarded: 0, max: maxScore, correct: null, objective: false, scored: false,
-      };
-    });
-    const attemptScore = {
-      earned,
-      max,
-      percent: max > 0 ? Math.round((earned / max) * 1000) / 10 : null,
-      objectiveCount: objective.length,
-      correctCount: objective.filter((question) => autoGrade(question, answers[question.id] ?? null)[1]).length,
-      scoredCount: objective.length,
-    };
     saveAttempt(quiz.subjectId, quiz.chapterId, {
+      title: current.title,
       earned,
       max,
       percent: attemptScore.percent,
-      completedAt,
+      completedAt: completedAt!,
       stage: "final",
       attemptId: current.attemptId,
       quizId: quiz.quizId,
       categoryId: quiz.categoryId,
       sourceKind: current.sourceKind,
-      objectiveCount: objective.length,
+      objectiveCount: attemptScore.objectiveCount,
       correctCount: attemptScore.correctCount,
-      scoredCount: objective.length,
-      objectiveAccuracy: objective.length ? Math.round((attemptScore.correctCount / objective.length) * 1000) / 10 : null,
-      perQuestion,
+      scoredCount: attemptScore.scoredCount,
+      objectiveAccuracy: attemptScore.objectiveCount ? Math.round((attemptScore.correctCount / attemptScore.objectiveCount) * 1000) / 10 : null,
+      perQuestion: questionResults,
     });
     checkpoint({
       phase: "summary",
       stage: "final",
       answers,
-      revealedQuestionIds: quiz.questions.filter((question) => isObjectivelyGradableQuestion(question)).map((question) => question.id),
+      revealedQuestionIds: Object.keys(revealed),
       questionResults,
       score: attemptScore,
       completedAt,
@@ -222,12 +187,12 @@ function EmbeddedRunner({ quiz, onAttemptChange, onRecorded }: { quiz: Generated
   const allAnswered = objectiveCount > 0 && answeredObjective === objectiveCount;
 
   return (
-    <div className="space-y-5" data-testid="review-quiz-runner">
+    <div className="space-y-5" data-testid="review-quiz-runner" data-review-attempt-id={quiz.attempt.attemptId} data-review-quiz-set-id={quiz.attempt.quizSetId ?? undefined}>
       {quiz.questions.map((q, i) => {
         const open = !!revealed[q.id];
         const needsConfirm = !(q.type === "single_choice" || q.type === "true_false");
         return (
-          <div key={q.id} className="min-w-0">
+          <fieldset key={q.id} className="min-w-0" disabled={recorded && !open}>
             <QuizQuestion
               question={q}
               index={i}
@@ -235,6 +200,7 @@ function EmbeddedRunner({ quiz, onAttemptChange, onRecorded }: { quiz: Generated
               mode={open ? "review" : "answer"}
               answer={answers[q.id] ?? null}
               onChange={(a) => {
+                if (attemptRef.current.phase === "summary") return;
                 const nextAnswers = { ...answers, [q.id]: a };
                 setAnswers(nextAnswers);
                 checkpoint({ answers: nextAnswers, currentIndex: i });
@@ -251,7 +217,7 @@ function EmbeddedRunner({ quiz, onAttemptChange, onRecorded }: { quiz: Generated
                 {t("agent.quiz.reveal.default")}
               </button>
             )}
-          </div>
+          </fieldset>
         );
       })}
 
@@ -271,11 +237,12 @@ function EmbeddedRunner({ quiz, onAttemptChange, onRecorded }: { quiz: Generated
         </div>
       )}
       {recorded && (
-        <p className="text-[12.5px] text-[var(--color-success)]">
-          ✓ {t("review.quiz.recorded")}
+        <p className="text-[12.5px] text-[var(--color-success)]" data-testid="review-quiz-score">
+          {quiz.attempt.score.earned} / {quiz.attempt.score.max} · {quiz.attempt.score.percent ?? "—"}% · ✓ {t("review.quiz.recorded")}
           {wrongRecorded > 0 ? ` ${t("review.quiz.wrongRecorded", { count: wrongRecorded })}` : ""}
         </p>
       )}
+      {recorded && quiz.questions.length > quiz.attempt.score.scoredCount ? <p className="text-[12px] text-[var(--ink-soft)]">{t("review.quiz.unscored", { count: quiz.questions.length - quiz.attempt.score.scoredCount })}</p> : null}
       {persistenceWarning ? <p className="text-[12px] text-[var(--md-sys-color-error)]" role="alert">{persistenceWarning}</p> : null}
       <div className="flex flex-wrap items-center gap-2 text-[11.5px] text-[var(--ink-faint)]" role="status" aria-live="polite">
         <span>{t(`review.quiz.sync.${quiz.attempt.syncState}`)}</span>
@@ -323,23 +290,32 @@ export default function ReviewQuizPane() {
   const [quiz, setQuiz] = useState<GeneratedQuiz | null>(null);
 
   const [bookVersion, setBookVersion] = useState(0);
-  const [accountWrongIndex, setAccountWrongAttempts] = useState<{ attemptIds: string[]; hasMoreAttemptRecords: boolean; ownerId: string | null }>({ attemptIds: [], hasMoreAttemptRecords: false, ownerId: null });
-  const accountWrongAttempts = accountWrongIndex.ownerId === auth.userId ? accountWrongIndex : { attemptIds: [], hasMoreAttemptRecords: false, ownerId: null };
+  const [accountWrongIndex, setAccountWrongAttempts] = useState<{ attemptIds: string[]; hasMoreAttemptRecords: boolean; wrongQuestionCount: number; ownerId: string | null; bookVersion: number }>({ attemptIds: [], hasMoreAttemptRecords: false, wrongQuestionCount: 0, ownerId: null, bookVersion: -1 });
+  const accountIndexLoading = auth.status === "signedIn" && (accountWrongIndex.ownerId !== auth.userId || accountWrongIndex.bookVersion !== bookVersion);
+  const accountWrongAttempts = !accountIndexLoading && accountWrongIndex.ownerId === auth.userId ? accountWrongIndex : { attemptIds: [], hasMoreAttemptRecords: false, wrongQuestionCount: 0, ownerId: null };
   // 交卷会写入 quiz-progress：随新题目刷新薄弱点，而不是只在挂载时算一次。
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const weakPoints = useMemo(() => selectWeakPoints(getAllProgress()), [quiz, bookVersion]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const wrongBook: WrongEntry[] = useMemo(() => readWrongBook(), [bookVersion, auth.userId]);
   const activeWrongEntries = wrongBook.filter((entry) => entry.latestCorrect !== true);
-  const canDiagnose = activeWrongEntries.some((entry) => !!entry.question || !!entry.attemptIds?.length) || accountWrongAttempts.attemptIds.length > 0;
+  const canDiagnose = activeWrongEntries.some((entry) => !!entry.question || !!entry.attemptIds?.length) || accountWrongAttempts.wrongQuestionCount > 0;
 
   const chapters = useMemo(() => {
     if (!subjectId) return [];
     if (subjectId === CLASS_SOURCE) return classSessions.map((s) => ({ id: s.id, title: s.title || "课堂" }));
     const subject = getSubject(subjectId as SubjectId);
-    // detail 板块的顶层小节作为「章节」候选。
+    // Group ids such as ch01 don't have a material file; use the actual leaves.
     const detail = subject?.categories.find((c) => c.id === "detail") ?? subject?.categories[0];
-    return (detail?.items ?? []).filter((it) => !it.navigationOnly);
+    const options: Array<{ id: string; title: string }> = [];
+    const visit = (items: ContentItem[], parents: string[]) => {
+      for (const item of items) {
+        if (item.children?.length) visit(item.children, [...parents, item.title]);
+        else if (!item.navigationOnly) options.push({ id: item.id, title: [...parents, item.title].join(" / ") });
+      }
+    };
+    visit(detail?.items ?? [], []);
+    return options;
   }, [subjectId, classSessions]);
 
   const detailCategoryId = useMemo(() => {
@@ -385,9 +361,9 @@ export default function ReviewQuizPane() {
     if (auth.status !== "signedIn" || !auth.userId) return;
     let active = true;
     void loadWrongAttemptIdsFromAccount(getStorageOwner()).then((value) => {
-      if (active) setAccountWrongAttempts({ ...value, ownerId: auth.userId! });
+      if (active) setAccountWrongAttempts({ ...value, ownerId: auth.userId!, bookVersion });
     }).catch(() => {
-      if (active) setAccountWrongAttempts({ attemptIds: [], hasMoreAttemptRecords: false, ownerId: auth.userId! });
+      if (active) setAccountWrongAttempts({ attemptIds: [], hasMoreAttemptRecords: true, wrongQuestionCount: 0, ownerId: auth.userId!, bookVersion });
     });
     return () => { active = false; };
   }, [auth.status, auth.userId, bookVersion]);
@@ -526,7 +502,7 @@ export default function ReviewQuizPane() {
   };
 
   const onChapter = () => {
-    if (!subjectId || !chapterId) return;
+    if (!subjectId || !chapterId || !chapters.some((chapter) => chapter.id === chapterId)) return;
     if (subjectId === CLASS_SOURCE) {
       const session = classSessions.find((s) => s.id === chapterId);
       if (!session || !auth.userId) return;
@@ -586,20 +562,24 @@ export default function ReviewQuizPane() {
                   })}
                 </ul>
               </>
-            ) : weakPoints.length === 0 ? (
+            ) : accountIndexLoading ? (
+              <p className="text-[12px] text-[var(--ink-faint)]" role="status">{t("review.quiz.wrong.loading")}</p>
+            ) : accountWrongAttempts.wrongQuestionCount > 0 ? (
+              <p className="text-[12px] text-[var(--ink-soft)]">{t("review.quiz.wrong.accountSummary", { count: accountWrongAttempts.wrongQuestionCount })}</p>
+            ) : weakPoints.length === 0 && !accountWrongAttempts.hasMoreAttemptRecords ? (
               <p className="text-[12px] text-[var(--ink-faint)]">{t("review.quiz.wrong.empty")}</p>
-            ) : (
+            ) : weakPoints.length > 0 ? (
               <>
                 <p className="mb-1 text-[11.5px] font-medium text-[var(--ink-soft)]">{t("review.quiz.wrong.weakList")}</p>
                 <ul className="mb-3 space-y-0.5 text-[11.5px] text-[var(--ink-faint)]">
                   {weakPoints.slice(0, 4).map((w) => (
                     <li key={`${w.subjectId}/${w.chapterId}`}>
-                      · {subjectLabel(w.subjectId)} {w.chapterLabel}（{w.lastPercent} 分）
+                      · {w.subjectId === "review" ? t("review.quiz.agentSource") : subjectLabel(w.subjectId)} {w.chapterLabel}（{w.lastPercent} 分）
                     </li>
                   ))}
                 </ul>
               </>
-            )}
+            ) : null}
             {!canDiagnose && weakPoints.length > 0 && (
               <p className="mb-3 text-[12px] leading-relaxed text-[var(--ink-faint)]">{t("review.quiz.noWrongContext")}</p>
             )}
@@ -678,7 +658,7 @@ export default function ReviewQuizPane() {
                 setMode("chapter");
                 onChapter();
               }}
-              disabled={busy || !subjectId || !chapterId}
+              disabled={busy || !subjectId || !chapterId || !chapters.some((chapter) => chapter.id === chapterId)}
               data-testid="review-quiz-chapter-cta"
               className="rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] hover:brightness-95 disabled:opacity-50"
             >
@@ -719,7 +699,7 @@ export default function ReviewQuizPane() {
               </button>
             </div>
             {quiz.contextCoverage && (
-              <p className="mb-3 rounded-lg border border-[var(--line)] bg-[var(--bg-panel)] px-3 py-2 text-[11.5px] leading-relaxed text-[var(--ink-soft)]" data-testid="review-context-coverage">
+              <p className="mb-3 rounded-lg border border-[var(--line)] bg-[var(--bg-panel)] px-3 py-2 text-[11.5px] leading-relaxed text-[var(--ink-soft)]" data-testid="review-context-coverage" data-review-context-question-keys={quiz.contextCoverage.includedQuestionKeys?.join(",")}>
                 {t("review.quiz.contextCoverage", {
                   questions: quiz.contextCoverage.includedQuestions,
                   totalQuestions: quiz.contextCoverage.totalQuestions,

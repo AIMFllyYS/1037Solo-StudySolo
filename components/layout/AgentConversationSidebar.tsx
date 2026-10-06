@@ -371,6 +371,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                             onClick={() => setCollapsedProjects((prev) => ({ ...prev, [project.id]: expanded }))}
                             fontWeight={600}
                             ariaLabel={project.name}
+                            endAdornment={!expanded ? <SessionRunBadge run={aggregateProjectRun(project.sessions, runsById)} /> : undefined}
                           />
                         )}
                       </div>
@@ -381,7 +382,6 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                        * 重命名时也藏起来，免得和输入框抢焦点。
                        */}
                       {/* 折叠时把成员会话的运行态聚成一颗徽标；展开后每行自己有徽标。 */}
-                      {!expanded ? <SessionRunBadge run={aggregateProjectRun(project.sessions, runsById)} /> : null}
                       {!project.system && renamingProjectId !== project.id ? (
                         <button
                           type="button"

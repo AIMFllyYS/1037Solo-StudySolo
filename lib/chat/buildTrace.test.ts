@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { buildTrace, buildToolTraceStep, getTraceToolOutput, type TraceToolPart } from './buildTrace.ts';
+import { buildTrace, buildToolTraceStep, getTraceToolOutput, getTraceToolStatus, type TraceToolPart } from './buildTrace.ts';
 import { getAnswerText, migrateLegacyMessage } from './messageParts.ts';
 import type { ChatMessagePart } from '@/lib/types/chat';
 
@@ -12,6 +12,24 @@ const section: TraceToolPart = {
   type: 'tool-getSection', toolCallId: 'section-1', state: 'output-available',
   input: { path: 'p/1' }, output: { text: '教材正文', found: true },
 };
+
+test('domain output facts distinguish command and external action lifecycle states', () => {
+  const cloud = (output: unknown) => ({ type: 'tool-cloudSandbox', toolCallId: 'fixture', state: 'output-available', input: { action: 'status' }, output }) as TraceToolPart;
+  const connector = (output: unknown) => ({ type: 'tool-learningConnectors', toolCallId: 'fixture', state: 'output-available', input: { action: 'status' }, output }) as TraceToolPart;
+  for (const state of ['running', 'starting', 'creating', 'closing']) assert.equal(getTraceToolStatus(cloud({ state }), false), 'running');
+  for (const state of ['completed', 'active', 'closed']) assert.equal(getTraceToolStatus(cloud({ state }), false), 'complete');
+  assert.equal(getTraceToolStatus(cloud({ state: 'completed', exitCode: 2 }), false), 'error');
+  assert.equal(getTraceToolStatus(cloud({ error: 'MFA_REQUIRED' }), false), 'error');
+  assert.equal(getTraceToolStatus(cloud({ state: 'uncertain', error: 'SANDBOX_RETRY_UNCERTAIN' }), false), 'unknown');
+  assert.equal(getTraceToolStatus(cloud({ state: 'unexpected' }), false), 'unknown');
+  assert.equal(getTraceToolStatus(connector({ action: { status: 'proposed', expiresAt: Date.now() + 60000 } }), false), 'waiting');
+  assert.equal(getTraceToolStatus(connector({ action: { status: 'proposed', expiresAt: 1 } }), false), 'error');
+  assert.equal(getTraceToolStatus(connector({ action: { status: 'executing' } }), false), 'running');
+  assert.equal(getTraceToolStatus(connector({ action: { status: 'cancelled' } }), false), 'cancelled');
+  assert.equal(getTraceToolStatus(connector({ action: { status: 'succeeded', result: { error: 'REMOTE_FAILED' } } }), false), 'error');
+  assert.equal(getTraceToolStatus(connector({ action: { status: 'future-state' } }), false), 'unknown');
+  assert.equal(getTraceToolStatus(connector({ data: ['public result'] }), false), 'complete');
+});
 
 test('buildTrace interleaves answers by step-start and matches getAnswerText', () => {
   const parts: ChatMessagePart[] = [

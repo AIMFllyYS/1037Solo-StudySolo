@@ -4,7 +4,7 @@ import { activateStorageOwner, ownedStorageKey } from "@/lib/storage/ownerScope"
 import assert from "node:assert/strict";
 import { beforeEach, afterEach, describe, test } from "node:test";
 import { flushPendingWrites, PERSIST_KEYS, chatBlobKey, chatSessionKey, __resetIdbStoragePendingForTests } from "@/lib/storage/idbStorage";
-import { cancelOrphanChatGc, __resetSessionV3ForTests, loadSessionMessages, __waitSessionWritesForTests } from "@/lib/storage/chatStorage";
+import { cancelOrphanChatGc, __resetSessionV3ForTests, loadSessionMessages, __waitSessionWritesForTests, flushPendingSessionCheckpoints } from "@/lib/storage/chatStorage";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
 
@@ -45,7 +45,6 @@ const physical = (key: string) => ownedStorageKey(key)!;
 const fixtureSet = (key: string, value: string) => storage.set(physical(key), value);
 const fixtureGet = async(key: string) => (await idbGet<string>(physical(key),testStore))??storage.get(physical(key));
 const fixtureHas = async(key: string) => (await fixtureGet(key))!==undefined;
-const fixtureDelete = (key: string) => storage.delete(physical(key));
 
 
 function msg(id: string, content: string): ChatMessage {
@@ -105,9 +104,14 @@ beforeEach(async () => {
   });
 });
 
-afterEach(() => {
+afterEach(async () => {
+  const { useChatHistory } = await import('./chatHistory.ts');
+  for (const session of useChatHistory.getState().sessionsMeta) await __waitSessionWritesForTests(session.id);
+  await flushPendingSessionCheckpoints();
+  await waitForPendingWrites();
   cancelOrphanChatGc();
   __resetIdbStoragePendingForTests();
+  activateStorageOwner(null);
   delete (globalThis as { window?: unknown }).window;
   delete (globalThis as { document?: unknown }).document;
   delete (globalThis as { localStorage?: Storage }).localStorage;
@@ -162,6 +166,35 @@ test("updateMessage：content-only 流式更新只写 session，不写 manifest"
   assert.equal(await fixtureGet(PERSIST_KEYS.chatManifest), undefined);
 });
 
+test("CloseOthers session switch survives owner rehydration without reopening the former active tab", async () => {
+  const { useChatHistory, ensureChatHistoryBootstrap } = await import("./chatHistory.ts");
+  const { useAgentTabs, hydrateAgentTabs } = await import("./agentTabs.ts");
+  const { loadManifest } = await import("@/lib/storage/chatStorage");
+  const sessionsMeta = [meta("former-active"), meta("selected-target"), meta("other-tab")];
+  fixtureSet(chatSessionKey("former-active"), JSON.stringify([msg("m1", "former active fixture")]));
+  fixtureSet(chatSessionKey("selected-target"), JSON.stringify([msg("m2", "selected target fixture")]));
+  fixtureSet(chatSessionKey("other-tab"), JSON.stringify([msg("m3", "other fixture")]));
+  useChatHistory.setState({ sessionsMeta, activeSessionId: "former-active", messagesById: { "former-active": [msg("m1", "former active fixture")] }, loadedSessionIds: ["former-active"], sessionLoadState: { "former-active": "loaded" }, _hasHydrated: true, _activeMessagesReady: true });
+  hydrateAgentTabs();
+  useAgentTabs.getState().closeTabs(["former-active", "other-tab"]);
+  useChatHistory.getState().switchSession("selected-target");
+  await waitForSessionLoad("selected-target");
+  await waitForPendingWrites();
+  assert.equal((await loadManifest())?.activeSessionId, "selected-target");
+
+  // Account bootstrap after a reload follows the same owner reset and manifest read.
+  activateStorageOwner(null);
+  activateStorageOwner("fixture-user");
+  await ensureChatHistoryBootstrap();
+  const restored = useChatHistory.getState();
+  assert.equal(restored.activeSessionId, "selected-target");
+  assert.equal(textOf(restored.messagesById["selected-target"]?.[0]), "selected target fixture");
+  assert.deepEqual(restored.sessionsMeta.map(session => session.id).sort(), sessionsMeta.map(session => session.id).sort());
+  // The real header reopens only the restored active session.
+  useAgentTabs.getState().reopenTab(restored.activeSessionId!);
+  assert.deepEqual(useAgentTabs.getState().closedIds.sort(), ["former-active", "other-tab"]);
+});
+
 test("updateMessage：新增 artifactId 时写 manifest 供冷 prune 使用", async () => {
   const { useChatHistory } = await import("./chatHistory.ts");
   fixtureSet(chatSessionKey("s1"), JSON.stringify([msg("m1", "old")]));
@@ -193,6 +226,22 @@ test("updateMessage：新增 artifactId 时写 manifest 供冷 prune 使用", as
   assert.deepEqual(manifest.sessions[0].artifactIds, ["a1"]);
 });
 
+test("follow-up tool facts use updateMessage and survive IndexedDB reload", async () => {
+  const { useChatHistory } = await import("./chatHistory.ts");
+  const { buildTrace } = await import("@/lib/chat/buildTrace");
+  const original: ChatMessage = { id: "m1", role: "assistant", timestamp: 1, parts: [{ type: "tool-cloudSandbox", toolCallId: "fixture-tool", state: "output-available", input: { action: "exec", command: "fixture" }, output: { text: "running", state: "running", conversationId: "s1", commandId: "fixture-command" } }] };
+  fixtureSet(chatSessionKey("s1"), JSON.stringify([original]));
+  useChatHistory.setState({ sessionsMeta: [meta("s1")], messagesById: { s1: [original] }, activeSessionId: "s1", sessionLoadState: { s1: "loaded" }, loadedSessionIds: ["s1"], pinnedSessionIds: [], _hasHydrated: true, _activeMessagesReady: true });
+  useChatHistory.getState().updateMessage("s1", "m1", { parts: [{ ...original.parts[0], output: { text: "finished", state: "completed", exitCode: 2, stdout: "public fixture log", conversationId: "s1", commandId: "fixture-command" } } as ChatMessage['parts'][number]] });
+  await __waitSessionWritesForTests("s1");
+  await flushPendingSessionCheckpoints();
+  const reloaded = await loadSessionMessages("s1");
+  assert.equal(reloaded?.[0].parts.length, 1);
+  assert.equal(buildTrace(reloaded![0]).steps[0].status, "error");
+  assert.match(JSON.stringify(reloaded![0]), /public fixture log/);
+  assert.equal(reloaded![0].parts[0].type, "tool-cloudSandbox");
+});
+
 test("createSession uses UUID ids that do not collide in the same millisecond", async () => {
   const { useChatHistory } = await import("./chatHistory.ts");
   const first = useChatHistory.getState().createSession();
@@ -219,7 +268,7 @@ test("createSession note kind does not claim the active main thread", async () =
   assert.equal(useChatHistory.getState().sessionsMeta.find((item) => item.id === noteSession)?.kind, "note");
 });
 
-test("evicting past MAX_SESSIONS deletes blobs and drops messagesById", async () => {
+test("new chat beyond 50 preserves authoritative history, attachments and run records", async () => {
   const { useChatHistory } = await import("./chatHistory.ts");
   const evicted = "old-49";
   const metas = Array.from({ length: 50 }, (_, index) => meta(`old-${String(index).padStart(2, "0")}`));
@@ -258,43 +307,39 @@ test("evicting past MAX_SESSIONS deletes blobs and drops messagesById", async ()
     _activeMessagesReady: true,
   });
 
-  useChatHistory.getState().createSession();
-  // 淘汰链路 = listBlobIds（触发 v2→v3 迁移写）→ deleteSessionData（排队删 v3 键）：
-  // 都是异步队列，轮询到删除落地为止，而不是赌一个固定毫秒数。
-  for (let i = 0; i < 60 && ((await fixtureHas(chatBlobKey(blobId))) || (await fixtureHas(chatSessionKey(evicted)))); i += 1) {
-    await new Promise((resolve) => setTimeout(resolve, 10));
-    flushPendingWrites();
-  }
+  const { useSessionRuns } = await import('./sessionRuns.ts');
+  useSessionRuns.getState().markDone(evicted, true);
+  useChatHistory.getState().startNewChat();
   await waitForPendingWrites();
-
-  assert.equal(useChatHistory.getState().messagesById[evicted], undefined);
-  assert.equal(await fixtureHas(chatBlobKey(blobId)), false);
-  assert.equal(await fixtureHas(chatSessionKey(evicted)), false);
-  assert.equal(await fixtureHas(`chat-s3:${evicted}:h`), false);
+  assert.equal(await fixtureHas(chatBlobKey(blobId)), true);
+  assert.equal(textOf((await loadSessionMessages(evicted))?.[0]), 'pic');
+  assert.equal(useSessionRuns.getState().byId[evicted]?.phase, 'done');
   const ids = useChatHistory.getState().sessionsMeta.map((item) => item.id);
-  assert.equal(ids.includes(evicted), false);
-  assert.equal(ids.length, 50);
+  assert.equal(ids.includes(evicted), true);
+  assert.equal(ids.length, 51);
 });
 
-test("updateMessage on an evicted session does not write the shard back", async () => {
+test("more than 50 metadata rows still use the bounded hot-session window", async () => {
   const { useChatHistory } = await import("./chatHistory.ts");
   const evicted = "old-49";
   const metas = Array.from({ length: 50 }, (_, index) => meta(`old-${String(index).padStart(2, "0")}`));
   useChatHistory.setState({
     sessionsMeta: metas,
-    messagesById: { [evicted]: [msg("m1", "stay")] },
+    messagesById: Object.fromEntries(metas.map(item => [item.id, [msg('m1', 'stay')]])),
     activeSessionId: evicted,
-    sessionLoadState: { [evicted]: "loaded" },
-    loadedSessionIds: [evicted],
+    sessionLoadState: Object.fromEntries(metas.map(item => [item.id, 'loaded' as const])),
+    loadedSessionIds: metas.map(item => item.id),
     pinnedSessionIds: [],
     _hasHydrated: true,
     _activeMessagesReady: true,
   });
   useChatHistory.getState().createSession();
-  fixtureDelete(chatSessionKey(evicted));
-  useChatHistory.getState().updateMessage(evicted, "m1", { parts: [{ type: "text", text: "ghost" }] });
   await waitForPendingWrites();
-  assert.equal(await fixtureGet(chatSessionKey(evicted)), undefined);
+  const state = useChatHistory.getState();
+  assert.equal(state.sessionsMeta.length, 51);
+  assert.ok(state.sessionsMeta.some(item => item.id === evicted));
+  assert.ok(Object.keys(state.messagesById).length <= 4);
+  assert.equal(state.loadedSessionIds.length, Object.keys(state.messagesById).length);
 });
 
 describe("chatHistory.startNewChat", { concurrency: false }, () => {
