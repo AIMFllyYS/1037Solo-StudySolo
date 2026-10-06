@@ -1,20 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { Home, RotateCw, ArrowRight, ArrowLeft, ExternalLink, Globe, Search, Smartphone, Monitor, MoreHorizontal, ZoomIn, ZoomOut } from "lucide-react";
+import { useCallback, useRef, useState, useSyncExternalStore } from "react";
+import { Home, RotateCw, ArrowRight, ArrowLeft, ExternalLink, Globe, Search, Smartphone, Monitor } from "lucide-react";
 import EmbedFallback from "@/components/browser/EmbedFallback";
 import WebviewSite, { type WebviewEl } from "@/components/browser/WebviewSite";
-import AnchoredMenu from "@/components/ui/AnchoredMenu";
+import PageControls from "@/components/browser/PageControls";
+import ZoomableSite from "@/components/browser/ZoomableSite";
 import { safeHttpUrl } from "@/components/browser/safeUrl";
-import { useBrowser, MOBILE_LOGICAL_WIDTH, MAX_BROWSER_ZOOM_PERCENT, MIN_BROWSER_ZOOM_PERCENT, type ViewMode } from "@/lib/hooks/useBrowser";
+import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
 import { useEmbeddable } from "@/lib/hooks/useEmbeddable";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
-import { computeIframeZoomLayout } from "@/lib/browser/iframeZoom";
 import { useT } from "@/lib/i18n";
 
 /** 右侧面板内置浏览器：地址栏 + 自适应（手机视口模拟）iframe。本地使用，仅做基础 sandbox 安全。 */
 export default function BrowserTab() {
-  const zoomStep = 10;
   const isPhone = useIsMobile();
   const currentUrl = useBrowser((s) => s.currentUrl);
   const reloadNonce = useBrowser((s) => s.reloadNonce);
@@ -29,11 +28,12 @@ export default function BrowserTab() {
   const t = useT();
 
   const [addr, setAddr] = useState(currentUrl);
+  const [nativeUrl, setNativeUrl] = useState(currentUrl);
   const [prevUrl, setPrevUrl] = useState(currentUrl);
-  const pageControlsTriggerRef = useRef<HTMLButtonElement | null>(null);
   if (currentUrl !== prevUrl) {
     setPrevUrl(currentUrl);
     setAddr(currentUrl);
+    setNativeUrl(currentUrl);
   }
 
   // 桌面端（Electron）→ 用真实 <webview> 跑全站；网页/开发态 → 维持 iframe + 可嵌入预检。
@@ -46,6 +46,13 @@ export default function BrowserTab() {
   // currentUrl 也可能来自 localStorage 持久化（未过 normalizeUrl），渲染前再过一遍白名单，
   // 防止脏数据变成 <a href> 或 iframe/webview 的可加载地址。
   const safeUrl = safeHttpUrl(currentUrl);
+  // Native navigation can stay inside the guest without changing its requested src.
+  // External-open follows that actual page, independently of address-bar edits.
+  const safeExternalUrl = isDesktop ? safeHttpUrl(nativeUrl) : safeUrl;
+  const handleNativeUrlChange = useCallback((url: string) => {
+    setAddr(url);
+    setNativeUrl(url);
+  }, []);
   const { blocked, reason, forceEmbed } = useEmbeddable(isDesktop ? null : safeUrl || null);
 
   const go = () => {
@@ -55,13 +62,13 @@ export default function BrowserTab() {
   const toggleView = () => setViewMode(viewMode === "mobile" ? "desktop" : "mobile");
 
   return (
-    <div className="flex h-full flex-col bg-[var(--bg-panel)]">
+    <div className="flex h-full min-w-0 flex-col bg-[var(--bg-panel)]">
       {/* 工具栏 */}
       <div className="mobile-browser-toolbar flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-2 py-1.5">
         <button
           onClick={goHome}
           title={t("window.browser.home")}
-          className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+          className="press flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
         >
           <Home size={15} />
         </button>
@@ -71,7 +78,7 @@ export default function BrowserTab() {
               onClick={() => webviewRef.current?.goBack()}
               title={t("window.browser.back")}
               disabled={!currentUrl}
-              className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
+              className="press flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
             >
               <ArrowLeft size={15} />
             </button>
@@ -79,7 +86,7 @@ export default function BrowserTab() {
               onClick={() => webviewRef.current?.goForward()}
               title={t("window.browser.forward")}
               disabled={!currentUrl}
-              className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
+              className="press flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
             >
               <ArrowRight size={15} />
             </button>
@@ -89,7 +96,7 @@ export default function BrowserTab() {
           onClick={reload}
           title={t("window.browser.refresh")}
           disabled={!currentUrl}
-          className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
+          className="press flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
         >
           <RotateCw size={15} />
         </button>
@@ -102,88 +109,36 @@ export default function BrowserTab() {
               if (e.key === "Enter") go();
             }}
             placeholder={t("window.browser.addressPlaceholder")}
-            className="min-w-0 flex-1 bg-transparent text-[13px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)]"
+            aria-label={t("window.browser.addressPlaceholder")}
+            className="w-0 min-w-0 flex-1 bg-transparent text-[13px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)]"
           />
         </div>
         <button
           onClick={go}
           title={t("window.browser.go")}
-          className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--accent-ink)] hover:bg-[var(--accent-weak)]"
+          className="press flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--accent-ink)] hover:bg-[var(--accent-weak)]"
         >
           <ArrowRight size={15} />
         </button>
-        {!isPhone && (
+        {!isPhone && !isDesktop && (
         <button
           onClick={toggleView}
           title={viewMode === "mobile" ? t("window.browser.viewMobileHint") : t("window.browser.viewDesktopHint")}
-          className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+          className="press flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
         >
           {viewMode === "mobile" ? <Smartphone size={15} /> : <Monitor size={15} />}
         </button>
         )}
-        <AnchoredMenu
-          label={t("window.browser.pageControls")}
-          width={210}
-          placement="bottom"
-          testId="browser-page-controls"
-          triggerRef={pageControlsTriggerRef}
-          className="press flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
-          trigger={<MoreHorizontal size={16} />}
-        >
-          {(close) => (
-            <div className="flex flex-col gap-1 p-1">
-              <button
-                type="button"
-                role="menuitem"
-                disabled={zoomPercent <= MIN_BROWSER_ZOOM_PERCENT}
-                onClick={() => { setZoomPercent(zoomPercent - zoomStep); close(); pageControlsTriggerRef.current?.focus({ preventScroll: true }); }}
-                className="flex min-h-9 items-center gap-2 rounded-lg px-2 text-left text-[12.5px] text-[var(--ink)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
-                data-testid="browser-zoom-out"
-              >
-                <ZoomOut size={15} /> <span className="flex-1">{t("window.browser.zoomOut")}</span><span>{zoomPercent}%</span>
-              </button>
-              <button
-                type="button"
-                role="menuitem"
-                disabled={zoomPercent >= MAX_BROWSER_ZOOM_PERCENT}
-                onClick={() => { setZoomPercent(zoomPercent + zoomStep); close(); pageControlsTriggerRef.current?.focus({ preventScroll: true }); }}
-                className="flex min-h-9 items-center gap-2 rounded-lg px-2 text-left text-[12.5px] text-[var(--ink)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
-                data-testid="browser-zoom-in"
-              >
-                <ZoomIn size={15} /> <span className="flex-1">{t("window.browser.zoomIn")}</span><span>{zoomPercent}%</span>
-              </button>
-              <button
-                type="button"
-                role="menuitem"
-                disabled={zoomPercent === 100}
-                onClick={() => { setZoomPercent(100); close(); pageControlsTriggerRef.current?.focus({ preventScroll: true }); }}
-                className="flex min-h-9 items-center justify-between rounded-lg px-2 text-left text-[12.5px] text-[var(--ink)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
-                data-testid="browser-zoom-reset"
-              >
-                <span>{t("window.browser.zoomReset")}</span><span>100%</span>
-              </button>
-              <button
-                type="button"
-                role="menuitem"
-                disabled={!currentUrl}
-                onClick={() => { reload(); close(); pageControlsTriggerRef.current?.focus({ preventScroll: true }); }}
-                className="flex min-h-9 items-center gap-2 rounded-lg px-2 text-left text-[12.5px] text-[var(--ink)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
-                data-testid="browser-menu-refresh"
-              >
-                <RotateCw size={15} /> {t("window.browser.refresh")}
-              </button>
-            </div>
-          )}
-        </AnchoredMenu>
+        <PageControls zoomPercent={zoomPercent} onZoomChange={setZoomPercent} onReload={reload} canReload={!!safeUrl} />
         <a
-          href={safeUrl || undefined}
+          href={safeExternalUrl || undefined}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           title={t("window.browser.openInNewTabHint")}
-          className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] aria-disabled:opacity-40"
-          aria-disabled={!safeUrl}
+          className="press flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] aria-disabled:opacity-40"
+          aria-disabled={!safeExternalUrl}
           onClick={(e) => {
-            if (!safeUrl) e.preventDefault();
+            if (!safeExternalUrl) e.preventDefault();
           }}
         >
           <ExternalLink size={15} />
@@ -199,7 +154,7 @@ export default function BrowserTab() {
               nonce={reloadNonce}
               zoomFactor={zoomPercent / 100}
               webviewRef={webviewRef}
-              onUrlChange={setAddr}
+              onUrlChange={handleNativeUrlChange}
             />
           ) : blocked ? (
             <EmbedFallback
@@ -210,66 +165,12 @@ export default function BrowserTab() {
               actionLabel={t("window.browser.openInNewTab")}
             />
           ) : (
-            <FramedSite url={safeUrl} nonce={reloadNonce} viewMode={frameMode} zoomPercent={zoomPercent} />
+            <ZoomableSite url={safeUrl} nonce={reloadNonce} logicalWidth={frameMode === "mobile" ? MOBILE_LOGICAL_WIDTH : undefined} zoomPercent={zoomPercent} title={t("window.browser.builtInBrowser")} allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-read; clipboard-write" />
           )
         ) : (
           <BingStartPage onSearch={navigate} />
         )}
       </div>
-    </div>
-  );
-}
-
-/**
- * 自适应 iframe：手机视图下以固定逻辑视口宽（414px）渲染，再 transform 缩放贴合面板宽，
- * 让所有站点都拿到"手机视口"并完整放进右侧窄面板（无横向溢出）；桌面视图按面板原宽 1:1。
- */
-function FramedSite({ url, nonce, viewMode, zoomPercent }: { url: string; nonce: number; viewMode: ViewMode; zoomPercent: number }) {
-  const t = useT();
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState({ w: 0, h: 0 });
-
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      const r = entries[0]?.contentRect;
-      if (r) setSize({ w: Math.round(r.width), h: Math.round(r.height) });
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  const logicalW = viewMode === "mobile" ? MOBILE_LOGICAL_WIDTH : size.w;
-  const frame = computeIframeZoomLayout({
-    containerWidth: size.w,
-    containerHeight: size.h,
-    logicalWidth: logicalW,
-    zoomFactor: zoomPercent / 100,
-  });
-
-  return (
-    <div ref={wrapRef} className="relative h-full w-full overflow-hidden bg-white">
-      {size.w > 0 && (
-        <iframe
-          key={`${url}:${nonce}:${viewMode}`}
-          src={url}
-          title={t("window.browser.builtInBrowser")}
-          style={{
-            position: "absolute",
-            left: frame.offsetLeft,
-            top: 0,
-            width: frame.iframeWidth,
-            height: frame.iframeHeight,
-            transform: `scale(${frame.renderScale})`,
-            transformOrigin: "top left",
-            border: 0,
-          }}
-          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-downloads allow-modals"
-          allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-read; clipboard-write"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-      )}
     </div>
   );
 }

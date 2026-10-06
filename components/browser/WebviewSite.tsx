@@ -45,6 +45,7 @@ export default function WebviewSite({
   const firstNonce = useRef(nonce);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [pageUrl, setPageUrl] = useState(safeUrl);
   const zoomFactorRef = useRef(zoomFactor);
   useLayoutEffect(() => {
     zoomFactorRef.current = zoomFactor;
@@ -60,7 +61,10 @@ export default function WebviewSite({
     };
     const onNav = (event: Event) => {
       const next = (event as unknown as { url?: string }).url || wv.getURL?.();
-      if (next) onUrlChange?.(next);
+      if (next) {
+        setPageUrl(safeHttpUrl(next));
+        onUrlChange?.(next);
+      }
       applyZoom();
     };
     const onStart = () => {
@@ -117,6 +121,7 @@ export default function WebviewSite({
     const wv = localRef.current;
     if (wv && safeUrl && safeUrl !== lastLoaded.current) {
       lastLoaded.current = safeUrl;
+      setPageUrl(safeUrl);
       setError(null);
       wv.loadURL(safeUrl).catch(() => {});
     }
@@ -164,9 +169,9 @@ export default function WebviewSite({
               <RotateCw size={13} /> {t("common.retry")}
             </button>
             <a
-              href={safeUrl || undefined}
+              href={pageUrl || undefined}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="press inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3.5 py-1.5 text-[12.5px] text-[var(--ink-soft)]"
             >
               <ExternalLink size={13} /> {t("window.browser.openInSystemBrowser")}
