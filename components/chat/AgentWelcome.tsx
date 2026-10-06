@@ -57,6 +57,7 @@ export function AgentWelcomeExamples({ onSelect }: { onSelect: (text: string) =>
   const t = useT();
   return (
     <NewChatSuggestions
+      label={t('panel.agentWelcome.examplesTitle')}
       items={AGENT_WELCOME_EXAMPLES.map((example) => ({ id: example.id, text: t(example.textKey), icon: example.icon }))}
       onSelect={onSelect}
       className="animate-fade-up"
