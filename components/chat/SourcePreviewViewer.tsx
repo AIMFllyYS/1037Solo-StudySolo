@@ -4,6 +4,10 @@ import { useCallback, useState, useSyncExternalStore } from "react";
 import { Globe } from "lucide-react";
 import EmbedFallback from "@/components/browser/EmbedFallback";
 import WebviewSite from "@/components/browser/WebviewSite";
+import PageControls from "@/components/browser/PageControls";
+import ZoomableSite from "@/components/browser/ZoomableSite";
+import { safeHttpUrl } from "@/components/browser/safeUrl";
+import { clampBrowserZoomPercent, DEFAULT_BROWSER_ZOOM_PERCENT } from "@/lib/stores/browser";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { useEmbeddable } from "@/lib/hooks/useEmbeddable";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
@@ -49,17 +53,26 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
 
   const data = (managed?.data ?? {}) as { url?: string; title?: string; iconUrl?: string };
   const url = data.url ?? "";
+  const safeUrl = safeHttpUrl(url);
   const isDesktop = useSyncExternalStore(
     () => () => {},
     () => !!(window as unknown as { desktop?: { isElectron?: boolean } }).desktop?.isElectron,
     () => false,
   );
-  const { blocked, reason, forceEmbed } = useEmbeddable(isDesktop ? null : url || null);
+  const { blocked, reason, forceEmbed } = useEmbeddable(isDesktop ? null : safeUrl || null);
   const [loadFailed, setLoadFailed] = useState(false);
+  // Owned by this window instance; changing one page never changes other windows
+  // or the browser tab's persisted zoom preference.
+  const [zoomPercent, setZoomPercent] = useState(DEFAULT_BROWSER_ZOOM_PERCENT);
+  const [reloadNonce, setReloadNonce] = useState(0);
+  const [nativeUrl, setNativeUrl] = useState(safeUrl);
   const [seenUrl, setSeenUrl] = useState(url);
   if (url !== seenUrl) {
     setSeenUrl(url);
     setLoadFailed(false);
+    setZoomPercent(DEFAULT_BROWSER_ZOOM_PERCENT);
+    setReloadNonce(0);
+    setNativeUrl(safeUrl);
   }
 
   if (!managed || !url) return null;
@@ -76,7 +89,8 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
       sameOrigin = true;
     }
   }
-  const showFallback = blocked || loadFailed || sameOrigin;
+  const showFallback = blocked || loadFailed || sameOrigin || !safeUrl;
+  const safeExternalUrl = isDesktop ? safeHttpUrl(nativeUrl) : safeUrl;
 
   return (
     <ManagedWindow
@@ -87,12 +101,23 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
       fullscreenTarget="notes"
       className="source-preview-window"
       testId="source-preview-window"
-      externalLink={{
+      actions={<PageControls
+        zoomPercent={zoomPercent}
+        onZoomChange={(percent) => setZoomPercent(clampBrowserZoomPercent(percent))}
+        onReload={() => {
+          setLoadFailed(false);
+          setReloadNonce((value) => value + 1);
+        }}
+        canZoom={!showFallback}
+        canReload={!sameOrigin && !!safeUrl}
+        testIdPrefix="source"
+      />}
+      externalLink={safeExternalUrl ? {
         onOpen: () => {
-          window.open(url, "_blank", "noopener,noreferrer");
+          window.open(safeExternalUrl, "_blank", "noopener,noreferrer");
         },
         label: t("window.source.openOriginal"),
-      }}
+      } : false}
       bodyClassName="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-white"
       unmountWhenMinimized
     >
@@ -106,16 +131,13 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
           }}
         />
       ) : isDesktop ? (
-        <WebviewSite url={url} />
+        <WebviewSite url={safeUrl} nonce={reloadNonce} zoomFactor={zoomPercent / 100} onUrlChange={setNativeUrl} />
       ) : (
-        <iframe
-          key={url}
-          src={url}
+        <ZoomableSite
+          url={safeUrl}
+          nonce={reloadNonce}
+          zoomPercent={zoomPercent}
           title={managed.title}
-          className="min-h-0 w-full flex-1 border-0 bg-white"
-          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-downloads allow-modals"
-          allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-write"
-          referrerPolicy="no-referrer-when-downgrade"
           onError={() => setLoadFailed(true)}
           onLoad={(event) => {
             try {
@@ -130,5 +152,4 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
     </ManagedWindow>
   );
 }
-
 
