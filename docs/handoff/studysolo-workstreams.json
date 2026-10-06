@@ -28,12 +28,12 @@
     }
   },
   "latest_user_directive": "2026-10-05用户明确授权自主CLI恢复RootSolo/任务项目，必要时直接起项目；32GB环境不因本机断开要求用户双击。写.codex全局记忆与项目规范并继续完整目标，旧禁CLI及本机阻塞结论撤销。",
-  "current_action": "用户要求先推当前StudySolo：干净PR188 head fcf0b08a完整CI37490614184类型/Lint/Secrets已过，Unit唯一旧Tailwind首行断言不接受合法source(none)；原SimpleUI worker同包修该精确合同，主审后重跑对应检查与候选CI并同步master/dev。Browser原6候选未变，本机/agent200但主/子CUA均Chrome缺连接/Edge fetch失败/IAB不可用，已一次请求连接；Feedback桌面提交恢复/后台2行及原非admin门保留，390待接口。指定账号admin10/05已执行且10/07只读复核admin/listed/verifiedFactor1，不重复授权。",
-  "next_workstream": "UI-DIALOGUE-CI then BROWSER-BASICS actual acceptance",
+  "current_action": "Browser网页包按本包实际缩放/刷新/基础布局准则主验并提交f6a7fedf；从master干净底精选11文件为fb33ced4已推codex/studysolo-simple-completion-20261007，依赖与master无差异，保护所有反馈/会员/旧native源码。远端任务分支是代码备份/整合候选，尚无新整线CI或main/dev合并，不宣称上线。外部URL/title新标签观察成立、第三方正文读仍超时，原生真包后续验。SIMPLE剩余反馈认证390、Core账单/marker/真实CLI均待本人或接口恢复，Gov与正式history已过不重做。",
+  "next_workstream": "FEEDBACK-ADMIN normal authenticated local narrow acceptance; then one full SIMPLE CI and master/dev sync. Core paid runtime awaits Edge billing and reviewed import prerequisites.",
   "stopped_action": "已被用户明确实现新计划取代；此前停止快照仅历史。",
   "implementation_recommendation": "执行three-lines-execution-plan：简单四包→沙箱/Skills→MCP→清理→客户端；网站用户部署，本轮仅本机验收。",
   "max_concurrent_subagents": 1,
-  "active_execution_group": "UI-DIALOGUE-CI",
+  "active_execution_group": "FEEDBACK-ADMIN",
   "execution_stop": {
     "explicit_user_request": false,
     "superseded_by": "2026-10-05 IMPLEMENT THIS PLAN",
@@ -324,7 +324,7 @@
         "不超过预算"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "第二条线开始后先核Edge阿里账单及预算、Chrome数据库所需配置，保留现有修复/模板/永久key；仅应用确实缺少的最小配置，再本机真实命令→完整Skills→下载→回收，不重放旧迁移、不重置runId。",
+      "next_step": "Governance已主独立验通过，不再查缺RPC或重放DDL。下一步准确Edge核本轮/月费用及余量，正常本人项目登录；再fresh预算快照及独立operator import审查，最后同worker真实CLI/两个完整技能/下载/回收。marker缺与账单未知仍不是完成。",
       "implementation_report": "docs/handoff/workstreams/core-sandbox-2026-10-05.md",
       "candidate_source_commit": "abd46ac89d37d59009a6ee3ecfb147a545f9a940",
       "candidate_pull_request": "https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/187",
@@ -344,7 +344,10 @@
         "merged_main": "ae63874a9e79beec49245dcc4a1d0c3b2e8c3942",
         "canonical": "supabase/migrations/202610050001_studysolo_reconciled_budget.sql",
         "same_bytes_as_tested_candidate": true,
-        "applied": false
+        "applied": true,
+        "formal_history_version": "20261005040543",
+        "verified_source_body_sha256": "375c8345b3b0df89515e206c098683f24864977f5d282c701949e67bd387a1e3",
+        "verification_boundary": "Primary independently parsed actual RootSolo MCP response: body exact canonical, nine parameters, Invoker, empty search_path, service execute true, anon/authenticated/PUBLIC false; exact formal history name found under different applied timestamp. No DDL replay or runtime proof."
       },
       "deployment_appendix": "docs/handoff/workstreams/core-integration-budget-deployment-2026-10-05.md",
       "environment_preparation": {
@@ -375,18 +378,18 @@
       "reviewer": "primary",
       "scheduled_after": "SIMPLE",
       "preparation": {
-        "status": "read_only_complete_actual_execution_not_verified",
+        "status": "current_rpc_governance_and_formal_history_verified_runtime_pending",
         "scope": "Current configuration/role/template/budget/invoice facts only; no resource/env/SQL/code mutation or paid command",
         "implementation_gate": "After SIMPLE real acceptance; same module worker resumes later",
         "report": "docs/handoff/workstreams/sandbox-readiness-2026-10-05.md",
         "current_facts": {
-          "observed_utc": "2026-10-04 18:00-18:03",
+          "observed_utc": "2026-10-06 16:58:58-17:01:03",
           "skills_files": "9 and 17 hashes match",
           "template": "configured template ready; not VM execution",
           "key": "one existing row never-expire flag; no credential values",
           "invoice": "unknown, not zero",
-          "required_rpc": "ss_agent_execution_reserve_reconciled not visible",
-          "canonical_history": "202610050001 not visible",
+          "required_rpc": "present_actual_nine_parameters_invoker_empty_search_path_service_true_public_api_roles_false_body_exact_canonical",
+          "canonical_history": "exact_name_found_formal_version20261005040543_maps_source202610050001_no_replay",
           "old_template": "v1 UI building, real job/cost unknown; no stop/delete or reserve release"
         }
       }
@@ -625,7 +628,7 @@
       "id": "BROWSER-BASICS",
       "title": "浏览器基础操作",
       "owner": "subagent_gpt-6.1-sol_high",
-      "status": "technical_candidate_reviewed_local_runtime_acceptance_pending",
+      "status": "web_accepted_committed_task_branch_native_deferred",
       "requirements": [
         "已有桥接的缩放/复位/刷新/菜单及外部打开",
         "不新代理/不全面重构"
@@ -635,9 +638,23 @@
         "桌面窄屏基础布局"
       ],
       "assigned_agent": "/root/browser_basics_sol_high",
-      "next_step": "服务恢复后同browser_basics_sol_high实际web缩放/复位/刷新/设置菜单/长URL/桌面390验收；native留后续客户包。未commit，未证明用户缩放过大症状已修。",
+      "next_step": "网页实际比例/刷新/桌面窄屏基础布局准则已过，11文件精确提交，纯Browser候选从origin/master精选进独立远端任务分支，不夹带native/会员候选。外部URL/title新标签已观察，第三方正文工具超时作为覆盖限制保留，native真包另归CLIENTS。SIMPLE反馈认证验收后才整线完整CI及master/dev同步；不重复Browser已通过项。",
       "implementation_report": "docs/handoff/workstreams/browser-basics-2026-10-05.md",
-      "technical_parent_review": "Reviewed common consumers, original zoom/iframe/native paths retained, AnchoredMenu and input behavior, narrow shrink contract, safe current native URL projection; 6 frozen hashes matched. No real visual root-cause/native claim."
+      "technical_parent_review": "Reviewed common consumers, original zoom/iframe/native paths retained, AnchoredMenu and input behavior, narrow shrink contract, safe current native URL projection; 6 frozen hashes matched. No real visual root-cause/native claim.",
+      "partial_acceptance": {
+        "candidate_files": 10,
+        "parent_hash_mismatches": 0,
+        "shared_source_controls": "actual_1280_and_390_passed",
+        "source_window_isolation": "actual_90_and_100_passed",
+        "source_refresh": "actual_scroll31.2_to0_zoom110_preserved",
+        "studio_post_extraction": "actual_90_then100_passed",
+        "external_arrival": "target_metadata_present_content_read_timeout_not_verified",
+        "native_verified": false,
+        "evidence": "artifacts/performance/browser-basics-2026-10-07/parent-real-acceptance.json"
+      },
+      "curated_remote_commit": "fb33ced4c148e9a2a0a4c0c6ff8d5ed3e84dd0b8",
+      "curated_remote_branch": "codex/studysolo-simple-completion-20261007",
+      "accepted_source_commit": "f6a7fedf251f16558a8f0beac85d25f737d136c5"
     }
   ],
   "policy_override": "2026-10-04人类最新指示取代主本人实现CORE及Luna Max的旧规定；归档历史不生效。",
@@ -721,6 +738,19 @@
     "website_deployment": "user owned; no server deployment or production acceptance",
     "automation": "do not recreate/resume old automation"
   },
+  "accepted_publication": {
+    "date": "2026-10-07",
+    "human_requested_current_push_override": true,
+    "pull_request": "https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/188",
+    "candidate": "a6d7dac5df5f23af93d9af45323f1b2ea557a7e8",
+    "ci": 37495447328,
+    "ci_result": "success_full_type_lint_secrets_unit_content_react_build",
+    "master": "c6fc63ecedfd397919c19f599e47f8c0f4d61520",
+    "dev": "e84d976a46d1858678dcded7980dd52d48b3ff97",
+    "trees_equal": true,
+    "scope": "Accepted dialogue/Review plus CLI conventions and exact CI repairs; no unaccepted native or unrelated membership changes",
+    "production_deployment_verified": false
+  },
   "continuation_policy": {
     "user_requested": "Continue; do not infer global stop or interrupt workers merely because one dependency is blocked",
     "task_status_is_not_worker_runtime": "Check collaboration live status separately",
@@ -734,7 +764,7 @@
     "completion_requires": "all authorized acceptance, not worker idle or one blocked dependency",
     "execution_resume": "2026-10-07 get_goal confirms active; old blocked audit is historical and does not determine execution."
   },
-  "last_goal_turn_classification": "Human resumed execution and authorized local CLI recovery; RootSolo managed service restored; Review real browser acceptance and minimal persistence fixes are running, no global execution stop.",
+  "last_goal_turn_classification": "Progress: exact accepted browser web package committed and pushed curated remote task branch; no unaccepted native changes, no full-goal completion",
   "local_acceptance_queue": [
     "FEEDBACK-ADMIN",
     "BROWSER-BASICS"
@@ -777,5 +807,12 @@
     "account": "Current1a/1b recovered through minimal manifest; old external web restarts were previous-turn history",
     "landing": "Old1037 process no longer listening; not started yet, start only when required for remaining feedback/admin check",
     "liveness_rule": "re-poll actual handle/health; persisted number is not proof"
+  },
+  "local_auth_handoff": {
+    "browser": "primary Codex IAB",
+    "surface": "localhost Account login",
+    "status": "normal_login_form_pending_human",
+    "question_already_sent": true,
+    "no_credential_copy": true
   }
 }
