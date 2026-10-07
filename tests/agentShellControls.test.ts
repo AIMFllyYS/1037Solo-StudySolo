@@ -190,5 +190,5 @@ test("资产页：卡片更大 + 骨架按视图 + 加载期 aria-busy", () => {
   assert.match(page, /data-testid="assets-skeleton"/);
   assert.match(page, /aria-label="资产加载中"/);
   // 分享标签走的是云端列表、与本机资产的骨架无关，所以加载期标记要把它排除掉（见组件里的 onShareTab）。
-  assert.match(page, /aria-busy=\{\(onShareTab \? false : showSkeleton\) \|\| undefined\}/);
+  assert.match(page, /aria-busy=\{\(onShareTab \? false : onCloudTab \? cloud\.phase === 'loading' : showSkeleton \|\| remoteLoading\) \|\| undefined\}/);
 });

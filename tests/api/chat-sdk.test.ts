@@ -10,6 +10,7 @@ import type { ChatMessage } from '@/lib/types/chat';
 
 // Test-local credentials and intercepted fetch: never use configured or paid endpoints.
 let POST: typeof import('@/app/api/chat/route')['POST'];
+let COMPACTION_SYSTEM: string;
 before(async () => {
   process.env.AI_BASE_URL = 'https://primary.invalid/v1';
   process.env.AI_API_KEY = 'test-only';
@@ -20,6 +21,7 @@ before(async () => {
   process.env.ZHIPU_BASE_URL = 'https://backup.invalid/v1';
   process.env.ZHIPU_API_KEY = 'test-only';
   ({ POST } = await import('@/app/api/chat/route'));
+  ({ COMPACTION_SYSTEM } = await import('@/lib/context/compactHistory'));
 });
 
 const finalAnswer = '这是最终回答。<FollowUp>如何应用|如何验证</FollowUp>';
@@ -208,7 +210,8 @@ test('chat SDK: real route → transport → parts preserves reasoning, tools, c
   assert.equal(message.metadata?.finishReason, 'stop');
   const firstMessages = requests[0].messages as Array<{ role: string; content: string }>;
   assert.equal(firstMessages.filter((m) => m.role === 'system').length, 1);
-  assert.match(firstMessages[0].content, /80% 软上限/);
+  assert.match(firstMessages[0].content, /【上下文策略】/);
+  assert.match(firstMessages[0].content, /文件引用可继续按需读取/);
   assert.match(firstMessages[0].content, /【参考材料】/);
   const modelToolResult = (requests[1].messages as Array<{ role: string; content: string }>).find((m) => m.role === 'tool');
   assert.ok(modelToolResult?.content);
@@ -558,7 +561,7 @@ test('chat SDK: soft-limit long history injects a rolling summary instead of dro
   mockPaidFetch(t, async (_url: unknown, init: RequestInit) => {
     const body = JSON.parse(String(init.body)) as Record<string, unknown>;
     requests.push(body);
-    if (JSON.stringify(body).includes('上下文压缩器')) {
+    if (systemText(body).includes(COMPACTION_SYSTEM)) {
       return Response.json({
         choices: [{ message: { role: 'assistant', content: '早期讨论了线粒体是能量工厂。' }, finish_reason: 'stop' }],
         usage: { prompt_tokens: 30, completion_tokens: 12, total_tokens: 42 },
@@ -573,6 +576,7 @@ test('chat SDK: soft-limit long history injects a rolling summary instead of dro
   }
   const { message } = await chat({ contextTruncated: true, id: 'sess-long' }, messages);
   assert.ok(message);
+  assert.equal(requests.filter(body => systemText(body).includes(COMPACTION_SYSTEM)).length, 1, '必须实际调用一次AI整理，不能回退截取原文');
   const main = requests.find((req) => {
     const blob = JSON.stringify(req.messages ?? []);
     return blob.includes('对话摘要') || blob.includes('线粒体是能量工厂');

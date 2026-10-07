@@ -64,7 +64,7 @@ test("目录与切片随请求上行：schema / body / 发送侧三处对齐", (
   const schema = readFile("lib/ai/agent/requestSchema.ts");
   assert.match(schema, /projectFiles: z/);
   assert.match(schema, /projectSlices: z/);
-  assert.match(schema, /\.max\(64\)\s*\n\s*\.default\(\[\]\),/, "目录条数有上限");
+  assert.match(schema, /\.max\(1000\)\s*\n\s*\.default\(\[\]\),/, "目录条数有上限，且不把单次9个附件误作项目累计限制");
 
   const body = readFile("lib/chat/buildChatRequestBody.ts");
   assert.match(body, /projectFiles\?: ProjectFileCatalogItem\[\];/);
