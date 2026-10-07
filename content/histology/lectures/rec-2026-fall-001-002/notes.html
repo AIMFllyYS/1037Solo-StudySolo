@@ -1,313 +1,76 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<style>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>人体组织学 · 第1-2节 · 绪论与上皮组织</title><style>
 :root{
-  --paper:#FAF8F1;--paper-2:#F2EFE5;--ink:#24201A;--ink-soft:#4A4337;--muted:#857B68;
-  --line:#E6DECC;--accent:#1F5C39;--accent-deep:#143D27;--accent-tint:#E8F1EA;--accent-line:#C3D9C9;
-  --gold:#A2630C;--gold-tint:#F8ECD3;--crimson:#B23A2E;--crimson-tint:#F7E4DF;
-  --serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#8A5A2B; --accent-d:#5F3D1B; --accent-t:#F4EADF;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
-.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-
-/* 封面 */
-.cover{background:radial-gradient(120% 80% at 78% 12%,#2F8557 0%,#1F5C39 55%,#143D27 100%);color:#F3EEE2;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(231,206,156,.55);}
-.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#E7CE9C;margin-bottom:8mm;}
-.cover h1{font-family:var(--serif);font-size:36pt;line-height:1.2;color:#FBF7EC;margin-bottom:6mm;}
-.cover h1 .accent{color:#E7CE9C;}
-.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(243,238,226,.82);margin-bottom:4mm;}
-.cover .meta{font-size:10pt;color:rgba(243,238,226,.6);margin-top:auto;}
-
-/* 目录 */
-.toc h2{font-family:var(--serif);font-size:22pt;color:var(--accent-deep);margin-bottom:8mm;border-bottom:2pt solid var(--accent);padding-bottom:3mm;}
-.toc-item{display:flex;justify-content:space-between;align-items:baseline;padding:3mm 0;border-bottom:0.5pt solid var(--line);}
-.toc-item .num{font-family:var(--serif);font-weight:700;color:var(--accent);min-width:12mm;}
-.toc-item .title{font-family:var(--serif);font-size:12pt;font-weight:600;flex:1;}
-.toc-item .desc{font-size:8.5pt;color:var(--muted);margin-left:4mm;}
-
-/* 章节 */
-.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
-.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
-.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
-
-h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
-h4{font-family:var(--serif);font-size:11pt;color:var(--ink);margin:4mm 0 2mm;}
-
-p{margin:2mm 0;}
-ul,ol{margin:2mm 0 2mm 6mm;}
-li{margin:1mm 0;}
-
-/* 卡片 */
-.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
-.card.concl{border-left:3pt solid var(--accent);}
-.card.warn{border-left:3pt solid var(--crimson);background:var(--crimson-tint);}
-.card.gold{border-left:3pt solid var(--gold);background:var(--gold-tint);}
-.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
-.card.warn .label{color:var(--crimson);}
-.card.gold .label{color:var(--gold);}
-
-/* 表格 */
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
-th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
-td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
-tr:nth-child(even) td{background:var(--accent-tint);}
-
-/* 要点高亮 */
-.hl{background:linear-gradient(180deg,var(--gold-tint),var(--gold-tint));border:0.4pt solid #E7CE9C;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
-.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
-
-/* 页脚 */
-.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
-</style>
-</head>
-<body>
-
-<!-- 封面 -->
-<div class="page cover">
-  <div class="frame"></div>
-  <div class="kicker">HISTOLOGY · 人体组织学</div>
-  <h1>绪论与<br><span class="accent">上皮组织</span></h1>
-  <div class="subt">第1-2节 · 课程笔记可视化手册</div>
-  <div class="meta">2026-08-31 · 李和教授 · 华中科技大学基础医学</div>
-</div>
-
-<!-- 目录 -->
-<div class="page">
-  <div class="toc">
-    <h2>目 录</h2>
-    <div class="toc-item"><span class="num">01</span><span class="title">组织学绪论</span><span class="desc">定义·层次·地位·发展史·技术方法</span></div>
-    <div class="toc-item"><span class="num">02</span><span class="title">上皮组织</span><span class="desc">基本特点·分类·被覆上皮各类型</span></div>
-    <div class="toc-item"><span class="num">03</span><span class="title">易错点与强调</span><span class="desc">嗜碱性/嗜酸性·内皮/间皮·基底面起伏</span></div>
-    <div class="toc-item"><span class="num">04</span><span class="title">主动回忆题</span><span class="desc">5道核心问答</span></div>
-  </div>
-  <div class="footer"><span>人体组织学 · 绪论与上皮组织</span><span>第 2 页</span></div>
-</div>
-
-<!-- 第一章 -->
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">组织学绪论</span></div>
-
-  <h3>一、组织学定义</h3>
-  <div class="card concl">
-    <div class="label">核心定义</div>
-    <p><strong>组织学（Histology）</strong>是研究正常人体<strong>微细结构</strong>及其相关功能的科学。词源：希腊语 histos（组织）+ logos（学问）。两个关键词：<strong>正常</strong>、<strong>结构</strong>。</p>
-    <p>组织学属于解剖学范畴，又称<strong>显微解剖学</strong>。</p>
-  </div>
-
-  <h3>二、人体结构的两个层次</h3>
-  <table>
-    <tr><th>层次</th><th>观察方式</th><th>别称</th><th>度量单位</th></tr>
-    <tr><td>大体结构</td><td>肉眼</td><td>大体解剖学</td><td>—</td></tr>
-    <tr><td>微细结构</td><td>显微镜</td><td>显微解剖学</td><td>μm / nm</td></tr>
-  </table>
-  <div class="hl"><span class="tag">必背</span>光镜结构→微米(μm)，分辨率0.2μm，放大1000~1500倍；超微结构(电镜)→纳米(nm)，分辨率0.1~0.2nm，高约1000倍。</div>
-
-  <h3>三、组织与四大基本组织</h3>
-  <p><strong>组织</strong> = 形态功能相近的<strong>细胞</strong> + <strong>细胞外基质(ECM)</strong>。ECM包括纤维、基质和组织液，又称细胞间质。</p>
-  <div class="card gold">
-    <div class="label">四大基本组织</div>
-    <p>上皮组织 · 结缔组织 · 肌组织 · 神经组织</p>
-    <p style="font-size:9pt;color:var(--muted);">结构层次：原子→分子→细胞器→细胞→组织→器官→系统→个体（九大系统）</p>
-  </div>
-  <div class="card warn">
-    <div class="label">易错</div>
-    <p><strong>基质(ground substance) ≠ 细胞外基质(ECM)</strong>。基质是ECM的组成部分之一；ECM（细胞间质）包含纤维+基质+组织液。</p>
-  </div>
-
-  <h3>四、组织学在医学中的地位</h3>
-  <ul>
-    <li><strong>基础医学骨干学科</strong>：形态学为功能学提供结构基础。</li>
-    <li><strong>形态与功能的桥梁</strong>：结构决定功能（如粗面内质网丰富→嗜碱性→蛋白质合成旺盛）。</li>
-    <li><strong>基础通向临床的桥梁</strong>：疾病最早改变在细胞层面；<strong>病理诊断以正常组织学为参照标准</strong>。</li>
-  </ul>
-
-  <div class="footer"><span>人体组织学 · 绪论与上皮组织</span><span>第 3 页</span></div>
-</div>
-
-<!-- 第一章续 -->
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">组织学绪论（续）</span></div>
-
-  <h3>五、组织学发展史</h3>
-  <table>
-    <tr><th>阶段</th><th>人物/技术</th><th>贡献</th></tr>
-    <tr><td>显微镜发明</td><td>Janssen（16世纪末）</td><td>最早透镜组合，放大镜思路</td></tr>
-    <tr><td></td><td><strong>Hooke（虎克）</strong></td><td>观察软木塞，命名 <strong>cell（细胞）</strong>（实际是细胞壁）</td></tr>
-    <tr><td></td><td><strong>Leeuwenhoek</strong></td><td><strong>首次看到活细胞</strong>（精子、红细胞），绘制精子图</td></tr>
-    <tr><td>19世纪</td><td>切片机(1856)+包埋+染色</td><td>推动细胞学说确立，组织学成独立学科</td></tr>
-    <tr><td>20世纪</td><td>电镜+超薄切片机</td><td>进入<strong>超微结构</strong>水平（50~60nm切片）</td></tr>
-    <tr><td>分子水平</td><td>组织化学/免疫组化/原位杂交</td><td>深入分子水平</td></tr>
-  </table>
-  <div class="card gold">
-    <div class="label">中国科学家贡献</div>
-    <p><strong>马文昭</strong>：中国组织学奠基人，线粒体/高尔基复合体与分泌功能研究。</p>
-    <p><strong>鲍鑑清</strong>：率先开展组织培养和电镜研究；发明蜂蜡包埋法（抗美援朝时期）。</p>
-    <p><strong>骆清明院士</strong>：发明<strong>MOST/fMOST</strong>显微光学切片断层成像技术，全脑神经元完整展示。</p>
-  </div>
-
-  <h3>六、研究技术方法</h3>
-  <h4>1. 光学显微镜技术</h4>
-  <p><strong>标本制备：</strong></p>
-  <ul>
-    <li><strong>石蜡切片</strong>：固定→脱水→透明→包埋→切片→脱蜡→染色。结构保存好，流程繁琐耗时。</li>
-    <li><strong>冰冻切片</strong>：低温冷冻后直接切片，<strong>快速</strong>，保存化学成分好。适用：①术中快速病理诊断 ②科研保存酶活性/小分子。</li>
-    <li>非切片法：涂片（血液）、铺片（疏松结缔组织）、磨片（骨/牙）。</li>
-  </ul>
-
-  <div class="footer"><span>人体组织学 · 绪论与上皮组织</span><span>第 4 页</span></div>
-</div>
-
-<!-- 第一章续2 -->
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">组织学绪论（续）</span></div>
-
-  <h4>2. HE染色（最常用）</h4>
-  <div class="card concl">
-    <div class="label">染色原理</div>
-    <p><strong>苏木精(H)</strong>：碱性染料 → 染酸性物质（核酸、核糖体）→ <strong>蓝紫色</strong> → 该物质称<strong>嗜碱性</strong>。</p>
-    <p><strong>伊红(E)</strong>：酸性染料 → 染碱性物质（细胞质、红细胞）→ <strong>红色</strong> → 该物质称<strong>嗜酸性</strong>。</p>
-    <p>对两种染料均无亲和力 → <strong>中性</strong>（浅灰色）。</p>
-  </div>
-  <div class="card warn">
-    <div class="label">最易错</div>
-    <p>染料性质与被染物质性质<strong>相反</strong>：碱性染料染酸性物质，酸性染料染碱性物质。嗜碱性物质本身是酸性的！</p>
-  </div>
-  <p><strong>特殊染色：</strong>甲苯胺蓝染肥大细胞颗粒→紫红色（异染性）；镀银法→神经纤维/网状纤维棕黑色。</p>
-
-  <h4>3. 电子显微镜技术</h4>
-  <table>
-    <tr><th>类型</th><th>原理</th><th>观察对象</th></tr>
-    <tr><td><strong>透射电镜 TEM</strong></td><td>电子束穿过超薄切片(约60nm)</td><td>内部超微结构；电子密度高→黑，低→亮</td></tr>
-    <tr><td><strong>扫描电镜 SEM</strong></td><td>电子束表面扫描，二次电子成像</td><td>表面立体结构（如红细胞双凹盘状、气管纤毛）</td></tr>
-  </table>
-
-  <h4>4. 组织化学</h4>
-  <ul>
-    <li><strong>PAS反应</strong>：过碘酸氧化乙二醇基→醛基→与Schiff试剂结合→紫红色沉淀。检测多糖（如肝糖原）。</li>
-    <li><strong>免疫组织化学</strong>：抗原-抗体反应，荧光素或酶标记抗体，特异性显示化学成分。</li>
-    <li><strong>原位杂交</strong>：碱基互补配对，检测核酸(DNA/RNA)。</li>
-  </ul>
-
-  <h3>七、学习方法</h3>
-  <p>抓重点（组织→细胞→细胞器）· 理论实践结合 · 结构与功能联系 · 动态变化观念 · 立体概念 · 总结归纳（共性与个性）。</p>
-
-  <div class="footer"><span>人体组织学 · 绪论与上皮组织</span><span>第 5 页</span></div>
-</div>
-
-<!-- 第二章 -->
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">02</span><span class="chapter-title">上皮组织</span></div>
-
-  <h3>一、基本特点</h3>
-  <div class="card concl">
-    <div class="label">五大特点</div>
-    <p><strong>①细胞排列紧密</strong>，细胞外基质极少（光镜下几乎不可见）。</p>
-    <p><strong>②分层排列</strong>：单层或复层。</p>
-    <p><strong>③极性明显</strong>：游离面（朝向体表/腔面）、基底面（附于基膜）、侧面（细胞间连接），各面结构功能不同。</p>
-    <p><strong>④无血管</strong>：营养由深层结缔组织血管透过基膜供应。</p>
-    <p><strong>⑤神经末梢丰富</strong>：感觉灵敏。</p>
-  </div>
-
-  <h3>二、分类</h3>
-  <p>被覆上皮（覆盖体表/腔面，本节重点）· 腺上皮（分泌功能）· 肌上皮 · 感觉上皮 · 生殖上皮。</p>
-
-  <h3>三、被覆上皮命名原则</h3>
-  <div class="hl"><span class="tag">命名公式</span>层数（单层/复层）+ 表层细胞形态（扁平/立方/柱状）。如：单层扁平上皮、复层扁平上皮。</div>
-
-  <h3>四、各类型要点</h3>
-  <table>
-    <tr><th>类型</th><th>结构特点</th><th>分布</th><th>备注</th></tr>
-    <tr><td>单层扁平上皮</td><td>一层扁平细胞，表面观多边形</td><td><strong>内皮</strong>：心血管/淋巴管腔面<br><strong>间皮</strong>：内脏外表面</td><td>表面光滑，利于液体流动/器官滑动</td></tr>
-    <tr><td>单层立方上皮</td><td>一层立方形细胞</td><td>肾小管、甲状腺滤泡</td><td>—</td></tr>
-    <tr><td>单层柱状上皮</td><td>一层长柱状细胞</td><td>胃、肠、子宫</td><td>小肠有<strong>纹状缘</strong>(微绒毛)和<strong>杯状细胞</strong></td></tr>
-    <tr><td>假复层纤毛柱状上皮</td><td>所有细胞附于基膜，高矮不一，看似多层实为单层，有纤毛</td><td>呼吸道（气管、支气管）</td><td>—</td></tr>
-    <tr><td>复层扁平上皮</td><td>多层，表层扁平，基底层矮柱状</td><td><strong>角化型</strong>：皮肤<br><strong>非角化型</strong>：口腔/食管/阴道</td><td>基底面起伏不平，扩大连接面积</td></tr>
-    <tr><td>变移上皮</td><td>层次形状随充盈状态变化</td><td>泌尿系统（肾盏/肾盂/输尿管/膀胱）</td><td>充盈变薄，排空变厚</td></tr>
-  </table>
-
-  <div class="footer"><span>人体组织学 · 绪论与上皮组织</span><span>第 6 页</span></div>
-</div>
-
-<!-- 第二章续 -->
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">02</span><span class="chapter-title">上皮组织（续）</span></div>
-
-  <div class="card gold">
-    <div class="label">杯状细胞</div>
-    <p>属于腺细胞，分泌黏液。<strong>HE染色呈空泡状</strong>（黏液被酒精溶解），<strong>PAS反应阳性</strong>（含黏多糖）。形似高脚酒杯。</p>
-  </div>
-
-  <div class="card gold">
-    <div class="label">纹状缘 vs 刷状缘</div>
-    <p>小肠单层柱状上皮游离面 → <strong>纹状缘</strong>（密集微绒毛构成，光镜下嗜酸性条带）。</p>
-    <p>肾小管单层立方上皮游离面 → <strong>刷状缘</strong>。</p>
-    <p>两者本质都是微绒毛，功能是扩大吸收面积。</p>
-  </div>
-
-  <div class="card warn">
-    <div class="label">复层扁平上皮基底面为何起伏不平？</div>
-    <p>扩大与深层结缔组织的连接面积 → ①增加上皮与结缔组织连接的牢固性；②扩大营养交换面积（上皮无血管，依赖结缔组织供血）。</p>
-  </div>
-
-  <div class="card concl">
-    <div class="label">变移上皮</div>
-    <p>充盈时：上皮变薄、层次减少、表层细胞拉长变扁。</p>
-    <p>排空时：上皮变厚、层次增多、细胞变矮。</p>
-    <p>表层细胞大而圆，称<strong>盖细胞/伞细胞</strong>，可防止尿液侵蚀。</p>
-  </div>
-
-  <h3>第三章 · 易错点汇总</h3>
-  <ol>
-    <li><strong>嗜碱性 vs 嗜酸性</strong>：物质本身酸性→嗜碱性（蓝紫）；物质本身碱性→嗜酸性（红）。染料性质与物质性质相反。</li>
-    <li><strong>内皮 vs 间皮</strong>：均为单层扁平上皮，内皮在心血管/淋巴管腔面，间皮在胸膜/腹膜/心包膜。</li>
-    <li><strong>细胞外基质 vs 基质</strong>：ECM包含纤维+基质+组织液；基质是ECM的一部分。</li>
-    <li><strong>Hooke vs Leeuwenhoek</strong>：Hooke命名cell（看到的是细胞壁），Leeuwenhoek首次看到活细胞。</li>
-    <li><strong>TEM vs SEM</strong>：TEM看内部超微结构（超薄切片），SEM看表面立体结构。</li>
-  </ol>
-
-  <div class="footer"><span>人体组织学 · 绪论与上皮组织</span><span>第 7 页</span></div>
-</div>
-
-<!-- 主动回忆题 -->
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">04</span><span class="chapter-title">主动回忆题</span></div>
-
-  <h4>Q1. 为什么说组织学是病理诊断的基础？</h4>
-  <div class="card">
-    <p>病理诊断通过与正常组织学结构比较来判断异常。疾病最早的改变发生在细胞/微观层面，只有掌握正常微细结构，才能识别早期病理改变。正常结构是判断异常的参照标准。</p>
-  </div>
-
-  <h4>Q2. 光镜下看到一个细胞胞质呈强嗜碱性，推测它可能具有什么功能？为什么？</h4>
-  <div class="card">
-    <p>蛋白质合成功能旺盛。嗜碱性意味着胞质含大量酸性物质（主要是核糖体/粗面内质网），而粗面内质网和核糖体是蛋白质合成的场所。</p>
-  </div>
-
-  <h4>Q3. 单层扁平上皮的内皮和间皮有何区别？</h4>
-  <div class="card">
-    <p>内皮分布在心血管和淋巴管的腔面，间皮分布在胸膜、腹膜、心包膜（内脏器官外表面）。两者都是单层扁平上皮，表面光滑。</p>
-  </div>
-
-  <h4>Q4. 变移上皮如何适应膀胱的充盈和排空？</h4>
-  <div class="card">
-    <p>充盈时上皮变薄、细胞层次减少、表层细胞拉长变扁；排空时上皮变厚、细胞层次增多、细胞变矮。这种变化使上皮既能保护膀胱壁，又能适应容积变化。</p>
-  </div>
-
-  <h4>Q5. 冰冻切片相比石蜡切片有什么优势？适用于什么场景？</h4>
-  <div class="card">
-    <p>优势：快速（无需脱水透明包埋）、能较好保存化学成分（避免高温和化学试剂破坏）。适用于：①临床手术中快速病理诊断；②科研中需保存酶活性或小分子化学成分的检测。</p>
-  </div>
-
-  <div style="margin-top:15mm;text-align:center;color:var(--muted);font-size:9pt;">
-    — 人体组织学 · 第1-2节 · 完 —
-  </div>
-
-  <div class="footer"><span>人体组织学 · 绪论与上皮组织</span><span>第 8 页</span></div>
-</div>
-
-</body>
-</html>
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body><div class="page cover"><p class="h1">人体组织学 · 第1-2节</p><p class="meta">绪论与上皮组织 · 2026-08-31</p><p class="lead" style="text-align:left">素材规模：逐字稿 25376 字 / 1 轮发言</p><table><tr><th>项目</th><th>内容</th></tr><tr><td>课程</td><td>人体组织学（histology / rec-2026-fall-001-002）</td></tr><tr><td>主题</td><td>绪论与上皮组织</td></tr><tr><td>学时</td><td>第 1–2 节（2 学时）</td></tr></table></div><div class="page"><h2 class="h2">0. 知识框架</h2><p class="lead">绪论建立显微结构观与病理参照标准；上皮组织为第一大基本组织，被覆上皮按层数与表层形态命名。</p>
+<svg viewBox="0 0 680 220" width="100%" aria-label="知识框架"><rect x="260" y="6" width="160" height="32" fill="#F4EADF" stroke="#8A5A2B"/><text x="340" y="28" text-anchor="middle" font-size="12" font-family="sans-serif">人体组织学第1-2节</text>
+<line x1="340" y1="38" x2="120" y2="68" stroke="#8A5A2B"/><line x1="340" y1="38" x2="340" y2="68" stroke="#8A5A2B"/><line x1="340" y1="38" x2="560" y2="68" stroke="#8A5A2B"/>
+<rect x="40" y="68" width="160" height="36" fill="#fff" stroke="#5F3D1B"/><text x="120" y="92" text-anchor="middle" font-size="10">定义·地位·发展史</text>
+<rect x="260" y="68" width="160" height="36" fill="#fff" stroke="#5F3D1B"/><text x="340" y="92" text-anchor="middle" font-size="10">光镜·电镜·组织化学</text>
+<rect x="480" y="68" width="160" height="36" fill="#fff" stroke="#5F3D1B"/><text x="560" y="92" text-anchor="middle" font-size="10">学习方法与资源</text>
+<line x1="340" y1="104" x2="340" y2="140" stroke="#8A5A2B"/>
+<rect x="220" y="140" width="240" height="36" fill="#F4EADF" stroke="#8A5A2B"/><text x="340" y="164" text-anchor="middle" font-size="11">上皮组织：特点·分类·被覆上皮类型</text>
+<line x1="200" y1="158" x2="160" y2="190" stroke="#8A5A2B"/><line x1="480" y1="158" x2="520" y2="190" stroke="#8A5A2B"/>
+<text x="100" y="206" font-size="9" fill="#6B7480">四大基本组织之一</text><text x="540" y="206" font-size="9" fill="#6B7480">内皮/间皮·变移上皮</text></svg></div><div class="page"><h2 class="h2">1. 组织学定义与医学地位</h2><p class="lead">正常微细结构是识别病理改变的标尺。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>组织学研究正常人体微细结构及相关功能 <span class="loc">〔说话人1 01:46〕</span></li><li>两个关键词：正常、结构 <span class="loc">〔说话人1 01:46〕</span></li><li>肉眼结构为大体解剖学；显微镜下为微细结构 <span class="loc">〔说话人1 01:46〕</span></li><li>组织学即显微解剖学，属解剖学范畴 <span class="loc">〔说话人1 01:46〕</span></li><li>Histology 词源希腊语 histos（组织）+ logos（学问） <span class="loc">〔说话人1 01:46〕</span></li><li>组织学为基础医学骨干学科 <span class="loc">〔说话人1 01:46〕</span></li><li>形态学为机能提供结构基础 <span class="loc">〔说话人1 01:46〕</span></li><li>结构是功能的基础 <span class="loc">〔说话人1 01:46〕</span></li><li>疾病最早改变常在细胞微观层面 <span class="loc">〔说话人1 01:46〕</span></li><li>病理诊断以正常组织学结构为参照 <span class="loc">〔说话人1 01:46〕</span></li><li>组织学承上启下连接解剖、生理、病理与临床 <span class="loc">〔说话人1 01:46〕</span></li></ul><div class="exam"><span class="tag">★考点</span>★病理诊断必须掌握正常微细结构再比较异常。 <span class="loc">〔说话人1 01:46〕</span></div></div><div class="page"><h2 class="h2">2. 结构层次与组织概念</h2><p class="lead">组织由细胞与细胞外基质构成，四大基本组织构成器官与系统。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>光镜结构可见细胞核、细胞质等，度量单位微米（μm） <span class="loc">〔说话人1 01:46〕</span></li><li>电镜下超微结构度量单位纳米（nm） <span class="loc">〔说话人1 01:46〕</span></li><li>超微结构指电镜所见结构，非电镜器械本身 <span class="loc">〔说话人1 01:46〕</span></li><li>组织由形态功能相同或相近的细胞及细胞外基质构成 <span class="loc">〔说话人1 01:46〕</span></li><li>细胞外基质（ECM）含纤维、基质、组织液 <span class="loc">〔说话人1 01:46〕</span></li><li>ECM 又称细胞间质；基质（ground substance）为其成分之一 <span class="loc">〔说话人1 01:46〕</span></li><li>四大基本组织：上皮、结缔、肌、神经 <span class="loc">〔说话人1 01:46〕</span></li><li>层次：原子→分子→细胞器→细胞→组织→器官→系统→个体 <span class="loc">〔说话人1 01:46〕</span></li><li>人体有九大系统 <span class="loc">〔说话人1 01:46〕</span></li><li>组织化学用理化方法研究组织化学成分，属交叉学科 <span class="loc">〔说话人1 01:46〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>层次</th><th>观察</th><th>单位</th></tr><tr><td>大体结构</td><td>肉眼</td><td>—</td></tr><tr><td>光镜结构</td><td>光学显微镜</td><td>μm</td></tr><tr><td>超微结构</td><td>电子显微镜</td><td>nm</td></tr></table><div class="exam"><span class="tag">★考点</span>★勿混淆中文「基质」与「细胞外基质」。 <span class="loc">〔说话人1 01:46〕</span></div></div><div class="page"><h2 class="h2">3. 组织学发展史</h2><p class="lead">显微镜与切片染色技术推动组织学从细胞命名到分子水平。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>发展史分四阶段，起点为显微镜发明 <span class="loc">〔说话人1 01:46〕</span></li><li>Janssen（16 世纪末荷兰眼镜商）透镜组合为最早显微镜思路 <span class="loc">〔说话人1 01:46〕</span></li><li>Hooke 观察软木塞薄片命名 cell（细胞） <span class="loc">〔说话人1 01:46〕</span></li><li>Hooke 所见为细胞壁，细胞质已干缩 <span class="loc">〔说话人1 01:46〕</span></li><li>Leeuwenhoek 可调焦距显微镜首次见活细胞 <span class="loc">〔说话人1 01:46〕</span></li><li>Leeuwenhoek 见精子、红细胞并绘图 <span class="loc">〔说话人1 01:46〕</span></li><li>无显微镜则无现代组织学 <span class="loc">〔说话人1 01:46〕</span></li><li>19世纪切片机、包埋、染色推动细胞学说 <span class="loc">〔说话人1 01:46〕</span></li><li>1856年英国发明切片机 <span class="loc">〔说话人1 01:46〕</span></li><li>20世纪电镜与超薄切片机进入超微结构水平 <span class="loc">〔说话人1 01:46〕</span></li><li>超薄切片约 50–60 nm <span class="loc">〔说话人1 01:46〕</span></li><li>细胞培养、活细胞工作站、流式细胞术、三维重建 <span class="loc">〔说话人1 01:46〕</span></li><li>20世纪50年代起组织化学、免疫组化、原位杂交 <span class="loc">〔说话人1 01:46〕</span></li><li>马文昭：线粒体、高尔基体与分泌功能 <span class="loc">〔说话人1 01:46〕</span></li><li>鲍鉴清：组织培养、电镜；蜂蜡包埋（抗美援朝时期） <span class="loc">〔说话人1 01:46〕</span></li><li>骆清铭：显微光学切片断层成像 MOST/fMOST <span class="loc">〔说话人1 01:46〕</span></li>
+<li>陈教授将组织化学技术引入国内并举办培训班 <span class="loc">〔说话人1 01:46〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>阶段</th><th>标志</th></tr><tr><td>显微镜发明</td><td>Janssen、Hooke、Leeuwenhoek</td></tr><tr><td>19世纪</td><td>切片机、染色、细胞学说</td></tr><tr><td>20世纪电镜</td><td>超微结构、超薄切片</td></tr><tr><td>分子水平</td><td>组织化学、免疫组化、原位杂交</td></tr></table><div class="exam"><span class="tag">★考点</span>★Hooke 所见为干缩细胞的细胞壁；Leeuwenhoek 首次见活细胞。 <span class="loc">〔说话人1 01:46〕</span></div></div><div class="page"><h2 class="h2">4. 光学显微镜与 HE 染色</h2><p class="lead">石蜡切片最常用；HE 染色区分嗜酸嗜碱。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>光镜技术包括标本制备、染色、观察 <span class="loc">〔说话人1 01:46〕</span></li><li>石蜡切片：固定→脱水→透明→包埋→切片→脱蜡→染色 <span class="loc">〔说话人1 01:46〕</span></li><li>固定目的：防止组织自溶腐败并适度增加硬度 <span class="loc">〔说话人1 01:46〕</span></li><li>包埋增加硬度便于切成数微米薄片 <span class="loc">〔说话人1 01:46〕</span></li><li>石蜡切片结构保存好但流程繁琐耗时 <span class="loc">〔说话人1 01:46〕</span></li><li>冰冻切片冷冻变硬后切片，数十分钟内完成 <span class="loc">〔说话人1 01:46〕</span></li><li>冰冻切片用于术中快速病理与保存化学成分 <span class="loc">〔说话人1 01:46〕</span></li><li>切片法除石蜡、冰冻外尚有振动切片等 <span class="loc">〔说话人1 01:46〕</span></li>
+<li>非切片法：涂片（血液）、铺片（疏松结缔）、磨片（骨、牙） <span class="loc">〔说话人1 01:46〕</span></li><li>苏木精（H）碱性染料染酸性物质→蓝紫→嗜碱性 <span class="loc">〔说话人1 01:46〕</span></li><li>伊红（E）酸性染料染碱性物质→红→嗜酸性 <span class="loc">〔说话人1 01:46〕</span></li><li>无亲和力者为中性 <span class="loc">〔说话人1 01:46〕</span></li><li>HE 为 Hematoxylin + Eosin 首字母 <span class="loc">〔说话人1 01:46〕</span></li><li>甲苯胺蓝染肥大细胞颗粒呈紫红色为异染性 <span class="loc">〔说话人1 01:46〕</span></li><li>镀银法（亲银/嗜银）显示神经纤维、网状纤维 <span class="loc">〔说话人1 01:46〕</span></li><li>普通光镜分辨率 0.2 μm <span class="loc">〔说话人1 01:46〕</span></li><li>光镜放大倍数约 1000–1500 倍 <span class="loc">〔说话人1 01:46〕</span></li><li>特殊光镜：荧光、相差、倒置、共聚焦、超分辨 <span class="loc">〔说话人1 01:46〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>切片</th><th>特点</th><th>适用</th></tr><tr><td>石蜡</td><td>步骤多、保存好</td><td>常规教学与病理</td></tr><tr><td>冰冻</td><td>快、保化学成分</td><td>术中快诊、科研</td></tr></table><div class="exam"><span class="tag">★考点</span>★碱性染料染酸性物质称嗜碱性，勿颠倒染料与物质酸碱性。 <span class="loc">〔说话人1 01:46〕</span></div></div><div class="page"><h2 class="h2">5. 电子显微镜与组织化学</h2><p class="lead">TEM 看内部，SEM 看表面；PAS 与免疫技术到分子水平。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>电镜以电子束为光源，电磁场代透镜 <span class="loc">〔说话人1 01:46〕</span></li><li>分辨率 0.1–0.2 nm，约比光镜高 1000 倍 <span class="loc">〔说话人1 01:46〕</span></li><li>放大可达数十万倍 <span class="loc">〔说话人1 01:46〕</span></li><li>TEM 电子束穿过约 60 nm 超薄切片 <span class="loc">〔说话人1 01:46〕</span></li><li>电子密度高（质量大）成像偏黑 <span class="loc">〔说话人1 01:46〕</span></li><li>SEM 表面扫描产生二次电子，见立体结构 <span class="loc">〔说话人1 01:46〕</span></li><li>SEM 例：红细胞双凹圆盘、气管纤毛 <span class="loc">〔说话人1 01:46〕</span></li><li>组织化学检测组织内多糖、脂类、核酸、酶等 <span class="loc">〔说话人1 01:46〕</span></li><li>PAS 反应检测多糖（如肝糖原） <span class="loc">〔说话人1 01:46〕</span></li><li>过碘酸氧化乙二醇基→醛基→Schiff 试剂紫红色 <span class="loc">〔说话人1 01:46〕</span></li><li>免疫组化：抗原抗体反应，荧光素或酶标记 <span class="loc">〔说话人1 01:46〕</span></li><li>免疫电镜：胶体金等标记，超微水平定位抗原 <span class="loc">〔说话人1 01:46〕</span></li><li>原位杂交：碱基互补检测 DNA/RNA <span class="loc">〔说话人1 01:46〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>类型</th><th>原理</th><th>所见</th></tr><tr><td>TEM</td><td>电子束透射超薄切片</td><td>内部黑白超微结构</td></tr><tr><td>SEM</td><td>表面扫描二次电子</td><td>表面立体形</td></tr></table><div class="exam"><span class="tag">★考点</span>★TEM 看内部超微结构；SEM 看表面立体形。 <span class="loc">〔说话人1 01:46〕</span></div></div><div class="page"><h2 class="h2">6. 学习方法与教学资源</h2><p class="lead">抓组织–细胞–细胞器层次，结构功能动态立体结合实习。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>重点研究组织、细胞、细胞器，不过多纠缠大体或分子细节 <span class="loc">〔说话人1 01:46〕</span></li><li>理论与实践结合，重视切片观察与实习 <span class="loc">〔说话人1 01:46〕</span></li><li>胞质强嗜碱性提示粗面内质网多、蛋白质合成旺盛 <span class="loc">〔说话人1 01:46〕</span></li><li>结构随功能变化：饥饿肝糖原减少、子宫内膜周期性 <span class="loc">〔说话人1 01:46〕</span></li><li>切片为二维，须空间想象还原三维（如小肠绒毛切面） <span class="loc">〔说话人1 01:46〕</span></li><li>总结共性与个性：小肠四层为共性，各段差异为个性 <span class="loc">〔说话人1 01:46〕</span></li><li>学习通发布课件、作业、通知与自主学习 <span class="loc">〔说话人1 01:46〕</span></li><li>数字切片平台可在线复习（考试前常用） <span class="loc">〔说话人1 01:46〕</span></li>
+<li>慕课/微课平台含课件、知识图谱与实验资源 <span class="loc">〔说话人1 01:46〕</span></li>
+<li>课后按关键词撰写约500字学习感想提交学习通 <span class="loc">〔说话人1 01:46〕</span></li><li>主教材第十版五年制组织学与胚胎学 <span class="loc">〔说话人1 01:46〕</span></li></ul><div class="exam"><span class="tag">★考点</span>★结构–功能：嗜碱性↔粗面内质网↔蛋白质合成。 <span class="loc">〔说话人1 01:46〕</span></div></div><div class="page"><h2 class="h2">7. 上皮组织基本特点与分类</h2><p class="lead">细胞密、基质少、有极性、无血管、神经末梢丰富。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>上皮由上皮细胞构成 <span class="loc">〔说话人1 01:46〕</span></li><li>细胞排列紧密，细胞外基质极少（光镜下几乎不见） <span class="loc">〔说话人1 01:46〕</span></li><li>分单层上皮与复层上皮 <span class="loc">〔说话人1 01:46〕</span></li><li>极性：游离面、基底面、侧面结构与功能不同 <span class="loc">〔说话人1 01:46〕</span></li><li>被覆上皮顶底极性最明显 <span class="loc">〔说话人1 01:46〕</span></li><li>上皮无血管，营养由深层结缔组织经基膜渗透 <span class="loc">〔说话人1 01:46〕</span></li><li>游离面神经末梢丰富，体表感觉灵敏 <span class="loc">〔说话人1 01:46〕</span></li><li>被覆上皮：覆盖体表或有腔器官腔面 <span class="loc">〔说话人1 01:46〕</span></li><li>腺上皮：以分泌为主，分外分泌腺与内分泌腺 <span class="loc">〔说话人1 01:46〕</span></li><li>另有肌上皮、感觉上皮、生殖上皮 <span class="loc">〔说话人1 01:46〕</span></li><li>被覆上皮命名：层数 + 表层细胞形态 <span class="loc">〔说话人1 01:46〕</span></li>
+<li>被覆上皮类型：单层扁平、单层立方、单层柱状、假复层纤毛柱状、复层扁平、复层立方、复层柱状、变移上皮 <span class="loc">〔说话人1 01:46〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>类型</th><th>功能侧重</th></tr><tr><td>被覆上皮</td><td>覆盖保护（本节重点）</td></tr><tr><td>腺上皮</td><td>分泌</td></tr><tr><td>肌/感觉/生殖上皮</td><td>收缩、感觉、生殖</td></tr></table><div class="exam"><span class="tag">★考点</span>★五大特点：紧密、分层、极性、无血管、神经末梢丰富。 <span class="loc">〔说话人1 01:46〕</span></div></div><div class="page"><h2 class="h2">8. 被覆上皮各型要点</h2><p class="lead">内皮与间皮均为单层扁平；变移上皮随膀胱充盈变化。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>单层扁平：侧面极薄，表面观多边形 <span class="loc">〔说话人1 01:46〕</span></li><li>内皮：心血管、淋巴管腔面 <span class="loc">〔说话人1 01:46〕</span></li><li>间皮：胸膜、腹膜、心包膜（内脏器官外表面） <span class="loc">〔说话人1 01:46〕</span></li><li>内皮与间皮表面光滑，利于流动与滑动 <span class="loc">〔说话人1 01:46〕</span></li><li>单层立方：肾小管、甲状腺滤泡等 <span class="loc">〔说话人1 01:46〕</span></li><li>单层柱状：胃、肠、子宫等 <span class="loc">〔说话人1 01:46〕</span></li><li>小肠游离面纹状缘（微绒毛），散在杯状细胞 <span class="loc">〔说话人1 01:46〕</span></li><li>杯状细胞分泌黏液；HE 呈空泡（黏液溶解），PAS 阳性 <span class="loc">〔说话人1 01:46〕</span></li><li>肾小管游离面刷状缘 <span class="loc">〔说话人1 01:46〕</span></li><li>假复层纤毛柱状：呼吸道；细胞高矮不一、核位置不同，看似复层，但均附着于基膜 <span class="loc">〔说话人1 01:46〕</span></li><li>复层扁平：表层扁平，基底矮柱状，中间多边形 <span class="loc">〔说话人1 01:46〕</span></li><li>角化型：皮肤表皮有角质层 <span class="loc">〔说话人1 01:46〕</span></li><li>非角化型：口腔、食管、阴道无角质层 <span class="loc">〔说话人1 01:46〕</span></li><li>复层扁平基底面起伏不平扩大连接与营养交换 <span class="loc">〔说话人1 01:46〕</span></li><li>变移上皮：肾盏、肾盂、输尿管、膀胱 <span class="loc">〔说话人1 01:46〕</span></li><li>充盈时上皮变薄、层次减少、细胞拉长 <span class="loc">〔说话人1 01:46〕</span></li><li>排空时上皮变厚、层次增多、细胞变矮 <span class="loc">〔说话人1 01:46〕</span></li><li>有观点认为变移上皮实为假复层：所有细胞均附着于基膜 <span class="loc">〔说话人1 01:46〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>类型</th><th>分布要点</th></tr><tr><td>单层扁平</td><td>内皮/间皮</td></tr><tr><td>单层立方</td><td>肾小管、甲状腺滤泡</td></tr><tr><td>单层柱状</td><td>胃肠子宫；小肠纹状缘、杯状细胞</td></tr><tr><td>假复层纤毛柱状</td><td>气管、支气管</td></tr><tr><td>复层扁平</td><td>皮肤（角化）/口腔食管阴道（非角化）</td></tr><tr><td>变移上皮</td><td>泌尿管道</td></tr></table><div class="exam"><span class="tag">★考点</span>★内皮在管腔面，间皮在脏器官外表面；均为单层扁平。 <span class="loc">〔说话人1 01:46〕</span></div></div><div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv"><li>组织学=正常人体微细结构；关键词正常+结构 <span class="loc">〔说话人1 01:46〕</span></li><li>光镜μm、电镜nm；四大基本组织名称 <span class="loc">〔说话人1 01:46〕</span></li><li>病理诊断以正常结构为参照 <span class="loc">〔说话人1 01:46〕</span></li><li>Hooke cell vs Leeuwenhoek 活细胞 <span class="loc">〔说话人1 01:46〕</span></li><li>HE：苏木精嗜碱、伊红嗜酸 <span class="loc">〔说话人1 01:46〕</span></li><li>石蜡慢保存好；冰冻快保化学成分 <span class="loc">〔说话人1 01:46〕</span></li><li>TEM内部、SEM表面；分辨率数量级 <span class="loc">〔说话人1 01:46〕</span></li><li>PAS染多糖 <span class="loc">〔说话人1 01:46〕</span></li><li>上皮五特点：紧密、分层、极性、无血管、神经末梢 <span class="loc">〔说话人1 01:46〕</span></li><li>被覆上皮命名：层数+表层形态 <span class="loc">〔说话人1 01:46〕</span></li><li>内皮管腔、间皮脏外层 <span class="loc">〔说话人1 01:46〕</span></li><li>杯状细胞黏液PAS阳性 <span class="loc">〔说话人1 01:46〕</span></li><li>变移上皮充盈变薄排空变厚 <span class="loc">〔说话人1 01:46〕</span></li></ul></div><div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2><table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>超微结构=电镜机器结构</td><td>超微结构是电镜下所观察的组织结构 <span class="loc">〔说话人1 01:46〕</span></td></tr>
+<tr><td>基质=细胞外基质</td><td>ECM含纤维+基质+组织液；基质仅为ECM一部分 <span class="loc">〔说话人1 01:46〕</span></td></tr>
+<tr><td>嗜碱性=物质呈碱性</td><td>嗜碱性指对碱性染料亲和；常因物质本身酸性（如核酸） <span class="loc">〔说话人1 01:46〕</span></td></tr>
+<tr><td>Hooke见到活细胞</td><td>Hooke见干缩细胞壁；Leeuwenhoek见活细胞 <span class="loc">〔说话人1 01:46〕</span></td></tr>
+<tr><td>内皮与间皮类型不同</td><td>均为单层扁平，分布位置不同 <span class="loc">〔说话人1 01:46〕</span></td></tr>
+<tr><td>杯状细胞HE见颗粒</td><td>黏液溶解呈空泡；PAS阳性 <span class="loc">〔说话人1 01:46〕</span></td></tr>
+<tr><td>Janssen为河南人</td><td>Janssen 是 16 世纪末荷兰眼镜商；原文误转写为「河南人」（整理）</td></tr>
+</table></div><div class="page"><h2 class="h2">附录 C 考点索引表</h2><table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>病理诊断与正常结构参照</td><td>§1</td><td>〔说话人1 01:46〕</td><td>简答</td></tr>
+<tr><td>嗜酸嗜碱与HE</td><td>§4</td><td>〔说话人1 01:46〕</td><td>单选/易错</td></tr>
+<tr><td>石蜡 vs 冰冻切片</td><td>§4</td><td>〔说话人1 01:46〕</td><td>对比</td></tr>
+<tr><td>TEM vs SEM</td><td>§5</td><td>〔说话人1 01:46〕</td><td>单选</td></tr>
+<tr><td>结构–功能嗜碱性</td><td>§6</td><td>〔说话人1 01:46〕</td><td>简答</td></tr>
+<tr><td>上皮五大特点</td><td>§7</td><td>〔说话人1 01:46〕</td><td>默写</td></tr>
+<tr><td>内皮/间皮</td><td>§8</td><td>〔说话人1 01:46〕</td><td>单选</td></tr>
+<tr><td>变移上皮适应充盈</td><td>§8</td><td>〔说话人1 01:46〕</td><td>简答</td></tr>
+</table></div><div class="page"><h2 class="h2">附录 D 知识点清单</h2><table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>组织学定义：研究正常人体微细结构及相关功能</td><td>定义</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>2</td><td>关键词：正常、结构</td><td>定义</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>3</td><td>组织学英文 Histology：histos+logos</td><td>术语</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>4</td><td>大体结构肉眼观察，属大体解剖学</td><td>分类</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>5</td><td>微细结构需显微镜，称显微解剖学</td><td>定义</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>6</td><td>组织学属解剖学范畴</td><td>结论</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>7</td><td>光镜结构单位微米μm</td><td>数字</td><td>§2</td><td>〔说话人1 01:46〕</td></tr><tr><td>8</td><td>超微结构（电镜结构）单位纳米nm</td><td>数字</td><td>§2</td><td>〔说话人1 01:46〕</td></tr><tr><td>9</td><td>超微结构指电镜下所见结构非电镜本身</td><td>易错</td><td>§2</td><td>〔说话人1 01:46〕</td></tr><tr><td>10</td><td>组织：形态功能相同或相近细胞+细胞外基质</td><td>定义</td><td>§2</td><td>〔说话人1 01:46〕</td></tr><tr><td>11</td><td>ECM含纤维、基质、组织液</td><td>定义</td><td>§2</td><td>〔说话人1 01:46〕</td></tr><tr><td>12</td><td>细胞外基质又称细胞间质</td><td>术语</td><td>§2</td><td>〔说话人1 01:46〕</td></tr><tr><td>13</td><td>基质ground substance是ECM组成部分</td><td>易错</td><td>§2</td><td>〔说话人1 01:46〕</td></tr><tr><td>14</td><td>四大基本组织：上皮、结缔、肌、神经</td><td>分类</td><td>§2</td><td>〔说话人1 01:46〕</td></tr><tr><td>15</td><td>微观到宏观：原子→分子→细胞器→细胞→组织→器官→系统→个体</td><td>机制</td><td>§2</td><td>〔说话人1 01:46〕</td></tr><tr><td>16</td><td>人体九大系统</td><td>数字</td><td>§2</td><td>〔说话人1 01:46〕</td></tr><tr><td>17</td><td>组织学为基础医学骨干学科</td><td>考点</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>18</td><td>形态学为机能提供结构基础</td><td>结论</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>19</td><td>结构是功能的基础</td><td>结论</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>20</td><td>疾病最早病理改变常在细胞微观层面</td><td>临床</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>21</td><td>病理诊断以正常组织学结构为参照</td><td>考点</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>22</td><td>组织学连接宏观解剖、微观结构、生理、病理、诊断、治疗</td><td>结论</td><td>§1</td><td>〔说话人1 01:46〕</td></tr><tr><td>23</td><td>发展史四阶段与显微镜及切片染色技术相关</td><td>分类</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>24</td><td>Janssen16世纪末透镜组合最早显微镜思路</td><td>人物</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>25</td><td>Hooke改进显微镜观察软木塞命名cell</td><td>人物</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>26</td><td>Hooke所见为植物细胞壁非活细胞质</td><td>易错</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>27</td><td>Leeuwenhoek可调焦距显微镜首次见活细胞</td><td>人物</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>28</td><td>Leeuwenhoek观察精子并绘图</td><td>人物</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>29</td><td>1856年英国发明切片机推动组织学发展</td><td>数字</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>30</td><td>包埋固定染色使组织可切薄片</td><td>机制</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>31</td><td>细胞学说确立后组织学成独立学科</td><td>结论</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>32</td><td>20世纪电镜与超薄切片进入超微结构</td><td>结论</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>33</td><td>超薄切片约50–60nm</td><td>数字</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>34</td><td>活细胞工作站、流式细胞术、三维重建等现代技术</td><td>技术</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>35</td><td>20世纪50年代组织化学、免疫组化、原位杂交</td><td>技术</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>36</td><td>马文昭：中国组织学奠基人，线粒体与高尔基体与分泌</td><td>人物</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>37</td><td>鲍鉴清：细胞培养、电镜；蜂蜡包埋替代冰箱冷藏</td><td>人物</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>38</td><td>骆清铭院士：MOST/fMOST全脑成像</td><td>人物</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>39</td><td>光学显微镜技术含标本制备、染色、观察</td><td>分类</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>40</td><td>石蜡切片：固定→脱水→透明→包埋→切片→脱蜡→染色</td><td>机制</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>41</td><td>石蜡包埋增加硬度便于切薄片</td><td>结论</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>42</td><td>冰冻切片快速无需脱水透明</td><td>对比</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>43</td><td>冰冻切片适用术中快速病理诊断</td><td>临床</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>44</td><td>冰冻切片利于保存化学成分与酶活性</td><td>结论</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>45</td><td>非切片法：涂片、铺片、磨片</td><td>分类</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>46</td><td>苏木精为碱性染料染酸性物质呈蓝紫→嗜碱性</td><td>机制</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>47</td><td>伊红为酸性染料染碱性物质呈红→嗜酸性</td><td>机制</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>48</td><td>对两染料均无亲和力为中性</td><td>定义</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>49</td><td>HE为Hematoxylin与Eosin首字母</td><td>术语</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>50</td><td>甲苯胺蓝染肥大细胞颗粒呈紫红色为异染性</td><td>机制</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>51</td><td>镀银法显示神经纤维网状纤维</td><td>技术</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>52</td><td>普通光镜分辨率0.2μm</td><td>数字</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>53</td><td>光镜放大倍数1000–1500倍</td><td>数字</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>54</td><td>倒置显微镜观察活细胞</td><td>技术</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>55</td><td>电镜以电子束代替可见光电磁场代替透镜</td><td>机制</td><td>§5</td><td>〔说话人1 01:46〕</td></tr><tr><td>56</td><td>电镜分辨率0.1–0.2nm约比光镜高1000倍</td><td>数字</td><td>§5</td><td>〔说话人1 01:46〕</td></tr><tr><td>57</td><td>TEM电子束穿过超薄切片见内部结构</td><td>对比</td><td>§5</td><td>〔说话人1 01:46〕</td></tr><tr><td>58</td><td>TEM电子密度高区域成像偏黑</td><td>机制</td><td>§5</td><td>〔说话人1 01:46〕</td></tr><tr><td>59</td><td>SEM表面扫描二次电子见立体表面</td><td>对比</td><td>§5</td><td>〔说话人1 01:46〕</td></tr><tr><td>60</td><td>PAS反应检测多糖如肝糖原</td><td>机制</td><td>§5</td><td>〔说话人1 01:46〕</td></tr><tr><td>61</td><td>PAS：过碘酸氧化乙二醇基→醛基→Schiff紫红色</td><td>机制</td><td>§5</td><td>〔说话人1 01:46〕</td></tr><tr><td>62</td><td>免疫组化抗原抗体特异性显示化学成分</td><td>技术</td><td>§5</td><td>〔说话人1 01:46〕</td></tr><tr><td>63</td><td>免疫电镜胶体金超微水平定位抗原</td><td>技术</td><td>§5</td><td>〔说话人1 01:46〕</td></tr><tr><td>64</td><td>原位杂交碱基互补检测核酸</td><td>技术</td><td>§5</td><td>〔说话人1 01:46〕</td></tr><tr><td>65</td><td>学习重点：组织、细胞、细胞器层次</td><td>方法</td><td>§6</td><td>〔说话人1 01:46〕</td></tr><tr><td>66</td><td>理论与实践结合重视切片实习</td><td>方法</td><td>§6</td><td>〔说话人1 01:46〕</td></tr><tr><td>67</td><td>嗜碱性强提示粗面内质网多蛋白质合成旺盛</td><td>考点</td><td>§6</td><td>〔说话人1 01:46〕</td></tr><tr><td>68</td><td>结构随功能动态变化如肝糖原与子宫内膜周期</td><td>方法</td><td>§6</td><td>〔说话人1 01:46〕</td></tr><tr><td>69</td><td>二维切片需立体想象如小肠绒毛切面</td><td>方法</td><td>§6</td><td>〔说话人1 01:46〕</td></tr><tr><td>70</td><td>归纳共性与个性如小肠四层结构与各段差异</td><td>方法</td><td>§6</td><td>〔说话人1 01:46〕</td></tr><tr><td>71</td><td>学习通发布课件作业通知与自主学习</td><td>元信息</td><td>§6</td><td>〔说话人1 01:46〕</td></tr><tr><td>72</td><td>数字切片平台可在线复习</td><td>元信息</td><td>§6</td><td>〔说话人1 01:46〕</td></tr><tr><td>73</td><td>上皮细胞排列紧密ECM极少</td><td>定义</td><td>§7</td><td>〔说话人1 01:46〕</td></tr><tr><td>74</td><td>上皮分单层与复层</td><td>分类</td><td>§7</td><td>〔说话人1 01:46〕</td></tr><tr><td>75</td><td>极性：游离面、基底面、侧面</td><td>定义</td><td>§7</td><td>〔说话人1 01:46〕</td></tr><tr><td>76</td><td>上皮无血管营养由结缔组织经基膜供给</td><td>机制</td><td>§7</td><td>〔说话人1 01:46〕</td></tr><tr><td>77</td><td>上皮神经末梢丰富感觉灵敏</td><td>结论</td><td>§7</td><td>〔说话人1 01:46〕</td></tr><tr><td>78</td><td>被覆上皮覆盖体表或腔面</td><td>分类</td><td>§7</td><td>〔说话人1 01:46〕</td></tr><tr><td>79</td><td>腺上皮以分泌为主分外分泌与内分泌</td><td>分类</td><td>§7</td><td>〔说话人1 01:46〕</td></tr><tr><td>80</td><td>还有肌上皮、感觉上皮、生殖上皮</td><td>分类</td><td>§7</td><td>〔说话人1 01:46〕</td></tr><tr><td>81</td><td>命名原则一：细胞层数单层或复层</td><td>规则</td><td>§7</td><td>〔说话人1 01:46〕</td></tr><tr><td>82</td><td>命名原则二：表层细胞形态扁平立方柱状</td><td>规则</td><td>§7</td><td>〔说话人1 01:46〕</td></tr><tr><td>83</td><td>单层扁平：内皮在血管淋巴管腔面</td><td>分布</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>84</td><td>单层扁平：间皮在胸腹心包膜脏层外表面</td><td>分布</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>85</td><td>单层立方：肾小管甲状腺滤泡等</td><td>分布</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>86</td><td>单层柱状：胃肠子宫；小肠纹状缘与杯状细胞</td><td>分布</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>87</td><td>杯状细胞分泌黏液HE空泡状PAS阳性</td><td>考点</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>88</td><td>假复层纤毛柱状：呼吸道所有细胞附基膜</td><td>分布</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>89</td><td>复层扁平角化型皮肤表皮</td><td>分布</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>90</td><td>复层扁平非角化型口腔食管阴道</td><td>分布</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>91</td><td>复层扁平基底面起伏扩大连接与营养交换</td><td>考点</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>92</td><td>变移上皮：泌尿道随充盈排空改变层次形状</td><td>分布</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>93</td><td>充盈时变薄层次少细胞拉长；排空相反</td><td>机制</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>94</td><td>陈教授将组织化学引入国内并办培训班</td><td>人物</td><td>§3</td><td>〔说话人1 01:46〕</td></tr><tr><td>95</td><td>振动切片等其他切片法</td><td>技术</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>96</td><td>慕课微课与数字切片教学平台</td><td>元信息</td><td>§6</td><td>〔说话人1 01:46〕</td></tr><tr><td>97</td><td>课后按关键词撰写约500字学习感想</td><td>元信息</td><td>§6</td><td>〔说话人1 01:46〕</td></tr><tr><td>98</td><td>复层立方与复层柱状上皮命名类型</td><td>分类</td><td>§7</td><td>〔说话人1 01:46〕</td></tr><tr><td>99</td><td>固定目的：防止组织自溶腐败并适度增加硬度</td><td>机制</td><td>§4</td><td>〔说话人1 01:46〕</td></tr><tr><td>100</td><td>假复层纤毛柱状上皮细胞高矮不一核位不同但均附基膜</td><td>结构</td><td>§8</td><td>〔说话人1 01:46〕</td></tr><tr><td>101</td><td>有观点认为变移上皮实为假复层（细胞均附基膜）</td><td>易错</td><td>§8</td><td>〔说话人1 01:46〕</td></tr></table><p class="foot">附录 D 共 101 条，与 recording.md 讲授内容逐条对应。</p></div></body></html>

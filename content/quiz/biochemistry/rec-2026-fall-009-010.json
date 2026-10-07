@@ -9,9 +9,9 @@
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-009-010",
-    "revision": 1,
-    "recordingHash": "",
-    "notesTextHash": ""
+    "revision": 3,
+    "recordingHash": "35e420c9b7023d9955c3fb2e9fd240fb6eec19e9b83b80399531f6aad9005a91",
+    "notesTextHash": "810d78b71b28bada50e9a1e8ec03ea109db87913741252bf3b57c2d8f92bdf2c"
   },
   "questions": [
     {
@@ -30,7 +30,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "tRNA三叶草二级结构、反密码子环与CCA末端"
+        "label": "1. tRNA的结构与功能 · tRNA三叶草二级结构、反密码子环与CCA末端"
       },
       "explanation": "**B 正确。** tRNA二级结构呈三叶草形，反密码子环含3个碱基，与mRNA密码子互补配对执行识别功能。A错：倒L型是tRNA的三级结构，且RNA不能稳定形成长双链双螺旋。C错：CCA末端位于3'端氨基酸臂，末端A通过共价键连接氨基酸，并不识别密码子。D错：正好说反——茎是氢键配对形成双链的部分，环才是未配对的单链部分。",
       "hint": "回忆三叶草的茎与环，以及识别密码子、连接氨基酸分别由哪个结构承担。",
@@ -52,7 +52,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "维生素分类：脂溶性ADEK与水溶性B族+C"
+        "label": "16. 维生素B1 · 维生素分类：脂溶性ADEK与水溶性B族+C"
       },
       "explanation": "**B 正确。** 脂溶性维生素共四种：A、D、E、K；水溶性维生素为B族加维生素C。A错：维生素B1和维生素C均为水溶性。C错：维生素C属于水溶性。D错：四项全部为水溶性维生素（B族与C）。",
       "hint": "口诀：脂溶性ADEK，水溶性B族+C。",
@@ -74,7 +74,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "核酸紫外吸收260nm与纯度判断A260/A280"
+        "label": "5. 核酸的紫外吸收与纯度 · 核酸紫外吸收260nm与纯度判断A260/A280"
       },
       "explanation": "**B 正确。** 核酸最大吸收峰在约260nm，吸收来自嘌呤、嘧啶碱基的共轭双键。A错：280nm是蛋白质的最大吸收波长，来源是芳香族氨基酸（苯丙氨酸、色氨酸、酪氨酸）。C错：波长260nm正确，但吸收来源不是核糖羟基，而是碱基。D错：波长与来源均错误。",
       "hint": "核酸260nm，蛋白质280nm。",
@@ -96,7 +96,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "维生素B2核黄素的活性形式FMN与FAD"
+        "label": "16. 维生素B1 · 维生素B2核黄素的活性形式FMN与FAD"
       },
       "explanation": "**C 正确。** 维生素B2（核黄素）的活性形式为FMN和FAD，作为氧化还原酶的递氢辅酶。A错：TPP是维生素B1（硫胺素）的活性形式。B错：磷酸吡哆醛是维生素B6的活性形式，不属于B2。D错：辅酶A含泛酸，不是维生素B2的活性形式。",
       "hint": "核黄素即黄素（flavin），活性形式带FM/FAD字样。",
@@ -118,7 +118,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "真核核糖体80S=60S+40S与沉降系数S不可加和"
+        "label": "2. rRNA与核糖体 · 真核核糖体80S=60S+40S与沉降系数S不可加和"
       },
       "explanation": "**B 正确。** S（Svedberg单位）表示离心场中的沉降速度，与颗粒大小、形状、密度都有关，不是线性可加量，故60S+40S≠100S而实测为80S。A错：沉降系数不能简单相加。C错：80S是完整核糖体的实测沉降系数，并非简称。D错：把两个亚基说反了——60S大亚基含3种rRNA、49种蛋白质，40S小亚基含1种rRNA、33种蛋白质。",
       "hint": "记住'60S+40S≠100S'，S不可加和。",
@@ -140,7 +140,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "组成型非编码RNA：核酶/snoRNA/snRNA/scRNA的功能区分"
+        "label": "3. 组成型非编码RNA · 组成型非编码RNA：核酶/snoRNA/snRNA/scRNA的功能区分"
       },
       "explanation": "**C 正确。** scRNA位于胞质，是信号识别颗粒（SRP）的组成部分，参与蛋白质转运。A错：参与mRNA剪接、位于核质的是snRNA（经剪接体）；位于核仁、负责rRNA加工的是snoRNA。B错：把snoRNA与snRNA的位置和功能张冠李戴——snRNA在核质（不在核仁）负责mRNA剪接。D错：核酶是具有催化功能的RNA，不是蛋白质酶。",
       "hint": "按所在区域记忆：核仁sno、核质sn、胞质sc；核酶按功能命名。",
@@ -162,7 +162,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "维生素D3皮肤→肝25-羟化→肾1α-羟化的活化路径"
+        "label": "11. 维生素D · 维生素D3皮肤→肝25-羟化→肾1α-羟化的活化路径"
       },
       "explanation": "**B 正确。** 皮肤中7-脱氢胆固醇经紫外线照射生成维生素D3，肝脏25-羟化酶生成25-羟维生素D3（血浆主要存在/肝脏储存形式），肾脏1α-羟化酶生成1,25-二羟维生素D3（活性形式）。A错：肝肾两步羟化的酶位次颠倒。C错：来源与步骤均错误。D错：皮肤只生成维生素D3前体，活性形式必须经肝肾两步羟化。",
       "hint": "先肝25羟化，再肾1α羟化；活性形式是1,25-(OH)2-D3。",
@@ -184,7 +184,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "维生素K作为γ-谷氨酸羧化酶辅因子参与凝血及缺乏症"
+        "label": "11. 维生素D · 维生素K作为γ-谷氨酸羧化酶辅因子参与凝血及缺乏症"
       },
       "explanation": "**D 正确。** 本项说法错误，故为答案——直接进入细胞核调控钙磷代谢基因的是维生素D，维生素K的核心功能是作为γ-谷氨酸羧化酶辅因子参与凝血因子活化。A、B、C均与课堂内容一致：羧化后的γ-羧基谷氨酸可螯合Ca²⁺使凝血因子活化；缺乏时凝血因子不能活化而易出血；新生儿肠道菌群未建立、不能合成K2，故需及时注射维生素K。",
       "hint": "看到维生素K要条件反射想到'凝血'。",
@@ -206,7 +206,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "核酸变性本质、增色效应与复性/分子杂交"
+        "label": "7. 核酸的复性与分子杂交 · 核酸变性本质、增色效应与复性/分子杂交"
       },
       "explanation": "**B 正确。** 核酸变性的本质是双链间氢键断裂、双螺旋解开为单链，但一级结构（磷酸二酯键）不破坏；碱基暴露使A260升高，即增色效应。A错：一级结构不破坏，且A260应升高而非下降。C错：复性（退火）必须受控地逐渐降温，剧烈降温单链来不及找到互补链。D错：不同来源的单链只要碱基（局部）互补即可结合成杂化双链，这正是分子杂交的原理。",
       "hint": "变性不变一级结构，复性要慢冷。",
@@ -228,7 +228,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "维生素A视循环：11-顺视黄醛与夜盲症机制"
+        "label": "11. 维生素D · 维生素A视循环：11-顺视黄醛与夜盲症机制"
       },
       "explanation": "**B 正确。** 暗视觉依赖视紫红质（11-顺视黄醛+视蛋白）；维生素A缺乏使11-顺视黄醛不足、视紫红质合成减少，视网膜对弱光敏感性下降，遂出现夜盲症。A错：调控钙磷代谢基因的是维生素D，且视黄酸调控基因表达与夜盲症无关。C错：光线使11-顺变全反式后才与视蛋白分离，全反式须在视网膜色素上皮细胞异构化回11-顺，该选项既错述过程又否认其功能意义。D错：β-胡萝卜素虽为维生素A原，但夜盲症核心是11-顺视黄醛/视紫红质不足，影响的恰是弱光（暗）视觉。",
       "hint": "抓住'11-顺视黄醛↔全反式视黄醛'的光诱导顺反转换。",
@@ -250,7 +250,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "Tm定义及其影响因素（GC含量、长度、离子浓度）"
+        "label": "6. 核酸的变性与解链温度 · Tm定义及其影响因素（GC含量、长度、离子浓度）"
       },
       "explanation": "**C 正确。** G-C间有3个氢键、A-T间只有2个，故GC越高总氢键越多Tm越高；序列越长总氢键越多Tm越高；溶液离子可中和磷酸骨架负电荷、减少链间排斥而稳定双螺旋，故离子浓度也影响Tm。A错：Tm是50%双链变性时的温度，不是完全变性。B错：G-C之间是3个氢键，GC越高Tm应越高而非越低。D错：Tm越高表示双链越难解开，而非越易解开。",
       "hint": "Tm=50%变性时温度；GC越高、越长，Tm越高。",

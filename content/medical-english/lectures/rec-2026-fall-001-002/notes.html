@@ -1,75 +1,295 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<style>
-:root{--paper:#F5F7FA;--ink:#1A2332;--muted:#5A6B7D;--line:#D0D8E0;--accent:#2C5F8A;--accent-deep:#1A3D5C;--accent-tint:#E0EAF3;--gold:#B8860B;--gold-tint:#FBF3DC;--serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
-.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-.cover{background:radial-gradient(120% 80% at 78% 12%,#3A7AB5 0%,#2C5F8A 55%,#1A3D5C 100%);color:#EEF3F8;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(184,134,11,.4);}
-.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#D4AF37;margin-bottom:8mm;}
-.cover h1{font-family:var(--serif);font-size:36pt;line-height:1.2;color:#FBFCFD;margin-bottom:6mm;}
-.cover h1 .accent{color:#F4D03F;}
-.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(238,243,248,.82);margin-bottom:4mm;}
-.cover .meta{font-size:10pt;color:rgba(238,243,248,.6);margin-top:auto;}
-.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
-.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
-.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
-h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
-p{margin:2mm 0;}
-.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
-.card.concl{border-left:3pt solid var(--accent);}
-.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
-th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
-td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
-tr:nth-child(even) td{background:var(--accent-tint);}
-.hl{background:var(--gold-tint);border:0.4pt solid #E0C870;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
-.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
-.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
-</style>
-</head>
-<body>
-<div class="page cover">
-  <div class="frame"></div>
-  <div class="kicker">MEDICAL ENGLISH · 医学英语</div>
-  <h1>课程<br><span class="accent">介绍</span></h1>
-  <div class="subt">第1-2节 · 课程笔记可视化手册</div>
-  <div class="meta">2026-09-02 · 华中科技大学基础医学</div>
-</div>
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">课程考核</span></div>
-  <table>
-    <tr><th>项目</th><th>分值</th><th>说明</th></tr>
-    <tr><td><strong>课堂表现</strong></td><td>20分</td><td>出勤、参与、互动</td></tr>
-    <tr><td><strong>项目 Project</strong></td><td>10分</td><td>期末展示成果</td></tr>
-    <tr><td><strong>期末考试</strong></td><td>70分</td><td>卷面总分70分</td></tr>
-  </table>
-  <div class="card concl">
-    <div class="label">出勤规则</div>
-    <p>缺勤每次扣3分，最多缺勤6次（扣完20分）。迟到允许1次。</p>
-    <p>课堂学习共24次，珍惜每次机会。</p>
-  </div>
-  <div class="hl"><span class="tag">提示</span>平时30分是"送分题"，拿到后期末压力小很多。作业只要交就有分，扣分是为了让你知道哪里错了。</div>
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">02</span><span class="chapter-title">学习内容与课堂要求</span></div>
-  <div class="card concl">
-    <div class="label">学习内容</div>
-    <p>教材共15单元，本学期学<strong>5个单元</strong>。</p>
-    <p>每个单元：Reading 1（自学背景知识）+ Reading 2（课堂精讲）。</p>
-    <p>另有1个单元用于期末项目（根据医学英语水平测试后选定）。</p>
-  </div>
-  <h3>课堂口语</h3>
-  <div class="card">
-    <p>• 老师说"Good morning"，学生应回应"Good morning"（不要只看着老师）。</p>
-    <p>• 英语国家日常对话开场常说"It's a fine day today"，而非"How are you"。</p>
-    <p>• "How do you do"仅用于非常正式的场合。</p>
-    <p>• <strong>orientation</strong> = direction / guideline（大学阶段正式用词，比direction更书面）。</p>
-  </div>
-  <div style="margin-top:8mm;text-align:center;color:var(--muted);font-size:9pt;">— 医学英语 · 第1-2节 · 完 —</div>
-  <div class="footer"><span>医学英语 · 课程介绍</span><span>第 2 页</span></div>
-</div>
-</body>
-</html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>医学英语 · 第1-2节 · 课程导学与医学术语构词</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#7A2E4A; --accent-d:#542033; --accent-t:#F4E4EA;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body>
+<div class="page cover"><p class="h1">医学英语</p><p class="meta">第1-2节 · 课程导学与医学术语构词 · 2026-09-02</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 37937 字 / 113 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>医学英语（medical-english）</td></tr>
+<tr><td>主题</td><td>课程介绍、学习要求、Medical Terminology 构词法</td></tr>
+<tr><td>学时</td><td>2 学时（第1-2节）</td></tr></table></div>
+
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">第1-2节：课程规则 + 医学英语构词法（词根、连接元音、前缀、后缀）。</p>
+<svg viewBox="0 0 680 220" width="100%" aria-label="知识框架">
+<rect x="240" y="8" width="200" height="28" fill="#F4E4EA" stroke="#7A2E4A"/>
+<text x="340" y="27" text-anchor="middle" font-size="11" font-family="sans-serif">医学英语 第1-2节</text>
+<line x1="340" y1="36" x2="110" y2="70" stroke="#7A2E4A"/><line x1="340" y1="36" x2="340" y2="70" stroke="#7A2E4A"/><line x1="340" y1="36" x2="570" y2="70" stroke="#7A2E4A"/>
+<rect x="30" y="70" width="160" height="36" fill="#fff" stroke="#542033"/><text x="110" y="92" text-anchor="middle" font-size="9">考核与课堂契约</text>
+<rect x="260" y="70" width="160" height="36" fill="#fff" stroke="#542033"/><text x="340" y="92" text-anchor="middle" font-size="9">词源与一词三式</text>
+<rect x="490" y="70" width="160" height="36" fill="#fff" stroke="#542033"/><text x="570" y="92" text-anchor="middle" font-size="9">构件与构词模式</text>
+<line x1="340" y1="106" x2="340" y2="130" stroke="#7A2E4A"/>
+<rect x="200" y="130" width="280" height="36" fill="#F4E4EA" stroke="#7A2E4A"/><text x="340" y="152" text-anchor="middle" font-size="10">prefix + root/o + suffix → 拆词记词</text>
+<rect x="120" y="180" width="440" height="28" fill="#EDEBE4" stroke="#D8D6CE"/><text x="340" y="198" text-anchor="middle" font-size="9">课后：课本绿词划分解 + 各段 translation/paraphrase</text>
+</svg></div>
+
+<div class="page"><h2 class="h2">1. 课程导学与考核构成</h2>
+<p class="lead">orientation 指大学阶段的课程导向；本学期成绩由课堂表现、项目与期末卷面三部分构成。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>course orientation 即 direction、guideline，大学课用 orientation 强调本科生身份 <span class="loc">〔说话人2 02:38〕</span></li>
+<li>日常寒暄应回 Good morning，不必 How are you <span class="loc">〔说话人2 02:38〕</span></li>
+<li>英语日常开场常说 It's a fine day today <span class="loc">〔说话人2 02:38〕</span></li>
+<li>How do you do 仅用于非常正式场合 <span class="loc">〔说话人2 02:38〕</span></li>
+<li>成绩三部分：课堂表现 20 分、项目 10 分、期末 70 分 <span class="loc">〔说话人2 06:34〕</span></li>
+<li>期末试卷总分仅 70 分，前 30 分取决于平时 <span class="loc">〔说话人2 06:34〕</span></li>
+<li>平时30分若拿满，期末 final examination 压力可减小 <span class="loc">〔说话人2 06:34〕</span></li>
+<li>notice absence（缺勤）：每次扣 3 分，约 6 次扣满 20 分 <span class="loc">〔说话人2 06:34〕</span></li>
+<li>迟到允许 1 次（one time for being late） <span class="loc">〔说话人2 06:34〕</span></li>
+<li>本学期课堂学习共 24 次 <span class="loc">〔说话人2 06:34〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>项目</th><th>分值</th><th>要点</th></tr>
+<tr><td>课堂表现 classroom performance</td><td>20</td><td>出勤、参与、互动</td></tr>
+<tr><td>项目 project</td><td>10</td><td>期末展示成果</td></tr>
+<tr><td>期末考试 final examination</td><td>70</td><td>卷面总分 70</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★ 说出 20+10+70 构成及缺勤扣分规则。 <span class="loc">〔说话人2 06:34〕</span></div></div>
+<div class="page"><h2 class="h2">2. 教学内容与课堂活动</h2>
+<p class="lead">教材 15 单元本学期精学 5 单元；课堂以 Reading 2 与医学术语为主线。</p>
+<ul class="kv">
+<li>textbook 共15 unit，totally will study five units <span class="loc">〔说话人2 09:30〕</span></li>
+<li>Reading one 自学背景，Reading two 课堂精讲 <span class="loc">〔说话人2 09:30〕</span></li>
+<li>project 另选 one unit，依 medical english proficiency 后确定 <span class="loc">〔说话人2 09:30〕</span></li>
+<li>课堂参与含句子翻译 translation 与释义改写 paraphrase <span class="loc">〔说话人2 11:04〕</span></li>
+<li>每单元课前划难句，课上练翻译与 paraphrase <span class="loc">〔说话人2 11:04〕</span></li>
+<li>另有段落 summary 与医学技术 presentation <span class="loc">〔说话人2 11:04〕</span></li>
+<li>These 2 hours 讲解 medical terminology 构词，其余时间自行记忆 <span class="loc">〔说话人2 11:04〕</span></li>
+<li>每单元结束有 medical terminology presentation 考查理解 <span class="loc">〔说话人2 11:34〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">3. 学习习惯与师生角色</h2>
+<p class="lead">八条课堂契约；全班 20 人分 5 组，评分按组不按个人。</p>
+<ul class="kv">
+<li>be punctual：准时到课 <span class="loc">〔说话人2 11:34〕</span></li>
+<li>be honest：考试不作弊，释义须本人原创（own creation） <span class="loc">〔说话人2 11:34〕</span></li>
+<li>use AI as your reference，交作业句子须本人完成（your own work） <span class="loc">〔说话人2 11:34〕</span></li>
+<li>preview 教师布置的下节阅读内容 <span class="loc">〔说话人2 14:27〕</span></li>
+<li>participate actively：积极回应，不要只听老师讲 <span class="loc">〔说话人2 15:06〕</span></li>
+<li>collaborate：5 组学习，成绩按组评定 <span class="loc">〔说话人2 15:06〕</span></li>
+<li>be a positive force：同学出错要鼓励勿嘲笑 <span class="loc">〔说话人2 15:06〕</span></li>
+<li>按时完成作业 assignment <span class="loc">〔说话人2 17:18〕</span></li>
+<li>full attendance：缺课会错过偶发的启发性内容 <span class="loc">〔说话人2 17:18〕</span></li>
+<li>教师角色 organizer、supervisor，指导医学英语学习 <span class="loc">〔说话人2 17:18〕</span></li>
+<li>mutual study：医学知识 I may learn from you <span class="loc">〔说话人2 17:18〕</span></li>
+</ul>
+<table class="tbl"><tr><th>要求</th><th>含义</th></tr>
+<tr><td>punctual</td><td>准时</td></tr>
+<tr><td>honest</td><td>诚信，AI 仅作参考</td></tr>
+<tr><td>preview</td><td>预习布置阅读</td></tr>
+<tr><td>actively</td><td>主动回答互动</td></tr>
+<tr><td>collaborate</td><td>小组合作，按组评分</td></tr></table></div>
+<div class="page"><h2 class="h2">4. 术语构件：前缀、后缀与词根</h2>
+<p class="lead">课本 Page 17 词表：破折号标出可拼接的词素位置。</p>
+<ul class="kv">
+<li>词末破折号表示 prefix 前缀 <span class="loc">〔说话人2 21:33〕</span></li>
+<li>词首破折号表示 suffix 后缀 <span class="loc">〔说话人2 21:33〕</span></li>
+<li>medical English 主要来自 Latin 与 Greek，亦有 Anglo-Saxon <span class="loc">〔说话人2 21:33〕</span></li>
+<li>西方医学起源于 Greek，Apollo 为医药之神 <span class="loc">〔说话人2 21:33〕</span></li>
+<li>Apollo 为医药之神，蛇（snake）成为医学标志 <span class="loc">〔说话人2 21:33〕</span></li>
+<li>Hippocrates 西方医学之父，首写医学生誓言 <span class="loc">〔说话人2 24:20〕</span></li>
+<li>另一名医 Galen（盖伦） <span class="loc">〔说话人2 24:20〕</span></li>
+<li>医学术语来源为 Greek、Latin 与 Anglo-Saxon（origin of medical terms） <span class="loc">〔说话人2 24:20〕</span></li>
+<li>只懂12% medical English words，要学80%以上新词 <span class="loc">〔说话人2 25:29〕</span></li>
+<li>medical words have regulations 与 rules，靠构件记词 <span class="loc">〔说话人2 25:29〕</span></li>
+</ul>
+<div class="def">synonyms of medicine：同一概念多种词形，含义相同。 <span class="loc">〔说话人2 25:29〕</span></div></div>
+<div class="page"><h2 class="h2">5. 词源与「一词三式」</h2>
+<p class="lead">日常 Anglo-Saxon、书面 Latin、专业 Greek 可指同一器官。</p>
+<ul class="kv">
+<li>「体」：body（Anglo-Saxon）、corpor-/corpus（Latin）、somat-/somatic（Greek） <span class="loc">〔说话人2 25:29〕</span></li>
+<li>corpor/o 为词根，-al 为后缀 <span class="loc">〔说话人2 31:54〕</span></li>
+<li>general scientific paper 用 stomach，专业文献用 gastric corpus <span class="loc">〔说话人2 31:54〕</span></li>
+<li>-us 结尾多拉丁词源，-um 结尾亦常见拉丁 <span class="loc">〔说话人2 34:24〕</span></li>
+<li>Latin 中世纪为官方语言，现已几乎无人日常使用 <span class="loc">〔说话人2 34:24〕</span></li>
+<li>一词三式：同一含义的三种词形，仅形式不同 <span class="loc">〔说话人2 34:24〕</span></li>
+</ul>
+<table class="tbl"><tr><th>含义</th><th>Anglo-Saxon</th><th>Latin</th><th>Greek</th></tr>
+<tr><td>身体</td><td>body</td><td>corpus / corporal</td><td>soma / somatic</td></tr>
+<tr><td>胃</td><td>stomach</td><td>—</td><td>gastr- / gastric</td></tr></table>
+<div class="mnem">助记（整理）：corpus、somatic、gastric 为专业阅读必记。 <span class="loc">〔说话人2 31:54〕</span></div></div>
+<div class="page"><h2 class="h2">6. 词根与连接形式 combining form</h2>
+<p class="lead">词根可独立变词类；连接形式为词根加连接元音 o。</p>
+<ul class="kv">
+<li>斜线后加 o 即 combining form，本身不是完整单词（not a real word） <span class="loc">〔说话人2 34:24〕</span></li>
+<li>word root 即词根本身，可改变词性（word class） <span class="loc">〔说话人2 34:24〕</span></li>
+<li>combining form 即 word root 加连接元音 o <span class="loc">〔说话人2 34:24〕</span></li>
+<li>cardi 即 heart 心脏，作词根后常加 o <span class="loc">〔说话人2 34:24〕</span></li>
+<li>记词就是记 prefix、suffix、combining form 的拼合规律 <span class="loc">〔说话人2 41:43〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★ 区分 word root 与 combining form（word root 加 o）。 <span class="loc">〔说话人2 34:24〕</span></div></div>
+<div class="page"><h2 class="h2">7. 连接元音 letter o</h2>
+<p class="lead">辅音词根接辅音后缀常加 o 以利发音；后缀以元音开头则常删 o。</p>
+<ul class="kv">
+<li>gastr 为胃词根，gastric 中词根后无多余字母 <span class="loc">〔说话人2 39:16〕</span></li>
+<li>连接元音 o 首要目的 pronunciation 发音 <span class="loc">〔说话人2 40:01〕</span></li>
+<li>后缀以元音开头时应删连接 o，读 gastritis 非 gastroitis <span class="loc">〔说话人2 40:01〕</span></li>
+<li>医学词常以器官为词根，操作为后缀 <span class="loc">〔说话人2 41:43〕</span></li>
+<li>两词根相连时即使第二词根以元音开头也保留 o（gastroenteritis） <span class="loc">〔说话人2 01:12:49〕</span></li>
+<li>见前后元音间仍有 o，可反推两侧皆为词根 <span class="loc">〔说话人2 01:13:19〕</span></li>
+<li>连接元音以 o 最常见，i 次之；a、e 发音多变故少用 <span class="loc">〔说话人2 01:13:19〕</span></li>
+</ul>
+<table class="tbl"><tr><th>规则</th><th>说明</th><th>例</th></tr>
+<tr><td>加 o</td><td>辅音接辅音，发音需要</td><td>gastr + o + …</td></tr>
+<tr><td>删 o</td><td>后缀以元音起首</td><td>gastr + itis → gastritis</td></tr>
+<tr><td>双词根保留 o</td><td>两词根之间</td><td>gastroenteritis</td></tr></table></div>
+<div class="page"><h2 class="h2">8. 词根示例（视频与课堂）</h2>
+<p class="lead">复杂术语拆成火车车厢：词根、后缀、前缀。</p>
+<ul class="kv">
+<li>arthr- / arthr/o：joint 关节（arthritis） <span class="loc">〔说话人3 44:43〕</span></li>
+<li>cardi- / cardi/o：heart 心（cardiac） <span class="loc">〔说话人3 44:43〕</span></li>
+<li>derm- / dermat/o：skin 皮肤（dermatology） <span class="loc">〔说话人3 44:43〕</span></li>
+<li>hem- / hemat/o：blood 血 <span class="loc">〔说话人3 46:42〕</span></li>
+<li>词末小横线表示 fragment 词素非整词 <span class="loc">〔说话人3 46:42〕</span></li>
+<li>课堂回忆四词根：关节、心、皮肤、血 <span class="loc">〔说话人2 47:31〕</span></li>
+<li>扁桃体切除术：摘除器官扁桃体，是常见手术（-ectomy 时为 tonsillectomy） <span class="loc">〔说话人2 48:37〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">9. 后缀：实义后缀与「无聊」后缀</h2>
+<ul class="kv">
+<li>-uria：尿中，hematuria 血尿 <span class="loc">〔说话人3 49:10〕</span></li>
+<li>blood in the urine 即 hematuria，常示 infection 或 kidney stone <span class="loc">〔说话人3 50:01〕</span></li>
+<li>-ous / -ic / -ac：pertaining to，表「与…相关」 <span class="loc">〔说话人3 50:01〕</span></li>
+<li>-oma：肿瘤或肿块，carcinoma、hematoma <span class="loc">〔说话人3 50:01〕</span></li>
+<li>-plegia：瘫痪，hemi- 半 + plegia → hemiplegia <span class="loc">〔说话人3 50:01〕</span></li>
+<li>-emia / -emia：血中，bacteremia 菌血症 <span class="loc">〔说话人3 50:01〕</span></li>
+<li>-itis：炎症，dermatitis 皮炎 <span class="loc">〔说话人3 58:32〕</span></li>
+<li>-ectomy：手术切除，splenectomy 脾切除 <span class="loc">〔说话人2 01:00:16〕</span></li>
+<li>脾词根 splen- 作词根时省略 e（非 spleen） <span class="loc">〔说话人2 01:00:34〕</span></li>
+<li>后缀分 exciting（有含义）与 boring（仅表词性） <span class="loc">〔说话人2 01:03:14〕</span></li>
+<li>-ic、-ous 等常只表形容词词性，无额外病义 <span class="loc">〔说话人2 01:03:14〕</span></li>
+<li>hyperinsulinemia：血中胰岛素过多 <span class="loc">〔说话人3 01:01:00〕</span></li>
+<li>cardiothoracic：与心和胸相关的 <span class="loc">〔说话人3 01:01:39〕</span></li>
+<li>thorax / thoracic：胸 <span class="loc">〔说话人3 01:01:39〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">10. 前缀系统</h2>
+<ul class="kv">
+<li>hyper-：过多、过度 hyperventilate <span class="loc">〔说话人3 50:01〕</span></li>
+<li>hyperthyroidism：甲亢，甲状腺过度活跃 <span class="loc">〔说话人3 53:55〕</span></li>
+<li>hypo-：不足、缺乏，与 hyper 相反 <span class="loc">〔说话人3 53:55〕</span></li>
+<li>hypoventilate、hypothermia 体温过低 <span class="loc">〔说话人3 53:55〕</span></li>
+<li>pre-：在…之前，preoperative 术前 <span class="loc">〔说话人3 53:55〕</span></li>
+<li>preterm labor：37 周前分娩为早产 <span class="loc">〔说话人3 56:14〕</span></li>
+<li>a-：无、缺乏，asymptomatic 无症状 <span class="loc">〔说话人3 56:14〕</span></li>
+<li>asystole：心脏无电活动（电视 flat line） <span class="loc">〔说话人3 56:14〕</span></li>
+<li>tachy-：快于正常，tachycardia 心率过快 <span class="loc">〔说话人3 56:14〕</span></li>
+<li>tachycardia 一般 &gt;100 次/分 <span class="loc">〔说话人3 58:32〕</span></li>
+<li>brady-：慢于正常，bradycardia 心率过慢 <span class="loc">〔说话人3 58:32〕</span></li>
+<li>bradycardia 一般 &lt;60 次/分 <span class="loc">〔说话人3 58:32〕</span></li>
+</ul>
+<table class="tbl"><tr><th>前缀</th><th>义</th><th>例</th></tr>
+<tr><td>hyper-</td><td>过多</td><td>hyperthyroidism</td></tr>
+<tr><td>hypo-</td><td>不足</td><td>hypothermia</td></tr>
+<tr><td>pre-</td><td>之前</td><td>preoperative</td></tr>
+<tr><td>a-</td><td>无</td><td>asymptomatic</td></tr>
+<tr><td>tachy-</td><td>快</td><td>tachycardia &gt;100</td></tr>
+<tr><td>brady-</td><td>慢</td><td>bradycardia &lt;60</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★ hyper/hypo、tachy/brady 成对记忆及心率阈值。 <span class="loc">〔说话人3 58:32〕</span></div></div>
+<div class="page"><h2 class="h2">11. 八种构词模式与课堂总结</h2>
+<ul class="kv">
+<li>多数医学词由 Greek、Latin 与部分 Anglo-Saxon 拼成 <span class="loc">〔说话人2 01:04:43〕</span></li>
+<li>learning what part fit together 是记 medical terms 关键 <span class="loc">〔说话人2 01:04:43〕</span></li>
+<li>阅读整词须 analyze each part 逐段拆解 <span class="loc">〔说话人2 01:04:43〕</span></li>
+<li>例 hypopharyngoscope：hypo- 不足 + pharyng/o + -scope <span class="loc">〔说话人2 01:06:44〕</span></li>
+<li>eight basic patterns（八种构词模式）常见如：词根单独成词、词根加后缀、词根加连接形式加词根、前缀加词根加后缀、前缀加后缀 <span class="loc">〔说话人2 01:06:44〕</span></li>
+<li>hepatic：hepat 肝 + -ic；hepatopathy 肝病 <span class="loc">〔说话人2 01:06:44〕</span></li>
+<li>hemoblast：hem/o 血 + blast 细胞 <span class="loc">〔说话人2 01:06:44〕</span></li>
+<li>最长医学词可达 72 字母，词典收录 <span class="loc">〔说话人2 01:06:44〕</span></li>
+<li>医学词重音多在倒数第二、第三音节，从后往前读 <span class="loc">〔说话人2 01:06:44〕</span></li>
+<li>无词根时 prefix 加 suffix 表某一 process <span class="loc">〔说话人2 01:11:45〕</span></li>
+<li>常见后缀 -ic、-ous、-al、-ary；path/o 作词首表疾病时去 y 加 o <span class="loc">〔说话人2 01:13:19〕</span></li>
+<li>negative prefix 列表含 a- 等，需记 <span class="loc">〔说话人2 01:16:48〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">12. 课本划词练习与课后句子</h2>
+<ul class="kv">
+<li>绿色印刷词多为医学英语词汇，用斜线划分词根与后缀 <span class="loc">〔说话人2 01:16:48〕</span></li>
+<li>urinary：-ary 形容词后缀，gen/o 词根 <span class="loc">〔说话人2 01:22:17〕</span></li>
+<li>electrocardiogram：electr/o + cardi/o + -gram <span class="loc">〔说话人2 01:22:17〕</span></li>
+<li>clinic：clinic/o + -al；stroke：词根 + -ic <span class="loc">〔说话人2 01:22:17〕</span></li>
+<li>radiologist：radi/o + -ologist；pneum/o 肺 <span class="loc">〔说话人2 01:22:17〕</span></li>
+<li>hypertrophic cardiomyopathy：hyper + troph + cardi/o + -pathy <span class="loc">〔说话人2 01:22:17〕</span></li>
+<li>arch/o 与测量相关；path/o 表疾病时去 y 加 o <span class="loc">〔说话人2 01:22:17〕</span></li>
+<li>第一段定义句翻译；despite advances 句 paraphrase <span class="loc">〔说话人2 01:26:17〕</span></li>
+<li>第 3 段末句、第 6 段 AI 句、第 7 段 consider 例句等翻译 <span class="loc">〔说话人2 01:26:17〕</span></li>
+<li>第 2、9、11 句 paraphrase（用英语解释原句） <span class="loc">〔说话人2 01:29:23〕</span></li>
+<li>作业中第二句、第九句和第十一句用英文解释（paraphrase），其余句子都是翻译（translation） <span class="loc">〔说话人2 01:29:23〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★ sentence translation 与 paraphrase 作业区分。 <span class="loc">〔说话人2 11:04〕</span></div></div>
+
+<div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>成绩 20+10+70，缺勤每次扣 3 分 <span class="loc">〔说话人2 06:34〕</span></li>
+<li>本学期 5 单元，Reading 1 自学 Reading 2 精讲 <span class="loc">〔说话人2 09:30〕</span></li>
+<li>AI 可参考，交作业须本人句子 <span class="loc">〔说话人2 14:27〕</span></li>
+<li>20 人 5 组，按组评分 <span class="loc">〔说话人2 15:06〕</span></li>
+<li>一词三式 body / corpus / somatic；stomach vs gastric <span class="loc">〔说话人2 31:54〕</span></li>
+<li>word root vs combining form（+o） <span class="loc">〔说话人2 39:16〕</span></li>
+<li>连接元音 o：发音需要；元音后缀删 o；双词根间保留 o <span class="loc">〔说话人2 01:12:49〕</span></li>
+<li>词根 cardi、derm、arthr、hem；后缀 -itis、-ectomy、-uria、-emia、-oma <span class="loc">〔说话人3 50:01〕</span></li>
+<li>hyper/hypo、pre、a-、tachy&gt;100、brady&lt;60 <span class="loc">〔说话人3 58:32〕</span></li>
+<li>二加十加七十，缺勤扣三限六次（整理）</li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>科普文 stomach 即专业不用 gastric</td><td>专业文献用 gastric <span class="loc">〔说话人2 31:54〕</span></td></tr>
+<tr><td>gastroitis 拼写</td><td>后缀元音起首删连接 o：gastritis <span class="loc">〔说话人2 40:01〕</span></td></tr>
+<tr><td>脾切除词根写 spleen</td><td>词根 splen-，splenectomy <span class="loc">〔说话人2 01:00:34〕</span></td></tr>
+<tr><td>所有后缀都有病义</td><td>-ic/-ous 常仅表形容词 <span class="loc">〔说话人2 01:03:14〕</span></td></tr>
+<tr><td>第二词根元音起首必删 o</td><td>两词根间保留 o：gastroenteritis <span class="loc">〔说话人2 01:12:49〕</span></td></tr>
+<tr><td>How are you 日常必问</td><td>日常可说 Hi 或谈天气 <span class="loc">〔说话人2 02:38〕</span></td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>成绩构成与缺勤</td><td>§1</td><td>〔说话人2 06:34〕</td><td>填空</td></tr>
+<tr><td>五单元与 Reading 分工</td><td>§2</td><td>〔说话人2 09:30〕</td><td>简答</td></tr>
+<tr><td>诚信与 AI 边界</td><td>§3</td><td>〔说话人2 14:27〕</td><td>简答</td></tr>
+<tr><td>词源与一词三式</td><td>§5</td><td>〔说话人2 31:54〕</td><td>名词解释</td></tr>
+<tr><td>词根与 combining form</td><td>§6</td><td>〔说话人2 39:16〕</td><td>辨析</td></tr>
+<tr><td>连接元音规则</td><td>§7</td><td>〔说话人2 01:12:49〕</td><td>单选</td></tr>
+<tr><td>前缀 hyper/hypo 等</td><td>§10</td><td>〔说话人3 58:32〕</td><td>匹配</td></tr>
+<tr><td>心率 tachycardia/bradycardia</td><td>§10</td><td>〔说话人3 58:32〕</td><td>数字</td></tr>
+<tr><td>translation vs paraphrase 作业</td><td>§12</td><td>〔说话人2 01:29:23〕</td><td>操作</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>课程 orientation 即 guideline</td><td>术语</td><td>§1</td><td>〔说话人2 02:38〕</td></tr><tr><td>2</td><td>寒暄回 Good morning</td><td>习惯</td><td>§1</td><td>〔说话人2 02:38〕</td></tr><tr><td>3</td><td>成绩课堂20项目10期末70</td><td>数字</td><td>§1</td><td>〔说话人2 06:34〕</td></tr><tr><td>4</td><td>缺勤每次扣3分约6次扣满</td><td>规则</td><td>§1</td><td>〔说话人2 06:34〕</td></tr><tr><td>5</td><td>迟到允许1次</td><td>规则</td><td>§1</td><td>〔说话人2 06:34〕</td></tr><tr><td>6</td><td>课堂共24次</td><td>数字</td><td>§1</td><td>〔说话人2 06:34〕</td></tr><tr><td>7</td><td>教材15单元本学期学5单元</td><td>安排</td><td>§2</td><td>〔说话人2 09:30〕</td></tr><tr><td>8</td><td>Reading1自学Reading2课堂</td><td>安排</td><td>§2</td><td>〔说话人2 09:30〕</td></tr><tr><td>9</td><td>项目单元依水平测试后定</td><td>安排</td><td>§2</td><td>〔说话人2 09:30〕</td></tr><tr><td>10</td><td>课堂含翻译与paraphrase</td><td>活动</td><td>§2</td><td>〔说话人2 11:04〕</td></tr><tr><td>11</td><td>单元末术语presentation</td><td>活动</td><td>§2</td><td>〔说话人2 11:34〕</td></tr><tr><td>12</td><td>be punctual准时</td><td>要求</td><td>§3</td><td>〔说话人2 11:34〕</td></tr><tr><td>13</td><td>be honest不作弊作业自创</td><td>要求</td><td>§3</td><td>〔说话人2 11:34〕</td></tr><tr><td>14</td><td>AI仅作参考</td><td>要求</td><td>§3</td><td>〔说话人2 11:34〕</td></tr><tr><td>15</td><td>preview预习布置内容</td><td>要求</td><td>§3</td><td>〔说话人2 14:27〕</td></tr><tr><td>16</td><td>participate actively积极回应</td><td>要求</td><td>§3</td><td>〔说话人2 15:06〕</td></tr><tr><td>17</td><td>20人分5组按组评分</td><td>要求</td><td>§3</td><td>〔说话人2 15:06〕</td></tr><tr><td>18</td><td>鼓励同学勿嘲笑</td><td>要求</td><td>§3</td><td>〔说话人2 15:06〕</td></tr><tr><td>19</td><td>按时完成作业</td><td>要求</td><td>§3</td><td>〔说话人2 17:18〕</td></tr><tr><td>20</td><td>教师organizer与supervisor</td><td>角色</td><td>§3</td><td>〔说话人2 17:18〕</td></tr><tr><td>21</td><td>破折号标prefix与suffix位置</td><td>定义</td><td>§4</td><td>〔说话人2 21:33〕</td></tr><tr><td>22</td><td>术语主源Latin与Greek</td><td>词源</td><td>§4</td><td>〔说话人2 21:33〕</td></tr><tr><td>23</td><td>西方医学起源Greek</td><td>词源</td><td>§4</td><td>〔说话人2 24:20〕</td></tr><tr><td>24</td><td>Hippocrates医学之父与誓言</td><td>历史</td><td>§4</td><td>〔说话人2 24:20〕</td></tr><tr><td>25</td><td>仅识约12%须学80%新词</td><td>数字</td><td>§4</td><td>〔说话人2 25:29〕</td></tr><tr><td>26</td><td>synonyms一词多形同义</td><td>概念</td><td>§4</td><td>〔说话人2 25:29〕</td></tr><tr><td>27</td><td>body corpus somatic一词三式</td><td>对比</td><td>§5</td><td>〔说话人2 25:29〕</td></tr><tr><td>28</td><td>科普stomach专业gastric</td><td>对比</td><td>§5</td><td>〔说话人2 31:54〕</td></tr><tr><td>29</td><td>-us/-um多拉丁词尾</td><td>词源</td><td>§5</td><td>〔说话人2 34:24〕</td></tr><tr><td>30</td><td>word root与combining form区别</td><td>定义</td><td>§6</td><td>〔说话人2 34:24〕</td></tr><tr><td>31</td><td>cardi/o为连接形式</td><td>例</td><td>§6</td><td>〔说话人2 34:24〕</td></tr><tr><td>32</td><td>连接元音o为发音</td><td>规则</td><td>§7</td><td>〔说话人2 40:01〕</td></tr><tr><td>33</td><td>元音后缀删连接o</td><td>规则</td><td>§7</td><td>〔说话人2 40:01〕</td></tr><tr><td>34</td><td>双词根间保留o</td><td>规则</td><td>§7</td><td>〔说话人2 01:12:49〕</td></tr><tr><td>35</td><td>o最常见i次之</td><td>规则</td><td>§7</td><td>〔说话人2 01:13:19〕</td></tr><tr><td>36</td><td>arthr关节cardi心derm皮肤hem血</td><td>词根</td><td>§8</td><td>〔说话人3 44:43〕</td></tr><tr><td>37</td><td>tonsillectomy扁桃体切除</td><td>例</td><td>§8</td><td>〔说话人2 48:37〕</td></tr><tr><td>38</td><td>hematuria血尿</td><td>后缀</td><td>§9</td><td>〔说话人3 49:10〕</td></tr><tr><td>39</td><td>-itis炎症dermatitis</td><td>后缀</td><td>§9</td><td>〔说话人3 58:32〕</td></tr><tr><td>40</td><td>-ectomy切除splenectomy</td><td>后缀</td><td>§9</td><td>〔说话人2 01:00:16〕</td></tr><tr><td>41</td><td>splen词根省略e</td><td>易错</td><td>§9</td><td>〔说话人2 01:00:34〕</td></tr><tr><td>42</td><td>-oma肿瘤-emia血中</td><td>后缀</td><td>§9</td><td>〔说话人3 50:01〕</td></tr><tr><td>43</td><td>后缀分有义与仅词性</td><td>概念</td><td>§9</td><td>〔说话人2 01:03:14〕</td></tr><tr><td>44</td><td>hyper过多hypo不足</td><td>前缀</td><td>§10</td><td>〔说话人3 53:55〕</td></tr><tr><td>45</td><td>pre术前preterm37周前</td><td>前缀</td><td>§10</td><td>〔说话人3 56:14〕</td></tr><tr><td>46</td><td>a无asymptomatic</td><td>前缀</td><td>§10</td><td>〔说话人3 56:14〕</td></tr><tr><td>47</td><td>tachycardia大于100</td><td>临床</td><td>§10</td><td>〔说话人3 58:32〕</td></tr><tr><td>48</td><td>bradycardia小于60</td><td>临床</td><td>§10</td><td>〔说话人3 58:32〕</td></tr><tr><td>49</td><td>八种构词模式</td><td>结构</td><td>§11</td><td>〔说话人2 01:06:44〕</td></tr><tr><td>50</td><td>hepatic与hepatopathy</td><td>例</td><td>§11</td><td>〔说话人2 01:06:44〕</td></tr><tr><td>51</td><td>医学词重音在倒数二三音节</td><td>发音</td><td>§11</td><td>〔说话人2 01:06:44〕</td></tr><tr><td>52</td><td>path/o表疾病去y加o</td><td>规则</td><td>§12</td><td>〔说话人2 01:22:17〕</td></tr><tr><td>53</td><td>ECG词根划分</td><td>练习</td><td>§12</td><td>〔说话人2 01:22:17〕</td></tr><tr><td>54</td><td>作业translation与paraphrase区分</td><td>作业</td><td>§12</td><td>〔说话人2 01:29:23〕</td></tr><tr><td>55</td><td>第2、9、11句paraphrase英文解释</td><td>作业</td><td>§12</td><td>〔说话人2 01:29:23〕</td></tr></table><p class="foot">附录 D 共 55 条，与 recording.md 讲授内容逐条对应。</p></div>
+</body></html>

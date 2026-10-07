@@ -10,7 +10,7 @@
   },
   "taughtOn": "2026-09-21",
   "topic": "分子荧光分析法（MFS）——荧光产生原理、激发与发射光谱、荧光强度与定量、影响因素与应用",
-  "revision": 1,
+  "revision": 3,
   "materials": {
     "recording": {
       "file": "recording.md",

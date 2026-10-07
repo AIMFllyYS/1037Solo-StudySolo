@@ -1,853 +1,608 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>B族维生素续讲与酶学</title>
-<style>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>生物化学与分子生物学 · 第11-12节 · B族维生素续讲与酶学</title><style>
 :root{
-  --paper: #FAF8F3;
-  --paper-card: #FFFFFF;
-  --ink: #1A1814;
-  --ink-soft: #4A453D;
-  --ink-faint: #8B8578;
-  --rule: #DDD8CC;
-  --accent: #2E7D4F;
-  --accent-soft: #2E7D4F15;
-  --accent-line: #2E7D4F40;
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#4A6B1F; --accent-d:#33490F; --accent-t:#EDF2E1;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
 }
-*{box-sizing:border-box; margin:0; padding:0;}
-html,body{background:var(--paper);}
-body{font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif; color:var(--ink); font-size:10pt; line-height:1.75;}
-.page{width:210mm; min-height:297mm; background:var(--paper); position:relative; padding:18mm 20mm 16mm 20mm; page-break-after:always;}
-.page:last-child{page-break-after:auto;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body>
+<div class="page cover"><p class="h1">生物化学与分子生物学</p><p class="meta">第11-12节 · B族维生素续讲与酶学 · 2026-09-16</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 34829 字 / 161 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>生物化学与分子生物学（biochemistry）</td></tr>
+<tr><td>主题</td><td>B族维生素续讲（B2/PP/泛酸/生物素/B6/叶酸/B12）、维生素C、酶与酶促反应</td></tr>
+<tr><td>学时</td><td>2 学时（第11-12节）</td></tr>
+<tr><td>上课日期</td><td>2026-09-16</td></tr></table></div>
 
-/* 封面 */
-.cover{background:linear-gradient(135deg, var(--accent) 0%, #2E7D4FCC 100%); color:#fff; padding:0;}
-.cover .inner{height:100%; min-height:261mm; padding:30mm 22mm 22mm 22mm; display:flex; flex-direction:column; justify-content:space-between;}
-.cover .eyebrow{font-size:9pt; letter-spacing:0.4em; text-transform:uppercase; opacity:0.85;}
-.cover h1{font-family:'Noto Serif CJK SC',serif; font-size:42pt; font-weight:900; line-height:1.15; margin-top:12mm;}
-.cover .subtitle{font-size:13pt; opacity:0.9; margin-top:8mm; line-height:1.7;}
-.cover .meta{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8mm; border-top:1px solid rgba(255,255,255,0.3); padding-top:8mm;}
-.cover .meta .k{font-size:7.5pt; letter-spacing:0.2em; opacity:0.7; text-transform:uppercase;}
-.cover .meta .v{font-size:11pt; font-weight:600; margin-top:2mm;}
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">维生素按「化学本质—生化功能（辅酶/转移基团）—缺乏症」收束，再进入酶的分子组成、结构与催化机制。</p>
+<ul class="kv">
+<li>B族维生素（续）
+  <ul class="kv">
+  <li>B2 核黄素 → FMN/FAD → 递氢</li>
+  <li>PP 烟酸/烟酰胺 → NAD/NADP → 递氢（NAD主分解、NADPH主合成）</li>
+  <li>泛酸 → 辅酶A/酰基载体蛋白 → 转酰基</li>
+  <li>生物素 → 自身即活性形式 → 转羧基</li>
+  <li>B6 → 磷酸吡多醛 → 转氨基</li>
+  <li>叶酸 → 四氢叶酸（FH4）→ 转一碳单位</li>
+  <li>B12 钴胺素 → 甲硫氨酸代谢</li>
+  </ul></li>
+<li>维生素C：L-抗坏血酸 ↔ 脱氢抗坏血酸；递氢体、保护维生素E、参与羟化反应；缺乏＝坏血病</li>
+<li>酶与酶促反应
+  <ul class="kv">
+  <li>分子组成：核酶／单纯酶／缀合酶；辅因子分辅酶、辅基</li>
+  <li>结构分类：单体酶／寡聚酶／多酶体系／多功能酶</li>
+  <li>活性中心：结合基团＋催化基团（催化三联体 Asp-His-Ser）</li>
+  <li>特点与特异性：高效、温和、可调节、绝对／相对／立体异构特异性</li>
+  <li>工作原理：过渡态、活化能、结合能；锁钥模型→诱导契合</li>
+  <li>催化机制：邻近效应、定向排列、表面效应（去溶剂化）、多元催化</li>
+  </ul></li>
+</ul></div>
 
-/* 目录 */
-.toc-title{font-family:'Noto Serif CJK SC',serif; font-size:24pt; font-weight:800; margin-bottom:2mm; color:var(--accent);}
-.toc-sub{color:var(--ink-soft); font-size:9.5pt; margin-bottom:8mm;}
-.toc-list{list-style:none;}
-.toc-list li{display:flex; align-items:baseline; padding:3.5mm 0; border-bottom:1px solid var(--rule);}
-.toc-num{font-family:'Noto Serif CJK SC',serif; font-weight:800; color:var(--accent); font-size:12pt; min-width:14mm;}
-.toc-text{font-size:10.5pt; font-weight:600;}
-
-/* 内容页 */
-.running{display:flex; justify-content:space-between; font-size:7.5pt; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-faint); border-bottom:1.5px solid var(--accent); padding-bottom:3mm; margin-bottom:8mm;}
-.running .course{color:var(--accent); font-weight:700;}
-
-h1{font-family:'Noto Serif CJK SC',serif; font-size:22pt; font-weight:900; color:var(--ink); margin:8mm 0 4mm 0; padding-bottom:3mm; border-bottom:2.5px solid var(--accent);}
-h2{font-family:'Noto Serif CJK SC',serif; font-size:16pt; font-weight:800; color:var(--accent); margin:7mm 0 3mm 0; padding-left:4mm; border-left:4px solid var(--accent);}
-h3{font-family:'Noto Serif CJK SC',serif; font-size:13pt; font-weight:700; color:var(--ink); margin:5mm 0 2.5mm 0;}
-h4{font-size:11pt; font-weight:700; color:var(--ink-soft); margin:4mm 0 2mm 0;}
-
-p{margin:2mm 0; text-align:justify;}
-ul{margin:2mm 0 2mm 6mm;}
-li{margin:1.2mm 0;}
-li.num{list-style:none; counter-increment:item;}
-li.num::before{content:counter(item) "."; font-weight:700; color:var(--accent); margin-right:2mm;}
-
-strong{color:var(--accent); font-weight:700;}
-em{color:var(--ink-soft);}
-code{background:var(--accent-soft); color:var(--accent); padding:0.5mm 1.5mm; border-radius:1mm; font-size:9pt; font-family:'Consolas',monospace;}
-
-blockquote{border-left:3px solid var(--accent); background:var(--accent-soft); padding:3mm 4mm; margin:3mm 0; border-radius:0 2mm 2mm 0;}
-blockquote p{margin:0; color:var(--ink-soft); font-style:italic;}
-
-hr{border:none; border-top:1px solid var(--rule); margin:6mm 0;}
-
-/* 表格 */
-.note-table{width:100%; border-collapse:collapse; margin:4mm 0; font-size:9.5pt;}
-.note-table th{background:var(--accent); color:#fff; padding:2.5mm 3mm; text-align:left; font-weight:700;}
-.note-table td{padding:2.5mm 3mm; border-bottom:1px solid var(--rule);}
-.note-table tr:nth-child(even) td{background:var(--accent-soft);}
-
-/* 页脚 */
-.footer{position:absolute; bottom:8mm; left:20mm; right:20mm; display:flex; justify-content:space-between; font-size:7.5pt; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:3mm;}
-</style>
-</head>
-<body>
-
-<!-- 封面 -->
-<div class="page cover">
-  <div class="inner">
-    <div>
-      <div class="eyebrow">HUST · 课堂可视化笔记</div>
-      <h1>B族维生素续讲与酶学</h1>
-      <div class="subtitle">第11-12节 · B2/PP/泛酸/生物素/B6/叶酸/B12 · 维生素C · 酶的分子组成/活性中心/工作原理/催化机制</div>
-    </div>
-    <div class="meta">
-      <div><div class="k">课程</div><div class="v">生物化学与分子生物学</div></div>
-      <div><div class="k">节次</div><div class="v">第11-12节</div></div>
-      <div><div class="k">日期</div><div class="v">2026-09-16</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- 目录 -->
-<div class="page">
-  <div class="toc-title">目录</div>
-  <div class="toc-sub">本笔记基于课堂录音完整逐字稿整理，详细记录课堂讲授的核心知识点、例题强调点与复习要点。</div>
-  <ul class="toc-list">
-    <li><span class="toc-num">01</span><span class="toc-text">一、知识结构</span></li>
-<li><span class="toc-num">02</span><span class="toc-text">二、核心知识点</span></li>
-<li><span class="toc-num">03</span><span class="toc-text">三、例题/强调点</span></li>
-<li><span class="toc-num">04</span><span class="toc-text">四、复习清单</span></li>
-<li><span class="toc-num">05</span><span class="toc-text">五、主动回忆题</span></li>
-  </ul>
-</div>
-
-<!-- 内容 -->
-<div class="page">
-  <div class="running">
-    <span class="course">生物化学与分子生物学</span>
-    <span>第11-12节 · 2026-09-16</span>
-  </div>
-  <h1>生物化学与分子生物学 · 第11-12节</h1>
-
-<blockquote>**课程**：生物化学与分子生物学</blockquote>
-<blockquote>**节次**：第11-12节（课程内累计）</blockquote>
-<blockquote>**日期**：2026年9月16日</blockquote>
-<blockquote>**主题**：B族维生素续讲、维生素C、酶与酶促反应</blockquote>
-
-<hr>
-
-<h2>一、知识结构</h2>
-
-<p><code>`</code></p>
-<p>维生素与酶</p>
-<p>├── B族维生素（续）</p>
-<p>│   ├── B2 核黄素 → FMN/FAD → 递氢体</p>
-<p>│   ├── PP 烟酸/烟酰胺 → NAD/NADP → 递氢体</p>
-<p>│   ├── 泛酸 → 辅酶A/酰基载体蛋白 → 转酰基</p>
-<p>│   ├── 生物素 → 自身即活性形式 → 羧化酶辅基</p>
-<p>│   ├── B6 吡哆醇/醛/胺 → 磷酸吡哆醛 → 转氨酶辅因子</p>
-<p>│   ├── 叶酸 → 四氢叶酸(FH4) → 转一碳单位</p>
-<p>│   └── B12 钴胺素 → 甲钴胺素/脱氧腺苷钴胺素 → 甲硫氨酸代谢</p>
-<p>├── 维生素C</p>
-<p>│   ├── L-抗坏血酸 ↔ 脱氢抗坏血酸</p>
-<p>│   ├── 递氢体、保护维生素E、参与羟化反应</p>
-<p>│   └── 缺乏症：坏血病</p>
-<p>└── 酶与酶促反应</p>
-<p>├── 酶的分子组成（核酶/单纯酶/缀合酶）</p>
-<p>├── 辅因子（辅酶/辅基、金属酶/金属激活酶）</p>
-<p>├── 酶的结构分类（单体/寡聚/多酶体系/多功能酶）</p>
-<p>├── 活性中心（结合基团+催化基团）</p>
-<p>├── 酶的特点（高效性、温和条件、可调节、特异性）</p>
-<p>├── 工作原理（过渡态、活化能、结合能、诱导契合）</p>
-<p>└── 催化机制（邻近效应、定向排列、表面效应、多元催化）</p>
-<p><code>`</code></p>
-
-<hr>
-
-<h2>二、核心知识点</h2>
-
-<h3>（一）维生素B2（核黄素）</h3>
-
-<p><strong>1. 化学本质</strong></p>
-<ul>
-<li>核黄素（riboflavin）= 核醇 + 含氮杂环（黄素）</li>
-<li>名字来源：核醇部分 + 黄色的黄素部分</li>
+<div class="page"><h2 class="h2">1. 维生素B2（核黄素）</h2>
+<p class="lead">两种活性形式 FMN、FAD，作为氧化还原酶辅因子递氢。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>维生素B2即核黄素（riboflavin），由核醇与含氮杂环（黄素）组成 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>核黄素加磷酸生成黄素单核苷酸，即FMN <span class="loc">〔说话人1 00:00〕</span></li>
+<li>核苷酸由碱基、核糖（戊糖）、磷酸三部分构成 <span class="loc">〔说话人1 00:36〕</span></li>
+<li>FMN符合核苷酸基本构造：黄素碱基＋戊糖＋磷酸 <span class="loc">〔说话人1 00:36〕</span></li>
+<li>FAD即黄素腺嘌呤二核苷酸，含FMN与腺嘌呤核苷酸两部分 <span class="loc">〔说话人1 01:37〕</span></li>
+<li>FAD中两个核苷酸经磷酸二酯键连接，是二核苷酸 <span class="loc">〔说话人1 01:37〕</span></li>
+<li>FMN（单核苷酸）与FAD（二核苷酸）都是维生素B2的活性形式 <span class="loc">〔说话人1 01:37〕</span></li>
+<li>所有B族维生素都可作为辅酶，故缺乏症状丰富杂乱，但背后原理一致 <span class="loc">〔说话人1 02:18〕</span></li>
+<li>B2作为氧化还原酶的辅因子，黄素含氮杂环可受氢或脱氢，作为递氢体 <span class="loc">〔说话人1 02:50〕</span></li>
+<li>长期食用过度加工食物易致B2缺乏 <span class="loc">〔说话人1 02:50〕</span></li>
+<li>B2缺乏症为口角炎、眼睑炎 <span class="loc">〔说话人1 03:56〕</span></li>
 </ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>活性形式</th><th>组成</th><th>功能</th></tr>
+<tr><td>FMN（黄素单核苷酸）</td><td>核黄素＋磷酸（碱基＋戊糖＋磷酸）</td><td>递氢体</td></tr>
+<tr><td>FAD（黄素腺嘌呤二核苷酸）</td><td>FMN＋AMP，经磷酸二酯键连接</td><td>递氢体</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★B2 的两种活性形式 FMN、FAD 及「递氢体」功能。 <span class="loc">〔说话人1 01:37〕</span></div></div>
 
-<p><strong>2. 活性形式（两种）</strong></p>
-<ul>
-<li><strong>黄素单核苷酸（FMN）</strong>：核黄素 + 磷酸</li>
-<li>符合核苷酸基本构造：碱基（黄素）+ 戊糖（核醇）+ 磷酸</li>
-<li>与组成核酸的核苷酸不同，但基本构造一致</li>
-<li><strong>黄素腺嘌呤二核苷酸（FAD）</strong>：FMN + AMP（腺嘌呤核苷酸）</li>
-<li>两个核苷酸通过磷酸二酯键连接</li>
-<li>结构：上方FMN部分 + 下方腺嘌呤核苷酸部分</li>
+<div class="page"><h2 class="h2">2. 维生素PP（烟酸/烟酰胺）</h2>
+<p class="lead">活性形式 NAD／NADP，作为递氢体参与氧化还原；NADPH 主司合成代谢。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>维生素PP包括烟酸和烟酰胺，结构为含氮杂环加羧基或酰胺基 <span class="loc">〔说话人1 03:56〕</span></li>
+<li>烟酰胺腺嘌呤二核苷酸即NAD，由烟酰胺核苷酸与腺嘌呤核苷酸组成 <span class="loc">〔说话人1 04:50〕</span></li>
+<li>NAD中两个磷酸成酯键，是典型的二核苷酸结构 <span class="loc">〔说话人1 04:50〕</span></li>
+<li>NAD再加一个磷酸生成NADP，即烟酰胺腺嘌呤二核苷酸磷酸 <span class="loc">〔说话人1 05:35〕</span></li>
+<li>NAD和NADP都是维生素PP的活性形式，参与氧化还原 <span class="loc">〔说话人1 05:35〕</span></li>
+<li>NAD/NADP在含氮碱基部分传递氢，是脱氢酶的辅因子、递氢体 <span class="loc">〔说话人1 06:04〕</span></li>
+<li>氧化型为受氢体，还原型为供氢体，可在两种状态间变化 <span class="loc">〔说话人1 06:04〕</span></li>
+<li>NAD受氢体参与糖酵解和三羧酸循环，供氢体参与丙酮酸生成乳酸 <span class="loc">〔说话人1 06:42〕</span></li>
+<li>NADP受氢体参与磷酸戊糖途径 <span class="loc">〔说话人1 06:42〕</span></li>
+<li>磷酸戊糖途径是糖代谢旁路，提供核苷酸原料和NADPH <span class="loc">〔说话人1 07:24〕</span></li>
+<li>NADPH作为供氢体参与脂肪酸、胆固醇合成（合成代谢） <span class="loc">〔说话人1 07:24〕</span></li>
+<li>NAD主要参与分解代谢，NADPH主要参与合成代谢 <span class="loc">〔说话人1 07:24〕</span></li>
+<li>维生素PP缺乏症为糙皮症，影响皮肤、消化和神经系统 <span class="loc">〔说话人1 08:05〕</span></li>
+<li>维生素PP过量症状不典型，多为肝损伤或中毒 <span class="loc">〔说话人1 08:29〕</span></li>
 </ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>形式</th><th>氧化型/还原型</th><th>受氢/供氢</th><th>主要参与</th></tr>
+<tr><td>NAD</td><td>NAD⁺／NADH</td><td>NAD⁺受氢、NADH供氢</td><td>糖酵解、三羧酸循环；丙酮酸→乳酸</td></tr>
+<tr><td>NADP</td><td>NADP⁺／NADPH</td><td>NADP⁺受氢、NADPH供氢</td><td>磷酸戊糖途径；脂肪酸、胆固醇合成</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★NAD 主分解代谢、NADPH 主合成代谢；磷酸戊糖途径是 NADPH 主要来源。 <span class="loc">〔说话人1 07:24〕</span></div></div>
 
-<p><strong>3. 生化功能</strong></p>
-<ul>
-<li>作为<strong>氧化还原酶的辅因子</strong></li>
-<li>黄素的含氮杂环部分可接受氢/脱去氢，进行可逆反应</li>
-<li>作为<strong>递氢体</strong>广泛参与代谢反应</li>
+<div class="page"><h2 class="h2">3. 泛酸（遍多酸）</h2>
+<p class="lead">活性形式 CoA／ACP，靠活泼巯基转移酰基。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>第四个B族维生素是泛酸（pantothenic，意为到处都有），又名遍多酸 <span class="loc">〔说话人1 09:05〕</span></li>
+<li>泛酸广泛存在，因而不易缺乏 <span class="loc">〔说话人1 09:05〕</span></li>
+<li>泛酸由二羟基二甲基丁酸与β-丙氨酸组成 <span class="loc">〔说话人1 09:33〕</span></li>
+<li>泛酸活性形式之一是在它的一端加上巯基乙胺，巯基非常活泼 <span class="loc">〔说话人1 09:33〕</span></li>
+<li>辅酶A（coenzyme A，CoA）由泛酸、巯基乙胺与磷酸化ADP组成 <span class="loc">〔说话人1 09:58〕</span></li>
+<li>辅酶A的活泼巯基可以再接上酰基，参与转移酰基 <span class="loc">〔说话人1 09:58〕</span></li>
+<li>辅酶A的巯基不用于氧化还原（不形成二硫键），而是转移酰基 <span class="loc">〔说话人1 09:58〕</span></li>
+<li>另一种活性形式是酰基载体蛋白（ACP），丝氨酸残基与泛酸部分共价相连 <span class="loc">〔说话人1 11:01〕</span></li>
+<li>巯基的硫与酰基形成共价键，生成相应的酰基辅酶A（酰基可为甲酰基、乙酰基等） <span class="loc">〔说话人1 11:38〕</span></li>
+<li>酰基辅酶A作为酰基供体，把酰基加到其他底物上 <span class="loc">〔说话人1 11:38〕</span></li>
+<li>蛋白质的翻译后修饰可通过酰基转移完成 <span class="loc">〔说话人1 11:38〕</span></li>
+<li>泛酸严重缺乏可致四肢神经痛 <span class="loc">〔说话人1 12:38〕</span></li>
 </ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>活性形式</th><th>化学本质</th><th>转移基团</th></tr>
+<tr><td>辅酶A（CoA）</td><td>泛酸＋巯基乙胺＋磷酸化ADP</td><td>酰基</td></tr>
+<tr><td>酰基载体蛋白（ACP）</td><td>蛋白质，丝氨酸与泛酸共价相连</td><td>酰基</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★泛酸巯基的功能是转移酰基（成硫酯键），不是氧化还原形成二硫键。 <span class="loc">〔说话人1 09:58〕</span></div></div>
 
-<p><strong>4. 缺乏症</strong></p>
-<ul>
-<li>口角炎、眼睑炎</li>
-<li>长期食用过度加工食物易导致缺乏</li>
-<li>鼓励多食用新鲜蔬菜水果</li>
+<div class="page"><h2 class="h2">4. 生物素</h2>
+<p class="lead">自身即活性形式，作为羧化酶辅因子传递羧基。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>第五个B族维生素是生物素（Biotin），结构为含硫噻吩环、尿素与戊酸侧链 <span class="loc">〔说话人1 13:01〕</span></li>
+<li>生物素自身就是它的活性形式 <span class="loc">〔说话人1 13:25〕</span></li>
+<li>生物素是羧化酶的辅因子，传递羧基 <span class="loc">〔说话人1 13:25〕</span></li>
+<li>生物素在尿素部分加上羧基，再传递给各种底物 <span class="loc">〔说话人1 14:03〕</span></li>
+<li>长期服用抗生素可导致生物素缺乏 <span class="loc">〔说话人1 14:03〕</span></li>
+<li>生物素缺乏症状不典型，影响各个组织器官 <span class="loc">〔说话人1 14:03〕</span></li>
+<li>实验室常用生物素标记或纯化蛋白质，类似谷胱甘肽的GST <span class="loc">〔说话人1 15:00〕</span></li>
 </ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>项目</th><th>内容</th></tr>
+<tr><td>化学本质</td><td>含硫噻吩环＋尿素＋戊酸侧链</td></tr>
+<tr><td>活性形式</td><td>生物素自身</td></tr>
+<tr><td>功能</td><td>羧化酶辅因子，传递羧基</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★生物素是「自身即活性形式」的维生素，功能为传递羧基。 <span class="loc">〔说话人1 13:25〕</span></div></div>
 
-<blockquote>**老师强调**：所有B族维生素都可作为辅酶，因此缺乏症表现丰富杂乱，但背后生化原理一致——影响一类酶的功能。</blockquote>
-
-<hr>
-
-<h3>（二）维生素PP（烟酸/烟酰胺）</h3>
-
-<p><strong>1. 化学本质</strong></p>
-<ul>
-<li>烟酸（nicotinic acid）+ 烟酰胺（nicotinamide）</li>
-<li>含氮杂环 + 羧基/酰胺基团</li>
+<div class="page"><h2 class="h2">5. 维生素B6（吡多醇/吡多醛/吡多胺）</h2>
+<p class="lead">活性形式磷酸吡多醛，作为转氨酶辅因子转移氨基。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>第六个B族维生素是维生素B6，化学本质为吡多醇、吡多醛、吡多胺 <span class="loc">〔说话人1 15:42〕</span></li>
+<li>吡多醛转变为吡多胺是加上一个氨基，不是进一步氧化 <span class="loc">〔说话人1 15:42〕</span></li>
+<li>维生素A走视黄醇→视黄醛→视黄酸，与B6的变化过程不同 <span class="loc">〔说话人1 15:42〕</span></li>
+<li>吡多醛、吡多胺加磷酸生成磷酸吡多醛和磷酸吡多胺 <span class="loc">〔说话人1 16:16〕</span></li>
+<li>磷酸吡多醛是B6的活性形式，能接受氨基再把它送出去 <span class="loc">〔说话人1 16:16〕</span></li>
+<li>磷酸吡多醛是转氨酶的辅因子，转移氨基 <span class="loc">〔说话人1 16:59〕</span></li>
+<li>转氨基例：α-酮戊二酸加上氨基生成谷氨酸 <span class="loc">〔说话人1 16:59〕</span></li>
+<li>磷酸吡多醛与磷酸吡多胺相互转化完成转氨基 <span class="loc">〔说话人1 16:59〕</span></li>
+<li>磷酸吡多醛还能终止类固醇激素的作用 <span class="loc">〔说话人1 16:59〕</span></li>
+<li>B6缺乏症为低血色素小细胞性贫血 <span class="loc">〔说话人1 16:59〕</span></li>
+<li>B6过量可致神经症状：肢体远端麻木疼痛 <span class="loc">〔说话人1 18:11〕</span></li>
+<li>B族维生素多与神经系统相关，因神经对能量消耗敏感、易先受累 <span class="loc">〔说话人1 18:38〕</span></li>
 </ul>
+<div class="exam"><span class="tag">★考点</span>★B6 活性形式磷酸吡多醛、转移氨基；缺乏症为低血色素小细胞性贫血。 <span class="loc">〔说话人1 16:59〕</span></div></div>
 
-<p><strong>2. 活性形式（两种）</strong></p>
-<ul>
-<li><strong>烟酰胺腺嘌呤二核苷酸（NAD）</strong>：烟酰胺核苷酸 + 腺嘌呤核苷酸</li>
-<li><strong>烟酰胺腺嘌呤二核苷酸磷酸（NADP）</strong>：NAD + 额外磷酸</li>
+<div class="page"><h2 class="h2">6. 叶酸</h2>
+<p class="lead">活性形式四氢叶酸（FH4），转移一碳单位，参与核苷酸合成。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>第七个B族维生素是叶酸（folic acid），最早在叶子中发现 <span class="loc">〔说话人1 18:38〕</span></li>
+<li>叶酸由蝶啶、对氨基苯甲酸与谷氨酸组成 <span class="loc">〔说话人1 19:26〕</span></li>
+<li>叶酸中谷氨酸以主链α-氨基、α-羧基与苯甲酸相连 <span class="loc">〔说话人1 20:14〕</span></li>
+<li>新增谷氨酸用侧链γ-羧基连接，故谷氨酸间为γ-肽键而非α-肽键 <span class="loc">〔说话人1 20:14〕</span></li>
+<li>蝶酸＝蝶啶＋对氨基苯甲酸，蝶酰谷氨酸即叶酸的通用名 <span class="loc">〔说话人1 20:14〕</span></li>
+<li>叶酸可含1个或多个（如7个）谷氨酸 <span class="loc">〔说话人1 20:14〕</span></li>
+<li>谷胱甘肽中也含γ-肽键 <span class="loc">〔说话人1 20:14〕</span></li>
+<li>叶酸的活性形式是四氢叶酸 <span class="loc">〔说话人1 20:14〕</span></li>
+<li>四氢叶酸＝蝶啶环5、6、7、8位各加上一个氢 <span class="loc">〔说话人1 20:14〕</span></li>
+<li>tetrahydro即四氢（tetra为四、hydro为氢） <span class="loc">〔说话人1 21:25〕</span></li>
+<li>四氢叶酸简称FH4 <span class="loc">〔说话人1 21:47〕</span></li>
+<li>四氢叶酸所传递的是一碳单位 <span class="loc">〔说话人1 21:47〕</span></li>
+<li>一碳单位指含一个碳的基团，如甲基、甲酰基、甲氨基等 <span class="loc">〔说话人1 22:33〕</span></li>
+<li>一碳单位常见于核苷酸合成，嘌呤环是逐个原子加上去的 <span class="loc">〔说话人1 22:55〕</span></li>
+<li>嘌呤合成中数个碳由四氢叶酸以一碳单位提供 <span class="loc">〔说话人1 23:17〕</span></li>
+<li>四氢叶酸缺乏致核苷酸合成障碍，引起巨幼细胞贫血 <span class="loc">〔说话人1 23:17〕</span></li>
+<li>巨幼细胞体积大但不能正常分裂，无法形成成熟红细胞 <span class="loc">〔说话人1 24:07〕</span></li>
+<li>孕妇叶酸不足可致胎儿脊柱裂、神经管缺陷，补充叶酸可有效防治 <span class="loc">〔说话人1 24:07〕</span></li>
+<li>备孕可到社区医院免费领取叶酸 <span class="loc">〔说话人1 24:53〕</span></li>
 </ul>
+<div class="exam"><span class="tag">★考点</span>★叶酸活性形式 FH4、转移一碳单位；缺乏致巨幼细胞贫血与神经管缺陷。 <span class="loc">〔说话人1 21:47〕</span></div></div>
 
-<p><strong>3. 生化功能</strong></p>
-<ul>
-<li>作为<strong>递氢体</strong>参与氧化还原反应</li>
-<li>含氮碱基部分进行氢的传递</li>
-<li>氧化形式（NAD⁺/NADP⁺）= 受氢体</li>
-<li>还原形式（NADH/NADPH）= 供氢体</li>
+<div class="page"><h2 class="h2">7. 维生素B12（钴胺素）</h2>
+<p class="lead">唯一含金属元素的维生素；参与甲硫氨酸代谢，串联 B6、叶酸、B12。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>第八个B族维生素是维生素B12，即钴胺素 <span class="loc">〔说话人1 25:33〕</span></li>
+<li>钴胺素是唯一含金属元素的维生素 <span class="loc">〔说话人1 25:33〕</span></li>
+<li>钴胺素结构类似血红素：中间是金属，周围是含氮杂环 <span class="loc">〔说话人1 25:33〕</span></li>
+<li>血红素中间是铁，钴胺素中间是钴 <span class="loc">〔说话人1 25:33〕</span></li>
+<li>血红素的铁上下有组氨酸配位，并可接受氧气 <span class="loc">〔说话人1 26:20〕</span></li>
+<li>钴胺素上下也有配位，上方R基团可为甲基、氰基或碱基加核糖 <span class="loc">〔说话人1 26:20〕</span></li>
+<li>R基团为甲基时是甲钴胺素 <span class="loc">〔说话人1 27:10〕</span></li>
+<li>R基团为脱氧腺苷酸时是5'-脱氧腺苷钴胺素 <span class="loc">〔说话人1 27:10〕</span></li>
+<li>甲钴胺素与5'-脱氧腺苷钴胺素是B12的活性形式 <span class="loc">〔说话人1 27:10〕</span></li>
+<li>钴胺素主要参与甲硫氨酸代谢 <span class="loc">〔说话人1 27:10〕</span></li>
+<li>B12吸收需要胃黏膜分泌的内因子（intrinsic factor，IF） <span class="loc">〔说话人1 27:10〕</span></li>
+<li>B12吸收后还需要转钴胺素协助运输到组织 <span class="loc">〔说话人1 27:10〕</span></li>
+<li>钴胺素是甲硫氨酸合成酶（MS）的辅因子 <span class="loc">〔说话人1 28:32〕</span></li>
+<li>甲基四氢叶酸加同型半胱氨酸生成甲硫氨酸和四氢叶酸 <span class="loc">〔说话人1 28:32〕</span></li>
+<li>同型半胱氨酸是甲硫氨酸的来源，也可进一步形成半胱氨酸 <span class="loc">〔说话人1 29:21〕</span></li>
+<li>甲硫氨酸与半胱氨酸都是含硫氨基酸 <span class="loc">〔说话人1 30:02〕</span></li>
+<li>同型半胱氨酸转变为半胱氨酸的合成酶以磷酸吡多醛（B6）为辅酶 <span class="loc">〔说话人1 30:02〕</span></li>
+<li>该循环把B6、叶酸和B12三种B族维生素串联到一起 <span class="loc">〔说话人1 30:02〕</span></li>
+<li>相关缺乏可致巨幼细胞贫血，也叫恶性贫血 <span class="loc">〔说话人1 30:02〕</span></li>
 </ul>
+<div class="exam"><span class="tag">★考点</span>★B12＝钴胺素、唯一含金属；需内因子吸收；参与甲硫氨酸代谢并串联B6、叶酸。 <span class="loc">〔说话人1 27:10〕</span></div></div>
 
-<p><strong>4. 具体参与的代谢途径</strong></p>
-
-<table class="note-table">
-<tr><th>活性形式</th><th>状态</th><th>参与代谢</th></tr>
-<tr><td>NAD⁺</td><td>受氢体（氧化型）</td><td>糖酵解、三羧酸循环（分解代谢）</td></tr>
-<tr><td>NADH</td><td>供氢体（还原型）</td><td>丙酮酸→乳酸（分解代谢）</td></tr>
-<tr><td>NADP⁺</td><td>受氢体（氧化型）</td><td>磷酸戊糖途径（生成NADPH）</td></tr>
-<tr><td>NADPH</td><td>供氢体（还原型）</td><td>脂肪酸合成、胆固醇合成（合成代谢）</td></tr>
-</table>
-
-<blockquote>**关键区别**：NAD主要参与**分解代谢**（供能），NADPH主要参与**合成代谢**（如脂肪酸、胆固醇合成）。磷酸戊糖途径是NADPH的主要来源。</blockquote>
-
-<p><strong>5. 缺乏症</strong></p>
-<ul>
-<li><strong>糙皮症（pellagra）</strong></li>
-<li>症状复杂：皮肤、消化系统、神经系统均受影响</li>
-<li>原理：氧化还原代谢障碍影响全身各器官</li>
+<div class="page"><h2 class="h2">8. 维生素C（抗坏血酸）</h2>
+<p class="lead">L-抗坏血酸，递氢体、保护维生素E、参与羟化反应；缺乏致坏血病。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>维生素C化学本质是L-抗坏血酸，为己糖酸内酯（内部形成环） <span class="loc">〔说话人1 30:02〕</span></li>
+<li>抗坏血酸的两个羟基使其可在两种状态间可逆变化 <span class="loc">〔说话人1 30:02〕</span></li>
+<li>抗坏血酸与脱氢抗坏血酸互变：脱氢者为氧化型、加氢者为还原型 <span class="loc">〔说话人1 30:02〕</span></li>
+<li>维生素C作为递氢体参与氧化还原 <span class="loc">〔说话人1 32:41〕</span></li>
+<li>维生素E即生育酚，是细胞膜中最重要的抗氧化剂 <span class="loc">〔说话人1 33:13〕</span></li>
+<li>维生素E被氧化后由维生素C帮它还原 <span class="loc">〔说话人1 33:13〕</span></li>
+<li>维生素C在细胞质中再由谷胱甘肽和NADPH还原 <span class="loc">〔说话人1 33:13〕</span></li>
+<li>维生素C可使巯基酶的巯基保持还原状态 <span class="loc">〔说话人1 33:13〕</span></li>
+<li>维生素C参与羟化反应，即给底物加上羟基 <span class="loc">〔说话人1 34:10〕</span></li>
+<li>胶原富含脯氨酸，脯氨酸羟化后胶原才算成熟 <span class="loc">〔说话人1 34:10〕</span></li>
+<li>胆汁酸合成、儿茶酚胺代谢也需要羟化反应 <span class="loc">〔说话人1 34:46〕</span></li>
+<li>维生素C缺乏症为坏血病，由航海缺乏新鲜蔬果发现 <span class="loc">〔说话人1 35:07〕</span></li>
+<li>坏血病症状：容易出血、骨折、伤口不愈合、牙龈腐烂、牙齿松动 <span class="loc">〔说话人1 35:07〕</span></li>
 </ul>
+<div class="mnem"><span class="tag">助记</span>抗氧化串联：维生素E（细胞膜）→维生素C（细胞质）→谷胱甘肽→NADPH。 <span class="loc">〔说话人1 33:13〕</span></div></div>
 
-<p><strong>6. 过量</strong></p>
-<ul>
-<li>症状不典型，多为肝损伤或中毒</li>
+<div class="page"><h2 class="h2">9. 维生素章节回顾（天天快答）</h2>
+<p class="lead">脂溶性维生素、维生素D活化、易混「酸」类维生素与B族速查。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>维生素先分脂溶性和水溶性两大类 <span class="loc">〔说话人1 36:05〕</span></li>
+<li>维生素的学习逻辑：化学本质→生化功能→缺乏症 <span class="loc">〔说话人1 36:05〕</span></li>
+<li>脂溶性维生素为A、D、E、K <span class="loc">〔说话人1 37:42〕</span></li>
+<li>胆钙化醇（维生素D3）在皮肤由胆固醇经紫外线照射形成 <span class="loc">〔说话人1 38:35〕</span></li>
+<li>胆钙化醇先去肝脏在25位加羟基，是血液运输和肝储存形式 <span class="loc">〔说话人1 38:48〕</span></li>
+<li>25-羟维生素D再去肾脏在1位加羟基，生成活性形式 <span class="loc">〔说话人1 38:48〕</span></li>
+<li>维生素PP（烟酸、烟酰胺）是NAD和NADP的组成 <span class="loc">〔说话人1 39:28〕</span></li>
+<li>泛酸、叶酸、烟酸易混，要按所转移基团区分 <span class="loc">〔说话人1 39:28〕</span></li>
+<li>泛酸活性形式是辅酶A和酰基载体蛋白，转移酰基 <span class="loc">〔说话人1 39:28〕</span></li>
+<li>叶酸活性形式是四氢叶酸，转移一碳单位 <span class="loc">〔说话人1 39:28〕</span></li>
+<li>生物素自身即活性形式，是羧化酶的辅因子 <span class="loc">〔说话人1 40:27〕</span></li>
+<li>B12是钴胺素，是唯一含金属钴的维生素 <span class="loc">〔说话人1 40:49〕</span></li>
+<li>B1是硫胺素，B2是核黄素 <span class="loc">〔说话人1 41:25〕</span></li>
+<li>B6活性形式是磷酸吡多醛，主要转移氨基 <span class="loc">〔说话人1 41:29〕</span></li>
 </ul>
-
-<hr>
-
-<h3>（三）泛酸（遍多酸）</h3>
-
-<p><strong>1. 化学本质</strong></p>
-<ul>
-<li>泛酸（pantothenic acid）= 二羟基二甲基丁酸 + β-丙氨酸</li>
-<li>"泛"=到处都有，广泛存在，又称遍多酸</li>
-</ul>
-
-<p><strong>2. 活性形式（两种）</strong></p>
-<ul>
-<li><strong>辅酶A（CoA, coenzyme A）</strong>：泛酸 + 巯基乙胺 + 磷酸化ADP</li>
-<li>关键：活泼的<strong>巯基（-SH）</strong></li>
-<li>巯基可与酰基形成共价键（硫酯键）</li>
-<li><strong>酰基载体蛋白（ACP）</strong>：蛋白质形式</li>
-<li>丝氨酸残基与泛酸部分共价连接</li>
-<li>同样保留活泼巯基</li>
-</ul>
-
-<p><strong>3. 生化功能</strong></p>
-<ul>
-<li>转移<strong>酰基</strong>（acyl group transfer）</li>
-<li>巯基与酰基形成酰基辅酶A（如乙酰CoA、甲酰CoA）</li>
-<li>酰基辅酶A作为酰基供体，将酰基加到其他底物上</li>
-<li>参与蛋白质翻译后修饰（酰基化）</li>
-</ul>
-
-<blockquote>**老师强调**：泛酸的巯基不是发挥氧化还原功能（不是形成二硫键），而是通过形成硫酯键来转移酰基。</blockquote>
-
-<p><strong>4. 缺乏症</strong></p>
-<ul>
-<li>较少见（广泛存在）</li>
-<li>严重缺乏可导致<strong>四肢神经痛</strong></li>
-</ul>
-
-<hr>
-
-<h3>（四）生物素</h3>
-
-<p><strong>1. 化学本质</strong></p>
-<ul>
-<li>生物素（biotin）= 噻吩环（含硫）+ 尿素 + 戊酸侧链</li>
-</ul>
-
-<p><strong>2. 活性形式</strong></p>
-<ul>
-<li><strong>生物素自身就是活性形式</strong>（与其他维生素不同）</li>
-</ul>
-
-<p><strong>3. 生化功能</strong></p>
-<ul>
-<li>作为<strong>羧化酶的辅因子</strong></li>
-<li>尿素部分可接受羧基，然后将羧基传递给各种底物</li>
-<li>传递<strong>羧基</strong>（carboxyl group transfer）</li>
-<li>参与多种代谢中的羧化反应</li>
-</ul>
-
-<p><strong>4. 缺乏症</strong></p>
-<ul>
-<li>不易缺乏</li>
-<li>长期服用抗生素可导致生物素缺乏（肠道菌群合成受抑制）</li>
-<li>症状不典型，影响各组织器官</li>
-</ul>
-
-<p><strong>5. 实验室应用</strong></p>
-<ul>
-<li>生物素常用于标记蛋白质（biotinylation）</li>
-<li>与链霉亲和素（streptavidin）高亲和力结合</li>
-<li>类似GST标签的纯化工具</li>
-</ul>
-
-<hr>
-
-<h3>（五）维生素B6（吡哆醇/吡哆醛/吡哆胺）</h3>
-
-<p><strong>1. 化学本质</strong></p>
-<ul>
-<li>三种形式：吡哆醇（pyridoxine）、吡哆醛（pyridoxal）、吡哆胺（pyridoxamine）</li>
-<li>吡哆醛 ↔ 吡哆胺：加氨基/脱氨基（不是进一步氧化，与维生素A的视黄醇→视黄醛→视黄酸不同）</li>
-</ul>
-
-<p><strong>2. 活性形式</strong></p>
-<ul>
-<li><strong>磷酸吡哆醛（PLP, pyridoxal phosphate）</strong>：吡哆醛 + 磷酸</li>
-<li>磷酸吡哆胺也可存在，但PLP是主要活性形式</li>
-</ul>
-
-<p><strong>3. 生化功能</strong></p>
-<ul>
-<li>作为<strong>转氨酶的辅因子</strong></li>
-<li>转移<strong>氨基</strong>（amino group transfer）</li>
-<li>机制：磷酸吡哆醛接受氨基→磷酸吡哆胺，再将氨基传递给α-酮酸</li>
-<li>例：α-酮戊二酸 + 氨基 → 谷氨酸（由转氨酶催化，PLP参与）</li>
-</ul>
-
-<p><strong>4. 其他功能</strong></p>
-<ul>
-<li>终止类固醇激素的作用（需特别记忆）</li>
-</ul>
-
-<p><strong>5. 缺乏症</strong></p>
-<ul>
-<li><strong>低血色素小细胞性贫血</strong></li>
-<li>与B12/叶酸缺乏导致的巨幼细胞贫血不同</li>
-</ul>
-
-<p><strong>6. 过量</strong></p>
-<ul>
-<li>神经系统症状：肢体远端麻木、疼痛</li>
-</ul>
-
-<blockquote>**老师串联**：B族维生素多与神经系统相关，因为神经系统对能量消耗敏感，而B族维生素作为辅酶参与能量代谢。</blockquote>
-
-<hr>
-
-<h3>（六）叶酸</h3>
-
-<p><strong>1. 化学本质</strong></p>
-<ul>
-<li>叶酸（folic acid）= 蝶啶 + 对氨基苯甲酸（PABA）+ 谷氨酸</li>
-<li>蝶酸 = 蝶啶 + PABA</li>
-<li>蝶酰谷氨酸 = 叶酸</li>
-</ul>
-
-<p><strong>2. 结构特点</strong></p>
-<ul>
-<li>谷氨酸部分可连接多个谷氨酸（1个或7个）</li>
-<li>谷氨酸之间通过<strong>γ-肽键</strong>连接（不是α-肽键）</li>
-<li>因为使用的是谷氨酸侧链的γ-羧基，不是主链的α-羧基</li>
-<li>谷胱甘肽中也有γ-肽键</li>
-</ul>
-
-<p><strong>3. 活性形式</strong></p>
-<ul>
-<li><strong>四氢叶酸（FH4, tetrahydrofolate）</strong></li>
-<li>蝶啶环的5、6、7、8位各加一个氢</li>
-<li>F = folic acid（叶酸），H4 = 四个氢</li>
-</ul>
-
-<p><strong>4. 生化功能</strong></p>
-<ul>
-<li>转移<strong>一碳单位</strong>（one-carbon unit）</li>
-<li>一碳单位包括：甲基（-CH₃）、甲酰基（-CHO）、甲氨基等含一个碳的基团</li>
-<li>参与<strong>核苷酸合成</strong>（嘌呤环的合成需要一碳单位）</li>
-<li>嘌呤环是逐步加上原子合成的，其中几个碳来自一碳单位</li>
-</ul>
-
-<p><strong>5. 缺乏症</strong></p>
-<ul>
-<li><strong>巨幼细胞贫血</strong>（megaloblastic anemia）</li>
-<li>核苷酸合成障碍 → 细胞不能正常分裂 → 红细胞体积大但不成熟</li>
-<li><strong>胎儿神经管缺陷</strong>（脊柱裂等）</li>
-<li>孕妇需额外补充叶酸</li>
-<li>社区医院可免费领取叶酸</li>
-<li>补充叶酸可有效防治神经管缺陷</li>
-</ul>
-
-<hr>
-
-<h3>（七）维生素B12（钴胺素）</h3>
-
-<p><strong>1. 化学本质</strong></p>
-<ul>
-<li>钴胺素（cobalamin）</li>
-<li><strong>唯一含有金属元素的维生素</strong>——钴（Co）</li>
-<li>结构类似血红素：中间金属离子 + 含氮杂环（咕啉环，类似卟啉环）</li>
-<li>血红素：中间是铁（Fe）</li>
-<li>钴胺素：中间是钴（Co）</li>
-<li>上下均有配位键</li>
-</ul>
-
-<p><strong>2. 活性形式（两种）</strong></p>
-<ul>
-<li><strong>甲钴胺素</strong>（methylcobalamin）：R基团=甲基</li>
-<li><strong>5'-脱氧腺苷钴胺素</strong>（5'-deoxyadenosylcobalamin）：R基团=脱氧腺苷酸</li>
-</ul>
-
-<p><strong>3. 吸收与运输（特殊）</strong></p>
-<ul>
-<li>需要<strong>内因子（IF, intrinsic factor）</strong>帮助吸收</li>
-<li>内因子由胃黏膜壁细胞分泌</li>
-<li>钴胺素进入胃后与内因子结合才能被吸收</li>
-<li>吸收后需要<strong>转钴胺素</strong>（transcobalamin）协助运输到组织</li>
-</ul>
-
-<p><strong>4. 生化功能</strong></p>
-<ul>
-<li>参与<strong>甲硫氨酸代谢</strong></li>
-<li>作为<strong>甲硫氨酸合成酶（MS）</strong>的辅因子</li>
-<li>甲基四氢叶酸 + 同型半胱氨酸 → 甲硫氨酸 + 四氢叶酸</li>
-<li>此反应由甲钴胺素参与</li>
-<li>串联三种B族维生素：</li>
-<li>B12（钴胺素）：甲硫氨酸合成酶辅因子</li>
-<li>叶酸（四氢叶酸）：提供一碳单位（甲基）</li>
-<li>B6（磷酸吡哆醛）：同型半胱氨酸→半胱氨酸的合成酶辅因子</li>
-<li>三者共同参与含硫氨基酸（甲硫氨酸、半胱氨酸）代谢</li>
-</ul>
-
-<p><strong>5. 缺乏症</strong></p>
-<ul>
-<li><strong>恶性贫血</strong>（pernicious anemia，巨幼细胞贫血的一种）</li>
-<li>内因子缺乏（如胃切除、萎缩性胃炎）可导致B12吸收障碍</li>
-</ul>
-
-<hr>
-
-<h3>（八）维生素C（抗坏血酸）</h3>
-
-<p><strong>1. 化学本质</strong></p>
-<ul>
-<li>L-抗坏血酸（L-ascorbic acid）</li>
-<li>己糖酸内酯（内部形成环）</li>
-<li>两个关键羟基使其具有氧化还原功能</li>
-</ul>
-
-<p><strong>2. 氧化还原形式</strong></p>
-<ul>
-<li>抗坏血酸（还原型）↔ 脱氢抗坏血酸（氧化型）</li>
-<li>脱氢=氧化型，加氢=还原型</li>
-</ul>
-
-<p><strong>3. 生化功能</strong></p>
-<ul>
-<li><strong>递氢体</strong>，参与氧化还原反应</li>
-<li><strong>保护维生素E</strong>：</li>
-<li>维生素E（生育酚）是细胞膜中最重要的抗氧化剂（脂溶性）</li>
-<li>维生素E被氧化后，由维生素C（水溶性）帮助还原</li>
-<li>维生素C在细胞质中再由谷胱甘肽、NADPH还原</li>
-<li>串联：维生素E → 维生素C → 谷胱甘肽 → NADPH</li>
-<li><strong>参与羟化反应</strong>：</li>
-<li>给底物加上羟基（-OH）</li>
-<li>胶原成熟：脯氨酸羟化→羟脯氨酸（胶原成熟必需）</li>
-<li>胆汁酸合成、儿茶酚胺代谢</li>
-<li>使巯基酶的巯基保持还原状态</li>
-</ul>
-
-<p><strong>4. 缺乏症</strong></p>
-<ul>
-<li><strong>坏血病</strong>（scurvy）</li>
-<li>历史：航海船员因缺乏新鲜蔬果导致</li>
-<li>症状：容易出血、骨折、伤口不愈合、牙龈腐烂、牙齿松动</li>
-<li>原理：胶原成熟障碍（羟化反应需要维生素C）</li>
-</ul>
-
-<hr>
-
-<h3>（九）维生素章节总结（天天快答回顾）</h3>
-
-<p><strong>1. 脂溶性维生素</strong>：A、D、E、K（四个）</p>
-
-<p><strong>2. 维生素D活化过程</strong>：</p>
-<ul>
-<li>皮肤：胆固醇 → 紫外线 → 胆钙化醇（D3）</li>
-<li>肝脏：25位羟化 → 25-羟维生素D（血液运输形式、肝储存形式）</li>
-<li>肾脏：1位羟化 → 1,25-二羟维生素D（活性形式）</li>
-</ul>
-
-<p><strong>3. 易混淆的"酸"类维生素</strong>：</p>
-<ul>
-<li>泛酸 → 辅酶A/酰基载体蛋白 → 转酰基</li>
-<li>叶酸 → 四氢叶酸 → 转一碳单位</li>
-<li>烟酸（PP）→ NAD/NADP → 递氢体</li>
-<li>生物素 → 自身即活性形式 → 羧化酶辅基</li>
-</ul>
-
-<p><strong>4. B族维生素速查</strong>：</p>
-
-<table class="note-table">
-<tr><th>维生素</th><th>活性形式</th><th>转移基团</th><th>缺乏症</th></tr>
+<h3 class="h3">B. 对比表：B族维生素速查</h3>
+<table class="tbl"><tr><th>维生素</th><th>活性形式</th><th>转移基团</th><th>缺乏症</th></tr>
 <tr><td>B1 硫胺素</td><td>TPP</td><td>醛基</td><td>脚气病</td></tr>
-<tr><td>B2 核黄素</td><td>FMN/FAD</td><td>氢</td><td>口角炎、眼睑炎</td></tr>
-<tr><td>PP 烟酸</td><td>NAD/NADP</td><td>氢</td><td>糙皮症</td></tr>
-<tr><td>泛酸</td><td>CoA/ACP</td><td>酰基</td><td>四肢神经痛</td></tr>
-<tr><td>生物素</td><td>生物素</td><td>羧基</td><td>（长期抗生素）</td></tr>
-<tr><td>B6 吡哆醛</td><td>PLP</td><td>氨基</td><td>低血色素小细胞性贫血</td></tr>
-<tr><td>叶酸</td><td>FH4</td><td>一碳单位</td><td>巨幼细胞贫血、神经管缺陷</td></tr>
-<tr><td>B12 钴胺素</td><td>甲钴胺素/脱氧腺苷钴胺素</td><td>（甲硫氨酸代谢）</td><td>恶性贫血</td></tr>
-</table>
+<tr><td>B2 核黄素</td><td>FMN、FAD</td><td>氢</td><td>口角炎、眼睑炎</td></tr>
+<tr><td>PP 烟酸/烟酰胺</td><td>NAD、NADP</td><td>氢</td><td>糙皮症</td></tr>
+<tr><td>泛酸</td><td>辅酶A、ACP</td><td>酰基</td><td>四肢神经痛</td></tr>
+<tr><td>生物素</td><td>生物素自身</td><td>羧基</td><td>长期抗生素致缺乏</td></tr>
+<tr><td>B6 吡多醛</td><td>磷酸吡多醛（PLP）</td><td>氨基</td><td>低血色素小细胞性贫血</td></tr>
+<tr><td>叶酸</td><td>四氢叶酸（FH4）</td><td>一碳单位</td><td>巨幼细胞贫血、神经管缺陷</td></tr>
+<tr><td>B12 钴胺素</td><td>甲钴胺素、5'-脱氧腺苷钴胺素</td><td>甲基（甲硫氨酸代谢）</td><td>恶性贫血</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★教材表2-1把辅酶名称、缩写、转移基团与所含维生素串起来，是先讲维生素后讲酶的原因。 <span class="loc">〔说话人1 42:08〕</span></div></div>
 
-<hr>
-
-<h3>（十）酶与酶促反应</h3>
-
-<h4>1. 酶的概念</h4>
-
-<ul>
-<li><strong>酶（enzyme, E）</strong>：生物催化剂（biocatalyst）</li>
-<li>催化剂基本特征：</li>
-<li>加快反应速度</li>
-<li>不改变反应平衡点（产物比例不变）</li>
-<li>反应前后质和量不变</li>
-<li><strong>酶学（enzymology）</strong>：研究酶的学科</li>
+<div class="page"><h2 class="h2">10. 酶的概念与分子组成</h2>
+<p class="lead">酶是生物催化剂；化学本质以蛋白质为主，少数为RNA（核酶）。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>酶（enzyme）本质上是一种生物催化剂（biocatalyst），以大写E表示 <span class="loc">〔说话人1 55:22〕</span></li>
+<li>催化剂加快反应速度，但不改变反应的平衡点 <span class="loc">〔说话人1 56:08〕</span></li>
+<li>酶符合催化剂的基本要求，又带有生物来源的特征 <span class="loc">〔说话人1 56:31〕</span></li>
+<li>酶学即enzymology（ology是学科后缀） <span class="loc">〔说话人1 56:31〕</span></li>
+<li>本章共六节，重点在酶的分子结构与功能、工作原理和酶促反应动力学 <span class="loc">〔说话人1 56:31〕</span></li>
+<li>酶的化学本质主要是蛋白质，还有RNA <span class="loc">〔说话人1 57:22〕</span></li>
+<li>以RNA为本质的酶是核酶 <span class="loc">〔说话人1 58:20〕</span></li>
+<li>核酶没有标准双螺旋，但局部互补配对也可形成双螺旋 <span class="loc">〔说话人1 58:20〕</span></li>
+<li>单纯酶只有蛋白质、没有其他成分，如胰淀粉酶 <span class="loc">〔说话人1 58:40〕</span></li>
+<li>缀合酶（结合酶）中既有蛋白质也有其他成分 <span class="loc">〔说话人1 59:01〕</span></li>
+<li>酶蛋白叫apoenzyme，apo指空的、未结合其他东西的部分 <span class="loc">〔说话人1 59:43〕</span></li>
+<li>辅因子（cofactor）指酶中除蛋白质以外的成分 <span class="loc">〔说话人1 59:43〕</span></li>
 </ul>
+<div class="exam"><span class="tag">★考点</span>★酶的化学本质是蛋白质（少数RNA），据此分单纯酶与缀合酶。 <span class="loc">〔说话人1 57:22〕</span></div></div>
 
-<h4>2. 酶的分子组成</h4>
-
-<p><strong>（1）核酶（ribozyme）</strong></p>
-<ul>
-<li>化学本质是RNA</li>
-<li>具有催化功能</li>
-<li>例：催化小RNA（组成型非编码RNA）</li>
+<div class="page"><h2 class="h2">11. 辅因子与金属酶</h2>
+<p class="lead">辅因子按结合紧密程度分辅酶与辅基；金属酶与金属激活酶的区别在于结合松紧。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>羧基肽酶的辅因子是锌离子 <span class="loc">〔说话人1 59:43〕</span></li>
+<li>辅因子按与酶蛋白结合的紧密程度分为辅酶和辅基 <span class="loc">〔说话人1 59:43〕</span></li>
+<li>辅酶与酶结合较疏松，辅基与酶结合较紧密 <span class="loc">〔说话人1 59:43〕</span></li>
+<li>金属离子是辅因子中最常见的一类 <span class="loc">〔说话人1 01:00:54〕</span></li>
+<li>金属酶（metalloenzyme）中金属离子与酶紧密结合 <span class="loc">〔说话人1 01:00:54〕</span></li>
+<li>金属激活酶（metal activated enzyme）中金属离子结合较疏松，但可显著提高酶活性 <span class="loc">〔说话人1 01:00:54〕</span></li>
+<li>金属酶与金属激活酶的区别就在于金属离子结合得紧密还是疏松 <span class="loc">〔说话人1 01:01:34〕</span></li>
 </ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>分类</th><th>与酶结合</th><th>举例/说明</th></tr>
+<tr><td>辅酶</td><td>较疏松</td><td>如各种维生素活性形式</td></tr>
+<tr><td>辅基</td><td>较紧密</td><td>不易与酶蛋白分离</td></tr>
+<tr><td>金属酶</td><td>紧密结合金属</td><td>羧基肽酶（Zn²⁺）</td></tr>
+<tr><td>金属激活酶</td><td>疏松结合金属</td><td>有金属时活性显著提高</td></tr></table></div>
 
-<p><strong>（2）蛋白质类酶</strong></p>
-<ul>
-<li><strong>单纯酶</strong>：只有蛋白质，无其他成分</li>
-<li>例：胰淀粉酶</li>
-<li><strong>缀合酶（结合酶）</strong>：蛋白质 + 其他成分</li>
-<li><strong>酶蛋白（apoenzyme）</strong>：酶中属于蛋白质的部分</li>
-<li>apo = 空的、未结合其他东西的部分</li>
-<li><strong>辅因子（cofactor）</strong>：酶中除蛋白质外的成分</li>
+<div class="page"><h2 class="h2">12. 酶的结构分类（按蛋白质组成）</h2>
+<p class="lead">单体酶、寡聚酶、多酶体系、多功能酶，区别在于肽链与亚基的组织方式。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>按蛋白质组成，酶分单体酶、寡聚酶、多酶体系和多功能酶 <span class="loc">〔说话人1 01:02:24〕</span></li>
+<li>单体酶只有一条肽链，只有三级结构 <span class="loc">〔说话人1 01:02:24〕</span></li>
+<li>寡聚酶有多个亚基，存在四级结构 <span class="loc">〔说话人1 01:02:24〕</span></li>
+<li>蛋白激酶A有4个亚基：2个催化亚基加2个调节亚基 <span class="loc">〔说话人1 01:02:24〕</span></li>
+<li>蛋白激酶A的调节亚基可以结合cAMP <span class="loc">〔说话人1 01:03:22〕</span></li>
+<li>cAMP即环腺苷酸，是第二信使 <span class="loc">〔说话人1 01:03:22〕</span></li>
+<li>第二信使把细胞外信号转变为细胞内信号 <span class="loc">〔说话人1 01:03:22〕</span></li>
+<li>cAMP结合调节亚基后发生构象变化，释放出游离的催化亚基 <span class="loc">〔说话人1 01:04:07〕</span></li>
+<li>游离催化亚基作为蛋白激酶给蛋白质加上磷酸基团，把信号传递下去 <span class="loc">〔说话人1 01:04:07〕</span></li>
+<li>多酶体系由多种不同的酶（多肽链）聚合在一起 <span class="loc">〔说话人1 01:05:02〕</span></li>
+<li>多酶体系中前一个反应的产物是后一个反应的底物，像流水线一样高效 <span class="loc">〔说话人1 01:05:02〕</span></li>
+<li>丙酮酸脱氢酶是典型多酶体系，可形成60聚体的高度对称结构 <span class="loc">〔说话人1 01:05:30〕</span></li>
+<li>多功能酶由一条肽链的不同区域分别催化不同反应 <span class="loc">〔说话人1 01:06:17〕</span></li>
+<li>脂肪酸合酶是单条肽链的多功能酶 <span class="loc">〔说话人1 01:06:17〕</span></li>
+<li>多酶体系用多条肽链，多功能酶用一条肽链的多个区域 <span class="loc">〔说话人1 01:06:38〕</span></li>
 </ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>类型</th><th>肽链/亚基</th><th>举例</th></tr>
+<tr><td>单体酶</td><td>一条肽链，三级结构</td><td>胰淀粉酶、胰蛋白酶</td></tr>
+<tr><td>寡聚酶</td><td>多个亚基，四级结构</td><td>蛋白激酶A（2催化＋2调节）</td></tr>
+<tr><td>多酶体系</td><td>多种酶、多条肽链聚合，反应串联</td><td>丙酮酸脱氢酶（60聚体）</td></tr>
+<tr><td>多功能酶</td><td>一条肽链、多个功能区域</td><td>脂肪酸合酶</td></tr></table></div>
 
-<h4>3. 辅因子分类</h4>
-
-<p><strong>（1）按结合紧密程度</strong></p>
-<ul>
-<li><strong>辅酶（coenzyme）</strong>：与酶蛋白结合较疏松</li>
-<li><strong>辅基（prosthetic group）</strong>：与酶蛋白结合较紧密</li>
+<div class="page"><h2 class="h2">13. 酶的活性中心</h2>
+<p class="lead">活性中心＝结合基团＋催化基团；以胰蛋白酶为例。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>活性中心是酶能与底物特异性结合、并把底物催化成产物的区域 <span class="loc">〔说话人1 01:07:07〕</span></li>
+<li>活性中心包括结合基团和催化基团两部分 <span class="loc">〔说话人1 01:07:07〕</span></li>
+<li>结合基团（binding site）负责与底物特异性结合 <span class="loc">〔说话人1 01:07:07〕</span></li>
+<li>催化基团（catalytic site）负责完成催化功能 <span class="loc">〔说话人1 01:07:07〕</span></li>
+<li>酶除活性中心外的区域构成整体架构，让活性中心有稳定的空间 <span class="loc">〔说话人1 01:07:07〕</span></li>
+<li>胰蛋白酶表面有深深的凹陷，这个位置就是结合基团 <span class="loc">〔说话人1 01:08:34〕</span></li>
+<li>胰蛋白酶识别底物中的精氨酸，并切割精氨酸旁边的肽键 <span class="loc">〔说话人1 01:09:02〕</span></li>
+<li>结合口袋底部的关键氨基酸是天冬氨酸（Asp），其羧基带负电 <span class="loc">〔说话人1 01:09:35〕</span></li>
+<li>精氨酸带正电、天冬氨酸带负电，二者以强静电相互作用结合 <span class="loc">〔说话人1 01:09:35〕</span></li>
+<li>催化基团由天冬氨酸、组氨酸、丝氨酸三个氨基酸组成催化三联体 <span class="loc">〔说话人1 01:09:35〕</span></li>
+<li>催化三联体的电子传递：Asp→His→Ser→即将断裂的肽键 <span class="loc">〔说话人1 01:11:15〕</span></li>
 </ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>组成部分</th><th>英文</th><th>功能</th></tr>
+<tr><td>结合基团</td><td>binding site</td><td>与底物特异性结合</td></tr>
+<tr><td>催化基团</td><td>catalytic site</td><td>完成催化，把底物变为产物</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★活性中心＝结合基团＋催化基团；胰蛋白酶催化三联体 Asp-His-Ser。 <span class="loc">〔说话人1 01:09:35〕</span></div></div>
 
-<p><strong>（2）按化学本质</strong></p>
-<ul>
-<li>金属离子（最常见）</li>
-<li>有机小分子（如各种维生素活性形式）</li>
+<div class="page"><h2 class="h2">14. 酶的特点与特异性</h2>
+<p class="lead">高效、温和、可调节、有特异性；特异性来自结合基团的结构。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>与一般催化剂相比，酶的反应温度较低、速率常数高 <span class="loc">〔说话人1 01:12:41〕</span></li>
+<li>催化剂在反应前后质和量不变，只能催化热力学允许的反应 <span class="loc">〔说话人1 01:13:28〕</span></li>
+<li>催化剂只改变反应速度，不改变反应平衡点 <span class="loc">〔说话人1 01:13:28〕</span></li>
+<li>酶的显著特征：极高的催化效率、常温常压并接近中性pH、可调节性 <span class="loc">〔说话人1 01:14:16〕</span></li>
+<li>酶可从质和量两方面发生调节 <span class="loc">〔说话人1 01:15:04〕</span></li>
+<li>特异性指酶只针对特定的反应进行催化 <span class="loc">〔说话人1 01:15:54〕</span></li>
+<li>绝对特异性指酶只能催化一个特定反应 <span class="loc">〔说话人1 01:15:54〕</span></li>
+<li>例：脲酶只催化尿素水解生成二氧化碳和氨 <span class="loc">〔说话人1 01:16:19〕</span></li>
+<li>脲酶不能催化尿素衍生物（甲基尿素、硫脲、双缩脲）水解 <span class="loc">〔说话人1 01:16:19〕</span></li>
+<li>双缩脲由两分子尿素缩合，其显色反应用于检测蛋白质 <span class="loc">〔说话人1 01:16:19〕</span></li>
+<li>立体异构特异性指酶只识别特定的立体构型 <span class="loc">〔说话人1 01:17:21〕</span></li>
+<li>蛋白酶只水解L-氨基酸组成的蛋白质，不能水解D型 <span class="loc">〔说话人1 01:18:00〕</span></li>
+<li>由D型氨基酸组成的多肽药物在体内半衰期很长 <span class="loc">〔说话人1 01:18:00〕</span></li>
+<li>相对特异性指酶对一类底物都可以催化 <span class="loc">〔说话人1 01:18:52〕</span></li>
+<li>特异性的来源是结合基团与底物的特异结合 <span class="loc">〔说话人1 01:18:52〕</span></li>
+<li>胰蛋白酶、胰凝乳蛋白酶、弹性蛋白酶整体结构相似，但结合口袋不同 <span class="loc">〔说话人1 01:19:43〕</span></li>
+<li>胰蛋白酶口袋底部为Asp，识别精氨酸、赖氨酸等带正电的大侧链 <span class="loc">〔说话人1 01:20:19〕</span></li>
+<li>胰凝乳蛋白酶口袋底部为Ser、较浅，识别苯丙氨酸等芳香族侧链 <span class="loc">〔说话人1 01:20:45〕</span></li>
+<li>弹性蛋白酶口袋两侧由甘氨酸变为缬氨酸、缺口很小，只识别丙氨酸等小侧链 <span class="loc">〔说话人1 01:21:48〕</span></li>
+<li>结合口袋的结构差异决定底物特异性，是结构决定功能的具体体现 <span class="loc">〔说话人1 01:22:36〕</span></li>
 </ul>
-
-<p><strong>（3）金属酶 vs 金属激活酶</strong></p>
-<ul>
-<li><strong>金属酶（metalloenzyme）</strong>：金属离子与酶紧密结合</li>
-<li>例：羧基肽酶（含Zn²⁺）</li>
-<li><strong>金属激活酶（metal-activated enzyme）</strong>：金属离子不紧密结合，但可显著提高酶活性</li>
-</ul>
-
-<blockquote>**老师强调**：教材表2-2总结了B族维生素如何以活性形式参与酶的过程，这是先讲维生素再讲酶的原因。</blockquote>
-
-<h4>4. 酶的结构分类（按蛋白质组成）</h4>
-
-<p><strong>（1）单体酶</strong></p>
-<ul>
-<li>只有一条肽链（只有三级结构）</li>
-<li>例：胰淀粉酶、胰蛋白酶</li>
-</ul>
-
-<p><strong>（2）寡聚酶</strong></p>
-<ul>
-<li>多个亚基（有四级结构）</li>
-<li>例：蛋白激酶A（PKA）</li>
-<li>4个亚基：2个催化亚基 + 2个调节亚基</li>
-<li>cAMP结合调节亚基 → 构象变化 → 释放催化亚基 → 发挥催化功能</li>
-<li>cAMP作为第二信使，通过激活PKA参与信号转导</li>
-</ul>
-
-<p><strong>（3）多酶体系</strong></p>
-<ul>
-<li>多种不同的酶（不同多肽链）聚合在一起</li>
-<li>反应串联：前一个反应的产物是后一个反应的底物</li>
-<li>例：丙酮酸脱氢酶（可形成60聚体，高度对称结构）</li>
-<li>优势：高效、连续完成流水线式反应</li>
-</ul>
-
-<p><strong>（4）多功能酶</strong></p>
-<ul>
-<li>一条肽链，但不同区域可催化不同反应</li>
-<li>例：脂肪酸合酶（一条肽链，多个功能域）</li>
-<li>与多酶体系的区别：多酶体系=多条肽链，多功能酶=一条肽链多区域</li>
-</ul>
-
-<h4>5. 酶的活性中心</h4>
-
-<p><strong>（1）定义</strong></p>
-<ul>
-<li>酶分子中能与底物特异性结合并催化底物变为产物的区域</li>
-<li>是酶发挥催化功能的核心区域</li>
-</ul>
-
-<p><strong>（2）组成</strong></p>
-<ul>
-<li><strong>结合基团（binding site）</strong>：与底物特异性结合的部分</li>
-<li><strong>催化基团（catalytic site）</strong>：完成催化功能的部分</li>
-</ul>
-
-<p><strong>（3）胰蛋白酶例子</strong></p>
-<ul>
-<li>结合基团：酶表面的深凹陷（口袋）</li>
-<li>口袋底部有<strong>天冬氨酸（Asp）</strong>（带负电荷）</li>
-<li>底物<strong>精氨酸（Arg）</strong>侧链（带正电荷）插入口袋</li>
-<li>静电相互作用实现特异性结合</li>
-<li>胰蛋白酶切割精氨酸/赖氨酸附近的肽键</li>
-<li>催化基团：<strong>催化三联体</strong>（catalytic triad）</li>
-<li>天冬氨酸（Asp）→ 组氨酸（His）→ 丝氨酸（Ser）</li>
-<li>电子传递链：Asp提供电子 → His → Ser → 肽键羰基碳（亲核攻击）</li>
-<li>最终打断肽键（水解）</li>
-</ul>
-
-<p><strong>（4）三种丝氨酸蛋白酶的特异性比较</strong></p>
-
-<table class="note-table">
-<tr><th>酶</th><th>结合口袋底部</th><th>口袋特点</th><th>识别底物</th></tr>
+<h3 class="h3">B. 对比表：三种丝氨酸蛋白酶</h3>
+<table class="tbl"><tr><th>酶</th><th>结合口袋底部</th><th>口袋特点</th><th>识别底物</th></tr>
 <tr><td>胰蛋白酶</td><td>天冬氨酸（负电）</td><td>深口袋</td><td>精氨酸/赖氨酸（正电大侧链）</td></tr>
 <tr><td>胰凝乳蛋白酶</td><td>丝氨酸（极性不带电）</td><td>较浅口袋</td><td>苯丙氨酸等芳香族/中性大侧链</td></tr>
-<tr><td>弹性蛋白酶</td><td>丝氨酸 + 两侧缬氨酸</td><td>很小口袋</td><td>丙氨酸等小侧链</td></tr>
+<tr><td>弹性蛋白酶</td><td>丝氨酸、两侧为缬氨酸</td><td>很小口袋</td><td>丙氨酸等小侧链</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★绝对特异性、相对特异性、立体异构特异性的区分；结合口袋决定底物特异性。 <span class="loc">〔说话人1 01:18:00〕</span></div></div>
+
+<div class="page"><h2 class="h2">15. 酶的工作原理</h2>
+<p class="lead">过渡态与活化能，催化剂以结合能降低活化能；锁钥模型到诱导契合。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>结合基团决定结合的特异性，催化基团决定催化如何进行 <span class="loc">〔说话人1 01:23:28〕</span></li>
+<li>只有产物自由能低于反应物，反应在热力学上才能发生 <span class="loc">〔说话人1 01:23:49〕</span></li>
+<li>能发生的反应也要先进入能量更高的活化状态，即过渡态 <span class="loc">〔说话人1 01:23:49〕</span></li>
+<li>过渡态（transition state）能量更高、不稳定，容易形成产物 <span class="loc">〔说话人1 01:24:19〕</span></li>
+<li>从反应物到达过渡态所需的额外能量叫活化能（activation energy） <span class="loc">〔说话人1 01:24:19〕</span></li>
+<li>升高温度或加入催化剂都能提供活化能，催化剂让所需的活化能更少 <span class="loc">〔说话人1 01:24:42〕</span></li>
+<li>活化能又称energy barrier（能量障碍） <span class="loc">〔说话人1 01:25:30〕</span></li>
+<li>催化剂与反应物结合所释放的能量叫结合能（binding energy） <span class="loc">〔说话人1 01:25:30〕</span></li>
+<li>结合能为反应物提供到达过渡态所需的活化能 <span class="loc">〔说话人1 01:26:25〕</span></li>
+<li>酶催化时先与底物形成酶和底物的复合体 <span class="loc">〔说话人1 01:26:25〕</span></li>
+<li>酶为enzyme、底物为substrate，反应式为E＋S→ES复合物→E＋P <span class="loc">〔说话人1 01:26:51〕</span></li>
+<li>锁钥模型认为酶和底物的结构完全互补 <span class="loc">〔说话人1 01:26:51〕</span></li>
+<li>诱导契合认为底物的结合会诱导酶发生构象变化 <span class="loc">〔说话人1 01:27:47〕</span></li>
+<li>例：己糖激酶两个结构域，结合葡萄糖后两者角度变小 <span class="loc">〔说话人1 01:27:47〕</span></li>
+<li>这一构象变化是通过解析有无葡萄糖时酶的结构发现的 <span class="loc">〔说话人1 01:29:04〕</span></li>
+<li>类似血红蛋白有无氧气时结构的差异 <span class="loc">〔说话人1 01:29:04〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>模型</th><th>要点</th><th>能否解释构象变化</th></tr>
+<tr><td>锁钥模型</td><td>酶与底物结构完全互补</td><td>不能</td></tr>
+<tr><td>诱导契合</td><td>底物结合诱导酶发生构象变化</td><td>能（如己糖激酶）</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★过渡态、活化能、结合能三者关系；诱导契合区别于锁钥模型。 <span class="loc">〔说话人1 01:27:47〕</span></div></div>
+
+<div class="page"><h2 class="h2">16. 酶的催化机制</h2>
+<p class="lead">邻近效应、定向排列、表面效应、多元催化四条机制。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>酶的催化机制主要有邻近效应、定向排列、表面效应和多元催化 <span class="loc">〔说话人1 01:30:23〕</span></li>
+<li>例：氨酰tRNA合成酶同时结合氨基酸和ATP两个底物 <span class="loc">〔说话人1 01:30:23〕</span></li>
+<li>tRNA一端识别密码子、一端结合氨基酸，匹配必须非常严格 <span class="loc">〔说话人1 01:30:58〕</span></li>
+<li>该酶针对特异的tRNA给它加上相对应的氨基酸 <span class="loc">〔说话人1 01:30:58〕</span></li>
+<li>反应第一步是活化氨基酸，给它加上ATP的能量 <span class="loc">〔说话人1 01:30:58〕</span></li>
+<li>催化口袋中同时结合赖氨酸和ATP两个底物 <span class="loc">〔说话人1 01:31:55〕</span></li>
+<li>邻近效应指两个底物同时结合使彼此距离非常近 <span class="loc">〔说话人1 01:31:55〕</span></li>
+<li>邻近效应使反应概率远高于溶液中靠随机碰撞 <span class="loc">〔说话人1 01:31:55〕</span></li>
+<li>定向排列指底物不仅距离近，还要有特定的空间角度 <span class="loc">〔说话人1 01:33:09〕</span></li>
+<li>化学键的形成需要空间上接近并具有合适角度 <span class="loc">〔说话人1 01:33:09〕</span></li>
+<li>上述酶与底物复合物的结构由实验室用X光晶体衍射解析得到 <span class="loc">〔说话人1 01:33:51〕</span></li>
+<li>表面效应：蛋白质三级结构内部疏水、表面亲水并有一层水化膜 <span class="loc">〔说话人1 01:33:51〕</span></li>
+<li>底物表面同样有水化膜，水分子夹在中间会阻碍反应 <span class="loc">〔说话人1 01:34:39〕</span></li>
+<li>去溶剂化指结合口袋把水分子排除出去，使底物与酶直接接触 <span class="loc">〔说话人1 01:35:13〕</span></li>
+<li>表面效应也就是去溶剂化，是第三条催化机制 <span class="loc">〔说话人1 01:35:13〕</span></li>
+<li>多元催化由蛋白质的两性解离性质决定 <span class="loc">〔说话人1 01:35:38〕</span></li>
+<li>真正能解离的是侧链基团，主要是酸性氨基酸和碱性氨基酸 <span class="loc">〔说话人1 01:36:21〕</span></li>
+<li>氨基酸侧链由此具有酸碱催化作用 <span class="loc">〔说话人1 01:36:21〕</span></li>
+<li>丝氨酸与肽键的羰基碳形成共价键，生成酰基化酶的共价中间产物 <span class="loc">〔说话人1 01:37:44〕</span></li>
+<li>第一步肽键断裂，释放出具有游离氨基的产物 <span class="loc">〔说话人1 01:38:25〕</span></li>
+<li>第二步水解酰基化酶，释放出具有游离羧基的产物 <span class="loc">〔说话人1 01:38:25〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>机制</th><th>要点</th><th>举例</th></tr>
+<tr><td>邻近效应</td><td>同时结合多个底物，使距离非常近</td><td>氨酰tRNA合成酶结合氨基酸与ATP</td></tr>
+<tr><td>定向排列</td><td>底物有特定空间角度，便于成键</td><td>ATP与氨基酸角度合适</td></tr>
+<tr><td>表面效应（去溶剂化）</td><td>结合口袋排除水分子，底物直接接触</td><td>水化膜被去除</td></tr>
+<tr><td>多元催化</td><td>氨基酸侧链的酸碱催化</td><td>胰蛋白酶催化三联体</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★四种催化机制的名称与含义；多元催化以胰蛋白酶催化三联体为例。 <span class="loc">〔说话人1 01:36:43〕</span></div></div>
+
+<div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>B2→FMN/FAD（递氢）</li>
+<li>PP→NAD/NADP（递氢）；NAD主分解、NADPH主合成</li>
+<li>泛酸→CoA/ACP（转酰基，靠巯基）</li>
+<li>生物素→自身即活性形式（转羧基）</li>
+<li>B6→磷酸吡多醛（转氨基）</li>
+<li>叶酸→FH4（转一碳单位）</li>
+<li>B12＝钴胺素（唯一含金属）→甲硫氨酸代谢</li>
+<li>B6缺乏＝低血色素小细胞性贫血；叶酸/B12缺乏＝巨幼细胞贫血</li>
+<li>维生素C＝L-抗坏血酸；抗氧化串联E→C→谷胱甘肽→NADPH；缺乏＝坏血病</li>
+<li>脂溶性维生素＝A、D、E、K</li>
+<li>酶＝生物催化剂（本质蛋白质，少数RNA）</li>
+<li>单纯酶 vs 缀合酶（酶蛋白＋辅因子）</li>
+<li>辅酶（疏松）与辅基（紧密）；金属酶与金属激活酶</li>
+<li>四类结构：单体/寡聚/多酶体系/多功能酶</li>
+<li>活性中心＝结合基团＋催化基团</li>
+<li>催化三联体 Asp-His-Ser 及电子传递</li>
+<li>绝对/相对/立体异构特异性</li>
+<li>过渡态、活化能、结合能；诱导契合</li>
+<li>四种催化机制：邻近效应、定向排列、表面效应、多元催化</li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>FMN与FAD混为一谈</td><td>FMN是单核苷酸、FAD是二核苷酸</td></tr>
+<tr><td>NAD与NADPH功能不分</td><td>NAD主分解代谢、NADPH主合成代谢</td></tr>
+<tr><td>泛酸巯基当作氧化还原</td><td>巯基转移酰基、形成硫酯键而非二硫键</td></tr>
+<tr><td>B6与维生素A的变化相混</td><td>吡多醛→吡多胺是加氨基，不是进一步氧化</td></tr>
+<tr><td>叶酸中肽键当作α-肽键</td><td>谷氨酸之间为γ-肽键（用侧链γ-羧基）</td></tr>
+<tr><td>贫血类型混为一谈</td><td>B6缺→低血色素小细胞性贫血；叶酸/B12缺→巨幼细胞贫血</td></tr>
+<tr><td>金属酶与金属激活酶不分</td><td>区别在金属离子结合的紧密或疏松</td></tr>
+<tr><td>多酶体系与多功能酶不分</td><td>多酶体系＝多条肽链；多功能酶＝一条肽链多区域</td></tr>
+<tr><td>锁钥模型与诱导契合不分</td><td>诱导契合：底物结合诱导酶构象变化</td></tr>
+<tr><td>把「辅因子」与「辅酶」等同</td><td>辅因子是总称，按结合松紧再分辅酶、辅基</td></tr>
+<tr><td>转写「FMM」</td><td>实为FMN（运行订正）</td></tr>
+<tr><td>转写B12处的「谷氨酸/谷氨素」</td><td>实为钴胺素（运行订正）</td></tr>
+<tr><td>转写「球基酶」「共氢体」</td><td>实为巯基酶、供氢体（运行订正）</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>可能题型</th></tr>
+<tr><td>B2活性形式与递氢</td><td>§1</td><td>〔说话人1 01:37〕</td><td>填空/单选</td></tr>
+<tr><td>NAD与NADPH的分工</td><td>§2</td><td>〔说话人1 07:24〕</td><td>简答</td></tr>
+<tr><td>辅酶A的巯基与转酰基</td><td>§3</td><td>〔说话人1 09:58〕</td><td>简答</td></tr>
+<tr><td>生物素自身即活性形式</td><td>§4</td><td>〔说话人1 13:25〕</td><td>单选</td></tr>
+<tr><td>磷酸吡多醛与转氨基</td><td>§5</td><td>〔说话人1 16:59〕</td><td>简答</td></tr>
+<tr><td>叶酸γ-肽键与一碳单位</td><td>§6</td><td>〔说话人1 20:14〕</td><td>简答</td></tr>
+<tr><td>B12含钴、内因子、甲硫氨酸代谢</td><td>§7</td><td>〔说话人1 27:10〕</td><td>病例/简答</td></tr>
+<tr><td>维生素C抗氧化串联</td><td>§8</td><td>〔说话人1 33:13〕</td><td>简答</td></tr>
+<tr><td>维生素D的合成与活化</td><td>§9</td><td>〔说话人1 38:48〕</td><td>填空</td></tr>
+<tr><td>酶的本质与单纯/缀合酶</td><td>§10</td><td>〔说话人1 59:43〕</td><td>单选</td></tr>
+<tr><td>辅酶/辅基、金属酶</td><td>§11</td><td>〔说话人1 01:01:34〕</td><td>单选</td></tr>
+<tr><td>四类结构分类</td><td>§12</td><td>〔说话人1 01:02:24〕</td><td>简答</td></tr>
+<tr><td>活性中心、催化三联体</td><td>§13</td><td>〔说话人1 01:09:35〕</td><td>简答</td></tr>
+<tr><td>三种特异性的区分</td><td>§14</td><td>〔说话人1 01:15:54〕</td><td>简答</td></tr>
+<tr><td>过渡态/活化能/结合能</td><td>§15</td><td>〔说话人1 01:24:19〕</td><td>名词解释</td></tr>
+<tr><td>四种催化机制</td><td>§16</td><td>〔说话人1 01:30:23〕</td><td>简答</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>B2＝核黄素（核醇＋含氮杂环）；加磷酸生成FMN（碱基＋戊糖＋磷酸）</td><td>定义</td><td>§1</td><td>〔说话人1 00:00〕</td></tr>
+<tr><td>2</td><td>FAD＝FMN＋AMP，两核苷酸经磷酸二酯键连接而成</td><td>结构</td><td>§1</td><td>〔说话人1 01:37〕</td></tr>
+<tr><td>3</td><td>FMN/FAD为B2活性形式；B2作氧化还原酶辅因子递氢；B族维生素皆可作辅酶</td><td>考点</td><td>§1</td><td>〔说话人1 02:18〕</td></tr>
+<tr><td>4</td><td>过度加工食物易致B2缺乏；缺乏症＝口角炎、眼睑炎</td><td>临床</td><td>§1</td><td>〔说话人1 02:50〕</td></tr>
+<tr><td>5</td><td>PP＝烟酸＋烟酰胺（含氮杂环加羧基/酰胺基）</td><td>定义</td><td>§2</td><td>〔说话人1 03:56〕</td></tr>
+<tr><td>6</td><td>NAD＝烟酰胺核苷酸＋腺嘌呤核苷酸（两磷酸成酯键）；加磷酸生成NADP，为PP活性形式</td><td>结构</td><td>§2</td><td>〔说话人1 04:50〕</td></tr>
+<tr><td>7</td><td>NAD/NADP为递氢体、脱氢酶辅因子；氧化型受氢、还原型供氢</td><td>功能</td><td>§2</td><td>〔说话人1 06:04〕</td></tr>
+<tr><td>8</td><td>NAD受氢体参与糖酵解与三羧酸循环、供氢体参与丙酮酸→乳酸；NADP受氢体参与磷酸戊糖途径</td><td>功能</td><td>§2</td><td>〔说话人1 06:42〕</td></tr>
+<tr><td>9</td><td>磷酸戊糖途径供核苷酸原料与NADPH；NADPH参与脂肪酸、胆固醇合成（NAD主分解、NADPH主合成）</td><td>考点</td><td>§2</td><td>〔说话人1 07:24〕</td></tr>
+<tr><td>10</td><td>PP缺乏症＝糙皮症（皮肤/消化/神经）；过量症状不典型</td><td>临床</td><td>§2</td><td>〔说话人1 08:05〕</td></tr>
+<tr><td>11</td><td>泛酸＝遍多酸，广泛存在、不易缺乏</td><td>定义</td><td>§3</td><td>〔说话人1 09:05〕</td></tr>
+<tr><td>12</td><td>泛酸＝二羟基二甲基丁酸＋β-丙氨酸；活性形式一端加巯基乙胺</td><td>结构</td><td>§3</td><td>〔说话人1 09:33〕</td></tr>
+<tr><td>13</td><td>辅酶A＝泛酸＋巯基乙胺＋磷酸化ADP；巯基转移酰基（硫酯键，非二硫键）</td><td>考点</td><td>§3</td><td>〔说话人1 09:58〕</td></tr>
+<tr><td>14</td><td>ACP的丝氨酸与泛酸共价相连；巯基与酰基成共价键生成酰基辅酶A；严重缺乏致四肢神经痛</td><td>机制</td><td>§3</td><td>〔说话人1 11:38〕</td></tr>
+<tr><td>15</td><td>生物素＝噻吩环＋尿素＋戊酸侧链，自身即活性形式，作羧化酶辅因子传羧基</td><td>考点</td><td>§4</td><td>〔说话人1 13:01〕</td></tr>
+<tr><td>16</td><td>生物素在尿素部分加羧基再传底物；长期抗生素致缺乏；实验室用于标记蛋白质</td><td>应用</td><td>§4</td><td>〔说话人1 14:03〕</td></tr>
+<tr><td>17</td><td>B6＝吡多醇/吡多醛/吡多胺；吡多醛→吡多胺为加氨基（维生素A走视黄醇→视黄醛→视黄酸）</td><td>易错</td><td>§5</td><td>〔说话人1 15:42〕</td></tr>
+<tr><td>18</td><td>吡多醛/胺加磷酸生成磷酸吡多醛/胺；磷酸吡多醛为活性形式、能接受并送出氨基</td><td>结构</td><td>§5</td><td>〔说话人1 16:16〕</td></tr>
+<tr><td>19</td><td>磷酸吡多醛是转氨酶辅因子（α-酮戊二酸加氨基→谷氨酸），与磷酸吡多胺互变</td><td>功能</td><td>§5</td><td>〔说话人1 16:59〕</td></tr>
+<tr><td>20</td><td>磷酸吡多醛可终止类固醇激素作用；B6缺乏＝低血色素小细胞性贫血；过量致远端麻木疼痛</td><td>临床</td><td>§5</td><td>〔说话人1 16:59〕</td></tr>
+<tr><td>21</td><td>叶酸＝蝶啶＋对氨基苯甲酸＋谷氨酸；蝶酸＝蝶啶＋PABA，蝶酰谷氨酸即叶酸</td><td>结构</td><td>§6</td><td>〔说话人1 19:26〕</td></tr>
+<tr><td>22</td><td>叶酸新增谷氨酸用侧链γ-羧基成γ-肽键（主链α-氨基/α-羧基连苯甲酸）；可含多个谷氨酸；谷胱甘肽亦含γ-肽键</td><td>易错</td><td>§6</td><td>〔说话人1 20:14〕</td></tr>
+<tr><td>23</td><td>叶酸活性形式＝四氢叶酸（蝶啶环5、6、7、8位各加一氢），简称FH4</td><td>分类</td><td>§6</td><td>〔说话人1 21:25〕</td></tr>
+<tr><td>24</td><td>四氢叶酸传递一碳单位（甲基、甲酰基、甲氨基等含一个碳基团）</td><td>功能</td><td>§6</td><td>〔说话人1 22:33〕</td></tr>
+<tr><td>25</td><td>一碳单位见于核苷酸合成，嘌呤环逐个原子加上</td><td>功能</td><td>§6</td><td>〔说话人1 22:55〕</td></tr>
+<tr><td>26</td><td>四氢叶酸缺乏致巨幼细胞贫血；孕妇缺叶酸致脊柱裂/神经管缺陷，补叶酸可防治</td><td>临床</td><td>§6</td><td>〔说话人1 23:17〕</td></tr>
+<tr><td>27</td><td>B12＝钴胺素，唯一含金属元素，结构类似血红素（钴 vs 铁）</td><td>考点</td><td>§7</td><td>〔说话人1 25:33〕</td></tr>
+<tr><td>28</td><td>血红素铁上下有组氨酸配位并可结合氧；钴胺素上方R基团可为甲基/氰基/碱基＋核糖</td><td>对比</td><td>§7</td><td>〔说话人1 26:20〕</td></tr>
+<tr><td>29</td><td>R＝甲基→甲钴胺素，R＝脱氧腺苷酸→5'-脱氧腺苷钴胺素（均为活性形式）</td><td>分类</td><td>§7</td><td>〔说话人1 27:10〕</td></tr>
+<tr><td>30</td><td>钴胺素参与甲硫氨酸代谢；吸收需内因子IF、运输需转钴胺素</td><td>机制</td><td>§7</td><td>〔说话人1 27:10〕</td></tr>
+<tr><td>31</td><td>钴胺素是甲硫氨酸合成酶MS辅因子；甲基四氢叶酸＋同型半胱氨酸→甲硫氨酸＋四氢叶酸</td><td>机制</td><td>§7</td><td>〔说话人1 28:32〕</td></tr>
+<tr><td>32</td><td>同型半胱氨酸→半胱氨酸的合成酶辅酶为磷酸吡多醛；该循环串联B6、叶酸、B12；缺乏致巨幼细胞（恶性）贫血</td><td>考点</td><td>§7</td><td>〔说话人1 30:02〕</td></tr>
+<tr><td>33</td><td>维生素C＝L-抗坏血酸（己糖酸内酯）；抗坏血酸↔脱氢抗坏血酸（脱氢为氧化型）</td><td>定义</td><td>§8</td><td>〔说话人1 30:02〕</td></tr>
+<tr><td>34</td><td>维生素C是递氢体，参与氧化还原</td><td>功能</td><td>§8</td><td>〔说话人1 32:41〕</td></tr>
+<tr><td>35</td><td>维生素E＝生育酚，细胞膜最重要的抗氧化剂；被氧化后由维C还原，维C再由谷胱甘肽/NADPH还原</td><td>机制</td><td>§8</td><td>〔说话人1 33:13〕</td></tr>
+<tr><td>36</td><td>维生素C使巯基酶的巯基保持还原态；参与羟化反应（胶原脯氨酸羟化后成熟）；胆汁酸合成、儿茶酚胺代谢亦需</td><td>功能</td><td>§8</td><td>〔说话人1 34:10〕</td></tr>
+<tr><td>37</td><td>维生素C缺乏症＝坏血病（航海发现）；症状见出血/骨折/伤口不愈/牙龈腐烂/牙齿松动</td><td>临床</td><td>§8</td><td>〔说话人1 35:07〕</td></tr>
+<tr><td>38</td><td>维生素分脂溶性/水溶性；逻辑化学本质→功能→缺乏症；脂溶性＝A、D、E、K</td><td>方法</td><td>§9</td><td>〔说话人1 36:05〕</td></tr>
+<tr><td>39</td><td>维生素D3（胆钙化醇）皮肤由胆固醇经紫外线生成；肝25位羟化＝运输/储存形式，肾1位羟化＝活性形式</td><td>机制</td><td>§9</td><td>〔说话人1 38:35〕</td></tr>
+<tr><td>40</td><td>维生素PP是NAD/NADP的组成</td><td>结论</td><td>§9</td><td>〔说话人1 39:28〕</td></tr>
+<tr><td>41</td><td>泛酸/叶酸/烟酸按转移基团区分：泛酸→酰基、叶酸→一碳单位；生物素自身即活性形式</td><td>易错</td><td>§9</td><td>〔说话人1 39:28〕</td></tr>
+<tr><td>42</td><td>B12＝钴胺素（唯一含钴）；B1＝硫胺素，B2＝核黄素，B6活性形式磷酸吡多醛转氨基</td><td>术语</td><td>§9</td><td>〔说话人1 40:49〕</td></tr>
+<tr><td>43</td><td>酶＝生物催化剂（以E表示）；催化剂加快速度、不改平衡点；酶学＝enzymology</td><td>定义</td><td>§10</td><td>〔说话人1 55:22〕</td></tr>
+<tr><td>44</td><td>酶本质主要为蛋白质，少数为RNA（核酶）；核酶局部可成双螺旋</td><td>结论</td><td>§10</td><td>〔说话人1 57:22〕</td></tr>
+<tr><td>45</td><td>单纯酶只有蛋白质（如胰淀粉酶）；缀合酶＝酶蛋白apoenzyme＋辅因子cofactor</td><td>定义</td><td>§10</td><td>〔说话人1 59:43〕</td></tr>
+<tr><td>46</td><td>羧基肽酶辅因子＝锌离子；辅因子按松紧分辅酶（疏松）/辅基（紧密）；金属离子最常见</td><td>分类</td><td>§11</td><td>〔说话人1 01:00:54〕</td></tr>
+<tr><td>47</td><td>金属酶＝金属紧密结合；金属激活酶＝疏松结合、提高活性，区别在松紧</td><td>定义</td><td>§11</td><td>〔说话人1 01:01:34〕</td></tr>
+<tr><td>48</td><td>按蛋白质组成分单体/寡聚/多酶体系/多功能酶；单体酶＝一条肽链三级结构，寡聚酶＝多亚基四级结构</td><td>分类</td><td>§12</td><td>〔说话人1 01:02:24〕</td></tr>
+<tr><td>49</td><td>蛋白激酶A＝2催化＋2调节亚基；调节亚基结合cAMP（第二信使），把胞外信号转胞内</td><td>机制</td><td>§12</td><td>〔说话人1 01:03:22〕</td></tr>
+<tr><td>50</td><td>cAMP结合调节亚基→构象变化→释放催化亚基，催化亚基加磷酸传信号</td><td>机制</td><td>§12</td><td>〔说话人1 01:04:07〕</td></tr>
+<tr><td>51</td><td>多酶体系＝多种酶聚合、反应串联（前产物为后底物），如丙酮酸脱氢酶（60聚体）</td><td>定义</td><td>§12</td><td>〔说话人1 01:05:02〕</td></tr>
+<tr><td>52</td><td>多功能酶＝一条肽链多区域（如脂肪酸合酶），区别于多酶体系的多条肽链</td><td>易错</td><td>§12</td><td>〔说话人1 01:06:38〕</td></tr>
+<tr><td>53</td><td>活性中心＝特异结合并催化底物变产物的区域，含结合基团binding site＋催化基团catalytic site</td><td>定义</td><td>§13</td><td>〔说话人1 01:07:07〕</td></tr>
+<tr><td>54</td><td>酶剩余区域构成整体架构，稳定活性中心空间</td><td>结构</td><td>§13</td><td>〔说话人1 01:07:07〕</td></tr>
+<tr><td>55</td><td>胰蛋白酶表面深凹陷即结合基团，识别并切割精氨酸旁的肽键</td><td>结构</td><td>§13</td><td>〔说话人1 01:09:02〕</td></tr>
+<tr><td>56</td><td>口袋底部Asp与正电精氨酸静电结合；催化三联体＝Asp＋His＋Ser，电子传递至肽键</td><td>结构</td><td>§13</td><td>〔说话人1 01:09:35〕</td></tr>
+<tr><td>57</td><td>酶比一般催化剂温度低、速率常数高；催化剂前后质与量不变、只改速度不改平衡点</td><td>结论</td><td>§14</td><td>〔说话人1 01:12:41〕</td></tr>
+<tr><td>58</td><td>酶的特点：极高催化效率、温和条件（常温常压近中性pH）、可从质与量调节</td><td>结论</td><td>§14</td><td>〔说话人1 01:14:16〕</td></tr>
+<tr><td>59</td><td>特异性＝只催化特定反应；绝对特异性＝只催化一个反应（脲酶只催化尿素水解为CO2和氨）</td><td>举例</td><td>§14</td><td>〔说话人1 01:16:19〕</td></tr>
+<tr><td>60</td><td>双缩脲＝两尿素缩合、检测蛋白质；立体异构特异性＝只识别特定构型（蛋白酶只水解L-氨基酸蛋白）</td><td>易错</td><td>§14</td><td>〔说话人1 01:17:21〕</td></tr>
+<tr><td>61</td><td>相对特异性＝对一类底物可催化；特异性来源＝结合基团</td><td>结论</td><td>§14</td><td>〔说话人1 01:18:52〕</td></tr>
+<tr><td>62</td><td>三种丝氨酸蛋白酶口袋不同：胰蛋白酶Asp（Arg/Lys）、胰凝乳蛋白酶Ser较浅（Phe）、弹性蛋白酶两侧Val（Ala）</td><td>对比</td><td>§14</td><td>〔说话人1 01:20:19〕</td></tr>
+<tr><td>63</td><td>结合口袋结构差异决定底物特异性（结构决定功能）</td><td>考点</td><td>§14</td><td>〔说话人1 01:22:36〕</td></tr>
+<tr><td>64</td><td>结合基团决定结合特异性，催化基团决定催化</td><td>结论</td><td>§15</td><td>〔说话人1 01:23:28〕</td></tr>
+<tr><td>65</td><td>反应需产物自由能更低且先进入过渡态；活化能＝到达过渡态所需额外能量</td><td>机制</td><td>§15</td><td>〔说话人1 01:24:19〕</td></tr>
+<tr><td>66</td><td>升温或加催化剂提供活化能，催化剂降低所需量；活化能＝energy barrier；催化剂结合释放结合能</td><td>术语</td><td>§15</td><td>〔说话人1 01:25:30〕</td></tr>
+<tr><td>67</td><td>结合能为反应物提供到过渡态的活化能；反应式E＋S→ES→E＋P</td><td>机制</td><td>§15</td><td>〔说话人1 01:26:25〕</td></tr>
+<tr><td>68</td><td>锁钥模型＝酶与底物结构互补；诱导契合＝底物结合诱导构象变化（己糖激酶夹角变小）</td><td>模型</td><td>§15</td><td>〔说话人1 01:27:47〕</td></tr>
+<tr><td>69</td><td>催化机制＝邻近效应/定向排列/表面效应/多元催化；例氨酰tRNA合成酶</td><td>分类</td><td>§16</td><td>〔说话人1 01:30:23〕</td></tr>
+<tr><td>70</td><td>催化口袋同时结合赖氨酸与ATP两个底物</td><td>结构</td><td>§16</td><td>〔说话人1 01:31:55〕</td></tr>
+<tr><td>71</td><td>邻近效应＝两底物同时结合、距离近，反应概率远高于随机碰撞</td><td>机制</td><td>§16</td><td>〔说话人1 01:32:40〕</td></tr>
+<tr><td>72</td><td>定向排列＝底物需合适角度，成键需空间接近＋合适角度；结构由X光晶体衍射解析</td><td>机制</td><td>§16</td><td>〔说话人1 01:33:09〕</td></tr>
+<tr><td>73</td><td>表面效应＝蛋白内部疏水/表面亲水有水化膜；去溶剂化＝结合口袋排除水分子</td><td>机制</td><td>§16</td><td>〔说话人1 01:34:39〕</td></tr>
+<tr><td>74</td><td>多元催化由蛋白质两性解离决定；真正解离的是侧链酸/碱氨基酸，具酸碱催化作用</td><td>机制</td><td>§16</td><td>〔说话人1 01:35:38〕</td></tr>
+<tr><td>75</td><td>丝氨酸与羰基碳成共价键→酰基化酶；第一步释放氨基产物，第二步水解释放羧基产物</td><td>机制</td><td>§16</td><td>〔说话人1 01:37:44〕</td></tr>
 </table>
-
-<blockquote>**结构决定功能**：结合口袋的结构差异决定了底物特异性。弹性蛋白酶口袋两侧的甘氨酸→缬氨酸（侧链变大、占空间），使口袋变小，只能识别小侧链氨基酸。</blockquote>
-
-<h4>6. 酶的特点</h4>
-
-<p><strong>（1）与一般催化剂的共同点</strong></p>
-<ul>
-<li>反应前后质和量不变</li>
-<li>只能催化热力学允许的反应（产物自由能<反应物自由能）</li>
-<li>只改变反应速度，不改变反应平衡点</li>
-</ul>
-
-<p><strong>（2）酶的显著特征</strong></p>
-<ul>
-<li><strong>极高的催化效率</strong>：速率常数远高于一般催化剂</li>
-<li><strong>反应条件温和</strong>：常温、常压、接近中性pH</li>
-<li><strong>可调节性</strong>：从质（活性调节）和量（表达量）两方面调节</li>
-<li><strong>特异性（specificity）</strong>：只催化特定反应</li>
-</ul>
-
-<h4>7. 酶的特异性分类</h4>
-
-<p><strong>（1）绝对特异性（absolute specificity）</strong></p>
-<ul>
-<li>只能催化一个特定反应</li>
-<li>例：脲酶只能催化尿素水解→CO₂+NH₃</li>
-<li>不能催化尿素衍生物（如甲基尿素、硫脲、双缩脲）水解</li>
-<li><strong>立体异构特异性（stereospecificity）</strong>：</li>
-<li>蛋白酶只能水解L-氨基酸组成的蛋白质，不能水解D-氨基酸蛋白质</li>
-<li>应用：D-氨基酸组成的多肽药物在体内半衰期长（不被常规蛋白酶水解）</li>
-</ul>
-
-<p><strong>（2）相对特异性（relative specificity）</strong></p>
-<ul>
-<li>对一类底物都可催化</li>
-<li>例：胰蛋白酶可水解所有含精氨酸/赖氨酸的蛋白质</li>
-</ul>
-
-<p><strong>（3）特异性来源</strong></p>
-<ul>
-<li>结合基团的结构决定了底物特异性</li>
-<li>蛋白质结构决定功能的具体体现</li>
-</ul>
-
-<h4>8. 酶的工作原理</h4>
-
-<p><strong>（1）过渡态与活化能</strong></p>
-<ul>
-<li>反应物 → 过渡态（transition state，能量更高、不稳定）→ 产物</li>
-<li><strong>活化能（activation energy）</strong>：反应物到达过渡态所需的额外能量</li>
-<li>能量壁垒（energy barrier）：活化能像一座山，越高越难跨越</li>
-<li>催化剂的作用：<strong>降低活化能</strong>（不是提供能量，而是让需要的活化能更少）</li>
-</ul>
-
-<p><strong>（2）结合能（binding energy）</strong></p>
-<ul>
-<li>酶与底物结合本身释放能量</li>
-<li>结合能为反应物提供到达过渡态所需的活化能</li>
-<li>这是酶催化的本质</li>
-</ul>
-
-<p><strong>（3）酶-底物复合物</strong></p>
-<ul>
-<li>E + S → ES复合物 → E + P</li>
-<li><strong>锁钥模型（lock and key）</strong>：</li>
-<li>旧模型，认为酶和底物结构完全互补</li>
-<li>不能解释酶的构象变化</li>
-<li><strong>诱导契合模型（induced fit）</strong>：</li>
-<li>新模型，底物结合诱导酶发生构象变化</li>
-<li>例：己糖激酶（两个结构域），结合葡萄糖后两结构域角度变小</li>
-<li>类似血红蛋白结合氧气后的构象变化</li>
-</ul>
-
-<h4>9. 酶的催化机制</h4>
-
-<p><strong>（1）邻近效应（proximity effect）</strong></p>
-<ul>
-<li>酶同时结合多个底物，使它们距离非常近</li>
-<li>比溶液中随机碰撞概率高得多</li>
-<li>例：氨酰tRNA合成酶同时结合氨基酸和ATP</li>
-</ul>
-
-<p><strong>（2）定向排列（orientation arrangement）</strong></p>
-<ul>
-<li>不仅距离近，而且有特定的空间角度</li>
-<li>使即将形成共价键的原子之间角度合适</li>
-<li>键的形成需要空间上接近+合适角度</li>
-</ul>
-
-<p><strong>（3）表面效应（surface effect）/ 去溶剂化（desolvation）</strong></p>
-<ul>
-<li>蛋白质表面有水化膜，底物表面也有水化膜</li>
-<li>水分子阻碍反应（夹在反应原子之间）</li>
-<li>酶的结合口袋可排除水分子（去溶剂化）</li>
-<li>使底物与酶的关键部位直接接触，促进反应</li>
-</ul>
-
-<p><strong>（4）多元催化（multi-element catalysis）</strong></p>
-<ul>
-<li>由蛋白质的两性解离性质决定</li>
-<li>氨基酸侧链可作为酸碱催化剂</li>
-<li>例：胰蛋白酶催化三联体</li>
-<li>天冬氨酸（酸性）→ 组氨酸（碱性）→ 丝氨酸</li>
-<li>电子传递：Asp → His → Ser → 肽键羰基碳（亲核攻击）</li>
-<li>形成共价中间产物（酰基化酶）</li>
-<li>第一步：肽键断裂，释放氨基产物，形成酰基化酶</li>
-<li>第二步：水解酰基化酶，释放羧基产物</li>
-</ul>
-
-<hr>
-
-<h2>三、例题/强调点</h2>
-
-<ul>
-<li class="num"><strong>B族维生素辅酶总结表</strong>（教材表2-1）：辅酶名称、缩写、转移基团、所含维生素——这是串联维生素和酶的核心表格。</li>
-</ul>
-
-<ul>
-<li class="num"><strong>NAD vs NADPH</strong>：NAD参与分解代谢（糖酵解、三羧酸循环），NADPH参与合成代谢（脂肪酸、胆固醇合成）。磷酸戊糖途径是NADPH的主要来源。</li>
-</ul>
-
-<ul>
-<li class="num"><strong>甲硫氨酸代谢串联三种B族维生素</strong>：B12（甲钴胺素）+ 叶酸（四氢叶酸）+ B6（磷酸吡哆醛）共同参与含硫氨基酸代谢。</li>
-</ul>
-
-<ul>
-<li class="num"><strong>维生素C的抗氧化串联</strong>：维生素E（细胞膜）→ 维生素C（细胞质）→ 谷胱甘肽 → NADPH。</li>
-</ul>
-
-<ul>
-<li class="num"><strong>催化三联体</strong>：Asp-His-Ser，电子传递链，亲核攻击，形成酰基化酶中间产物。</li>
-</ul>
-
-<ul>
-<li class="num"><strong>诱导契合 vs 锁钥</strong>：己糖激酶结合葡萄糖后构象变化（两结构域角度变小）。</li>
-</ul>
-
-<ul>
-<li class="num"><strong>平行结构的逻辑顺序</strong>：医学英语中强调的parallel structure不是随便排列，有其逻辑（如严重程度、从具体到一般、从上到下）。</li>
-</ul>
-
-<hr>
-
-<h2>四、复习清单</h2>
-
-<ul>
-<li>[ ] 默写B族维生素8种的名称、活性形式、转移基团、缺乏症</li>
-<li>[ ] 区分NAD和NADPH的功能差异</li>
-<li>[ ] 理解叶酸γ-肽键的结构特点</li>
-<li>[ ] 掌握维生素B12的吸收过程（内因子、转钴胺素）</li>
-<li>[ ] 理解维生素C的抗氧化串联（E→C→GSH→NADPH）</li>
-<li>[ ] 区分单纯酶、缀合酶、单体酶、寡聚酶、多酶体系、多功能酶</li>
-<li>[ ] 掌握酶活性中心的组成（结合基团+催化基团）</li>
-<li>[ ] 理解胰蛋白酶催化三联体的电子传递机制</li>
-<li>[ ] 比较三种丝氨酸蛋白酶的结合口袋差异</li>
-<li>[ ] 理解过渡态、活化能、结合能的概念</li>
-<li>[ ] 掌握诱导契合模型</li>
-<li>[ ] 理解四种催化机制（邻近效应、定向排列、表面效应、多元催化）</li>
-</ul>
-
-<hr>
-
-<h2>五、主动回忆题</h2>
-
-<ul>
-<li class="num"><strong>为什么B族维生素的缺乏症表现多样且不典型？</strong></li>
-</ul>
-<p>> 因为B族维生素作为辅酶参与多种酶的功能，影响一类代谢反应，因此全身各器官都可能受累。</p>
-
-<ul>
-<li class="num"><strong>NAD和NADPH在功能上有什么区别？</strong></li>
-</ul>
-<p>> NAD主要参与分解代谢（糖酵解、三羧酸循环），NADPH主要参与合成代谢（脂肪酸、胆固醇合成）。NADPH主要由磷酸戊糖途径产生。</p>
-
-<ul>
-<li class="num"><strong>为什么叶酸缺乏会导致巨幼细胞贫血？</strong></li>
-</ul>
-<p>> 四氢叶酸是一碳单位载体，参与核苷酸（嘌呤）合成。缺乏时核苷酸合成障碍，细胞不能正常分裂，导致红细胞体积大但不成熟。</p>
-
-<ul>
-<li class="num"><strong>维生素B12的吸收有什么特殊之处？</strong></li>
-</ul>
-<p>> 需要胃黏膜分泌的内因子（IF）帮助吸收，吸收后需要转钴胺素运输到组织。胃切除或萎缩性胃炎可导致内因子缺乏，引起B12吸收障碍和恶性贫血。</p>
-
-<ul>
-<li class="num"><strong>酶的活性中心由哪两部分组成？各有什么功能？</strong></li>
-</ul>
-<p>> 结合基团：与底物特异性结合；催化基团：催化底物变为产物。</p>
-
-<ul>
-<li class="num"><strong>胰蛋白酶的催化三联体是什么？电子如何传递？</strong></li>
-</ul>
-<p>> 天冬氨酸→组氨酸→丝氨酸。电子从Asp经His传到Ser，Ser的羟基氧对肽键羰基碳进行亲核攻击，最终打断肽键。</p>
-
-<ul>
-<li class="num"><strong>锁钥模型和诱导契合模型有什么区别？</strong></li>
-</ul>
-<p>> 锁钥模型认为酶和底物结构完全互补，酶结构不变；诱导契合模型认为底物结合会诱导酶发生构象变化，使其更好地结合和催化底物。</p>
-
-<ul>
-<li class="num"><strong>酶降低活化能的机制有哪些？</strong></li>
-</ul>
-<p>> 邻近效应（底物距离近）、定向排列（底物角度合适）、表面效应/去溶剂化（排除水分子）、多元催化（氨基酸侧链的酸碱催化）。</p>
-
-<hr>
-
-<blockquote>**笔记说明**：本笔记基于2026年9月16日生化课堂完整逐字稿整理，涵盖B族维生素续讲（B2/PP/泛酸/生物素/B6/叶酸/B12）、维生素C、维生素章节回顾及酶与酶促反应（分子组成、活性中心、工作原理、催化机制）。所有知识点均经过逐字稿核对。</blockquote>
-
-  <div class="footer">
-    <span>生物化学与分子生物学 · B族维生素续讲与酶学</span>
-    <span>HUST课堂笔记</span>
-  </div>
-</div>
-
-</body>
-</html>
+<p class="foot">附录 D 共 75 条，与 recording.md 讲授内容逐条对应。</p></div>
+</body></html>

@@ -1,65 +1,457 @@
-<!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<title>细胞生物学实验 细胞膜的特性 可视化笔记</title>
-<style>
-@page { size: A4; margin: 18mm 16mm; }
-body { font-family: "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; color: #2a3a2e; line-height: 1.75; font-size: 10.5pt; max-width: 180mm; margin: 0 auto; }
-h1 { color: #1F5C39; font-size: 22pt; border-bottom: 3px solid #2E7D4F; padding-bottom: 6px; margin-bottom: 4px; }
-.meta { color: #666; font-size: 9pt; margin-bottom: 18px; }
-h2 { color: #1F5C39; font-size: 15pt; border-left: 5px solid #2E7D4F; padding-left: 10px; margin-top: 26px; }
-h3 { color: #2E7D4F; font-size: 12pt; margin-top: 16px; }
-table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 9.5pt; }
-th, td { border: 1px solid #c3d9c9; padding: 6px 10px; text-align: left; }
-th { background: #e8f1ea; color: #1F5C39; font-weight: 600; }
-.warn { background: #f7e4df; border-left: 4px solid #b23a2e; padding: 8px 12px; margin: 10px 0; border-radius: 4px; }
-.key { background: #f8ecd3; border-left: 4px solid #a2630c; padding: 8px 12px; margin: 10px 0; border-radius: 4px; }
-ul { margin: 6px 0; padding-left: 22px; }
-li { margin: 3px 0; }
-.cover { text-align: center; padding-top: 60mm; page-break-after: always; }
-.cover h1 { border: none; font-size: 28pt; }
-.cover .sub { font-size: 13pt; color: #666; margin-top: 10px; }
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>细胞生物学实验 第9-12节 细胞膜的特性——ABO血型鉴定、巨噬细胞吞噬与溶血实验</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#2F5D50; --accent-d:#1E3F36; --accent-t:#E6EFEC;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+body{margin:0;padding:10mm 0;background:var(--paper);color:var(--ink);font:10.5pt/1.75 var(--sans);}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+h1,h2,h3{font-family:var(--serif);color:var(--accent-d);margin:0.4em 0;}
+h1{font-size:19pt;border-bottom:2.5px solid var(--accent);padding-bottom:4px;}
+h2{font-size:14.5pt;margin-top:14px;border-left:5px solid var(--accent);padding-left:8px;}
+h3{font-size:11.5pt;margin-top:10px;color:var(--accent);}
+.cover{text-align:center;padding:24mm 6mm 10mm;border-bottom:3px double var(--line);margin-bottom:8mm;}
+.cover .h1{font-size:26pt;}
+.cover .h2{font-size:15pt;border:none;padding:0;margin:6px 0;color:var(--ink2);}
+.cover .meta{margin-top:10mm;font-size:10pt;color:var(--muted);line-height:2.1;}
+.lead{background:var(--accent-t);border:1px solid var(--line);border-left:4px solid var(--accent);padding:6px 10px;margin:8px 0;color:var(--ink2);}
+.kv{margin:6px 0;padding-left:0;list-style:none;}
+.kv li{margin:4px 0;padding-left:1.4em;text-indent:-1.4em;}
+.kv li::before{content:"▪ ";color:var(--accent);font-weight:bold;}
+.loc{color:var(--muted);font-size:9pt;font-family:var(--sans);}
+.tbl{width:100%;border-collapse:collapse;margin:8px 0;font-size:10pt;}
+.tbl th{background:var(--accent);color:#fff;padding:5px 7px;border:1px solid var(--accent-d);text-align:left;}
+.tbl td{padding:5px 7px;border:1px solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam{background:var(--exam-t);border:1px solid var(--exam);border-radius:4px;padding:7px 10px;margin:8px 0;break-inside:avoid;}
+.wrong{background:var(--wrong-t);border:1px solid var(--wrong);border-radius:4px;padding:7px 10px;margin:8px 0;break-inside:avoid;}
+.mnem{background:var(--mnem-t);border:1px solid var(--mnem);border-radius:4px;padding:7px 10px;margin:8px 0;break-inside:avoid;}
+.def{background:var(--def-t);border:1px solid var(--def);border-radius:4px;padding:7px 10px;margin:8px 0;break-inside:avoid;}
+.tag{display:inline-block;background:var(--exam);color:#fff;font-size:8.5pt;border-radius:3px;padding:0 5px;margin-right:4px;vertical-align:middle;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(46%,1fr));gap:8px;margin:8px 0;}
+.card{border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:4px;padding:8px 10px;background:#fff;break-inside:avoid;}
+.foot{margin-top:10mm;padding-top:4px;border-top:1px solid var(--line);color:var(--muted);font-size:9pt;text-align:center;}
+.idx{width:100%;border-collapse:collapse;margin:8px 0;font-size:9pt;}
+.idx th{background:var(--accent-d);color:#fff;padding:4px 6px;border:1px solid var(--accent-d);text-align:left;}
+.idx td{padding:4px 6px;border:1px solid var(--line);vertical-align:top;}
+.idx tr:nth-child(even) td{background:var(--paper2);}
+.fr{margin:6px 0 6px 0;padding:0;list-style:none;}
+.fr li{margin:2px 0;}
+.fr .l1{font-weight:bold;color:var(--accent-d);}
+.fr .l2{margin-left:1.6em;color:var(--ink2);}
+@media print{.page{margin:0}}
 </style></head><body>
+
+<div class="page">
 <div class="cover">
-<h1>细胞生物学实验<br>细胞膜的特性</h1>
-<div class="sub">第23-26节 · 2026-09-22<br>ABO血型鉴定 · 巨噬细胞吞噬 · 细胞膜通透性与溶血</div>
+  <div class="h1">细胞生物学实验</div>
+  <div class="h2">第 9-12 节 · 细胞膜的特性——细胞膜的结构、流动镶嵌与特性观察实验</div>
+  <div class="h2">ABO 血型鉴定 · 小鼠腹腔巨噬细胞吞噬观察 · 红细胞膜通透性与溶血实验</div>
+  <div class="meta">
+    上课日期：2026-09-22　·　授课教师：彭老师　·　学时：4 学时<br>
+    素材规模：逐字稿 25,841 字 / 297 轮<br>
+    笔记性质：核心内容结论式笔记（定位标注〔说话人N HH:MM〕可直接回溯逐字稿原轮次）
+  </div>
 </div>
 
-<h2>实验一：ABO血型鉴定</h2>
-<h3>1. 抗原本质</h3>
-<div class="key"><b>ABO血型抗原的化学本质是糖链，不是蛋白质！</b></div>
-<table><tr><th>血型</th><th>抗原</th><th>说明</th></tr>
-<tr><td>O型</td><td>H抗原（基础糖链）</td><td>所有血型都有H抗原</td></tr>
-<tr><td>A型</td><td>H抗原 + N-乙酰半乳糖胺</td><td>可能是AA或AO</td></tr>
-<tr><td>B型</td><td>H抗原 + 半乳糖</td><td>可能是BB或BO</td></tr>
-<tr><td>AB型</td><td>同时表达A和B</td><td>—</td></tr></table>
-<h3>2. 遗传与凝集判定</h3>
-<div class="warn"><b>关键：</b>A型×B型父母可以生O型孩子（AO×BO→OO）。凝集=形成大小不等凝块，摇匀后液体透亮；假阳性=红细胞自然沉降，摇匀后恢复悬浊。</div>
-<h3>3. 操作要点</h3>
-<ul><li>采血部位：无名指（用得少）</li>
-<li>用棉签木棒端刮血，不要用棉花头</li>
-<li>蓝色=抗A，黄色=抗B，静置5分钟看凝集</li></ul>
+<h1>0. 知识框架</h1>
+<ul class="fr">
+  <li><span class="l1">一、实验素养与安全</span> —— 每步操作先想目的（离心＝取沉淀或上清）；晕血提前报告；小鼠咬伤打狂犬疫苗</li>
+  <li><span class="l1">二、ABO 血型鉴定</span>
+    <div class="l2">抗原本质＝膜上糖链（不是蛋白）→ O 型＝H 抗原（少一个糖）→ 抗 A/抗 B 凝集原理 → 等位基因遗传（AA/AO 不可分）→ 双凹玻片操作 → 真凝集 vs 假阳性沉降</div></li>
+  <li><span class="l1">三、巨噬细胞吞噬观察</span>
+    <div class="l2">胞吞（所有细胞）vs 吞噬（仅巨噬细胞）→ 单核细胞来源 → 3 天前 6% 淀粉肉汤召集＋30 分钟前 1% 鸡血红细胞 → 颈椎脱臼 → 腹腔液提取（淡黄色＝成功）→ 临时封片镜检</div></li>
+  <li><span class="l1">四、细胞膜通透性与溶血</span>
+    <div class="l2">选择性通透半透膜 → 等渗下物质入胞→水随之内流→胀破＝溶血 → 8 支试管（蒸馏水阳性对照＋7 种等渗试剂）→ 溶血快慢＝通透速度</div></li>
+  <li><span class="l1">五、操作顺序与收尾</span> —— 溶血先做（要等）→ ABO 血型（手还干净）→ 最后戴手套杀小鼠；报告第一、二页撕下上交</li>
+</ul>
 
-<h2>实验二：巨噬细胞吞噬实验</h2>
-<h3>1. 概念区分</h3>
-<table><tr><th>过程</th><th>发生细胞</th></tr>
-<tr><td>胞吞 endocytosis</td><td>所有细胞都有</td></tr>
-<tr><td>吞噬 phagocytosis</td><td>仅巨噬细胞等特殊细胞</td></tr></table>
-<p>巨噬细胞来源：血液单核细胞迁入组织后分化。功能：吞噬降解 + 抗原呈递。</p>
-<h3>2. 实验时间线</h3>
-<table><tr><th>时间</th><th>操作</th><th>目的</th></tr>
-<tr><td>3天前</td><td>6%淀粉肉汤腹腔注射</td><td>诱导单核细胞聚集，巨噬细胞增多</td></tr>
-<tr><td>30分钟前</td><td>1%鸡血红细胞注射</td><td>被吞噬目标</td></tr></table>
-<div class="key"><b>细胞鉴别：</b>鸡血红细胞长椭圆形、有核；小鼠红细胞双凹、无核。</div>
-<h3>3. 操作与观察</h3>
-<ul><li>处死：颈椎脱臼法，夹颈部不夹肩部</li>
-<li>取材：侧面剪开避腹主动脉，按摩腹部后加1mL生理盐水，吸底部淡黄色液体</li>
-<li>红色液体=剪破血管全是血；淡黄色=成功</li>
-<li>观察：低倍找高倍看，巨噬细胞内吞多个有核长椭圆形细胞</li></ul>
+<h1>一、实验素养与安全要求</h1>
+<p class="lead">主旨：从总结前两次培养实验出发，确立「每步操作先想目的」的科学工作习惯，并交代本课安全红线。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li>前两次实验为原代培养与传代培养：有同学成功、有同学不理想，这很正常；第二次实验很多同学可能一个细胞都看不到，但按正常操作肯定有细胞。<span class="loc">〔说话人1 01:07〕</span></li>
+<li>有同学忘了离心，甚至不知道离心还是没离心——这类操作以后要成为重要的肌肉记忆。<span class="loc">〔说话人1 01:07〕</span></li>
+<li><span class="tag">★考点</span>离心的目的是获得沉淀或者获得上清；不能为了离心而离心，否则很容易错。<span class="loc">〔说话人1 01:07〕</span></li>
+<li>每个实验操作前先思考：要得到什么结果、获得什么信息，想清楚再做；到专业实验室、研究生阶段尤其如此。<span class="loc">〔说话人1 02:51〕</span></li>
+<li>没有思考过的人不建议做实验：实验过程中一次小小的干扰，就可能让你忘记正在做什么、要拿什么结果。<span class="loc">〔说话人1 03:11〕</span></li>
+<li>失败的代价不只是时间，还可能浪费非常重要的实验材料。<span class="loc">〔说话人1 03:11〕</span></li>
+<li>临床珍贵样本（如肝癌样本）没有重来的机会：忘了加某种试剂，不能再切一点补做。<span class="loc">〔说话人1 03:11〕</span></li>
+<li>实验时间长（下午 2 点半做到 6 点半、接近 7 点）恰体现实验价值：除冻存复苏打了折，其他实验全部完成、没有打折。<span class="loc">〔说话人1 03:43〕</span></li>
+<li>老师每年被投诉「让学生做实验做太多」，但以投诉为荣、坚决不改：必须保证出去的学生会细胞培养，免得被后面的老板质疑。<span class="loc">〔说话人1 03:43〕</span></li>
+<li>本课主题：细胞膜的特性，三个实验集中在今天完成。<span class="loc">〔说话人1 03:43〕</span></li>
+<li>安全红线：有晕血现象的同学提前报告、可以不做；前几届有同学一扎手见血马上就晕，容易出事故。<span class="loc">〔说话人1 10:37〕</span></li>
+<li>晕血的同学做好思想准备，千万不要硬来。<span class="loc">〔说话人1 42:14〕</span></li>
+</ul>
+<div class="exam"><b>★老师强调：</b>「每一次离心我到底获得什么东西」——作为科学工作者必须知道每个实验操作的目的，不能当只是完成工作的「工人」。<span class="loc">〔说话人1 01:07〕</span></div>
+<h1>二、ABO 血型鉴定 · 原理</h1>
+<p class="lead">主旨：细胞膜上的抗原决定细胞类型与识别；ABO 血型抗原的化学本质是糖链而不是蛋白质，凝集反应是最简单的抗原识别模型。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li>细胞膜上有抗原，抗原性质决定细胞类型、细胞识别和细胞间的相互作用关系；ABO 血型是最容易理解的抗原模型。<span class="loc">〔说话人1 04:57〕</span></li>
+<li>ABO 血型＝红细胞表面的一种特殊抗原类型。<span class="loc">〔说话人1 05:25〕</span></li>
+<li><span class="tag">★考点</span>ABO 血型抗原的化学本质不是蛋白质，而是糖——是跨在膜上的糖链；很多教科书都写错。<span class="loc">〔说话人1 06:04〕</span></li>
+<li>认知现状：据老师了解，医院相关人员约 70%~80%（包括博士生、博士生导师）都误认为 ABO 抗原是蛋白。<span class="loc">〔说话人1 05:25〕</span></li>
+<li>糖链上糖基的种类与连接方式决定表现为 A 抗原、B 抗原还是 O 型（H 抗原）：A、B 抗原都在 H 抗原糖链上多接一个糖（A 抗原为 N-乙酰半乳糖胺，B 抗原为半乳糖，手卡核实）。<span class="loc">〔说话人1 06:04〕</span></li>
+<li>O 型血并不是没有抗原：它没有 A、B 抗原，用的是 H 抗原（基础糖链，比 A/B 少一个糖）。<span class="loc">〔说话人1 06:04〕</span></li>
+<li>凝集原理：有 A 抗原的红细胞被抗 A 抗体凝聚；有 B 抗原的被抗 B 抗体凝聚；两种抗原都有则两边都凝集；O 型不被抗 A、抗 B 识别，不发生凝集。<span class="loc">〔说话人1 06:04〕〔说话人1 07:02〕</span></li>
+<li><span class="tag">★考点</span>遗传学：血型由等位基因决定，理论上有两个 copy；O 等位基因（H 抗原）记作小 i，一个 copy 是 A、另一个是 i 时仍表现为 A 型。<span class="loc">〔说话人1 07:02〕</span></li>
+<li><span class="tag">★考点</span>A 型检测阳性只有两种基因型可能：AA（纯合）或 AO（杂合）；经典检测只能判 A/B/AB/O，不能判断纯合子还是杂合子。<span class="loc">〔说话人1 07:02〕</span></li>
+<li>A 型父亲＋B 型母亲可以生出 O 型孩子，社会上常因此怀疑孩子抱错。<span class="loc">〔说话人1 08:13〕</span></li>
+<li>案例：楚天都市报曾报道 A 型母亲与 B 型父亲生出 O 型孩子，父亲不满引发夫妻猜忌、家庭破裂。<span class="loc">〔说话人1 08:13〕</span></li>
+<li>老师就该报道写长文到湖北日报社挑战：全国约 6000 万人属于这种夫妻配比，若都怀疑配偶与孩子将是巨大社会问题；最后对方道歉并重新科普。<span class="loc">〔说话人1 08:54〕</span></li>
+<li><span class="tag">★考点</span>结论：A 型血加 B 型血完全可以生出 O 型血的孩子（各传一个 O 等位基因，孩子为 OO）。<span class="loc">〔说话人1 08:54〕</span></li>
+<li>学了科学还要向周围缺乏基础知识的人做科普，这是社会责任。<span class="loc">〔说话人1 09:39〕</span></li>
+<li>本课可验证血型：不知道的同学今天测出结果，知道的同学可验证。<span class="loc">〔说话人1 09:39〕</span></li>
+</ul>
+<h3>B. 对比表</h3>
+<table class="tbl">
+<tr><th>血型</th><th>红细胞表面抗原</th><th>加抗 A 抗体</th><th>加抗 B 抗体</th><th>定位</th></tr>
+<tr><td>A 型</td><td>A 抗原</td><td>凝集</td><td>不凝集</td><td class="loc">〔说话人1 07:02〕</td></tr>
+<tr><td>B 型</td><td>B 抗原</td><td>不凝集</td><td>凝集</td><td class="loc">〔说话人1 07:02〕</td></tr>
+<tr><td>AB 型</td><td>A＋B 抗原</td><td>凝集</td><td>凝集</td><td class="loc">〔说话人1 07:02〕</td></tr>
+<tr><td>O 型</td><td>仅 H 抗原</td><td>不凝集</td><td>不凝集</td><td class="loc">〔说话人1 06:04〕</td></tr>
+</table>
+<table class="tbl">
+<tr><th>基因型</th><th>表现型</th><th>说明</th><th>定位</th></tr>
+<tr><td>AA</td><td>A 型</td><td>纯合，检测无法与 AO 区分</td><td class="loc">〔说话人1 07:02〕</td></tr>
+<tr><td>AO</td><td>A 型</td><td>杂合，检测无法与 AA 区分</td><td class="loc">〔说话人1 07:02〕</td></tr>
+<tr><td>BB / BO</td><td>B 型</td><td>同理存在纯合与杂合两种可能</td><td class="loc">〔说话人1 07:02〕</td></tr>
+<tr><td>AB</td><td>AB 型</td><td>两个等位基因各表达一个抗原</td><td class="loc">〔说话人1 07:02〕</td></tr>
+<tr><td>OO（ii）</td><td>O 型</td><td>只表达 H 抗原</td><td class="loc">〔说话人1 06:04〕</td></tr>
+</table>
+<div class="def"><b>定义框：</b>抗原＝细胞膜上决定细胞类型与识别的分子；H 抗原＝O 型也表达的基础糖链抗原；凝集＝抗原抗体反应使红细胞结成不可逆的块。<span class="loc">〔说话人1 04:57〕〔说话人1 06:04〕</span></div>
+<div class="mnem"><b>助记：</b>「ABO 是糖不是蛋白，O 型也有 H 抗原」（手卡口诀）。</div>
+<h1>三、ABO 血型鉴定 · 操作与判定</h1>
+<p class="lead">主旨：双凹玻片双抗体凝集法；取样必须用棉签木棒端；真凝集与假阳性沉降的区分是结果判定关键。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li>器材：双凹玻片，摸一下确认凹面，凹槽朝上、凹面加液体。<span class="loc">〔说话人1 11:12〕</span></li>
+<li>抗体滴加：蓝色（标 A）＝抗 A 抗体，黄色（标 B）＝抗 B 抗体；色盲同学请其他同学提醒。<span class="loc">〔说话人1 11:12〕</span></li>
+<li>两个抗体千万不要混到一起，一混就毫无意义、必须重做。<span class="loc">〔说话人1 11:12〕</span></li>
+<li>手指消毒：碘伏、酒精棉球；选非惯用手（用得少）的无名指——惯用右手者选左手无名指，左撇子选右手无名指。<span class="loc">〔说话人1 12:27〕</span></li>
+<li>取血针掰开盖后放平面上，手放桌面压住针、一翻即扎破；不要悬着——悬着时一翻自然会躲，就失去扎破的机会。<span class="loc">〔说话人1 12:57〕〔说话人1 44:21〕</span></li>
+<li>扎针不是垂直扎，是平放一翻；动作狠一点、一次搞定，不要轻轻扎好几次。<span class="loc">〔说话人1 44:21〕〔说话人1 45:05〕</span></li>
+<li>扎破只要一个小洞，不会血流如注；顺手掌慢慢推挤，挤出约半颗绿豆大小的血滴即够检测。<span class="loc">〔说话人1 13:54〕</span></li>
+<li><span class="tag">★考点</span>取样用棉签木棒端（尾部）刮血，不能用棉花头——棉花头会把血吸进去，白做。<span class="loc">〔说话人1 46:18〕</span></li>
+<li>取样：一根棉签掰断，一头刮血在抗 A 中搅和，另一头刮血在抗 B 中搅和；同一头搅和后不能回来再刮血，必须换新棉签末端。<span class="loc">〔说话人1 14:38〕〔说话人1 15:09〕</span></li>
+<li>搅和后把双凹玻片放到白纸或吸水纸上方观察（黑桌面看不到现象），静置约 5 分钟即可看到凝集。<span class="loc">〔说话人1 46:45〕〔说话人1 48:03〕</span></li>
+<li>采血结束手指擦碘伏、摁一下就完成消毒。<span class="loc">〔说话人1 14:38〕</span></li>
+<li>出了结果用碘伏棉球摁着止血；没出结果先留着、别擦。<span class="loc">〔说话人1 47:46〕</span></li>
+<li>结果判定：哪边形成凝块＝拥有哪种抗原；两边都凝＝AB 型。<span class="loc">〔说话人1 15:09〕</span></li>
+<li>记录自己的血型数据；结果由自己判读，老师不替同学做判断。<span class="loc">〔说话人1 50:58〕〔说话人1 47:19〕</span></li>
+<li>已知血型的同学可作对照互相参看（如 AB 型同学作阳性对照）。<span class="loc">〔说话人2 48:09〕</span></li>
+<li>ABO 血型实验安排在第二步做：杀小鼠后再操作会手部污染。<span class="loc">〔说话人1 15:09〕</span></li>
+</ul>
+<h3>B. 对比表</h3>
+<table class="tbl">
+<tr><th>现象</th><th>判定</th><th>机制</th><th>定位</th></tr>
+<tr><td>形成大小不均的块，怎么摇液体都透亮（红色透明），不会摇后又变浑</td><td>真凝集（阳性）</td><td>抗原抗体反应，不可逆</td><td class="loc">〔说话人1 15:09〕</td></tr>
+<tr><td>静置后细胞聚集在中部，摇一下又恢复悬浊</td><td>假阳性（阴性）</td><td>红细胞自然沉降堆积，不是抗原抗体反应</td><td class="loc">〔说话人1 15:09〕</td></tr>
+</table>
+<div class="wrong"><b>易错：</b>把自然沉降的聚集当成凝集。沉降堆积摇后复浑；真凝集形成大小不均的块、摇后仍透亮。<span class="loc">〔说话人1 15:09〕</span></div>
+<h1>四、巨噬细胞吞噬观察 · 原理</h1>
+<p class="lead">主旨：分清胞吞与吞噬两个概念；巨噬细胞来自血液单核细胞，功能是吞噬降解与抗原呈递。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li><span class="tag">★考点</span>胞吞作用（endocytosis）是所有细胞都有的；吞噬作用（phagocytosis）只是特殊细胞所具有——两个词完全不一样，勿混。<span class="loc">〔说话人1 16:57〕</span></li>
+<li>胞吞作用＝所有细胞从外界获得营养物质或小分子物质的一种基本方式。<span class="loc">〔说话人1 16:57〕</span></li>
+<li>吞噬作用＝巨噬细胞将细胞外的大分子液体或病原体吞入细胞内降解；降解物一个途径是降解掉，另一个是以抗原呈递方式展示给免疫系统。<span class="loc">〔说话人1 16:57〕</span></li>
+<li>巨噬细胞是免疫相关的重要细胞。<span class="loc">〔说话人1 16:57〕</span></li>
+<li><span class="tag">★考点</span>巨噬细胞的来源：组织学中的单核细胞从血液迁徙进入机体各部位，具有活性后转变为巨噬细胞。<span class="loc">〔说话人1 16:57〕</span></li>
+<li>巨噬细胞在体内不是随时随地都有很多，要看它的吞噬活动，必须先把数量提高。<span class="loc">〔说话人1 18:22〕</span></li>
+</ul>
+<h3>B. 对比表</h3>
+<table class="tbl">
+<tr><th>比较项</th><th>胞吞作用 endocytosis</th><th>吞噬作用 phagocytosis</th><th>定位</th></tr>
+<tr><td>拥有细胞</td><td>所有细胞</td><td>仅巨噬细胞等特殊细胞</td><td class="loc">〔说话人1 16:57〕</td></tr>
+<tr><td>吞入对象</td><td>营养物质、小分子物质</td><td>细胞外大分子液体、病原体</td><td class="loc">〔说话人1 16:57〕</td></tr>
+<tr><td>后续处理</td><td>获取营养的基本方式</td><td>降解，或抗原呈递给免疫系统</td><td class="loc">〔说话人1 16:57〕</td></tr>
+</table>
+<div class="def"><b>定义框：</b>endocytosis＝胞吞（所有细胞）；phagocytosis＝吞噬（巨噬细胞等）。<span class="loc">〔说话人1 16:57〕</span></div>
+<h1>五、巨噬细胞吞噬观察 · 诱导与取材</h1>
+<p class="lead">主旨：提前 3 天注 6% 淀粉肉汤把巨噬细胞「召集」到腹腔、课前 30 分钟注 1% 鸡血红细胞作吞噬目标；颈椎脱臼处死后抢在尸僵前取出淡黄色腹腔液。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li>实验动物：昆明小鼠；用两种试剂调动其腹腔巨噬细胞的活性，每位同学操作一只小鼠。<span class="loc">〔说话人1 18:22〕〔说话人1 19:34〕</span></li>
+<li><span class="tag">★考点</span>实验前 3 天腹腔注射 6% 淀粉肉汤（含台盼蓝）：作为外源性刺激物诱导小鼠单核细胞大量进入腹腔吞噬，巨噬细胞如同听到「集结号」，数量增加。<span class="loc">〔说话人1 18:54〕</span></li>
+<li><span class="tag">★考点</span>实验前 30 分钟腹腔注射 1% 鸡血红细胞：今天要观察的被吞噬目标物；注射后讲完课、操作完毕正好可见吞噬现象。<span class="loc">〔说话人1 19:34〕</span></li>
+<li><span class="tag">★考点</span>鸡血红细胞与哺乳动物红细胞不同：长椭圆形、有细胞核；鸟类、两栖类、爬行类红细胞都有核，哺乳类没有核。<span class="loc">〔说话人1 19:34〕</span></li>
+<li>为避免被咬伤，本课不让学生徒手断颈，改用大镊子操作；以后有能力了再用手（手更快）。<span class="loc">〔说话人1 19:34〕〔说话人1 21:30〕</span></li>
+<li>大鼠不做颈椎脱臼处死：太危险了。<span class="loc">〔说话人1 19:34〕</span></li>
+<li>小鼠颈部缩在一起、看不见，要用手（或镊子）去感知、掐出颈部的细度。<span class="loc">〔说话人1 19:34〕〔说话人1 21:30〕</span></li>
+<li>颈椎脱臼手法：右手提尾巴（主控手），左手掐住颈部；右手往斜后方约 45°、左手往前下方，一扯即断。<span class="loc">〔说话人1 21:30〕</span></li>
+<li>断颈成功标志：没有声音，但手心清楚感到颈椎断的触感（跳跃、掰断的感觉），每个人都要体会这个感觉。<span class="loc">〔说话人1 21:30〕</span></li>
+<li><span class="tag">★考点</span>小鼠咬到人要打狂犬疫苗——哺乳动物咬到都要打（老师强调「包括我咬你」）；咬镊子不用打。<span class="loc">〔说话人1 21:30〕〔说话人1 22:53〕</span></li>
+<li>夹持位置必须是颈部而不是肩部：肩部拉不开；没夹好再夹一次，去感受颈部受力，不要过度拉扯。<span class="loc">〔说话人1 22:53〕</span></li>
+<li>断颈后小鼠出现抽搐动作很正常；拉断后它不可能再做其他运动。<span class="loc">〔说话人1 22:53〕</span></li>
+<li><span class="tag">★考点</span>断颈后必须马上快速进行后续操作：等小鼠僵硬后腹腔液就没了、难以提取，老师要的是尚未吸收的腹腔液。<span class="loc">〔说话人1 22:53〕〔说话人1 01:01:00〕</span></li>
+<li>每人处死自己的小鼠，不要让别人代杀。<span class="loc">〔说话人1 48:58〕</span></li>
+<li>拎尾巴只拎末端、不靠身体的位置拿：靠身体会被它反过来咬；看准了一抓就提起来。<span class="loc">〔说话人1 53:48〕</span></li>
+<li>处死小鼠在桌面上的平皿（培养皿）内解剖，操作前把桌面、实验报告清理干净。<span class="loc">〔说话人1 54:22〕〔说话人1 01:05:45〕</span></li>
+<li>腹部酒精擦拭消毒：本课在有菌实验室做，消毒意义不大；但可使剪开时毛不漂浮。以后若要提取腹腔巨噬细胞则需要无菌操作。<span class="loc">〔说话人1 24:02〕</span></li>
+<li>剪口位置避开中间、往两侧偏一点：腹主动脉在正中，剪到会大量出血；从侧位剪一个小口。<span class="loc">〔说话人1 24:02〕</span></li>
+<li>用镊子把皮肤拎起来剪开，依次剪开皮肤、皮下组织、腹膜：要暴露脏器，而不是把脏器剪破。<span class="loc">〔说话人1 24:02〕</span></li>
+<li><span class="tag">★考点</span>滴液前先按摩腹部，让腹腔液分泌更多；再加约 1 mL 生理盐水（PBS 也可，不必很准确），滴时用镊子把组织掀起来，让盐水真正滴入腹腔。<span class="loc">〔说话人1 24:02〕</span></li>
+<li>加盐水后轻柔腹部，让细胞混匀。<span class="loc">〔说话人1 24:02〕</span></li>
+<li>吸管绕过整个肠道、伸到底部（靠近肺的位置），吸取靠底部的液体。<span class="loc">〔说话人1 26:28〕</span></li>
+<li><span class="tag">★考点</span>取材成败判断：剪破腹主动脉则吸出的主要是血（红色，镜下满视野小鼠红细胞）；没剪破血管则液体为淡黄色＝成功。<span class="loc">〔说话人1 26:28〕</span></li>
+<li>吸取量只需一滴就够，不需要吸太多。<span class="loc">〔说话人1 26:28〕</span></li>
+<li>看不到鸡血细胞的小鼠：可能是注射时打漏了或本身为阴性结果——处理方法是再杀一只重做。<span class="loc">〔说话人1 01:21:37〕</span></li>
+</ul>
+<h3>B. 对比表</h3>
+<table class="tbl">
+<tr><th>注射时间</th><th>注射物</th><th>作用</th><th>定位</th></tr>
+<tr><td>实验前 3 天</td><td>6% 淀粉肉汤（含台盼蓝）</td><td>外源刺激物→诱导单核细胞进入腹腔→巨噬细胞大量聚集</td><td class="loc">〔说话人1 18:54〕</td></tr>
+<tr><td>实验前 30 分钟</td><td>1% 鸡血红细胞</td><td>今天要观察的被吞噬目标物</td><td class="loc">〔说话人1 19:34〕</td></tr>
+</table>
+<table class="tbl">
+<tr><th>特征</th><th>鸡血红细胞</th><th>哺乳动物红细胞</th><th>定位</th></tr>
+<tr><td>形状</td><td>长椭圆形（梭形）</td><td>双凹圆盘形</td><td class="loc">〔说话人1 19:34〕</td></tr>
+<tr><td>细胞核</td><td>有核</td><td>无核</td><td class="loc">〔说话人1 19:34〕</td></tr>
+<tr><td>有核范围</td><td>鸟类、两栖类、爬行类均有核</td><td>哺乳类无核</td><td class="loc">〔说话人1 19:34〕</td></tr>
+</table>
+<div class="mnem"><b>助记（整理）：</b>「三天肉汤召集兵，三十分钟喂鸡血」——3 天前淀粉肉汤增数量，30 分钟前鸡血红细胞当靶子。<span class="loc">〔说话人1 18:54〕〔说话人1 19:34〕</span></div>
+<h1>六、巨噬细胞吞噬观察 · 制片与镜下判定</h1>
+<p class="lead">主旨：普通载玻片做临时封片（一侧先贴慢放防水泡），先低倍找再高倍看；巨噬细胞吞入多个有核长椭圆形鸡血红细胞为阳性，贴附现象与多棘红细胞是正常视野。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li>制片用普通载玻片（每桌盒装），不是双凹玻片；滴一滴腹腔液即可。<span class="loc">〔说话人1 01:04:26〕〔说话人1 26:28〕</span></li>
+<li>盖玻片一侧先贴靠液面、借水的张力慢慢盖下去；直接丢上去会出现很多气泡，气泡会严重影响拍摄。<span class="loc">〔说话人1 26:28〕</span></li>
+<li>这是短时间观察的临时封片：液体逐渐变干会把细胞挤破，不可能长期保存，短时间看没有问题。<span class="loc">〔说话人1 27:37〕</span></li>
+<li>封完片马上看：干了以后细胞会变形。<span class="loc">〔说话人1 01:06:01〕</span></li>
+<li>用普通显微镜观察：先在低倍镜（10 倍）下找，再转到高倍镜（60 倍）看。<span class="loc">〔说话人1 01:10:07〕</span></li>
+<li><span class="tag">★考点</span>阳性现象：大细胞（巨噬细胞）内吞入多个长椭圆形有核的鸡血红细胞，一个细胞内可见 2 个甚至 7、8、10 个不等；鸡血细胞吞进去以后会变形。<span class="loc">〔说话人1 27:37〕〔说话人1 01:19:54〕</span></li>
+<li>贴附现象：巨噬细胞贴附在其他细胞表面（正在变形），也是正常视野；正常细胞不会形成贴附，只有特异性结合以后才会贴附。<span class="loc">〔说话人1 27:37〕〔说话人1 01:19:54〕</span></li>
+<li>视野中还可见游离的巨噬细胞。<span class="loc">〔说话人1 27:37〕</span></li>
+<li>小鼠红细胞：双凹圆盘形、无核（镜下正面观呈小圆形）；若剪破血管，视野中会出现大量这样的小鼠红细胞，但也应能看到个别阳性吞噬现象。<span class="loc">〔说话人1 27:37〕〔说话人1 01:19:54〕</span></li>
+<li>多棘状红细胞：离体后温度从 37 ℃ 降到二十多度，红细胞自然出现棘状凸起，是体外降温的自然现象，不是异常、不考虑它。<span class="loc">〔说话人1 27:37〕</span></li>
+<li>镜下找不到目标时，先在低倍镜下找到再换高倍镜；不要一开始就开最高倍。<span class="loc">〔说话人2 01:16:59〕〔说话人1 01:10:07〕</span></li>
+<li>视野液体偏黄属正常（巨噬细胞液）；其中还可见一些小型的免疫细胞。<span class="loc">〔说话人1 01:33:30〕</span></li>
+<li>镜下细胞全部胀破、溶解，说明制片时加错了液体。<span class="loc">〔说话人1 01:12:32〕</span></li>
+</ul>
+<h3>B. 对比表</h3>
+<table class="tbl">
+<tr><th>镜下所见</th><th>判定</th><th>定位</th></tr>
+<tr><td>大细胞内吞入多个长椭圆形、有核的红细胞</td><td>吞噬现象（阳性结果）</td><td class="loc">〔说话人1 27:37〕</td></tr>
+<tr><td>巨噬细胞贴附在其他细胞表面、正在变形</td><td>贴附现象（正常视野）</td><td class="loc">〔说话人1 01:19:54〕</td></tr>
+<tr><td>游离的大细胞</td><td>游离巨噬细胞</td><td class="loc">〔说话人1 27:37〕</td></tr>
+<tr><td>大量小圆形、双凹、无核的红细胞</td><td>小鼠红细胞（提示剪破血管）</td><td class="loc">〔说话人1 27:37〕</td></tr>
+<tr><td>带多个棘状突起的红细胞</td><td>多棘状红细胞：体外降温自然现象，非异常</td><td class="loc">〔说话人1 27:37〕</td></tr>
+</table>
+<div class="wrong"><b>易错：</b>把多棘状红细胞当病变、把贴附当阴性；二者都是正常视野。真正要交差的是「一个巨噬细胞吞了多个有核长椭圆形细胞」。<span class="loc">〔说话人1 27:37〕〔说话人1 01:19:54〕</span></div>
+<h1>七、细胞膜通透性与溶血 · 原理</h1>
+<p class="lead">主旨：细胞膜是选择性通透的半透膜；等渗条件下可通透物质入胞→渗透压升高→水内流→细胞胀破，即溶血；溶血快慢反映通透速度。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li>细胞膜不是自由扩散的简单膜：膜上有受体、有通道，具有选择性通透的特点，可称为选择性通透的半透膜性质。<span class="loc">〔说话人1 29:23〕</span></li>
+<li>细胞膜两侧的浓度决定水分子的运动关系（水顺浓度梯度移动直至等渗）。<span class="loc">〔说话人1 29:23〕</span></li>
+<li>换一个条件：两侧对该物质是等渗时，若该物质能通透细胞膜进入细胞，水便随之进入以平衡渗透压的变化。<span class="loc">〔说话人1 30:44〕</span></li>
+<li>物质通透越快，水内流越快；细胞膜承载有限，水过多即被撑破——称为细胞膜的破裂现象。<span class="loc">〔说话人1 30:44〕</span></li>
+<li><span class="tag">★考点</span>本实验用羊的红细胞：羊血红细胞被撑破时就称为溶血现象。物质运输得快，溶血现象就快；运输得慢，水进来也慢。<span class="loc">〔说话人1 30:44〕</span></li>
+<li><span class="tag">★考点</span>由溶血快慢可总结该物质的通透性：溶血越快＝该物质越容易通透细胞膜。<span class="loc">〔说话人1 30:44〕</span></li>
+<li>本实验在等渗液体中利用不同溶质的通透性差异，观察细胞是否破裂。<span class="loc">〔说话人1 32:04〕</span></li>
+</ul>
+<div class="def"><b>定义框：</b>溶血＝可通透溶质入胞使细胞内渗透压升高、水随之内流，细胞吸水胀破，悬浊血变为红色透明的液体；半透膜＋选择性通透＝细胞膜的物质运输特性。<span class="loc">〔说话人1 30:44〕〔说话人1 32:04〕</span></div>
+<div class="mnem"><b>助记（整理）：</b>「能进→水涨→破」三字链：物质入胞 → 渗透压升高 → 水内流 → 胀破溶血。<span class="loc">〔说话人1 30:44〕</span></div>
+<h1>八、溶血实验 · 操作与结果分析</h1>
+<p class="lead">主旨：8 支试管（蒸馏水阳性对照＋7 种等渗试剂）各加 0.5 mL 10% 羊血，记录是否溶血与时间；溶血越快＝物质越易通透。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li>准备了 8 支试管，顺序已排好、不用改变；每管「大概等渗」，例外是阳性对照蒸馏水（不是等渗）。<span class="loc">〔说话人1 32:04〕</span></li>
+<li><span class="tag">★考点</span>阳性对照的意义：蒸馏水非等渗，羊血一加进去水大量涌入细胞，秒级溶血（还没开始测就已溶）——让你看见什么叫溶血。<span class="loc">〔说话人1 32:04〕</span></li>
+<li>加样：各组吸 0.5 mL 老师准备好的 10% 羊血红细胞悬液滴入试管，滴的同时甩动混匀，放在试管架上观察。<span class="loc">〔说话人1 32:04〕</span></li>
+<li>溶血判定：刚加进去时理论上是悬浊液；一旦发生溶血，对侧的字、手都能看得很清楚，变成红色透明液体。<span class="loc">〔说话人1 32:04〕</span></li>
+<li>7 种等渗试剂：氯化钠、氯化铵、硫酸钠、草酸铵、葡萄糖、甘油、乙醇溶液；连同蒸馏水共 8 管。<span class="loc">〔说话人1 33:30〕</span></li>
+<li>记录表自己列表，三栏：①物质是否发生溶血；②若溶血，溶血时间多长；③结果分析（溶血说明什么、没溶血说明什么）。<span class="loc">〔说话人1 33:30〕</span></li>
+<li>老师加羊血后，各组多人配合记时间。<span class="loc">〔说话人1 35:49〕</span></li>
+<li>计时方式：加一管就开始计一管；老师可能隔 10 秒、30 秒加一管，把时间补记进去。<span class="loc">〔说话人1 36:03〕</span></li>
+<li>一人计时、一人录像，分组配合记录。<span class="loc">〔说话人2 37:56〕</span></li>
+<li>加样后必须摇匀：上下颜色一致；分层（上面浅、下面深）不行，不摇匀没有意义。<span class="loc">〔说话人1 39:31〕</span></li>
+<li>对比判读：拿一个完全不透明的管和一个已溶的（蒸馏水）管对比，就知道什么叫变化、什么叫没变化；试管放在原来位置。<span class="loc">〔说话人1 40:11〕</span></li>
+<li>溶血速度分级：有的是秒级、有的是分钟级、有的是十几分钟级，无明显变化的先搁置不用着急；快的很快、慢的很慢。<span class="loc">〔说话人1 38:27〕</span></li>
+<li><span class="tag">★考点</span>结果分析：溶血＝该物质能通透细胞膜，水随之内流把细胞撑破；溶血快＝通透快；不溶血＝该物质不能通透细胞膜。<span class="loc">〔说话人1 33:30〕〔说话人1 30:44〕</span></li>
+<li>课堂实际结果：最后剩两、三组试剂没有溶解，其中硫酸钠长时间不溶——说明该物质不能通透细胞膜。<span class="loc">〔说话人1 01:23:10〕〔说话人2 01:36:01〕</span></li>
+</ul>
+<h3>B. 对比表</h3>
+<table class="tbl">
+<tr><th>试管</th><th>是否等渗</th><th>角色</th><th>预期现象</th><th>定位</th></tr>
+<tr><td>蒸馏水</td><td>否</td><td>阳性对照</td><td>秒级溶血，示范「什么叫溶血」</td><td class="loc">〔说话人1 32:04〕</td></tr>
+<tr><td>氯化钠、氯化铵、硫酸钠、草酸铵、葡萄糖、甘油、乙醇</td><td>是</td><td>实验组</td><td>按通透速度分秒级/分钟级/十几分钟级/不溶</td><td class="loc">〔说话人1 33:30〕</td></tr>
+</table>
+<div class="exam"><b>★老师强调：</b>「溶血代表我们检测到了什么结果、说明什么问题」要自己反过来总结——没有溶血代表该物质不能通透，溶血快代表容易通透、水内流快。<span class="loc">〔说话人1 33:30〕</span></div>
 
-<h2>实验三：细胞膜通透性与溶血</h2>
-<h3>1. 溶血原理</h3>
-<div class="key"><b>细胞膜是选择性通透的半透膜。</b>等渗物质可通透→进入细胞→渗透压升高→水内流→细胞胀破→悬浊液变红色透明液体。</div>
-<h3>2. 实验试剂与观察</h3>
-<p>试剂：NaCl、NH4Cl、Na2SO4、草酸铵、葡萄糖、甘油、乙醇 + 蒸馏水对照（阳性对照，秒级溶血）。</p>
-<div class="warn"><b>溶血越快 = 该物质越容易通透细胞膜；不溶血 = 不能通透。</b></div>
+<h1>附录 A 必背清单</h1>
+<p class="lead">全课要背的条目集中列出，最短句式，可直接背。</p>
+<ul class="kv">
+<li>ABO 血型抗原化学本质＝糖链，不是蛋白质。</li>
+<li>O 型血不是没有抗原，而是表达 H 抗原（比 A/B 少一个糖）。</li>
+<li>A 抗原＝H 抗原＋N-乙酰半乳糖胺；B 抗原＝H 抗原＋半乳糖。</li>
+<li>有 A 抗原则被抗 A 凝集，有 B 抗原则被抗 B 凝集，两者都有则两边都凝。</li>
+<li>血型由等位基因决定；A 型可为 AA 或 AO，检测不能区分纯合/杂合。</li>
+<li>A 型×B 型可以生出 O 型孩子（AO×BO→OO）。</li>
+<li>真凝集＝大小不均的块、摇后液体透亮、不可逆；假阳性＝自然沉降、摇后复浑。</li>
+<li>取样用棉签木棒端刮血，不能用棉花头。</li>
+<li>蓝色＝抗 A，黄色＝抗 B；两抗体绝不能混。</li>
+<li>采血选用得少的手指（无名指）；采血针平放桌面一翻即扎破。</li>
+<li>胞吞（endocytosis）所有细胞都有；吞噬（phagocytosis）仅巨噬细胞等特殊细胞有。</li>
+<li>巨噬细胞来源于血液单核细胞迁入组织后分化。</li>
+<li>吞噬作用＝吞入大分子/病原体，降解或抗原呈递。</li>
+<li>实验前 3 天腹腔注射 6% 淀粉肉汤（含台盼蓝）召集巨噬细胞。</li>
+<li>实验前 30 分钟注射 1% 鸡血红细胞作为被吞噬目标。</li>
+<li>鸡血红细胞长椭圆形、有核；哺乳动物红细胞双凹、无核。</li>
+<li>颈椎脱臼：夹颈部不夹肩部；小鼠咬伤需打狂犬疫苗。</li>
+<li>处死后立即解剖取材，尸僵后腹腔液消失。</li>
+<li>剪口避开腹主动脉（正中）；吸出淡黄色液体＝成功，红色＝剪破血管。</li>
+<li>盖玻片一侧先贴、借水张力慢放，防气泡。</li>
+<li>镜下先低倍找、再高倍看；巨噬细胞内吞多个有核长椭圆细胞＝吞噬现象阳性。</li>
+<li>贴附现象＝巨噬细胞贴附细胞表面，正常；多棘状红细胞＝体外降温，正常。</li>
+<li>细胞膜是选择性通透的半透膜，有受体与通道。</li>
+<li>溶血＝可通透物质入胞、渗透压升高、水内流、细胞胀破。</li>
+<li>溶血快＝该物质易通透；不溶血＝不能通透。</li>
+<li>蒸馏水为阳性对照，秒级溶血，示范什么是溶血。</li>
+<li>8 管＝蒸馏水＋氯化钠、氯化铵、硫酸钠、草酸铵、葡萄糖、甘油、乙醇。</li>
+</ul>
+
+<h1>附录 B 易错点 · 易混对照</h1>
+<table class="tbl">
+<tr><th>错（易混）</th><th>对（订正）</th></tr>
+<tr><td>ABO 血型抗原是蛋白质</td><td>是糖链（糖），跨膜糖</td></tr>
+<tr><td>O 型血没有抗原</td><td>O 型表达 H 抗原，只是少了 A/B 那一个糖</td></tr>
+<tr><td>检测能区分 AA 与 AO</td><td>经典检测只判 A/B/AB/O，分不出纯合杂合</td></tr>
+<tr><td>A 型×B 型不能生 O 型孩子</td><td>可以，AO×BO→OO</td></tr>
+<tr><td>静置后聚集就是凝集</td><td>摇后复浑是假阳性沉降；摇后仍透亮才是真凝集</td></tr>
+<tr><td>用棉签棉花头刮血</td><td>用木棒端（尾部）刮血，棉花头会吸血</td></tr>
+<tr><td>抗 A、抗 B 混一点没关系</td><td>绝不能混，混了毫无意义必须重做</td></tr>
+<tr><td>胞吞＝吞噬</td><td>胞吞所有细胞；吞噬仅巨噬细胞等特殊细胞</td></tr>
+<tr><td>鸡血红细胞无核</td><td>鸡血红细胞有核、长椭圆形</td></tr>
+<tr><td>断颈夹肩部</td><td>夹颈部（细的那段），肩部拉不开</td></tr>
+<tr><td>处死后慢慢来</td><td>立即取材，尸僵后腹腔液消失</td></tr>
+<tr><td>镜下一开始就开最高倍</td><td>先低倍（10×）找，再高倍（60×）看</td></tr>
+<tr><td>多棘状红细胞是病变</td><td>体外降温的自然现象，正常、不考虑</td></tr>
+<tr><td>溶血越快越说明不能通透</td><td>溶血快＝越容易通透细胞膜</td></tr>
+<tr><td>盖玻片直接啪地丢上去</td><td>一侧先贴液面、借水张力慢慢盖上，防气泡</td></tr>
+</table>
+
+<h1>附录 C 考点索引表</h1>
+<table class="idx">
+<tr><th>考点</th><th>出处小节</th><th>定位</th><th>可能题型</th></tr>
+<tr><td>离心目的＝获得沉淀或上清，不可为离心而离心</td><td>一</td><td class="loc">〔说话人1 01:07〕</td><td>简答/实验素养</td></tr>
+<tr><td>ABO 血型抗原化学本质是糖链不是蛋白</td><td>二</td><td class="loc">〔说话人1 06:04〕</td><td>选择/判断/简答</td></tr>
+<tr><td>O 型＝H 抗原（并非无抗原）</td><td>二</td><td class="loc">〔说话人1 06:04〕</td><td>选择/简答</td></tr>
+<tr><td>血型遗传：A 型阳性可为 AA 或 AO，不可分纯合杂合</td><td>二</td><td class="loc">〔说话人1 07:02〕</td><td>计算/简答</td></tr>
+<tr><td>A 型×B 型可生 O 型孩子</td><td>二</td><td class="loc">〔说话人1 08:54〕</td><td>遗传题</td></tr>
+<tr><td>真凝集与假阳性沉降的区分</td><td>三</td><td class="loc">〔说话人1 15:09〕</td><td>判断/实验分析</td></tr>
+<tr><td>用棉签木棒端刮血，不用棉花头</td><td>三</td><td class="loc">〔说话人1 46:18〕</td><td>操作细节</td></tr>
+<tr><td>胞吞与吞噬的概念区别</td><td>四</td><td class="loc">〔说话人1 16:57〕</td><td>选择/名词解释</td></tr>
+<tr><td>巨噬细胞来源＝血液单核细胞迁入组织分化</td><td>四</td><td class="loc">〔说话人1 16:57〕</td><td>简答</td></tr>
+<tr><td>3 天前 6% 淀粉肉汤召唤巨噬细胞的原理</td><td>五</td><td class="loc">〔说话人1 18:54〕</td><td>简答/实验设计</td></tr>
+<tr><td>鸡血红细胞有核、哺乳动物红细胞无核</td><td>五</td><td class="loc">〔说话人1 19:34〕</td><td>选择/判断</td></tr>
+<tr><td>颈椎脱臼操作要点（夹颈部、咬伤打疫苗）</td><td>五</td><td class="loc">〔说话人1 22:53〕</td><td>操作题</td></tr>
+<tr><td>腹腔液成功＝淡黄色，剪破血管＝红色</td><td>五</td><td class="loc">〔说话人1 26:28〕</td><td>判断/实验分析</td></tr>
+<tr><td>吞噬现象与贴附现象、多棘红细胞都是正常视野</td><td>六</td><td class="loc">〔说话人1 01:19:54〕</td><td>读片/判断</td></tr>
+<tr><td>溶血原理：物质入胞→渗透压升高→水内流→胀破</td><td>七</td><td class="loc">〔说话人1 30:44〕</td><td>简答</td></tr>
+<tr><td>溶血快慢＝物质通透细胞膜的速度</td><td>八</td><td class="loc">〔说话人1 33:30〕</td><td>结果分析</td></tr>
+</table>
+
+<h1>附录 D 知识点清单</h1>
+<table class="idx">
+<tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>离心目的＝获得沉淀或上清</td><td>考点</td><td>一</td><td class="loc">〔说话人1 01:07〕</td></tr>
+<tr><td>2</td><td>每步操作先想目的，不做只完成工作的「工人」</td><td>理念</td><td>一</td><td class="loc">〔说话人1 01:07〕</td></tr>
+<tr><td>3</td><td>没有思考过的人不建议做实验</td><td>理念</td><td>一</td><td class="loc">〔说话人1 03:11〕</td></tr>
+<tr><td>4</td><td>失败浪费时间与珍贵实验材料</td><td>理念</td><td>一</td><td class="loc">〔说话人1 03:11〕</td></tr>
+<tr><td>5</td><td>实验时长体现价值（除冻存复苏外全做到）</td><td>理念</td><td>一</td><td class="loc">〔说话人1 03:43〕</td></tr>
+<tr><td>6</td><td>晕血提前报告、可免做</td><td>安全</td><td>一</td><td class="loc">〔说话人1 10:37〕</td></tr>
+<tr><td>7</td><td>晕血勿硬来</td><td>安全</td><td>一</td><td class="loc">〔说话人1 42:14〕</td></tr>
+<tr><td>8</td><td>细胞膜抗原则决定细胞类型与识别</td><td>定义</td><td>二</td><td class="loc">〔说话人1 04:57〕</td></tr>
+<tr><td>9</td><td>ABO 血型＝红细胞表面特殊抗原类型</td><td>定义</td><td>二</td><td class="loc">〔说话人1 05:25〕</td></tr>
+<tr><td>10</td><td>70%~80% 医生误认抗原为蛋白</td><td>数据</td><td>二</td><td class="loc">〔说话人1 05:25〕</td></tr>
+<tr><td>11</td><td>ABO 抗原化学本质＝跨膜糖链</td><td>考点</td><td>二</td><td class="loc">〔说话人1 06:04〕</td></tr>
+<tr><td>12</td><td>A 抗原＝H＋N-乙酰半乳糖胺</td><td>定义</td><td>二</td><td class="loc">〔说话人1 06:04〕</td></tr>
+<tr><td>13</td><td>B 抗原＝H＋半乳糖</td><td>定义</td><td>二</td><td class="loc">〔说话人1 06:04〕</td></tr>
+<tr><td>14</td><td>O 型＝H 抗原，「没有」只是少一个糖</td><td>考点</td><td>二</td><td class="loc">〔说话人1 06:04〕</td></tr>
+<tr><td>15</td><td>抗 A 凝集 A 抗原、抗 B 凝集 B 抗原、O 型不凝</td><td>机制</td><td>二</td><td class="loc">〔说话人1 06:04〕</td></tr>
+<tr><td>16</td><td>等位基因两 copy，O 等位基因记作 i</td><td>考点</td><td>二</td><td class="loc">〔说话人1 07:02〕</td></tr>
+<tr><td>17</td><td>A 型阳性＝AA 或 AO，不可分纯合杂合</td><td>考点</td><td>二</td><td class="loc">〔说话人1 07:02〕</td></tr>
+<tr><td>18</td><td>A 型×B 型可生 O 型孩子</td><td>考点</td><td>二</td><td class="loc">〔说话人1 08:13〕</td></tr>
+<tr><td>19</td><td>楚天都市报家庭猜忌案例</td><td>案例</td><td>二</td><td class="loc">〔说话人1 08:13〕</td></tr>
+<tr><td>20</td><td>约 6000 万人属此夫妻配比，需科普</td><td>数据</td><td>二</td><td class="loc">〔说话人1 08:54〕</td></tr>
+<tr><td>21</td><td>科学工作者要向公众科普</td><td>理念</td><td>二</td><td class="loc">〔说话人1 09:39〕</td></tr>
+<tr><td>22</td><td>双凹玻片凹槽朝上、凹面加液体</td><td>操作</td><td>三</td><td class="loc">〔说话人1 11:12〕</td></tr>
+<tr><td>23</td><td>蓝色＝抗 A、黄色＝抗 B，两者不可混</td><td>操作</td><td>三</td><td class="loc">〔说话人1 11:12〕</td></tr>
+<tr><td>24</td><td>手消毒选无名指（用得少）</td><td>操作</td><td>三</td><td class="loc">〔说话人1 12:27〕</td></tr>
+<tr><td>25</td><td>采血针平放桌面一翻即破，勿悬手</td><td>操作</td><td>三</td><td class="loc">〔说话人1 12:57〕</td></tr>
+<tr><td>26</td><td>扎针不垂直、一次狠扎</td><td>操作</td><td>三</td><td class="loc">〔说话人1 44:21〕</td></tr>
+<tr><td>27</td><td>血滴约半颗绿豆大小即可</td><td>操作</td><td>三</td><td class="loc">〔说话人1 13:54〕</td></tr>
+<tr><td>28</td><td>用棉签木棒端刮血，不用棉花头</td><td>考点</td><td>三</td><td class="loc">〔说话人1 46:18〕</td></tr>
+<tr><td>29</td><td>两头分别搅抗 A/抗 B，同一头不可回头刮</td><td>操作</td><td>三</td><td class="loc">〔说话人1 14:38〕</td></tr>
+<tr><td>30</td><td>放白纸/吸水纸上观察，静置约 5 分钟</td><td>操作</td><td>三</td><td class="loc">〔说话人1 46:45〕</td></tr>
+<tr><td>31</td><td>真凝集 vs 假阳性沉降判定</td><td>考点</td><td>三</td><td class="loc">〔说话人1 15:09〕</td></tr>
+<tr><td>32</td><td>记录血型数据，老师不代为判断</td><td>操作</td><td>三</td><td class="loc">〔说话人1 50:58〕</td></tr>
+<tr><td>33</td><td>ABO 实验放第二步做（防手污染）</td><td>操作</td><td>三</td><td class="loc">〔说话人1 15:09〕</td></tr>
+<tr><td>34</td><td>胞吞 endocytosis 所有细胞都有</td><td>考点</td><td>四</td><td class="loc">〔说话人1 16:57〕</td></tr>
+<tr><td>35</td><td>吞噬 phagocytosis 仅特殊细胞（巨噬细胞）</td><td>考点</td><td>四</td><td class="loc">〔说话人1 16:57〕</td></tr>
+<tr><td>36</td><td>吞噬＝吞入大分子/病原体，降解＋抗原呈递</td><td>机制</td><td>四</td><td class="loc">〔说话人1 16:57〕</td></tr>
+<tr><td>37</td><td>巨噬细胞来自单核细胞迁入组织分化</td><td>考点</td><td>四</td><td class="loc">〔说话人1 16:57〕</td></tr>
+<tr><td>38</td><td>巨噬细胞需先提高数量才能观察</td><td>机制</td><td>四</td><td class="loc">〔说话人1 18:22〕</td></tr>
+<tr><td>39</td><td>实验动物昆明小鼠，每人一只</td><td>操作</td><td>五</td><td class="loc">〔说话人1 18:22〕</td></tr>
+<tr><td>40</td><td>3 天前 6% 淀粉肉汤（含台盼蓝）召集巨噬细胞</td><td>考点</td><td>五</td><td class="loc">〔说话人1 18:54〕</td></tr>
+<tr><td>41</td><td>30 分钟前 1% 鸡血红细胞作被吞噬目标</td><td>考点</td><td>五</td><td class="loc">〔说话人1 19:34〕</td></tr>
+<tr><td>42</td><td>鸡血红细胞长椭圆形、有核</td><td>考点</td><td>五</td><td class="loc">〔说话人1 19:34〕</td></tr>
+<tr><td>43</td><td>鸟/两栖/爬行红细胞有核，哺乳类无核</td><td>定义</td><td>五</td><td class="loc">〔说话人1 19:34〕</td></tr>
+<tr><td>44</td><td>本课用大镊子断颈，不徒手</td><td>安全</td><td>五</td><td class="loc">〔说话人1 19:34〕</td></tr>
+<tr><td>45</td><td>大鼠不做颈椎脱臼</td><td>安全</td><td>五</td><td class="loc">〔说话人1 19:34〕</td></tr>
+<tr><td>46</td><td>颈椎脱臼手法（提尾/掐颈/斜 45°）</td><td>操作</td><td>五</td><td class="loc">〔说话人1 21:30〕</td></tr>
+<tr><td>47</td><td>断颈触感为成功标志</td><td>操作</td><td>五</td><td class="loc">〔说话人1 21:30〕</td></tr>
+<tr><td>48</td><td>小鼠咬伤需打狂犬疫苗</td><td>安全</td><td>五</td><td class="loc">〔说话人1 21:30〕</td></tr>
+<tr><td>49</td><td>夹颈部而非肩部</td><td>易错</td><td>五</td><td class="loc">〔说话人1 22:53〕</td></tr>
+<tr><td>50</td><td>断颈后抽搐属正常</td><td>现象</td><td>五</td><td class="loc">〔说话人1 22:53〕</td></tr>
+<tr><td>51</td><td>处死后立即取材，尸僵后腹腔液消失</td><td>考点</td><td>五</td><td class="loc">〔说话人1 22:53〕</td></tr>
+<tr><td>52</td><td>拎尾巴末端，不靠身体</td><td>安全</td><td>五</td><td class="loc">〔说话人1 53:48〕</td></tr>
+<tr><td>53</td><td>腹部酒精消毒（本课意义不大，防毛漂浮）</td><td>操作</td><td>五</td><td class="loc">〔说话人1 24:02〕</td></tr>
+<tr><td>54</td><td>剪口避开腹主动脉（正中）</td><td>易错</td><td>五</td><td class="loc">〔说话人1 24:02〕</td></tr>
+<tr><td>55</td><td>逐层剪开皮肤/皮下/腹膜，暴露脏器</td><td>操作</td><td>五</td><td class="loc">〔说话人1 24:02〕</td></tr>
+<tr><td>56</td><td>按摩腹部后加约 1 mL 生理盐水</td><td>考点</td><td>五</td><td class="loc">〔说话人1 24:02〕</td></tr>
+<tr><td>57</td><td>加盐水后轻揉腹部混匀</td><td>操作</td><td>五</td><td class="loc">〔说话人1 24:02〕</td></tr>
+<tr><td>58</td><td>吸管绕肠道伸到底部吸液</td><td>操作</td><td>五</td><td class="loc">〔说话人1 26:28〕</td></tr>
+<tr><td>59</td><td>淡黄色＝成功，红色＝剪破血管</td><td>考点</td><td>五</td><td class="loc">〔说话人1 26:28〕</td></tr>
+<tr><td>60</td><td>普通载玻片＋盖玻片做临时封片</td><td>操作</td><td>六</td><td class="loc">〔说话人1 01:04:26〕</td></tr>
+<tr><td>61</td><td>盖玻片一侧先贴、借水张力慢放防气泡</td><td>操作</td><td>六</td><td class="loc">〔说话人1 27:37〕</td></tr>
+<tr><td>62</td><td>临时封片不能长期保存</td><td>现象</td><td>六</td><td class="loc">〔说话人1 27:37〕</td></tr>
+<tr><td>63</td><td>封片后马上看，久则细胞变形</td><td>操作</td><td>六</td><td class="loc">〔说话人1 01:06:01〕</td></tr>
+<tr><td>64</td><td>先低倍（10×）找、再高倍（60×）看</td><td>操作</td><td>六</td><td class="loc">〔说话人1 01:10:07〕</td></tr>
+<tr><td>65</td><td>吞噬现象＝细胞内多个有核长椭圆细胞</td><td>考点</td><td>六</td><td class="loc">〔说话人1 27:37〕</td></tr>
+<tr><td>66</td><td>贴附现象正常，需特异性结合</td><td>现象</td><td>六</td><td class="loc">〔说话人1 01:19:54〕</td></tr>
+<tr><td>67</td><td>小鼠红细胞双凹、无核</td><td>现象</td><td>六</td><td class="loc">〔说话人1 27:37〕</td></tr>
+<tr><td>68</td><td>多棘状红细胞＝体外降温自然现象</td><td>现象</td><td>六</td><td class="loc">〔说话人1 27:37〕</td></tr>
+<tr><td>69</td><td>镜下细胞全胀破＝加错液体</td><td>易错</td><td>六</td><td class="loc">〔说话人1 01:12:32〕</td></tr>
+<tr><td>70</td><td>看不到鸡血的小鼠再杀一只重做</td><td>操作</td><td>六</td><td class="loc">〔说话人1 01:21:37〕</td></tr>
+<tr><td>71</td><td>细胞膜是选择性通透的半透膜</td><td>考点</td><td>七</td><td class="loc">〔说话人1 29:23〕</td></tr>
+<tr><td>72</td><td>两侧浓度决定水的运动方向</td><td>机制</td><td>七</td><td class="loc">〔说话人1 29:23〕</td></tr>
+<tr><td>73</td><td>可通透物质入胞→水随之内流</td><td>机制</td><td>七</td><td class="loc">〔说话人1 30:44〕</td></tr>
+<tr><td>74</td><td>物质快→水快→细胞膜撑破（破裂）</td><td>机制</td><td>七</td><td class="loc">〔说话人1 30:44〕</td></tr>
+<tr><td>75</td><td>羊红细胞被撑破＝溶血现象</td><td>考点</td><td>七</td><td class="loc">〔说话人1 30:44〕</td></tr>
+<tr><td>76</td><td>溶血快慢＝物质通透细胞膜的速度</td><td>考点</td><td>七</td><td class="loc">〔说话人1 30:44〕</td></tr>
+<tr><td>77</td><td>8 支试管，蒸馏水作阳性对照</td><td>考点</td><td>八</td><td class="loc">〔说话人1 32:04〕</td></tr>
+<tr><td>78</td><td>蒸馏水秒级溶血，示范「什么叫溶血」</td><td>考点</td><td>八</td><td class="loc">〔说话人1 32:04〕</td></tr>
+<tr><td>79</td><td>各管加 0.5 mL 10% 羊血悬液并摇匀</td><td>操作</td><td>八</td><td class="loc">〔说话人1 32:04〕</td></tr>
+<tr><td>80</td><td>溶血＝变红色透明、可透见字</td><td>判定</td><td>八</td><td class="loc">〔说话人1 32:04〕</td></tr>
+<tr><td>81</td><td>7 种等渗试剂：NaCl、NH4Cl、Na2SO4、草酸铵、葡萄糖、甘油、乙醇</td><td>定义</td><td>八</td><td class="loc">〔说话人1 33:30〕</td></tr>
+<tr><td>82</td><td>记录三栏：是否溶血/溶血时间/结果分析</td><td>操作</td><td>八</td><td class="loc">〔说话人1 33:30〕</td></tr>
+<tr><td>83</td><td>加一管计一管，多人配合计时（一人计时、一人录像）</td><td>操作</td><td>八</td><td class="loc">〔说话人1 36:03〕</td></tr>
+<tr><td>84</td><td>必须摇匀，上下颜色一致</td><td>操作</td><td>八</td><td class="loc">〔说话人1 39:31〕</td></tr>
+<tr><td>85</td><td>与不透明管对比判读</td><td>操作</td><td>八</td><td class="loc">〔说话人1 40:11〕</td></tr>
+<tr><td>86</td><td>溶血分级：秒级/分钟级/十几分钟级</td><td>现象</td><td>八</td><td class="loc">〔说话人1 38:27〕</td></tr>
+<tr><td>87</td><td>结果分析：溶＝可通透，不溶＝不可通透</td><td>考点</td><td>八</td><td class="loc">〔说话人1 33:30〕</td></tr>
+<tr><td>88</td><td>课堂实测：两、三组不溶（如硫酸钠）</td><td>数据</td><td>八</td><td class="loc">〔说话人1 01:23:10〕</td></tr>
+</table>
+
+<div class="foot">细胞生物学实验 · 第 9-12 节 · 细胞膜的特性　|　核心内容结论式笔记，定位可回溯逐字稿原轮次</div>
+</div>
 </body></html>

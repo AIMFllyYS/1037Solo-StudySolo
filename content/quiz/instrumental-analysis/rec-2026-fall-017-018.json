@@ -9,9 +9,9 @@
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-017-018",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "95157d270999e14c165c55662b4e2589e515aae360c22ae6c785029a1cbdc67b",
-    "notesTextHash": "e0ecad9e667c5c68ab713b8685f24112a58aca74657eed48d89635b236c30142"
+    "notesTextHash": "3a4d14acbea16165eb450f57ce6d91a79ad21f8594965c077cd45b3f8dbd8e74"
   },
   "questions": [
     {
@@ -23,7 +23,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
-        "label": "化学发光与荧光的能量来源区别"
+        "label": "2. 化学发光本质与鲁米诺 · 化学发光与荧光的能量来源区别"
       },
       "stem": "化学发光分析区别于荧光分析、在仪器结构上最本质的一点是：",
       "options": [
@@ -45,7 +45,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
-        "label": "鲁米诺发光反应条件"
+        "label": "2. 化学发光本质与鲁米诺 · 鲁米诺发光反应条件"
       },
       "stem": "鲁米诺（发光胺）化学发光反应发生所需要的条件是：",
       "options": [
@@ -89,7 +89,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
-        "label": "石墨炉三阶段升温程序"
+        "label": "15. 石墨炉原子化器 · 石墨炉三阶段升温程序"
       },
       "stem": "石墨炉原子化器的升温程序正确顺序是：",
       "options": [
@@ -133,7 +133,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
-        "label": "空心阴极灯为何发射锐线"
+        "label": "11. 空心阴极灯（HCL） · 空心阴极灯为何发射锐线"
       },
       "stem": "空心阴极灯(HCL)为什么能发射出很窄的锐线特征谱线？",
       "options": [
@@ -155,7 +155,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
-        "label": "三种火焰的温度与氧化还原性"
+        "label": "14. 火焰类型、温度与背景 · 三种火焰的温度与氧化还原性"
       },
       "stem": "关于原子吸收火焰的三种类型，下列对应正确的是：",
       "options": [
@@ -177,7 +177,7 @@
       "sourceRef": {
         "source": "recording",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/recording.md",
-        "label": "AAS为何要用锐线光源"
+        "label": "11. 空心阴极灯（HCL） · AAS为何要用锐线光源"
       },
       "stem": "原子吸收为什么必须采用锐线光源，而不能像紫外-可见那样用连续光源加单色器？",
       "options": [
@@ -243,7 +243,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-017-018/notes.html",
-        "label": "石墨炉分阶段升温的目的"
+        "label": "15. 石墨炉原子化器 · 石墨炉分阶段升温的目的"
       },
       "stem": "石墨炉原子化为什么要分干燥→灰化→原子化三步，而不直接把样品升到高温原子化？",
       "options": [

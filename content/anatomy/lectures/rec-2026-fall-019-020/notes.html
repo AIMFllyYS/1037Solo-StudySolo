@@ -1,687 +1,311 @@
-<!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<title>系统解剖学 · 第19-20节 · 内脏学总论与消化系统开篇</title>
-<style>
-:root{--accent:#0E7C7B;--accent-deep:#0A5C5B;--accent-tint:#E5F1F1;--paper:#FAF8F1;--ink:#24201A;--ink-soft:#4A4337;--muted:#857B68;--line:#E6DECC;--mnem:#A2630C;--mnem-tint:#F8ECD3;--crimson:#B23A2E;--crimson-tint:#F7E4DF;}
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>系统解剖学 · 第19-20节 · 内脏学总论与消化系统开篇</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#B4531F; --accent-d:#7A3413; --accent-t:#F7E7DE;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
 *{box-sizing:border-box;}
-body{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--paper);max-width:900px;margin:0 auto;padding:40px 32px;line-height:1.8;font-size:15px;}
-h1{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:28px;border-bottom:3px solid var(--accent);padding-bottom:12px;margin-top:0;}
-h2{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:22px;background:var(--accent-tint);padding:10px 16px;border-left:5px solid var(--accent);border-radius:0 6px 6px 0;margin-top:36px;}
-h3{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:18px;margin-top:28px;border-bottom:1.5px solid #BCDAD9;padding-bottom:6px;}
-h4{color:var(--accent-deep);font-size:16px;margin-top:20px;}
-p{margin:10px 0;}
-ul,ol{margin:8px 0;padding-left:28px;}
-li{margin:5px 0;}
-blockquote{background:var(--mnem-tint);border-left:4px solid var(--mnem);padding:12px 18px;margin:16px 0;border-radius:0 6px 6px 0;color:var(--ink-soft);font-size:14px;}
-blockquote strong{color:var(--mnem);}
-table.vt{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;}
-table.vt th{background:var(--accent);color:#fff;padding:10px 12px;text-align:left;font-weight:600;}
-table.vt td{padding:8px 12px;border-bottom:1px solid var(--line);}
-table.vt tr:nth-child(even){background:#fff;}
-code{background:#f0ebe0;padding:2px 6px;border-radius:3px;font-size:13px;color:var(--accent-deep);}
-hr{border:none;border-top:2px solid var(--line);margin:32px 0;}
-.checklist{list-style:none;padding-left:8px;}
-.checklist li{margin:6px 0;}
-.checklist input[type=checkbox]{margin-right:8px;accent-color:var(--accent);}
-strong{color:var(--accent-deep);}
-@media print{body{padding:20px;}h2{page-break-after:avoid;}table.vt{page-break-inside:avoid;}}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
 </style></head><body>
-<h1>系统解剖学 · 第19-20节 · 内脏学总论与消化系统开篇</h1>
-<h2>课程信息</h2>
-<table class="vt">
-<tr><th>项目</th><th>内容</th></tr>
-<tr><td>课程名</td><td>系统解剖学（BMS0518）</td></tr>
-<tr><td>节次</td><td>第19-20节（课程内累计，第7次课）</td></tr>
-<tr><td>日期</td><td>2026年9月18日（周五）</td></tr>
-<tr><td>全天节次</td><td>第3-4节（10:10-11:50）</td></tr>
-<tr><td>授课教师</td><td>赵俊 教授</td></tr>
-<tr><td>主题</td><td>内脏学总论、消化系统（口腔、咽、食管、胃开篇）</td></tr>
-<tr><td>授课形式</td><td>理论课 · PBL教学楼6中</td></tr>
-<tr><td>逐字稿大小</td><td>67,833字节</td></tr>
+<div class="page cover"><p class="h1">系统解剖学 · 第19-20节</p><p class="meta">内脏学总论与消化系统开篇 · 2026-09-18</p><p class="lead" style="text-align:left">素材规模：逐字稿 24143 字 / 93 轮发言</p><table><tr><th>项目</th><th>内容</th></tr><tr><td>课次</td><td>rec-2026-fall-019-020（第19–20节，2学时）</td></tr><tr><td>主题</td><td>内脏学总论、胸腹标志线、消化系统自口腔至胃开篇（lesson.json）</td></tr></table></div>
+<div class="page"><h2 class="h2">0. 知识框架</h2><p class="lead">判据界定内脏 → 体表标志线定位 → 消化管自上而下（口腔→咽→食管→胃）。</p>
+<svg viewBox="0 0 640 200" width="100%" aria-label="框架"><rect x="200" y="8" width="240" height="32" fill="#F7E7DE" stroke="#B4531F"/><text x="320" y="28" text-anchor="middle" font-size="12">内脏学总论 + 消化系统开篇</text><line x1="120" y1="48" x2="320" y2="48" stroke="#B4531F"/><line x1="520" y1="48" x2="320" y2="48" stroke="#B4531F"/><rect x="40" y="56" width="160" height="28" fill="#fff" stroke="#7A3413"/><text x="120" y="74" text-anchor="middle" font-size="10">内脏判据·分类</text><rect x="240" y="56" width="160" height="28" fill="#fff" stroke="#7A3413"/><text x="320" y="74" text-anchor="middle" font-size="10">胸腹标志线·九分法</text><rect x="440" y="56" width="160" height="28" fill="#fff" stroke="#7A3413"/><text x="520" y="74" text-anchor="middle" font-size="10">口腔→咽→食管→胃</text><line x1="320" y1="88" x2="320" y2="120" stroke="#B4531F"/><rect x="180" y="120" width="280" height="36" fill="#FBF0DC" stroke="#A9660A"/><text x="320" y="142" text-anchor="middle" font-size="11">考点链：心血管非内脏·咽峡·颏舌肌·腮腺管·咽隐窝·食管三狭窄</text></svg>
+<ul class="kv"><li>约5节课学完四大内脏系统，节奏快，须课后复习 <span class="loc">〔说话人1 00:01〕</span></li><li>课堂拓展：高压电脉冲（约 2000 V）消融肿瘤，已进入临床 <span class="loc">〔说话人1 00:01〕</span></li></ul></div>
+<div class="page"><h2 class="h2">1. 内脏学总论</h2><p class="lead">内脏指胸腹盆腔四大系统器官；研究其形态位置功能称内脏学。</p>
+<ul class="kv">
+<li>内脏位于胸、腹、盆腔：消化、呼吸、泌尿、生殖四大系统 <span class="loc">〔说话人1 01:15〕</span></li>
+<li>内脏学研究位置、形态结构与功能；英文 visceral <span class="loc">〔说话人1 01:15〕</span></li>
+<li>形态：连续管道 + 一个或多个实质性器官 <span class="loc">〔说话人1 01:47〕</span></li>
+<li>孔道直接或间接连向外界 <span class="loc">〔说话人1 01:47〕</span></li>
+<li>功能：物质代谢、繁衍后代、内分泌 <span class="loc">〔说话人1 01:47〕</span></li>
+<li>心血管系统不属于内脏：其管道不与外界相通，一旦相通即为出血需急救 <span class="loc">〔说话人1 02:26〕</span></li>
+<li>实质性器官：内部无特定空腔，多为腺组织 <span class="loc">〔说话人1 02:26〕</span></li>
+<li>表面有被膜或浆膜，实质分小叶 <span class="loc">〔说话人1 03:16〕</span></li>
+<li>神经血管管道出入处称门；肝是人体最大腺体，肝门有动静脉与肝总管等 <span class="loc">〔说话人1 03:16〕</span></li>
+<li>中空性器官：管状或囊状，器官壁围成空腔 <span class="loc">〔说话人1 04:37〕</span></li>
+<li>消化道壁四层：黏膜、黏膜下层、肌层、外膜 <span class="loc">〔说话人1 04:37〕</span></li>
+<li>呼吸道、泌尿道壁一般为三层 <span class="loc">〔说话人1 04:37〕</span></li>
+</ul>
+<table class="tbl"><tr><th>类型</th><th>特征</th><th>例</th></tr><tr><td>实质性</td><td>被膜、小叶、门</td><td>肝</td></tr><tr><td>中空性</td><td>3~4层壁</td><td>胃、气管、输尿管、膀胱</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>心血管系统不属于内脏（判断题高频）。 <span class="loc">〔说话人1 02:26〕</span></div></div>
+<div class="page"><h2 class="h2">2. 胸腹部标志线与腹部分区</h2><p class="lead">垂直标志线描述体表投影；医学生掌握腹部九分法。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>胸部标志线是本课重点之一 <span class="loc">〔说话人1 04:37〕</span></li>
+<li>前面：前正中线（1条）＋胸骨线、胸骨旁线、锁骨中线（各左右1条），共7条垂直线 <span class="loc">〔说话人1 07:05〕</span></li>
+<li>胸骨线沿胸骨外侧缘；胸骨旁线在胸骨线与锁骨中线之间中点垂线 <span class="loc">〔说话人1 06:31〕</span></li>
+<li>后面：肩胛线（肩胛骨下角垂线）、后正中线 <span class="loc">〔说话人1 07:05〕</span></li>
+<li>侧面：腋前线、腋中线、腋后线 <span class="loc">〔说话人1 07:05〕</span></li>
+<li>英文：前 anterior、后 posterior、正中 median、胸骨 sternal、锁骨 midclavicular、腋前线 anterior axillary line <span class="loc">〔说话人1 09:02〕</span></li>
+<li>临床常用腹部分区四分法：以脐为中心 <span class="loc">〔说话人1 09:46〕</span></li>
+<li>医学生用九分法：画井字，九区 <span class="loc">〔说话人1 09:46〕</span></li>
+<li>上水平线：肋下平面（两侧肋弓最低点连线） <span class="loc">〔说话人1 10:52〕</span></li>
+<li>下水平线：两侧髂结节连线 <span class="loc">〔说话人1 10:52〕</span></li>
+<li>两垂直线：腹股沟韧带中点垂线 <span class="loc">〔说话人1 12:15〕</span></li>
+<li>肝脏体表投影：右锁骨中线和第五肋的交点为右侧上缘；左锁骨中线和第五肋间隙的交点为左侧上缘 <span class="loc">〔说话人1 12:15〕</span></li>
+<li>胃中等充盈：大部分在左季肋区，小部分在腹上区 <span class="loc">〔说话人1 14:49〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>左</th><th>中</th><th>右</th></tr><tr><td>左季肋区</td><td>腹上区</td><td>右季肋区</td></tr><tr><td>左腰区</td><td>脐区</td><td>右腰区</td></tr><tr><td>左髂区</td><td>腹下区</td><td>右髂区</td></tr></table>
+<div class="wrong"><strong>易混</strong>：胸骨线≠前正中线；胸骨线≠胸骨旁线。 <span class="loc">〔说话人1 06:31〕</span></div></div>
+<div class="page"><h2 class="h2">3. 消化系统总论</h2><p class="lead">消化管 + 消化腺；上下消化道出血表现不同。</p>
+<ul class="kv">
+<li>消化系统英文 alimentary system <span class="loc">〔说话人1 15:48〕</span></li>
+<li>摄取食物，物理化学消化，黏膜上皮吸收营养，残渣成粪便排出 <span class="loc">〔说话人1 15:48〕</span></li>
+<li>辅助功能：呼吸、发音、语言 <span class="loc">〔说话人1 15:48〕</span></li>
+<li>克罗恩病 Crohn disease：自身免疫攻击肠道黏膜，吸收障碍 <span class="loc">〔说话人1 16:26〕</span></li>
+<li>消化管 alimentary canal：口腔至肛门 <span class="loc">〔说话人1 17:02〕</span></li>
+<li>十二指肠空肠移行处分上下消化道 <span class="loc">〔说话人1 17:32〕</span></li>
+<li>上消化道：口腔、咽、食管、胃、十二指肠 <span class="loc">〔说话人1 17:32〕</span></li>
+<li>下消化道：空肠、回肠、盲肠、阑尾、结肠、直肠、肛门 <span class="loc">〔说话人1 17:32〕</span></li>
+<li>下消化道出血便血鲜红；上消化道出血一般黑色 <span class="loc">〔说话人1 17:32〕</span></li>
+<li>十二指肠、空肠、回肠统称小肠 <span class="loc">〔说话人1 18:31〕</span></li>
+<li>小消化腺在消化管壁内黏膜或黏膜下层 <span class="loc">〔说话人1 18:31〕</span></li>
+<li>大消化腺为独立器官，经导管送消化液入管 <span class="loc">〔说话人1 18:31〕</span></li>
+<li>考试重点大消化腺：大唾液腺、肝、胰腺 <span class="loc">〔说话人1 18:31〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>上下消化道出血颜色鉴别。 <span class="loc">〔说话人1 17:32〕</span></div></div>
+<div class="page"><h2 class="h2">4. 口腔</h2><p class="lead">六向毗邻、前庭与固有口腔、咽峡与腮腺管开口。</p>
+<ul class="kv">
+<li>口腔 oral cavity：消化管起始 <span class="loc">〔说话人1 20:06〕</span></li>
+<li>前壁上下唇；后界经咽峡通咽；上壁腭；下壁口腔底；侧壁颊 <span class="loc">〔说话人1 20:06〕</span></li>
+<li>上下牙弓分口腔前庭与固有口腔 <span class="loc">〔说话人1 20:46〕</span></li>
+<li>口唇由外向内：皮肤、口轮匝肌、黏膜 <span class="loc">〔说话人1 22:03〕</span></li>
+<li>唇红为皮肤黏膜移行处，毛细血管丰富；缺氧发绀 <span class="loc">〔说话人1 22:03〕</span></li>
+<li>人中、鼻唇沟、上下唇系带 <span class="loc">〔说话人1 22:57〕</span></li>
+<li>颊由外向内：皮肤、颊肌、颊脂体、口腔黏膜 <span class="loc">〔说话人1 23:50〕</span></li>
+<li>腮腺管开口：上颌第二磨牙牙冠相对颊黏膜 <span class="loc">〔说话人1 24:50〕</span></li>
+<li>腭 palate：硬腭前2/3、软腭后1/3 <span class="loc">〔说话人1 25:43〕</span></li>
+<li>软腭吞咽上提分隔鼻咽与口咽 <span class="loc">〔说话人1 26:17〕</span></li>
+<li>腭帆、腭垂、腭舌弓、腭咽弓；腭扁桃体位于其间 <span class="loc">〔说话人1 26:17〕</span></li>
+<li>咽峡 isthmus：口腔与咽的分界，较窄 <span class="loc">〔说话人1 28:13〕</span></li>
+<li>咽峡围成：腭帆游离缘、腭舌弓与腭咽弓、舌根 <span class="loc">〔说话人1 28:13〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>咽峡名词解释（围成 + 分界功能）；腮腺管开口位置。 <span class="loc">〔说话人1 28:13〕</span></div></div>
+<div class="page"><h2 class="h2">5. 牙与牙周组织</h2><p class="lead">乳牙恒牙数量与牙式；牙组织与牙周病临床联系。</p>
+<ul class="kv">
+<li>牙：咀嚼、辅助发音；位于上下颌牙槽 <span class="loc">〔说话人1 29:54〕</span></li>
+<li>乳牙20颗，6个月萌出、3岁出齐；恒牙32颗，除第三磨牙外14岁出齐 <span class="loc">〔说话人1 30:27〕</span></li>
+<li>乳牙罗马数字标记，恒牙阿拉伯数字 <span class="loc">〔说话人1 34:32〕</span></li>
+<li>切牙 incisors、尖牙 canine、前磨牙 premolars、磨牙 molars；K9 记尖牙 <span class="loc">〔说话人1 30:27〕</span></li>
+<li>外形：牙冠、牙颈、牙根；牙冠腔、牙根管、根尖孔 <span class="loc">〔说话人1 35:14〕</span></li>
+<li>组织：牙釉质（冠面最硬）、牙质、牙骨质、牙髓 <span class="loc">〔说话人1 35:14〕</span></li>
+<li>牙釉质为磷酸钙晶体，怕酸致龋齿；孕期缺钙易牙坏 <span class="loc">〔说话人1 37:00〕</span></li>
+<li>牙周组织：牙周膜、牙槽骨、牙龈 <span class="loc">〔说话人1 38:30〕</span></li>
+<li>牙周膜固定牙根、缓冲咀嚼压力 <span class="loc">〔说话人1 38:30〕</span></li>
+<li>牙龈贴牙颈与牙槽骨，与骨膜相连不能动 <span class="loc">〔说话人1 39:10〕</span></li>
+<li>牙结石刺激牙龈萎缩，老人掉牙多因牙周病 <span class="loc">〔说话人1 39:50〕</span></li>
+<li>槟榔刺激口腔黏膜可纤维化乃至肿瘤 <span class="loc">〔说话人1 39:50〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">6. 舌</h2><p class="lead">界沟分舌体舌根；四种舌乳头；颏舌肌功能易错。</p>
+<ul class="kv">
+<li>舌 tongue：口腔底肌性器官，骨骼肌交织，覆黏膜 <span class="loc">〔说话人1 42:46〕</span></li>
+<li>功能：咀嚼、吞咽、味觉、发音 <span class="loc">〔说话人1 42:46〕</span></li>
+<li>界沟将舌背分舌体（前2/3）与舌根（后1/3） <span class="loc">〔说话人1 43:40〕</span></li>
+<li>舌根向后延续至会厌腹侧面；口腔经咽峡与咽相通 <span class="loc">〔说话人1 44:38〕</span></li>
+<li>轮廓乳头最大，界沟前7~11个；丝状最小最多无味蕾 <span class="loc">〔说话人1 55:41〕</span></li>
+<li>菌状散在舌尖侧缘；叶状在舌侧缘后部（儿童明显） <span class="loc">〔说话人1 57:03〕</span></li>
+<li>味蕾在轮廓、菌状、叶状及软腭会厌等；丝状主感觉 <span class="loc">〔说话人1 57:44〕</span></li>
+<li>舌根大淋巴组织为舌扁桃体 <span class="loc">〔说话人1 55:41〕</span></li>
+<li>舌系带：舌下面正中黏膜皱襞 <span class="loc">〔说话人1 58:22〕</span></li>
+<li>舌下阜：下颌下腺导管与舌下腺大管开口 <span class="loc">〔说话人1 01:00:24〕</span></li>
+<li>舌下襞：舌下腺小管开口 <span class="loc">〔说话人1 01:00:24〕</span></li>
+<li>舌内肌改形状；舌外肌改位置（颏舌肌、舌骨舌肌、茎突舌肌） <span class="loc">〔说话人1 01:00:53〕</span></li>
+<li>颏舌肌起下颌颏棘，扇形入舌 <span class="loc">〔说话人1 01:01:34〕</span></li>
+<li>单侧颏舌肌收缩：舌尖伸向对侧 <span class="loc">〔说话人1 01:03:05〕</span></li>
+<li>一侧颏舌肌瘫痪：伸舌偏向瘫痪侧 <span class="loc">〔说话人1 01:04:23〕</span></li>
+<li>茎突舌肌收缩舌向后上；舌骨舌肌向后下 <span class="loc">〔说话人1 01:04:56〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>丝状乳头无味蕾；颏舌肌单侧收缩与瘫痪偏斜。 <span class="loc">〔说话人1 01:03:05〕</span></div></div>
+<div class="page"><h2 class="h2">7. 大唾液腺</h2><p class="lead">三对大唾液腺位置与导管开口；腮腺为本课重点。</p>
+<ul class="kv">
+<li>唾液腺属大消化腺，分泌液经导管入消化道 <span class="loc">〔说话人1 01:05:45〕</span></li>
+<li>三对：腮腺 parotid、下颌下腺 submandibular、舌下腺 sublingual <span class="loc">〔说话人1 01:06:30〕</span></li>
+<li>腮腺分浅部与深部；浅部上达颧弓、下至下颌角、前至咬肌后1/3前面 <span class="loc">〔说话人1 01:08:15〕</span></li>
+<li>腮腺深部在下颌后窝，下颌支与胸锁乳突肌之间 <span class="loc">〔说话人1 01:09:08〕</span></li>
+<li>腮腺管自浅部前缘发出，沿颧弓下一横指，越咬肌，斜穿颊肌 <span class="loc">〔说话人1 01:09:36〕</span></li>
+<li>腮腺管开口于上颌第二磨牙相对颊黏膜 <span class="loc">〔说话人1 01:09:36〕</span></li>
+<li>下颌下腺位于下颌下三角（下颌体下缘与二腹肌） <span class="loc">〔说话人1 01:11:50〕</span></li>
+<li>下颌下腺导管开口舌下阜；舌下腺在舌下襞深面，大管开舌下阜、小管开舌下襞 <span class="loc">〔说话人1 01:11:50〕</span></li>
+<li>头颈放疗可损伤唾液腺致口干；调强放疗等可保腮 <span class="loc">〔说话人1 01:14:50〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">8. 咽</h2><p class="lead">消化与呼吸共同通道；鼻咽口咽喉咽分界与临床隐窝。</p>
+<ul class="kv">
+<li>咽 pharynx：消化管上端扩大部，消化道与呼吸道共同通道 <span class="loc">〔说话人1 01:20:33〕</span></li>
+<li>上起颅底，下至第6颈椎下缘移行食管；漏斗形肌性管道 <span class="loc">〔说话人1 01:20:33〕</span></li>
+<li>咽 pharynx 与喉 larynx 易混；联想吃 food、ph 发 f <span class="loc">〔说话人1 01:19:49〕</span></li>
+<li>鼻咽：颅底至腭帆游离缘；咽鼓管咽口、咽鼓管圆枕、咽隐窝 <span class="loc">〔说话人1 01:22:58〕</span></li>
+<li>咽鼓管咽口在下鼻甲后约1cm，通中耳鼓室；吞咽张口可开 <span class="loc">〔说话人1 01:24:00〕</span></li>
+<li>咽隐窝为鼻咽癌好发部位 <span class="loc">〔说话人1 01:25:15〕</span></li>
+<li>鼻咽淋巴组织：咽扁桃体、咽鼓管扁桃体；咽扁桃体10岁后退缩 <span class="loc">〔说话人1 01:25:50〕</span></li>
+<li>口咽：腭帆游离缘至会厌上缘；经咽峡通口腔 <span class="loc">〔说话人1 01:27:31〕</span></li>
+<li>舌会厌正中襞；会厌谷为鱼刺易卡处 <span class="loc">〔说话人1 01:27:31〕</span></li>
+<li>腭扁桃体位于扁桃体窝，为淋巴上皮器官 <span class="loc">〔说话人1 01:30:45〕</span></li>
+<li>会厌炎可致呼吸道阻塞，属急症 <span class="loc">〔说话人1 01:29:33〕</span></li>
+<li>咽淋巴环：咽扁桃体、咽鼓管扁桃体、腭扁桃体、舌扁桃体 <span class="loc">〔说话人1 01:31:35〕</span></li>
+<li>喉咽：会厌上缘至第6颈椎下缘；前壁喉口通喉腔 <span class="loc">〔说话人1 01:31:35〕</span></li>
+<li>梨状隐窝在会厌两侧，鱼刺可卡此处 <span class="loc">〔说话人1 01:33:07〕</span></li>
+</ul>
+<table class="tbl"><tr><th>分部</th><th>上界</th><th>下界</th><th>重点</th></tr><tr><td>鼻咽</td><td>颅底</td><td>腭帆游离缘</td><td>咽鼓管咽口、咽隐窝</td></tr><tr><td>口咽</td><td>腭帆游离缘</td><td>会厌上缘</td><td>腭扁桃体、会厌谷</td></tr><tr><td>喉咽</td><td>会厌上缘</td><td>第6颈椎下缘</td><td>梨状隐窝、喉口</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>咽淋巴环四扁桃体；咽隐窝与鼻咽癌。 <span class="loc">〔说话人1 01:31:35〕</span></div></div>
+<div class="page"><h2 class="h2">9. 食管与胃开篇</h2><p class="lead">食管最窄、三狭窄与距中切牙距离；胃三大功能含内分泌。</p>
+<ul class="kv">
+<li>食管 esophagus：前后扁肌性管，消化管最狭窄部分 <span class="loc">〔说话人1 01:34:01〕</span></li>
+<li>长约25cm；上端第6颈椎下缘接咽，下端第11胸椎接胃贲门 <span class="loc">〔说话人1 01:34:01〕</span></li>
+<li>食管癌危险因素：烫食等 <span class="loc">〔说话人1 01:34:01〕</span></li>
+<li>颈段至胸骨颈静脉切迹；胸段至食管裂孔；腹段至贲门 <span class="loc">〔说话人1 01:35:23〕</span></li>
+<li>第一狭窄：起始处第6颈椎下缘，距中切牙15cm <span class="loc">〔说话人1 01:36:16〕</span></li>
+<li>第二狭窄：左主支气管后方交叉，第4~5胸椎，距中切牙25cm <span class="loc">〔说话人1 01:36:16〕</span></li>
+<li>第三狭窄：食管裂孔处，距中切牙40cm；15+25=40 <span class="loc">〔说话人1 01:36:16〕</span></li>
+<li>分部界线与三狭窄位置勿混 <span class="loc">〔说话人1 01:36:16〕</span></li>
+<li>胃：消化管最庞大，连食管与十二指肠 <span class="loc">〔说话人1 01:38:15〕</span></li>
+<li>胃功能：收纳食物、分泌胃液、内分泌（饥饿相关激素） <span class="loc">〔说话人1 01:38:15〕</span></li>
+<li>司美格鲁肽为 GLP-1 受体激动剂，原为降糖药，其减重作用被用于减肥 <span class="loc">〔说话人1 01:39:06〕</span></li>
+</ul>
+<div class="mnem"><strong>记忆</strong>：食管三狭窄距中切牙 15、25、40 cm。 <span class="loc">〔说话人1 01:36:16〕</span></div></div>
+<div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>内脏四大系统 + 孔道通外界；心血管不是内脏 <span class="loc">〔说话人1 02:26〕</span></li>
+<li>实质性被膜小叶门；中空性3~4层壁 <span class="loc">〔说话人1 04:37〕</span></li>
+<li>胸骨线、胸骨旁线、前正中线勿混 <span class="loc">〔说话人1 06:31〕</span></li>
+<li>九分法两横线肋下平面与髂结节；垂直线腹股沟韧带中点 <span class="loc">〔说话人1 12:15〕</span></li>
+<li>上下消化道分界与出血颜色 <span class="loc">〔说话人1 17:32〕</span></li>
+<li>大消化腺：大唾液腺、肝、胰 <span class="loc">〔说话人1 18:31〕</span></li>
+<li>咽峡围成与功能 <span class="loc">〔说话人1 28:13〕</span></li>
+<li>腮腺管开口上颌第二磨牙颊黏膜 <span class="loc">〔说话人1 24:50〕</span></li>
+<li>丝状乳头无味蕾 <span class="loc">〔说话人1 55:41〕</span></li>
+<li>颏舌肌：单侧伸对侧，瘫侧偏瘫侧 <span class="loc">〔说话人1 01:04:23〕</span></li>
+<li>腮腺管走行与开口 <span class="loc">〔说话人1 01:09:36〕</span></li>
+<li>咽淋巴环四扁桃体 <span class="loc">〔说话人1 01:31:35〕</span></li>
+<li>咽隐窝鼻咽癌；梨状隐窝鱼刺 <span class="loc">〔说话人1 01:25:15〕</span></li>
+<li>食管三狭窄15/25/40cm <span class="loc">〔说话人1 01:36:16〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>心血管属于内脏</td><td>不与外界相通，不属于内脏 〔说话人1 02:26〕</td></tr>
+<tr><td>胸骨线即前正中线</td><td>胸骨线沿胸骨外侧缘 〔说话人1 06:31〕</td></tr>
+<tr><td>食管分部界即三狭窄</td><td>第二狭窄在左主支气管交叉，非颈胸交界 〔说话人1 01:36:16〕</td></tr>
+<tr><td>丝状乳头有味蕾</td><td>丝状最小最多，无味蕾 〔说话人1 55:41〕</td></tr>
+<tr><td>瘫侧收缩推舌向对侧</td><td>健侧收缩，舌尖偏向瘫痪侧 〔说话人1 01:04:23〕</td></tr>
+<tr><td>咽与喉英文混淆</td><td>pharynx 咽，larynx 喉 〔说话人1 01:19:49〕</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>心血管非内脏</td><td>§1</td><td>〔说话人1 02:26〕</td><td>判断</td></tr>
+<tr><td>胸部标志线</td><td>§2</td><td>〔说话人1 04:37〕</td><td>单选/填图</td></tr>
+<tr><td>腹部九分法</td><td>§2</td><td>〔说话人1 12:15〕</td><td>填图</td></tr>
+<tr><td>上下消化道出血</td><td>§3</td><td>〔说话人1 17:32〕</td><td>临床单选</td></tr>
+<tr><td>咽峡</td><td>§4</td><td>〔说话人1 28:13〕</td><td>名解</td></tr>
+<tr><td>腮腺管开口</td><td>§4</td><td>〔说话人1 24:50〕</td><td>单选</td></tr>
+<tr><td>舌乳头与味蕾</td><td>§6</td><td>〔说话人1 55:41〕</td><td>单选</td></tr>
+<tr><td>颏舌肌</td><td>§6</td><td>〔说话人1 01:03:05〕</td><td>临床</td></tr>
+<tr><td>腮腺管走行</td><td>§7</td><td>〔说话人1 01:09:36〕</td><td>名解</td></tr>
+<tr><td>咽淋巴环</td><td>§8</td><td>〔说话人1 01:31:35〕</td><td>单选</td></tr>
+<tr><td>食管三狭窄</td><td>§9</td><td>〔说话人1 01:36:16〕</td><td>单选</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>高压电脉冲消融肿瘤（课堂拓展）</td><td>拓展</td><td>§0</td><td>〔说话人1 00:01〕</td></tr>
+<tr><td>2</td><td>5节课学完四大内脏系统</td><td>安排</td><td>§0</td><td>〔说话人1 00:01〕</td></tr>
+<tr><td>3</td><td>内脏四大系统器官</td><td>定义</td><td>§1</td><td>〔说话人1 01:15〕</td></tr>
+<tr><td>4</td><td>内脏学visceral</td><td>术语</td><td>§1</td><td>〔说话人1 01:15〕</td></tr>
+<tr><td>5</td><td>管道+实质性器官</td><td>形态</td><td>§1</td><td>〔说话人1 01:47〕</td></tr>
+<tr><td>6</td><td>孔道通外界</td><td>判据</td><td>§1</td><td>〔说话人1 01:47〕</td></tr>
+<tr><td>7</td><td>内分泌功能</td><td>功能</td><td>§1</td><td>〔说话人1 01:47〕</td></tr>
+<tr><td>8</td><td>心血管非内脏</td><td>考点</td><td>§1</td><td>〔说话人1 02:26〕</td></tr>
+<tr><td>9</td><td>实质性无空腔腺组织</td><td>分类</td><td>§1</td><td>〔说话人1 02:26〕</td></tr>
+<tr><td>10</td><td>被膜小叶门</td><td>分类</td><td>§1</td><td>〔说话人1 03:16〕</td></tr>
+<tr><td>11</td><td>肝最大腺体肝门</td><td>例</td><td>§1</td><td>〔说话人1 03:16〕</td></tr>
+<tr><td>12</td><td>中空性管囊状</td><td>分类</td><td>§1</td><td>〔说话人1 04:37〕</td></tr>
+<tr><td>13</td><td>肠壁四层</td><td>组织</td><td>§1</td><td>〔说话人1 04:37〕</td></tr>
+<tr><td>14</td><td>呼吸泌尿道三层</td><td>组织</td><td>§1</td><td>〔说话人1 04:37〕</td></tr>
+<tr><td>15</td><td>前正中线胸骨线等7条</td><td>标志</td><td>§2</td><td>〔说话人1 07:05〕</td></tr>
+<tr><td>16</td><td>肩胛线后正中线</td><td>标志</td><td>§2</td><td>〔说话人1 07:05〕</td></tr>
+<tr><td>17</td><td>腋前中后线</td><td>标志</td><td>§2</td><td>〔说话人1 07:05〕</td></tr>
+<tr><td>18</td><td>腹部分区四分法脐</td><td>分区</td><td>§2</td><td>〔说话人1 09:46〕</td></tr>
+<tr><td>19</td><td>九分法井字九区</td><td>分区</td><td>§2</td><td>〔说话人1 09:46〕</td></tr>
+<tr><td>20</td><td>肋下平面髂结节连线</td><td>分区</td><td>§2</td><td>〔说话人1 10:52〕</td></tr>
+<tr><td>21</td><td>腹股沟韧带中点垂线</td><td>分区</td><td>§2</td><td>〔说话人1 12:15〕</td></tr>
+<tr><td>22</td><td>肝锁骨中线第5肋投影</td><td>应用</td><td>§2</td><td>〔说话人1 12:15〕</td></tr>
+<tr><td>23</td><td>胃左季肋区中等充盈</td><td>应用</td><td>§2</td><td>〔说话人1 14:49〕</td></tr>
+<tr><td>24</td><td>alimentary system</td><td>术语</td><td>§3</td><td>〔说话人1 15:48〕</td></tr>
+<tr><td>25</td><td>克罗恩病黏膜受损</td><td>临床</td><td>§3</td><td>〔说话人1 16:26〕</td></tr>
+<tr><td>26</td><td>消化管口腔至肛门</td><td>结构</td><td>§3</td><td>〔说话人1 17:02〕</td></tr>
+<tr><td>27</td><td>十二指肠空肠界</td><td>分界</td><td>§3</td><td>〔说话人1 17:32〕</td></tr>
+<tr><td>28</td><td>上下消化道出血颜色</td><td>临床</td><td>§3</td><td>〔说话人1 17:32〕</td></tr>
+<tr><td>29</td><td>小肠十二指肠空肠回肠</td><td>结构</td><td>§3</td><td>〔说话人1 18:31〕</td></tr>
+<tr><td>30</td><td>小消化腺壁内</td><td>腺</td><td>§3</td><td>〔说话人1 18:31〕</td></tr>
+<tr><td>31</td><td>大唾液腺肝胰</td><td>腺</td><td>§3</td><td>〔说话人1 18:31〕</td></tr>
+<tr><td>32</td><td>口腔六向毗邻</td><td>口腔</td><td>§4</td><td>〔说话人1 20:46〕</td></tr>
+<tr><td>33</td><td>前庭与固有口腔</td><td>口腔</td><td>§4</td><td>〔说话人1 20:46〕</td></tr>
+<tr><td>34</td><td>唇红发绀</td><td>临床</td><td>§4</td><td>〔说话人1 22:03〕</td></tr>
+<tr><td>35</td><td>颊脂体结构</td><td>口腔</td><td>§4</td><td>〔说话人1 23:50〕</td></tr>
+<tr><td>36</td><td>腮腺管开口第二磨牙</td><td>考点</td><td>§4</td><td>〔说话人1 24:50〕</td></tr>
+<tr><td>37</td><td>硬腭软腭腭垂</td><td>腭</td><td>§4</td><td>〔说话人1 26:17〕</td></tr>
+<tr><td>38</td><td>咽峡isthmus分界</td><td>考点</td><td>§4</td><td>〔说话人1 28:13〕</td></tr>
+<tr><td>39</td><td>乳牙20恒牙32；分切牙/尖牙/前磨牙/磨牙</td><td>牙</td><td>§5</td><td>〔说话人1 30:27〕</td></tr>
+<tr><td>40</td><td>牙式罗马与阿拉伯</td><td>牙</td><td>§5</td><td>〔说话人1 34:32〕</td></tr>
+<tr><td>41</td><td>牙冠颈根腔管</td><td>牙</td><td>§5</td><td>〔说话人1 35:14〕</td></tr>
+<tr><td>42</td><td>牙釉质磷酸钙怕酸</td><td>牙</td><td>§5</td><td>〔说话人1 37:00〕</td></tr>
+<tr><td>43</td><td>牙周膜牙槽骨牙龈</td><td>牙周</td><td>§5</td><td>〔说话人1 38:30〕</td></tr>
+<tr><td>44</td><td>牙结石牙周病</td><td>临床</td><td>§5</td><td>〔说话人1 39:50〕</td></tr>
+<tr><td>45</td><td>界沟舌体舌根</td><td>舌</td><td>§6</td><td>〔说话人1 43:40〕</td></tr>
+<tr><td>46</td><td>四种舌乳头</td><td>舌</td><td>§6</td><td>〔说话人1 55:41〕</td></tr>
+<tr><td>47</td><td>丝状无味蕾</td><td>考点</td><td>§6</td><td>〔说话人1 55:41〕</td></tr>
+<tr><td>48</td><td>舌下阜舌下襞开口</td><td>舌</td><td>§6</td><td>〔说话人1 01:00:24〕</td></tr>
+<tr><td>49</td><td>颏舌肌对侧伸舌</td><td>考点</td><td>§6</td><td>〔说话人1 01:03:05〕</td></tr>
+<tr><td>50</td><td>瘫侧伸舌偏瘫侧</td><td>临床</td><td>§6</td><td>〔说话人1 01:04:23〕</td></tr>
+<tr><td>51</td><td>腮腺浅深部位置</td><td>腺</td><td>§7</td><td>〔说话人1 01:09:08〕</td></tr>
+<tr><td>52</td><td>腮腺管走行咬肌颊肌</td><td>腺</td><td>§7</td><td>〔说话人1 01:09:36〕</td></tr>
+<tr><td>53</td><td>下颌下腺下颌下三角</td><td>腺</td><td>§7</td><td>〔说话人1 01:11:50〕</td></tr>
+<tr><td>54</td><td>放疗口干保腮</td><td>临床</td><td>§7</td><td>〔说话人1 01:15:33〕</td></tr>
+<tr><td>55</td><td>咽位置第6颈椎</td><td>咽</td><td>§8</td><td>〔说话人1 01:20:33〕</td></tr>
+<tr><td>56</td><td>咽鼓管咽口圆枕</td><td>咽</td><td>§8</td><td>〔说话人1 01:24:00〕</td></tr>
+<tr><td>57</td><td>咽隐窝鼻咽癌</td><td>临床</td><td>§8</td><td>〔说话人1 01:25:15〕</td></tr>
+<tr><td>58</td><td>咽扁桃体腺样体</td><td>咽</td><td>§8</td><td>〔说话人1 01:25:50〕</td></tr>
+<tr><td>59</td><td>会厌谷鱼刺</td><td>临床</td><td>§8</td><td>〔说话人1 01:27:31〕</td></tr>
+<tr><td>60</td><td>咽淋巴环四扁桃体</td><td>考点</td><td>§8</td><td>〔说话人1 01:31:35〕</td></tr>
+<tr><td>61</td><td>梨状隐窝</td><td>临床</td><td>§8</td><td>〔说话人1 01:33:07〕</td></tr>
+<tr><td>62</td><td>食管25cm最窄</td><td>食管</td><td>§9</td><td>〔说话人1 01:34:01〕</td></tr>
+<tr><td>63</td><td>贲门第11胸椎</td><td>食管</td><td>§9</td><td>〔说话人1 01:35:23〕</td></tr>
+<tr><td>64</td><td>颈静脉切迹食管裂孔分界</td><td>食管</td><td>§9</td><td>〔说话人1 01:35:23〕</td></tr>
+<tr><td>65</td><td>三狭窄15/25/40</td><td>考点</td><td>§9</td><td>〔说话人1 01:36:16〕</td></tr>
+<tr><td>66</td><td>胃收纳分泌内分泌</td><td>胃</td><td>§9</td><td>〔说话人1 01:38:15〕</td></tr>
+<tr><td>67</td><td>司美格鲁肽GLP-1</td><td>拓展</td><td>§9</td><td>〔说话人1 01:39:06〕</td></tr>
 </table>
-<hr>
-<h2>课堂导入</h2>
-<h3>开场与课程安排</h3>
-<p>老师开场先分享了几个科研方向的拓展内容：</p>
-<ol>
-<li><strong>高压电脉冲消融</strong>："叫高压电脉冲消的这么一个东西。就是什么意思呢？就是肿瘤不是你用药杀不死，对不对？我们电一下，用高压电，2000多高压电这样电一下，然后肿瘤就啊。这个东西是上临床用的。"——这是一种肿瘤微创治疗技术。</li>
-</ul>
-<ol>
-<li><strong>汪伟老师的神经胶质瘤电疗研究</strong>：第三个提到的方向是做神经胶质瘤的电疗。</li>
-</ul>
-<p><strong>【老师强调】</strong> 课程节奏预告："我们大概用5节课的时间要把四大内脏里面的四大系统学完，所以这个节奏还是比较快的。所以给大家的要求就是回去一定要看，当然我知道大家回去肯定是不太看的。"</p>
-<h3>本节课要点预告</h3>
-<p>老师明确本节课需要掌握的核心要点：</p>
-<ul>
-<li>胸腹部的标志线</li>
-<li>消化系统的组成</li>
-<li>从牙、舌、咽、食管到胃的完整开篇内容</li>
-</ul>
-<p><strong>【老师强调】</strong> 英文词汇要求："内脏啊。一些比较重，比较特征的一些英文词汇，大家需要知道一下。"</p>
-<hr>
-<h2>一、内脏学总论</h2>
-<h3>1.1 内脏的定义</h3>
-<p><strong>老师原话</strong>："所谓内脏呢，它就是指位于胸、腹和盆腔内的四大系统——消化、呼吸、泌尿、生殖——它的器官，这是它的内脏。如果我们研究它的位置、形态结构和功能呢，我们就叫内脏学。"</p>
-<ul>
-<li>内脏英文：<strong>visceral</strong>（形容词），内脏学 = splanchnology</li>
-<li>内脏的核心判定标准：<strong>有孔道直接或间接与外界相通</strong></li>
-</ul>
-<h3>1.2 四大系统的共有特征</h3>
-<p><strong>【老师强调·高频考点】</strong> 老师逐条讲解了四大内脏系统的共同特征：</p>
-<ol>
-<li><strong>形态结构</strong>：由一套<strong>连续的管道</strong>和一个或多个<strong>实质性器官</strong>组成</li>
-<li><strong>孔道相通</strong>：有孔道<strong>直接或间接</strong>连向外界</li>
-<li><strong>位置</strong>：大部分位于胸腔、腹腔和盆腔内</li>
-<li><strong>功能</strong>：</li>
-<li>物质代谢（消化、呼吸、泌尿）</li>
-<li>繁衍后代（生殖）</li>
-<li>内分泌功能</li>
-</ul>
-<p><strong>🔍网络验证</strong>：内脏（viscera）的标准解剖学定义为：位于胸腔、腹腔和盆腔内，通过管道直接或间接与外界相通，参与物质代谢和繁殖功能的器官系统。教材标准表述见《系统解剖学》（人民卫生出版社第9版）。</p>
-<h3>1.3 ★★★判断题高频考点：心血管系统属不属于内脏？</h3>
-<p><strong>老师原话</strong>："那么这个就是一个典型的一个判断题，叫心血管系统属不属于内脏？注意啊，内脏是有一个管道间接或者直接的和外界相通的，当你的心血管系统和外界相通的时候，我们就要进行急救，对不对？所以心血管系统不是内脏，不是内脏系统。"</p>
-<p><strong>【老师强调】</strong> 这是判断题的高频考点——<strong>心血管系统不属于内脏</strong>，因为心血管系统与外界不相通（一旦相通意味着出血，需要急救）。</p>
-<h3>1.4 内脏器官的分类</h3>
-<p>按基本构造分为两类：</p>
-<h4>（1）实质性器官</h4>
-<p><strong>老师讲解要点</strong>：</p>
-<ul>
-<li>内部<strong>没有特定空腔</strong></li>
-<li>大部分为<strong>腺组织</strong></li>
-<li>表面覆盖<strong>被膜或浆膜</strong></li>
-<li>被膜将实质分为更小的单位——<strong>小叶</strong></li>
-<li>神经、血管、管道出入处称为<strong>器官的门</strong></li>
-</ul>
-<p><strong>举例——肝</strong>：</p>
-<ul>
-<li>肝是人体最大的腺体</li>
-<li>肝门处有肝静脉、肝动脉、肝总管、胆囊等出入</li>
-<li>"对于肝来说，在中间这个绿色部分，你可以看见有这些蓝色的静脉、红色的动脉以及这胆囊、肝总管这些出入的地方，我们就把它叫做肝门。"</li>
-</ul>
-<p><strong>【老师强调】</strong> 实质性器官三个关键词：<strong>被膜、小叶、门</strong>。</p>
-<h4>（2）中空性器官</h4>
-<p><strong>老师讲解要点</strong>：</p>
-<ul>
-<li>呈<strong>管状或囊状</strong>，内部有空腔</li>
-<li>空腔由<strong>器官壁</strong>包绕形成</li>
-<li>器官壁由<strong>3~4层组织</strong>构成</li>
-<li>消化道壁 = <strong>4层</strong>（黏膜、黏膜下层、肌层、外膜）</li>
-<li>呼吸道/泌尿道壁 = <strong>3层</strong></li>
-</ul>
-<p><strong>老师举例</strong>：胃、气管、支气管、输尿管、膀胱、输卵管、子宫。</p>
-<p><strong>课程间关联</strong>："这个是大家在组胚的时候会去学啊，组胚也是很多人挂科的一门课啊，所以大家也是要注意的。"——老师提醒组织胚胎学挂科率高，需要重视。</p>
-<hr>
-<h2>二、胸腹部标志线与腹部分区</h2>
-<h3>2.1 ★★★胸部垂直标志线（9种，前面7条）</h3>
-<p><strong>【老师强调·本节重点】</strong> "这个是我们今天说的重点啊，一个标志线，你学会了，你学过系统解剖学，不知道标志线，那还是走不过去啊。"</p>
-<p>老师用画图的方式逐条讲解（按线名种类全身共 <strong>9 种</strong>；老师特别强调<strong>前面</strong>把成对的线左右各画一条，共 <strong>7 条</strong>：前正中线 1 条 + 胸骨线、胸骨旁线、锁骨中线各左右 1 对）：</p>
-<h4>前面（4种线名；按左右实际画线共7条）</h4>
-<table class="vt">
-<tr><th>标志线</th><th>定位</th><th>英文</th></tr>
-<tr><td><strong>前正中线</strong></td><td>沿胸骨正中所作的垂直线</td><td>anterior median line</td></tr>
-<tr><td><strong>胸骨线</strong></td><td>沿胸骨外侧缘所作的垂直线</td><td>sternal line</td></tr>
-<tr><td><strong>胸骨旁线</strong></td><td>胸骨线与锁骨中线之间中点所作的垂直线</td><td>parasternal line</td></tr>
-<tr><td><strong>锁骨中线</strong></td><td>通过锁骨中点所作的垂直线</td><td>midclavicular line</td></tr>
-</table>
-<p><strong>【老师强调·易混淆】</strong> "胸骨线和胸骨旁线要分开，胸骨线是沿着胸部的侧缘线……这个是容易和前正中线所混淆的。"</p>
-<p><strong>英文记忆法</strong>：</p>
-<ul>
-<li>前 = anterior，后 = posterior</li>
-<li>正中 = median</li>
-<li>胸骨 = sternal</li>
-<li>锁骨 = clavicular</li>
-<li>腋前线 = anterior axillary line，腋后线 = posterior axillary line</li>
-</ul>
-<h4>侧面（3种线名，左右各一）</h4>
-<table class="vt">
-<tr><th>标志线</th><th>定位</th></tr>
-<tr><td><strong>腋前线</strong></td><td>沿腋前襞所作的垂直线</td></tr>
-<tr><td><strong>腋中线</strong></td><td>腋前线与腋后线之间中点</td></tr>
-<tr><td><strong>腋后线</strong></td><td>沿腋后襞所作的垂直线</td></tr>
-</table>
-<h4>后面（2种线名）</h4>
-<table class="vt">
-<tr><th>标志线</th><th>定位</th></tr>
-<tr><td><strong>肩胛线</strong></td><td>通过肩胛骨下角所作的垂直线</td></tr>
-<tr><td><strong>后正中线</strong></td><td>沿身体后面正中（脊柱棘突）所作的垂直线</td></tr>
-</table>
-<p><strong>【老师趣味互动】</strong> "那么对于临床病人来说，如果一个患者过去说，一上来就跟你说，我的按胸部标志线来划分的那你得出什么结论？这个患者是一个医学生，对不对？"</p>
-<h3>2.2 腹部的分区</h3>
-<h4>（1）四分法（临床常用）</h4>
-<p><strong>老师讲解</strong>："对于患者来说，我们不能要求那么高，我们这个临床常用的一个比较基本的一个叫四分法，腹部的这样一个分区，以脐为终点做一个四分，这是非常常见的。"</p>
-<ul>
-<li>以<strong>脐</strong>为中心，画水平线和垂直线</li>
-<li>分为：左上腹、右上腹、左下腹、右下腹</li>
-</ul>
-<h4>（2）九分法（医学生要求掌握）</h4>
-<p><strong>【老师强调】</strong> "对于医学生来说呢，我们要求高一些，我们用九分法。"</p>
-<p><strong>两条水平线</strong>：</p>
-<ol>
-<li><strong>肋下平面</strong>：两侧肋弓最低点的连线（上方水平线）</li>
-<li><strong>髂结节连线</strong>：两侧髂结节的连线（下方水平线）</li>
-</ul>
-<p><strong>两条垂直线</strong>：</p>
-<ul>
-<li>通过<strong>两侧腹股沟韧带中点</strong>所作的垂直线</li>
-</ul>
-<p><strong>九个分区</strong>（从上到下、从左到右）：</p>
-<table class="vt">
-<tr><th>左季肋区</th><th>腹上区</th><th>右季肋区</th></tr>
-<tr><td>左腰区</td><td>脐区</td><td>右腰区</td></tr>
-<tr><td>左髂区（左腹股沟区）</td><td>腹下区（耻区）</td><td>右髂区（右腹股沟区）</td></tr>
-</table>
-<p><strong>【老师强调】</strong> "这个名字第一个有点怪啊，叫左季肋区，季肋区高一点的。"</p>
-<h3>2.3 标志线的应用</h3>
-<p><strong>老师讲解</strong>："为什么我们要有这些标志线呢？这样你就可以来描述对应的内脏，它所投影的这个点在体表的位置。"</p>
-<p><strong>举例1——肝脏的体表投影</strong>：</p>
-<ul>
-<li>肝右侧上缘 = <strong>右锁骨中线与第5肋的交点</strong></li>
-<li>肝左侧上缘 = <strong>左锁骨中线与第5肋间隙的交点</strong>（位置稍低）</li>
-</ul>
-<p><strong>举例2——胃的体表投影</strong>：</p>
-<ul>
-<li>中等充盈时，胃大部分位于<strong>左季肋区</strong>，小部分位于<strong>腹上区</strong></li>
-</ul>
-<p><strong>【老师强调·学习方法】</strong> "我给大家的建议就是，拿笔记一下，就别光拍或者拿那个高亮的那个画，highlighter在那画，那是没有任何意义，你画完就忘了。手写一下……有个印象总好一些。"</p>
-<hr>
-<h2>三、消化系统概述</h2>
-<h3>3.1 消化系统的组成与功能</h3>
-<p><strong>老师讲解</strong>："消化系统英文叫alimentary system。摄取食物并进行物理的和化学的消化，从消化管的粘膜上皮细胞来吸收营养，最后呢将食物残渣形成粪便排出。"</p>
-<p><strong>辅助功能</strong>：除了消化吸收，消化系统还参与<strong>呼吸、发音和语言</strong>的辅助功能。</p>
-<h3>3.2 临床拓展：克罗恩病</h3>
-<p><strong>老师举例</strong>："大家有没有听说一种病叫克罗氏、克罗恩氏病？Crohn's disease，有个人叫安倍晋三……他就长时间的就有叫克罗恩氏病，是一种自身免疫性的疾病，是进攻自己的肠道，肠道就是它的粘膜上皮会受损，受损导致你没有办法吸收营养，就会导致这个人身体比较差。"</p>
-<h3>3.3 消化管</h3>
-<p><strong>老师讲解</strong>：消化管（alimentary canal）从口腔到肛门。</p>
-<p><strong>上下消化道分界</strong>：</p>
-<ul>
-<li>以<strong>十二指肠空肠曲</strong>（十二指肠与空肠移行处）为界</li>
-<li><strong>上消化道</strong>：口腔→咽→食管→胃→十二指肠</li>
-<li><strong>下消化道</strong>：空肠→回肠→盲肠→阑尾→结肠→直肠→肛门</li>
-</ul>
-<p><strong>【老师强调·考点】</strong> "一个经常考的问题是，这两个部分出血的症状是有不一样的地方……下消化道出血，你的便血是红色的，如果上消化道一般是黑色的。"</p>
-<p><strong>小肠组成</strong>：十二指肠、空肠、回肠统称小肠。</p>
-<h3>3.4 消化腺</h3>
-<p><strong>分类</strong>：</p>
-<ul>
-<li><strong>小消化腺</strong>：分布于消化管壁内（黏膜或黏膜下层），如唇腺、颊腺、舌腺、食管腺、胃腺、肠腺——"很多，但不用记"</li>
-<li><strong>大消化腺</strong>：独立于消化管壁外的器官，通过导管将消化液输送入消化管</li>
-</ul>
-<p><strong>【老师强调·本节课重点】</strong> "我们所要考察的叫，记的一般叫大消化腺……今天就要知道了，大唾液腺、肝和胰腺。"</p>
-<hr>
-<h2>四、口腔</h2>
-<h3>4.1 口腔的位置与毗邻（P0关系）</h3>
-<p><strong>老师讲解</strong>："口腔oral cavity，它的位置是在消化管的起始。"</p>
-<p><strong>六向毗邻</strong>（名词解释考点）：</p>
-<ul>
-<li><strong>前壁</strong>：上下唇</li>
-<li><strong>后界</strong>：经<strong>咽峡</strong>与咽相通</li>
-<li><strong>上壁</strong>：上腭（硬腭+软腭）</li>
-<li><strong>下壁</strong>：口腔底</li>
-<li><strong>侧壁</strong>：颊</li>
-</ul>
-<p><strong>口腔的分部</strong>：</p>
-<ul>
-<li>以<strong>上下牙弓</strong>为界</li>
-<li><strong>口腔前庭</strong>：牙弓与口唇、颊之间的间隙</li>
-<li><strong>固有口腔</strong>：牙弓内侧的空间</li>
-</ul>
-<h3>4.2 口唇</h3>
-<p><strong>老师讲解</strong>：</p>
-<ul>
-<li>从外到内：皮肤 → 口轮匝肌 → 黏膜</li>
-<li><strong>唇红</strong>：皮肤与黏膜的移行处，是体表毛细血管最丰富的位置</li>
-<li><strong>【临床考点】</strong> 缺氧时唇红从鲜红色变为紫蓝色——<strong>发绀</strong></li>
-</ul>
-<p><strong>其他结构</strong>：人中、鼻唇沟、上唇系带、下唇系带</p>
-<p><strong>老师举例</strong>："如果你的上唇系带特别发达的时候，它就会干扰这个中切牙的发育，这时候你就要做手术矫正，怎么办？剪掉就行了。"</p>
-<h3>4.3 颊</h3>
-<p><strong>从外到内</strong>：皮肤 → 颊肌 → <strong>颊脂体</strong> → 口腔黏膜</p>
-<p><strong>【临床拓展】</strong> "颊脂体是用来干啥的？医美上有有一个操作是干啥的？知道不？就是你的脸太胖了……你就把颊脂体给切掉。"</p>
-<p><strong>★★★核心考点——腮腺管开口</strong>：</p>
-<ul>
-<li>位置：<strong>上颌第二磨牙牙冠相对的颊黏膜上</strong></li>
-<li>"记得啊，这个……记得它的位置在哪里？……在颊这个部位所需要掌握的一个结构。"</li>
-</ul>
-<h3>4.4 腭</h3>
-<p><strong>腭的英文</strong>：palate</p>
-<p><strong>分部</strong>：</p>
-<ul>
-<li><strong>硬腭</strong>：前2/3，以骨为基础</li>
-<li><strong>软腭</strong>：后1/3，肌肉构成</li>
-</ul>
-<p><strong>软腭的结构</strong>：</p>
-<ul>
-<li>静止时下垂，吞咽时上提封闭鼻咽与口咽</li>
-<li><strong>腭帆</strong>：软腭后缘斜向下的部分</li>
-<li><strong>腭垂（悬雍垂）</strong>：腭帆后缘正中下垂的部分（"小舌头"）</li>
-<li><strong>腭舌弓</strong>：腭帆向前下方移行至舌背的皱襞</li>
-<li><strong>腭咽弓</strong>：腭帆向后下方移行至咽侧壁的皱襞</li>
-<li><strong>腭扁桃体</strong>：位于腭舌弓与腭咽弓之间的扁桃体窝内</li>
-</ul>
-<p><strong>老师趣味分享</strong>："大家如果学过法语，学过德语，那个小舌音，小舌音就是用这个结构发音的……我学德语的时候，大家都问你是不是有好多痰要吐啊？"</p>
-<h3>4.5 ★★★咽峡（核心名词解释）</h3>
-<p><strong>【老师强调·必须掌握】</strong> "这个叫咽峡的结构，这是我们今天要掌握的，叫咽峡。由于它比较窄，所以叫isthmus。"</p>
-<p><strong>定义</strong>：咽峡是<strong>口腔与咽的分界</strong>结构。</p>
-<p><strong>围成</strong>：</p>
-<ul>
-<li>上方：<strong>腭帆游离缘</strong></li>
-<li>两侧：<strong>腭舌弓、腭咽弓</strong>（腭扁桃体位于其间）</li>
-<li>下方：<strong>舌根</strong></li>
-</ul>
-<p><strong>考试要点</strong>：</p>
-<ol>
-<li>什么是咽峡？（名词解释）</li>
-<li>咽峡的功能是什么？（口腔与咽的分界）</li>
-<li>咽峡由哪些结构围成？（四方结构）</li>
-</ul>
-<hr>
-<h2>五、牙</h2>
-<h3>5.1 牙的概述</h3>
-<p><strong>老师讲解</strong>："最坚硬的器官，咀嚼食物、辅助发音。"</p>
-<ul>
-<li>位置：上下颌骨的牙槽内，位于口腔前庭与固有口腔之间</li>
-<li>分类：乳牙 vs 恒牙</li>
-</ul>
-<h3>5.2 乳牙与恒牙</h3>
-<table class="vt">
-<tr><th>项目</th><th>乳牙</th><th>恒牙</th></tr>
-<tr><td>数量</td><td>20颗</td><td>32颗</td></tr>
-<tr><td>萌出时间</td><td>6个月开始萌出，3岁出齐</td><td>除第三磨牙外14岁出齐</td></tr>
-<tr><td>牙式标记</td><td>罗马数字</td><td>阿拉伯数字</td></tr>
-<tr><td>英文</td><td>deciduous teeth / milk teeth</td><td>permanent teeth</td></tr>
-</table>
-<p><strong>【老师强调】</strong> "智齿叫智牙，或者叫第三磨牙……智齿是个好东西，对不对？因为高等恐怖直立猿的理论寿命只有30多岁，对不对？在你快挂的时候，然后给你出一颗智齿，还能吃点东西。"</p>
-<h3>5.3 牙的分类</h3>
-<p>从前到后：</p>
-<ul>
-<li><strong>切牙（incisors）</strong>：切割作用</li>
-<li><strong>尖牙（canine）</strong>：撕裂作用</li>
-<li><strong>前磨牙（premolars）</strong>：研磨作用</li>
-<li><strong>磨牙（molars）</strong>：研磨作用</li>
-</ul>
-<p><strong>记忆技巧</strong>：尖牙英文 canine → 美国警车标识 <strong>K9</strong>（警犬）</p>
-<h3>5.4 牙的形态与结构</h3>
-<p><strong>形态分部</strong>：牙冠、牙颈、牙根</p>
-<p><strong>内部结构</strong>：</p>
-<ul>
-<li>牙冠腔、牙根管</li>
-<li>根尖孔（血管神经出入处）</li>
-</ul>
-<p><strong>组织构成</strong>（从外到内）：</p>
-<ol>
-<li><strong>牙釉质</strong>：牙冠表面，人体最坚硬的组织</li>
-<li><strong>牙质（牙本质）</strong>：中间主体</li>
-<li><strong>牙骨质</strong>：牙根表面</li>
-<li><strong>牙髓</strong>：牙冠腔和牙根管内，含神经、血管、结缔组织</li>
-</ul>
-<p><strong>🔍网络验证</strong>：牙釉质主要成分为羟基磷灰石（磷酸钙晶体），是人体最坚硬的组织。老师博士做牙科材料，提到牙釉质的扫描电镜图像显示竖长的磷酸钙晶体和蛋白质网络（类似水泥混凝土结构）。</p>
-<p><strong>【临床拓展】</strong> 龋齿的形成：酸性物质腐蚀牙釉质（磷酸钙晶体溶解）→ 钙质流失 → 龋齿。"为什么说有时候那个怀宝宝的时候容易牙坏掉？因为那个钙都被小朋友吸收了。"</p>
-<h3>5.5 牙周组织</h3>
-<p><strong>组成</strong>：牙周膜、牙槽骨、牙龈</p>
-<ul>
-<li><strong>牙周膜（periodontal membrane）</strong>：牙槽骨与牙根之间的致密结缔组织，由胶原纤维构成，功能为固定牙根、缓解咀嚼压力</li>
-<li><strong>牙槽骨</strong>：上下颌骨容纳牙根的部分</li>
-<li><strong>牙龈</strong>：覆盖牙颈及邻近牙槽骨的口腔黏膜，<strong>直接与骨膜相连，不能移动</strong></li>
-</ul>
-<p><strong>【临床拓展】</strong></p>
-<ul>
-<li><strong>牙结石</strong>：沉积刺激牙龈 → 炎症 → 牙龈萎缩 → 牙根暴露 → 牙齿松动脱落</li>
-<li>"其实对于国内来说呢，这个老年人这个牙齿为什么容易掉？其实很多情况下不是因为你牙齿有这个龋齿，而是因为有这个牙周病。"</li>
-<li><strong>槟榔的危害</strong>："槟榔加烟，法力无边……它会不停地刺激这个口腔黏膜，就会导致炎症炎症，然后增生增生……轻一点的叫口腔纤维化，嘴就张不开，重一点的就会有肿瘤。"</li>
-</ul>
-<p><strong>【临床拓展·冷冻消融】</strong> 口腔肿瘤的冷冻消融治疗："用液氮进去，温度降到零下大概170度左右，冻成冰块……一冻一热这样的过程呢，细胞就会膨胀就死掉了。"</p>
-<hr>
-<h2>六、舌</h2>
-<h3>6.1 舌的概述</h3>
-<p><strong>老师讲解</strong>："舌。烫烫烫，tongue，这个单词要记得，烫。"</p>
-<ul>
-<li>位置：口腔底</li>
-<li>性质：<strong>肌性器官</strong>（纵横垂直三个方向的骨骼肌交织而成）</li>
-<li>表面：覆以黏膜</li>
-<li>功能：协助咀嚼、吞咽、感受味觉、发音</li>
-</ul>
-<h3>6.2 舌的形态</h3>
-<p><strong>舌背的分区</strong>：</p>
-<ul>
-<li><strong>界沟</strong>：V形沟，将舌背分为两部分</li>
-<li><strong>舌体</strong>：前2/3，可游离活动</li>
-<li><strong>舌根</strong>：后1/3，以舌肌固定于舌骨和下颌骨</li>
-</ul>
-<p><strong>【老师强调】</strong> 舌体后缘延续至会厌的<strong>腹侧面</strong>（不是背侧面）。</p>
-<h3>6.3 ★★★舌乳头（4种）</h3>
-<p>分布于<strong>舌体背面</strong>（前2/3），共四种：</p>
-<table class="vt">
-<tr><th>乳头类型</th><th>大小</th><th>数量</th><th>位置</th><th>有味蕾？</th></tr>
-<tr><td><strong>轮廓乳头</strong></td><td>最大</td><td>7~11个</td><td>界沟前方</td><td>✅ 有</td></tr>
-<tr><td><strong>菌状乳头</strong></td><td>较小</td><td>散在</td><td>舌尖、舌侧缘</td><td>✅ 有</td></tr>
-<tr><td><strong>叶状乳头</strong></td><td>条状</td><td>—</td><td>舌侧缘后部</td><td>✅ 有（儿童明显）</td></tr>
-<tr><td><strong>丝状乳头</strong></td><td>最小</td><td>最多</td><td>舌背广泛分布</td><td>❌ <strong>无味蕾</strong></td></tr>
-</table>
-<p><strong>【老师强调·高频考点】</strong> "丝状的数目最多，体积最小，由于它如此之小，你注意啥？以至于它里面就没有我们所谓的能够感受味觉的味蕾这个东西，丝状应该是没有味蕾。"</p>
-<p><strong>味蕾分布</strong>：除轮廓、菌状、叶状乳头外，软腭、会厌等处的黏膜上皮中也有味蕾。</p>
-<p><strong>舌根的淋巴组织</strong>：舌扁桃体（不是舌乳头）。</p>
-<h3>6.4 舌下面（腹面）</h3>
-<p><strong>结构</strong>：</p>
-<ul>
-<li><strong>舌系带</strong>：舌下面正中线的黏膜皱襞，连于口腔底前部</li>
-<li><strong>舌下阜</strong>：舌系带根部两侧的黏膜隆起——<strong>下颌下腺导管和舌下腺大管的开口处</strong></li>
-<li><strong>舌下襞</strong>：舌下阜向两侧延伸的黏膜皱襞——<strong>舌下腺小管的开口处</strong></li>
-</ul>
-<p><strong>【老师强调】</strong> "对于舌的下面来说，我们其实要掌握的是舌下阜和舌下襞这两个概念。"</p>
-<h3>6.5 ★★★舌肌</h3>
-<p><strong>分类</strong>：</p>
-<table class="vt">
-<tr><th>类型</th><th>功能</th><th>包括</th></tr>
-<tr><td><strong>舌内肌</strong></td><td>改变舌的<strong>形状</strong></td><td>纵肌、横肌、垂直肌</td></tr>
-<tr><td><strong>舌外肌</strong></td><td>改变舌的<strong>位置</strong></td><td>颏舌肌、舌骨舌肌、茎突舌肌</td></tr>
-</table>
-<h4>★★★重点：颏舌肌（genioglossus）</h4>
-<p><strong>起止</strong>：</p>
-<ul>
-<li>起点：<strong>下颌骨颏棘</strong></li>
-<li>止点：肌纤维呈扇形向后上方分散，入舌正中线两侧</li>
-</ul>
-<p><strong>功能——高频考点</strong>：</p>
-<ul>
-<li><strong>单侧收缩</strong>：舌尖伸向<strong>对侧</strong></li>
-<li><strong>【老师记忆法】</strong> "你用你的舌头去够你右边的磨牙，使劲够，保持这个位置，然后发现哪边的舌头会发酸？左边……左边收缩够右边牙。"</li>
-</ul>
-<p><strong>【临床考点】</strong> "如果一个人他突然半边瘫痪，他右边的颏舌肌瘫痪了，那么这时候你再用力去颏舌肌收缩的时候，舌头往哪边偏？……往右边。为啥？左边收缩。"</p>
-<h4>其他舌外肌：</h4>
-<ul>
-<li><strong>茎突舌肌</strong>：起自茎突，止于舌侧和舌底 → 收缩时舌向后上方运动</li>
-<li><strong>舌骨舌肌</strong>：起自舌骨大角，止于舌侧部 → 收缩时舌向后下方运动</li>
-</ul>
-<hr>
-<h2>七、大唾液腺</h2>
-<h3>7.1 概述</h3>
-<p><strong>老师讲解</strong>："唾液腺是属于大消化腺还是小消化腺？大消化腺。"</p>
-<p>三对大唾液腺：</p>
-<ol>
-<li><strong>腮腺（parotid gland）</strong></li>
-<li><strong>下颌下腺（submandibular gland）</strong></li>
-<li><strong>舌下腺（sublingual gland）</strong></li>
-</ul>
-<h3>7.2 ★★★腮腺（重点中的重点）</h3>
-<p><strong>分部</strong>：浅部 + 深部</p>
-<p><strong>浅部位置</strong>：</p>
-<ul>
-<li>上达<strong>颧弓</strong></li>
-<li>下至<strong>下颌角</strong></li>
-<li>前缘至<strong>咬肌后1/3的前面</strong></li>
-</ul>
-<p><strong>深部位置</strong>：</p>
-<ul>
-<li>位于<strong>下颌后窝</strong>内</li>
-<li>边界：下颌支与胸锁乳突肌之间</li>
-</ul>
-<p><strong>★★★腮腺管（名词解释考点）</strong>：</p>
-<p><strong>走行</strong>：</p>
-<ol>
-<li>从腮腺浅部前缘发出</li>
-<li>沿颧弓下一横指向前走行</li>
-<li>越过咬肌表面（外侧面）</li>
-<li>在咬肌前缘转向内侧</li>
-<li>斜穿颊肌</li>
-<li><strong>开口于上颌第二磨牙相对的颊黏膜上</strong></li>
-</ul>
-<p><strong>【老师强调】</strong> "如果我们说，比方说名词解释腮腺管，你就要把这部分都要给记住……其中我们改分怎么改，知道吗？挑关键词啊，腮腺管，你写了腮腺，加分……有一个咬肌，加分……我们是生怕你过不了。"</p>
-<h3>7.3 下颌下腺</h3>
-<ul>
-<li>位置：<strong>下颌下三角</strong>内</li>
-<li>构成：下颌体下缘 + 二腹肌</li>
-<li>导管开口：<strong>舌下阜</strong></li>
-</ul>
-<h3>7.4 舌下腺</h3>
-<ul>
-<li>位置：<strong>舌下襞</strong>深面</li>
-<li>导管：</li>
-<li><strong>大管</strong>：1条，开口于<strong>舌下阜</strong></li>
-<li><strong>小管</strong>：多条，开口于<strong>舌下襞</strong></li>
-</ul>
-<h3>7.5 临床拓展：头颈部肿瘤放疗与唾液腺保护</h3>
-<p><strong>老师分享</strong>：</p>
-<ul>
-<li>头颈部深部肿瘤手术困难，放疗是重要的无创治疗手段</li>
-<li>传统放疗穿过正常组织 → 损伤唾液腺 → <strong>口干症</strong></li>
-<li>现代技术：<strong>调强放疗（IMRT）</strong>——多方向照射，剂量聚焦肿瘤，保护周围正常组织</li>
-<li>更先进：<strong>质子放疗、重离子（碳离子）放疗</strong>——物理剂量分布更优（布拉格峰），表层剂量少，精准聚焦肿瘤</li>
-<li>"上海有个医院叫重离子放疗中心……一个病人50万。"</li>
-<li>中国各地质子治疗中心快速发展，武汉已有两家</li>
-</ul>
-<hr>
-<h2>八、咽</h2>
-<h3>8.1 咽的概述</h3>
-<p><strong>老师讲解</strong>："咽，pharynx……咽是消化管的上端扩大的部分，是消化道和呼吸道的共同通道。"</p>
-<p><strong>形态</strong>：上宽下窄、前后略扁的<strong>漏斗形肌性管道</strong></p>
-<p><strong>位置</strong>：</p>
-<ul>
-<li>上起<strong>颅底</strong></li>
-<li>下至<strong>第6颈椎下缘</strong>（环状软骨水平），移行于食管</li>
-<li>前方毗邻：鼻腔 → 口腔 → 喉腔（从上到下）</li>
-<li>后方：颈椎的椎前筋膜</li>
-<li>侧面：颈部大血管及甲状腺侧叶</li>
-</ul>
-<p><strong>英文记忆法</strong>：咽 = pharynx（ph发/f/音 → food → 吃东西的通道），喉 = larynx</p>
-<h3>8.2 咽的分部（三部分）</h3>
-<p>根据前方毗邻结构，咽分为：</p>
-<h4>（1）鼻咽（nasopharynx）</h4>
-<p><strong>位置</strong>：咽的上部，鼻腔后方</p>
-<ul>
-<li>上：颅底</li>
-<li>下：腭帆游离缘</li>
-</ul>
-<p><strong>向前通鼻后孔</strong>与鼻腔相通</p>
-<p><strong>★★★鼻咽重点结构</strong>：</p>
-<table class="vt">
-<tr><th>结构</th><th>位置</th><th>意义</th></tr>
-<tr><td><strong>咽鼓管咽口</strong></td><td>鼻咽侧壁，下鼻甲后方1cm</td><td>经咽鼓管与中耳鼓室相通</td></tr>
-<tr><td><strong>咽鼓管圆枕</strong></td><td>咽鼓管咽口后方的弧形隆起</td><td>寻找咽鼓管咽口的标志</td></tr>
-<tr><td><strong>咽隐窝</strong></td><td>咽鼓管圆枕后方与咽后壁之间的纵行深窝</td><td><strong>鼻咽癌好发部位</strong></td></tr>
-</table>
-<p><strong>【老师强调】</strong> "咽隐窝呢，是鼻咽癌的好发区域，这也是为什么说鼻咽癌的手术非常难做，你想看它这特别深的地方。"</p>
-<p><strong>咽鼓管的功能</strong>：维持鼓膜两侧压力平衡。"坐飞机的时候，那不是耳朵嗡嗡嗡的，那就是这个地方。"</p>
-<p><strong>儿童特点</strong>：儿童咽鼓管较短、较平、较宽 → 容易患中耳炎</p>
-<p><strong>鼻咽部的淋巴组织</strong>：</p>
-<ul>
-<li><strong>咽鼓管扁桃体</strong>：咽鼓管咽口附近</li>
-<li><strong>咽扁桃体</strong>：鼻咽上壁（腺样体，adenoid）</li>
-<li>儿童期发达，<strong>10岁后退缩</strong></li>
-<li>肥大可导致鼻塞 → 张口呼吸 → <strong>腺样体面容</strong>（牙列前凸）</li>
-</ul>
-<h4>（2）口咽（oropharynx）</h4>
-<p><strong>位置</strong>：腭帆游离缘至会厌上缘之间</p>
-<ul>
-<li>前：经<strong>咽峡</strong>通口腔</li>
-<li>上：续鼻咽</li>
-<li>下：续喉咽</li>
-</ul>
-<p><strong>重点结构</strong>：</p>
-<table class="vt">
-<tr><th>结构</th><th>位置</th><th>意义</th></tr>
-<tr><td><strong>舌会厌正中襞</strong></td><td>舌根与会厌之间正中的黏膜皱襞</td><td>—</td></tr>
-<tr><td><strong>会厌谷</strong></td><td>舌会厌正中襞两侧的深窝</td><td><strong>鱼刺等异物易停留处</strong></td></tr>
-<tr><td><strong>腭扁桃体</strong></td><td>腭舌弓与腭咽弓之间的扁桃体窝内</td><td>淋巴上皮器官</td></tr>
-</table>
-<p><strong>腭扁桃体细节</strong>：</p>
-<ul>
-<li>内侧面有扁桃体小窝（凹陷）</li>
-<li>周围包绕扁桃体囊（结缔组织）</li>
-<li>扁桃体上窝：未被扁桃体充满的空间（扁桃体结石好发处）</li>
-</ul>
-<p><strong>⚠️急症提示——会厌炎</strong>："会厌如果发炎是个非常危险的事情，这是急症……当这个会厌如果是炎症特别厉害的时候呢，就会整个堵塞这个呼吸道，这个是个会有生命危险的事情。"</p>
-<h4>★★★咽淋巴环（Waldeyer环）</h4>
-<p><strong>组成（四种扁桃体）</strong>：</p>
-<ol>
-<li><strong>咽扁桃体</strong>（鼻咽上壁）</li>
-<li><strong>咽鼓管扁桃体</strong>（咽鼓管咽口附近）</li>
-<li><strong>腭扁桃体</strong>（口咽侧壁）</li>
-<li><strong>舌扁桃体</strong>（舌根）</li>
-</ul>
-<p><strong>功能</strong>：对消化道和呼吸道起<strong>防御</strong>作用</p>
-<p><strong>【老师强调】</strong> "这堂课还请大家记住，什么叫咽淋巴环？有四个，咽鼓管扁桃体、咽扁桃体、舌扁桃体、腭扁桃体。"</p>
-<h4>（3）喉咽（laryngopharynx）</h4>
-<p><strong>位置</strong>：咽的最下段，较狭窄</p>
-<ul>
-<li>上：会厌上缘平面</li>
-<li>下：第6颈椎下缘，与食管延续</li>
-<li>前壁：有<strong>喉口</strong>，通喉腔</li>
-</ul>
-<p><strong>★★★梨状隐窝</strong>：</p>
-<ul>
-<li>位置：喉口两侧的深窝</li>
-<li><strong>鱼刺等异物的常见卡顿部位</strong></li>
-<li>"你卡鱼刺卡的比较高级，就会卡在这里，叫梨状隐窝。"</li>
-</ul>
-<hr>
-<h2>九、食管</h2>
-<h3>9.1 食管概述</h3>
-<p><strong>老师讲解</strong>："食管，esophagus……食管癌的高发危险因素是啥？你干啥容易得食管癌？是烫的。"</p>
-<ul>
-<li>形态：前后扁平的肌性管状器官</li>
-<li><strong>消化管中最狭窄的部分</strong></li>
-<li>长度：约<strong>25cm</strong></li>
-<li>上端：<strong>第6颈椎下缘</strong>，与咽相接</li>
-<li>下端：<strong>第11胸椎体高度</strong>，接胃的贲门</li>
-</ul>
-<p><strong>⚠️老师提醒</strong>："噎到时候你要喝水不？别喝水啊，对吧？你喝水在这真的得得胀起来，你喝馒吃馒头胀起来了。"</p>
-<h3>9.2 食管的分部（三段）</h3>
-<table class="vt">
-<tr><th>分段</th><th>分界标志</th></tr>
-<tr><td><strong>颈部</strong></td><td>起始 → <strong>胸骨颈静脉切迹</strong>平面</td></tr>
-<tr><td><strong>胸部</strong></td><td>颈静脉切迹 → <strong>食管裂孔</strong>（第10胸椎）</td></tr>
-<tr><td><strong>腹部</strong></td><td>食管裂孔 → 贲门（第11胸椎）</td></tr>
-</table>
-<h3>9.3 ★★★食管的三个生理性狭窄</h3>
-<table class="vt">
-<tr><th>狭窄</th><th>位置</th><th>距中切牙距离</th></tr>
-<tr><td><strong>第一狭窄</strong></td><td>食管起始处（第6颈椎下缘）</td><td><strong>15cm</strong></td></tr>
-<tr><td><strong>第二狭窄</strong></td><td>左主支气管后方与食管交叉处（第4~5胸椎之间）</td><td><strong>25cm</strong></td></tr>
-<tr><td><strong>第三狭窄</strong></td><td>食管裂孔处（第10胸椎）</td><td><strong>40cm</strong></td></tr>
-</table>
-<p><strong>记忆口诀</strong>：<strong>15 + 25 = 40</strong></p>
-<p><strong>【老师强调】</strong> "为什么这两个分界点要记住呢？因为它和我们所说的食管的三个狭窄是容易搞混淆的……第二狭窄是在白色的是我们说的主支气管……左主支气管的后方和食管交叉的部分。"</p>
-<p><strong>临床意义</strong>：三个狭窄是食管异物易滞留和食管癌的好发部位。</p>
-<hr>
-<h2>十、胃（开篇）</h2>
-<h3>10.1 胃的概述</h3>
-<p><strong>老师讲解</strong>："胃是消化管当中最庞大的部分，上连食管，下连十二指肠。"</p>
-<p><strong>功能</strong>：</p>
-<ol>
-<li><strong>收纳食物</strong></li>
-<li><strong>分泌胃液</strong></li>
-<li><strong>内分泌功能</strong>——"真的有内分泌功能……胃有一部分它是启动分泌一些也可能是激素啊，就让你特别想吃。"</li>
-</ul>
-<h3>10.2 临床拓展：减重与GLP-1</h3>
-<p><strong>老师分享</strong>：</p>
-<ul>
-<li><strong>胃袖切除术</strong>：切除部分胃 → 减少饥饿感 → 减重。"切完之后，人真的是不想吃了，但那个不太好，那个是有风险的一个东西。"</li>
-<li><strong>司美格鲁肽（semaglutide）</strong>：</li>
-<li>最初作为<strong>糖尿病药物</strong>开发</li>
-<li>发现小鼠用药后体重下降（作为副作用报道）</li>
-<li>对人而言体重下降是正面效果 → 成为热门减肥药</li>
-<li>作用靶点：<strong>GLP-1受体</strong></li>
-<li><strong>科研拓展</strong>：同济医学院陈薇老师（Robert Langer的博士后）长期研究GLP-1方向，是大创项目的热门选择。</li>
-</ul>
-<hr>
-<h2>老师强调的重点/考点汇总</h2>
-<h3>必须掌握的核心内容</h3>
-<ol>
-<li><strong>内脏的定义与判定</strong>：四大系统 + 有管道与外界相通 + 心血管系统不属于内脏（判断题高频）</li>
-<li><strong>内脏器官分类</strong>：实质性器官（被膜、小叶、门）vs 中空性器官（3~4层壁）</li>
-<li><strong>胸部垂直标志线</strong>：全身按线名种类共 <strong>9 种</strong>（前面4种：前正中线、胸骨线、胸骨旁线、锁骨中线；侧面3种：腋前线、腋中线、腋后线；后面2种：肩胛线、后正中线）；老师强调的<strong>前面 7 条</strong>=前正中线 1 条 + 胸骨线/胸骨旁线/锁骨中线各左右 1 对（注意区分胸骨线与胸骨旁线）</li>
-<li><strong>腹部九分法</strong>：两条水平线（肋下平面、髂结节连线）+ 两条垂直线（腹股沟韧带中点）</li>
-<li><strong>上下消化道分界</strong>：十二指肠空肠曲；出血症状差异（黑便 vs 鲜血）</li>
-<li><strong>咽峡</strong>：名词解释（组成+功能）</li>
-<li><strong>腮腺管开口</strong>：上颌第二磨牙相对的颊黏膜</li>
-<li><strong>乳牙/恒牙</strong>：数量、萌出时间、牙式标记</li>
-<li><strong>牙的结构</strong>：牙釉质（最硬）、牙质、牙骨质、牙髓；牙周组织三部分</li>
-<li><strong>舌乳头四种</strong>：轮廓、菌状、叶状、丝状（丝状无味蕾！）</li>
-<li><strong>舌下阜与舌下襞</strong>：导管开口</li>
-<li><strong>颏舌肌</strong>：单侧收缩→舌尖伸向对侧；瘫痪侧→舌尖偏向瘫痪侧</li>
-<li><strong>三对大唾液腺</strong>：腮腺（重点）、下颌下腺、舌下腺的位置和导管开口</li>
-<li><strong>咽的三部分</strong>：鼻咽、口咽、喉咽的分界和重点结构</li>
-<li><strong>咽鼓管咽口、圆枕、咽隐窝</strong>：咽隐窝=鼻咽癌好发</li>
-<li><strong>咽淋巴环四种扁桃体</strong>：咽、咽鼓管、腭、舌</li>
-<li><strong>梨状隐窝</strong>：鱼刺易卡顿</li>
-<li><strong>食管三个狭窄</strong>：位置和距中切牙距离（15/25/40cm）</li>
-<li><strong>食管三段</strong>：颈、胸、腹的分界</li>
-</ul>
-<h3>老师课堂纪律与学习方法强调</h3>
-<ul>
-<li>上课不要看手机</li>
-<li>手写笔记代替拍照/高亮标注</li>
-<li>改卷抓关键词给分</li>
-<li>组胚挂科率高，要重视</li>
-<li>神经解剖模块难度大，要提前投入</li>
-</ul>
-<hr>
-<h2>课程间关联汇总</h2>
-<table class="vt">
-<tr><th>关联课程</th><th>关联内容</th></tr>
-<tr><td><strong>组织胚胎学</strong></td><td>器官壁层次（黏膜/黏膜下层/肌层/外膜）、上皮组织类型、被膜概念</td></tr>
-<tr><td><strong>生物化学</strong></td><td>消化酶、物质代谢</td></tr>
-<tr><td><strong>病理学</strong></td><td>克罗恩病（自身免疫病）、鼻咽癌、口腔肿瘤</td></tr>
-<tr><td><strong>临床医学</strong></td><td>扁桃体炎、会厌炎急症、龋齿、牙周病、食管异物</td></tr>
-<tr><td><strong>药理学/内分泌</strong></td><td>GLP-1受体、司美格鲁肽减重</td></tr>
-<tr><td><strong>医学影像</strong></td><td>质子/重离子放疗、调强放疗</td></tr>
-</table>
-<hr>
-<h2>复习清单</h2>
-<h3>必背结构</h3>
-<ul class="checklist">
-<li><input type="checkbox"  disabled> 内脏的定义与四大系统</li>
-<li><input type="checkbox"  disabled> 心血管系统不属于内脏的原因</li>
-<li><input type="checkbox"  disabled> 实质性器官 vs 中空性器官的特征</li>
-<li><input type="checkbox"  disabled> 胸部所有标志线的名称和定位</li>
-<li><input type="checkbox"  disabled> 腹部四分法和九分法的分区名称</li>
-<li><input type="checkbox"  disabled> 上下消化道的分界和出血鉴别</li>
-<li><input type="checkbox"  disabled> 口腔六向毗邻关系</li>
-<li><input type="checkbox"  disabled> 咽峡的组成（名词解释）</li>
-<li><input type="checkbox"  disabled> 乳牙和恒牙的数量、萌出时间</li>
-<li><input type="checkbox"  disabled> 牙的组织构成（从外到内）</li>
-<li><input type="checkbox"  disabled> 牙周组织三部分</li>
-<li><input type="checkbox"  disabled> 四种舌乳头的特征和味蕾分布</li>
-<li><input type="checkbox"  disabled> 舌下面的结构（舌系带、舌下阜、舌下襞）</li>
-<li><input type="checkbox"  disabled> 颏舌肌的起止和功能</li>
-<li><input type="checkbox"  disabled> 腮腺的位置分部和腮腺管走行开口</li>
-<li><input type="checkbox"  disabled> 下颌下腺和舌下腺的位置及导管开口</li>
-<li><input type="checkbox"  disabled> 咽的位置和三部分分界</li>
-<li><input type="checkbox"  disabled> 鼻咽的三个重点结构（咽鼓管咽口、圆枕、隐窝）</li>
-<li><input type="checkbox"  disabled> 咽淋巴环的四种扁桃体</li>
-<li><input type="checkbox"  disabled> 梨状隐窝的位置和临床意义</li>
-<li><input type="checkbox"  disabled> 食管的长度、起止位置、三分部</li>
-<li><input type="checkbox"  disabled> 食管三个狭窄的位置和距中切牙距离</li>
-</ul>
-<h3>理解性内容</h3>
-<ul class="checklist">
-<li><input type="checkbox"  disabled> 内脏与外界相通的判定逻辑</li>
-<li><input type="checkbox"  disabled> 标志线描述内脏体表投影的方法</li>
-<li><input type="checkbox"  disabled> 软腭吞咽时的运动机制</li>
-<li><input type="checkbox"  disabled> 颏舌肌瘫痪的临床表现</li>
-<li><input type="checkbox"  disabled> 放疗技术对唾液腺的保护原理</li>
-<li><input type="checkbox"  disabled> 食管狭窄与异物滞留、食管癌的关系</li>
-</ul>
-<hr>
-<h2>主动回忆题</h2>
-<p><strong>Q1：什么是内脏？心血管系统为什么不属于内脏？</strong></p>
-<blockquote>答案要点：内脏指位于胸、腹、盆腔内，由消化、呼吸、泌尿、生殖四大系统器官组成，有管道直接或间接与外界相通。心血管系统的管道不与外界相通（一旦相通即出血需急救），因此不属于内脏。</blockquote>
-<p><strong>Q2：请描述胸部的全部垂直标志线。</strong></p>
-<blockquote>答案要点：前面4条（前正中线、胸骨线、胸骨旁线、锁骨中线），侧面3条（腋前线、腋中线、腋后线），后面2条（肩胛线、后正中线）。注意区分胸骨线（胸骨外侧缘）与胸骨旁线（胸骨线与锁骨中线中点）。</blockquote>
-<p><strong>Q3：腹部九分法是如何划分的？九个分区名称是什么？</strong></p>
-<blockquote>答案要点：两条水平线（肋下平面、髂结节连线），两条垂直线（腹股沟韧带中点垂线）。九区：左季肋区、腹上区、右季肋区；左腰区、脐区、右腰区；左髂区、腹下区、右髂区。</blockquote>
-<p><strong>Q4：什么是咽峡？由哪些结构围成？有什么功能？</strong></p>
-<blockquote>答案要点：咽峡是口腔与咽的分界。由腭帆游离缘（上）、腭舌弓和腭咽弓（两侧）、舌根（下）共同围成。功能为口腔与咽之间的通道和分界。</blockquote>
-<p><strong>Q5：舌乳头有哪几种？哪种没有味蕾？</strong></p>
-<blockquote>答案要点：四种——轮廓乳头（最大，7~11个，界沟前）、菌状乳头（散在，舌尖舌侧缘）、叶状乳头（舌侧缘后部）、丝状乳头（最小最多，无味蕾）。丝状乳头仅起机械摩擦作用。</blockquote>
-<p><strong>Q6：颏舌肌单侧收缩时舌尖偏向哪一侧？一侧瘫痪时伸舌偏向哪一侧？</strong></p>
-<blockquote>答案要点：单侧收缩时舌尖伸向对侧（如左侧收缩→舌尖向右）。一侧瘫痪时，健侧收缩使舌尖偏向瘫痪侧（如右侧瘫痪→伸舌向右偏）。</blockquote>
-<p><strong>Q7：腮腺管的走行和开口在哪里？</strong></p>
-<blockquote>答案要点：从腮腺浅部前缘发出，沿颧弓下一横指前行，越过咬肌表面，在咬肌前缘转向内侧斜穿颊肌，开口于上颌第二磨牙相对的颊黏膜上。</blockquote>
-<p><strong>Q8：咽淋巴环由哪四种扁桃体组成？</strong></p>
-<blockquote>答案要点：咽扁桃体（鼻咽上壁）、咽鼓管扁桃体（咽鼓管咽口附近）、腭扁桃体（腭舌弓与腭咽弓之间）、舌扁桃体（舌根）。</blockquote>
-<p><strong>Q9：食管有哪三个生理性狭窄？距中切牙分别多远？</strong></p>
-<blockquote>答案要点：第一狭窄=起始处（第6颈椎下缘），距中切牙15cm；第二狭窄=左主支气管交叉处（第4~5胸椎），距中切牙25cm；第三狭窄=食管裂孔处（第10胸椎），距中切牙40cm。记忆：15+25=40。</blockquote>
-<hr>
-<p>*笔记完成 · 基于完整课堂逐字稿整理 · 约1.8万字*</p>
+<p class="foot">附录 D 共 67 条，覆盖 recording.md 讲授知识点。</p></div>
+
 </body></html>

@@ -1,70 +1,877 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
-<style>
-@page{size:A4;margin:0;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"Noto Sans CJK SC",sans-serif;color:#24201A;background:#FAF8F1;font-size:10pt;line-height:1.6;}
-.cover{width:210mm;height:297mm;background:radial-gradient(120% 80% at 78% 12%,#0E7C7B 0%,#0A5C5B 55%,#062E25 100%);color:#F3EEE2;position:relative;overflow:hidden;page-break-after:always;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(231,206,156,.55);}
-.cover-inner{position:absolute;inset:13mm;padding:22mm 20mm;display:flex;flex-direction:column;}
-.kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#E7CE9C;font-weight:500;}
-.cover-rule{width:46mm;height:1.4pt;background:#E7CE9C;margin:9mm 0 11mm;}
-.cover h1{font-family:"Noto Serif CJK SC",serif;font-weight:700;font-size:36pt;line-height:1.16;color:#FBF7EC;}
-.cover .subt{margin-top:7mm;font-family:"Noto Serif CJK SC",serif;font-size:16pt;color:rgba(243,238,226,.82);}
-.cover .meta{margin-top:5mm;font-size:10.5pt;color:rgba(243,238,226,.6);}
-.cover .spacer{flex:1;}
-.cover .by{font-size:8.6pt;color:rgba(243,238,226,.55);letter-spacing:.04em;}
-.content{padding:15mm 18mm;}
-.content-title{font-family:"Noto Serif CJK SC",serif;font-size:22pt;font-weight:700;color:#0A5C5B;margin-bottom:2mm;}
-.content-sub{color:#857B68;font-size:10pt;margin-bottom:8mm;}
-.sec{margin-bottom:6mm;break-inside:avoid;}
-.sec-head{display:flex;align-items:center;gap:4mm;padding-bottom:2mm;margin-bottom:3mm;border-bottom:1.6pt solid #0E7C7B;}
-.sec-no{font-family:"Noto Serif CJK SC",serif;font-weight:700;font-size:10pt;color:#fff;background:#0E7C7B;padding:1mm 3mm;border-radius:1.6mm;}
-.sec-title{font-family:"Noto Serif CJK SC",serif;font-weight:700;font-size:14pt;color:#0A5C5B;}
-.sec-body{background:#fff;border:0.5pt solid #E6DECC;border-radius:2.4mm;padding:4mm 5mm;}
-.kv{display:flex;gap:3mm;margin:1.5mm 0;font-size:9.5pt;}
-.kv .k{font-weight:600;color:#0A5C5B;min-width:28mm;flex:none;}
-.kv .k::after{content:"｜";color:#BCDAD9;margin-left:.3em;font-weight:400;}
-.kv .v{color:#4A4337;flex:1;}
-.p{margin:1.5mm 0;font-size:9.5pt;color:#4A4337;}
-.hl{background:linear-gradient(180deg,#F8ECD3,#F8ECD3);border:0.4pt solid #E7CE9C;border-radius:1.8mm;padding:2mm 3mm;margin:2mm 0;font-size:9.5pt;color:#24201A;font-weight:500;}
-.warn{background:#F7E4DF;border:0.4pt solid #E6BDB4;border-radius:1.8mm;padding:2mm 3mm;margin:2mm 0;font-size:9.3pt;color:#7E2A20;}
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>系统解剖学 · 第10-12节 · 颅骨及其连接</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#B4531F; --accent-d:#7A3413; --accent-t:#F7E7DE;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.exam .loc,.def .loc,.mnem .loc,.wrong .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
 </style></head><body>
-<div class="cover"><div class="frame"></div>
-<div class="cover-inner">
-<div class="kicker">SYSTEMIC ANATOMY</div>
-<div class="cover-rule"></div>
-<h1>系统解剖学</h1>
-<div class="subt">颅骨及其连接</div>
-<div class="meta">HUST 基础医学 · 可视化笔记</div>
-<div class="spacer"></div>
-<div class="by">课堂录音整理 · 结构化可视化</div>
-</div></div>
-<div class="content">
-<div class="content-title">系统解剖学 · 核心知识图谱</div>
-<div class="content-sub">颅骨及其连接 · 关键知识点结构化呈现</div>
 
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">01</span><span class="sec-title">颅骨分类基础</span></div>
-          <div class="sec-body"><div class="hl">颅骨共23块（不含舌骨），脑颅8块+面颅15块</div><div class="kv"><span class="k">分界</span><span class="v">眶上缘+外耳门上缘连线</span></div><div class="kv"><span class="k">脑颅不成对</span><span class="v">额骨、筛骨、蝶骨、枕骨</span></div><div class="kv"><span class="k">脑颅成对</span><span class="v">颞骨×2、顶骨×2</span></div><div class="kv"><span class="k">面颅不成对</span><span class="v">犁骨、下颌骨、舌骨</span></div><div class="kv"><span class="k">面颅成对</span><span class="v">上颌骨、鼻骨、泪骨、颧骨、下鼻甲、腭骨</span></div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">02</span><span class="sec-title">脑颅骨核心结构</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">额骨</span><span class="v">额鳞、眶上部、额窦；眶上孔/切迹</span></div><div class="kv"><span class="k">筛骨</span><span class="v">形似「巾」；筛板（筛孔→嗅神经）、垂直板、筛骨迷路（筛窦）</span></div><div class="warn">⚠ 筛板受损→脑脊液漏、嗅觉减退</div><div class="kv"><span class="k">蝶骨</span><span class="v">形似蝴蝶；蝶骨体（蝶窦、垂体窝）、大翼（圆孔/卵圆孔/棘孔）</span></div><div class="hl">垂体窝→经鼻腔垂体手术必经通路</div><div class="kv"><span class="k">枕骨</span><span class="v">枕骨大孔、枕髁（寰枕关节）、枕外隆凸（项韧带）</span></div><div class="kv"><span class="k">颞骨</span><span class="v">茎突、乳突、茎乳孔（面神经穿出）</span></div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">03</span><span class="sec-title">面颅骨核心结构</span></div>
-          <div class="sec-body"><div class="hl">下颌骨=面颅体积最大的骨，一体两支</div><div class="kv"><span class="k">下颌骨</span><span class="v">颏孔（颏神经）、冠突、髁突（颞下颌关节头）、下颌孔、下颌小舌</span></div><div class="hl">下颌小舌=下牙槽神经阻滞麻醉的核心定位标志</div><div class="kv"><span class="k">上颌骨</span><span class="v">一体四突（颧/额/牙槽/腭突）、上颌窦、泪沟→鼻泪管</span></div><div class="warn">⚠ 上颌窦=最大鼻旁窦，站立位引流差→上颌窦炎常见</div><div class="kv"><span class="k">鼻泪管</span><span class="v">连通泪囊与鼻腔→哭泣时流涕</span></div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">04</span><span class="sec-title">颅骨整体结构</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">冠状缝</span><span class="v">额骨与顶骨之间</span></div><div class="kv"><span class="k">矢状缝</span><span class="v">左右顶骨之间</span></div><div class="kv"><span class="k">人字缝</span><span class="v">顶骨与枕骨之间</span></div><div class="hl">翼点=额/顶/颞/蝶四骨H形交界=太阳穴</div><div class="warn">⚠ 翼点骨折→损伤脑膜中动脉前支→硬膜外血肿</div><div class="kv"><span class="k">颅底三窝</span><span class="v">颅前窝（筛板）、颅中窝（视神经管/眶上裂/圆孔/卵圆孔/棘孔）、颅后窝</span></div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">05</span><span class="sec-title">鼻旁窦与鼻腔</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">额窦</span><span class="v">开口于中鼻道</span></div><div class="kv"><span class="k">上颌窦</span><span class="v">开口于中鼻道（最大，引流差）</span></div><div class="kv"><span class="k">筛窦前中组</span><span class="v">开口于中鼻道</span></div><div class="kv"><span class="k">筛窦后组</span><span class="v">开口于上鼻道</span></div><div class="kv"><span class="k">蝶窦</span><span class="v">开口于蝶筛隐窝</span></div><div class="kv"><span class="k">鼻中隔</span><span class="v">筛骨垂直板+犁骨</span></div><div class="kv"><span class="k">鼻腔外侧壁</span><span class="v">上/中/下鼻甲→上/中/下鼻道</span></div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">06</span><span class="sec-title">颞下颌关节与新生儿颅骨</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">颞下颌关节构成</span><span class="v">下颌骨髁突+颞骨下颌窝+关节结节</span></div><div class="kv"><span class="k">关节盘</span><span class="v">纤维软骨，分上下两腔</span></div><div class="kv"><span class="k">运动</span><span class="v">双侧联动，开口/闭口/前后滑动/侧方运动</span></div><div class="warn">⚠ 关节囊前壁薄弱→易前脱位</div><div class="hl">新生儿脑颅:面颅≈8:1，成年≈4:1</div><div class="kv"><span class="k">颅囟</span><span class="v">前囟、后囟、蝶囟、乳突囟（结缔组织膜填充）</span></div></div>
-        </section>
-</div></body></html>
+<div class="page cover">
+<p class="h1">系统解剖学 · 第10-12节</p>
+<p class="meta">颅骨及其连接 · 2026-09-09 · 授课 李鑫焱 副教授</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 33,705 字 / 143 轮发言。本笔记按「知识点问题簇」而非时间线分章，只收结论式核心内容，每条结论标注逐字稿真实轮次（同一轮讲多个知识点时共用该轮时间）。</p>
+<table>
+<tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>系统解剖学（anatomy / rec-2026-fall-010-012）</td></tr>
+<tr><td>主题</td><td>颅骨及其连接</td></tr>
+<tr><td>学时</td><td>第 10–12 节（3 学时，运动系统收束）</td></tr>
+<tr><td>上课日期</td><td>2026-09-09</td></tr>
+<tr><td>教材主线</td><td>脑颅骨 8 块 · 面颅骨 15 块 · 颅骨整体结构 · 鼻腔与鼻旁窦 · 颞下颌关节 · 新生儿颅骨</td></tr>
+</table>
+</div>
+
+<div class="page">
+<h2 class="h2">0. 知识框架</h2>
+<p class="lead">全课一条主线：先按「眶上缘＋外耳门上缘连线」把 23 块颅骨分为脑颅 8 块与面颅 15 块，逐骨记住形态与专属结构，再把散落的「孔—沟—窝—窦」串成神经血管通路，最后落到颅骨唯一关节（颞下颌关节）、颅底三窝与新生儿颅囟。</p>
+<svg viewBox="0 0 660 250" width="100%" aria-label="知识框架">
+<rect x="240" y="6" width="180" height="30" fill="#F7E7DE" stroke="#B4531F"/>
+<text x="330" y="25" text-anchor="middle" font-size="12">颅骨及其连接（23 块）</text>
+<line x1="90" y1="41" x2="570" y2="41" stroke="#B4531F"/>
+<line x1="90" y1="41" x2="90" y2="56" stroke="#B4531F"/>
+<line x1="250" y1="41" x2="250" y2="56" stroke="#B4531F"/>
+<line x1="410" y1="41" x2="410" y2="56" stroke="#B4531F"/>
+<line x1="570" y1="41" x2="570" y2="56" stroke="#B4531F"/>
+<rect x="20" y="56" width="140" height="26" fill="#fff" stroke="#7A3413"/>
+<text x="90" y="73" text-anchor="middle" font-size="10">脑颅骨 8 块</text>
+<rect x="180" y="56" width="140" height="26" fill="#fff" stroke="#7A3413"/>
+<text x="250" y="73" text-anchor="middle" font-size="10">面颅骨 15 块</text>
+<rect x="340" y="56" width="140" height="26" fill="#fff" stroke="#7A3413"/>
+<text x="410" y="73" text-anchor="middle" font-size="10">颅骨整体</text>
+<rect x="500" y="56" width="140" height="26" fill="#fff" stroke="#7A3413"/>
+<text x="570" y="73" text-anchor="middle" font-size="10">关节与发育</text>
+<rect x="20" y="96" width="140" height="52" fill="#F7E7DE" stroke="#B4531F"/>
+<text x="90" y="114" text-anchor="middle" font-size="9">额/筛/蝶/枕</text>
+<text x="90" y="130" text-anchor="middle" font-size="9">颞/顶（成对）</text>
+<rect x="180" y="96" width="140" height="52" fill="#f6efe9" stroke="#B4531F"/>
+<text x="250" y="114" text-anchor="middle" font-size="9">下颌/上颌/犁/舌</text>
+<text x="250" y="130" text-anchor="middle" font-size="9">鼻/泪/颧/下鼻甲/腭</text>
+<rect x="340" y="96" width="140" height="52" fill="#f6efe9" stroke="#B4531F"/>
+<text x="410" y="114" text-anchor="middle" font-size="9">颅盖缝/颅底三窝</text>
+<text x="410" y="130" text-anchor="middle" font-size="9">翼点/鼻腔/鼻旁窦</text>
+<rect x="500" y="96" width="140" height="52" fill="#f6efe9" stroke="#B4531F"/>
+<text x="570" y="114" text-anchor="middle" font-size="9">颞下颌关节</text>
+<text x="570" y="130" text-anchor="middle" font-size="9">新生儿颅囟</text>
+<text x="330" y="182" text-anchor="middle" font-size="9.5" fill="#3C444D">孔—沟—窝—窦：把每个骨性结构记成一条神经血管通路</text>
+<text x="330" y="202" text-anchor="middle" font-size="9.5" fill="#3C444D">连接：缝／软骨直接连接为主，唯一滑膜关节＝颞下颌关节</text>
+<text x="330" y="222" text-anchor="middle" font-size="9.5" fill="#3C444D">功能：保护脑与感觉器、支持面形</text>
+</svg>
+</div>
+
+<div class="page">
+<h2 class="h2">1. 颅骨总论：多少块、怎么分、怎么连</h2>
+<p class="lead">颅骨共 23 块（含舌骨），以眶上缘＋外耳门上缘连线为界分为脑颅 8 块与面颅 15 块；除下颌骨、舌骨外各骨均以缝或软骨直接连接，活动度极低。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>颅骨构成头颅，舌骨位于其下方 <span class="loc">〔说话人2 02:09〕</span></li>
+<li>颅骨共 23 块，含舌骨 <span class="loc">〔说话人2 02:09〕</span></li>
+<li>除下颌骨、舌骨外，其余各骨以骨缝或软骨连接，活动度很低 <span class="loc">〔说话人2 02:09〕</span></li>
+<li>颅骨起保护与支持作用 <span class="loc">〔说话人2 02:09〕</span></li>
+<li>颅骨及其连接是运动系统中最难的部分 <span class="loc">〔说话人2 02:09〕</span></li>
+<li>脑颅与面颅以眶上缘、外耳门上缘的连线为分界 <span class="loc">〔说话人2 03:21〕</span></li>
+<li>连线以上为脑颅，共 8 块，围成颅腔、容纳脑 <span class="loc">〔说话人2 03:21〕</span></li>
+<li>连线以下为面颅，共 15 块，构成眶、鼻、口腔 <span class="loc">〔说话人2 03:21〕</span></li>
+<li>成对脑颅骨为颞骨与顶骨，左右各一 <span class="loc">〔说话人2 04:29〕</span></li>
+<li>不成对脑颅骨为额骨、筛骨、蝶骨、枕骨 <span class="loc">〔说话人2 04:29〕</span></li>
+<li>不成对面颅骨为犁骨、下颌骨、舌骨 <span class="loc">〔说话人2 36:12〕</span></li>
+<li>成对面颅骨为上颌骨、鼻骨、泪骨、颧骨、下鼻甲、腭骨 <span class="loc">〔说话人2 36:12〕</span></li>
+<li>颅骨连接只有缝连接、纤维连接与软骨连接三种直接连接 <span class="loc">〔说话人2 01:31:30〕</span></li>
+<li>颅盖以缝连接，颅底各骨多由软骨连接 <span class="loc">〔说话人2 01:31:30〕</span></li>
+<li>颅骨只有一个关节，即下颌（颞下颌）关节 <span class="loc">〔说话人2 01:32:21〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>项目</th><th>脑颅</th><th>面颅</th></tr>
+<tr><td>块数</td><td>8 块</td><td>15 块</td></tr>
+<tr><td>位置</td><td>颅后上部</td><td>颅前下部</td></tr>
+<tr><td>构成</td><td>围成颅腔、容纳脑</td><td>眶、鼻、口腔的骨性支架</td></tr>
+<tr><td>不成对</td><td>额骨、筛骨、蝶骨、枕骨</td><td>犁骨、下颌骨、舌骨</td></tr>
+<tr><td>成对</td><td>颞骨、顶骨</td><td>上颌骨、鼻骨、泪骨、颧骨、下鼻甲、腭骨</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>数字必记：脑颅 8＋面颅 15＝23（含舌骨）；脑颅不成对 4、成对 2 对；面颅不成对 3、成对 6 对。</div>
+</div>
+
+<div class="page">
+<h2 class="h2">2. 额骨：额鳞、额窦与眶上结构</h2>
+<p class="lead">额骨构成额头与前颅顶；额鳞内藏额窦，眶上缘的眶上孔或眶上切迹为眶上神经血管出入处。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>额骨位于颅骨正前上方，是额头处的一块骨 <span class="loc">〔说话人2 05:10〕</span></li>
+<li>额鳞是额骨上部宽阔的骨板 <span class="loc">〔说话人2 05:10〕</span></li>
+<li>额窦是额鳞内的空腔，属鼻旁窦，向下开口通鼻腔 <span class="loc">〔说话人2 05:10〕</span></li>
+<li>额窦左右各一，位于额骨两侧 <span class="loc">〔说话人2 05:10〕</span></li>
+<li>眶上部是额骨构成眼眶上壁的部分 <span class="loc">〔说话人2 05:10〕</span></li>
+<li>额骨下缘构成鼻的上部，即鼻根 <span class="loc">〔说话人2 05:10〕</span></li>
+<li>眶上孔位于眶上缘，孔下缘未闭合时称为眶上切迹 <span class="loc">〔说话人2 05:10〕</span></li>
+<li>无论眶上孔还是眶上切迹，都有眶上神经与血管穿出 <span class="loc">〔说话人2 05:10〕</span></li>
+</ul>
+<div class="def"><strong>定义</strong>：额窦（frontal sinus）是额骨内的含气空腔，属鼻旁窦，向下开口通鼻腔。 <span class="loc">〔说话人2 05:10〕</span></div>
+<div class="exam"><span class="tag">★考点</span>眶上孔与眶上切迹只是形态差异，功能相同，均有眶上神经、血管穿出。 <span class="loc">〔说话人2 05:10〕</span></div>
+</div>
+
+<div class="page">
+<h2 class="h2">3. 筛骨：似「巾」，筛板、垂直板与筛骨迷路</h2>
+<p class="lead">筛骨位于两眶之间，形似汉字「巾」；筛板多孔通嗅神经，垂直板构成鼻中隔上部，两侧筛骨迷路内含筛窦并发出上、中鼻甲。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>筛骨位于两眶之间，前邻额骨、后邻蝶骨 <span class="loc">〔说话人2 06:53〕</span></li>
+<li>筛骨形似汉字「巾」，两边壁厚、中间一竖 <span class="loc">〔说话人2 06:53〕</span></li>
+<li>筛骨大部分进入鼻腔，参与鼻腔外侧壁、上壁与鼻中隔 <span class="loc">〔说话人2 06:53〕</span></li>
+<li>筛窦是筛骨迷路内多个散在的小空腔，属鼻旁窦 <span class="loc">〔说话人2 06:53〕</span></li>
+<li>筛板是筛骨上部的水平骨板，上面有许多筛孔 <span class="loc">〔说话人2 08:28〕</span></li>
+<li>嗅神经的嗅丝呈丝状穿过筛孔入颅 <span class="loc">〔说话人2 08:28〕</span></li>
+<li>嗅神经是传入神经，在鼻腔感受气体气味、传回脑内形成嗅觉 <span class="loc">〔说话人2 08:28〕</span></li>
+<li>鸡冠是筛板正中向上的突起，硬脑膜附着于此 <span class="loc">〔说话人2 08:28〕</span></li>
+<li>垂直板是筛骨正中的垂直骨板 <span class="loc">〔说话人2 08:28〕</span></li>
+<li>垂直板下端构成鼻中隔上部 <span class="loc">〔说话人2 09:56〕</span></li>
+<li>筛骨迷路是筛骨两侧宽厚的含气骨块，内含筛窦 <span class="loc">〔说话人2 10:46〕</span></li>
+<li>筛骨迷路外侧壁称眶板，构成眼眶内侧壁 <span class="loc">〔说话人2 10:46〕</span></li>
+<li>筛骨迷路内侧壁构成鼻腔外侧壁 <span class="loc">〔说话人2 10:46〕</span></li>
+<li>内侧壁向下发出上鼻甲与中鼻甲 <span class="loc">〔说话人2 10:46〕</span></li>
+<li>下鼻甲是独立骨块，不由筛骨发出 <span class="loc">〔说话人2 10:46〕</span></li>
+<li>面部受重击可致筛板骨折，脑脊液经鼻腔流出 <span class="loc">〔说话人2 13:55〕</span></li>
+<li>筛板骨折伤及穿行的嗅丝，可致嗅觉受损 <span class="loc">〔说话人2 13:55〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>结构</th><th>位置 / 形态</th><th>要点</th></tr>
+<tr><td>筛板</td><td>筛骨上部的水平骨板</td><td>有筛孔，嗅丝穿过</td></tr>
+<tr><td>鸡冠</td><td>筛板正中向上突起</td><td>位于颅腔侧，硬脑膜附着</td></tr>
+<tr><td>垂直板</td><td>筛骨正中的垂直板</td><td>构成鼻中隔上部</td></tr>
+<tr><td>筛骨迷路</td><td>两侧宽厚的含气骨块</td><td>内含筛窦，发出上、中鼻甲</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>筛板骨折两大表现：脑脊液鼻漏＋嗅觉受损。 <span class="loc">〔说话人2 13:55〕</span></div>
+<div class="wrong"><strong>易混</strong>：上鼻甲、中鼻甲由筛骨发出；只有下鼻甲是独立骨块，不属于筛骨。</div>
+<div class="mnem">助记（整理）：筛骨像毛巾的「巾」——上横筛板通嗅丝，中竖垂直板做鼻中隔，两边迷路藏筛窦。</div>
+</div>
+
+<div class="page">
+<h2 class="h2">4. 蝶骨：似蝴蝶，蝶鞍、垂体窝与大翼三孔</h2>
+<p class="lead">蝶骨居中形似蝴蝶；蝶骨体含蝶窦、上有蝶鞍与垂体窝，大翼从前到后为圆孔、卵圆孔、棘孔，大翼小翼之间为眶上裂。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>蝶骨位于颅底中央，形似蝴蝶 <span class="loc">〔说话人2 14:35〕</span></li>
+<li>蝶骨体是蝶骨中部的主体部分 <span class="loc">〔说话人2 14:35〕</span></li>
+<li>蝶窦是蝶骨体内的空腔，属鼻旁窦，开口通鼻腔 <span class="loc">〔说话人2 14:35〕</span></li>
+<li>蝶鞍是蝶骨体上面马鞍形的凹陷 <span class="loc">〔说话人2 14:35〕</span></li>
+<li>垂体窝是蝶鞍中央的凹陷，容纳垂体 <span class="loc">〔说话人2 14:35〕</span></li>
+<li>垂体位置较深，垂体手术多经鼻腔穿蝶窦入路 <span class="loc">〔说话人2 15:51〕</span></li>
+<li>大翼的大脑面构成颅腔底 <span class="loc">〔说话人2 16:42〕</span></li>
+<li>大翼的眶面构成眼眶后部 <span class="loc">〔说话人2 16:42〕</span></li>
+<li>大翼外面为颞面，从颅外可见，与颞叶相对 <span class="loc">〔说话人2 16:42〕</span></li>
+<li>大翼从前到后有三孔：圆孔、卵圆孔、棘孔 <span class="loc">〔说话人2 16:42〕</span></li>
+<li>圆孔、卵圆孔有神经穿出，棘孔有血管穿出 <span class="loc">〔说话人2 16:42〕</span></li>
+<li>圆孔向前通翼腭窝 <span class="loc">〔说话人2 19:21〕</span></li>
+<li>卵圆孔与棘孔垂直向下通颅底 <span class="loc">〔说话人2 18:49〕</span></li>
+<li>视神经管内为视神经，向前连于眼球 <span class="loc">〔说话人2 18:49〕</span></li>
+<li>视神经管位于眼眶后方偏内侧 <span class="loc">〔说话人2 19:21〕</span></li>
+<li>眶上裂是大翼与小翼之间的裂隙，有神经血管通过 <span class="loc">〔说话人2 19:21〕</span></li>
+<li>翼突是蝶骨向下的突起，分外侧板与内侧板 <span class="loc">〔说话人2 19:21〕</span></li>
+<li>翼管位于翼突，有重要结构通过 <span class="loc">〔说话人2 19:21〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>大翼三孔（从前到后）</th><th>通行结构</th><th>方向</th></tr>
+<tr><td>圆孔</td><td>神经</td><td>向前通翼腭窝</td></tr>
+<tr><td>卵圆孔</td><td>神经</td><td>垂直向下通颅底</td></tr>
+<tr><td>棘孔</td><td>血管</td><td>垂直向下通颅底</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>经鼻腔—蝶窦—垂体窝是垂体手术的经典入路。 <span class="loc">〔说话人2 15:51〕</span></div>
+<div class="mnem">助记（整理）：蝶骨似蝴蝶，体中藏蝶窦，鞍上垂体窝，大翼三孔「圆卵棘」。</div>
+</div>
+
+<div class="page">
+<h2 class="h2">5. 枕骨与顶骨：枕骨大孔、枕髁与项线</h2>
+<p class="lead">枕骨中央有枕骨大孔通脊髓，两侧枕髁与寰椎构成寰枕关节；枕外隆凸、上项线与下项线为体表标志及项韧带附着点。顶骨形态最简单。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>枕骨位于颅后下部，中央有一个枕骨大孔 <span class="loc">〔说话人2 22:09〕</span></li>
+<li>脊髓由枕骨大孔穿过并向下行 <span class="loc">〔说话人2 22:09〕</span></li>
+<li>枕骨分四部：基底部、两侧部与枕鳞 <span class="loc">〔说话人2 22:09〕</span></li>
+<li>枕髁是枕骨侧部的关节面，与寰椎构成寰枕关节 <span class="loc">〔说话人2 22:09〕</span></li>
+<li>枕外隆凸是枕骨正中线上的明显凸起，体表可触及 <span class="loc">〔说话人2 23:33〕</span></li>
+<li>上项线是枕外隆凸向两侧延伸的条状凸起 <span class="loc">〔说话人2 23:33〕</span></li>
+<li>下项线位于上项线下方，是更不明显的一条凸起 <span class="loc">〔说话人2 23:33〕</span></li>
+<li>项韧带由棘上韧带向后发散、附着于枕外隆凸 <span class="loc">〔说话人2 24:16〕</span></li>
+<li>舌下神经管位于枕髁上方，舌下神经由此穿出 <span class="loc">〔说话人2 24:44〕</span></li>
+<li>枕内隆凸是枕外隆凸对应的颅内面凸起 <span class="loc">〔说话人2 24:44〕</span></li>
+<li>横窦沟是枕内隆凸两侧的沟，容纳横窦 <span class="loc">〔说话人2 24:44〕</span></li>
+<li>解剖学中「窦」多指管径粗大的静脉 <span class="loc">〔说话人2 24:44〕</span></li>
+<li>顶骨位于颅顶中部，左右各一，呈四边形 <span class="loc">〔说话人2 24:44〕</span></li>
+<li>顶骨是所有颅骨中形态最简单的一块 <span class="loc">〔说话人2 24:44〕</span></li>
+</ul>
+<div class="def"><strong>定义</strong>：寰枕关节＝枕髁与寰椎上关节凹构成的关节，参与头部屈伸。 <span class="loc">〔说话人2 22:09〕</span></div>
+<div class="exam"><span class="tag">★考点</span>枕骨大孔通脊髓；枕髁连寰椎成寰枕关节；枕外隆凸附项韧带。 <span class="loc">〔说话人2 22:09〕</span></div>
+</div>
+
+<div class="page">
+<h2 class="h2">6. 颞骨：以外耳门为中心的鳞部、鼓部、岩部</h2>
+<p class="lead">颞骨参与颅底与颅腔侧壁；以耳门为中心分三部，鳞部发颧突与下颌窝，岩部藏内耳，茎乳孔是面神经出颅处。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>颞骨位于颅骨两侧并延至颅底，参与构成颅底与颅腔侧壁 <span class="loc">〔说话人2 26:55〕</span></li>
+<li>以外耳门为中心，颞骨可分为鳞部、鼓部、岩部三部分 <span class="loc">〔说话人2 26:55〕</span></li>
+<li>鳞部是片状骨板，向前发出颧突 <span class="loc">〔说话人2 26:55〕</span></li>
+<li>颞骨的颧突与颧骨连接，共同形成颧弓 <span class="loc">〔说话人2 26:55〕</span></li>
+<li>颞骨下颌窝与下颌骨构成颞下颌关节，是一个联合关节 <span class="loc">〔说话人2 26:55〕</span></li>
+<li>关节结节位于下颌窝前方向下突起，防止下颌关节向前脱位 <span class="loc">〔说话人2 28:59〕</span></li>
+<li>下颌关节易向下脱位，即俗称的掉下巴 <span class="loc">〔说话人2 28:59〕</span></li>
+<li>颞骨内侧面有宽大的脑压迹，与脑表面贴合 <span class="loc">〔说话人2 29:33〕</span></li>
+<li>颞骨内侧面有细长的脑膜中动脉沟 <span class="loc">〔说话人2 29:33〕</span></li>
+<li>鼓部即外耳门周围的部分，颅外只见外耳门 <span class="loc">〔说话人2 30:38〕</span></li>
+<li>岩部内有内耳，感受听觉与空间方位 <span class="loc">〔说话人2 31:06〕</span></li>
+<li>岩部有弓状隆起，鼓室盖覆盖鼓室 <span class="loc">〔说话人2 31:06〕</span></li>
+<li>内耳门是听神经、前庭神经与面神经的通道 <span class="loc">〔说话人2 31:06〕</span></li>
+<li>面神经经内耳门入内耳道，途中经过膝状神经节 <span class="loc">〔说话人2 01:56:22〕</span></li>
+<li>颈动脉管分内口与外口，颈内动脉经此走行 <span class="loc">〔说话人2 33:07〕</span></li>
+<li>颈静脉孔由颞骨与枕骨共同围成，不是单一骨上的孔 <span class="loc">〔说话人2 33:57〕</span></li>
+<li>颈静脉窝位于颈动脉管外口附近 <span class="loc">〔说话人2 33:57〕</span></li>
+<li>茎突是颈静脉窝外侧尖细的突起 <span class="loc">〔说话人2 33:57〕</span></li>
+<li>乳突是耳后圆钝的突起，体表可触及 <span class="loc">〔说话人2 33:57〕</span></li>
+<li>茎乳孔位于茎突与乳突之间 <span class="loc">〔说话人2 33:57〕</span></li>
+<li>面神经由内耳门入、从茎乳孔穿出 <span class="loc">〔说话人2 33:57〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>分部</th><th>核心结构</th><th>通路</th></tr>
+<tr><td>鳞部</td><td>颧突、下颌窝、关节结节</td><td>颧弓、颞下颌关节</td></tr>
+<tr><td>鼓部</td><td>外耳门</td><td>外耳道（感觉器课详讲）</td></tr>
+<tr><td>岩部</td><td>内耳、弓状隆起、鼓室盖</td><td>内耳门（面神经、前庭蜗神经）</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>面神经经内耳门入、由茎乳孔出，是颞骨最常考的通路。 <span class="loc">〔说话人2 33:57〕</span></div>
+</div>
+
+<div class="page">
+<h2 class="h2">7. 下颌骨：面颅最大的骨，一体两支</h2>
+<p class="lead">下颌骨分下颌体与下颌支；体有颏隆突、颏孔、颏棘、二腹肌窝，支有冠突、髁突、下颌孔与下颌小舌。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>下颌骨是面颅中体积最大的骨 <span class="loc">〔说话人2 37:26〕</span></li>
+<li>下颌骨分下颌体与下颌支，即一体两支 <span class="loc">〔说话人2 37:26〕</span></li>
+<li>下颌体上缘为下牙槽，容纳下牙 <span class="loc">〔说话人2 37:26〕</span></li>
+<li>颏隆突是下颌体前面正中的隆起 <span class="loc">〔说话人2 39:01〕</span></li>
+<li>颏孔位于颏隆突两侧，颏神经由此穿出 <span class="loc">〔说话人2 39:01〕</span></li>
+<li>颏棘是下颌体内侧面正中的突起，有肌肉附着 <span class="loc">〔说话人2 39:01〕</span></li>
+<li>二腹肌窝是颏棘两侧的凹陷，有二腹肌附着 <span class="loc">〔说话人2 39:01〕</span></li>
+<li>下颌支上端前为冠突、后为髁突 <span class="loc">〔说话人2 39:01〕</span></li>
+<li>髁突是颞下颌关节的关节头 <span class="loc">〔说话人2 39:01〕</span></li>
+<li>冠突与髁突之间的凹陷称下颌切迹 <span class="loc">〔说话人2 40:25〕</span></li>
+<li>髁突向下的缩窄部称下颌颈 <span class="loc">〔说话人2 40:25〕</span></li>
+<li>下颌体与下颌支交界的转角称下颌角，体表可触及 <span class="loc">〔说话人2 40:25〕</span></li>
+<li>下颌孔位于下颌支内侧面，下牙槽神经由此穿入 <span class="loc">〔说话人2 40:25〕</span></li>
+<li>下颌孔斜向后上、并非垂直，故孔缘外凸形成下颌小舌 <span class="loc">〔说话人2 40:25〕</span></li>
+<li>下颌小舌是下牙槽神经阻滞麻醉的重要定位标志 <span class="loc">〔说话人2 40:25〕</span></li>
+<li>传统下牙槽神经麻醉在下颌孔附近进针，凭触到下颌小舌定位 <span class="loc">〔说话人2 40:25〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>部位</th><th>结构</th><th>要点</th></tr>
+<tr><td>下颌体</td><td>颏隆突、颏孔、颏棘、二腹肌窝</td><td>颏孔穿颏神经</td></tr>
+<tr><td>下颌支上端</td><td>冠突、髁突</td><td>髁突＝关节头</td></tr>
+<tr><td>下颌支内面</td><td>下颌孔、下颌小舌</td><td>下牙槽神经、麻醉定位</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>下颌小舌为下牙槽神经阻滞麻醉的骨性标志。 <span class="loc">〔说话人2 40:25〕</span></div>
+</div>
+
+<div class="page">
+<h2 class="h2">8. 上颌骨及其余面颅骨</h2>
+<p class="lead">上颌骨一体四突，内含最大的上颌窦；犁骨构成鼻中隔后下部，腭骨呈 L 形补全硬腭后份，舌骨不与其他颅骨直接相连。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>上颌骨成对，左右各一块，中间以缝相隔 <span class="loc">〔说话人2 44:28〕</span></li>
+<li>上颌体是上颌骨中部的主体 <span class="loc">〔说话人2 44:28〕</span></li>
+<li>上颌骨有四突：颧突、额突、牙槽突、腭突 <span class="loc">〔说话人2 44:28〕</span></li>
+<li>额突向上连接额骨 <span class="loc">〔说话人2 44:28〕</span></li>
+<li>颧突向后外侧连接颧骨 <span class="loc">〔说话人2 50:33〕</span></li>
+<li>牙槽突向下构成上牙槽 <span class="loc">〔说话人2 44:28〕</span></li>
+<li>腭突向后构成口腔顶（硬腭）的前大部分 <span class="loc">〔说话人2 44:28〕</span></li>
+<li>眶下孔位于眶下缘下方，有眶下神经穿出 <span class="loc">〔说话人2 45:36〕</span></li>
+<li>上颌骨前面有尖牙窝 <span class="loc">〔说话人2 46:41〕</span></li>
+<li>上颌骨的颞下面有牙槽孔 <span class="loc">〔说话人2 47:36〕</span></li>
+<li>眶面有眶下沟，眶下神经经此走行 <span class="loc">〔说话人2 48:09〕</span></li>
+<li>鼻面是上颌骨朝向鼻腔的一面，从鼻腔内可看到 <span class="loc">〔说话人2 48:46〕</span></li>
+<li>上颌窦位于上颌体内，是体积最大的鼻旁窦 <span class="loc">〔说话人2 48:46〕</span></li>
+<li>上颌窦位置低于鼻腔、开口较高，站立位积液不易排出 <span class="loc">〔说话人2 48:46〕</span></li>
+<li>泪沟向下参与构成鼻泪管，连通眼眶与鼻腔 <span class="loc">〔说话人2 48:46〕</span></li>
+<li>犁骨是斜方形小骨片，构成鼻中隔的后下部 <span class="loc">〔说话人2 42:53〕</span></li>
+<li>舌骨分舌骨体、大角与小角 <span class="loc">〔说话人2 42:53〕</span></li>
+<li>舌骨与颅骨既无直接连接也无间接连接，靠肌腱、肌肉附着 <span class="loc">〔说话人2 42:53〕</span></li>
+<li>腭骨呈 L 形，垂直板长、水平板短 <span class="loc">〔说话人2 52:16〕</span></li>
+<li>腭骨垂直板构成鼻腔外侧壁的后份 <span class="loc">〔说话人2 52:16〕</span></li>
+<li>腭骨水平板构成硬腭后份 <span class="loc">〔说话人2 52:16〕</span></li>
+<li>硬腭（骨腭）是口腔顶的骨性结构 <span class="loc">〔说话人2 52:16〕</span></li>
+<li>鼻骨成对，构成鼻的骨性部分 <span class="loc">〔说话人2 36:12〕</span></li>
+<li>泪骨位于眼眶内侧壁，是一块很小的骨 <span class="loc">〔说话人2 36:12〕</span></li>
+<li>颧骨与颞骨的颧突连接，共同形成颧弓 <span class="loc">〔说话人2 37:26〕</span></li>
+<li>下鼻甲是独立的一对面颅骨 <span class="loc">〔说话人2 37:26〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>上颌骨四突</th><th>方向</th><th>构成</th></tr>
+<tr><td>额突</td><td>向上</td><td>连额骨</td></tr>
+<tr><td>颧突</td><td>向外</td><td>连颧骨</td></tr>
+<tr><td>牙槽突</td><td>向下</td><td>上牙槽</td></tr>
+<tr><td>腭突</td><td>向后内</td><td>硬腭前大部</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>上颌窦最大、位置低、开口高，故站立位引流差、易发上颌窦炎。 <span class="loc">〔说话人2 48:46〕</span></div>
+<div class="mnem">助记（整理）：上颌一体四突「额颧牙腭」，上颌窦最大难排，泪沟下通鼻泪管，哭时流涕有来源。</div>
+</div>
+
+<div class="page">
+<h2 class="h2">9. 颅盖骨缝与颅骨内面</h2>
+<p class="lead">颅盖三缝定位顶骨与额、枕的关系；颅骨内面有上矢状窦沟、横窦沟与颗粒小凹等结构；颅盖以缝连接、颅底以软骨连接。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>冠状缝位于额骨与左右顶骨之间 <span class="loc">〔说话人2 01:08:44〕</span></li>
+<li>矢状缝位于左右顶骨之间 <span class="loc">〔说话人2 01:08:44〕</span></li>
+<li>人字缝位于顶骨与枕骨之间 <span class="loc">〔说话人2 01:08:44〕</span></li>
+<li>人字缝的外文名音译为「拉米达」 <span class="loc">〔说话人2 01:09:44〕</span></li>
+<li>颅盖骨以缝连接，颅底的骨多由软骨连接 <span class="loc">〔说话人2 01:31:30〕</span></li>
+<li>上矢状窦沟是颅顶内面纵行的沟，容纳上矢状窦 <span class="loc">〔说话人2 01:10:00〕</span></li>
+<li>横窦沟位于枕内隆凸两侧 <span class="loc">〔说话人2 01:10:00〕</span></li>
+<li>颅骨内面细长的沟为血管沟，贴合脑表面血管 <span class="loc">〔说话人2 01:10:00〕</span></li>
+<li>颗粒小凹是颅骨内面颗粒状的凹陷 <span class="loc">〔说话人2 01:10:00〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>骨缝</th><th>相邻骨</th><th>备注</th></tr>
+<tr><td>冠状缝</td><td>额骨与顶骨</td><td>颅盖前方横行的缝</td></tr>
+<tr><td>矢状缝</td><td>左右顶骨</td><td>颅盖正中纵行的缝</td></tr>
+<tr><td>人字缝</td><td>顶骨与枕骨</td><td>外文名 lambdoid</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>三缝口诀：冠状缝＝额顶，矢状缝＝顶顶，人字缝＝顶枕。 <span class="loc">〔说话人2 01:08:44〕</span></div>
+</div>
+
+<div class="page">
+<h2 class="h2">10. 颅底三窝与主要孔道</h2>
+<p class="lead">颅底从前到后分颅前窝、颅中窝、颅后窝；各窝内的孔道有固定通行结构，是神经血管出入颅的路线图。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>颅底可分为颅前窝、颅中窝与颅后窝 <span class="loc">〔说话人2 01:11:57〕</span></li>
+<li>颅前窝有鸡冠，硬脑膜附着于鸡冠 <span class="loc">〔说话人2 01:11:57〕</span></li>
+<li>颅前窝的筛板有许多筛孔，嗅丝穿过筛孔 <span class="loc">〔说话人2 01:11:57〕</span></li>
+<li>盲孔位于鸡冠前方，其内不通向任何结构 <span class="loc">〔说话人2 01:12:40〕</span></li>
+<li>颅中窝有视神经管，视神经由此穿出 <span class="loc">〔说话人2 01:12:40〕</span></li>
+<li>眶上裂位于蝶骨大翼与小翼之间，有神经走行 <span class="loc">〔说话人2 01:12:40〕</span></li>
+<li>颅中窝的关键孔道：视神经管、眶上裂、圆孔、卵圆孔、棘孔 <span class="loc">〔说话人2 01:12:40〕</span></li>
+<li>圆孔、卵圆孔穿神经，棘孔穿血管 <span class="loc">〔说话人2 01:13:28〕</span></li>
+<li>卵圆孔与棘孔垂直向下通颅底，圆孔向前通翼腭窝 <span class="loc">〔说话人2 01:13:28〕</span></li>
+<li>破裂孔由三块骨围成，形状不规则 <span class="loc">〔说话人2 01:14:35〕</span></li>
+<li>破裂孔无重要结构穿出，由软组织填充 <span class="loc">〔说话人2 01:14:35〕</span></li>
+<li>颈静脉孔由颞骨与枕骨共同围成 <span class="loc">〔说话人2 01:16:12〕</span></li>
+<li>斜坡是颅骨基底部、枕骨大孔前方向下的坡 <span class="loc">〔说话人2 01:16:12〕</span></li>
+<li>乙状窦沟位于颞骨内面，容纳乙状窦 <span class="loc">〔说话人2 01:16:12〕</span></li>
+<li>枕骨大孔位于颅后窝，脊髓由它通过 <span class="loc">〔说话人2 01:16:12〕</span></li>
+<li>舌下神经管内口在枕骨大孔前方向两侧走行 <span class="loc">〔说话人2 01:17:16〕</span></li>
+<li>内耳门是听神经、前庭神经与面神经的入颅处 <span class="loc">〔说话人2 01:17:16〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>颅底分区</th><th>主要结构</th><th>通行</th></tr>
+<tr><td>颅前窝</td><td>鸡冠、筛板、筛孔</td><td>嗅丝</td></tr>
+<tr><td>颅中窝</td><td>视神经管、眶上裂、圆孔、卵圆孔、棘孔</td><td>视神经、神经血管</td></tr>
+<tr><td>颅后窝</td><td>斜坡、颈静脉孔、内耳门、枕骨大孔</td><td>脊髓、神经血管</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>破裂孔不规则且无重要结构穿出；颈静脉孔由颞骨＋枕骨两骨围成。 <span class="loc">〔说话人2 01:14:35〕</span></div>
+</div>
+
+<div class="page">
+<h2 class="h2">11. 颅底外面、翼点与三个窝</h2>
+<p class="lead">颞窝、颞下窝、翼腭窝层层深入，翼腭窝是孔道枢纽；翼点由四骨交汇成 H 形，是颅骨最薄的危险区。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>腭骨后外侧有腭大孔，向上经翼腭管通翼腭窝 <span class="loc">〔说话人2 01:17:16〕</span></li>
+<li>颅底外面可见卵圆孔与棘孔，看不到圆孔 <span class="loc">〔说话人2 01:17:16〕</span></li>
+<li>颅底外面可见茎突、乳突、茎乳孔与枕髁 <span class="loc">〔说话人2 01:17:16〕</span></li>
+<li>翼点由额骨、顶骨、颞骨、蝶骨四骨交汇成 H 形 <span class="loc">〔说话人2 01:19:21〕</span></li>
+<li>翼点深部有脑膜中动脉前支走行，即日常所说的太阳穴 <span class="loc">〔说话人2 01:19:21〕</span></li>
+<li>颞窝是颧弓上方的凹陷 <span class="loc">〔说话人2 01:20:00〕</span></li>
+<li>颞下窝是颧弓下方的凹陷 <span class="loc">〔说话人2 01:20:00〕</span></li>
+<li>翼腭窝位于颞下窝深部，是颅底神经血管的枢纽 <span class="loc">〔说话人2 01:20:00〕</span></li>
+<li>眶下神经经眶下裂、眶下沟、眶下管出眶下孔，在出孔前分出上牙槽神经 <span class="loc">〔说话人2 01:20:00〕</span></li>
+<li>经眶下裂可到达翼腭窝 <span class="loc">〔说话人2 01:21:09〕</span></li>
+<li>腭大孔向上经翼腭管（腭大管）通翼腭窝 <span class="loc">〔说话人2 01:21:09〕</span></li>
+<li>圆孔向前通翼腭窝 <span class="loc">〔说话人2 01:21:09〕</span></li>
+<li>蝶腭孔连接鼻腔与翼腭窝 <span class="loc">〔说话人2 01:21:09〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>窝</th><th>位置</th><th>要点</th></tr>
+<tr><td>颞窝</td><td>颧弓上方</td><td>颅侧面的浅窝</td></tr>
+<tr><td>颞下窝</td><td>颧弓下方</td><td>翼腭窝的外围区域</td></tr>
+<tr><td>翼腭窝</td><td>颞下窝深部</td><td>圆孔／眶下裂／翼腭管／蝶腭孔交汇</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>翼腭窝是颅底孔道的总枢纽：圆孔、眶下裂、翼腭管、蝶腭孔都通到这里。 <span class="loc">〔说话人2 01:21:09〕</span></div>
+<div class="wrong"><strong>易错</strong>：颅底外面只看到卵圆孔、棘孔，看不到圆孔，因圆孔向前通翼腭窝。</div>
+</div>
+
+<div class="page">
+<h2 class="h2">12. 眼眶与鼻腔的骨性结构</h2>
+<p class="lead">眼眶是底朝前外、尖朝后的锥体；鼻腔外侧壁三鼻甲对三鼻道，鼻中隔由筛骨垂直板与犁骨拼成，顶为筛板、底为硬腭。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>鼻腔外侧壁有上、中、下三个鼻甲，形成上、中、下三个鼻道 <span class="loc">〔说话人2 01:22:46〕</span></li>
+<li>上、中鼻甲由筛骨发出，下鼻甲是独立骨块 <span class="loc">〔说话人2 01:22:46〕</span></li>
+<li>鼻中隔前上部为筛骨垂直板，后下部为犁骨 <span class="loc">〔说话人2 01:22:46〕</span></li>
+<li>鼻腔顶为筛骨的筛板，底为硬腭 <span class="loc">〔说话人2 01:22:46〕</span></li>
+<li>口腔的顶称腭，其骨性结构称硬腭（骨腭） <span class="loc">〔说话人2 01:23:44〕</span></li>
+<li>硬腭前大份由上颌骨腭突构成，后小份由腭骨水平板构成 <span class="loc">〔说话人2 01:23:44〕</span></li>
+<li>眼眶由额骨、上颌骨、筛骨眶板、颧骨与蝶骨大小翼围成 <span class="loc">〔说话人2 01:23:44〕</span></li>
+<li>眼眶呈底朝前外、尖朝后的锥体形 <span class="loc">〔说话人2 01:25:09〕</span></li>
+<li>眶尖有视神经管口 <span class="loc">〔说话人2 01:25:09〕</span></li>
+<li>眶缘有眶上孔（或眶上切迹）与眶下孔 <span class="loc">〔说话人2 01:25:09〕</span></li>
+<li>眶上壁有泪腺窝 <span class="loc">〔说话人2 01:25:09〕</span></li>
+<li>眶内侧有泪囊窝与鼻泪管 <span class="loc">〔说话人2 01:25:09〕</span></li>
+<li>眶下壁有眶下裂，神经经眶下沟、眶下管出眶下孔 <span class="loc">〔说话人2 01:25:09〕</span></li>
+<li>鼻中隔多不居正中，常有轻度偏曲，一般无症状 <span class="loc">〔说话人2 01:58:30〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>部位</th><th>骨性构成</th><th>要点</th></tr>
+<tr><td>鼻腔顶</td><td>筛骨筛板</td><td>嗅丝通过</td></tr>
+<tr><td>鼻腔外侧壁</td><td>上、中鼻甲（筛骨）＋下鼻甲</td><td>对三鼻道</td></tr>
+<tr><td>硬腭</td><td>上颌骨腭突＋腭骨水平板</td><td>口腔顶</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>鼻中隔＝筛骨垂直板（上）＋犁骨（下）；三鼻甲对三鼻道。 <span class="loc">〔说话人2 01:22:46〕</span></div>
+</div>
+
+<div class="page">
+<h2 class="h2">13. 鼻旁窦：四对空腔与开口</h2>
+<p class="lead">鼻旁窦是鼻腔周围含气的骨性空腔，共四对；记忆核心是把每个窦对应到它的开口部位。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>鼻旁窦是鼻腔周围含气的骨性空腔，共四对 <span class="loc">〔说话人2 01:27:18〕</span></li>
+<li>鼻旁窦均开口于鼻腔 <span class="loc">〔说话人2 01:27:18〕</span></li>
+<li>额窦位于额骨内，开口于中鼻道 <span class="loc">〔说话人2 01:27:18〕</span></li>
+<li>筛窦位于筛骨迷路内，分为若干群（组） <span class="loc">〔说话人2 01:27:18〕</span></li>
+<li>上颌窦是最大的鼻旁窦，开口于中鼻道 <span class="loc">〔说话人2 01:27:18〕</span></li>
+<li>筛窦前中组开口于中鼻道 <span class="loc">〔说话人2 01:27:18〕</span></li>
+<li>筛窦后组开口于上鼻道 <span class="loc">〔说话人2 01:27:18〕</span></li>
+<li>蝶窦开口于蝶筛隐窝 <span class="loc">〔说话人2 01:27:18〕</span></li>
+<li>上颌窦位置最低，站立位引流最差 <span class="loc">〔说话人2 48:46〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>鼻旁窦</th><th>所在骨</th><th>开口</th><th>特点</th></tr>
+<tr><td>额窦</td><td>额骨</td><td>中鼻道</td><td>—</td></tr>
+<tr><td>上颌窦</td><td>上颌骨</td><td>中鼻道</td><td>最大，站立位引流差</td></tr>
+<tr><td>筛窦前中组</td><td>筛骨迷路</td><td>中鼻道</td><td>分组开口</td></tr>
+<tr><td>筛窦后组</td><td>筛骨迷路</td><td>上鼻道</td><td>—</td></tr>
+<tr><td>蝶窦</td><td>蝶骨体</td><td>蝶筛隐窝</td><td>—</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>开口口诀：额、上颌、筛前中→中鼻道；筛后→上鼻道；蝶窦→蝶筛隐窝。 <span class="loc">〔说话人2 01:27:18〕</span></div>
+<div class="mnem">助记（整理）：额上筛前中，统统中鼻道；筛后上鼻道，蝶窦隐窝找。</div>
+</div>
+
+<div class="page">
+<h2 class="h2">14. 颞下颌关节：颅骨唯一的关节</h2>
+<p class="lead">颞下颌关节由下颌骨髁突与颞骨下颌窝、关节结节构成；有纤维软骨关节盘，双侧联动，因囊前壁薄弱而以前脱位多见。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>颞下颌关节是颅骨唯一的关节 <span class="loc">〔说话人2 01:32:21〕</span></li>
+<li>颞下颌关节由下颌骨下颌头、颞骨下颌窝与关节结节构成 <span class="loc">〔说话人4 01:34:45〕</span></li>
+<li>下颌头即关节头，颞骨下颌窝即关节窝 <span class="loc">〔说话人2 01:32:21〕</span></li>
+<li>关节囊上方附着于下颌窝与关节结节周围，下方附着于下颌颈 <span class="loc">〔说话人4 01:34:45〕</span></li>
+<li>关节囊外有外侧韧带加强 <span class="loc">〔说话人4 01:34:45〕</span></li>
+<li>关节囊内有纤维软骨构成的关节盘，将关节腔分为上下两腔 <span class="loc">〔说话人4 01:34:45〕</span></li>
+<li>关节囊前份较弱而松弛，故易向前脱位 <span class="loc">〔说话人4 01:34:45〕</span></li>
+<li>关节结节位于关节窝前方，可在一定程度上限制下颌向前移位 <span class="loc">〔说话人2 01:32:21〕</span></li>
+<li>颞下颌关节属于联合关节，两侧必须同时运动 <span class="loc">〔说话人4 01:35:18〕</span></li>
+<li>开口、闭口时下颌头沿额状轴转动，下颌体表现为下降与上提 <span class="loc">〔说话人4 01:35:18〕</span></li>
+<li>前后运动时关节盘连同下颌头在上关节腔内沿额状轴做弧形运动 <span class="loc">〔说话人4 01:35:18〕</span></li>
+<li>侧方运动时一侧下颌头对关节盘旋转，另一侧下颌头连同关节盘对关节窝前进 <span class="loc">〔说话人4 01:35:18〕</span></li>
+<li>前脱位时下颌头越过关节结节移向前方 <span class="loc">〔说话人2 01:33:49〕</span></li>
+<li>关节前方肌肉较多，其收缩牵拉是前脱位的因素 <span class="loc">〔说话人2 01:33:49〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>项目</th><th>内容</th></tr>
+<tr><td>关节头</td><td>下颌骨髁突（下颌头）</td></tr>
+<tr><td>关节窝</td><td>颞骨下颌窝</td></tr>
+<tr><td>关节盘</td><td>纤维软骨，分关节腔为上下两腔</td></tr>
+<tr><td>运动</td><td>开口、闭口、前伸、后退、侧方</td></tr>
+<tr><td>脱位</td><td>关节囊前壁薄弱→前脱位</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>颅骨唯一关节＝颞下颌关节；易前脱位的原因是关节囊前壁薄弱。 <span class="loc">〔说话人4 01:34:45〕</span></div>
+</div>
+
+<div class="page">
+<h2 class="h2">15. 新生儿颅骨：颅囟与脑颅／面颅比例</h2>
+<p class="lead">新生儿颅骨未完全骨化，留有前囟、后囟、蝶囟、乳突囟；面颅小、脑颅大，比例随发育从约 8:1 变为约 4:1。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>新生儿颅骨未完全骨化，骨缝连接尚未闭合 <span class="loc">〔说话人2 01:29:41〕</span></li>
+<li>颅囟是颅骨未长合处，由结缔组织膜填充 <span class="loc">〔说话人2 01:29:41〕</span></li>
+<li>颅囟包括前囟、后囟、蝶囟与乳突囟 <span class="loc">〔说话人2 01:29:41〕</span></li>
+<li>前囟位于顶骨与额骨之间，又称额囟 <span class="loc">〔说话人2 01:29:41〕</span></li>
+<li>新生儿面颅小、脑颅大 <span class="loc">〔说话人2 01:29:41〕</span></li>
+<li>新生儿脑颅与面颅比例约 8:1 <span class="loc">〔说话人2 01:29:41〕</span></li>
+<li>成年人脑颅与面颅比例约 4:1 <span class="loc">〔说话人2 01:29:41〕</span></li>
+<li>新生儿鼻旁窦尚未发育成熟 <span class="loc">〔说话人2 01:29:41〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>项目</th><th>新生儿</th><th>成年人</th></tr>
+<tr><td>脑颅:面颅</td><td>约 8:1</td><td>约 4:1</td></tr>
+<tr><td>骨缝</td><td>未闭合，有颅囟</td><td>已闭合为缝</td></tr>
+<tr><td>鼻旁窦</td><td>未发育成熟</td><td>发育完全</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>比例必背：新生儿脑颅:面颅≈8:1，成年≈4:1。 <span class="loc">〔说话人2 01:29:41〕</span></div>
+</div>
+
+<div class="page">
+<h2 class="h2">16. 英文教学视频补充要点（Dr Martin）</h2>
+<p class="lead">课堂播放的英文解剖视频以「sutures &amp; landmarks」为线索复述颅骨各处标志，以下为该视频补充、中文讲授未展开的可考点。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>The skull is an Old Norse word meaning scaly or a bald head.（颅骨） <span class="loc">〔说话人3 01:36:15〕</span></li>
+<li>The frontal bone forms the forehead above the eyebrows; frontal is Latin for forehead.（额骨） <span class="loc">〔说话人3 01:37:18〕</span></li>
+<li>The sphenoid bone is felt just behind the orbit; most people massage their temples on it.（蝶骨） <span class="loc">〔说话人3 01:37:40〕</span></li>
+<li>The frontal sinus is a hollow, mucosal-lined cave in the frontal bone; it makes mucus and helps the resonance of sound.（额窦） <span class="loc">〔说话人3 01:38:30〕</span></li>
+<li>The supraorbital notch or foramen transmits the supraorbital artery and the supraorbital nerve.（眶上孔／切迹） <span class="loc">〔说话人3 01:39:15〕</span></li>
+<li>The optic canal contains cranial nerve II (the optic nerve) and the ophthalmic artery.（视神经管） <span class="loc">〔说话人3 01:39:15〕</span></li>
+<li>The superior orbital fissure contains the superior ophthalmic vein and cranial nerves 3, 4, 5 and 6 (V1 only).（眶上裂） <span class="loc">〔说话人3 01:39:15〕</span></li>
+<li>The coronal suture is between the parietal and frontal bones; coronal is Latin for a crown of garland.（冠状缝） <span class="loc">〔说话人3 01:45:36〕</span></li>
+<li>The squamous suture is between the parietal and temporal bones.（鳞缝） <span class="loc">〔说话人3 01:45:55〕</span></li>
+<li>The lambdoid suture is between the parietal and occipital bones.（人字缝） <span class="loc">〔说话人3 01:45:55〕</span></li>
+<li>The pterion lies between the parietal, frontal, sphenoid and temporal bones; pterion means wing.（翼点） <span class="loc">〔说话人3 01:45:55〕</span></li>
+<li>The middle meningeal artery courses through the foramen spinosum; its rupture separates the dura from the skull and forms an epidural hematoma.（硬膜外血肿） <span class="loc">〔说话人3 01:47:01〕</span></li>
+<li>The mastoid process of the temporal bone contains mastoid air cells.（乳突） <span class="loc">〔说话人3 01:48:21〕</span></li>
+<li>The external acoustic meatus leads inward to the tympanic membrane (ear drum).（外耳道） <span class="loc">〔说话人3 01:48:53〕</span></li>
+<li>The term mandible is Latin to chew, for it performs the mastication movement.（下颌骨） <span class="loc">〔说话人3 01:45:04〕</span></li>
+<li>The occipital bone is Latin for the back of the skull.（枕骨） <span class="loc">〔说话人3 01:45:04〕</span></li>
+</ul>
+<div class="def"><strong>词源</strong>：skull＝Old Norse「scaly／bald head」；occiput 指后颅；pterion 意为 wing。 <span class="loc">〔说话人3 01:36:15〕</span></div>
+<div class="exam"><span class="tag">★考点</span>optic canal＝CN II＋ophthalmic artery；superior orbital fissure＝眼上静脉＋CN III／IV／V1／VI；middle meningeal artery 经棘孔入颅，翼点骨折可致 epidural hematoma。 <span class="loc">〔说话人3 01:39:15〕</span></div>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 A · 必背清单</h2>
+<p class="lead">全课要背的条目集中于此，最短句式，可直接背。</p>
+<ul class="kv">
+<li>颅骨 23 块＝脑颅 8＋面颅 15（含舌骨） <span class="loc">〔说话人2 03:21〕</span></li>
+<li>脑颅／面颅分界：眶上缘＋外耳门上缘连线 <span class="loc">〔说话人2 03:21〕</span></li>
+<li>脑颅不成对 4：额、筛、蝶、枕 <span class="loc">〔说话人2 04:29〕</span></li>
+<li>脑颅成对 2 对：颞骨、顶骨 <span class="loc">〔说话人2 04:29〕</span></li>
+<li>面颅不成对 3：犁骨、下颌骨、舌骨 <span class="loc">〔说话人2 36:12〕</span></li>
+<li>面颅成对 6 对：上颌、鼻、泪、颧、下鼻甲、腭 <span class="loc">〔说话人2 36:12〕</span></li>
+<li>除下颌骨、舌骨外均为缝／软骨连接 <span class="loc">〔说话人2 02:09〕</span></li>
+<li>额骨结构：额鳞、额窦、眶上部 <span class="loc">〔说话人2 05:10〕</span></li>
+<li>眶上孔／切迹穿眶上神经血管 <span class="loc">〔说话人2 05:10〕</span></li>
+<li>筛骨似「巾」：筛板＋垂直板＋筛骨迷路 <span class="loc">〔说话人2 06:53〕</span></li>
+<li>筛孔穿嗅丝（嗅神经，传入神经） <span class="loc">〔说话人2 08:28〕</span></li>
+<li>鸡冠附硬脑膜 <span class="loc">〔说话人2 08:28〕</span></li>
+<li>筛骨迷路外侧壁＝眶板 <span class="loc">〔说话人2 10:46〕</span></li>
+<li>上、中鼻甲属筛骨；下鼻甲独立 <span class="loc">〔说话人2 10:46〕</span></li>
+<li>筛板骨折→脑脊液鼻漏＋嗅觉受损 <span class="loc">〔说话人2 13:55〕</span></li>
+<li>蝶骨似蝴蝶：蝶骨体、蝶窦、蝶鞍、垂体窝 <span class="loc">〔说话人2 14:35〕</span></li>
+<li>垂体手术经鼻腔穿蝶窦入路 <span class="loc">〔说话人2 15:51〕</span></li>
+<li>大翼三孔：圆孔→卵圆孔→棘孔 <span class="loc">〔说话人2 16:42〕</span></li>
+<li>圆孔向前通翼腭窝；卵圆孔、棘孔通颅底 <span class="loc">〔说话人2 19:21〕</span></li>
+<li>棘孔有血管穿出 <span class="loc">〔说话人2 16:42〕</span></li>
+<li>视神经管向前连眼球 <span class="loc">〔说话人2 18:49〕</span></li>
+<li>眶上裂在大翼、小翼之间 <span class="loc">〔说话人2 19:21〕</span></li>
+<li>枕骨大孔通脊髓 <span class="loc">〔说话人2 22:09〕</span></li>
+<li>枕髁与寰椎成寰枕关节 <span class="loc">〔说话人2 22:09〕</span></li>
+<li>枕外隆凸、上项线、下项线 <span class="loc">〔说话人2 23:33〕</span></li>
+<li>项韧带附于枕外隆凸 <span class="loc">〔说话人2 24:16〕</span></li>
+<li>舌下神经管在枕髁上方 <span class="loc">〔说话人2 24:44〕</span></li>
+<li>横窦沟容横窦（窦＝粗大静脉） <span class="loc">〔说话人2 24:44〕</span></li>
+<li>顶骨四边形，形态最简单 <span class="loc">〔说话人2 24:44〕</span></li>
+<li>颞骨三部：鳞部、鼓部、岩部 <span class="loc">〔说话人2 26:55〕</span></li>
+<li>颧突＋颧骨＝颧弓 <span class="loc">〔说话人2 26:55〕</span></li>
+<li>关节结节防下颌向前脱位 <span class="loc">〔说话人2 28:59〕</span></li>
+<li>面神经入内耳门、出茎乳孔 <span class="loc">〔说话人2 33:57〕</span></li>
+<li>颈静脉孔＝颞骨＋枕骨围成 <span class="loc">〔说话人2 33:57〕</span></li>
+<li>下颌骨＝面颅最大；一体两支 <span class="loc">〔说话人2 37:26〕</span></li>
+<li>颏孔穿颏神经 <span class="loc">〔说话人2 39:01〕</span></li>
+<li>冠突在前、髁突在后＝关节头 <span class="loc">〔说话人2 39:01〕</span></li>
+<li>下颌孔穿下牙槽神经；下颌小舌是麻醉定位 <span class="loc">〔说话人2 40:25〕</span></li>
+<li>上颌骨一体四突：额、颧、牙槽、腭 <span class="loc">〔说话人2 44:28〕</span></li>
+<li>上颌窦＝最大鼻旁窦，站立位引流差 <span class="loc">〔说话人2 48:46〕</span></li>
+<li>泪沟→鼻泪管（哭时流涕） <span class="loc">〔说话人2 48:46〕</span></li>
+<li>犁骨构成鼻中隔后下部 <span class="loc">〔说话人2 42:53〕</span></li>
+<li>舌骨无直接骨连接 <span class="loc">〔说话人2 42:53〕</span></li>
+<li>腭骨 L 形，构成硬腭后份 <span class="loc">〔说话人2 52:16〕</span></li>
+<li>冠状缝＝额顶；矢状缝＝顶顶；人字缝＝顶枕 <span class="loc">〔说话人2 01:08:44〕</span></li>
+<li>上矢状窦沟、横窦沟、颗粒小凹 <span class="loc">〔说话人2 01:10:00〕</span></li>
+<li>颅底三窝：前窝／中窝／后窝 <span class="loc">〔说话人2 01:11:57〕</span></li>
+<li>破裂孔无重要结构穿出 <span class="loc">〔说话人2 01:14:35〕</span></li>
+<li>翼点＝额、顶、颞、蝶四骨 H 形交界＝太阳穴 <span class="loc">〔说话人2 01:19:21〕</span></li>
+<li>翼腭窝＝颅底孔道枢纽 <span class="loc">〔说话人2 01:21:09〕</span></li>
+<li>鼻中隔＝筛骨垂直板＋犁骨 <span class="loc">〔说话人2 01:22:46〕</span></li>
+<li>三鼻甲对三鼻道 <span class="loc">〔说话人2 01:22:46〕</span></li>
+<li>鼻旁窦四对：额、筛、蝶、上颌 <span class="loc">〔说话人2 01:27:18〕</span></li>
+<li>额／上颌／筛前中→中鼻道；筛后→上鼻道；蝶窦→蝶筛隐窝 <span class="loc">〔说话人2 01:27:18〕</span></li>
+<li>颞下颌关节＝颅骨唯一关节，双侧联动 <span class="loc">〔说话人4 01:35:18〕</span></li>
+<li>关节囊前部薄弱→易前脱位 <span class="loc">〔说话人4 01:34:45〕</span></li>
+<li>新生儿四囟：前、后、蝶、乳突 <span class="loc">〔说话人2 01:29:41〕</span></li>
+<li>脑颅:面颅：新生儿≈8:1，成年≈4:1 <span class="loc">〔说话人2 01:29:41〕</span></li>
+</ul>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 B · 易错点 · 易混对照</h2>
+<p class="lead">左「错」右「对」，一条一行。</p>
+<table class="tbl">
+<tr><th>易错／易混</th><th>正确结论</th></tr>
+<tr><td>把颅骨 23 块记成不含舌骨</td><td>颅骨 23 块含舌骨，舌骨是 15 块面颅骨之一</td></tr>
+<tr><td>上、中鼻甲也算独立面颅骨</td><td>上、中鼻甲由筛骨发出；只有下鼻甲是独立面颅骨</td></tr>
+<tr><td>把颞骨发出的突起叫颧弓</td><td>颞骨发出的突起叫颧突；颧突与颧骨连接后才形成颧弓</td></tr>
+<tr><td>认为卵圆孔向前通翼腭窝</td><td>圆孔向前通翼腭窝；卵圆孔、棘孔垂直向下通颅底</td></tr>
+<tr><td>认为颅底外面能看到圆孔</td><td>颅底外面只见卵圆孔、棘孔，圆孔向前通翼腭窝而看不到</td></tr>
+<tr><td>把破裂孔当成有重要结构穿出的大孔</td><td>破裂孔由三骨围成、形状不规则，无重要结构穿出，由软组织填充</td></tr>
+<tr><td>把颈静脉孔记成单一骨的孔</td><td>颈静脉孔由颞骨与枕骨共同围成</td></tr>
+<tr><td>把颞骨上的结构写成「下颌结节」</td><td>颞骨上的结构是关节结节，位于下颌窝前方，防止下颌向前脱位</td></tr>
+<tr><td>以为舌骨与其他颅骨有关节连接</td><td>舌骨既不直接也不间接连接颅骨，靠肌腱、肌肉附着</td></tr>
+<tr><td>以为上颌骨是一块</td><td>上颌骨成对（两块），下颌骨才是一块</td></tr>
+<tr><td>把嗅神经说成感受味觉</td><td>嗅丝穿筛孔，感受气体气味，形成嗅觉</td></tr>
+<tr><td>把脑颅、面颅分界记成其他线</td><td>分界是眶上缘＋外耳门上缘连线</td></tr>
+<tr><td>把鼻中隔后下部记成鼻骨</td><td>鼻中隔后下部是犁骨，前上部是筛骨垂直板</td></tr>
+<tr><td>把窦等同于普通管道</td><td>解剖学中「窦」多指管径粗大的静脉（如横窦、乙状窦）</td></tr>
+<tr><td>漏记上颌窦开口高于窦底</td><td>上颌窦位置低于鼻腔、开口较高，站立位积液排不出</td></tr>
+<tr><td>把顶骨当成成对脑颅骨之外</td><td>顶骨成对，位于颅顶中部，是脑颅骨中最简单的一块</td></tr>
+</table>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 C · 考点索引表</h2>
+<table class="tbl idx">
+<tr><th>考点</th><th>出处小节</th><th>定位</th><th>可能题型</th></tr>
+<tr><td>颅骨总数与脑颅／面颅分界</td><td>§1</td><td>〔说话人2 03:21〕</td><td>填空／选择</td></tr>
+<tr><td>脑颅骨与面颅骨的分类名单</td><td>§1</td><td>〔说话人2 04:29〕</td><td>填空／简答</td></tr>
+<tr><td>筛骨结构及临床</td><td>§3</td><td>〔说话人2 08:28〕</td><td>选择／问答</td></tr>
+<tr><td>筛板骨折的两大表现</td><td>§3</td><td>〔说话人2 13:55〕</td><td>病例分析</td></tr>
+<tr><td>蝶骨大翼三孔及通行结构</td><td>§4</td><td>〔说话人2 16:42〕</td><td>填空／选择</td></tr>
+<tr><td>垂体手术入路</td><td>§4</td><td>〔说话人2 15:51〕</td><td>简答</td></tr>
+<tr><td>枕骨大孔、枕髁与寰枕关节</td><td>§5</td><td>〔说话人2 22:09〕</td><td>填空／选择</td></tr>
+<tr><td>颞骨分部与茎乳孔通路</td><td>§6</td><td>〔说话人2 33:57〕</td><td>填空／选择</td></tr>
+<tr><td>下颌骨结构（颏孔、髁突、下颌孔、下颌小舌）</td><td>§7</td><td>〔说话人2 40:25〕</td><td>简答／填图</td></tr>
+<tr><td>上颌骨四突与上颌窦</td><td>§8</td><td>〔说话人2 44:28〕</td><td>简答／选择</td></tr>
+<tr><td>上颌窦易发炎的原因</td><td>§8</td><td>〔说话人2 48:46〕</td><td>病例分析</td></tr>
+<tr><td>颅盖三缝</td><td>§9</td><td>〔说话人2 01:08:44〕</td><td>填空</td></tr>
+<tr><td>颅底三窝及主要孔道</td><td>§10</td><td>〔说话人2 01:11:57〕</td><td>填空／简答</td></tr>
+<tr><td>翼点的构成与临床意义</td><td>§11</td><td>〔说话人2 01:19:21〕</td><td>问答</td></tr>
+<tr><td>翼腭窝的枢纽地位及交通</td><td>§11</td><td>〔说话人2 01:21:09〕</td><td>问答</td></tr>
+<tr><td>鼻中隔与三鼻甲三鼻道</td><td>§12</td><td>〔说话人2 01:22:46〕</td><td>填空／填图</td></tr>
+<tr><td>鼻旁窦四对及开口</td><td>§13</td><td>〔说话人2 01:27:18〕</td><td>填空／简答</td></tr>
+<tr><td>颞下颌关节构成与脱位</td><td>§14</td><td>〔说话人4 01:34:45〕</td><td>问答</td></tr>
+<tr><td>新生儿颅囟与脑颅／面颅比例</td><td>§15</td><td>〔说话人2 01:29:41〕</td><td>填空／选择</td></tr>
+<tr><td>英文视频：孔道内容物与硬膜外血肿</td><td>§16</td><td>〔说话人3 01:39:15〕</td><td>选择／名词解释</td></tr>
+</table>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 D · 知识点清单（零遗漏自查）</h2>
+<p class="lead">逐条登记全课知识点；定位均为逐字稿真实轮次。</p>
+<table class="tbl idx">
+<tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>颅骨共 23 块（含舌骨）</td><td>数字</td><td>§1</td><td>〔说话人2 02:09〕</td></tr>
+<tr><td>2</td><td>除下颌骨、舌骨外以骨缝或软骨连接</td><td>定义</td><td>§1</td><td>〔说话人2 02:09〕</td></tr>
+<tr><td>3</td><td>脑颅／面颅分界：眶上缘＋外耳门上缘连线</td><td>定义</td><td>§1</td><td>〔说话人2 03:21〕</td></tr>
+<tr><td>4</td><td>脑颅 8 块，围颅腔容纳脑</td><td>数字</td><td>§1</td><td>〔说话人2 03:21〕</td></tr>
+<tr><td>5</td><td>面颅 15 块，构成眶、鼻、口腔</td><td>数字</td><td>§1</td><td>〔说话人2 03:21〕</td></tr>
+<tr><td>6</td><td>脑颅成对骨：颞骨、顶骨</td><td>分类</td><td>§1</td><td>〔说话人2 04:29〕</td></tr>
+<tr><td>7</td><td>脑颅不成对骨：额骨、筛骨、蝶骨、枕骨</td><td>分类</td><td>§1</td><td>〔说话人2 04:29〕</td></tr>
+<tr><td>8</td><td>面颅不成对骨：犁骨、下颌骨、舌骨</td><td>分类</td><td>§1</td><td>〔说话人2 36:12〕</td></tr>
+<tr><td>9</td><td>面颅成对骨：上颌、鼻、泪、颧、下鼻甲、腭骨</td><td>分类</td><td>§1</td><td>〔说话人2 36:12〕</td></tr>
+<tr><td>10</td><td>颅骨唯一关节：颞下颌关节</td><td>考点</td><td>§1</td><td>〔说话人2 01:32:21〕</td></tr>
+<tr><td>11</td><td>额骨位于颅骨正前上方</td><td>结构</td><td>§2</td><td>〔说话人2 05:10〕</td></tr>
+<tr><td>12</td><td>额窦（鼻旁窦，开口通鼻腔）</td><td>定义</td><td>§2</td><td>〔说话人2 05:10〕</td></tr>
+<tr><td>13</td><td>眶上孔／眶上切迹</td><td>定义</td><td>§2</td><td>〔说话人2 05:10〕</td></tr>
+<tr><td>14</td><td>眶上神经血管出入眶上孔／切迹</td><td>结构</td><td>§2</td><td>〔说话人2 05:10〕</td></tr>
+<tr><td>15</td><td>筛骨形似「巾」</td><td>口诀</td><td>§3</td><td>〔说话人2 06:53〕</td></tr>
+<tr><td>16</td><td>筛骨参与鼻腔外侧壁、上壁与鼻中隔</td><td>结构</td><td>§3</td><td>〔说话人2 06:53〕</td></tr>
+<tr><td>17</td><td>筛窦</td><td>定义</td><td>§3</td><td>〔说话人2 06:53〕</td></tr>
+<tr><td>18</td><td>筛板</td><td>定义</td><td>§3</td><td>〔说话人2 08:28〕</td></tr>
+<tr><td>19</td><td>筛孔穿嗅丝</td><td>结构</td><td>§3</td><td>〔说话人2 08:28〕</td></tr>
+<tr><td>20</td><td>嗅神经为传入神经，感受气味形成嗅觉</td><td>机制</td><td>§3</td><td>〔说话人2 08:28〕</td></tr>
+<tr><td>21</td><td>鸡冠，硬脑膜附着</td><td>定义</td><td>§3</td><td>〔说话人2 08:28〕</td></tr>
+<tr><td>22</td><td>垂直板构成鼻中隔上部</td><td>结构</td><td>§3</td><td>〔说话人2 09:56〕</td></tr>
+<tr><td>23</td><td>眶板（眼眶内侧壁）</td><td>结构</td><td>§3</td><td>〔说话人2 10:46〕</td></tr>
+<tr><td>24</td><td>筛骨迷路内侧壁构成鼻腔外侧壁</td><td>结构</td><td>§3</td><td>〔说话人2 10:46〕</td></tr>
+<tr><td>25</td><td>上、中鼻甲由筛骨发出</td><td>结构</td><td>§3</td><td>〔说话人2 10:46〕</td></tr>
+<tr><td>26</td><td>下鼻甲为独立骨块</td><td>易错</td><td>§3</td><td>〔说话人2 10:46〕</td></tr>
+<tr><td>27</td><td>筛板骨折→脑脊液鼻漏</td><td>临床</td><td>§3</td><td>〔说话人2 13:55〕</td></tr>
+<tr><td>28</td><td>筛板骨折→嗅觉受损</td><td>临床</td><td>§3</td><td>〔说话人2 13:55〕</td></tr>
+<tr><td>29</td><td>蝶骨位于颅底中央、形似蝴蝶</td><td>结构</td><td>§4</td><td>〔说话人2 14:35〕</td></tr>
+<tr><td>30</td><td>垂体窝容纳垂体</td><td>定义</td><td>§4</td><td>〔说话人2 14:35〕</td></tr>
+<tr><td>31</td><td>经鼻腔穿蝶窦垂体手术入路</td><td>临床</td><td>§4</td><td>〔说话人2 15:51〕</td></tr>
+<tr><td>32</td><td>大翼大脑面构成颅腔底</td><td>结构</td><td>§4</td><td>〔说话人2 16:42〕</td></tr>
+<tr><td>33</td><td>大翼眶面构成眼眶后部</td><td>结构</td><td>§4</td><td>〔说话人2 16:42〕</td></tr>
+<tr><td>34</td><td>大翼三孔：圆孔、卵圆孔、棘孔</td><td>分类</td><td>§4</td><td>〔说话人2 16:42〕</td></tr>
+<tr><td>35</td><td>圆孔卵圆孔穿神经、棘孔穿血管</td><td>结构</td><td>§4</td><td>〔说话人2 16:42〕</td></tr>
+<tr><td>36</td><td>圆孔向前通翼腭窝</td><td>机制</td><td>§4</td><td>〔说话人2 19:21〕</td></tr>
+<tr><td>37</td><td>卵圆孔、棘孔垂直向下通颅底</td><td>机制</td><td>§4</td><td>〔说话人2 18:49〕</td></tr>
+<tr><td>38</td><td>视神经管向前连眼球</td><td>机制</td><td>§4</td><td>〔说话人2 18:49〕</td></tr>
+<tr><td>39</td><td>眶上裂位于大翼与小翼之间</td><td>定义</td><td>§4</td><td>〔说话人2 19:21〕</td></tr>
+<tr><td>40</td><td>枕骨位于颅后下部</td><td>结构</td><td>§5</td><td>〔说话人2 22:09〕</td></tr>
+<tr><td>41</td><td>脊髓经枕骨大孔下行</td><td>机制</td><td>§5</td><td>〔说话人2 22:09〕</td></tr>
+<tr><td>42</td><td>枕骨分四部（基底部、两侧部、枕鳞）</td><td>分类</td><td>§5</td><td>〔说话人2 22:09〕</td></tr>
+<tr><td>43</td><td>枕髁与寰椎构成寰枕关节</td><td>结构</td><td>§5</td><td>〔说话人2 22:09〕</td></tr>
+<tr><td>44</td><td>项韧带附于枕外隆凸</td><td>结构</td><td>§5</td><td>〔说话人2 24:16〕</td></tr>
+<tr><td>45</td><td>顶骨四边形、位于颅顶中部</td><td>结构</td><td>§5</td><td>〔说话人2 24:44〕</td></tr>
+<tr><td>46</td><td>颞骨位于颅两侧并参与颅底侧壁</td><td>结构</td><td>§6</td><td>〔说话人2 26:55〕</td></tr>
+<tr><td>47</td><td>颞骨分鳞部、鼓部、岩部</td><td>分类</td><td>§6</td><td>〔说话人2 26:55〕</td></tr>
+<tr><td>48</td><td>颧突＋颧骨＝颧弓</td><td>定义</td><td>§6</td><td>〔说话人2 26:55〕</td></tr>
+<tr><td>49</td><td>下颌窝构成颞下颌关节</td><td>结构</td><td>§6</td><td>〔说话人2 26:55〕</td></tr>
+<tr><td>50</td><td>关节结节防下颌向前脱位</td><td>定义</td><td>§6</td><td>〔说话人2 28:59〕</td></tr>
+<tr><td>51</td><td>掉下巴＝下颌关节脱位</td><td>临床</td><td>§6</td><td>〔说话人2 28:59〕</td></tr>
+<tr><td>52</td><td>鼓部（外耳门）</td><td>定义</td><td>§6</td><td>〔说话人2 30:38〕</td></tr>
+<tr><td>53</td><td>岩部含内耳，感受听觉与方位</td><td>结构</td><td>§6</td><td>〔说话人2 31:06〕</td></tr>
+<tr><td>54</td><td>弓状隆起、鼓室盖</td><td>结构</td><td>§6</td><td>〔说话人2 31:06〕</td></tr>
+<tr><td>55</td><td>内耳门穿听神经、前庭神经、面神经</td><td>结构</td><td>§6</td><td>〔说话人2 31:06〕</td></tr>
+<tr><td>56</td><td>颈动脉管内口与外口</td><td>结构</td><td>§6</td><td>〔说话人2 33:07〕</td></tr>
+<tr><td>57</td><td>颈静脉孔由颞骨＋枕骨围成</td><td>结构</td><td>§6</td><td>〔说话人2 33:57〕</td></tr>
+<tr><td>58</td><td>乳突</td><td>结构</td><td>§6</td><td>〔说话人2 33:57〕</td></tr>
+<tr><td>59</td><td>茎乳孔</td><td>结构</td><td>§6</td><td>〔说话人2 33:57〕</td></tr>
+<tr><td>60</td><td>面神经入内耳门、出茎乳孔</td><td>机制</td><td>§6</td><td>〔说话人2 33:57〕</td></tr>
+<tr><td>61</td><td>下颌骨为面颅最大</td><td>数字</td><td>§7</td><td>〔说话人2 37:26〕</td></tr>
+<tr><td>62</td><td>下颌骨一体两支</td><td>结构</td><td>§7</td><td>〔说话人2 37:26〕</td></tr>
+<tr><td>63</td><td>下颌体上缘为下牙槽</td><td>结构</td><td>§7</td><td>〔说话人2 37:26〕</td></tr>
+<tr><td>64</td><td>颏隆突</td><td>定义</td><td>§7</td><td>〔说话人2 39:01〕</td></tr>
+<tr><td>65</td><td>颏孔穿颏神经</td><td>结构</td><td>§7</td><td>〔说话人2 39:01〕</td></tr>
+<tr><td>66</td><td>颏棘</td><td>定义</td><td>§7</td><td>〔说话人2 39:01〕</td></tr>
+<tr><td>67</td><td>二腹肌窝</td><td>定义</td><td>§7</td><td>〔说话人2 39:01〕</td></tr>
+<tr><td>68</td><td>冠突与髁突</td><td>结构</td><td>§7</td><td>〔说话人2 39:01〕</td></tr>
+<tr><td>69</td><td>髁突为颞下颌关节关节头</td><td>结构</td><td>§7</td><td>〔说话人2 39:01〕</td></tr>
+<tr><td>70</td><td>下颌切迹</td><td>定义</td><td>§7</td><td>〔说话人2 40:25〕</td></tr>
+<tr><td>71</td><td>下颌颈</td><td>定义</td><td>§7</td><td>〔说话人2 40:25〕</td></tr>
+<tr><td>72</td><td>下颌角</td><td>定义</td><td>§7</td><td>〔说话人2 40:25〕</td></tr>
+<tr><td>73</td><td>下颌孔穿下牙槽神经</td><td>结构</td><td>§7</td><td>〔说话人2 40:25〕</td></tr>
+<tr><td>74</td><td>下颌孔斜向后上，外凸成下颌小舌</td><td>结构</td><td>§7</td><td>〔说话人2 40:25〕</td></tr>
+<tr><td>75</td><td>下颌小舌为麻醉定位标志</td><td>临床</td><td>§7</td><td>〔说话人2 40:25〕</td></tr>
+<tr><td>76</td><td>下牙槽神经麻醉自下颌支内面进针</td><td>临床</td><td>§7</td><td>〔说话人2 42:23〕</td></tr>
+<tr><td>77</td><td>上颌骨成对</td><td>结构</td><td>§8</td><td>〔说话人2 44:28〕</td></tr>
+<tr><td>78</td><td>上颌骨四突（额、颧、牙槽、腭）</td><td>分类</td><td>§8</td><td>〔说话人2 44:28〕</td></tr>
+<tr><td>79</td><td>颧突连颧骨</td><td>结构</td><td>§8</td><td>〔说话人2 50:33〕</td></tr>
+<tr><td>80</td><td>牙槽突构成上牙槽</td><td>结构</td><td>§8</td><td>〔说话人2 44:28〕</td></tr>
+<tr><td>81</td><td>腭突构成硬腭前大部</td><td>结构</td><td>§8</td><td>〔说话人2 44:28〕</td></tr>
+<tr><td>82</td><td>眶下孔穿眶下神经</td><td>结构</td><td>§8</td><td>〔说话人2 45:36〕</td></tr>
+<tr><td>83</td><td>牙槽孔</td><td>结构</td><td>§8</td><td>〔说话人2 47:36〕</td></tr>
+<tr><td>84</td><td>鼻面构成鼻腔外侧壁</td><td>结构</td><td>§8</td><td>〔说话人2 48:46〕</td></tr>
+<tr><td>85</td><td>上颌窦为最大鼻旁窦</td><td>结构</td><td>§8</td><td>〔说话人2 48:46〕</td></tr>
+<tr><td>86</td><td>上颌窦站立位引流差</td><td>临床</td><td>§8</td><td>〔说话人2 48:46〕</td></tr>
+<tr><td>87</td><td>泪沟→鼻泪管</td><td>结构</td><td>§8</td><td>〔说话人2 48:46〕</td></tr>
+<tr><td>88</td><td>犁骨构成鼻中隔后下部</td><td>结构</td><td>§8</td><td>〔说话人2 42:53〕</td></tr>
+<tr><td>89</td><td>舌骨体、大角、小角</td><td>结构</td><td>§8</td><td>〔说话人2 42:53〕</td></tr>
+<tr><td>90</td><td>腭骨 L 形</td><td>结构</td><td>§8</td><td>〔说话人2 52:16〕</td></tr>
+<tr><td>91</td><td>腭骨构成鼻腔外侧壁后份与硬腭后份</td><td>结构</td><td>§8</td><td>〔说话人2 52:16〕</td></tr>
+<tr><td>92</td><td>硬腭（骨腭）</td><td>定义</td><td>§8</td><td>〔说话人2 52:16〕</td></tr>
+<tr><td>93</td><td>颧骨与颞骨颧突构成颧弓</td><td>结构</td><td>§8</td><td>〔说话人2 37:26〕</td></tr>
+<tr><td>94</td><td>冠状缝（额-顶）</td><td>结构</td><td>§9</td><td>〔说话人2 01:08:44〕</td></tr>
+<tr><td>95</td><td>矢状缝（顶-顶）</td><td>结构</td><td>§9</td><td>〔说话人2 01:08:44〕</td></tr>
+<tr><td>96</td><td>人字缝（顶-枕）</td><td>结构</td><td>§9</td><td>〔说话人2 01:08:44〕</td></tr>
+<tr><td>97</td><td>人字缝外文名 lambdoid</td><td>术语</td><td>§9</td><td>〔说话人2 01:09:44〕</td></tr>
+<tr><td>98</td><td>颅盖缝连接、颅底软骨连接</td><td>结构</td><td>§9</td><td>〔说话人2 01:31:30〕</td></tr>
+<tr><td>99</td><td>上矢状窦沟</td><td>结构</td><td>§9</td><td>〔说话人2 01:10:00〕</td></tr>
+<tr><td>100</td><td>横窦沟（颅骨内面）</td><td>结构</td><td>§9</td><td>〔说话人2 01:10:00〕</td></tr>
+<tr><td>101</td><td>颅底三窝：颅前窝、颅中窝、颅后窝</td><td>分类</td><td>§10</td><td>〔说话人2 01:11:57〕</td></tr>
+<tr><td>102</td><td>颅前窝鸡冠、筛板、筛孔</td><td>结构</td><td>§10</td><td>〔说话人2 01:11:57〕</td></tr>
+<tr><td>103</td><td>颅中窝关键孔道（视神经管、眶上裂、圆孔、卵圆孔、棘孔）</td><td>结构</td><td>§10</td><td>〔说话人2 01:12:40〕</td></tr>
+<tr><td>104</td><td>圆孔卵圆孔穿神经、棘孔穿血管</td><td>结构</td><td>§10</td><td>〔说话人2 01:13:28〕</td></tr>
+<tr><td>105</td><td>卵圆孔棘孔向下、圆孔向前</td><td>机制</td><td>§10</td><td>〔说话人2 01:13:28〕</td></tr>
+<tr><td>106</td><td>破裂孔</td><td>定义</td><td>§10</td><td>〔说话人2 01:14:35〕</td></tr>
+<tr><td>107</td><td>破裂孔无重要结构穿出</td><td>结构</td><td>§10</td><td>〔说话人2 01:14:35〕</td></tr>
+<tr><td>108</td><td>颈静脉孔</td><td>结构</td><td>§10</td><td>〔说话人2 01:16:12〕</td></tr>
+<tr><td>109</td><td>枕骨大孔（颅后窝）</td><td>结构</td><td>§10</td><td>〔说话人2 01:16:12〕</td></tr>
+<tr><td>110</td><td>舌下神经管内口</td><td>结构</td><td>§10</td><td>〔说话人2 01:17:16〕</td></tr>
+<tr><td>111</td><td>内耳门</td><td>结构</td><td>§10</td><td>〔说话人2 01:17:16〕</td></tr>
+<tr><td>112</td><td>腭大孔与翼腭管</td><td>结构</td><td>§11</td><td>〔说话人2 01:17:16〕</td></tr>
+<tr><td>113</td><td>颅底外面可见茎突、乳突、茎乳孔、枕髁</td><td>结构</td><td>§11</td><td>〔说话人2 01:17:16〕</td></tr>
+<tr><td>114</td><td>翼点（四骨 H 形交界）</td><td>定义</td><td>§11</td><td>〔说话人2 01:19:21〕</td></tr>
+<tr><td>115</td><td>翼点深部脑膜中动脉前支</td><td>临床</td><td>§11</td><td>〔说话人2 01:19:21〕</td></tr>
+<tr><td>116</td><td>颞窝</td><td>定义</td><td>§11</td><td>〔说话人2 01:20:00〕</td></tr>
+<tr><td>117</td><td>颞下窝</td><td>定义</td><td>§11</td><td>〔说话人2 01:20:00〕</td></tr>
+<tr><td>118</td><td>眶下裂→眶下沟→眶下管→眶下孔</td><td>机制</td><td>§11</td><td>〔说话人2 01:20:00〕</td></tr>
+<tr><td>119</td><td>上牙槽神经自眶下神经分出</td><td>结构</td><td>§11</td><td>〔说话人2 01:20:00〕</td></tr>
+<tr><td>120</td><td>经眶下裂到翼腭窝</td><td>机制</td><td>§11</td><td>〔说话人2 01:21:09〕</td></tr>
+<tr><td>121</td><td>腭大管（翼腭管）通翼腭窝</td><td>结构</td><td>§11</td><td>〔说话人2 01:21:09〕</td></tr>
+<tr><td>122</td><td>圆孔通翼腭窝</td><td>机制</td><td>§11</td><td>〔说话人2 01:21:09〕</td></tr>
+<tr><td>123</td><td>蝶腭孔</td><td>结构</td><td>§11</td><td>〔说话人2 01:21:09〕</td></tr>
+<tr><td>124</td><td>鼻腔外侧壁三鼻甲对应三鼻道</td><td>结构</td><td>§12</td><td>〔说话人2 01:22:46〕</td></tr>
+<tr><td>125</td><td>鼻中隔（筛骨垂直板＋犁骨）</td><td>结构</td><td>§12</td><td>〔说话人2 01:22:46〕</td></tr>
+<tr><td>126</td><td>鼻腔顶为筛板、底为硬腭</td><td>结构</td><td>§12</td><td>〔说话人2 01:22:46〕</td></tr>
+<tr><td>127</td><td>口腔顶为腭，骨性部分为硬腭</td><td>定义</td><td>§12</td><td>〔说话人2 01:23:44〕</td></tr>
+<tr><td>128</td><td>硬腭构成（上颌骨腭突＋腭骨水平板）</td><td>结构</td><td>§12</td><td>〔说话人2 01:23:44〕</td></tr>
+<tr><td>129</td><td>眼眶围成骨（额、上颌、筛骨眶板、颧、蝶骨大小翼）</td><td>结构</td><td>§12</td><td>〔说话人2 01:23:44〕</td></tr>
+<tr><td>130</td><td>眼眶锥体形（底朝前外、尖朝后）</td><td>结构</td><td>§12</td><td>〔说话人2 01:25:09〕</td></tr>
+<tr><td>131</td><td>泪腺窝、泪囊窝与鼻泪管</td><td>结构</td><td>§12</td><td>〔说话人2 01:25:09〕</td></tr>
+<tr><td>132</td><td>鼻中隔轻度偏曲多无症状</td><td>结构</td><td>§12</td><td>〔说话人2 01:58:30〕</td></tr>
+<tr><td>133</td><td>鼻旁窦共四对</td><td>分类</td><td>§13</td><td>〔说话人2 01:27:18〕</td></tr>
+<tr><td>134</td><td>鼻旁窦均为含气空腔、开口通鼻腔</td><td>定义</td><td>§13</td><td>〔说话人2 01:27:18〕</td></tr>
+<tr><td>135</td><td>额窦开口于中鼻道</td><td>结构</td><td>§13</td><td>〔说话人2 01:27:18〕</td></tr>
+<tr><td>136</td><td>上颌窦最大、开口于中鼻道</td><td>结构</td><td>§13</td><td>〔说话人2 01:27:18〕</td></tr>
+<tr><td>137</td><td>筛窦分群（前中组、后组）</td><td>结构</td><td>§13</td><td>〔说话人2 01:27:18〕</td></tr>
+<tr><td>138</td><td>筛窦前中组开口于中鼻道</td><td>结构</td><td>§13</td><td>〔说话人2 01:27:18〕</td></tr>
+<tr><td>139</td><td>筛窦后组开口于上鼻道</td><td>结构</td><td>§13</td><td>〔说话人2 01:27:18〕</td></tr>
+<tr><td>140</td><td>蝶窦开口于蝶筛隐窝</td><td>结构</td><td>§13</td><td>〔说话人2 01:27:18〕</td></tr>
+<tr><td>141</td><td>颞下颌关节为颅骨唯一关节</td><td>考点</td><td>§14</td><td>〔说话人2 01:32:21〕</td></tr>
+<tr><td>142</td><td>关节构成（下颌头＋下颌窝＋关节结节）</td><td>结构</td><td>§14</td><td>〔说话人4 01:34:45〕</td></tr>
+<tr><td>143</td><td>关节囊附着（上于下颌窝、下于下颌颈）</td><td>结构</td><td>§14</td><td>〔说话人4 01:34:45〕</td></tr>
+<tr><td>144</td><td>关节囊外有外侧韧带</td><td>结构</td><td>§14</td><td>〔说话人4 01:34:45〕</td></tr>
+<tr><td>145</td><td>纤维软骨关节盘分上下两腔</td><td>结构</td><td>§14</td><td>〔说话人4 01:34:45〕</td></tr>
+<tr><td>146</td><td>关节囊前份薄弱→易前脱位</td><td>机制</td><td>§14</td><td>〔说话人4 01:34:45〕</td></tr>
+<tr><td>147</td><td>联合关节，双侧同时运动</td><td>结构</td><td>§14</td><td>〔说话人4 01:35:18〕</td></tr>
+<tr><td>148</td><td>开闭口时下颌头沿额状轴转动</td><td>机制</td><td>§14</td><td>〔说话人4 01:35:18〕</td></tr>
+<tr><td>149</td><td>前后运动时关节盘连同下颌头弧形运动</td><td>机制</td><td>§14</td><td>〔说话人4 01:35:18〕</td></tr>
+<tr><td>150</td><td>侧方运动机制</td><td>机制</td><td>§14</td><td>〔说话人4 01:35:18〕</td></tr>
+<tr><td>151</td><td>关节结节限制下颌前移</td><td>结构</td><td>§14</td><td>〔说话人2 01:32:21〕</td></tr>
+<tr><td>152</td><td>前脱位时下颌头移向前方</td><td>机制</td><td>§14</td><td>〔说话人2 01:33:49〕</td></tr>
+<tr><td>153</td><td>新生儿颅骨未完全骨化</td><td>结构</td><td>§15</td><td>〔说话人2 01:29:41〕</td></tr>
+<tr><td>154</td><td>四种颅囟（前、后、蝶、乳突）</td><td>分类</td><td>§15</td><td>〔说话人2 01:29:41〕</td></tr>
+<tr><td>155</td><td>前囟位于顶骨与额骨之间</td><td>结构</td><td>§15</td><td>〔说话人2 01:29:41〕</td></tr>
+<tr><td>156</td><td>新生儿面颅小、脑颅大</td><td>结构</td><td>§15</td><td>〔说话人2 01:29:41〕</td></tr>
+<tr><td>157</td><td>新生儿脑颅:面颅≈8:1</td><td>数字</td><td>§15</td><td>〔说话人2 01:29:41〕</td></tr>
+<tr><td>158</td><td>成人脑颅:面颅≈4:1</td><td>数字</td><td>§15</td><td>〔说话人2 01:29:41〕</td></tr>
+<tr><td>159</td><td>新生儿鼻旁窦未发育成熟</td><td>结构</td><td>§15</td><td>〔说话人2 01:29:41〕</td></tr>
+<tr><td>160</td><td>optic canal（CN II＋ophthalmic artery）</td><td>术语</td><td>§16</td><td>〔说话人3 01:39:15〕</td></tr>
+<tr><td>161</td><td>superior orbital fissure（眼上静脉＋CN III/IV/V1/VI）</td><td>术语</td><td>§16</td><td>〔说话人3 01:39:15〕</td></tr>
+<tr><td>162</td><td>squamous suture（顶-颞）</td><td>术语</td><td>§16</td><td>〔说话人3 01:45:55〕</td></tr>
+<tr><td>163</td><td>lambdoid suture（顶-枕）</td><td>术语</td><td>§16</td><td>〔说话人3 01:45:55〕</td></tr>
+<tr><td>164</td><td>pterion（顶、额、蝶、颞四骨）</td><td>术语</td><td>§16</td><td>〔说话人3 01:45:55〕</td></tr>
+<tr><td>165</td><td>middle meningeal artery→epidural hematoma</td><td>临床</td><td>§16</td><td>〔说话人3 01:47:01〕</td></tr>
+<tr><td>166</td><td>mastoid process &amp; mastoid air cells</td><td>术语</td><td>§16</td><td>〔说话人3 01:48:21〕</td></tr>
+</table>
+<div class="foot">共登记 166 条知识点，覆盖脑颅骨、面颅骨、颅骨整体结构、颅底孔道、眼眶与鼻腔、鼻旁窦、颞下颌关节、新生儿颅骨及英文视频补充要点，逐轮与 recording.md 核对，无遗漏。</div>
+</div>
+
+</body></html>

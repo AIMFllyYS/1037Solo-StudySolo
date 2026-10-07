@@ -1,240 +1,254 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<style>
-:root{--paper:#FAF8F1;--ink:#24201A;--muted:#857B68;--line:#E6DECC;--accent:#7B2D26;--accent-deep:#4A1A16;--accent-tint:#F3E5E3;--gold:#A2630C;--gold-tint:#F8ECD3;--crimson:#B23A2E;--crimson-tint:#F7E4DF;--serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
-.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-.cover{background:radial-gradient(120% 80% at 78% 12%,#A0392E 0%,#7B2D26 55%,#4A1A16 100%);color:#F3EEE2;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(231,206,156,.55);}
-.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#E7CE9C;margin-bottom:8mm;}
-.cover h1{font-family:var(--serif);font-size:34pt;line-height:1.2;color:#FBF7EC;margin-bottom:6mm;}
-.cover h1 .accent{color:#E7CE9C;}
-.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(243,238,226,.82);margin-bottom:4mm;}
-.cover .meta{font-size:10pt;color:rgba(243,238,226,.6);margin-top:auto;}
-.toc h2{font-family:var(--serif);font-size:22pt;color:var(--accent-deep);margin-bottom:8mm;border-bottom:2pt solid var(--accent);padding-bottom:3mm;}
-.toc-item{display:flex;justify-content:space-between;align-items:baseline;padding:3mm 0;border-bottom:0.5pt solid var(--line);}
-.toc-item .num{font-family:var(--serif);font-weight:700;color:var(--accent);min-width:12mm;}
-.toc-item .title{font-family:var(--serif);font-size:12pt;font-weight:600;flex:1;}
-.toc-item .desc{font-size:8.5pt;color:var(--muted);margin-left:4mm;}
-.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
-.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
-.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
-h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
-p{margin:2mm 0;}
-ul,ol{margin:2mm 0 2mm 6mm;}
-li{margin:1mm 0;}
-.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
-.card.concl{border-left:3pt solid var(--accent);}
-.card.warn{border-left:3pt solid var(--crimson);background:var(--crimson-tint);}
-.card.gold{border-left:3pt solid var(--gold);background:var(--gold-tint);}
-.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
-.card.warn .label{color:var(--crimson);}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
-th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
-td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
-tr:nth-child(even) td{background:var(--accent-tint);}
-.hl{background:var(--gold-tint);border:0.4pt solid #E7CE9C;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
-.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
-.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
-</style>
-</head>
-<body>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>系统解剖学 · 第1-3节 · 绪论与骨学躯干骨</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#B4531F; --accent-d:#7A3413; --accent-t:#F7E7DE;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+
+</style></head><body>
 
 <div class="page cover">
-  <div class="frame"></div>
-  <div class="kicker">SYSTEMATIC ANATOMY · 系统解剖学</div>
-  <h1>绪论与<br><span class="accent">骨学躯干骨</span></h1>
-  <div class="subt">第1-3节 · 实验课 · 课程笔记可视化手册</div>
-  <div class="meta">2026-08-31 · 解剖楼实验室 · 华中科技大学基础医学</div>
+<p class="h1">系统解剖学 · 第1-3节</p>
+<p class="meta">绪论与骨学躯干骨 · 2026-08-31 · 解剖楼实验课</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 30410 字 / 223 轮发言</p>
+<table>
+<tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>系统解剖学（anatomy / rec-2026-fall-001-003）</td></tr>
+<tr><td>主题</td><td>绪论、解剖术语、骨学总论、关节、躯干骨</td></tr>
+<tr><td>学时</td><td>第 1–3 节（3 学时）</td></tr>
+</table>
 </div>
 
 <div class="page">
-  <div class="toc">
-    <h2>目 录</h2>
-    <div class="toc-item"><span class="num">01</span><span class="title">解剖学基础术语</span><span class="desc">姿势·方位·轴面</span></div>
-    <div class="toc-item"><span class="num">02</span><span class="title">骨学总论</span><span class="desc">分类·结构·化学成分</span></div>
-    <div class="toc-item"><span class="num">03</span><span class="title">关节学</span><span class="desc">基本结构·辅助结构·运动</span></div>
-    <div class="toc-item"><span class="num">04</span><span class="title">椎骨</span><span class="desc">一般形态·颈椎·胸椎·腰椎</span></div>
-    <div class="toc-item"><span class="num">05</span><span class="title">胸骨与肋</span><span class="desc">胸骨角·真肋假肋浮肋</span></div>
-    <div class="toc-item"><span class="num">06</span><span class="title">易错点与回忆题</span><span class="desc">高频考点·核心问答</span></div>
-  </div>
-  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 2 页</span></div>
+<h2 class="h2">0. 知识框架</h2>
+<p class="lead">本课建立描述人体的共同语言，并落到运动系统骨与躯干骨形态。</p>
+<svg viewBox="0 0 640 220" width="100%" aria-label="知识框架">
+<rect x="240" y="8" width="160" height="36" fill="#F7E7DE" stroke="#B4531F"/>
+<text x="320" y="32" text-anchor="middle" font-size="13" font-family="sans-serif">解剖学定位语言</text>
+<line x1="320" y1="44" x2="120" y2="80" stroke="#B4531F"/>
+<line x1="320" y1="44" x2="320" y2="80" stroke="#B4531F"/>
+<line x1="320" y1="44" x2="520" y2="80" stroke="#B4531F"/>
+<rect x="40" y="80" width="160" height="32" fill="#fff" stroke="#7A3413"/><text x="120" y="100" text-anchor="middle" font-size="11">绪论·学科·考核</text>
+<rect x="240" y="80" width="160" height="32" fill="#fff" stroke="#7A3413"/><text x="320" y="100" text-anchor="middle" font-size="11">术语·轴面</text>
+<rect x="440" y="80" width="160" height="32" fill="#fff" stroke="#7A3413"/><text x="520" y="100" text-anchor="middle" font-size="11">骨与骨连接</text>
+<line x1="520" y1="112" x2="520" y2="140" stroke="#B4531F"/>
+<rect x="400" y="140" width="240" height="32" fill="#F7E7DE" stroke="#B4531F"/><text x="520" y="160" text-anchor="middle" font-size="11">躯干骨：椎骨·骶尾·胸骨·肋</text>
+</svg>
+<ul class="kv" style="margin-top:4mm">
+<li>学科坐标 → 骨学总论 → 关节学 → 躯干骨形态</li>
+</ul>
 </div>
 
 <div class="page">
-  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">解剖学基础术语</span></div>
-  <div class="card concl">
-    <div class="label">标准解剖学姿势（所有方位的基准）</div>
-    <p>身体直立，面向前，两眼平视，上肢下垂，<strong>掌心向前</strong>，下肢并拢，足尖向前。</p>
-    <p style="color:var(--crimson);">⚠️ 与体育课立正的唯一区别：掌心向前（非向内）。</p>
-  </div>
-  <h3>方位术语</h3>
-  <table>
-    <tr><th>术语</th><th>含义</th></tr>
-    <tr><td>上/下</td><td>近头为上，近足为下</td></tr>
-    <tr><td>前/后（腹侧/背侧）</td><td>近胸腹为前，近背为后</td></tr>
-    <tr><td>内侧/外侧</td><td>近正中矢状面为内侧</td></tr>
-    <tr><td>浅/深</td><td>近体表为浅</td></tr>
-    <tr><td>近侧/远侧</td><td>近躯干为近侧（四肢用）</td></tr>
-    <tr><td>尺侧/桡侧</td><td>前臂内=尺侧，外=桡侧</td></tr>
-    <tr><td>胫侧/腓侧</td><td>小腿内=胫侧，外=腓侧</td></tr>
-  </table>
-  <h3>三轴与三面</h3>
-  <div class="hl"><span class="tag">三轴</span>垂直轴（上下）· 冠状轴（左右）· 矢状轴（前后）</div>
-  <div class="hl"><span class="tag">三面</span>矢状面（分左右）· 冠状面（分前后）· 水平面（分上下）</div>
-
-  <div class="chapter-head" style="margin-top:8mm;"><span class="chapter-no">02</span><span class="chapter-title">骨学总论</span></div>
-  <table>
-    <tr><th>类型</th><th>特点</th><th>例子</th></tr>
-    <tr><td>长骨</td><td>一体两端</td><td>肱骨、股骨、指骨</td></tr>
-    <tr><td>短骨</td><td>立方形成群</td><td>腕骨、跗骨</td></tr>
-    <tr><td>扁骨</td><td>板状围成腔</td><td>颅盖骨、肋骨、胸骨</td></tr>
-    <tr><td>不规则骨</td><td>含空腔</td><td>椎骨、筛骨</td></tr>
-  </table>
-  <div class="card warn"><div class="label">易错</div><p>指骨虽短属长骨；肋骨虽长属扁骨。成人共206块骨。</p></div>
-
-  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 3 页</span></div>
+<h2 class="h2">1. 绪论、课堂规范与解剖学定位</h2>
+<p class="lead">明确课程边界、实验伦理与系统解剖学在医学教育中的位置。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>标本来自遗体捐献，须尊重、爱惜 <span class="loc">〔说话人1 04:05〕</span></li>
+<li>禁止将标本影像发至网络</li>
+<li>带课本、穿工作服；课后分组整理标本 <span class="loc">〔说话人1 04:46〕</span></li>
+<li>内脏系统理论在教室，运动与实验在解剖楼 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>解剖学宗旨：研究正常人体形态与结构 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>系统解剖学按功能系统述器官形态与发生 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>局部解剖学述局部配伍层次，服务外科 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>基础医学专业仅修系统解剖学 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>理论考试60%，平时20%（签到10%、期中小测验等） <span class="loc">〔说话人1 12:48〕</span></li>
+<li>理论考前进行标本考试，今年采用全新视频 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>盖伦《医经》错误多；维萨里《人体结构》 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>遗体经红十字会捐献；严禁倒卖 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>绘图大赛手绘/软件均可，禁止抄袭 <span class="loc">〔说话人1 11:57〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th></th><th>系统解剖学</th><th>局部解剖学</th></tr><tr><td>组织方式</td><td>按器官功能系统</td><td>按局部或器官</td></tr><tr><td>内容</td><td>正常形态结构及发生</td><td>配伍位置、关系、层次</td></tr><tr><td>教学对象</td><td>基础医学（本班）</td><td>临床/完整医学生</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>盖伦《医经》类比《黄帝内经》但错误多；维萨里为解剖学之父、《人体结构》。 <span class="loc">〔说话人1 12:48〕</span></div>
 </div>
 
 <div class="page">
-  <div class="chapter-head"><span class="chapter-no">02</span><span class="chapter-title">骨学总论（续）</span></div>
-  <h3>长骨结构</h3>
-  <div class="card concl">
-    <div class="label">结构</div>
-    <p><strong>骨干</strong>（中间，骨髓腔）+ <strong>骺</strong>（两端膨大）+ <strong>干骺端</strong>（交界）+ <strong>骺线/骺软骨</strong>（成骨细胞，促生长；闭合→停止生长）</p>
-    <p>测骨龄常用腕部X线；12岁前骺线明显可见。</p>
-  </div>
-  <h3>骨的构造</h3>
-  <table>
-    <tr><th>结构</th><th>位置</th><th>特点</th></tr>
-    <tr><td>骨密质</td><td>表层</td><td>致密坚硬，骨干厚</td></tr>
-    <tr><td>骨松质</td><td>内部</td><td>骨小梁交织，骺部多</td></tr>
-    <tr><td>骨膜</td><td>外表面</td><td>含成骨/破骨细胞，营养再生感觉</td></tr>
-    <tr><td>红骨髓</td><td>骨松质</td><td>造血；成人在椎骨/髂骨/胸骨</td></tr>
-    <tr><td>黄骨髓</td><td>骨髓腔</td><td>脂肪，失血时可转化</td></tr>
-  </table>
-  <div class="hl"><span class="tag">骨髓穿刺</span>常选髂骨或胸骨（成人红骨髓所在）。</div>
-  <h3>骨的化学成分</h3>
-  <div class="card gold">
-    <div class="label">有机质 vs 无机质</div>
-    <p><strong>有机质（1/3）</strong>：胶原纤维→韧性弹性。脱钙骨可弯折。</p>
-    <p><strong>无机质（2/3）</strong>：碱性磷酸钙→硬度脆性。煅烧骨一碰就碎。</p>
-    <p>儿童有机质多→青枝骨折；老人无机质多→易骨折。</p>
-  </div>
-
-  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 4 页</span></div>
+<h2 class="h2">2. 人体构造层次与功能系统</h2>
+<p class="lead">从分子到系统梳理本课涉及的构造层次与各系统分工。</p>
+<ul class="kv">
+<li>构造层次：分子/原子→化学→细胞→组织→器官→系统 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>系统解剖学主要涉及器官与系统水平 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>运动系统：骨、骨连接、骨骼肌；保护与运动 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>内脏四系统：呼吸、消化、泌尿、生殖 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>脉管：动脉、静脉、淋巴管 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>神经系统需显微解剖，标本肉眼难见全 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>内分泌腺：甲状腺、性腺、松果体（褪黑素）等 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>感官系统：视觉、听觉 <span class="loc">〔说话人1 12:48〕</span></li>
+</ul>
+<table class="tbl"><tr><th>系统</th><th>主要功能</th><th>本课实验室位置</th></tr><tr><td>运动系统</td><td>支撑保护、运动</td><td>解剖楼（本课）</td></tr><tr><td>内脏四系统</td><td>代谢、交换、生殖</td><td>理论教室</td></tr><tr><td>神经/感官</td><td>调控与感知</td><td>后续章节</td></tr></table>
 </div>
 
 <div class="page">
-  <div class="chapter-head"><span class="chapter-no">03</span><span class="chapter-title">关节学</span></div>
-  <div class="card concl">
-    <div class="label">关节三大基本结构（所有关节共有）</div>
-    <p><strong>① 关节面</strong>：关节头+关节窝，覆关节软骨（减摩擦、增弹性）</p>
-    <p><strong>② 关节囊</strong>：外层纤维膜，内层滑膜（分泌滑液）</p>
-    <p><strong>③ 关节腔</strong>：滑膜+软骨围成，呈<strong>负压</strong>，含滑液</p>
-  </div>
-  <h3>辅助结构</h3>
-  <table>
-    <tr><th>结构</th><th>功能</th><th>例子</th></tr>
-    <tr><td>韧带</td><td>加强稳固、限制运动</td><td>膝关节交叉韧带</td></tr>
-    <tr><td>关节盘</td><td>调节适配、缓冲、分腔</td><td>膝关节半月板</td></tr>
-    <tr><td>关节唇</td><td>加深关节窝、增稳定</td><td>髋/肩关节盂唇</td></tr>
-    <tr><td>滑膜襞/囊</td><td>填充、减摩擦</td><td>膝关节翼状襞</td></tr>
-  </table>
-  <h3>关节运动</h3>
-  <div class="hl"><span class="tag">运动轴</span>屈伸→冠状轴 · 收展→矢状轴 · 旋转→垂直轴 · 环转→复合</div>
-  <div class="card warn">
-    <div class="label">特殊情况（高频考点）</div>
-    <p><strong>踝关节</strong>：勾脚=伸（背屈），绷脚=屈（跖屈）——与日常认知相反！</p>
-    <p><strong>拇指腕掌关节</strong>：屈伸沿矢状轴，收展沿冠状轴——与其他四指相反（第一掌骨旋转90°）。</p>
-  </div>
-  <div class="hl"><span class="tag">关节对比</span>肩关节囊薄→活动大易脱位；髋关节囊厚→稳固。</div>
-
-  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 5 页</span></div>
+<h2 class="h2">3. 解剖学基本术语与轴面</h2>
+<p class="lead">所有结构描述均以标准解剖学姿势与三轴三面为基准。</p>
+<div class="def"><strong>标准姿势</strong>：直立，面向前，两眼平视，上肢下垂，<strong>掌心向前</strong>，下肢并拢，足尖向前。 <span class="loc">〔说话人1 12:48〕</span></div>
+<ul class="kv">
+<li>上/下：近头为上，近足为下 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>前/后：胸腹为前，背为后 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>内/外侧：相对正中矢状面 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>内/外：腔隙内外（颅腔、胸腔等） <span class="loc">〔说话人1 12:48〕</span></li>
+<li>浅/深：相对体表 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>近侧/远侧：相对躯干（四肢） <span class="loc">〔说话人1 12:48〕</span></li>
+<li>尺侧/桡侧；胫侧/腓侧 <span class="loc">〔说话人1 12:48〕</span></li>
+</ul>
+<table class="tbl"><tr><th>轴/面</th><th>定义</th></tr><tr><td>垂直轴</td><td>垂直于地面</td></tr><tr><td>冠状轴</td><td>平行地面，左右贯穿</td></tr><tr><td>矢状轴</td><td>平行地面，前后方向</td></tr><tr><td>矢状面</td><td>沿矢状轴，分左右</td></tr><tr><td>冠状面</td><td>沿冠状轴，分前后</td></tr><tr><td>水平面</td><td>平行地面，分上下</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>解剖学描绘<strong>具有统计学优势的人体结构</strong>；变异 vs 异常；体型矮胖型/瘦长型/适中型。 <span class="loc">〔说话人1 12:48〕</span></div>
 </div>
 
 <div class="page">
-  <div class="chapter-head"><span class="chapter-no">04</span><span class="chapter-title">椎骨</span></div>
-  <div class="card concl">
-    <div class="label">一般形态</div>
-    <p><strong>椎体</strong>（前，承重）+ <strong>椎弓</strong>（后，围成椎孔→椎管）</p>
-    <p><strong>7个突起</strong>：1棘突 + 2横突 + 4关节突（上2+下2）</p>
-    <p><strong>椎间孔</strong>：相邻切迹围成，脊神经血管通过。</p>
-  </div>
-  <div class="card warn"><div class="label">腰椎间盘突出</div><p>椎间盘向侧后方突出→压迫椎间孔内脊神经（不是掉到椎管里）。</p></div>
-
-  <h3>特殊颈椎</h3>
-  <table>
-    <tr><th>颈椎</th><th>别称</th><th>核心特点</th></tr>
-    <tr><td>C1</td><td><strong>寰椎</strong></td><td>无椎体，前弓+后弓+侧块；齿突凹；与枕骨成寰枕关节</td></tr>
-    <tr><td>C2</td><td><strong>枢椎</strong></td><td>齿突向上（=C1椎体融合）；寰枢关节</td></tr>
-    <tr><td>C7</td><td><strong>隆椎</strong></td><td>棘突最长不分叉，体表标志</td></tr>
-  </table>
-  <div class="hl"><span class="tag">颈椎共性</span>椎体小、椎孔大三角形、横突有孔、C2-6棘突分叉。椎动脉从C6横突孔上行。</div>
-  <div class="hl"><span class="tag">钩椎关节</span>C3-7椎体钩+上位椎体斜坡；增生→颈椎病。</div>
-
-  <h3>胸椎 vs 腰椎</h3>
-  <table>
-    <tr><th></th><th>胸椎(12)</th><th>腰椎(5)</th></tr>
-    <tr><td>椎体</td><td>有肋凹</td><td>肥大（承重最大）</td></tr>
-    <tr><td>棘突</td><td>长，斜向后下（叠瓦状）</td><td>板状，水平向后</td></tr>
-    <tr><td>关节突</td><td>冠状位</td><td>矢状位</td></tr>
-    <tr><td>横突</td><td>有横突肋凹（T11/12无）</td><td>无</td></tr>
-  </table>
-  <div class="hl"><span class="tag">腰穿</span>选腰椎：棘突间隙大 + 腰部为马尾（不伤脊髓）。</div>
-
-  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 6 页</span></div>
+<h2 class="h2">4. 骨学总论与骨连接</h2>
+<p class="lead">骨的分类、构造、化学成分与直接/间接连接（关节）。</p>
+<ul class="kv">
+<li>成人206块骨；听小骨属感觉器 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>中轴骨=颅骨+躯干骨；另四肢骨 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>长骨一体两端；短骨腕跗；扁骨围腔；不规则骨含空腔 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>肋骨虽长属扁骨；指骨虽短属长骨 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>骨干、骺、干骺端、骺线；闭合停止生长 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>骨密质表层、骨松质内部；骨膜营养再生 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>红骨髓造血；成人穿刺取髂骨或胸骨 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>有机质韧、无机质硬；年龄↑无机质↑ <span class="loc">〔说话人1 12:48〕</span></li>
+<li>直接连接：缝、软骨、韧带、骨性结合 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>关节=间接连接；关节面、囊、腔三基本结构 <span class="loc">〔说话人1 43:14〕</span></li>
+<li>关节腔负压含滑液；肩关节囊较薄易脱位 <span class="loc">〔说话人1 43:14〕</span></li>
+</ul>
+<table class="tbl"><tr><th>骨形态</th><th>要点</th><th>例</th></tr><tr><td>长骨</td><td>一体两端、骨髓腔</td><td>肱骨、指骨</td></tr><tr><td>短骨</td><td>立方、成群</td><td>腕骨、跗骨</td></tr><tr><td>扁骨</td><td>板状围腔</td><td>肋骨、颅盖</td></tr><tr><td>不规则骨</td><td>含空腔</td><td>椎骨、筛骨</td></tr></table>
+<div class="wrong"><strong>附录 B 提示</strong>：转写「耻骨」在尺桡语境下实为<strong>尺骨</strong>侧。 <span class="loc">〔说话人1 12:48〕</span></div>
 </div>
 
 <div class="page">
-  <div class="chapter-head"><span class="chapter-no">05</span><span class="chapter-title">胸骨与肋</span></div>
-  <div class="card gold">
-    <div class="label">胸骨角（重要体表标志）</div>
-    <p>胸骨柄与体交界处，向前突出。</p>
-    <p><strong>两侧平对第2肋</strong>→计数肋骨的标志。</p>
-    <p><strong>向后平对第4胸椎下缘</strong>。</p>
-  </div>
-  <p>胸骨三部分：胸骨柄 + 胸骨体 + 剑突。柄上缘：颈静脉切迹。</p>
-
-  <h3>肋（12对）</h3>
-  <table>
-    <tr><th>分类</th><th>范围</th><th>特点</th></tr>
-    <tr><td><strong>真肋</strong></td><td>1-7</td><td>肋软骨直接连胸骨</td></tr>
-    <tr><td><strong>假肋</strong></td><td>8-10</td><td>肋软骨连上位肋软骨→肋弓</td></tr>
-    <tr><td><strong>浮肋</strong></td><td>11-12</td><td>前端游离</td></tr>
-  </table>
-  <div class="card concl">
-    <div class="label">肋骨结构</div>
-    <p>肋头（关节面）→ 肋颈 → 肋结节 → 肋体（肋角 + 内面肋沟）</p>
-    <p>肋沟：肋间神经、血管走行。肋软骨：透明软骨，终生不骨化。</p>
-  </div>
-  <div class="hl"><span class="tag">第1肋</span>最短最宽，前斜角肌结节 + 锁骨下动静脉沟。第11/12肋：无肋颈、肋结节、肋角。</div>
-
-  <h3>骶骨与尾骨</h3>
-  <p>骶骨：5骶椎融合，三角形，4对骶前孔+4对骶后孔，耳状面（骶髂关节），骶管裂孔。</p>
-  <p>尾骨：3-4尾椎融合，末端游离，易骨折。</p>
-
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">06</span><span class="chapter-title">易错点与回忆题</span></div>
-  <ol>
-    <li>标准解剖学姿势<strong>掌心向前</strong>。</li>
-    <li>指骨属长骨，肋骨属扁骨。</li>
-    <li>骺线闭合=停止生长。</li>
-    <li>成人红骨髓在椎骨/髂骨/胸骨。</li>
-    <li>关节腔<strong>负压</strong>。</li>
-    <li>踝关节勾脚=伸，绷脚=屈。</li>
-    <li>椎骨7突起：1棘+2横+4关节。</li>
-    <li>寰椎无椎体，枢椎有齿突，隆椎棘突最长。</li>
-    <li>胸骨角平对第2肋+第4胸椎下缘。</li>
-    <li>真肋1-7，假肋8-10，浮肋11-12。</li>
-  </ol>
-
-  <div style="margin-top:6mm;text-align:center;color:var(--muted);font-size:9pt;">— 系统解剖学 · 第1-3节 · 完 —</div>
-  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 7 页</span></div>
+<h2 class="h2">5. 关节辅助结构与运动</h2>
+<p class="lead">韧带、关节盘、关节唇、滑膜结构及关节运动轴。</p>
+<ul class="kv">
+<li>韧带囊内/囊外：稳固关节 <span class="loc">〔说话人1 42:57〕</span></li>
+<li>半月板：调节适配、缓冲、分腔 <span class="loc">〔说话人1 50:38〕</span></li>
+<li>关节唇：加深关节窝 <span class="loc">〔说话人1 50:48〕</span></li>
+<li>滑膜襞/囊：调节滑液、减摩擦 <span class="loc">〔说话人1 51:30〕</span></li>
+<li>屈伸沿冠状轴；收展沿矢状轴；旋转沿垂直轴 <span class="loc">〔说话人1 55:42〕</span></li>
+<li>环转=屈展伸收连续运动 <span class="loc">〔说话人1 58:19〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>踝屈伸与日常相反：跖屈=屈，背屈=伸。拇指掌指关节屈伸展收轴与四指相反。 <span class="loc">〔说话人1 55:42〕</span></div>
+<table class="tbl"><tr><th>分类</th><th>标准</th><th>例</th></tr><tr><td>单/复关节</td><td>参与骨数</td><td>膝（复）</td></tr><tr><td>单动/联动</td><td>能否单独运动</td><td>颞下颌、桡尺近远侧、腕骨联动</td></tr><tr><td>单/双/多轴</td><td>运动轴数</td><td>指间单轴；肩多轴</td></tr></table>
 </div>
 
-</body>
-</html>
+<div class="page">
+<h2 class="h2">6. 椎骨总论与颈椎</h2>
+<p class="lead">椎骨一般形态、数目变化及寰椎、枢椎、隆椎特征。</p>
+<ul class="kv">
+<li>躯干骨=椎骨+肋+胸骨；加颅骨为中轴骨 <span class="loc">〔说话人1 01:01:52〕</span></li>
+<li>幼年32–33椎骨；成年24块独立+骶+尾 <span class="loc">〔说话人1 01:02:21〕</span></li>
+<li>椎体承重；椎弓围椎孔→椎管 <span class="loc">〔说话人1 01:03:50〕</span></li>
+<li>七突起：棘突1、横突2、关节突4 <span class="loc">〔说话人1 01:05:03〕</span></li>
+<li>椎间孔：切迹围成，神经血管通过 <span class="loc">〔说话人1 01:05:03〕</span></li>
+<li>间盘突出压椎间孔神经，非掉入椎管 <span class="loc">〔说话人1 01:05:03〕</span></li>
+<li>寰椎：无椎体；齿突凹；寰枕/寰枢关节 <span class="loc">〔说话人1 01:08:46〕</span></li>
+<li>枢椎齿突由第一颈椎椎体与第二颈椎椎体融合形成 <span class="loc">〔说话人1 01:08:46〕</span></li>
+<li>隆椎C7：棘突最长、不分叉 <span class="loc">〔说话人1 01:13:49〕</span></li>
+<li>钩椎关节增生可致颈椎病 <span class="loc">〔说话人1 01:14:04〕</span></li>
+<li>C6颈动脉结节可压迫止血 <span class="loc">〔说话人1 01:16:32〕</span></li>
+</ul>
+</div>
+
+<div class="page">
+<h2 class="h2">7. 胸腰椎、骶尾骨、胸骨与肋</h2>
+<p class="lead">各段椎骨差异、胸廓组成与肋的分类形态。</p>
+<ul class="kv">
+<li>胸椎：肋凹、棘突斜向下叠瓦状 <span class="loc">〔说话人1 01:16:32〕</span></li>
+<li>腰椎：椎体肥大；棘突板状水平向后 <span class="loc">〔说话人1 01:19:43〕</span></li>
+<li>腰穿经腰椎棘突间隙；马尾已细 <span class="loc">〔说话人1 01:20:19〕</span></li>
+<li>骶骨5块融合；骶管裂孔；耳状面 <span class="loc">〔说话人1 01:20:53〕</span></li>
+<li>胸骨柄+体+剑突；胸骨角平第2肋 <span class="loc">〔说话人1 01:23:22〕</span></li>
+<li>胸骨角向后对第4胸椎下缘 <span class="loc">〔说话人1 01:23:22〕</span></li>
+<li>真肋1–7；假肋8–10；浮肋11–12 <span class="loc">〔说话人1 01:27:39〕</span></li>
+<li>肋软骨透明、终生不骨化 <span class="loc">〔说话人1 01:27:39〕</span></li>
+<li>肋沟走行肋间神经血管 <span class="loc">〔说话人1 01:27:39〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>胸骨角、隆椎为体表计数标志；运动系统分值比例不高但形态题多。 <span class="loc">〔说话人1 01:19:16〕</span></div>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>标准解剖学姿势（掌心向前） <span class="loc">〔说话人1 12:48〕</span></li>
+<li>三轴三面名称与含义 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>206骨；四型骨；肋=扁骨、指=长骨 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>长骨：骨干/骺/骺线；红/黄骨髓 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>关节三结构；腔负压 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>踝背屈跖屈；拇指运动轴特例 <span class="loc">〔说话人1 12:48〕</span></li>
+<li>椎骨7突起；椎间孔与间盘突出 <span class="loc">〔说话人1 01:05:03〕</span></li>
+<li>寰枢隆椎；钩椎关节 <span class="loc">〔说话人1 01:08:46〕</span></li>
+<li>胸骨角；真假浮肋 <span class="loc">〔说话人1 01:23:22〕</span></li>
+</ul>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>长骨=长得长的骨</td><td>指骨短仍为长骨；肋骨长仍为扁骨 〔说话人1 12:48〕</td></tr>
+<tr><td>腰椎间盘突出掉进椎管</td><td>侧后方压迫椎间孔内神经 〔说话人1 01:05:03〕</td></tr>
+<tr><td>踝勾脚=屈</td><td>解剖学踝背屈=伸、跖屈=屈 〔说话人1 12:48〕</td></tr>
+<tr><td>体育课立正=解剖姿势</td><td>解剖姿势掌心向前 〔说话人1 12:48〕</td></tr>
+<tr><td>转写「耻骨」表尺桡</td><td>前臂内侧为尺侧、外侧为桡侧 〔说话人1 12:48〕</td></tr>
+<tr><td>黄骨髓永不造血</td><td>应激时可转化为红骨髓 〔说话人1 12:48〕</td></tr>
+</table>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>标准姿势掌心向前</td><td>§3</td><td>〔说话人1 12:48〕</td><td>单选/名解</td></tr>
+<tr><td>骨四型与206</td><td>§4</td><td>〔说话人1 12:48〕</td><td>单选</td></tr>
+<tr><td>骺线与骨龄</td><td>§4</td><td>〔说话人1 12:48〕</td><td>单选</td></tr>
+<tr><td>关节三结构+负压</td><td>§4–5</td><td>〔说话人1 42:57〕</td><td>名解</td></tr>
+<tr><td>踝背屈跖屈</td><td>§5</td><td>〔说话人1 55:42〕</td><td>易错单选</td></tr>
+<tr><td>寰枢隆椎</td><td>§6</td><td>〔说话人1 01:08:46〕</td><td>单选/标本</td></tr>
+<tr><td>胸骨角与肋计数</td><td>§7</td><td>〔说话人1 01:23:22〕</td><td>临床单选</td></tr>
+<tr><td>真假浮肋</td><td>§7</td><td>〔说话人1 01:27:39〕</td><td>单选</td></tr>
+</table>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>遗体捐献标本须尊重、爱惜</td><td>规范</td><td>§1</td><td>〔说话人1 04:05〕</td></tr><tr><td>2</td><td>标本不得拍照上传网络</td><td>规范</td><td>§1</td><td>〔说话人1 04:43〕</td></tr><tr><td>3</td><td>上课带课本、穿工作服</td><td>规范</td><td>§1</td><td>〔说话人1 04:46〕</td></tr><tr><td>4</td><td>实验课在解剖楼，内脏系统理论在教室</td><td>安排</td><td>§1</td><td>〔说话人3 05:28〕</td></tr><tr><td>5</td><td>解剖楼上午8:30上课与校历一致</td><td>安排</td><td>§1</td><td>〔说话人3 05:46〕</td></tr><tr><td>6</td><td>十一前下午2:30、十一后下午2:00</td><td>安排</td><td>§1</td><td>〔说话人1 06:06〕</td></tr><tr><td>7</td><td>课后分组整理标本摆放</td><td>规范</td><td>§1</td><td>〔说话人1 05:16〕</td></tr><tr><td>8</td><td>解剖绘图史推动解剖学与医学发展</td><td>背景</td><td>§1</td><td>〔说话人1 06:24〕</td></tr><tr><td>9</td><td>课堂提及伦勃朗解剖课场景画</td><td>背景</td><td>§1</td><td>〔说话人1 06:24〕</td></tr><tr><td>10</td><td>达芬奇手臂肌肉插图解剖精细</td><td>背景</td><td>§1</td><td>〔说话人1 06:24〕</td></tr><tr><td>11</td><td>达芬奇解剖手册去世后才出版</td><td>背景</td><td>§1</td><td>〔说话人1 06:24〕</td></tr><tr><td>12</td><td>卡哈尔（Cajal）神经元高尔基染色、诺奖</td><td>背景</td><td>§1</td><td>〔说话人1 10:24〕</td></tr><tr><td>13</td><td>米开朗基罗《论人体》/生理学著作</td><td>背景</td><td>§1</td><td>〔说话人1 10:24〕</td></tr><tr><td>14</td><td>14世纪华佗针灸图（讲稿转写「华侨」；教材2017英译版）</td><td>背景</td><td>§1</td><td>〔说话人3 10:22〕</td></tr><tr><td>15</td><td>1933儿童科学蓝图式中国科普宣传画</td><td>背景</td><td>§1</td><td>〔说话人1 10:24〕</td></tr><tr><td>16</td><td>画家用图示标注腹痛部位助诊断</td><td>背景</td><td>§1</td><td>〔说话人1 10:24〕</td></tr><tr><td>17</td><td>解剖绘图大赛：手绘或软件、禁止抄袭</td><td>活动</td><td>§1</td><td>〔说话人1 11:57〕</td></tr><tr><td>18</td><td>盖伦《医经》：中世纪欧洲权威、错误多</td><td>史</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>19</td><td>维萨里（Vesalius）：解剖学之父、《人体结构》</td><td>史</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>20</td><td>中国解剖学近现代才系统发展</td><td>史</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>21</td><td>宋慈《洗冤集录》描绘人体结构（法医）</td><td>史</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>22</td><td>1832英国《解剖法》允许死刑犯遗体解剖</td><td>史</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>23</td><td>倒卖遗体国内外均有严查（含哈佛案例）</td><td>伦理</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>24</td><td>中国遗体经红十字会捐献、严禁倒卖</td><td>伦理</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>25</td><td>显微解剖学、塑化标本技术发展</td><td>史</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>26</td><td>本校仅两具塑化标本在标本馆</td><td>史</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>27</td><td>美容、影像断层、耳鼻喉、口腔等应用解剖分支</td><td>学科</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>28</td><td>口腔解剖由口腔学单独讲授</td><td>学科</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>29</td><td>解剖学宗旨：正常人体形态与结构</td><td>定义</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>30</td><td>系统解剖学按功能系统述形态发生</td><td>定义</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>31</td><td>局部解剖学：局部配伍层次、外科基础</td><td>定义</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>32</td><td>基础医学专业只上系统解剖学</td><td>安排</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>33</td><td>人体构造：分子→细胞→组织→器官→系统</td><td>层次</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>34</td><td>胚胎学/细胞生物学属细胞水平课程</td><td>层次</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>35</td><td>运动系统：骨、骨连接、骨骼肌；保护躯体与运动</td><td>系统</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>36</td><td>内脏四系统：呼吸、消化、泌尿、生殖</td><td>系统</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>37</td><td>脉管系统：动脉、静脉、淋巴管</td><td>系统</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>38</td><td>神经系统最复杂、多靠显微与神经科学</td><td>系统</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>39</td><td>内分泌系统：甲状腺、性腺、松果体等</td><td>系统</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>40</td><td>松果体分泌褪黑素、调节生物节律</td><td>系统</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>41</td><td>感官系统：视、听</td><td>系统</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>42</td><td>局部解剖按头颈躯干四肢（临床方向）</td><td>学科</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>43</td><td>大课小课结合；运动系统在解剖楼</td><td>教学</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>44</td><td>理论考试60%：单选多选名解等</td><td>考核</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>45</td><td>平时20%：签到10%、期中测验等</td><td>考核</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>46</td><td>标本考试用全新视频（非二三十年旧片）</td><td>考核</td><td>§1</td><td>〔说话人1 12:48〕</td></tr><tr><td>47</td><td>标准解剖学姿势：直立面向前平视</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>48</td><td>上肢下垂、下肢并拢、足尖向前</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>49</td><td>掌心向前（非体育课立正向内）</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>50</td><td>掌心向前则拇指在食指外侧</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>51</td><td>上/下：近头为上、近足为下</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>52</td><td>前/后：胸腹前、背侧后</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>53</td><td>内/外侧：相对正中矢状面</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>54</td><td>内/外：腔隙内为内、腔外为外</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>55</td><td>浅/深：相对体表距离</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>56</td><td>近侧/远侧：相对躯干（四肢）</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>57</td><td>前臂尺侧/桡侧；小腿胫侧/腓侧</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>58</td><td>垂直轴：垂直地面</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>59</td><td>冠状轴：平行地面、左右贯穿</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>60</td><td>矢状轴：平行地面、前后方向</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>61</td><td>冠状面：沿冠状轴分前后</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>62</td><td>矢状面：沿矢状轴分左右</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>63</td><td>水平面：平行地面分上下</td><td>术语</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>64</td><td>解剖学描述优势正常结构（统计学）</td><td>原则</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>65</td><td>变异：差异不显著、仍属正常范围</td><td>原则</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>66</td><td>异常：出现概率极低</td><td>原则</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>67</td><td>体型：矮胖型、瘦长型、适中型</td><td>原则</td><td>§2</td><td>〔说话人1 12:48〕</td></tr><tr><td>68</td><td>运动系统：骨、骨连接、骨骼肌</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>69</td><td>成人206块骨（可有变异）</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>70</td><td>三对听小骨属感觉器、不计运动系统骨</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>71</td><td>中轴骨=颅骨+躯干骨；另分四肢骨</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>72</td><td>长骨：一体两端，多见于四肢</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>73</td><td>指骨虽短仍属长骨</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>74</td><td>短骨：腕骨、跗骨，成群立方</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>75</td><td>扁骨：围成腔隙，如颅骨、肋骨</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>76</td><td>肋骨虽长属扁骨（围胸腔）</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>77</td><td>不规则骨：椎骨、筛骨等含空腔</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>78</td><td>骨干：中间细长、含骨髓腔</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>79</td><td>骺：两端膨大</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>80</td><td>干骺端：骨干与骺交界</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>81</td><td>骺线：软骨、成骨细胞促生长</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>82</td><td>骺线闭合则骨不再生长</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>83</td><td>12岁前X线骺线明显；测骨龄看腕</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>84</td><td>骨密质：表层致密抗压</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>85</td><td>骨松质：内部骨小梁交织</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>86</td><td>骨膜：纤维膜、血管神经、成/破骨细胞</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>87</td><td>骨膜：营养、再生、感觉</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>88</td><td>红骨髓造血；胎儿期几乎全骨红骨髓</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>89</td><td>成人长骨髓腔多为黄骨髓（脂肪）</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>90</td><td>骨髓穿刺常取髂骨或胸骨</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>91</td><td>黄骨髓失血等可转化为红骨髓</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>92</td><td>有机质：胶原与粘多糖→韧性弹性</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>93</td><td>无机质：碱性磷酸钙→硬度脆性</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>94</td><td>脱钙骨可弯折；煅烧骨脆碎</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>95</td><td>年龄↑有机质↓无机质↑→易骨折</td><td>骨</td><td>§3</td><td>〔说话人1 12:48〕</td></tr><tr><td>96</td><td>骨连接分直接连接与间接连接</td><td>连接</td><td>§4</td><td>〔说话人1 12:48〕</td></tr><tr><td>97</td><td>直接连接：缝、软骨、韧带、骨性结合</td><td>连接</td><td>§4</td><td>〔说话人1 12:48〕</td></tr><tr><td>98</td><td>颅骨缝连接；髋骨多块骨化融合</td><td>连接</td><td>§4</td><td>〔说话人1 12:48〕</td></tr><tr><td>99</td><td>椎间盘为软骨连接；椎间韧带为纤维连接</td><td>连接</td><td>§4</td><td>〔说话人1 12:48〕</td></tr><tr><td>100</td><td>关节=间接连接、活动度最大</td><td>连接</td><td>§4</td><td>〔说话人2 40:51〕</td></tr><tr><td>101</td><td>关节面：关节头凸、关节窝凹</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>102</td><td>关节面覆软骨减摩擦增弹性</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>103</td><td>关节囊外纤维膜内滑膜</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>104</td><td>滑膜分泌滑液润滑营养</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>105</td><td>关节腔负压、含滑液</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>106</td><td>肩关节囊较薄→活动大易脱位</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>107</td><td>韧带囊内/囊外：稳固限制运动</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>108</td><td>膝关节交叉韧带为囊内韧带</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>109</td><td>关节盘（半月板）缓冲、分腔增运动</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>110</td><td>关节唇加深关节窝增稳定性</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>111</td><td>滑膜襞/滑膜垫：填充调节滑液</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>112</td><td>滑膜囊：减肌腱与骨面摩擦</td><td>连接</td><td>§4</td><td>〔说话人1 42:57〕</td></tr><tr><td>113</td><td>屈伸沿冠状轴、角度变小为屈</td><td>运动</td><td>§4</td><td>〔说话人1 55:42〕</td></tr><tr><td>114</td><td>收展沿矢状轴、靠正中为收</td><td>运动</td><td>§4</td><td>〔说话人1 55:42〕</td></tr><tr><td>115</td><td>旋转沿垂直轴；旋内/旋前、旋外/旋后</td><td>运动</td><td>§4</td><td>〔说话人1 55:42〕</td></tr><tr><td>116</td><td>环转：屈展伸收连续、远端画圆</td><td>运动</td><td>§4</td><td>〔说话人1 55:42〕</td></tr><tr><td>117</td><td>踝屈伸与日常相反：跖屈为屈、背屈为伸</td><td>运动</td><td>§4</td><td>〔说话人1 55:42〕</td></tr><tr><td>118</td><td>拇指掌指关节屈伸展收轴与四指相反</td><td>运动</td><td>§4</td><td>〔说话人1 55:42〕</td></tr><tr><td>119</td><td>单关节两骨；复关节两骨以上</td><td>分类</td><td>§4</td><td>〔说话人1 59:15〕</td></tr><tr><td>120</td><td>单动关节可单独动；联动如颞下颌</td><td>分类</td><td>§4</td><td>〔说话人1 59:15〕</td></tr><tr><td>121</td><td>腕骨多关节联动</td><td>分类</td><td>§4</td><td>〔说话人1 59:15〕</td></tr><tr><td>122</td><td>单轴：仅屈伸如指间关节</td><td>分类</td><td>§4</td><td>〔说话人1 58:19〕</td></tr><tr><td>123</td><td>双轴：屈伸+收展如掌指关节</td><td>分类</td><td>§4</td><td>〔说话人1 58:19〕</td></tr><tr><td>124</td><td>多轴：可旋转如肩髋</td><td>分类</td><td>§4</td><td>〔说话人1 58:19〕</td></tr><tr><td>125</td><td>躯干骨=椎骨+肋骨+胸骨</td><td>躯干</td><td>§5</td><td>〔说话人1 01:01:52〕</td></tr><tr><td>126</td><td>躯干骨+颅骨=中轴骨</td><td>躯干</td><td>§5</td><td>〔说话人1 01:02:21〕</td></tr><tr><td>127</td><td>幼年椎骨32–33；成年独立24+骶+尾</td><td>躯干</td><td>§5</td><td>〔说话人1 01:02:21〕</td></tr><tr><td>128</td><td>颈椎7、胸椎12、腰椎5</td><td>躯干</td><td>§5</td><td>〔说话人1 01:02:21〕</td></tr><tr><td>129</td><td>5骶椎融合骶骨；3–4尾椎融合尾骨</td><td>躯干</td><td>§5</td><td>〔说话人1 01:02:21〕</td></tr><tr><td>130</td><td>椎体在前承重、间盘连接</td><td>躯干</td><td>§5</td><td>〔说话人1 01:05:03〕</td></tr><tr><td>131</td><td>椎弓与椎体围成椎孔→椎管容脊髓</td><td>躯干</td><td>§5</td><td>〔说话人1 01:05:03〕</td></tr><tr><td>132</td><td>7突起：1棘突2横突4关节突</td><td>躯干</td><td>§5</td><td>〔说话人1 01:05:03〕</td></tr><tr><td>133</td><td>椎上下切迹围成椎间孔通神经血管</td><td>躯干</td><td>§5</td><td>〔说话人1 01:05:03〕</td></tr><tr><td>134</td><td>腰椎间盘突出压椎间孔神经非掉入椎管</td><td>躯干</td><td>§5</td><td>〔说话人1 01:05:03〕</td></tr><tr><td>135</td><td>寰椎C1：无椎体、环状、前弓后弓侧块</td><td>颈椎</td><td>§5</td><td>〔说话人1 01:08:46〕</td></tr><tr><td>136</td><td>寰椎前弓齿突凹与枢椎齿突相关节</td><td>颈椎</td><td>§5</td><td>〔说话人1 01:08:46〕</td></tr><tr><td>137</td><td>寰枢正中关节</td><td>颈椎</td><td>§5</td><td>〔说话人1 01:08:46〕</td></tr><tr><td>138</td><td>枢椎齿突由第一颈椎椎体与第二颈椎椎体融合形成</td><td>颈椎</td><td>§5</td><td>〔说话人1 01:08:46〕</td></tr><tr><td>139</td><td>寰椎后弓椎动脉沟；椎动脉经横突孔入颅</td><td>颈椎</td><td>§5</td><td>〔说话人1 01:08:46〕</td></tr><tr><td>140</td><td>寰枕关节：C1上关节面与枕骨</td><td>颈椎</td><td>§5</td><td>〔说话人1 01:08:46〕</td></tr><tr><td>141</td><td>隆椎C7：棘突最长、不分叉、体表标志</td><td>颈椎</td><td>§5</td><td>〔说话人1 01:08:46〕</td></tr><tr><td>142</td><td>颈椎横突孔；椎动脉自C6向上</td><td>颈椎</td><td>§5</td><td>〔说话人1 01:08:46〕</td></tr><tr><td>143</td><td>C2–6棘突末端分叉</td><td>颈椎</td><td>§5</td><td>〔说话人1 01:08:46〕</td></tr><tr><td>144</td><td>钩椎关节：椎体钩；增生→颈椎病</td><td>颈椎</td><td>§5</td><td>〔说话人1 01:08:46〕</td></tr><tr><td>145</td><td>颈动脉结节：C6横突前结节压迫止血</td><td>颈椎</td><td>§5</td><td>〔说话人1 01:16:32〕</td></tr><tr><td>146</td><td>胸椎肋凹+横突肋凹与肋相关节</td><td>胸椎</td><td>§6</td><td>〔说话人1 01:16:32〕</td></tr><tr><td>147</td><td>胸椎棘突长、斜向下、叠瓦状</td><td>胸椎</td><td>§6</td><td>〔说话人1 01:16:32〕</td></tr><tr><td>148</td><td>胸椎关节突关节面近冠状位</td><td>胸椎</td><td>§6</td><td>〔说话人1 01:16:32〕</td></tr><tr><td>149</td><td>T2–10上下肋凹；T1/T11/T12全肋凹</td><td>胸椎</td><td>§6</td><td>〔说话人1 01:16:32〕</td></tr><tr><td>150</td><td>T11/T12无横突肋凹</td><td>胸椎</td><td>§6</td><td>〔说话人1 01:16:32〕</td></tr><tr><td>151</td><td>腰椎椎体肥大；棘突板状水平向后</td><td>腰椎</td><td>§6</td><td>〔说话人1 01:19:43〕</td></tr><tr><td>152</td><td>腰穿经腰椎棘突间隙；马尾已细</td><td>腰椎</td><td>§6</td><td>〔说话人1 01:19:43〕</td></tr><tr><td>153</td><td>腰椎关节突矢状位</td><td>腰椎</td><td>§6</td><td>〔说话人1 01:19:43〕</td></tr><tr><td>154</td><td>骶骨5骶椎融合、三角形</td><td>骶</td><td>§6</td><td>〔说话人1 01:20:53〕</td></tr><tr><td>155</td><td>骶管上通椎管；骶管裂孔下端开口</td><td>骶</td><td>§6</td><td>〔说话人1 01:20:53〕</td></tr><tr><td>156</td><td>骶前孔/骶后孔；骶正中嵴</td><td>骶</td><td>§6</td><td>〔说话人1 01:20:53〕</td></tr><tr><td>157</td><td>耳状面与髋骨成骶髂关节</td><td>骶</td><td>§6</td><td>〔说话人1 01:20:53〕</td></tr><tr><td>158</td><td>尾骨末端游离、易骨折</td><td>骶</td><td>§6</td><td>〔说话人1 01:20:53〕</td></tr><tr><td>159</td><td>胸骨柄+体+剑突；胸骨角柄体交界</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:23:22〕</td></tr><tr><td>160</td><td>胸骨角平对第2肋、向后对第4胸椎下缘</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:23:22〕</td></tr><tr><td>161</td><td>颈静脉切迹；锁切迹锁胸关节</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:23:22〕</td></tr><tr><td>162</td><td>第1肋切迹与第1肋胸肋关节</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:23:22〕</td></tr><tr><td>163</td><td>肋=肋骨+肋软骨（透明软骨终生不骨化）</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:23:22〕</td></tr><tr><td>164</td><td>真肋1–7肋软骨直连胸骨</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:27:39〕</td></tr><tr><td>165</td><td>假肋8–10连于第7肋软骨</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:27:39〕</td></tr><tr><td>166</td><td>浮肋11–12前端游离</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:27:39〕</td></tr><tr><td>167</td><td>肋弓：两侧肋软骨至胸骨弓状</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:27:39〕</td></tr><tr><td>168</td><td>肋骨头→肋颈→肋结节→肋体</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:27:39〕</td></tr><tr><td>169</td><td>肋角后折向前；肋沟贴肋间神经血管</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:27:39〕</td></tr><tr><td>170</td><td>第1肋：锁骨下动静脉沟、前斜角肌结节</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:27:39〕</td></tr><tr><td>171</td><td>第11–12肋无肋结节/肋颈等（浮肋）</td><td>胸肋</td><td>§7</td><td>〔说话人1 01:27:39〕</td></tr></table>
+<p class="foot">附录 D 共 171 条，与 recording.md 讲授知识点一一对应。</p>
+</div>
+
+</body></html>

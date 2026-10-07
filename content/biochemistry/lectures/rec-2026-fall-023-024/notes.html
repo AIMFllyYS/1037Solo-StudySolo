@@ -1,22 +1,374 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>糖代谢复习·可视化</title>
-<style>
-body{font-family:"Microsoft YaHei",sans-serif;background:#FAF8F1;color:#24201A;margin:0;line-height:1.7;font-size:10.5pt}
-.page{width:210mm;min-height:297mm;margin:0 auto;padding:18mm 16mm}
-h1{color:#1F5C39;font-size:24pt;border-bottom:2.5pt solid #2E7D4F;padding-bottom:3mm}
-h2{color:#1F5C39;font-size:15pt;margin:7mm 0 3mm;border-left:4pt solid #2E7D4F;padding-left:3mm}
-table{width:100%;border-collapse:collapse;margin:3mm 0}th{background:#2E7D4F;color:#fff;padding:2mm;text-align:left}td{padding:2mm;border-bottom:.5pt solid #E6DECC}
-tr:nth-child(even) td{background:#fff}
-.tip{background:#F8ECD3;border-left:3pt solid #A2630C;padding:3mm;margin:3mm 0}
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>生物化学与分子生物学 · 第23-24节 · 糖代谢总复习与血糖调节</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#4A6B1F; --accent-d:#33490F; --accent-t:#EDF2E1;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
 </style></head><body>
-<div class="page"><h1>糖代谢复习与血糖<span style="color:#A2630C">可视化</span></h1>
-<h2>血糖标准</h2>
-<table><tr><th>指标</th><th>数值</th></tr>
-<tr><td>空腹正常</td><td>3.9-6.0 mmol/L</td></tr>
-<tr><td>低血糖</td><td>&lt;2.8</td></tr>
-<tr><td>糖尿病</td><td>空腹≥7.0</td></tr></table>
-<h2>糖尿病分型</h2>
-<table><tr><th>类型</th><th>病因</th></tr>
-<tr><td>1型</td><td>胰岛素分泌不足</td></tr>
-<tr><td>2型</td><td>胰岛素抵抗</td></tr></table>
-<div class="tip">所有物质彻底氧化→乙酰CoA→TCA。乳酸可被心肌直接利用。</div>
-</div></body></html>
+<div class="page cover">
+<p class="h1">生物化学与分子生物学 · 第23-24节</p>
+<p class="meta">糖代谢总复习：血糖标准与糖尿病、途径串讲、来源去路 · 2026-09-30</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 24088 字 / 191 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>生物化学与分子生物学（biochemistry / rec-2026-fall-023-024）</td></tr>
+<tr><td>学时</td><td>2 学时（第23-24节）</td></tr>
+<tr><td>主题</td><td>糖异生复习、血糖异常与糖尿病、非糖物质氧化/异生、乳酸去向、进食饥饿肝调节、胰岛素缺乏代谢</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">复习糖异生四酶与血糖七条；串讲彻底氧化须乙酰 CoA；分组织谈乳酸；进食/饥饿扣来源去路。</p>
+<svg viewBox="0 0 720 210" width="100%" aria-label="知识框架">
+<rect x="260" y="6" width="200" height="30" fill="#EDF2E1" stroke="#4A6B1F"/>
+<text x="360" y="25" text-anchor="middle" font-size="11" font-family="sans-serif">血糖稳态与糖代谢复习</text>
+<line x1="360" y1="36" x2="100" y2="68" stroke="#4A6B1F"/><line x1="360" y1="36" x2="360" y2="68" stroke="#4A6B1F"/><line x1="360" y1="36" x2="620" y2="68" stroke="#4A6B1F"/>
+<rect x="20" y="68" width="160" height="50" fill="#fff" stroke="#33490F"/><text x="100" y="88" text-anchor="middle" font-size="9">糖异生·四酶</text><text x="100" y="104" text-anchor="middle" font-size="8">G6P 酶仅肝释糖</text>
+<rect x="280" y="68" width="160" height="50" fill="#fff" stroke="#33490F"/><text x="360" y="88" text-anchor="middle" font-size="9">血糖标准·糖尿病</text><text x="360" y="104" text-anchor="middle" font-size="8">OGTT·分型</text>
+<rect x="540" y="68" width="160" height="50" fill="#fff" stroke="#33490F"/><text x="620" y="88" text-anchor="middle" font-size="9">途径与调节</text><text x="620" y="104" text-anchor="middle" font-size="8">氧化·异生·乳酸</text>
+<line x1="100" y1="118" x2="100" y2="148" stroke="#4A6B1F"/><line x1="360" y1="118" x2="360" y2="148" stroke="#4A6B1F"/><line x1="620" y1="118" x2="620" y2="148" stroke="#4A6B1F"/>
+<rect x="40" y="148" width="120" height="36" fill="#EDF2E1" stroke="#4A6B1F"/><text x="100" y="170" text-anchor="middle" font-size="8">三来源四去路</text>
+<rect x="300" y="148" width="120" height="36" fill="#EDF2E1" stroke="#4A6B1F"/><text x="360" y="170" text-anchor="middle" font-size="8">乙酰 CoA→TCA</text>
+<rect x="560" y="148" width="120" height="36" fill="#EDF2E1" stroke="#4A6B1F"/><text x="620" y="170" text-anchor="middle" font-size="8">进食/饥饿肝</text>
+</svg>
+<ul class="kv">
+<li>本课衔接上节糖异生并进入糖代谢障碍与总复习 <span class="loc">〔说话人1 00:40〕</span></li>
+<li>总复习脉络：糖原合成与分解、乳酸循环、血糖来源与去路 <span class="loc">〔说话人1 20:45〕</span></li>
+<li>核心抓手：血糖来源三条、去路四条（共七条） <span class="loc">〔说话人1 20:45〕</span></li>
+<li>分组习题：彻底氧化、乳酸去向、肝维持血糖、胰岛素缺乏 <span class="loc">〔说话人1 21:39〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">1. 糖异生复习与生理意义</h2>
+<p class="lead">沿糖酵解逆反应须四酶绕三处不可逆；葡萄糖-6-磷酸酶仅肝有，故只有肝能释糖入血。</p>
+<div class="def"><b>糖异生</b>：肝、肾将非糖物质转变为葡萄糖；肝主要稳定血糖，肾参与酸碱平衡。 <span class="loc">〔说话人1 00:40〕</span></div>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>糖异生部位：肝脏（补血糖）与肾脏（酸碱平衡） <span class="loc">〔说话人1 00:40〕</span></li>
+<li>途径沿糖酵解逆反应，但须越过三处不可逆能障 <span class="loc">〔说话人1 01:52〕</span></li>
+<li>能障一：丙酮酸→PEP 由丙酮酸羧化酶与 PEP 羧激酶两酶取代 <span class="loc">〔说话人1 01:52〕</span></li>
+<li>能障二：1,6-二磷酸果糖→6-磷酸果糖，去一磷酸，酶为果糖-1,6-二磷酸酶（果糖二磷酸酶Ⅰ） <span class="loc">〔说话人1 02:42〕</span></li>
+<li>能障三：6-磷酸葡萄糖→葡萄糖，葡萄糖-6-磷酸酶去磷酸化 <span class="loc">〔说话人1 03:23〕</span></li>
+<li>葡萄糖-6-磷酸酶仅肝脏表达，其他组织不能生成葡萄糖释入血 <span class="loc">〔说话人1 03:23〕</span></li>
+<li>生理意义①饥饿时肝糖异生维持血糖水平 <span class="loc">〔说话人1 03:23〕</span></li>
+<li>生理意义②饥饿后进食恢复肝糖原储备 <span class="loc">〔说话人1 04:45〕</span></li>
+<li>生理意义③肾糖异生增强以维持体液酸碱平衡 <span class="loc">〔说话人1 00:40〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★选择题常考：非肝组织不能通过糖异生直接补充血糖。 <span class="loc">〔说话人1 03:23〕</span></div>
+<table class="tbl"><tr><th>糖异生关键酶</th><th>对应糖酵解不可逆步</th><th>反应要点</th></tr>
+<tr><td>丙酮酸羧化酶 + PEP 羧激酶</td><td>丙酮酸激酶</td><td>丙酮酸→PEP</td></tr>
+<tr><td>果糖-1,6-二磷酸酶Ⅰ</td><td>磷酸果糖激酶-1</td><td>F-1,6-BP→F-6-P</td></tr>
+<tr><td>葡萄糖-6-磷酸酶</td><td>己糖激酶/葡萄糖激酶</td><td>G-6-P→葡萄糖（仅肝）</td></tr></table></div>
+
+<div class="page"><h2 class="h2">2. 血糖浓度、糖耐量与低血糖</h2>
+<p class="lead">血糖为血液葡萄糖浓度；正常空腹 3.9–6.0 mmol/L；OGTT 看调控速度而非单次数值。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>血糖（blood glucose）：血液中葡萄糖浓度 <span class="loc">〔说话人1 04:59〕</span></li>
+<li>空腹血糖正常约 3.9–6.0 mmol/L <span class="loc">〔说话人1 04:59〕</span></li>
+<li>浓度过低或过高可致糖耐量异常、血糖水平异常 <span class="loc">〔说话人1 04:59〕</span></li>
+<li>葡萄糖耐量试验（OGTT）检测机体对血糖的调控反应性 <span class="loc">〔说话人1 05:33〕</span></li>
+<li>正常人口服葡萄糖后 0.5–1 h 达峰，下降迅速 <span class="loc">〔说话人1 05:33〕</span></li>
+<li>正常人 OGTT 2 h 血糖降至 7.8 mmol/L 以下，并逐步低于 6 mmol/L <span class="loc">〔说话人1 05:33〕</span></li>
+<li>糖尿病病人 OGTT：起效慢、下降缓，血糖持续偏高 <span class="loc">〔说话人1 06:26〕</span></li>
+<li>糖尿病诊断线索：OGTT 2 h 仍高于 11.1 mmol/L <span class="loc">〔说话人1 06:56〕</span></li>
+<li>仅测一次空腹血糖不能替代糖耐量对调控能力的评价 <span class="loc">〔说话人1 06:56〕</span></li>
+<li>低血糖：血糖 &lt;2.8 mmol/L <span class="loc">〔说话人1 07:33〕</span></li>
+<li>脑神经元只能依靠葡萄糖供能，低血糖可致休克、昏迷 <span class="loc">〔说话人1 07:33〕</span></li>
+<li>低血糖常见原因：胰性、肝性、内分泌异常、肿瘤、长期饥饿 <span class="loc">〔说话人1 07:59〕</span></li>
+</ul>
+<div class="mnem">空腹三九六零，低二八、高七点零；耐量两小时，七点八正常、十一点一糖尿病（整理）</div>
+<table class="tbl"><tr><th>指标</th><th>数值</th><th>意义</th></tr>
+<tr><td>空腹血糖正常</td><td>3.9–6.0 mmol/L</td><td>稳态参考</td></tr>
+<tr><td>低血糖</td><td>&lt;2.8 mmol/L</td><td>神经危象</td></tr>
+<tr><td>OGTT 2 h 正常</td><td>&lt;7.8 mmol/L</td><td>调控良好</td></tr>
+<tr><td>OGTT 2 h 糖尿病</td><td>&gt;11.1 mmol/L</td><td>持续高血糖</td></tr></table></div>
+
+<div class="page"><h2 class="h2">3. 高血糖、糖尿病分型与其他高血糖原因</h2>
+<p class="lead">空腹≥7 mmol/L 为高血糖，须结合 OGTT 与糖化血红蛋白判糖尿病；1 型分泌不足、2 型受体抵抗。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>空腹血糖 ≥7.0 mmol/L 称高血糖，不等于已确诊糖尿病 <span class="loc">〔说话人1 07:59〕</span></li>
+<li>确诊糖尿病需结合糖耐量试验与糖化血红蛋白是否阳性 <span class="loc">〔说话人1 07:59〕</span></li>
+<li>1 型糖尿病：胰岛素分泌不足（胰腺不产生足够信号） <span class="loc">〔说话人1 07:59〕</span></li>
+<li>2 型糖尿病：胰岛素抵抗，胰岛素受体缺陷、信号不被接纳 <span class="loc">〔说话人1 07:59〕</span></li>
+<li>肾小管葡萄糖重吸收障碍可致血糖升高但糖耐量曲线正常 <span class="loc">〔说话人1 09:06〕</span></li>
+<li>情绪激动、肾上腺素↑可动员肝糖原，致一过性高血糖 <span class="loc">〔说话人1 09:06〕</span></li>
+<li>静脉滴注 5% 葡萄糖过快可致血糖骤升、调节不及 <span class="loc">〔说话人1 09:06〕</span></li>
+<li>糖原储积症属糖原代谢异常；糖尿病为最常见糖代谢紊乱之一 <span class="loc">〔说话人1 10:20〕</span></li>
+<li>糖尿病典型：持续性高血糖 + 尿糖阳性 <span class="loc">〔说话人1 10:20〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★1 型「没信号」、2 型「不接收」——分泌不足 vs 受体抵抗。 <span class="loc">〔说话人1 10:20〕</span></div>
+<table class="tbl"><tr><th>分型</th><th>病因</th><th>口诀</th></tr>
+<tr><td>1 型糖尿病</td><td>胰岛素分泌不足</td><td>没信号</td></tr>
+<tr><td>2 型糖尿病</td><td>胰岛素受体缺陷/抵抗</td><td>不接收</td></tr></table></div>
+
+<div class="page"><h2 class="h2">4. 糖尿病流行、并发症与控糖提示</h2>
+<p class="lead">我国糖尿病患病率高且年轻化；控糖可减缓但不能完全阻止长期并发症。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>我国糖尿病患病数达亿级，发病呈高发与年轻化趋势 <span class="loc">〔说话人1 12:52〕</span></li>
+<li>我国糖尿病发病率居全球首位，相关研究受国家大力资助 <span class="loc">〔说话人1 18:11〕</span></li>
+<li>营养过剩、高碳水饮食与生活方式改变参与 2 型风险上升 <span class="loc">〔说话人1 12:52〕</span></li>
+<li>亚洲人群相对易在较低肥胖程度下出现糖代谢异常（与遗传背景相关） <span class="loc">〔说话人1 16:51〕</span></li>
+<li>降糖治疗可较快降低血糖，但难完全阻止并发症进展 <span class="loc">〔说话人1 18:51〕</span></li>
+<li>病程约 5–10 年常出现肾、肝、心、脑、眼、足等脏器并发症 <span class="loc">〔说话人1 18:51〕</span></li>
+<li>高血糖可致皮肤伤口难愈合，需严格控糖才易恢复 <span class="loc">〔说话人1 19:43〕</span></li>
+<li>控糖实践：晚餐少主食、勿过饱，避免长期餐后血糖调控不及 <span class="loc">〔说话人1 13:51〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">5. 血糖来源与去路（简答必考）</h2>
+<p class="lead">三来源、四去路共七条；答题始终扣「从哪里来、到哪里去」。</p>
+<div class="exam"><span class="tag">★考点</span>★本章最重要简答之一：三个来源、四个去路。 <span class="loc">〔说话人1 20:45〕</span></div>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>来源①食物消化吸收进入血液 <span class="loc">〔说话人1 20:45〕</span></li>
+<li>来源②肝糖原分解 <span class="loc">〔说话人1 20:45〕</span></li>
+<li>来源③非糖物质经糖异生生成葡萄糖 <span class="loc">〔说话人1 20:45〕</span></li>
+<li>去路①氧化供能（最主要） <span class="loc">〔说话人1 21:39〕</span></li>
+<li>去路②合成糖原储存 <span class="loc">〔说话人1 01:23:37〕</span></li>
+<li>去路③转化为脂肪、氨基酸等 <span class="loc">〔说话人1 21:39〕</span></li>
+<li>去路④经支路合成其他生物活性物质（如磷酸戊糖途径产物） <span class="loc">〔说话人1 21:39〕</span></li>
+<li>彻底分解非糖物质：下游走有氧氧化；向上则糖异生 <span class="loc">〔说话人1 21:39〕</span></li>
+</ul>
+<table class="tbl"><tr><th>三个来源</th><th>四个去路</th></tr>
+<tr><td>食物消化吸收</td><td>氧化磷酸化供能</td></tr>
+<tr><td>肝糖原分解</td><td>糖原合成</td></tr>
+<tr><td>糖异生（乳酸/甘油/生糖氨基酸等）</td><td>合成脂肪、氨基酸等；磷酸戊糖等支路</td></tr></table></div>
+
+<div class="page"><h2 class="h2">6. 彻底氧化：须先成乙酰 CoA（2 碳）</h2>
+<p class="lead">追踪碳原子：甘油三碳、乳酸三碳、丙酮酸三碳、草酰乙酸四碳、α-酮戊二酸五碳，彻底氧化均须变为乙酰 CoA 进 TCA。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>彻底氧化分解须先将碳骨架变为二碳乙酰辅酶 A <span class="loc">〔说话人1 01:11:13〕</span></li>
+<li>TCA 循环只接受乙酰 CoA 为二碳单位彻底氧化，无其他底物替代 <span class="loc">〔说话人1 01:10:11〕</span></li>
+<li>甘油经甘油激酶磷酸化→3-磷酸甘油→与磷酸二羟丙酮互变→糖酵解下行→丙酮酸→乙酰 CoA→CO₂+H₂O <span class="loc">〔说话人1 01:11:13〕</span></li>
+<li>甘油进入糖酵解的关键中间物是磷酸二羟丙酮，非直接到丙酮酸 <span class="loc">〔说话人1 01:11:13〕</span></li>
+<li>乳酸先变为丙酮酸，再经丙酮酸脱氢生成乙酰 CoA 彻底氧化 <span class="loc">〔说话人1 01:12:04〕</span></li>
+<li>丙氨酸经谷丙转氨酶将氨基转给 α-酮戊二酸，自身变为丙酮酸后走氧化通路 <span class="loc">〔说话人1 01:12:43〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">7. 草酰乙酸与 α-酮戊二酸：氧化路径差异</h2>
+<p class="lead">草酰乙酸可在胞液经 PEP 羧激酶变 PEP；α-酮戊二酸须入线粒体沿 TCA 下半段至苹果酸出线粒体。</p>
+<div class="exam"><span class="tag">★考点</span>★线粒体膜有 α-酮戊二酸载体，无草酰乙酸载体——两酸氧化/异生路线易混。 <span class="loc">〔说话人1 01:13:25〕</span></div>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>草酰乙酸可来自天冬氨酸脱氨基（胞液中发生） <span class="loc">〔说话人1 01:13:25〕</span></li>
+<li>α-酮戊二酸可来自谷氨酸脱氨基 <span class="loc">〔说话人1 01:08:28〕</span></li>
+<li>PEP 羧激酶在胞液与线粒体均有，草酰乙酸在胞液可直接 4 碳→3 碳 PEP，无需穿梭 <span class="loc">〔说话人1 01:13:25〕</span></li>
+<li>草酰乙酸氧化：胞液 PEP→丙酮酸→乙酰 CoA→TCA <span class="loc">〔说话人1 01:13:25〕</span></li>
+<li>α-酮戊二酸须经线粒体膜载体进入线粒体 <span class="loc">〔说话人1 01:13:25〕</span></li>
+<li>α-酮戊二酸在线粒体沿 TCA 下半段至苹果酸出线粒体，可携带还原当量 <span class="loc">〔说话人1 01:13:25〕</span></li>
+<li>彻底氧化时线粒体出的 NADH 须再穿梭回线粒体产能，效率降低 <span class="loc">〔说话人1 01:15:02〕</span></li>
+<li>该 NADH 穿梭回线粒体后可产约 1.5 或 2.5 ATP（存在变量） <span class="loc">〔说话人1 01:15:02〕</span></li>
+<li>苹果酸出线粒体后变草酰乙酸，再经 PEP 羧激酶→PEP→丙酮酸→乙酰 CoA <span class="loc">〔说话人1 01:15:36〕</span></li>
+<li>胞液糖异生途径中 PEP 羧激酶在胞液与线粒体均存在 <span class="loc">〔说话人1 01:07:56〕</span></li>
+</ul>
+<table class="tbl"><tr><th>中间物</th><th>彻底氧化要点</th><th>与异生关系</th></tr>
+<tr><td>草酰乙酸（4C）</td><td>胞液 PEP 羧激酶→PEP，不需 OAA 穿梭</td><td>PEP 向上异生</td></tr>
+<tr><td>α-酮戊二酸（5C）</td><td>先入线粒体→苹果酸出线粒体</td><td>须苹果酸转运后再升糖</td></tr></table></div>
+
+<div class="page"><h2 class="h2">8. 糖异生切入点与中间物走向</h2>
+<p class="lead">同一中间物可上行异生或下行氧化；甘油最简单从磷酸二羟丙酮切入。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>甘油异生糖：磷酸二羟丙酮切入，经糖异生途径合成葡萄糖 <span class="loc">〔说话人1 01:16:29〕</span></li>
+<li>乳酸沿糖酵解逆反应上行异生 <span class="loc">〔说话人1 01:16:29〕</span></li>
+<li>丙酮酸/丙氨酸等三碳底物异生路径与乳酸类似 <span class="loc">〔说话人1 01:16:29〕</span></li>
+<li>草酰乙酸在胞液经 PEP 羧激酶得 PEP 后向上异生，不先下行氧化 <span class="loc">〔说话人1 01:17:13〕</span></li>
+<li>α-酮戊二酸异生须先入线粒体至苹果酸出线粒体→草酰乙酸→PEP 再上行 <span class="loc">〔说话人1 01:17:13〕</span></li>
+<li>中间代谢物一旦切入糖酵解/糖异生，由细胞需求决定上行异生或下行氧化 <span class="loc">〔说话人1 01:17:13〕</span></li>
+<li>答题须追踪碳源并明确从哪一步「切入」 <span class="loc">〔说话人1 01:17:13〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">9. 乳酸代谢：组织差异与乳酰化</h2>
+<p class="lead">剧烈运动产乳酸入血；并非全部回肝，心肌等可氧化利用；肝糖异生、肾糖异生酸碱调节，肌主要分泌乳酸。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>剧烈运动耗 ATP、血糖偏低时肌肉产生乳酸进入血液循环 <span class="loc">〔说话人1 01:19:12〕</span></li>
+<li>乳酸经全身循环，多种脏器可利用乳酸，非仅肝脏 <span class="loc">〔说话人1 01:19:12〕</span></li>
+<li>外源乳酸可致代谢重编程，组蛋白乳酰化修饰改变染色质与转录 <span class="loc">〔说话人1 01:19:12〕</span></li>
+<li>乳酰化类似磷酸化，可改变蛋白质结构与功能、开放基因表达 <span class="loc">〔说话人1 01:19:12〕</span></li>
+<li>代谢重编程可致节食后仍倾向脂肪合成（酶表达已上调） <span class="loc">〔说话人1 01:20:44〕</span></li>
+<li>心脏：利用乳酸氧化供能 <span class="loc">〔说话人1 01:21:14〕</span></li>
+<li>肝脏：乳酸主要经糖异生补充血糖（乳酸循环/Cori cycle） <span class="loc">〔说话人1 01:21:14〕</span></li>
+<li>肾脏：代谢乳酸并经糖异生参与酸碱平衡 <span class="loc">〔说话人1 01:21:14〕</span></li>
+<li>肌肉：产生并分泌乳酸，不能完成释糖性糖异生 <span class="loc">〔说话人1 01:21:14〕</span></li>
+</ul>
+<table class="tbl"><tr><th>组织</th><th>乳酸主要去向</th><th>生理目的</th></tr>
+<tr><td>心肌</td><td>氧化分解供能</td><td>心肌耗能多</td></tr>
+<tr><td>肝脏</td><td>糖异生→葡萄糖</td><td>维持血糖</td></tr>
+<tr><td>肾脏</td><td>糖异生</td><td>酸碱平衡</td></tr>
+<tr><td>骨骼肌</td><td>分泌入血</td><td>无 G6P 酶，不释糖</td></tr></table></div>
+
+<div class="page"><h2 class="h2">10. 进食与饥饿：肝脏如何维持血糖</h2>
+<p class="lead">进食血糖高→增加去路；饥饿血糖低→节约氧化、动员糖原与糖异生，脑与红细胞仍用糖。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>进食状态血糖升高，机体增加血糖去路以降低血糖 <span class="loc">〔说话人1 01:22:01〕</span></li>
+<li>全身优先利用葡萄糖氧化供能，激素可诱导葡萄糖转运体上膜摄取 <span class="loc">〔说话人1 01:22:40〕</span></li>
+<li>肝、肌除氧化外可合成糖原储存 <span class="loc">〔说话人1 01:23:37〕</span></li>
+<li>肝糖原储备约 70–100 g，满后多余葡萄糖可合成脂肪 <span class="loc">〔说话人1 01:23:37〕</span></li>
+<li>合成脂肪需 NADPH，肝可经磷酸戊糖途径提供还原力 <span class="loc">〔说话人1 01:24:03〕</span></li>
+<li>饥饿状态血糖降低，组织尽量节约葡萄糖氧化（脑、红细胞除外） <span class="loc">〔说话人1 01:24:03〕</span></li>
+<li>饥饿时肝糖原分解旺盛，随后氨基酸分解增加、糖异生旺盛 <span class="loc">〔说话人1 01:25:07〕</span></li>
+<li>饥饿同时脂肪动员氧化供能 <span class="loc">〔说话人1 01:25:07〕</span></li>
+<li>综合考试可要求联答脂代谢、氨基酸代谢，本课先扣糖七条 <span class="loc">〔说话人1 01:22:40〕</span></li>
+</ul>
+<div class="grid"><div class="card"><b>进食（降糖）</b><br>氧化供能↑；糖原合成↑；转脂肪↑；磷酸戊糖途径供 NADPH</div>
+<div class="card"><b>饥饿（升糖）</b><br>糖原分解↑；糖异生↑；脂肪氧化↑；脑/红细胞仍用葡萄糖</div></div></div>
+
+<div class="page"><h2 class="h2">11. 胰岛素分泌减少：糖代谢异常答题框架</h2>
+<p class="lead">结合胰岛素受体信号转导，对照高血糖时关键酶磷酸化状态；须写糖原合酶、磷酸化酶、糖异生酶等。</p>
+<div class="exam"><span class="tag">★考点</span>★爬坡题：胰岛素缺乏≈胰岛素通路被阻断，按「高血糖调节」反向分析各关键酶。 <span class="loc">〔说话人1 01:26:16〕</span></div>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>题目限定激素调节时，从胰岛素与受体复合物信号转导写起 <span class="loc">〔说话人1 01:26:16〕</span></li>
+<li>胰岛素通路亢进时磷蛋白磷酸酶旺盛，促进关键酶去磷酸化 <span class="loc">〔说话人1 01:26:16〕</span></li>
+<li>胰岛素缺乏时该通路被阻断，去磷酸化状态消失，表现为高血糖 <span class="loc">〔说话人1 01:26:16〕</span></li>
+<li>须逐条检查糖酵解、糖原合成/分解、糖异生各关键酶磷酸化是否异常 <span class="loc">〔说话人1 01:28:00〕</span></li>
+<li>胰岛素缺乏：细胞摄取葡萄糖减少，血糖升高 <span class="loc">〔说话人2 59:14〕</span></li>
+<li>糖原合酶活化受阻，肝糖原合成减少 <span class="loc">〔说话人1 01:28:00〕</span></li>
+<li>糖原磷酸化酶抑制减弱，糖原分解相对增强 <span class="loc">〔说话人1 01:28:00〕</span></li>
+<li>胰岛素对糖异生抑制作用减弱，糖异生相对增强 <span class="loc">〔说话人2 59:14〕</span></li>
+<li>促进脂肪酸合成通路减弱，葡萄糖氧化受阻、体型消瘦 <span class="loc">〔说话人2 59:14〕</span></li>
+<li>复习须自己动手写一遍，避免只听不练 <span class="loc">〔说话人1 23:18〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv">
+<li>糖异生四酶：丙酮酸羧化酶+PEP 羧激酶、果糖-1,6-二磷酸酶Ⅰ、G-6-P 酶（仅肝释糖） <span class="loc">〔说话人1 03:23〕</span></li>
+<li>糖异生生理意义三条：饥饿肝补糖、进食后补糖原、肾酸碱 <span class="loc">〔说话人1 04:59〕</span></li>
+<li>空腹 3.9–6.0；低血糖 &lt;2.8；空腹高血糖 ≥7.0；OGTT 2 h &gt;11.1 诊糖尿病 <span class="loc">〔说话人1 06:56〕</span></li>
+<li>1 型分泌不足、2 型受体抵抗；持续高血糖+尿糖 <span class="loc">〔说话人1 10:20〕</span></li>
+<li>血糖三来源、四去路 <span class="loc">〔说话人1 20:45〕</span></li>
+<li>彻底氧化必先乙酰 CoA（2 碳）进 TCA <span class="loc">〔说话人1 01:10:11〕</span></li>
+<li>甘油→磷酸二羟丙酮；乳酸→丙酮酸；心肌直接用乳酸 <span class="loc">〔说话人1 01:12:04〕</span></li>
+<li>草酰乙酸胞液 PEP 羧激酶；α-酮戊二酸须苹果酸出线粒体 <span class="loc">〔说话人1 01:13:25〕</span></li>
+<li>进食肝：氧化、糖原、脂肪、磷酸戊糖；饥饿：糖原分解+糖异生+脂肪氧化 <span class="loc">〔说话人1 01:24:03〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>任何组织糖异生都能释糖入血</td><td>仅肝有 G-6-P 酶，肌等不能生成游离葡萄糖 <span class="loc">〔说话人1 03:23〕</span></td></tr>
+<tr><td>空腹≥7 即确诊糖尿病</td><td>须结合 OGTT 与糖化血红蛋白 <span class="loc">〔说话人1 07:59〕</span></td></tr>
+<tr><td>乳酸全部回肝</td><td>心肌等可直接利用；肝肾异生、肌分泌 <span class="loc">〔说话人1 01:19:12〕</span></td></tr>
+<tr><td>甘油先变丙酮酸</td><td>甘油→磷酸二羟丙酮插入糖酵解 <span class="loc">〔说话人1 01:11:13〕</span></td></tr>
+<tr><td>草酰乙酸须苹果酸穿梭才氧化</td><td>胞液已有 PEP 羧激酶，4C→PEP 不需 OAA 载体 <span class="loc">〔说话人1 01:13:25〕</span></td></tr>
+<tr><td>α-酮戊二酸与草酰乙酸氧化相同</td><td>α-酮戊二酸须入线粒体经苹果酸转出 <span class="loc">〔说话人1 01:15:36〕</span></td></tr>
+<tr><td>仅查空腹血糖即可评糖尿病</td><td>OGTT 评价调控反应性 <span class="loc">〔说话人1 06:56〕</span></td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>糖异生四酶与 G-6-P 酶仅肝</td><td>§1</td><td>〔说话人1 03:23〕</td><td>单选/简答</td></tr>
+<tr><td>糖异生生理意义三条</td><td>§1</td><td>〔说话人1 04:59〕</td><td>简答</td></tr>
+<tr><td>血糖正常与 OGTT 界值</td><td>§2</td><td>〔说话人1 06:56〕</td><td>单选</td></tr>
+<tr><td>低血糖与脑供能</td><td>§2</td><td>〔说话人1 07:33〕</td><td>单选</td></tr>
+<tr><td>1 型 vs 2 型</td><td>§3</td><td>〔说话人1 10:20〕</td><td>单选</td></tr>
+<tr><td>血糖来源三、去路四</td><td>§5</td><td>〔说话人1 20:45〕</td><td>简答</td></tr>
+<tr><td>乙酰 CoA 与 TCA 唯一二碳</td><td>§6</td><td>〔说话人1 01:10:11〕</td><td>简答</td></tr>
+<tr><td>草酰乙酸 vs α-酮戊二酸</td><td>§7</td><td>〔说话人1 01:13:25〕</td><td>单选/计算</td></tr>
+<tr><td>乳酸组织去向</td><td>§9</td><td>〔说话人1 01:21:14〕</td><td>简答/表格</td></tr>
+<tr><td>进食/饥饿肝调节</td><td>§10</td><td>〔说话人1 01:24:03〕</td><td>论述</td></tr>
+<tr><td>胰岛素缺乏代谢异常</td><td>§11</td><td>〔说话人1 01:28:00〕</td><td>论述</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>糖异生定义与肝肾部位</td><td>名词</td><td>§1</td><td>〔说话人1 00:40〕</td></tr>
+<tr><td>2</td><td>肝糖异生补血糖、肾糖异生酸碱</td><td>生理</td><td>§1</td><td>〔说话人1 00:40〕</td></tr>
+<tr><td>3</td><td>糖异生沿酵解逆反应三能障</td><td>机制</td><td>§1</td><td>〔说话人1 01:52〕</td></tr>
+<tr><td>4</td><td>丙酮酸→PEP 两酶取代</td><td>酶</td><td>§1</td><td>〔说话人1 01:52〕</td></tr>
+<tr><td>5</td><td>果糖-1,6-二磷酸酶Ⅰ</td><td>酶</td><td>§1</td><td>〔说话人1 02:42〕</td></tr>
+<tr><td>6</td><td>葡萄糖-6-磷酸酶去磷酸化</td><td>酶</td><td>§1</td><td>〔说话人1 03:23〕</td></tr>
+<tr><td>7</td><td>G-6-P 酶仅肝、非肝不释糖</td><td>考点</td><td>§1</td><td>〔说话人1 03:23〕</td></tr>
+<tr><td>8</td><td>饥饿肝糖异生维持血糖</td><td>生理</td><td>§1</td><td>〔说话人1 03:23〕</td></tr>
+<tr><td>9</td><td>进食后恢复肝糖原储备</td><td>生理</td><td>§1</td><td>〔说话人1 04:45〕</td></tr>
+<tr><td>10</td><td>肾糖异生维持酸碱平衡</td><td>生理</td><td>§1</td><td>〔说话人1 00:40〕</td></tr>
+<tr><td>11</td><td>血糖概念</td><td>名词</td><td>§2</td><td>〔说话人1 04:59〕</td></tr>
+<tr><td>12</td><td>空腹血糖 3.9–6.0 mmol/L</td><td>数字</td><td>§2</td><td>〔说话人1 04:59〕</td></tr>
+<tr><td>13</td><td>OGTT 测调控反应性</td><td>机制</td><td>§2</td><td>〔说话人1 05:33〕</td></tr>
+<tr><td>14</td><td>正常人 OGTT 0.5–1 h 峰</td><td>数字</td><td>§2</td><td>〔说话人1 05:33〕</td></tr>
+<tr><td>15</td><td>OGTT 2 h &lt;7.8 mmol/L 正常</td><td>数字</td><td>§2</td><td>〔说话人1 06:26〕</td></tr>
+<tr><td>16</td><td>糖尿病 OGTT 2 h &gt;11.1</td><td>数字</td><td>§2</td><td>〔说话人1 06:56〕</td></tr>
+<tr><td>17</td><td>低血糖 &lt;2.8 mmol/L</td><td>数字</td><td>§2</td><td>〔说话人1 07:33〕</td></tr>
+<tr><td>18</td><td>脑神经元只靠葡萄糖供能</td><td>生理</td><td>§2</td><td>〔说话人1 07:33〕</td></tr>
+<tr><td>19</td><td>空腹≥7 为高血糖非必然糖尿病</td><td>易错</td><td>§3</td><td>〔说话人1 07:59〕</td></tr>
+<tr><td>20</td><td>1 型胰岛素分泌不足</td><td>分类</td><td>§3</td><td>〔说话人1 07:59〕</td></tr>
+<tr><td>21</td><td>2 型胰岛素受体抵抗</td><td>分类</td><td>§3</td><td>〔说话人1 07:59〕</td></tr>
+<tr><td>22</td><td>肾糖重吸收障碍致血糖高曲线正常</td><td>临床</td><td>§3</td><td>〔说话人1 09:06〕</td></tr>
+<tr><td>23</td><td>肾上腺素动员肝糖原一过性高血糖</td><td>临床</td><td>§3</td><td>〔说话人1 09:06〕</td></tr>
+<tr><td>24</td><td>静脉 5% 葡萄糖滴速过快高血糖</td><td>临床</td><td>§3</td><td>〔说话人1 09:06〕</td></tr>
+<tr><td>25</td><td>糖尿病：持续高血糖+尿糖阳性</td><td>定义</td><td>§3</td><td>〔说话人1 10:20〕</td></tr>
+<tr><td>26</td><td>糖原储积症属糖原代谢病</td><td>分类</td><td>§3</td><td>〔说话人1 10:20〕</td></tr>
+<tr><td>27</td><td>我国糖尿病高流行与年轻化</td><td>临床</td><td>§4</td><td>〔说话人1 12:52〕</td></tr>
+<tr><td>28</td><td>我国糖尿病发病率全球首位</td><td>临床</td><td>§4</td><td>〔说话人1 18:11〕</td></tr>
+<tr><td>29</td><td>控糖不能阻止全部并发症</td><td>临床</td><td>§4</td><td>〔说话人1 18:51〕</td></tr>
+<tr><td>30</td><td>病程 5–10 年脏器并发症</td><td>临床</td><td>§4</td><td>〔说话人1 18:51〕</td></tr>
+<tr><td>31</td><td>糖尿病皮肤伤口难愈</td><td>临床</td><td>§4</td><td>〔说话人1 19:43〕</td></tr>
+<tr><td>32</td><td>复习主线：糖原合成/分解与乳酸循环</td><td>框架</td><td>§0</td><td>〔说话人1 20:45〕</td></tr>
+<tr><td>33</td><td>血糖来源：食物消化吸收</td><td>考点</td><td>§5</td><td>〔说话人1 20:45〕</td></tr>
+<tr><td>34</td><td>血糖来源：肝糖原分解</td><td>考点</td><td>§5</td><td>〔说话人1 20:45〕</td></tr>
+<tr><td>35</td><td>血糖来源：糖异生</td><td>考点</td><td>§5</td><td>〔说话人1 20:45〕</td></tr>
+<tr><td>36</td><td>去路：氧化供能</td><td>考点</td><td>§5</td><td>〔说话人1 21:39〕</td></tr>
+<tr><td>37</td><td>去路：合成糖原</td><td>考点</td><td>§5</td><td>〔说话人1 01:23:37〕</td></tr>
+<tr><td>38</td><td>去路：转脂肪氨基酸</td><td>考点</td><td>§5</td><td>〔说话人1 21:39〕</td></tr>
+<tr><td>39</td><td>去路：支路合成生物活性物质</td><td>考点</td><td>§5</td><td>〔说话人1 21:39〕</td></tr>
+<tr><td>40</td><td>彻底氧化须乙酰 CoA 二碳</td><td>规则</td><td>§6</td><td>〔说话人1 01:11:13〕</td></tr>
+<tr><td>41</td><td>TCA 只接受乙酰 CoA</td><td>规则</td><td>§6</td><td>〔说话人1 01:10:11〕</td></tr>
+<tr><td>42</td><td>甘油→磷酸二羟丙酮</td><td>通路</td><td>§6</td><td>〔说话人1 01:11:13〕</td></tr>
+<tr><td>43</td><td>乳酸→丙酮酸→乙酰 CoA</td><td>通路</td><td>§6</td><td>〔说话人1 01:12:04〕</td></tr>
+<tr><td>44</td><td>丙氨酸转氨基→丙酮酸</td><td>通路</td><td>§6</td><td>〔说话人1 01:12:43〕</td></tr>
+<tr><td>45</td><td>天冬氨酸脱氨→草酰乙酸（胞液）</td><td>通路</td><td>§7</td><td>〔说话人1 01:13:25〕</td></tr>
+<tr><td>46</td><td>谷氨酸脱氨→α-酮戊二酸</td><td>通路</td><td>§7</td><td>〔说话人1 01:08:28〕</td></tr>
+<tr><td>47</td><td>线粒体无草酰乙酸载体有 α-酮戊二酸载体</td><td>机制</td><td>§7</td><td>〔说话人1 01:13:25〕</td></tr>
+<tr><td>48</td><td>胞液 PEP 羧激酶 4C→PEP 不需穿梭</td><td>机制</td><td>§7</td><td>〔说话人1 01:13:25〕</td></tr>
+<tr><td>49</td><td>α-酮戊二酸入线粒体至苹果酸出线粒体</td><td>机制</td><td>§7</td><td>〔说话人1 01:15:02〕</td></tr>
+<tr><td>50</td><td>苹果酸携带 NADH 穿梭产能 1.5/2.5 ATP</td><td>数字</td><td>§7</td><td>〔说话人1 01:15:36〕</td></tr>
+<tr><td>51</td><td>甘油异生从磷酸二羟丙酮切入</td><td>通路</td><td>§8</td><td>〔说话人1 01:16:29〕</td></tr>
+<tr><td>52</td><td>乳酸逆酵解异生</td><td>通路</td><td>§8</td><td>〔说话人1 01:16:29〕</td></tr>
+<tr><td>53</td><td>α-酮戊二酸异生须苹果酸转运</td><td>通路</td><td>§8</td><td>〔说话人1 01:17:13〕</td></tr>
+<tr><td>54</td><td>中间物切入后决定氧化或异生</td><td>框架</td><td>§8</td><td>〔说话人1 01:17:13〕</td></tr>
+<tr><td>55</td><td>运动产生乳酸入血</td><td>生理</td><td>§9</td><td>〔说话人1 01:19:12〕</td></tr>
+<tr><td>56</td><td>组蛋白乳酰化与代谢重编程</td><td>机制</td><td>§9</td><td>〔说话人1 01:20:44〕</td></tr>
+<tr><td>57</td><td>心肌乳酸氧化供能</td><td>组织</td><td>§9</td><td>〔说话人1 01:21:14〕</td></tr>
+<tr><td>58</td><td>肝乳酸糖异生升糖（乳酸循环）</td><td>组织</td><td>§9</td><td>〔说话人1 01:21:14〕</td></tr>
+<tr><td>59</td><td>肾乳酸糖异生酸碱</td><td>组织</td><td>§9</td><td>〔说话人1 01:21:14〕</td></tr>
+<tr><td>60</td><td>肌分泌乳酸不释糖</td><td>组织</td><td>§9</td><td>〔说话人1 01:21:14〕</td></tr>
+<tr><td>61</td><td>进食增加葡萄糖去路</td><td>调节</td><td>§10</td><td>〔说话人1 01:22:40〕</td></tr>
+<tr><td>62</td><td>肝糖原 70–100 g 后合成脂肪</td><td>数字</td><td>§10</td><td>〔说话人1 01:23:37〕</td></tr>
+<tr><td>63</td><td>磷酸戊糖途径供 NADPH 合成脂肪</td><td>通路</td><td>§10</td><td>〔说话人1 01:24:03〕</td></tr>
+<tr><td>64</td><td>饥饿节约糖氧化（脑/红细胞除外）</td><td>调节</td><td>§10</td><td>〔说话人1 01:24:03〕</td></tr>
+<tr><td>65</td><td>饥饿糖原分解+糖异生+脂肪氧化</td><td>调节</td><td>§10</td><td>〔说话人1 01:25:07〕</td></tr>
+<tr><td>66</td><td>胰岛素缺乏阻断磷蛋白磷酸酶通路</td><td>激素</td><td>§11</td><td>〔说话人1 01:26:16〕</td></tr>
+<tr><td>67</td><td>胰岛素缺乏致摄取糖减少、血糖高</td><td>激素</td><td>§11</td><td>〔说话人2 59:14〕</td></tr>
+<tr><td>68</td><td>糖异生增强、脂肪合成减弱致消瘦</td><td>激素</td><td>§11</td><td>〔说话人2 59:14〕</td></tr>
+<tr><td>69</td><td>糖原合酶/磷酸化酶/糖异生酶答题</td><td>考点</td><td>§11</td><td>〔说话人1 01:28:00〕</td></tr>
+</table>
+<p class="foot">附录 D 共 69 条，与 recording.md 讲授及习题答疑知识点逐条登记。</p></div>
+</body></html>
+

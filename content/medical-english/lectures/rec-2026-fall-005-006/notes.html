@@ -1,624 +1,539 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>Unit 1: AI在医学诊断中的应用</title>
-<style>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>医学英语 第5-6节 · Unit 1 课文精读与 AI 医学诊断文本分析 · 核心内容笔记</title><style>
 :root{
-  --paper: #FAF8F3;
-  --paper-card: #FFFFFF;
-  --ink: #1A1814;
-  --ink-soft: #4A453D;
-  --ink-faint: #8B8578;
-  --rule: #DDD8CC;
-  --accent: #7A3350;
-  --accent-soft: #7A335015;
-  --accent-line: #7A335040;
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#7A2E4A; --accent-d:#542033; --accent-t:#F4E4EA;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
 }
-*{box-sizing:border-box; margin:0; padding:0;}
-html,body{background:var(--paper);}
-body{font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif; color:var(--ink); font-size:10pt; line-height:1.75;}
-.page{width:210mm; min-height:297mm; background:var(--paper); position:relative; padding:18mm 20mm 16mm 20mm; page-break-after:always;}
-.page:last-child{page-break-after:auto;}
+*{box-sizing:border-box}
+body{margin:0;padding:10mm 0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;margin:0 auto 6mm;background:#fff;box-sizing:border-box}
+.h1{font-family:var(--serif);font-size:15pt;margin:0 0 4mm;color:var(--accent-d)}
+.h2{font-family:var(--serif);font-size:13pt;margin:0 0 3mm;padding-left:2.5mm;border-left:4px solid var(--accent);color:var(--accent-d)}
+.h3{font-family:var(--serif);font-size:11.5pt;margin:5mm 0 2mm;color:var(--ink2)}
+.lead{background:var(--accent-t);border-left:4px solid var(--accent);padding:2mm 3mm;margin:0 0 3mm;color:var(--ink2)}
+.kv{margin:0 0 2mm;padding-left:5mm}
+.kv li{margin:.6mm 0}
+.tbl{width:100%;border-collapse:collapse;margin:2mm 0 4mm;font-size:9.5pt}
+.tbl th{background:var(--accent);color:#fff;padding:1.5mm 2mm;text-align:left;font-weight:600;border:1px solid var(--accent-d)}
+.tbl td{padding:1.5mm 2mm;border:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.exam{background:var(--exam-t);border:1px solid var(--exam);border-left:4px solid var(--exam);padding:2mm 3mm;margin:2mm 0 4mm}
+.wrong{background:var(--wrong-t);border:1px solid var(--wrong);border-left:4px solid var(--wrong);padding:2mm 3mm;margin:2mm 0 4mm}
+.mnem{background:var(--mnem-t);border:1px solid var(--mnem);border-left:4px solid var(--mnem);padding:2mm 3mm;margin:2mm 0 4mm}
+.def{background:var(--def-t);border:1px solid var(--def);border-left:4px solid var(--def);padding:2mm 3mm;margin:2mm 0 4mm}
+.grid{display:flex;gap:3mm;margin:2mm 0 4mm}
+.card{flex:1;background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--accent);padding:2mm 2.5mm;break-inside:avoid}
+.tag{display:inline-block;background:var(--exam);color:#fff;font-size:8pt;padding:0 1.6mm;border-radius:2px;margin-right:1.5mm}
+.loc{color:var(--muted);font-size:8pt;white-space:nowrap}
+.foot{color:var(--muted);font-size:8.5pt;border-top:1px solid var(--line);margin-top:6mm;padding-top:2mm}
+.idx{width:100%;border-collapse:collapse;margin:2mm 0 4mm;font-size:8.5pt}
+.idx th{background:var(--accent);color:#fff;padding:1.2mm 1.8mm;text-align:left;font-weight:600;border:1px solid var(--accent-d)}
+.idx td{padding:1.2mm 1.8mm;border:1px solid var(--line);vertical-align:top}
+.idx tr:nth-child(even) td{background:var(--paper)}
+.exam,.card,.tbl,.idx{break-inside:avoid}
+.fw{width:100%;margin:2mm 0 3mm}
+@media print{.page{margin:0}}
+</style></head><body>
 
-/* 封面 */
-.cover{background:linear-gradient(135deg, var(--accent) 0%, #7A3350CC 100%); color:#fff; padding:0;}
-.cover .inner{height:100%; min-height:261mm; padding:30mm 22mm 22mm 22mm; display:flex; flex-direction:column; justify-content:space-between;}
-.cover .eyebrow{font-size:9pt; letter-spacing:0.4em; text-transform:uppercase; opacity:0.85;}
-.cover h1{font-family:'Noto Serif CJK SC',serif; font-size:42pt; font-weight:900; line-height:1.15; margin-top:12mm;}
-.cover .subtitle{font-size:13pt; opacity:0.9; margin-top:8mm; line-height:1.7;}
-.cover .meta{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8mm; border-top:1px solid rgba(255,255,255,0.3); padding-top:8mm;}
-.cover .meta .k{font-size:7.5pt; letter-spacing:0.2em; opacity:0.7; text-transform:uppercase;}
-.cover .meta .v{font-size:11pt; font-weight:600; margin-top:2mm;}
-
-/* 目录 */
-.toc-title{font-family:'Noto Serif CJK SC',serif; font-size:24pt; font-weight:800; margin-bottom:2mm; color:var(--accent);}
-.toc-sub{color:var(--ink-soft); font-size:9.5pt; margin-bottom:8mm;}
-.toc-list{list-style:none;}
-.toc-list li{display:flex; align-items:baseline; padding:3.5mm 0; border-bottom:1px solid var(--rule);}
-.toc-num{font-family:'Noto Serif CJK SC',serif; font-weight:800; color:var(--accent); font-size:12pt; min-width:14mm;}
-.toc-text{font-size:10.5pt; font-weight:600;}
-
-/* 内容页 */
-.running{display:flex; justify-content:space-between; font-size:7.5pt; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-faint); border-bottom:1.5px solid var(--accent); padding-bottom:3mm; margin-bottom:8mm;}
-.running .course{color:var(--accent); font-weight:700;}
-
-h1{font-family:'Noto Serif CJK SC',serif; font-size:22pt; font-weight:900; color:var(--ink); margin:8mm 0 4mm 0; padding-bottom:3mm; border-bottom:2.5px solid var(--accent);}
-h2{font-family:'Noto Serif CJK SC',serif; font-size:16pt; font-weight:800; color:var(--accent); margin:7mm 0 3mm 0; padding-left:4mm; border-left:4px solid var(--accent);}
-h3{font-family:'Noto Serif CJK SC',serif; font-size:13pt; font-weight:700; color:var(--ink); margin:5mm 0 2.5mm 0;}
-h4{font-size:11pt; font-weight:700; color:var(--ink-soft); margin:4mm 0 2mm 0;}
-
-p{margin:2mm 0; text-align:justify;}
-ul{margin:2mm 0 2mm 6mm;}
-li{margin:1.2mm 0;}
-li.num{list-style:none; counter-increment:item;}
-li.num::before{content:counter(item) "."; font-weight:700; color:var(--accent); margin-right:2mm;}
-
-strong{color:var(--accent); font-weight:700;}
-em{color:var(--ink-soft);}
-code{background:var(--accent-soft); color:var(--accent); padding:0.5mm 1.5mm; border-radius:1mm; font-size:9pt; font-family:'Consolas',monospace;}
-
-blockquote{border-left:3px solid var(--accent); background:var(--accent-soft); padding:3mm 4mm; margin:3mm 0; border-radius:0 2mm 2mm 0;}
-blockquote p{margin:0; color:var(--ink-soft); font-style:italic;}
-
-hr{border:none; border-top:1px solid var(--rule); margin:6mm 0;}
-
-/* 表格 */
-.note-table{width:100%; border-collapse:collapse; margin:4mm 0; font-size:9.5pt;}
-.note-table th{background:var(--accent); color:#fff; padding:2.5mm 3mm; text-align:left; font-weight:700;}
-.note-table td{padding:2.5mm 3mm; border-bottom:1px solid var(--rule);}
-.note-table tr:nth-child(even) td{background:var(--accent-soft);}
-
-/* 页脚 */
-.footer{position:absolute; bottom:8mm; left:20mm; right:20mm; display:flex; justify-content:space-between; font-size:7.5pt; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:3mm;}
-</style>
-</head>
-<body>
-
-<!-- 封面 -->
-<div class="page cover">
-  <div class="inner">
-    <div>
-      <div class="eyebrow">HUST · 课堂可视化笔记</div>
-      <h1>Unit 1: AI在医学诊断中的应用</h1>
-      <div class="subtitle">第5-6节 · 医学术语构成 · 同族词记忆 · AI诊断优势与挑战 · 写作风格与翻译技巧</div>
-    </div>
-    <div class="meta">
-      <div><div class="k">课程</div><div class="v">医学英语</div></div>
-      <div><div class="k">节次</div><div class="v">第5-6节</div></div>
-      <div><div class="k">日期</div><div class="v">2026-09-16</div></div>
-    </div>
+<div class="page">
+  <div class="cover">
+    <p class="h1">医学英语 · 第5-6节 课堂笔记（核心内容版）</p>
+    <table class="tbl">
+      <tr><th style="width:22%">主题</th><td>Unit 1 Language Learning (2) &amp; Exercise —— AI 在医学诊断中的应用（课文第 3-12 段精读）</td></tr>
+      <tr><th>上课日期</th><td>2026-09-16（周三）· 教材 Unit 1 Reading 2《AI in Medical Diagnosis: Not Just Hype》；医学术语 Presentation 三任务</td></tr>
+      <tr><th>素材规模</th><td>逐字稿 37,762 字 / 210 轮</td></tr>
+      <tr><th>使用说明</th><td>每条结论后〔说话人N HH:MM〕为逐字稿原样定位；文末附必背清单、易错对照、考点索引与知识点全登记。</td></tr>
+    </table>
   </div>
+
+  <h2 class="h2">0. 知识框架</h2>
+  <p class="lead">全课分四层：术语学习法 → Unit 1 课文逐段分析 → 写作风格/修辞/翻译工具 → 第五单元预习。</p>
+  <svg class="fw" viewBox="0 0 660 236" role="img" aria-label="全课知识框架">
+    <rect x="230" y="6" width="200" height="28" rx="3" fill="#F4E4EA" stroke="#7A2E4A"/>
+    <text x="330" y="25" text-anchor="middle" font-size="12" fill="#542033">医学英语 第5-6节 全课骨架</text>
+    <line x1="90" y1="34" x2="90" y2="58" stroke="#7A2E4A"/>
+    <line x1="280" y1="34" x2="280" y2="58" stroke="#7A2E4A"/>
+    <line x1="470" y1="34" x2="470" y2="58" stroke="#7A2E4A"/>
+    <line x1="600" y1="34" x2="600" y2="58" stroke="#7A2E4A"/>
+    <rect x="14" y="58" width="152" height="24" rx="3" fill="#fff" stroke="#542033"/>
+    <text x="90" y="74" text-anchor="middle" font-size="9">术语学习法（三任务）</text>
+    <rect x="178" y="58" width="204" height="24" rx="3" fill="#fff" stroke="#542033"/>
+    <text x="280" y="74" text-anchor="middle" font-size="9">Unit 1 课文 P3-P12</text>
+    <rect x="394" y="58" width="152" height="24" rx="3" fill="#fff" stroke="#542033"/>
+    <text x="470" y="74" text-anchor="middle" font-size="9">风格·修辞·翻译</text>
+    <rect x="558" y="58" width="92" height="24" rx="3" fill="#fff" stroke="#542033"/>
+    <text x="604" y="74" text-anchor="middle" font-size="9">Unit 5 预习</text>
+    <line x1="71" y1="82" x2="71" y2="104" stroke="#7A2E4A"/><line x1="129" y1="82" x2="129" y2="104" stroke="#7A2E4A"/>
+    <line x1="200" y1="82" x2="200" y2="104" stroke="#7A2E4A"/><line x1="280" y1="82" x2="280" y2="104" stroke="#7A2E4A"/><line x1="360" y1="82" x2="360" y2="104" stroke="#7A2E4A"/>
+    <line x1="430" y1="82" x2="430" y2="104" stroke="#7A2E4A"/><line x1="512" y1="82" x2="512" y2="104" stroke="#7A2E4A"/>
+    <rect x="18" y="104" width="106" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="71" y="119" text-anchor="middle" font-size="8.5">词根词缀·同族词</text>
+    <rect x="24" y="134" width="94" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="71" y="149" text-anchor="middle" font-size="8.5">期末考·小组分配</text>
+    <rect x="132" y="104" width="76" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="170" y="119" text-anchor="middle" font-size="8.5">P3-P4 主旨</text>
+    <rect x="214" y="104" width="76" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="252" y="119" text-anchor="middle" font-size="8.5">P5-P8 两优势</text>
+    <rect x="296" y="104" width="76" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="334" y="119" text-anchor="middle" font-size="8.5">P9 数据助力</text>
+    <rect x="378" y="104" width="76" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="416" y="119" text-anchor="middle" font-size="8.5">P10-P12 风险</text>
+    <rect x="132" y="134" width="158" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="211" y="149" text-anchor="middle" font-size="8.5">误诊→主旨句→优势→助力→挑战</text>
+    <rect x="394" y="104" width="72" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="430" y="119" text-anchor="middle" font-size="8.5">五种风格</text>
+    <rect x="472" y="104" width="80" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="512" y="119" text-anchor="middle" font-size="8.5">三种修辞</text>
+    <rect x="394" y="134" width="158" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="473" y="149" text-anchor="middle" font-size="8.5">四条翻译技巧·两种题型</text>
+    <rect x="558" y="104" width="92" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="604" y="119" text-anchor="middle" font-size="8.5">再生医学</text>
+    <rect x="558" y="134" width="92" height="22" rx="3" fill="#F7F6F2" stroke="#D8D6CE"/><text x="604" y="149" text-anchor="middle" font-size="8.5">翻译/paraphrase</text>
+    <text x="330" y="192" text-anchor="middle" font-size="9" fill="#6B7480">主线：先给结论，再用 example 与 comparison 展示，深层靠 cause and effect；平行结构列举必带逻辑；AI 仅辅助，不能取代 human diagnosis。</text>
+  </svg>
 </div>
 
-<!-- 目录 -->
 <div class="page">
-  <div class="toc-title">目录</div>
-  <div class="toc-sub">本笔记基于课堂录音完整逐字稿整理，详细记录课堂讲授的核心知识点、例题强调点与复习要点。</div>
-  <ul class="toc-list">
-    <li><span class="toc-num">01</span><span class="toc-text">一、知识结构</span></li>
-<li><span class="toc-num">02</span><span class="toc-text">二、核心知识点</span></li>
-<li><span class="toc-num">03</span><span class="toc-text">三、例题/强调点</span></li>
-<li><span class="toc-num">04</span><span class="toc-text">四、复习清单</span></li>
-<li><span class="toc-num">05</span><span class="toc-text">五、主动回忆题</span></li>
+  <h2 class="h2">第1章 课程作业与医学术语学习法</h2>
+  <p class="lead">章主旨：本课程以「单元展示」为抓手，三项任务围绕词根、前缀、后缀反复操练，靠同族词成串记忆医学术语。</p>
+
+  <h3 class="h3">1.1 作业总纲与三任务</h3>
+  <ul class="kv">
+    <li>每学完一个单元做一次医学术语展示（medical terminology presentation），目的在反复练习中记住词汇。 <span class="loc">〔说话人1 00:00〕</span></li>
+    <li>展示共三个任务（three tasks）：Words Analysis（词汇分析）、Cognate Words（同族词）、Medical Translation（医学翻译）。 <span class="loc">〔说话人1 00:00〕</span></li>
+    <li>展示属于平时成绩的一部分（performance and activity）。 <span class="loc">〔说话人1 12:15〕</span></li>
+  </ul>
+
+  <h3 class="h3">1.2 Task 1：Words Analysis（词汇分析）</h3>
+  <ul class="kv">
+    <li>翻到教材第 17 页，从词根（word root）列表中选 7 个词，逐个分析其构成。 <span class="loc">〔说话人1 00:00〕</span></li>
+    <li>分析示例：radiologist = radio（词根：辐射）＋ log（后缀：学科）＋ ist（后缀：人）。 <span class="loc">〔说话人1 02:37〕</span></li>
+    <li>词汇分析的目的：靠记住词根与词缀来记单词。 <span class="loc">〔说话人1 08:54〕</span></li>
+  </ul>
+
+  <h3 class="h3">1.3 Task 2：Cognate Words（同族词）</h3>
+  <ul class="kv">
+    <li>同族词指共享同一个词根的词；词根是词最基本的成分，构成该词的语义代码（semantic code）。 <span class="loc">〔说话人1 03:16〕</span></li>
+    <li>做法：每个词根选 five words，用 prefix ＋ word root ＋ combining vowel ＋ suffix 组合。 <span class="loc">〔说话人1 03:38〕</span></li>
+    <li>示例：cardio（心脏）可派生 cardiology、cardiologist、cardiovascular 等同族词。 <span class="loc">〔说话人1 03:38〕</span></li>
+    <li>一个词根至少能派生出 20 个词（加前缀、后缀或词根叠加）。 <span class="loc">〔说话人1 07:00〕</span></li>
+    <li>词根含义在组合中不变：cardio 到哪儿都是 heart（心脏）之意。 <span class="loc">〔说话人1 07:00〕</span></li>
+    <li>记词根比记整个单词容易得多。 <span class="loc">〔说话人1 07:00〕</span></li>
+    <li>期末考试词汇从课本和词汇包中选，应尽量多记。 <span class="loc">〔说话人1 06:24〕</span></li>
+  </ul>
+
+  <h3 class="h3">1.4 词汇构成模式</h3>
+  <ul class="kv">
+    <li>基本模式：prefix（前缀）＋ word root（词根）＋ combining vowel（连接元音）＋ suffix（后缀）；词根也可叠加。 <span class="loc">〔说话人1 04:32〕</span></li>
+    <li>有些成分既可作词根也可作后缀：-pathy 作后缀时意为疾病（disease）。 <span class="loc">〔说话人1 05:30〕</span></li>
+    <li>-pathy 作词根时去掉 y 加 o（patho-）。 <span class="loc">〔说话人1 05:30〕</span></li>
+    <li>例：chromosome = chroma（color，颜色）＋ soma（body，身体）。 <span class="loc">〔说话人1 06:24〕</span></li>
+  </ul>
+
+  <h3 class="h3">1.5 Task 3：Medical Translation 与小组分配</h3>
+  <ul class="kv">
+    <li>Task 3 做教材第 18-19 页的医学翻译练习。 <span class="loc">〔说话人1 07:46〕</span></li>
+    <li>第一题按要求写出医学术语，并画斜杠做词形分解（word analysis）。 <span class="loc">〔说话人1 08:13〕</span></li>
+    <li>填空题直接写答案；翻译题较难，课堂上对答案。 <span class="loc">〔说话人1 08:54〕</span></li>
+    <li>每个同学都要做翻译；做展示的小组还要分享翻译技巧（难句、长句怎么译）。 <span class="loc">〔说话人1 08:54〕</span></li>
+    <li>期末考试会从课文翻译中选句考汉译英或英译汉。 <span class="loc">〔说话人1 08:54〕</span></li>
+    <li>全班 5 个小组，课堂只学 4 个单元（Unit 1、5、6、8）。 <span class="loc">〔说话人1 10:35〕</span></li>
+    <li>第 3 单元（脑机接口 BCI，教材 P71）作为项目学习，由余下小组负责。 <span class="loc">〔说话人1 11:31〕</span></li>
+    <li>第 3 单元安排到最后讲。 <span class="loc">〔说话人1 12:15〕</span></li>
+    <li>每上完一个单元，下一周由对应小组展示；第一个单元的小组只有一周准备时间。 <span class="loc">〔说话人1 53:12〕</span></li>
+    <li>老师另提供「一词三式」等参考资料，可通过找同根词记单词。 <span class="loc">〔说话人1 13:14〕</span></li>
   </ul>
 </div>
 
-<!-- 内容 -->
 <div class="page">
-  <div class="running">
-    <span class="course">医学英语</span>
-    <span>第5-6节 · 2026-09-16</span>
-  </div>
-  <h1>医学英语 · 第5-6节</h1>
-
-<blockquote>**课程**：医学英语</blockquote>
-<blockquote>**节次**：第5-6节（课程内累计）</blockquote>
-<blockquote>**日期**：2026年9月16日</blockquote>
-<blockquote>**主题**：Unit 1 Language Learning (2) & Exercises — AI在医学诊断中的应用</blockquote>
-
-<hr>
-
-<h2>一、知识结构</h2>
-
-<p><code>`</code></p>
-<p>医学英语 Unit 1</p>
-<p>├── 课程作业（医学术语Presentation）</p>
-<p>│   ├── Task 1: Words Analysis（7个词根分析）</p>
-<p>│   ├── Task 2: Cognate Words（同族词，每个词根5个词）</p>
-<p>│   └── Task 3: Medical Translation（P18-19练习）</p>
-<p>├── Unit 1 课文：AI in Medical Diagnosis</p>
-<p>│   ├── Paragraph 3: 误诊原因（疾病特征与已知模式不匹配）</p>
-<p>│   ├── Paragraph 4: 过渡段/主旨句（AI can solve all these problems）</p>
-<p>│   ├── Paragraph 5: AI优势1——不易受人为因素影响</p>
-<p>│   ├── Paragraph 6: AI优势1细节——准确性和时效性</p>
-<p>│   ├── Paragraph 7: AI优势2——诊断未知模式疾病</p>
-<p>│   ├── Paragraph 8: 总结前两个优势</p>
-<p>│   ├── Paragraph 9: 数据发展使AI帮助各领域医生</p>
-<p>│   ├── Paragraph 10: AI的挑战与风险（经济/知识产权/长期发展）</p>
-<p>│   ├── Paragraph 11: 错误信息问题（misinformation）</p>
-<p>│   └── Paragraph 12: 患者和医生对AI的信任问题</p>
-<p>├── 写作风格分析</p>
-<p>│   ├── Example（举例）</p>
-<p>│   ├── Comparison & Contrast（对比）</p>
-<p>│   ├── Cause and Effect（因果）</p>
-<p>│   ├── Problem and Solution（问题与解决）</p>
-<p>│   └── Parallel Structure（平行结构）</p>
-<p>├── 修辞手法</p>
-<p>│   ├── Rhetorical Question（反问句）</p>
-<p>│   ├── Imperative Sentence（祈使句）</p>
-<p>│   └── Metaphor（隐喻，如thread）</p>
-<p>└── 翻译技巧</p>
-<p>├── 英语长句→汉语短句</p>
-<p>├── 近义词替换（协助/帮助/支持）</p>
-<p>└── 按目标语言思维翻译</p>
-<p><code>`</code></p>
-
-<hr>
-
-<h2>二、核心知识点</h2>
-
-<h3>（一）课程作业：医学术语Presentation</h3>
-
-<p><strong>1. 作业背景</strong></p>
-<ul>
-<li>每学完一个单元后进行医学术语展示（presentation）</li>
-<li>目的：反复练习医学术语，帮助记忆</li>
-<li>属于平时成绩的一部分（performance and activity）</li>
-</ul>
-
-<p><strong>2. 三个任务（Three Tasks）</strong></p>
-
-<p><strong>Task 1: Words Analysis（词汇分析）</strong></p>
-<ul>
-<li>教材第17页，选择7个词根（word root）</li>
-<li>分析每个词的构成：词根 + 前缀/后缀</li>
-<li>例：radiologist = radio（词根，辐射）+ log（后缀，学科）+ ist（后缀，人）</li>
-<li>目的：通过分析词根词缀来记忆单词</li>
-</ul>
-
-<p><strong>Task 2: Cognate Words（同族词）</strong></p>
-<ul>
-<li>同族词 = 共享同一个词根的词</li>
-<li>选择7个词根，每个词根找5个同族词</li>
-<li>用词根 + 前缀 + 连接元音 + 后缀的方式组合</li>
-<li>例：cardio（心脏）→ cardiology, cardiologist, cardiovascular, cardiogram, carditis</li>
-<li><strong>为什么做同族词？</strong></li>
-<li>一个词根可以派生至少20个词（加前缀、后缀、词根组合）</li>
-<li>记词根比记整个单词容易得多</li>
-<li>词根的含义在任何组合中都不变（cardio永远是heart的意思）</li>
-</ul>
-
-<p><strong>Task 3: Medical Translation（医学翻译）</strong></p>
-<ul>
-<li>教材第18-19页</li>
-<li>第一题：根据意思写出医学术语，并分解构成（word analysis）</li>
-<li>填空题：直接写出答案</li>
-<li>翻译题：每个同学都要做</li>
-<li>做presentation的小组要分享翻译技巧（难句、长句怎么翻译）</li>
-</ul>
-
-<p><strong>3. 词汇构成基本模式</strong></p>
-<ul>
-<li>prefix + word root + combining vowel + suffix</li>
-<li>或：prefix + word root + combining vowel + word root + suffix</li>
-<li>注意：有些成分既可作词根也可作词缀</li>
-<li>例：-pathy作后缀时=疾病（disease），作词根时=pass（去掉y加o）</li>
-</ul>
-
-<p><strong>4. 小组分配</strong></p>
-<ul>
-<li>共5个小组，课堂学4个单元（Unit 1, 5, 6, 8）</li>
-<li>第3单元（脑机接口，BCI）作为项目学习，由第5个小组负责</li>
-<li>每上完一个单元，下一周由对应小组做医学术语展示</li>
-<li>第1单元的小组只有一周准备时间</li>
-</ul>
-
-<hr>
-
-<h3>（二）Unit 1 课文：AI in Medical Diagnosis</h3>
-
-<h4>Paragraph 3 — 误诊原因</h4>
-
-<p><strong>核心内容</strong>：</p>
-<ul>
-<li>其他时候误诊是因为疾病的特征与已知模式不匹配</li>
-<li>例：心脏病发作时没有明显症状或心电图异常</li>
-<li>关键词：misread, mistake, miss bad notes</li>
-</ul>
-
-<h4>Paragraph 4 — 过渡段/主旨句</h4>
-
-<p><strong>核心内容</strong>：</p>
-<ul>
-<li>只有一句话，是过渡段（transitional paragraph）</li>
-<li>同时也是全文的<strong>主旨句（thesis statement）</strong></li>
-<li>内容：AI can solve all these problems</li>
-</ul>
-
-<h4>Paragraph 5 — AI优势1：不易受人为因素影响</h4>
-
-<p><strong>核心内容</strong>：</p>
-<ul>
-<li>AI不易受常见人为因素影响（医生容易受影响）</li>
-<li>能发现难以识别的细节</li>
-<li>人为因素包括：heavy workload（工作负担重）、lack of sufficient time（时间不足）、cognitive bandwidth（认知带宽有限）、gaps of knowledge（知识缺口）</li>
-</ul>
-
-<p><strong>写作风格</strong>：</p>
-<ul>
-<li>只有两句话</li>
-<li>Comparison & Contrast（对比AI和医生）</li>
-<li>Example（举例说明导致医生误诊的因素）</li>
-<li>Parallel Structure：heavy workload, lack of sufficient time, cognitive bandwidth, gaps of knowledge</li>
-</ul>
-
-<h4>Paragraph 6 — AI优势1细节：准确性和时效性</h4>
-
-<p><strong>核心内容</strong>：</p>
-<ul>
-<li>AI的优势：<strong>accuracy（准确性）</strong>和<strong>timelessness（时效性）</strong></li>
-<li>例1（joke）：AI诊断与人类放射科医生对比</li>
-<li>例2：研究表明，AI通过卓越的模式匹配能力，能在影像检查几秒后识别中风，远快于人类放射科专家</li>
-<li>AI能诊断：pneumonia（肺炎）、blood clot in the lungs / pulmonary embolism（肺栓塞）、acute kidney injury（急性肾损伤）等</li>
-</ul>
-
-<p><strong>写作风格</strong>：</p>
-<ul>
-<li>General + specific examples（概述+具体例子）</li>
-<li>Comparison（AI vs 人类放射科医生）</li>
-<li>Cause and Effect：因为AI有accuracy和timelessness，所以能mean the difference between life and death</li>
-<li>Parallel Structure：pneumonia, blood clot in the lungs, acute kidney injury</li>
-</ul>
-
-<p><strong>平行结构的逻辑顺序</strong>：</p>
-<ul>
-<li>不是随便排列的，有内在逻辑</li>
-<li>逻辑1：按严重程度——pneumonia（普通疾病）→ blood clot（慢性疾病）→ acute kidney injury（急性严重疾病）</li>
-<li>逻辑2：按身体部位从上到下——肺（呼吸）→ 肾</li>
-</ul>
-
-<p><strong>翻译练习</strong>：</p>
-<blockquote>研究表明，凭借出色的模式识别能力，人工智能可以在影像完成后数秒内识别脑卒中，速度远超人类放射科医师。</blockquote>
-
-<h4>Paragraph 7 — AI优势2：诊断未知模式疾病</h4>
-
-<p><strong>核心内容</strong>：</p>
-<ul>
-<li>AI能诊断人类尚未开发出诊断脚本（scripts）的疾病</li>
-<li>例：hypertrophic cardiomyopathy（肥厚型心肌病）</li>
-<li>是一种遗传性疾病（genetic disorder）</li>
-<li>心肌比正常所需更厚</li>
-<li>会导致心力衰竭，甚至有时致人死亡</li>
-<li>最后一句是<strong>反问句（rhetorical question）</strong>：那剩下的80%呢？</li>
-<li>不需要回答，因为AI可以帮助解决</li>
-</ul>
-
-<p><strong>写作风格</strong>：</p>
-<ul>
-<li>Example（肥厚型心肌病）</li>
-<li>Comparison & Contrast（人类 vs AI）</li>
-<li>Cause and Effect：因为AI能识别新模式，所以能诊断未知疾病</li>
-</ul>
-
-<p><strong>句子分析</strong>：</p>
-<ul>
-<li>"Consider for example, hypertrophic cardiomyopathy..." 是<strong>祈使句（imperative sentence）</strong></li>
-<li>作用：吸引读者注意力（attract readers' interests）</li>
-<li>疾病描述模式：定义（definition）→ 机制（mechanism）→ 过程（process）→ 结果（result）</li>
-</ul>
-
-<p><strong>翻译练习</strong>：</p>
-<blockquote>以肥厚性心肌病为例，这种遗传性疾病会导致心肌异常增厚，最终引发心力衰竭，甚至死亡。</blockquote>
-
-<h4>Paragraph 8 — 总结前两个优势</h4>
-
-<p><strong>核心内容</strong>：</p>
-<ul>
-<li>只有一句话</li>
-<li>AI能检测复杂的、以往未被发现的特征模式，来识别可能患有肥厚性心肌病的患者</li>
-<li>意味着AI驱动算法将能通过常规心电图实现疾病早期筛查</li>
-</ul>
-
-<p><strong>写作风格</strong>：</p>
-<ul>
-<li>Comparison（与人类对比：人类认不出的未知模式，AI可以）</li>
-</ul>
-
-<p><strong>翻译技巧</strong>：</p>
-<ul>
-<li>英语长句 → 汉语短句</li>
-<li>原句是一个长句，翻译时拆成两个短句</li>
-<li>反过来，汉译英时要按英语思维（可能合成一个句子）</li>
-</ul>
-
-<h4>Paragraph 9 — 数据发展使AI帮助各领域医生</h4>
-
-<p><strong>核心内容</strong>：</p>
-<ul>
-<li>医疗数据的快速增长 + AI的进步 → AI能从数据中识别模式</li>
-<li>帮助不同领域的医生检测疾病</li>
-<li>医疗数据包括：electronic health records（电子健康记录）、imaging（影像）、genomic data（基因组数据）、biometric data（生物特征数据）、behavior data（行为数据）</li>
-<li>AI已帮助：</li>
-<li>Radiologists（放射科医生）find hidden cancers（发现隐藏癌症）</li>
-<li>Pathologists（病理科医生）characterize liver fibrosis（判定肝纤维化特征）</li>
-<li>Ophthalmologists（眼科医生）detect retinal diseases（检测视网膜疾病）</li>
-</ul>
-
-<p><strong>写作风格</strong>：</p>
-<ul>
-<li>Cause and Effect：因为AI有独特的模式识别能力，所以能帮助医生</li>
-<li>Example（列举数据类型和医生领域）</li>
-<li>Parallel Structure（两处）：</li>
-<li class="num">数据列举：electronic health records, imaging, genomic data, biometric data, behavior data</li>
-<li>逻辑：从具体到一般（specific to general），从concrete到abstract</li>
-<li class="num">医生列举：radiologists, pathologists, ophthalmologists</li>
-<li>逻辑：不同医学领域，且特意选了眼科（最精密的疾病也能诊断，体现AI能力）</li>
-</ul>
-
-<p><strong>为什么选眼科？</strong></p>
-<ul>
-<li>眼科的特征是视网膜，非常精密</li>
-<li>即使是最精密的疾病，AI也能诊断出来</li>
-<li>不选kidney（前面已经提过acute kidney injury）</li>
-<li>体现AI不仅在不同领域，而且能处理精密疾病</li>
-</ul>
-
-<p><strong>翻译技巧</strong>：</p>
-<ul>
-<li>原文只用了一个"help"，翻译时用不同的近义词：</li>
-<li>协助（assist）放射科医生</li>
-<li>帮助（help）病理科医生</li>
-<li>支持（support）眼科医生</li>
-<li>避免重复，体现翻译的多样性</li>
-</ul>
-
-<p><strong>翻译练习</strong>：</p>
-<blockquote>凭借其独特的数据模式识别能力，人工智能已经协助放射科医生发现隐藏的癌症，帮助病理科医生判定肝纤维化的特征，并支持眼科医生检测视网膜疾病。</blockquote>
-
-<h4>Paragraph 10 — AI的挑战与风险</h4>
-
-<p><strong>核心内容</strong>：</p>
-<ul>
-<li>随着机遇而来的是挑战和风险</li>
-<li>三个挑战（均与经济/财务相关）：</li>
-<li class="num"><strong>AI很昂贵（expensive）</strong>：需要大规模数据训练，算法成本高</li>
-<li class="num"><strong>知识产权保护困难</strong>：资源变得更易获取（more accessible），相关知识产权保护更难，可能挫伤公共和私人投资热情</li>
-<li class="num"><strong>长期发展需要财务激励</strong>：AI可能长期改善医疗质量，但如果没有财务支持，发展和采用会很慢</li>
-</ul>
-
-<p><strong>写作风格</strong>：</p>
-<ul>
-<li>开头提出主旨（challenges and risks），然后分析三个原因</li>
-<li>典型的英文写作段落结构：topic sentence first</li>
-<li>Cause and Effect：每个挑战都有原因和结果</li>
-<li>Comparison & Contrast：more accessible（现在 vs 过去）</li>
-</ul>
-
-<p><strong>三个挑战的逻辑顺序</strong>：</p>
-<ul>
-<li>从创造到使用到长期效果（creative → use → long-term effect）</li>
-<li>这就是产品的生命周期：先开发出来 → 再运用 → 长期运用不断更新</li>
-<li>作者背景：第二个作者是经济学家（Economist），所以这部分有经济学逻辑</li>
-</ul>
-
-<p><strong>翻译练习</strong>：</p>
-<blockquote>随着数据资源日益普及，相关知识产权的保护将变得更加困难，这可能挫伤公共和私人领域的投资热情。</blockquote>
-
-<h4>Paragraph 11 — 错误信息问题（Misinformation）</h4>
-
-<p><strong>核心内容</strong>：</p>
-<ul>
-<li>AI可能受到错误信息的影响</li>
-<li>不是所有网上信息都是可信的</li>
-<li>AI通过预测在线文本中下一个词的可能性来工作（基于训练数据）</li>
-<li>结果：AI可能给权威来源（如WHO）的信息和网上随机不可靠的信息同等权重</li>
-<li>许多研究和用户经历表明，AI可能编造不存在的来源并伪装成可靠来源</li>
-</ul>
-
-<p><strong>写作风格</strong>：</p>
-<ul>
-<li>Problem and Solution（提出问题，然后给出解决方案）</li>
-<li>Example</li>
-<li>Cause and Effect：</li>
-<li>原因（第2句）：AI基于在线文本预测下一个词</li>
-<li>结果（第3句）：这可能给权威和不可靠信息同等权重</li>
-<li>"this"指代第2句的整个过程</li>
-</ul>
-
-<p><strong>修辞手法</strong>：</p>
-<ul>
-<li>"random thread" 是<strong>隐喻（metaphor）</strong></li>
-<li>thread = 线，很细，经不起推敲，一扯就断</li>
-<li>指代不可靠的网上信息（unreliable information）</li>
-<li>作者不好直接说"unbelievable information"（因为有人相信），所以用thread委婉表达</li>
-</ul>
-
-<p><strong>老师提醒</strong>：</p>
-<ul>
-<li>不要把creative idea（新想法）放到AI里问，容易泄密</li>
-<li>AI会把你的资料更新，当别人问相同问题时，你的idea就会被给到别人</li>
-<li>AI时代最有价值的是creative idea，还是人的brain</li>
-<li>AI只是整合现有数据，new idea需要人类大脑</li>
-</ul>
-
-<p><strong>翻译练习</strong>：</p>
-<blockquote>许多研究和用户经历已经表明，人工智能可能会编造并不存在的信息来源，并伪装成可靠的来源。</blockquote>
-
-<h4>Paragraph 12 — 患者和医生对AI的信任问题</h4>
-
-<p><strong>核心内容</strong>：</p>
-<ul>
-<li>从general（第11段的网上错误信息）到specific（医生和患者如何解读和使用AI）</li>
-<li>调查数据：60%的...</li>
-<li>用户愿意用AI回答简单问题</li>
-<li>但问题越复杂、风险越高，用户越不愿意信任AI的诊断</li>
-</ul>
-
-<p><strong>写作风格</strong>：</p>
-<ul>
-<li>Example / Data（使用调查数据和统计数字）</li>
-<li>Cause and Effect：问题越复杂→风险越高→越不愿意信任AI</li>
-<li>Comparison & Contrast：简单问题 vs 复杂问题，更愿意信任 vs 更不愿意信任</li>
-</ul>
-
-<p><strong>段落间逻辑</strong>：</p>
-<ul>
-<li>"then" 是过渡词，连接上文（general问题）和下文（doctor/patient具体问题）</li>
-<li>从general到specific</li>
-</ul>
-
-<p><strong>Paraphrase练习</strong>：</p>
-<blockquote>原句：Although users were willing to use AI to answer simple questions, they became increasingly reluctant to trust AI's diagnosis as the questions became more complicated and potential risk rose.</blockquote>
-<blockquote>改写：Where users accept AI responses to basic queries, trust declines as question complexity and associated risk increase.</blockquote>
-<blockquote>比较：原句更生动丰富（vivid, rich），改写句更正式（formal）</blockquote>
-
-<hr>
-
-<h3>（三）写作风格总结</h3>
-
-<table class="note-table">
-<tr><th>写作风格</th><th>英文</th><th>出现段落</th><th>说明</th></tr>
-<tr><td>举例</td><td>Example</td><td>几乎每段</td><td>最基本的写作手法</td></tr>
-<tr><td>对比</td><td>Comparison & Contrast</td><td>P5, P6, P7, P9, P12</td><td>AI vs 人类，简单 vs 复杂</td></tr>
-<tr><td>因果</td><td>Cause and Effect</td><td>P6, P7, P9, P10, P11, P12</td><td>深层逻辑，每段几乎都有</td></tr>
-<tr><td>问题与解决</td><td>Problem and Solution</td><td>P11</td><td>提出错误信息问题并给出方向</td></tr>
-<tr><td>平行结构</td><td>Parallel Structure</td><td>P5, P6, P9</td><td>医学英语典型句式，有逻辑顺序</td></tr>
-</table>
-
-<blockquote>**老师强调**：example、comparison只是展现形式，深层的是逻辑（logic）。读英文时要找cause and effect，这是英文思维的核心。英文段落第一句通常是topic sentence，后面是information/background。</blockquote>
-
-<hr>
-
-<h3>（四）修辞手法总结</h3>
-
-<table class="note-table">
-<tr><th>修辞手法</th><th>英文</th><th>例子</th><th>作用</th></tr>
-<tr><td>反问句</td><td>Rhetorical Question</td><td>P7最后一句"what about the remaining 80%?"</td><td>不需要回答，强调AI能解决</td></tr>
-<tr><td>祈使句</td><td>Imperative Sentence</td><td>"Consider for example, hypertrophic cardiomyopathy"</td><td>吸引读者注意力</td></tr>
-<tr><td>隐喻</td><td>Metaphor</td><td>"random thread"（P11）</td><td>委婉表达不可靠信息</td></tr>
-</table>
-
-<hr>
-
-<h3>（五）翻译技巧总结</h3>
-
-<ul>
-<li class="num"><strong>英语长句 → 汉语短句</strong>：英语一个长句，汉语可拆成多个短句</li>
-<li class="num"><strong>近义词替换</strong>：避免重复使用同一个动词（如help→协助/帮助/支持）</li>
-<li class="num"><strong>按目标语言思维翻译</strong>：</li>
-<li>英译汉：按汉语思维</li>
-<li>汉译英：按英语思维</li>
-<li class="num"><strong>more accessible的理解</strong>：与过去对比（from past to present），现在资源更易获取</li>
-</ul>
-
-<hr>
-
-<h3>（六）第五单元预习</h3>
-
-<ul>
-<li><strong>主题</strong>：Bioengineered Hope: Regenerative Medicine（再生医学）</li>
-<li>跨学科领域（interdisciplinary field）</li>
-<li>已有20年历史，现在不断创新（如干细胞已用于整容）</li>
-<li>预习句子：</li>
-<li>P121 第三段："Since her initial repair, Bekah..."（翻译）</li>
-<li>第六段第一句："For more than a century, clinicians..."（paraphrase）</li>
-</ul>
-
-<hr>
-
-<h2>三、例题/强调点</h2>
-
-<ul>
-<li class="num"><strong>医学术语构成</strong>：prefix + word root + combining vowel + suffix</li>
-<li class="num"><strong>同族词记忆法</strong>：记词根比记整个单词容易，一个词根可派生20+词</li>
-<li class="num"><strong>英文段落结构</strong>：第一句topic sentence，后面展开（与中文先铺垫后结论不同）</li>
-<li class="num"><strong>平行结构的逻辑</strong>：不是随便排列，有严重程度、从具体到一般、从上到下等逻辑</li>
-<li class="num"><strong>疾病描述模式</strong>：definition → mechanism → process → result</li>
-<li class="num"><strong>AI诊断优势</strong>：accuracy + timelessness，能识别未知模式</li>
-<li class="num"><strong>AI挑战</strong>：经济成本、知识产权、长期财务激励</li>
-<li class="num"><strong>Misinformation</strong>：AI给权威和不可靠信息同等权重，可能编造来源</li>
-</ul>
-
-<hr>
-
-<h2>四、复习清单</h2>
-
-<ul>
-<li>[ ] 掌握医学术语构成的基本模式（prefix+root+combining vowel+suffix）</li>
-<li>[ ] 理解同族词（cognate words）的概念和记忆方法</li>
-<li>[ ] 复述Unit 1课文每段的main idea</li>
-<li>[ ] 识别每段的writing style（example/comparison/cause and effect等）</li>
-<li>[ ] 理解parallel structure的逻辑顺序</li>
-<li>[ ] 掌握三种修辞手法（rhetorical question/imperative/metaphor）</li>
-<li>[ ] 练习翻译技巧（长句拆短句、近义词替换）</li>
-<li>[ ] 理解AI在医学诊断中的优势和挑战</li>
-<li>[ ] 预习第五单元（再生医学）</li>
-</ul>
-
-<hr>
-
-<h2>五、主动回忆题</h2>
-
-<ul>
-<li class="num"><strong>医学术语presentation有哪三个任务？</strong></li>
-</ul>
-<p>> Task 1: Words Analysis（7个词根分析）；Task 2: Cognate Words（每个词根5个同族词）；Task 3: Medical Translation（P18-19练习）。</p>
-
-<ul>
-<li class="num"><strong>为什么要学习同族词（cognate words）？</strong></li>
-</ul>
-<p>> 一个词根可以派生至少20个词，记词根比记整个单词容易得多，词根的含义在任何组合中都不变。</p>
-
-<ul>
-<li class="num"><strong>Unit 1课文的主旨句（thesis statement）是什么？在哪一段？</strong></li>
-</ul>
-<p>> "AI can solve all these problems." 在第4段，只有一句话，既是过渡段也是全文主旨句。</p>
-
-<ul>
-<li class="num"><strong>AI在医学诊断中的两个主要优势是什么？</strong></li>
-</ul>
-<p>> 优势1：不易受人为因素影响，具有准确性（accuracy）和时效性（timelessness）；优势2：能诊断人类尚未开发出诊断脚本的未知模式疾病。</p>
-
-<ul>
-<li class="num"><strong>英文段落的典型结构是什么？与中文有什么不同？</strong></li>
-</ul>
-<p>> 英文：第一句是topic sentence（主旨句），后面展开说明。中文：先铺垫背景，最后得出结论。读英文时第一句最重要。</p>
-
-<ul>
-<li class="num"><strong>Parallel structure（平行结构）中的列举是随便排列的吗？举例说明。</strong></li>
-</ul>
-<p>> 不是。有内在逻辑。如P6的pneumonia→blood clot→acute kidney injury，按严重程度排列（普通→慢性→急性严重），或按身体部位从上到下。</p>
-
-<ul>
-<li class="num"><strong>AI面临的三个挑战是什么？它们的逻辑顺序是什么？</strong></li>
-</ul>
-<p>> 1. AI很昂贵（需要大规模数据训练）；2. 知识产权保护困难；3. 长期发展需要财务激励。逻辑顺序：从创造（creative）到使用（use）到长期效果（long-term effect），即产品的生命周期。</p>
-
-<ul>
-<li class="num"><strong>"random thread"用了什么修辞手法？指代什么？</strong></li>
-</ul>
-<p>> 隐喻（metaphor）。thread=线，很细经不起推敲，指代网上不可靠的信息（unreliable information）。作者用委婉方式表达，避免直接说"unbelievable"。</p>
-
-<ul>
-<li class="num"><strong>翻译时如何处理英语长句？</strong></li>
-</ul>
-<p>> 英语长句可拆成汉语多个短句。反过来汉译英时要按英语思维，可能合成一个句子。同时注意近义词替换，避免重复。</p>
-
-<ul>
-<li class="num"><strong>为什么作者在P9特意选择眼科（ophthalmologists）作为AI帮助的例子之一？</strong></li>
-</ul>
-<p>> 眼科的特征是视网膜，非常精密。选择眼科是为了体现即使是最精密的疾病，AI也能诊断出来，进一步展示AI的能力。不选kidney因为前面已经提过acute kidney injury。</p>
-
-<hr>
-
-<blockquote>**笔记说明**：本笔记基于2026年9月16日医学英语课堂完整逐字稿整理，涵盖课程作业安排（医学术语presentation三个任务）、Unit 1课文第3-12段详细分析（AI在医学诊断中的应用）、写作风格与修辞手法总结、翻译技巧及第五单元预习安排。所有段落分析均经过逐字稿核对。</blockquote>
-
-  <div class="footer">
-    <span>医学英语 · Unit 1: AI在医学诊断中的应用</span>
-    <span>HUST课堂笔记</span>
-  </div>
+  <h2 class="h2">第2章 Unit 1 总览与主旨句（P3-P4）</h2>
+  <p class="lead">章主旨：第 3 段指出误诊原因，第 4 段一句话既是过渡段又是全文主旨句；英语段落第一句即 topic sentence。</p>
+
+  <h3 class="h3">2.1 课文进度与第 3 段</h3>
+  <ul class="kv">
+    <li>本节从第 3 段继续，讲完 Unit 1 课文。 <span class="loc">〔说话人1 13:51〕</span></li>
+    <li>第 3 段主旨：误诊源于疾病特征与已知模式不匹配。 <span class="loc">〔说话人2 15:06〕</span></li>
+    <li>第 3 段例：心脏病发作时无明显症状，或心电图异常、表现不典型。 <span class="loc">〔说话人2 15:06〕</span></li>
+    <li>这类不匹配易造成误读、误判（misread、mistake）。 <span class="loc">〔说话人1 15:16〕</span></li>
+    <li>前三个 paragraph 讲人类医学诊断存在的问题。 <span class="loc">〔说话人1 15:38〕</span></li>
+  </ul>
+
+  <h3 class="h3">2.2 第 4 段：过渡段与主旨句</h3>
+  <ul class="kv">
+    <li>第 4 段只有一句话，是过渡段（transitional paragraph）。 <span class="loc">〔说话人3 16:00〕</span></li>
+    <li><span class="tag">★考点</span>第 4 段同时是全文主旨句（thesis statement）：AI 能解决这一切问题。 <span class="loc">〔说话人1 16:23〕</span></li>
+  </ul>
+
+  <h3 class="h3">2.3 英语段落的写作逻辑</h3>
+  <ul class="kv">
+    <li>英语段落常以第一句为 topic sentence（主旨句），其后是 information／background。 <span class="loc">〔说话人1 01:08:51〕</span></li>
+    <li>中文思维先铺垫再得结论，英文思维先给结论再展开，二者相反。 <span class="loc">〔说话人1 01:08:13〕</span></li>
+    <li>读医学文献时，第一句或最后一句最重要。 <span class="loc">〔说话人1 01:08:51〕</span></li>
+  </ul>
 </div>
 
-</body>
-</html>
+<div class="page">
+  <h2 class="h2">第3章 AI 诊断优势一：准确性与时效性（P5-P6）</h2>
+  <p class="lead">章主旨：AI 首要不被人类常见因素左右，凭 accuracy（准确性）与 timelessness（时效性）胜过人类诊断。</p>
+
+  <h3 class="h3">3.1 第 5 段：不受人为因素影响</h3>
+  <ul class="kv">
+    <li>第 5 段主旨（paragraph 5 main idea）：AI 不易受 common factors 影响，能 find details difficult to identify。 <span class="loc">〔说话人1 18:02〕</span></li>
+    <li>第 5 段只有 two sentences（两句话）。 <span class="loc">〔说话人1 18:02〕</span></li>
+    <li>这些 factors 正是导致医生误诊（make errors）的原因，如 work load。 <span class="loc">〔说话人3 18:44〕</span></li>
+    <li>人为因素含 heavy workload（工作负担重）。 <span class="loc">〔说话人1 24:12〕</span></li>
+    <li>还包括 lack of sufficient time（时间不足）、cognitive bandwidth（认知带宽有限）、gaps of knowledge（知识缺口）。 <span class="loc">〔说话人1 24:20〕</span></li>
+    <li>第 5 段写作风格：comparison 与 contrast（对比 AI 与医生）＋ example（举例）。 <span class="loc">〔说话人1 18:02〕</span></li>
+    <li>结论：在诊断上 AI 优于人类（AI is better than human diagnosis）。 <span class="loc">〔说话人1 19:04〕</span></li>
+  </ul>
+
+  <h3 class="h3">3.2 第 6 段：优势细节——准确性与时效性</h3>
+  <ul class="kv">
+    <li>第 6 段主旨：AI 能提高诊断的准确性（accuracy）。 <span class="loc">〔说话人3 19:48〕</span></li>
+    <li><span class="tag">★考点</span>AI 优势的两个关键词：accuracy（准确性）与 timelessness（时效性）。 <span class="loc">〔说话人1 20:09〕</span></li>
+    <li>第 6 段写作风格：general＋true examples（概述＋实例）。 <span class="loc">〔说话人1 20:09〕</span></li>
+    <li>例：AI 诊断与人类放射科医生（human radiologists）对比。 <span class="loc">〔说话人1 20:47〕</span></li>
+    <li>研究例：AI 凭卓越的模式匹配能力，在影像完成后数秒内识别脑卒中，远快于人类放射科专家。 <span class="loc">〔说话人1 28:03〕</span></li>
+    <li>AI 可诊断疾病举例：pneumonia（肺炎）、blood clot in the lungs／pulmonary embolism（肺栓塞）、acute kidney injury（急性肾损伤）。 <span class="loc">〔说话人1 23:56〕</span></li>
+  </ul>
+
+  <h3 class="h3">3.3 因果逻辑与平行结构</h3>
+  <ul class="kv">
+    <li>第 6 段含 cause and effect：正因 accuracy 与 timelessness，AI 才能决定生与死（the difference between life and death）。 <span class="loc">〔说话人1 21:52〕</span></li>
+    <li>描述优点时必有 logic chain（逻辑链），要追问它解决了什么问题。 <span class="loc">〔说话人1 22:13〕</span></li>
+    <li>疾病清单是 parallel structure（平行结构），不可随意调换顺序。 <span class="loc">〔说话人1 24:38〕</span></li>
+    <li><span class="tag">★考点</span>逻辑一按严重程度：pneumonia（普通）→ blood clot（慢性）→ acute kidney injury（急性）。 <span class="loc">〔说话人1 25:43〕</span></li>
+    <li>逻辑二按身体部位从 up 到 down：肺（呼吸）→ 肾。 <span class="loc">〔说话人1 25:43〕</span></li>
+    <li>parallel structure 是医学英语 very typical sentence pattern。 <span class="loc">〔说话人1 24:20〕</span></li>
+    <li>这类 listing 几乎每一段都有。 <span class="loc">〔说话人1 24:33〕</span></li>
+  </ul>
+</div>
+
+<div class="page">
+  <h2 class="h2">第4章 AI 诊断优势二：诊断未知模式疾病（P7-P8）</h2>
+  <p class="lead">章主旨：AI 的第二优势是能诊断人类尚未开发出诊断脚本的疾病，靠识别新模式做到。</p>
+
+  <h3 class="h3">4.1 第 7 段：诊断未知模式</h3>
+  <ul class="kv">
+    <li>第 7 段主旨：AI 能帮助诊断人类尚未开发出诊断脚本（scripts）的疾病。 <span class="loc">〔说话人1 28:03〕</span></li>
+    <li>这是 AI 诊断的第二大优势：能诊断新出现或未知的模式。 <span class="loc">〔说话人1 28:03〕</span></li>
+    <li>第 7 段例：hypertrophic cardiomyopathy（肥厚型心肌病）。 <span class="loc">〔说话人1 28:03〕</span></li>
+    <li>第 7 段写作风格：example（举例）＋ comparison 与 contrast（人类医生 vs AI）。 <span class="loc">〔说话人1 28:03〕</span></li>
+    <li>第 7 段含 cause and effect：因 AI 能识别新模式，故能诊断人类未知的疾病。 <span class="loc">〔说话人1 32:15〕</span></li>
+  </ul>
+
+  <h3 class="h3">4.2 第 7 段的语言点</h3>
+  <ul class="kv">
+    <li>段末「what about the remaining 80%?」是反问句（rhetorical question），无须回答。 <span class="loc">〔说话人1 30:44〕</span></li>
+    <li>该句属于 language feature（语言特征），不是写作风格。 <span class="loc">〔说话人1 30:44〕</span></li>
+    <li>「Consider for example, hypertrophic cardiomyopathy...」是祈使句（imperative sentence）。 <span class="loc">〔说话人1 34:50〕</span></li>
+    <li>祈使句的作用：吸引读者注意力（attract readers' interests）。 <span class="loc">〔说话人1 35:52〕</span></li>
+    <li>该句用 attributive clause 解释疾病，是 medical article 常见模式。 <span class="loc">〔说话人1 36:31〕</span></li>
+    <li>疾病描述模式：definition（定义）→ mechanism（机制）→ process（过程）→ result（结果）。 <span class="loc">〔说话人1 36:31〕</span></li>
+    <li>译文（P7）：以肥厚性心肌病为例，这种遗传性疾病会导致心肌异常增厚，最终引发心力衰竭，甚至死亡。 <span class="loc">〔说话人1 36:15〕</span></li>
+  </ul>
+
+  <h3 class="h3">4.3 第 8 段：总结前两个优势</h3>
+  <ul class="kv">
+    <li>第 8 段只有一句话，是对前两个优势的总结（conclusion）。 <span class="loc">〔说话人1 38:20〕</span></li>
+    <li>第 8 段含 comparison：与人类相比，AI 能识别人类识别不出的未知模式。 <span class="loc">〔说话人1 39:13〕</span></li>
+    <li>第 8 段：AI 通过识别复杂且以往未被发现的疾病特征模式，筛查肥厚型心肌病潜在患者。 <span class="loc">〔说话人1 40:26〕</span></li>
+    <li>这意味着 AI 驱动算法能通过常规心电图实现该疾病的早期筛查。 <span class="loc">〔说话人1 40:26〕</span></li>
+    <li>翻译技巧：英语长句可拆成汉语短句；汉译英则按英语思维处理。 <span class="loc">〔说话人1 40:26〕</span></li>
+  </ul>
+</div>
+
+<div class="page">
+  <h2 class="h2">第5章 数据增长与 AI 助力各领域医生（P9）</h2>
+  <p class="lead">章主旨：医疗数据爆发＋AI 进步，使 AI 从数据中识别模式，协助不同领域医生发现疾病。</p>
+
+  <h3 class="h3">5.1 第 9 段主旨与数据类型</h3>
+  <ul class="kv">
+    <li>第 9 段主旨：healthcare data 增长与 AI 进步，使 AI identify patterns 并帮助不同 doctors detect disease。 <span class="loc">〔说话人4 42:00〕</span></li>
+    <li>首句即 topic sentence，是紧接第 8 段的进一步说明。 <span class="loc">〔说话人1 42:42〕</span></li>
+    <li>医疗数据（healthcare data）举例：electronic health records（电子健康记录）、imaging（影像）、genomic data（基因组数据）、biometric data（生物特征数据）、behavior data（行为数据）。 <span class="loc">〔说话人1 56:01〕</span></li>
+    <li>数据列举是 parallel structure，逻辑为从具体到一般（specific to general）。 <span class="loc">〔说话人1 58:02〕</span></li>
+    <li>排列走向：从具体、较小的 EHR，到影像、基因组，再到较一般的生化与行为数据。 <span class="loc">〔说话人1 58:21〕</span></li>
+  </ul>
+
+  <h3 class="h3">5.2 第 9 段的医生清单</h3>
+  <ul class="kv">
+    <li>AI 已协助：radiologists（放射科医生）发现隐藏癌症、pathologists（病理科医生）判定肝纤维化、ophthalmologists（眼科医生）检测视网膜疾病。 <span class="loc">〔说话人1 59:00〕</span></li>
+    <li>该医生列举也是 parallel structure，逻辑是覆盖不同医学领域以展现 AI 的能力。 <span class="loc">〔说话人1 59:00〕</span></li>
+    <li>特意选眼科：视网膜非常精密，连最精密的疾病 AI 也能诊断。 <span class="loc">〔说话人1 01:00:45〕</span></li>
+    <li>不选 kidney 的原因：前面已出现过 acute kidney injury。 <span class="loc">〔说话人1 01:00:45〕</span></li>
+  </ul>
+
+  <h3 class="h3">5.3 第 9 段的逻辑与翻译</h3>
+  <ul class="kv">
+    <li>第 9 段含 cause and effect：因 AI 有独特的模式识别能力，故能帮助医生。 <span class="loc">〔说话人1 44:07〕</span></li>
+    <li>译文：凭借其独特的数据模式识别能力，AI 已协助放射科医生、帮助病理科医生、并支持眼科医生。 <span class="loc">〔说话人1 01:02:35〕</span></li>
+    <li>翻译技巧：原文只用一个 help，中译时用协助／帮助／支持等近义词避免重复。 <span class="loc">〔说话人1 01:03:09〕</span></li>
+    <li><span class="tag">★考点</span>AI 的诊断只是辅助（assistant function），不能完全取代人类诊断。 <span class="loc">〔说话人1 01:02:35〕</span></li>
+  </ul>
+</div>
+
+<div class="page">
+  <h2 class="h2">第6章 AI 的挑战与风险（P10-P12）</h2>
+  <p class="lead">章主旨：AI 诊断虽强，却面临三重财务挑战（P10）、错误信息（P11）与信任问题（P12）。</p>
+
+  <h3 class="h3">6.1 第 10 段：三大挑战</h3>
+  <ul class="kv">
+    <li>第 10 段主旨：Along with opportunities come challenges and risks；AI diagnosis 仍有 problems。 <span class="loc">〔说话人1 01:04:44〕</span></li>
+    <li><span class="tag">★考点</span>三挑战：① AI expensive（high cost）；② intellectual property 难保护；③ financial incentive 重要。 <span class="loc">〔说话人5 01:05:05〕</span></li>
+    <li>挑战一：AI 昂贵（expensive），需大规模数据训练，算法成本高。 <span class="loc">〔说话人1 01:07:13〕</span></li>
+    <li>挑战二：资源更易获取后，知识产权（intellectual property）保护变难，可能挫伤公共与私人投资。 <span class="loc">〔说话人1 01:07:48〕</span></li>
+    <li>挑战三：AI 长期可 improve the quality of care，但无 financial support 则 development 与 adoption 会 slow。 <span class="loc">〔说话人1 01:07:48〕</span></li>
+    <li><span class="tag">★考点</span>挑战的逻辑顺序：creative（创造）→ use（使用）→ long-term effect（长期效果），即产品生命周期。 <span class="loc">〔说话人1 01:12:19〕</span></li>
+    <li>第 10 段是典型英文段落：首句先提 challenges and risks，再分析原因。 <span class="loc">〔说话人1 01:08:13〕</span></li>
+    <li>第二作者是经济学家（Economist），所以这段带经济学逻辑。 <span class="loc">〔说话人1 01:13:41〕</span></li>
+    <li>more accessible 是与过去对比（from past to present）：现在 AI 资源比过去更易获取。 <span class="loc">〔说话人1 01:15:04〕</span></li>
+    <li>译文：随着数据资源日益普及，相关知识产权的保护将更加困难，可能挫伤公私投资热情。 <span class="loc">〔说话人1 01:16:02〕</span></li>
+  </ul>
+
+  <h3 class="h3">6.2 第 11 段：错误信息（Misinformation）</h3>
+  <ul class="kv">
+    <li>第 11 段主旨：AI 可能受错误信息（misinformation）影响。 <span class="loc">〔说话人6 01:17:00〕</span></li>
+    <li>并非所有网上信息都可信，需要质疑。 <span class="loc">〔说话人1 01:17:41〕</span></li>
+    <li>第 11 段写作风格：problem and solution（问题与解决）。 <span class="loc">〔说话人6 01:19:54〕</span></li>
+    <li>因果链：AI 基于在线文本预测下一个词的可能性（原因）→ 结果可能给权威来源与不可靠信息同等权重。 <span class="loc">〔说话人1 01:23:34〕</span></li>
+    <li>结果混淆了权威数据（如 WHO）与网上随机、不可靠信息，视其同等可信。 <span class="loc">〔说话人1 01:29:24〕</span></li>
+    <li>「this」指代前一句（第二句）所述的整个过程，是中国学生易错的指代。 <span class="loc">〔说话人1 01:23:55〕</span></li>
+    <li><span class="tag">★考点</span>random thread 是隐喻（metaphor）：thread 很细、经不起推敲、一扯就断，指网上不可靠的信息。 <span class="loc">〔说话人1 01:27:30〕</span></li>
+    <li>用 thread 是有意委婉，回避直接说 unbelievable information。 <span class="loc">〔说话人1 01:28:30〕</span></li>
+    <li>段末译文：许多研究和用户经历表明，AI 可能编造并不存在的信息来源，并伪装成可靠来源。 <span class="loc">〔说话人1 01:29:55〕</span></li>
+    <li>老师提醒：不要把 creative idea（新想法）放进 AI 里问，容易泄密。 <span class="loc">〔说话人1 01:17:41〕</span></li>
+    <li>AI 时代最有价值的是 creative idea（人的大脑）；AI 只整合现有数据，new idea 需人类大脑。 <span class="loc">〔说话人1 01:18:58〕</span></li>
+  </ul>
+
+  <h3 class="h3">6.3 第 12 段：患者与医生对 AI 的信任</h3>
+  <ul class="kv">
+    <li>第 12 段主旨：用户愿意用 AI 回答简单问题，但问题越复杂越不信任 AI 诊断。 <span class="loc">〔说话人8 01:31:00〕</span></li>
+    <li>段落逻辑：从 general（第 11 段网上错误信息）到 specific（医生与患者如何使用 AI）。 <span class="loc">〔说话人1 01:32:18〕</span></li>
+    <li>过渡词「then」连接上文的 general 问题与下文的医生、患者具体问题。 <span class="loc">〔说话人1 01:32:30〕</span></li>
+    <li>写作风格：example／data（调查数据，含 60%）、cause and effect、comparison。 <span class="loc">〔说话人7 01:33:26〕</span></li>
+    <li>因果：问题越 complex、risk 越高，用户越 less willing to trust AI 诊断。 <span class="loc">〔说话人1 01:33:53〕</span></li>
+    <li>对比：simple question vs complex questions；more willing vs less willing to trust。 <span class="loc">〔说话人1 01:35:04〕</span></li>
+    <li>Paraphrase 原句：Although users were willing to use AI to answer simple questions, they became increasingly reluctant to trust AI's diagnosis as the questions became more complicated and potential risk rose. <span class="loc">〔说话人5 01:36:27〕</span></li>
+    <li>改写：Where users accept AI responses to basic queries, trust declines as question complexity and associated risk increase. <span class="loc">〔说话人1 01:36:50〕</span></li>
+    <li>原句比改写更生动（vivid, rich），改写更正式（formal）。 <span class="loc">〔说话人1 01:36:50〕</span></li>
+  </ul>
+</div>
+
+<div class="page">
+  <h2 class="h2">第7章 写作风格 · 修辞手法 · 翻译技巧</h2>
+  <p class="lead">章主旨：全课工具层——五种写作风格、三种修辞手法、四条翻译技巧。</p>
+
+  <h3 class="h3">7.1 写作风格总结</h3>
+  <table class="tbl">
+    <tr><th style="width:30%">写作风格</th><th>要点</th><th style="width:24%">出现段落</th></tr>
+    <tr><td>Example（举例）</td><td>最基本的手法，几乎每段都有</td><td>几乎每段</td></tr>
+    <tr><td>Comparison and Contrast（对比）</td><td>比 AI 与人类、简单与复杂</td><td>P5、P6、P7、P9、P12</td></tr>
+    <tr><td>Cause and Effect（因果）</td><td>深层逻辑，每段几乎都有</td><td>P6、P7、P9、P10、P11、P12</td></tr>
+    <tr><td>Problem and Solution（问题与解决）</td><td>提出问题再给解决方向</td><td>P11</td></tr>
+    <tr><td>Parallel Structure（平行结构）</td><td>医学英语典型句式，有逻辑顺序</td><td>P5、P6、P9</td></tr>
+  </table>
+  <ul class="kv">
+    <li>Example（举例）是最基本的写作手法，几乎每段都有。 <span class="loc">〔说话人1 01:20:21〕</span></li>
+    <li>Comparison and Contrast（对比）用于比 AI 与人类、简单与复杂。 <span class="loc">〔说话人1 19:04〕</span></li>
+    <li>Cause and Effect（因果）是深层逻辑，几乎每段都有。 <span class="loc">〔说话人1 21:52〕</span></li>
+    <li>Problem and Solution（问题与解决）见于第 11 段。 <span class="loc">〔说话人1 01:20:00〕</span></li>
+    <li>Parallel Structure（平行结构）见于 P5、P6、P9。 <span class="loc">〔说话人1 24:20〕</span></li>
+    <li><span class="tag">★考点</span>老师强调：example、comparison 只是展现形式，深层的是逻辑（logic）。 <span class="loc">〔说话人1 01:08:51〕</span></li>
+    <li>读英文要主动找 cause and effect，这是英文思维的核心。 <span class="loc">〔说话人1 01:25:22〕</span></li>
+    <li>平行结构不是随便排列，有严重程度、从具体到一般、从上到下等逻辑。 <span class="loc">〔说话人1 25:30〕</span></li>
+  </ul>
+
+  <h3 class="h3">7.2 修辞手法总结</h3>
+  <ul class="kv">
+    <li>反问句（Rhetorical Question）：第 7 段末「what about the remaining 80%?」，无须回答。 <span class="loc">〔说话人1 30:44〕</span></li>
+    <li>祈使句（Imperative Sentence）：以 Consider for example 开头，作用是吸引读者注意。 <span class="loc">〔说话人1 34:50〕</span></li>
+    <li>隐喻（Metaphor）：第 11 段「random thread」，指不可靠的网上信息。 <span class="loc">〔说话人1 01:27:30〕</span></li>
+    <li>第 11 段是 problem-solving 段落，不需要修辞手法。 <span class="loc">〔说话人1 01:26:30〕</span></li>
+  </ul>
+
+  <h3 class="h3">7.3 翻译技巧总结</h3>
+  <ul class="kv">
+    <li>技巧一：英语长句可拆成汉语短句。 <span class="loc">〔说话人1 40:26〕</span></li>
+    <li>技巧二：近义词替换，避免同一动词重复（help → 协助／帮助／支持）。 <span class="loc">〔说话人1 01:03:09〕</span></li>
+    <li>技巧三：按目标语言思维翻译——英译汉按汉语思维，汉译英按英语思维。 <span class="loc">〔说话人1 40:26〕</span></li>
+    <li>技巧四：more accessible 理解为与过去对比（from past to present）。 <span class="loc">〔说话人1 01:15:04〕</span></li>
+  </ul>
+</div>
+
+<div class="page">
+  <h2 class="h2">第8章 第五单元预习</h2>
+  <p class="lead">章主旨：下次课进入 Unit 5《Bioengineered Hope: Regenerative Medicine》，课前勾画翻译与 paraphrase 句子。</p>
+  <ul class="kv">
+    <li>Unit 5 主题：Bioengineered Hope: Regenerative Medicine（再生医学）。 <span class="loc">〔说话人1 01:38:23〕</span></li>
+    <li>再生医学是跨学科、跨领域（interdisciplinary field）的方向。 <span class="loc">〔说话人1 01:38:23〕</span></li>
+    <li>再生医学已有约 20 年历史，如今仍在不断创新（如干细胞已用于整容）。 <span class="loc">〔说话人1 01:38:23〕</span></li>
+    <li>篇目为 Reading 2（教材 P121 起），选自 Nature，难度高于第一篇，句子偏长。 <span class="loc">〔说话人1 01:38:23〕</span></li>
+    <li>P121 第三段「Since her initial repair, Bekah...」做翻译。 <span class="loc">〔说话人1 01:38:23〕</span></li>
+    <li>第六段第一句「For more than a century, clinicians...」做 paraphrase。 <span class="loc">〔说话人1 01:38:23〕</span></li>
+    <li>第七段第三句「to clear the excess markers, patient must routinely...」做 paraphrase。 <span class="loc">〔说话人1 01:38:23〕</span></li>
+    <li>第八段「to address this limitation...」做翻译。 <span class="loc">〔说话人1 01:40:54〕</span></li>
+    <li>to address 意为「谈到、说到」，是医学英语中谈论／解决问题的常见表达。 <span class="loc">〔说话人1 01:40:54〕</span></li>
+    <li>「Synthetic scaffold can expand and contract in sync.」做 paraphrase。 <span class="loc">〔说话人1 01:41:43〕</span></li>
+    <li>「Missing tissue」一句做 paraphrase。 <span class="loc">〔说话人1 01:41:50〕</span></li>
+    <li>第九段第二句「By using the patient's own cell...」做翻译。 <span class="loc">〔说话人1 01:42:05〕</span></li>
+    <li>第十段第一句「Surgeons can customize the composite of stem cells...」做翻译。 <span class="loc">〔说话人1 01:42:17〕</span></li>
+    <li>第十三段「according to one researcher...applicability of the work」做翻译。 <span class="loc">〔说话人1 01:42:34〕</span></li>
+    <li>第十四段「Not only... but also...Bioengineered blood tissue」做翻译。 <span class="loc">〔说话人1 01:43:10〕</span></li>
+    <li>最后一段「it holds tremendous promise」做翻译。 <span class="loc">〔说话人1 01:43:10〕</span></li>
+  </ul>
+</div>
+
+<div class="page">
+  <h2 class="h2">附录 A 必背清单</h2>
+  <ul class="kv">
+    <li>展示三任务：Words Analysis、Cognate Words、Medical Translation。</li>
+    <li>作品计入平时成绩（performance and activity）。</li>
+    <li>词构成模式：prefix ＋ word root ＋ combining vowel ＋ suffix。</li>
+    <li>记词根优于记整词；一个词根派生 ≥20 词；词根含义不变（cardio＝heart）。</li>
+    <li>-pathy：作后缀＝疾病；作词根去 y 加 o（patho-）。</li>
+    <li>chromosome = chroma（color）＋ soma（body）。</li>
+    <li>期末词汇取自课本与词汇包；翻译句会进期末考题。</li>
+    <li>P4 一句话＝过渡段＝全文主旨句：AI can solve all these problems。</li>
+    <li>英文段落首句＝topic sentence，其后是 information／background。</li>
+    <li>AI 优势一：accuracy（准确性）＋ timelessness（时效性）。</li>
+    <li>AI 优势二：诊断人类未开发 scripts 的未知模式疾病。</li>
+    <li>AI 可诊：pneumonia、blood clot in the lungs／pulmonary embolism、acute kidney injury。</li>
+    <li>平行结构必有逻辑（严重程度、从上到下、从具体到一般）。</li>
+    <li>疾病描述模式：definition → mechanism → process → result。</li>
+    <li>三种修辞：rhetorical question、imperative sentence、metaphor。</li>
+    <li>random thread＝网上不可靠的信息。</li>
+    <li>AI 三挑战：昂贵、知识产权、财务激励；逻辑 creative → use → long-term effect。</li>
+    <li>第二作者是 Economist（经济学家）。</li>
+    <li>misinformation：AI 给权威与随机信息同等权重，且可能编造来源。</li>
+    <li>P12：简单问题愿用 AI，问题越复杂越不信任。</li>
+    <li>写作风格五类：example、comparison、cause-effect、problem-solution、parallel structure。</li>
+    <li>翻译技巧：长句拆短句、近义词替换、按目标语言思维、more accessible＝过去对比。</li>
+    <li>Unit 5：Bioengineered Hope: Regenerative Medicine（再生医学）。</li>
+    <li>不要把 creative idea 喂给 AI（易泄密）；最宝贵的是人的 idea。</li>
+  </ul>
+
+  <h2 class="h2">附录 B 易错点 · 易混对照</h2>
+  <table class="tbl">
+    <tr><th style="width:46%">错</th><th>对</th></tr>
+    <tr><td>connecting power／combining power</td><td>combining vowel（连接元音）</td></tr>
+    <tr><td>parallel structure 的列举随便排</td><td>必有逻辑：严重程度、从上到下、从具体到一般</td></tr>
+    <tr><td>网上信息多即可信</td><td>并非全部可信，需要质疑</td></tr>
+    <tr><td>thread＝线索（普通词）</td><td>random thread 是隐喻，指不可靠信息</td></tr>
+    <tr><td>this 只指前一个名词</td><td>this 指代第二句所述的整个过程</td></tr>
+    <tr><td>AI 可完全取代医生</td><td>AI 仅辅助（assistant），不能取代人类诊断</td></tr>
+    <tr><td>pneumonia 与 acute kidney injury 同级</td><td>前者普通、后者急性严重，有严重程度差</td></tr>
+    <tr><td>Consider for example 是陈述句</td><td>是祈使句，作用为吸引读者注意</td></tr>
+    <tr><td>more accessible 与过去无关</td><td>是与过去对比（past → present）</td></tr>
+    <tr><td>P4 有多句话</td><td>P4 只有一句话</td></tr>
+    <tr><td>P3 讲 AI 的优势</td><td>P3 讲人类诊断的误诊原因</td></tr>
+    <tr><td>同一个 help 全译成「帮助」</td><td>译作协助／帮助／支持以避免重复</td></tr>
+  </table>
+
+  <h2 class="h2">附录 C 考点索引表</h2>
+  <table class="idx">
+    <tr><th style="width:32%">考点</th><th style="width:14%">出处小节</th><th style="width:20%">定位</th><th>可能题型</th></tr>
+    <tr><td>词构成基本模式</td><td>§1.4</td><td>〔说话人1 04:32〕</td><td>填空、术语分析</td></tr>
+    <tr><td>同族词概念与记忆法</td><td>§1.3</td><td>〔说话人1 03:16〕</td><td>名词解释</td></tr>
+    <tr><td>全文主旨句位置与内容</td><td>§2.2</td><td>〔说话人1 16:23〕</td><td>段落主旨题</td></tr>
+    <tr><td>英文段落 topic sentence</td><td>§2.3</td><td>〔说话人1 01:08:51〕</td><td>篇章结构题</td></tr>
+    <tr><td>AI 优势一 accuracy／timelessness</td><td>§3.2</td><td>〔说话人1 20:09〕</td><td>主旨题、填空</td></tr>
+    <tr><td>因果逻辑 life and death</td><td>§3.3</td><td>〔说话人1 21:52〕</td><td>逻辑题</td></tr>
+    <tr><td>平行结构的逻辑顺序</td><td>§3.3</td><td>〔说话人1 25:43〕</td><td>排序、说明题</td></tr>
+    <tr><td>AI 优势二 scripts</td><td>§4.1</td><td>〔说话人1 28:03〕</td><td>主旨题</td></tr>
+    <tr><td>疾病描述模式</td><td>§4.2</td><td>〔说话人1 36:31〕</td><td>写作分析题</td></tr>
+    <tr><td>修辞手法辨认</td><td>§4.2</td><td>〔说话人1 30:44〕</td><td>修辞题</td></tr>
+    <tr><td>医疗数据类型列举</td><td>§5.1</td><td>〔说话人1 56:01〕</td><td>列举题</td></tr>
+    <tr><td>医生领域与选眼科原因</td><td>§5.2</td><td>〔说话人1 01:00:45〕</td><td>细节题</td></tr>
+    <tr><td>AI 的三大挑战</td><td>§6.1</td><td>〔说话人5 01:05:05〕</td><td>归纳题</td></tr>
+    <tr><td>misinformation 因果链</td><td>§6.2</td><td>〔说话人1 01:23:34〕</td><td>因果题</td></tr>
+    <tr><td>thread 隐喻的含义</td><td>§6.2</td><td>〔说话人1 01:27:30〕</td><td>修辞题</td></tr>
+    <tr><td>信任随问题复杂度下降</td><td>§6.3</td><td>〔说话人1 01:33:53〕</td><td>因果题</td></tr>
+    <tr><td>写作风格分类</td><td>§7.1</td><td>〔说话人1 01:20:21〕</td><td>归类题</td></tr>
+    <tr><td>翻译技巧</td><td>§7.3</td><td>〔说话人1 40:26〕</td><td>翻译题</td></tr>
+    <tr><td>期末翻译选句范围</td><td>§1.5</td><td>〔说话人1 08:54〕</td><td>考试说明</td></tr>
+    <tr><td>Unit 5 主题与预习</td><td>§8</td><td>〔说话人1 01:38:23〕</td><td>预习</td></tr>
+  </table>
+</div>
+
+<div class="page">
+  <h2 class="h2">附录 D 知识点清单</h2>
+  <table class="idx">
+    <tr><th style="width:5%">#</th><th style="width:47%">知识点</th><th style="width:12%">类型</th><th style="width:12%">小节</th><th>定位</th></tr>
+    <tr><td>1</td><td>医学术语展示：每单元一次，目的反复练习记词；三任务 Words Analysis／Cognate Words／Medical Translation</td><td>说明</td><td>§1.1</td><td>〔说话人1 00:00〕</td></tr>
+    <tr><td>2</td><td>展示计入平时成绩（performance and activity）</td><td>说明</td><td>§1.1</td><td>〔说话人1 12:15〕</td></tr>
+    <tr><td>3</td><td>Task1：教材 P17 选 7 个词根分析构成；例 radiologist = radio＋log＋ist</td><td>步骤</td><td>§1.2</td><td>〔说话人1 02:37〕</td></tr>
+    <tr><td>4</td><td>词汇分析的目的：靠词根与词缀记单词</td><td>目的</td><td>§1.2</td><td>〔说话人1 08:54〕</td></tr>
+    <tr><td>5</td><td>同族词＝共享同一词根；词根是词最基本的成分与语义代码</td><td>定义</td><td>§1.3</td><td>〔说话人1 03:16〕</td></tr>
+    <tr><td>6</td><td>Task2：每词根找 5 个同族词（前缀＋词根＋连接元音＋后缀）；例 cardio 派生词</td><td>步骤</td><td>§1.3</td><td>〔说话人1 03:38〕</td></tr>
+    <tr><td>7</td><td>一个词根派生 ≥20 词；含义不变（cardio＝heart）；记词根优于记整词</td><td>结论</td><td>§1.3</td><td>〔说话人1 07:00〕</td></tr>
+    <tr><td>8</td><td>期末词汇取自课本与词汇包</td><td>考点</td><td>§1.3</td><td>〔说话人1 06:24〕</td></tr>
+    <tr><td>9</td><td>词构成模式 prefix ＋ word root ＋ combining vowel ＋ suffix（可叠加词根）</td><td>公式</td><td>§1.4</td><td>〔说话人1 04:32〕</td></tr>
+    <tr><td>10</td><td>-pathy：作后缀＝疾病；作词根去 y 加 o（patho-）</td><td>定义</td><td>§1.4</td><td>〔说话人1 05:30〕</td></tr>
+    <tr><td>11</td><td>chromosome = chroma（color）＋ soma（body）</td><td>例子</td><td>§1.4</td><td>〔说话人1 06:24〕</td></tr>
+    <tr><td>12</td><td>Task3：P18-19 写术语并画斜杠分解；填空写答案；翻译课堂对答案</td><td>步骤</td><td>§1.5</td><td>〔说话人1 08:13〕</td></tr>
+    <tr><td>13</td><td>每人做翻译；展示组分享技巧；期考从课文翻译选句</td><td>考点</td><td>§1.5</td><td>〔说话人1 08:54〕</td></tr>
+    <tr><td>14</td><td>5 组；课堂学 4 单元（1、5、6、8）；Unit3（BCI，P71）项目学习且最后讲</td><td>结构</td><td>§1.5</td><td>〔说话人1 11:31〕</td></tr>
+    <tr><td>15</td><td>每单元后下周对应组展示；第一组仅一周准备；另有「一词三式」资料</td><td>结构</td><td>§1.5</td><td>〔说话人1 53:12〕</td></tr>
+    <tr><td>16</td><td>本节从 P3 继续讲完 Unit 1</td><td>进度</td><td>§2.1</td><td>〔说话人1 13:51〕</td></tr>
+    <tr><td>17</td><td>P3 误诊＝疾病特征与已知模式不匹配；例心脏病发作无症状／心电图异常</td><td>结论</td><td>§2.1</td><td>〔说话人2 15:06〕</td></tr>
+    <tr><td>18</td><td>不匹配致 misread／mistake；前三段讲人类诊断问题</td><td>术语</td><td>§2.1</td><td>〔说话人1 15:16〕</td></tr>
+    <tr><td>19</td><td>P4 一句＝过渡段＝全文主旨句：AI can solve all these problems</td><td>考点</td><td>§2.2</td><td>〔说话人1 16:23〕</td></tr>
+    <tr><td>20</td><td>英文段落首句＝topic sentence；中英思维相反；读文献首句／末句最重要</td><td>规则</td><td>§2.3</td><td>〔说话人1 01:08:51〕</td></tr>
+    <tr><td>21</td><td>P5 主旨：AI 不受人为因素影响、发现难识别细节；仅两句</td><td>结论</td><td>§3.1</td><td>〔说话人1 18:02〕</td></tr>
+    <tr><td>22</td><td>人为因素致误诊：heavy workload／lack of time／cognitive bandwidth／gaps of knowledge</td><td>术语</td><td>§3.1</td><td>〔说话人1 24:20〕</td></tr>
+    <tr><td>23</td><td>P5 风格 comparison＋example；AI 优于人类诊断</td><td>风格</td><td>§3.1</td><td>〔说话人1 19:04〕</td></tr>
+    <tr><td>24</td><td>P6 主旨：提高准确性；关键词 accuracy／timelessness</td><td>考点</td><td>§3.2</td><td>〔说话人1 20:09〕</td></tr>
+    <tr><td>25</td><td>P6 风格 general＋examples；例 AI vs human radiologists</td><td>风格</td><td>§3.2</td><td>〔说话人1 20:47〕</td></tr>
+    <tr><td>26</td><td>研究：数秒识别脑卒中；可诊 pneumonia／肺栓塞／acute kidney injury</td><td>数字</td><td>§3.2</td><td>〔说话人1 23:56〕</td></tr>
+    <tr><td>27</td><td>P6 因果 accuracy＋timelessness → life and death；优点必有 logic chain</td><td>因果</td><td>§3.3</td><td>〔说话人1 21:52〕</td></tr>
+    <tr><td>28</td><td>疾病清单为 parallel structure，不可乱序</td><td>规则</td><td>§3.3</td><td>〔说话人1 24:38〕</td></tr>
+    <tr><td>29</td><td>平行逻辑：严重程度（普通→慢性→急性）；从上到下（肺→肾）</td><td>逻辑</td><td>§3.3</td><td>〔说话人1 25:43〕</td></tr>
+    <tr><td>30</td><td>parallel structure 是医学英语典型句式，几乎每段都有</td><td>结论</td><td>§3.3</td><td>〔说话人1 24:33〕</td></tr>
+    <tr><td>31</td><td>P7 主旨：诊断未开发 scripts 的疾病＝第二优势（未知模式）</td><td>结论</td><td>§4.1</td><td>〔说话人1 28:03〕</td></tr>
+    <tr><td>32</td><td>P7 例 hypertrophic cardiomyopathy；风格 example＋comparison</td><td>例子</td><td>§4.1</td><td>〔说话人1 28:03〕</td></tr>
+    <tr><td>33</td><td>P7 因果：识别新模式 → 诊断未知疾病</td><td>因果</td><td>§4.1</td><td>〔说话人1 32:15〕</td></tr>
+    <tr><td>34</td><td>段末反问句 remaining 80%，为 language feature 非写作风格</td><td>修辞</td><td>§4.2</td><td>〔说话人1 30:44〕</td></tr>
+    <tr><td>35</td><td>Consider for example 为祈使句，作用为吸引读者注意</td><td>修辞</td><td>§4.2</td><td>〔说话人1 34:50〕</td></tr>
+    <tr><td>36</td><td>定语从句解释疾病为常见模式；描述模式 definition→mechanism→process→result</td><td>公式</td><td>§4.2</td><td>〔说话人1 36:31〕</td></tr>
+    <tr><td>37</td><td>P7 译文：肥厚性心肌病为遗传性、心肌异常增厚、致心衰甚至死亡</td><td>翻译</td><td>§4.2</td><td>〔说话人1 36:15〕</td></tr>
+    <tr><td>38</td><td>P8 一句＝前两优势总结；含 comparison</td><td>结论</td><td>§4.3</td><td>〔说话人1 38:20〕</td></tr>
+    <tr><td>39</td><td>P8：AI 识别未知模式筛查 HCM；算法经常规心电图早期筛查</td><td>结论</td><td>§4.3</td><td>〔说话人1 40:26〕</td></tr>
+    <tr><td>40</td><td>翻译技巧：英语长句拆成汉语短句</td><td>技巧</td><td>§4.3</td><td>〔说话人1 40:26〕</td></tr>
+    <tr><td>41</td><td>P9 主旨：数据增长＋AI → 帮助各领域医生；首句 topic sentence</td><td>结论</td><td>§5.1</td><td>〔说话人4 42:00〕</td></tr>
+    <tr><td>42</td><td>医疗数据类型 EHR／imaging／genomic／biometric／behavior；列举 specific→general</td><td>分类</td><td>§5.1</td><td>〔说话人1 56:01〕</td></tr>
+    <tr><td>43</td><td>AI 已帮助 radiologists／pathologists／ophthalmologists（覆盖不同领域）</td><td>分类</td><td>§5.2</td><td>〔说话人1 59:00〕</td></tr>
+    <tr><td>44</td><td>选眼科因视网膜精密；不选 kidney 因已提 acute kidney injury</td><td>考点</td><td>§5.2</td><td>〔说话人1 01:00:45〕</td></tr>
+    <tr><td>45</td><td>P9 因果：独特模式识别能力 → 帮助医生</td><td>因果</td><td>§5.3</td><td>〔说话人1 44:07〕</td></tr>
+    <tr><td>46</td><td>P9 译文用协助／帮助／支持；AI 为辅助，不能取代人类</td><td>翻译</td><td>§5.3</td><td>〔说话人1 01:02:35〕</td></tr>
+    <tr><td>47</td><td>P10 主旨：机遇伴随挑战与风险</td><td>结论</td><td>§6.1</td><td>〔说话人1 01:04:44〕</td></tr>
+    <tr><td>48</td><td>三挑战：昂贵／知识产权／财务激励</td><td>分类</td><td>§6.1</td><td>〔说话人5 01:05:05〕</td></tr>
+    <tr><td>49</td><td>挑战 1 昂贵需大规模数据；挑战 2 资源易获取→知识产权难保护；挑战 3 无财务支持发展慢</td><td>结论</td><td>§6.1</td><td>〔说话人1 01:07:13〕</td></tr>
+    <tr><td>50</td><td>挑战逻辑 creative→use→long-term effect；more accessible＝过去对比</td><td>逻辑</td><td>§6.1</td><td>〔说话人1 01:12:19〕</td></tr>
+    <tr><td>51</td><td>P10 首句提 challenges and risks；第二作者是 Economist</td><td>背景</td><td>§6.1</td><td>〔说话人1 01:13:41〕</td></tr>
+    <tr><td>52</td><td>P10 译文：数据普及 → 知识产权难保护 → 挫伤投资</td><td>翻译</td><td>§6.1</td><td>〔说话人1 01:16:02〕</td></tr>
+    <tr><td>53</td><td>P11 主旨 misinformation；网上信息并非全可信</td><td>结论</td><td>§6.2</td><td>〔说话人6 01:17:00〕</td></tr>
+    <tr><td>54</td><td>P11 风格 problem and solution</td><td>风格</td><td>§6.2</td><td>〔说话人6 01:19:54〕</td></tr>
+    <tr><td>55</td><td>P11 因果：预测下词 → 权威与随机信息同等权重</td><td>因果</td><td>§6.2</td><td>〔说话人1 01:23:34〕</td></tr>
+    <tr><td>56</td><td>this 指代第二句所述整个过程</td><td>易错</td><td>§6.2</td><td>〔说话人1 01:23:55〕</td></tr>
+    <tr><td>57</td><td>random thread 是隐喻＝网上不可靠信息，委婉表 unbelievable</td><td>修辞</td><td>§6.2</td><td>〔说话人1 01:27:30〕</td></tr>
+    <tr><td>58</td><td>P11 译文：AI 可能编造不存在来源并伪装成可靠来源</td><td>翻译</td><td>§6.2</td><td>〔说话人1 01:29:55〕</td></tr>
+    <tr><td>59</td><td>勿把 creative idea 喂 AI（泄密）；AI 时代最宝贵是 creative idea</td><td>提醒</td><td>§6.2</td><td>〔说话人1 01:17:41〕</td></tr>
+    <tr><td>60</td><td>P12 主旨：简单问题愿用 AI，越复杂越不信任</td><td>结论</td><td>§6.3</td><td>〔说话人8 01:31:00〕</td></tr>
+    <tr><td>61</td><td>P11→P12 general→specific；then 连接 general 与具体问题</td><td>结构</td><td>§6.3</td><td>〔说话人1 01:32:18〕</td></tr>
+    <tr><td>62</td><td>P12 风格 example／data／cause／comparison</td><td>风格</td><td>§6.3</td><td>〔说话人7 01:33:26〕</td></tr>
+    <tr><td>63</td><td>P12 因果：复杂度／风险↑ → 信任↓；对比简单 vs 复杂</td><td>因果</td><td>§6.3</td><td>〔说话人1 01:33:53〕</td></tr>
+    <tr><td>64</td><td>Paraphrase 原句与改写句；原句 vivid、改写 formal</td><td>翻译</td><td>§6.3</td><td>〔说话人1 01:36:50〕</td></tr>
+    <tr><td>65</td><td>写作风格五类：Example／Comparison／Cause-Effect／Problem-Solution／Parallel</td><td>分类</td><td>§7.1</td><td>〔说话人1 01:20:21〕</td></tr>
+    <tr><td>66</td><td>Example 最基本；Comparison 比 AI 与人类、简单与复杂</td><td>风格</td><td>§7.1</td><td>〔说话人1 19:04〕</td></tr>
+    <tr><td>67</td><td>Cause and Effect 是深层逻辑；Problem-Solution 见 P11；Parallel 见 P5／6／9</td><td>风格</td><td>§7.1</td><td>〔说话人1 21:52〕</td></tr>
+    <tr><td>68</td><td>形式（example／comparison）只是表现，深层是逻辑；找因果是英文思维核心</td><td>强调</td><td>§7.1</td><td>〔说话人1 01:25:22〕</td></tr>
+    <tr><td>69</td><td>平行结构有逻辑（严重程度／具体到一般／从上到下）</td><td>强调</td><td>§7.1</td><td>〔说话人1 25:30〕</td></tr>
+    <tr><td>70</td><td>三修辞：反问句（remaining 80%）、祈使句（Consider）、隐喻（random thread）</td><td>修辞</td><td>§7.2</td><td>〔说话人1 30:44〕</td></tr>
+    <tr><td>71</td><td>P11 为 problem-solving，不需修辞</td><td>结论</td><td>§7.2</td><td>〔说话人1 01:26:30〕</td></tr>
+    <tr><td>72</td><td>翻译技巧：长句拆短句；近义词替换；按目标语言思维；more accessible＝过去对比</td><td>技巧</td><td>§7.3</td><td>〔说话人1 40:26〕</td></tr>
+    <tr><td>73</td><td>Unit5 主题 Bioengineered Hope: Regenerative Medicine（再生医学），跨学科</td><td>主题</td><td>§8</td><td>〔说话人1 01:38:23〕</td></tr>
+    <tr><td>74</td><td>再生医学约 20 年历史，干细胞已用于整容；Reading2 P121 选自 Nature，难度高</td><td>说明</td><td>§8</td><td>〔说话人1 01:38:23〕</td></tr>
+    <tr><td>75</td><td>预习 paraphrase 句：第六段第一句、第七段第三句、第八段后两句</td><td>任务</td><td>§8</td><td>〔说话人1 01:38:23〕</td></tr>
+    <tr><td>76</td><td>预习翻译句：P121 第三段、第八段、第九段第二句、第十段第一句、第十三段、第十四段、最后一段</td><td>任务</td><td>§8</td><td>〔说话人1 01:43:10〕</td></tr>
+    <tr><td>77</td><td>to address 意为「谈到、说到」，医学英语谈论／解决问题的常见表达</td><td>语言点</td><td>§8</td><td>〔说话人1 01:40:54〕</td></tr>
+  </table>
+
+  <p class="foot">本笔记依据 2026-09-16 医学英语课堂逐字稿整理，覆盖课程作业三任务、Unit 1 课文第 3-12 段、写作风格与修辞手法、翻译技巧及 Unit 5 预习；所有结论均附逐字稿原样定位，全部知识点已在附录 D 逐条登记（共 77 条）。</p>
+</div>
+
+</body></html>

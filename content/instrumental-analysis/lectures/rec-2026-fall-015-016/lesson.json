@@ -10,7 +10,7 @@
   },
   "taughtOn": "2026-09-24",
   "topic": "分子发光分析法——荧光分析法：荧光与磷光的产生、荧光定量分析、影响因素、荧光仪器及化学发光",
-  "revision": 1,
+  "revision": 3,
   "materials": {
     "recording": {
       "file": "recording.md",

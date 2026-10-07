@@ -3,258 +3,607 @@
   "chapterId": "rec-2026-fall-021-022",
   "generatedAt": "2026-09-28",
   "examConfig": {
-    "source": "content/cell-biology/lectures/rec-2026-fall-021-022/recording.md；content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-    "totalPoints": 110,
-    "timeLimit": 45
+    "source": "content/cell-biology/lectures/rec-2026-fall-021-022/recording.md；content/cell-biology/lectures/rec-2026-fall-021-022/notes.html（SOP-04 课上录音标准 24 题/100 分）",
+    "totalPoints": 100,
+    "timeLimit": 50
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-021-022",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "842ac129884d4c6ded6f4c0c79d835a3faaab90289642dd8272cb2722c63701b",
-    "notesTextHash": "3ebf031c9d09c6fce2abbcef416a7b17363e058f8bd53cfadc058849940d8005"
+    "notesTextHash": "e6632c626c6495d2dd766797dd2c1bbddaf637b4978c77863691c58ad4de28ba"
   },
   "questions": [
     {
       "id": "q001",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
-      "points": 10,
       "source": "current_chapter",
+      "stem": "关于微丝（肌动蛋白丝）两端的性质与分工，下列叙述正确的是：",
+      "options": [
+        "正端（barbed end）结合游离单体的能力弱、负责解聚；负端（pointed end）负责生长",
+        "正端（barbed end）更容易结合溶液中游离的 G-actin、是微丝的生长端；负端（pointed end）结合单体能力较弱、主要负责单体的解聚",
+        "微丝两端在结构上完全相同，任何条件下聚合与解聚速度都相等",
+        "正端优先结合 ADP-actin，因此是微丝上最先发生解聚的一端"
+      ],
+      "answer": 1,
       "sourceRef": {
         "source": "notes",
         "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-        "label": "微丝极性"
+        "label": "1. 微丝极性、临界浓度与踏车 · 正端与负端：一根微丝的两种性格（说话人1 01:26）"
       },
-      "stem": "关于微丝（肌动蛋白丝）的极性，下列叙述正确的是：",
-      "options": [
-        "正端（barbed end）结合单体能力弱，负责解聚；负端（pointed end）负责生长",
-        "正端（barbed end）易结合游离 G-actin 单体、负责生长；负端（pointed end）结合单体弱、负责解聚",
-        "微丝无极性，两端聚合与解聚速率完全相同",
-        "正端结合 ADP-actin，是微丝上最先开始解聚的一端"
-      ],
-      "answer": 1,
-      "explanation": "**B 正确。**微丝正端又称带刺端（barbed end），更容易结合游离肌动蛋白单体，是生长端；负端又称点状端（pointed end），结合单体能力弱，是解聚端。A错：把两端功能说反。C错：微丝具有明确极性。D错：正端优先结合 ATP-actin，负端区才多为 ADP-actin 并被 Cofilin 识别解聚。",
-      "hint": "正端长、负端缩。"
+      "hint": "回忆老师对「带刺的一端」和「点状的一端」分别用了哪个动词：加入还是解聚。",
+      "explanation": "**B 正确。** 老师 01:26 明确：正端又称 barbed end（尾巴带刺的一端），「更容易跟溶液中游离的肌动蛋白单体进行结合」，是负责生长的一端；另一端叫负端 minus end，又名 pointed end（点状端），「跟游离的肌动蛋白单体结合能力比较弱」，主要负责微丝单体的解聚。\n**A 错：**把两端的结合能力与分工完全对调，这是本课最高频的记反点。\n**C 错：**微丝具有明确的极性（两端结构不同），聚合与解聚速度只有在游离浓度恰好等于临界浓度 Cc 时才相等，并非任何条件下都相等。\n**D 错：**正端优先结合的是 ATP 形式的单体，负端区域才多为 ADP-actin 并被 Cofilin 识别；把 ADP-actin 安到正端，等于把 Plate 02 的 Cofilin 作用位点也一起带错。"
     },
     {
       "id": "q002",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
-      "points": 10,
       "source": "current_chapter",
+      "stem": "体系中游离 G-actin 的浓度与微丝临界浓度 Cc 的大小关系，决定这根微丝的走向。下列对应关系正确的是：",
+      "options": [
+        "游离浓度大于 Cc 时从负端解离占优，微丝缩短",
+        "游离浓度小于 Cc 时正端加入占优，微丝变长",
+        "游离浓度等于 Cc 时正端加入速度与负端解离速度相等，净增量为 0、长度不变，即踏车现象",
+        "游离浓度等于 Cc 时微丝两端同时停止活动，动态完全停止"
+      ],
+      "answer": 2,
       "sourceRef": {
         "source": "notes",
         "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-        "label": "踏车现象与临界浓度"
+        "label": "1. 微丝极性、临界浓度与踏车 · 临界浓度 Cc：判断长、缩、还是不变的唯一标尺（说话人1 02:39）"
       },
-      "stem": "当体系中游离 G-actin 浓度恰好等于微丝的临界浓度（Cc）时，微丝表现为：",
-      "options": [
-        "两端同时快速生长，微丝急剧变长",
-        "两端同时解聚，微丝迅速缩短",
-        "正端生长、负端解聚，二者速度相等，净长度不变，即踏车现象",
-        "微丝完全停止所有动态，被 CapZ 封端"
-      ],
-      "answer": 2,
-      "explanation": "**C 正确。**游离单体浓度 > Cc 时正端生长；< Cc 时负端解聚；= Cc 时正端加入与负端解离速度相等，微丝一端长、一端缩，净长度不变，称为踏车现象（treadmilling）。A错：>Cc 才整体生长。B错：<Cc 才整体解聚。D错：踏车是动态平衡而非封端静止。",
-      "hint": "等于临界浓度→一端长一端缩→长度不变。"
+      "hint": "把三种浓度关系各配一个动词：长、缩、不变；再想「不变」是不是等于「不动」。",
+      "explanation": "**C 正确。** 老师 02:39 的完整推理是：浓度大于 Cc → 微丝倾向于在正端加入单体、正端生长；浓度小于 Cc → 从负端解离出单体、微丝变短；浓度恰好等于 Cc → 「一端生长，一端解离，二者的速度刚好是相等的，微丝的长度保持不变」，这就是踏车现象（treadmilling，老师亦称消长现象）。\n**A 错：**把「大于 Cc」与负端解离绑定，等于把阈值方向记反。\n**B 错：**同理，小于 Cc 时是负端解离占优。\n**D 错：**踏车是两端都在高速进行的动态平衡（聚合与解聚同时发生，只是速度相等），而不是微丝被冻结；「停止活动」的描述接近封端蛋白（CapZ/Tropomodulin）造成的稳定状态，两者机制完全不同。"
     },
     {
       "id": "q003",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
-      "points": 10,
       "source": "current_chapter",
+      "stem": "下列「微丝调控因子—作用位点与后果」的配对中，正确的是：",
+      "options": [
+        "Gelsolin — 结合微丝正端并将其封住，抑制单体加入",
+        "Stathmin — 只结合微丝负末端，特异性地抑制负端解聚",
+        "Gelsolin — 结合胞浆游离 Ca²⁺ 后由失活变活性，结合在微丝中间部位并像剪刀一样把微丝切断",
+        "Cofilin — 均匀结合微丝整个表面，把正端聚合与负端解聚同限度压低"
+      ],
+      "answer": 2,
       "sourceRef": {
         "source": "notes",
         "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-        "label": "CapZ与Tropomodulin封端"
+        "label": "2. 四类微丝调控因子 · 解聚调控：Gelsolin 与 Cofilin 的机制完全不同（说话人1 04:22–06:35）"
       },
-      "stem": "关于微丝封端蛋白 CapZ 与 Tropomodulin，下列配对正确的是：",
-      "options": [
-        "CapZ 封负端，Tropomodulin 封正端",
-        "CapZ 封正端（抑制生长），Tropomodulin 封负端（抑制解聚）",
-        "二者都结合微丝中部进行切断",
-        "CapZ 与 Tropomodulin 都结合 G-actin 单体"
-      ],
-      "answer": 1,
-      "explanation": "**B 正确。**CapZ（如骨骼肌 Z disk 的主要成分）特异性结合微丝正端、封端后抑制单体加入从而抑制生长；Tropomodulin 结合负端、封端后抑制解聚。二者共同把微丝长度锁死、维持稳定。A错：把两端说反（高频陷阱）。C错：从微丝中部切断的是 Gelsolin。D错：二者都是末端封端蛋白，不是单体结合蛋白。",
-      "hint": "CapZ封正，Tmod封负，别记反。"
+      "hint": "抓住两个「特异标签」：谁需要钙离子，谁结合的是 ADP 形式的单体。",
+      "explanation": "**C 正确。** Gelsolin（录音读作 Gasoline）的特征是：结合细胞胞浆里游离的钙离子后由失活变活性；活化后结合的部位是「微丝的中间部位，而不是结合微丝的负端或正端」；结合后让单体与单体之间的结合变弱，最终把微丝从中间断开，像一把剪刀一样切断，从而促进解聚。\n**A 错：**封正端的是 CapZ，不是 Gelsolin；Gelsolin 明确不结合两端。\n**B 错：**Stathmin 恰恰「没有特异性」——它均匀结合微丝整个 surface，既不是只结合负端，也不是只抑制解聚，而是把两端动态同限度降低。\n**D 错：**均匀包被整个表面、压低整体动态性的是 Stathmin；Cofilin 优先结合的是负末端区域的 ADP-actin。此选项把两者的特征拼接在一起，是典型的混淆项。"
     },
     {
       "id": "q004",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
-      "points": 10,
       "source": "current_chapter",
+      "stem": "关于微丝末端的两个封端蛋白 CapZ 与 Tropomodulin，下列配对正确的是：",
+      "options": [
+        "CapZ 结合负端、抑制解聚；Tropomodulin 结合正端、抑制生长",
+        "CapZ 结合正端、封端后抑制生长；Tropomodulin 结合负端、封端后抑制解聚",
+        "二者的作用都是把游离的 G-actin 单体隔离起来，使其无法进入微丝",
+        "二者都结合微丝中部，通过把微丝切断来促进解聚"
+      ],
+      "answer": 1,
       "sourceRef": {
         "source": "notes",
         "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-        "label": "Arp2/3与Formin产物形态"
+        "label": "2. 四类微丝调控因子 · 稳定性调控：CapZ 封正端与 Tropomodulin 封负端（说话人1 08:47）"
       },
-      "stem": "Arp2/3 复合物与 Formin 分别产生的微丝结构是：",
-      "options": [
-        "Arp2/3 产生线性平行束；Formin 产生分支状网",
-        "Arp2/3 产生 70° 夹角的分支状微丝网；Formin 产生无分支的线性（平行束）微丝",
-        "二者都产生分支状微丝，只是位置不同",
-        "二者都封端微丝，不参与成核"
-      ],
-      "answer": 1,
-      "explanation": "**B 正确。**Arp2/3 成核时以约 70° 夹角在母丝上长出子丝，形成枝状（分支）网络；Formin 沿正端 processive 推进，产生无分支的线性微丝平行束（如丝状伪足核心）。A错：把二者产物说反。C错：Formin 不形成分支。D错：二者都是成核因子，不是封端蛋白。",
-      "hint": "Arp枝状，Formin线性。"
+      "hint": "先想骨骼肌肌节里那个由大量 CapZ 构成、位于微丝正端处的屏障叫什么名字。",
+      "explanation": "**B 正确。** 老师 07:57–08:47 的对应关系是：CapZ 特异性识别并结合微丝的正末端，结合上去后单体无法从正端加入，微丝无法从正端生长；Tropomodulin 结合负末端，抑制负末端的解聚。二者共同把微丝两端锁住，保证微丝长度稳定。骨骼肌肌节里由大量 CapZ 构成、位于微丝正端处的结构就是 Z disk，可作为校验记忆的几何抓手。\n**A 错：**把两端说反，是本课被老师点名会考的高频陷阱。\n**C 错：**隔离游离单体、抑制其进入微丝的是第一类「单体结合」调控因子（Profilin 的拮抗者），不是封端蛋白；封端蛋白作用于已聚合的微丝末端。\n**D 错：**结合微丝中部并把微丝切断的是 Gelsolin。"
     },
     {
       "id": "q005",
       "type": "single_choice",
-      "difficulty": "intermediate",
-      "points": 10,
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
+      "stem": "对比 Arp2/3 复合物与 Formin，下列关于「产物几何形状」与「自身位置是否随生长移动」的叙述正确的是：",
+      "options": [
+        "Arp2/3 产生无分支的线性微丝束，并随正端生长不断向前移动",
+        "Arp2/3 产生夹角恒为 70° 的分支状微丝网、自身固定在母丝负端一侧不动；Formin 产生线性微丝、始终位于微丝正端生长处并随单体加入前移",
+        "Formin 产生 70° 分支网，Arp2/3 产生平行微丝束",
+        "二者都通过结合 GTP 从正端封端，从而决定微丝的形状"
+      ],
+      "answer": 1,
       "sourceRef": {
         "source": "notes",
         "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-        "label": "NPF激活Arp2/3"
+        "label": "2. 四类微丝调控因子 · 第四类成核因子：Arp2/3 与 Formin（说话人1 09:19–11:25）"
       },
-      "stem": "关于成核促进因子（NPF）WASP/WAVE 与 Arp2/3 的关系，正确的是：",
-      "options": [
-        "Arp2/3 在静息状态下即持续活性，不需要 NPF",
-        "静息时 Arp2/3 无活性；信号到来后 WASP/WAVE 结合 Arp2/3，使其构象改变、模拟肌动蛋白二聚体而被激活开始成核",
-        "WASP/WAVE 直接切断微丝",
-        "WASP/WAVE 结合 G-actin 单体并把它封在正端"
-      ],
-      "answer": 1,
-      "explanation": "**B 正确。**静息时 Arp2/3 复合物处于非活性（未拟合出肌动蛋白二聚体构象）状态；上游信号经 NPF（WASP 或 WAVE/SCAR）结合后，使 Arp2/3 构象改变、模拟肌动蛋白二聚体作为引物，从而启动分支状微丝成核。A错：Arp2/3 静息时无活性。C错：切断微丝的是 Gelsolin。D错：NPF 激活 Arp2/3，不是封端或直接结合单体。",
-      "hint": "NPF=WASP/WAVE，信号来了才激活 Arp2/3。"
+      "hint": "问自己一个问题：这两个成核因子中，哪一个自己在动？",
+      "explanation": "**B 正确。** Arp2/3 把两个亚基拟合为模拟肌动蛋白二聚体的引物，「固定在微丝的负末端」，正末端是新的微丝逐渐加进来，「它的位置是始终保持不变的」，因而长出夹角恒定 70° 的分支网；Formin 则「始终是位于微丝正端生长的地方，随着一个新的单体加进来，它自己也会往前走」，因而产生无分支的线性微丝，并可在丝状伪足最末端被精确定位。\n**A 错：**把 Arp2/3 的产物与位置都换成了 Formin 的特征。\n**C 错：**把两者的产物对调。\n**D 错：**两者都是成核因子而非封端蛋白，也不通过结合 GTP 发挥作用；封正端的是 CapZ。"
     },
     {
       "id": "q006",
       "type": "single_choice",
-      "difficulty": "intermediate",
-      "points": 10,
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
+      "stem": "关于成核促进因子（NPF）WASP/WAVE 与 Arp2/3 复合物的关系，下列叙述正确的是：",
+      "options": [
+        "静息状态下 Arp2/3 就持续处于活性状态，不需要 NPF 参与",
+        "静息状态下 Arp2/3 处于非活性状态；信号到来后 WASP/WAVE 结合上去，使 Arp2 与 Arp3 构象改变、拟合形成模拟肌动蛋白二聚体的形式而启动成核",
+        "WASP/WAVE 直接结合游离 G-actin 单体，并把单体逐个送到微丝正端",
+        "WASP/WAVE 以钙离子依赖的方式把微丝从中间切断"
+      ],
+      "answer": 1,
       "sourceRef": {
         "source": "notes",
         "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-        "label": "小GTPase与伪足"
+        "label": "3. 成核因子、NPF 与 Rho 家族信号 · NPF：成核促进因子，把 Arp2/3 从「关」拨到「开」（说话人1 12:51–13:49）"
       },
-      "stem": "Rac、Cdc42、Rho 三种小 GTP 酶分别对应的下游结构是：",
-      "options": [
-        "Rac→丝状伪足；Cdc42→片状伪足；Rho→应激纤维",
-        "Rac→片状伪足（lamellipodia）；Cdc42→丝状伪足（filopodia）；Rho→应激纤维（stress fiber）",
-        "Rac→应激纤维；Cdc42→片状伪足；Rho→丝状伪足",
-        "三者都通过 Formin 产生分支状微丝"
-      ],
-      "answer": 1,
-      "explanation": "**B 正确。**Rac→WAVE→Arp2/3→分支状微丝→片状伪足（lamellipodia，细胞边缘皱褶铺开）；Cdc42→WASP→Arp2/3→丝状伪足（filopodia，表面“炸毛”刺突）；Rho→Formin→线性束→应激纤维（stress fiber，胞质贯穿束、助细胞贴壁）。A、C错：把三者对应关系说混。D错：只有 Rho 走 Formin 线性束，Rac/Cdc42 走 Arp2/3 分支。",
-      "hint": "Rac片、Cdc丝、Rho贴壁。"
+      "hint": "回忆老师对 steady state 下 Arp2/3 那两个亚基状态的那句英文描述。",
+      "explanation": "**B 正确。** 老师 13:49 的原话逻辑是：正常状态（steady state）下细胞里的 Arp2/3 complex「是一个 inactive 非活性的状态」，两个亚基并没有拟合形成符合微丝二聚体的构象；只有当信号来了、变成 NPF（WASP 或 WAVE）后，它们结合到非活性的 Arp2/3 complex 上，使 Arp2 与 Arp3 构象改变、拟合形成模拟肌动蛋白二聚体的形式，才促进微丝聚合。WAVE 的另一个名字是 SCAR，属同一类蛋白。\n**A 错：**静息态 Arp2/3 是非活性，这是整个 NPF 调控逻辑的前提。\n**C 错：**把 NPF 误当成了单体转运蛋白（那是 Profilin 一类的工作）。\n**D 错：**钙离子依赖的切断是 Gelsolin 的特征。"
     },
     {
       "id": "q007",
       "type": "single_choice",
-      "difficulty": "intermediate",
-      "points": 10,
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
+      "stem": "Rac、Cdc42、Rho 三种 Rho 家族小 GTP 酶被激活后，其下游通路与最终细胞结构的对应关系是：",
+      "options": [
+        "Rac→WASP→丝状伪足；Cdc42→WAVE→片状伪足；Rho→Formin→应激纤维",
+        "Rac→WAVE→Arp2/3→片状伪足（lamellipodia）；Cdc42→WASP→Arp2/3→丝状伪足（filopodia）；Rho→Formin→应激纤维（stress fiber）",
+        "Rac→Formin→应激纤维；Cdc42→WASP→片状伪足；Rho→WAVE→丝状伪足",
+        "三者都通过 Formin 产生线性微丝束，只是分布部位不同"
+      ],
+      "answer": 1,
       "sourceRef": {
         "source": "notes",
         "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-        "label": "Gelsolin切丝机制"
+        "label": "3. 成核因子、NPF 与 Rho 家族信号 · 上游小 GTP 酶级联与 形态学证据（说话人1 15:45、30:16–32:56）"
       },
-      "stem": "关于微丝解聚调控蛋白 Gelsolin 的作用，正确的是：",
-      "options": [
-        "结合微丝正端将其封死",
-        "结合 Ca²⁺ 后活化，结合到微丝中部、像剪刀一样把微丝切断，促进解聚",
-        "结合 ADP-actin 从负端逐单体剥离",
-        "均匀包裹微丝表面以压低整体动态"
-      ],
-      "answer": 1,
-      "explanation": "**B 正确。**Gelsolin 结合胞浆游离 Ca²⁺ 后由失活变活化，特异性结合在微丝中部（而非正端/负端），削弱相邻单体间的结合、把微丝从中间切断，从而促进解聚。A错：封正端的是 CapZ。C错：结合 ADP-actin、促负端解聚的是 Cofilin。D错：均匀包被表面压低动态的是 Stathmin。",
-      "hint": "Gelsolin=Ca²⁺激活、中部切断。"
+      "hint": "先说形状再看通路：哪一种让细胞边缘「卷起皱褶」，哪一种让表面「像炸毛」。",
+      "explanation": "**B 正确。** 三条级联在本课被讲了两次（3.4 的信号推演与 3.5 的荧光形态学证据）：Rac 激活 WAVE（=SCAR）→ 激活 Arp2/3 → 分支状微丝 → 细胞边缘出现皱褶，即片状伪足；Cdc42 激活 WASP → 激活 Arp2/3 → 质膜上出现大量「尖刺像炸毛一样」的刺突，即丝状伪足；Rho 经下游因子激活 Formin → 线性微丝 → 胞质内大量贯穿的应激纤维，帮助细胞贴附在生长基底上。\n**A 错：**把 Rac 与 Cdc42 的下游 NPF 对调。\n**C 错：**把三种结构的对应关系整体打乱。\n**D 错：**只有 Rho 走 Formin 线性束，Rac 与 Cdc42 都是经 Arp2/3 产生分支状微丝。"
     },
     {
       "id": "q008",
       "type": "single_choice",
-      "difficulty": "intermediate",
-      "points": 10,
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
+      "stem": "李斯特菌能在宿主细胞内做「火箭式」运动，其表面 ActA 蛋白的特点是：",
+      "options": [
+        "一种能水解 ATP 的马达蛋白，直接拉着细菌沿宿主微丝移动",
+        "一种跨膜蛋白，在蛋白序列与蛋白结构域上与宿主 WAVE 高度保守，能把宿主 Arp2/3 由非活性变为活性",
+        "一种结合 Ca²⁺ 后把宿主微丝从中间切断的酶",
+        "一种封端蛋白，结合宿主微丝正端从而阻止细菌移动"
+      ],
+      "answer": 1,
       "sourceRef": {
         "source": "notes",
         "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-        "label": "Cofilin回收单体"
+        "label": "ActA：细菌用来「冒充」宿主蛋白的跨膜蛋白（说话人1 23:08）"
       },
-      "stem": "在李斯特菌（Listeria）火箭样运动模型中，Cofilin 与 CapZ 各自的作用是：",
-      "options": [
-        "Cofilin 封正端、CapZ 解聚旧微丝",
-        "Cofilin 解聚旧微丝、回收 G-actin 单体以维持正端浓度>Cc；CapZ 封支端正端，把聚合力集中在细菌-微丝界面",
-        "二者都是细菌表面蛋白，模拟 WASP",
-        "二者都直接水解 GTP"
-      ],
-      "answer": 1,
-      "explanation": "**B 正确。**李斯特菌运动的体外重建含微丝+Arp2/3+CapZ+Cofilin+ActA：Cofilin 从旧微丝负端解聚、回收单体，维持正端游离浓度>Cc 使聚合持续；CapZ 封住分支自由端、防止无谓扩展，把聚合力集中在细菌尾部。A错：把二者说反。C错：模拟 WASP 的是细菌表面 ActA。D错：与 GTP 水解无关。",
-      "hint": "Cofilin回收单体，CapZ封端聚合力。"
+      "hint": "老师用「进化非常狠」形容这个蛋白，是因为细菌用一个自己的蛋白冒充了宿主的某个调控因子。",
+      "explanation": "**B 正确。** 老师 23:08 指出：细菌表面蓝色的跨膜蛋白叫 ActA，它在「蛋白序列和蛋白结构域上」与 Arp2/3 的激活因子 WAVE 非常保守，即「细菌利用它自身的一个细菌蛋白来模拟我们哺乳动物细胞里面的 Arp2/3 的激活因子」；有了它，宿主的 Arp2/3 复合物就能由非活性变活性，在细菌附近产生大量分支状微丝。\n**A 错：**ActA 不是马达；推动细菌的力来自微丝在细菌尾部的持续聚合与踏车，细菌本身不带动力装置。\n**C 错：**钙离子依赖的切丝是 Gelsolin；Cofilin 才负责该体系里的解聚回收。\n**D 错：**体系里的封端蛋白是宿主来源的 CapZ，而且它的作用是限制分支扩展、把聚合力集中到细菌界面，从而让细菌更容易被推动，并非阻止运动。"
     },
     {
       "id": "q009",
       "type": "single_choice",
-      "difficulty": "intermediate",
-      "points": 10,
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
+      "stem": "中性粒细胞能定向追捕金黄色葡萄球菌，它所识别的化学信号及其受体分别是：",
+      "options": [
+        "细菌分泌的甲基化甲硫氨酸—亮氨酸—苯丙氨酸三肽；质膜上的七次跨膜受体（GPCR）",
+        "细菌释放的单糖分子；细胞质内的核受体",
+        "宿主自身分泌的趋化因子；一次跨膜受体",
+        "细菌表面的脂多糖；酪氨酸激酶型受体"
+      ],
+      "answer": 0,
       "sourceRef": {
         "source": "notes",
         "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-        "label": "伪足类型与上游信号"
+        "label": "5. 中性粒细胞趋化与细胞爬行 · 化学信号与受体：一个三肽 + 一个 GPCR（说话人1 34:42–35:46）"
       },
-      "stem": "中性粒细胞定向趋化“追杀”细菌时，前端主要伸出、后端收缩，其前端片状伪足的微丝骨架与上游信号是：",
-      "options": [
-        "Formin 线性束，由 Rho 激活",
-        "Arp2/3 分支状网，由 Rac 激活",
-        "Formin 平行束，由 Cdc42 激活",
-        "微管组成，由 dynein 驱动"
-      ],
-      "answer": 1,
-      "explanation": "**B 正确。**片状伪足（lamellipodia）由 Rac→WAVE→Arp2/3 产生的分支状微丝网支撑，是迁移细胞前端铺开、向前推进的主要结构；中性粒细胞前端伸出片状伪足、后端收缩完成趋化运动。A错：Rho→Formin→应激纤维负责贴壁/收缩而非片状伪足前端。C错：Cdc42→丝状伪足是细长刺突，不是宽扁片状伪足。D错：伪足是微丝结构，不是微管。",
-      "hint": "片状伪足=Rac+Arp2/3分支网。"
+      "hint": "先回忆「三个氨基酸组成的小分子」，再回忆老师在讲它受体时提到的临床药物靶点。",
+      "explanation": "**A 正确。** 老师 34:42–35:46 讲得很具体：细菌在血液中分泌一种特征性的三肽——甲基化的甲硫氨酸、亮氨酸和苯丙氨酸，只有三个氨基酸，作为化学递质存在，并形成浓度递减的梯度，因此朝向细菌一侧的质膜上结合的受体更多；该受体是一个七次跨膜受体，也就是 GPCR，老师强调它「诺奖拿了好多」，是药物成药性最好的靶点之一。\n**B 错：**信号不是糖类，受体也不是核受体——受体位于细胞质膜上，负责感知细胞外的浓度梯度。\n**C 错：**趋化因子由细菌释放而非宿主；受体的跨膜次数也记错了（应为七次）。\n**D 错：**脂多糖与酪氨酸激酶受体均未在本课出现，属于脱离本课内容的干扰项。"
     },
     {
       "id": "q010",
       "type": "single_choice",
-      "difficulty": "advanced",
-      "points": 10,
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
+      "stem": "关于微管的结构与极性，下列叙述正确的是：",
+      "options": [
+        "微管的聚合单体是单个 α-tubulin，α-tubulin 所在的一端是正末端",
+        "微管的管壁由 13 条原纤维构成，α-tubulin 标记的一端为负末端、β-tubulin 标记的一端为正末端",
+        "微管的聚合单体是 α/β 异二聚体，与 actin 一样结合 ATP",
+        "新单体从负末端加入，所以细胞中的微管是内正外负"
+      ],
+      "answer": 1,
       "sourceRef": {
         "source": "notes",
         "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-        "label": "Arp2/3成核机制与位置"
+        "label": "结构：13 条原纤维拼出的中空管（说话人1 01:19:14）"
       },
-      "stem": "关于 Arp2/3 促进分支状微丝成核的机制，下列叙述最准确的是：",
-      "options": [
-        "Arp2/3 随正端一起向前移动，边走边加单体",
-        "Arp2/3 模拟肌动蛋白二聚体作为成核引物、克服成核限速步骤，自身固定在母丝负端不动，子丝正端向前生长，夹角约 70°",
-        "Arp2/3 结合 GTP 后从正端封端",
-        "Arp2/3 把微丝从中部切断产生分支"
-      ],
-      "answer": 1,
-      "explanation": "**B 正确。**Arp2/3（Arp2 与 Arp3）在形态上模拟肌动蛋白二聚体，充当成核引物，绕开体外自发成核最慢的限速步骤直接进入延伸；它钉在母丝上（负端侧）位置不变，新子丝正端不断向前生长，子丝与母丝保持约 70° 夹角，形成枝状网络。A错：跟随正端移动的是 Formin，不是 Arp2/3。C错：封正端的是 CapZ，与 GTP 无关。D错：从中部切断的是 Gelsolin。",
-      "hint": "Arp2/3钉负端、模拟二聚体引物、70°分支。"
+      "hint": "微管比微丝「简单」在什么地方？老师说他不用像微丝那样想半天才知道哪端是正端。",
+      "explanation": "**B 正确。** 微管的单体是 α-tubulin 与 β-tubulin 首尾连接形成的异二聚体，中空管壁由 13 条原纤维组装，每条原纤维是 α-β-α-β 依次堆叠；老师明确指出「阿尔法我们称之为负末端，然后贝塔的这一端呢称之为正末端」，所以微管的端与亚基一一对应，比微丝更容易判断。\n**A 错：**单体是异二聚体而不是单个 α-tubulin，且 α 端是负末端。\n**C 错：**结合核苷酸记错了——actin 结合 ATP，而 α 与 β tubulin 各结合一分子的 GTP。\n**D 错：**新单体永远从正端加入；由微管组织中心发出的微管是「外正内负」，而不是内正外负。"
     },
     {
       "id": "q011",
-      "type": "single_choice",
-      "difficulty": "advanced",
-      "points": 10,
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
+      "stem": "关于微丝调控因子的作用位点与后果，下列说法正确的有：",
+      "options": [
+        "Profilin 结合游离的肌动蛋白单体，并促进该单体加入微丝（促聚合）",
+        "Cofilin 优先结合负末端区域的 ADP 形式肌动蛋白，促进负末端解聚",
+        "Gelsolin 结合细胞胞浆中游离的 Ca²⁺ 后，由失活状态变为活性状态",
+        "Stathmin 特异性地只结合微丝正末端，从而抑制正端生长"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "逐个问「它结合的对象是游离单体、微丝中部、还是某一端」，四个选项里有一个位点说得不对。",
+      "explanation": "**A、B、C 正确。** A：Profilin 与另一个结合单体后抑制其进入微丝的蛋白（录音读作 cytosin）作用相反，二者都作用于游离单体，Profilin 促聚合。B：Cofilin 优先结合的是微丝负末端区域的 ADP 形式肌动蛋白，结合后促进负末端单体解聚，让微丝从负端逐渐缩短。C：Gelsolin 需要先结合胞浆游离钙离子才由失活变活性，随后才结合到微丝中间部位执行切断功能，这是它区别于其他解聚因子的关键前提。\n**D 错：**Stathmin 的特征恰恰是「没有特异性」——它均匀结合微丝整个 surface，既不结合正端也不结合负端，其效果是让正端聚合与负端解聚同限度降低；只结合正端并抑制生长的是 CapZ。此选项把 Stathmin 与 CapZ 的位点混在一起，属典型的高频混淆。",
       "sourceRef": {
         "source": "notes",
         "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
-        "label": "李斯特菌ActA与体外重建"
-      },
-      "stem": "李斯特菌能在宿主细胞内火箭样运动，其表面 ActA 蛋白及体外重建的逻辑是：",
+        "label": "2. 四类微丝调控因子 · 第二类 · 解聚调控：Gelsolin 与 Cofilin 的机制完全不同"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "关于 Arp2/3 复合物促进微丝聚合的机制，下列说法正确的有：",
       "options": [
-        "ActA 是宿主微丝马达，直接拉细菌前进",
-        "ActA 模拟宿主 WASP/WAVE，直接激活 Arp2/3；仅用微丝+Arp2/3+CapZ+Cofilin+ActA 最小组分即可在体外重建该运动",
-        "ActA 结合 Ca²⁺ 后切断宿主微丝",
-        "该运动必须依赖宿主细胞核内转录，无法在体外重建"
+        "它在形态与结构上模拟肌动蛋白二聚体，为聚合提供现成的成核引物",
+        "使微丝聚合绕开最慢的成核（延迟期）限速步骤，直接进入延伸阶段",
+        "自身固定在母微丝的负末端一侧，位置始终保持不变，新丝正端向前生长",
+        "它随微丝正端一起向前移动，因此既负责成核又负责把正端封住"
       ],
-      "answer": 1,
-      "explanation": "**B 正确。**李斯特菌表面跨膜蛋白 ActA 在结构上模拟宿主 NPF（WASP/WAVE），直接激活 Arp2/3，在细菌尾部组装分支状微丝，靠踏车产生的聚合力推动细菌运动；老师强调“在体外用最小组分重建该过程”是理解生命过程的金标准，仅需 G-actin+Arp2/3+CapZ+Cofilin+ActA 五个组分即可重建。A错：ActA 不直接作马达。C错：切丝是 Gelsolin 的活。D错：正是可体外重建，且不依赖核内转录。",
-      "hint": "ActA扮WASP，五组分体外重建。"
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "先确定「谁跟着正端走」，再把这句话代回每个选项检验。",
+      "explanation": "**A、B、C 正确。** 老师 09:19–10:28 把 Arp2/3 的巧妙之处拆成三点：① 细胞利用 Arp2 与 Arp3 在形态上、结构上「模拟的是我们的肌动蛋白二聚体」，作为一对引物；② 有了引物，聚合便可从最慢的限速步骤——成核（延迟期）——直接进入延伸阶段，从而急剧加速聚合；③ 它「固定在微丝的负末端」，正端是新的微丝不断加入生长，而它的位置始终保持不变。\n**D 错：**「随正端前移」是 Formin 的行为（Formin 位于正端生长处并随新单体加入向前走）；而「封住正端」是 CapZ 的功能。该选项把 Formin 与 CapZ 的特征同时安到了 Arp2/3 上。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "Arp2/3 复合物：用一对「假二聚体」跳过最慢的一步"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "关于 Rho 家族小 GTP 酶的开关规则与下游级联，下列说法正确的有：",
+      "options": [
+        "结合 GTP 时处于活性状态，结合 GDP 时失活",
+        "Rac 位于 WAVE 的上游，激活后经 Arp2/3 产生分支状微丝",
+        "Rho 激活后招募或激活下游因子，进而作用于 Formin，产生线性微丝束",
+        "Formin 的直接激活因子已被明确鉴定为 WASP"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "四个选项里有三条是本课明确讲过的级联，只有一条涉及「已明确 / 尚未明确」的判断。",
+      "explanation": "**A、B、C 正确。** A：老师 14:54 的原话是这些蛋白「可以结合 GTP，改变它的活性，当结合 GTP 的时候，这个蛋白是有活性的」，反之结合 GDP 即失活。B：WAVE 属于 NPF，其上游调控因子是 Rac 这一类小 GTP 酶，Rac→WAVE→Arp2/3→分支状微丝→片状伪足。C：Rho 属于同一家族的小 GTP 酶，结合 GTP 后招募或激活下游因子，下游因子再激活 Formin，这是一条从上到下的级联激活过程。\n**D 错：**老师明确说「对于 Arp2/3 我们已经明确了，是 WASP……但是对于 formin，它的上游因子是没有明确的，还不知道」。把 WASP 派给 Formin，正是本课特别提醒不要硬拗的地方。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "2. 四类微丝调控因子 · 上游小 GTP 酶级联：Rac / Cdc42 / Rho 分别指挥哪条支路"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "关于体外重建李斯特菌运动的最小组分及其作用，下列说法正确的有：",
+      "options": [
+        "只需微丝（G-actin）、Arp2/3 复合物、capping protein（CapZ）、Cofilin 与 ActA 等最小组分即可重建",
+        "CapZ 封住分支状微丝的正端，使游离单体与聚合力集中到细菌—微丝界面",
+        "Cofilin 把后端的旧微丝解聚成单体，维持正端游离单体浓度大于临界浓度 Cc",
+        "体系必须额外加入肌球蛋白 myosin，否则微丝无法推动细菌"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "想一想细菌被推动的力到底来自聚合还是来自马达收缩。",
+      "explanation": "**A、B、C 正确。** 老师 22:27 给出重建所需的几个东西：微丝、Arp2/3 complex、capping protein、cofilin，再加上李斯特菌表面的 ActA（以及细菌本身）。其中 CapZ 的作用是把分支状微丝的末端封住，避免体系像片状伪足那样向四周扩展开，「要保证所有的资源用在细菌跟微丝的界面上面，才能推着细菌走」；Cofilin 则结合 ADP 形式的单体把微丝解聚，把单体回收（recycle），以维持正端生长所需的「游离肌动蛋白浓度大于临界浓度」这一条件。\n**D 错：**该运动不需要 myosin。推动细菌的力来自细菌表面微丝网络的持续聚合与踏车；能体外重建本身也说明不需要额外马达，这一点正是「最小组分」的意义所在。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "4. 李斯特菌运动与体外重建金标准 · 为什么必须有 capping protein：把资源集中到一个界面"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "关于中性粒细胞趋化时受体下游的两条信号通路，下列说法正确的有：",
+      "options": [
+        "通路一由 Gi 偶联，经第二信使 PI(3,4,5)P3 激活 Rac",
+        "通路二由 G12/13 偶联，激活 Rho 以组装应激纤维，并与肌球蛋白一起产生收缩",
+        "PI(3,4,5)P3 形成快、降解也快，其作用只限于朝向细菌一侧的质膜",
+        "Rho 在细胞头部同样活跃，因为 Rac 会增强 Rho 的活性"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "两条通路在空间上如何分工，取决于其中一个第二信使的寿命，以及两条通路之间是促进还是抑制。",
+      "explanation": "**A、B、C 正确。** 受体（七次跨膜 GPCR）被三肽激活后产生两条相互拮抗的信号：第一条激活 Gi，产生第二信使 PI(3,4,5)P3——它是位于质膜上的磷脂，形成非常快速、降解也非常快，半衰期短，因此其作用「只限于朝向细菌的这一侧的质膜」，随后它激活 Rac，把质膜往前推、产生片状伪足；第二条激活 G12/13，与 Gi 不同，它激活 Rho，组装应激纤维，与肌球蛋白一起形成可收缩的结构，把细胞尾部往前拉。\n**D 错：**方向恰好相反——老师明确说「因为 Rac 的活性可以抑制 Rho」，所以 Rho 不得不在远离细胞头部的尾部起作用。若按 D 的理解，前推与后拉会在同一处同时发生而互相抵消，细胞无法定向移动。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "5. 中性粒细胞趋化与细胞爬行 · 两条相互拮抗的通路：前推与后拉"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "Gelsolin 与 Cofilin 都能促进微丝解聚，但两者的机制完全不同。下列叙述正确的是：",
+      "options": [
+        "Gelsolin 结合胞浆游离 Ca²⁺ 后被激活，从微丝中部切断；Cofilin 优先结合负端区 ADP 形式的肌动蛋白，促进负端解聚",
+        "Gelsolin 封住微丝正端抑制生长；Cofilin 封住负端抑制解聚",
+        "两者都只能结合游离的 G-actin 单体，从而降低聚合速度",
+        "两者都必须先结合 Ca²⁺，再作用于微丝的正端"
+      ],
+      "answer": 0,
+      "hint": "先分清「切断」与「从一端拆」两种解聚方式，再想 Ca²⁺ 只对其中哪一个必要。",
+      "explanation": "**A 正确。** 解聚调控类的两个蛋白走的是两条不同的路：Gelsolin 必须先结合胞浆中的游离 Ca²⁺ 才由失活变活性，活化后结合到微丝**中部**执行**切断**功能；Cofilin 优先结合微丝**负端区域**的 ADP 形式肌动蛋白，结合后促使负端单体解聚，让微丝从负端逐渐缩短。\n**B 错：**「封端」属于第三类稳定性调控——封正端的是 CapZ、封负端的是 Tropomodulin，与 Gelsolin/Cofilin 不是同一类因子。\n**C 错：** 作用于游离单体的是第一类（Profilin 促聚合、Cofilin 也可结合单体抑制聚合），但 Gelsolin 的主要作用是切断已有的微丝，把它说成只结合单体就丢掉了「切断」这一关键功能。\n**D 错：** 需要 Ca²⁺ 的只有 Gelsolin；Cofilin 的作用依赖肌动蛋白的核苷酸状态（ADP-actin），而不是 Ca²⁺。这一项把两个蛋白的触发条件混为一谈。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "2. 四类微丝调控因子 · 第二类 · 解聚调控：Gelsolin 与 Cofilin 的机制完全不同"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "骨骼肌肌节中，Z disk 处大量存在的、把微丝正端锁死以维持肌节长度稳定的封端蛋白是：",
+      "options": [
+        "CapZ",
+        "Tropomodulin",
+        "Cofilin",
+        "Stathmin"
+      ],
+      "answer": 0,
+      "hint": "先想 Z disk 位于肌节的哪一端、对应微丝的哪一端，再想哪个蛋白专门封这一端。",
+      "explanation": "**A 正确。** 肌节靠肌动蛋白（微丝）与肌球蛋白的相对滑动产生收缩力，要求微丝本身的长度在用力时保持稳定。Z disk 就是大量 **CapZ 构成的屏障**，封住微丝的**正端（barbed end）**，把正端锁死以维持肌节长度稳定。\n**B 错：** Tropomodulin 封的是微丝的**负端**——在肌节里它封住伸向 M line 那一侧的自由负端，与 Z disk 不是同一处。\n**C 错：** Cofilin 是解聚调控因子，作用是促负端解聚、回收单体，不是封端。\n**D 错：** Stathmin 均匀结合于微丝表面、压低整体动态（既不结合正端也不结合负端），既不封端也与 Z disk 无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "2. 四类微丝调控因子 · 第三类 · 稳定性调控：Stathmin、CapZ 与 Tropomodulin"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "与微丝（肌动蛋白丝）相比，微管在单体与结构上有自己的一套特征。下列叙述正确的是：",
+      "options": [
+        "单体是 α/β 微管蛋白异二聚体，结合的是 GTP；由 13 条原纤维围成中空管",
+        "单体是 α/β 微管蛋白异二聚体，结合的是 ATP；由 9 组双联微管围成",
+        "单体是单个球状肌动蛋白，结合的是 GTP；由 13 条原纤维围成实心纤维",
+        "单体是单个球状肌动蛋白，结合的是 ATP；由 9+2 微管构成"
+      ],
+      "answer": 0,
+      "hint": "先分清「哪个骨架用 GTP」和「谁负责 9+2」——9+2 是另一种突起的结构。",
+      "explanation": "**A 正确。** 微管的基本单位是 **α/β 微管蛋白异二聚体**（不是单体球状蛋白），它结合并水解的是 **GTP**；若干条原纤维侧向围拢形成**中空管**，横切面上为 **13 条原纤维**。\n**B 错：** GTP 说对了但常数错、结构错——9 组双联微管是**纤毛**内部的「9+2」结构，不是微管的横切构成。\n**C 错：** 把微管的单体说成了微丝的单体（球状肌动蛋白 G-actin），而且微管是**中空管**而非实心纤维。\n**D 错：** 结合 ATP 的、以及 9+2 结构，都把微管与微丝／纤毛混在了一起；微丝结合的是 ATP，微管结合的是 GTP。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "结构：13 条原纤维拼出的中空管"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "细胞用同一套微丝系统能组装出四种不同形态的微丝结构。关于这四种模式及其支架蛋白，下列说法正确的有：",
+      "options": [
+        "丝状伪足的微丝平行但致密，形成紧密的微丝束",
+        "片状伪足中微丝以夹角恒定约 70° 的分支网形式存在",
+        "应激纤维中的微丝平行但较为疏松，为肌球蛋白留出空间",
+        "皮质区的凝胶状网络由 Filamin 交联形成；Filamin 突变可导致脑室旁结节异位"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "逐个核对「平行还是分支」「致密还是疏松」「谁交联谁成网」，四项都能在课上讲到的四种模式里找到对应。",
+      "explanation": "**四项均正确。** 本课把微丝的组装模式归为四类，判据是「平行还是分支」以及「致密还是疏松」：\n- **丝状伪足**：微丝平行排列且**致密**，形成微丝束，支撑细胞表面伸出的刺突；\n- **片状伪足**：微丝以**夹角恒定约 70° 的分支网**形式存在，由 Arp2/3 在母丝侧面成核长出；\n- **应激纤维**：微丝**平行但疏松**，之间的空隙正是留给肌球蛋白（myosin II）结合并产生收缩力的空间；\n- **凝胶状网络**：位于**皮质区**，由 **Filamin** 把微丝交联成网；课上特别给出临床联系——**Filamin 突变导致脑室旁结节异位**。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "7. 肌球蛋白 Myosin II 与肌节 · 临床联系：Filamin 突变导致脑室旁结节异位"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "李斯特菌能利用宿主细胞质中的成核系统实现「火箭式」运动。关于这一过程被体外重建时所需的最小组分，下列说法正确的有：",
+      "options": [
+        "需要 G-actin 提供单体、Arp2/3 负责在细菌表面成核",
+        "需要 ActA 作为细菌表面的跨膜蛋白，功能上模拟宿主的 WASP/WAVE",
+        "需要 CapZ 封住支端正端，把聚合力集中到细菌—微丝界面",
+        "需要 Cofilin 解聚旧微丝、回收 G-actin 单体以维持正端浓度大于临界浓度 Cc"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "按「谁提供砖、谁起头、谁收口、谁回收砖」四个角色各问一遍。",
+      "explanation": "**四项均正确。** 体外用最小组成重建李斯特菌运动只需要五个组分（G-actin、Arp2/3、CapZ、Cofilin、ActA），四项正好对应其中四个角色，缺一不可：\n- **G-actin** 是聚合单体的来源；**Arp2/3** 是被 ActA 招募到细菌表面执行成核的复合物，长出支状微丝网推动细菌前进。\n- **ActA** 是细菌表面的跨膜蛋白，结构上**模拟宿主 WASP/WAVE**，直接激活 Arp2/3——这是细菌「劫持」宿主系统的关键。\n- **CapZ**（capping protein）封住支端的正端，防止微丝向末端继续伸展而浪费聚合力，把聚合集中到**细菌—微丝界面**这一个方向。\n- **Cofilin** 负责解聚旧的微丝、**回收 G-actin 单体**，使细菌表面的正端附近单体浓度维持在 **> Cc**，聚合才能持续进行。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "4. 李斯特菌运动与体外重建金标准 · 为什么必须有 capping protein：把资源集中到一个界面"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "请解释什么是微丝的**踏车现象（treadmilling）**：写出它发生的浓度条件、在两端同时进行的两种反应，并说明为什么「净长度不变」并不等于「两端都不动」。",
+      "answer": "**（1）浓度条件（3 分）**：体系中游离 G-actin 单体的浓度决定微丝的走向——游离单体浓度 **> Cc** 时正端以较快的速度结合单体而生长；**< Cc** 时负端以较快的速度解聚而缩短；**= Cc** 时正端的加入速度与负端的解聚速度恰好相等，微丝整体长度不变，这就是踏车现象。\n**（2）两端同时进行两种反应（3 分）**：正端（barbed end）持续结合 G-actin 单体而延长；负端（pointed end）持续解聚、释放单体而缩短。两端对单体的亲和力不同（正端结合能力强、负端弱），且两端结合的核苷酸状态不同（正端附近为 ATP-actin，负端区为 ADP-actin），这是同一根微丝两端「性格不同」的结构基础。\n**（3）「净长度不变 ≠ 两端不动」（4 分）**：踏车是**动态平衡**而非静止状态——微丝在正端不断加、在负端不断拆，只是两端的速率相等使总长度守恒。因此它是一种「内部流动、宏观看长度稳定」的状态：若把体系中的游离单体耗尽或阻断供能，这种动态平衡随即被打破。生物学意义在于：细胞既能维持微丝结构的相对稳定，又能持续进行单体的周转与重新装配。",
+      "scoring_criteria": [
+        "写出三种浓度关系与对应走向（> Cc 正端生长、< Cc 负端解聚、= Cc 踏车）（3 分）",
+        "写清踏车时正端在加单体、负端在解聚这一同时进行的双向过程（3 分）",
+        "指出踏车是动态平衡、净长度不变但两端都在动（2 分）",
+        "指出两端亲和力／核苷酸状态不同是两端性质差异的结构基础（2 分）"
+      ],
+      "hint": "先只答「浓度如何决定走向」这一问，再分别描述两端各自在做什么；最后一问的关键词是「动态平衡」。",
+      "explanation": "本题按三个设问给分，落点如下：\n1. **浓度条件**对应 1.2 节：临界浓度 Cc 是判断「长、缩、还是不变」的唯一标尺，必须写全三种关系，只写「等于 Cc 时踏车」会丢掉比较项。\n2. **两端反应**对应 1.1、1.3 节：正端负责生长、负端负责解聚，两者同时发生；答题时若把两端写成「一端先动、另一端后动」即与原文不符。\n3. **动态平衡**是本题的区分点：老师强调的是「净长度不变」这一宏观结果来自两端速率相等的抵消，而不是两端都停止；再补一句核苷酸状态与亲和力的差异，即完整命中 1.3 与 2.6 节。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "1. 微丝极性、临界浓度与踏车 · 踏车现象 treadmilling：动态平衡，而非静止"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "请从**成核机制**、**产物几何形状**、**自身位置是否随生长端移动**三个方面比较 Arp2/3 复合物与 Formin，并说明 NPF（WASP/WAVE）在其中起什么作用。",
+      "answer": "**（1）Arp2/3 复合物（4 分）**：它自身在结构上模拟肌动蛋白的**二聚体**，充当成核引物，从而跳过聚合中最慢的成核限速步骤，让聚合直接进入快速延伸阶段。产物是**分支状微丝网**：子丝与母丝之间呈**约 70°** 的固定夹角。它**固定在母丝的负端一侧不移动**，子丝的正端不断向前生长，于是不断长出新的支。\n**（2）Formin（4 分）**：它以另一种方式促进成核与延伸，产物是**线性（平行束）微丝**，没有分支。Formin 始终位于微丝的**正端生长端**，**随单体不断加入而向前移动**，因此它「跟着正端走」。\n**（3）NPF 的作用（2 分）**：Arp2/3 在正常情况下没有活性；当上游信号到来时，**成核促进因子（NPF，即 WASP / WAVE）**结合并使 Arp2/3 发生构象改变，把它从「关」拨到「开」，成核才能开始。也就是说 NPF 是 Arp2/3 的**开关**；Formin 的调控走的是另一条上游通路（Rho → Formin）。",
+      "scoring_criteria": [
+        "Arp2/3：模拟肌动蛋白二聚体作为成核引物、跳过成核限速步骤（2 分）",
+        "Arp2/3：产生约 70° 夹角的分支状微丝网，且自身固定在母丝负端不移动（2 分）",
+        "Formin：始终位于正端生长端、随单体加入向前移动（2 分）",
+        "Formin：产生线性（平行束）微丝、无分支（2 分）",
+        "NPF（WASP/WAVE）结合 Arp2/3 使其构象改变而由失活转为活化，是它的开关（2 分）"
+      ],
+      "hint": "三个比较项各写一句结论即可，关键是不要写反「谁钉在负端、谁跟着正端走」，最后别忘了 Arp2/3 平时是关着的。",
+      "explanation": "本题是典型的「成对概念对照」题，评分只看三件事是否说对：\n1. **成核机制**：Arp2/3 用一个「假二聚体」跳过最慢的一步；Formin 的机制是套住正端、让单体在其通道内快速加入（3.1、3.2 节）。\n2. **产物几何**：Arp2/3 → 70° 分支网；Formin → 线性束。把两者写反是最常见的失分点。\n3. **自身位置**：Arp2/3 钉在母丝负端不动；Formin 跟着正端前进——这一条正是「分支」与「线性」两种几何形状的成因。\n4. **NPF**：Arp2/3 本身无活性，必须由 WASP/WAVE 结合激活；这一问对应 3.3 节，答成「NPF 直接成核」不得分。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "Formin：跟着正端一起往前走的成核因子"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "论述题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "老师以李斯特菌在宿主细胞内的「火箭式」运动为例，讲了「怎样才算真正理解一个生命过程」。请围绕这一案例系统论述：\n① 该案例中被认为「真正理解」的标准是什么，为什么它比只看表型更有说服力；\n② 体外重建该运动所需的**五个最小组分**，以及每个组分不可替代的作用；\n③ ActA 与宿主 WASP/WAVE 的关系，以及细菌由此获得了什么。",
+      "answer": "**①「真正理解」的标准（5 分）**：老师给出的标准是**在体外用最小的代价、最小的因素把该过程重新做出来**——即体外最小体系重建（reconstitution）。它的说服力在于：只看敲除基因后的表型，只能得到「少了某个东西就不动了」的相关性结论，无法排除间接效应与旁路代偿；而把过程从头搭出来，说明这些组分**充分且必要**，才算把机制讲清楚。这一标准贯穿本课：从现象观察 → 提出所需组分 → 用纯化组分重建 → 验证运动能否复现。\n**② 五个最小组分与各自作用（7 分）**：\n- **G-actin（肌动蛋白单体）**：聚合的原料，构成推动细菌前进的微丝尾；\n- **Arp2/3 复合物**：在细菌表面成核，形成 70° 分支网；\n- **ActA**：细菌表面的跨膜蛋白，作为招募与激活 Arp2/3 的平台（见 ③）；\n- **CapZ（capping protein）**：封住支端正端，把聚合力限制并集中到细菌—微丝界面，避免微丝在无关方向上浪费延伸；\n- **Cofilin**：解聚尾部的旧微丝、回收 G-actin 单体，使界面附近游离单体浓度维持在 **> Cc**，聚合可持续。\n**③ ActA 与 WASP/WAVE 的关系（3 分）**：ActA 在功能与结构上**模拟宿主的 WASP/WAVE**（NPF），因此能直接激活宿主的 Arp2/3 并把它招募到细菌表面。细菌由此获得的能力是：**劫持宿主的微丝成核系统**，用宿主的原料（G-actin）为自己造出一条不断聚合的微丝尾，从而在细胞质内被「推」着前进并扩散到相邻细胞。",
+      "scoring_criteria": [
+        "答出「真正理解」的标准是体外用最小组分重建该过程（3 分）",
+        "说明体外重建比只看敲除表型更有说服力（组分充分且必要、排除间接效应）（2 分）",
+        "写出五个最小组分：G-actin、Arp2/3、ActA、CapZ、Cofilin（写出 5 个得 3 分，缺项按比例扣）",
+        "分别说明 CapZ 的作用：封支端正端、把聚合力集中到细菌—微丝界面（2 分）",
+        "分别说明 Cofilin 的作用：解聚旧微丝、回收单体维持正端浓度 > Cc（2 分）",
+        "ActA 模拟宿主 WASP/WAVE 并激活 Arp2/3，细菌借此劫持宿主成核系统推动前进（3 分）"
+      ],
+      "hint": "三问按顺序答：先说「凭什么算理解」，再逐一列组分和它的不可替代性，最后再说细菌是怎么「借」宿主的东西。",
+      "explanation": "本题对应第 4 章整章，评分落在三处：\n1. **认识论部分**（对应 4.2、4.7 节）要写清「体外最小重建」与「敲基因看表型」的区别，只说「重建很重要」不够，必须点出前者能证明组分的必要性与充分性。\n2. **组分部分**（对应 4.3–4.6 节）要逐个说作用而不是只报名字：CapZ 的关键词是「封正端、集中聚合力」，Cofilin 的关键词是「回收单体、维持 > Cc」，这两个最容易混。\n3. **ActA 部分**（4.4 节）要落到「结构上模拟 WASP/WAVE → 直接激活 Arp2/3 → 劫持宿主系统」。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "4. 李斯特菌运动与体外重建金标准 · 五个最小组分与各自不可替代的作用"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "材料分析题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "阅读下列课堂材料，回答问题。\n\n> **【课堂病例与机制（据逐字稿整理）】** 一名患儿被诊断为**脑室旁结节异位**，遗传学检查提示** Filamin 基因突变**。老师由此把话题拉回微丝的组装模式，强调细胞皮质区并不是一团散乱的微丝，而是由交联蛋白组织成的网络。\n\n**设问：**\n（1）Filamin 在微丝系统中属于哪一类蛋白、在哪种组装模式中起作用？它的作用位点与「封端蛋白」有何本质区别？\n（2）结合皮质区凝胶状网络的结构特点，解释 Filamin 突变为什么会影响神经元迁移并导致脑室旁结节异位。\n（3）本课归纳的四种微丝组装模式中，另外三种分别是什么、各由哪类成核或交联机制产生？",
+      "answer": "**（1）归类与区别（5 分）**：Filamin 属于**交联蛋白（actin cross-linking protein）**，作用于**细胞皮质区的凝胶状网络**这一组装模式。它与封端蛋白的本质区别在于作用方式：封端蛋白（CapZ 封正端、Tropomodulin 封负端）是**结合在微丝的一端**，阻止该端继续聚合或解聚，改变的是「末端能不能动」；而 Filamin 是**把两根微丝交联在一起**（在微丝之间搭桥），不占据末端、不改变单根微丝两端的动力学，改变的是**微丝之间的空间关系与网络的力学性质**——把松散的微丝变成有弹性的三维凝胶网络。\n**（2）突变致病的推理（5 分）**：皮质区紧贴质膜的凝胶状网络承担着支撑细胞形态、维持皮层张力与力学稳定性的功能。神经元迁移过程中，胞体与突起需要皮质网络提供力学支撑与形变能力；Filamin 缺失或异常 → 皮质区微丝无法正常交联成有弹性的网络 → 皮层力学支撑与形变异常 → 神经元无法完成正常的迁移定位 → 部分神经元滞留在脑室旁区域，形成**脑室旁结节异位**。即：**交联功能缺陷 → 皮质网络力学异常 → 迁移受阻 → 异位**。\n**（3）另外三种模式（5 分）**：\n- **丝状伪足**：微丝**平行且致密**成束，是细胞表面伸出的刺突，支撑它的是使微丝成束的机制（成束蛋白）；\n- **片状伪足**：微丝以**夹角恒定约 70° 的分支网**形式存在，由 **Arp2/3 在母丝侧面成核**产生分支；\n- **应激纤维**：微丝**平行但疏松**，空隙留给肌球蛋白结合，是产生收缩力的结构。\n四类模式的判据可以归纳为「平行还是分支」＋「致密还是疏松」。",
+      "scoring_criteria": [
+        "指出 Filamin 是交联蛋白、作用于皮质区凝胶状网络（2 分）",
+        "说明它与封端蛋白的区别：交联微丝之间 vs 占据末端改变末端动力学（3 分）",
+        "说明皮质网络承担支撑细胞形态／皮层张力的力学功能（3 分）",
+        "写出「交联缺陷 → 皮质网络力学异常 → 神经元迁移受阻 → 滞留在脑室旁」的因果链（3 分）",
+        "写出另外三种模式：丝状伪足（平行致密束）、片状伪足（70° 分支网，Arp2/3）、应激纤维（平行疏松，为肌球蛋白留空间）（4 分）"
+      ],
+      "hint": "两问分开答：(1) 先辨明 Filamin 是「把两根丝连起来」还是「堵住某一端」；(2) 再想皮质网络负责什么力学任务，缺了它迁移的哪一步会失败。最后一问按「平行/分支 + 致密/疏松」两个维度排列即可。",
+      "explanation": "本题的材料来自课上讲的临床联系（6.7 节：Filamin 突变导致脑室旁结节异位），三问递进：\n1. **归类题**的关键是抓住 Filamin 与封端蛋白的机制差别：一个是**侧向交联**，一个是**末端封堵**。把 Filamin 说成封端蛋白即不得分。\n2. **致病推理题**必须写出完整因果链，只答「Filamin 突变导致疾病」是复述而非解释；得分点落在「皮质网络力学异常」与「神经元迁移受阻」两个中间环节（对应 6.5 皮质区与 Filamin）。\n3. **归纳题**考查第 6 章的四模式总览，注意应激纤维要写出「为肌球蛋白留出空间」这一功能性的「疏松」，只写「平行」不完整。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-021-022/notes.html",
+        "label": "6. 四种微丝组装模式与疾病 · 临床联系：Filamin 突变导致脑室旁结节异位"
+      }
     }
-  ]
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "multiple_choice": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
 }

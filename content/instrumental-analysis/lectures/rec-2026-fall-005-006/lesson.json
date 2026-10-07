@@ -10,7 +10,7 @@
   },
   "taughtOn": "2026-09-08",
   "topic": "检出限与试样采集预处理",
-  "revision": 1,
+  "revision": 3,
   "materials": {
     "recording": {
       "file": "recording.md",

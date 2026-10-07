@@ -1,226 +1,277 @@
-<!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-@page{size:A4;margin:0}
-body{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;color:#24201A;background:#FAF8F1;font-size:10pt;line-height:1.7}
-.cover{width:210mm;height:297mm;background:linear-gradient(135deg,#2E7D4F 0%,#1F5C39 55%,#143D27 100%);color:#FBF7EC;display:flex;flex-direction:column;justify-content:center;padding:30mm 25mm;page-break-after:always}
-.cover .kicker{font-size:9pt;letter-spacing:.4em;text-transform:uppercase;color:#E7CE9C;margin-bottom:8mm}
-.cover h1{font-family:"Noto Serif CJK SC",serif;font-size:34pt;font-weight:700;line-height:1.2;margin-bottom:6mm}
-.cover .sub{font-size:14pt;color:rgba(251,247,236,.8);margin-bottom:12mm}
-.cover .meta{display:grid;grid-template-columns:1fr 1fr;gap:5mm;font-size:10pt;color:rgba(251,247,236,.7);border-top:1px solid rgba(231,206,156,.3);padding-top:8mm}
-.cover .meta b{color:#E7CE9C;display:block;font-size:8pt;letter-spacing:.15em;margin-bottom:1mm}
-.page{padding:18mm 20mm;page-break-after:always}
-.page:last-child{page-break-after:auto}
-h2.sec{font-family:"Noto Serif CJK SC",serif;font-size:18pt;color:#1F5C39;border-bottom:2.5pt solid #2E7D4F;padding-bottom:2mm;margin-bottom:6mm;display:flex;align-items:baseline;gap:4mm}
-h2.sec .num{background:#2E7D4F;color:#fff;font-size:11pt;padding:1mm 3mm;border-radius:2mm}
-h3.subsec{font-size:13pt;color:#1F5C39;margin:5mm 0 2.5mm;padding-left:3mm;border-left:3pt solid #A2630C}
-p{margin-bottom:2.5mm;color:#4A4337}
-.kv-grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0}
-.kv-card{background:#fff;border:0.5pt solid #C3D9C9;border-radius:2mm;padding:3mm 4mm}
-.kv-card .k{font-weight:700;color:#1F5C39;font-size:9.5pt;margin-bottom:1mm}
-.kv-card .v{font-size:9pt;color:#4A4337;line-height:1.55}
-.highlight{background:linear-gradient(180deg,#F8ECD3,#F8ECD3);border:0.5pt solid #E7CE9C;border-radius:2mm;padding:3mm 4mm;margin:3mm 0;font-size:9.5pt}
-.highlight .tag{display:inline-block;background:#A2630C;color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;letter-spacing:.08em}
-.warn{background:#F7E4DF;border:0.5pt solid #E6BDB4;border-radius:2mm;padding:3mm 4mm;margin:3mm 0;font-size:9.5pt;color:#7E2A20}
-.warn .tag{display:inline-block;background:#B23A2E;color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt}
-th{background:#2E7D4F;color:#fff;padding:2mm 3mm;text-align:left;font-weight:600}
-td{padding:2mm 3mm;border-bottom:0.5pt solid #C3D9C9;color:#4A4337;vertical-align:top}
-tr:nth-child(even) td{background:#F3EFE5}
-.checklist{list-style:none;margin:3mm 0}
-.checklist li{padding:1.5mm 0 1.5mm 7mm;position:relative;font-size:9.5pt;color:#4A4337;border-bottom:0.3pt dashed #C3D9C9}
-.checklist li::before{content:"☐";position:absolute;left:0;color:#2E7D4F;font-weight:700}
-.qa{margin:3mm 0}
-.qa .q{font-weight:700;color:#1F5C39;font-size:10pt;margin-bottom:1.5mm;padding-left:3mm;border-left:3pt solid #2E7D4F}
-.qa .a{font-size:9.5pt;color:#4A4337;padding-left:6mm;line-height:1.65}
-.toc{margin:5mm 0}
-.toc-item{display:flex;align-items:baseline;gap:3mm;padding:2mm 0;border-bottom:0.3pt solid #C3D9C9;font-size:10.5pt}
-.toc-item .tn{font-weight:700;color:#2E7D4F;min-width:12mm}
-.toc-item .tt{color:#24201A;font-weight:600}
-.structure{background:#fff;border:0.5pt solid #C3D9C9;border-radius:2mm;padding:5mm;margin:4mm 0;font-size:9pt;line-height:2}
-.structure .l1{font-weight:700;color:#1F5C39}
-.structure .l2{padding-left:6mm;color:#4A4337}
-.structure .l3{padding-left:12mm;color:#857B68;font-size:8.5pt}
-.principle{background:#E8F1EA;border:1pt solid #2E7D4F;border-radius:3mm;padding:4mm 5mm;margin:4mm 0;text-align:center}
-.principle .pt{font-family:"Noto Serif CJK SC",serif;font-size:12pt;font-weight:700;color:#1F5C39;margin-bottom:1mm}
-.principle .pd{font-size:9pt;color:#4A4337}
-</style></head><body>
-
-<div class="cover">
-  <div class="kicker">HUST · 基础医学 · 可视化笔记</div>
-  <h1>细胞生物学<br><span style="color:#E7CE9C">细胞膜与物质的穿膜运输</span></h1>
-  <div class="sub">第5-6节 · 2026-09-07 · 林珑教授</div>
-  <div class="meta">
-    <div><b>课程</b>细胞生物学</div>
-    <div><b>节次</b>课程内第5-6节</div>
-    <div><b>主题</b>细胞膜化学组成、生物学特性、结构模型、跨膜运输引入</div>
-    <div><b>类型</b>课堂可视化笔记</div>
-  </div>
-</div>
-
-<div class="page">
-  <h2 class="sec"><span class="num">00</span>知识结构与课程说明</h2>
-
-  <div class="principle">
-    <div class="pt">膜的第一性原则</div>
-    <div class="pd">所有生物膜的核心特性，都源于「用疏水核心隔开两个水相」这一基本结构。</div>
-  </div>
-
-  <div class="structure">
-    <div class="l1">一、细胞膜化学组成</div>
-    <div class="l2">1. 膜脂 — 磷脂（甘油磷脂/鞘磷脂）、胆固醇、糖脂</div>
-    <div class="l2">2. 膜蛋白 — 整合/外周/脂锚定；提取方法；人工脂质体</div>
-    <div class="l2">3. 膜糖 — 糖萼；ABO血型本质</div>
-    <div class="l1">二、细胞膜生物学特性</div>
-    <div class="l2">1. 异质性 — 组分多样→功能多样</div>
-    <div class="l2">2. 不对称性 — 内外侧分布差异；位置即信息；PS外翻=凋亡</div>
-    <div class="l2">3. 流动性 — 影响因素（饱和度/链长/胆固醇）；验证实验</div>
-    <div class="l1">三、膜结构模型</div>
-    <div class="l2">1. 流动镶嵌模型 — 三大要点</div>
-    <div class="l2">2. 脂筏模型 — 补充而非否定</div>
-    <div class="l1">四、跨膜运输引入</div>
-    <div class="l2">1. 判断四维度 — 大小极性/梯度方向/耗能/介导</div>
-    <div class="l2">2. 电化学梯度</div>
-  </div>
-
-  <div class="highlight"><span class="tag">成绩占比</span>期末45% + 实验30% + 期中15% + 过程性评价10%。课程注重理解与推理，不鼓励死记硬背。</div>
-</div>
-
-<div class="page">
-  <h2 class="sec"><span class="num">01</span>细胞膜化学组成</h2>
-
-  <h3 class="subsec">1.1 膜脂三类</h3>
-  <table>
-    <tr><th>类别</th><th>结构特点</th><th>功能</th></tr>
-    <tr><td>磷脂</td><td>两亲性（亲水头部+疏水尾部）；基本骨架；分甘油磷脂和鞘磷脂</td><td>构成脂双层基本框架</td></tr>
-    <tr><td>胆固醇</td><td>甾醇类，强刚性，两亲性</td><td>膜流动性缓冲调节剂（双向调节）</td></tr>
-    <tr><td>糖脂</td><td>单糖/寡糖+脂共价连接；动物细胞以鞘氨醇为骨架</td><td>细胞识别、保护；拓扑学永久外侧</td></tr>
-  </table>
-
-  <h3 class="subsec">1.2 甘油磷脂头基分类与不对称分布</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">PE（磷脂酰乙醇胺）</div><div class="v">小头基，倒圆锥形状，易分布于脂双层内侧</div></div>
-    <div class="kv-card"><div class="k">PC（磷脂酰胆碱）</div><div class="v">主要分布于脂双层外侧</div></div>
-    <div class="kv-card"><div class="k">PS（磷脂酰丝氨酸）</div><div class="v">带负电荷，正常仅分布于内侧；外翻=细胞凋亡信号</div></div>
-    <div class="kv-card"><div class="k">鞘磷脂</div><div class="v">主要分布于外侧</div></div>
-  </div>
-  <div class="warn"><span class="tag">关键</span>不对称分布需酶（翻转酶/flippase）催化维持，无法自发形成。PS外翻是细胞凋亡的标志性信号，可被巨噬细胞识别并吞噬。</div>
-
-  <h3 class="subsec">1.3 胆固醇的双向流动性调节</h3>
-  <div class="highlight"><span class="tag">核心机制</span>低温下：胆固醇抑制脂肪酸链紧密排列→提升流动性，防止膜凝固。高温下：胆固醇抑制组分过度流动→降低流动性。本质=拓宽膜维持合适流动性的温度范围。</div>
-
-  <h3 class="subsec">1.4 膜蛋白三类结合方式</h3>
-  <table>
-    <tr><th>类型</th><th>结合方式</th><th>特点</th><th>提取方法</th></tr>
-    <tr><td>整合膜蛋白</td><td>跨膜α螺旋嵌入疏水核心</td><td>占20-30%；60%+临床药物靶点；多次跨膜可围成亲水孔道</td><td>需去垢剂（离子型/非离子型）</td></tr>
-    <tr><td>外周膜蛋白</td><td>非共价贴附膜内外表面</td><td>改变盐浓度/pH可温和剥离</td><td>高盐/改变pH</td></tr>
-    <tr><td>脂锚定膜蛋白</td><td>共价键连接脂分子</td><td>通过脂分子锚定于膜上</td><td>需断裂共价键</td></tr>
-  </table>
-  <p><b>人工脂质体：</b>利用脂双层自发封闭特性制备，用于膜蛋白研究和药物/核酸靶向递送。整合膜蛋白的跨膜区以疏水氨基酸为主。</p>
-
-  <h3 class="subsec">1.5 膜糖与糖萼</h3>
-  <p>所有膜糖（糖脂+糖蛋白）的糖链永久朝向非胞质侧（外侧）。细胞外被（糖萼）由膜糖链构成，功能包括保护细胞、维持离子平衡、介导细胞识别黏附。<b>ABO血型本质</b>=红细胞膜上糖链末端糖种类不同，不是蛋白质差异。</p>
-</div>
-
-<div class="page">
-  <h2 class="sec"><span class="num">02</span>细胞膜生物学特性</h2>
-
-  <h3 class="subsec">2.1 三大特性总览</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">异质性</div><div class="v">膜脂/膜蛋白/膜糖组分种类多样→功能多样性的基础</div></div>
-    <div class="kv-card"><div class="k">不对称性</div><div class="v">内外侧分布、种类、数量均不对称；「位置本身就是信息」</div></div>
-    <div class="kv-card"><div class="k">流动性</div><div class="v">平面内侧向扩散、旋转、弯曲；自发跨双层翻转热力学几乎不可能</div></div>
-  </div>
-
-  <h3 class="subsec">2.2 流动性三大影响因素</h3>
-  <table>
-    <tr><th>因素</th><th>影响方向</th><th>机制</th></tr>
-    <tr><td>脂肪酸饱和度</td><td>饱和→流动性低；不饱和（顺式双键）→流动性高</td><td>饱和链排列紧密；顺式双键造成弯曲→排列疏松</td></tr>
-    <tr><td>脂肪酸链长</td><td>链越长→流动性越低</td><td>分子间疏水相互作用增强（影响弱于饱和度）</td></tr>
-    <tr><td>胆固醇</td><td>双向缓冲</td><td>低温提升流动性（防凝固）；高温降低流动性（防过度流动）</td></tr>
-  </table>
-
-  <h3 class="subsec">2.3 流动性验证两个经典实验</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">细胞融合实验</div><div class="v">人鼠细胞膜蛋白分别标记红绿荧光→细胞融合→37℃孵育→荧光均匀分布→证明膜蛋白可侧向扩散</div></div>
-    <div class="kv-card"><div class="k">FRAP（荧光漂白恢复）</div><div class="v">激光漂白局部荧光→观察漂白区荧光恢复→可量化扩散速率与可流动池大小</div></div>
-  </div>
-
-  <h3 class="subsec">2.4 PS外翻与细胞凋亡</h3>
-  <div class="highlight"><span class="tag">凋亡标志</span>正常状态下PS仅分布于脂双层内侧。当细胞发生凋亡时，PS出现在外侧→向巨噬细胞发出「吞噬自身」的信号。这一不对称分布的维持需要翻转酶催化，无法自发形成。</div>
-</div>
-
-<div class="page">
-  <h2 class="sec"><span class="num">03</span>膜结构模型与跨膜运输引入</h2>
-
-  <h3 class="subsec">3.1 流动镶嵌模型三大要点</h3>
-  <div class="highlight"><span class="tag">必背</span>① 脂双层是二维流体 &nbsp; ② 蛋白质以整合/外周/脂锚定形式镶嵌于脂双层 &nbsp; ③ 膜具有显著的不对称性</div>
-  <p>流动镶嵌模型是经数十年验证的核心基础框架，后续提出的模型（如脂筏模型）均在此基础上补充而非否定。</p>
-
-  <h3 class="subsec">3.2 脂筏模型</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">定义</div><div class="v">膜上动态存在的鞘脂、胆固醇、特定蛋白富集的微区</div></div>
-    <div class="kv-card"><div class="k">与流动镶嵌关系</div><div class="v">补充而非否定；在流动镶嵌模型基础上提出</div></div>
-    <div class="kv-card"><div class="k">功能</div><div class="v">信号传导、胞吞的功能平台</div></div>
-  </div>
-
-  <h3 class="subsec">3.3 跨膜运输判断四维度</h3>
-  <div class="highlight"><span class="tag">判断框架</span>① 物质的大小与极性 &nbsp; ② 浓度/电化学梯度方向 &nbsp; ③ 是否需要耗能 &nbsp; ④ 是否需要通道/转运体介导</div>
-  <table>
-    <tr><th>物质类型</th><th>驱动力</th><th>耗能</th></tr>
-    <tr><td>不带电物质</td><td>仅受浓度梯度驱动</td><td>被动运输不耗能</td></tr>
-    <tr><td>带电离子</td><td>同时受浓度梯度+电势梯度（电化学梯度）驱动</td><td>顺梯度不耗能，逆梯度需耗能</td></tr>
-  </table>
-  <p><b>电化学梯度：</b>对于带电离子，其跨膜扩散不仅受浓度梯度影响，还受膜两侧电势差影响，两者的合力称为电化学梯度。这是判断离子跨膜运输方向和方式的核心依据。</p>
-</div>
-
-<div class="page">
-  <h2 class="sec"><span class="num">04</span>复习清单与主动回忆题</h2>
-
-  <h3 class="subsec">复习清单（10-15分钟）</h3>
-  <ul class="checklist">
-    <li>膜的第一性原则：疏水核心隔开两个水相</li>
-    <li>膜脂三类的结构特点与功能</li>
-    <li>甘油磷脂四种头基（PE/PC/PS/鞘磷脂）的分布特点</li>
-    <li>胆固醇双向调节膜流动性的机制</li>
-    <li>膜蛋白三类结合方式与提取方法</li>
-    <li>整合膜蛋白作为60%+临床药物靶点的意义</li>
-    <li>人工脂质体的原理与应用</li>
-    <li>膜糖永久朝向外侧的规则与糖萼功能</li>
-    <li>ABO血型的本质（糖链末端糖种类）</li>
-    <li>细胞膜三大特性：异质性、不对称性、流动性</li>
-    <li>「位置本身就是信息」的含义</li>
-    <li>PS外翻与细胞凋亡的关系</li>
-    <li>流动性三大影响因素（饱和度/链长/胆固醇）</li>
-    <li>细胞融合实验与FRAP实验的原理</li>
-    <li>流动镶嵌模型三大要点</li>
-    <li>脂筏模型与流动镶嵌模型的关系</li>
-    <li>跨膜运输判断四维度</li>
-    <li>电化学梯度的概念</li>
-  </ul>
-
-  <h3 class="subsec">主动回忆题</h3>
-  <div class="qa">
-    <div class="q">Q1：为什么细胞膜脂双层的不对称分布无法自发形成，需要酶来维持？</div>
-    <div class="a">A：磷脂分子从脂双层一侧翻转到另一侧（flip-flop）需要将亲水头部穿过疏水核心，这在热力学上极为不利，自发翻转速率极低。因此，特定磷脂在内外侧的不对称分布必须依靠翻转酶（flippase）等蛋白主动催化才能建立和维持。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q2：胆固醇如何实现对膜流动性的双向调节？</div>
-    <div class="a">A：胆固醇分子插入磷脂脂肪酸链之间。低温时，胆固醇的甾环结构干扰脂肪酸链的紧密排列，防止膜凝固，从而提升流动性；高温时，胆固醇限制脂肪酸链的过度运动，降低流动性。其本质是拓宽了膜能维持合适流动性的温度范围。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q3：为什么整合膜蛋白占临床药物靶点的60%以上？</div>
-    <div class="a">A：整合膜蛋白跨膜分布，包括受体、通道、转运体等，是细胞感知外界信号和物质交换的关键门户。许多疾病的发生与这些蛋白的功能异常相关，药物通过作用于这些膜蛋白可以有效调控细胞功能。此外，膜蛋白的胞外结构域易于被药物接触，是理想的药物作用靶点。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q4：FRAP实验如何量化膜的流动性？</div>
-    <div class="a">A：FRAP（荧光漂白恢复）实验先用高强度激光将细胞膜局部区域的荧光分子漂白（不可逆），然后观察该区域荧光随时间的恢复。恢复来源于周围未漂白的荧光分子通过侧向扩散进入漂白区。通过分析恢复速率可计算扩散系数，通过最终恢复程度可量化可流动池的大小（部分膜蛋白可能被锚定无法流动）。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q5：ABO血型差异的分子本质是什么？</div>
-    <div class="a">A：ABO血型的本质是红细胞膜上糖蛋白和糖脂的糖链末端糖基种类不同。A型血末端为N-乙酰半乳糖胺，B型血末端为半乳糖，O型血缺少这两种末端糖基（H抗原）。这是糖基转移酶基因差异导致的，不是蛋白质本身的差异。</div>
-  </div>
-</div>
-
-</body></html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>细胞生物学 · 第5-6节 · 细胞膜</title><style>:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#2B4C8C; --accent-d:#1C3462; --accent-t:#E6EBF6;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}</style></head><body><div class="page cover">
+<p class="h1">细胞生物学 · 第5-6节</p>
+<p class="meta">细胞膜与物质穿膜运输 · 2026-09-07</p>
+<p class="lead" style="text-align:left">素材：逐字稿 24710 字 / 123 轮</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课节</td><td>rec-2026-fall-005-006</td></tr>
+<tr><td>授课</td><td>林珑 教授</td></tr>
+<tr><td>范围</td><td>膜组成 · 膜特性 · 流动镶嵌/脂筏 · 运输引入</td></tr>
+</table></div><div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">结构决定屏障与不对称；特性由脂、蛋白、糖共同赋予。</p>
+<svg viewBox="0 0 640 200" width="100%" aria-label="知识框架">
+<rect x="180" y="8" width="280" height="30" fill="#E6EBF6" stroke="#2B4C8C"/>
+<text x="320" y="28" text-anchor="middle" font-size="11" font-family="sans-serif">第四章 细胞膜与穿膜运输</text>
+<line x1="120" y1="38" x2="120" y2="62" stroke="#2B4C8C"/><line x1="320" y1="38" x2="320" y2="62" stroke="#2B4C8C"/><line x1="520" y1="38" x2="520" y2="62" stroke="#2B4C8C"/>
+<rect x="40" y="62" width="160" height="24" fill="#fff" stroke="#1C3462"/><text x="120" y="78" text-anchor="middle" font-size="9">化学组成</text>
+<rect x="240" y="62" width="160" height="24" fill="#fff" stroke="#1C3462"/><text x="320" y="78" text-anchor="middle" font-size="9">生物学特性</text>
+<rect x="440" y="62" width="160" height="24" fill="#fff" stroke="#1C3462"/><text x="520" y="78" text-anchor="middle" font-size="9">结构模型</text>
+<line x1="320" y1="86" x2="320" y2="110" stroke="#2B4C8C"/>
+<rect x="200" y="110" width="240" height="26" fill="#E6EBF6" stroke="#2B4C8C"/><text x="320" y="126" text-anchor="middle" font-size="9">脂·蛋白·糖 + 第一性原则</text>
+<line x1="320" y1="136" x2="320" y2="158" stroke="#2B4C8C"/>
+<rect x="220" y="158" width="200" height="26" fill="#fff" stroke="#1C3462"/><text x="320" y="174" text-anchor="middle" font-size="9">运输四问 + 扩散</text>
+</svg></div><div class="page"><h2 class="h2">1. 课程定位与考核</h2><p class="lead">医学细胞生物学讲机制；成绩分散，勿把复习全押在期末。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>医学细胞生物学不讲植物、叶绿体与光合作用 <span class="loc">〔说话人1 01:11〕</span></li>
+<li>64 学时：理论 32 + 实验 32，实验占比大 <span class="loc">〔说话人1 01:11〕</span></li>
+<li>大学课程要讲为什么，用机制分析现象与疾病 <span class="loc">〔说话人1 03:26〕</span></li>
+<li>生命活动与疾病最终可落到细胞与分子机制 <span class="loc">〔说话人1 03:26〕</span></li>
+<li>成绩：期末 45%、实验 30%、期中 15%、过程 10% <span class="loc">〔说话人1 05:08〕</span></li>
+<li>期中于国庆假期后；课程约 10 月底至 11 月初结束 <span class="loc">〔说话人1 05:38〕</span></li>
+<li>过程性考核含出勤与课堂参与，缺课抽查会扣分 <span class="loc">〔说话人1 06:00〕</span></li>
+<li>考试考逻辑，要你说明事情为什么发生 <span class="loc">〔说话人1 02:02〕</span></li>
+<li>双语课：主教材外列三本英文参考书，卷面英文词须能认读 <span class="loc">〔说话人1 06:53〕</span></li>
+<li>专业词多源自希腊词根，认一词可推一串 <span class="loc">〔说话人1 07:40〕</span></li>
+<li>四位教师按教材主线，小标题可因突出重点而调整 <span class="loc">〔说话人1 08:16〕</span></li>
+</ul>
+<table class="tbl"><tr><th>考核项</th><th>占比</th></tr>
+<tr><td>期末考试</td><td>45%</td></tr><tr><td>实验课</td><td>30%</td></tr><tr><td>期中考试</td><td>15%</td></tr><tr><td>过程性考核</td><td>10%</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★考点以课堂讲授为准，书上未讲的不考。 <span class="loc">〔说话人1 01:12:54〕</span></div></div><div class="page"><h2 class="h2">2. 第四章总览与生物膜功能</h2><p class="lead">从结构推导选择性屏障，再联系运输与疾病。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>第四章主题：细胞膜结构与物质穿膜运输 <span class="loc">〔说话人1 09:06〕</span></li>
+<li>细胞膜隔开细胞与环境，又须让氧气、葡萄糖与离子交换 <span class="loc">〔说话人1 09:06〕</span></li>
+<li>章逻辑：组成→结构→小分子运输→大分子运输→相关疾病 <span class="loc">〔说话人1 09:50〕</span></li>
+<li>生物膜含细胞膜与细胞内膜性细胞器膜 <span class="loc">〔说话人1 10:41〕</span></li>
+<li>生物膜七大功能可概括为四关键词：区室化、物质运输、信号传递、能量转换 <span class="loc">〔说话人1 10:41〕</span></li>
+<li>区室化：膜分隔腔室，扩大反应面积并维持不同腔内环境 <span class="loc">〔说话人1 10:41〕</span></li>
+<li>氧化磷酸化在线粒体内膜，利用质子梯度产生 ATP <span class="loc">〔说话人1 11:47〕</span></li>
+<li>学习目标：识图、判断运输方式、解释逆梯度能量来源、联系疾病 <span class="loc">〔说话人1 11:47〕</span></li>
+<li>第四章按教材四节讲授，主线与教材一致 <span class="loc">〔说话人1 13:42〕</span></li>
+<li>将讲囊性纤维化、家族性高胆固醇血症、肾性糖尿、高尿酸尿症等 <span class="loc">〔说话人1 13:42〕</span></li>
+</ul>
+<table class="tbl"><tr><th>关键词</th><th>含义</th></tr>
+<tr><td>区室化 compartmentation</td><td>膜分隔不同生化环境</td></tr>
+<tr><td>物质运输</td><td>选择性屏障与跨膜转运</td></tr>
+<tr><td>信号传递</td><td>膜受体将外界信号传入胞内</td></tr>
+<tr><td>能量转换</td><td>如线粒体内膜氧化磷酸化</td></tr></table></div><div class="page"><h2 class="h2">3. 膜组成与第一性原则</h2><p class="lead">膜脂、膜蛋白、膜糖；一切特性由疏水核心隔两水相推导。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>细胞膜主要物质：膜脂、膜蛋白、膜糖 <span class="loc">〔说话人1 14:20〕</span></li>
+<li>本节要点：流动性、不对称性、结构模型（流动镶嵌） <span class="loc">〔说话人1 14:20〕</span></li>
+<li>膜第一性原则：疏水核心隔开两个水相 <span class="loc">〔说话人1 15:46〕</span></li>
+<li>细胞外与细胞质均为水相；细胞器膜两侧为腔 lumen 与胞质 <span class="loc">〔说话人1 15:46〕</span></li>
+<li>磷脂提供疏水核心骨架；磷酸基团带负电荷 <span class="loc">〔说话人1 16:54〕</span></li>
+<li>磷脂为两亲性 amphipathic：极性头亲水，脂肪酸链疏水 <span class="loc">〔说话人1 18:34〕</span></li>
+<li>两水相使磷脂头朝水、尾相对，形成磷脂双分子层 <span class="loc">〔说话人1 19:48〕</span></li>
+</ul>
+<div class="def"><strong>第一性原则</strong>：疏水核心隔开两个水相，可推导跨膜蛋白疏水区与翻转需酶。 <span class="loc">〔说话人1 14:20〕</span></div></div><div class="page"><h2 class="h2">4. 甘油磷脂与头基几何</h2><p class="lead">甘油磷脂为重点；头基形状与电荷决定 leaflet 分布倾向。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>磷脂分甘油磷脂（重点）与鞘磷脂 <span class="loc">〔说话人1 21:01〕</span></li>
+<li>甘油即丙三醇骨架；1、2 位连脂肪酸，3 位连磷酸及极性头基 X <span class="loc">〔说话人1 21:01〕</span></li>
+<li>磷脂酰胆碱 PC（卵磷脂）：大头基，近似圆柱形 <span class="loc">〔说话人1 22:50〕</span></li>
+<li>磷脂酰乙醇胺 PE：小头基，几何上似倒圆锥，具负曲率 <span class="loc">〔说话人1 24:14〕</span></li>
+<li>出芽膜凸侧需更大面积，圆柱形 PC 宜在外；凹侧 PE 宜在内 <span class="loc">〔说话人1 26:03〕</span></li>
+<li>PE 与 PC 静电荷均为零，仅 PS 整体带负电 <span class="loc">〔说话人1 24:14〕</span></li>
+<li>头基极性与几何是功能信息，非单纯分类游戏 <span class="loc">〔说话人1 24:58〕</span></li>
+</ul>
+<table class="tbl"><tr><th>磷脂</th><th>头基</th><th>电荷/形状</th><th>分布倾向</th></tr>
+<tr><td>PC</td><td>胆碱</td><td>近电中性；圆柱</td><td>外侧居多</td></tr>
+<tr><td>PE</td><td>乙醇胺</td><td>近电中性；倒锥</td><td>内侧居多</td></tr>
+<tr><td>PS</td><td>丝氨酸</td><td>负电</td><td>正常仅内侧</td></tr>
+<tr><td>鞘磷脂</td><td>胆碱</td><td>—</td><td>外侧居多</td></tr></table></div><div class="page"><h2 class="h2">5. 胆固醇与膜流动性缓冲</h2><p class="lead">甾醇刚性插入脂双层，双向调节流动性。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>胆固醇属甾醇 sterol：四环刚性平面 + 亲水羟基 + 疏水侧链 <span class="loc">〔说话人1 27:46〕</span></li>
+<li>动物为胆固醇；真菌麦角固醇、植物豆甾醇，甾醇骨架相同 <span class="loc">〔说话人1 28:31〕</span></li>
+<li>胆固醇插入可破坏脂肪酸链紧密排列 <span class="loc">〔说话人1 29:37〕</span></li>
+<li>低温：磷脂趋向紧密排列，胆固醇阻止过密而提高流动性 <span class="loc">〔说话人1 32:55〕</span></li>
+<li>高温：胆固醇抑制磷脂过度运动，降低流动性 <span class="loc">〔说话人1 32:55〕</span></li>
+<li>胆固醇是流动性缓冲剂 buffer，拓宽合适流动性的温度范围 <span class="loc">〔说话人1 34:29〕</span></li>
+<li>对恒温动物体温仍重要；对植物与细菌尤关键 <span class="loc">〔说话人1 34:29〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★胆固醇不说单纯升高或降低流动性，而是双向缓冲。 <span class="loc">〔说话人1 34:29〕</span></div></div><div class="page"><h2 class="h2">6. 糖脂与拓扑学等价</h2><p class="lead">糖脂永远位于质膜外侧；腔内合成对应胞外拓扑。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>第三类膜脂为糖脂 glycolipid：糖以共价键连在脂上 <span class="loc">〔说话人1 34:29〕</span></li>
+<li>细菌、植物糖脂以甘油为骨架；动物细胞以鞘氨醇为骨架 <span class="loc">〔说话人1 34:29〕</span></li>
+<li>糖脂拓扑学上永远处于质膜外侧（胞外） <span class="loc">〔说话人1 37:30〕</span></li>
+<li>糖在 ER、高尔基腔 lumen 内添加（含 N-/O-糖基化），囊泡融合后糖朝外 <span class="loc">〔说话人1 38:18〕</span></li>
+<li>脂双层每一层称脂单叶（lipid leaflet） <span class="loc">〔说话人1 37:08〕</span></li>
+<li>拓扑学等价：lumen 等于 extracellular 细胞外；胞质侧永远朝胞质 <span class="loc">〔说话人1 38:18〕</span></li>
+<li>糖脂像天线，参与识别、黏附、信号；可为病毒/毒素识别位点 <span class="loc">〔说话人1 39:17〕</span></li>
+<li>受体多为蛋白，但勿忽略糖脂在信号与糖生物学中的作用 <span class="loc">〔说话人1 39:17〕</span></li>
+</ul>
+<div class="mnem"><strong>助记</strong>（整理）：腔内加糖，翻转到外，lumen 即胞外。 <span class="loc">〔说话人1 38:18〕</span></div></div><div class="page"><h2 class="h2">7. 膜蛋白三类与跨膜结构</h2><p class="lead">整合膜蛋白是通道、转运体与多数药物靶点。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>膜蛋白分整合、外周、脂锚定三类 <span class="loc">〔说话人1 41:16〕</span></li>
+<li>整合膜蛋白 integral：跨膜 transmembrane，疏水区稳定位于脂疏水核心 <span class="loc">〔说话人1 42:36〕</span></li>
+<li>跨膜区氨基酸侧链以疏水残基为主 <span class="loc">〔说话人1 42:36〕</span></li>
+<li>外周膜蛋白 peripheral：非共价贴附，内外均可，改盐浓度或 pH 可剥离 <span class="loc">〔说话人1 43:59〕</span></li>
+<li>脂锚定蛋白：与脂分子共价相连，可在内侧或外侧 <span class="loc">〔说话人1 44:37〕</span></li>
+<li>整合膜蛋白约占全部蛋白 20%–30% <span class="loc">〔说话人1 56:08〕</span></li>
+<li>约 60% 药物靶点为膜蛋白/跨膜蛋白 <span class="loc">〔说话人1 56:08〕</span></li>
+<li>跨膜蛋白可单次或多次跨膜，多次跨膜多为多个 α 螺旋 <span class="loc">〔说话人1 56:08〕</span></li>
+<li>α 螺旋约 3.6 个氨基酸/圈，螺距 0.54 nm <span class="loc">〔说话人1 57:54〕</span></li>
+<li>膜厚约 5–8 nm，疏水核心约 3–4 nm，单段螺旋约 20–30 个氨基酸 <span class="loc">〔说话人1 57:54〕</span></li>
+<li>离子通道：螺旋疏水朝脂双层，孔道内侧亲水，离子经孔道通过 <span class="loc">〔说话人1 01:00:05〕</span></li>
+<li>疏水 hydrophobic；亲水 hydrophilic；水解 hydrolysis <span class="loc">〔说话人1 01:01:49〕</span></li>
+</ul>
+<table class="tbl"><tr><th>类型</th><th>结合</th><th>提取/特点</th></tr>
+<tr><td>整合</td><td>跨膜嵌入</td><td>去垢剂；药物靶点</td></tr>
+<tr><td>外周</td><td>非共价</td><td>盐浓度、pH 剥离</td></tr>
+<tr><td>脂锚定</td><td>共价连脂</td><td>内外均可</td></tr></table></div><div class="page"><h2 class="h2">8. 去垢剂与脂质体</h2><p class="lead">两亲去垢剂溶膜提蛋白；脂双层自发封闭可造脂质体。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>整合膜蛋白研究常用去垢剂 detergent 抽提 <span class="loc">〔说话人1 01:02:42〕</span></li>
+<li>去垢剂两亲：亲水头进水相，疏水尾插入膜蛋白疏水区 <span class="loc">〔说话人1 01:04:23〕</span></li>
+<li>离子型去垢剂 SDS 作用强，用于 SDS-PAGE 等 <span class="loc">〔说话人1 01:05:27〕</span></li>
+<li>非离子型 Triton X-100、NP-40 较温和，利于保持蛋白功能 <span class="loc">〔说话人1 01:05:27〕</span></li>
+<li>脂质体 liposome：脂双层自发封闭形成 <span class="loc">〔说话人1 01:06:23〕</span></li>
+<li>可嵌入膜蛋白研究转运；可递送药物与核酸（脂溶性药入膜间、水溶性药或核酸入内腔） <span class="loc">〔说话人1 01:06:49〕</span></li>
+</ul></div><div class="page"><h2 class="h2">9. 膜糖、糖萼与 ABO 血型</h2><p class="lead">膜糖含糖脂与糖蛋白，糖链永久朝非胞质侧。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>膜糖包括糖脂与糖蛋白，糖链均朝细胞膜外侧 <span class="loc">〔说话人1 01:06:49〕</span></li>
+<li>膜糖严谨称为非胞质侧，即外侧 <span class="loc">〔说话人1 01:06:49〕</span></li>
+<li>膜糖结构多样，同蛋白在不同组织糖型可不同 <span class="loc">〔说话人1 01:09:06〕</span></li>
+<li>ABO 血型差异在红细胞膜糖链末端糖基，非氨基酸 <span class="loc">〔说话人1 01:09:51〕</span></li>
+<li>A 型末端加 N-乙酰半乳糖胺；B 型加半乳糖；O 型无延伸；AB 兼有 <span class="loc">〔说话人1 01:10:33〕</span></li>
+<li>糖萼/细胞外被：密集糖链，电镜下似外层衣被 <span class="loc">〔说话人1 01:11:59〕</span></li>
+<li>功能：保护免受机械与化学损伤 <span class="loc">〔说话人1 01:11:59〕</span></li>
+<li>唾液酸带负电，使膜外整体负电，吸附 Na⁺、Ca²⁺ 等维持微环境 <span class="loc">〔说话人1 01:11:59〕</span></li>
+<li>介导识别与黏附，例：凝集素；ABO 为识别实例 <span class="loc">〔说话人1 01:12:54〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★ABO 血型差别在红细胞膜糖链末端糖种类。 <span class="loc">〔说话人1 01:09:51〕</span></div></div><div class="page"><h2 class="h2">10. 异质性、不对称性与 PS 信号</h2><p class="lead">三大生物学特性源于化学组成的多样与分布差异。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>生物学特性：异质性、不对称性、流动性 <span class="loc">〔说话人1 01:13:57〕</span></li>
+<li>异质性：脂、蛋白、糖种类多，组分多样 <span class="loc">〔说话人1 01:14:42〕</span></li>
+<li>不对称性 asymmetry：各成分分布、种类、数量不对称，与功能相关 <span class="loc">〔说话人1 01:14:42〕</span></li>
+<li>外侧富集鞘磷脂与 PC；内侧富集 PE <span class="loc">〔说话人1 01:15:38〕</span></li>
+<li>PS 正常仅在内侧；分布需酶做功建立，建立后不易自发外翻 <span class="loc">〔说话人1 01:17:25〕</span></li>
+<li>PS 出现在外侧提示异常，如凋亡时外翻 <span class="loc">〔说话人1 01:17:25〕</span></li>
+<li>PS 外翻为巨噬细胞吞噬凋亡细胞的 eat-me 信号 <span class="loc">〔说话人1 01:17:25〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★位置本身就是信息。 <span class="loc">〔说话人1 01:17:25〕</span></div></div><div class="page"><h2 class="h2">11. 流动性概念与脂分子运动</h2><p class="lead">膜为液晶态二维流体；自发跨层翻转热力学不利。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>流动性非整膜固液相变，也非磷脂自由穿层流动 <span class="loc">〔说话人1 01:19:08〕</span></li>
+<li>相变 phase transition：凝胶态与液晶态转换，膜为二维液晶流体 <span class="loc">〔说话人1 01:19:08〕</span></li>
+<li>磷脂双分子层温度升高可由凝胶态变液晶态，仍是二维流体 <span class="loc">〔说话人1 01:21:07〕</span></li>
+<li>油相与水相分开叫相分离；家用油是甘油三酯不是磷脂 <span class="loc">〔说话人1 01:21:07〕</span></li>
+<li>侧向扩散 lateral diffusion，约 10⁻⁶ s（微秒级） <span class="loc">〔说话人1 01:23:55〕</span></li>
+<li>旋转弯曲约 10⁻⁹ s，纳秒级 <span class="loc">〔说话人1 01:24:58〕</span></li>
+<li>flip-flop 翻转约 10⁵ s，需酶帮助 <span class="loc">〔说话人1 01:24:58〕</span></li>
+<li>自发翻转需极性头穿越疏水核心，自由能不允许 <span class="loc">〔说话人1 01:22:41〕</span></li>
+<li>流动性是刚性墙与完全液体之间的折中液晶态 <span class="loc">〔说话人1 01:23:55〕</span></li>
+</ul>
+<table class="tbl"><tr><th>运动</th><th>时间尺度</th><th>自发？</th></tr>
+<tr><td>侧向扩散</td><td>~10⁻⁶ s</td><td>易</td></tr>
+<tr><td>旋转弯曲</td><td>~10⁻⁹ s</td><td>易</td></tr>
+<tr><td>flip-flop</td><td>~10⁵ s</td><td>需酶</td></tr></table></div><div class="page"><h2 class="h2">12. 流动性影响因素与验证实验</h2><p class="lead">脂肪酸饱和度为主；胆固醇双向调节；膜蛋白可侧向扩散。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>温度升高，布朗运动增强，流动性增加 <span class="loc">〔说话人1 01:25:37〕</span></li>
+<li>饱和脂肪酸链直、排列紧→流动性低、相变温度高 <span class="loc">〔说话人1 01:27:05〕</span></li>
+<li>不饱和脂肪酸顺式双键→链弯曲→排列疏松→流动性高 <span class="loc">〔说话人1 01:27:05〕</span></li>
+<li>植物油多不饱和，常温液态；动物油多饱和，常温固态 <span class="loc">〔说话人1 01:28:23〕</span></li>
+<li>链越长相互作用越多，流动性越低，但弱于饱和度影响 <span class="loc">〔说话人1 01:28:23〕</span></li>
+<li>胆固醇双向调节流动性，见 §5 <span class="loc">〔说话人1 01:29:47〕</span></li>
+<li>膜蛋白可在脂双层平面侧向扩散 <span class="loc">〔说话人1 01:30:31〕</span></li>
+<li>人鼠细胞融合实验：膜蛋白荧光 37℃ 后红绿均匀→侧向扩散 <span class="loc">〔说话人1 01:31:16〕</span></li>
+<li>低温（如 4℃）扩散慢，需更长时间才可见荧光混合 <span class="loc">〔说话人1 01:31:16〕</span></li>
+<li>FRAP：激光漂白局部荧光，周围蛋白侧向迁入使荧光恢复 <span class="loc">〔说话人1 01:33:00〕</span></li>
+<li>恢复曲线斜率反映速度；平台高度反映可流动池比例 <span class="loc">〔说话人1 01:34:26〕</span></li>
+</ul>
+<div class="wrong"><strong>易混</strong>：FRAP 测的是膜蛋白侧向扩散，不是 flip-flop 跨层翻转。</div></div><div class="page"><h2 class="h2">13. 流动镶嵌模型、脂筏与运输引入</h2><p class="lead">流动镶嵌为基础；脂筏为动态富脂微区；运输先问四维度。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>流动镶嵌模型：脂双层二维流体；蛋白整合/外周/脂锚定镶嵌；显著不对称 <span class="loc">〔说话人1 01:35:20〕</span></li>
+<li>流动镶嵌可解释多数膜生物学现象，已验证数十年 <span class="loc">〔说话人1 01:36:55〕</span></li>
+<li>脂筏模型补充流动镶嵌：鞘脂+胆固醇+蛋白的动态 microdomain <span class="loc">〔说话人1 01:36:55〕</span></li>
+<li>流动镶嵌图可见 GPI 锚定蛋白、胆固醇镶嵌等细节 <span class="loc">〔说话人1 01:36:20〕</span></li>
+<li>脂筏微区是信号传导和胞吞时的功能平台 <span class="loc">〔说话人1 01:36:55〕</span></li>
+<li>看物质极性大小、顺逆梯度、要不要能量、通道还是转运体 <span class="loc">〔说话人1 01:38:16〕</span></li>
+<li>扩散 diffusion：被动运输，不耗能，高浓度→低浓度 <span class="loc">〔说话人1 01:39:29〕</span></li>
+<li>不带电物质看浓度梯度；离子看电化学梯度（浓度+电势） <span class="loc">〔说话人1 01:39:29〕</span></li>
+</ul>
+<table class="tbl"><tr><th>问题</th><th>目的</th></tr>
+<tr><td>大还是小？极性？</td><td>选扩散或蛋白介导</td></tr>
+<tr><td>顺还是逆梯度？</td><td>是否需能量</td></tr>
+<tr><td>channel 还是 transporter？</td><td>机制分类</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★逆电化学梯度运输须追问能量来源。 <span class="loc">〔说话人1 11:47〕</span></div></div><div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv">
+<li>膜第一性原则：疏水核心隔开两个水相</li>
+<li>膜脂三类：磷脂、胆固醇、糖脂</li>
+<li>PE 内、PC/鞘磷脂外；PS 负电在内，外翻=凋亡</li>
+<li>胆固醇：流动性双向缓冲</li>
+<li>糖脂/膜糖永远朝非胞质侧；lumen=胞外</li>
+<li>膜蛋白：整合、外周、脂锚定；~60% 药物靶点</li>
+<li>三大特性：异质性、不对称性、流动性</li>
+<li>flip-flop 自发难，侧向扩散易</li>
+<li>流动镶嵌三要点 + 脂筏补充</li>
+<li>运输四问 + 扩散被动、离子用电化学梯度</li>
+</ul></div><div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>胆固醇只降低流动性</td><td>低温升、高温降，是缓冲剂</td></tr>
+<tr><td>膜糖可朝胞质侧</td><td>糖脂与膜糖链永久朝外侧</td></tr>
+<tr><td>ABO 由蛋白/氨基酸决定</td><td>红细胞膜糖链末端糖基不同</td></tr>
+<tr><td>流动性=磷脂在两层间自由穿梭</td><td>主要是同层侧向扩散；跨层需酶</td></tr>
+<tr><td>脂筏否定流动镶嵌</td><td>脂筏是在镶嵌模型上的补充</td></tr>
+<tr><td>生物膜=仅细胞膜</td><td>含细胞内所有膜性细胞器膜</td></tr>
+</table></div><div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>成绩构成与命题风格</td><td>§1</td><td>1@05:08</td><td>简答</td></tr>
+<tr><td>生物膜四关键词</td><td>§2</td><td>1@10:41</td><td>简答</td></tr>
+<tr><td>第一性原则</td><td>§3</td><td>1@15:46</td><td>简答/推导</td></tr>
+<tr><td>PE/PC 几何与分布</td><td>§4</td><td>1@26:03</td><td>简答</td></tr>
+<tr><td>胆固醇缓冲</td><td>§5</td><td>1@34:29</td><td>简答</td></tr>
+<tr><td>拓扑 lumen=胞外</td><td>§6</td><td>1@39:17</td><td>判断</td></tr>
+<tr><td>整合膜蛋白与药物靶点</td><td>§7</td><td>1@56:08</td><td>填空</td></tr>
+<tr><td>离子通道亲水孔道</td><td>§7</td><td>1@01:00:05</td><td>机制</td></tr>
+<tr><td>ABO 血型本质</td><td>§9</td><td>1@01:09:51</td><td>判断</td></tr>
+<tr><td>PS 外翻与凋亡</td><td>§10</td><td>1@01:17:25</td><td>简答</td></tr>
+<tr><td>脂运动时间尺度</td><td>§11</td><td>1@01:25:37</td><td>填空</td></tr>
+<tr><td>FRAP 读图</td><td>§12</td><td>1@01:34:26</td><td>简答</td></tr>
+<tr><td>流动镶嵌与脂筏</td><td>§13</td><td>1@01:36:55</td><td>比较</td></tr>
+<tr><td>运输四维度</td><td>§13</td><td>1@01:39:29</td><td>简答</td></tr>
+</table></div><div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>医学细胞生物学不讲植物叶绿体光合作用</td><td>范围</td><td>§1</td><td><span class="loc">〔说话人1 01:11〕</span></td></tr><tr><td>2</td><td>64 学时理论 32 实验 32</td><td>数据</td><td>§1</td><td><span class="loc">〔说话人1 01:11〕</span></td></tr><tr><td>3</td><td>大学讲机制分析现象与疾病</td><td>观点</td><td>§1</td><td><span class="loc">〔说话人1 03:26〕</span></td></tr><tr><td>4</td><td>疾病可落到细胞分子如通道与受体</td><td>联系</td><td>§1</td><td><span class="loc">〔说话人1 03:26〕</span></td></tr><tr><td>5</td><td>期末45实验30期中15过程10</td><td>考核</td><td>§1</td><td><span class="loc">〔说话人1 05:08〕</span></td></tr><tr><td>6</td><td>期中国庆假期后</td><td>考核</td><td>§1</td><td><span class="loc">〔说话人1 05:38〕</span></td></tr><tr><td>7</td><td>过程性考核出勤与参与</td><td>考核</td><td>§1</td><td><span class="loc">〔说话人1 06:00〕</span></td></tr><tr><td>8</td><td>考逻辑非机械名词解释</td><td>命题</td><td>§1</td><td><span class="loc">〔说话人1 02:02〕</span></td></tr><tr><td>9</td><td>双语专业词见到可识别</td><td>要求</td><td>§1</td><td><span class="loc">〔说话人1 06:53〕</span></td></tr><tr><td>10</td><td>四位教师按教材主线</td><td>组织</td><td>§1</td><td><span class="loc">〔说话人1 08:16〕</span></td></tr><tr><td>11</td><td>第四章细胞膜与穿膜运输</td><td>框架</td><td>§2</td><td><span class="loc">〔说话人1 09:06〕</span></td></tr><tr><td>12</td><td>膜分隔环境且须选择性通透</td><td>功能</td><td>§2</td><td><span class="loc">〔说话人1 09:50〕</span></td></tr><tr><td>13</td><td>章逻辑组成运输疾病</td><td>框架</td><td>§2</td><td><span class="loc">〔说话人1 09:50〕</span></td></tr><tr><td>14</td><td>生物膜含细胞膜与细胞器膜</td><td>定义</td><td>§2</td><td><span class="loc">〔说话人1 10:41〕</span></td></tr><tr><td>15</td><td>四关键词区室化运输信号能量</td><td>功能</td><td>§2</td><td><span class="loc">〔说话人1 10:41〕</span></td></tr><tr><td>16</td><td>氧化磷酸化在线粒体内膜</td><td>例子</td><td>§2</td><td><span class="loc">〔说话人1 11:47〕</span></td></tr><tr><td>17</td><td>学习目标识图判断解释应用</td><td>目标</td><td>§2</td><td><span class="loc">〔说话人1 11:47〕</span></td></tr><tr><td>18</td><td>囊性纤维化、家族性高胆固醇血症等</td><td>应用</td><td>§2</td><td><span class="loc">〔说话人1 13:42〕</span></td></tr><tr><td>19</td><td>膜脂膜蛋白膜糖三组成</td><td>组成</td><td>§3</td><td><span class="loc">〔说话人1 14:20〕</span></td></tr><tr><td>20</td><td>流动性不对称性流动镶嵌模型</td><td>特性</td><td>§3</td><td><span class="loc">〔说话人1 14:20〕</span></td></tr><tr><td>21</td><td>第一性原则疏水核心隔两水相</td><td>原则</td><td>§3</td><td><span class="loc">〔说话人1 15:46〕</span></td></tr><tr><td>22</td><td>胞外胞质与lumen腔均为水相</td><td>结构</td><td>§3</td><td><span class="loc">〔说话人1 15:46〕</span></td></tr><tr><td>23</td><td>磷脂磷酸负电两亲性</td><td>脂</td><td>§3</td><td><span class="loc">〔说话人1 16:54〕</span></td></tr><tr><td>24</td><td>磷脂双分子层头朝水尾相对</td><td>结构</td><td>§3</td><td><span class="loc">〔说话人1 19:48〕</span></td></tr><tr><td>25</td><td>甘油磷脂与鞘磷脂分类</td><td>分类</td><td>§4</td><td><span class="loc">〔说话人1 21:01〕</span></td></tr><tr><td>26</td><td>甘油丙三醇1-2位脂肪酸3位磷酸头基</td><td>结构</td><td>§4</td><td><span class="loc">〔说话人1 21:01〕</span></td></tr><tr><td>27</td><td>PC大头圆柱外侧</td><td>脂</td><td>§4</td><td><span class="loc">〔说话人1 22:50〕</span></td></tr><tr><td>28</td><td>PE小头倒锥负曲率内侧</td><td>脂</td><td>§4</td><td><span class="loc">〔说话人1 24:14〕</span></td></tr><tr><td>29</td><td>PS整体负电</td><td>电荷</td><td>§4</td><td><span class="loc">〔说话人1 24:58〕</span></td></tr><tr><td>30</td><td>出芽凸侧圆柱凹侧PE</td><td>机制</td><td>§4</td><td><span class="loc">〔说话人1 26:03〕</span></td></tr><tr><td>31</td><td>胆固醇甾醇四环刚性</td><td>脂</td><td>§5</td><td><span class="loc">〔说话人1 27:46〕</span></td></tr><tr><td>32</td><td>胆固醇低温升流动性高温降</td><td>机制</td><td>§5</td><td><span class="loc">〔说话人1 32:55〕</span></td></tr><tr><td>33</td><td>胆固醇为流动性缓冲剂</td><td>考点</td><td>§5</td><td><span class="loc">〔说话人1 34:29〕</span></td></tr><tr><td>34</td><td>糖脂Glycolipid共价连糖</td><td>脂</td><td>§6</td><td><span class="loc">〔说话人1 34:29〕</span></td></tr><tr><td>35</td><td>糖脂永远质膜外侧</td><td>拓扑</td><td>§6</td><td><span class="loc">〔说话人1 37:30〕</span></td></tr><tr><td>36</td><td>高尔基ER腔内加糖</td><td>合成</td><td>§6</td><td><span class="loc">〔说话人1 38:18〕</span></td></tr><tr><td>37</td><td>lumen等于细胞外拓扑等价</td><td>拓扑</td><td>§6</td><td><span class="loc">〔说话人1 39:17〕</span></td></tr><tr><td>38</td><td>整合外周脂锚定三类膜蛋白</td><td>蛋白</td><td>§7</td><td><span class="loc">〔说话人1 41:16〕</span></td></tr><tr><td>39</td><td>整合蛋白疏水跨膜区</td><td>蛋白</td><td>§7</td><td><span class="loc">〔说话人1 42:36〕</span></td></tr><tr><td>40</td><td>外周蛋白盐pH剥离</td><td>方法</td><td>§7</td><td><span class="loc">〔说话人1 43:59〕</span></td></tr><tr><td>41</td><td>整合蛋白占20-30%</td><td>数据</td><td>§7</td><td><span class="loc">〔说话人1 56:08〕</span></td></tr><tr><td>42</td><td>60%药物靶点膜蛋白</td><td>考点</td><td>§7</td><td><span class="loc">〔说话人1 56:08〕</span></td></tr><tr><td>43</td><td>跨膜螺旋约20-30氨基酸</td><td>数据</td><td>§7</td><td><span class="loc">〔说话人1 57:54〕</span></td></tr><tr><td>44</td><td>离子通道孔道内侧亲水</td><td>机制</td><td>§7</td><td><span class="loc">〔说话人1 01:00:05〕</span></td></tr><tr><td>45</td><td>去垢剂两亲抽提整合蛋白</td><td>方法</td><td>§8</td><td><span class="loc">〔说话人1 01:04:23〕</span></td></tr><tr><td>46</td><td>SDS离子型Triton非离子型</td><td>试剂</td><td>§8</td><td><span class="loc">〔说话人1 01:05:27〕</span></td></tr><tr><td>47</td><td>脂质体自发封闭与应用</td><td>技术</td><td>§8</td><td><span class="loc">〔说话人1 01:06:49〕</span></td></tr><tr><td>48</td><td>膜糖糖脂糖蛋白朝非胞质侧</td><td>糖</td><td>§9</td><td><span class="loc">〔说话人1 01:06:49〕</span></td></tr><tr><td>49</td><td>ABO血型糖链末端糖基差异</td><td>考点</td><td>§9</td><td><span class="loc">〔说话人1 01:09:51〕</span></td></tr><tr><td>50</td><td>糖萼保护与唾液酸负电</td><td>功能</td><td>§9</td><td><span class="loc">〔说话人1 01:11:59〕</span></td></tr><tr><td>51</td><td>异质性不对称性流动性</td><td>特性</td><td>§10</td><td><span class="loc">〔说话人1 01:13:57〕</span></td></tr><tr><td>52</td><td>PC鞘脂外PE内PS内</td><td>不对称</td><td>§10</td><td><span class="loc">〔说话人1 01:15:38〕</span></td></tr><tr><td>53</td><td>PS外翻凋亡eat-me信号</td><td>考点</td><td>§10</td><td><span class="loc">〔说话人1 01:17:25〕</span></td></tr><tr><td>54</td><td>液晶态二维流体非穿层流</td><td>流动性</td><td>§11</td><td><span class="loc">〔说话人1 01:19:08〕</span></td></tr><tr><td>55</td><td>侧向~10⁻⁶ s翻转~10⁵ s需酶</td><td>运动</td><td>§11</td><td><span class="loc">〔说话人1 01:25:37〕</span></td></tr><tr><td>56</td><td>饱和链紧流动性低</td><td>因素</td><td>§12</td><td><span class="loc">〔说话人1 01:27:05〕</span></td></tr><tr><td>57</td><td>不饱和顺式双键流动性高</td><td>因素</td><td>§12</td><td><span class="loc">〔说话人1 01:28:23〕</span></td></tr><tr><td>58</td><td>人鼠融合实验37度荧光混合</td><td>实验</td><td>§12</td><td><span class="loc">〔说话人1 01:31:16〕</span></td></tr><tr><td>59</td><td>FRAP斜率与平台意义</td><td>实验</td><td>§12</td><td><span class="loc">〔说话人1 01:34:26〕</span></td></tr><tr><td>60</td><td>流动镶嵌三要点</td><td>模型</td><td>§13</td><td><span class="loc">〔说话人1 01:35:20〕</span></td></tr><tr><td>61</td><td>脂筏动态微区信号胞吞</td><td>模型</td><td>§13</td><td><span class="loc">〔说话人1 01:38:16〕</span></td></tr><tr><td>62</td><td>运输四问与扩散被动</td><td>运输</td><td>§13</td><td><span class="loc">〔说话人1 01:39:29〕</span></td></tr><tr><td>63</td><td>离子电化学梯度</td><td>运输</td><td>§13</td><td><span class="loc">〔说话人1 01:39:29〕</span></td></tr><tr><td>64</td><td>课堂讲授为准书上未讲不考</td><td>命题</td><td>§9</td><td><span class="loc">〔说话人1 01:12:54〕</span></td></tr>
+<tr><td>65</td><td>脂双层单层称lipid leaflet</td><td>术语</td><td>§6</td><td><span class="loc">〔说话人1 37:08〕</span></td></tr>
+<tr><td>66</td><td>ER高尔基腔内N/O糖基化</td><td>合成</td><td>§6</td><td><span class="loc">〔说话人1 38:18〕</span></td></tr>
+<tr><td>67</td><td>第四章教材四节主线</td><td>框架</td><td>§2</td><td><span class="loc">〔说话人1 13:42〕</span></td></tr>
+<tr><td>68</td><td>三本英文参考书双语要求</td><td>要求</td><td>§1</td><td><span class="loc">〔说话人1 06:53〕</span></td></tr>
+<tr><td>69</td><td>跨膜蛋白单次与多次跨膜</td><td>蛋白</td><td>§7</td><td><span class="loc">〔说话人1 56:08〕</span></td></tr>
+<tr><td>70</td><td>相变凝胶态与液晶态</td><td>流动性</td><td>§11</td><td><span class="loc">〔说话人1 01:19:08〕</span></td></tr>
+<tr><td>71</td><td>脂筏动态microdomain不否定镶嵌模型</td><td>模型</td><td>§13</td><td><span class="loc">〔说话人1 01:36:55〕</span></td></tr>
+<tr><td>72</td><td>GPI锚定蛋白见于镶嵌模型图</td><td>蛋白</td><td>§13</td><td><span class="loc">〔说话人1 01:36:20〕</span></td></tr>
+</table><p class="foot">附录 D 共 72 条，覆盖 recording.md 讲授知识点。</p></div></body></html>

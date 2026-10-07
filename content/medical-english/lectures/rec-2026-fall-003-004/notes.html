@@ -1,315 +1,463 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>医学英语基础 · 第3-4节 · 可视化笔记</title>
-<style>
-  :root{
-    --paper:#F5F2EB; --paper-card:#FBF9F4; --ink:#1E1C18; --ink-soft:#555046; --ink-faint:#8A8476; --rule:#D4CEBE;
-    --accent-lang:#6B2D4E; --accent-lang-soft:#EAD9E2;
-    --accent-med:#1B5E5A; --accent-med-soft:#D6E8E6;
-    --accent-key:#9A6B1A; --accent-key-soft:#F2E6CC;
-    --accent-warn:#9C3A2E; --accent-warn-soft:#F2DDD8;
-    --display:'Noto Serif CJK SC',serif; --body:'Noto Sans CJK SC',sans-serif;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{background:var(--paper);}
-  body{font-family:var(--body);color:var(--ink);font-size:9.6pt;line-height:1.65;}
-  .page{width:210mm;min-height:297mm;background:var(--paper);position:relative;overflow:hidden;padding:16mm 17mm 14mm 17mm;page-break-after:always;}
-  .page:last-child{page-break-after:auto;}
-  .running{display:flex;justify-content:space-between;align-items:baseline;font-size:7.4pt;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--rule);padding-bottom:2.5mm;margin-bottom:7mm;}
-  .running .tag{color:var(--accent-lang);font-weight:700;}
-  .cover{background:var(--ink);color:var(--paper);padding:0;}
-  .cover .inner{position:relative;height:100%;padding:28mm 18mm 18mm 18mm;display:flex;flex-direction:column;justify-content:space-between;min-height:257mm;}
-  .cover .eyebrow{font-size:8.5pt;letter-spacing:0.34em;text-transform:uppercase;color:var(--accent-key-soft);display:flex;align-items:center;gap:8px;}
-  .cover .eyebrow::before{content:"";width:24px;height:2px;background:var(--accent-key);display:inline-block;}
-  .cover h1.title{font-family:var(--display);font-weight:900;color:var(--paper);font-size:44pt;line-height:1.08;margin-top:12mm;letter-spacing:-0.01em;}
-  .cover h1.title small{display:block;font-size:15pt;font-weight:500;color:var(--accent-key-soft);margin-top:7mm;}
-  .cover .subtitle{font-family:var(--display);font-size:11.5pt;color:#C9C4B3;margin-top:8mm;max-width:130mm;line-height:1.75;font-weight:500;}
-  .cover .meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5mm;border-top:1px solid #4d4b42;padding-top:5mm;margin-top:12mm;}
-  .cover .meta div .k{font-size:7.4pt;letter-spacing:0.18em;color:var(--ink-faint);text-transform:uppercase;}
-  .cover .meta div .v{font-family:var(--display);font-size:10.5pt;color:var(--paper);margin-top:1.5mm;}
-  .toc-title{font-family:var(--display);font-size:24pt;font-weight:800;margin-bottom:2mm;}
-  .toc-sub{color:var(--ink-soft);font-size:9.5pt;max-width:150mm;margin-bottom:8mm;line-height:1.8;}
-  table.toc{width:100%;border-collapse:collapse;font-size:9.2pt;}
-  table.toc th{text-align:left;font-size:7.4pt;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--ink);padding:0 3mm 2mm 0;font-weight:600;}
-  table.toc td{padding:3.8mm 3mm 3.8mm 0;border-bottom:1px solid var(--rule);vertical-align:top;}
-  table.toc .num{font-family:var(--display);font-weight:800;color:var(--accent-lang);font-size:10.5pt;white-space:nowrap;}
-  table.toc .ch{font-family:var(--display);font-weight:700;font-size:10pt;}
-  table.toc .desc{color:var(--ink-soft);font-size:8.8pt;}
-  h2.ch-title{font-family:var(--display);font-weight:900;font-size:22pt;line-height:1.15;margin-top:2mm;max-width:150mm;}
-  .thesis{font-family:var(--display);font-weight:600;font-size:11pt;color:var(--accent-lang);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:3.5mm 0;margin:5mm 0 6mm 0;line-height:1.6;}
-  h3.sec{font-family:var(--display);font-weight:700;font-size:13pt;color:var(--ink);margin:6mm 0 3mm 0;padding-left:3mm;border-left:3px solid var(--accent-lang);}
-  h3.sec.med{border-left-color:var(--accent-med);}
-  h3.sec.key{border-left-color:var(--accent-key);}
-  p{margin-bottom:2.5mm;}
-  .cardgrid{display:grid;grid-template-columns:1fr 1fr;gap:3.5mm;margin:4mm 0;}
-  .card{background:var(--paper-card);border:0.5pt solid var(--rule);border-radius:2mm;padding:3.5mm 4mm;break-inside:avoid;}
-  .card .tab{display:inline-block;font-size:7.2pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.8mm 2mm;border-radius:1mm;margin-bottom:2mm;}
-  .card.lang .tab{background:var(--accent-lang-soft);color:var(--accent-lang);}
-  .card.med .tab{background:var(--accent-med-soft);color:var(--accent-med);}
-  .card.key .tab{background:var(--accent-key-soft);color:var(--accent-key);}
-  .card.warn .tab{background:var(--accent-warn-soft);color:var(--accent-warn);}
-  .card h4{font-family:var(--display);font-size:10.5pt;font-weight:700;margin-bottom:1.5mm;}
-  .card p,.card li{font-size:8.8pt;color:var(--ink-soft);line-height:1.55;}
-  .card ul{padding-left:4mm;}
-  .card li{margin-bottom:1mm;}
-  .pullquote{border-left:3px solid var(--accent-key);padding:3mm 4mm;margin:4mm 0;background:var(--accent-key-soft);border-radius:0 2mm 2mm 0;}
-  .pullquote p{font-family:var(--display);font-size:10.5pt;font-weight:600;color:var(--ink);line-height:1.6;font-style:italic;}
-  .pullquote .attr{font-size:8pt;color:var(--ink-faint);margin-top:1.5mm;font-style:normal;}
-  table.data{width:100%;border-collapse:collapse;font-size:8.8pt;margin:3mm 0;}
-  table.data th{background:var(--accent-lang-soft);color:var(--accent-lang);font-weight:700;text-align:left;padding:2mm 3mm;border:0.5pt solid var(--rule);font-size:8.2pt;letter-spacing:0.04em;}
-  table.data td{padding:2mm 3mm;border:0.5pt solid var(--rule);vertical-align:top;}
-  table.data tr:nth-child(even) td{background:var(--paper-card);}
-  .checklist{margin:3mm 0;}
-  .checklist .item{display:flex;gap:2.5mm;align-items:flex-start;margin-bottom:2mm;font-size:9pt;}
-  .checklist .box{flex:none;width:3.5mm;height:3.5mm;border:1pt solid var(--accent-lang);border-radius:0.8mm;margin-top:0.6mm;}
-  .checklist .txt b{color:var(--ink);}
-  .checklist .txt{color:var(--ink-soft);}
-  .diagram-frame{border:0.5pt solid var(--rule);border-radius:2mm;padding:4mm;background:var(--paper-card);margin:4mm 0;text-align:center;}
-  .diagram-frame .caption{font-size:7.8pt;color:var(--ink-faint);margin-top:2mm;letter-spacing:0.04em;}
-  .flow{display:flex;align-items:center;justify-content:center;gap:2mm;flex-wrap:wrap;}
-  .flow .node{background:var(--accent-lang-soft);color:var(--accent-lang);padding:2.5mm 4mm;border-radius:2mm;font-size:8.5pt;font-weight:600;text-align:center;min-width:28mm;}
-  .flow .node.med{background:var(--accent-med-soft);color:var(--accent-med);}
-  .flow .node.key{background:var(--accent-key-soft);color:var(--accent-key);}
-  .flow .arrow{color:var(--ink-faint);font-size:12pt;font-weight:700;}
-  .footer{position:absolute;bottom:6mm;left:17mm;right:17mm;display:flex;justify-content:space-between;font-size:7.2pt;color:var(--ink-faint);letter-spacing:0.08em;border-top:0.5pt solid var(--rule);padding-top:2mm;}
-</style>
-</head>
-<body>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>医学英语 · 第3-4节 · Paraphrasing与AI医学诊断文本分析</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#7A2E4A; --accent-d:#542033; --accent-t:#F4E4EA;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:6mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;border-collapse:collapse;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body>
 
-<!-- COVER -->
 <div class="page cover">
-  <div class="inner">
-    <div>
-      <div class="eyebrow">Medical English · Lecture Notes</div>
-      <h1 class="title">医学英语基础<small>Paraphrasing · AI医学诊断文本 · 学术写作</small></h1>
-      <p class="subtitle">第3-4节课堂笔记：释义改写技巧精讲、AI医学诊断文本三段式结构分析、八种学术段落展开方法，以及小组展示任务安排。</p>
-    </div>
-    <div class="meta">
-      <div><div class="k">课程</div><div class="v">医学英语基础</div></div>
-      <div><div class="k">节次</div><div class="v">第3-4节</div></div>
-      <div><div class="k">日期</div><div class="v">2026-09-09</div></div>
-      <div><div class="k">教师</div><div class="v">叶琳 副教授</div></div>
-      <div><div class="k">教材</div><div class="v">Unit 1 Reading 2</div></div>
-      <div><div class="k">类型</div><div class="v">理论课</div></div>
-    </div>
-  </div>
+<p class="h1">医学英语 · 第3-4节</p>
+<p class="meta">Paraphrasing（释义改写）与 AI 医学诊断文本分析 · 2026-09-09（周三）</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 34,661 字 / 197 轮发言</p>
+<table><tr><th style="width:22%">项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>医学英语（medical-english）· 课程内第3-4节</td></tr>
+<tr><td>主题</td><td>Paraphrasing 释义改写；Unit 1 Reading 2《AI in Medical Diagnosis: Not Just Hype》结构分析与 Para 1-3 精讲；段落展开八法</td></tr>
+<tr><td>授课教师</td><td>叶琳 副教授</td></tr>
+<tr><td>教材内容</td><td>Unit 1 Reading 2 and Language Learning (1)</td></tr>
+<tr><td>使用说明</td><td>每条结论后〔说话人N HH:MM〕为逐字稿原样轮次定位；卷末附必背清单、易错对照、考点索引、知识点全登记。</td></tr></table>
 </div>
 
-<!-- TOC -->
-<div class="page">
-  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CONTENTS</span></div>
-  <div class="toc-title">目录</div>
-  <p class="toc-sub">本课围绕三大核心板块展开：Paraphrasing释义改写的系统方法、AI医学诊断文本的结构与论证分析、以及学术写作段落展开的八种方法。每章以一个核心论点统领，配卡片、表格和流程图辅助理解。</p>
-  <table class="toc">
-    <thead><tr><th style="width:14mm">章节</th><th style="width:55mm">标题</th><th>核心论点</th></tr></thead>
-    <tbody>
-      <tr><td class="num">01</td><td class="ch">Paraphrasing释义改写</td><td class="desc">用不同词语重述他人内容，完全保留原意不歪曲；四大技巧+四步操作+特殊规则</td></tr>
-      <tr><td class="num">02</td><td class="ch">AI医学诊断文本分析</td><td class="desc">文本呈"问题→优势→挑战"三段式；AI补充而非替代人类专业知识</td></tr>
-      <tr><td class="num">03</td><td class="ch">学术写作段落展开</td><td class="desc">八种方法组合使用；医学文本也用隐喻和反讽增强可读性</td></tr>
-      <tr><td class="num">04</td><td class="ch">小组展示与发展建议</td><td class="desc">五组四段分析维度；跨学科发展是医学生可行路径</td></tr>
-    </tbody>
-  </table>
-</div>
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">全课三块：Paraphrasing 技法 → 课文结构分析与八种段落展开法 → Para 1-3 逐段精讲。</p>
+<ul class="kv">
+<li>第1-4章 Paraphrasing：定义与三大价值 · 四大技巧与四步骤 · 特殊规则与场景注意 · 2 型糖尿病句实战</li>
+<li>第5-7章 课文：结构 Para 1-3 / 4-9 / 10-14 · illness script · 误诊两大原因 · AI 优势与四挑战 · complement 非 replace</li>
+<li>第8-9章 写作与背景：段落展开八法 · 修辞 metaphor/irony · 作者跨学科背景与个人发展建议</li>
+<li>第10-11章 精讲：五组任务 · 四个分析维度 · 标题 irony · Para 1-3 主旨／写法／修辞／长难句翻译</li>
+<li>★ 课文逻辑链：人工诊断有问题（Para 1-3）→ AI 能解决（Para 4-9）→ 挑战与出路（Para 10-14）。</li>
+</ul></div>
 
-<!-- CHAPTER 1 -->
-<div class="page">
-  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 01</span></div>
-  <h2 class="ch-title">Paraphrasing 释义改写</h2>
-  <div class="thesis">Paraphrasing的核心是"用不同词语重述他人内容，完全保留原意不歪曲"——它既是理解工具，也是学术写作的降重利器。</div>
+<div class="page"><h2 class="h2">第1章 Paraphrasing：定义与三大价值</h2>
+<p class="lead">章主旨：paraphrasing 指用不同的词（different words）重述他人内容、原意不变，中译「同义复述」；它服务理解、笔记与论文三大场景。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>定义：用 different words 表达他人说过或写过的内容，即中文「同义复述（tongyi fusu）」。 <span class="loc">〔说话人1 01:00〕</span></li>
+<li>价值一 better understanding：能用自己的话复述，才说明真正读懂了原文。 <span class="loc">〔说话人1 01:28〕</span></li>
+<li>价值二 note taking and summary：做笔记与总结不是照抄原文，而是用自己的话压缩原文。 <span class="loc">〔说话人1 01:28〕</span></li>
+<li>价值三 writing academic papers：学位论文或发表论文都须用英语、用自己的话写，不能照抄原文。 <span class="loc">〔说话人1 02:04〕</span></li>
+<li>改写可避免抄袭（avoid copying）；查重率过高（课上举例 10%～50%）论文不能通过。 <span class="loc">〔说话人1 02:04〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表：三大价值</h3>
+<table class="tbl"><tr><th style="width:22%">价值</th><th style="width:26%">英文</th><th>说明</th></tr>
+<tr><td>加深理解</td><td>better understanding</td><td>能用自己的话（your own words）表达才算读懂 <span class="loc">〔说话人1 01:28〕</span></td></tr>
+<tr><td>笔记与总结</td><td>note taking and summary</td><td>用自己的话（your own words）压缩原文，而非照抄（copy） <span class="loc">〔说话人1 01:28〕</span></td></tr>
+<tr><td>学术论文</td><td>writing academic papers</td><td>避免抄袭（avoid copying）、控制查重率 <span class="loc">〔说话人1 02:04〕</span></td></tr></table>
+<div class="exam"><span class="tag">★考点</span>paraphrasing 三大价值：better understanding / note taking and summary / writing academic papers。 <span class="loc">〔说话人1 01:28〕</span></div></div>
 
-  <h3 class="sec">定义与三大价值</h3>
-  <div class="cardgrid">
-    <div class="card lang"><div class="tab">Definition</div><h4>核心定义</h4><p>Restating others' written or spoken content with different words, with the core requirement of fully retaining the original semantic meaning without distortion.</p></div>
-    <div class="card key"><div class="tab">Value</div><h4>三大价值</h4><ul><li>帮助更好地理解原文</li><li>支持高效笔记和总结</li><li>避免抄袭，降低查重率</li></ul></div>
-  </div>
+<div class="page"><h2 class="h2">第2章 Paraphrasing：四大技巧与四步骤</h2>
+<p class="lead">章主旨：改写可在词、短语、语态、句型四个层面进行；标准流程为「理解原文→找关键词→替换重组→对照确认」，重组句子本质是再创作。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>可改层面：词（words）、短语（phrases）、语态（voices）、句型（sentence patterns）。 <span class="loc">〔说话人1 03:15〕</span></li>
+<li>英语只有主动、被动两种语态（active voice / passive voice），可主动改被动或反之。 <span class="loc">〔说话人1 03:15〕</span></li>
+<li>步骤一 read for comprehension：仔细通读原句，先理解其意思。 <span class="loc">〔说话人1 03:50〕</span></li>
+<li>步骤二 figure out the keywords and expressions：找出有实义的关键词与表达，再用同义词替换。 <span class="loc">〔说话人1 03:50〕</span></li>
+<li>词性转换 change part of speech：名词可变动词；动词变名词后句型随之改变。 <span class="loc">〔说话人1 04:28〕</span></li>
+<li>步骤三 rearrange sentences：重新组织句子——paraphrasing 是一种再创作（recreation），要造出意思与原句相同的新句。 <span class="loc">〔说话人1 14:40〕</span></li>
+<li>步骤四 compare with the original：把改写句与原文逐一对照，确认意思一致。 <span class="loc">〔说话人1 14:15〕</span></li>
+<li>理想做法是遮住原文（cover the original）再重写，但这一步极难做到，除非把句子背下来。 <span class="loc">〔说话人1 22:48〕</span></li>
+<li>替代办法：读书百遍，其义自见——先把句子多读几遍，再改写就会不同。 <span class="loc">〔说话人1 22:48〕</span></li>
+<li>成稿须意思一致、表达清晰、行文流畅（your version is clear and flows well）。 <span class="loc">〔说话人1 23:47〕</span></li>
+<li>课堂练习目的：加深理解（further understanding）＋扩大词汇量（enlarge your vocabulary）。 <span class="loc">〔说话人1 21:55〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表：四大技巧</h3>
+<table class="tbl"><tr><th style="width:20%">技巧</th><th>要点</th><th style="width:34%">课堂例</th></tr>
+<tr><td>同义词替换 synonyms</td><td>用同义词替换原词、原短语，含义不变</td><td>famous → well-known；delicious → tasty <span class="loc">〔说话人1 04:57〕</span></td></tr>
+<tr><td>词性转换 part of speech</td><td>名词↔动词；动词变名词后句型随之改变</td><td>the bomb exploded → the bomb explosion <span class="loc">〔说话人1 10:05〕</span></td></tr>
+<tr><td>主被动转换 voices</td><td>主动语态↔被动语态；转换时宾语变主语</td><td>a study of this kind → A study of this kind can be related to… <span class="loc">〔说话人1 10:05〕</span></td></tr>
+<tr><td>句型改写 sentence patterns</td><td>简单句↔复合句、并句等句式重组</td><td>把两个 simple sentence 合并成一个 complex sentence <span class="loc">〔说话人1 05:26〕</span></td></tr></table>
+<ul class="kv">
+<li>句型改写示例：把 unless 从句改为 similarly / likewise 开头，只换句型，其余不动。 <span class="loc">〔说话人1 10:05〕</span></li>
+<li>整句重写示例：Numerous people were killed or injured when the bomb explosion happened. <span class="loc">〔说话人1 10:05〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>四大技巧与四步骤；rearrange sentences 是再创作（recreation）。 <span class="loc">〔说话人1 14:40〕</span></div></div>
 
-  <h3 class="sec">四大释义技巧</h3>
-  <table class="data">
-    <thead><tr><th style="width:32mm">技巧</th><th style="width:28mm">英文</th><th>说明与示例</th></tr></thead>
-    <tbody>
-      <tr><td><b>同义词替换</b></td><td>synonyms</td><td>用同义词替换原词和短语，如 important → crucial / significant</td></tr>
-      <tr><td><b>词性转换</b></td><td>part of speech</td><td>名词↔动词、形容词↔副词，如 analysis (n.) → analyze (v.)</td></tr>
-      <tr><td><b>主被动转换</b></td><td>active ↔ passive</td><td>The doctor diagnosed → It was diagnosed by the doctor</td></tr>
-      <tr><td><b>句型改写</b></td><td>sentence patterns</td><td>调整句子结构，简单句↔复合句</td></tr>
-    </tbody>
-  </table>
+<div class="page"><h2 class="h2">第3章 Paraphrasing：特殊规则与场景注意</h2>
+<p class="lead">章主旨：术语不换、谚语译意、语境匹配、正式性保留；用三个课堂实例走完整套流程。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>语境匹配：有些词在上下文中含义特定（specific meanings in context），抽象含义词不能用字面对应词替换。 <span class="loc">〔说话人1 06:10〕</span></li>
+<li>例：宾语 aspect 抽象（非具体的 cup），故 looking at 可改 observe、aspects 可改 features。 <span class="loc">〔说话人1 06:10〕</span></li>
+<li>谚语、习语（proverbs and idioms）属特殊情况：先完全理解其隐含意义，再改写，不能按字面翻译。 <span class="loc">〔说话人1 12:04〕</span></li>
+<li>谚语例：Don't count your chickens before they hatch → You shouldn't assume success before it actually happens（不要过早假定成功）。 <span class="loc">〔说话人1 12:04〕</span></li>
+<li>专业术语、专有名词（fixed proper nouns）不可替换：photosynthesis、plants、sunlight、energy 都不能动。 <span class="loc">〔说话人1 12:56〕</span></li>
+<li>学术句只能改句型与普通词：Photosynthesis is the process by which plants convert sunlight into energy → Through photosynthesis, plants use sunlight to create energy。 <span class="loc">〔说话人1 12:56〕</span></li>
+<li>后果：专业名词仍然存在，查重率（percentage）依旧偏高（本例至少 30%）。 <span class="loc">〔说话人1 12:56〕</span></li>
+<li>降重对策：其余可改写的句子尽量全部改写，把整体查重率拉低。 <span class="loc">〔说话人1 13:56〕</span></li>
+<li>正式性：把拉丁、希腊语源的正式术语换成普通英语（common English），会降低学术正式性，正式论文不推荐。 <span class="loc">〔说话人1 21:39〕</span></li>
+<li>医学词汇一词三式：同一「糖」概念有 glycemic 与 glucose 等多种表达，故医学 paraphrasing 反而更容易。 <span class="loc">〔说话人1 19:21〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表：范例一（观察母亲行为的句子）</h3>
+<table class="tbl"><tr><th style="width:22%">原表达</th><th style="width:24%">改后</th><th>理由（语境）</th></tr>
+<tr><td>looking at</td><td>observe</td><td>宾语 aspect 抽象，非具体的 cup <span class="loc">〔说话人1 06:10〕</span></td></tr>
+<tr><td>one or two</td><td>several</td><td>同义替换 <span class="loc">〔说话人1 07:44〕</span></td></tr>
+<tr><td>aspects</td><td>features</td><td>本句语境中 aspects 意为「特征」 <span class="loc">〔说话人1 07:44〕</span></td></tr>
+<tr><td>the way</td><td>how</td><td>the way 在本句即「如何、怎样」 <span class="loc">〔说话人1 07:44〕</span></td></tr>
+<tr><td>behaves / baby</td><td>acts / little child</td><td>同义替换 <span class="loc">〔说话人1 07:44〕</span></td></tr></table>
+<p>改后全句：It is useful to observe several features of how a mother acts when she is with her little child. <span class="loc">〔说话人1 07:44〕</span></p>
+<div class="exam"><span class="tag">★考点</span>术语（fixed proper nouns，如 photosynthesis）不可替换；谚语先懂再译；common English 会降低正式性。 <span class="loc">〔说话人1 12:56〕</span></div></div>
 
-  <h3 class="sec key">标准操作四步骤</h3>
-  <div class="diagram-frame">
-    <div class="flow">
-      <div class="node">① 通读理解<br><span style="font-size:7.5pt;font-weight:400">Read & understand</span></div>
-      <div class="arrow">→</div>
-      <div class="node key">② 识别核心词<br><span style="font-size:7.5pt;font-weight:400">Identify keywords</span></div>
-      <div class="arrow">→</div>
-      <div class="node">③ 替换重组<br><span style="font-size:7.5pt;font-weight:400">Replace & rearrange</span></div>
-      <div class="arrow">→</div>
-      <div class="node key">④ 对照确认<br><span style="font-size:7.5pt;font-weight:400">Compare & confirm</span></div>
-    </div>
-    <div class="caption">图 1.1 — Paraphrasing 标准操作流程</div>
-  </div>
-  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>03</span></div>
-</div>
+<div class="page"><h2 class="h2">第4章 医学术语改写实战（2 型糖尿病句）</h2>
+<p class="lead">章主旨：用一句临床句演示如何辨别「可变」与「不可变」，并顺带掌握 glycemic、metformin、pharmacotherapy 等词根词源。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>原句：Patients with type 2 diabetes who fail to achieve glycemic control through lifestyle modification alone are typically initiated on metformin as first-line pharmacotherapy. <span class="loc">〔说话人1 14:40〕</span></li>
+<li>type 2 diabetes（二型糖尿病）是原句核心，改写时保持不变。 <span class="loc">〔说话人1 18:43〕</span></li>
+<li>glycemic 词根：glyc- 表 sugar（糖），-emic 表 blood；故 glycemic control 即血糖控制。 <span class="loc">〔说话人1 16:04〕</span></li>
+<li>lifestyle modification 意为生活方式干预（如饮食、运动）。 <span class="loc">〔说话人1 16:32〕</span></li>
+<li>metformin 即二甲双胍；以 -in 结尾的词常是药名或病名（如 penicillin），多源自拉丁语。 <span class="loc">〔说话人1 17:46〕</span></li>
+<li>改写版一：用 blood glucose 替换 glycemic，用 diet and exercise changes 替换 lifestyle modification。 <span class="loc">〔说话人1 18:43〕</span></li>
+<li>glycemic 与 glucose 同表「糖」（一希腊、一拉丁），故可互换——正是一词三式的体现。 <span class="loc">〔说话人1 19:21〕</span></li>
+<li>metformin 不能替换，因为该药专治此病；drug treatment 是 pharmacotherapy 的普通英语说法。 <span class="loc">〔说话人1 20:11〕</span></li>
+<li>改写版二：把 metformin 提作主语——Metformin is generally the first medication given to type 2 diabetes patients whose blood sugar remains poorly managed despite lifestyle adjustment. <span class="loc">〔说话人1 21:08〕</span></li>
+<li>两版对比：原文（original）比两个改写版更正式；改为 common English 会降低正式度。 <span class="loc">〔说话人1 20:45〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表：原句成分的可改性与替换</h3>
+<table class="tbl"><tr><th style="width:30%">原句成分</th><th style="width:16%">可否替换</th><th>改写后</th></tr>
+<tr><td>type 2 diabetes</td><td>不可换</td><td>type 2 diabetes patients <span class="loc">〔说话人1 18:43〕</span></td></tr>
+<tr><td>glycemic control</td><td>可换</td><td>blood glucose control <span class="loc">〔说话人1 18:43〕</span></td></tr>
+<tr><td>lifestyle modification</td><td>可换</td><td>diet and exercise changes <span class="loc">〔说话人1 20:00〕</span></td></tr>
+<tr><td>metformin</td><td>不可换</td><td>metformin（药名保留） <span class="loc">〔说话人1 20:11〕</span></td></tr>
+<tr><td>pharmacotherapy</td><td>可换</td><td>drug treatment <span class="loc">〔说话人1 20:11〕</span></td></tr></table>
+<div class="mnem"><span class="tag">助记</span>glycemic = blood glucose；药名 metformin 与病名 type 2 diabetes 属 fixed terms 不动，其余尽量改写。</div>
+<div class="exam"><span class="tag">★考点</span>术语不变、其余全改；glycemic 的词根拆解（glyc- 糖 + -emic 血）。 <span class="loc">〔说话人1 16:04〕</span></div></div>
 
-<!-- CHAPTER 1 continued -->
-<div class="page">
-  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 01</span></div>
+<div class="page"><h2 class="h2">第5章 课文三段式结构</h2>
+<p class="lead">章主旨：Reading 2 共 14 段，按「人工诊断问题→AI 优势→挑战与出路」三段式组织，另附课本删去的 15-17 段。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>课堂先做结构填空题（课本未列出），用 5～10 分钟通读，把握整体结构与大意。 <span class="loc">〔说话人1 24:38〕</span></li>
+<li>结构填空共 10 个句子，需拍照记录。 <span class="loc">〔说话人1 25:21〕</span></li>
+<li>Section 1（Para 1-3）：人类医学诊断现存的问题（the problem of human diagnosis）及原因分析。 <span class="loc">〔说话人1 24:38〕</span></li>
+<li>Section 2（Para 4-9）：AI 应用于医学诊断的核心优势（AI's diagnostic advantages）。 <span class="loc">〔说话人1 25:35〕</span></li>
+<li>Section 3（Para 10-14）：AI 诊断的挑战与出路（challenges and the path forward）。 <span class="loc">〔说话人1 25:55〕</span></li>
+<li>另有一节（Para 15-17）：原文有、课本编辑版已删，不作课文内容，但填空题仍可完成。 <span class="loc">〔说话人1 25:55〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表：课文四部分结构</h3>
+<table class="tbl"><tr><th style="width:16%">部分</th><th style="width:16%">段落</th><th>核心内容</th><th style="width:22%">定位</th></tr>
+<tr><td>Section 1</td><td>Para 1-3</td><td>人工诊断的问题 + 误诊两大原因</td><td>〔说话人1 24:38〕</td></tr>
+<tr><td>Section 2</td><td>Para 4-9</td><td>AI 诊断优势（准确性 + 时效性）</td><td>〔说话人1 25:35〕</td></tr>
+<tr><td>Section 3</td><td>Para 10-14</td><td>AI 诊断的挑战 + 未来出路</td><td>〔说话人1 25:55〕</td></tr>
+<tr><td>Section 4</td><td>Para 15-17</td><td>原文有、课本删去，不作课文内容</td><td>〔说话人1 25:55〕</td></tr></table>
+<div class="mnem"><span class="tag">助记</span>课文三段式：问题（Para 1-3）→ 优势（Para 4-9）→ 挑战（Para 10-14）。</div></div>
 
-  <h3 class="sec">特殊规则与场景注意</h3>
-  <div class="cardgrid">
-    <div class="card warn"><div class="tab">⚠ 不可替换</div><h4>专业术语与专有名词</h4><p>Fixed proper nouns including professional terms such as <b>photosynthesis</b> and <b>drug names</b> cannot be replaced. 替换会导致术语错误。</p></div>
-    <div class="card lang"><div class="tab">Idioms</div><h4>谚语/习语释义</h4><p>必须先掌握核心隐含意义（core implied meaning），再用平实语言重述——<b>非字面翻译</b>。</p></div>
-    <div class="card key"><div class="tab">Context</div><h4>语境匹配</h4><p>抽象含义词不可用字面同义词替换，必须匹配具体语义场景。</p></div>
-    <div class="card med"><div class="tab">Formality</div><h4>正式性保持</h4><p>拉丁/希腊源正式术语换成普通词会降低学术正式性，正式论文写作不推荐。</p></div>
-  </div>
+<div class="page"><h2 class="h2">第6章 人工诊断机制、误诊原因与 AI 优势</h2>
+<p class="lead">章主旨：医生靠记忆 illness script 识病，易漏特异因素与不典型表现；AI 靠海量数据正好补这两个短板。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>医生依赖记忆疾病脚本（illness scripts）来识别疾病，读书阶段就要记住大量脚本。 <span class="loc">〔说话人1 35:33〕</span></li>
+<li>误诊原因一：患者关键特异因素被忽略（critical details of patient-specific factors are neglected）。 <span class="loc">〔说话人1 36:18〕</span></li>
+<li>误诊原因二：非典型疾病表现不符合标准模式（atypical presentations do not conform to standard patterns）。 <span class="loc">〔说话人1 36:18〕</span></li>
+<li>AI 能解决这两个问题，因为它不是「一个大脑」，而是成千上万个大脑（thousands of brains）＋海量数据（data）。 <span class="loc">〔说话人1 36:18〕</span></li>
+<li>AI 优势实例：能在数秒内识别缺血性中风（identify illness like ischemic stroke in seconds）。 <span class="loc">〔说话人1 36:18〕</span></li>
+<li>AI 的两大优势：提高准确性（accuracy）与时效性（timeliness）。 <span class="loc">〔说话人1 38:05〕</span></li>
+<li>AI 还能发现新的、创造性的模式（new, creative patterns）。 <span class="loc">〔说话人1 38:22〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表：人工诊断 vs AI 诊断</h3>
+<table class="tbl"><tr><th style="width:18%">维度</th><th>人工诊断</th><th>AI 诊断</th></tr>
+<tr><td>依据</td><td>记忆 illness script 识病 <span class="loc">〔说话人1 35:33〕</span></td><td>海量数据（thousands of brains） <span class="loc">〔说话人1 36:18〕</span></td></tr>
+<tr><td>表现</td><td>忽略 critical specific factors、非典型表现 <span class="loc">〔说话人1 36:18〕</span></td><td>accuracy 与 timeliness 提升、发现 new patterns <span class="loc">〔说话人1 38:22〕</span></td></tr>
+<tr><td>短板</td><td>工作量大、易误诊</td><td>开发成本、错误信息、患者信任</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>误诊两大原因：忽略 critical specific factors、atypical presentations；正是 AI（海量 data）能解决者。 <span class="loc">〔说话人1 36:18〕</span></div></div>
 
-  <div class="pullquote">
-    <p>"Fully retaining the original semantic meaning without distortion" — 保留原意是Paraphrasing的第一原则，技巧服务于意义，而非相反。</p>
-    <div class="attr">— 本课核心原则</div>
-  </div>
+<div class="page"><h2 class="h2">第7章 AI 诊断的挑战、定位与出路</h2>
+<p class="lead">章主旨：AI 面临成本、错误信息、信任与伦理就业四类挑战；其定位是补充而非替代，并需充足的投资。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>挑战一：高昂的开发成本（high development cost），而非单纯的投入成本（investment cost）。 <span class="loc">〔说话人1 39:00〕</span></li>
+<li>时代背景：AI and robot 推动电气工程由冷门转热，因电力是所有智能运行的基础。 <span class="loc">〔说话人1 40:12〕</span></li>
+<li>挑战二：潜在的错误信息输出（risk of misinformation）——AI 也会出错，只是存储量远大于单个大脑。 <span class="loc">〔说话人1 41:43〕</span></li>
+<li>结论：人仍然是最根本的——即便有 AI，也不必害怕。 <span class="loc">〔说话人1 41:43〕</span></li>
+<li>挑战三：患者信任度低（low patient trust in AI diagnosis）——人更相信人的判断；除非 AI 有大量数据证明其诊断正确。 <span class="loc">〔说话人1 42:18〕</span></li>
+<li>若 AI 能主导诊断，医生的作用将转向治疗与药物研发（drug development）。 <span class="loc">〔说话人1 42:51〕</span></li>
+<li>核心定位：AI 技术应补充（complement）而非替代（replace）人类专业知识。 <span class="loc">〔说话人1 43:21〕</span></li>
+<li>关键条件：AI 的成功需要充足的投资（sufficient investment）。 <span class="loc">〔说话人1 43:50〕</span></li>
+<li>伦理与就业：欧洲对 AI 研发保守，担心大规模失业（unemployed）而放慢发展。 <span class="loc">〔说话人1 43:50〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表：AI 的四类挑战</h3>
+<table class="tbl"><tr><th style="width:22%">挑战</th><th style="width:28%">英文</th><th>说明</th></tr>
+<tr><td>开发成本</td><td>high development cost</td><td>是 development cost 而非 investment cost <span class="loc">〔说话人1 39:00〕</span></td></tr>
+<tr><td>错误信息</td><td>risk of misinformation</td><td>AI 也会出错 <span class="loc">〔说话人1 41:43〕</span></td></tr>
+<tr><td>患者信任</td><td>low patient trust</td><td>缺乏足够有效数据时信任度低 <span class="loc">〔说话人1 42:18〕</span></td></tr>
+<tr><td>伦理与就业</td><td>ethical concern / unemployment</td><td>欧洲保守研发以防大规模失业 <span class="loc">〔说话人1 43:50〕</span></td></tr></table>
+<div class="exam"><span class="tag">★考点</span>AI 定位：complement（补充 human expertise），not to replace（不能取代）。 <span class="loc">〔说话人1 43:21〕</span></div></div>
 
-  <h3 class="sec med">医学英语句子特征</h3>
-  <p>Medical academic texts often use two characteristic sentence patterns:</p>
-  <div class="cardgrid">
-    <div class="card med"><div class="tab">Pattern A</div><h4>简单句 + 丰富修饰语</h4><p>Simple sentences with rich modifiers — 主干清晰，修饰成分承载专业信息。</p></div>
-    <div class="card med"><div class="tab">Pattern B</div><h4>复合句：简单主句 + 复杂从句</h4><p>Compound sentences with simple main clauses and complex subordinate clauses — 分析时先找主句抓核心意思。</p></div>
-  </div>
-  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>04</span></div>
-</div>
+<div class="page"><h2 class="h2">第8章 学术写作的八种段落展开方法</h2>
+<p class="lead">章主旨：段落靠八种方法展开；正式段落常多法组合，医学文本也用修辞增强可读性。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>时间顺序 time order：讲历史事件时按时间先后罗列。 <span class="loc">〔说话人1 55:08〕</span></li>
+<li>过程描述 process：说明实验或流程时按 step 1、step 2 展开。 <span class="loc">〔说话人1 55:08〕</span></li>
+<li>空间描述 space description：描述建筑等时按方位（behind / on the left side 等）组织。 <span class="loc">〔说话人1 55:08〕</span></li>
+<li>举例加概括 example and generalization：先给概括句，再举例支撑观点，最常用。 <span class="loc">〔说话人1 55:08〕</span></li>
+<li>比较与对比 comparison and contrast：本篇即比较 human diagnosis 与 AI diagnosis。 <span class="loc">〔说话人1 55:08〕</span></li>
+<li>因果关系 cause and effect：分析原因与结果，如人工误诊的两个原因。 <span class="loc">〔说话人1 57:01〕</span></li>
+<li>分类与划分 classification and division：相似特征归为一类；同类中特征不同则划分为几部分。 <span class="loc">〔说话人1 57:22〕</span></li>
+<li>定义法 definition：给关键词下定义，作用之一是显示权威（authority）。 <span class="loc">〔说话人1 57:43〕</span></li>
+<li>应用规则：正式学术段落通常不只用一种方法（not only one method），而是多方法组合支撑核心论点。 <span class="loc">〔说话人1 57:43〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表：八种段落展开方法</h3>
+<table class="tbl"><tr><th style="width:22%">方法</th><th style="width:32%">英文</th><th>用途与课堂例</th></tr>
+<tr><td>时间顺序</td><td>time order</td><td>讲 historical event，按时间罗列 <span class="loc">〔说话人1 55:08〕</span></td></tr>
+<tr><td>过程描述</td><td>process</td><td>说明实验步骤 step 1、step 2 <span class="loc">〔说话人1 55:08〕</span></td></tr>
+<tr><td>空间描述</td><td>space description</td><td>描述建筑方位 behind / left side <span class="loc">〔说话人1 55:08〕</span></td></tr>
+<tr><td>举例加概括</td><td>example and generalization</td><td>先给 generalization，再举例 example 支撑，most common <span class="loc">〔说话人1 55:08〕</span></td></tr>
+<tr><td>比较与对比</td><td>comparison and contrast</td><td>本篇比较 human 与 AI diagnosis <span class="loc">〔说话人1 55:08〕</span></td></tr>
+<tr><td>因果关系</td><td>cause and effect</td><td>分析误诊 reasons and results <span class="loc">〔说话人1 57:01〕</span></td></tr>
+<tr><td>分类与划分</td><td>classification and division</td><td>相似归一组，否则 divide into parts <span class="loc">〔说话人1 57:22〕</span></td></tr>
+<tr><td>定义法</td><td>definition</td><td>下定义，显示 authority <span class="loc">〔说话人1 57:43〕</span></td></tr></table>
+<div class="exam"><span class="tag">★考点</span>八法名称与用途；正式段落常 combine all these methods 组合使用。 <span class="loc">〔说话人1 57:43〕</span></div></div>
 
-<!-- CHAPTER 2 -->
-<div class="page">
-  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 02</span></div>
-  <h2 class="ch-title">AI 医学诊断文本分析</h2>
-  <div class="thesis">文本呈"人类诊断问题→AI优势→AI挑战"三段式论证结构；AI的定位是补充而非替代人类专业知识。</div>
+<div class="page"><h2 class="h2">第9章 课文作者背景与个人发展建议</h2>
+<p class="lead">章主旨：文章选自《洛杉矶时报》，两位作者均为跨学科（医学＋计算机/经济学）人才，由此引出副业成长建议。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>出处：文章选自《洛杉矶时报》（Los Angeles Times），是面向大众的报刊文章（popular paper）。 <span class="loc">〔说话人1 57:43〕</span></li>
+<li>作者一：计算机科学家兼哈佛医学院的医生，兼任 Foundation Medicine 首席数据官（Chief Data Officer）。 <span class="loc">〔说话人1 57:43〕</span></li>
+<li>作者二：经济学家（economist）兼哈佛医学院的医生、教授（a physician and professor at Harvard Medical School）。 <span class="loc">〔说话人1 57:43〕</span></li>
+<li>两位作者都是跨学科（interdisciplinary）人才，兼顾医学与另一学科，才能写好「AI 诊断 vs 人工诊断」。 <span class="loc">〔说话人1 57:43〕</span></li>
+<li>作者深知 AI 需要充足的投入、成本高昂（sufficient investment, high cost）。 <span class="loc">〔说话人1 01:00:26〕</span></li>
+<li>建议一：在技术快速变革的时代，可围绕兴趣在主业医学之外发展副业（side business），作为未来生存的技能。 <span class="loc">〔说话人1 01:00:54〕</span></li>
+<li>建议二：我们不到 20 岁，正处人生的起点；这既是最好的时代，也可能是最糟的时代（best time or worst time）。 <span class="loc">〔说话人1 01:02:13〕</span></li>
+<li>佐证：作者是哈佛医学院教授——全世界顶级医学院的教授也不只学医。 <span class="loc">〔说话人1 01:02:48〕</span></li>
+</ul>
+<div class="mnem"><span class="tag">助记</span>医学＋另一学科 = interdisciplinary；以兴趣为主发展 side business。</div>
+<div class="exam"><span class="tag">★考点</span>两位作者的跨学科背景与个人发展建议。 <span class="loc">〔说话人1 01:00:54〕</span></div></div>
 
-  <h3 class="sec med">文本三段式结构</h3>
-  <div class="diagram-frame">
-    <div class="flow" style="flex-direction:column;gap:3mm;">
-      <div style="display:flex;align-items:center;gap:3mm;width:100%;">
-        <div class="node med" style="min-width:35mm;">Section 1<br>Para 1-3</div>
-        <div style="text-align:left;font-size:8.8pt;color:var(--ink-soft);"><b>人类医学诊断现存问题</b><br>误诊两大核心原因分析</div>
-      </div>
-      <div class="arrow" style="transform:rotate(90deg);">→</div>
-      <div style="display:flex;align-items:center;gap:3mm;width:100%;">
-        <div class="node" style="min-width:35mm;">Section 2<br>Para 4-9</div>
-        <div style="text-align:left;font-size:8.8pt;color:var(--ink-soft);"><b>AI应用于医学诊断的核心优势</b><br>准确性 + 时效性提升</div>
-      </div>
-      <div class="arrow" style="transform:rotate(90deg);">→</div>
-      <div style="display:flex;align-items:center;gap:3mm;width:100%;">
-        <div class="node key" style="min-width:35mm;">Section 3<br>Para 10-14</div>
-        <div style="text-align:left;font-size:8.8pt;color:var(--ink-soft);"><b>AI诊断现存挑战 + 未来方向</b><br>成本、信任、伦理与就业</div>
-      </div>
-    </div>
-    <div class="caption">图 2.1 — AI医学诊断文本三段式论证结构</div>
-  </div>
+<div class="page"><h2 class="h2">第10章 小组任务、四个分析维度与修辞</h2>
+<p class="lead">章主旨：14 段分 5 部分，每组按「主旨、写法、修辞、释义翻译」四维度讲解；课文标题即含 irony。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>14 段分 5 部分：Para 1-3 / 4-6 / 7-9 / 10-11 / 12-14，各小组选一部分讲解。 <span class="loc">〔说话人1 01:04:17〕</span></li>
+<li>每组讲解必须覆盖四个维度（four points），缺一不可。 <span class="loc">〔说话人1 01:04:36〕</span></li>
+<li>维度一：每段的 main idea（主旨大意）。 <span class="loc">〔说话人1 01:04:41〕</span></li>
+<li>维度二 writing style（写作风格），即该段还用了哪种段落展开方法。 <span class="loc">〔说话人1 01:05:06〕</span></li>
+<li>维度三：rhetorical devices（修辞手法）。 <span class="loc">〔说话人1 01:05:06〕</span></li>
+<li>维度四：关键句的 paraphrasing and translation（释义与翻译）。 <span class="loc">〔说话人1 01:06:47〕</span></li>
+<li>标题修辞：《AI in Medical Diagnosis: Not Just Hype》用了 irony——字面说「不只是炒作」，实指 AI 诊断已是现实（is the reality）。 <span class="loc">〔说话人1 01:05:06〕</span></li>
+<li>「修辞」中文即 xiu ci；医学论文同样用语言修辞增强可读性、吸引读者。 <span class="loc">〔说话人1 01:06:00〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表：五组任务分配</h3>
+<table class="tbl"><tr><th style="width:24%">小组</th><th style="width:34%">负责段落</th><th>定位</th></tr>
+<tr><td>Group 1</td><td>Para 1-3</td><td>〔说话人1 01:04:17〕</td></tr>
+<tr><td>Group 2</td><td>Para 4-6</td><td>〔说话人1 01:04:17〕</td></tr>
+<tr><td>Group 3</td><td>Para 7-9</td><td>〔说话人1 01:04:17〕</td></tr>
+<tr><td>Group 4</td><td>Para 10-11</td><td>〔说话人1 01:04:17〕</td></tr>
+<tr><td>Group 5</td><td>Para 12-14</td><td>〔说话人1 01:04:17〕</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>四维度缺一不可；标题 irony 的字面义与真实义。 <span class="loc">〔说话人1 01:05:06〕</span></div></div>
 
-  <h3 class="sec">Illness Script 与误诊原因</h3>
-  <div class="cardgrid">
-    <div class="card med"><div class="tab">Concept</div><h4>Illness Script（疾病脚本）</h4><p>医生通常依靠记忆疾病脚本来识别疾病——这是一种基于经验的模式匹配方法。</p></div>
-    <div class="card warn"><div class="tab">⚠ Misdiagnosis</div><h4>误诊两大原因</h4><ul><li>忽略患者关键特异因素</li><li>非典型表现不符合标准模式</li></ul></div>
-  </div>
-  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>05</span></div>
-</div>
+<div class="page"><h2 class="h2">第11章 Para 1-3 逐段精讲</h2>
+<p class="lead">章主旨：Para 1 用时间顺序加举例讲诊断史并含隐喻；Para 2 用定义法讲 illness script；Para 3 用因果分析误诊原因。</p>
 
-<!-- CHAPTER 2 continued -->
-<div class="page">
-  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 02</span></div>
+<h3 class="h3">11.1 Para 1</h3>
+<ul class="kv">
+<li>主旨：医学诊断的历史（the history of medical diagnosis）。 <span class="loc">〔说话人3 01:18:23〕</span></li>
+<li>写法一 time sequence：从 ancient、Egyptian 一路讲到 20th、21st century，按时间线串联诊断史。 <span class="loc">〔说话人1 01:18:46〕</span></li>
+<li>写法二 example：列举诊察手段与工具（如 palpation 触诊、percussion 叩诊）支撑「技术进步」的观点。 <span class="loc">〔说话人3 01:19:19〕</span></li>
+<li>修辞 metaphor：首句 The history is a march 属 A is B 型隐喻，作用为吸引读者。 <span class="loc">〔说话人1 01:21:40〕</span></li>
+<li>同构示例：Life is a journey（每人有不同站点），也是 A is B 隐喻。 <span class="loc">〔说话人1 01:22:07〕</span></li>
+<li>翻译示例：随后几个世纪中，脉诊、触诊、叩诊等技术逐渐发展完善，成为医生识别与认知疾病的重要手段（tools 可意译为「手段」）。 <span class="loc">〔说话人3 01:23:04〕</span></li>
+<li>句式：本句是简单句（simple sentence），没有从句。 <span class="loc">〔说话人1 01:24:27〕</span></li>
+<li>主语是 techniques，谓语是 were developed and refined。 <span class="loc">〔说话人1 01:24:36〕</span></li>
+<li>语态：用被动语态（passive voice）以强调技术本身的发展。 <span class="loc">〔说话人1 01:25:00〕</span></li>
+<li>医学英语语言特点之一：句子结构简单，却用大量修饰成分（时间状语、分词等）修饰名词与谓语。 <span class="loc">〔说话人1 01:25:30〕</span></li>
+<li>serving as 为现在分词短语，作状语表结果。 <span class="loc">〔说话人1 01:26:00〕</span></li>
+<li>翻译策略：长句先抓主句（main part / key part），主句译对至少可得一半分数。 <span class="loc">〔说话人1 01:26:12〕</span></li>
+</ul>
 
-  <h3 class="sec med">AI诊断的核心优势</h3>
-  <div class="cardgrid">
-    <div class="card med"><div class="tab">Accuracy</div><h4>提高准确性</h4><p>海量数据支撑（supported by massive data），能发现人类容易忽略的新模式。</p></div>
-    <div class="card med"><div class="tab">Timeliness</div><h4>提高时效性</h4><p>快速识别疾病，如缺血性中风（ischemic stroke）的快速识别。</p></div>
-    <div class="card med"><div class="tab">New Patterns</div><h4>发现创造性模式</h4><p>Spot new, creative patterns — 超越人类经验局限的模式识别能力。</p></div>
-    <div class="card key"><div class="tab">Core Principle</div><h4>补充而非替代</h4><p>AI should <b>complement rather than replace</b> human professional expertise. 需充足资金投入。</p></div>
-  </div>
+<h3 class="h3">11.2 Para 2</h3>
+<ul class="kv">
+<li>主旨：医生仍依赖 illness script 诊断（doctors depend on illness scripts for diagnosis）。 <span class="loc">〔说话人1 01:27:00〕</span></li>
+<li>首句即主题句（topic sentence）。 <span class="loc">〔说话人1 01:27:00〕</span></li>
+<li>写法一 example and generalization（举例加概括）。 <span class="loc">〔说话人1 01:28:46〕</span></li>
+<li>写法二 definition：给 illness script 下定义——由成簇的体征、症状与诊断发现（clusters of signs, symptoms and diagnostic findings）构成，是疾病的标志。 <span class="loc">〔说话人1 01:30:08〕</span></li>
+<li>定义的目的：说明医生如何诊病，并凸显 illness script 涉及面广、工作量大（heavy workload）。 <span class="loc">〔说话人1 01:31:52〕</span></li>
+<li>不同心脏病患者的 signs、symptoms、diagnostic findings 各异，故医生要记的内容极多。 <span class="loc">〔说话人1 01:32:36〕</span></li>
+<li>写作意图：这一切为后文的 AI 诊断铺垫（为 AI diagnosis 服务）。 <span class="loc">〔说话人1 01:33:39〕</span></li>
+<li>本段无修辞手法（答 No）。 <span class="loc">〔说话人1 01:34:24〕</span></li>
+<li>释义示例：However, even with the technological improvements, diagnosis is still largely dependent on human efforts, including clusters of signs, symptoms and diagnostic findings. <span class="loc">〔说话人2 01:34:35〕</span></li>
+<li>改写：Despite the technological advances, diagnosis remains largely a human-driven process. <span class="loc">〔说话人1 01:35:52〕</span></li>
+<li>可换与不可换：signs、symptoms、diagnostic findings 等名词不可替换，其余成分可转换。 <span class="loc">〔说话人1 01:36:20〕</span></li>
+<li>句式：本句为复合句（compound sentence），但主句很简单（A remains B），难点在其后的从句。 <span class="loc">〔说话人1 01:36:35〕</span></li>
+</ul>
 
-  <h3 class="sec">AI诊断面临的四大挑战</h3>
-  <table class="data">
-    <thead><tr><th style="width:28mm">挑战</th><th style="width:32mm">英文</th><th>说明</th></tr></thead>
-    <tbody>
-      <tr><td><b>高开发成本</b></td><td>High development cost</td><td>AI医疗技术研发需要大量资金投入</td></tr>
-      <tr><td><b>潜在错误信息</b></td><td>Potential misinformation</td><td>AI可能输出错误或误导性诊断信息</td></tr>
-      <tr><td><b>患者信任度低</b></td><td>Low patient trust</td><td>缺乏有效数据支撑时，患者对AI诊断信任度低</td></tr>
-      <tr><td><b>伦理与就业</b></td><td>Ethics & employment</td><td>过度依赖AI可能导致大规模失业；欧洲采取保守研发策略</td></tr>
-    </tbody>
-  </table>
+<h3 class="h3">11.3 Para 3</h3>
+<ul class="kv">
+<li>主旨：人类会误诊（human misdiagnosis），作者举两例说明。 <span class="loc">〔说话人2 01:38:06〕</span></li>
+<li>写法一 example：举例说明误诊。 <span class="loc">〔说话人1 01:38:42〕</span></li>
+<li>写法二 cause and effect：分析人类误诊的原因。 <span class="loc">〔说话人1 01:39:27〕</span></li>
+<li>写作意图：分析误诊两大原因，是为说明它们正是 AI 能解决的问题，从而为 AI 的优势做铺垫。 <span class="loc">〔说话人1 01:40:22〕</span></li>
+<li>本段只列 AI can solve 的 problem，不列 human diagnosis 的其他问题。 <span class="loc">〔说话人1 01:40:30〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表：Para 1-3 三段速览</h3>
+<table class="tbl"><tr><th style="width:14%">段落</th><th style="width:26%">写法</th><th>核心内容</th><th style="width:20%">修辞</th></tr>
+<tr><td>Para 1</td><td>时间顺序 + 举例</td><td>医学诊断发展史（the history of medical diagnosis） <span class="loc">〔说话人3 01:18:23〕</span></td><td>隐喻 The history is a march <span class="loc">〔说话人1 01:21:40〕</span></td></tr>
+<tr><td>Para 2</td><td>举例 + 定义</td><td>诊断仍靠 illness script，工作量大 <span class="loc">〔说话人1 01:27:00〕</span></td><td>无 <span class="loc">〔说话人1 01:34:24〕</span></td></tr>
+<tr><td>Para 3</td><td>举例 + 因果</td><td>误诊两大原因，为 AI 铺垫 <span class="loc">〔说话人1 01:40:22〕</span></td><td>—</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>Para 1 首句 The history is a march 属 metaphor（A is B），须识别该修辞。 <span class="loc">〔说话人1 01:21:40〕</span></div></div>
 
-  <div class="pullquote">
-    <p>"Our country develops too fast... if AI is used to replace people like this, a large number of people will be unemployed, which is unimaginable."</p>
-    <div class="attr">— 课堂讨论：AI发展的社会风险</div>
-  </div>
-  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>06</span></div>
-</div>
+<div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>paraphrasing 定义：用 different words 复述他人内容，原意不变。 <span class="loc">〔说话人1 01:00〕</span></li>
+<li>三大价值：better understanding / note taking and summary / writing academic papers 防抄袭。 <span class="loc">〔说话人1 01:28〕</span></li>
+<li>四技巧：同义词替换、词性转换、主被动转换、句型改写。 <span class="loc">〔说话人1 03:15〕</span></li>
+<li>四步骤：read → find keywords → rearrange → compare with the original。 <span class="loc">〔说话人1 14:15〕</span></li>
+<li>术语 fixed proper nouns 不可替换；谚语先懂隐含意义再改写。 <span class="loc">〔说话人1 12:56〕</span></li>
+<li>glycemic = blood glucose（glyc- 糖 + -emic 血）；metformin 不可替换。 <span class="loc">〔说话人1 16:04〕</span></li>
+<li>课文三段式：Para 1-3 问题 / 4-9 AI 优势 / 10-14 挑战与出路。 <span class="loc">〔说话人1 24:38〕</span></li>
+<li>illness script 识病；误诊两原因：忽略 critical specific factors、atypical presentations。 <span class="loc">〔说话人1 36:18〕</span></li>
+<li>AI 优势：accuracy + timeliness，数秒识别 ischemic stroke。 <span class="loc">〔说话人1 36:18〕</span></li>
+<li>AI 四挑战：development cost / misinformation / low patient trust / 伦理失业。 <span class="loc">〔说话人1 39:00〕</span></li>
+<li>核心定位：complement rather than replace human expertise。 <span class="loc">〔说话人1 43:21〕</span></li>
+<li>八种段落展开法：时间、过程、空间、举例、比较、因果、分类、定义。 <span class="loc">〔说话人1 55:08〕</span></li>
+<li>标题 irony：《AI in Medical Diagnosis: Not Just Hype》实指 AI 诊断已是现实。 <span class="loc">〔说话人1 01:05:06〕</span></li>
+<li>四维度：main idea / writing style / rhetorical devices / paraphrasing and translation。 <span class="loc">〔说话人1 01:04:36〕</span></li>
+<li>Para 1 隐喻 The history is a march（A is B）。 <span class="loc">〔说话人1 01:21:40〕</span></li>
+</ul></div>
 
-<!-- CHAPTER 3 -->
-<div class="page">
-  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 03</span></div>
-  <h2 class="ch-title">学术写作段落展开方法</h2>
-  <div class="thesis">八种段落展开方法通常组合使用而非单一应用；即使专业医学文本也会用隐喻和反讽等修辞手法增强可读性。</div>
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th style="width:46%">错</th><th>对</th></tr>
+<tr><td>把 photosynthesis 这类术语也替换掉</td><td>fixed proper nouns 必须保留 <span class="loc">〔说话人1 12:56〕</span></td></tr>
+<tr><td>谚语/习语按字面直接翻译</td><td>先懂隐含意义，再用平实语言改写 <span class="loc">〔说话人1 12:04〕</span></td></tr>
+<tr><td>looking at 一律解为「看某物」</td><td>aspect 抽象，应改 observe <span class="loc">〔说话人1 06:10〕</span></td></tr>
+<tr><td>用 common English 替代拉丁/希腊正式术语</td><td>会降低学术正式性，正式论文不推荐 <span class="loc">〔说话人1 21:39〕</span></td></tr>
+<tr><td>改写时把药名 metformin 换掉</td><td>药名属 fixed terms，不可替换 <span class="loc">〔说话人1 20:11〕</span></td></tr>
+<tr><td>认为 AI 的成本是 investment cost</td><td>文本所指为 high development cost <span class="loc">〔说话人1 39:00〕</span></td></tr>
+<tr><td>认为 AI 会取代医生</td><td>定位是 complement，而非 replace <span class="loc">〔说话人1 43:21〕</span></td></tr>
+<tr><td>以为 Para 1 没有修辞</td><td>首句 The history is a march 是隐喻 <span class="loc">〔说话人1 01:21:40〕</span></td></tr>
+<tr><td>以为 rhetorical devices 只是辞藻堆砌</td><td>是修辞手法，用以增强可读性 <span class="loc">〔说话人1 01:06:00〕</span></td></tr></table></div>
 
-  <h3 class="sec key">八种常用段落展开方法</h3>
-  <div class="cardgrid">
-    <div class="card key"><div class="tab">01</div><h4>时间顺序</h4><p>time order / time sequence — 按时间先后组织内容</p></div>
-    <div class="card key"><div class="tab">02</div><h4>过程描述</h4><p>process — 描述步骤和流程</p></div>
-    <div class="card key"><div class="tab">03</div><h4>空间描述</h4><p>space description — 按空间位置组织</p></div>
-    <div class="card key"><div class="tab">04</div><h4>举例+概括</h4><p>example and generalization — 先举例后归纳或反之</p></div>
-    <div class="card key"><div class="tab">05</div><h4>比较与对比</h4><p>comparison and contrast — 比较异同</p></div>
-    <div class="card key"><div class="tab">06</div><h4>因果关系</h4><p>cause and effect — 分析原因与结果</p></div>
-    <div class="card key"><div class="tab">07</div><h4>分类与划分</h4><p>classification and division — 将整体分类或划分</p></div>
-    <div class="card key"><div class="tab">08</div><h4>定义法</h4><p>definition — 先定义概念再展开</p></div>
-  </div>
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th style="width:34%">考点</th><th style="width:12%">小节</th><th style="width:26%">定位</th><th>可能题型</th></tr>
+<tr><td>paraphrasing 定义与三大价值</td><td>§1</td><td>〔说话人1 01:28〕</td><td>简答</td></tr>
+<tr><td>四大技巧与四步骤</td><td>§2</td><td>〔说话人1 14:40〕</td><td>填空</td></tr>
+<tr><td>术语不换、谚语译意、正式性</td><td>§3</td><td>〔说话人1 12:56〕</td><td>辨析</td></tr>
+<tr><td>医学术语改写与词根</td><td>§4</td><td>〔说话人1 16:04〕</td><td>操作</td></tr>
+<tr><td>课文四部分结构</td><td>§5</td><td>〔说话人1 25:55〕</td><td>匹配</td></tr>
+<tr><td>误诊两原因与 AI 优势</td><td>§6</td><td>〔说话人1 36:18〕</td><td>简答</td></tr>
+<tr><td>AI 四挑战与 complement 定位</td><td>§7</td><td>〔说话人1 43:21〕</td><td>简答</td></tr>
+<tr><td>八种段落展开方法</td><td>§8</td><td>〔说话人1 55:08〕</td><td>匹配</td></tr>
+<tr><td>作者跨学科背景与发展建议</td><td>§9</td><td>〔说话人1 01:00:54〕</td><td>简答</td></tr>
+<tr><td>标题 irony 与四个分析维度</td><td>§10</td><td>〔说话人1 01:05:06〕</td><td>分析</td></tr>
+<tr><td>Para 1-3 主旨/写法/修辞/翻译</td><td>§11</td><td>〔说话人1 01:21:40〕</td><td>综合</td></tr></table></div>
 
-  <h3 class="sec">应用规则与修辞手法</h3>
-  <div class="cardgrid">
-    <div class="card lang"><div class="tab">Rule</div><h4>多方法组合</h4><p>Most formal academic paragraphs do <b>not</b> use a single development method; multiple methods are often combined to support core arguments.</p></div>
-    <div class="card med"><div class="tab">Rhetoric</div><h4>医学文本也用修辞</h4><p>Even professional medical academic texts use <b>metaphor</b> and <b>irony</b> in titles and key sentences to enhance readability.</p></div>
-  </div>
-  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>07</span></div>
-</div>
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th style="width:44%">知识点</th><th style="width:12%">类型</th><th style="width:10%">小节</th><th style="width:22%">定位</th></tr>
+<tr><td>1</td><td>paraphrasing 定义（different words 复述他人内容）／中文「同义复述」</td><td>定义</td><td>§1</td><td>〔说话人1 01:00〕</td></tr>
+<tr><td>2</td><td>价值 better understanding／note taking and summary</td><td>价值</td><td>§1</td><td>〔说话人1 01:28〕</td></tr>
+<tr><td>3</td><td>价值 writing academic papers 学术论文</td><td>价值</td><td>§1</td><td>〔说话人1 02:04〕</td></tr>
+<tr><td>4</td><td>avoid copying；查重率 10%～50%</td><td>规则</td><td>§1</td><td>〔说话人1 02:04〕</td></tr>
+<tr><td>5</td><td>可改写层面 words/phrases/voices/sentence patterns</td><td>分类</td><td>§2</td><td>〔说话人1 03:15〕</td></tr>
+<tr><td>6</td><td>英语仅主动、被动两种语态</td><td>定义</td><td>§2</td><td>〔说话人1 03:15〕</td></tr>
+<tr><td>7</td><td>步骤一 read for comprehension；步骤二 找 keywords/expressions</td><td>步骤</td><td>§2</td><td>〔说话人1 03:50〕</td></tr>
+<tr><td>8</td><td>技巧 词性转换 change part of speech</td><td>技巧</td><td>§2</td><td>〔说话人1 04:28〕</td></tr>
+<tr><td>9</td><td>例 famous→well-known；两 simple sentence 并为 one complex sentence</td><td>例</td><td>§2</td><td>〔说话人1 04:57〕</td></tr>
+<tr><td>10</td><td>例 exploded→explosion、a study of this kind 被动化</td><td>例</td><td>§2</td><td>〔说话人1 10:05〕</td></tr>
+<tr><td>11</td><td>步骤三 rearrange sentences（再创作 recreation）</td><td>步骤</td><td>§2</td><td>〔说话人1 14:40〕</td></tr>
+<tr><td>12</td><td>步骤四 compare with the original</td><td>步骤</td><td>§2</td><td>〔说话人1 14:15〕</td></tr>
+<tr><td>13</td><td>遮住原文 cover the original 极难；读书百遍其义自见（整理）</td><td>方法</td><td>§2</td><td>〔说话人1 22:48〕</td></tr>
+<tr><td>14</td><td>成稿须 clear and flows well</td><td>标准</td><td>§2</td><td>〔说话人1 23:47〕</td></tr>
+<tr><td>15</td><td>练习目的 further understanding＋enlarge vocabulary</td><td>目的</td><td>§2</td><td>〔说话人1 21:55〕</td></tr>
+<tr><td>16</td><td>语境匹配：抽象含义词不可字面对应替换；例 aspect→observe</td><td>规则</td><td>§3</td><td>〔说话人1 06:10〕</td></tr>
+<tr><td>17</td><td>例 one or two→several、the way→how、behaves→acts、baby→little child</td><td>例</td><td>§3</td><td>〔说话人1 07:44〕</td></tr>
+<tr><td>18</td><td>谚语/习语先懂隐含意义；例 Don't count your chickens before they hatch</td><td>规则</td><td>§3</td><td>〔说话人1 12:04〕</td></tr>
+<tr><td>19</td><td>术语 fixed proper nouns 不可替换；photosynthesis 句查重仍 ≥30%</td><td>规则</td><td>§3</td><td>〔说话人1 12:56〕</td></tr>
+<tr><td>20</td><td>降重对策：其余可改句尽量全改</td><td>对策</td><td>§3</td><td>〔说话人1 13:56〕</td></tr>
+<tr><td>21</td><td>common English 替代拉丁/希腊术语会降正式性</td><td>规则</td><td>§3</td><td>〔说话人1 21:39〕</td></tr>
+<tr><td>22</td><td>医学一词三式 glycemic＝glucose</td><td>概念</td><td>§3</td><td>〔说话人1 19:21〕</td></tr>
+<tr><td>23</td><td>原句 type 2 diabetes 临床句；核心词改写时不变</td><td>例</td><td>§4</td><td>〔说话人1 14:40〕</td></tr>
+<tr><td>24</td><td>glycemic 词根 glyc- 糖、-emic 血＝blood glucose control</td><td>词根</td><td>§4</td><td>〔说话人1 16:04〕</td></tr>
+<tr><td>25</td><td>lifestyle modification 生活方式干预</td><td>术语</td><td>§4</td><td>〔说话人1 16:32〕</td></tr>
+<tr><td>26</td><td>metformin＝二甲双胍；-in 结尾常为药名（penicillin）</td><td>词源</td><td>§4</td><td>〔说话人1 17:46〕</td></tr>
+<tr><td>27</td><td>改写版一 blood glucose／diet and exercise changes</td><td>例</td><td>§4</td><td>〔说话人1 18:43〕</td></tr>
+<tr><td>28</td><td>drug treatment＝pharmacotherapy；原文更正式</td><td>例</td><td>§4</td><td>〔说话人1 20:11〕</td></tr>
+<tr><td>29</td><td>结构填空共 10 个句子</td><td>任务</td><td>§5</td><td>〔说话人1 25:21〕</td></tr>
+<tr><td>30</td><td>Section 1（Para 1-3）人工诊断问题与误诊两原因</td><td>结构</td><td>§5</td><td>〔说话人1 24:38〕</td></tr>
+<tr><td>31</td><td>Section 2（Para 4-9）AI 诊断优势</td><td>结构</td><td>§5</td><td>〔说话人1 25:35〕</td></tr>
+<tr><td>32</td><td>Section 3（Para 10-14）挑战与出路；Section 4（15-17）课本删去</td><td>结构</td><td>§5</td><td>〔说话人1 25:55〕</td></tr>
+<tr><td>33</td><td>医生靠记忆 illness script 识别疾病</td><td>机制</td><td>§6</td><td>〔说话人1 35:33〕</td></tr>
+<tr><td>34</td><td>误诊原因一：忽略患者 critical specific factors</td><td>考点</td><td>§6</td><td>〔说话人1 36:18〕</td></tr>
+<tr><td>35</td><td>误诊原因二：atypical presentations 不符标准模式</td><td>考点</td><td>§6</td><td>〔说话人1 36:18〕</td></tr>
+<tr><td>36</td><td>AI 靠 thousands of brains 与海量 data 解决上述问题</td><td>优势</td><td>§6</td><td>〔说话人1 36:18〕</td></tr>
+<tr><td>37</td><td>AI 数秒识别 ischemic stroke</td><td>例</td><td>§6</td><td>〔说话人1 36:18〕</td></tr>
+<tr><td>38</td><td>AI 优势 accuracy 与 timeliness；发现 new, creative patterns</td><td>优势</td><td>§6</td><td>〔说话人1 38:22〕</td></tr>
+<tr><td>39</td><td>挑战一：high development cost（非 investment cost）</td><td>挑战</td><td>§7</td><td>〔说话人1 39:00〕</td></tr>
+<tr><td>40</td><td>时代背景：AI and robot 使电气工程由冷转热</td><td>例</td><td>§7</td><td>〔说话人1 40:12〕</td></tr>
+<tr><td>41</td><td>挑战二：risk of misinformation 错误信息输出</td><td>挑战</td><td>§7</td><td>〔说话人1 41:43〕</td></tr>
+<tr><td>42</td><td>结论：人仍然是最根本的</td><td>结论</td><td>§7</td><td>〔说话人1 41:43〕</td></tr>
+<tr><td>43</td><td>挑战三：low patient trust 患者信任度低</td><td>挑战</td><td>§7</td><td>〔说话人1 42:18〕</td></tr>
+<tr><td>44</td><td>医生作用转向治疗与 drug development</td><td>推论</td><td>§7</td><td>〔说话人1 42:51〕</td></tr>
+<tr><td>45</td><td>定位：complement rather than replace</td><td>原则</td><td>§7</td><td>〔说话人1 43:21〕</td></tr>
+<tr><td>46</td><td>条件 sufficient investment；伦理：欧洲保守防 unemployment</td><td>条件</td><td>§7</td><td>〔说话人1 43:50〕</td></tr>
+<tr><td>47</td><td>展开法一 time order；二 process；三 space description</td><td>方法</td><td>§8</td><td>〔说话人1 55:08〕</td></tr>
+<tr><td>48</td><td>展开法四 example and generalization；五 comparison and contrast</td><td>方法</td><td>§8</td><td>〔说话人1 55:08〕</td></tr>
+<tr><td>49</td><td>展开法六 cause and effect；七 classification and division</td><td>方法</td><td>§8</td><td>〔说话人1 57:22〕</td></tr>
+<tr><td>50</td><td>展开法八 definition；正式段落常多方法组合</td><td>方法</td><td>§8</td><td>〔说话人1 57:43〕</td></tr>
+<tr><td>51</td><td>出处 Los Angeles Times 大众报刊文章</td><td>出处</td><td>§9</td><td>〔说话人1 57:43〕</td></tr>
+<tr><td>52</td><td>两位作者：computer scientist + physician + Chief Data Officer／economist + Harvard 教授</td><td>背景</td><td>§9</td><td>〔说话人1 57:43〕</td></tr>
+<tr><td>53</td><td>两人皆 interdisciplinary；建议发展 side business</td><td>建议</td><td>§9</td><td>〔说话人1 01:00:54〕</td></tr>
+<tr><td>54</td><td>不到 20 岁是人生起点，best time or worst time</td><td>建议</td><td>§9</td><td>〔说话人1 01:02:13〕</td></tr>
+<tr><td>55</td><td>14 段分 5 部分讲解</td><td>结构</td><td>§10</td><td>〔说话人1 01:04:17〕</td></tr>
+<tr><td>56</td><td>每组须覆盖 four points 四个维度</td><td>任务</td><td>§10</td><td>〔说话人1 01:04:36〕</td></tr>
+<tr><td>57</td><td>维度一 main idea／维度二 writing style</td><td>维度</td><td>§10</td><td>〔说话人1 01:04:41〕</td></tr>
+<tr><td>58</td><td>维度三 rhetorical devices（中文「修辞」xiu ci）</td><td>维度</td><td>§10</td><td>〔说话人1 01:05:06〕</td></tr>
+<tr><td>59</td><td>维度四 paraphrasing and translation 释义与翻译</td><td>维度</td><td>§10</td><td>〔说话人1 01:06:47〕</td></tr>
+<tr><td>60</td><td>标题 irony：Not Just Hype 实指已是现实</td><td>修辞</td><td>§10</td><td>〔说话人1 01:05:06〕</td></tr>
+<tr><td>61</td><td>Para 1 主旨 history of medical diagnosis；写法 time sequence</td><td>主旨</td><td>§11</td><td>〔说话人3 01:18:23〕</td></tr>
+<tr><td>62</td><td>Para 1 写法 example：palpation 触诊、percussion 叩诊</td><td>写法</td><td>§11</td><td>〔说话人3 01:19:19〕</td></tr>
+<tr><td>63</td><td>Para 1 隐喻 The history is a march（A is B）；Life is a journey</td><td>修辞</td><td>§11</td><td>〔说话人1 01:21:40〕</td></tr>
+<tr><td>64</td><td>Para 1 翻译 tools→「手段」；简单句主语 techniques</td><td>翻译</td><td>§11</td><td>〔说话人3 01:23:04〕</td></tr>
+<tr><td>65</td><td>Para 1 被动语态强调技术发展；serving as 现在分词作状语</td><td>语法</td><td>§11</td><td>〔说话人1 01:25:00〕</td></tr>
+<tr><td>66</td><td>医学英语特点：简单句 + 大量修饰；抓主句得一半分</td><td>特征</td><td>§11</td><td>〔说话人1 01:25:30〕</td></tr>
+<tr><td>67</td><td>Para 2 主旨：依赖 illness script；首句 topic sentence</td><td>主旨</td><td>§11</td><td>〔说话人1 01:27:00〕</td></tr>
+<tr><td>68</td><td>Para 2 写法 example and generalization；定义 illness script</td><td>写法</td><td>§11</td><td>〔说话人1 01:30:08〕</td></tr>
+<tr><td>69</td><td>Para 2 定义目的 heavy workload；为后文 AI 铺垫；无修辞</td><td>意图</td><td>§11</td><td>〔说话人1 01:31:52〕</td></tr>
+<tr><td>70</td><td>不同心脏病患者 signs/symptoms/findings 各异</td><td>例</td><td>§11</td><td>〔说话人1 01:32:36〕</td></tr>
+<tr><td>71</td><td>Para 2 释义句 However, even with the technological improvements…</td><td>例</td><td>§11</td><td>〔说话人2 01:34:35〕</td></tr>
+<tr><td>72</td><td>Para 2 改写 Despite the technological advances…</td><td>例</td><td>§11</td><td>〔说话人1 01:35:52〕</td></tr>
+<tr><td>73</td><td>Para 2 signs/symptoms/findings 不可替换；复合句主句简单</td><td>句式</td><td>§11</td><td>〔说话人1 01:36:20〕</td></tr>
+<tr><td>74</td><td>Para 3 主旨 human misdiagnosis；写法 example</td><td>主旨</td><td>§11</td><td>〔说话人2 01:38:06〕</td></tr>
+<tr><td>75</td><td>Para 3 cause and effect；因果为 AI 优势铺垫，只列 AI 能解决问题</td><td>写法</td><td>§11</td><td>〔说话人1 01:39:27〕</td></tr></table></div>
 
-<!-- CHAPTER 3 continued + CHAPTER 4 -->
-<div class="page">
-  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 03-04</span></div>
+<p class="foot">医学英语 · 第3-4节 · 核心内容笔记 · 依据逐字稿（34,661 字 / 197 轮）重写</p>
 
-  <h3 class="sec med">段落分析实例（Para 1-3）</h3>
-  <table class="data">
-    <thead><tr><th style="width:18mm">段落</th><th style="width:35mm">展开方法</th><th>核心内容与修辞</th></tr></thead>
-    <tbody>
-      <tr><td><b>Para 1</b></td><td>时间顺序 + 举例</td><td>医学诊断发展史；隐喻 <b>"history is a march"</b>；代表性简单被动句</td></tr>
-      <tr><td><b>Para 2</b></td><td>举例 + 定义</td><td>诊断仍依赖医生的 illness scripts；长复合句特征：简单主句+复杂从句</td></tr>
-      <tr><td><b>Para 3</b></td><td>举例 + 因果</td><td>人类误诊两大原因；为后续AI优势做铺垫</td></tr>
-    </tbody>
-  </table>
-
-  <div class="pullquote">
-    <p>长复合句分析技巧：先找 simple main clause 抓核心意思，再看 complex subordinate clause 理解修饰和补充信息。</p>
-    <div class="attr">— 课堂强调点</div>
-  </div>
-
-  <h2 class="ch-title" style="margin-top:8mm;font-size:18pt;">小组展示与发展建议</h2>
-
-  <h3 class="sec lang">小组展示安排</h3>
-  <div class="cardgrid">
-    <div class="card lang"><div class="tab">5 Groups</div><h4>五组分配</h4><p>Para 1-3 / 4-6 / 7-9 / 10-11 / 12-14 — 14段文本分为5部分</p></div>
-    <div class="card key"><div class="tab">4 Dimensions</div><h4>四个分析维度</h4><ul><li>段落主旨（main idea）</li><li>写作风格（writing style）</li><li>修辞手法（rhetorical devices）</li><li>句子释义与翻译（paraphrasing & translation）</li></ul></div>
-  </div>
-
-  <h3 class="sec med">个人发展建议</h3>
-  <p>文本两位作者均为具有医学+计算机/经济学双背景的跨学科人才。教师鼓励医学生：</p>
-  <div class="checklist">
-    <div class="item"><div class="box"></div><div class="txt"><b>跨学科发展</b> — 结合医学主业与其他学科（计算机、经济学等）</div></div>
-    <div class="item"><div class="box"></div><div class="txt"><b>发展副业技能</b> — 在医学主业基础上，结合兴趣发展可生存的副业技能</div></div>
-    <div class="item"><div class="box"></div><div class="txt"><b>主动规划未来</b> — "less than 20 years old is just the starting point of life"，时代既是机遇也是挑战</div></div>
-  </div>
-
-  <div class="pullquote">
-    <p>"Our main business is medicine. If you are interested, you can really develop a side business, which may be the skill for us to survive in this era in the future."</p>
-    <div class="attr">— 教师金句 · 跨学科发展建议</div>
-  </div>
-  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>08</span></div>
-</div>
-
-</body>
-</html>
+</body></html>

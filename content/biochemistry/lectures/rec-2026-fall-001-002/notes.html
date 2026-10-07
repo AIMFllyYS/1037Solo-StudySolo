@@ -1,205 +1,435 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<style>
-:root{--paper:#FBF7F2;--ink:#2A1F1A;--muted:#8A7568;--line:#E8DCD0;--accent:#7B3F00;--accent-deep:#5A2D00;--accent-tint:#F5E8D8;--gold:#B8860B;--gold-tint:#FBF3DC;--crimson:#A93226;--crimson-tint:#F9E5E2;--teal:#1A6B5A;--teal-tint:#DCEDE8;--serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
-.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-.cover{background:radial-gradient(120% 80% at 78% 12%,#A0522D 0%,#7B3F00 55%,#5A2D00 100%);color:#F5EDE0;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(212,175,55,.45);}
-.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#D4AF37;margin-bottom:8mm;}
-.cover h1{font-family:var(--serif);font-size:32pt;line-height:1.2;color:#FBF7F0;margin-bottom:6mm;}
-.cover h1 .accent{color:#F4D03F;}
-.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(245,237,224,.82);margin-bottom:4mm;}
-.cover .meta{font-size:10pt;color:rgba(245,237,224,.6);margin-top:auto;}
-.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
-.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
-.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
-h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
-p{margin:2mm 0;}
-ul,ol{margin:2mm 0 2mm 6mm;}
-li{margin:1mm 0;}
-.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
-.card.concl{border-left:3pt solid var(--accent);}
-.card.warn{border-left:3pt solid var(--crimson);background:var(--crimson-tint);}
-.card.gold{border-left:3pt solid var(--gold);background:var(--gold-tint);}
-.card.teal{border-left:3pt solid var(--teal);background:var(--teal-tint);}
-.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
-.card.warn .label{color:var(--crimson);}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
-th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
-td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
-tr:nth-child(even) td{background:var(--accent-tint);}
-.hl{background:var(--gold-tint);border:0.4pt solid #E0C870;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
-.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
-.flow{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm;margin:3mm 0;font-size:9pt;}
-.flow-step{display:flex;align-items:center;margin:1.5mm 0;}
-.flow-num{width:7mm;height:7mm;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:8pt;flex-shrink:0;}
-.flow-text{margin-left:3mm;flex:1;}
-.flow-arrow{margin-left:6mm;color:var(--muted);font-size:12pt;}
-.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
-</style>
-</head>
-<body>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>生物化学与分子生物学 · 第1-2节 · 绪论与蛋白质概述</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#4A6B1F; --accent-d:#33490F; --accent-t:#EDF2E1;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
 
-<div class="page cover">
-  <div class="frame"></div>
-  <div class="kicker">BIOCHEMISTRY · 生物化学</div>
-  <h1>绪论与<br><span class="accent">蛋白质概述</span></h1>
-  <div class="subt">第1-2节 · 课程笔记可视化手册</div>
-  <div class="meta">2026-09-01 · 华中科技大学基础医学</div>
-</div>
+</style></head><body>
+<div class="page cover"><p class="h1">生物化学与分子生物学</p><p class="meta">第1-2节 · 绪论与蛋白质概述 · 2026-09-01</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 26872 字 / 132 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>生物化学与分子生物学（biochemistry）</td></tr>
+<tr><td>主题</td><td>绪论、分子医学案例、蛋白质分子组成与氨基酸</td></tr>
+<tr><td>学时</td><td>2 学时（第1-2节）</td></tr></table></div>
 
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">课程体系</span></div>
-  <table>
-    <tr><th>部分</th><th>内容</th><th>授课教师</th></tr>
-    <tr><td><strong>第一部分</strong></td><td>生物分子的结构与功能（4章）</td><td>本教师（蛋白质方向）</td></tr>
-    <tr><td><strong>第二部分</strong></td><td>代谢与调节</td><td>陈军教授（糖脂代谢/糖尿病）、宋谭静教授（表观遗传）</td></tr>
-    <tr><td><strong>第三部分</strong></td><td>分子生物学</td><td>于梦君老师</td></tr>
-  </table>
-  <div class="hl"><span class="tag">说明</span>前两部分合称"生物化学"，是课程名称来源。考核：期末60%（闭卷）+ 平时40%。</div>
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">从课程定位与临床案例建立基因—蛋白—代谢链，再进入氨基酸组成、分类与肽键。</p>
+<svg viewBox="0 0 680 200" width="100%" aria-label="知识框架">
+<rect x="240" y="8" width="200" height="28" fill="#EDF2E1" stroke="#4A6B1F"/>
+<text x="340" y="27" text-anchor="middle" font-size="11" font-family="sans-serif">生化第1-2节</text>
+<line x1="340" y1="36" x2="120" y2="60" stroke="#4A6B1F"/><line x1="340" y1="36" x2="340" y2="60" stroke="#4A6B1F"/><line x1="340" y1="36" x2="560" y2="60" stroke="#4A6B1F"/>
+<rect x="40" y="60" width="160" height="32" fill="#fff" stroke="#33490F"/><text x="120" y="80" text-anchor="middle" font-size="9">绪论·考核</text>
+<rect x="260" y="60" width="160" height="32" fill="#fff" stroke="#33490F"/><text x="340" y="80" text-anchor="middle" font-size="9">基因组与案例</text>
+<rect x="480" y="60" width="160" height="32" fill="#fff" stroke="#33490F"/><text x="560" y="80" text-anchor="middle" font-size="9">氨基酸与肽</text>
+<line x1="340" y1="92" x2="340" y2="120" stroke="#4A6B1F"/>
+<rect x="220" y="120" width="240" height="32" fill="#EDF2E1" stroke="#4A6B1F"/><text x="340" y="140" text-anchor="middle" font-size="10">基因→蛋白质→功能→疾病</text>
+</svg></div>
 
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">02</span><span class="chapter-title">案例一：硫胺素反应性巨幼细胞贫血</span></div>
-  <div class="card gold">
-    <div class="label">病例</div>
-    <p>1岁幼儿，突发咳嗽发烧，同时患有<strong>肺炎、糖尿病、贫血、听力丧失</strong>，当地对症治疗半个月无好转。</p>
-    <p>多种症状同时出现 → 大概率有<strong>共同病因</strong>（一元论诊断思维）。</p>
-  </div>
+<div class="page"><h2 class="h2">1. 课程体系与学科定位</h2>
+<p class="lead">三大部分四位教师；前两部分合称生物化学。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>大二生化位于医学知识金字塔底层基础作用 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>生化与分子生物学包括生物分子结构功能代谢调节分子生物学三大部分 <span class="loc">〔说话人1 02:22〕</span></li>
+<li>生物分子结构功能约四章由本教师讲授蛋白质方向 <span class="loc">〔说话人1 02:22〕</span></li>
+<li>代谢与调节糖脂代谢陈军教授糖尿病相关 <span class="loc">〔说话人1 02:22〕</span></li>
+<li>代谢后半与表观遗传调节宋谭静教授 <span class="loc">〔说话人1 02:22〕</span></li>
+<li>分子生物学由于梦君老师讲授 <span class="loc">〔说话人1 02:22〕</span></li>
+<li>前两大部分也可合称生物化学为课程名来源 <span class="loc">〔说话人1 02:22〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>部分</th><th>内容</th><th>教师</th></tr>
+<tr><td>一</td><td>生物分子结构与功能</td><td>本教师</td></tr>
+<tr><td>二</td><td>代谢与调节</td><td>陈军、宋谭静</td></tr>
+<tr><td>三</td><td>分子生物学</td><td>于梦君</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★说出三大部分及对应授课教师。 <span class="loc">〔说话人1 02:22〕</span></div></div>
 
-  <h3>分子机制</h3>
-  <div class="flow">
-    <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>SLC19A2基因突变</strong></div></div>
-    <div class="flow-arrow">↓</div>
-    <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">硫胺素转运蛋白1（ThTr1）缺陷</div></div>
-    <div class="flow-arrow">↓</div>
-    <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">维生素B1（硫胺素）摄取不足</div></div>
-    <div class="flow-arrow">↓</div>
-    <div class="flow-step"><div class="flow-num">4</div><div class="flow-text">焦磷酸硫胺素（TPP）生成减少</div></div>
-    <div class="flow-arrow">↓</div>
-    <div class="flow-step"><div class="flow-num">5</div><div class="flow-text">丙酮酸脱氢酶复合体活性降低</div></div>
-    <div class="flow-arrow">↓</div>
-    <div class="flow-step"><div class="flow-num">6</div><div class="flow-text">丙酮酸→乙酰CoA受阻，三羧酸循环障碍</div></div>
-    <div class="flow-arrow">↓</div>
-    <div class="flow-step"><div class="flow-num">7</div><div class="flow-text">能量代谢紊乱 → 多系统症状</div></div>
-  </div>
+<div class="page"><h2 class="h2">2. 基因组学与罕见病背景</h2>
+<p class="lead">测序成本骤降使全基因组测序进入临床。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>多种复杂症状同时出现大概率有共同病因一元论 <span class="loc">〔说话人1 02:22〕</span></li>
+<li>人类基因组计划历时十几年花费30多亿美元多国完成 <span class="loc">〔说话人1 06:07〕</span></li>
+<li>现在自测全基因组约一天且费用约100美元量级 <span class="loc">〔说话人1 06:29〕</span></li>
+<li>我们现在世界上有将近7000种罕见病 <span class="loc">〔说话人1 06:29〕</span></li>
+<li>80%都是由于基因缺陷所导致的遗传病 <span class="loc">〔说话人1 06:29〕</span></li>
+<li>大概有1/3医生并不了解 <span class="loc">〔说话人1 06:29〕</span></li>
+<li>平均看8个医生有过3次误诊经历 <span class="loc">〔说话人1 06:29〕</span></li>
+<li>最终可能要平均7年多才能确诊 <span class="loc">〔说话人1 06:29〕</span></li>
+<li>危重的新生儿来进行快速的全基因组的测序是新的专家共识 <span class="loc">〔说话人1 06:29〕</span></li>
+</ul>
+<table class="tbl"><tr><th>时期</th><th>时间</th><th>费用</th></tr>
+<tr><td>人类基因组计划</td><td>十几年</td><td>约30亿美元</td></tr>
+<tr><td>现在</td><td>约1天</td><td>约100美元</td></tr></table></div>
 
-  <div class="card concl">
-    <div class="label">治疗</div>
-    <p><strong>口服大剂量维生素B1</strong>。转运蛋白效率降低但非完全失活，提高底物浓度可部分代偿。反复症状缓解；耳聋因长期器质性损伤较难恢复。</p>
-  </div>
+<div class="page"><h2 class="h2">3. 案例：硫胺素转运缺陷</h2>
+<p class="lead">转运蛋白缺陷→TPP不足→糖代谢受阻；口服维B1代偿。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>通过全基因测序还真的发现了一个基因缺陷 <span class="loc">〔说话人1 06:29〕</span></li>
+<li>基因编码蛋白硫胺素转运蛋白一 <span class="loc">〔说话人1 06:29〕</span></li>
+<li>基因主要功能是能够进行编码蛋白 <span class="loc">〔说话人1 06:29〕</span></li>
+<li>其中一个重大功能就是物质运输 <span class="loc">〔说话人1 08:48〕</span></li>
+<li>硫胺素实际上就是维生素 <span class="loc">〔说话人1 09:19〕</span></li>
+<li>维生素B1在肝代谢为焦磷酸硫胺素TPP <span class="loc">〔说话人1 09:35〕</span></li>
+<li>TPP是重要辅因子主要功能是转移醛基 <span class="loc">〔说话人1 09:35〕</span></li>
+<li>丙酮酸脱氢酶复合体必须依赖焦磷酸硫胺素 <span class="loc">〔说话人1 09:35〕</span></li>
+<li>催化丙酮酸变乙酰辅酶A进入三羧酸循环 <span class="loc">〔说话人1 09:35〕</span></li>
+<li>糖代谢是物质和能量代谢核心 <span class="loc">〔说话人1 09:35〕</span></li>
+<li>转运蛋白效率降低可每日口服维生素B1缓解 <span class="loc">〔说话人1 12:05〕</span></li>
+<li>耳聋因长期器质性变化相对更难恢复 <span class="loc">〔说话人1 12:18〕</span></li>
+<li>生化介绍健康与疾病中的分子机制 <span class="loc">〔说话人1 12:18〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★TPP与丙酮酸脱氢酶复合体、口服B1治疗逻辑。 <span class="loc">〔说话人1 09:35〕</span></div></div>
 
-  <div class="footer"><span>生化 · 绪论与蛋白质概述</span><span>第 2 页</span></div>
-</div>
+<div class="page"><h2 class="h2">4. 案例：CPS1缺陷与基因编辑</h2>
+<p class="lead">尿素循环障碍 vs 可编辑的个体化疗法。</p>
+<ul class="kv">
+<li>氨甲酰磷酸合成酶一蛋白质的缺乏 <span class="loc">〔说话人1 12:18〕</span></li>
+<li>需降氨治疗严格低蛋白饮食新生儿极困难 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>肝脏缺陷最终常需肝移植否则高死亡率 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>长期高氨可致神经系统后遗症 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>全球第一例个性化定制基因编辑疗法去年报道 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>治疗后恢复健康活泼随访无明显额外副作用 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>背后有CRISPR等分子生物学新技术 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>基因编辑风险高国内亦有调查中的案例 <span class="loc">〔说话人1 14:37〕</span></li>
+</ul></div>
 
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">03</span><span class="chapter-title">维生素B1与丙酮酸脱氢酶复合体</span></div>
-  <div class="card concl">
-    <div class="label">维生素B1（硫胺素）</div>
-    <p><strong>活性形式</strong>：焦磷酸硫胺素（TPP），在肝脏生成。</p>
-    <p><strong>功能</strong>：转移醛基（重要酶辅因子）。</p>
-    <p><strong>依赖TPP的酶</strong>：丙酮酸脱氢酶复合体、α-酮戊二酸脱氢酶复合体、转酮醇酶。</p>
-  </div>
+<div class="page"><h2 class="h2">5. 教材与成绩构成</h2>
+<p class="lead">期末60%+慕课25%+汇报15%。</p>
+<ul class="kv">
+<li>理论教材第十版生物化学 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>推荐人卫出版社第四版 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>实验课2016年教材 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>习题集与高质量英文参考书推荐 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>期末考试闭卷笔试占60% <span class="loc">〔说话人1 14:37〕</span></li>
+<li>慕课占25%含6次单元测验及慕课期末 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>课程学习汇报PPT占15% <span class="loc">〔说话人1 14:37〕</span></li>
+<li>必须加入慕课堂才算慕课成绩 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>慕课登录方式不同会得到不同账号须固定一种 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>慕课昵称写清班级学号防成绩对错 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>注意慕课考试截止时间逾期无法计分 <span class="loc">〔说话人1 14:37〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★60/25/15构成与慕课堂加入要求。 <span class="loc">〔说话人1 14:37〕</span></div></div>
 
-  <div class="card teal">
-    <div class="label">丙酮酸脱氢酶复合体（PDH）</div>
-    <p><strong>催化反应</strong>：丙酮酸 → 乙酰辅酶A</p>
-    <p><strong>位置</strong>：进入三羧酸循环之前的关键步骤</p>
-    <p><strong>必需辅因子</strong>：TPP（焦磷酸硫胺素）</p>
-    <p><strong>代谢地位</strong>：糖代谢核心酶之一</p>
-  </div>
+<div class="page"><h2 class="h2">6. 蛋白质章导读与镰刀型贫血</h2>
+<p class="lead">单氨基酸替换可致细胞形态与功能巨变。</p>
+<ul class="kv">
+<li>第一章蛋白质的结构与功能 <span class="loc">〔说话人1 21:46〕</span></li>
+<li>引子为血管内镰刀型红细胞 <span class="loc">〔说话人1 22:33〕</span></li>
+<li>镰刀型红细胞贫血 <span class="loc">〔说话人1 22:33〕</span></li>
+<li>问题在血红蛋白编码基因 <span class="loc">〔说话人1 23:36〕</span></li>
+<li>单碱基突变使翻译氨基酸改变 <span class="loc">〔说话人1 24:19〕</span></li>
+<li>谷氨酸变为缬氨酸 <span class="loc">〔说话人1 24:19〕</span></li>
+<li>镰刀型红细胞更硬更脆 <span class="loc">〔说话人1 24:19〕</span></li>
+<li>穿毛细血管需挤压镰刀型易破碎致贫血 <span class="loc">〔说话人1 24:19〕</span></li>
+<li>本章五节分子组成结构功能理化性质分离纯化 <span class="loc">〔说话人1 24:19〕</span></li>
+<li>组成指化学元素结构指空间排布 <span class="loc">〔说话人1 24:19〕</span></li>
+</ul></div>
 
-  <div class="hl"><span class="tag">代谢通路</span>葡萄糖 → 糖酵解 → 丙酮酸 →（PDH复合体，需TPP）→ 乙酰CoA → 三羧酸循环 → ATP</div>
+<div class="page"><h2 class="h2">7. 蛋白质元素组成与测氮</h2>
+<p class="lead">氮平均16%是凯氏法测蛋白基础。</p>
+<ul class="kv">
+<li>蛋白质化学元素碳氢氧氮等以碳为主 <span class="loc">〔说话人1 27:34〕</span></li>
+<li>糖脂也富含碳氢氧蛋白质特点在氮 <span class="loc">〔说话人1 27:34〕</span></li>
+<li>蛋白质氮元素含量平均16%较恒定 <span class="loc">〔说话人1 27:34〕</span></li>
+<li>检测氮含量可推测蛋白质含量 <span class="loc">〔说话人1 27:34〕</span></li>
+<li>教材的第八页看到这个公式了 <span class="loc">〔说话人1 27:34〕</span></li>
+<li>每克含氮53毫克算得33.125克每百克 <span class="loc">〔说话人1 30:33〕</span></li>
+<li>食品质检常用测氮推蛋白 <span class="loc">〔说话人1 31:45〕</span></li>
+<li>三聚氰胺高氮非蛋白掺假提升测氮值 <span class="loc">〔说话人1 32:03〕</span></li>
+<li>需更特异蛋白质检测手段 <span class="loc">〔说话人1 32:03〕</span></li>
+</ul>
+<div class="wrong"><span class="tag">易错</span>测氮法默认氮来自蛋白质，掺非蛋白氮会失真。 <span class="loc">〔说话人1 32:03〕</span></div></div>
 
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">04</span><span class="chapter-title">案例二：CPS1缺陷与基因编辑</span></div>
-  <div class="card warn">
-    <div class="label">CPS1缺陷</div>
-    <p><strong>酶</strong>：氨甲酰磷酸合成酶1（CPS1），尿素循环关键酶。</p>
-    <p><strong>缺陷后果</strong>：高氨血症。新生儿表现：肌张力高、手臂抬起僵硬、颤抖、血糖升高。</p>
-    <p><strong>传统治疗</strong>：严格低蛋白饮食（新生儿需高蛋白，非常困难）+ 肝移植。不治疗高死亡率，存活者神经系统后遗症。</p>
-  </div>
+<div class="page"><h2 class="h2">8. α氨基酸与L构型</h2>
+<p class="lead">组成蛋白质须为L型α氨基酸。</p>
+<ul class="kv">
+<li>氨基酸有氨基和羧基 <span class="loc">〔说话人1 34:15〕</span></li>
+<li>组成蛋白质者为α氨基酸氨基羧基同在α碳 <span class="loc">〔说话人1 34:31〕</span></li>
+<li>组成蛋白质的氨基酸都是阿尔法氨基酸 <span class="loc">〔说话人1 34:31〕</span></li>
+<li>L与D为构型相对参照L甘油醛 <span class="loc">〔说话人1 36:33〕</span></li>
+<li>α碳连四不同基团为手性中心 <span class="loc">〔说话人1 36:33〕</span></li>
+<li>生物界蛋白质由L型α氨基酸组成 <span class="loc">〔说话人1 39:00〕</span></li>
+<li>D型氨基酸掺入会使结构全变做不到 <span class="loc">〔说话人1 39:00〕</span></li>
+<li>甘氨酸侧链R为氢较特殊 <span class="loc">〔说话人1 38:32〕</span></li>
+<li>20种组成蛋白质的氨基酸 <span class="loc">〔说话人1 40:08〕</span></li>
+</ul></div>
 
-  <div class="card gold">
-    <div class="label">基因编辑治疗（2023年首例）</div>
-    <p>全世界第一例<strong>个性化定制基因编辑疗法</strong>，针对CPS1缺陷新生儿。</p>
-    <p>治疗后恢复为健康正常儿童，随访无额外副作用。技术基础：CRISPR等。</p>
-  </div>
-  <div class="hl"><span class="tag">注意</span>基因编辑仍有较高风险，国内也有患者冒险尝试，很多在调查中。需关注技术和伦理问题。</div>
+<div class="page"><h2 class="h2">9. 镜像生物学</h2>
+<p class="lead">D型肽药抗蛋白酶降解；镜像生命有风险。</p>
+<ul class="kv">
+<li>科学家探索镜像生物学用D型氨基酸 <span class="loc">〔说话人1 40:08〕</span></li>
+<li>D型肽不易被识别L型蛋白的蛋白酶分解 <span class="loc">〔说话人1 40:08〕</span></li>
+<li>可延长肽类药物半衰期 <span class="loc">〔说话人1 40:08〕</span></li>
+<li>完全镜像生命体系可能带来不可控风险 <span class="loc">〔说话人1 40:08〕</span></li>
+</ul></div>
 
-  <div class="footer"><span>生化 · 绪论与蛋白质概述</span><span>第 3 页</span></div>
-</div>
+<div class="page"><h2 class="h2">10. 二十种氨基酸分类</h2>
+<p class="lead">表1-1五类：先记酸碱芳香再分极性。</p>
+<table class="tbl"><tr><th>类别</th><th>成员</th><th>依据</th></tr>
+<tr><td>酸性</td><td>Asp、Glu</td><td>侧链羧基</td></tr>
+<tr><td>碱性</td><td>Lys、Arg、His</td><td>侧链正电</td></tr>
+<tr><td>芳香族</td><td>Phe、Tyr、Trp</td><td>苯环</td></tr>
+<tr><td>极性中性</td><td>Ser、Thr、Asn、Gln、Cys</td><td>羟基酰氨基巯基</td></tr>
+<tr><td>非极性</td><td>其余脂肪族</td><td>疏水侧链</td></tr></table>
+<ul class="kv">
+<li>两个酸性的氨基酸侧链当中有羧基 <span class="loc">〔说话人1 45:21〕</span></li>
+<li>中文英文三字母以及单字母的缩写 <span class="loc">〔说话人1 40:08〕</span></li>
+<li>赖氨酸和精氨酸是代表氨基 <span class="loc">〔说话人1 45:21〕</span></li>
+<li>碱性赖氨酸精氨酸组氨酸侧链带正电荷 <span class="loc">〔说话人1 45:21〕</span></li>
+<li>组氨酸咪唑基团 <span class="loc">〔说话人1 45:21〕</span></li>
+<li>直接带有一个苯环的就是苯丙氨酸 <span class="loc">〔说话人1 45:21〕</span></li>
+<li>丝氨酸苏氨酸侧链羟基属极性中性 <span class="loc">〔说话人1 47:43〕</span></li>
+<li>天冬酰胺谷氨酰胺为酰氨基 <span class="loc">〔说话人1 47:43〕</span></li>
+<li>半胱氨酸巯基活泼属极性中性 <span class="loc">〔说话人1 47:43〕</span></li>
+<li>其余多为非极性脂肪族氨基酸 <span class="loc">〔说话人1 47:43〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★表1-1二十种氨基酸分五大类要牢牢记在心里。 <span class="loc">〔说话人1 40:08〕</span></div></div>
 
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">05</span><span class="chapter-title">基因组学与罕见病</span></div>
-  <table>
-    <tr><th>时期</th><th>时间</th><th>费用</th></tr>
-    <tr><td>人类基因组计划（1990-2003）</td><td>十几年</td><td>约30亿美元（多国合作）</td></tr>
-    <tr><td>现在</td><td>约1天</td><td>约100美元</td></tr>
-  </table>
-  <div class="hl"><span class="tag">临床应用</span>危重新生儿快速全基因组测序已成为新的专家共识。测序成本降低使遗传病可早期诊断、精准治疗。</div>
+<div class="page"><h2 class="h2">11. 突变表示、脯氨酸与半胱氨酸</h2>
+<ul class="kv">
+<li>镰刀贫血谷氨酸变缬氨酸酸性变非极性 <span class="loc">〔说话人1 49:22〕</span></li>
+<li>文献写原氨基酸位号突变后如V600E <span class="loc">〔说话人1 49:22〕</span></li>
+<li>BRAF癌基因600位缬变谷氨酸性质大变 <span class="loc">〔说话人1 49:22〕</span></li>
+<li>酪氨酸丝氨酸苏氨酸可磷酸化信号转导 <span class="loc">〔说话人1 54:21〕</span></li>
+<li>位点突变可消羟基研究磷酸化功能 <span class="loc">〔说话人1 54:21〕</span></li>
+<li>脯氨酸为亚氨基酸侧链成环结构特殊 <span class="loc">〔说话人1 54:21〕</span></li>
+<li>脯氨酸难形成主链氢键影响二级结构 <span class="loc">〔说话人1 54:21〕</span></li>
+<li>半胱氨酸巯基在氧化环境可形成二硫键 <span class="loc">〔说话人1 58:40〕</span></li>
+<li>二硫键需两巯基空间邻近再加氧化 <span class="loc">〔说话人1 58:40〕</span></li>
+<li>二硫键对蛋白质结构与功能很重要 <span class="loc">〔说话人1 58:40〕</span></li>
+</ul></div>
 
-  <h3>罕见病现状</h3>
-  <div class="card concl">
-    <div class="label">关键数据</div>
-    <p>• 全世界约 <strong>7000种</strong> 罕见病</p>
-    <p>• <strong>80%</strong> 由基因缺陷导致（遗传病）</p>
-    <p>• 约1/3医生不了解罕见病</p>
-    <p>• 每个患者平均：看 <strong>8个医生</strong>、<strong>3次误诊</strong>、<strong>7年多</strong>才确诊</p>
-  </div>
+<div class="page"><h2 class="h2">12. 氨基酸理化性质</h2>
+<p class="lead">两性解离与pI；280nm紫外；茚三酮570nm。</p>
+<ul class="kv">
+<li>氨基羧基可两性解离 <span class="loc">〔说话人1 01:00:38〕</span></li>
+<li>特定pH下净电荷为零为等电点pI <span class="loc">〔说话人1 01:00:38〕</span></li>
+<li>pI为两解离pKa的平均值 <span class="loc">〔说话人1 01:00:38〕</span></li>
+<li>血压值显著小于7的是酸性氨基酸 <span class="loc">〔说话人1 01:00:38〕</span></li>
+<li>共轭双键的结构可以吸收紫外线 <span class="loc">〔说话人1 01:04:38〕</span></li>
+<li>主要吸收峰大概在280纳米 <span class="loc">〔说话人1 01:06:17〕</span></li>
+<li>最强的是色氨酸最少就是丙氨酸 <span class="loc">〔说话人1 01:06:17〕</span></li>
+<li>280纳米的吸收来测定样品蛋白质浓度 <span class="loc">〔说话人1 01:06:17〕</span></li>
+<li>生成带有蓝紫色的物质 <span class="loc">〔说话人1 01:06:17〕</span></li>
+<li>最大吸收峰是570纳米 <span class="loc">〔说话人1 01:06:17〕</span></li>
+<li>分光光度计在特定波长之下能够吸收多少光 <span class="loc">〔说话人1 01:09:48〕</span></li>
+<li>核酸在260纳米来进行测定 <span class="loc">〔说话人1 01:09:48〕</span></li>
+</ul>
+<table class="tbl"><tr><th>性质</th><th>波长/要点</th></tr>
+<tr><td>紫外吸收</td><td>约280 nm（Trp/Tyr）</td></tr>
+<tr><td>茚三酮</td><td>570 nm 蓝紫色</td></tr></table></div>
 
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">06</span><span class="chapter-title">蛋白质功能与核心逻辑</span></div>
-  <table>
-    <tr><th>功能类别</th><th>例子</th></tr>
-    <tr><td><strong>物质运输</strong></td><td>硫胺素转运蛋白1、血红蛋白、载体蛋白</td></tr>
-    <tr><td><strong>酶催化</strong></td><td>CPS1、丙酮酸脱氢酶复合体</td></tr>
-    <tr><td>结构支持</td><td>胶原蛋白、角蛋白</td></tr>
-    <tr><td>免疫防御</td><td>抗体、补体</td></tr>
-    <tr><td>信号传导</td><td>受体、激素蛋白</td></tr>
-    <tr><td>运动</td><td>肌动蛋白、肌球蛋白</td></tr>
-  </table>
+<div class="page"><h2 class="h2">13. 肽键与蛋白质定义</h2>
+<ul class="kv">
+<li>氨基酸氨基与羧基脱水缩合形成肽键 <span class="loc">〔说话人1 01:11:26〕</span></li>
+<li>侧链羧基与氨基空间近也可成肽键 <span class="loc">〔说话人1 01:11:26〕</span></li>
+<li>游离氨基叫做氨基末端也叫做N端 <span class="loc">〔说话人1 01:11:26〕</span></li>
+<li>从n端来说到c端的这样一个顺序 <span class="loc">〔说话人1 01:11:26〕</span></li>
+<li>链中为氨基酸残基 <span class="loc">〔说话人1 01:15:22〕</span></li>
+<li>2至20个氨基酸称寡肽 <span class="loc">〔说话人1 01:16:41〕</span></li>
+<li>20个以上称多肽 <span class="loc">〔说话人1 01:16:41〕</span></li>
+<li>蛋白质为多肽折叠特定结构具生物学功能 <span class="loc">〔说话人1 01:16:41〕</span></li>
+<li>一般50个残基以上称蛋白质 <span class="loc">〔说话人1 01:16:41〕</span></li>
+</ul></div>
 
-  <div class="card teal">
-    <div class="label">核心逻辑链</div>
-    <p><strong>基因 → 蛋白质 → 功能 → 器官 → 人体健康</strong></p>
-    <p>每一步发生障碍都可能导致疾病；反过来，疾病必然源于某一步的障碍，可以从病因出发解决问题。</p>
-  </div>
+<div class="page"><h2 class="h2">14. 谷胱甘肽与GST标签</h2>
+<ul class="kv">
+<li>生物活性肽谷胱甘肽由谷氨酸半胱氨酸甘氨酸 <span class="loc">〔说话人1 01:19:49〕</span></li>
+<li>谷氨酸侧链γ羧基与半胱氨酸形成γ肽键 <span class="loc">〔说话人1 01:19:49〕</span></li>
+<li>GSH中SH表示半胱氨酸巯基 <span class="loc">〔说话人1 01:21:27〕</span></li>
+<li>两分子GSH巯基氧化成GSSG二硫键 <span class="loc">〔说话人1 01:21:27〕</span></li>
+<li>还原型GSH可还原过氧化氢抗氧化 <span class="loc">〔说话人1 01:21:27〕</span></li>
+<li>氧化型GSSG可在还原剂作用下回到GSH <span class="loc">〔说话人1 01:21:27〕</span></li>
+<li>GST蛋白可结合谷胱甘肽作融合标签纯化 <span class="loc">〔说话人1 01:23:57〕</span></li>
+</ul></div>
 
-  <div class="footer"><span>生化 · 绪论与蛋白质概述</span><span>第 4 页</span></div>
-</div>
+<div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>生化三大部分与授课教师 <span class="loc">〔说话人1 02:22〕</span></li>
+<li>7000种罕见病80%基因缺陷8医生3误诊7年 <span class="loc">〔说话人1 06:29〕</span></li>
+<li>SLC19A2→硫胺素转运→口服维生素B1 <span class="loc">〔说话人1 12:05〕</span></li>
+<li>TPP转移醛基与丙酮酸脱氢酶复合体 <span class="loc">〔说话人1 09:35〕</span></li>
+<li>成绩60%期末25%慕课15%汇报 <span class="loc">〔说话人1 14:37〕</span></li>
+<li>蛋白质氮16%与33.125计算 <span class="loc">〔说话人1 30:33〕</span></li>
+<li>L型α氨基酸20种五类分类 <span class="loc">〔说话人1 45:21〕</span></li>
+<li>镰刀贫血谷氨酸变缬氨酸 <span class="loc">〔说话人1 24:19〕</span></li>
+<li>pI与280nm与茚三酮570nm <span class="loc">〔说话人1 01:00:38〕</span></li>
+<li>GSH/GSSG与γ肽键 <span class="loc">〔说话人1 01:19:49〕</span></li>
+</ul></div>
 
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">07</span><span class="chapter-title">易错点与回忆题</span></div>
-  <ol>
-    <li>生化三大部分：生物分子结构功能、代谢与调节、分子生物学。</li>
-    <li><strong>维生素B1 = 硫胺素</strong>，活性形式是<strong>焦磷酸硫胺素（TPP）</strong>，功能是<strong>转移醛基</strong>。</li>
-    <li><strong>丙酮酸脱氢酶复合体</strong>需要TPP，催化丙酮酸→乙酰CoA，是糖代谢关键步骤。</li>
-    <li><strong>SLC19A2</strong>编码硫胺素转运蛋白1，缺陷→硫胺素反应性巨幼细胞贫血，治疗=口服维生素B1。</li>
-    <li><strong>CPS1</strong>是尿素循环关键酶，缺陷→高氨血症，可基因编辑治疗。</li>
-    <li>罕见病：7000种、80%遗传、8个医生、3次误诊、7年确诊。</li>
-    <li>人类基因组计划：30亿美元/十几年 → 现在100美元/1天。</li>
-    <li>多种症状同时出现→考虑共同病因（一元论）。</li>
-  </ol>
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>基因直接发挥功能</td><td>基因编码蛋白质，蛋白执行功能 <span class="loc">〔说话人1 08:48〕</span></td></tr>
+<tr><td>测氮一定等于蛋白</td><td>非蛋白氮如三聚氰胺可虚高 <span class="loc">〔说话人1 32:03〕</span></td></tr>
+<tr><td>有氨基羧基即可入蛋白</td><td>须L型α氨基酸 <span class="loc">〔说话人1 39:00〕</span></td></tr>
+<tr><td>L/D直接等于旋光方向</td><td>L/D相对构型参照L甘油醛 <span class="loc">〔说话人1 36:33〕</span></td></tr>
+<tr><td>转写lslc19a2</td><td>实为SLC19A2（整理订正）</td></tr>
+<tr><td>焦煤酸的安全</td><td>转写为焦磷酸硫胺素，实为TPP（整理）</td></tr>
+</table></div>
 
-  <h3>主动回忆题</h3>
-  <div class="card">
-    <p><strong>Q1. 为什么SLC19A2缺陷导致多系统症状？</strong></p>
-    <p>SLC19A2编码硫胺素转运蛋白1，缺陷→维生素B1摄取不足→TPP减少→丙酮酸脱氢酶复合体活性↓→三羧酸循环障碍→能量代谢紊乱→影响造血、胰岛、听觉神经等高耗能系统。</p>
-  </div>
-  <div class="card">
-    <p><strong>Q2. 为什么口服维生素B1能治疗硫胺素反应性巨幼细胞贫血？</strong></p>
-    <p>转运蛋白缺陷使效率降低但非完全失活。口服大剂量维生素B1提高底物浓度，可部分代偿转运效率不足，使细胞获得足够硫胺素。</p>
-  </div>
-  <div class="card">
-    <p><strong>Q3. 用CPS1说明基因→蛋白→功能→疾病的逻辑链。</strong></p>
-    <p>CPS1基因突变→CPS1蛋白缺乏→尿素循环障碍→血氨升高（高氨血症）→神经系统损伤。治疗：低蛋白饮食、肝移植、或基因编辑修复突变。</p>
-  </div>
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>课程三大部分</td><td>§1</td><td>〔说话人1 02:22〕</td><td>简答</td></tr>
+<tr><td>基因组计划与测序成本</td><td>§2</td><td>〔说话人1 06:29〕</td><td>填空</td></tr>
+<tr><td>硫胺素案例机制</td><td>§3</td><td>〔说话人1 09:35〕</td><td>病例分析</td></tr>
+<tr><td>成绩构成与慕课</td><td>§5</td><td>〔说话人1 14:37〕</td><td>单选</td></tr>
+<tr><td>测氮与16%</td><td>§7</td><td>〔说话人1 30:33〕</td><td>计算</td></tr>
+<tr><td>氨基酸五类</td><td>§10</td><td>〔说话人1 45:21〕</td><td>默写</td></tr>
+<tr><td>理化性质三要点</td><td>§12</td><td>〔说话人1 01:11:26〕</td><td>简答</td></tr>
+<tr><td>谷胱甘肽氧化还原</td><td>§14</td><td>〔说话人1 01:21:27〕</td><td>简答</td></tr>
+</table></div>
 
-  <div style="margin-top:6mm;text-align:center;color:var(--muted);font-size:9pt;">— 生物化学 · 第1-2节 · 完 —</div>
-  <div class="footer"><span>生化 · 绪论与蛋白质概述</span><span>第 5 页</span></div>
-</div>
-
-</body>
-</html>
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>大二生化课是医学教育金字塔底层基础</td><td>结论</td><td>§1</td><td>〔说话人1 00:00〕</td></tr>
+<tr><td>2</td><td>生化与分子生物学课分三大部分</td><td>分类</td><td>§1</td><td>〔说话人1 02:22〕</td></tr>
+<tr><td>3</td><td>第一部分生物分子结构与功能约4章</td><td>分类</td><td>§1</td><td>〔说话人1 02:22〕</td></tr>
+<tr><td>4</td><td>第二部分代谢与调节多章</td><td>分类</td><td>§1</td><td>〔说话人1 02:22〕</td></tr>
+<tr><td>5</td><td>第三部分分子生物学</td><td>分类</td><td>§1</td><td>〔说话人1 02:22〕</td></tr>
+<tr><td>6</td><td>前两大部分合称生物化学</td><td>术语</td><td>§1</td><td>〔说话人1 02:22〕</td></tr>
+<tr><td>7</td><td>蛋白质结构功能由本教师讲授</td><td>安排</td><td>§1</td><td>〔说话人1 02:22〕</td></tr>
+<tr><td>8</td><td>糖脂代谢陈军教授</td><td>安排</td><td>§1</td><td>〔说话人1 02:22〕</td></tr>
+<tr><td>9</td><td>代谢调节宋谭静教授</td><td>安排</td><td>§1</td><td>〔说话人1 02:22〕</td></tr>
+<tr><td>10</td><td>分子生物学于梦君老师</td><td>安排</td><td>§1</td><td>〔说话人1 02:22〕</td></tr>
+<tr><td>11</td><td>多症状同时出现应找共同病因一元论</td><td>临床</td><td>§2</td><td>〔说话人1 02:22〕</td></tr>
+<tr><td>12</td><td>人类基因组计划历时十几年</td><td>数字</td><td>§2</td><td>〔说话人1 06:07〕</td></tr>
+<tr><td>13</td><td>人类基因组计划约30多亿美元多国合作</td><td>数字</td><td>§2</td><td>〔说话人1 06:07〕</td></tr>
+<tr><td>14</td><td>现在全基因组测序约一天完成</td><td>数字</td><td>§2</td><td>〔说话人1 06:29〕</td></tr>
+<tr><td>15</td><td>现在测序费用约100美元量级</td><td>数字</td><td>§2</td><td>〔说话人1 06:29〕</td></tr>
+<tr><td>16</td><td>全世界约7000种罕见病</td><td>数字</td><td>§2</td><td>〔说话人1 08:48〕</td></tr>
+<tr><td>17</td><td>罕见病约80%为基因缺陷遗传病</td><td>数字</td><td>§2</td><td>〔说话人1 08:48〕</td></tr>
+<tr><td>18</td><td>罕见病患者平均看8个医生3次误诊7年确诊</td><td>数字</td><td>§2</td><td>〔说话人1 08:48〕</td></tr>
+<tr><td>19</td><td>危重新生儿快速全基因组测序为新专家共识</td><td>临床</td><td>§2</td><td>〔说话人1 08:48〕</td></tr>
+<tr><td>20</td><td>全基因测序发现基因缺陷SLC19A2</td><td>机制</td><td>§3</td><td>〔说话人1 06:29〕</td></tr>
+<tr><td>21</td><td>基因主要功能是能够进行编码蛋白</td><td>结论</td><td>§3</td><td>〔说话人1 06:29〕</td></tr>
+<tr><td>22</td><td>硫胺素实际上就是维生素</td><td>术语</td><td>§3</td><td>〔说话人1 09:19〕</td></tr>
+<tr><td>23</td><td>肝内硫胺素代谢为焦磷酸硫胺素TPP</td><td>机制</td><td>§3</td><td>〔说话人1 09:35〕</td></tr>
+<tr><td>24</td><td>TPP是重要辅因子主要转移醛基</td><td>机制</td><td>§3</td><td>〔说话人1 09:35〕</td></tr>
+<tr><td>25</td><td>丙酮酸脱氢酶复合体需TPP</td><td>机制</td><td>§3</td><td>〔说话人1 09:35〕</td></tr>
+<tr><td>26</td><td>催化丙酮酸变乙酰辅酶A进三羧酸循环</td><td>机制</td><td>§3</td><td>〔说话人1 09:35〕</td></tr>
+<tr><td>27</td><td>糖代谢是物质能量代谢核心</td><td>结论</td><td>§3</td><td>〔说话人1 09:35〕</td></tr>
+<tr><td>28</td><td>硫胺素反应性巨幼细胞贫血诊断</td><td>临床</td><td>§3</td><td>〔说话人1 09:19〕</td></tr>
+<tr><td>29</td><td>口服维生素B1可部分代偿转运缺陷</td><td>治疗</td><td>§3</td><td>〔说话人1 12:05〕</td></tr>
+<tr><td>30</td><td>耳聋因长期器质性损伤较难恢复</td><td>临床</td><td>§3</td><td>〔说话人1 12:18〕</td></tr>
+<tr><td>31</td><td>氨甲酰磷酸合成酶一蛋白质缺乏</td><td>临床</td><td>§4</td><td>〔说话人1 12:18〕</td></tr>
+<tr><td>32</td><td>需严格低蛋白饮食与肝移植</td><td>治疗</td><td>§4</td><td>〔说话人1 14:37〕</td></tr>
+<tr><td>33</td><td>全球第一例个性化定制基因编辑疗法</td><td>临床</td><td>§4</td><td>〔说话人1 14:37〕</td></tr>
+<tr><td>34</td><td>基因编辑仍有较高风险需关注伦理</td><td>考点</td><td>§4</td><td>〔说话人1 14:37〕</td></tr>
+<tr><td>35</td><td>主教材第十版生物化学</td><td>元信息</td><td>§5</td><td>〔说话人1 14:37〕</td></tr>
+<tr><td>36</td><td>推荐人卫第四版与2016实验教材</td><td>元信息</td><td>§5</td><td>〔说话人1 14:37〕</td></tr>
+<tr><td>37</td><td>期末笔试闭卷占60%</td><td>数字</td><td>§5</td><td>〔说话人1 14:37〕</td></tr>
+<tr><td>38</td><td>慕课成绩占25%含6次单元测验</td><td>数字</td><td>§5</td><td>〔说话人1 14:37〕</td></tr>
+<tr><td>39</td><td>课程学习汇报占15%</td><td>数字</td><td>§5</td><td>〔说话人1 14:37〕</td></tr>
+<tr><td>40</td><td>须加入慕课堂且固定一种登录账号</td><td>考点</td><td>§5</td><td>〔说话人1 14:37〕</td></tr>
+<tr><td>41</td><td>慕课昵称写清班级学号</td><td>考点</td><td>§5</td><td>〔说话人1 14:37〕</td></tr>
+<tr><td>42</td><td>镰刀型红细胞贫血为本章引子</td><td>临床</td><td>§6</td><td>〔说话人1 22:33〕</td></tr>
+<tr><td>43</td><td>血红蛋白编码基因单碱基突变</td><td>机制</td><td>§6</td><td>〔说话人1 23:36〕</td></tr>
+<tr><td>44</td><td>谷氨酸变为缬氨酸致镰刀型红细胞</td><td>机制</td><td>§6</td><td>〔说话人1 24:19〕</td></tr>
+<tr><td>45</td><td>镰刀型红细胞硬脆穿毛细血管易破碎贫血</td><td>机制</td><td>§6</td><td>〔说话人1 24:19〕</td></tr>
+<tr><td>46</td><td>本章五节分子组成结构功能理化性质</td><td>分类</td><td>§6</td><td>〔说话人1 24:19〕</td></tr>
+<tr><td>47</td><td>蛋白质元素碳氢氧氮硫等以碳为主</td><td>组成</td><td>§7</td><td>〔说话人1 27:34〕</td></tr>
+<tr><td>48</td><td>蛋白质区别于糖脂的特征是氮元素</td><td>考点</td><td>§7</td><td>〔说话人1 27:34〕</td></tr>
+<tr><td>49</td><td>蛋白质氮含量平均约16%较恒定</td><td>数字</td><td>§7</td><td>〔说话人1 27:34〕</td></tr>
+<tr><td>50</td><td>教材第八页公式测氮推算蛋白质含量</td><td>方法</td><td>§7</td><td>〔说话人1 27:34〕</td></tr>
+<tr><td>51</td><td>每克样品含氮53毫克算得约33.125克蛋白每百克</td><td>计算</td><td>§7</td><td>〔说话人1 30:33〕</td></tr>
+<tr><td>52</td><td>三聚氰胺高氮非蛋白掺假致奶粉事件</td><td>临床</td><td>§7</td><td>〔说话人1 32:03〕</td></tr>
+<tr><td>53</td><td>需更特异蛋白质检测方法</td><td>结论</td><td>§7</td><td>〔说话人1 32:03〕</td></tr>
+<tr><td>54</td><td>氨基酸含氨基与羧基</td><td>定义</td><td>§8</td><td>〔说话人1 34:15〕</td></tr>
+<tr><td>55</td><td>组成蛋白质者为α氨基酸</td><td>定义</td><td>§8</td><td>〔说话人1 34:31〕</td></tr>
+<tr><td>56</td><td>氨基羧基连在同一α碳上</td><td>结构</td><td>§8</td><td>〔说话人1 34:31〕</td></tr>
+<tr><td>57</td><td>英文amino acid需掌握</td><td>术语</td><td>§8</td><td>〔说话人1 35:51〕</td></tr>
+<tr><td>58</td><td>L型与D型为镜像不能重叠</td><td>结构</td><td>§8</td><td>〔说话人1 36:33〕</td></tr>
+<tr><td>59</td><td>L型参照L甘油醛羟基在左</td><td>结构</td><td>§8</td><td>〔说话人1 36:33〕</td></tr>
+<tr><td>60</td><td>生物界蛋白质由L型α氨基酸组成</td><td>结论</td><td>§8</td><td>〔说话人1 39:00〕</td></tr>
+<tr><td>61</td><td>D型氨基酸不能掺入正常蛋白质</td><td>易错</td><td>§8</td><td>〔说话人1 39:00〕</td></tr>
+<tr><td>62</td><td>甘氨酸R侧链为氢较特殊</td><td>结构</td><td>§8</td><td>〔说话人1 38:32〕</td></tr>
+<tr><td>63</td><td>组成蛋白质标准氨基酸20种</td><td>数字</td><td>§8</td><td>〔说话人1 38:32〕</td></tr>
+<tr><td>64</td><td>镜像生物学用D型氨基酸延长肽药半衰期</td><td>延伸</td><td>§9</td><td>〔说话人1 40:08〕</td></tr>
+<tr><td>65</td><td>D型肽不易被蛋白酶降解</td><td>机制</td><td>§9</td><td>〔说话人1 40:08〕</td></tr>
+<tr><td>66</td><td>镜像生命创造存在风险争议</td><td>考点</td><td>§9</td><td>〔说话人1 40:08〕</td></tr>
+<tr><td>67</td><td>表1-1二十种氨基酸分五大类</td><td>分类</td><td>§10</td><td>〔说话人1 45:21〕</td></tr>
+<tr><td>68</td><td>酸性氨基酸天冬氨酸谷氨酸各一羧基侧链</td><td>分类</td><td>§10</td><td>〔说话人1 45:21〕</td></tr>
+<tr><td>69</td><td>碱性赖氨酸精氨酸组氨酸侧链带正电</td><td>分类</td><td>§10</td><td>〔说话人1 45:21〕</td></tr>
+<tr><td>70</td><td>芳香族苯丙氨酸酪氨酸色氨酸含苯环</td><td>分类</td><td>§10</td><td>〔说话人1 47:43〕</td></tr>
+<tr><td>71</td><td>极性中性丝苏羟基天冬酰胺谷氨酰胺巯基</td><td>分类</td><td>§10</td><td>〔说话人1 47:43〕</td></tr>
+<tr><td>72</td><td>非极性脂肪族为最多一类</td><td>分类</td><td>§10</td><td>〔说话人1 47:43〕</td></tr>
+<tr><td>73</td><td>镰刀贫血谷氨酸变缬氨酸由酸性变非极性</td><td>机制</td><td>§11</td><td>〔说话人1 49:22〕</td></tr>
+<tr><td>74</td><td>突变书写原氨基酸位号突变后如V600E</td><td>方法</td><td>§11</td><td>〔说话人1 49:22〕</td></tr>
+<tr><td>75</td><td>BRAF癌基因缬600变谷氨酸性质大变</td><td>举例</td><td>§11</td><td>〔说话人1 49:22〕</td></tr>
+<tr><td>76</td><td>酪氨酸磷酸化是重要信号转导修饰</td><td>机制</td><td>§11</td><td>〔说话人1 54:21〕</td></tr>
+<tr><td>77</td><td>脯氨酸为亚氨基酸侧链成环</td><td>结构</td><td>§11</td><td>〔说话人1 54:21〕</td></tr>
+<tr><td>78</td><td>脯氨酸难形成常规主链氢键影响二级结构</td><td>结构</td><td>§11</td><td>〔说话人1 54:21〕</td></tr>
+<tr><td>79</td><td>半胱氨酸巯基可氧化形成二硫键</td><td>机制</td><td>§11</td><td>〔说话人1 58:40〕</td></tr>
+<tr><td>80</td><td>二硫键需空间邻近加氧化环境</td><td>条件</td><td>§11</td><td>〔说话人1 58:40〕</td></tr>
+<tr><td>81</td><td>氨基酸两性解离有等电点pI</td><td>性质</td><td>§12</td><td>〔说话人1 01:00:38〕</td></tr>
+<tr><td>82</td><td>pI为两性离子时pH取两pKa平均值</td><td>公式</td><td>§12</td><td>〔说话人1 01:00:38〕</td></tr>
+<tr><td>83</td><td>酸性氨基酸pI显著小于7碱性大于7</td><td>结论</td><td>§12</td><td>〔说话人1 01:03:25〕</td></tr>
+<tr><td>84</td><td>芳香族共轭双键可紫外吸收</td><td>性质</td><td>§12</td><td>〔说话人1 01:04:38〕</td></tr>
+<tr><td>85</td><td>色氨酸酪氨酸吸收峰约280纳米</td><td>数字</td><td>§12</td><td>〔说话人1 01:05:22〕</td></tr>
+<tr><td>86</td><td>色氨酸紫外吸收最强苯丙氨酸较弱</td><td>对比</td><td>§12</td><td>〔说话人1 01:06:11〕</td></tr>
+<tr><td>87</td><td>纯化蛋白可用280纳米测浓度</td><td>方法</td><td>§12</td><td>〔说话人1 01:06:17〕</td></tr>
+<tr><td>88</td><td>蓝紫色物质最大吸收峰570纳米</td><td>性质</td><td>§12</td><td>〔说话人1 01:06:17〕</td></tr>
+<tr><td>89</td><td>分光光度计测特定波长吸光度</td><td>仪器</td><td>§12</td><td>〔说话人1 01:09:48〕</td></tr>
+<tr><td>90</td><td>核酸常用260纳米测浓度</td><td>关联</td><td>§12</td><td>〔说话人1 01:11:26〕</td></tr>
+<tr><td>91</td><td>氨基酸缩合脱水形成肽键</td><td>机制</td><td>§13</td><td>〔说话人1 01:11:26〕</td></tr>
+<tr><td>92</td><td>肽链有N端氨基与C端羧基</td><td>结构</td><td>§13</td><td>〔说话人1 01:15:22〕</td></tr>
+<tr><td>93</td><td>序列书写从N端到C端</td><td>规则</td><td>§13</td><td>〔说话人1 01:16:41〕</td></tr>
+<tr><td>94</td><td>链中为氨基酸残基非完整氨基酸</td><td>术语</td><td>§13</td><td>〔说话人1 01:15:22〕</td></tr>
+<tr><td>95</td><td>2至20个氨基酸为寡肽</td><td>定义</td><td>§13</td><td>〔说话人1 01:16:41〕</td></tr>
+<tr><td>96</td><td>20个以上为多肽</td><td>定义</td><td>§13</td><td>〔说话人1 01:16:41〕</td></tr>
+<tr><td>97</td><td>蛋白质多肽折叠特定结构具生物学功能</td><td>定义</td><td>§13</td><td>〔说话人1 01:16:41〕</td></tr>
+<tr><td>98</td><td>一般50个残基以上称蛋白质</td><td>数字</td><td>§13</td><td>〔说话人1 01:16:41〕</td></tr>
+<tr><td>99</td><td>谷胱甘肽GSH三肽谷半胱甘</td><td>定义</td><td>§14</td><td>〔说话人1 01:19:49〕</td></tr>
+<tr><td>100</td><td>谷氨酸侧链γ羧基形成γ肽键</td><td>结构</td><td>§14</td><td>〔说话人1 01:19:49〕</td></tr>
+<tr><td>101</td><td>GSH中SH表示半胱氨酸巯基</td><td>术语</td><td>§14</td><td>〔说话人1 01:21:27〕</td></tr>
+<tr><td>102</td><td>氧化型GSSG两分子谷胱甘肽二硫键连接</td><td>机制</td><td>§14</td><td>〔说话人1 01:21:27〕</td></tr>
+<tr><td>103</td><td>还原型GSH可清除过氧化氢</td><td>功能</td><td>§14</td><td>〔说话人1 01:21:27〕</td></tr>
+<tr><td>104</td><td>GST融合标签结合谷胱甘肽用于蛋白纯化</td><td>技术</td><td>§14</td><td>〔说话人1 01:23:57〕</td></tr>
+<tr><td>105</td><td>基因到蛋白质到功能障碍即疾病</td><td>逻辑</td><td>§1</td><td>〔说话人1 12:18〕</td></tr>
+<tr><td>106</td><td>蛋白质重要功能包括物质运输</td><td>功能</td><td>§3</td><td>〔说话人1 09:12〕</td></tr>
+<tr><td>107</td><td>CRISPR等基因编辑为分子生物学内容</td><td>关联</td><td>§4</td><td>〔说话人1 14:37〕</td></tr>
+<tr><td>108</td><td>英文习题集与Lehninger类参考书推荐</td><td>元信息</td><td>§5</td><td>〔说话人1 14:37〕</td></tr>
+</table>
+<p class="foot">附录 D 共 108 条，与 recording.md 讲授内容逐条对应。</p></div>
+</body></html>

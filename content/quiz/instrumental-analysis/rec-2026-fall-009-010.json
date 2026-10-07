@@ -9,9 +9,9 @@
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-009-010",
-    "revision": 1,
-    "recordingHash": "",
-    "notesTextHash": ""
+    "revision": 3,
+    "recordingHash": "e4d4345849fcd9764794f9f0b54fba73bf7fbc57efa83f55de335add89a52694",
+    "notesTextHash": "389079b881654e12a10fbae60091a729501b6e8f80297f32a045d809c0b21596"
   },
   "questions": [
     {
@@ -23,7 +23,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "紫外与可见光波长范围"
+        "label": "10. 紫外可见分光光度计构造 · 紫外与可见光波长范围"
       },
       "stem": "紫外可见分光光度法中，紫外波段所对应的波长范围是下列哪一项？",
       "options": [
@@ -45,7 +45,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "朗伯比尔定律数学表达式"
+        "label": "9. 朗伯比尔定律的偏离 · 朗伯比尔定律数学表达式"
       },
       "stem": "朗伯比尔定律的正确数学表达式是下列哪一个？",
       "options": [
@@ -89,7 +89,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "紫外可见分光光度法的光谱分类归属"
+        "label": "10. 紫外可见分光光度计构造 · 紫外可见分光光度法的光谱分类归属"
       },
       "stem": "按光谱产生机理分类，紫外可见分光光度法属于下列哪一类？",
       "options": [
@@ -133,7 +133,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "偏离朗伯比尔定律的光学因素"
+        "label": "9. 朗伯比尔定律的偏离 · 偏离朗伯比尔定律的光学因素"
       },
       "stem": "下列各项中，全部属于偏离朗伯比尔定律的“光学因素”的一组是哪一项？",
       "options": [
@@ -155,7 +155,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "杂散光作为主要偏离因素"
+        "label": "9. 朗伯比尔定律的偏离 · 杂散光作为主要偏离因素"
       },
       "stem": "在朗伯比尔定律的各类偏离因素中，被课堂明确指为“造成偏离的主要因素”的是下列哪一项？",
       "options": [
@@ -177,7 +177,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "摩尔吸光系数与灵敏度判断标准"
+        "label": "8. 吸光系数、灵敏度与定量方法 · 摩尔吸光系数与灵敏度判断标准"
       },
       "stem": "课堂以吸光系数 K 的数量级粗略判断检测灵敏度。按这一标准，下列哪一项属于“灵敏度高”？",
       "options": [
@@ -221,7 +221,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "朗伯比尔定律不适用于高浓度的原因"
+        "label": "9. 朗伯比尔定律的偏离 · 朗伯比尔定律不适用于高浓度的原因"
       },
       "stem": "课堂强调朗伯比尔定律不适合高浓度溶液。从非单色光角度看，其根本原因是下列哪一项？",
       "options": [
@@ -243,7 +243,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "溶剂极性对π→π*与n→π*跃迁的不同影响"
+        "label": "4. 溶剂极性对吸收的影响 · 溶剂极性对π→π*与n→π*跃迁的不同影响"
       },
       "stem": "某物质在非极性溶剂己烷中 λmax = 305 nm，改在极性溶剂乙醇中 λmax 变为 307 nm。由这一变化可判断其对应的电子跃迁类型及溶剂极性效应应为下列哪一项？",
       "options": [

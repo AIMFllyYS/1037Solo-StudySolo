@@ -1,468 +1,585 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<title>细胞生物学 · 第7-8节 · 可视化笔记</title>
-<style>
-  @page { size: A4; margin: 0; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; color: #1a2e1a; background: #f5f8f5; font-size: 10pt; line-height: 1.6; }
-  .page { width: 210mm; min-height: 297mm; padding: 14mm 16mm; page-break-after: always; position: relative; background: #f5f8f5; }
-  .page:last-child { page-break-after: avoid; }
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>细胞生物学 · 第7-8节 · 生物膜与跨膜运输复习及内膜系统开篇</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#2B4C8C; --accent-d:#1C3462; --accent-t:#E6EBF6;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.6em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.kv ul{margin:1mm 0 1mm 4mm;padding:0;list-style:none;}
+.kv ul li::before{background:var(--muted);width:1.6mm;height:1.6mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.tbl .loc{font-size:8pt;color:var(--muted);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.exam .loc,.wrong .loc,.mnem .loc,.def .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0}}
+</style></head><body>
 
-  /* Cover */
-  .cover { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 40%, #388e3c 100%); color: #fff; display: flex; flex-direction: column; justify-content: center; padding: 20mm 18mm; }
-  .cover::before { content: ''; position: absolute; top: -30mm; right: -20mm; width: 120mm; height: 120mm; border-radius: 50%; background: rgba(255,255,255,0.06); }
-  .cover::after { content: ''; position: absolute; bottom: -20mm; left: -15mm; width: 80mm; height: 80mm; border-radius: 50%; background: rgba(255,255,255,0.04); }
-  .cover-kicker { font-size: 9pt; letter-spacing: 0.5em; text-transform: uppercase; color: #a5d6a7; margin-bottom: 8mm; font-weight: 500; }
-  .cover h1 { font-size: 32pt; font-weight: 700; line-height: 1.2; margin-bottom: 6mm; letter-spacing: 0.02em; }
-  .cover h1 .accent { color: #ffd54f; }
-  .cover-sub { font-size: 13pt; color: #c8e6c9; margin-bottom: 12mm; font-weight: 400; }
-  .cover-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 8mm; margin-top: auto; padding-top: 10mm; border-top: 1px solid rgba(255,255,255,0.2); }
-  .cover-meta-item { font-size: 9pt; }
-  .cover-meta-item .label { color: #a5d6a7; font-size: 7.5pt; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1mm; }
-  .cover-meta-item .value { color: #fff; font-weight: 500; font-size: 10pt; }
-
-  /* Page header */
-  .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6mm; padding-bottom: 3mm; border-bottom: 2px solid #2e7d32; }
-  .page-header .title { font-size: 14pt; font-weight: 700; color: #1b5e20; }
-  .page-header .subtitle { font-size: 8.5pt; color: #66bb6a; font-weight: 500; }
-  .page-num { position: absolute; bottom: 8mm; right: 16mm; font-size: 8pt; color: #81c784; font-weight: 600; }
-
-  /* Section */
-  .section { margin-bottom: 5mm; }
-  .section-title { font-size: 12pt; font-weight: 700; color: #1b5e20; margin-bottom: 3mm; padding-left: 3mm; border-left: 4px solid #66bb6a; }
-  .section-title .num { display: inline-block; background: #2e7d32; color: #fff; font-size: 8pt; padding: 1mm 2.5mm; border-radius: 2mm; margin-right: 2mm; vertical-align: middle; }
-
-  /* Knowledge map */
-  .km-container { background: #fff; border-radius: 3mm; padding: 5mm; border: 1px solid #c8e6c9; margin-bottom: 4mm; }
-  .km-root { text-align: center; background: #2e7d32; color: #fff; padding: 2.5mm 4mm; border-radius: 2mm; font-weight: 700; font-size: 10pt; margin: 0 auto 4mm; max-width: 70%; }
-  .km-branches { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
-  .km-branch { background: #e8f5e9; border-radius: 2mm; padding: 3mm; border-left: 3px solid #66bb6a; }
-  .km-branch-title { font-weight: 700; color: #1b5e20; font-size: 9pt; margin-bottom: 1.5mm; }
-  .km-branch-items { font-size: 8pt; color: #33691e; line-height: 1.5; }
-  .km-branch-items span { display: inline-block; background: #fff; padding: 0.5mm 1.5mm; border-radius: 1mm; margin: 0.5mm; border: 1px solid #c8e6c9; }
-
-  /* Knowledge cards */
-  .kcard { background: #fff; border-radius: 2.5mm; padding: 3.5mm 4mm; margin-bottom: 3mm; border: 1px solid #c8e6c9; border-left: 3.5px solid #43a047; }
-  .kcard.hot { border-left-color: #f9a825; background: #fffef5; }
-  .kcard.warn { border-left-color: #e53935; background: #fff5f5; }
-  .kcard-title { font-weight: 700; color: #1b5e20; font-size: 10pt; margin-bottom: 2mm; display: flex; align-items: center; gap: 2mm; }
-  .kcard-title .tag { font-size: 7pt; background: #e8f5e9; color: #2e7d32; padding: 0.5mm 1.5mm; border-radius: 1mm; font-weight: 600; }
-  .kcard-title .tag.hot { background: #fff8e1; color: #f57f17; }
-  .kcard-body { font-size: 8.8pt; color: #2e3b2e; line-height: 1.65; }
-  .kcard-body .kv { margin: 1mm 0; }
-  .kcard-body .kv .k { font-weight: 600; color: #1b5e20; }
-  .kcard-body .hl { background: #fff9c4; padding: 1mm 2mm; border-radius: 1mm; border-left: 2.5px solid #f9a825; margin: 1.5mm 0; font-weight: 500; }
-  .kcard-body .warn-box { background: #ffebee; padding: 1.5mm 2mm; border-radius: 1mm; border-left: 2.5px solid #e53935; margin: 1.5mm 0; font-size: 8.5pt; color: #b71c1c; }
-  .kcard-body .mnem { background: #e8f5e9; padding: 1.5mm 2.5mm; border-radius: 1.5mm; margin-top: 2mm; font-style: italic; color: #1b5e20; font-size: 8.5pt; border-left: 2.5px solid #66bb6a; }
-
-  /* Two column layout */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
-
-  /* Review checklist */
-  .checklist { background: #fff; border-radius: 2.5mm; padding: 4mm; border: 1px solid #c8e6c9; }
-  .checklist-item { display: flex; align-items: flex-start; gap: 2mm; padding: 1.2mm 0; border-bottom: 1px dashed #e8f5e9; font-size: 8.8pt; }
-  .checklist-item:last-child { border-bottom: none; }
-  .checklist-item .box { width: 3.5mm; height: 3.5mm; border: 1.2px solid #66bb6a; border-radius: 0.8mm; flex: none; margin-top: 0.5mm; }
-  .checklist-item .text { color: #2e3b2e; }
-  .checklist-item .text b { color: #1b5e20; }
-
-  /* Disease table */
-  .disease-table { width: 100%; border-collapse: collapse; font-size: 8.2pt; background: #fff; border-radius: 2mm; overflow: hidden; }
-  .disease-table th { background: #2e7d32; color: #fff; padding: 2mm 2.5mm; text-align: left; font-weight: 600; font-size: 8pt; }
-  .disease-table td { padding: 2mm 2.5mm; border-bottom: 1px solid #e8f5e9; color: #2e3b2e; vertical-align: top; }
-  .disease-table tr:last-child td { border-bottom: none; }
-  .disease-table .disease-name { font-weight: 700; color: #1b5e20; white-space: nowrap; }
-
-  /* Footer note */
-  .footer-note { position: absolute; bottom: 8mm; left: 16mm; font-size: 7.5pt; color: #a5d6a7; }
-</style>
-</head>
-<body>
-
-<!-- COVER PAGE -->
 <div class="page cover">
-  <div class="cover-kicker">CELL BIOLOGY · HUST</div>
-  <h1>细胞生物学<br><span class="accent">第7-8节</span></h1>
-  <div class="cover-sub">生物膜与跨膜运输复习 · 内膜系统与囊泡转运开篇</div>
-  <div class="cover-meta">
-    <div class="cover-meta-item"><div class="label">Date</div><div class="value">2026-09-10（周四）</div></div>
-    <div class="cover-meta-item"><div class="label">Session</div><div class="value">全天3-4节 · 10:10-11:50</div></div>
-    <div class="cover-meta-item"><div class="label">Instructor</div><div class="value">林珑 教授</div></div>
-    <div class="cover-meta-item"><div class="label">Location</div><div class="value">PBL教学楼6中(3层)</div></div>
-  </div>
+<p class="h1">细胞生物学 · 第7-8节</p>
+<p class="meta">生物膜与跨膜运输复习及内膜系统开篇 · 2026-09-10 · 林珑 教授</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 26344 字 / 97 轮发言</p>
+<table>
+<tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>细胞生物学（cell-biology / rec-2026-fall-007-008）</td></tr>
+<tr><td>主题</td><td>第四章 生物膜与跨膜运输（全章复习）+ 第五章 内膜系统开篇</td></tr>
+<tr><td>学时</td><td>第 7–8 节（2 学时）</td></tr>
+<tr><td>上课日期</td><td>2026-09-10（周四）</td></tr>
+</table>
 </div>
 
-<!-- PAGE 2: KNOWLEDGE MAP + OVERVIEW -->
 <div class="page">
-  <div class="page-header">
-    <div class="title">知识结构总览</div>
-    <div class="subtitle">Knowledge Map · 第四章复习 + 第五章开篇</div>
-  </div>
-
-  <div class="km-container">
-    <div class="km-root">细胞生物学 · 第7-8节</div>
-    <div class="km-branches">
-      <div class="km-branch">
-        <div class="km-branch-title">🔬 跨膜运输基础</div>
-        <div class="km-branch-items">
-          <span>脂双层通透判断</span><span>自由扩散</span><span>协助扩散</span><span>转运体交替开放</span>
-        </div>
-      </div>
-      <div class="km-branch">
-        <div class="km-branch-title">⚡ 通道与水通道</div>
-        <div class="km-branch-items">
-          <span>离子通道选择性</span><span>电压门控</span><span>配体门控</span><span>机械门控</span><span>AQP水通道</span>
-        </div>
-      </div>
-      <div class="km-branch">
-        <div class="km-branch-title">🔋 主动运输</div>
-        <div class="km-branch-items">
-          <span>钠钾泵(3Na/2K)</span><span>P型/V型/ABC泵</span><span>继发性主动运输</span><span>SGLT同向转运</span><span>口服补盐液原理</span>
-        </div>
-      </div>
-      <div class="km-branch">
-        <div class="km-branch-title">📦 大分子运输</div>
-        <div class="km-branch-items">
-          <span>吞噬/胞饮/受体介导</span><span>网格蛋白胞吞</span><span>LDL胞吞途径</span><span>持续性/调节性分泌</span>
-        </div>
-      </div>
-      <div class="km-branch">
-        <div class="km-branch-title">🏥 运输异常疾病</div>
-        <div class="km-branch-items">
-          <span>家族性高胆固醇血症</span><span>胱氨酸尿症</span><span>肾性糖尿</span><span>囊性纤维化</span>
-        </div>
-      </div>
-      <div class="km-branch">
-        <div class="km-branch-title">🏗️ 内膜系统开篇</div>
-        <div class="km-branch-items">
-          <span>区室化意义</span><span>内质网结构</span><span>糙面/光面内质网</span><span>附着核糖体动态</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">核心</span>本节课重点概览</div>
-    <div class="two-col">
-      <div class="kcard hot">
-        <div class="kcard-title">钠钾泵 <span class="tag hot">必考</span></div>
-        <div class="kcard-body">
-          <div class="hl">1 ATP → 3 Na⁺出 + 2 K⁺入，生电泵</div>
-          <div class="kv"><span class="k">地位：</span>动物细胞离子稳态最核心泵，消耗细胞1/3的ATP</div>
-        </div>
-      </div>
-      <div class="kcard hot">
-        <div class="kcard-title">受体介导胞吞 <span class="tag hot">必考</span></div>
-        <div class="kcard-body">
-          <div class="hl">五组分：配体→受体→AP2→网格蛋白→发动蛋白</div>
-          <div class="kv"><span class="k">LDL实例：</span>受体循环复用，LDL入溶酶体降解</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="page-num">2</div>
+<h2 class="h2">0. 知识框架</h2>
+<p class="lead">本课先复习物质跨膜运输的两大分支（小分子 / 大分子），再用四类疾病串起运输异常，最后开篇内膜系统与内质网。</p>
+<ul class="kv">
+<li>一、脂双层通透性判据与被动/主动运输总纲</li>
+<li>二、膜运输蛋白与转运体（交替开放 · 协助扩散）</li>
+<li>三、通道蛋白：离子通道（选择性 · 门控）与水通道 AQP</li>
+<li>四、原发性主动运输与三类 ATP 驱动泵（P 型 / V 型 / ABC）</li>
+<li>五、继发性主动运输与 SGLT（小肠 / 肾小管葡萄糖吸收、口服补盐液）</li>
+<li>六、大分子运输：胞吞（吞噬 / 胞饮 / 受体介导）</li>
+<li>七、受体介导内吞的分子机制与 LDL · 家族性高胆固醇血症</li>
+<li>八、胞吐作用（持续性分泌 / 调节性分泌）</li>
+<li>九、跨膜运输异常与疾病（FH / 胱氨酸尿症 / 肾性糖尿 / 囊性纤维化）</li>
+<li>十、第五章开篇：内膜系统与内质网</li>
+</ul>
+<div class="foot">细胞生物学 · 第7-8节 · 课堂核心内容笔记（结论式）</div>
 </div>
 
-<!-- PAGE 3: SMALL MOLECULE TRANSPORT -->
 <div class="page">
-  <div class="page-header">
-    <div class="title">小分子跨膜运输</div>
-    <div class="subtitle">Passive & Active Transport · 核心考点</div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">3.1</span>通透判断与被动运输</div>
-    <div class="kcard">
-      <div class="kcard-title">脂双层通透能力判断逻辑</div>
-      <div class="kcard-body">
-        <div class="kv"><span class="k">判断优先级：</span>①是否带电 → ②脂溶性/极性 → ③分子大小</div>
-        <div class="hl">带电离子完全无法直接穿透脂双层疏水核心</div>
-        <div class="kv"><span class="k">自由穿透：</span>O₂、CO₂、N₂、类固醇激素（高脂溶性、非极性）</div>
-        <div class="kv"><span class="k">低通透：</span>水、尿素、甘油（不带电极性小分子）</div>
-        <div class="kv"><span class="k">无法穿透：</span>Na⁺、K⁺、Cl⁻（带电离子）、葡萄糖、氨基酸</div>
-        <div class="mnem">带电先挡门外，脂溶轻松进来，极性小分子蹭缝，大分子排队等车</div>
-      </div>
-    </div>
-    <div class="kcard">
-      <div class="kcard-title">自由扩散 vs 协助扩散</div>
-      <div class="kcard-body">
-        <div class="two-col">
-          <div>
-            <div class="kv"><span class="k">自由扩散：</span>无需蛋白、不耗能、顺梯度、无饱和、速率与浓度线性相关</div>
-          </div>
-          <div>
-            <div class="kv"><span class="k">协助扩散：</span>需转运体、不耗能、顺梯度、有结构特异性、有饱和性(Vmax)</div>
-          </div>
-        </div>
-        <div class="warn-box">⚠ 协助扩散≠主动运输：虽需转运体，但不耗能、顺梯度，属被动运输</div>
-        <div class="mnem">自由扩散不排队，浓度越高跑越快；协助扩散要上车，车位满了就得等</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">3.2</span>离子通道与水通道</div>
-    <div class="kcard hot">
-      <div class="kcard-title">离子通道核心特征与三类门控 <span class="tag hot">高频</span></div>
-      <div class="kcard-body">
-        <div class="kv"><span class="k">通量：</span>10⁷-10⁸ 离子/秒（远高于转运体约1000倍）</div>
-        <div class="kv"><span class="k">选择性过滤器：</span>只允许特定离子通过（如钾通道只允许K⁺）</div>
-        <div class="hl">三类门控：电压门控（膜电位）· 配体门控（神经递质）· 机械门控（压力张力）</div>
-        <div class="warn-box">⚠ 离子通道只介导被动运输，不能逆梯度转运离子；逆梯度需离子泵</div>
-        <div class="mnem">通道像水管，离子顺流跑；电压配体机械门，三种开关控制好</div>
-      </div>
-    </div>
-    <div class="kcard">
-      <div class="kcard-title">水通道（AQP）</div>
-      <div class="kcard-body">
-        <div class="kv"><span class="k">功能：</span>仅提升水的跨膜运输效率，仍为被动运输</div>
-        <div class="kv"><span class="k">方向：</span>由渗透压梯度决定（水从低渗侧流向高渗侧）</div>
-        <div class="kv"><span class="k">分布：</span>分泌腺、肾小管、集合管、红细胞</div>
-        <div class="hl">2003年诺贝尔化学奖（彼得·阿格雷），爪蟾卵母细胞实验证实AQP1</div>
-        <div class="mnem">水通道走水不走电，2003诺奖纪念，渗透方向定高低</div>
-      </div>
-    </div>
-  </div>
-  <div class="page-num">3</div>
+<h2 class="h2">1. 脂双层通透性判据与被动/主动运输总纲</h2>
+<p class="lead">先掌握“能不能直接穿膜”的判断顺序，再把握被动运输与主动运输的分界。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>细胞膜是选择性屏障，中央疏水核心把细胞内外两个水相隔开<span class="loc">〔说话人1 01:00〕</span></li>
+<li>疏水核心由膜脂（磷脂、胆固醇）赋予，不是蛋白质<span class="loc">〔说话人1 01:00〕</span></li>
+<li>脂双层两侧是亲水端，朝向水相（细胞外与细胞内）<span class="loc">〔说话人1 01:00〕</span></li>
+<li>相似相溶：高脂溶性物质才能穿过脂双层<span class="loc">〔说话人1 02:08〕</span></li>
+<li>仅仅分子小还不够，极性极强的分子也过不去<span class="loc">〔说话人1 02:08〕</span></li>
+<li>极性、带电、离子是三个不同的概念，带电物质一定过不去<span class="loc">〔说话人1 02:56〕</span></li>
+<li>物质跨膜运输先讲小分子、再讲大分子<span class="loc">〔说话人1 02:56〕</span></li>
+<li>自由扩散（diffusion）从高浓度向低浓度自发进行，ΔG 小于 0，不耗能<span class="loc">〔说话人1 02:56〕</span></li>
+<li>不带电物质看化学浓度梯度；带电物质的驱动力是浓度梯度与电势梯度之和，即电化学梯度<span class="loc">〔说话人1 02:56〕</span></li>
+<li>被动运输＝顺电化学梯度、下坡、不耗能<span class="loc">〔说话人1 04:44〕</span></li>
+<li>主动运输＝逆电化学梯度、上坡、ΔG 大于 0、需要能量<span class="loc">〔说话人1 04:44〕</span></li>
+<li>主动运输的能量由 ATP 提供<span class="loc">〔说话人1 04:44〕</span></li>
+<li>ATP 通过磷酸化改变蛋白质构象来供能<span class="loc">〔说话人1 05:44〕</span></li>
+<li>ATP 含 3 个磷酸，供能时脱掉末端的高能 γ 磷酸<span class="loc">〔说话人1 06:23〕</span></li>
+<li>自由扩散（free diffusion）不耗能，属于被动运输<span class="loc">〔说话人1 07:09〕</span></li>
+<li>疏水与非极性可以视为同一概念<span class="loc">〔说话人1 08:23〕</span></li>
+<li>判断能否直接穿膜的顺序：先看是否带电 → 再看脂溶性与极性 → 最后看分子大小<span class="loc">〔说话人1 08:57〕</span></li>
+</ul>
+<h3 class="h3">B. 通透能力分层（对比表）</h3>
+<table class="tbl">
+<tr><th>通透能力</th><th>物质类型</th><th>代表物质</th></tr>
+<tr><td>自由穿透</td><td>高脂溶性物质</td><td>醇类激素、脂肪酸、脂溶性药物<span class="loc">〔说话人1 07:34〕</span></td></tr>
+<tr><td>自由穿透</td><td>疏水、非极性的小分子</td><td>氧气、二氧化碳、氮气<span class="loc">〔说话人1 08:23〕</span></td></tr>
+<tr><td>低通透</td><td>不带电的极性小分子</td><td>水、尿素、甘油、氨<span class="loc">〔说话人1 08:57〕</span></td></tr>
+<tr><td>很难通透</td><td>极性大分子</td><td>葡萄糖、蔗糖<span class="loc">〔说话人1 08:57〕</span></td></tr>
+<tr><td>完全不通透</td><td>带电离子（分子虽小）</td><td>Na⁺、K⁺ 等离子<span class="loc">〔说话人1 08:57〕</span></td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>带电是决定性障碍：只要带电，无论分子多小都不能直接穿过脂双层。<span class="loc">〔说话人1 02:56〕</span></div>
+<div class="foot">细胞生物学 · 第7-8节 · 第 1 章</div>
 </div>
-
-<!-- PAGE 4: ACTIVE TRANSPORT -->
 <div class="page">
-  <div class="page-header">
-    <div class="title">主动运输与ATP驱动泵</div>
-    <div class="subtitle">Active Transport · 钠钾泵 · 三类泵 · 继发性运输</div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">4.1</span>钠钾泵（Na⁺/K⁺-ATPase）</div>
-    <div class="kcard hot">
-      <div class="kcard-title">钠钾泵核心机制 <span class="tag hot">必考</span></div>
-      <div class="kcard-body">
-        <div class="hl">每水解1分子ATP → 向胞外转运3个Na⁺ + 向胞内转运2个K⁺</div>
-        <div class="kv"><span class="k">生电反应：</span>净转出1个正电荷，使膜内电位更负</div>
-        <div class="kv"><span class="k">类型：</span>P型离子泵（反应中形成磷酸化中间体）</div>
-        <div class="kv"><span class="k">功能：</span>维持Na⁺外高内低、K⁺内高外低的跨膜梯度；消耗细胞约1/3 ATP（神经细胞达2/3）</div>
-        <div class="warn-box">⚠ 钠钾泵是生电泵（3出2进，净出1正电荷），不是电中性泵</div>
-        <div class="mnem">三钠出，二钾进，一个ATP换稳定；生电泵，膜内负，动物细胞最核心</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">4.2</span>三类ATP驱动泵比较</div>
-    <div class="kcard hot">
-      <div class="kcard-title">P型 / V型 / ABC转运体 <span class="tag hot">高频</span></div>
-      <div class="kcard-body">
-        <div class="kv"><span class="k">P型离子泵：</span>形成磷酸化中间体；代表=钠钾泵、钙泵；功能=维持离子稳态</div>
-        <div class="kv"><span class="k">V型离子泵：</span>定位于液泡、溶酶体、内吞体膜；功能=泵入H⁺维持酸性环境(pH 4.5-5.0)</div>
-        <div class="kv"><span class="k">ABC转运体：</span>2跨膜域+2ATP结合域；底物谱广（脂质、胆固醇、药物）；高表达致肿瘤多药耐药(MDR)</div>
-        <div class="hl">钙泵维持胞质低钙(~10⁻⁷M)，钙通道开放时Ca²⁺涌入形成钙信号脉冲</div>
-        <div class="mnem">P型磷酸化，钠钾钙泵它；V型泵氢进，溶酶体酸哈哈；ABC俩域俩结合，耐药肿瘤它最作</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">4.3</span>继发性主动运输与SGLT</div>
-    <div class="kcard">
-      <div class="kcard-title">继发性主动运输</div>
-      <div class="kcard-body">
-        <div class="kv"><span class="k">定义：</span>依赖原发性主动运输建立的离子梯度势能供能，无直接ATP消耗</div>
-        <div class="kv"><span class="k">同向运输(symport)：</span>被转运物与离子同方向，如SGLT（Na⁺+葡萄糖同向入胞）</div>
-        <div class="kv"><span class="k">反向运输(antiport)：</span>被转运物与离子反方向，如Na⁺/Ca²⁺交换体（Na⁺进、Ca²⁺出）</div>
-        <div class="warn-box">⚠ 继发性主动运输≠不耗能：不直接水解ATP，但依赖的离子梯度是用ATP建立的，属间接耗能</div>
-      </div>
-    </div>
-    <div class="kcard hot">
-      <div class="kcard-title">口服补盐液（ORS）原理 <span class="tag hot">临床关联</span></div>
-      <div class="kcard-body">
-        <div class="hl">核心配方：同时含Na⁺和葡萄糖 → 激活SGLT → Na⁺与葡萄糖协同吸收 → 建立渗透压梯度 → 促进水吸收</div>
-        <div class="kv"><span class="k">意义：</span>大幅提升腹泻患者补液效率，WHO推荐的核心补液方法</div>
-        <div class="mnem">钠糖手拉手，SGLT来接收；钠出建渗透，水自然跟着走</div>
-      </div>
-    </div>
-  </div>
-  <div class="page-num">4</div>
+<h2 class="h2">2. 膜运输蛋白与转运体（交替开放 · 协助扩散）</h2>
+<p class="lead">不能自由扩散的物质需膜运输蛋白；转运体既可介导被动也可介导主动，但一律遵循交替开放。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>不能自由扩散跨膜的物质，需要膜上的膜运输蛋白帮助<span class="loc">〔说话人1 10:27〕</span></li>
+<li>膜运输蛋白一般是多次跨膜的 α 螺旋<span class="loc">〔说话人1 10:27〕</span></li>
+<li>单次跨膜 α 螺旋的疏水侧面朝外；多个 α 螺旋可围成一个亲水核心<span class="loc">〔说话人1 10:27〕</span></li>
+<li>膜运输蛋白分两类：转运体蛋白（transporter，又称载体蛋白 carrier）与通道蛋白（channel）<span class="loc">〔说话人1 11:27〕</span></li>
+<li>转运体可比喻为旋转门：不会像开放隧道那样始终贯通膜两侧<span class="loc">〔说话人1 11:27〕</span></li>
+<li>转运体通过结合底物、构象改变、释放底物完成转运<span class="loc">〔说话人1 12:20〕</span></li>
+<li>转运体既可介导主动运输，也可介导被动运输<span class="loc">〔说话人1 12:20〕</span></li>
+<li>协助扩散（facilitated diffusion，又称易化扩散）是转运体蛋白中最简单的一种<span class="loc">〔说话人1 13:13〕</span></li>
+<li>协助扩散需要转运体蛋白帮助，不耗能、顺梯度，依旧属于被动运输<span class="loc">〔说话人1 14:33〕</span></li>
+<li>协助扩散有结构特异性：一类转运体只转运一类底物<span class="loc">〔说话人1 15:17〕</span></li>
+<li>协助扩散有转运饱和性；自由扩散不饱和，速率与浓度呈线性<span class="loc">〔说话人1 15:17〕</span></li>
+<li>饱和由两点共同决定：转运蛋白数量有限、构象循环速度有限<span class="loc">〔说话人1 15:17〕</span></li>
+<li>所有转运体蛋白的基本工作原理都是交替开放（alternating access）<span class="loc">〔说话人1 16:53〕</span></li>
+<li>交替开放：转运体不会同时向两侧开放，任一时间只有一侧开放<span class="loc">〔说话人1 17:18〕</span></li>
+<li>交替开放的循环：朝外结合底物 → 形成闭锁态 → 转向内开放放出底物<span class="loc">〔说话人1 17:18〕</span></li>
+<li>交替开放与是否耗能无关，被动协助扩散与主动协同/反向转运均遵循<span class="loc">〔说话人1 18:19〕</span></li>
+</ul>
+<h3 class="h3">B. 自由扩散与协助扩散对比</h3>
+<table class="tbl">
+<tr><th>特征</th><th>自由扩散</th><th>协助扩散</th></tr>
+<tr><td>膜蛋白</td><td>不需要</td><td>需要转运体<span class="loc">〔说话人1 14:33〕</span></td></tr>
+<tr><td>能量</td><td>不耗能</td><td>不耗能，仍属被动运输<span class="loc">〔说话人1 14:33〕</span></td></tr>
+<tr><td>方向</td><td>顺电化学梯度</td><td>顺电化学梯度</td></tr>
+<tr><td>饱和效应</td><td>无，速率与浓度线性相关</td><td>有转运饱和性<span class="loc">〔说话人1 15:17〕</span></td></tr>
+<tr><td>特异性</td><td>无</td><td>有结构特异性<span class="loc">〔说话人1 15:17〕</span></td></tr>
+</table>
+<div class="wrong"><span class="tag">易错</span>协助扩散需要转运体，但仍是被动运输——不耗能、顺梯度，不能与主动运输混为一谈。<span class="loc">〔说话人1 14:33〕</span></div>
+<div class="foot">细胞生物学 · 第7-8节 · 第 2 章</div>
 </div>
-
-<!-- PAGE 5: ENDOCYTOSIS & EXOCYTOSIS -->
 <div class="page">
-  <div class="page-header">
-    <div class="title">大分子跨膜运输</div>
-    <div class="subtitle">Endocytosis & Exocytosis · 胞吞胞吐</div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">5.1</span>胞吞作用三类型</div>
-    <div class="kcard">
-      <div class="kcard-title">吞噬 / 胞饮 / 受体介导胞吞</div>
-      <div class="kcard-body">
-        <div class="kv"><span class="k">吞噬作用：</span>仅专职吞噬细胞（巨噬细胞、中性粒细胞）；摄取细菌、细胞碎片等大颗粒；形成吞噬体与溶酶体融合</div>
-        <div class="kv"><span class="k">胞饮作用：</span>绝大多数细胞持续发生；非特异性吞入胞外液体；形成小型胞吞囊泡；维持细胞膜稳态</div>
-        <div class="kv"><span class="k">受体介导胞吞：</span>多种细胞；特异性摄取特定配体；依赖网格蛋白包被小窝；高效选择性（可浓缩1000倍）</div>
-        <div class="mnem">吞噬大颗粒，免疫专属它；胞饮喝液体，细胞都有它；受体介导最精准，网格蛋白来包被</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">5.2</span>受体介导胞吞五组分</div>
-    <div class="kcard hot">
-      <div class="kcard-title">受体介导胞吞核心组分与流程 <span class="tag hot">必考</span></div>
-      <div class="kcard-body">
-        <div class="hl">按作用顺序：货物配体 → 膜受体 → AP2衔接蛋白 → 网格蛋白 → 发动蛋白(Dynamin)</div>
-        <div class="kv"><span class="k">AP2：</span>连接受体与网格蛋白的衔接蛋白</div>
-        <div class="kv"><span class="k">网格蛋白：</span>三脚蛋白复合物，形成包被小窝，提供膜形变机械力</div>
-        <div class="kv"><span class="k">发动蛋白：</span>水解GTP介导囊泡从质膜缢断脱落</div>
-        <div class="kv"><span class="k">后续流程：</span>囊泡脱包被 → 与早期内吞体融合 → pH下降(~6.0)使受体-配体解离 → 受体循环回质膜，配体入溶酶体降解</div>
-        <div class="mnem">配体受体先牵手，AP2牵线网格收，发动蛋白剪一刀，囊泡脱落往内走</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">5.3</span>LDL胞吞与胞吐</div>
-    <div class="two-col">
-      <div class="kcard hot">
-        <div class="kcard-title">LDL胞吞途径 <span class="tag hot">高频</span></div>
-        <div class="kcard-body">
-          <div class="kv"><span class="k">流程：</span>LDL与LDL受体结合→受体介导胞吞→内吞体pH下降→LDL与受体解离→受体循环回质膜复用→LDL入溶酶体降解释放胆固醇</div>
-          <div class="kv"><span class="k">关键：</span>受体循环复用，一个受体可多次介导LDL摄取</div>
-        </div>
-      </div>
-      <div class="kcard">
-        <div class="kcard-title">胞吐：持续性 vs 调节性</div>
-        <div class="kcard-body">
-          <div class="kv"><span class="k">持续性分泌：</span>所有细胞持续发生，合成后立即释放，同时补充细胞膜；如细胞外基质分泌</div>
-          <div class="kv"><span class="k">调节性分泌：</span>产物预先储存于囊泡，信号触发后释放（常伴胞质Ca²⁺升高）；如胰岛素、神经递质</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="page-num">5</div>
+<h2 class="h2">3. 通道蛋白：离子通道与水通道</h2>
+<p class="lead">通道形成亲水孔道、只做被动运输，具备选择性与门控；水通道专用以加速水的跨膜转运。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>离子通道是贯穿脂双层的亲水性孔道，一旦打开离子即可通过<span class="loc">〔说话人1 43:43〕</span></li>
+<li>离子带电会吸引水形成水合层，无法穿过疏水核心，故需要亲水通道<span class="loc">〔说话人1 43:43〕</span></li>
+<li>离子通道只介导被动运输，离子的净方向由电化学梯度决定<span class="loc">〔说话人1 13:13〕</span></li>
+<li>离子通道开合的调控叫门控（gating）<span class="loc">〔说话人1 13:13〕</span></li>
+<li>通道有选择性：中间有选择性过滤器，不只看大小<span class="loc">〔说话人1 44:39〕</span></li>
+<li>钾离子通道不允许钠离子通过，尽管钠离子更小<span class="loc">〔说话人1 44:39〕</span></li>
+<li>选择性决定谁能通过，门控决定何时能通过<span class="loc">〔说话人1 45:10〕</span></li>
+<li>离子通道通量极高，可达 10⁷–10⁸ 个离子/秒<span class="loc">〔说话人1 45:37〕</span></li>
+<li>转运体有饱和、速度受构象循环限制，比通道慢很多<span class="loc">〔说话人1 45:37〕</span></li>
+<li>离子通道可双向运输，净方向取决于膜两侧浓度较高的一侧<span class="loc">〔说话人1 56:08〕</span></li>
+<li>门控分三类：电压门控、配体门控、机械门控<span class="loc">〔说话人1 56:44〕</span></li>
+<li>电压门控：膜电位变化控制通道开合，如神经元钠通道<span class="loc">〔说话人1 56:44〕</span></li>
+<li>配体门控：配体与通道结合而开合，分胞外配体门控与胞内配体门控<span class="loc">〔说话人1 56:44〕</span></li>
+<li>胞内配体门控的配体如钙、cAMP 等第二信使<span class="loc">〔说话人1 56:44〕</span></li>
+<li>机械门控：牵拉、压力、震动等机械力控制开合<span class="loc">〔说话人1 57:56〕</span></li>
+<li>钾离子渗漏通道存在于绝大多数动物细胞膜上<span class="loc">〔说话人1 57:56〕</span></li>
+<li>钾渗漏通道与钠钾泵共同维持静息膜电位（外正内负）<span class="loc">〔说话人1 57:56〕</span></li>
+<li>动作电位靠电压门控钠、钾通道；神经递质释放与钙相关；听觉靠机械门控<span class="loc">〔说话人1 57:56〕</span></li>
+<li>水通道只提高水的跨膜运输效率，本身仍属被动运输<span class="loc">〔说话人1 01:04:19〕</span></li>
+<li>水的净转运方向由渗透压梯度（水的梯度）决定<span class="loc">〔说话人1 01:04:19〕</span></li>
+<li>水通道多分布在大量分泌或吸收水的部位，如分泌腺、肾小管、集合管、红细胞<span class="loc">〔说话人1 01:01:58〕</span></li>
+<li>水通道最初在红细胞膜与肾小管中被发现<span class="loc">〔说话人1 01:01:58〕</span></li>
+<li>2003 年诺贝尔化学奖用爪蟾卵母细胞低渗膨胀实验证实水通道功能<span class="loc">〔说话人1 01:02:46〕</span></li>
+<li>水通道蛋白记为 AQP（Aquaporin），首个为 AQP1，是一种膜蛋白<span class="loc">〔说话人1 01:03:21〕</span></li>
+<li>AQP1 为四聚体，每个亚基中间各有一个水孔，不是亚基围成的中央孔<span class="loc">〔说话人1 01:03:21〕</span></li>
+<li>AQP1 至 AQP5 都表达在需要大量水吸收、分泌或快速维持渗透压的部位<span class="loc">〔说话人1 01:03:59〕</span></li>
+</ul>
+<h3 class="h3">B. 门控类型对比</h3>
+<table class="tbl">
+<tr><th>门控类型</th><th>触发因素</th><th>例子</th></tr>
+<tr><td>电压门控</td><td>膜电位变化</td><td>神经元钠通道<span class="loc">〔说话人1 56:44〕</span></td></tr>
+<tr><td>配体门控</td><td>配体与通道结合</td><td>胞外配体如神经元钠通道；胞内配体如钙、cAMP<span class="loc">〔说话人1 56:44〕</span></td></tr>
+<tr><td>机械门控</td><td>牵拉、压力、震动等机械力</td><td>内耳听觉（声波振动）<span class="loc">〔说话人1 57:56〕</span></td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>钾渗漏通道 + 钠钾泵共同维持静息膜电位（外正内负）；动作电位靠电压门控钠、钾通道。<span class="loc">〔说话人1 57:56〕</span></div>
+<div class="foot">细胞生物学 · 第7-8节 · 第 3 章</div>
 </div>
-
-<!-- PAGE 6: DISEASES + ENDOMEMBRANE -->
 <div class="page">
-  <div class="page-header">
-    <div class="title">运输异常疾病与内膜系统开篇</div>
-    <div class="subtitle">Diseases · Endomembrane System</div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">6.1</span>四种跨膜运输异常疾病</div>
-    <table class="disease-table">
-      <tr><th style="width:22%">疾病</th><th style="width:28%">缺陷位点</th><th>发病机制与表现</th></tr>
-      <tr>
-        <td class="disease-name">家族性高胆固醇血症</td>
-        <td>LDL受体功能缺陷</td>
-        <td>血液LDL无法被肝细胞胞吞摄取→血浆胆固醇蓄积→动脉粥样硬化→早发冠心病。常染色体显性遗传</td>
-      </tr>
-      <tr>
-        <td class="disease-name">胱氨酸尿症</td>
-        <td>肾小管胱氨酸转运体缺陷</td>
-        <td>胱氨酸等氨基酸无法被重吸收→随尿排出→胱氨酸溶解度低易结晶→尿路结石</td>
-      </tr>
-      <tr>
-        <td class="disease-name">肾性糖尿</td>
-        <td>肾小管SGLT缺陷</td>
-        <td>血糖正常但葡萄糖重吸收障碍→随尿排出。区别于糖尿病（血糖过高超过肾糖阈）</td>
-      </tr>
-      <tr>
-        <td class="disease-name">囊性纤维化(CF)</td>
-        <td>CFTR氯通道功能异常</td>
-        <td>Cl⁻无法外排→气道水分泌减少→黏液变稠→纤毛摆动障碍→反复感染→慢性阻塞性肺病。核心链：离子→水→组织→疾病</td>
-      </tr>
-    </table>
-    <div class="kcard" style="margin-top:3mm;">
-      <div class="kcard-title">SGLT抑制剂降糖机制 <span class="tag">临床关联</span></div>
-      <div class="kcard-body">
-        <div class="kv"><span class="k">代表药物：</span>达格列净、恩格列净等「列净类」</div>
-        <div class="kv"><span class="k">机制：</span>抑制肾小管SGLT→阻断葡萄糖重吸收→促进糖随尿排出→降低血糖</div>
-        <div class="kv"><span class="k">特点：</span>不依赖胰岛素分泌，同时有减重、心血管保护作用</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">6.2</span>内膜系统开篇</div>
-    <div class="kcard hot">
-      <div class="kcard-title">内膜系统定义与区室化意义 <span class="tag hot">高频</span></div>
-      <div class="kcard-body">
-        <div class="kv"><span class="k">内膜系统：</span>细胞质内的膜性细胞器，通过囊泡运输构成动态功能网络</div>
-        <div class="kv"><span class="k">包括：</span>内质网、高尔基体、溶酶体、过氧化物酶体、内吞体、分泌囊泡</div>
-        <div class="hl">线粒体不属于内膜系统（有独立起源和遗传系统，不通过囊泡与内膜系统交换）</div>
-        <div class="kv"><span class="k">区室化意义：</span>不同细胞器维持专属pH和氧化还原环境，保障各类生化反应高效独立进行</div>
-        <div class="kv"><span class="k">举例：</span>溶酶体pH 4.5-5.0（酸性，适配水解酶）；内质网氧化环境（利于二硫键形成）；细胞质中性、还原环境</div>
-        <div class="mnem">内膜系统是家，各屋各环境；溶酶体酸水解，内质网氧化折蛋白；线粒体是租客，不算自家人</div>
-      </div>
-    </div>
-    <div class="kcard">
-      <div class="kcard-title">糙面内质网 vs 光面内质网</div>
-      <div class="kcard-body">
-        <div class="two-col">
-          <div>
-            <div class="kv"><span class="k">糙面内质网(RER)：</span>扁平片状；有附着核糖体；合成分泌蛋白和膜蛋白；发达于分泌旺盛细胞</div>
-          </div>
-          <div>
-            <div class="kv"><span class="k">光面内质网(SER)：</span>管状分支；无核糖体；脂质合成、解毒、钙储存；发达于肝细胞、肌细胞</div>
-          </div>
-        </div>
-        <div class="hl">附着核糖体非永久结合：合成分泌蛋白时才结合，合成完成后脱落回胞质</div>
-        <div class="mnem">糙面有核糖体，合成分泌膜蛋白；光面光秃秃，脂质解毒钙储存；核糖体是临时工，活完就走不留踪</div>
-      </div>
-    </div>
-  </div>
-  <div class="page-num">6</div>
+<h2 class="h2">4. 原发性主动运输与三类 ATP 驱动泵</h2>
+<p class="lead">原发性主动运输直接水解 ATP 建立离子梯度；ATP 驱动泵分 P 型、V 型、ABC 三类。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>主动运输逆电化学梯度，需要能量耦联使 ΔG 小于 0<span class="loc">〔说话人1 19:05〕</span></li>
+<li>离子浓度差：胞外高钠、胞内高钾、胞外高钙，钙离子差几个数量级<span class="loc">〔说话人1 19:05〕</span></li>
+<li>主动运输按能量来源分两类：原发性（直接水解 ATP）与继发性（利用离子梯度势能）<span class="loc">〔说话人1 19:05〕</span></li>
+<li>ATP 水解生成 ADP 和一个磷酸基团<span class="loc">〔说话人1 21:06〕</span></li>
+<li>ATP 是能量货币：其水解 ΔG 约 -30.54 千焦/摩尔<span class="loc">〔说话人1 21:06〕</span></li>
+<li>ATP 水解与热力学上不易发生的反应偶联，可使耦联后的总反应更易发生<span class="loc">〔说话人1 21:06〕</span></li>
+<li>直接水解 ATP 的酶叫 ATP 酶；以 -ase 结尾的通常是酶<span class="loc">〔说话人1 21:41〕</span></li>
+<li>原发性主动运输的重要作用是建立离子的跨膜梯度<span class="loc">〔说话人1 22:06〕</span></li>
+<li>ATP 建立离子梯度如同用电把水抽高；离子顺梯度释放的自由能可做功<span class="loc">〔说话人1 22:38〕</span></li>
+<li>ATP 驱动泵分三类：P 型、V 型、ABC 转运体<span class="loc">〔说话人1 24:31〕</span></li>
+<li>P 型的 P 代表磷酸化，反应中形成磷酸化的酶中间体<span class="loc">〔说话人1 25:03〕</span></li>
+<li>磷酸化与去磷酸化使转运体构象改变，从而转运底物<span class="loc">〔说话人1 25:43〕</span></li>
+<li>P 型泵的代表是钠钾泵与钙离子泵<span class="loc">〔说话人1 25:43〕</span></li>
+<li>钠钾泵是维持动物细胞离子稳态的核心泵，是最重要的泵，可不加“之一”<span class="loc">〔说话人1 25:43〕</span></li>
+<li>钠钾泵维持胞外高钠、胞内高钾<span class="loc">〔说话人1 26:51〕</span></li>
+<li>钠钾泵每水解 1 个 ATP，向胞外转运 3 个 Na⁺、向胞内转运 2 个 K⁺<span class="loc">〔说话人1 26:51〕</span></li>
+<li>钠钾泵是生电反应：净移出 1 个正电荷，使膜内电位更负<span class="loc">〔说话人1 26:51〕</span></li>
+<li>钠钾泵循环：朝内开放结合 3 Na⁺ → ATP 磷酸化 → 转外开释放 Na⁺ → 结合 2 K⁺ → 去磷酸化 → 转内开释放 K⁺<span class="loc">〔说话人1 27:26〕</span></li>
+<li>钙是重要的第二信使；胞质钙浓度极低，胞外与内质网钙浓度高<span class="loc">〔说话人1 30:42〕</span></li>
+<li>钙通道开放时 Ca²⁺ 顺梯度涌入胞质，形成钙信号脉冲<span class="loc">〔说话人1 31:14〕</span></li>
+<li>钙泵消耗 ATP 把钙泵出，维持胞质低钙；钙泵与钙通道是两个概念<span class="loc">〔说话人1 31:14〕</span></li>
+<li>V 型的 V 代表液泡（vacuole）<span class="loc">〔说话人1 32:24〕</span></li>
+<li>V 型泵把氢离子泵入腔内，使腔内 pH 下降<span class="loc">〔说话人1 32:24〕</span></li>
+<li>V 型泵存在于溶酶体、内吞体、植物液泡、高尔基体与分泌囊泡膜上<span class="loc">〔说话人1 33:16〕</span></li>
+<li>溶酶体 pH 约 4.5–5.5，适配水解酶的最适酸性环境<span class="loc">〔说话人1 33:16〕</span></li>
+<li>ABC 转运体即 ATP 结合盒，含 2 个跨膜结构域（TMD）与 2 个胞内 ATP 结合域（NBD）<span class="loc">〔说话人1 34:08〕</span></li>
+<li>ABC 转运体结合 ATP 后构象改变，同样遵循交替开放<span class="loc">〔说话人1 34:48〕</span></li>
+<li>ABC 底物谱广（脂质、胆固醇、胆汁酸代谢物、药物），是最大的膜转运超家族之一<span class="loc">〔说话人1 34:48〕</span></li>
+<li>肿瘤细胞高表达 ABC 转运体，把化疗药泵出，导致多药耐药（MDR）<span class="loc">〔说话人1 34:48〕</span></li>
+</ul>
+<h3 class="h3">B. 三类 ATP 驱动泵对比</h3>
+<table class="tbl">
+<tr><th>类型</th><th>标志特征</th><th>代表 / 定位</th><th>功能</th></tr>
+<tr><td>P 型</td><td>形成磷酸化中间体<span class="loc">〔说话人1 25:03〕</span></td><td>钠钾泵、钙泵<span class="loc">〔说话人1 25:43〕</span></td><td>维持离子稳态</td></tr>
+<tr><td>V 型</td><td>定位于液泡、溶酶体、内吞体膜</td><td>溶酶体质子泵<span class="loc">〔说话人1 33:16〕</span></td><td>泵入 H⁺，维持酸性环境</td></tr>
+<tr><td>ABC</td><td>2 个 TMD + 2 个 NBD<span class="loc">〔说话人1 34:08〕</span></td><td>多药耐药蛋白<span class="loc">〔说话人1 34:48〕</span></td><td>广谱底物转运，致多药耐药</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>钠钾泵“3 Na⁺ 出、2 K⁺ 进、1 ATP、生电（净出 1 个正电荷）”，是最重要的泵。<span class="loc">〔说话人1 26:51〕</span></div>
+<div class="mnem">口诀（整理）：三钠出，二钾进，一个 ATP 换稳定；生电泵，膜内负，动物细胞最核心。</div>
+<div class="foot">细胞生物学 · 第7-8节 · 第 4 章</div>
 </div>
-
-<!-- PAGE 7: REVIEW CHECKLIST -->
 <div class="page">
-  <div class="page-header">
-    <div class="title">复习清单与主动回忆</div>
-    <div class="subtitle">Review Checklist · Active Recall</div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">★</span>必须掌握（核心考点）</div>
-    <div class="checklist">
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>脂双层通透判断逻辑</b>：先看带电→再看脂溶性/极性→最后看大小</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>自由扩散、协助扩散、主动运输</b>的区别与特点</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>转运体交替开放机制</b>：不会同时向两侧开放</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>离子通道三类门控</b>：电压门控、配体门控、机械门控</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>水通道(AQP)</b>功能、2003诺奖、分布部位</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>钠钾泵工作机制</b>：3 Na⁺出 / 2 K⁺入 / 1 ATP / 生电泵</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>三类ATP驱动泵</b>：P型(钠钾泵/钙泵)、V型(质子泵)、ABC(多药耐药)</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>继发性主动运输</b>原理（SGLT为例）与口服补盐液原理</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>受体介导胞吞五组分</b>：配体→受体→AP2→网格蛋白→发动蛋白</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>LDL胞吞过程</b>与家族性高胆固醇血症机制</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>持续性分泌 vs 调节性分泌</b>的区别</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>四种运输异常疾病</b>的缺陷位点与机制（FH/胱氨酸尿症/肾性糖尿/CF）</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>内膜系统定义</b>（线粒体不属于内膜系统）与区室化意义</div></div>
-      <div class="checklist-item"><div class="box"></div><div class="text"><b>糙面 vs 光面内质网</b>区别（形态/核糖体/功能），附着核糖体非永久结合</div></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="num">?</span>主动回忆题（自测）</div>
-    <div class="kcard">
-      <div class="kcard-body" style="font-size:9pt;">
-        <div style="margin-bottom:2mm;"><b>Q1.</b> 简述判断物质能否直接通过脂双层的优先级逻辑，并举例。</div>
-        <div style="margin-bottom:2mm;"><b>Q2.</b> 详述钠钾泵的工作机制及其生理意义。为什么说它是「最重要的泵」？</div>
-        <div style="margin-bottom:2mm;"><b>Q3.</b> 比较三类ATP驱动泵的结构特点、定位和功能。ABC转运体如何导致肿瘤多药耐药？</div>
-        <div style="margin-bottom:2mm;"><b>Q4.</b> 以SGLT为例说明继发性主动运输机制，并解释口服补盐液为什么必须同时含钠和葡萄糖。</div>
-        <div style="margin-bottom:2mm;"><b>Q5.</b> 详述受体介导的胞吞过程（以LDL为例），并说明家族性高胆固醇血症的发病机制。</div>
-        <div style="margin-bottom:2mm;"><b>Q6.</b> 比较四种跨膜运输异常疾病的缺陷位点、发病机制和临床表现。</div>
-        <div><b>Q7.</b> 什么是内膜系统的区室化作用？举例说明不同细胞器的环境差异。为什么线粒体不属于内膜系统？</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer-note">细胞生物学 · 第7-8节 · 2026-09-10 · 林珑教授 · HUST基础医学</div>
-  <div class="page-num">7</div>
+<h2 class="h2">5. 继发性主动运输与 SGLT</h2>
+<p class="lead">继发性主动运输借用钠梯度势能；SGLT 是必考的同向协同转运体，串起小肠与肾小管。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>继发性主动运输不直接水解 ATP，而用离子顺梯度释放的自由能供能<span class="loc">〔说话人1 35:57〕</span></li>
+<li>该离子梯度由钠钾泵消耗 ATP 建立，故继发性间接依赖 ATP<span class="loc">〔说话人1 35:57〕</span></li>
+<li>协同运输按方向分为同向运输（symport）与反向运输（antiport）<span class="loc">〔说话人1 36:45〕</span></li>
+<li>协同运输的两个底物，一个顺梯度、一个逆梯度，运输方向可同可反<span class="loc">〔说话人1 36:45〕</span></li>
+<li>SGLT 即钠-葡萄糖协同转运蛋白（Sodium-Glucose Linked Transporter）<span class="loc">〔说话人1 37:38〕</span></li>
+<li>SGLT 利用钠离子梯度转运葡萄糖，本课会出现两次<span class="loc">〔说话人1 37:38〕</span></li>
+<li>小肠上皮是极性细胞：顶侧膜为 apical，基底侧膜为 basal<span class="loc">〔说话人1 38:45〕</span></li>
+<li>小肠吸收葡萄糖：钠钾泵建立低钠梯度（原发）→ SGLT1 使 Na⁺ 顺梯度入胞并驱动葡萄糖逆梯度入胞（继发）<span class="loc">〔说话人1 38:45〕</span></li>
+<li>基底侧膜的 GLUT2 使葡萄糖顺梯度运出，属协助扩散<span class="loc">〔说话人1 38:45〕</span></li>
+<li>小肠吸收葡萄糖同时包含原发性、继发性主动运输与协助扩散三种方式<span class="loc">〔说话人1 41:05〕</span></li>
+<li>腹泻时口服补盐液不只补水，还必须含钠离子<span class="loc">〔说话人1 41:05〕</span></li>
+<li>补盐液还必须含葡萄糖，SGLT1 才能工作，从而充分补水<span class="loc">〔说话人1 41:51〕</span></li>
+</ul>
+<h3 class="h3">B. 协同运输的两种方向</h3>
+<table class="tbl">
+<tr><th>类型</th><th>方向关系</th><th>举例</th></tr>
+<tr><td>同向运输（symport）</td><td>被转运物与离子同方向</td><td>SGLT 同向转运 Na⁺ 与葡萄糖<span class="loc">〔说话人1 37:38〕</span></td></tr>
+<tr><td>反向运输（antiport）</td><td>被转运物与离子反方向</td><td>两个底物一顺一逆、方向相反<span class="loc">〔说话人1 36:45〕</span></td></tr>
+</table>
+<div class="def">定义：继发性主动运输 = 用原发性主动运输建立的离子梯度势能，驱动另一种物质逆梯度转运。<span class="loc">〔说话人1 35:57〕</span></div>
+<div class="exam"><span class="tag">★考点</span>小肠吸收葡萄糖 = 钠钾泵（原发）→ SGLT1（继发）→ GLUT2（协助扩散）。<span class="loc">〔说话人1 38:45〕</span></div>
+<div class="foot">细胞生物学 · 第7-8节 · 第 5 章</div>
+</div>
+<div class="page">
+<h2 class="h2">6. 大分子运输：胞吞作用</h2>
+<p class="lead">大分子靠膜形变形成囊泡进入细胞；受体介导内吞靠网格蛋白包被实现选择性高效摄取。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>大分子和颗粒物质无法经转运体或通道跨膜，需把整块膜吞入细胞<span class="loc">〔说话人1 01:04:45〕</span></li>
+<li>胞吞（endocytosis）：endo 意为内部、cyto 意为细胞，是细胞向内吞的过程<span class="loc">〔说话人1 01:04:45〕</span></li>
+<li>胞吞分三类：吞噬作用、胞饮作用、受体介导的胞吞<span class="loc">〔说话人1 01:04:45〕</span></li>
+<li>吞噬（phagocytosis）摄取细菌、细胞碎片等大颗粒<span class="loc">〔说话人1 01:08:17〕</span></li>
+<li>胞饮（pinocytosis）摄取细胞外液等液体<span class="loc">〔说话人1 01:04:45〕</span></li>
+<li>受体介导的胞吞有受体、特异性结合配体，能选择性地高效摄取<span class="loc">〔说话人1 01:07:37〕</span></li>
+<li>吞噬时受体感受胞外颗粒，细胞膜向外伸出<span class="loc">〔说话人1 01:08:17〕</span></li>
+<li>吞噬形成标志性的吞噬体（phagosome），可达约 500 nm<span class="loc">〔说话人1 01:08:17〕</span></li>
+<li>吞噬靠 actin 肌动蛋白重解聚重排伸出伪足，包入后与溶酶体结合降解<span class="loc">〔说话人1 01:09:29〕</span></li>
+<li>吞噬作用只发生在专职吞噬细胞，如巨噬细胞与中性粒细胞<span class="loc">〔说话人1 01:10:19〕</span></li>
+<li>胞饮在绝大多数细胞中持续发生，是非特异的基础稳态过程，维持细胞膜平衡<span class="loc">〔说话人1 01:10:19〕</span></li>
+<li>吞噬体很大，而胞饮吞入的是非常小的胞吞囊泡<span class="loc">〔说话人1 01:10:19〕</span></li>
+<li>受体介导的胞吞选择高效，受体聚集于膜微区即包被小窝（coated pit）<span class="loc">〔说话人1 01:11:30〕</span></li>
+<li>受体在胞质侧与包被蛋白结合，包被蛋白即网格蛋白（clathrin）<span class="loc">〔说话人1 01:12:28〕</span></li>
+<li>网格蛋白是包被蛋白，介导受体介导的内吞作用<span class="loc">〔说话人1 01:12:28〕</span></li>
+<li>网格蛋白在胞质侧组装成笼状结构，笼子里面是需要内吞的受体<span class="loc">〔说话人1 01:13:36〕</span></li>
+<li>配体（ligand / cargo）与受体（receptor）特异性结合，使货物富集<span class="loc">〔说话人1 01:14:23〕</span></li>
+<li>膜内陷的动力由网格蛋白形成的笼状骨架提供<span class="loc">〔说话人1 01:15:03〕</span></li>
+<li>受体介导内吞含两重选择：受体-配体特异结合，以及受体与衔接蛋白结合<span class="loc">〔说话人1 01:16:38〕</span></li>
+<li>质膜上发挥作用的衔接蛋白是 AP2<span class="loc">〔说话人1 01:16:38〕</span></li>
+<li>受体介导内吞的分子顺序：货物 → 受体 → 衔接蛋白 → 网格蛋白<span class="loc">〔说话人1 01:17:38〕</span></li>
+<li>网格蛋白与衔接蛋白组装成包被，膜弯曲下拉，形成出芽（budding）<span class="loc">〔说话人1 01:17:38〕</span></li>
+<li>膜断裂需要发动蛋白（dynamin）<span class="loc">〔说话人1 01:17:38〕</span></li>
+<li>发动蛋白在囊泡颈部组装，是 GTPase，水解 GTP 使构象改变，把膜缢断<span class="loc">〔说话人1 01:18:15〕</span></li>
+<li>缢断后形成有被小泡（coated vesicle）<span class="loc">〔说话人1 01:18:47〕</span></li>
+<li>有被小泡需先脱包被（甩掉网格蛋白与衔接蛋白），才能与早期内吞体融合<span class="loc">〔说话人1 01:19:20〕</span></li>
+</ul>
+<h3 class="h3">B. 胞吞三类型对比</h3>
+<table class="tbl">
+<tr><th>类型</th><th>发生细胞</th><th>摄取对象</th><th>关键特征</th></tr>
+<tr><td>吞噬作用</td><td>专职吞噬细胞<span class="loc">〔说话人1 01:10:19〕</span></td><td>细菌、细胞碎片等大颗粒</td><td>形成吞噬体，与溶酶体融合降解</td></tr>
+<tr><td>胞饮作用</td><td>绝大多数细胞<span class="loc">〔说话人1 01:10:19〕</span></td><td>胞外液体及可溶物</td><td>持续发生、非特异，维持膜平衡</td></tr>
+<tr><td>受体介导胞吞</td><td>多种细胞<span class="loc">〔说话人1 01:07:37〕</span></td><td>特定配体（如 LDL）</td><td>选择高效，依赖网格蛋白包被</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>受体介导内吞的分子顺序：货物 → 受体 → 衔接蛋白 AP2 → 网格蛋白 → 发动蛋白。<span class="loc">〔说话人1 01:17:38〕</span></div>
+<div class="mnem">口诀（整理）：配体受体先牵手，AP2 牵线网格收，发动蛋白剪一刀，囊泡脱落往内走。</div>
+<div class="foot">细胞生物学 · 第7-8节 · 第 6 章</div>
+</div>
+<div class="page">
+<h2 class="h2">7. 受体介导内吞实例：LDL 与家族性高胆固醇血症</h2>
+<p class="lead">LDL 胞吞串起受体介导内吞的全过程与分选概念，也是家族性高胆固醇血症的病因。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>LDL（低密度脂蛋白）是胆固醇的运输形式<span class="loc">〔说话人1 01:20:36〕</span></li>
+<li>LDL 颗粒表面有 apoB 蛋白，被质膜上的 LDL 受体识别<span class="loc">〔说话人1 01:20:36〕</span></li>
+<li>LDL 胞吞流程：配体-受体结合 → AP2 与网格蛋白包被 → 胞吞形成有被小泡（coated vesicle）<span class="loc">〔说话人1 01:21:39〕</span></li>
+<li>脱包被后与早期内吞体融合，内吞体逐渐酸化、pH 下降<span class="loc">〔说话人1 01:21:39〕</span></li>
+<li>溶酶体腔呈强酸性，而细胞质 pH 约 7.2、呈中性<span class="loc">〔说话人1 01:21:39〕</span></li>
+<li>pH 下降使配体与受体解离，随后进行分选（sorting）<span class="loc">〔说话人1 01:23:12〕</span></li>
+<li>分选：LDL 颗粒进入溶酶体水解为游离胆固醇，供细胞利用<span class="loc">〔说话人1 01:23:12〕</span></li>
+<li>分选：LDL 受体经循环回到质膜，可重复利用<span class="loc">〔说话人1 01:23:12〕</span></li>
+<li>分选（sorting）发生在内吞体中，是囊泡运输的重要概念<span class="loc">〔说话人1 01:23:12〕</span></li>
+<li>家族性高胆固醇血症：LDL 受体缺陷，血中胆固醇无法被摄取而升高<span class="loc">〔说话人1 01:24:41〕</span></li>
+<li>家族性高胆固醇血症最终导致动脉粥样硬化等一系列疾病<span class="loc">〔说话人1 01:24:41〕</span></li>
+</ul>
+<h3 class="h3">B. 受体与配体的两种命运（分选）</h3>
+<table class="tbl">
+<tr><th>对象</th><th>去向</th><th>意义</th></tr>
+<tr><td>LDL 颗粒（配体）</td><td>进溶酶体水解为游离胆固醇<span class="loc">〔说话人1 01:23:12〕</span></td><td>释放胆固醇供细胞利用</td></tr>
+<tr><td>LDL 受体</td><td>循环回质膜复用<span class="loc">〔说话人1 01:23:12〕</span></td><td>提高摄取效率</td></tr>
+</table>
+<div class="foot">细胞生物学 · 第7-8节 · 第 7 章</div>
+</div>
+<div class="page">
+<h2 class="h2">8. 胞吐作用</h2>
+<p class="lead">胞吐是胞吞的反过程，囊泡与质膜融合外排内容物并补充膜；按是否持续分为两类分泌。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>胞吐（exocytosis）中囊泡与质膜结合，把内容物释放出去<span class="loc">〔说话人1 01:26:00〕</span></li>
+<li>胞吐会把囊泡膜并入质膜，补充细胞膜<span class="loc">〔说话人1 01:26:00〕</span></li>
+<li>胞吐按是否持续分为持续性分泌与调节性分泌<span class="loc">〔说话人1 01:26:00〕</span></li>
+<li>持续性分泌合成后立即分泌，几乎在所有细胞中持续发生<span class="loc">〔说话人1 01:26:00〕</span></li>
+<li>调节性分泌把货物先储存在分泌囊泡中，信号来了才释放<span class="loc">〔说话人1 01:26:00〕</span></li>
+<li>调节性分泌常见于胰岛素、消化酶、神经递质的分泌<span class="loc">〔说话人1 01:26:00〕</span></li>
+<li>调节性分泌的信号往往带来胞质钙浓度升高<span class="loc">〔说话人1 01:26:00〕</span></li>
+</ul>
+<h3 class="h3">B. 持续性分泌与调节性分泌对比</h3>
+<table class="tbl">
+<tr><th>类型</th><th>释放方式</th><th>分布 / 举例</th></tr>
+<tr><td>持续性分泌</td><td>合成后立即释放，持续发生<span class="loc">〔说话人1 01:26:00〕</span></td><td>几乎所有细胞（补充细胞膜）</td></tr>
+<tr><td>调节性分泌</td><td>货物先储存于分泌囊泡，信号触发后释放<span class="loc">〔说话人1 01:26:00〕</span></td><td>胰岛素、消化酶、神经递质<span class="loc">〔说话人1 01:26:00〕</span></td></tr>
+</table>
+<div class="foot">细胞生物学 · 第7-8节 · 第 8 章</div>
+</div>
+<div class="page">
+<h2 class="h2">9. 跨膜运输异常与疾病</h2>
+<p class="lead">四种疾病各由一个跨膜运输蛋白缺陷引起；复习时按“问题位点 → 对应结果”梳理因果链。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>家族性高胆固醇血症：LDL 受体缺陷致血胆固醇升高（机制见 §7）<span class="loc">〔说话人1 01:24:41〕</span></li>
+<li>胱氨酸尿症：胱氨酸溶解度特别低，容易结晶<span class="loc">〔说话人1 01:28:47〕</span></li>
+<li>胱氨酸尿症：肾小管转运蛋白缺陷，胱氨酸无法重吸收，尿中浓度增高形成尿路结石<span class="loc">〔说话人1 01:28:47〕</span></li>
+<li>肾性糖尿：血糖正常但尿中出现糖，因肾小管对葡萄糖的重吸收障碍<span class="loc">〔说话人1 01:29:17〕</span></li>
+<li>肾小管重吸收葡萄糖与肠上皮几乎一样：钠钾泵 → SGLT → GLUT<span class="loc">〔说话人1 01:29:17〕</span></li>
+<li>SGLT 抑制剂阻断肾小管葡萄糖重吸收，使糖随尿排出而降低血糖<span class="loc">〔说话人1 01:31:09〕</span></li>
+<li>囊性纤维化发生在气道上皮，患者易反复感染与炎症<span class="loc">〔说话人1 01:31:36〕</span></li>
+<li>囊性纤维化由 CFTR 基因编码的蛋白异常引起<span class="loc">〔说话人1 01:32:06〕</span></li>
+<li>CFTR 是气道上皮顶端膜的氯离子与碳酸氢根通道<span class="loc">〔说话人1 01:32:06〕</span></li>
+<li>正常时氯离子经 CFTR 外排，黏液保持水化，纤毛摆动清除细菌<span class="loc">〔说话人1 01:32:06〕</span></li>
+<li>CFTR 异常 → 氯离子无法外排 → 气道表面水分泌减少 → 黏液变稠 → 纤毛无法摆动 → 反复感染<span class="loc">〔说话人1 01:32:06〕</span></li>
+<li>离子的运输会影响水的运输，从而引发疾病<span class="loc">〔说话人1 01:33:59〕</span></li>
+</ul>
+<h3 class="h3">B. 四种运输异常疾病对比</h3>
+<table class="tbl">
+<tr><th>疾病</th><th>缺陷位点</th><th>机制</th><th>结果</th></tr>
+<tr><td>家族性高胆固醇血症</td><td>LDL 受体<span class="loc">〔说话人1 01:24:41〕</span></td><td>LDL 无法被胞吞摄取</td><td>高胆固醇血症、动脉粥样硬化</td></tr>
+<tr><td>胱氨酸尿症</td><td>肾小管胱氨酸转运蛋白<span class="loc">〔说话人1 01:28:47〕</span></td><td>胱氨酸无法重吸收，溶解度低易结晶</td><td>尿路结石</td></tr>
+<tr><td>肾性糖尿</td><td>肾小管 SGLT<span class="loc">〔说话人1 01:29:17〕</span></td><td>血糖正常但葡萄糖重吸收障碍</td><td>尿中出现糖（血糖正常）</td></tr>
+<tr><td>囊性纤维化</td><td>CFTR 氯离子通道<span class="loc">〔说话人1 01:32:06〕</span></td><td>Cl⁻ 无法外排 → 气道水分泌减少 → 黏液变稠</td><td>纤毛障碍、反复感染</td></tr>
+</table>
+<div class="wrong"><span class="tag">易错</span>肾性糖尿 ≠ 糖尿病：肾性糖尿血糖正常，是肾小管重吸收障碍；糖尿病是血糖过高超过肾糖阈。<span class="loc">〔说话人1 01:29:17〕</span></div>
+<div class="foot">细胞生物学 · 第7-8节 · 第 9 章</div>
+</div>
+<div class="page">
+<h2 class="h2">10. 第五章开篇：内膜系统与内质网</h2>
+<p class="lead">内膜系统是膜性细胞器通过囊泡运输构成的动态网络；内质网是其中最大的膜性结构。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>第五章讲细胞的内膜系统与囊泡转运，视线从膜转向细胞质<span class="loc">〔说话人1 01:34:33〕</span></li>
+<li>内膜系统是膜性细胞器，靠囊泡运输把相对独立的细胞器连接起来<span class="loc">〔说话人1 01:34:33〕</span></li>
+<li>线粒体不走经典分泌通路，不属于内膜系统<span class="loc">〔说话人1 01:35:25〕</span></li>
+<li>本章涉及的膜性细胞器：高尔基体、光面与糙面内质网、内吞体、溶酶体、过氧化物酶体等<span class="loc">〔说话人1 01:35:25〕</span></li>
+<li>区室化：各细胞器功能不同需分开，溶酶体酸性、内质网氧化、细胞质还原，使各类反应高效进行<span class="loc">〔说话人1 01:36:34〕</span></li>
+<li>第二点意义是扩大表面积，便于酶与底物在膜上反应<span class="loc">〔说话人1 01:37:16〕</span></li>
+<li>第三点意义是相互协作，各细胞器连成动态网络而非孤立<span class="loc">〔说话人1 01:37:16〕</span></li>
+<li>本章学习目标之一是识别四种膜性细胞器：内质网、高尔基体、溶酶体、过氧化物酶体<span class="loc">〔说话人1 01:37:58〕</span></li>
+<li>学习目标还包括蛋白质分选、囊泡运输分子机制与相关疾病<span class="loc">〔说话人1 01:37:58〕</span></li>
+<li>囊泡运输涉及 COPⅡ、COPⅠ、网格蛋白、Rab、SNARE 等<span class="loc">〔说话人1 01:38:53〕</span></li>
+<li>内质网 = Endoplasmic Reticulum，reticulum 意为“网”<span class="loc">〔说话人1 01:38:53〕</span></li>
+<li>内质网是细胞内最大的膜性结构，分糙面内质网与光面内质网<span class="loc">〔说话人1 01:38:53〕</span></li>
+<li>糙面内质网上的核糖体不是永久结合，合成蛋白质时才上去<span class="loc">〔说话人1 01:39:49〕</span></li>
+<li>糙面内质网呈扁平片状（sheet），面积大便于核糖体附着<span class="loc">〔说话人1 01:40:22〕</span></li>
+<li>光面内质网呈管状（tubule），不主要负责合成蛋白<span class="loc">〔说话人1 01:40:22〕</span></li>
+</ul>
+<h3 class="h3">B. 糙面内质网与光面内质网对比</h3>
+<table class="tbl">
+<tr><th>类型</th><th>形态</th><th>核糖体</th><th>主要功能</th></tr>
+<tr><td>糙面内质网</td><td>扁平片状 sheet<span class="loc">〔说话人1 01:40:22〕</span></td><td>有附着核糖体<span class="loc">〔说话人1 01:38:53〕</span></td><td>合成蛋白</td></tr>
+<tr><td>光面内质网</td><td>管状 tubule<span class="loc">〔说话人1 01:40:22〕</span></td><td>无</td><td>不主要负责合成蛋白</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>线粒体不属于内膜系统；附着核糖体非永久结合，合成分泌蛋白时才结合。<span class="loc">〔说话人1 01:39:49〕</span></div>
+<div class="foot">细胞生物学 · 第7-8节 · 第 10 章</div>
+</div>
+<div class="page">
+<h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>脂双层疏水核心由膜脂（磷脂、胆固醇）构成，不是蛋白</li>
+<li>带电物质无论多小都不能直接穿过脂双层</li>
+<li>穿膜判断顺序：带电 → 极性/脂溶性 → 分子大小</li>
+<li>被动运输顺电化学梯度不耗能；主动运输逆梯度耗能</li>
+<li>自由扩散无饱和；协助扩散需转运体、有饱和</li>
+<li>转运体原理＝交替开放，绝不两侧同时开放</li>
+<li>离子通道只被动运输，有选择性与门控</li>
+<li>门控三类：电压门控、配体门控、机械门控</li>
+<li>离子通道通量 10⁷–10⁸ 离子/秒</li>
+<li>水通道 AQP 只加速水转运，方向由渗透压决定</li>
+<li>水通道发现获 2003 年诺贝尔化学奖（AQP1）</li>
+<li>钠钾泵每 ATP 出 3 Na⁺、入 2 K⁺，为生电泵</li>
+<li>P 型＝磷酸化中间体；V 型＝液泡；ABC＝ATP 结合盒</li>
+<li>溶酶体 pH 约 4.5–5.5，靠 V 型泵维持</li>
+<li>ABC 转运体高表达致肿瘤多药耐药 MDR</li>
+<li>继发性主动运输用离子梯度势能，间接依赖 ATP</li>
+<li>协同运输分同向运输与反向运输</li>
+<li>SGLT＝钠-葡萄糖协同转运蛋白</li>
+<li>小肠吸收葡萄糖＝钠钾泵→SGLT1→GLUT2</li>
+<li>口服补盐液必须同时含钠与葡萄糖</li>
+<li>胞吞分吞噬、胞饮、受体介导三类</li>
+<li>受体介导内吞顺序：货物→受体→AP2→网格蛋白→发动蛋白</li>
+<li>发动蛋白是 GTPase，负责缢断囊泡</li>
+<li>分选：LDL 入溶酶体，LDL 受体循环回质膜</li>
+<li>家族性高胆固醇血症＝LDL 受体缺陷</li>
+<li>胞吐分持续性分泌与调节性分泌</li>
+<li>胱氨酸尿症＝肾小管转运体缺陷致尿路结石</li>
+<li>肾性糖尿＝血糖正常但尿糖</li>
+<li>囊性纤维化＝CFTR 缺陷，离子→水→黏液因果链</li>
+<li>线粒体不属于内膜系统</li>
+<li>内质网是最大膜性结构，糙面片状、光面管状</li>
+<li>糙面内质网核糖体非永久结合</li>
+</ul>
+<div class="foot">附录 A · 必背清单</div>
+</div>
+<div class="page">
+<h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl">
+<tr><th>错</th><th>对</th></tr>
+<tr><td>协助扩散属于主动运输</td><td>协助扩散需转运体，但不耗能、顺梯度，属于被动运输</td></tr>
+<tr><td>分子小就一定能直接穿膜</td><td>带电或极性极强者即使很小也不能直接穿过脂双层</td></tr>
+<tr><td>转运体可同时向两侧开放</td><td>交替开放，任何时间只有一侧开放</td></tr>
+<tr><td>通道可逆梯度主动转运离子</td><td>通道只介导被动运输，逆梯度必须靠泵</td></tr>
+<tr><td>钠钾泵是电中性泵</td><td>生电泵：3 Na⁺ 出、2 K⁺ 入，净出 1 个正电荷</td></tr>
+<tr><td>继发性主动运输完全不耗能</td><td>它不直接水解 ATP，但依赖 ATP 建立的离子梯度</td></tr>
+<tr><td>肾性糖尿等同糖尿病</td><td>肾性糖尿血糖正常，是肾小管重吸收障碍</td></tr>
+<tr><td>胞饮与吞噬是同一回事</td><td>胞饮吞液体、绝大多数细胞持续发生；吞噬吞大颗粒、仅专职细胞</td></tr>
+<tr><td>网格蛋白负责把囊泡缢断</td><td>网格蛋白与 AP2 负责包被，发动蛋白负责缢断</td></tr>
+<tr><td>分选时受体与配体同去溶酶体</td><td>受体循环回质膜复用，配体入溶酶体降解</td></tr>
+<tr><td>线粒体属于内膜系统</td><td>线粒体不走经典分泌通路，不属于内膜系统</td></tr>
+<tr><td>附着核糖体永久固定在糙面内质网</td><td>核糖体仅在合成蛋白时结合，合成完成后脱落</td></tr>
+</table>
+<div class="foot">附录 B · 易错点与易混对照</div>
+</div>
+<div class="page">
+<h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx">
+<tr><th>考点</th><th>出处小节</th><th>定位</th><th>可能题型</th></tr>
+<tr><td>穿膜判断优先级</td><td>§1</td><td>说话人1 08:57</td><td>简答</td></tr>
+<tr><td>被动运输 vs 主动运输</td><td>§1</td><td>说话人1 04:44</td><td>选择</td></tr>
+<tr><td>自由扩散 vs 协助扩散</td><td>§2</td><td>说话人1 15:17</td><td>比较</td></tr>
+<tr><td>交替开放机制</td><td>§2</td><td>说话人1 17:18</td><td>名词解释</td></tr>
+<tr><td>离子通道的选择性与门控</td><td>§3</td><td>说话人1 45:10</td><td>简答</td></tr>
+<tr><td>三类门控（电压/配体/机械）</td><td>§3</td><td>说话人1 56:44</td><td>填空</td></tr>
+<tr><td>水通道 AQP 与 2003 诺奖</td><td>§3</td><td>说话人1 01:02:46</td><td>选择</td></tr>
+<tr><td>钠钾泵 3:2 与生电反应</td><td>§4</td><td>说话人1 26:51</td><td>简答</td></tr>
+<tr><td>三类 ATP 驱动泵比较</td><td>§4</td><td>说话人1 24:31</td><td>表格比较</td></tr>
+<tr><td>ABC 转运体与多药耐药</td><td>§4</td><td>说话人1 34:48</td><td>综合</td></tr>
+<tr><td>继发性主动运输定义</td><td>§5</td><td>说话人1 35:57</td><td>名词解释</td></tr>
+<tr><td>SGLT 与小肠/肾小管葡萄糖吸收</td><td>§5</td><td>说话人1 38:45</td><td>综合</td></tr>
+<tr><td>口服补盐液原理</td><td>§5</td><td>说话人1 41:51</td><td>应用</td></tr>
+<tr><td>受体介导内吞五组分</td><td>§6</td><td>说话人1 01:17:38</td><td>简答</td></tr>
+<tr><td>LDL 胞吞与分选</td><td>§7</td><td>说话人1 01:23:12</td><td>综合</td></tr>
+<tr><td>家族性高胆固醇血症</td><td>§7</td><td>说话人1 01:24:41</td><td>病例</td></tr>
+<tr><td>持续性 vs 调节性分泌</td><td>§8</td><td>说话人1 01:26:00</td><td>比较</td></tr>
+<tr><td>四种运输异常疾病</td><td>§9</td><td>说话人1 01:32:06</td><td>综合</td></tr>
+<tr><td>囊性纤维化因果链</td><td>§9</td><td>说话人1 01:32:06</td><td>简答</td></tr>
+<tr><td>内膜系统与线粒体定位</td><td>§10</td><td>说话人1 01:35:25</td><td>判断</td></tr>
+<tr><td>区室化的意义</td><td>§10</td><td>说话人1 01:36:34</td><td>简答</td></tr>
+<tr><td>糙面 vs 光面内质网</td><td>§10</td><td>说话人1 01:40:22</td><td>比较</td></tr>
+</table>
+<div class="foot">附录 C · 考点索引表</div>
+</div>
+<div class="page">
+<h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx">
+<tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>细胞膜是选择性屏障，疏水核心由磷脂、胆固醇等膜脂构成并隔开两水相</td><td>结构</td><td>§1</td><td><span class="loc">〔说话人1 01:00〕</span></td></tr>
+<tr><td>2</td><td>相似相溶：脂溶性物质可穿膜，极性极强者不可</td><td>原理</td><td>§1</td><td><span class="loc">〔说话人1 02:08〕</span></td></tr>
+<tr><td>3</td><td>极性、带电、离子是三概念，带电一定不通透</td><td>考点</td><td>§1</td><td><span class="loc">〔说话人1 02:56〕</span></td></tr>
+<tr><td>4</td><td>自由扩散自高向低、ΔG 小于 0、不耗能</td><td>定义</td><td>§1</td><td><span class="loc">〔说话人1 02:56〕</span></td></tr>
+<tr><td>5</td><td>被动运输顺电化学梯度，主动运输逆梯度耗能</td><td>定义</td><td>§1</td><td><span class="loc">〔说话人1 04:44〕</span></td></tr>
+<tr><td>6</td><td>ATP 供能靠磷酸化改变蛋白构象，脱下 γ 磷酸</td><td>机制</td><td>§1</td><td><span class="loc">〔说话人1 06:23〕</span></td></tr>
+<tr><td>7</td><td>穿膜判断顺序：带电→极性/脂溶性→分子大小</td><td>考点</td><td>§1</td><td><span class="loc">〔说话人1 08:57〕</span></td></tr>
+<tr><td>8</td><td>高脂溶性例：醇类激素、脂肪酸、脂溶性药物</td><td>举例</td><td>§1</td><td><span class="loc">〔说话人1 07:34〕</span></td></tr>
+<tr><td>9</td><td>通透性举例：可过 O₂/CO₂/N₂；低透 水/尿素/甘油/氨；难透 葡萄糖/蔗糖；不透 Na⁺/K⁺</td><td>举例</td><td>§1</td><td><span class="loc">〔说话人1 08:57〕</span></td></tr>
+<tr><td>10</td><td>不能自由扩散者需膜运输蛋白；分转运体（载体）与通道</td><td>分类</td><td>§2</td><td><span class="loc">〔说话人1 11:27〕</span></td></tr>
+<tr><td>11</td><td>膜运输蛋白多为多次跨膜 α 螺旋，可围成亲水核心</td><td>结构</td><td>§2</td><td><span class="loc">〔说话人1 10:27〕</span></td></tr>
+<tr><td>12</td><td>转运体如旋转门，经结合-构象改变-释放，可介导主动或被动运输</td><td>机制</td><td>§2</td><td><span class="loc">〔说话人1 12:20〕</span></td></tr>
+<tr><td>13</td><td>协助扩散 facilitated diffusion 由转运体介导</td><td>定义</td><td>§2</td><td><span class="loc">〔说话人1 13:13〕</span></td></tr>
+<tr><td>14</td><td>协助扩散不耗能、顺梯度，仍属被动运输</td><td>考点</td><td>§2</td><td><span class="loc">〔说话人1 14:33〕</span></td></tr>
+<tr><td>15</td><td>协助扩散有结构特异性与饱和性</td><td>特征</td><td>§2</td><td><span class="loc">〔说话人1 15:17〕</span></td></tr>
+<tr><td>16</td><td>饱和因转运蛋白数量与构象循环速度有限</td><td>机制</td><td>§2</td><td><span class="loc">〔说话人1 15:17〕</span></td></tr>
+<tr><td>17</td><td>转运体原理为交替开放 alternating access：不同时两侧开放，主动被动均适用</td><td>机制</td><td>§2</td><td><span class="loc">〔说话人1 17:18〕</span></td></tr>
+<tr><td>18</td><td>离子通道为贯穿脂双层亲水孔道（离子水合层故需亲水通道）</td><td>结构</td><td>§3</td><td><span class="loc">〔说话人1 43:43〕</span></td></tr>
+<tr><td>19</td><td>离子通道只介导被动运输，开合调控称门控</td><td>考点</td><td>§3</td><td><span class="loc">〔说话人1 13:13〕</span></td></tr>
+<tr><td>20</td><td>通道有选择性过滤器，故钾通道不许钠离子通过</td><td>结构</td><td>§3</td><td><span class="loc">〔说话人1 44:39〕</span></td></tr>
+<tr><td>21</td><td>选择性决定谁通过，门控决定何时通过</td><td>概念</td><td>§3</td><td><span class="loc">〔说话人1 45:10〕</span></td></tr>
+<tr><td>22</td><td>离子通道通量达 10⁷–10⁸ 离子/秒</td><td>数字</td><td>§3</td><td><span class="loc">〔说话人1 45:37〕</span></td></tr>
+<tr><td>23</td><td>离子通道可双向运输，方向由电化学梯度定</td><td>特征</td><td>§3</td><td><span class="loc">〔说话人1 56:08〕</span></td></tr>
+<tr><td>24</td><td>门控三类：电压、配体（胞外/胞内）、机械；机械由牵拉/压力/震动激活</td><td>分类</td><td>§3</td><td><span class="loc">〔说话人1 56:44〕</span></td></tr>
+<tr><td>25</td><td>钾渗漏通道+钠钾泵维持静息膜电位（外正内负）</td><td>考点</td><td>§3</td><td><span class="loc">〔说话人1 57:56〕</span></td></tr>
+<tr><td>26</td><td>水通道只加速水转运，仍属被动，方向由渗透压定</td><td>定义</td><td>§3</td><td><span class="loc">〔说话人1 01:04:19〕</span></td></tr>
+<tr><td>27</td><td>水通道分布于肾小管、红细胞等；2003 诺奖用爪蟾卵母细胞低渗实验证实</td><td>发现</td><td>§3</td><td><span class="loc">〔说话人1 01:02:46〕</span></td></tr>
+<tr><td>28</td><td>AQP 为四聚体，每亚基各有一水孔</td><td>结构</td><td>§3</td><td><span class="loc">〔说话人1 01:03:21〕</span></td></tr>
+<tr><td>29</td><td>主动运输逆梯度耗能，须与 ATP 等耦联使总 ΔG 小于 0；胞外高钠、胞内高钾、胞外高钙</td><td>定义</td><td>§4</td><td><span class="loc">〔说话人1 19:05〕</span></td></tr>
+<tr><td>30</td><td>ATP 水解为 ADP+磷酸（ΔG 约 -30.54 kJ/mol）；水解酶称 ATP 酶</td><td>数字</td><td>§4</td><td><span class="loc">〔说话人1 21:06〕</span></td></tr>
+<tr><td>31</td><td>ATP 造梯度如电抽水，离子顺梯度势能可做功</td><td>类比</td><td>§4</td><td><span class="loc">〔说话人1 22:38〕</span></td></tr>
+<tr><td>32</td><td>ATP 驱动泵分 P 型、V 型、ABC</td><td>分类</td><td>§4</td><td><span class="loc">〔说话人1 24:31〕</span></td></tr>
+<tr><td>33</td><td>P 型 P 代表磷酸化中间体，代表钠钾泵与钙泵</td><td>定义</td><td>§4</td><td><span class="loc">〔说话人1 25:03〕</span></td></tr>
+<tr><td>34</td><td>钠钾泵每 ATP 出 3 Na⁺、入 2 K⁺，为生电泵</td><td>数字</td><td>§4</td><td><span class="loc">〔说话人1 26:51〕</span></td></tr>
+<tr><td>35</td><td>钠钾泵维持动物细胞离子稳态，最重要</td><td>考点</td><td>§4</td><td><span class="loc">〔说话人1 25:43〕</span></td></tr>
+<tr><td>36</td><td>钠钾泵循环：内开结 Na→磷酸化→外开释 Na→结 K→去磷酸化→释 K</td><td>机制</td><td>§4</td><td><span class="loc">〔说话人1 27:26〕</span></td></tr>
+<tr><td>37</td><td>钙是重要第二信使，胞质钙极低；钙通道开成脉冲</td><td>概念</td><td>§4</td><td><span class="loc">〔说话人1 31:14〕</span></td></tr>
+<tr><td>38</td><td>V 型泵（V=液泡）将 H⁺ 泵入溶酶体、内吞体、液泡等腔内降 pH</td><td>定义</td><td>§4</td><td><span class="loc">〔说话人1 32:24〕</span></td></tr>
+<tr><td>39</td><td>溶酶体 pH 约 4.5–5.5，适配水解酶</td><td>数字</td><td>§4</td><td><span class="loc">〔说话人1 33:16〕</span></td></tr>
+<tr><td>40</td><td>ABC=ATP 结合盒（2 TMD+2 NBD），底物广：脂质、胆固醇、胆汁酸、药物</td><td>结构</td><td>§4</td><td><span class="loc">〔说话人1 34:08〕</span></td></tr>
+<tr><td>41</td><td>肿瘤高表达 ABC 致多药耐药 MDR</td><td>应用</td><td>§4</td><td><span class="loc">〔说话人1 34:48〕</span></td></tr>
+<tr><td>42</td><td>继发性用离子梯度势能而非直接 ATP</td><td>定义</td><td>§5</td><td><span class="loc">〔说话人1 35:57〕</span></td></tr>
+<tr><td>43</td><td>协同运输分同向运输与反向运输</td><td>分类</td><td>§5</td><td><span class="loc">〔说话人1 36:45〕</span></td></tr>
+<tr><td>44</td><td>SGLT 即钠-葡萄糖协同转运蛋白，利用钠梯度转运葡萄糖</td><td>术语</td><td>§5</td><td><span class="loc">〔说话人1 37:38〕</span></td></tr>
+<tr><td>45</td><td>小肠上皮极性：顶侧 apical、基底侧 basal</td><td>结构</td><td>§5</td><td><span class="loc">〔说话人1 38:45〕</span></td></tr>
+<tr><td>46</td><td>小肠吸收葡萄糖：钠钾泵→SGLT1→GLUT2</td><td>机制</td><td>§5</td><td><span class="loc">〔说话人1 38:45〕</span></td></tr>
+<tr><td>47</td><td>口服补盐液须同时含钠与葡萄糖</td><td>应用</td><td>§5</td><td><span class="loc">〔说话人1 41:51〕</span></td></tr>
+<tr><td>48</td><td>大分子靠膜形变形成囊泡进入细胞</td><td>概念</td><td>§6</td><td><span class="loc">〔说话人1 01:04:45〕</span></td></tr>
+<tr><td>49</td><td>胞吞分吞噬、胞饮、受体介导三类</td><td>分类</td><td>§6</td><td><span class="loc">〔说话人1 01:04:45〕</span></td></tr>
+<tr><td>50</td><td>吞噬 phago 意为吃，形成吞噬体，约 500 nm</td><td>定义</td><td>§6</td><td><span class="loc">〔说话人1 01:08:17〕</span></td></tr>
+<tr><td>51</td><td>吞噬靠 actin 伸伪足，与溶酶体融合降解</td><td>机制</td><td>§6</td><td><span class="loc">〔说话人1 01:09:29〕</span></td></tr>
+<tr><td>52</td><td>胞饮在绝大多数细胞持续发生，维持膜平衡</td><td>特征</td><td>§6</td><td><span class="loc">〔说话人1 01:10:19〕</span></td></tr>
+<tr><td>53</td><td>受体聚集膜微区为包被小窝 coated pit</td><td>术语</td><td>§6</td><td><span class="loc">〔说话人1 01:11:30〕</span></td></tr>
+<tr><td>54</td><td>包被蛋白为网格蛋白 clathrin，组装成笼状</td><td>结构</td><td>§6</td><td><span class="loc">〔说话人1 01:12:28〕</span></td></tr>
+<tr><td>55</td><td>分子顺序：货物→受体→衔接蛋白 AP2→网格蛋白</td><td>考点</td><td>§6</td><td><span class="loc">〔说话人1 01:17:38〕</span></td></tr>
+<tr><td>56</td><td>膜断裂需发动蛋白 dynamin，为 GTPase</td><td>机制</td><td>§6</td><td><span class="loc">〔说话人1 01:18:15〕</span></td></tr>
+<tr><td>57</td><td>缢断后形成有被小泡，须脱包被再融合</td><td>机制</td><td>§6</td><td><span class="loc">〔说话人1 01:19:20〕</span></td></tr>
+<tr><td>58</td><td>LDL 是胆固醇运输形式，表面 apoB 被受体识别</td><td>概念</td><td>§7</td><td><span class="loc">〔说话人1 01:20:36〕</span></td></tr>
+<tr><td>59</td><td>内吞体酸化→配体受体解离并分选：LDL 入溶酶体、受体循环回质膜</td><td>机制</td><td>§7</td><td><span class="loc">〔说话人1 01:23:12〕</span></td></tr>
+<tr><td>60</td><td>家族性高胆固醇血症：LDL 受体缺陷致动脉粥样硬化</td><td>应用</td><td>§7</td><td><span class="loc">〔说话人1 01:24:41〕</span></td></tr>
+<tr><td>61</td><td>胞吐囊泡与质膜融合外排并补充膜，分持续性与调节性分泌</td><td>定义</td><td>§8</td><td><span class="loc">〔说话人1 01:26:00〕</span></td></tr>
+<tr><td>62</td><td>调节性分泌货物储存囊泡、信号触发、常伴钙升高</td><td>定义</td><td>§8</td><td><span class="loc">〔说话人1 01:26:00〕</span></td></tr>
+<tr><td>63</td><td>胱氨酸尿症：肾小管转运体缺陷致尿路结石</td><td>应用</td><td>§9</td><td><span class="loc">〔说话人1 01:28:47〕</span></td></tr>
+<tr><td>64</td><td>肾性糖尿：血糖正常但尿糖，因重吸收障碍</td><td>应用</td><td>§9</td><td><span class="loc">〔说话人1 01:29:17〕</span></td></tr>
+<tr><td>65</td><td>肾小管重吸收葡萄糖同肠上皮：泵→SGLT→GLUT</td><td>机制</td><td>§9</td><td><span class="loc">〔说话人1 01:29:17〕</span></td></tr>
+<tr><td>66</td><td>SGLT 抑制剂阻断重吸收而降血糖</td><td>应用</td><td>§9</td><td><span class="loc">〔说话人1 01:31:09〕</span></td></tr>
+<tr><td>67</td><td>囊性纤维化：CFTR 缺陷→Cl⁻ 不外排→黏液稠→感染</td><td>机制</td><td>§9</td><td><span class="loc">〔说话人1 01:32:06〕</span></td></tr>
+<tr><td>68</td><td>离子运输异常会影响水运输而致病</td><td>结论</td><td>§9</td><td><span class="loc">〔说话人1 01:33:59〕</span></td></tr>
+<tr><td>69</td><td>内膜系统为膜性细胞器，靠囊泡运输相连</td><td>定义</td><td>§10</td><td><span class="loc">〔说话人1 01:34:33〕</span></td></tr>
+<tr><td>70</td><td>线粒体不属于内膜系统</td><td>考点</td><td>§10</td><td><span class="loc">〔说话人1 01:35:25〕</span></td></tr>
+<tr><td>71</td><td>内膜系统意义：区室化（溶酶体酸/内质网氧化/胞质还原）、扩大表面积、相互协作</td><td>功能</td><td>§10</td><td><span class="loc">〔说话人1 01:36:34〕</span></td></tr>
+<tr><td>72</td><td>学习目标：识别四种膜性细胞器</td><td>目标</td><td>§10</td><td><span class="loc">〔说话人1 01:37:58〕</span></td></tr>
+<tr><td>73</td><td>囊泡运输涉及 COPⅡ、COPⅠ、网格蛋白、Rab、SNARE</td><td>术语</td><td>§10</td><td><span class="loc">〔说话人1 01:38:53〕</span></td></tr>
+<tr><td>74</td><td>内质网是最大膜性结构，分糙面（片状 sheet、核糖体非永久结合）与光面（管状 tubule）</td><td>结构</td><td>§10</td><td><span class="loc">〔说话人1 01:40:22〕</span></td></tr>
+<tr><td>75</td><td>溶酶体腔强酸性，细胞质 pH 约 7.2、呈中性</td><td>数字</td><td>§7</td><td><span class="loc">〔说话人1 01:21:39〕</span></td></tr>
+</table>
+<p class="foot">附录 D 共 75 条，逐条登记 recording.md 全部知识点。</p>
 </div>
 
-</body>
-</html>
+
+</body></html>

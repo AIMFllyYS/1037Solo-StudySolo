@@ -1,62 +1,255 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>微丝调控·可视化</title>
-<style>
-:root{--paper:#FAF8F1;--ink:#24201A;--soft:#4A4337;--muted:#857B68;--line:#E6DECC;
---accent:#2E7D4F;--accent-d:#1F5C39;--accent-t:#E8F1EA;--mnem:#A2630C;--mnem-t:#F8ECD3;--red:#B23A2E;--red-t:#F7E4DF;}
-*{box-sizing:border-box}body{font-family:"Microsoft YaHei",sans-serif;background:var(--paper);color:var(--ink);margin:0;line-height:1.7;font-size:10.5pt}
-.page{width:210mm;min-height:297mm;margin:0 auto;padding:18mm 16mm;background:var(--paper)}
-h1{font-family:serif;color:var(--accent-d);font-size:24pt;margin:0 0 3mm;border-bottom:2.5pt solid var(--accent);padding-bottom:3mm}
-h2{font-family:serif;color:var(--accent-d);font-size:15pt;margin:7mm 0 3mm;border-left:4pt solid var(--accent);padding-left:3mm}
-.cover{display:flex;flex-direction:column;justify-content:center;min-height:260mm}
-.cover h1{font-size:28pt;border:none}.cover .sub{font-size:13pt;color:var(--soft);margin-top:3mm}
-.meta{margin-top:8mm;font-size:10pt;color:var(--muted);line-height:2}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt}
-th{background:var(--accent);color:#fff;padding:2mm;text-align:left}td{padding:2mm;border-bottom:.5pt solid var(--line)}
-tr:nth-child(even) td{background:#fff}
-.box{background:#fff;border:.5pt solid var(--line);border-radius:2mm;padding:3mm 4mm;margin:3mm 0}
-.warn{background:var(--red-t);border:.5pt solid #E6BDB4;padding:3mm;margin:3mm 0;border-radius:2mm}
-.tip{background:var(--mnem-t);border-left:3pt solid var(--mnem);padding:3mm;margin:3mm 0;border-radius:0 2mm 2mm 0}
-</style></head><body>
-<div class="page cover">
-<div style="letter-spacing:.3em;color:var(--mnem);font-size:10pt">CELL BIOLOGY</div>
-<h1>微丝调控与细胞运动<span style="color:var(--mnem)">可视化</span></h1>
-<div class="sub">细胞生物学 第5-6节 · 2026-09-28</div>
-<div class="meta">微丝极性 · 调控因子 · Arp2/3 · Formin · 小GTPase · 伪足 · 李斯特菌</div>
-</div>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>细胞生物学 · 第21-22节 · 微丝调控与细胞运动</title><style>:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#2B4C8C; --accent-d:#1C3462; --accent-t:#E6EBF6;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}</style></head><body>
+<div class="page cover"><p class="h1">细胞生物学 · 第21-22节</p>
+<p class="meta">微丝及其调控、Arp2/3、Formin、Rho 家族小 GTP 酶与伪足/细胞运动 · 2026-09-28</p>
+<p class="lead" style="text-align:left">素材：逐字稿 33188 字 / 122 轮</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课节</td><td>rec-2026-fall-021-022</td></tr>
+<tr><td>主题</td><td>微丝调控因子、成核与信号、李斯特菌模型、中性粒细胞趋化、肌球蛋白与肌节、微管对照</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">极性与 Cc 决定动态；成核因子与 Rho GTP 酶决定形态；myosin 与微管马达负责力与运输。</p>
+<div><svg viewBox="0 0 700 240" width="100%" role="img"><rect x="220" y="4" width="260" height="26" fill="#E6EBF6" stroke="#2B4C8C"/><text x="350" y="22" text-anchor="middle" font-size="10">Actin · Protrusion · Crawling</text>
+<rect x="20" y="44" width="100" height="22" fill="#fff" stroke="#1C3462"/><text x="70" y="59" text-anchor="middle" font-size="8">Cc</text>
+<rect x="130" y="44" width="110" height="22" fill="#fff" stroke="#1C3462"/><text x="185" y="59" text-anchor="middle" font-size="8">Regulators</text>
+<rect x="250" y="44" width="120" height="22" fill="#fff" stroke="#1C3462"/><text x="310" y="59" text-anchor="middle" font-size="8">Arp2/3 Formin</text>
+<rect x="380" y="44" width="110" height="22" fill="#fff" stroke="#1C3462"/><text x="435" y="59" text-anchor="middle" font-size="8">Rho GTPase</text>
+<rect x="500" y="44" width="90" height="22" fill="#fff" stroke="#1C3462"/><text x="545" y="59" text-anchor="middle" font-size="8">Listeria</text>
+<rect x="600" y="44" width="80" height="22" fill="#fff" stroke="#1C3462"/><text x="640" y="59" text-anchor="middle" font-size="8">Chemotaxis</text>
+<rect x="80" y="88" width="540" height="24" fill="#E6EBF6" stroke="#2B4C8C"/><text x="350" y="104" text-anchor="middle" font-size="9">Lamellipodia · Filopodia · Stress fiber · Cortex</text>
+<rect x="120" y="128" width="460" height="24" fill="#fff" stroke="#1C3462"/><text x="350" y="144" text-anchor="middle" font-size="9">Myosin · Sarcomere · MT · Motors</text></svg></div>
+<ul class="kv"><li>上课先回顾上节微丝内容，再讲调控、信号与运动 <span class="loc">〔说话人1 01:03〕</span></li>
+<li>考试重点在微丝；微管少量涉及 <span class="loc">〔说话人1 01:16:28〕</span></li></ul></div>
 
-<div class="page">
-<h2>一、微丝极性与踏车</h2>
-<table><tr><th>端</th><th>别名</th><th>功能</th></tr>
-<tr><td><b>正端</b></td><td>barbed end带刺端</td><td>易加单体→生长</td></tr>
-<tr><td><b>负端</b></td><td>pointed end点状端</td><td>解聚</td></tr></table>
-<div class="tip">游离浓度>Cc→正端生长；&lt;Cc→负端解聚；=Cc→踏车(treadmilling)，净长度不变。</div>
+<div class="page"><h2 class="h2">1. 微丝极性、临界浓度与踏车</h2>
+<p class="lead">正端加单体、负端解聚；游离 G-actin 与 Cc 的关系决定净生长或缩短。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>正端 barbed end（带刺端）：易结合游离肌动蛋白单体，负责生长 <span class="loc">〔说话人1 01:26〕</span></li>
+<li>负端 pointed end（点状端）：结合单体弱，负责解聚 <span class="loc">〔说话人1 01:26〕</span></li>
+<li>临界浓度 Cc（critical concentration）：描述微丝聚合状态的参数 <span class="loc">〔说话人1 02:39〕</span></li>
+<li>游离单体浓度 &gt; Cc → 正端倾向加入、微丝生长 <span class="loc">〔说话人1 02:39〕</span></li>
+<li>游离单体浓度 &lt; Cc → 负端倾向解离、微丝缩短 <span class="loc">〔说话人1 02:39〕</span></li>
+<li>浓度 = Cc → 正端生长与负端解聚等速，净长度不变 <span class="loc">〔说话人1 02:39〕</span></li>
+<li>上述动态平衡称踏车现象 treadmilling（课堂音译 trademarkly） <span class="loc">〔说话人1 02:39〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">2. 四类微丝调控因子</h2>
+<p class="lead">单体结合、解聚、封端稳定、成核——作用位点不同，效应相反或协同。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>Profilin：结合 G-actin，促进单体加入微丝、促进聚合 <span class="loc">〔说话人1 04:22〕</span></li>
+<li>Cytosin（课堂所给名称，抑制单体入丝的蛋白）：结合 G-actin 后阻止其加入微丝、下调聚合 <span class="loc">〔说话人1 04:22〕</span></li>
+<li>Gelsolin：结合 Ca²⁺ 活化后结合微丝中部，削弱单体间作用并切断微丝 <span class="loc">〔说话人1 05:30〕</span></li>
+<li>Cofilin：优先结合负端区 ADP-actin（deform actin），促负端解聚 <span class="loc">〔说话人1 06:35〕</span></li>
+<li>正端富 ATP-actin，负端富 ADP-actin；Cofilin 作用于 ADP 形式 <span class="loc">〔说话人1 06:35〕</span></li>
+<li>Stathmin：均匀结合微丝表面，同步压低正端聚合与负端解聚 <span class="loc">〔说话人1 07:57〕</span></li>
+<li>CapZ：特异性结合微丝正端，阻止正端生长 <span class="loc">〔说话人1 08:47〕</span></li>
+<li>Tropomodulin：结合微丝负端，抑制负端解聚 <span class="loc">〔说话人1 08:47〕</span></li>
+<li>CapZ 与 Tropomodulin 封端，使微丝聚合后保持稳定、避免过度解聚或生长 <span class="loc">〔说话人1 08:47〕</span></li>
+</ul>
+<table class="tbl"><tr><th>类别</th><th>代表蛋白</th><th>作用</th></tr>
+<tr><td>单体结合</td><td>Profilin / Cytosin</td><td>促聚 vs 抑聚</td></tr>
+<tr><td>解聚</td><td>Gelsolin / Cofilin</td><td>中部切断 vs 负端解聚</td></tr>
+<tr><td>稳定性</td><td>Stathmin / CapZ / Tropomodulin</td><td>全丝降动态 / 封正端 / 封负端</td></tr>
+<tr><td>成核</td><td>Arp2/3 / Formin</td><td>见 §3</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>CapZ 结合正端（老师强调会考）；Tropomodulin 结合负端。 <span class="loc">〔说话人1 08:47〕</span></div></div>
+<div class="page"><h2 class="h2">3. 成核因子、NPF 与 Rho 家族信号</h2>
+<p class="lead">Arp2/3 与 Formin 成核几何不同；WASP/WAVE 激活 Arp2/3；小 GTP 酶级联决定伪足类型。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>Arp2/3：Arp2/3 二聚体模拟肌动蛋白二聚体作引物，越过成核限速步骤 <span class="loc">〔说话人1 09:19〕</span></li>
+<li>Arp2/3 固定在母丝负端，子丝正端延伸，分支夹角恒定 70° <span class="loc">〔说话人1 10:28〕</span></li>
+<li>Formin：位于微丝正端生长端，随单体加入向前移动，产生线性微丝 <span class="loc">〔说话人1 11:25〕</span></li>
+<li>线性微丝突起即丝状伪足 filopodia（丝状尾足） <span class="loc">〔说话人1 11:25〕</span></li>
+<li>NPF（nucleation promoting factor）：WASP、WAVE（=SCAR）可结合 Arp2/3 并激活 <span class="loc">〔说话人1 12:51〕</span></li>
+<li>稳态下 Arp2/3 complex 多为非活性；信号→NPF 结合→构象改变→分支成核 <span class="loc">〔说话人1 13:49〕</span></li>
+<li>Rho 家族小 GTP 酶：结合 GTP 为活性，可招募/激活下游 <span class="loc">〔说话人1 15:45〕</span></li>
+<li>Rac 经 WAVE 等激活 Arp2/3；Formin 上游因子尚不完全明确 <span class="loc">〔说话人1 16:39〕</span></li>
+<li>Arp2/3 活化→分支微丝→片状质膜凸起 lamellipodia（片状伪足） <span class="loc">〔说话人1 17:27〕</span></li>
+<li>Formin 活化→垂直膜的长突起 filopodia（丝状伪足） <span class="loc">〔说话人1 18:00〕</span></li>
+</ul>
+<table class="tbl"><tr><th>小 GTP 酶</th><th>下游</th><th>微丝/结构</th></tr>
+<tr><td>Cdc42</td><td>WASP→Arp2/3</td><td>丝状伪足（表面刺突）</td></tr>
+<tr><td>Rac</td><td>WAVE→Arp2/3</td><td>片状伪足（边缘皱褶）</td></tr>
+<tr><td>Rho</td><td>Formin</td><td>应激纤维 stress fiber，助贴壁</td></tr></table>
+<ul class="kv">
+<li>静息细胞微丝富集于质膜下；激活 Cdc42 后质膜出现大量丝状伪足 <span class="loc">〔说话人1 30:16〕</span></li>
+<li>激活 Rac 后细胞边缘产生皱褶状片状伪足 <span class="loc">〔说话人1 31:31〕</span></li>
+<li>激活 Rho 后胞质出现贯穿的线性微丝束（应激纤维） <span class="loc">〔说话人1 32:05〕</span></li>
+</ul>
+<div class="mnem"><strong>（整理）</strong>Rac 片、Cdc42 丝、Rho 贴壁应激纤。</div></div>
+<div class="page"><h2 class="h2">4. 李斯特菌运动与体外重建金标准</h2>
+<p class="lead">细菌 ActA 模拟 NPF 激活 Arp2/3；CapZ 与 Cofilin 维持踏车与定向推力。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>理解细胞过程的金标准：体外用最小组分重建该过程 <span class="loc">〔说话人1 21:54〕</span></li>
+<li>体外重建影像中微丝组装在细菌后方，像尾翼推着细菌在胞质内前进 <span class="loc">〔说话人1 20:13〕</span></li>
+<li>推进中微丝长度大致恒定，类似踏车动态 <span class="loc">〔说话人1 20:53〕</span></li>
+<li>体外重建组分：G-actin、Arp2/3 complex、capping protein（CapZ）、Cofilin、细菌 ActA <span class="loc">〔说话人1 22:27〕</span></li>
+<li>ActA：细菌表面跨膜蛋白，序列/结构域类似 WASP/WAVE，激活宿主 Arp2/3 <span class="loc">〔说话人1 23:08〕</span></li>
+<li>CapZ 封分支微丝正端，防止片状扩展，资源集中于细菌-微丝界面 <span class="loc">〔说话人1 24:50〕</span></li>
+<li>Cofilin 解聚尾部微丝，回收单体使游离浓度 &gt; Cc，支撑正端持续生长 <span class="loc">〔说话人1 26:23〕</span></li>
+<li>尾部解聚、前端生长→单体循环→推动细菌前进 <span class="loc">〔说话人1 27:44〕</span></li>
+<li>capping protein 课堂即 CapZ，结合微丝正端 <span class="loc">〔说话人1 28:14〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>good science：不仅敲基因看表型，更要体外重建过程。 <span class="loc">〔说话人1 28:42〕</span></div></div>
+<div class="page"><h2 class="h2">5. 中性粒细胞趋化与细胞爬行</h2>
+<p class="lead">细菌分泌 fMLF 三肽→GPCR→拮抗双通路：前 Rac/片状伪足推，后 Rho/肌球蛋白拉。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>中性粒细胞无眼睛却能定向追杀细菌，靠趋化因子浓度梯度 <span class="loc">〔说话人1 34:42〕</span></li>
+<li>细菌分泌甲酰化 Met-Leu-Phe 三肽（fMLF），结合中性粒细胞质膜受体 <span class="loc">〔说话人1 34:42〕</span></li>
+<li>趋化侧质膜受体结合更多配体（浓度梯度） <span class="loc">〔说话人1 35:23〕</span></li>
+<li>受体为七次跨膜 GPCR；激活后产生两条相互拮抗的信号 <span class="loc">〔说话人1 35:46〕</span></li>
+<li>通路一：Gi→第二信使 PI(3,4,5)P3（质膜磷脂，半衰期短，限近细菌侧） <span class="loc">〔说话人1 36:31〕</span></li>
+<li>PI(3,4,5)P3 激活 Rac→Arp2/3→分支微丝→片状伪足前推 <span class="loc">〔说话人1 37:27〕</span></li>
+<li>通路二：G12/13 激活 Rho；头部 Rac 活性抑制 Rho，Rho 主要在尾部起效 <span class="loc">〔说话人1 37:45〕</span></li>
+<li>Rho 促应激纤维与 myosin 收缩，把细胞尾部向前拉 <span class="loc">〔说话人1 38:50〕</span></li>
+<li>前推+后拉→细胞向细菌位移；趋化因子持续则循环往复 <span class="loc">〔说话人1 38:50〕</span></li>
+<li>细胞运动更贴切称 crawling（爬行） <span class="loc">〔说话人1 39:59〕</span></li>
+<li>片状伪足伸出后靠 stress fiber 与 focal adhesion（黏着斑）固定于基底 <span class="loc">〔说话人1 40:58〕</span></li>
+<li>尾部 myosin 与 stress fiber 收缩，完成一步爬行 <span class="loc">〔说话人1 40:58〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">6. 四种微丝组装模式与疾病</h2>
+<p class="lead">平行束可致密或疏松；分支网 70°；皮质凝胶较凌乱；支架蛋白决定几何。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>丝状伪足：多根线性微丝成束 bundle，平行且间距小（致密） <span class="loc">〔说话人1 42:57〕</span></li>
+<li>片状伪足内为分支状微丝，分支夹角恒为 70° <span class="loc">〔说话人1 42:57〕</span></li>
+<li>应激纤维微丝平行但间距宽、排列疏松，需 myosin 占据丝间以收缩 <span class="loc">〔说话人1 44:34〕</span></li>
+<li>皮质 cell cortex：质膜下凝胶样 actin，角度不恒定、较凌乱 <span class="loc">〔说话人1 44:34〕</span></li>
+<li>Formin 家族例：FMNL、Mdia、INF2、Spire 等促线性微丝聚合 <span class="loc">〔说话人1 55:43〕</span></li>
+<li>应激纤维：α-actinin（α actinin）支架平行微丝，myosin 位于丝间 <span class="loc">〔说话人1 57:07〕</span></li>
+<li>丝状伪足：Fascin 支架固定致密平行束 <span class="loc">〔说话人1 57:07〕</span></li>
+<li>Filamin 二聚体交联成角微丝，稳定凝胶样网络 <span class="loc">〔说话人1 57:59〕</span></li>
+<li>Filamin 基因突变可致脑室旁结节异位（PVNH），神经元迁移障碍 <span class="loc">〔说话人1 58:45〕</span></li>
+</ul>
+<table class="tbl"><tr><th>结构</th><th>微丝排列</th><th>支架</th></tr>
+<tr><td>Filopodia</td><td>平行致密</td><td>Fascin</td></tr>
+<tr><td>Stress fiber</td><td>平行疏松</td><td>α-actinin + myosin</td></tr>
+<tr><td>Lamellipodia</td><td>70° 分支</td><td>Arp2/3 网络</td></tr>
+<tr><td>Cortex gel</td><td>交叉凌乱</td><td>Filamin</td></tr></table></div>
+<div class="page"><h2 class="h2">7. 肌球蛋白 Myosin II 与肌节</h2>
+<p class="lead">粗丝沿微丝向正端步进→反作用力拉微丝；肌节用 CapZ/Z 盘锁长度以做功。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>Myosin II 二聚体：N 端头部（ATP 酶）、颈部铰链、coiled-coil 尾；另有轻链 <span class="loc">〔说话人1 01:01:45〕</span></li>
+<li>细胞内数百个 myosin II 首尾排列成粗丝 thick filament，中间裸露域、两端头部 <span class="loc">〔说话人1 01:03:54〕</span></li>
+<li>多种 myosin 共有保守 motor domain（头部 ATP 水解区） <span class="loc">〔说话人1 01:03:54〕</span></li>
+<li>Myosin 1、3、14 为单体；其余多为二聚体 <span class="loc">〔说话人1 01:05:27〕</span></li>
+<li>粗丝须与微丝平行排布，头部可逆结合微丝 <span class="loc">〔说话人1 01:05:27〕</span></li>
+<li>头部结合 ATP 后脱离→水解 ATP→构象变→向微丝正端移动一步→ADP 释放后紧结合 <span class="loc">〔说话人1 01:07:38〕</span></li>
+<li>消耗一分子 ATP 后 myosin 头部向微丝正端移动；反作用力拉微丝→细胞收缩 <span class="loc">〔说话人1 01:07:38〕</span></li>
+<li>骨骼肌细胞（肌纤维）多核、可达 cm 级长、直径约 5–50 μm <span class="loc">〔说话人1 01:09:33〕</span></li>
+<li>肌原纤维 myofibril 直径约 1–2 μm，平行排列 <span class="loc">〔说话人1 01:10:33〕</span></li>
+<li>肌节 sarcomere：中间粗丝两侧细微丝；M line 居中；Z disk 位于微丝正端 <span class="loc">〔说话人1 01:13:21〕</span></li>
+<li>Z disk 由大量 CapZ 结合微丝正端构成 <span class="loc">〔说话人1 01:13:55〕</span></li>
+<li>Tropomodulin 封微丝负端，与 CapZ 共同锁死微丝长度 <span class="loc">〔说话人1 01:14:18〕</span></li>
+<li>收缩场景微丝需稳定作模板；运动场景微丝需高度 dynamic <span class="loc">〔说话人1 01:16:28〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">8. 微管（与微丝对照，非考试重点）</h2>
+<p class="lead">αβ-tubulin 二聚体、13 原纤维中空管；γ-TuRC 成核；catastrophe 与两种马达。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>微管单体为 α-tubulin + β-tubulin 首尾二聚体；均可结合 GTP <span class="loc">〔说话人1 01:17:54〕</span></li>
+<li>β-tubulin 常作 Western loading control <span class="loc">〔说话人1 01:17:54〕</span></li>
+<li>微管为中空管状，管壁由 13 条原纤维组成 <span class="loc">〔说话人1 01:19:14〕</span></li>
+<li>α 端为负端，β 端为正端；新二聚体从正端加入 <span class="loc">〔说话人1 01:19:14〕</span></li>
+<li>新合成段多 GTP，老段 GDP→结合弱，负端易解聚 <span class="loc">〔说话人1 01:20:36〕</span></li>
+<li>微管负端快速解聚称 catastrophe（灾难性解聚） <span class="loc">〔说话人1 01:21:09〕</span></li>
+<li>Kinesin-13（catastrophe factor）：结合正端促解聚、提高 catastrophe 频率 <span class="loc">〔说话人1 01:22:28〕</span></li>
+<li>XMAP215：结合正端稳定、抑制解离 <span class="loc">〔说话人1 01:23:18〕</span></li>
+<li>γ-tubulin small complex（γ-TuSC）为成核最小单元；七个 γ-TuSC 螺旋成环 <span class="loc">〔说话人1 01:24:06〕</span></li>
+<li>γ-TuRC 作 13 引物基座，类比 Arp2/3 模拟二聚体成核 <span class="loc">〔说话人1 01:25:46〕</span></li>
+<li>γ/α 交错界面结合弱→微管易沿该线断裂，半衰期较短但可调控 <span class="loc">〔说话人1 01:28:04〕</span></li>
+<li>中心体 centrosome：一对垂直中心粒 + 外围 γ-TuRC，为微管组织中心 MTOC <span class="loc">〔说话人1 01:31:05〕</span></li>
+<li>从 MTOC 辐射的微管外正内负（正端朝外） <span class="loc">〔说话人1 01:33:06〕</span></li>
+<li>微管分子马达：kinesin 与 dynein，沿微管转运货物 <span class="loc">〔说话人1 01:34:03〕</span></li>
+<li>Kinesin：二聚体头部水解 ATP，步进式行走，一步一 ATP <span class="loc">〔说话人1 01:35:55〕</span></li>
+<li>Dynein：结构不同，沿微管连续快速运动，约 14 μm/s <span class="loc">〔说话人1 01:37:00〕</span></li>
+<li>神经元轴突内微管极性一致，保障长距离单向运输 <span class="loc">〔说话人1 01:40:06〕</span></li>
+<li>树突微管极性可混合，侧重双向转运效率 <span class="loc">〔说话人1 01:41:19〕</span></li>
+</ul></div>
 
-<h2>二、四大类调控因子</h2>
-<table><tr><th>类别</th><th>蛋白</th><th>作用</th></tr>
-<tr><td rowspan="2">单体结合</td><td>Profilin</td><td>促聚合</td></tr>
-<tr><td>Cofilin(单体)</td><td>抑制聚合</td></tr>
-<tr><td rowspan="2">解聚</td><td>Gelsolin</td><td>Ca²⁺依赖，中部切断</td></tr>
-<tr><td>Cofilin</td><td>结合ADP-actin，促负端解聚</td></tr>
-<tr><td rowspan="3">稳定性</td><td>Stathmin</td><td>均匀结合，压低动态</td></tr>
-<tr><td><b>CapZ</b></td><td><b>封正端</b></td></tr>
-<tr><td>Tropomodulin</td><td>封负端</td></tr>
-<tr><td rowspan="2">成核</td><td>Arp2/3</td><td>分支状70°，固定负端</td></tr>
-<tr><td>Formin</td><td>线性，跟随正端</td></tr></table>
-</div>
-
-<div class="page">
-<h2>三、小GTPase信号级联</h2>
-<table><tr><th>GTPase</th><th>下游</th><th>微丝</th><th>细胞结构</th></tr>
-<tr><td><b>Rac</b></td><td>WAVE→Arp2/3</td><td>分支状</td><td>片状伪足 lamellipodia</td></tr>
-<tr><td><b>Cdc42</b></td><td>WASP→Arp2/3</td><td>分支状</td><td>丝状伪足 filopodia(炸毛)</td></tr>
-<tr><td><b>Rho</b></td><td>Formin</td><td>线性束</td><td>应激纤维 stress fiber(贴壁)</td></tr></table>
-
-<h2>四、李斯特菌运动模型（体外重建金标准）</h2>
-<div class="box">
-<b>核心组分：</b>微丝 + Arp2/3 + CapZ + Cofilin + ActA<br>
-<b>ActA：</b>细菌表面蛋白，模拟宿主WASP/WAVE→直接激活Arp2/3<br>
-<b>CapZ：</b>封支端，集中聚合力于细菌-微丝界面<br>
-<b>Cofilin：</b>解聚旧微丝回收单体，维持浓度>Cc
-</div>
-<div class="tip">老师金句：真正理解 = 能用最小组分在体外重建该过程，而不只是敲基因看表型。</div>
-</div>
+<div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>正端 barbed 生长，负端 pointed 解聚；&gt;Cc 长、&lt;Cc 缩、=Cc 踏车</li>
+<li>Profilin 促聚；Gelsolin（Ca²⁺）中段切；Cofilin 负端 ADP-actin 解聚</li>
+<li>Stathmin 降整体动态；CapZ 正端；Tropomodulin 负端</li>
+<li>Arp2/3：70° 分支，钉负端；Formin：跟正端线性</li>
+<li>NPF=WASP/WAVE(SCAR)；稳态 Arp2/3 非活性</li>
+<li>Rac→片状伪足；Cdc42→丝状伪足；Rho→应激纤维</li>
+<li>李斯特菌：ActA+Arp2/3+CapZ+Cofilin+actin；体外重建金标准</li>
+<li>趋化：fMLF→GPCR→PI(3,4,5)P3/Rac 前推 + Rho/myosin 后拉</li>
+<li>爬行：lamellipodia+黏着斑+stress fiber 收缩</li>
+<li>Fascin/α-actinin/Filamin 三种支架；PVNH 与 Filamin 突变</li>
+<li>Myosin II 粗丝；ATP 步进向微丝正端；肌节 Z 盘=CapZ</li>
+<li>微管：13 原纤维；γ-TuRC；catastrophe；kinesin vs dynein</li>
+</ul></div>
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>CapZ 封负端</td><td>CapZ 封正端；Tropomodulin 封负端</td></tr>
+<tr><td>Arp2/3 跟正端走</td><td>Arp2/3 固定负端；Formin 跟正端</td></tr>
+<tr><td>Cdc42 产生片状伪足</td><td>Cdc42→丝状伪足；Rac→片状伪足</td></tr>
+<tr><td>李斯特菌需 myosin 才能动</td><td>课堂重建列出 CapZ 与 Cofilin；myosin 非该最小组分列表项</td></tr>
+<tr><td>微管单体是 G-actin</td><td>微管单体为 αβ-tubulin 二聚体，结合 GTP</td></tr>
+<tr><td>Kinesin 封微丝正端</td><td>课堂口误 kinesin；封端蛋白是 CapZ</td></tr>
+<tr><td>肌球蛋白向负端走一步</td><td>消耗 ATP 后向微丝正端位移</td></tr>
+<tr><td>树突微管必须单向</td><td>轴突一致极性；树突可正负混合</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>CapZ 正端 / Tropomodulin 负端</td><td>§2</td><td>〔说话人1 08:47〕</td><td>填空/判断</td></tr>
+<tr><td>踏车条件与 Cc</td><td>§1</td><td>〔说话人1 02:39〕</td><td>简答</td></tr>
+<tr><td>Arp2/3 vs Formin 位置与结构</td><td>§3</td><td>〔说话人1 10:28〕</td><td>比较</td></tr>
+<tr><td>Rac/Cdc42/Rho 与伪足</td><td>§3</td><td>〔说话人1 30:16〕</td><td>连线/简答</td></tr>
+<tr><td>李斯特菌五组分重建</td><td>§4</td><td>〔说话人1 22:27〕</td><td>机制</td></tr>
+<tr><td>ActA 模拟 WASP/WAVE</td><td>§4</td><td>〔说话人1 23:08〕</td><td>简答</td></tr>
+<tr><td>中性粒细胞双通路拮抗</td><td>§5</td><td>〔说话人1 37:45〕</td><td>作图</td></tr>
+<tr><td>细胞爬行与黏着斑</td><td>§5</td><td>〔说话人1 40:58〕</td><td>简答</td></tr>
+<tr><td>致密束 vs 疏松束</td><td>§6</td><td>〔说话人1 43:42〕</td><td>比较</td></tr>
+<tr><td>Filamin 与 PVNH</td><td>§6</td><td>〔说话人1 58:45〕</td><td>病例</td></tr>
+<tr><td>肌节 Z 盘与 CapZ</td><td>§7</td><td>〔说话人1 01:13:55〕</td><td>结构</td></tr>
+<tr><td>微管 catastrophe / γ-TuRC</td><td>§8</td><td>〔说话人1 01:25:46〕</td><td>简答</td></tr>
+<tr><td>考试重点在微丝</td><td>§0</td><td>〔说话人1 01:16:28〕</td><td>范围</td></tr>
+</table></div><div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>正端 barbed end 生长</td><td>定义</td><td>§1</td><td><span class="loc">〔说话人1 01:26〕</span></td></tr><tr><td>2</td><td>负端 pointed end 解聚</td><td>定义</td><td>§1</td><td><span class="loc">〔说话人1 01:26〕</span></td></tr><tr><td>3</td><td>临界浓度 Cc</td><td>定义</td><td>§1</td><td><span class="loc">〔说话人1 02:39〕</span></td></tr><tr><td>4</td><td>浓度&gt;Cc 正端生长</td><td>机制</td><td>§1</td><td><span class="loc">〔说话人1 02:39〕</span></td></tr><tr><td>5</td><td>浓度&lt;Cc 负端解聚</td><td>机制</td><td>§1</td><td><span class="loc">〔说话人1 02:39〕</span></td></tr><tr><td>6</td><td>浓度=Cc 踏车 treadmilling</td><td>现象</td><td>§1</td><td><span class="loc">〔说话人1 02:39〕</span></td></tr><tr><td>7</td><td>Profilin 促单体聚合</td><td>调控</td><td>§2</td><td><span class="loc">〔说话人1 04:22〕</span></td></tr><tr><td>8</td><td>Cytosin 类抑单体入丝</td><td>调控</td><td>§2</td><td><span class="loc">〔说话人1 04:22〕</span></td></tr><tr><td>9</td><td>Gelsolin Ca²⁺ 活化切中部</td><td>调控</td><td>§2</td><td><span class="loc">〔说话人1 05:30〕</span></td></tr><tr><td>10</td><td>Cofilin 结合 ADP-actin 负端</td><td>调控</td><td>§2</td><td><span class="loc">〔说话人1 06:35〕</span></td></tr><tr><td>11</td><td>Stathmin 均匀降动态</td><td>调控</td><td>§2</td><td><span class="loc">〔说话人1 07:57〕</span></td></tr><tr><td>12</td><td>CapZ 封正端</td><td>调控</td><td>§2</td><td><span class="loc">〔说话人1 08:47〕</span></td></tr><tr><td>13</td><td>Tropomodulin 封负端</td><td>调控</td><td>§2</td><td><span class="loc">〔说话人1 08:47〕</span></td></tr><tr><td>14</td><td>Arp2/3 模拟二聚体引物</td><td>成核</td><td>§3</td><td><span class="loc">〔说话人1 09:19〕</span></td></tr><tr><td>15</td><td>Arp2/3 固定负端 70° 分支</td><td>成核</td><td>§3</td><td><span class="loc">〔说话人1 10:28〕</span></td></tr><tr><td>16</td><td>Formin 跟正端线性聚合</td><td>成核</td><td>§3</td><td><span class="loc">〔说话人1 11:25〕</span></td></tr><tr><td>17</td><td>Filopodia 线性尾足</td><td>结构</td><td>§3</td><td><span class="loc">〔说话人1 11:25〕</span></td></tr><tr><td>18</td><td>NPF=WASP/WAVE(SCAR)</td><td>信号</td><td>§3</td><td><span class="loc">〔说话人1 12:51〕</span></td></tr><tr><td>19</td><td>Arp2/3 稳态非活性</td><td>信号</td><td>§3</td><td><span class="loc">〔说话人1 13:49〕</span></td></tr><tr><td>20</td><td>小 GTP 酶 GTP 活化</td><td>信号</td><td>§3</td><td><span class="loc">〔说话人1 15:45〕</span></td></tr><tr><td>21</td><td>Lamellipodia 片状伪足</td><td>结构</td><td>§3</td><td><span class="loc">〔说话人1 17:27〕</span></td></tr><tr><td>22</td><td>Rac→WAVE→Arp2/3</td><td>通路</td><td>§3</td><td><span class="loc">〔说话人1 31:31〕</span></td></tr><tr><td>23</td><td>Cdc42→丝状伪足</td><td>通路</td><td>§3</td><td><span class="loc">〔说话人1 30:16〕</span></td></tr><tr><td>24</td><td>Rho→Formin→stress fiber</td><td>通路</td><td>§3</td><td><span class="loc">〔说话人1 32:05〕</span></td></tr><tr><td>25</td><td>体外重建金标准</td><td>方法</td><td>§4</td><td><span class="loc">〔说话人1 21:54〕</span></td></tr><tr><td>26</td><td>李斯特菌 ActA 激活 Arp2/3</td><td>机制</td><td>§4</td><td><span class="loc">〔说话人1 23:08〕</span></td></tr><tr><td>27</td><td>重建含 actin Arp2/3 CapZ Cofilin</td><td>实验</td><td>§4</td><td><span class="loc">〔说话人1 22:27〕</span></td></tr><tr><td>28</td><td>CapZ 集中界面聚合力</td><td>机制</td><td>§4</td><td><span class="loc">〔说话人1 24:50〕</span></td></tr><tr><td>29</td><td>Cofilin 回收单体&gt;Cc</td><td>机制</td><td>§4</td><td><span class="loc">〔说话人1 26:23〕</span></td></tr><tr><td>30</td><td>fMLF 三肽趋化因子</td><td>信号</td><td>§5</td><td><span class="loc">〔说话人1 34:42〕</span></td></tr><tr><td>31</td><td>七次跨膜 GPCR</td><td>受体</td><td>§5</td><td><span class="loc">〔说话人1 35:46〕</span></td></tr><tr><td>32</td><td>PI(3,4,5)P3 短半衰期限前侧</td><td>信号</td><td>§5</td><td><span class="loc">〔说话人1 36:31〕</span></td></tr><tr><td>33</td><td>Gi 与 G12/13 拮抗通路</td><td>信号</td><td>§5</td><td><span class="loc">〔说话人1 37:45〕</span></td></tr><tr><td>34</td><td>Rac 抑制头部 Rho</td><td>信号</td><td>§5</td><td><span class="loc">〔说话人1 37:45〕</span></td></tr><tr><td>35</td><td>myosin 拉尾部</td><td>运动</td><td>§5</td><td><span class="loc">〔说话人1 38:50〕</span></td></tr><tr><td>36</td><td>cell crawling 爬行</td><td>术语</td><td>§5</td><td><span class="loc">〔说话人1 39:59〕</span></td></tr><tr><td>37</td><td>focal adhesion 黏着斑</td><td>结构</td><td>§5</td><td><span class="loc">〔说话人1 40:58〕</span></td></tr><tr><td>38</td><td>filopodia 致密平行束</td><td>结构</td><td>§6</td><td><span class="loc">〔说话人1 42:57〕</span></td></tr><tr><td>39</td><td>lamellipodia 70° 分支</td><td>结构</td><td>§6</td><td><span class="loc">〔说话人1 42:57〕</span></td></tr><tr><td>40</td><td>stress fiber 疏松+myosin</td><td>结构</td><td>§6</td><td><span class="loc">〔说话人1 43:42〕</span></td></tr><tr><td>41</td><td>cell cortex 凝胶样</td><td>结构</td><td>§6</td><td><span class="loc">〔说话人1 44:34〕</span></td></tr><tr><td>42</td><td>FMNL Mdia INF2 Spire</td><td>蛋白</td><td>§6</td><td><span class="loc">〔说话人1 55:43〕</span></td></tr><tr><td>43</td><td>α-actinin 支架 stress fiber</td><td>蛋白</td><td>§6</td><td><span class="loc">〔说话人1 57:07〕</span></td></tr><tr><td>44</td><td>Fascin 支架 filopodia</td><td>蛋白</td><td>§6</td><td><span class="loc">〔说话人1 57:07〕</span></td></tr><tr><td>45</td><td>Filamin 交联凝胶网</td><td>蛋白</td><td>§6</td><td><span class="loc">〔说话人1 57:59〕</span></td></tr><tr><td>46</td><td>PVNH Filamin 突变</td><td>疾病</td><td>§6</td><td><span class="loc">〔说话人1 58:45〕</span></td></tr><tr><td>47</td><td>Myosin II 头颈尾二聚体</td><td>结构</td><td>§7</td><td><span class="loc">〔说话人1 01:01:45〕</span></td></tr><tr><td>48</td><td>thick filament 粗丝裸露域</td><td>结构</td><td>§7</td><td><span class="loc">〔说话人1 01:02:59〕</span></td></tr><tr><td>49</td><td>myosin 1 3 14 单体</td><td>分类</td><td>§7</td><td><span class="loc">〔说话人1 01:05:27〕</span></td></tr><tr><td>50</td><td>ATP 水解向正端步进</td><td>机制</td><td>§7</td><td><span class="loc">〔说话人1 01:07:38〕</span></td></tr><tr><td>51</td><td>骨骼肌多核大细胞</td><td>细胞</td><td>§7</td><td><span class="loc">〔说话人1 01:09:33〕</span></td></tr><tr><td>52</td><td>肌原纤维与肌节</td><td>结构</td><td>§7</td><td><span class="loc">〔说话人1 01:11:05〕</span></td></tr><tr><td>53</td><td>M line 与 Z disk</td><td>结构</td><td>§7</td><td><span class="loc">〔说话人1 01:12:53〕</span></td></tr><tr><td>54</td><td>Z disk 富 CapZ</td><td>结构</td><td>§7</td><td><span class="loc">〔说话人1 01:13:55〕</span></td></tr><tr><td>55</td><td>收缩微丝稳定 vs 运动 dynamic</td><td>对比</td><td>§7</td><td><span class="loc">〔说话人1 01:16:28〕</span></td></tr><tr><td>56</td><td>αβ-tubulin GTP 二聚体</td><td>定义</td><td>§8</td><td><span class="loc">〔说话人1 01:17:54〕</span></td></tr><tr><td>57</td><td>13 原纤维中空微管</td><td>结构</td><td>§8</td><td><span class="loc">〔说话人1 01:19:14〕</span></td></tr><tr><td>58</td><td>catastrophe 灾难性解聚</td><td>术语</td><td>§8</td><td><span class="loc">〔说话人1 01:21:09〕</span></td></tr><tr><td>59</td><td>Kinesin-13 促正端解聚</td><td>调控</td><td>§8</td><td><span class="loc">〔说话人1 01:22:28〕</span></td></tr><tr><td>60</td><td>XMAP215 稳定正端</td><td>调控</td><td>§8</td><td><span class="loc">〔说话人1 01:23:18〕</span></td></tr><tr><td>61</td><td>γ-TuSC vs γ-TuRC</td><td>成核</td><td>§8</td><td><span class="loc">〔说话人1 01:27:04〕</span></td></tr><tr><td>62</td><td>中心体与 MTOC</td><td>细胞器</td><td>§8</td><td><span class="loc">〔说话人1 01:31:05〕</span></td></tr><tr><td>63</td><td>微管外正内负</td><td>极性</td><td>§8</td><td><span class="loc">〔说话人1 01:33:06〕</span></td></tr><tr><td>64</td><td>kinesin 步进 ATP</td><td>马达</td><td>§8</td><td><span class="loc">〔说话人1 01:35:55〕</span></td></tr><tr><td>65</td><td>dynein 约14μm/s</td><td>马达</td><td>§8</td><td><span class="loc">〔说话人1 01:37:00〕</span></td></tr><tr><td>66</td><td>轴突微管极性一致</td><td>神经元</td><td>§8</td><td><span class="loc">〔说话人1 01:40:06〕</span></td></tr><tr><td>67</td><td>树突微管极性可混合</td><td>神经元</td><td>§8</td><td><span class="loc">〔说话人1 01:41:19〕</span></td></tr><tr><td>68</td><td>good science 体外重建</td><td>观点</td><td>§4</td><td><span class="loc">〔说话人1 28:42〕</span></td></tr><tr><td>69</td><td>微丝主要分布于质膜下</td><td>分布</td><td>§3</td><td><span class="loc">〔说话人1 30:16〕</span></td></tr><tr><td>70</td><td>吞噬细菌 phagocytosis</td><td>过程</td><td>§5</td><td><span class="loc">〔说话人2 34:31〕</span></td></tr></table><p class="foot">附录 D 共 70 条。</p></div>
 </body></html>

@@ -1,66 +1,371 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
-<style>
-@page{size:A4;margin:0;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"Noto Sans CJK SC",sans-serif;color:#24201A;background:#FAF8F1;font-size:10pt;line-height:1.6;}
-.cover{width:210mm;height:297mm;background:radial-gradient(120% 80% at 78% 12%,#0E5C52 0%,#0A463E 55%,#062E25 100%);color:#F3EEE2;position:relative;overflow:hidden;page-break-after:always;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(231,206,156,.55);}
-.cover-inner{position:absolute;inset:13mm;padding:22mm 20mm;display:flex;flex-direction:column;}
-.kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#E7CE9C;font-weight:500;}
-.cover-rule{width:46mm;height:1.4pt;background:#E7CE9C;margin:9mm 0 11mm;}
-.cover h1{font-family:"Noto Serif CJK SC",serif;font-weight:700;font-size:36pt;line-height:1.16;color:#FBF7EC;}
-.cover .subt{margin-top:7mm;font-family:"Noto Serif CJK SC",serif;font-size:16pt;color:rgba(243,238,226,.82);}
-.cover .meta{margin-top:5mm;font-size:10.5pt;color:rgba(243,238,226,.6);}
-.cover .spacer{flex:1;}
-.cover .by{font-size:8.6pt;color:rgba(243,238,226,.55);letter-spacing:.04em;}
-.content{padding:15mm 18mm;}
-.content-title{font-family:"Noto Serif CJK SC",serif;font-size:22pt;font-weight:700;color:#0A463E;margin-bottom:2mm;}
-.content-sub{color:#857B68;font-size:10pt;margin-bottom:8mm;}
-.sec{margin-bottom:6mm;break-inside:avoid;}
-.sec-head{display:flex;align-items:center;gap:4mm;padding-bottom:2mm;margin-bottom:3mm;border-bottom:1.6pt solid #0E5C52;}
-.sec-no{font-family:"Noto Serif CJK SC",serif;font-weight:700;font-size:10pt;color:#fff;background:#0E5C52;padding:1mm 3mm;border-radius:1.6mm;}
-.sec-title{font-family:"Noto Serif CJK SC",serif;font-weight:700;font-size:14pt;color:#0A463E;}
-.sec-body{background:#fff;border:0.5pt solid #E6DECC;border-radius:2.4mm;padding:4mm 5mm;}
-.kv{display:flex;gap:3mm;margin:1.5mm 0;font-size:9.5pt;}
-.kv .k{font-weight:600;color:#0A463E;min-width:28mm;flex:none;}
-.kv .k::after{content:"｜";color:#BFD8CF;margin-left:.3em;font-weight:400;}
-.kv .v{color:#4A4337;flex:1;}
-.p{margin:1.5mm 0;font-size:9.5pt;color:#4A4337;}
-.hl{background:linear-gradient(180deg,#F8ECD3,#F8ECD3);border:0.4pt solid #E7CE9C;border-radius:1.8mm;padding:2mm 3mm;margin:2mm 0;font-size:9.5pt;color:#24201A;font-weight:500;}
-.warn{background:#F7E4DF;border:0.4pt solid #E6BDB4;border-radius:1.8mm;padding:2mm 3mm;margin:2mm 0;font-size:9.3pt;color:#7E2A20;}
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>分析化学 · 第3-4节 · 有效数字与误差分析</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#155E75; --accent-d:#0C3F51; --accent-t:#E1EEF3;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
 </style></head><body>
-<div class="cover"><div class="frame"></div>
-<div class="cover-inner">
-<div class="kicker">ANALYTICAL CHEMISTRY</div>
-<div class="cover-rule"></div>
-<h1>分析化学</h1>
-<div class="subt">有效数字与误差分析</div>
-<div class="meta">HUST 基础医学 · 可视化笔记</div>
-<div class="spacer"></div>
-<div class="by">课堂录音整理 · 结构化可视化</div>
-</div></div>
-<div class="content">
-<div class="content-title">分析化学 · 核心知识图谱</div>
-<div class="content-sub">有效数字与误差分析 · 关键知识点结构化呈现</div>
+<div class="page cover"><p class="h1">分析化学（仪器分析）</p><p class="meta">第3-4节 · 有效数字与误差分析 · 2026-09-04</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 35934 字 / 188 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>分析化学 · instrumental-analysis</td></tr>
+<tr><td>主题</td><td>结果表示、有效数字、误差、精密度与准确度、方法评价</td></tr></table></div>
 
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">01</span><span class="sec-title">分析结果单位规范</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">固体样品</span><span class="v">质量比：μg/g、ng/g、pg/g</span></div><div class="kv"><span class="k">液体样品</span><span class="v">质量体积浓度：g/L、μg/L、ng/L</span></div><div class="kv"><span class="k">气体样品</span><span class="v">mg/m³、细菌个数/m³</span></div><div class="kv"><span class="k">水硬度</span><span class="v">中国CaO基准，欧洲CaCO₃基准</span></div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">02</span><span class="sec-title">有效数字核心规则</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">定义</span><span class="v">全部可靠数字+1位可疑数字</span></div><div class="kv"><span class="k">判定</span><span class="v">小数点后第一个非零数字开始</span></div><div class="kv"><span class="k">修约</span><span class="v">四舍六入五成双；5后有非零必进1</span></div><div class="kv"><span class="k">加减运算</span><span class="v">以小数点后位数最少为准</span></div><div class="kv"><span class="k">乘除运算</span><span class="v">以有效数字位数最少为准</span></div><div class="hl">含量≥10%留4位；1-10%留2-3位；<1%留2位</div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">03</span><span class="sec-title">三类误差对比</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">过失误差</span><span class="v">操作失误，无规律，数据直接舍弃</span></div><div class="kv"><span class="k">系统误差</span><span class="v">确定因素，固定方向，可校正（方法/仪器/试剂/主观）</span></div><div class="kv"><span class="k">随机误差</span><span class="v">微小波动，正态分布，增加测量次数抵消</span></div><div class="kv"><span class="k">系统误差特性</span><span class="v">重现性、单向性、可测性</span></div><div class="kv"><span class="k">随机误差特性</span><span class="v">对称性、单峰性、有界性、抵偿性</span></div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">04</span><span class="sec-title">精密度与准确度</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">准确度</span><span class="v">测定值与真值一致程度，用误差表示</span></div><div class="kv"><span class="k">精密度</span><span class="v">多次平行测定分散程度，用偏差表示</span></div><div class="hl">精密度是准确度的先决条件</div><div class="kv"><span class="k">RSD</span><span class="v">标准偏差÷样本平均值（实验报告核心指标）</span></div><div class="kv"><span class="k">评价规范</span><span class="v">高/中/低三浓度，平行3-7次</span></div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">05</span><span class="sec-title">分析方法评价指标</span></div>
-          <div class="sec-body"><div class="hl">称量量≥200mg，滴定体积≥20mL（相对误差≤1‰）</div><div class="kv"><span class="k">加标回收</span><span class="v">回收率=(加标后总量-原样总量)÷理论加标量×100%</span></div><div class="kv"><span class="k">校准曲线</span><span class="v">r≥0.99，熟练≥0.998；截距=系统误差，斜率=灵敏度</span></div><div class="kv"><span class="k">标准曲线vs工作曲线</span><span class="v">纯溶剂vs空白基体（匹配度更高）</span></div><div class="hl">检出限=空白信号3倍标准偏差对应的浓度</div><div class="kv"><span class="k">空白实验</span><span class="v">扣除基体/试剂背景干扰</span></div></div>
-        </section>
-</div></body></html>
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">固液气结果表示 → 有效数字 → 三类误差 → 精密度准确度 → 方法评价与校准曲线。</p>
+<svg viewBox="0 0 680 200" width="100%" aria-label="知识框架">
+<rect x="220" y="6" width="240" height="28" fill="#E1EEF3" stroke="#155E75"/>
+<text x="340" y="25" text-anchor="middle" font-size="11" font-family="sans-serif">有效数字与误差分析</text>
+<line x1="100" y1="34" x2="100" y2="52" stroke="#155E75"/><line x1="240" y1="34" x2="240" y2="52" stroke="#155E75"/>
+<line x1="440" y1="34" x2="440" y2="52" stroke="#155E75"/><line x1="580" y1="34" x2="580" y2="52" stroke="#155E75"/>
+<rect x="20" y="52" width="160" height="32" fill="#fff" stroke="#0C3F51"/><text x="100" y="72" text-anchor="middle" font-size="9">结果表示</text>
+<rect x="160" y="52" width="160" height="32" fill="#fff" stroke="#0C3F51"/><text x="240" y="72" text-anchor="middle" font-size="9">有效数字</text>
+<rect x="360" y="52" width="160" height="32" fill="#fff" stroke="#0C3F51"/><text x="440" y="72" text-anchor="middle" font-size="9">误差分类</text>
+<rect x="520" y="52" width="160" height="32" fill="#fff" stroke="#0C3F51"/><text x="600" y="72" text-anchor="middle" font-size="9">精密度准确度</text>
+<line x1="340" y1="84" x2="340" y2="108" stroke="#155E75"/>
+<rect x="180" y="108" width="320" height="32" fill="#E1EEF3" stroke="#155E75"/><text x="340" y="128" text-anchor="middle" font-size="9">称量滴定阈值 · 加标回收 · 校准曲线 · 检出限</text>
+</svg></div>
+
+<div class="page"><h2 class="h2">1. 分析结果表示规范</h2>
+<p class="lead">固体质量比、液体质量体积浓度、气体质量浓度或计数；水硬度基准因国标而异。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>固体样品常用微克每克、纳克每克、皮克每克等单位 <span class="loc">〔说话人1 00:17〕</span></li>
+<li>液体样品分母为体积，常用克每升、微克每升、纳克每升 <span class="loc">〔说话人1 00:17〕</span></li>
+<li>气体样品可用毫克每立方米或细菌个数每立方米 <span class="loc">〔说话人1 00:17〕</span></li>
+<li>呼气检测幽门杆菌等可视为气体样品分析 <span class="loc">〔说话人1 01:38〕</span></li>
+<li>组织为固体、血液为液体、呼气为气体，本专业三类均可能遇到 <span class="loc">〔说话人1 01:38〕</span></li>
+<li>自来水硬度常以钙镁总量表示，配位滴定常不能分开钙镁 <span class="loc">〔说话人1 02:24〕</span></li>
+<li>中国国标水硬度以氧化钙表示，非单指钙离子 <span class="loc">〔说话人1 02:58〕</span></li>
+<li>部分欧洲国家水硬度以碳酸钙表示 <span class="loc">〔说话人1 02:58〕</span></li>
+<li>氧化钙与碳酸钙表示可互相换算，按本国规定书写即可 <span class="loc">〔说话人1 02:58〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>样品形态</th><th>常用单位类型</th><th>课堂举例</th></tr>
+<tr><td>固体</td><td>质量比 μg/g、ng/g、pg/g</td><td>组织检测</td></tr>
+<tr><td>液体</td><td>质量体积浓度 g/L、μg/L</td><td>血液</td></tr>
+<tr><td>气体</td><td>mg/m³ 或 个数/m³</td><td>呼气、幽门杆菌</td></tr>
+<tr><td>水硬度</td><td>以 CaO 或 CaCO₃ 计</td><td>中国 CaO，欧洲 CaCO₃</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">2. 有效数字定义与仪器读数</h2>
+<p class="lead">全部可靠数字加一位可疑数字；正确记录即可看出准确到哪一位。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>有效数字是实际能测到的数字，含全部可靠数字和一位可疑数字 <span class="loc">〔说话人1 03:28〕</span></li>
+<li>分析天平有玻璃防风罩，读数受风影响 <span class="loc">〔说话人1 04:17〕</span></li>
+<li>分析天平至少精确到万分之一，可读至0.1毫克 <span class="loc">〔说话人1 04:17〕</span></li>
+<li>称0.1克头发时读数常带多个尾零，最后一位仍属记录规范 <span class="loc">〔说话人1 04:17〕</span></li>
+<li>天平最后一位0.1毫克位为仪器估读，属可疑数字 <span class="loc">〔说话人1 06:11〕</span></li>
+<li>滴定管读数如20.00毫升，末位为零常为人估读 <span class="loc">〔说话人1 05:00〕</span></li>
+<li>万分之一电子天平才称分析天平，非所有电子天平都算 <span class="loc">〔说话人1 06:47〕</span></li>
+<li>容量瓶写100.0毫升、移液管25.00毫升体现末位估读 <span class="loc">〔说话人1 07:14〕</span></li>
+<li>说移取25毫升移液管时实际常指25.00毫升 <span class="loc">〔说话人1 07:14〕</span></li>
+</ul>
+<div class="def"><b>定义</b>：可靠数字加一位可疑数字；意义是见数即知准确到哪一位。 <span class="loc">〔说话人1 06:11〕</span></div></div>
+
+<div class="page"><h2 class="h2">3. 有效数字判定与特殊规则</h2>
+<p class="lead">从小数点后第一个非零数字起算；整数用科学计数法；pH 只看小数部分；加减乘除的位数取舍见 §4。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>带小数点数字从第一个非零数字起算有效数字位数 <span class="loc">〔说话人1 07:59〕</span></li>
+<li>0.0500从数字5起算为三位有效数字 <span class="loc">〔说话人1 07:59〕</span></li>
+<li>主成分含量≥10%为常量，报告常保留四位有效数字 <span class="loc">〔说话人1 09:18〕</span></li>
+<li>含量1%–10%一般保留两位或三位有效数字 <span class="loc">〔说话人1 09:18〕</span></li>
+<li>含量小于1%微量组分常保留两位有效数字 <span class="loc">〔说话人1 09:18〕</span></li>
+<li>仪器精度提高时按实测位数记录，先记录再讨论取舍 <span class="loc">〔说话人1 09:36〕</span></li>
+<li>无小数点整数如1000须写科学计数法才有意义 <span class="loc">〔说话人1 10:00〕</span></li>
+<li>常数π、倍数10等有效位数随运算中其他数而定 <span class="loc">〔说话人1 10:26〕</span></li>
+<li>首位数字大于8时可多计一位有效数字参与运算 <span class="loc">〔说话人1 10:56〕</span></li>
+<li>滴定读数9.50毫升可按四位而非三位处理 <span class="loc">〔说话人1 10:56〕</span></li>
+<li>科学计数法定位幂次仅起定位作用，看系数部分位数 <span class="loc">〔说话人1 11:39〕</span></li>
+<li>pH=11.02看小数部分02，有效数字为两位 <span class="loc">〔说话人1 11:39〕</span></li>
+<li>pKa=2.100看小数部分，为三位有效数字 <span class="loc">〔说话人1 19:09〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>情形</th><th>规则</th></tr>
+<tr><td>普通小数</td><td>自第一个非零数字起算</td></tr>
+<tr><td>整数无小数点</td><td>科学计数法后再判定</td></tr>
+<tr><td>π、稀释倍数</td><td>位数随他数</td></tr>
+<tr><td>首位&gt;8</td><td>可多计一位</td></tr>
+<tr><td>pH、pKa、对数</td><td>只看小数部分尾数</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>★红字含量对应有效数字位数必须掌握 <span class="loc">〔说话人1 08:59〕</span></div></div>
+
+<div class="page"><h2 class="h2">4. 四舍六入五成双与运算</h2>
+<p class="lead">尾数≤4舍、≥6进；尾数5看前位奇偶或5后有无非零；有计算器可先算后修约。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>有效数字修约规则为四舍六入五成双，非中学四舍五入 <span class="loc">〔说话人1 12:54〕</span></li>
+<li>尾数小于等于4直接舍弃 <span class="loc">〔说话人1 12:54〕</span></li>
+<li>尾数大于等于6向前进一 <span class="loc">〔说话人1 12:54〕</span></li>
+<li>尾数为5且5后无数时舍5使前一位成偶 <span class="loc">〔说话人1 13:27〕</span></li>
+<li>尾数为5且5后有0时仍按五成双规则处理 <span class="loc">〔说话人1 13:27〕</span></li>
+<li>五后面有非零数只要有数就全部记上去 <span class="loc">〔说话人1 15:00〕</span></li>
+<li>加减运算以小数点后位数最少者确定结果位数 <span class="loc">〔说话人1 15:00〕</span></li>
+<li>乘除运算以有效数字位数最少者确定结果位数 <span class="loc">〔说话人1 15:00〕</span></li>
+<li>无计算器时可各量多保留一位再计算 <span class="loc">〔说话人1 16:08〕</span></li>
+<li>有计算器可先计算再按规则统一修约 <span class="loc">〔说话人1 16:57〕</span></li>
+<li>先修约再计算源于无计算器年代手算减工作量 <span class="loc">〔说话人1 17:19〕</span></li>
+</ul>
+<div class="mnem">五后有非零只要有数就记上去，即五后非零必进一。（整理） <span class="loc">〔说话人1 15:00〕</span></div>
+<div class="exam"><span class="tag">★考点</span>★修约与加减乘除保留规则为必考 <span class="loc">〔说话人1 20:14〕</span></div></div>
+
+<div class="page"><h2 class="h2">5. 误差概念与过失误差</h2>
+<p class="lead">误差为测定值与真值之差；过失误差为不应出现的操作失误，数据舍弃。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>误差是测定结果与真值之间的差值 <span class="loc">〔说话人1 20:14〕</span></li>
+<li>标准砝码可视为真值，称量偏差即误差 <span class="loc">〔说话人1 20:14〕</span></li>
+<li>误差分为过失误差、系统误差和随机误差三类 <span class="loc">〔说话人1 21:47〕</span></li>
+<li>过失误差是不应出现的误差，如加错试剂、指示剂 <span class="loc">〔说话人1 21:47〕</span></li>
+<li>器皿不清洁可引入过失误差，如残钙或自来水钙干扰 <span class="loc">〔说话人1 22:28〕</span></li>
+<li>移液后未及时转移导致样品损失属过失误差 <span class="loc">〔说话人1 23:00〕</span></li>
+<li>凭感觉扣掉漏滴数据仍属不可靠，应舍弃 <span class="loc">〔说话人1 23:46〕</span></li>
+<li>仪器异常未发现或电压电流不稳也可致过失误差 <span class="loc">〔说话人1 25:30〕</span></li>
+<li>读数、抄写、计算错误属过失误差，数据应丢弃 <span class="loc">〔说话人1 25:30〕</span></li>
+<li>过失误差出现则实验无意义，不应继续沿用数据 <span class="loc">〔说话人1 25:30〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">6. 系统误差</h2>
+<p class="lead">确定因素、单向可测；来源含方法、仪器、试剂、主观；可针对性校正。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>系统误差由较确定因素引起，具固定方向与大小 <span class="loc">〔说话人1 25:30〕</span></li>
+<li>方法不完善如萃取率仅95%属方法误差 <span class="loc">〔说话人1 26:59〕</span></li>
+<li>未校准容量瓶、试剂不纯、滴定终点主观偏差属系统误差来源 <span class="loc">〔说话人1 27:59〕</span></li>
+<li>同一操作者滴定终点总偏黄或偏橙可形成主观系统误差 <span class="loc">〔说话人1 29:14〕</span></li>
+<li>系统误差特性：重现性、单向性、可测性 <span class="loc">〔说话人1 29:32〕</span></li>
+<li>系统误差=总体平均值减真值 <span class="loc">〔说话人1 33:29〕</span></li>
+<li>真值含理论真值、约定真值和相对真值如标准物质标称值 <span class="loc">〔说话人1 34:12〕</span></li>
+<li>方法误差可用标准方法对照校正 <span class="loc">〔说话人1 29:54〕</span></li>
+<li>仪器误差可用砝码、移液器等校准 <span class="loc">〔说话人1 29:54〕</span></li>
+<li>试剂误差可用空白实验测定后扣除 <span class="loc">〔说话人1 30:30〕</span></li>
+<li>主观误差可用标准物质或加标回收评价 <span class="loc">〔说话人1 30:47〕</span></li>
+<li>同一只滴定管标定与测样可抵消体积系统误差 <span class="loc">〔说话人1 31:35〕</span></li>
+<li>差减法称量两次读数相减可抵消天平恒定系统误差 <span class="loc">〔说话人1 31:35〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>来源</th><th>课堂要点</th><th>校正思路</th></tr>
+<tr><td>方法</td><td>萃取率&lt;100%</td><td>标准方法对照</td></tr>
+<tr><td>仪器</td><td>容量瓶未校</td><td>砝码校准</td></tr>
+<tr><td>试剂</td><td>溶剂本底</td><td>空白实验扣除</td></tr>
+<tr><td>主观</td><td>终点颜色判断偏差</td><td>标准物质、加标回收</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">7. 随机误差与正态分布</h2>
+<p class="lead">消除系统误差后剩余波动；无固定方向；增大平行次数利用抵偿性。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>随机误差在系统误差消除后，单次测量值减总体平均值 <span class="loc">〔说话人1 35:25〕</span></li>
+<li>天平末位0与1跳动、滴定管估读差异属随机误差 <span class="loc">〔说话人1 36:57〕</span></li>
+<li>环境温湿度电压微小波动可致随机误差 <span class="loc">〔说话人1 37:31〕</span></li>
+<li>三类误差来源均可能涉及仪器、人与环境 <span class="loc">〔说话人1 37:31〕</span></li>
+<li>随机误差无固定方向，大小正负均有 <span class="loc">〔说话人1 37:31〕</span></li>
+<li>随机误差的分布规律为正态分布 <span class="loc">〔说话人1 37:31〕</span></li>
+<li>正态分布：正负误差几率相等，对称性 <span class="loc">〔说话人1 38:29〕</span></li>
+<li>出现小误差的几率大一些，大误差几率小一些 <span class="loc">〔说话人1 38:29〕</span></li>
+<li>有界性：远离主体数据点可能为过失误差 <span class="loc">〔说话人1 39:22〕</span></li>
+<li>抵偿性：正负误差取平均可部分抵消 <span class="loc">〔说话人1 40:22〕</span></li>
+<li>单点偏离全体不判为系统误差 <span class="loc">〔说话人1 39:22〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">8. 准确度与精密度概念</h2>
+<p class="lead">准确度对真值用误差；精密度对平均值用偏差；公式中减真值与减平均值不同。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>准确度是测定值与真值一致程度，用误差表示 <span class="loc">〔说话人1 40:47〕</span></li>
+<li>绝对误差为测定值减真值，相对误差为绝对误差除以真值 <span class="loc">〔说话人1 40:47〕</span></li>
+<li>未知样无真值时不宜直接用真值算准确度 <span class="loc">〔说话人1 40:47〕</span></li>
+<li>文献中若出现减总体平均值，多指已扣除系统误差后的值 <span class="loc">〔说话人1 41:41〕</span></li>
+<li>精密度是多次平行结果分散程度，反映随机误差 <span class="loc">〔说话人1 42:47〕</span></li>
+<li>偏差d为单次测定值减平均值，与误差概念不同 <span class="loc">〔说话人1 42:47〕</span></li>
+<li>平均偏差为各绝对偏差绝对值之和除以n <span class="loc">〔说话人1 43:49〕</span></li>
+<li>平均偏差须加绝对值以免正负抵消 <span class="loc">〔说话人1 44:15〕</span></li>
+<li>相对平均偏差为平均偏差除以平均值 <span class="loc">〔说话人1 44:27〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★准确度精密度公式要求背诵 <span class="loc">〔说话人1 44:45〕</span></div></div>
+
+<div class="page"><h2 class="h2">9. 标准偏差与相对标准偏差</h2>
+<p class="lead">平均偏差有时分辨不了分散差异；样本标准偏差分母为n−1（自由度）。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>两组数据平均偏差相同但分散程度可不同 <span class="loc">〔说话人1 56:48〕</span></li>
+<li>标准偏差公式可把大的偏差占的比重加大 <span class="loc">〔说话人1 58:13〕</span></li>
+<li>总体标准偏差σ对应无限次测量，用总体平均值μ <span class="loc">〔说话人1 57:43〕</span></li>
+<li>样本标准偏差对应有限次测量，分母为n减1 <span class="loc">〔说话人1 59:07〕</span></li>
+<li>样本标准偏差分母N减1叫做自由度 <span class="loc">〔说话人1 59:07〕</span></li>
+<li>相对标准偏差RSD为标准偏差除以平均值，报告常用 <span class="loc">〔说话人1 01:00:53〕</span></li>
+<li>精密度主要评价随机误差，非系统误差 <span class="loc">〔说话人1 01:02:17〕</span></li>
+<li>期间精密度：同实验室、同设备、同方法，测定人可不同 <span class="loc">〔说话人1 01:02:54〕</span></li>
+<li>日内精密度一天多次测定，日间精密度连续多天 <span class="loc">〔说话人1 01:02:54〕</span></li>
+<li>重复性强调人设备方法全同，复现性跨实验室 <span class="loc">〔说话人1 01:02:54〕</span></li>
+<li>精密度评价常设高、中、低三浓度 <span class="loc">〔说话人1 01:02:54〕</span></li>
+<li>增加测定次数可减小随机误差，一般5至7次 <span class="loc">〔说话人1 01:04:24〕</span></li>
+<li>平行次数按国标可为3次或5次等 <span class="loc">〔说话人1 01:04:41〕</span></li>
+</ul>
+<div class="def"><b>RSD</b>（relative standard deviation）：相对标准偏差，检测文献常见。 <span class="loc">〔说话人1 01:01:34〕</span></div></div>
+
+<div class="page"><h2 class="h2">10. 精密度与准确度关系</h2>
+<p class="lead">精密度是准确度先决条件；有系统误差但精密的数据可校正；极分散数据难救。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>精密度不好时判断准确度不合理 <span class="loc">〔说话人1 01:08:35〕</span></li>
+<li>数据集中但有系统误差可通过找系统误差扣除 <span class="loc">〔说话人1 01:09:00〕</span></li>
+<li>数据极分散无法预判下一点，精密度差难校正 <span class="loc">〔说话人1 01:09:00〕</span></li>
+<li>精密度是保证准确度的先决条件，要求掌握 <span class="loc">〔说话人1 01:09:00〕</span></li>
+<li>消除系统误差后高精密可得高准确度 <span class="loc">〔说话人1 01:09:54〕</span></li>
+<li>准确度反映系统误差与随机误差综合影响 <span class="loc">〔说话人1 01:09:54〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★差个系统误差扣掉即可，数据分散精密度不好难救 <span class="loc">〔说话人1 01:07:09〕</span></div></div>
+
+<div class="page"><h2 class="h2">11. 提高准确度：方法选择与测量误差</h2>
+<p class="lead">滴定重量法适合高含量；仪器法灵敏适合低含量；称量与滴定体积控制千分之相对误差。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>提高准确度首要是选择合适分析方法 <span class="loc">〔说话人1 01:10:30〕</span></li>
+<li>重量分析、滴定分析准确度高、灵敏度相对低 <span class="loc">〔说话人1 01:10:30〕</span></li>
+<li>本班滴定相对平均偏差要求约千分之三 <span class="loc">〔说话人1 01:10:30〕</span></li>
+<li>仪器分析允许相对误差约4%多源于方法局限 <span class="loc">〔说话人1 01:11:35〕</span></li>
+<li>高要求如电子级磷酸检测不能用4%误差方法 <span class="loc">〔说话人1 01:12:14〕</span></li>
+<li>分析天平差减法一次称量极值随机误差约±0.2毫克 <span class="loc">〔说话人1 01:12:14〕</span></li>
+<li>控制相对误差千分之一内称量量需足够大 <span class="loc">〔说话人1 01:12:14〕</span></li>
+<li>滴定管读数极值误差约±0.02毫升 <span class="loc">〔说话人1 01:15:01〕</span></li>
+<li>滴定体积约20毫升可使0.02毫升相对误差约千分之一 <span class="loc">〔说话人1 01:15:27〕</span></li>
+<li>增加测定次数求平均可减小随机误差 <span class="loc">〔说话人1 01:15:27〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>控制目标</th><th>课堂经验阈值</th><th>依据</th></tr>
+<tr><td>称量相对误差≤1‰</td><td>称量量≥约200 mg</td><td>±0.2 mg 极值</td></tr>
+<tr><td>滴定相对误差≤1‰</td><td>体积≥约20 mL</td><td>±0.02 mL 极值</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>★称量两百毫克、滴定二十毫升量级 <span class="loc">〔说话人1 01:15:27〕</span></div></div>
+
+<div class="page"><h2 class="h2">12. 消除系统误差与加标回收</h2>
+<p class="lead">标准物质、标准方法、加标回收；未知样无真值时常用加标回收率判断系统偏差。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>消除系统误差可用标准物质对照 <span class="loc">〔说话人1 01:16:07〕</span></li>
+<li>消除系统误差可用标准方法对照 <span class="loc">〔说话人1 01:17:02〕</span></li>
+<li>加标回收用于无真值样品检验方法系统差 <span class="loc">〔说话人1 01:18:38〕</span></li>
+<li>奶茶咖啡因等未知真值样品适合加标回收思路 <span class="loc">〔说话人1 01:19:20〕</span></li>
+<li>回收率=加标后测定总量减原样测定总量除以理论加标量 <span class="loc">〔说话人1 01:20:59〕</span></li>
+<li>回收率稳定偏离100%提示固定方向系统误差 <span class="loc">〔说话人1 01:20:38〕</span></li>
+<li>加标量计算需注意微升与毫升10的三次方换算 <span class="loc">〔说话人1 01:24:19〕</span></li>
+<li>分子加标后含量也应浓度乘体积得物质量 <span class="loc">〔说话人1 01:24:50〕</span></li>
+<li>血清钙加标例题回收率约95%，提示存在系统误差 <span class="loc">〔说话人1 01:25:26〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★加标回收公式必考，课堂要求当场算会 <span class="loc">〔说话人1 01:20:59〕</span></div>
+<div class="mnem">加标看回收，差值除理论量。（整理）</div></div>
+
+<div class="page"><h2 class="h2">13. 校准曲线、灵敏度与检出限</h2>
+<p class="lead">标准曲线纯水配制简便；工作曲线空白基体匹配；r≥0.99，熟练≥0.998；检出限≈3σ空白。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>校准曲线横轴浓度纵轴信号，得回归方程 <span class="loc">〔说话人1 01:25:55〕</span></li>
+<li>标准曲线在纯水配标准系列，操作简便 <span class="loc">〔说话人1 01:27:07〕</span></li>
+<li>工作曲线在空白基体配系列，基体更匹配 <span class="loc">〔说话人1 01:27:07〕</span></li>
+<li>回归方程Y=A+BX，截距A反映固定系统误差 <span class="loc">〔说话人1 01:28:52〕</span></li>
+<li>斜率B规定为方法灵敏度 <span class="loc">〔说话人1 01:32:34〕</span></li>
+<li>相关系数r越接近1线性越好 <span class="loc">〔说话人1 01:28:52〕</span></li>
+<li>本学期初做r≥0.99可接受，熟练应达0.998以上 <span class="loc">〔说话人1 01:31:13〕</span></li>
+<li>线性范围常指最大与最小浓度比值，可达多数量级 <span class="loc">〔说话人1 01:31:33〕</span></li>
+<li>空白实验测定溶剂或基体本底信号 <span class="loc">〔说话人1 01:33:12〕</span></li>
+<li>空白值过高需提纯试剂或改善实验室洁净度 <span class="loc">〔说话人1 01:33:12〕</span></li>
+<li>检出限为能区别于基线噪音的最低浓度 <span class="loc">〔说话人1 01:37:30〕</span></li>
+<li>检出限常规定为空白信号三倍标准偏差 <span class="loc">〔说话人1 01:38:15〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>曲线类型</th><th>配制介质</th><th>特点</th></tr>
+<tr><td>标准曲线</td><td>纯水/纯溶剂</td><td>简便，可能有基体系统差</td></tr>
+<tr><td>工作曲线</td><td>空白基体</td><td>与样品基体一致</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>★r≥0.99与检出限三倍空白标准偏差 <span class="loc">〔说话人1 01:38:15〕</span></div></div>
+
+<div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>固液气结果单位与水硬度CaO与CaCO₃ <span class="loc">〔说话人1 02:58〕</span></li>
+<li>有效数字定义：可靠加一位可疑 <span class="loc">〔说话人1 06:11〕</span></li>
+<li>≥10%四位；1–10%两三位；&lt;1%两位 <span class="loc">〔说话人1 09:18〕</span></li>
+<li>四舍六入五成双及5后非零进一 <span class="loc">〔说话人1 15:00〕</span></li>
+<li>加减看小数位，乘除看有效位数 <span class="loc">〔说话人1 15:00〕</span></li>
+<li>过失误差舍弃；系统误差可校正；随机误差多次抵消 <span class="loc">〔说话人1 29:32〕</span></li>
+<li>系统误差三性：重现、单向、可测 <span class="loc">〔说话人1 29:32〕</span></li>
+<li>随机正态：对称、单峰、有界、抵偿 <span class="loc">〔说话人1 40:22〕</span></li>
+<li>精密度是先决条件 <span class="loc">〔说话人1 01:09:00〕</span></li>
+<li>称量≥200 mg、滴定≥20 mL控1‰ <span class="loc">〔说话人1 01:15:27〕</span></li>
+<li>加标回收率公式 <span class="loc">〔说话人1 01:20:59〕</span></li>
+<li>标准曲线vs工作曲线 <span class="loc">〔说话人1 01:27:07〕</span></li>
+<li>r≥0.99，熟练0.998；检出限3σ空白 <span class="loc">〔说话人1 01:38:15〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>水硬度中国以钙离子计</td><td>国标以氧化钙计 <span class="loc">〔说话人1 02:58〕</span></td></tr>
+<tr><td>1000无小数点直接数四位</td><td>写科学计数法再判定 <span class="loc">〔说话人1 10:00〕</span></td></tr>
+<tr><td>pH把整数部分一起数位数</td><td>只看小数部分如11.02为两位 <span class="loc">〔说话人1 19:09〕</span></td></tr>
+<tr><td>五成双一律舍去5</td><td>5后非零须进一 <span class="loc">〔说话人1 15:00〕</span></td></tr>
+<tr><td>偏差公式减真值</td><td>偏差减平均值；误差减真值 <span class="loc">〔说话人1 42:47〕</span></td></tr>
+<tr><td>样本标准偏差分母n</td><td>有限次分母n−1 <span class="loc">〔说话人1 59:07〕</span></td></tr>
+<tr><td>精密度差仍可谈准确度</td><td>须先精密合格 <span class="loc">〔说话人1 01:08:35〕</span></td></tr>
+<tr><td>标准曲线与工作曲线相同</td><td>纯水配vs基体配 <span class="loc">〔说话人1 01:27:07〕</span></td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>含量与有效数字位数</td><td>§3</td><td>〔说话人1 09:18〕</td><td>选择/填空</td></tr>
+<tr><td>四舍六入五成双</td><td>§4</td><td>〔说话人1 13:27〕</td><td>计算</td></tr>
+<tr><td>三类误差区分</td><td>§5–§7</td><td>〔说话人1 21:47〕</td><td>简答</td></tr>
+<tr><td>系统误差校正</td><td>§6</td><td>〔说话人1 29:54〕</td><td>简答</td></tr>
+<tr><td>平均偏差与标准偏差</td><td>§8–§9</td><td>〔说话人1 56:48〕</td><td>计算</td></tr>
+<tr><td>精密准确度关系</td><td>§10</td><td>〔说话人1 01:09:00〕</td><td>辨析</td></tr>
+<tr><td>称量滴定体积阈值</td><td>§11</td><td>〔说话人1 01:15:27〕</td><td>计算</td></tr>
+<tr><td>加标回收率</td><td>§12</td><td>〔说话人1 01:20:59〕</td><td>计算</td></tr>
+<tr><td>校准曲线与r</td><td>§13</td><td>〔说话人1 01:31:13〕</td><td>填空</td></tr>
+<tr><td>检出限定义</td><td>§13</td><td>〔说话人1 01:38:15〕</td><td>填空</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>固体微克每克等质量比单位</td><td>单位</td><td>§1</td><td>〔说话人1 00:17〕</td></tr><tr><td>2</td><td>液体克每升等质量体积浓度</td><td>单位</td><td>§1</td><td>〔说话人1 00:17〕</td></tr><tr><td>3</td><td>气体毫克每立方米或菌数每立方米</td><td>单位</td><td>§1</td><td>〔说话人1 00:17〕</td></tr><tr><td>4</td><td>呼气检测幽门杆菌属气体样品</td><td>应用</td><td>§1</td><td>〔说话人1 01:38〕</td></tr><tr><td>5</td><td>水硬度配位滴定钙镁一起测</td><td>方法</td><td>§1</td><td>〔说话人1 02:24〕</td></tr><tr><td>6</td><td>中国水硬度以氧化钙表示</td><td>标准</td><td>§1</td><td>〔说话人1 02:58〕</td></tr><tr><td>7</td><td>欧洲部分国家以碳酸钙表示硬度</td><td>标准</td><td>§1</td><td>〔说话人1 02:58〕</td></tr><tr><td>8</td><td>有效数字含可靠数字与一位可疑数字</td><td>定义</td><td>§2</td><td>〔说话人1 03:28〕</td></tr><tr><td>9</td><td>分析天平万分之一可读0.1毫克</td><td>仪器</td><td>§2</td><td>〔说话人1 04:17〕</td></tr><tr><td>10</td><td>防风罩防风吹动影响读数</td><td>仪器</td><td>§2</td><td>〔说话人1 04:17〕</td></tr><tr><td>11</td><td>滴定管末位毫升数常为人估读</td><td>仪器</td><td>§2</td><td>〔说话人1 05:00〕</td></tr><tr><td>12</td><td>容量瓶移液管书写体现估读位</td><td>书写</td><td>§2</td><td>〔说话人1 07:14〕</td></tr><tr><td>13</td><td>从第一个非零数字起算有效位</td><td>规则</td><td>§3</td><td>〔说话人1 07:59〕</td></tr><tr><td>14</td><td>常量组分≥10%报告约四位</td><td>规则</td><td>§3</td><td>〔说话人1 09:18〕</td></tr><tr><td>15</td><td>1–10%含量两至三位有效数字</td><td>规则</td><td>§3</td><td>〔说话人1 09:18〕</td></tr><tr><td>16</td><td>&lt;1%微量两位有效数字</td><td>规则</td><td>§3</td><td>〔说话人1 09:18〕</td></tr><tr><td>17</td><td>整数须科学计数法判定</td><td>规则</td><td>§3</td><td>〔说话人1 10:00〕</td></tr><tr><td>18</td><td>π与倍数位数随运算他数</td><td>规则</td><td>§3</td><td>〔说话人1 10:26〕</td></tr><tr><td>19</td><td>首位&gt;8可多计一位</td><td>规则</td><td>§3</td><td>〔说话人1 10:56〕</td></tr><tr><td>20</td><td>pH只看小数部分位数</td><td>规则</td><td>§3</td><td>〔说话人1 11:39〕</td></tr><tr><td>21</td><td>四舍六入五成双修约</td><td>规则</td><td>§4</td><td>〔说话人1 12:54〕</td></tr><tr><td>22</td><td>尾数5后非零一律进一</td><td>规则</td><td>§4</td><td>〔说话人1 15:00〕</td></tr><tr><td>23</td><td>加减以小数点后最少位为准</td><td>运算</td><td>§4</td><td>〔说话人1 15:00〕</td></tr><tr><td>24</td><td>乘除以有效位数最少为准</td><td>运算</td><td>§4</td><td>〔说话人1 15:00〕</td></tr><tr><td>25</td><td>有计算器可先算后修约</td><td>运算</td><td>§4</td><td>〔说话人1 16:57〕</td></tr><tr><td>26</td><td>误差=测定值减真值</td><td>定义</td><td>§5</td><td>〔说话人1 20:14〕</td></tr><tr><td>27</td><td>过失误差不应出现应舍弃</td><td>分类</td><td>§5</td><td>〔说话人1 21:47〕</td></tr><tr><td>28</td><td>器皿不清洁致过失误差</td><td>来源</td><td>§5</td><td>〔说话人1 22:28〕</td></tr><tr><td>29</td><td>样品转移损失与仪器异常属过失误差</td><td>来源</td><td>§5</td><td>〔说话人1 23:00〕</td></tr><tr><td>30</td><td>系统误差确定因素单向可测</td><td>定义</td><td>§6</td><td>〔说话人1 29:32〕</td></tr><tr><td>31</td><td>萃取率不足属方法误差</td><td>来源</td><td>§6</td><td>〔说话人1 26:59〕</td></tr><tr><td>32</td><td>滴定终点主观色差属系统误差</td><td>来源</td><td>§6</td><td>〔说话人1 29:14〕</td></tr><tr><td>33</td><td>系统误差=总体平均减真值</td><td>公式</td><td>§6</td><td>〔说话人1 33:29〕</td></tr><tr><td>34</td><td>标准物质提供相对真值</td><td>真值</td><td>§6</td><td>〔说话人1 34:12〕</td></tr><tr><td>35</td><td>空白实验扣试剂本底</td><td>校正</td><td>§6</td><td>〔说话人1 30:30〕</td></tr><tr><td>36</td><td>差减法可扣天平系统误差</td><td>技巧</td><td>§6</td><td>〔说话人1 31:35〕</td></tr><tr><td>37</td><td>随机误差=单次值减总体平均</td><td>定义</td><td>§7</td><td>〔说话人1 35:25〕</td></tr><tr><td>38</td><td>随机误差符合正态分布</td><td>分布</td><td>§7</td><td>〔说话人1 38:29〕</td></tr><tr><td>39</td><td>正态分布对称单峰有界抵偿</td><td>性质</td><td>§7</td><td>〔说话人1 40:22〕</td></tr><tr><td>40</td><td>远离主体点可能为过失误差</td><td>判据</td><td>§7</td><td>〔说话人1 39:22〕</td></tr><tr><td>41</td><td>准确度用误差表示</td><td>定义</td><td>§8</td><td>〔说话人1 40:47〕</td></tr><tr><td>42</td><td>精密度用偏差表示</td><td>定义</td><td>§8</td><td>〔说话人1 42:47〕</td></tr><tr><td>43</td><td>平均偏差须取绝对值再平均</td><td>公式</td><td>§8</td><td>〔说话人1 44:15〕</td></tr><tr><td>44</td><td>样本标准偏差分母n−1</td><td>公式</td><td>§9</td><td>〔说话人1 59:07〕</td></tr><tr><td>45</td><td>RSD用于报告精密度</td><td>指标</td><td>§9</td><td>〔说话人1 01:00:53〕</td></tr><tr><td>46</td><td>精密度评价高中低三浓度</td><td>规范</td><td>§9</td><td>〔说话人1 01:02:54〕</td></tr><tr><td>47</td><td>平行测定常5至7次</td><td>规范</td><td>§9</td><td>〔说话人1 01:04:24〕</td></tr><tr><td>48</td><td>精密度是准确度先决条件</td><td>关系</td><td>§10</td><td>〔说话人1 01:09:00〕</td></tr><tr><td>49</td><td>滴定重量法高含量高准确度</td><td>方法</td><td>§11</td><td>〔说话人1 01:10:30〕</td></tr><tr><td>50</td><td>仪器分析允许约4%相对误差</td><td>数字</td><td>§11</td><td>〔说话人1 01:11:35〕</td></tr><tr><td>51</td><td>称量极值±0.2 mg差减法</td><td>数字</td><td>§11</td><td>〔说话人1 01:12:14〕</td></tr><tr><td>52</td><td>滴定体积20 mL控1‰</td><td>数字</td><td>§11</td><td>〔说话人1 01:15:27〕</td></tr><tr><td>53</td><td>加标回收率计算公式</td><td>公式</td><td>§12</td><td>〔说话人1 01:20:59〕</td></tr><tr><td>54</td><td>标准曲线与工作曲线区别</td><td>方法</td><td>§13</td><td>〔说话人1 01:27:07〕</td></tr><tr><td>55</td><td>截距系统误差斜率灵敏度</td><td>参数</td><td>§13</td><td>〔说话人1 01:32:34〕</td></tr><tr><td>56</td><td>r≥0.99熟练0.998</td><td>标准</td><td>§13</td><td>〔说话人1 01:31:13〕</td></tr><tr><td>57</td><td>检出限三倍空白标准偏差</td><td>定义</td><td>§13</td><td>〔说话人1 01:38:15〕</td></tr>
+</table>
+<p class="foot">附录 D 共 57 条，对照 recording.md 全课讲授点登记。</p></div>
+</body></html>

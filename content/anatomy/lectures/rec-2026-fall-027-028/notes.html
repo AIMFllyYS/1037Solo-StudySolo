@@ -1,58 +1,273 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>女性生殖系统·可视化</title>
-<style>
-:root{--paper:#FAF8F1;--ink:#24201A;--soft:#4A4337;--muted:#857B68;--line:#E6DECC;
---accent:#0E7C7B;--accent-d:#0A5C5B;--accent-t:#E5F1F1;--mnem:#A2630C;--mnem-t:#F8ECD3;--red:#B23A2E;--red-t:#F7E4DF;}
-*{box-sizing:border-box}body{font-family:"Microsoft YaHei",sans-serif;background:var(--paper);color:var(--ink);margin:0;line-height:1.7;font-size:10.5pt}
-.page{width:210mm;min-height:297mm;margin:0 auto;padding:18mm 16mm;background:var(--paper)}
-h1{font-family:serif;color:var(--accent-d);font-size:24pt;margin:0 0 3mm;border-bottom:2.5pt solid var(--accent);padding-bottom:3mm}
-h2{font-family:serif;color:var(--accent-d);font-size:15pt;margin:7mm 0 3mm;border-left:4pt solid var(--accent);padding-left:3mm}
-.cover{display:flex;flex-direction:column;justify-content:center;min-height:260mm}
-.cover h1{font-size:28pt;border:none}.cover .sub{font-size:13pt;color:var(--soft);margin-top:3mm}
-.meta{margin-top:8mm;font-size:10pt;color:var(--muted);line-height:2}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt}
-th{background:var(--accent);color:#fff;padding:2mm;text-align:left}td{padding:2mm;border-bottom:.5pt solid var(--line)}
-tr:nth-child(even) td{background:#fff}
-.box{background:#fff;border:.5pt solid var(--line);border-radius:2mm;padding:3mm 4mm;margin:3mm 0}
-.warn{background:var(--red-t);border:.5pt solid #E6BDB4;padding:3mm;margin:3mm 0;border-radius:2mm}
-.tip{background:var(--mnem-t);border-left:3pt solid var(--mnem);padding:3mm;margin:3mm 0;border-radius:0 2mm 2mm 0}
-</style></head><body>
-<div class="page cover">
-<div style="letter-spacing:.3em;color:var(--mnem);font-size:10pt">ANATOMY</div>
-<h1>女性生殖系统+腹膜+会阴<span style="color:var(--accent)">可视化</span></h1>
-<div class="sub">系统解剖学 第5-6节 · 2026-09-29</div>
-<div class="meta">卵巢 · 输卵管 · 子宫 · 阴道穹 · 腹膜 · 会阴</div>
-</div>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>系统解剖学 · 第27-28节 · 女性生殖系统与腹膜</title><style>:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#B4531F; --accent-d:#7A3413; --accent-t:#F7E7DE;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}</style></head><body>
+<div class="page cover"><p class="h1">系统解剖学 · 第27-28节</p><p class="meta">女性生殖系统与腹膜 · 2026-09-29</p><table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课次</td><td>rec-2026-fall-027-028（第27-28节，2学时）</td></tr>
+<tr><td>主题</td><td>卵巢/输卵管/子宫/阴道；腹膜与网膜囊；会阴；乳腺临床要点</td></tr>
+<tr><td>素材规模</td><td>逐字稿 26,474 字 / 97 轮</td></tr></table></div>
 
-<div class="page">
-<h2>一、输卵管四部</h2>
-<table><tr><th>分部</th><th>特点</th></tr>
-<tr><td>子宫部</td><td>穿子宫壁</td></tr>
-<tr><td>峡部</td><td><b>结扎处</b></td></tr>
-<tr><td>壶腹部</td><td><b>受精部位</b>(最宽长)</td></tr>
-<tr><td>漏斗部</td><td>伞端拾卵</td></tr></table>
+<div class="page"><h2 class="h2">0. 知识框架</h2><p class="lead">生殖管道链（卵巢→输卵管→子宫→阴道）与腹膜潜在间隙（腹膜腔、器官分位、网膜囊）交汇于受精、结扎、剖宫产、后穹穿刺与积液定位。</p>
+<svg viewBox="0 0 700 200" width="100%" aria-label="框架"><rect x="240" y="8" width="220" height="26" fill="#F7E7DE" stroke="#B4531F"/><text x="350" y="26" text-anchor="middle" font-size="11">第27-28节</text>
+<rect x="30" y="48" width="140" height="44" fill="#fff" stroke="#7A3413"/><text x="100" y="66" text-anchor="middle" font-size="9">卵巢·三韧带</text><text x="100" y="80" text-anchor="middle" font-size="8">输卵管四部</text>
+<rect x="190" y="48" width="140" height="44" fill="#fff" stroke="#7A3413"/><text x="260" y="66" text-anchor="middle" font-size="9">子宫·四韧带</text><text x="260" y="80" text-anchor="middle" font-size="8">陷凹·后穹</text>
+<rect x="350" y="48" width="140" height="44" fill="#fff" stroke="#7A3413"/><text x="420" y="66" text-anchor="middle" font-size="9">腹膜·分位</text><text x="420" y="80" text-anchor="middle" font-size="8">大网膜</text>
+<rect x="510" y="48" width="160" height="44" fill="#fff" stroke="#7A3413"/><text x="590" y="66" text-anchor="middle" font-size="9">网膜囊·孔</text><text x="590" y="80" text-anchor="middle" font-size="8">会阴·乳腺</text>
+<text x="350" y="120" text-anchor="middle" font-size="9" fill="#6B7480">★壶腹受精·输卵管峡结扎·子宫峡剖宫产·直肠子宫陷凹·后穹穿刺</text>
+<text x="350" y="138" text-anchor="middle" font-size="9" fill="#6B7480">★圆韧带前倾·骶韧带前屈·主韧带防脱·阔韧带限侧移·网膜囊</text></svg></div>
 
-<h2>二、子宫四韧带</h2>
-<table><tr><th>韧带</th><th>功能</th></tr>
-<tr><td>阔韧带</td><td>限制侧移</td></tr>
-<tr><td>圆韧带</td><td><b>维持前倾</b></td></tr>
-<tr><td>主韧带</td><td><b>防脱垂</b></td></tr>
+<div class="page"><h2 class="h2">1. 女性生殖系统总论</h2><p class="lead">reproductive system：繁殖后代与维持第二性征（雌激素）。</p><ul class="kv">
+<li>功能：产生卵子，输卵管受精，子宫发育胎儿，娩出；分泌雌激素维持第二性征 <span class="loc">〔说话人1 02:25〕</span></li>
+<li>盆腔冠状面（后面观）四部：输卵管、卵巢、子宫、阴道 <span class="loc">〔说话人1 03:19〕</span></li>
+<li>女性发育成熟后子宫体积显著增大 <span class="loc">〔说话人1 03:19〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">2. 卵巢</h2><p class="lead">卵巢窝定位；白膜-皮质-髓质；三固定装置；黄体与卵巢癌临床。</p><ul class="kv">
+<li>功能：产生卵子，分泌雌激素（estrogen） <span class="loc">〔说话人1 04:01〕</span></li>
+<li>位置：盆腔侧壁卵巢窝，髂内、外动脉夹角处 <span class="loc">〔说话人1 04:01〕</span></li>
+<li>胚胎期腹膜后肾下方，逐渐下移盆腔 <span class="loc">〔说话人1 04:01〕</span></li>
+<li>输尿管跨髂血管为第二狭窄（复习） <span class="loc">〔说话人1 04:01〕</span></li>
+<li>扁卵圆形，约长4 cm、宽2 cm、厚3 cm <span class="loc">〔说话人1 06:12〕</span></li>
+<li>成年后表面凹凸不平，为反复排卵瘢痕 <span class="loc">〔说话人1 06:12〕</span></li>
+<li>上端输卵管端，下端子宫端借固有韧带连子宫角 <span class="loc">〔说话人1 06:49〕</span></li>
+<li>前缘卵巢系膜连子宫阔韧带；后缘游离（独立缘） <span class="loc">〔说话人1 07:58〕</span></li>
+<li>卵巢门：系膜处血管神经进出 <span class="loc">〔说话人1 07:58〕</span></li>
+<li>结构：外白膜，外皮质（卵泡、黄体），内髓质（血管神经） <span class="loc">〔说话人1 07:58〕</span></li>
+<li>排卵后卵泡壁闭合形成黄体，分泌雌激素、孕激素、抑制素约两周 <span class="loc">〔说话人1 09:46〕</span></li>
+<li>出生时卵母细胞约200万；青春期约30万；一生成熟排卵约400–500个 <span class="loc">〔说话人1 10:27〕</span></li>
+<li>非法商业化取卵侵入性强，中国违法 <span class="loc">〔说话人1 10:51〕</span></li>
+<li>孕激素（progesterone）维持早孕、抑制子宫活动、闭宫颈口、轻度升温 <span class="loc">〔说话人1 12:51〕</span></li>
+<li>不孕可源于下丘脑垂体、卵巢病变或黄体功能缺陷 <span class="loc">〔说话人1 13:30〕</span></li>
+<li>卵巢癌 ovarian cancer：发现常已晚期，浆液性播散，预后差 <span class="loc">〔说话人1 13:30〕</span></li>
+<li>黄体功能不足：卵泡1.4–1.8 cm难成熟，可反复流产 <span class="loc">〔说话人1 15:31〕</span></li>
+<li>卵巢悬韧带 suspensory ligament：骨盆侧壁→输卵管端，含血管，找血管标志 <span class="loc">〔说话人1 16:05〕</span></li>
+<li>又称骨盆漏斗韧带；腹膜皱襞 <span class="loc">〔说话人1 16:05〕</span></li>
+<li>卵巢固有韧带：卵巢下端→子宫角，覆腹膜 <span class="loc">〔说话人1 17:11〕</span></li>
+<li>卵巢系膜：前缘连子宫阔韧带；阔韧带后层包绕卵巢 <span class="loc">〔说话人1 17:11〕</span></li>
+</ul><div class="exam"><span class="tag">★考点</span>卵巢三固定装置；悬韧带为找卵巢血管标志。 <span class="loc">〔说话人1 16:05〕</span></div>
+<div class="mnem">悬韧带找血管，固有韧带连子宫角，系膜接阔韧带。（整理）</div></div>
+
+<div class="page"><h2 class="h2">3. 输卵管</h2><p class="lead">uterine tube：捕获、受精、运输；四部；女性腹膜腔开放性。</p><ul class="kv">
+<li>细长肌性管道，长约10–15 cm，左右各一 <span class="loc">〔说话人1 20:42〕</span></li>
+<li>功能：捕获卵子、提供受精场所、输送受精卵入子宫 <span class="loc">〔说话人1 20:42〕</span></li>
+<li>连于子宫角两侧，阔韧带上缘，外侧近卵巢上端 <span class="loc">〔说话人1 20:42〕</span></li>
+<li>腹腔口开放，女性腹膜腔经输卵管与外界间接相通 <span class="loc">〔说话人1 21:51〕</span></li>
+<li>固定：输卵管系膜 <span class="loc">〔说话人1 21:51〕</span></li>
+<li>四部（由内向外）：子宫部、峡部、壶腹部、漏斗部 <span class="loc">〔说话人1 23:03〕</span></li>
+<li>子宫部：穿子宫壁，管径最细 <span class="loc">〔说话人1 23:03〕</span></li>
+<li>峡部：子宫外最窄，短直壁厚腔窄，输卵管结扎部位 <span class="loc">〔说话人1 24:39〕</span></li>
+<li>壶腹部：粗长壁薄腔大，受精部位 <span class="loc">〔说话人1 24:39〕</span></li>
+<li>漏斗部膨大，缘有输卵管伞；较长一条称卵巢伞，覆盖卵巢拾卵 <span class="loc">〔说话人1 24:39〕</span></li>
+<li>伞缘绒毛摆动形成漩涡引导卵子入管 <span class="loc">〔说话人1 25:48〕</span></li>
+<li>阻塞不通致不孕；反复人流炎症瘢痕为常见原因 <span class="loc">〔说话人1 27:48〕</span></li>
+</ul><table class="tbl"><tr><th>分部</th><th>特点</th><th>临床</th></tr>
+<tr><td>子宫部</td><td>子宫壁内最细</td><td>—</td></tr>
+<tr><td>峡部</td><td>子宫外最窄</td><td>结扎</td></tr>
+<tr><td>壶腹部</td><td>最宽长</td><td>受精</td></tr>
+<tr><td>漏斗部</td><td>伞拾卵</td><td>拾卵</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>受精在壶腹，结扎在峡部；宫→峡→壶→漏。 <span class="loc">〔说话人1 24:39〕</span></div></div>
+
+<div class="page"><h2 class="h2">4. 子宫形态、壁与位置</h2><p class="lead">uterus 倒置梨形；底体颈与峡；内膜周期；前倾前屈与陷凹。</p><ul class="kv">
+<li>肌性器官，壁厚腔小，孕育胎儿；成年长约7.5 cm <span class="loc">〔说话人1 27:48〕</span></li>
+<li>分部：子宫底、子宫体、子宫颈（cervix） <span class="loc">〔说话人1 27:48〕</span></li>
+<li>子宫颈为肿瘤高发区；宫颈癌 cervical cancer 与 HPV 感染强相关 <span class="loc">〔说话人1 27:48〕</span></li>
+<li>HPV 高危型如16、18；多价疫苗针对不同亚型 <span class="loc">〔说话人1 27:48〕</span></li>
+<li>子宫体与子宫颈间狭窄部为子宫峡部；勿与输卵管峡部混淆 <span class="loc">〔说话人1 31:15〕</span></li>
+<li>妊娠子宫峡部明显延长；剖腹产切口选子宫峡部，少损腹膜 <span class="loc">〔说话人1 31:15〕</span></li>
+<li>腔分子宫体腔与子宫颈管；内口与外口；经产妇外口形态不同 <span class="loc">〔说话人1 31:15〕</span></li>
+<li>壁自外向内：外膜（脏腹膜）、肌层、内膜黏膜 <span class="loc">〔说话人1 33:00〕</span></li>
+<li>子宫内膜异位症：异位种植，影响生活质量 <span class="loc">〔说话人1 33:00〕</span></li>
+<li>宫颈管内膜前后纵襞，向外斜行皱襞称斜襞，分泌碱性黏液栓 <span class="loc">〔说话人1 33:52〕</span></li>
+<li>宫颈上2/3纤毛柱状上皮，下1/3复层鳞状上皮；交界区宫颈癌好发 <span class="loc">〔说话人1 34:47〕</span></li>
+<li>肌层平滑肌；妊娠肌纤维由约40–50 μm增至250–600 μm <span class="loc">〔说话人1 34:47〕</span></li>
+<li>分娩时肌层收缩、宫颈扩张助胎儿娩出 <span class="loc">〔说话人1 34:47〕</span></li>
+<li>腹膜覆盖子宫体底前面，折返形成膀胱子宫陷凹与直肠子宫陷凹 <span class="loc">〔说话人1 36:42〕</span></li>
+<li>直立时直肠子宫陷凹为女性腹膜腔最低点 <span class="loc">〔说话人1 38:00〕</span></li>
+<li>位置：小骨盆中央，膀胱与直肠之间；输卵管卵巢称附件 <span class="loc">〔说话人1 38:00〕</span></li>
+<li>膀胱空虚时子宫前倾、前屈 <span class="loc">〔说话人1 38:00〕</span></li>
+<li>前倾：子宫长轴与阴道长轴夹角略大于90° <span class="loc">〔说话人1 39:38〕</span></li>
+<li>前屈：宫体轴线与宫颈轴线向前成约170°角 <span class="loc">〔说话人1 39:38〕</span></li>
+<li>宫颈下端低于坐骨棘平面可子宫脱垂 <span class="loc">〔说话人1 39:38〕</span></li>
+</ul><div class="exam"><span class="tag">★考点</span>子宫峡部剖宫产；鳞柱交界与宫颈癌；直肠子宫陷凹。 <span class="loc">〔说话人1 31:15〕</span></div></div>
+
+<div class="page"><h2 class="h2">5. 子宫四韧带</h2><p class="lead">阔、圆、主、骶子宫韧带维持正常位置。</p><ul class="kv">
+<li>子宫借韧带、阴道、尿生殖膈与盆底肌固定 <span class="loc">〔说话人1 40:31〕</span></li>
+<li>四韧带：阔韧带、圆韧带、主韧带、骶子宫韧带 <span class="loc">〔说话人1 40:31〕</span></li>
+<li>阔韧带 broad ligament：子宫前后腹膜向侧延伸至盆壁的双层膜，限制子宫侧倾 <span class="loc">〔说话人1 41:44〕</span></li>
+<li>包绕输卵管、卵巢、固有韧带；分输卵管系膜、卵巢系膜、子宫系膜 <span class="loc">〔说话人1 41:44〕</span></li>
+<li>圆韧带：子宫体前外侧→经腹环入腹股沟管→止于阴阜及大阴唇皮下，维持前倾 <span class="loc">〔说话人1 43:31〕</span></li>
+<li>主韧带：又称宫旁组织，宫颈连盆侧壁结缔组织，防脱垂 <span class="loc">〔说话人1 56:33〕</span></li>
+<li>骶子宫韧带：宫颈后上外侧绕直肠至S2–S3椎前筋膜，维持前屈 <span class="loc">〔说话人1 57:26〕</span></li>
+<li>骶子宫韧带表面腹膜形成直肠子宫陷凹 <span class="loc">〔说话人1 58:39〕</span></li>
+</ul><table class="tbl"><tr><th>韧带</th><th>功能</th></tr>
+<tr><td>阔韧带</td><td>限制向两侧倾斜</td></tr>
+<tr><td>圆韧带</td><td>维持前倾</td></tr>
+<tr><td>主韧带</td><td>防脱垂</td></tr>
 <tr><td>骶子宫韧带</td><td>维持前屈</td></tr></table>
-<div class="tip">子宫位置：前倾前屈</div>
-</div>
+<div class="exam"><span class="tag">★考点</span>圆韧带前倾、骶韧带前屈、主韧带防脱、阔韧带限侧移。 <span class="loc">〔说话人1 57:26〕</span></div></div>
 
-<div class="page">
-<h2>三、临床要点</h2>
-<table><tr><th>结构</th><th>临床意义</th></tr>
-<tr><td>子宫峡部</td><td>剖腹产切口</td></tr>
-<tr><td>宫颈上皮交界</td><td>宫颈癌好发</td></tr>
-<tr><td>直肠子宫陷凹</td><td><b>女性直立腹膜腔最低点</b></td></tr>
-<tr><td>阴道后穹</td><td>穿刺抽液诊断积液</td></tr></table>
+<div class="page"><h2 class="h2">6. 阴道与乳腺要点</h2><p class="lead">阴道穹与后穹穿刺；乳腺癌橘皮样与三阴性。</p><ul class="kv">
+<li>阴道上端包绕宫颈形成阴道穹 <span class="loc">〔说话人1 58:39〕</span></li>
+<li>后穹最深，邻直肠子宫陷凹，仅隔阴道壁与腹膜 <span class="loc">〔说话人1 58:39〕</span></li>
+<li>腹腔积液可经阴道后穹穿刺抽液诊断 <span class="loc">〔说话人1 58:39〕</span></li>
+<li>乳腺癌橘皮样变：淋巴回流受阻水肿，悬韧带牵拉皮肤凹陷 <span class="loc">〔说话人1 59:38〕</span></li>
+<li>三阴性乳腺癌：无HER2、雌激素受体、孕激素受体，靶向治疗受限 <span class="loc">〔说话人1 01:00:30〕</span></li>
+</ul><div class="exam"><span class="tag">★考点</span>阴道后穹穿刺抽腹腔积液。 <span class="loc">〔说话人1 58:39〕</span></div></div>
 
-<h2>四、腹膜与会阴</h2>
-<div class="box">大网膜=<b>腹腔卫士</b>；网膜囊=小腹膜腔</div>
-<div class="box">肛直肠环=控便关键；产科会阴=肛门与外生殖器间</div>
+<div class="page"><h2 class="h2">7. 腹膜与腹膜腔</h2><p class="lead">腹膜覆盖腹盆壁与脏器；腹膜腔为潜在间隙，不等于腹腔。</p><ul class="kv">
+<li>腹膜：薄而光滑浆膜，间皮+少量结缔组织，类胸膜 <span class="loc">〔说话人1 01:01:21〕</span></li>
+<li>壁腹膜覆腹盆壁，脏腹膜覆脏器表面，移行形成腹膜腔 peritoneal cavity <span class="loc">〔说话人1 01:01:21〕</span></li>
+<li>腹腔：膈下小骨盆上口以上腹壁围成腔；腹膜腔为壁脏腹膜间潜在腔隙 <span class="loc">〔说话人1 01:02:26〕</span></li>
+<li>脏器在腹腔中；胃表面脏腹膜，胃不属于腹膜腔内容物 <span class="loc">〔说话人1 01:03:02〕</span></li>
+<li>功能：分泌浆液润滑、支持固定、吸收、防御（巨噬细胞）、修复 <span class="loc">〔说话人1 01:03:02〕</span></li>
+<li>吸收能力上部大于下部；腹腔感染宜半卧位使渗出局限下部 <span class="loc">〔说话人1 01:04:06〕</span></li>
+<li>修复可纤维粘连；手术宜快防腹膜干燥粘连 <span class="loc">〔说话人1 01:04:06〕</span></li>
+<li>手术尽量避免损伤腹膜以防粘连 <span class="loc">〔说话人1 01:05:00〕</span></li>
+<li>肾手术、剖腹产经子宫峡部可减少腹膜损伤 <span class="loc">〔说话人1 01:05:44〕</span></li>
+</ul></div>
 
-<h2>五、乳腺</h2>
-<div class="warn">乳腺癌橘皮样=淋巴水肿+悬韧带牵拉；三阴性=缺HER2/ER/PR=难治</div>
-</div>
+<div class="page"><h2 class="h2">8. 腹膜器官分位</h2><p class="lead">内位几乎全包裹；间位大部分包裹；外位一面覆膜。</p><ul class="kv">
+<li>内位：几乎全部表面被腹膜包裹 <span class="loc">〔说话人1 01:05:00〕</span></li>
+<li>间位：大部分被腹膜包裹 <span class="loc">〔说话人1 01:05:00〕</span></li>
+<li>外位：仅一面被腹膜覆盖 <span class="loc">〔说话人1 01:05:00〕</span></li>
+<li>内位举例：胃、空肠、回肠、盲肠、脾、卵巢、输卵管 <span class="loc">〔说话人1 01:05:44〕</span></li>
+<li>直肠不在内位；横结肠前后腹膜覆盖为内位 <span class="loc">〔说话人1 01:06:47〕</span></li>
+<li>升结肠、降结肠不是腹膜内位器官 <span class="loc">〔说话人1 01:06:47〕</span></li>
+<li>肝膈面冠状韧带间肝裸区无腹膜，肝为间位器官 <span class="loc">〔说话人1 01:07:24〕</span></li>
+<li>膀胱、子宫：腹膜覆上表面，子宫底体被覆，为间位 <span class="loc">〔说话人1 01:08:32〕</span></li>
+<li>外位：肾、肾上腺、输尿管、胰、十二指肠降升水平部 <span class="loc">〔说话人1 01:09:11〕</span></li>
+<li>腹膜形成物：网膜、系膜、韧带，为血管神经通路 <span class="loc">〔说话人1 01:09:33〕</span></li>
+</ul><table class="tbl"><tr><th>分位</th><th>覆盖</th><th>代表</th></tr>
+<tr><td>内位</td><td>几乎全部</td><td>胃、空回肠、卵巢</td></tr>
+<tr><td>间位</td><td>大部分</td><td>肝、膀胱、子宫</td></tr>
+<tr><td>外位</td><td>仅一面</td><td>肾、胰、十二指肠部分</td></tr></table></div>
+
+<div class="page"><h2 class="h2">9. 网膜与网膜囊</h2><p class="lead">小网膜、大网膜；网膜孔通网膜囊；本课重点。</p><ul class="kv">
+<li>网膜：与胃小弯、胃大弯相连的双层腹膜皱襞 <span class="loc">〔说话人1 01:10:10〕</span></li>
+<li>小网膜 lesser omentum：肝门→胃小弯与十二指肠上部 <span class="loc">〔说话人1 01:11:04〕</span></li>
+<li>分肝胃韧带与肝十二指肠韧带 <span class="loc">〔说话人1 01:11:04〕</span></li>
+<li>小网膜右缘游离，经网膜孔通向后方间隙 <span class="loc">〔说话人1 01:12:05〕</span></li>
+<li>网膜孔又名 foramen of Winslow <span class="loc">〔说话人1 01:13:01〕</span></li>
+<li>大网膜：胃大弯与横结肠间，像围裙覆盖肠管，含脂肪 <span class="loc">〔说话人1 01:13:22〕</span></li>
+<li>矢状面见四层腹膜折叠；成人前后层可粘连愈合 <span class="loc">〔说话人1 01:13:22〕</span></li>
+<li>愈合后形成胃结肠韧带 <span class="loc">〔说话人1 01:15:20〕</span></li>
+<li>大网膜可移动包裹炎症，称腹腔卫士；儿童大网膜短 <span class="loc">〔说话人1 01:15:20〕</span></li>
+<li>网膜囊 omental bursa：小网膜与胃后壁、腹后壁间扁窄间隙，即小腹膜腔 <span class="loc">〔说话人1 01:16:38〕</span></li>
+<li>经网膜孔与大腹膜腔相通 <span class="loc">〔说话人1 01:16:38〕</span></li>
+<li>前壁：小网膜、胃后壁腹膜、胃结肠韧带 <span class="loc">〔说话人1 01:18:23〕</span></li>
+<li>后壁：横结肠系膜、胰、左肾及左肾上腺表面腹膜 <span class="loc">〔说话人1 01:19:11〕</span></li>
+<li>上壁：肝尾状叶与膈下腹膜；下壁：大网膜前后层愈合处 <span class="loc">〔说话人1 01:19:34〕</span></li>
+<li>左壁：脾、胃脾韧带、脾肾韧带 <span class="loc">〔说话人1 01:16:38〕</span></li>
+<li>右侧经网膜孔通腹膜腔其余部分 <span class="loc">〔说话人1 01:19:34〕</span></li>
+<li>网膜孔上界肝尾状叶，下界十二指肠上部，左前肝十二指肠韧带，后下腔静脉 <span class="loc">〔说话人1 01:23:22〕</span></li>
+<li>胃后壁穿孔内容物先入网膜囊，早期体征不明显；胃液酸性 <span class="loc">〔说话人1 01:23:22〕</span></li>
+</ul><div class="exam"><span class="tag">★考点</span>网膜囊与网膜孔；胃后壁穿孔先入网膜囊。 <span class="loc">〔说话人1 01:23:22〕</span></div></div>
+
+<div class="page"><h2 class="h2">10. 系膜、隐窝与腹膜陷凹</h2><p class="lead">肠系膜扇形；肝肾隐窝；男女直立位最低点。</p><ul class="kv">
+<li>系膜：脏壁腹膜移行连器官于腹盆壁的双层腹膜 <span class="loc">〔说话人1 01:24:40〕</span></li>
+<li>肠系膜、阑尾系膜、横结肠系膜、乙状结肠系膜 <span class="loc">〔说话人1 01:24:40〕</span></li>
+<li>肠系膜扇形固定空回肠；根长约15 cm，自L2左侧斜向右下 <span class="loc">〔说话人1 01:25:34〕</span></li>
+<li>空回肠长约5–7 m；系膜容纳肠系膜上血管 <span class="loc">〔说话人1 01:25:34〕</span></li>
+<li>肠系膜活动过大可致肠扭转、肠套叠 <span class="loc">〔说话人1 01:25:34〕</span></li>
+<li>阑尾系膜含血管，切除需结扎 <span class="loc">〔说话人1 01:25:34〕</span></li>
+<li>横结肠系膜起于大网膜后双层跨过横结肠 <span class="loc">〔说话人1 01:26:58〕</span></li>
+<li>肝肾隐窝 hepatorenal recess：肝右叶与右肾间，平卧时腹膜腔最低点 <span class="loc">〔说话人1 01:28:08〕</span></li>
+<li>膀胱子宫陷凹、直肠子宫陷凹（女）；直肠膀胱陷凹（男直立最低） <span class="loc">〔说话人1 01:31:06〕</span></li>
+<li>女性直立最低：直肠子宫陷凹；男性：直肠膀胱陷凹 <span class="loc">〔说话人1 01:31:06〕</span></li>
+<li>肝的韧带：冠状韧带、镰状韧带、肝圆韧带及左、右三角韧带 <span class="loc">〔说话人1 01:26:58〕</span></li>
+<li>腹膜皱襞：脐正中襞、脐内侧襞、脐外侧襞 <span class="loc">〔说话人1 01:29:51〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">11. 会阴</h2><p class="lead">广义封闭小骨盆下口；产科会阴；尿生殖三角与肛三角。</p><ul class="kv">
+<li>广义会阴：封闭小骨盆下口的全部软组织 <span class="loc">〔说话人1 01:32:17〕</span></li>
+<li>前界耻骨联合下缘，后界尾骨尖 <span class="loc">〔说话人1 01:32:17〕</span></li>
+<li>两侧从前向后：耻骨下支、坐骨支、坐骨结节、骶结节韧带 <span class="loc">〔说话人1 01:33:18〕</span></li>
+<li>产科会阴：肛门与外生殖器间软组织，分娩注意保护 <span class="loc">〔说话人1 01:33:18〕</span></li>
+<li>以坐骨结节连线分尿生殖三角（前）与肛三角（后） <span class="loc">〔说话人1 01:33:18〕</span></li>
+<li>肛提肌起耻骨后面与坐骨棘，止于会阴中心腱与尾骨 <span class="loc">〔说话人1 01:33:18〕</span></li>
+<li>尾骨肌起坐骨棘止于骶尾骨两侧 <span class="loc">〔说话人1 01:33:18〕</span></li>
+<li>肛门外括约肌分皮下、浅、深部；肛直肠环控便关键 <span class="loc">〔说话人1 01:33:18〕</span></li>
+<li>课堂结论：会阴细节仅需掌握广义与产科会阴概念 <span class="loc">〔说话人1 01:36:24〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">12. 课堂影音延伸</h2><p class="lead">排卵周期、卵巢癌分期、乳腺淋巴（课堂播放英文视频，结论无中文逐字稿定位）。</p><ul class="kv">
+<li>排卵：约第14天LH surge，卵泡破裂释卵，输卵管伞捕捉运输</li>
+<li>卵排出后12–24 h内受精；未受精则随子宫内膜脱落</li>
+<li>上皮性卵巢癌起自卵巢外层上皮（课堂视频概述）</li>
+<li>卵巢癌按分级分期决定治疗方案（课堂视频概述）</li>
+<li>乳腺含脂肪、腺体、导管；淋巴经淋巴结引流（课堂视频概述）</li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv">
+<li>输卵管四部；受精壶腹、结扎峡部 <span class="loc">〔说话人1 24:39〕</span></li>
+<li>子宫四韧带功能 <span class="loc">〔说话人1 57:26〕</span></li>
+<li>直肠子宫陷凹=女直立腹膜腔最低；后穹穿刺 <span class="loc">〔说话人1 58:39〕</span></li>
+<li>子宫峡部剖腹产切口 <span class="loc">〔说话人1 31:15〕</span></li>
+<li>宫颈鳞柱交界与宫颈癌 <span class="loc">〔说话人1 34:47〕</span></li>
+<li>卵巢悬韧带找血管 <span class="loc">〔说话人1 16:05〕</span></li>
+<li>大网膜腹腔卫士；网膜囊与网膜孔 <span class="loc">〔说话人1 01:16:38〕</span></li>
+<li>肝肾隐窝平卧最低；男直立直肠膀胱陷凹 <span class="loc">〔说话人1 01:31:06〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2><table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>输卵管峡与子宫峡混淆</td><td>输卵管峡部结扎；子宫峡部剖宫产 <span class="loc">〔说话人1 31:15〕</span></td></tr>
+<tr><td>腹膜腔=腹腔</td><td>腹膜腔为壁脏腹膜间潜在间隙 <span class="loc">〔说话人1 01:02:26〕</span></td></tr>
+<tr><td>胃在腹膜腔内</td><td>胃被脏腹膜覆盖，不属于腹膜腔脏器 <span class="loc">〔说话人1 01:03:02〕</span></td></tr>
+<tr><td>平卧最低Douglas窝</td><td>平卧最低为右侧肝肾隐窝 <span class="loc">〔说话人1 01:28:08〕</span></td></tr>
+<tr><td>陷凹写成凹陷</td><td>规范称陷凹，如直肠子宫陷凹 <span class="loc">〔说话人1 36:42〕</span></td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2><table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>输卵管分部与结扎受精</td><td>§3</td><td>〔说话人1 24:39〕</td><td>简答</td></tr>
+<tr><td>子宫四韧带</td><td>§5</td><td>〔说话人1 57:26〕</td><td>简答</td></tr>
+<tr><td>后穹穿刺</td><td>§6</td><td>〔说话人1 58:39〕</td><td>临床</td></tr>
+<tr><td>子宫峡剖宫产</td><td>§4</td><td>〔说话人1 31:15〕</td><td>临床</td></tr>
+<tr><td>腹膜腔概念</td><td>§7</td><td>〔说话人1 01:02:26〕</td><td>单选</td></tr>
+<tr><td>器官分位</td><td>§8</td><td>〔说话人1 01:05:00〕</td><td>单选</td></tr>
+<tr><td>网膜囊与孔</td><td>§9</td><td>〔说话人1 01:16:38〕</td><td>简答</td></tr>
+<tr><td>腹膜陷凹最低位</td><td>§10</td><td>〔说话人1 01:31:06〕</td><td>单选</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2><table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>生殖系统繁殖与第二性征</td><td>功能</td><td>§1</td><td>〔说话人1 02:25〕</td></tr><tr><td>2</td><td>卵巢产卵分泌雌激素</td><td>功能</td><td>§2</td><td>〔说话人1 04:01〕</td></tr><tr><td>3</td><td>卵巢窝位置髂内外动脉夹角</td><td>位置</td><td>§2</td><td>〔说话人1 04:01〕</td></tr><tr><td>4</td><td>卵巢胚胎下移至盆腔</td><td>发育</td><td>§2</td><td>〔说话人1 04:01〕</td></tr><tr><td>5</td><td>卵巢扁卵圆约4×2×3 cm</td><td>形态</td><td>§2</td><td>〔说话人1 06:12〕</td></tr><tr><td>6</td><td>成年卵巢表面凹凸不平</td><td>形态</td><td>§2</td><td>〔说话人1 06:12〕</td></tr><tr><td>7</td><td>输卵管端与子宫端</td><td>形态</td><td>§2</td><td>〔说话人1 06:49〕</td></tr><tr><td>8</td><td>卵巢门血管神经进出</td><td>结构</td><td>§2</td><td>〔说话人1 07:58〕</td></tr><tr><td>9</td><td>白膜皮质髓质</td><td>结构</td><td>§2</td><td>〔说话人1 07:58〕</td></tr><tr><td>10</td><td>黄体分泌雌激素孕激素抑制素</td><td>内分泌</td><td>§2</td><td>〔说话人1 09:46〕</td></tr><tr><td>11</td><td>一生约排400–500个成熟卵泡</td><td>生理</td><td>§2</td><td>〔说话人1 10:27〕</td></tr><tr><td>12</td><td>孕激素维持早孕功能</td><td>内分泌</td><td>§2</td><td>〔说话人1 12:51〕</td></tr><tr><td>13</td><td>卵巢癌发现即晚期</td><td>临床</td><td>§2</td><td>〔说话人1 14:06〕</td></tr><tr><td>14</td><td>卵巢悬韧带找血管标志</td><td>韧带</td><td>§2</td><td>〔说话人1 16:05〕</td></tr><tr><td>15</td><td>卵巢固有韧带连子宫角</td><td>韧带</td><td>§2</td><td>〔说话人1 17:11〕</td></tr><tr><td>16</td><td>卵巢系膜接阔韧带</td><td>韧带</td><td>§2</td><td>〔说话人1 17:11〕</td></tr><tr><td>17</td><td>输卵管拾卵受精运输</td><td>功能</td><td>§3</td><td>〔说话人1 20:42〕</td></tr><tr><td>18</td><td>输卵管10–15 cm肌性管道</td><td>形态</td><td>§3</td><td>〔说话人1 20:42〕</td></tr><tr><td>19</td><td>女性腹膜腔经输卵管与外界相通</td><td>临床</td><td>§3</td><td>〔说话人1 21:51〕</td></tr><tr><td>20</td><td>输卵管四部子宫峡壶漏斗</td><td>分部</td><td>§3</td><td>〔说话人1 23:03〕</td></tr><tr><td>21</td><td>峡部结扎壶腹受精</td><td>考点</td><td>§3</td><td>〔说话人1 24:39〕</td></tr><tr><td>22</td><td>输卵管伞拾卵</td><td>结构</td><td>§3</td><td>〔说话人1 24:39〕</td></tr><tr><td>23</td><td>输卵管阻塞致不孕</td><td>临床</td><td>§3</td><td>〔说话人1 27:48〕</td></tr><tr><td>24</td><td>子宫倒置梨形底体颈</td><td>形态</td><td>§4</td><td>〔说话人1 27:48〕</td></tr><tr><td>25</td><td>宫颈癌与HPV相关</td><td>临床</td><td>§4</td><td>〔说话人1 27:48〕</td></tr><tr><td>26</td><td>子宫峡部剖腹产切口</td><td>临床</td><td>§4</td><td>〔说话人1 31:15〕</td></tr><tr><td>27</td><td>子宫内膜异位症</td><td>临床</td><td>§4</td><td>〔说话人1 33:00〕</td></tr><tr><td>28</td><td>宫颈鳞柱交界宫颈癌好发</td><td>结构</td><td>§4</td><td>〔说话人1 34:47〕</td></tr><tr><td>29</td><td>妊娠子宫平滑肌纤维延长</td><td>生理</td><td>§4</td><td>〔说话人1 34:47〕</td></tr><tr><td>30</td><td>膀胱子宫与直肠子宫陷凹</td><td>陷凹</td><td>§4</td><td>〔说话人1 36:42〕</td></tr><tr><td>31</td><td>直立时直肠子宫陷凹最低</td><td>位置</td><td>§4</td><td>〔说话人1 38:00〕</td></tr><tr><td>32</td><td>子宫前倾前屈定义</td><td>位置</td><td>§4</td><td>〔说话人1 39:38〕</td></tr><tr><td>33</td><td>子宫脱垂低于坐骨棘</td><td>临床</td><td>§4</td><td>〔说话人1 39:38〕</td></tr><tr><td>34</td><td>阔韧带限制侧移</td><td>韧带</td><td>§5</td><td>〔说话人1 41:44〕</td></tr><tr><td>35</td><td>圆韧带维持前倾</td><td>韧带</td><td>§5</td><td>〔说话人1 43:31〕</td></tr><tr><td>36</td><td>主韧带防脱垂</td><td>韧带</td><td>§5</td><td>〔说话人1 56:33〕</td></tr><tr><td>37</td><td>骶子宫韧带维持前屈</td><td>韧带</td><td>§5</td><td>〔说话人1 57:26〕</td></tr><tr><td>38</td><td>阴道穹后穹穿刺</td><td>临床</td><td>§6</td><td>〔说话人1 58:39〕</td></tr><tr><td>39</td><td>乳腺癌橘皮样改变机制</td><td>临床</td><td>§6</td><td>〔说话人1 59:38〕</td></tr><tr><td>40</td><td>三阴性乳腺癌缺三受体</td><td>临床</td><td>§6</td><td>〔说话人1 01:00:30〕</td></tr><tr><td>41</td><td>腹膜壁层脏层与腹膜腔</td><td>定义</td><td>§7</td><td>〔说话人1 01:01:21〕</td></tr><tr><td>42</td><td>腹腔与腹膜腔区别</td><td>概念</td><td>§7</td><td>〔说话人1 01:02:26〕</td></tr><tr><td>43</td><td>腹膜分泌吸收防御修复</td><td>功能</td><td>§7</td><td>〔说话人1 01:03:02〕</td></tr><tr><td>44</td><td>吸收上部大于下部半卧位</td><td>临床</td><td>§7</td><td>〔说话人1 01:04:06〕</td></tr><tr><td>45</td><td>内位间位外位器官</td><td>分类</td><td>§8</td><td>〔说话人1 01:05:00〕</td></tr><tr><td>46</td><td>胃空肠卵巢输卵管内位</td><td>举例</td><td>§8</td><td>〔说话人1 01:06:47〕</td></tr><tr><td>47</td><td>肝膀胱子宫间位</td><td>举例</td><td>§8</td><td>〔说话人1 01:08:32〕</td></tr><tr><td>48</td><td>肾胰十二指肠外位</td><td>举例</td><td>§8</td><td>〔说话人1 01:09:11〕</td></tr><tr><td>49</td><td>小网膜肝胃肝十二指肠韧带</td><td>网膜</td><td>§9</td><td>〔说话人1 01:11:04〕</td></tr><tr><td>50</td><td>大网膜腹腔卫士</td><td>网膜</td><td>§9</td><td>〔说话人1 01:15:20〕</td></tr><tr><td>51</td><td>网膜囊小腹膜腔</td><td>网膜</td><td>§9</td><td>〔说话人1 01:16:38〕</td></tr><tr><td>52</td><td>网膜孔Winslow</td><td>网膜</td><td>§9</td><td>〔说话人1 01:13:01〕</td></tr><tr><td>53</td><td>胃后壁穿孔先入网膜囊</td><td>临床</td><td>§9</td><td>〔说话人1 01:23:22〕</td></tr><tr><td>54</td><td>肠系膜根长约15 cm</td><td>系膜</td><td>§10</td><td>〔说话人1 01:25:34〕</td></tr><tr><td>55</td><td>肝肾隐窝平卧最低点</td><td>隐窝</td><td>§10</td><td>〔说话人1 01:28:08〕</td></tr><tr><td>56</td><td>男性直立直肠膀胱陷凹最低</td><td>陷凹</td><td>§10</td><td>〔说话人1 01:29:51〕</td></tr><tr><td>57</td><td>广义会阴封闭小骨盆下口</td><td>会阴</td><td>§11</td><td>〔说话人1 01:32:17〕</td></tr><tr><td>58</td><td>产科会阴肛与外生殖器间</td><td>会阴</td><td>§11</td><td>〔说话人1 01:33:18〕</td></tr><tr><td>59</td><td>尿生殖三角与肛三角</td><td>会阴</td><td>§11</td><td>〔说话人1 01:33:18〕</td></tr><tr><td>60</td><td>肛直肠环控便</td><td>会阴</td><td>§11</td><td>〔说话人1 01:33:18〕</td></tr><tr><td>61</td><td>排卵视频LH surge约第14天</td><td>延伸</td><td>§12</td><td>〔说话人2 45:30〕</td></tr><tr><td>62</td><td>卵巢癌上皮性最常见</td><td>延伸</td><td>§12</td><td>〔说话人3 48:21〕</td></tr><tr><td>63</td><td>乳腺淋巴引流经淋巴结</td><td>延伸</td><td>§12</td><td>〔说话人3 01:38:16〕</td></tr><tr><td>64</td><td>升结肠降结肠非内位器官</td><td>分类</td><td>§8</td><td>〔说话人1 01:06:47〕</td></tr><tr><td>65</td><td>肠系膜异常可肠扭转套叠</td><td>临床</td><td>§10</td><td>〔说话人1 01:25:34〕</td></tr><tr><td>66</td><td>网膜囊左壁脾胃脾韧带脾肾韧带</td><td>网膜</td><td>§9</td><td>〔说话人1 01:16:38〕</td></tr><tr><td>67</td><td>肝的韧带冠状镰状肝圆左右三角</td><td>韧带</td><td>§10</td><td>〔说话人1 01:26:58〕</td></tr><tr><td>68</td><td>腹膜皱襞脐正中内侧外侧襞</td><td>皱襞</td><td>§10</td><td>〔说话人1 01:29:51〕</td></tr>
+</table><p class="foot">附录 D 登记 68 条，与 recording.md 讲授点及正文 §1–§12 交叉对照。</p></div>
 </body></html>

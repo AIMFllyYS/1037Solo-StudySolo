@@ -1,233 +1,615 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<title>生物化学与分子生物学 · 第5-6节 · 可视化笔记</title>
-<style>
-:root{--accent:#2E7D4F;--accent-deep:#1F5C39;--accent-tint:#E8F1EA;--accent-line:#C3D9C9;--mnem:#A2630C;--mnem-tint:#F8ECD3;--paper:#FAF8F1;--ink:#24201A;--ink-soft:#4A4337;--muted:#857B68;--line:#E6DECC;--crimson:#B23A2E;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;background:var(--paper);color:var(--ink);font-size:10pt;line-height:1.7;padding:0;}
-.cover{width:210mm;min-height:297mm;background:linear-gradient(135deg,#2F8557 0%,#1F5C39 55%,#143D27 100%);color:#F3EEE2;padding:25mm 20mm;display:flex;flex-direction:column;page-break-after:always;position:relative;overflow:hidden;}
-.cover::before{content:"";position:absolute;right:-30mm;top:-20mm;width:120mm;height:120mm;border:1pt solid rgba(231,206,156,.15);border-radius:50%;}
-.cover .kicker{font-size:9pt;letter-spacing:.4em;text-transform:uppercase;color:#E7CE9C;margin-bottom:8mm;}
-.cover h1{font-family:"Noto Serif CJK SC",serif;font-size:32pt;font-weight:700;line-height:1.2;margin-bottom:6mm;}
-.cover h1 .accent{color:#E7CE9C;}
-.cover .sub{font-size:13pt;color:rgba(243,238,226,.85);margin-bottom:4mm;}
-.cover .meta{font-size:10pt;color:rgba(243,238,226,.6);margin-top:auto;line-height:2;}
-.cover .meta b{color:#E7CE9C;}
-.page{padding:18mm 16mm;page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-h2.sec-title{font-family:"Noto Serif CJK SC",serif;font-size:17pt;color:var(--accent-deep);border-bottom:2pt solid var(--accent);padding-bottom:2mm;margin-bottom:5mm;}
-h3.sub-title{font-size:12pt;color:var(--accent-deep);margin:5mm 0 2mm;font-weight:700;}
-p{margin-bottom:2.5mm;text-align:justify;}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
-th{background:var(--accent);color:#fff;padding:2mm 2.5mm;text-align:left;font-weight:600;}
-td{padding:1.8mm 2.5mm;border-bottom:0.5pt solid var(--line);vertical-align:top;}
-tr:nth-child(even) td{background:rgba(232,241,234,.4);}
-.hl-box{background:var(--mnem-tint);border-left:3pt solid var(--mnem);padding:3mm 4mm;margin:3mm 0;border-radius:0 2mm 2mm 0;}
-.hl-box .tag{display:inline-block;background:var(--mnem);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;letter-spacing:.05em;}
-.warn-box{background:#F7E4DF;border-left:3pt solid var(--crimson);padding:3mm 4mm;margin:3mm 0;border-radius:0 2mm 2mm 0;color:#7E2A20;}
-.warn-box .tag{display:inline-block;background:var(--crimson);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
-.kv{margin:1.5mm 0;}
-.kv .k{font-weight:700;color:var(--accent-deep);}
-.kv .k::after{content:"｜";color:var(--accent-line);margin:0 .3em;font-weight:400;}
-ul,ol{margin:2mm 0 2mm 6mm;}
-li{margin-bottom:1mm;}
-.toc{columns:2;column-gap:8mm;}
-.toc-item{break-inside:avoid;margin-bottom:2mm;font-size:9.5pt;}
-.toc-item .num{color:var(--accent);font-weight:700;margin-right:2mm;}
-.checklist li{list-style:none;margin-left:-4mm;}
-.checklist li::before{content:"☐ ";color:var(--accent);font-weight:700;}
-.qa{margin-bottom:4mm;}
-.qa .q{font-weight:700;color:var(--accent-deep);margin-bottom:1.5mm;}
-.qa .a{color:var(--ink-soft);padding-left:4mm;border-left:1.5pt solid var(--accent-line);}
-.flow{display:flex;align-items:center;flex-wrap:wrap;gap:1mm;margin:3mm 0;font-size:8.5pt;}
-.flow .step{background:var(--accent-tint);border:0.5pt solid var(--accent-line);color:var(--accent-deep);padding:1.5mm 3mm;border-radius:2mm;font-weight:600;}
-.flow .arrow{color:var(--muted);font-weight:700;}
-</style>
-</head>
-<body>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>生物化学与分子生物学 · 第5-6节 · 蛋白质结构功能与核酸开篇</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#4A6B1F; --accent-d:#33490F; --accent-t:#EDF2E1;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body>
 
-<div class="cover">
-  <div class="kicker">BIOCHEMISTRY · 可视化笔记</div>
-  <h1>生物化学与<br>分子生物学<span class="accent">速查</span></h1>
-  <div class="sub">第5-6节 · 蛋白质结构与功能收尾 + 核酸章节开篇</div>
-  <div class="meta">
-    <b>授课教师</b>：郭雨松 教授<br>
-    <b>日期</b>：2026-09-08（周二）<br>
-    <b>课程内节次</b>：第5-6节<br>
-    <b>主题</b>：血红蛋白协同效应 · 构象疾病 · 蛋白质分离纯化 · 结构解析 · 核酸开篇
-  </div>
+<div class="page cover">
+<p class="h1">生物化学与分子生物学 · 第5-6节</p>
+<p class="meta">蛋白质结构功能与核酸开篇 · 2026-09-08 · 授课 郭雨松 教授</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 31370 字 / 142 轮发言。本笔记按「知识点问题簇」而非时间线分章，只收结论式核心内容。</p>
+<table>
+<tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>生物化学与分子生物学（biochemistry / rec-2026-fall-005-006）</td></tr>
+<tr><td>主题</td><td>蛋白质结构与功能（协同效应、构象疾病、理化性质、变性复性、分离纯化、结构解析）+ 核酸开篇（化学组成与一级结构）</td></tr>
+<tr><td>学时</td><td>第 5–6 节（2 学时）</td></tr>
+<tr><td>上课日期</td><td>2026-09-08</td></tr>
+</table>
 </div>
 
 <div class="page">
-  <h2 class="sec-title">知识结构总览</h2>
-  <div class="toc">
-    <div class="toc-item"><span class="num">01</span>血红蛋白协同效应与别构效应</div>
-    <div class="toc-item"><span class="num">02</span>蛋白质构象疾病（阿尔茨海默病）</div>
-    <div class="toc-item"><span class="num">03</span>蛋白质理化性质（双缩脲/胶体）</div>
-    <div class="toc-item"><span class="num">04</span>蛋白质变性与复性（Anfinsen实验）</div>
-    <div class="toc-item"><span class="num">05</span>电泳技术（SDS-PAGE/等电聚焦/双向）</div>
-    <div class="toc-item"><span class="num">06</span>层析技术（亲和/离子交换/凝胶过滤）</div>
-    <div class="toc-item"><span class="num">07</span>超速离心与沉降系数S</div>
-    <div class="toc-item"><span class="num">08</span>蛋白质结构解析（NMR/X射线/冷冻电镜）</div>
-    <div class="toc-item"><span class="num">09</span>AI辅助结构研究（AlphaFold/2024诺奖）</div>
-    <div class="toc-item"><span class="num">10</span>核酸分类与5种碱基</div>
-    <div class="toc-item"><span class="num">11</span>核苷与核苷酸（ATP/cAMP）</div>
-  </div>
-
-  <h2 class="sec-title" style="margin-top:8mm;">01 · 血红蛋白协同效应与别构效应</h2>
-  <div class="flow">
-    <span class="step">O₂结合亚基</span><span class="arrow">→</span>
-    <span class="step">Fe²⁺嵌入卟啉环</span><span class="arrow">→</span>
-    <span class="step">组氨酸F8位移</span><span class="arrow">→</span>
-    <span class="step">盐桥断裂</span><span class="arrow">→</span>
-    <span class="step">T态→R态</span><span class="arrow">→</span>
-    <span class="step">其余亚基更易结合O₂</span>
-  </div>
-  <table>
-    <tr><th>状态</th><th>名称</th><th>结构特征</th></tr>
-    <tr><td>T态</td><td>紧张态（Tense）</td><td>未结合O₂，亚基间离子键/盐桥紧密连接</td></tr>
-    <tr><td>R态</td><td>松弛态（Relaxed）</td><td>结合O₂后，盐桥断裂，亚基结构疏松</td></tr>
-  </table>
-  <div class="kv"><span class="k">协同效应</span>寡聚体蛋白中某亚基结合配体后，影响其余亚基与配体的结合能力 → S型氧结合曲线的核心原因</div>
-  <div class="kv"><span class="k">别构效应</span>配体结合单个亚基的微小构象变化，跨亚基传递改变整体蛋白结构与功能</div>
-  <div class="warn-box"><span class="tag">⚠ 易混</span>协同效应是别构效应的一种（配体相同）；别构效应可涉及不同配体（如BPG对血红蛋白的别构调节）。肌红蛋白为单体，无协同效应，曲线为双曲线型。</div>
+<h2 class="h2">0. 知识框架</h2>
+<p class="lead">一条主线：蛋白质由结构决定功能、由理化性质决定分离与解析；另一条主线：核酸由核苷酸构成，碱基分嘌呤与嘧啶，核苷酸兼作能量与信号分子。</p>
+<ul class="kv">
+<li>蛋白质结构与功能
+<ul class="kv" style="margin:1mm 0 1mm 4mm">
+<li>① 血红蛋白的协同效应与别构效应</li>
+<li>② 蛋白质构象疾病</li>
+<li>③ 蛋白质的理化性质</li>
+<li>④ 蛋白质的变性与复性</li>
+<li>⑤ 蛋白质的分离与纯化（电泳／层析／超速离心）</li>
+<li>⑥ 蛋白质结构解析与 AI（NMR／X 射线／冷冻电镜／AlphaFold）</li>
+</ul>
+</li>
+<li>核酸的化学组成与一级结构
+<ul class="kv" style="margin:1mm 0 1mm 4mm">
+<li>① DNA 与 RNA 的分类、词根</li>
+<li>② 5 种碱基（嘌呤双环／嘧啶单环）</li>
+<li>③ 核苷与核苷酸（糖苷键／5′ 磷酸酯键）</li>
+<li>④ ATP（能量货币）与 cAMP（第二信使）</li>
+</ul>
+</li>
+</ul>
 </div>
 
 <div class="page">
-  <h2 class="sec-title">02 · 蛋白质构象疾病</h2>
-  <div class="flow">
-    <span class="step">正常α-螺旋为主</span><span class="arrow">→</span>
-    <span class="step">错误折叠β-折叠为主</span><span class="arrow">→</span>
-    <span class="step">β折叠链间氢键延伸</span><span class="arrow">→</span>
-    <span class="step">淀粉样纤维沉淀</span><span class="arrow">→</span>
-    <span class="step">神经元损伤</span>
-  </div>
-  <div class="kv"><span class="k">核心特征</span>氨基酸序列无突变，仅空间构象改变</div>
-  <div class="kv"><span class="k">阿尔茨海默病</span>APP异常切割→Aβ聚集→β折叠纤维→斑块损伤神经元突触；分子层面征兆早于临床症状20年</div>
-  <div class="hl-box"><span class="tag">必背</span>构象疾病还包括：疯牛病（朊病毒PrP^Sc）、亨廷顿舞蹈症、帕金森病（α-突触核蛋白）等。</div>
-
-  <h2 class="sec-title" style="margin-top:8mm;">03 · 蛋白质理化性质</h2>
-  <table>
-    <tr><th>性质</th><th>氨基酸</th><th>蛋白质</th><th>备注</th></tr>
-    <tr><td>两性解离/等电点</td><td>✅</td><td>✅</td><td>保留两端游离氨基、羧基及侧链电离基团；ExPASy可计算</td></tr>
-    <tr><td>紫外吸收（280nm）</td><td>✅ Tyr/Trp/Phe</td><td>✅</td><td>由侧链Tyr/Trp决定；可计算消光系数</td></tr>
-    <tr><td>茚三酮反应</td><td>✅ 游离α-氨基</td><td>❌</td><td>仅蛋白质水解释放游离氨基酸后才可触发</td></tr>
-    <tr><td>双缩脲反应</td><td>❌</td><td>✅ 肽键</td><td>蛋白质特有！稀碱下肽键与CuSO₄共热→深紫色</td></tr>
-  </table>
-  <div class="kv"><span class="k">胶体性质</span>分子量1万-100万，颗粒1-100nm；稳定因素=①水化膜（亲水氨基酸）②表面电荷（两性电离）</div>
-  <div class="warn-box"><span class="tag">⚠ 易混</span>茚三酮反应检测游离α-氨基（氨基酸有，蛋白质无）；双缩脲反应检测肽键（蛋白质有，氨基酸无）。两者正好相反！</div>
+<h2 class="h2">1. 血红蛋白的协同效应与别构效应</h2>
+<p class="lead">四聚体血红蛋白通过亚基间的构象传递实现氧的协同结合，其微观起点是铁原子的一次微小位移。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>肌红蛋白为单亚基，血红蛋白由四个亚基组成 <span class="loc">〔说话人2 01:17〕</span></li>
+<li>两者结构相似、均以血红素结合并运输氧，但与氧的亲和力明显不同 <span class="loc">〔说话人1 01:21〕</span></li>
+<li>血红蛋白需在高氧分压结合氧、低氧分压释放氧，以完成体内运输 <span class="loc">〔说话人1 01:21〕</span></li>
+<li>协同效应（cooperativity）：一个亚基结合配体后，影响寡聚体中其他亚基与配体的结合 <span class="loc">〔说话人1 01:21〕</span></li>
+<li>协同效应使血红蛋白氧结合曲线呈 S 型 <span class="loc">〔说话人1 01:21〕</span></li>
+<li>T 态（紧张态，tense state）：未结合氧，亚基间由离子键紧密相连 <span class="loc">〔说话人1 02:34〕</span></li>
+<li>R 态（松弛态，relax state）：结合氧后离子键／盐桥断裂，亚基变疏松 <span class="loc">〔说话人1 03:23〕</span></li>
+<li>结合一个氧即打断部分盐桥，使其余亚基更易结合氧，此为正协同 <span class="loc">〔说话人1 03:23〕</span></li>
+<li>血红素含卟啉环，中心结合一个铁原子 <span class="loc">〔说话人1 04:19〕</span></li>
+<li>铁原子除与卟啉环上四个原子配位外，还与蛋白质中的一个组氨酸配位 <span class="loc">〔说话人1 04:59〕</span></li>
+<li>结合氧后铁原子下移，更嵌入卟啉环中间的空位 <span class="loc">〔说话人1 05:37〕</span></li>
+<li>铁位移带动相邻组氨酸位移，进而使邻近亚基的离子键／盐桥断裂 <span class="loc">〔说话人1 05:37〕</span></li>
+<li>极微小的构象变化即可影响蛋白质整体的结构与功能 <span class="loc">〔说话人1 06:22〕</span></li>
+<li>别构效应（allosteric effect）：配体结合一个亚基引起其他亚基构象改变 <span class="loc">〔说话人1 06:22〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>比较项</th><th>T 态（紧张态）</th><th>R 态（松弛态）</th></tr>
+<tr><td>是否结合氧</td><td>未结合氧</td><td>已结合氧</td></tr>
+<tr><td>亚基间连接</td><td>由离子键／盐桥紧密相连</td><td>盐桥断裂，连接疏松</td></tr>
+<tr><td>构象特点</td><td>紧密</td><td>疏松</td></tr>
+</table>
+<table class="tbl">
+<tr><th>比较项</th><th>肌红蛋白</th><th>血红蛋白</th></tr>
+<tr><td>亚基组成</td><td>单亚基</td><td>四个亚基</td></tr>
+<tr><td>协同效应</td><td>无</td><td>有（正协同）</td></tr>
+<tr><td>氧结合曲线</td><td>双曲线型</td><td>S 型</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>血红蛋白氧结合曲线呈 S 型的根本原因是正协同效应。 <span class="loc">〔说话人1 01:21〕</span></div>
+<div class="exam"><span class="tag">★考点</span>构象传递路径：O₂ 结合 → 铁原子下移 → 组氨酸位移 → 盐桥断裂 → 其余亚基更易结合 O₂。 <span class="loc">〔说话人1 05:37〕</span></div>
+<div class="mnem">助记（整理）：T 紧 R 松，铁动桥断，越吸越松。</div>
 </div>
 
 <div class="page">
-  <h2 class="sec-title">04 · 蛋白质变性与复性</h2>
-  <div class="kv"><span class="k">变性定义</span>一级结构（肽键、序列）完整，二级及以上空间构象破坏，理化性质改变，生物活性丧失</div>
-  <div class="kv"><span class="k">Anfinsen实验</span>尿素（破坏氢键）+ β-巯基乙醇（还原二硫键）使核糖核酸酶变性→透析去除后活性恢复→证明一级结构决定高级结构（诺贝尔奖）</div>
-  <div class="kv"><span class="k">破坏的作用力</span>氢键、疏水作用、盐桥、二硫键；<b>不破坏</b>肽键</div>
-  <div class="kv"><span class="k">变性因素</span>高温、酸碱、重金属、75%乙醇等有机溶剂</div>
-  <div class="kv"><span class="k">变性后表现</span>白色/黄色沉淀（疏水侧链暴露→肽链缠绕聚集）；复性（部分简单蛋白可恢复）；不可逆凝固（强酸强碱/高温→如煮熟鸡蛋）</div>
-  <div class="hl-box"><span class="tag">实验</span>实验室利用变性灭菌消毒；蛋白样本需全程低温保护（冰盒、4℃层析柜、冷库）。</div>
-
-  <h2 class="sec-title" style="margin-top:8mm;">05 · 电泳技术</h2>
-  <table>
-    <tr><th>方法</th><th>分离依据</th><th>原理</th><th>应用</th></tr>
-    <tr><td>SDS-PAGE</td><td>分子量</td><td>SDS覆盖蛋白本身电荷，带电量与分子量正相关；凝胶孔径差异</td><td>常规分子量检测</td></tr>
-    <tr><td>等电聚焦</td><td>等电点</td><td>连续pH梯度，蛋白移至自身pI处呈电中性停止</td><td>分离分子量相近电荷不同的蛋白</td></tr>
-    <tr><td>双向电泳</td><td>pI+分子量</td><td>第一向等电聚焦，第二向SDS-PAGE</td><td>蛋白质组学全局分析</td></tr>
-  </table>
-  <div class="warn-box"><span class="tag">⚠ 易混</span>SDS-PAGE中小分子迁移快（阻力小）；凝胶过滤中大分子先洗脱（路径短）。两者方向相反！</div>
+<h2 class="h2">2. 蛋白质构象疾病</h2>
+<p class="lead">氨基酸序列不变、仅空间构象改变即可致病；共性是从 α 螺旋为主错误折叠为 β 折叠为主，最终形成淀粉样沉淀。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>构象疾病：氨基酸序列不变，仅空间结构（构象）发生改变 <span class="loc">〔说话人1 07:02〕</span></li>
+<li>正常蛋白以 α 螺旋为主，错误折叠后转变为以 β 折叠为主 <span class="loc">〔说话人1 07:02〕</span></li>
+<li>β 折叠链间形成氢键，可向邻近肽链延伸成片层 <span class="loc">〔说话人1 08:09〕</span></li>
+<li>片层之间相互重叠，不断延伸为长纤维状结构 <span class="loc">〔说话人1 08:09〕</span></li>
+<li>纤维状种子可成为核，促使更多肽链加入而延长 <span class="loc">〔说话人1 08:58〕</span></li>
+<li>α 螺旋为主的蛋白可溶；转为 β 折叠后易析出，形成淀粉样沉淀 <span class="loc">〔说话人1 08:58〕</span></li>
+<li>多种神经退行性疾病以淀粉样纤维沉淀为病理特征，如阿尔茨海默病 <span class="loc">〔说话人1 09:31〕</span></li>
+<li>阿尔茨海默病：APP（前体蛋白）原本可溶，异常聚集形成以 β 折叠为主的纤维 <span class="loc">〔说话人1 09:31〕</span></li>
+<li>这些纤维进一步相互聚集成为巨大的斑块 <span class="loc">〔说话人1 09:31〕</span></li>
+<li>年轻时小蛋白可被正常降解清除，随年龄增长斑块逐渐累积 <span class="loc">〔说话人1 10:20〕</span></li>
+<li>斑块聚集于神经元突触，损坏突触功能，临床表现为记忆丧失、认知受损 <span class="loc">〔说话人1 10:20〕</span></li>
+<li>Aβ 蛋白聚集早于临床症状约 20 年出现 <span class="loc">〔说话人1 10:20〕</span></li>
+<li>tau 蛋白过度磷酸化早于症状约 15 年出现 <span class="loc">〔说话人1 10:20〕</span></li>
+<li>在症状出现前多年进行早期干预，是当前阿尔茨海默病研究的方向 <span class="loc">〔说话人1 11:10〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>比较项</th><th>正常状态</th><th>构象疾病状态</th></tr>
+<tr><td>氨基酸序列</td><td>不变</td><td>不变</td></tr>
+<tr><td>主要二级结构</td><td>α 螺旋为主</td><td>β 折叠为主</td></tr>
+<tr><td>溶解性</td><td>可溶</td><td>易析出、形成纤维与沉淀</td></tr>
+<tr><td>典型疾病</td><td>—</td><td>阿尔茨海默病、疯牛病、亨廷顿舞蹈症</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>构象疾病的关键是「序列不变、构象改变」；病理链为 α 螺旋为主 → β 折叠为主 → 淀粉样纤维沉淀。 <span class="loc">〔说话人1 07:02〕</span></div>
+<div class="mnem">助记（整理）：序列不变构象变，α 转 β 折叠淀。</div>
 </div>
 
 <div class="page">
-  <h2 class="sec-title">06 · 层析技术（"过柱子"）</h2>
-  <div class="kv"><span class="k">核心原理</span>基于固定相与流动相的分配差异，目标蛋白与固定相相互作用强度不同→洗脱速度差异→分离</div>
-  <table>
-    <tr><th>方法</th><th>分离依据</th><th>关键要点</th></tr>
-    <tr><td>亲和层析</td><td>特异性亲和力</td><td>添加GST/His标签，标签与配体高亲和力结合，竞争洗脱；特异性最高</td></tr>
-    <tr><td>离子交换层析</td><td>表面电荷</td><td>固定相带电荷，结合相反电荷蛋白；逐步提高NaCl浓度竞争洗脱；A280监测洗脱峰</td></tr>
-    <tr><td>凝胶过滤（分子筛）</td><td>分子量</td><td>凝胶填料有孔隙，大分子不能进入孔隙先洗脱，小分子进入孔隙延迟洗脱</td></tr>
-  </table>
-
-  <h2 class="sec-title" style="margin-top:8mm;">07 · 超速离心与沉降系数</h2>
-  <div class="kv"><span class="k">沉降系数S</span>颗粒在离心力场中的移动速度，单位10⁻¹³秒</div>
-  <div class="kv"><span class="k">30S+50S=70S</span>非简单加和，因结合后形状变化影响沉降速度</div>
-  <div class="kv"><span class="k">操作安全</span>必须严格配平，否则损毁设备甚至安全事故</div>
-
-  <h2 class="sec-title" style="margin-top:8mm;">08 · 蛋白质结构解析方法</h2>
-  <table>
-    <tr><th>方法</th><th>适用范围</th><th>特点</th></tr>
-    <tr><td>NMR</td><td>&lt;50aa，&lt;10KD</td><td>小分子多肽/小蛋白；溶液中原子级结构</td></tr>
-    <tr><td>X射线衍射</td><td>需培养蛋白晶体</td><td>高分辨率；经典方法（血红蛋白、肌红蛋白）</td></tr>
-    <tr><td>冷冻电镜</td><td>3-100nm蛋白及复合体</td><td>当前主流；可达3Å分辨率；无需晶体</td></tr>
-  </table>
-  <div class="hl-box"><span class="tag">前沿</span>2024诺贝尔化学奖：David Baker（独享半奖，蛋白质设计）+ AlphaFold团队（共享半奖）。AlphaFold数据库可直接获取蛋白预测结构。Foldit游戏化众包蛋白结构预测，玩家成果可发Nature。</div>
+<h2 class="h2">3. 蛋白质的理化性质</h2>
+<p class="lead">蛋白质既继承氨基酸的两性解离、紫外吸收性质，又具有双缩脲反应与胶体性质等氨基酸没有的特有性质。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>氨基酸的三种理化性质：两性解离、紫外吸收、茚三酮反应 <span class="loc">〔说话人2 13:36〕</span></li>
+<li>两性解离可用等电点 pI 这一特殊常数来描述 <span class="loc">〔说话人1 12:47〕</span></li>
+<li>紫外吸收由共轭双键决定，而共轭双键位于氨基酸侧链 <span class="loc">〔说话人2 13:36〕</span></li>
+<li>蛋白质中氨基酸已成残基，但侧链仍保留，故紫外吸收依然存在 <span class="loc">〔说话人2 13:36〕</span></li>
+<li>蛋白质紫外吸收主要由酪氨酸（Tyr）与色氨酸（Trp）的数量决定 <span class="loc">〔说话人2 13:36〕</span></li>
+<li>蛋白质在 280 nm 处有吸收峰，可用于监测与浓度测定 <span class="loc">〔说话人2 01:02:12〕</span></li>
+<li>ExPASy 在线工具输入序列即可计算消光系数与等电点 <span class="loc">〔说话人2 16:23〕</span></li>
+<li>蛋白质 N 端、C 端仍保留游离氨基与羧基，因此两端仍可电离 <span class="loc">〔说话人2 15:37〕</span></li>
+<li>蛋白质同样存在等电点，此时其净电荷为零 <span class="loc">〔说话人2 15:37〕</span></li>
+<li>茚三酮仅与游离氨基酸显色，蛋白质本身无此反应 <span class="loc">〔说话人2 17:19〕</span></li>
+<li>蛋白质水解产生游离氨基酸后，才可与茚三酮显色 <span class="loc">〔说话人2 17:19〕</span></li>
+<li>双缩脲反应：肽键在稀碱环境中与硫酸铜共热，生成深紫色化合物 <span class="loc">〔说话人2 17:19〕</span></li>
+<li>双缩脲试剂本身为蓝色，遇肽键则变为红色或紫色 <span class="loc">〔说话人2 18:19〕</span></li>
+<li>双缩脲反应是蛋白质特有的呈色反应 <span class="loc">〔说话人2 18:19〕</span></li>
+<li>双缩脲颜色深浅反映肽键数量，可据此判断蛋白质水解程度 <span class="loc">〔说话人2 19:05〕</span></li>
+<li>胶体性质：蛋白质分子量约 1 万–100 万，颗粒尺寸约 1–100 nm <span class="loc">〔说话人2 19:56〕</span></li>
+<li>球状蛋白外侧多为亲水氨基酸，内侧多为疏水氨基酸 <span class="loc">〔说话人2 20:43〕</span></li>
+<li>稳定因素一：外侧水化膜使蛋白质颗粒保持稳定、不相互聚集 <span class="loc">〔说话人2 20:43〕</span></li>
+<li>稳定因素二：表面电荷（来自可电离侧链与末端） <span class="loc">〔说话人2 21:28〕</span></li>
+<li>表面电荷量可由等电点大致估算 <span class="loc">〔说话人2 21:28〕</span></li>
+<li>镰状细胞贫血：亲水的谷氨酸突变为疏水的缬氨酸，缬氨酸相互聚集 <span class="loc">〔说话人2 20:43〕</span></li>
+<li>快答：侧链含羧基的氨基酸为酸性氨基酸，在水中电离出负电荷 <span class="loc">〔说话人2 01:19:36〕</span></li>
+<li>快答：pI 小于 7.4 的蛋白质在 pH 7.4 时带负电，因其含较多羧基侧链 <span class="loc">〔说话人2 01:20:14〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>性质</th><th>氨基酸</th><th>蛋白质</th></tr>
+<tr><td>两性解离／等电点</td><td>有（游离氨基、羧基）</td><td>有（两端游离基团＋侧链电离基团）</td></tr>
+<tr><td>紫外吸收</td><td>芳香族氨基酸有</td><td>有，由侧链 Tyr／Trp 决定（280 nm）</td></tr>
+<tr><td>茚三酮反应</td><td>游离氨基酸有</td><td>本身无，水解释放游离氨基酸后才有</td></tr>
+<tr><td>双缩脲反应</td><td>无（无肽键）</td><td>有，检测肽键，为蛋白质特有</td></tr>
+<tr><td>胶体性质</td><td>无</td><td>有（水化膜＋表面电荷）</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>茚三酮测游离氨基，双缩脲测肽键；双缩脲反应是蛋白质特有、氨基酸没有的反应。 <span class="loc">〔说话人2 17:19〕</span></div>
+<div class="mnem">助记（整理）：茚三酮测氨基，双缩脲测肽键；胶体靠水膜电荷。</div>
 </div>
 
 <div class="page">
-  <h2 class="sec-title">09-11 · 核酸章节开篇</h2>
-  <div class="kv"><span class="k">阿雷西博信息</span>50多年前阿雷西博望远镜向地外发射的二进制编码信息，核心包含核酸相关信息（数字1-10、DNA组成元素、脱氧核苷酸结构、DNA双螺旋、人类特征、太阳系、望远镜形态）</div>
-
-  <h3 class="sub-title">核酸分类与5种碱基</h3>
-  <table>
-    <tr><th>类别</th><th>碱基</th><th>结构</th></tr>
-    <tr><td>嘌呤（双环）</td><td>腺嘌呤A、鸟嘌呤G</td><td>双环结构</td></tr>
-    <tr><td>嘧啶（单环）</td><td>胞嘧啶C、尿嘧啶U、胸腺嘧啶T</td><td>单环结构</td></tr>
-  </table>
-  <div class="kv"><span class="k">DNA</span>脱氧核糖核酸（deoxy=脱氧），含A/T/G/C</div>
-  <div class="kv"><span class="k">RNA</span>核糖核酸（ribo=核糖），含A/U/G/C（U替代T）</div>
-
-  <h3 class="sub-title">核苷与核苷酸</h3>
-  <div class="flow">
-    <span class="step">碱基</span><span class="arrow">+</span>
-    <span class="step">核糖/脱氧核糖</span><span class="arrow">糖苷键→</span>
-    <span class="step">核苷</span><span class="arrow">+磷酸(5'位)→</span>
-    <span class="step">核苷酸</span>
-  </div>
-  <div class="kv"><span class="k">核苷</span>碱基+核糖/脱氧核糖（糖苷键连接）</div>
-  <div class="kv"><span class="k">核苷酸</span>核苷+磷酸（5'位羟基）；核酸的基本组成单位</div>
-  <div class="kv"><span class="k">ATP</span>磷酸间高能酸酐键=细胞内化学能核心载体</div>
-  <div class="kv"><span class="k">cAMP</span>细胞内第二信使</div>
-  <div class="warn-box"><span class="tag">⚠ 易混</span>核苷=碱基+糖（无磷酸）；核苷酸=核苷+磷酸（有磷酸）。核酸基本单位是核苷酸，不是核苷！核糖编号加撇（'）与碱基编号区分。</div>
-
-  <h2 class="sec-title" style="margin-top:8mm;">复习清单</h2>
-  <ul class="checklist">
-    <li>血红蛋白T态/R态结构差异与转换机制</li>
-    <li>协同效应与别构效应的定义与区别</li>
-    <li>S型氧结合曲线的形成原因</li>
-    <li>蛋白质构象疾病病理机制（α→β折叠，淀粉样沉淀）</li>
-    <li>阿尔茨海默病分子机制（APP/Aβ）</li>
-    <li>蛋白质双缩脲反应原理与应用</li>
-    <li>蛋白质胶体稳定的两大因素</li>
-    <li>蛋白质变性定义与Anfinsen实验</li>
-    <li>SDS-PAGE、等电聚焦、双向电泳原理</li>
-    <li>亲和层析、离子交换层析、凝胶过滤层析原理</li>
-    <li>沉降系数S的定义与30S+50S=70S</li>
-    <li>NMR、X射线衍射、冷冻电镜适用范围</li>
-    <li>5种碱基分类（嘌呤/嘧啶）</li>
-    <li>核苷与核苷酸组成关系</li>
-  </ul>
+<h2 class="h2">4. 蛋白质的变性与复性</h2>
+<p class="lead">变性只破坏二级及以上空间构象而保留一级结构；去除变性因素后简单蛋白可复性，剧烈变性则不可逆凝固。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>Anfinsen 实验：核糖核酸酶经变性剂与还原剂处理，变为无空间结构的开链 <span class="loc">〔说话人2 22:45〕</span></li>
+<li>该实验证明一级结构是高级结构和功能的基础，由此获得诺贝尔奖 <span class="loc">〔说话人2 22:45〕</span></li>
+<li>变性：特定的空间构象被破坏，而一级结构保持完整 <span class="loc">〔说话人2 23:09〕</span></li>
+<li>变性破坏二硫键 <span class="loc">〔说话人2 23:09〕</span></li>
+<li>变性还破坏氢键、疏水相互作用以及盐桥／离子键等非共价键 <span class="loc">〔说话人2 23:48〕</span></li>
+<li>变性不破坏肽键，氨基酸序列并未改变 <span class="loc">〔说话人2 23:56〕</span></li>
+<li>变性后理化性质改变，生物学活性丧失 <span class="loc">〔说话人2 23:09〕</span></li>
+<li>常见变性因素：高温、酸碱、重金属 <span class="loc">〔说话人2 23:56〕</span></li>
+<li>有机溶剂如 75% 乙醇同样可破坏蛋白质 <span class="loc">〔说话人2 26:39〕</span></li>
+<li>应用：高压灭菌锅以高温高压破坏病原体蛋白，达到灭菌 <span class="loc">〔说话人2 25:34〕</span></li>
+<li>应用：生物安全柜使用前喷洒 75% 乙醇消毒 <span class="loc">〔说话人2 26:03〕</span></li>
+<li>蛋白样本保护需全程低温，如冰盒与 4℃ 层析柜 <span class="loc">〔说话人2 27:57〕</span></li>
+<li>大型设备可置于 4℃ 冷库中操作，以维持低温环境 <span class="loc">〔说话人2 28:20〕</span></li>
+<li>变性后沉淀多呈白色或黄色 <span class="loc">〔说话人2 28:56〕</span></li>
+<li>沉淀的本质是疏水侧链暴露、肽链相互缠绕聚集 <span class="loc">〔说话人2 30:12〕</span></li>
+<li>复性（renaturation）：去除变性因素后恢复原有构象与功能 <span class="loc">〔说话人2 30:12〕</span></li>
+<li>多数蛋白质难以复性，复性成功率并不高 <span class="loc">〔说话人2 30:12〕</span></li>
+<li>强酸强碱等剧烈变性可致不可逆凝固（coagulation），形成坚硬凝块 <span class="loc">〔说话人2 30:12〕</span></li>
+<li>例：煮熟的鸡蛋蛋白即为不可逆凝固的蛋白凝块 <span class="loc">〔说话人2 30:12〕</span></li>
+<li>快答：核糖核酸酶复性说明变性具有可逆性，一级结构未被破坏 <span class="loc">〔说话人2 01:22:16〕</span></li>
+<li>快答：高温对蛋白质破坏严重、往往不可逆 <span class="loc">〔说话人2 01:22:54〕</span></li>
+<li>快答：核酸高温处理后仍可复性，该性质被用于分子生物学操作 <span class="loc">〔说话人2 01:23:36〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>过程</th><th>触发因素</th><th>一级结构</th><th>能否恢复</th></tr>
+<tr><td>变性（denaturation）</td><td>高温、酸碱、重金属、有机溶剂</td><td>完整（肽键未断）</td><td>去除因素后简单蛋白可复性</td></tr>
+<tr><td>复性（renaturation）</td><td>去除变性因素</td><td>完整</td><td>恢复构象与功能</td></tr>
+<tr><td>凝固（coagulation）</td><td>强酸强碱、剧烈高温</td><td>完整</td><td>不可逆，形成坚硬凝块</td></tr>
+</table>
+<table class="tbl">
+<tr><th>键力</th><th>变性时是否破坏</th></tr>
+<tr><td>肽键（维持一级结构）</td><td>不破坏</td></tr>
+<tr><td>二硫键</td><td>破坏</td></tr>
+<tr><td>氢键、疏水作用、盐桥／离子键</td><td>破坏</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>Anfinsen 实验证明「一级结构决定高级结构」；变性只破坏高级结构、不破坏肽键。 <span class="loc">〔说话人2 22:45〕</span></div>
+<div class="mnem">助记（整理）：变性不破肽键，一级决定高级，Anfinsen 得诺奖。</div>
 </div>
 
 <div class="page">
-  <h2 class="sec-title">主动回忆题</h2>
-  <div class="qa">
-    <div class="q">Q1：为什么血红蛋白的氧结合曲线是S型而肌红蛋白是双曲线型？</div>
-    <div class="a">血红蛋白是四聚体寡聚蛋白，具有正协同效应——第一个亚基结合O₂后，通过铁原子→组氨酸→盐桥断裂的构象传递路径，使其余亚基从T态转为R态，对O₂亲和力逐渐升高，因此曲线呈S型。肌红蛋白是单体蛋白，无亚基间协同效应，因此为简单的双曲线型。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q2：蛋白质变性时哪些作用力被破坏？哪些不被破坏？Anfinsen实验证明了什么？</div>
-    <div class="a">变性破坏维持高级结构的作用力：氢键、疏水相互作用、盐桥/离子键、二硫键。不破坏维持一级结构的肽键。Anfinsen核糖核酸酶复性实验证明：蛋白质的一级结构（氨基酸序列）包含了其高级结构折叠的全部信息，一级结构是高级结构与功能的基础。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q3：凝胶过滤层析中，大分子蛋白质和小分子蛋白质哪个先被洗脱？为什么？</div>
-    <div class="a">大分子先洗脱。凝胶过滤填料内部有不同大小的孔隙，大分子无法进入孔隙，只能从颗粒间流过，路径短、速度快，先被洗脱；小分子可以进入填料孔隙内部，路径长、速度慢，延迟洗脱。这与SDS-PAGE中大分子迁移慢（阻力大）正好相反。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q4：核酸的基本组成单位是什么？5种碱基如何分类？核苷和核苷酸有何区别？</div>
-    <div class="a">核酸的基本组成单位是核苷酸。5种碱基分为两类：嘌呤（双环结构）包括腺嘌呤A和鸟嘌呤G；嘧啶（单环结构）包括胞嘧啶C、尿嘧啶U和胸腺嘧啶T。核苷=碱基+核糖/脱氧核糖（通过糖苷键连接）；核苷酸=核苷+磷酸（连接在核糖5'位羟基），即核苷酸比核苷多一个磷酸基团。</div>
-  </div>
+<h2 class="h2">5. 蛋白质的分离与纯化</h2>
+<p class="lead">纯化的依据是不同蛋白质在分子量、电荷、特异性亲和力上的差异；电泳、层析、超速离心是三类核心手段。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>纯化的依据是不同蛋白质理化性质不完全相同 <span class="loc">〔说话人2 34:18〕</span></li>
+<li>典型流程：用基因工程将目的基因导入载体，在大肠杆菌或哺乳动物细胞中表达，再进行纯化 <span class="loc">〔说话人2 33:02〕</span></li>
+<li>纯化后可进一步做结构解析或蛋白质互作筛选 <span class="loc">〔说话人2 33:39〕</span></li>
+<li>电泳：带电的蛋白质在电场中发生移动 <span class="loc">〔说话人2 35:35〕</span></li>
+<li>SDS-PAGE：SDS 为强去垢剂（十二烷基硫酸钠），覆盖蛋白质本身的电荷 <span class="loc">〔说话人2 35:35〕</span></li>
+<li>SDS 处理后，蛋白质带电量只与分子量正相关 <span class="loc">〔说话人2 36:33〕</span></li>
+<li>PAGE 为聚丙烯酰胺凝胶，内含小孔，使不同大小蛋白以不同速度迁移 <span class="loc">〔说话人2 36:58〕</span></li>
+<li>SDS-PAGE 按分子量分离，常以 Marker 标准样形成梯状比对 <span class="loc">〔说话人2 37:28〕</span></li>
+<li>等电聚焦（isoelectric focusing）：凝胶设连续 pH 梯度，蛋白质移至自身 pI 处呈电中性而停止 <span class="loc">〔说话人2 39:37〕</span></li>
+<li>双向凝胶电泳（2-DE）：第一向等电聚焦按 pI，第二向 SDS-PAGE 按分子量 <span class="loc">〔说话人2 41:12〕</span></li>
+<li>双向电泳用于蛋白质组学全局分析，可比较加药前后蛋白表达差异 <span class="loc">〔说话人2 42:28〕</span></li>
+<li>层析：利用流动相与固定相，与固定相作用强者移动慢、晚洗脱 <span class="loc">〔说话人2 43:35〕</span></li>
+<li>亲和层析：借助标签与固定相配体之间的高亲和力结合 <span class="loc">〔说话人2 55:32〕</span></li>
+<li>GST 标签可结合谷胱甘肽；加高浓度谷胱甘肽竞争洗脱 <span class="loc">〔说话人2 57:22〕</span></li>
+<li>His 标签为 4–10 个组氨酸（常用 6 个），其侧链可与镍离子螯合 <span class="loc">〔说话人2 57:55〕</span></li>
+<li>His 标签结合于镍-NTA 固定相，加高浓度咪唑竞争洗脱 <span class="loc">〔说话人2 58:30〕</span></li>
+<li>离子交换层析：利用蛋白质自身的表面电荷 <span class="loc">〔说话人2 59:49〕</span></li>
+<li>pH 7 时 pI 小于 7 的蛋白带负电，结合到带正电的交换树脂上 <span class="loc">〔说话人2 59:49〕</span></li>
+<li>逐步提高 NaCl 浓度竞争洗脱，带电量少者先被洗下 <span class="loc">〔说话人2 01:00:58〕</span></li>
+<li>用 A280（280 nm 吸收）监测洗脱峰，峰处即有蛋白质 <span class="loc">〔说话人2 01:02:12〕</span></li>
+<li>凝胶过滤（分子筛）：凝胶含孔隙，大分子先洗脱，小分子进入孔隙而延迟洗脱 <span class="loc">〔说话人2 01:03:45〕</span></li>
+<li>亲和层析、离子交换层析、分子筛常按此顺序三步纯化 <span class="loc">〔说话人2 01:04:53〕</span></li>
+<li>超速离心可分离蛋白质复合体、核糖体乃至各种细胞器 <span class="loc">〔说话人2 01:05:27〕</span></li>
+<li>核糖体分为小亚基 30S、大亚基 50S 与完整核糖体 70S <span class="loc">〔说话人2 01:05:27〕</span></li>
+<li>沉降系数 S：颗粒在离心力场中的移动速度，单位为 10⁻¹³ 秒 <span class="loc">〔说话人2 01:06:22〕</span></li>
+<li>30S 加 50S 等于 70S 而非 80S，因结合后形状变化影响沉降速度 <span class="loc">〔说话人2 01:06:22〕</span></li>
+<li>超速离心必须严格配平，否则损坏设备甚至造成安全事故 <span class="loc">〔说话人2 01:08:15〕</span></li>
+<li>快答：离子交换中带电量少的蛋白先被低浓度氯离子洗脱 <span class="loc">〔说话人2 01:25:20〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>电泳</th><th>分离依据</th><th>关键原理</th></tr>
+<tr><td>SDS-PAGE</td><td>分子量</td><td>SDS 覆盖本身电荷，带电量与分子量正相关；凝胶小孔按大小分离</td></tr>
+<tr><td>等电聚焦</td><td>等电点 pI</td><td>pH 梯度中蛋白质移至自身 pI 处呈电中性而停止</td></tr>
+<tr><td>双向电泳</td><td>pI＋分子量</td><td>第一向等电聚焦，第二向 SDS-PAGE</td></tr>
+</table>
+<table class="tbl">
+<tr><th>层析</th><th>分离依据</th><th>关键原理</th></tr>
+<tr><td>亲和层析</td><td>特异性亲和力</td><td>GST／His 标签与配体结合，竞争洗脱</td></tr>
+<tr><td>离子交换</td><td>表面电荷</td><td>梯度 NaCl 竞争，带电量少者先洗脱</td></tr>
+<tr><td>凝胶过滤</td><td>分子量</td><td>大分子先洗脱，小分子入孔延迟</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>凝胶过滤中大分子先洗脱、小分子后洗脱；SDS-PAGE 中分子量大者迁移慢，二者方向相反。 <span class="loc">〔说话人2 01:03:45〕</span></div>
+<div class="exam"><span class="tag">★考点</span>沉降系数 S 单位是 10⁻¹³ 秒；30S＋50S＝70S，不是 80S。 <span class="loc">〔说话人2 01:06:22〕</span></div>
+<div class="mnem">助记（整理）：亲和靠标签，离子靠电荷，分子筛大分子先跑。</div>
 </div>
 
-</body>
-</html>
+<div class="page">
+<h2 class="h2">6. 蛋白质结构解析与 AI 预测设计</h2>
+<p class="lead">按分子大小与是否需晶体选择 NMR、X 射线衍射或冷冻电镜；当前更可用 AlphaFold 依序列直接预测结构。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>一级结构（序列）可由测序确定，空间结构则需结构解析 <span class="loc">〔说话人2 01:08:47〕</span></li>
+<li>长度单位：1 Å 等于 0.1 nm，即 10⁻¹⁰ m <span class="loc">〔说话人2 01:09:26〕</span></li>
+<li>核磁共振（NMR）：适用于约 50 个氨基酸以内、10 kD 以内的小分子多肽或小蛋白 <span class="loc">〔说话人2 01:10:22〕</span></li>
+<li>X 射线衍射：需先将蛋白质培养成晶体，分辨率高，可搭建准确的原子模型 <span class="loc">〔说话人2 01:10:46〕</span></li>
+<li>血红蛋白、肌红蛋白的结构均由 X 射线衍射完成 <span class="loc">〔说话人2 01:10:46〕</span></li>
+<li>单颗粒冷冻电镜：观测 3–100 nm 的蛋白及复合体，分辨率可达约 3 Å <span class="loc">〔说话人2 01:11:49〕</span></li>
+<li>冷冻电镜是目前最常用的结构解析技术 <span class="loc">〔说话人2 01:11:49〕</span></li>
+<li>AlphaFold 可依蛋白质序列直接预测其结构 <span class="loc">〔说话人2 01:12:30〕</span></li>
+<li>2024 年诺贝尔化学奖：David Baker 独得 1/2（蛋白质设计），AlphaFold 团队共享另 1/2 <span class="loc">〔说话人2 01:13:29〕</span></li>
+<li>蛋白质设计指设计自然界不存在的蛋白，如从头设计抗体药物 <span class="loc">〔说话人2 01:13:29〕</span></li>
+<li>蛋白质设计可做出 D 型蛋白，使其难以被体内水解酶分解 <span class="loc">〔说话人2 01:14:25〕</span></li>
+<li>Foldit 是游戏化众包蛋白质结构预测的平台 <span class="loc">〔说话人2 01:14:42〕</span></li>
+<li>Foldit 玩家的预测成果曾发表于 Nature，玩家可列为论文作者 <span class="loc">〔说话人2 01:16:01〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>方法</th><th>适用范围</th><th>是否需晶体</th><th>特点</th></tr>
+<tr><td>NMR 核磁共振</td><td>约 50 aa ／ 10 kD 以内的小蛋白</td><td>否</td><td>溶液中原子的高精度结构</td></tr>
+<tr><td>X 射线衍射</td><td>能长出晶体的蛋白质</td><td>是</td><td>高分辨率，经典方法</td></tr>
+<tr><td>单颗粒冷冻电镜</td><td>3–100 nm 的蛋白及复合体</td><td>否</td><td>当前主流，可达约 3 Å</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>三种结构解析方法选择：小蛋白用 NMR，有晶体用 X 射线衍射，大分子复合体用冷冻电镜。 <span class="loc">〔说话人2 01:11:49〕</span></div>
+<div class="mnem">助记（整理）：小蛋白 NMR，有晶体 X 射线，大分子冷冻电镜。</div>
+</div>
+
+<div class="page">
+<h2 class="h2">7. 核酸的化学组成与一级结构</h2>
+<p class="lead">核酸的基本组成单位是核苷酸；碱基分嘌呤（双环）与嘧啶（单环）两类，核苷酸还兼作能量与信号分子。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>阿雷西博信息：约 50 多年前由阿雷西博望远镜向地外发射的二进制编码信息 <span class="loc">〔说话人2 01:27:35〕</span></li>
+<li>信息内容含数字 1–10、DNA 元素序号、脱氧核苷酸式、DNA 双螺旋、人类特征与太阳系等 <span class="loc">〔说话人2 01:29:03〕</span></li>
+<li>组成 DNA 的元素为碳、氢、氧、氮、磷，比蛋白质多一个磷 <span class="loc">〔说话人2 01:28:38〕</span></li>
+<li>核酸分两大类：DNA（脱氧核糖核酸，deoxyribonucleic acid）与 RNA（核糖核酸，ribonucleic acid） <span class="loc">〔说话人2 01:31:03〕</span></li>
+<li>词根：ribo 即核糖（ribose），deoxy 即脱氧 <span class="loc">〔说话人2 01:31:45〕</span></li>
+<li>核酸水解的基本产物是核苷酸（nucleotide） <span class="loc">〔说话人2 01:32:19〕</span></li>
+<li>碱基（base）是一类含氮杂环化合物 <span class="loc">〔说话人2 01:32:43〕</span></li>
+<li>组成核酸的常见碱基共有 5 种 <span class="loc">〔说话人2 01:33:11〕</span></li>
+<li>碱基分两类：嘌呤（双环）与嘧啶（单环） <span class="loc">〔说话人2 01:33:11〕</span></li>
+<li>嘌呤（purine）包括腺嘌呤（A）与鸟嘌呤（G） <span class="loc">〔说话人2 01:33:53〕</span></li>
+<li>嘧啶（pyrimidine）包括尿嘧啶（U）、胸腺嘧啶（T）与胞嘧啶（C） <span class="loc">〔说话人2 01:33:53〕</span></li>
+<li>英文名：Guanine（鸟嘌呤）、Adenine（腺嘌呤）、Uracil（尿嘧啶）、Cytosine（胞嘧啶）、Thymine（胸腺嘧啶） <span class="loc">〔说话人2 01:34:24〕</span></li>
+<li>尿嘧啶（U）只见于 RNA，胸腺嘧啶（T）只见于 DNA <span class="loc">〔说话人2 01:34:24〕</span></li>
+<li>核糖与脱氧核糖均为五碳糖（脱氧核糖 deoxyribose） <span class="loc">〔说话人2 01:35:05〕</span></li>
+<li>两者差别在 2′ 位：核糖为羟基，脱氧核糖为氢 <span class="loc">〔说话人2 01:35:31〕</span></li>
+<li>核糖编号带撇号以区别碱基编号，3′ 位带羟基（关键） <span class="loc">〔说话人2 01:35:31〕</span></li>
+<li>碱基与核糖通过糖苷键（glycosidic bond）连接，组成核苷 <span class="loc">〔说话人2 01:35:31〕</span></li>
+<li>核苷再接 5′ 位磷酸即核苷酸，该键为 5′ 磷酸酯键 <span class="loc">〔说话人2 01:35:31〕</span></li>
+<li>可接 1–3 个磷酸，成为一／二／三磷酸核苷 <span class="loc">〔说话人2 01:37:16〕</span></li>
+<li>磷酸之间的键为高能酸酐键 <span class="loc">〔说话人2 01:37:49〕</span></li>
+<li>ATP 即腺苷三磷酸，是体内最重要的能量货币 <span class="loc">〔说话人2 01:38:18〕</span></li>
+<li>ATP 断开一个高能酸酐键即生成 ADP（腺苷二磷酸） <span class="loc">〔说话人2 01:38:18〕</span></li>
+<li>高能酸酐键使核苷酸成为细胞内化学能的载体 <span class="loc">〔说话人2 01:38:18〕</span></li>
+<li>cAMP（环腺苷酸）是细胞内第二信使，由腺苷酸环化酶催化 ATP 生成 <span class="loc">〔说话人2 01:39:19〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>类别</th><th>环数</th><th>成员</th><th>存在</th></tr>
+<tr><td>嘌呤 purine</td><td>双环</td><td>腺嘌呤 A、鸟嘌呤 G</td><td>DNA、RNA 均有</td></tr>
+<tr><td>嘧啶 pyrimidine</td><td>单环</td><td>胞嘧啶 C</td><td>DNA、RNA 均有</td></tr>
+<tr><td>嘧啶 pyrimidine</td><td>单环</td><td>尿嘧啶 U</td><td>仅 RNA</td></tr>
+<tr><td>嘧啶 pyrimidine</td><td>单环</td><td>胸腺嘧啶 T</td><td>仅 DNA</td></tr>
+</table>
+<table class="tbl">
+<tr><th>比较项</th><th>核苷（nucleoside）</th><th>核苷酸（nucleotide）</th></tr>
+<tr><td>组成</td><td>碱基＋核糖／脱氧核糖</td><td>核苷＋磷酸</td></tr>
+<tr><td>连接键</td><td>糖苷键</td><td>5′ 磷酸酯键</td></tr>
+<tr><td>是否核酸基本单位</td><td>否</td><td>是</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>5 种碱基分类：嘌呤双环 A、G；嘧啶单环 C、U、T。DNA 含 A/T/G/C，RNA 含 A/U/G/C。 <span class="loc">〔说话人2 01:33:11〕</span></div>
+<div class="exam"><span class="tag">★考点</span>核酸的基本组成单位是核苷酸；核苷＝碱基＋糖，核苷酸＝核苷＋磷酸。 <span class="loc">〔说话人2 01:35:31〕</span></div>
+<div class="mnem">助记（整理）：嘌呤双环 AG，嘧啶单环 CUT；核苷碱基糖，加磷变核苷酸。</div>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 A · 必背清单</h2>
+<ul class="kv">
+<li>协同效应：一个亚基结合配体影响其他亚基结合配体 <span class="loc">〔说话人1 01:21〕</span></li>
+<li>T 态未结合氧、盐桥连接；R 态结合氧、盐桥断裂 <span class="loc">〔说话人1 03:23〕</span></li>
+<li>构象传递：O₂ 结合→铁下移→组氨酸位移→盐桥断裂 <span class="loc">〔说话人1 05:37〕</span></li>
+<li>别构效应：配体结合一个亚基引起其他亚基构象改变 <span class="loc">〔说话人1 06:22〕</span></li>
+<li>构象疾病：序列不变、构象改变，α 螺旋变 β 折叠 <span class="loc">〔说话人1 07:02〕</span></li>
+<li>淀粉样沉淀；Aβ 早于症状 20 年、tau 早于 15 年 <span class="loc">〔说话人1 10:20〕</span></li>
+<li>等电点 pI：净电荷为零时的环境 pH <span class="loc">〔说话人2 15:37〕</span></li>
+<li>紫外吸收由 Tyr／Trp 决定，280 nm <span class="loc">〔说话人2 13:36〕</span></li>
+<li>茚三酮只测游离氨基酸 <span class="loc">〔说话人2 17:19〕</span></li>
+<li>双缩脲反应测肽键，蛋白质特有，深紫色 <span class="loc">〔说话人2 17:19〕</span></li>
+<li>胶体稳定：水化膜＋表面电荷；颗粒 1–100 nm <span class="loc">〔说话人2 21:28〕</span></li>
+<li>变性：高级结构破坏、一级结构完整 <span class="loc">〔说话人2 23:09〕</span></li>
+<li>变性不破坏肽键；破坏二硫键、氢键、疏水作用、盐桥 <span class="loc">〔说话人2 23:56〕</span></li>
+<li>Anfinsen 实验：一级结构决定高级结构 <span class="loc">〔说话人2 22:45〕</span></li>
+<li>变性因素：高温、酸碱、重金属、75% 乙醇 <span class="loc">〔说话人2 23:56〕</span></li>
+<li>复性可逆、凝固不可逆（煮熟鸡蛋） <span class="loc">〔说话人2 30:12〕</span></li>
+<li>SDS-PAGE 按分子量；SDS 覆盖本身电荷 <span class="loc">〔说话人2 35:35〕</span></li>
+<li>等电聚焦按 pI；双向电泳先 pI 后分子量 <span class="loc">〔说话人2 41:12〕</span></li>
+<li>亲和靠标签，离子交换靠电荷，分子筛大分子先洗脱 <span class="loc">〔说话人2 01:03:45〕</span></li>
+<li>沉降系数 S：单位 10⁻¹³ 秒；30S＋50S＝70S <span class="loc">〔说话人2 01:06:22〕</span></li>
+<li>NMR 小蛋白，X 射线需晶体，冷冻电镜大分子 <span class="loc">〔说话人2 01:11:49〕</span></li>
+<li>碱基：嘌呤双环 A／G，嘧啶单环 C／U／T <span class="loc">〔说话人2 01:33:11〕</span></li>
+<li>U 只在 RNA，T 只在 DNA <span class="loc">〔说话人2 01:34:24〕</span></li>
+<li>核苷＝碱基＋糖；核苷酸＝核苷＋磷酸 <span class="loc">〔说话人2 01:35:31〕</span></li>
+<li>ATP 为能量货币，cAMP 为第二信使 <span class="loc">〔说话人2 01:38:18〕</span></li>
+</ul>
+<h2 class="h2">附录 B · 易错点 · 易混对照</h2>
+<table class="tbl">
+<tr><th>易错说法（错）</th><th>正确结论（对）</th></tr>
+<tr><td>变性会破坏肽键</td><td>变性不破坏肽键，只破坏二硫键、氢键、疏水作用、盐桥</td></tr>
+<tr><td>茚三酮反应可检测蛋白质</td><td>茚三酮只与游离氨基酸显色；检测蛋白质用双缩脲反应</td></tr>
+<tr><td>双缩脲反应检测氨基酸</td><td>双缩脲反应检测肽键，是蛋白质特有的呈色反应</td></tr>
+<tr><td>280 nm 吸收最强的是丙氨酸</td><td>280 nm 吸收主要由色氨酸（Trp）、酪氨酸（Tyr）决定</td></tr>
+<tr><td>30S＋50S＝80S</td><td>30S＋50S＝70S，沉降系数不是简单加和</td></tr>
+<tr><td>凝胶过滤中小分子先洗脱</td><td>凝胶过滤中大分子先洗脱，小分子入孔延迟洗脱</td></tr>
+<tr><td>SDS-PAGE 按电荷分离</td><td>SDS-PAGE 按分子量分离（SDS 覆盖了本身电荷）</td></tr>
+<tr><td>等电聚焦按分子量分离</td><td>等电聚焦按等电点 pI 分离</td></tr>
+<tr><td>高温变性都可通过复性恢复</td><td>高温变性常不可逆（凝固）；只有核酸高温后仍可复性</td></tr>
+<tr><td>嘧啶是双环结构</td><td>嘌呤为双环，嘧啶为单环</td></tr>
+<tr><td>胸腺嘧啶存在于 RNA</td><td>尿嘧啶 U 只在 RNA，胸腺嘧啶 T 只在 DNA</td></tr>
+<tr><td>核苷酸＝碱基＋糖</td><td>核苷＝碱基＋糖；核苷酸＝核苷＋磷酸</td></tr>
+<tr><td>沉降系数 S 的单位是秒</td><td>S 的单位是 10⁻¹³ 秒</td></tr>
+<tr><td>结合氧后铁原子上移</td><td>结合氧后铁原子下移，更嵌入卟啉环空位</td></tr>
+<tr><td>构象疾病存在氨基酸序列突变</td><td>构象疾病序列不变，仅空间构象发生改变</td></tr>
+<tr><td>双缩脲试剂遇蛋白质由紫变蓝</td><td>试剂本身为蓝色，遇肽键才变红或紫</td></tr>
+</table>
+<h2 class="h2">附录 C · 考点索引表</h2>
+<table class="tbl idx">
+<tr><th>考点</th><th>出处小节</th><th>定位</th><th>可能题型</th></tr>
+<tr><td>协同效应与 S 型曲线</td><td>§1</td><td>〔说话人1 01:21〕</td><td>选择／简答</td></tr>
+<tr><td>T 态／R 态与盐桥</td><td>§1</td><td>〔说话人1 03:23〕</td><td>名词解释</td></tr>
+<tr><td>铁—组氨酸—盐桥构象传递</td><td>§1</td><td>〔说话人1 05:37〕</td><td>简答</td></tr>
+<tr><td>别构效应定义</td><td>§1</td><td>〔说话人1 06:22〕</td><td>名词解释</td></tr>
+<tr><td>构象疾病与淀粉样沉淀</td><td>§2</td><td>〔说话人1 07:02〕</td><td>简答</td></tr>
+<tr><td>阿尔茨海默病 Aβ／20 年</td><td>§2</td><td>〔说话人1 10:20〕</td><td>选择</td></tr>
+<tr><td>等电点 pI 与电荷</td><td>§3</td><td>〔说话人2 16:23〕</td><td>计算</td></tr>
+<tr><td>双缩脲反应</td><td>§3</td><td>〔说话人2 17:19〕</td><td>名词解释</td></tr>
+<tr><td>胶体稳定两因素</td><td>§3</td><td>〔说话人2 21:28〕</td><td>选择</td></tr>
+<tr><td>Anfinsen 复性实验</td><td>§4</td><td>〔说话人2 22:45〕</td><td>简答</td></tr>
+<tr><td>变性破坏／不破坏的键</td><td>§4</td><td>〔说话人2 23:09〕</td><td>多选</td></tr>
+<tr><td>SDS-PAGE 原理</td><td>§5</td><td>〔说话人2 35:35〕</td><td>简答</td></tr>
+<tr><td>等电聚焦／双向电泳</td><td>§5</td><td>〔说话人2 41:12〕</td><td>比较</td></tr>
+<tr><td>亲和层析与竞争洗脱</td><td>§5</td><td>〔说话人2 57:22〕</td><td>简答</td></tr>
+<tr><td>离子交换洗脱顺序</td><td>§5</td><td>〔说话人2 01:25:20〕</td><td>选择</td></tr>
+<tr><td>凝胶过滤洗脱顺序</td><td>§5</td><td>〔说话人2 01:03:45〕</td><td>选择</td></tr>
+<tr><td>沉降系数与 30S＋50S＝70S</td><td>§5</td><td>〔说话人2 01:06:22〕</td><td>填空</td></tr>
+<tr><td>三种结构解析方法的选择</td><td>§6</td><td>〔说话人2 01:11:49〕</td><td>比较</td></tr>
+<tr><td>5 种碱基分类</td><td>§7</td><td>〔说话人2 01:33:11〕</td><td>选择</td></tr>
+<tr><td>核苷与核苷酸的区别</td><td>§7</td><td>〔说话人2 01:35:31〕</td><td>名词解释</td></tr>
+<tr><td>ATP／cAMP 的功能</td><td>§7</td><td>〔说话人2 01:39:19〕</td><td>填空</td></tr>
+</table>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 D · 知识点全覆盖核对表</h2>
+<p class="lead">逐条登记全课知识点（定义、分类、机制、结构、数字、术语、举例、临床、考点、口诀），每条附对应小节与逐字稿定位，作为「零遗漏」的核查证据。</p>
+<table class="tbl idx">
+<tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>肌红蛋白为单亚基，血红蛋白为四个亚基</td><td>结构</td><td>§1</td><td>〔说话人2 01:17〕</td></tr>
+<tr><td>2</td><td>二者结构相似但氧亲和力不同</td><td>对比</td><td>§1</td><td>〔说话人1 01:21〕</td></tr>
+<tr><td>3</td><td>血红蛋白高氧分压结合、低氧分压释放氧</td><td>功能</td><td>§1</td><td>〔说话人1 01:21〕</td></tr>
+<tr><td>4</td><td>协同效应定义</td><td>定义</td><td>§1</td><td>〔说话人1 01:21〕</td></tr>
+<tr><td>5</td><td>协同效应使氧结合曲线呈 S 型</td><td>结论</td><td>§1</td><td>〔说话人1 01:21〕</td></tr>
+<tr><td>6</td><td>T 态（紧张态）未结合氧、亚基紧密</td><td>定义</td><td>§1</td><td>〔说话人1 02:34〕</td></tr>
+<tr><td>7</td><td>R 态（松弛态）结合氧、亚基疏松</td><td>定义</td><td>§1</td><td>〔说话人1 03:23〕</td></tr>
+<tr><td>8</td><td>T 态亚基间由离子键相连</td><td>结构</td><td>§1</td><td>〔说话人1 03:23〕</td></tr>
+<tr><td>9</td><td>R 态离子键／盐桥断裂</td><td>结构</td><td>§1</td><td>〔说话人1 03:23〕</td></tr>
+<tr><td>10</td><td>结合一个氧即打断盐桥、促进正协同</td><td>机制</td><td>§1</td><td>〔说话人1 03:23〕</td></tr>
+<tr><td>11</td><td>血红素含卟啉环，中心为铁原子</td><td>结构</td><td>§1</td><td>〔说话人1 04:19〕</td></tr>
+<tr><td>12</td><td>铁原子与蛋白质中的一个组氨酸配位</td><td>结构</td><td>§1</td><td>〔说话人1 04:59〕</td></tr>
+<tr><td>13</td><td>结合氧后铁原子下移、嵌入卟啉环空位</td><td>机制</td><td>§1</td><td>〔说话人1 05:37〕</td></tr>
+<tr><td>14</td><td>铁位移带动组氨酸位移、断裂邻近盐桥</td><td>机制</td><td>§1</td><td>〔说话人1 05:37〕</td></tr>
+<tr><td>15</td><td>微小构象变化即可影响整体结构功能</td><td>结论</td><td>§1</td><td>〔说话人1 06:22〕</td></tr>
+<tr><td>16</td><td>别构效应（allosteric effect）定义</td><td>定义</td><td>§1</td><td>〔说话人1 06:22〕</td></tr>
+<tr><td>17</td><td>构象疾病：序列不变、仅构象改变</td><td>定义</td><td>§2</td><td>〔说话人1 07:02〕</td></tr>
+<tr><td>18</td><td>正常蛋白以 α 螺旋为主</td><td>结构</td><td>§2</td><td>〔说话人1 07:02〕</td></tr>
+<tr><td>19</td><td>错误折叠转为以 β 折叠为主</td><td>机制</td><td>§2</td><td>〔说话人1 07:02〕</td></tr>
+<tr><td>20</td><td>β 折叠链间氢键向邻近链延伸成片层</td><td>机制</td><td>§2</td><td>〔说话人1 08:09〕</td></tr>
+<tr><td>21</td><td>片层重叠延伸为长纤维</td><td>机制</td><td>§2</td><td>〔说话人1 08:09〕</td></tr>
+<tr><td>22</td><td>纤维种子成核并促使肽链延长</td><td>机制</td><td>§2</td><td>〔说话人1 08:58〕</td></tr>
+<tr><td>23</td><td>α 螺旋可溶，β 折叠析出形成淀粉样沉淀</td><td>结论</td><td>§2</td><td>〔说话人1 08:58〕</td></tr>
+<tr><td>24</td><td>神经退行性疾病以淀粉样沉淀为病理特征</td><td>临床</td><td>§2</td><td>〔说话人1 09:31〕</td></tr>
+<tr><td>25</td><td>APP 可溶，异常聚集为 β 折叠纤维</td><td>机制</td><td>§2</td><td>〔说话人1 09:31〕</td></tr>
+<tr><td>26</td><td>纤维进一步聚集成巨大斑块</td><td>机制</td><td>§2</td><td>〔说话人1 09:31〕</td></tr>
+<tr><td>27</td><td>斑块损伤神经元突触致记忆与认知损害</td><td>临床</td><td>§2</td><td>〔说话人1 10:20〕</td></tr>
+<tr><td>28</td><td>Aβ 聚集早于症状约 20 年</td><td>数字</td><td>§2</td><td>〔说话人1 10:20〕</td></tr>
+<tr><td>29</td><td>tau 过度磷酸化早于症状约 15 年</td><td>数字</td><td>§2</td><td>〔说话人1 10:20〕</td></tr>
+<tr><td>30</td><td>症状前早期干预为研究方向</td><td>应用</td><td>§2</td><td>〔说话人1 11:10〕</td></tr>
+<tr><td>31</td><td>氨基酸三种理化性质</td><td>分类</td><td>§3</td><td>〔说话人2 13:36〕</td></tr>
+<tr><td>32</td><td>等电点 pI 描述两性解离</td><td>定义</td><td>§3</td><td>〔说话人1 12:47〕</td></tr>
+<tr><td>33</td><td>紫外吸收由侧链共轭双键决定</td><td>机制</td><td>§3</td><td>〔说话人2 13:36〕</td></tr>
+<tr><td>34</td><td>蛋白质中侧链保留、紫外吸收仍存在</td><td>结论</td><td>§3</td><td>〔说话人2 13:36〕</td></tr>
+<tr><td>35</td><td>紫外吸收主要由 Tyr／Trp 数量决定</td><td>结论</td><td>§3</td><td>〔说话人2 13:36〕</td></tr>
+<tr><td>36</td><td>蛋白质在 280 nm 有吸收峰</td><td>数字</td><td>§3</td><td>〔说话人2 01:02:12〕</td></tr>
+<tr><td>37</td><td>ExPASy 输入序列计算消光系数与等电点</td><td>应用</td><td>§3</td><td>〔说话人2 16:23〕</td></tr>
+<tr><td>38</td><td>蛋白质两端游离氨基、羧基仍可电离</td><td>结构</td><td>§3</td><td>〔说话人2 15:37〕</td></tr>
+<tr><td>39</td><td>蛋白质存在等电点、此时净电荷为零</td><td>定义</td><td>§3</td><td>〔说话人2 15:37〕</td></tr>
+<tr><td>40</td><td>茚三酮仅与游离氨基酸显色</td><td>结论</td><td>§3</td><td>〔说话人2 17:19〕</td></tr>
+<tr><td>41</td><td>蛋白质水解释放游离氨基酸后才显色</td><td>机制</td><td>§3</td><td>〔说话人2 17:19〕</td></tr>
+<tr><td>42</td><td>双缩脲反应：肽键＋稀碱＋硫酸铜共热呈深紫</td><td>定义</td><td>§3</td><td>〔说话人2 17:19〕</td></tr>
+<tr><td>43</td><td>双缩脲试剂本为蓝色、遇肽键变红紫</td><td>现象</td><td>§3</td><td>〔说话人2 18:19〕</td></tr>
+<tr><td>44</td><td>双缩脲反应为蛋白质特有</td><td>结论</td><td>§3</td><td>〔说话人2 18:19〕</td></tr>
+<tr><td>45</td><td>颜色深浅反映肽键数量、判断水解程度</td><td>应用</td><td>§3</td><td>〔说话人2 19:05〕</td></tr>
+<tr><td>46</td><td>胶体颗粒 1–100 nm、分子量 1 万–100 万</td><td>数字</td><td>§3</td><td>〔说话人2 19:56〕</td></tr>
+<tr><td>47</td><td>球状蛋白外侧亲水、内侧疏水</td><td>结构</td><td>§3</td><td>〔说话人2 20:43〕</td></tr>
+</table>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 D（续）· 知识点全覆盖核对表</h2>
+<table class="tbl idx">
+<tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>48</td><td>水化膜维持胶体稳定</td><td>机制</td><td>§3</td><td>〔说话人2 20:43〕</td></tr>
+<tr><td>49</td><td>表面电荷维持胶体稳定</td><td>机制</td><td>§3</td><td>〔说话人2 21:28〕</td></tr>
+<tr><td>50</td><td>表面电荷由可电离侧链与末端决定</td><td>结论</td><td>§3</td><td>〔说话人2 21:28〕</td></tr>
+<tr><td>51</td><td>镰状细胞贫血：亲水谷氨酸变为疏水缬氨酸</td><td>临床</td><td>§3</td><td>〔说话人2 20:43〕</td></tr>
+<tr><td>52</td><td>侧链含羧基的氨基酸为酸性氨基酸、电离出负电荷</td><td>考点</td><td>§3</td><td>〔说话人2 01:19:36〕</td></tr>
+<tr><td>53</td><td>pI 小于 7.4 的蛋白在 pH 7.4 时带负电</td><td>考点</td><td>§3</td><td>〔说话人2 01:20:14〕</td></tr>
+<tr><td>54</td><td>Anfinsen 实验：核糖核酸酶经变性剂与还原剂变成开链</td><td>实验</td><td>§4</td><td>〔说话人2 22:45〕</td></tr>
+<tr><td>55</td><td>Anfinsen 实验证明一级结构是高级结构的基础、获诺贝尔奖</td><td>结论</td><td>§4</td><td>〔说话人2 22:45〕</td></tr>
+<tr><td>56</td><td>变性：空间构象破坏、一级结构完整</td><td>定义</td><td>§4</td><td>〔说话人2 23:09〕</td></tr>
+<tr><td>57</td><td>变性破坏二硫键</td><td>机制</td><td>§4</td><td>〔说话人2 23:09〕</td></tr>
+<tr><td>58</td><td>变性破坏氢键、疏水作用、盐桥／离子键</td><td>机制</td><td>§4</td><td>〔说话人2 23:48〕</td></tr>
+<tr><td>59</td><td>变性不破坏肽键，氨基酸序列不变</td><td>结论</td><td>§4</td><td>〔说话人2 23:56〕</td></tr>
+<tr><td>60</td><td>变性后理化性质改变、生物学活性丧失</td><td>结论</td><td>§4</td><td>〔说话人2 23:09〕</td></tr>
+<tr><td>61</td><td>常见变性因素：高温、酸碱、重金属</td><td>分类</td><td>§4</td><td>〔说话人2 23:56〕</td></tr>
+<tr><td>62</td><td>有机溶剂如 75% 乙醇可破坏蛋白质</td><td>因素</td><td>§4</td><td>〔说话人2 26:39〕</td></tr>
+<tr><td>63</td><td>应用：高压灭菌锅高温高压灭菌</td><td>应用</td><td>§4</td><td>〔说话人2 25:34〕</td></tr>
+<tr><td>64</td><td>应用：生物安全柜喷洒 75% 乙醇消毒</td><td>应用</td><td>§4</td><td>〔说话人2 26:03〕</td></tr>
+<tr><td>65</td><td>低温保护：冰盒与 4℃ 层析柜</td><td>应用</td><td>§4</td><td>〔说话人2 27:57〕</td></tr>
+<tr><td>66</td><td>4℃ 冷库供大型设备维持低温操作</td><td>应用</td><td>§4</td><td>〔说话人2 28:20〕</td></tr>
+<tr><td>67</td><td>变性后沉淀呈白色或黄色</td><td>现象</td><td>§4</td><td>〔说话人2 28:56〕</td></tr>
+<tr><td>68</td><td>沉淀本质：疏水侧链暴露、肽链缠绕聚集</td><td>机制</td><td>§4</td><td>〔说话人2 30:12〕</td></tr>
+<tr><td>69</td><td>复性：去除变性因素后恢复构象与功能</td><td>定义</td><td>§4</td><td>〔说话人2 30:12〕</td></tr>
+<tr><td>70</td><td>多数蛋白质难以复性</td><td>结论</td><td>§4</td><td>〔说话人2 30:12〕</td></tr>
+<tr><td>71</td><td>不可逆凝固（coagulation）形成坚硬凝块</td><td>定义</td><td>§4</td><td>〔说话人2 30:12〕</td></tr>
+<tr><td>72</td><td>例：煮熟的鸡蛋蛋白</td><td>举例</td><td>§4</td><td>〔说话人2 30:12〕</td></tr>
+<tr><td>73</td><td>核糖核酸酶复性提示变性可逆、一级结构未破坏</td><td>考点</td><td>§4</td><td>〔说话人2 01:22:16〕</td></tr>
+<tr><td>74</td><td>高温对蛋白质破坏严重且往往不可逆</td><td>考点</td><td>§4</td><td>〔说话人2 01:22:54〕</td></tr>
+<tr><td>75</td><td>核酸高温处理后仍可复性</td><td>考点</td><td>§4</td><td>〔说话人2 01:23:36〕</td></tr>
+<tr><td>76</td><td>纯化依据不同蛋白质理化性质差异</td><td>原理</td><td>§5</td><td>〔说话人2 34:18〕</td></tr>
+<tr><td>77</td><td>典型流程：基因工程在细胞中表达目的蛋白后纯化</td><td>流程</td><td>§5</td><td>〔说话人2 33:02〕</td></tr>
+<tr><td>78</td><td>纯化后可做结构解析或蛋白质互作筛选</td><td>应用</td><td>§5</td><td>〔说话人2 33:39〕</td></tr>
+<tr><td>79</td><td>电泳：带电蛋白质在电场中移动</td><td>原理</td><td>§5</td><td>〔说话人2 35:35〕</td></tr>
+<tr><td>80</td><td>SDS-PAGE：SDS 覆盖蛋白质本身电荷</td><td>原理</td><td>§5</td><td>〔说话人2 35:35〕</td></tr>
+<tr><td>81</td><td>SDS 处理后带电量与分子量正相关</td><td>机制</td><td>§5</td><td>〔说话人2 36:33〕</td></tr>
+<tr><td>82</td><td>PAGE 凝胶小孔使蛋白按大小分离</td><td>原理</td><td>§5</td><td>〔说话人2 36:58〕</td></tr>
+<tr><td>83</td><td>以 Marker 标准样比对未知蛋白分子量</td><td>应用</td><td>§5</td><td>〔说话人2 37:28〕</td></tr>
+<tr><td>84</td><td>等电聚焦按等电点 pI 分离</td><td>原理</td><td>§5</td><td>〔说话人2 39:37〕</td></tr>
+<tr><td>85</td><td>双向电泳：第一向等电聚焦、第二向 SDS-PAGE</td><td>原理</td><td>§5</td><td>〔说话人2 41:12〕</td></tr>
+<tr><td>86</td><td>双向电泳用于蛋白质组学全局分析</td><td>应用</td><td>§5</td><td>〔说话人2 42:28〕</td></tr>
+<tr><td>87</td><td>层析：流动相与固定相分配差异</td><td>原理</td><td>§5</td><td>〔说话人2 43:35〕</td></tr>
+<tr><td>88</td><td>亲和层析借标签与配体的高亲和力</td><td>原理</td><td>§5</td><td>〔说话人2 55:32〕</td></tr>
+<tr><td>89</td><td>GST 标签结合谷胱甘肽、竞争洗脱</td><td>方法</td><td>§5</td><td>〔说话人2 57:22〕</td></tr>
+<tr><td>90</td><td>His 标签 4–10 个、常用 6 个</td><td>数字</td><td>§5</td><td>〔说话人2 57:55〕</td></tr>
+<tr><td>91</td><td>His 标签与镍离子螯合、加咪唑洗脱</td><td>方法</td><td>§5</td><td>〔说话人2 58:30〕</td></tr>
+<tr><td>92</td><td>离子交换层析利用表面电荷</td><td>原理</td><td>§5</td><td>〔说话人2 59:49〕</td></tr>
+<tr><td>93</td><td>pH7 时 pI 小于 7 的蛋白带负电、结合正电树脂</td><td>机制</td><td>§5</td><td>〔说话人2 59:49〕</td></tr>
+<tr><td>94</td><td>梯度 NaCl 竞争洗脱、带电量少者先洗下</td><td>方法</td><td>§5</td><td>〔说话人2 01:00:58〕</td></tr>
+<tr><td>95</td><td>A280 监测洗脱峰</td><td>方法</td><td>§5</td><td>〔说话人2 01:02:12〕</td></tr>
+<tr><td>96</td><td>凝胶过滤：大分子先洗脱、小分子延迟</td><td>原理</td><td>§5</td><td>〔说话人2 01:03:45〕</td></tr>
+<tr><td>97</td><td>三步层析顺序：亲和→离子交换→分子筛</td><td>流程</td><td>§5</td><td>〔说话人2 01:04:53〕</td></tr>
+<tr><td>98</td><td>超速离心可分离复合体、核糖体与细胞器</td><td>应用</td><td>§5</td><td>〔说话人2 01:05:27〕</td></tr>
+<tr><td>99</td><td>核糖体 30S＋50S＝70S</td><td>数字</td><td>§5</td><td>〔说话人2 01:05:27〕</td></tr>
+<tr><td>100</td><td>沉降系数 S 的单位为 10⁻¹³ 秒</td><td>定义</td><td>§5</td><td>〔说话人2 01:06:22〕</td></tr>
+<tr><td>101</td><td>30S＋50S＝70S 并非简单加和</td><td>结论</td><td>§5</td><td>〔说话人2 01:06:22〕</td></tr>
+<tr><td>102</td><td>超速离心必须严格配平</td><td>安全</td><td>§5</td><td>〔说话人2 01:08:15〕</td></tr>
+</table>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 D（续）· 知识点全覆盖核对表</h2>
+<table class="tbl idx">
+<tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>103</td><td>一级结构靠测序、空间结构靠解析</td><td>结论</td><td>§6</td><td>〔说话人2 01:08:47〕</td></tr>
+<tr><td>104</td><td>1 Å＝0.1 nm＝10⁻¹⁰ m</td><td>数字</td><td>§6</td><td>〔说话人2 01:09:26〕</td></tr>
+<tr><td>105</td><td>NMR 适用约 50 aa 以内、10 kD 以内的小蛋白</td><td>方法</td><td>§6</td><td>〔说话人2 01:10:22〕</td></tr>
+<tr><td>106</td><td>X 射线衍射需蛋白晶体、分辨率高</td><td>方法</td><td>§6</td><td>〔说话人2 01:10:46〕</td></tr>
+<tr><td>107</td><td>血红蛋白、肌红蛋白由 X 射线衍射解析</td><td>举例</td><td>§6</td><td>〔说话人2 01:10:46〕</td></tr>
+<tr><td>108</td><td>冷冻电镜观测 3–100 nm、可达约 3 Å</td><td>方法</td><td>§6</td><td>〔说话人2 01:11:49〕</td></tr>
+<tr><td>109</td><td>冷冻电镜为当前最常用结构解析技术</td><td>结论</td><td>§6</td><td>〔说话人2 01:11:49〕</td></tr>
+<tr><td>110</td><td>AlphaFold 依序列直接预测蛋白质结构</td><td>应用</td><td>§6</td><td>〔说话人2 01:12:30〕</td></tr>
+<tr><td>111</td><td>2024 诺奖：Baker 独得 1/2＋AlphaFold 团队共享 1/2</td><td>前沿</td><td>§6</td><td>〔说话人2 01:13:29〕</td></tr>
+<tr><td>112</td><td>蛋白质设计：设计自然界不存在的蛋白（如抗体）</td><td>前沿</td><td>§6</td><td>〔说话人2 01:13:29〕</td></tr>
+<tr><td>113</td><td>可设计 D 型蛋白使其难以被水解</td><td>前沿</td><td>§6</td><td>〔说话人2 01:14:25〕</td></tr>
+<tr><td>114</td><td>Foldit 游戏化众包蛋白质结构预测</td><td>前沿</td><td>§6</td><td>〔说话人2 01:14:42〕</td></tr>
+<tr><td>115</td><td>Foldit 玩家成果发表于 Nature、玩家可列作者</td><td>前沿</td><td>§6</td><td>〔说话人2 01:16:01〕</td></tr>
+<tr><td>116</td><td>阿雷西博信息约 50 年前向地外发射</td><td>背景</td><td>§7</td><td>〔说话人2 01:27:35〕</td></tr>
+<tr><td>117</td><td>信息含 DNA 元素序号、双螺旋、人类特征、太阳系</td><td>内容</td><td>§7</td><td>〔说话人2 01:29:03〕</td></tr>
+<tr><td>118</td><td>组成 DNA 的元素含磷（碳氢氧氮磷）</td><td>数字</td><td>§7</td><td>〔说话人2 01:28:38〕</td></tr>
+<tr><td>119</td><td>核酸分 DNA（脱氧核糖核酸）与 RNA（核糖核酸）</td><td>分类</td><td>§7</td><td>〔说话人2 01:31:03〕</td></tr>
+<tr><td>120</td><td>词根 ribo＝核糖、deoxy＝脱氧</td><td>术语</td><td>§7</td><td>〔说话人2 01:31:45〕</td></tr>
+<tr><td>121</td><td>核酸水解的基本产物为核苷酸</td><td>结论</td><td>§7</td><td>〔说话人2 01:32:19〕</td></tr>
+<tr><td>122</td><td>碱基为含氮杂环化合物</td><td>定义</td><td>§7</td><td>〔说话人2 01:32:43〕</td></tr>
+<tr><td>123</td><td>组成核酸的常见碱基共 5 种</td><td>数字</td><td>§7</td><td>〔说话人2 01:33:11〕</td></tr>
+<tr><td>124</td><td>碱基分嘌呤（双环）与嘧啶（单环）</td><td>分类</td><td>§7</td><td>〔说话人2 01:33:11〕</td></tr>
+<tr><td>125</td><td>嘌呤：腺嘌呤 A、鸟嘌呤 G</td><td>分类</td><td>§7</td><td>〔说话人2 01:33:53〕</td></tr>
+<tr><td>126</td><td>嘧啶：尿嘧啶 U、胸腺嘧啶 T、胞嘧啶 C</td><td>分类</td><td>§7</td><td>〔说话人2 01:33:53〕</td></tr>
+<tr><td>127</td><td>英文名 Guanine／Adenine／Uracil／Cytosine／Thymine</td><td>术语</td><td>§7</td><td>〔说话人2 01:34:24〕</td></tr>
+<tr><td>128</td><td>尿嘧啶只见于 RNA、胸腺嘧啶只见于 DNA</td><td>结论</td><td>§7</td><td>〔说话人2 01:34:24〕</td></tr>
+<tr><td>129</td><td>核糖与脱氧核糖均为五碳糖</td><td>结构</td><td>§7</td><td>〔说话人2 01:35:05〕</td></tr>
+<tr><td>130</td><td>2′ 位差异：羟基（核糖）↔ 氢（脱氧核糖）</td><td>结构</td><td>§7</td><td>〔说话人2 01:35:31〕</td></tr>
+<tr><td>131</td><td>核糖编号带撇以区别碱基、3′ 位带羟基</td><td>规则</td><td>§7</td><td>〔说话人2 01:35:31〕</td></tr>
+<tr><td>132</td><td>核苷＝碱基＋核糖（糖苷键连接）</td><td>定义</td><td>§7</td><td>〔说话人2 01:35:31〕</td></tr>
+<tr><td>133</td><td>核苷酸＝核苷＋5′ 位磷酸（5′ 磷酸酯键）</td><td>定义</td><td>§7</td><td>〔说话人2 01:35:31〕</td></tr>
+<tr><td>134</td><td>可接 1–3 个磷酸成为一／二／三磷酸核苷</td><td>结构</td><td>§7</td><td>〔说话人2 01:37:16〕</td></tr>
+<tr><td>135</td><td>磷酸之间为高能酸酐键</td><td>结论</td><td>§7</td><td>〔说话人2 01:37:49〕</td></tr>
+<tr><td>136</td><td>ATP＝腺苷三磷酸、体内最重要能量货币</td><td>定义</td><td>§7</td><td>〔说话人2 01:38:18〕</td></tr>
+<tr><td>137</td><td>ATP 断开一个酸酐键生成 ADP</td><td>机制</td><td>§7</td><td>〔说话人2 01:38:18〕</td></tr>
+<tr><td>138</td><td>核苷酸是细胞内化学能的载体</td><td>定义</td><td>§7</td><td>〔说话人2 01:38:18〕</td></tr>
+<tr><td>139</td><td>cAMP 是细胞内第二信使</td><td>定义</td><td>§7</td><td>〔说话人2 01:39:19〕</td></tr>
+<tr><td>140</td><td>快答：离子交换中带电量少的蛋白先被洗脱</td><td>考点</td><td>§5</td><td>〔说话人2 01:25:20〕</td></tr>
+<tr><td>141</td><td>肌红蛋白无协同效应、曲线为双曲线型</td><td>对比</td><td>§1</td><td>〔说话人1 01:21〕</td></tr>
+</table>
+<p class="foot">附录 D 共 141 条，与 recording.md 讲授内容逐条对应，覆盖全课知识点（定义、分类、机制、数字、术语、举例、临床、考点、口诀）。</p>
+</div>
+
+
+
+</body></html>

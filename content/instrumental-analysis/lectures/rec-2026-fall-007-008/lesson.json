@@ -4,15 +4,30 @@
   "courseInstanceId": "rec-2026-fall",
   "lessonId": "rec-2026-fall-007-008",
   "courseName": "分析化学",
-  "sessionRange": { "start": 7, "end": 8 },
+  "sessionRange": {
+    "start": 7,
+    "end": 8
+  },
   "taughtOn": "2026-09-11",
   "topic": "萃取技术体系与紫外可见分光光度法基础",
-  "revision": 1,
+  "revision": 3,
   "materials": {
-    "recording": { "file": "recording.md", "format": "text" },
-    "minutes": { "file": "minutes.md", "format": "markdown" },
-    "notes": { "file": "notes.html", "format": "html" },
-    "cards": { "file": "cards.md", "format": "markdown" }
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
   },
   "quizId": "rec-2026-fall-007-008"
 }

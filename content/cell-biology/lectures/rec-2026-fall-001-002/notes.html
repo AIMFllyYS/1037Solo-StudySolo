@@ -1,258 +1,467 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<style>
-:root{--paper:#FAF8F1;--ink:#24201A;--ink-soft:#4A4337;--muted:#857B68;--line:#E6DECC;--accent:#1A5276;--accent-deep:#0E2F44;--accent-tint:#E5EDF3;--gold:#A2630C;--gold-tint:#F8ECD3;--crimson:#B23A2E;--crimson-tint:#F7E4DF;--serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
-.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-.cover{background:radial-gradient(120% 80% at 78% 12%,#2980B9 0%,#1A5276 55%,#0E2F44 100%);color:#F3EEE2;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(231,206,156,.55);}
-.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#E7CE9C;margin-bottom:8mm;}
-.cover h1{font-family:var(--serif);font-size:36pt;line-height:1.2;color:#FBF7EC;margin-bottom:6mm;}
-.cover h1 .accent{color:#E7CE9C;}
-.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(243,238,226,.82);margin-bottom:4mm;}
-.cover .meta{font-size:10pt;color:rgba(243,238,226,.6);margin-top:auto;}
-.toc h2{font-family:var(--serif);font-size:22pt;color:var(--accent-deep);margin-bottom:8mm;border-bottom:2pt solid var(--accent);padding-bottom:3mm;}
-.toc-item{display:flex;justify-content:space-between;align-items:baseline;padding:3mm 0;border-bottom:0.5pt solid var(--line);}
-.toc-item .num{font-family:var(--serif);font-weight:700;color:var(--accent);min-width:12mm;}
-.toc-item .title{font-family:var(--serif);font-size:12pt;font-weight:600;flex:1;}
-.toc-item .desc{font-size:8.5pt;color:var(--muted);margin-left:4mm;}
-.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
-.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
-.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
-h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
-h4{font-family:var(--serif);font-size:11pt;color:var(--ink);margin:4mm 0 2mm;}
-p{margin:2mm 0;}
-ul,ol{margin:2mm 0 2mm 6mm;}
-li{margin:1mm 0;}
-.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
-.card.concl{border-left:3pt solid var(--accent);}
-.card.warn{border-left:3pt solid var(--crimson);background:var(--crimson-tint);}
-.card.gold{border-left:3pt solid var(--gold);background:var(--gold-tint);}
-.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
-.card.warn .label{color:var(--crimson);}
-.card.gold .label{color:var(--gold);}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
-th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
-td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
-tr:nth-child(even) td{background:var(--accent-tint);}
-.hl{background:var(--gold-tint);border:0.4pt solid #E7CE9C;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
-.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
-.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
-</style>
-</head>
-<body>
-
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>细胞生物学 · 第1-2节 · 绪论与细胞膜框架</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#2B4C8C; --accent-d:#1C3462; --accent-t:#E6EBF6;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body>
 <div class="page cover">
-  <div class="frame"></div>
-  <div class="kicker">CELL BIOLOGY · 细胞生物学</div>
-  <h1>绪论与<br><span class="accent">细胞膜框架</span></h1>
-  <div class="subt">第1-2节 · 课程笔记可视化手册</div>
-  <div class="meta">2026-08-31 · 华中科技大学基础医学</div>
+<p class="h1">细胞生物学 · 第1-2节</p>
+<p class="meta">绪论与细胞膜框架 · 2026-08-31</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 25279 字 / 41 轮发言</p>
+<table>
+<tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>细胞生物学（cell-biology / rec-2026-fall-001-002）</td></tr>
+<tr><td>主题</td><td>绪论与细胞膜框架</td></tr>
+<tr><td>学时</td><td>第 1–2 节（2 学时）</td></tr>
+</table>
 </div>
-
 <div class="page">
-  <div class="toc">
-    <h2>目 录</h2>
-    <div class="toc-item"><span class="num">01</span><span class="title">为什么学细胞生物学</span><span class="desc">四大功能模块·亚细胞结构</span></div>
-    <div class="toc-item"><span class="num">02</span><span class="title">细胞定义与发现史</span><span class="desc">Hooke·Leeuwenhoek·细胞学说</span></div>
-    <div class="toc-item"><span class="num">03</span><span class="title">细胞生物学发展</span><span class="desc">三个诺贝尔奖·模式生物</span></div>
-    <div class="toc-item"><span class="num">04</span><span class="title">细胞生命特征</span><span class="desc">遗传·能量·膜·基础基因</span></div>
-    <div class="toc-item"><span class="num">05</span><span class="title">细胞膜</span><span class="desc">三类脂·双分子层特性·膜蛋白</span></div>
-    <div class="toc-item"><span class="num">06</span><span class="title">细胞器</span><span class="desc">线粒体·遗传·运输方式</span></div>
-    <div class="toc-item"><span class="num">07</span><span class="title">新技术与易错点</span><span class="desc">超分辨·冷冻电镜·相分离</span></div>
-  </div>
-  <div class="footer"><span>细胞生物学 · 绪论与细胞膜框架</span><span>第 2 页</span></div>
+<h2 class="h2">0. 知识框架</h2>
+<p class="lead">亚细胞结构支撑四大细胞生理学模块，膜与细胞器是后续物质运输与信号研究的底座。</p>
+<svg viewBox="0 0 640 200" width="100%" aria-label="知识框架">
+<rect x="220" y="8" width="200" height="34" fill="#E6EBF6" stroke="#2B4C8C"/>
+<text x="320" y="30" text-anchor="middle" font-size="12" font-family="sans-serif">四大细胞生理学模块</text>
+<line x1="320" y1="42" x2="80" y2="72" stroke="#2B4C8C"/>
+<line x1="320" y1="42" x2="240" y2="72" stroke="#2B4C8C"/>
+<line x1="320" y1="42" x2="400" y2="72" stroke="#2B4C8C"/>
+<line x1="320" y1="42" x2="560" y2="72" stroke="#2B4C8C"/>
+<rect x="8" y="72" width="144" height="28" fill="#fff" stroke="#1C3462"/><text x="80" y="90" text-anchor="middle" font-size="10">物质运输与稳态</text>
+<rect x="168" y="72" width="144" height="28" fill="#fff" stroke="#1C3462"/><text x="240" y="90" text-anchor="middle" font-size="10">能量代谢</text>
+<rect x="328" y="72" width="144" height="28" fill="#fff" stroke="#1C3462"/><text x="400" y="90" text-anchor="middle" font-size="10">信号转导</text>
+<rect x="488" y="72" width="144" height="28" fill="#fff" stroke="#1C3462"/><text x="560" y="90" text-anchor="middle" font-size="10">大分子质控</text>
+<line x1="320" y1="100" x2="320" y2="128" stroke="#2B4C8C"/>
+<rect x="200" y="128" width="240" height="32" fill="#E6EBF6" stroke="#2B4C8C"/><text x="320" y="148" text-anchor="middle" font-size="11">亚细胞结构：膜·细胞器·凝聚体</text>
+</svg>
 </div>
-
 <div class="page">
-  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">为什么学细胞生物学</span></div>
-  <div class="card concl">
-    <div class="label">四大功能模块（课程总框架）</div>
-    <table>
-      <tr><th>模块</th><th>内容</th></tr>
-      <tr><td>① 物质运输与稳态</td><td>细胞内物流、离子通道、分泌/内吞</td></tr>
-      <tr><td>② 能量代谢</td><td>ATP生成、糖脂代谢</td></tr>
-      <tr><td>③ 信号转导</td><td>胞内外信息传递</td></tr>
-      <tr><td>④ 大分子质量控制</td><td>DNA/RNA/蛋白质合成、降解、质量监控</td></tr>
-    </table>
-    <p>四大模块贯穿发育、分化、衰老、代谢等所有生理过程。</p>
-  </div>
-  <div class="hl"><span class="tag">核心逻辑</span>亚细胞结构（细胞器、细胞骨架、凝聚体）是四大模块的上游支撑 → 理解亚细胞结构 → 才能理解生理学/病理学。</div>
-
-  <h3>细胞定义与发现史</h3>
-  <div class="card gold">
-    <div class="label">关键人物</div>
-    <p><strong>Hooke（1665）</strong>：观察软木塞，命名 cell（实际看到的是细胞壁/死细胞）。</p>
-    <p><strong>Leeuwenhoek（1674）</strong>：放大200倍，首次看到<strong>活细胞</strong>（红细胞、精子）。</p>
-    <p><strong>施莱登+施旺（1830s）</strong>：细胞学说——所有动植物由细胞组成。</p>
-  </div>
-  <div class="card warn"><div class="label">易错</div><p>细胞是<strong>基本组成单位</strong>，不是最小单位（比细胞小的还有细胞器、分子、原子）。</p></div>
-
-  <h3>三个诺贝尔奖</h3>
-  <table>
-    <tr><th>年份</th><th>贡献</th></tr>
-    <tr><td><strong>1974</strong></td><td>细胞器结构与功能（溶酶体、过氧化物酶体、内质网-核糖体系统）</td></tr>
-    <tr><td><strong>1999</strong></td><td>蛋白质<strong>定位信号肽</strong>，决定胞内分布</td></tr>
-    <tr><td><strong>2013</strong></td><td><strong>囊泡运输</strong>调控机制</td></tr>
-  </table>
-  <p style="font-size:9pt;color:var(--muted);">平均间隔约20年。功能学研究从1970s开始，至今约50年。</p>
-
-  <div class="footer"><span>细胞生物学 · 绪论与细胞膜框架</span><span>第 3 页</span></div>
+<h2 class="h2">1. 为何学细胞生物学与四大功能模块</h2>
+<p class="lead">生理与病理的分子基础由细胞层面四大模块构成，其上游是亚细胞结构。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>最终关注人的生理与病理问题 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>细胞生理学第一模块：细胞内物质运输与稳态 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>第二模块：细胞内能量代谢 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>第三模块：细胞内信号转导 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>第四模块：大分子质量控制与稳态（DNA、RNA、蛋白质） <span class="loc">〔说话人2 01:01〕</span></li>
+<li>四大功能模块构成细胞生理学或分子生理学基本组成 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>发育分化衰老代谢等过程均涉及四大模块 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>四大模块上游是亚细胞结构：细胞器、细胞骨架、大分子凝聚体 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>研究细胞生物学即深入理解亚细胞结构后再研究生理病理 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>课程负责人李老师；开课目的为建立系统性框架 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>脑中无框架则知识破碎</li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>模块</th><th>内容</th></tr>
+<tr><td>① 物质运输与稳态</td><td>细胞内物流、离子通道、分泌与内吞</td></tr>
+<tr><td>② 能量代谢</td><td>ATP、糖脂代谢</td></tr>
+<tr><td>③ 信号转导</td><td>胞内外信息传递</td></tr>
+<tr><td>④ 大分子质控</td><td>核酸与蛋白质合成降解监控</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★必记四大模块：物质运输与稳态、能量代谢、信号转导、大分子质量控制。 <span class="loc">〔说话人2 01:01〕</span></div>
 </div>
-
 <div class="page">
-  <div class="chapter-head"><span class="chapter-no">04</span><span class="chapter-title">细胞生命特征</span></div>
-  <div class="card concl">
-    <div class="label">四大特征</div>
-    <p><strong>① 遗传</strong>：每个细胞含全部遗传信息；通用遗传系统（64密码子编码20种氨基酸，简并性）。</p>
-    <p><strong>② 能量</strong>：从环境获取能量；ATP是主要能量货币。</p>
-    <p><strong>③ 膜结构</strong>：磷脂双分子层为基础；隔离+选择性交流+反应平台。</p>
-    <p><strong>④ 基础基因</strong>：生存必需基因约<strong>500个</strong>（人约2万个基因）。</p>
-  </div>
-  <div class="card warn"><div class="label">教师强调</div><p>做生物医学研究不懂遗传学 = 残废。很多组学研究只给结论不说机制，就是因为不懂遗传学。</p></div>
-  <div class="card gold"><div class="label">最小基因组</div><p>支原体：已知基因组最小的物种，仅约500个基础基因，寄生性，从宿主获得小分子。</p></div>
-
-  <h3>细胞膜 · 三类脂</h3>
-  <table>
-    <tr><th>类别</th><th>代表</th><th>特点</th></tr>
-    <tr><td>甘油磷脂</td><td>PC、PE、PS</td><td>细胞膜主体，甘油骨架+两条脂肪酸链</td></tr>
-    <tr><td>鞘脂</td><td>鞘磷脂</td><td>少量掺杂</td></tr>
-    <tr><td>胆固醇</td><td>—</td><td>调节流动性，无法代谢（胆汁排出），类固醇激素原料</td></tr>
-  </table>
-
-  <h3>磷脂双分子层特性</h3>
-  <div class="card concl">
-    <div class="label">五大特性</div>
-    <p><strong>① 两亲性</strong>：头部亲水+尾部疏水 → 自发形成双分子层。</p>
-    <p><strong>② 封闭性</strong>：边缘暴露疏水尾部能量不稳 → 自发卷曲成囊泡（原始细胞形成推测）。</p>
-    <p><strong>③ 流动性</strong>：侧向流动（不需能）+ 翻转（需翻转酶+能量）。</p>
-    <p><strong>④ 不对称性</strong>：内外层脂质种类不同；脂质本身是底层信号分子。</p>
-    <p><strong>⑤ 脂筏</strong>：胆固醇富集微区，富集特定功能蛋白。</p>
-  </div>
-
-  <div class="footer"><span>细胞生物学 · 绪论与细胞膜框架</span><span>第 4 页</span></div>
+<h2 class="h2">2. 细胞定义、发现史与诺奖脉络</h2>
+<p class="lead">细胞是生命体基本组成单位；功能学研究由细胞器诺奖串起。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>细胞是生命体基本组成单位，不是最小单位 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>原核到真核谱系均由细胞构成（大肠杆菌、藻类、植物、动物） <span class="loc">〔说话人2 01:01〕</span></li>
+<li>人工细胞与虚拟细胞因细胞是基本生命单位而受关注 <span class="loc">〔说话人2 06:53〕</span></li>
+<li>1665年Hooke观察软木塞命名cell（小房间），见细胞壁 <span class="loc">〔说话人2 06:53〕</span></li>
+<li>1674年Leeuwenhoek显微镜约200倍，见红细胞；1677年见精子 <span class="loc">〔说话人2 06:53〕</span></li>
+<li>1809年拉马克假说生物体由细胞组成 <span class="loc">〔说话人2 06:53〕</span></li>
+<li>1830年代分辨率约1微米；施莱登与施旺提出细胞学说 <span class="loc">〔说话人2 06:53〕</span></li>
+<li>1974诺奖Claude、de Duve、Palade：细胞器结构与功能</li>
+<li>核糖体严格说不算细胞器，但附着内质网，属核糖体-内质网系统 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>细胞器分子层面系统研究约自1970年代，五六十年历史 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>1999诺奖Blobel：蛋白质内在定位信号决定胞内分布 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>2013诺奖Rothman、Schekman、Südhof：囊泡运输调控</li>
+<li>三个诺奖平均间隔约20年串起亚细胞生物学发展 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>形态学发现很早，功能学研究上世纪70年代起 <span class="loc">〔说话人2 10:59〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>年份</th><th>贡献</th></tr>
+<tr><td>1974</td><td>细胞器结构与功能（溶酶体、过氧化物酶体等）</td></tr>
+<tr><td>1999</td><td>蛋白质定位信号</td></tr>
+<tr><td>2013</td><td>细胞内囊泡运输调控</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★Hooke 命名 cell（在软木塞中见到的死细胞壁）；Leeuwenhoek 首次观察活细胞（红细胞、精子）。</div>
 </div>
-
 <div class="page">
-  <div class="chapter-head"><span class="chapter-no">05</span><span class="chapter-title">细胞膜（续）</span></div>
-
-  <div class="card gold">
-    <div class="label">PS外翻与细胞凋亡（高频考点）</div>
-    <p>正常：PS（磷脂酰丝氨酸）位于细胞膜<strong>内侧</strong>。</p>
-    <p>凋亡时：PS外翻到外侧 → 发出"我快死了，请吞噬我"的信号。</p>
-    <p>翻转酶突变 → 免疫缺陷疾病。</p>
-  </div>
-  <div class="hl"><span class="tag">分布</span>红细胞膜：外侧PC+鞘脂多；内侧PS+PE多。</div>
-
-  <h3>膜蛋白</h3>
-  <ul>
-    <li>约<strong>30%</strong>的蛋白质是膜蛋白（人预估100万种中约30万种）。</li>
-    <li>8种类型：单跨膜、多跨膜、桶状跨膜（β-折叠/孔蛋白）、半跨膜、脂质锚定、GPI锚定、膜相关等。</li>
-    <li><strong>定位决定功能</strong>——不知道空间定位，对功能理解就有限。</li>
-    <li>跨膜区 = 疏水α-螺旋，可通过生物信息学软件预测。</li>
-    <li>新领域：<strong>表面组学（surfaceomics）</strong>——整体研究膜表面所有露头蛋白。</li>
-  </ul>
-
-  <h3>膜骨架与糖基化</h3>
-  <div class="card concl">
-    <div class="label">膜骨架</div>
-    <p>血影蛋白（spectrin）+ 肌动蛋白等，贴在膜内侧形成网络，支撑膜形态。</p>
-    <p>缺陷 → <strong>遗传性溶血性贫血</strong>。</p>
-  </div>
-  <div class="card concl">
-    <div class="label">糖基化</div>
-    <p>糖仅分布于<strong>非胞质侧</strong>（细胞膜外侧），高尔基体合成。</p>
-    <p>例：新冠病毒表面大量糖基化形成"糖盾"，逃避免疫识别。</p>
-  </div>
-
-  <div class="footer"><span>细胞生物学 · 绪论与细胞膜框架</span><span>第 5 页</span></div>
+<h2 class="h2">3. 模式生物、学科定义与细胞生命特征</h2>
+<p class="lead">分子细胞生物学强调动态与时空分辨率；细胞具遗传、能量、膜结构等特征。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>模式生物：酵母、果蝇、线虫、小鼠、斑马鱼、灵长类 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>模式生物标准：简单好用、后代多、好储存、便宜 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>进化保守性使简单模式生物可研究人类关心过程 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>细胞生物学以细胞为对象：整体、亚细胞、分子三层次 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>用动态观点研究细胞器结构功能与生活史 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>又称分子细胞生物学，属生命科学前沿 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>静态成像、跑胶缺乏时空分辨率，所得结论不准 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>遗传：繁殖相似性状子代；每个细胞含全部遗传信息 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>不懂遗传学则难以拓展生物医学研究 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>DNA中心法则与密码子：64密码子编码20种氨基酸 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>翻译方式生命界通用；简并性与tRNA丰度有关 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>细胞从环境获取能量；植物藻类光合作用，动物食物链 <span class="loc">〔说话人2 24:15〕</span></li>
+<li>ATP为细胞内大部分反应能量货币（亦有GTP） <span class="loc">〔说话人2 24:15〕</span></li>
+<li>动植物化学反应原料差异大但基本原则相通 <span class="loc">〔说话人2 24:15〕</span></li>
+<li>膜结构：磷脂双分子层、选择性交流、提供微环境 <span class="loc">〔说话人2 24:15〕</span></li>
+<li>膜本身也是反应平台；凝聚体属空间分布概念 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>生存必需基因约500个；人约2万基因 <span class="loc">〔说话人2 24:15〕</span></li>
+<li>支原体基因组最小约500基因，主要大分子合成 <span class="loc">〔说话人2 24:15〕</span></li>
+<li>单细胞是最小能自我繁殖单位：遗传、蛋白合成、膜、能量 <span class="loc">〔说话人2 28:23〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>特征</th><th>要点</th></tr>
+<tr><td>遗传</td><td>全部遗传信息、中心法则、密码子</td></tr>
+<tr><td>能量</td><td>环境获能、ATP</td></tr>
+<tr><td>膜结构</td><td>隔离、选择性通透、反应平台</td></tr>
+<tr><td>基础基因</td><td>约500必需基因</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★细胞是基本组成单位，不是最小单位；不懂遗传学则难以拓展生物医学研究。 <span class="loc">〔说话人2 10:59〕</span></div>
 </div>
-
 <div class="page">
-  <div class="chapter-head"><span class="chapter-no">06</span><span class="chapter-title">细胞器</span></div>
-
-  <div class="card gold">
-    <div class="label">线粒体的特殊性（高频考点）</div>
-    <p><strong>内共生起源</strong>：古细菌被真核细胞吞噬后共存，演化为线粒体。</p>
-    <p><strong>唯一有自身基因组（mtDNA）的细胞器</strong>。</p>
-    <p>经典理论：线粒体<strong>不属于囊泡运输体系</strong>，是独立的细胞器系统。</p>
-    <p style="font-size:9pt;color:var(--muted);">新进展（争议）：应激状态下可能与其他细胞器有膜接触交流。</p>
-  </div>
-
-  <h3>细胞器遗传</h3>
-  <div class="card concl">
-    <div class="label">母系遗传</div>
-    <p>子细胞中的细胞器<strong>不是从头合成的，而是从母细胞继承</strong>。</p>
-    <p>卵细胞大、精子小 → 子代细胞器主要来自母亲。</p>
-    <p>这也是母系遗传疾病影响远大于父系的原因之一。</p>
-  </div>
-
-  <h3>细胞器间三种运输方式</h3>
-  <table>
-    <tr><th>方式</th><th>路径</th><th>例子</th></tr>
-    <tr><td>门控运输</td><td>通过核孔</td><td>细胞核↔细胞质</td></tr>
-    <tr><td>跨膜运输</td><td>蛋白质跨膜进入</td><td>线粒体、过氧化物酶体</td></tr>
-    <tr><td>囊泡运输</td><td>囊泡传递</td><td>内质网→高尔基体→内体/溶酶体/细胞膜</td></tr>
-  </table>
-
-  <div class="hl"><span class="tag">定位信号</span>蛋白质含15-60氨基酸的定位信号肽，决定运输目的地（1999诺奖）。可人工利用信号肽定位蛋白。</div>
-
-  <h3>细胞器概况</h3>
-  <ul>
-    <li>膜性细胞器总体积占细胞约<strong>一半</strong>，总膜面积大于细胞膜。</li>
-    <li>同一种细胞器在不同细胞中功能相同，但含量和形态是动态的。</li>
-    <li>非膜细胞器：蛋白质相分离形成的凝聚体。</li>
-  </ul>
-
-  <div class="footer"><span>细胞生物学 · 绪论与细胞膜框架</span><span>第 6 页</span></div>
+<h2 class="h2">4. 生物膜与三大类脂</h2>
+<p class="lead">生物膜包括细胞膜与细胞器膜；脂类以甘油磷脂为主体。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>不理解膜结构则无法讨论物质运输 <span class="loc">〔说话人2 28:23〕</span></li>
+<li>生物膜含细胞膜与各细胞器膜，膜逐层分割细胞 <span class="loc">〔说话人2 28:23〕</span></li>
+<li>膜脂三大类：甘油磷脂、鞘脂、胆固醇 <span class="loc">〔说话人2 28:23〕</span></li>
+<li>甘油磷脂含PC、PE、PS等；两条脂肪酸链可饱和或不饱和</li>
+<li>PC、PE、PS 构成膜主体；少量鞘脂；胆固醇镶嵌调节硬度</li>
+<li>人体胆固醇不能代谢，经胆汁排肠道；可饮食或自身合成 <span class="loc">〔说话人2 28:23〕</span></li>
+<li>胆固醇缺乏可致激素体系问题 <span class="loc">〔说话人2 32:27〕</span></li>
+<li>脂类两亲性：头亲水尾疏水，决定膜一切结构特征</li>
+<li>水中自发形成双分子层；锥形脂→球形，柱状脂→双分子层 <span class="loc">〔说话人2 32:38〕</span></li>
+<li>磷脂双分子层趋于封闭结构，与原始细胞形成假说相关 <span class="loc">〔说话人2 32:38〕</span></li>
+<li>膜流动性：侧向流动易；翻转需翻转酶耗能 <span class="loc">〔说话人2 32:38〕</span></li>
+<li>凋亡前PS外翻，巨噬细胞吞噬；翻转酶突变可免疫缺陷 <span class="loc">〔说话人2 32:38〕</span></li>
+<li>不饱和脂肪酸链流动性好；不同细胞器脂组成不同 <span class="loc">〔说话人2 32:38〕</span></li>
+<li>胆固醇像膜上小船（脂筏），富集功能蛋白 <span class="loc">〔说话人2 38:24〕</span></li>
+<li>脂滴在内质网形成，储甘油三酯等中性脂 <span class="loc">〔说话人2 38:24〕</span></li>
+<li>磷脂双分子层具强烈不对称性 <span class="loc">〔说话人2 39:37〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>脂类</th><th>代表</th><th>作用</th></tr>
+<tr><td>甘油磷脂</td><td>PC、PE、PS</td><td>膜主体</td></tr>
+<tr><td>鞘脂</td><td>鞘磷脂</td><td>少量掺杂</td></tr>
+<tr><td>胆固醇</td><td>—</td><td>硬度、脂筏、激素原料</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★膜脂三大类（甘油磷脂、鞘脂、胆固醇）；翻转酶缺陷与 PS 外翻的凋亡信号。</div>
 </div>
-
 <div class="page">
-  <div class="chapter-head"><span class="chapter-no">07</span><span class="chapter-title">新技术与易错点</span></div>
-
-  <h3>五大新技术</h3>
-  <table>
-    <tr><th>技术</th><th>关键参数/原理</th></tr>
-    <tr><td>超高分辨显微镜</td><td>分辨率60nm（传统200nm），每秒250帧，活体3D</td></tr>
-    <tr><td>原子力显微镜AFM</td><td>测量大分子间相互作用力（皮牛级）</td></tr>
-    <tr><td>冷冻电镜断层cryo-ET</td><td>玻璃化+FIB离子束减薄+断层扫描，原位看蛋白空间排列</td></tr>
-    <tr><td>蛋白质相分离</td><td>溶解态→液态→胶态→固态（病理性不可逆，如老年痴呆）</td></tr>
-    <tr><td>体外重构</td><td>控制变量重建过程，需体内+体外互证</td></tr>
-  </table>
-
-  <h3>易错点汇总</h3>
-  <ol>
-    <li>细胞是<strong>基本组成单位</strong>，不是最小单位。</li>
-    <li>Hooke看到的是<strong>细胞壁（死细胞）</strong>；Leeuwenhoek首次看到活细胞。</li>
-    <li>PS正常在<strong>内侧</strong>，外翻=凋亡信号。</li>
-    <li>线粒体有<strong>mtDNA</strong>，是唯一有遗传物质的细胞器。</li>
-    <li>细胞器<strong>母系遗传</strong>，不是从头合成。</li>
-    <li>体外培养细胞<strong>失去极性</strong>，结论不能直接推广到体内。</li>
-    <li>膜蛋白占<strong>30%</strong>，定位决定功能。</li>
-    <li>脂质不仅是结构成分，还是<strong>信号分子</strong>（脂质组学）。</li>
-  </ol>
-
-  <h3>主动回忆题</h3>
-  <div class="card">
-    <p><strong>Q1. 为什么说细胞生物学是生理学和病理学的基础？</strong></p>
-    <p>四大功能模块是所有生理/病理过程的分子基础，其上游支撑是亚细胞结构。理解亚细胞结构才能理解疾病机制。</p>
-  </div>
-  <div class="card">
-    <p><strong>Q2. 磷脂双分子层不对称性的生物学意义？</strong></p>
-    <p>内外层脂质不同→结合不同蛋白→不同结构功能；PS外翻=凋亡信号；脂质是底层信号分子。</p>
-  </div>
-  <div class="card">
-    <p><strong>Q3. 线粒体为什么特殊？</strong></p>
-    <p>内共生起源、有mtDNA、不属于经典囊泡运输体系。</p>
-  </div>
-
-  <div style="margin-top:8mm;text-align:center;color:var(--muted);font-size:9pt;">— 细胞生物学 · 第1-2节 · 完 —</div>
-  <div class="footer"><span>细胞生物学 · 绪论与细胞膜框架</span><span>第 7 页</span></div>
+<h2 class="h2">5. 膜不对称、脂质信号与糖被</h2>
+<p class="lead">内外层脂不同决定蛋白结合与底层信号；糖被在外侧受调控合成。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>红细胞膜外侧PC与鞘脂多，内侧PS与PE多</li>
+<li>PS 大量外翻提示细胞凋亡，招募巨噬细胞吞噬</li>
+<li>脂质种类不同结合蛋白不同，脂质是最底层信号 <span class="loc">〔说话人2 39:37〕</span></li>
+<li>脂质组学lipidomics解码细胞生物学底层信号 <span class="loc">〔说话人2 41:27〕</span></li>
+<li>肿瘤相关信号通路的底层信号来自脂质</li>
+<li>糖脂糖蛋白糖被仅分布于非胞质侧（膜外侧） <span class="loc">〔说话人2 41:27〕</span></li>
+<li>糖在高尔基体合成，参与粘附与信号；糖科学兴起 <span class="loc">〔说话人2 41:27〕</span></li>
+<li>新冠刺突蛋白高度糖基化，糖盾致抗体难产生</li>
+<li>糖基化有调控，非随机 <span class="loc">〔说话人2 44:37〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>★PS 正常位于膜内侧，外翻是凋亡信号；脂质本身也是信号分子。</div>
 </div>
-
-</body>
-</html>
+<div class="page">
+<h2 class="h2">6. 膜蛋白、膜骨架与细胞极性</h2>
+<p class="lead">约三成蛋白为膜蛋白；定位决定功能；体外培养失去极性。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>膜蛋白约占蛋白总量30%，人预估约100万种蛋白中30余万种为膜蛋白 <span class="loc">〔说话人2 44:37〕</span></li>
+<li>表面组学整体鉴定细胞膜露头蛋白 <span class="loc">〔说话人2 47:11〕</span></li>
+<li>膜蛋白八类：单跨膜、多跨膜、桶状、半跨膜、脂锚定、GPI锚定、膜相关等 <span class="loc">〔说话人2 47:11〕</span></li>
+<li>离子通道与转运蛋白多属跨膜；贴膜研究常关注锚定与GPI等</li>
+<li>定位决定功能；不知定位则功能理解有限 <span class="loc">〔说话人2 51:08〕</span></li>
+<li>跨膜区疏水α螺旋，可用生物信息学预测跨膜段 <span class="loc">〔说话人2 51:08〕</span></li>
+<li>桶状跨膜形成离子或小分子通道 <span class="loc">〔说话人2 54:05〕</span></li>
+<li>糖基化主要在内质网与高尔基体，可判断蛋白是否经高尔基 <span class="loc">〔说话人2 54:05〕</span></li>
+<li>去垢剂抽提膜蛋白结构与原位可能不同 <span class="loc">〔说话人2 54:05〕</span></li>
+<li>镶嵌脂双层测结构优于单纯去膜，仍非完全原生膜</li>
+<li>活细胞冷冻电镜见原位结构；构象异构仍难捕捉</li>
+<li>膜蛋白也具流动性；FRAP光漂白实验证流动 <span class="loc">〔说话人2 54:05〕</span></li>
+<li>膜蛋白分布具极性：肠上皮腔面与基底面不同</li>
+<li>HeLa等体外培养细胞失去极性，结论难直接对应体内 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>膜骨架在膜内侧：血影蛋白spectrin等，支撑膜形态 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>膜骨架缺陷可致遗传性溶血性贫血 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>膜形态片状管状球状由塑形蛋白决定，形态决定功能 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>胞质并非混沌，由膜包裹或蛋白凝聚形成分区 <span class="loc">〔说话人2 51:08〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>概念</th><th>要点</th></tr>
+<tr><td>表面组学</td><td>膜表面露头蛋白组</td></tr>
+<tr><td>极性</td><td>膜蛋白区域分布不同</td></tr>
+<tr><td>膜骨架</td><td>内侧网络支撑形态</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★定位决定功能；体外培养失极性需体内验证。 <span class="loc">〔说话人2 01:00:02〕</span></div>
+</div>
+<div class="page">
+<h2 class="h2">7. 细胞器概论、起源与运输</h2>
+<p class="lead">膜性细胞器占细胞体积约一半；线粒体内共生且经典上独立于囊泡体系。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>膜性细胞器：核、内质网、高尔基体、线粒体、溶酶体、内体等 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>非膜细胞器：蛋白相分离形成的凝聚体 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>1974年起细胞器系统研究；脂滴亦视作细胞器 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>同种细胞器在不同细胞功能相同但含量形态动态 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>膜性细胞器总体积约细胞一半，总膜面积大于细胞膜 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>膜提供反应平台，须说明反应发生在哪一膜上 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>细胞器起源两类：内陷膜与线粒体古细菌内共生 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>线粒体自有mtDNA，为唯一具自身遗传物质的细胞器 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>经典图式：线粒体无绿色囊泡运输箭头，独立于打包体系 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>应激下线粒体膜接触交流有新报道，生理状态仍待证实</li>
+<li>细胞器间运输三门控、跨膜、囊泡 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>1999 定位信号肽一般 15–60 个氨基酸 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>信号肽可人工引导蛋白定位 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>子代细胞器多继承卵细胞而非从头合成，母系遗传明显 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>精子主要提供遗传物质，卵细胞提供细胞器主体 <span class="loc">〔说话人2 01:00:02〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>运输</th><th>例</th></tr>
+<tr><td>门控</td><td>核孔</td></tr>
+<tr><td>跨膜</td><td>线粒体、过氧化物酶体</td></tr>
+<tr><td>囊泡</td><td>内质网—高尔基体—分泌/溶酶体</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★线粒体mtDNA与内共生；细胞器母系遗传。 <span class="loc">〔说话人2 01:00:02〕</span></div>
+</div>
+<div class="page">
+<h2 class="h2">8. 技术驱动：成像、力谱、冷冻断层与体外重构</h2>
+<p class="lead">细胞生物学由技术推动；须结合体内观察与体外重构。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>细胞生物学发展技术驱动，如超高分辨率显微镜 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>传统光学显微镜分辨率约150至200纳米受波长限制 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>电镜电子束波长约50纳米可见超微结构 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>超高分辨可达约60纳米，拍摄约每秒250帧，可3D活细胞 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>荧光亮度不足则超分辨解析度下降；Z越深分辨率越差 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>拍摄速度关系时间分辨率，捕捉快速囊泡运输 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>原子力显微镜AFM可测皮牛级分子间作用力 <span class="loc">〔说话人2 01:22:10〕</span></li>
+<li>冷冻电镜断层cryo-ET：玻璃化、荧光定位、FIB离子减薄、断层重建</li>
+<li>原位观察细胞内蛋白空间排列，解析度仍低于单颗粒 <span class="loc">〔说话人2 01:22:10〕</span></li>
+<li>蛋白质相分离四态：溶解态、液态、胶态、固态 <span class="loc">〔说话人2 01:22:10〕</span></li>
+<li>固态淀粉样沉淀与阿尔茨海默病等神经退行相关 <span class="loc">〔说话人2 01:22:10〕</span></li>
+<li>液态胶态可逆，固态难恢复致病</li>
+<li>体外重构reconstitution控制变量解析通路，须与体内互证 <span class="loc">〔说话人2 01:22:10〕</span></li>
+<li>高水平研究体内现象加体外重构验证 <span class="loc">〔说话人2 01:22:10〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>技术</th><th>要点</th></tr>
+<tr><td>超分辨荧光</td><td>约60nm、高速、需亮荧光</td></tr>
+<tr><td>AFM</td><td>表面力与形貌</td></tr>
+<tr><td>cryo-ET</td><td>原位断层</td></tr>
+<tr><td>相分离</td><td>无膜细胞器</td></tr>
+<tr><td>体外重构</td><td>降噪推机制</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★体外结论不能代替体内；相分离固态与神经退行。 <span class="loc">〔说话人2 01:22:10〕</span></div>
+</div>
+<div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv">
+<li>四大模块：物质运输稳态、能量代谢、信号转导、大分子质控 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>亚细胞结构支撑四大模块 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>细胞是基本组成单位非最小单位 <span class="loc">〔说话人2 01:01〕</span></li>
+<li>Hooke cell与Leeuwenhoek活细胞</li>
+<li>1974/1999/2013三个诺奖 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>模式生物四标准 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>三层次动态的细胞生物学定义 <span class="loc">〔说话人2 10:59〕</span></li>
+<li>遗传能量膜结构与约500必需基因 <span class="loc">〔说话人2 24:15〕</span></li>
+<li>膜脂三类与两亲性双分子层 <span class="loc">〔说话人2 28:23〕</span></li>
+<li>侧向流动与翻转酶 <span class="loc">〔说话人2 32:38〕</span></li>
+<li>PS外翻凋亡</li>
+<li>脂筏与脂滴</li>
+<li>膜蛋白约30%与定位决定功能 <span class="loc">〔说话人2 51:08〕</span></li>
+<li>八类膜蛋白与表面组学 <span class="loc">〔说话人2 47:11〕</span></li>
+<li>膜极性与体外培养失极性 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>线粒体mtDNA内共生 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>三种细胞器运输（门控·跨膜·囊泡） <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>定位信号肽约 15–60 个氨基酸 <span class="loc">〔说话人2 01:00:02〕</span></li>
+<li>超分辨AFM cryo-ET相分离体外重构</li>
+</ul></div>
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>细胞是最小生命单位</td><td>细胞是基本组成单位；最小能自我繁殖单位指繁殖层面 <span class="loc">〔说话人2 28:23〕</span></td></tr>
+<tr><td>Hooke看到活细胞</td><td>Hooke见软木塞细胞壁；Leeuwenhoek见活细胞</td></tr>
+<tr><td>核糖体是经典细胞器</td><td>严格说不算细胞器，附着内质网，属核糖体-内质网系统 <span class="loc">〔说话人2 10:59〕</span></td></tr>
+<tr><td>胆固醇可代谢排出</td><td>胆固醇不能代谢，经胆汁排肠道 <span class="loc">〔说话人2 28:23〕</span></td></tr>
+<tr><td>膜两侧脂对称</td><td>双层不对称，PS主要内侧 <span class="loc">〔说话人2 39:37〕</span></td></tr>
+<tr><td>体外细胞结论可直接用于人</td><td>体外培养失极性，须体内验证 <span class="loc">〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>线粒体参与经典囊泡运输</td><td>经典理论线粒体独立于囊泡打包体系 <span class="loc">〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>体外重构等于体内</td><td>体外降噪推机制，须与体内互证</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>四大功能模块</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td><td>默写/简答</td></tr>
+<tr><td>Hooke与Leeuwenhoek</td><td>§2</td><td>—</td><td>单选</td></tr>
+<tr><td>三个诺奖年份与内容</td><td>§2</td><td> <span>〔说话人2 10:59〕</span></td><td>填空</td></tr>
+<tr><td>膜脂三类</td><td>§4</td><td>—</td><td>单选</td></tr>
+<tr><td>PS外翻与凋亡</td><td>§5</td><td>—</td><td>简答</td></tr>
+<tr><td>膜蛋白比例与定位</td><td>§6</td><td> <span>〔说话人2 44:37〕</span></td><td>单选</td></tr>
+<tr><td>线粒体特殊性</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td><td>论述</td></tr>
+<tr><td>体外培养极性</td><td>§6</td><td> <span>〔说话人2 01:00:02〕</span></td><td>易错</td></tr>
+<tr><td>相分离与疾病</td><td>§8</td><td> <span>〔说话人2 01:22:10〕</span></td><td>简答</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>最终关注人的生理与病理问题</td><td>结论</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>2</td><td>细胞生理学第一模块：细胞内物质运输与稳态</td><td>结论</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>3</td><td>第二模块：细胞内能量代谢</td><td>结论</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>4</td><td>第三模块：细胞内信号转导</td><td>结论</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>5</td><td>第四模块：大分子质量控制与稳态（DNA、RNA、蛋白质）</td><td>结论</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>6</td><td>四大功能模块构成细胞生理学或分子生理学基本组成</td><td>结论</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>7</td><td>发育分化衰老代谢等过程均涉及四大模块</td><td>结论</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>8</td><td>四大模块上游是亚细胞结构：细胞器、细胞骨架、大分子凝聚体</td><td>结论</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>9</td><td>研究细胞生物学即深入理解亚细胞结构后再研究生理病理</td><td>结论</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>10</td><td>课程负责人李老师；开课目的为建立系统性框架</td><td>结论</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>11</td><td>脑中无框架则知识破碎</td><td>结论</td><td>§1</td><td>—</td></tr>
+<tr><td>12</td><td>细胞是生命体基本组成单位，不是最小单位</td><td>结论</td><td>§2</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>13</td><td>原核到真核谱系均由细胞构成（大肠杆菌、藻类、植物、动物）</td><td>结论</td><td>§2</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>14</td><td>人工细胞与虚拟细胞因细胞是基本生命单位而受关注</td><td>结论</td><td>§2</td><td> <span>〔说话人2 06:53〕</span></td></tr>
+<tr><td>15</td><td>1665年Hooke观察软木塞命名cell（小房间），见细胞壁</td><td>结论</td><td>§2</td><td> <span>〔说话人2 06:53〕</span></td></tr>
+<tr><td>16</td><td>1674年Leeuwenhoek显微镜约200倍，见红细胞；1677年见精子</td><td>结论</td><td>§2</td><td> <span>〔说话人2 06:53〕</span></td></tr>
+<tr><td>17</td><td>1809年拉马克假说生物体由细胞组成</td><td>结论</td><td>§2</td><td> <span>〔说话人2 06:53〕</span></td></tr>
+<tr><td>18</td><td>1830年代分辨率约1微米；施莱登与施旺提出细胞学说</td><td>结论</td><td>§2</td><td> <span>〔说话人2 06:53〕</span></td></tr>
+<tr><td>19</td><td>1974诺奖Claude、de Duve、Palade：细胞器结构与功能</td><td>结论</td><td>§2</td><td>—</td></tr>
+<tr><td>20</td><td>核糖体严格说不算细胞器，但附着内质网，属核糖体-内质网系统</td><td>结论</td><td>§2</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>21</td><td>细胞器分子层面系统研究约自1970年代，五六十年历史</td><td>结论</td><td>§2</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>22</td><td>1999诺奖Blobel：蛋白质内在定位信号决定胞内分布</td><td>结论</td><td>§2</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>23</td><td>2013诺奖Rothman、Schekman、Südhof：囊泡运输调控</td><td>结论</td><td>§2</td><td>—</td></tr>
+<tr><td>24</td><td>三个诺奖平均间隔约20年串起亚细胞生物学发展</td><td>结论</td><td>§2</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>25</td><td>形态学发现很早，功能学研究上世纪70年代起</td><td>结论</td><td>§2</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>26</td><td>模式生物：酵母、果蝇、线虫、小鼠、斑马鱼、灵长类</td><td>结论</td><td>§3</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>27</td><td>模式生物标准：简单好用、后代多、好储存、便宜</td><td>结论</td><td>§3</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>28</td><td>进化保守性使简单模式生物可研究人类关心过程</td><td>结论</td><td>§3</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>29</td><td>细胞生物学以细胞为对象：整体、亚细胞、分子三层次</td><td>结论</td><td>§3</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>30</td><td>用动态观点研究细胞器结构功能与生活史</td><td>结论</td><td>§3</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>31</td><td>又称分子细胞生物学，属生命科学前沿</td><td>结论</td><td>§3</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>32</td><td>静态成像跑胶等无时空分辨率结论不准</td><td>结论</td><td>§3</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>33</td><td>遗传：繁殖相似性状子代；每个细胞含全部遗传信息</td><td>结论</td><td>§3</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>34</td><td>不懂遗传学则难以拓展生物医学研究</td><td>结论</td><td>§3</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>35</td><td>DNA中心法则与密码子：64密码子编码20种氨基酸</td><td>结论</td><td>§3</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>36</td><td>翻译方式生命界通用；简并性与tRNA丰度有关</td><td>结论</td><td>§3</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>37</td><td>细胞从环境获取能量；植物藻类光合作用，动物食物链</td><td>结论</td><td>§3</td><td> <span>〔说话人2 24:15〕</span></td></tr>
+<tr><td>38</td><td>ATP为细胞内大部分反应能量货币（亦有GTP）</td><td>结论</td><td>§3</td><td> <span>〔说话人2 24:15〕</span></td></tr>
+<tr><td>39</td><td>动植物化学反应原料差异大但基本原则相通</td><td>结论</td><td>§3</td><td> <span>〔说话人2 24:15〕</span></td></tr>
+<tr><td>40</td><td>膜结构：磷脂双分子层、选择性交流、提供微环境</td><td>结论</td><td>§3</td><td> <span>〔说话人2 24:15〕</span></td></tr>
+<tr><td>41</td><td>膜本身也是反应平台；凝聚体属空间分布概念</td><td>结论</td><td>§3</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>42</td><td>生存必需基因约500个；人约2万基因</td><td>结论</td><td>§3</td><td> <span>〔说话人2 24:15〕</span></td></tr>
+<tr><td>43</td><td>支原体基因组最小约500基因，主要大分子合成</td><td>结论</td><td>§3</td><td> <span>〔说话人2 24:15〕</span></td></tr>
+<tr><td>44</td><td>单细胞是最小能自我繁殖单位：遗传、蛋白合成、膜、能量</td><td>结论</td><td>§3</td><td> <span>〔说话人2 28:23〕</span></td></tr>
+<tr><td>45</td><td>不理解膜结构则无法讨论物质运输</td><td>结论</td><td>§4</td><td> <span>〔说话人2 28:23〕</span></td></tr>
+<tr><td>46</td><td>生物膜含细胞膜与各细胞器膜，膜逐层分割细胞</td><td>结论</td><td>§4</td><td> <span>〔说话人2 28:23〕</span></td></tr>
+<tr><td>47</td><td>膜脂三大类：甘油磷脂、鞘脂、胆固醇</td><td>结论</td><td>§4</td><td> <span>〔说话人2 28:23〕</span></td></tr>
+<tr><td>48</td><td>甘油磷脂含PC、PE、PS等；两条脂肪酸链可饱和或不饱和</td><td>结论</td><td>§4</td><td>—</td></tr>
+<tr><td>49</td><td>PE PC PS构成膜主体；少量鞘脂；胆固醇镶嵌调节硬度</td><td>结论</td><td>§4</td><td>—</td></tr>
+<tr><td>50</td><td>人体胆固醇不能代谢，经胆汁排肠道；可饮食或自身合成</td><td>结论</td><td>§4</td><td> <span>〔说话人2 28:23〕</span></td></tr>
+<tr><td>51</td><td>胆固醇缺乏可致激素体系问题</td><td>结论</td><td>§4</td><td> <span>〔说话人2 32:27〕</span></td></tr>
+<tr><td>52</td><td>脂类两亲性：头亲水尾疏水，决定膜一切结构特征</td><td>结论</td><td>§4</td><td>—</td></tr>
+<tr><td>53</td><td>水中自发形成双分子层；锥形脂→球形，柱状脂→双分子层</td><td>结论</td><td>§4</td><td> <span>〔说话人2 32:38〕</span></td></tr>
+<tr><td>54</td><td>磷脂双分子层趋于封闭结构，与原始细胞形成假说相关</td><td>结论</td><td>§4</td><td> <span>〔说话人2 32:38〕</span></td></tr>
+<tr><td>55</td><td>膜流动性：侧向流动易；翻转需翻转酶耗能</td><td>结论</td><td>§4</td><td> <span>〔说话人2 32:38〕</span></td></tr>
+<tr><td>56</td><td>凋亡前PS外翻，巨噬细胞吞噬；翻转酶突变可免疫缺陷</td><td>结论</td><td>§4</td><td> <span>〔说话人2 32:38〕</span></td></tr>
+<tr><td>57</td><td>不饱和脂肪酸链流动性好；不同细胞器脂组成不同</td><td>结论</td><td>§4</td><td> <span>〔说话人2 32:38〕</span></td></tr>
+<tr><td>58</td><td>胆固醇像膜上小船（脂筏），富集功能蛋白</td><td>结论</td><td>§4</td><td> <span>〔说话人2 38:24〕</span></td></tr>
+<tr><td>59</td><td>脂滴在内质网形成，储甘油三酯等中性脂</td><td>结论</td><td>§4</td><td> <span>〔说话人2 38:24〕</span></td></tr>
+<tr><td>60</td><td>磷脂双分子层具强烈不对称性</td><td>结论</td><td>§4</td><td> <span>〔说话人2 39:37〕</span></td></tr>
+<tr><td>61</td><td>红细胞膜外侧PC与鞘脂多，内侧PS与PE多</td><td>结论</td><td>§5</td><td>—</td></tr>
+<tr><td>62</td><td>PS大量外翻提示细胞凋亡请吞噬</td><td>结论</td><td>§5</td><td>—</td></tr>
+<tr><td>63</td><td>脂质种类不同结合蛋白不同，脂质是最底层信号</td><td>结论</td><td>§5</td><td> <span>〔说话人2 39:37〕</span></td></tr>
+<tr><td>64</td><td>脂质组学lipidomics解码细胞生物学底层信号</td><td>结论</td><td>§5</td><td> <span>〔说话人2 41:27〕</span></td></tr>
+<tr><td>65</td><td>肿瘤相关信号通路的底层信号来自脂质</td><td>结论</td><td>§5</td><td>—</td></tr>
+<tr><td>66</td><td>糖脂糖蛋白糖被仅分布于非胞质侧（膜外侧）</td><td>结论</td><td>§5</td><td> <span>〔说话人2 41:27〕</span></td></tr>
+<tr><td>67</td><td>糖在高尔基体合成，参与粘附与信号；糖科学兴起</td><td>结论</td><td>§5</td><td> <span>〔说话人2 41:27〕</span></td></tr>
+<tr><td>68</td><td>新冠刺突蛋白高度糖基化，糖盾致抗体难产生</td><td>结论</td><td>§5</td><td>—</td></tr>
+<tr><td>69</td><td>糖基化有调控，非随机</td><td>结论</td><td>§5</td><td> <span>〔说话人2 44:37〕</span></td></tr>
+<tr><td>70</td><td>膜蛋白约占蛋白总量30%，人预估约100万种蛋白中30余万种为膜蛋白</td><td>结论</td><td>§6</td><td> <span>〔说话人2 44:37〕</span></td></tr>
+<tr><td>71</td><td>表面组学整体鉴定细胞膜露头蛋白</td><td>结论</td><td>§6</td><td> <span>〔说话人2 47:11〕</span></td></tr>
+<tr><td>72</td><td>膜蛋白八类：单跨膜、多跨膜、桶状、半跨膜、脂锚定、GPI锚定、膜相关等</td><td>结论</td><td>§6</td><td> <span>〔说话人2 47:11〕</span></td></tr>
+<tr><td>73</td><td>离子通道与转运蛋白多属跨膜；贴膜研究常关注锚定与GPI等</td><td>结论</td><td>§6</td><td>—</td></tr>
+<tr><td>74</td><td>定位决定功能；不知定位则功能理解有限</td><td>结论</td><td>§6</td><td> <span>〔说话人2 51:08〕</span></td></tr>
+<tr><td>75</td><td>跨膜区疏水α螺旋，可用生物信息学预测跨膜段</td><td>结论</td><td>§6</td><td> <span>〔说话人2 51:08〕</span></td></tr>
+<tr><td>76</td><td>桶状跨膜形成离子或小分子通道</td><td>结论</td><td>§6</td><td> <span>〔说话人2 54:05〕</span></td></tr>
+<tr><td>77</td><td>糖基化主要在内质网与高尔基体，可判断蛋白是否经高尔基</td><td>结论</td><td>§6</td><td> <span>〔说话人2 54:05〕</span></td></tr>
+<tr><td>78</td><td>去垢剂抽提膜蛋白结构与原位可能不同</td><td>结论</td><td>§6</td><td> <span>〔说话人2 54:05〕</span></td></tr>
+<tr><td>79</td><td>镶嵌脂双层测结构优于单纯去膜，仍非完全原生膜</td><td>结论</td><td>§6</td><td>—</td></tr>
+<tr><td>80</td><td>活细胞冷冻电镜见原位结构；构象异构仍难捕捉</td><td>结论</td><td>§6</td><td>—</td></tr>
+<tr><td>81</td><td>膜蛋白也具流动性；FRAP光漂白实验证流动</td><td>结论</td><td>§6</td><td> <span>〔说话人2 54:05〕</span></td></tr>
+<tr><td>82</td><td>膜蛋白分布具极性：肠上皮腔面与基底面不同</td><td>结论</td><td>§6</td><td>—</td></tr>
+<tr><td>83</td><td>HeLa等体外培养细胞失去极性，结论难直接对应体内</td><td>结论</td><td>§6</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>84</td><td>膜骨架在膜内侧：血影蛋白spectrin等，支撑膜形态</td><td>结论</td><td>§6</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>85</td><td>膜骨架缺陷可致遗传性溶血性贫血</td><td>结论</td><td>§6</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>86</td><td>膜形态片状管状球状由塑形蛋白决定，形态决定功能</td><td>结论</td><td>§6</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>87</td><td>胞质非混沌，膜包裹或蛋白凝聚分区</td><td>结论</td><td>§6</td><td> <span>〔说话人2 51:08〕</span></td></tr>
+<tr><td>88</td><td>膜性细胞器：核、内质网、高尔基体、线粒体、溶酶体、内体等</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>89</td><td>非膜细胞器：蛋白相分离形成的凝聚体</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>90</td><td>1974年起细胞器系统研究；脂滴亦视作细胞器</td><td>结论</td><td>§7</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>91</td><td>同种细胞器在不同细胞功能相同但含量形态动态</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>92</td><td>膜性细胞器总体积约细胞一半，总膜面积大于细胞膜</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>93</td><td>膜提供反应平台，须说明反应发生在哪一膜上</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>94</td><td>细胞器起源两类：内陷膜与线粒体古细菌内共生</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>95</td><td>线粒体自有mtDNA，为唯一具自身遗传物质的细胞器</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>96</td><td>经典图式：线粒体无绿色囊泡运输箭头，独立于打包体系</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>97</td><td>应激下线粒体膜接触交流有新报道，生理状态仍待证实</td><td>结论</td><td>§7</td><td>—</td></tr>
+<tr><td>98</td><td>细胞器间运输三门控、跨膜、囊泡</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>99</td><td>1999 定位信号肽一般 15–60 个氨基酸</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>100</td><td>信号肽可人工引导蛋白定位</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>101</td><td>子代细胞器多继承卵细胞而非从头合成，母系遗传明显</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>102</td><td>精子主要提供遗传物质，卵细胞提供细胞器主体</td><td>结论</td><td>§7</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>103</td><td>细胞生物学发展技术驱动，如超高分辨率显微镜</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>104</td><td>传统光学显微镜分辨率约150至200纳米受波长限制</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>105</td><td>电镜电子束波长约50纳米可见超微结构</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>106</td><td>超高分辨可达约60纳米，拍摄约每秒250帧，可3D活细胞</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>107</td><td>荧光亮度不足则超分辨解析度下降；Z越深分辨率越差</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>108</td><td>拍摄速度关系时间分辨率，捕捉快速囊泡运输</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>109</td><td>原子力显微镜AFM可测皮牛级分子间作用力</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:22:10〕</span></td></tr>
+<tr><td>110</td><td>冷冻电镜断层cryo-ET：玻璃化、荧光定位、FIB离子减薄、断层重建</td><td>结论</td><td>§8</td><td>—</td></tr>
+<tr><td>111</td><td>原位观察细胞内蛋白空间排列，解析度仍低于单颗粒</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:22:10〕</span></td></tr>
+<tr><td>112</td><td>蛋白质相分离四态：溶解态、液态、胶态、固态</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:22:10〕</span></td></tr>
+<tr><td>113</td><td>固态淀粉样沉淀与阿尔茨海默病等神经退行相关</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:22:10〕</span></td></tr>
+<tr><td>114</td><td>液态胶态可逆，固态难恢复致病</td><td>结论</td><td>§8</td><td>—</td></tr>
+<tr><td>115</td><td>体外重构reconstitution控制变量解析通路，须与体内互证</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:22:10〕</span></td></tr>
+<tr><td>116</td><td>高水平研究体内现象加体外重构验证</td><td>结论</td><td>§8</td><td> <span>〔说话人2 01:22:10〕</span></td></tr>
+<tr><td>117</td><td>课程主题绪论与细胞膜框架</td><td>元信息</td><td>封面</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>118</td><td>物质运输模块含离子通道与分泌/内吞体系</td><td>机制</td><td>§1</td><td> <span>〔说话人2 01:01〕</span></td></tr>
+<tr><td>119</td><td>光遗传学可用多跨膜感光通道蛋白</td><td>应用</td><td>§6</td><td> <span>〔说话人2 54:05〕</span></td></tr>
+<tr><td>120</td><td>糖蛋白多糖形成膜上糖被</td><td>结构</td><td>§5</td><td> <span>〔说话人2 54:05〕</span></td></tr>
+<tr><td>121</td><td>内质网与高尔基体参与糖基化</td><td>机制</td><td>§6</td><td> <span>〔说话人2 54:05〕</span></td></tr>
+<tr><td>122</td><td>细胞器动态性须时空观点</td><td>方法</td><td>§7</td><td> <span>〔说话人2 10:59〕</span></td></tr>
+<tr><td>123</td><td>ROI为成像感兴趣区域</td><td>术语</td><td>§8</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+<tr><td>124</td><td>STED SIM光片等为超分辨类型</td><td>技术</td><td>§8</td><td> <span>〔说话人2 01:00:02〕</span></td></tr>
+</table>
+<p class="foot">附录 D 共 124 条，与 recording.md 讲授内容逐条对应。</p>
+</div>
+</body></html>

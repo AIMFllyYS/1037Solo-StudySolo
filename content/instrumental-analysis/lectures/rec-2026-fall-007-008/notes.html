@@ -1,457 +1,558 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<title>分析化学 · 第7-8节 · 萃取技术与紫外可见分光光度法</title>
-<style>
-@page { size: A4; margin: 0; }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; color: #1a1a2e; background: #f8f9fc; }
-.page { width: 210mm; height: 297mm; padding: 18mm 16mm; page-break-after: always; position: relative; overflow: hidden; }
-.page:last-child { page-break-after: auto; }
-
-.cover { background: linear-gradient(135deg, #0e5c52 0%, #1a7a6e 50%, #0e5c52 100%); color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-.cover::before { content: ''; position: absolute; top: -50mm; right: -50mm; width: 200mm; height: 200mm; border-radius: 50%; background: rgba(255,255,255,0.05); }
-.cover-kicker { font-size: 11pt; letter-spacing: 6px; text-transform: uppercase; opacity: 0.7; margin-bottom: 12mm; }
-.cover h1 { font-size: 34pt; font-weight: 700; line-height: 1.3; margin-bottom: 8mm; }
-.cover h1 .accent { color: #e7ce9c; }
-.cover-sub { font-size: 13pt; opacity: 0.85; margin-bottom: 4mm; }
-.cover-meta { font-size: 10pt; opacity: 0.6; margin-top: 20mm; line-height: 2; }
-.chem-icon { font-size: 56pt; margin-bottom: 10mm; opacity: 0.9; }
-
-.page-header { display: flex; align-items: center; margin-bottom: 7mm; padding-bottom: 3mm; border-bottom: 2.5pt solid #0e5c52; }
-.chapter-badge { background: #0e5c52; color: #fff; padding: 2mm 5mm; border-radius: 3mm; font-size: 10pt; font-weight: 600; margin-right: 4mm; }
-.page-title { font-size: 17pt; font-weight: 700; color: #0a463e; }
-.page-num { font-size: 9pt; color: #888; margin-left: auto; }
-
-.section { margin-bottom: 5mm; }
-.section-title { font-size: 11.5pt; font-weight: 700; color: #0e5c52; margin-bottom: 2.5mm; padding-left: 3mm; border-left: 3pt solid #0e5c52; }
-.section-body { font-size: 9.5pt; line-height: 1.75; color: #333; }
-
-.kv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm; margin: 2.5mm 0; }
-.kv-card { background: #fff; border: 0.5pt solid #bfd8cf; border-radius: 2mm; padding: 2.5mm 3.5mm; }
-.kv-card .k { font-weight: 700; color: #0a463e; font-size: 9.5pt; margin-bottom: 0.5mm; }
-.kv-card .v { font-size: 9pt; color: #555; line-height: 1.6; }
-
-.highlight-box { background: linear-gradient(135deg, #fef9e7 0%, #fdebd0 100%); border-left: 3pt solid #a2630c; border-radius: 0 2mm 2mm 0; padding: 2.5mm 4mm; margin: 2.5mm 0; font-size: 9.5pt; }
-.highlight-box .label { font-weight: 700; color: #8a5208; font-size: 8.5pt; margin-bottom: 1mm; }
-
-.warn-box { background: #fdedec; border-left: 3pt solid #e74c3c; border-radius: 0 2mm 2mm 0; padding: 2.5mm 4mm; margin: 2.5mm 0; font-size: 9.5pt; color: #922b21; }
-.warn-box .label { font-weight: 700; font-size: 8.5pt; margin-bottom: 1mm; }
-
-.table-wrap { margin: 2.5mm 0; }
-table { width: 100%; border-collapse: collapse; font-size: 8.8pt; }
-th { background: #0e5c52; color: #fff; padding: 1.8mm 2.5mm; text-align: left; font-weight: 600; }
-td { padding: 1.8mm 2.5mm; border-bottom: 0.5pt solid #bfd8cf; }
-tr:nth-child(even) td { background: #f0f7f4; }
-
-.flow-chart { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2mm; margin: 3mm 0; }
-.flow-node { background: #0e5c52; color: #fff; padding: 2mm 3.5mm; border-radius: 2mm; font-size: 9pt; font-weight: 600; text-align: center; }
-.flow-node.light { background: #bfd8cf; color: #0a463e; }
-.flow-arrow { color: #0e5c52; font-size: 13pt; font-weight: 700; }
-
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
-
-.footer { position: absolute; bottom: 8mm; left: 16mm; right: 16mm; display: flex; justify-content: space-between; font-size: 8pt; color: #aaa; border-top: 0.5pt solid #e0e0e0; padding-top: 2mm; }
-</style>
-</head>
-<body>
-
-<!-- Page 1: Cover -->
-<div class="page cover">
-  <div class="chem-icon">⚗️</div>
-  <div class="cover-kicker">ANALYTICAL CHEMISTRY · 分析化学</div>
-  <h1>萃取技术与<br><span class="accent">紫外可见分光光度法</span></h1>
-  <div class="cover-sub">第7-8节 · 课程内累计节次</div>
-  <div class="cover-meta">
-    日期：2026年9月11日（周五）<br>
-    课表主题：分析数据处理和分析工作质量保证<br>
-    实际授课：萃取技术体系 + UV-VIS基础
-  </div>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>分析化学 · 第7-8节 · 萃取技术体系与紫外可见分光光度法基础</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#155E75; --accent-d:#0C3F51; --accent-t:#E1EEF3;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.exam .loc,.mnem .loc,.def .loc,.wrong .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.card h4{margin:0 0 2mm;font-size:10pt;color:var(--accent-d);}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:10mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body>
+<div class="page cover"><p class="h1">分析化学（仪器分析）</p>
+<p class="meta">第7-8节 · 萃取技术体系与紫外可见分光光度法基础 · 2026-09-11（周五）</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 36387 字 / 173 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>分析化学 · 第7-8节（instrumental-analysis）</td></tr>
+<tr><td>学时</td><td>2 学时</td></tr>
+<tr><td>日期</td><td>2026-09-11（周五）</td></tr>
+<tr><td>主题</td><td>萃取技术体系与紫外可见分光光度法基础</td></tr>
+<tr><td>素材规模</td><td>逐字稿 36387 字 / 173 轮发言</td></tr></table>
+<p class="foot">核心内容版笔记 · 结论式短句 · 每条附逐字稿定位</p></div>
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">两大板块：先补齐样品前处理的萃取技术体系（基础理论→方法→操作→固相萃取）；再进入紫外可见分光光度法（UV-VIS）基础（电磁波谱→分子能级→电子跃迁→生色团）。</p>
+<svg viewBox="0 0 700 372" width="100%" aria-label="知识框架">
+<rect x="250" y="6" width="200" height="30" fill="#E1EEF3" stroke="#155E75"/>
+<text x="350" y="26" text-anchor="middle" font-size="11" font-family="sans-serif">第7-8节 核心内容</text>
+<line x1="80" y1="36" x2="80" y2="58" stroke="#155E75"/><line x1="230" y1="36" x2="230" y2="58" stroke="#155E75"/><line x1="380" y1="36" x2="380" y2="58" stroke="#155E75"/><line x1="530" y1="36" x2="530" y2="58" stroke="#155E75"/><line x1="650" y1="36" x2="650" y2="58" stroke="#155E75"/>
+<rect x="15" y="58" width="130" height="30" fill="#fff" stroke="#0C3F51"/><text x="80" y="78" text-anchor="middle" font-size="9">① 前处理/萃取基础</text>
+<rect x="165" y="58" width="130" height="30" fill="#fff" stroke="#0C3F51"/><text x="230" y="78" text-anchor="middle" font-size="9">② 分配理论 K_D·D·E%</text>
+<rect x="315" y="58" width="130" height="30" fill="#fff" stroke="#0C3F51"/><text x="380" y="78" text-anchor="middle" font-size="9">③ 多次萃取</text>
+<rect x="465" y="58" width="130" height="30" fill="#fff" stroke="#0C3F51"/><text x="530" y="78" text-anchor="middle" font-size="9">④ 主流萃取方法</text>
+<rect x="615" y="58" width="70" height="30" fill="#fff" stroke="#0C3F51"/><text x="650" y="78" text-anchor="middle" font-size="9">⑤ 操作类型</text>
+<rect x="15" y="104" width="130" height="48" fill="#F7F6F2" stroke="#D8D6CE"/><text x="80" y="122" text-anchor="middle" font-size="8">灰化/消化/微波溶样</text><text x="80" y="138" text-anchor="middle" font-size="8">萃取↔反萃取</text>
+<rect x="165" y="104" width="130" height="48" fill="#F7F6F2" stroke="#D8D6CE"/><text x="230" y="122" text-anchor="middle" font-size="8">K_D 单形态平衡浓度</text><text x="230" y="138" text-anchor="middle" font-size="8">D 总浓度·E% 公式</text>
+<rect x="315" y="104" width="130" height="48" fill="#F7F6F2" stroke="#D8D6CE"/><text x="380" y="122" text-anchor="middle" font-size="8">少量多次回收率高</text><text x="380" y="138" text-anchor="middle" font-size="8">残留 m_n 等比递减</text>
+<rect x="465" y="104" width="130" height="48" fill="#F7F6F2" stroke="#D8D6CE"/><text x="530" y="122" text-anchor="middle" font-size="8">直接/ASE/SFE</text><text x="530" y="138" text-anchor="middle" font-size="8">MAE/UAE·石油醚</text>
+<rect x="615" y="104" width="70" height="48" fill="#F7F6F2" stroke="#D8D6CE"/><text x="650" y="122" text-anchor="middle" font-size="8">单级/逆流</text><text x="650" y="138" text-anchor="middle" font-size="8">索氏/稀土</text>
+<line x1="80" y1="152" x2="80" y2="174" stroke="#155E75"/><line x1="230" y1="152" x2="230" y2="174" stroke="#155E75"/><line x1="380" y1="152" x2="380" y2="174" stroke="#155E75"/><line x1="530" y1="152" x2="530" y2="174" stroke="#155E75"/><line x1="650" y1="152" x2="650" y2="174" stroke="#155E75"/>
+<rect x="15" y="174" width="670" height="30" fill="#E1EEF3" stroke="#155E75"/><text x="350" y="193" text-anchor="middle" font-size="9">⑥ 固相萃取 SPE / 固相微萃取 SPME · 沉淀法除蛋白</text>
+<rect x="15" y="214" width="200" height="30" fill="#fff" stroke="#0C3F51"/><text x="115" y="234" text-anchor="middle" font-size="9">⑦ UV-VIS 概述/电磁波谱</text>
+<rect x="225" y="214" width="200" height="30" fill="#fff" stroke="#0C3F51"/><text x="325" y="234" text-anchor="middle" font-size="9">⑧ 分子能级与吸收光谱</text>
+<rect x="435" y="214" width="250" height="30" fill="#fff" stroke="#0C3F51"/><text x="560" y="234" text-anchor="middle" font-size="9">⑨ 电子跃迁类型　⑩ 生色团/助色团</text>
+<rect x="15" y="252" width="670" height="30" fill="#FBF0DC" stroke="#A9660A"/><text x="350" y="271" text-anchor="middle" font-size="9">★掌握：K_D/D/E%、少量多次；电子跃迁与连续谱；π→π* 主力；有大共轭才有紫外吸收</text>
+<rect x="15" y="290" width="670" height="70" fill="#fff" stroke="#0C3F51"/><text x="350" y="310" text-anchor="middle" font-size="9">两条主线：两相分配（溶解度差异）→ 分离；分子吸收光（能级差）→ 定性定量</text><text x="350" y="330" text-anchor="middle" font-size="9">波段记牢：可见光 400-760 nm，紫外 200-400 nm；能级差 电子 &gt; 振动 &gt; 转动</text><text x="350" y="350" text-anchor="middle" font-size="9">红移＝向长波移动，共轭越大波长越长；生色团吸光，助色团经 p-π 共轭助红移</text>
+</svg>
+<p class="foot">图：全课十章骨架，上为萃取技术体系，下为紫外可见分光光度法基础。</p></div>
+<div class="page"><h2 class="h2">1. 样品前处理回顾与溶剂萃取基础</h2>
+<p class="lead">回顾灰化、消化与改进前处理；溶剂萃取靠溶解度差异，水→有机为萃取、有机→水为反萃取，去向由亲疏水决定。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>样品前处理基础方法：干法灰化与湿法消化 <span class="loc">〔说话人1 01:09〕</span></li>
+<li>低温等离子体氧灰化：利用氧的强氧化性提供氧化能力 <span class="loc">〔说话人1 01:09〕</span></li>
+<li>其他常用处理方法：常用消化液、密闭罐消化、微波溶样 <span class="loc">〔说话人1 01:09〕</span></li>
+<li>微波溶样：极性分子在交变电场中快速旋转，产生摩擦撕扯以分解有机物 <span class="loc">〔说话人1 01:09〕</span></li>
+<li>部分分解法即水解法，可加淀粉酶、蛋白酶，属部分水解、很常用 <span class="loc">〔说话人1 02:08〕</span></li>
+<li>溶剂萃取利用组分在互不相溶两相中溶解度（分配）的差异实现分离 <span class="loc">〔说话人1 02:29〕</span></li>
+<li>碘在有机相中的溶解度大于水，故由水相萃入有机相 <span class="loc">〔说话人1 02:29〕</span></li>
+<li>四氯化碳密度大于水，故有机相位于下层，显紫色 <span class="loc">〔说话人1 03:49〕</span></li>
+<li>上层水相残留碘显浅黄，浓度高时显棕红，说明一次萃取不完全 <span class="loc">〔说话人1 03:49〕</span></li>
+<li>一次萃取不完全，可再加有机相重复萃取 <span class="loc">〔说话人1 03:49〕</span></li>
+<li>萃取：组分由水相转入有机相；反萃取：由有机相转回水相 <span class="loc">〔说话人1 04:40〕</span></li>
+<li>锂电池回收锂是「萃取＋反萃取」循环的典型应用 <span class="loc">〔说话人1 04:40〕</span></li>
+<li>锂离子不溶于有机相，需加萃取剂（螯合物）抓入有机相，再破坏配位拉回水相 <span class="loc">〔说话人1 04:40〕</span></li>
+<li>萃取与反萃取的根据是溶解度，溶解度又由亲水性与疏水性决定 <span class="loc">〔说话人1 06:00〕</span></li>
+<li>亲水基团多为极性基团，能与水形成氢键 <span class="loc">〔说话人1 06:22〕</span></li>
+<li>疏水基团多为烃链、卤代烃，故易溶于有机相 <span class="loc">〔说话人1 06:22〕</span></li>
+<li>萃取剂用于抓取目标物，与目标物一同溶于萃取溶剂（如氯仿） <span class="loc">〔说话人1 01:43:34〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>概念</th><th>方向</th><th>说明</th></tr>
+<tr><td>萃取</td><td>水相 → 有机相</td><td>目标物进入有机相</td></tr>
+<tr><td>反萃取</td><td>有机相 → 水相</td><td>改变条件（pH、配位／螯合剂）使目标物回到水相</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>萃取基础理论（分配系数、分配比、萃取百分率）属要求掌握内容，书上有没有都要掌握 <span class="loc">〔说话人1 06:22〕</span></div>
 </div>
-
-<!-- Page 2: 基础液液萃取 -->
-<div class="page">
-  <div class="page-header">
-    <span class="chapter-badge">第一章</span>
-    <span class="page-title">基础液液萃取</span>
-    <span class="page-num">2 / 7</span>
-  </div>
-
-  <div class="section">
-    <div class="section-title">萃取与反萃取</div>
-    <div class="section-body">
-      <div class="two-col">
-        <div class="kv-card" style="border-left:3pt solid #0e5c52"><div class="k">萃取</div><div class="v">组分从<b>水相</b>转移至<b>有机相</b></div></div>
-        <div class="kv-card" style="border-left:3pt solid #a2630c"><div class="k">反萃取</div><div class="v">组分从<b>有机相</b>转移至<b>水相</b></div></div>
-      </div>
-      <div class="highlight-box">
-        <div class="label">💡 本质</div>
-        由物质的<b>亲疏水溶解特性</b>决定。利用组分在互不相溶的两相中溶解度差异实现分离。典型应用：锂电池废液中锂的回收（萃取+反萃取循环）。
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">分配系数KD与分配比D</div>
-    <div class="table-wrap">
-      <table>
-        <tr><th>参数</th><th>定义</th><th>公式</th><th>特点</th></tr>
-        <tr><td><b>分配系数 KD</b></td><td>单形态平衡浓度比</td><td>KD=[A]O/[A]W</td><td>热力学常数，仅与组分、溶剂、温度有关</td></tr>
-        <tr><td><b>分配比 D</b></td><td>总浓度比</td><td>D=CO/CW</td><td>覆盖所有存在形态，更反映实际效果</td></tr>
-      </table>
-    </div>
-    <div class="warn-box">
-      <div class="label">⚠️ 关键区别</div>
-      [A]（有方括号）= 某一形态的平衡浓度；C（无方括号）= 总浓度。当某一相存在多种形态时（如碘在水相有I₂、I⁻、次碘酸HIO等），KD只看单形态、D计入全部形态，二者不相等（课堂不要求比较大小）。
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">萃取百分率E%与多次萃取规律</div>
-    <div class="kv-grid">
-      <div class="kv-card"><div class="k">萃取百分率</div><div class="v">E% = DV_O/(DV_O+V_W) × 100%<br>等体积时：E% = D/(D+1) × 100%</div></div>
-      <div class="kv-card"><div class="k">n次萃取残留</div><div class="v">m_n = m₀ × [V_W/(DV_O+V_W)]ⁿ</div></div>
-    </div>
-    <div class="highlight-box">
-      <div class="label">🔑 核心结论</div>
-      同等总有机相用量下，<b>少量多次萃取的回收率显著高于单次萃取</b>。因为V_W/(DV_O+V_W) < 1，n越大残留越少。类比：洗衣服少量多次漂洗比一次大量漂洗更干净。
-    </div>
-  </div>
-
-  <div class="footer"><span>分析化学 · 萃取技术与UV-VIS</span><span>第 2 页</span></div>
+<div class="page"><h2 class="h2">2. 分配系数 K_D、分配比 D 与萃取百分率</h2>
+<p class="lead">K_D 是单形态平衡浓度之比、为常数；D 是总浓度之比、须覆盖所有形态；E% 由 D 与两相体积共同决定。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>分配系数记为 K_D（distribution coefficient，分配系数） <span class="loc">〔说话人1 07:15〕</span></li>
+<li>K_D = [A]ₒ/[A]_w，A 代表分配于两相的某单一形态（如碘分子） <span class="loc">〔说话人1 07:15〕</span></li>
+<li>方括号 [A] 表示某一形态的平衡浓度 <span class="loc">〔说话人1 07:15〕</span></li>
+<li>下标 O 代表 organic／oil（有机相），W 代表 water（水相） <span class="loc">〔说话人1 07:58〕</span></li>
+<li>K_D 在温度、溶剂、组分都确定时为常数 <span class="loc">〔说话人1 08:17〕</span></li>
+<li>强调一定温度，因温度会影响溶解度 <span class="loc">〔说话人1 08:17〕</span></li>
+<li>分配比记为 D，D = Cₒ/C_w，为组分在两相的总浓度之比 <span class="loc">〔说话人1 09:06〕</span></li>
+<li>C 表示总浓度（concentration），不加方括号 <span class="loc">〔说话人1 09:06〕</span></li>
+<li>碘进入水相后存在碘分子、碘离子、次碘酸等多种形态，分配比须计入全部形态 <span class="loc">〔说话人1 09:06〕</span></li>
+<li>只要某相存在多种形态，K_D 与 D 就不相等 <span class="loc">〔说话人1 09:06〕</span></li>
+<li>分配系数不考虑体积，分配比考虑体积 <span class="loc">〔说话人1 01:41:59〕</span></li>
+<li>等体积萃取时 K_D 与 D 数值相等 <span class="loc">〔说话人1 01:41:59〕</span></li>
+<li>分配系数只与组分、溶剂、温度有关 <span class="loc">〔说话人1 01:41:59〕</span></li>
+<li>分配比 D 与组分在各相中的形态分布有关 <span class="loc">〔说话人1 01:42:48〕</span></li>
+<li>萃取百分率 E%：进入有机相的组分量占总量的百分比 <span class="loc">〔说话人1 09:40〕</span></li>
+<li>E% = 有机相组分量 ÷ 总组分量 × 100%，量＝浓度×体积 <span class="loc">〔说话人1 10:21〕</span></li>
+<li>萃取率达不到 100%，水相残留属分配平衡决定的系统误差 <span class="loc">〔说话人1 10:21〕</span></li>
+<li>E% 一般式：将定义式上下同除以 C_w，得 E% = D·V_O/(D·V_O＋V_W) × 100% <span class="loc">〔说话人1 11:24〕</span></li>
+<li>两相等体积时 E% 简化为 D/(D＋1) × 100% <span class="loc">〔说话人1 11:24〕</span></li>
+<li>萃取百分率由分配比 D 与两相体积比共同决定 <span class="loc">〔说话人1 11:24〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>量</th><th>公式</th><th>含义</th></tr>
+<tr><td>分配系数 K_D</td><td>[A]ₒ/[A]_w</td><td>某一形态在两相中的平衡浓度之比，为常数</td></tr>
+<tr><td>分配比 D</td><td>Cₒ/C_w</td><td>组分在两相中的总浓度之比，覆盖全部存在形态</td></tr></table>
+<div class="def">记忆要点：方括号＝某一形态的平衡浓度，C＝总浓度；这是 K_D 与 D 的关键区别。 <span class="loc">〔说话人1 09:06〕</span></div>
+<div class="exam"><span class="tag">★考点</span>K_D、D、E% 三个概念都要掌握，须会由分配比与体积推算萃取率 <span class="loc">〔说话人1 10:21〕</span></div>
 </div>
-
-<!-- Page 3: 主流萃取方法 -->
-<div class="page">
-  <div class="page-header">
-    <span class="chapter-badge">第二章</span>
-    <span class="page-title">主流萃取方法</span>
-    <span class="page-num">3 / 7</span>
-  </div>
-
-  <div class="section">
-    <div class="section-title">五种萃取方法对比</div>
-    <div class="table-wrap">
-      <table>
-        <tr><th>方法</th><th>原理/条件</th><th>特点</th><th>典型应用</th></tr>
-        <tr><td><b>直接萃取</b></td><td>分液漏斗手动操作</td><td>最常用、最简单</td><td>CCl₄萃取水中碘、石油醚萃取脂肪</td></tr>
-        <tr><td><b>加速溶剂 ASE</b></td><td>~10 MPa高压+较高温度</td><td>加压加温提升效果</td><td>生物样本痕量活性物质提取</td></tr>
-        <tr><td><b>超临界流体 SFE</b></td><td>超临界CO₂，31℃/7.39MPa</td><td>条件温和、<b>无溶剂残留</b></td><td>精油、咖啡因提取</td></tr>
-        <tr><td><b>微波辅助 MAE</b></td><td>微波快速升温</td><td><b>速度极快</b></td><td>810W+80%乙醇，105秒提芒果皮酚类</td></tr>
-        <tr><td><b>超声辅助 UAE</b></td><td>超声空化效应</td><td>操作简便</td><td>人血浆提取法匹拉韦（抗病毒药）</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">超临界CO₂萃取详解</div>
-    <div class="section-body">
-      <div class="flow-chart">
-        <div class="flow-node light">CO₂气体</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">加压升温<br><span style="font-size:7.5pt">31℃, 7.39MPa</span></div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node light">超临界CO₂<br><span style="font-size:7.5pt">气体流动性+液体溶解度</span></div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">萃取目标物</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node light">降压<br>CO₂挥发</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">无残留产物</div>
-      </div>
-      <div class="highlight-box">
-        <div class="label">💡 为什么用CO₂？</div>
-        临界温度31℃接近室温→适合热敏性物质；无毒不燃化学惰性；降压后完全挥发→无溶剂残留；成本低易获取。
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">萃取操作类型</div>
-    <div class="kv-grid">
-      <div class="kv-card"><div class="k">单级萃取</div><div class="v">操作最简单，一次完成；单次无法完全回收，需多次重复</div></div>
-      <div class="kv-card"><div class="k">多级逆流萃取</div><div class="v">轻重两相反向流动、多级接触；<b>稀土分离核心技术</b>（徐光宪）</div></div>
-      <div class="kv-card" style="grid-column:1/-1"><div class="k">连续萃取（索氏提取器）</div><div class="v">利用溶剂回流和虹吸原理，每次用新鲜溶剂萃取；茶叶咖啡因提取；萃取后需蒸馏去溶剂</div></div>
-    </div>
-  </div>
-
-  <div class="footer"><span>分析化学 · 萃取技术与UV-VIS</span><span>第 3 页</span></div>
+<div class="page"><h2 class="h2">3. 多次萃取（少量多次）</h2>
+<p class="lead">同等总有机相用量下，分多次萃取回收率高于一次全量萃取；n 次后水相残留按等比递减。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>同等总有机相用量下，少量多次萃取的回收率高于一次全量萃取 <span class="loc">〔说话人1 12:36〕</span></li>
+<li>n 次萃取后水相残留 m_n = m_0·(V_W/(D·V_O＋V_W))^n <span class="loc">〔说话人1 11:58〕</span></li>
+<li>因 V_W/(D·V_O＋V_W) 小于 1，萃取次数越多残留越少 <span class="loc">〔说话人1 12:36〕</span></li>
+<li>该公式要求会自行推导（课上布置了不检查的作业） <span class="loc">〔说话人1 12:36〕</span></li>
+<li>类比：洗衣服打肥皂后少量多次漂洗比一次冲净更干净 <span class="loc">〔说话人1 12:36〕</span></li>
+</ul>
+<div class="mnem">助记：少量多次效果好，就像洗衣服漂清；残留公式 n 次方，次数越多越干净。 <span class="loc">〔说话人1 12:36〕</span></div>
+<div class="exam"><span class="tag">★考点</span>要求不是背公式，而是会推导多次萃取公式 <span class="loc">〔说话人1 12:36〕</span></div>
 </div>
-
-<!-- Page 4: 稀土分离与固相萃取 -->
-<div class="page">
-  <div class="page-header">
-    <span class="chapter-badge">第三章·续</span>
-    <span class="page-title">稀土分离与固相萃取</span>
-    <span class="page-num">4 / 7</span>
-  </div>
-
-  <div class="section">
-    <div class="section-title">稀土分离与徐光宪</div>
-    <div class="highlight-box" style="background:linear-gradient(135deg,#eaf2f8,#d4e6f1);border-left-color:#2e86c1">
-      <div class="label" style="color:#1a5276">🏆 「稀土之父」徐光宪</div>
-      稀土元素化学性质极相近，分离难度极大。国外用离子交换法（效率低、成本高）。徐光宪团队开创<b>多级逆流萃取</b>技术，建立串级萃取理论，实现多种稀土高效分离。更可贵的是将技术<b>无偿推广</b>到全国工厂，亲自讲学指导，使我国从稀土资源大国转变为分离生产大国。
-    </div>
-    <div class="kv-grid">
-      <div class="kv-card"><div class="k">技术优势</div><div class="v">效率远超离子交换法，成本低、处理量大</div></div>
-      <div class="kv-card"><div class="k">战略意义</div><div class="v">稀土是新能源、电子、军工不可或缺的战略物资，受出口管制</div></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">固相萃取SPE</div>
-    <div class="section-body">
-      <div class="flow-chart">
-        <div class="flow-node light">活化</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">上样<br><span style="font-size:7.5pt">目标物吸附</span></div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node light">淋洗<br><span style="font-size:7.5pt">去杂质</span></div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">洗脱<br><span style="font-size:7.5pt">收集目标物</span></div>
-      </div>
-      <div class="kv-grid">
-        <div class="kv-card"><div class="k">原理</div><div class="v">针筒状小柱装填固相吸附材料，目标物被吸附后溶剂洗脱富集</div></div>
-        <div class="kv-card"><div class="k">常用填料</div><div class="v"><b>C18（碳十八键合硅球）</b>，靠脂溶性吸附有机物</div></div>
-        <div class="kv-card" style="grid-column:1/-1"><div class="k">典型应用</div><div class="v">黄曲霉素检测前的样本富集（利用抗原特异性结合的SPE柱）</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">固相微萃取SPME</div>
-    <div class="table-wrap">
-      <table>
-        <tr><th>维度</th><th>说明</th></tr>
-        <tr><td><b>发展</b></td><td>1991年加拿大人首发论文，<b>1993年商业化</b></td></tr>
-        <tr><td><b>结构</b></td><td>类似注射器，内部为涂覆固相涂层的细针，外部保护套</td></tr>
-        <tr><td><b>操作方式</b></td><td>浸入法（难挥发组分）/ 顶空法（易挥发组分）</td></tr>
-        <tr><td><b>五大优势</b></td><td>操作时间短、样本量小、<b>无需溶剂</b>、重复性好、可自动化</td></tr>
-        <tr><td><b>定位</b></td><td>集采样、萃取、浓缩、进样于一体，绿色分析技术代表</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="footer"><span>分析化学 · 萃取技术与UV-VIS</span><span>第 4 页</span></div>
+<div class="page"><h2 class="h2">4. 主流萃取方法体系</h2>
+<p class="lead">直接萃取最常用；加速溶剂萃取高压高温、超临界流体萃取无残留、微波辅助快、超声辅助设备常见。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>直接萃取是本专业最常用、最基础的方法 <span class="loc">〔说话人1 14:17〕</span></li>
+<li>水中的碘用四氯化碳萃取，食品中的脂肪用石油醚萃取 <span class="loc">〔说话人1 14:17〕</span></li>
+<li>分光光度法测人造奶油中镍残留：镍为催化剂，用丁二酮肟配位、氯仿萃取（了解即可） <span class="loc">〔说话人1 13:37〕</span></li>
+<li>丁二酮肟提供配位基团与镍配位 <span class="loc">〔说话人1 13:37〕</span></li>
+<li>镍与丁二酮肟形成环状配合物，以氯仿萃取 <span class="loc">〔说话人1 14:17〕</span></li>
+<li>石油醚是低分子量烃类混合物，按沸点分规格（30-60、60-90、90-120、120-150 ℃） <span class="loc">〔说话人1 14:49〕</span></li>
+<li>石油醚本质是烃而非醚，脂溶性好 <span class="loc">〔说话人1 14:49〕</span></li>
+<li>加速溶剂萃取 ASE：约 10 MPa（≈100 大气压）高压＋较高温度 <span class="loc">〔说话人1 15:46〕</span></li>
+<li>1 大气压 = 10⁵ Pa，1 兆帕 = 10⁶ Pa，故 10 MPa ≈ 100 大气压 <span class="loc">〔说话人1 16:40〕</span></li>
+<li>加压加温可提高萃取效果：升温使溶解度增大 <span class="loc">〔说话人1 17:53〕</span></li>
+<li>ASE 案例：三氯甲烷加速溶剂萃取生物样本中痕量活性物质 <span class="loc">〔说话人1 17:19〕</span></li>
+<li>超临界流体兼具气体的高流动性与液体的溶解度 <span class="loc">〔说话人1 17:53〕</span></li>
+<li>超临界流体：温度、压力超过临界点，像气体又像液体 <span class="loc">〔说话人1 18:39〕</span></li>
+<li>超临界 CO₂ 萃取柑橘精油：压力约 7.39 MPa、温度约 31 ℃，条件温和 <span class="loc">〔说话人1 19:11〕</span></li>
+<li>超临界 CO₂ 降压后 CO₂ 挥发，产物无溶剂残留 <span class="loc">〔说话人1 19:42〕</span></li>
+<li>超临界 CO₂ 常用作咖啡因脱除，速度快、免蒸馏 <span class="loc">〔说话人1 20:47〕</span></li>
+<li>水蒸气蒸馏是最古老的精油提取法，副产物为「露」 <span class="loc">〔说话人1 21:34〕</span></li>
+<li>微波辅助萃取：810 W、80% 乙醇、105 秒提取芒果皮酚类，最大优点是快 <span class="loc">〔说话人1 21:34〕</span></li>
+<li>超声辅助萃取利用超声空化效应，设备常见（超声清洗机同原理） <span class="loc">〔说话人1 22:44〕</span></li>
+<li>超声辅助案例：从人血浆提取抗病毒药法匹拉韦 <span class="loc">〔说话人1 24:04〕</span></li>
+<li>抗病毒药多以「韦」字结尾（如法匹拉韦） <span class="loc">〔说话人1 24:04〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>方法</th><th>条件／原理</th><th>特点与应用</th></tr>
+<tr><td>直接萃取</td><td>分液漏斗，溶解度差异</td><td>最常用；CCl₄ 萃碘、石油醚萃脂肪</td></tr>
+<tr><td>加速溶剂萃取 ASE</td><td>约 10 MPa、较高温度</td><td>高温高压提高效率；痕量物质提取</td></tr>
+<tr><td>超临界流体萃取 SFE</td><td>超临界 CO₂（31 ℃、7.39 MPa）</td><td>条件温和、无残留；精油、咖啡因</td></tr>
+<tr><td>微波辅助萃取 MAE</td><td>微波快速均匀升温</td><td>速度极快；810 W、80% 乙醇、105 秒</td></tr>
+<tr><td>超声辅助萃取 UAE</td><td>超声空化效应</td><td>设备常见；血浆提取法匹拉韦</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>直接萃取（本专业重点）与石油醚规格要知道；设计题中能说出一种合理方法即可 <span class="loc">〔说话人1 15:46〕</span></div>
 </div>
-
-<!-- Page 5: UV-VIS基础 -->
-<div class="page">
-  <div class="page-header">
-    <span class="chapter-badge">第四章</span>
-    <span class="page-title">紫外可见分光光度法基础</span>
-    <span class="page-num">5 / 7</span>
-  </div>
-
-  <div class="section">
-    <div class="section-title">电磁波谱与互补光</div>
-    <div class="section-body">
-      <div class="flow-chart" style="font-size:8pt">
-        <div class="flow-node light">无线电波</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node light">微波</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node light">红外</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node light">可见光</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node">紫外</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node light">X射线</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node light">γ射线</div>
-      </div>
-      <div style="text-align:center;font-size:8.5pt;color:#666;margin:1mm 0">波长递减 → 能量递增（E = hC/λ）</div>
-      <div class="kv-grid">
-        <div class="kv-card"><div class="k">可见光 / 紫外</div><div class="v">可见光 400~760 nm、紫外 200~400 nm（要求记）；可见感知有个体/物种差异（视锥细胞数量、斑马鱼、深海生物）</div></div>
-        <div class="kv-card"><div class="k">互补光</div><div class="v">两种单色光按比例混合得白光；溶液颜色=不吸收的互补光颜色</div></div>
-      </div>
-      <div class="highlight-box">
-        <div class="label">💡 示例</div>
-        溶液在450nm（蓝光）处有最大吸收 → 透过蓝光的互补光 → 溶液呈现<b>黄色</b>。
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">分子三类能级</div>
-    <div class="table-wrap">
-      <table>
-        <tr><th>运动形式</th><th>对应能级</th><th>能级差</th><th>吸收波段</th></tr>
-        <tr><td>电子绕核运动</td><td><b>电子能级</b></td><td>最大（约1~20eV）</td><td><b>紫外可见</b></td></tr>
-        <tr><td>原子在平衡位置振动</td><td>振动能级</td><td>中等（约0.05~1eV）</td><td>红外</td></tr>
-        <tr><td>分子整体转动</td><td>转动能级</td><td>最小（&lt;0.05eV）</td><td>远红外</td></tr>
-      </table>
-      <div style="font-size:8pt;color:#888;margin-top:1mm">eV 为教材量级参考，课堂不要求背数值，只需记住各能级对应哪个波段。</div>
-    </div>
-    <div class="warn-box">
-      <div class="label">⚠️ 关键结论</div>
-      电子能级跃迁<b>必然伴随</b>振动、转动能级跃迁，而振动转动能级非常密集 → 分子紫外可见光谱为<b>连续带状谱</b>，而非原子光谱那样的离散线状谱。
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">吸收曲线的应用</div>
-    <div class="two-col">
-      <div>
-        <div class="kv-card" style="margin-bottom:2mm"><div class="k">定性分析（三特征）</div><div class="v">①峰位置(λmax) ②峰个数 ③峰相对高度</div></div>
-        <div class="kv-card"><div class="k">定量分析</div><div class="v">选<b>最大吸收波长</b>（灵敏度最高），校准曲线法</div></div>
-      </div>
-      <div>
-        <div class="highlight-box" style="background:linear-gradient(135deg,#eaf2f8,#d4e6f1);border-left-color:#2e86c1">
-          <div class="label" style="color:#1a5276">溶剂效应</div>
-          气态：有锯齿状精细结构<br>
-          水溶液：氢键束缚，精细结构消失，曲线更平滑
-        </div>
-      </div>
-    </div>
-    <div class="highlight-box" style="margin-top:2mm">
-      <div class="label">🔑 结构相关性</div>
-      分子紫外吸收特征<b>仅由共轭不饱和结构决定</b>，其余不参与共轭的结构几乎无影响。两个结构不同但共轭体系相似的分子，吸收曲线可能相近。
-    </div>
-  </div>
-
-  <div class="footer"><span>分析化学 · 萃取技术与UV-VIS</span><span>第 5 页</span></div>
+<div class="page"><h2 class="h2">5. 萃取操作类型与稀土分离</h2>
+<p class="lead">按操作分单级、多级逆流、连续萃取；多级逆流萃取是我国稀土分离的核心技术，由徐光宪开创推广。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>单级萃取：一次萃取完成，操作最简单 <span class="loc">〔说话人1 24:47〕</span></li>
+<li>多级逆流萃取：轻重两相反向流动、在各级混合后分层、逐级趋近平衡 <span class="loc">〔说话人1 27:06〕</span></li>
+<li>连续萃取以索氏提取器为代表，靠溶剂回流与虹吸使固体反复被新鲜溶剂萃取 <span class="loc">〔说话人1 24:47〕</span></li>
+<li>索氏提取咖啡因：茶叶包裹后用乙醇加热，一般萃取三次、每次用新鲜乙醇 <span class="loc">〔说话人1 24:47〕</span></li>
+<li>多级逆流萃取可分离性质极相近的组分 <span class="loc">〔说话人1 25:54〕</span></li>
+<li>徐光宪被称为「稀土之父」，开创串级（多级逆流）萃取工艺 <span class="loc">〔说话人1 25:54〕</span></li>
+<li>徐光宪早年研究电子排布规则 <span class="loc">〔说话人1 25:54〕</span></li>
+<li>国外长期用离子交换法分离稀土，效率低、成本高 <span class="loc">〔说话人1 28:00〕</span></li>
+<li>徐光宪将稀土分离技术无偿推广到全国各级工厂并亲自讲学 <span class="loc">〔说话人1 28:00〕</span></li>
+<li>稀土是新能源、电子信息、国防军工的战略物资，受出口管制 <span class="loc">〔说话人1 25:54〕</span></li>
+<li>多级逆流分离的计算复杂，是其技术难点 <span class="loc">〔说话人1 27:06〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>操作类型</th><th>要点</th><th>典型场合</th></tr>
+<tr><td>单级萃取</td><td>一次完成、萃取不完全，常重复 2-3 次</td><td>实验室分液漏斗操作</td></tr>
+<tr><td>多级逆流萃取</td><td>轻重两相反向流动、逐级接触、每级趋近平衡</td><td>稀土等性质极相近组分的工业分离</td></tr>
+<tr><td>连续萃取</td><td>溶剂回流与虹吸，固体反复被新鲜溶剂萃取</td><td>索氏提取器提取茶叶咖啡因</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>多级逆流萃取＝我国稀土分离核心技术；对比国外离子交换法效率低、成本高 <span class="loc">〔说话人1 28:00〕</span></div>
 </div>
-
-<!-- Page 6: 电子跃迁 -->
-<div class="page">
-  <div class="page-header">
-    <span class="chapter-badge">第五章</span>
-    <span class="page-title">电子跃迁类型与生色团</span>
-    <span class="page-num">6 / 7</span>
-  </div>
-
-  <div class="section">
-    <div class="section-title">电子轨道能级顺序</div>
-    <div class="flow-chart">
-      <div class="flow-node light">σ成键</div>
-      <div class="flow-arrow">&lt;</div>
-      <div class="flow-node light">π成键</div>
-      <div class="flow-arrow">&lt;</div>
-      <div class="flow-node light">n非键</div>
-      <div class="flow-arrow">&lt;</div>
-      <div class="flow-node light">π*反键</div>
-      <div class="flow-arrow">&lt;</div>
-      <div class="flow-node light">σ*反键</div>
-    </div>
-    <div style="text-align:center;font-size:8.5pt;color:#666">能级从低到高（左侧低，右侧高）</div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">四类电子跃迁对比</div>
-    <div class="table-wrap">
-      <table>
-        <tr><th>跃迁类型</th><th>吸收波长</th><th>摩尔吸光系数ε</th><th>特点与应用</th></tr>
-        <tr><td><b>σ→σ*</b></td><td>&lt; 200 nm</td><td>—</td><td>真空紫外，常规仪器无法检测；<b>烷烃可作惰性溶剂</b></td></tr>
-        <tr><td><b>n→σ*</b></td><td>150~250 nm</td><td>≈ 10²</td><td>灵敏度极低（如甲醇183nm）；含孤对电子小分子可作紫外溶剂</td></tr>
-        <tr><td><b>π→π*</b></td><td>孤立π键（乙烯165、苯184nm）尚在真空紫外边缘，共轭增大后红移进入紫外可见区</td><td>10⁴~10⁵</td><td><b>灵敏度高，UV-VIS主要检测对象</b>；共轭越大→能级差越小→红移</td></tr>
-        <tr><td><b>n→π*</b></td><td>近紫外区</td><td>较小</td><td>含孤对电子的不饱和键（如羰基C=O）</td></tr>
-      </table>
-    </div>
-    <div class="warn-box">
-      <div class="label">⚠️ 易错</div>
-      π→π*是最有用的跃迁（高灵敏、在可检测范围），σ→σ*是最没用的（真空紫外）。不要混淆各类跃迁的波长范围和灵敏度。
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">生色团与助色团</div>
-    <div class="two-col">
-      <div class="kv-card" style="border-left:3pt solid #0e5c52">
-        <div class="k">生色团</div>
-        <div class="v">含不饱和键的共轭结构，产生紫外可见吸收<br>例：C=C、C=O、苯环、稠环芳烃</div>
-      </div>
-      <div class="kv-card" style="border-left:3pt solid #a2630c">
-        <div class="k">助色团</div>
-        <div class="v">含孤对电子基团，本身不吸收，连接生色团后引发<b>红移</b><br>例：-OH、-NH₂、-OR、-X（卤素）</div>
-      </div>
-    </div>
-    <div class="kv-grid" style="margin-top:2mm">
-      <div class="kv-card"><div class="k">红移</div><div class="v">吸收波长向<b>长波</b>方向移动（共轭增大/助色团效应）</div></div>
-      <div class="kv-card"><div class="k">蓝移</div><div class="v">吸收波长向<b>短波</b>方向移动（共轭减小/空间位阻）</div></div>
-    </div>
-    <div class="highlight-box" style="margin-top:2mm">
-      <div class="label">🔑 核心结论</div>
-      什么样的结构有紫外可见吸收？——<b>有大的共轭体系</b>。共轭体系越大，π和π*能级差越小，吸收波长越长（红移），越容易进入紫外-可见光区。课堂例证：苯/萘/蒽 λmax 为 184/221/251nm，逐步红移（苯184nm处ε≈6.8×10⁴）。
-    </div>
-  </div>
-
-  <div class="footer"><span>分析化学 · 萃取技术与UV-VIS</span><span>第 6 页</span></div>
+<div class="page"><h2 class="h2">6. 固相萃取 SPE 与固相微萃取 SPME</h2>
+<p class="lead">SPE 用固相填料吸附目标物、溶剂洗脱富集；SPME 用涂层针浸入或顶空吸附，无需萃取溶剂。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>固相萃取原理：针筒状小柱内装固相吸附材料，样品过柱时目标物被吸附、杂质流出 <span class="loc">〔说话人1 29:04〕</span></li>
+<li>SPE 柱上下加挡板防止填料漏失，上样后目标物被吸附、其余流出 <span class="loc">〔说话人1 29:47〕</span></li>
+<li>洗脱：用合适溶剂把吸附的目标物洗出，实现富集净化 <span class="loc">〔说话人1 29:47〕</span></li>
+<li>SPE 最常用填料是碳 18 键合的微米级硅球 <span class="loc">〔说话人1 30:38〕</span></li>
+<li>碳 18 即 18 个碳的长链烷烃，靠疏水作用吸附有机物 <span class="loc">〔说话人1 31:04〕</span></li>
+<li>也可选用 C8、带苯环等修饰的填料 <span class="loc">〔说话人1 31:04〕</span></li>
+<li>黄曲霉素多见于久放的玉米、花生等坚果，肉眼不可见且可致癌 <span class="loc">〔说话人1 31:47〕</span></li>
+<li>专用柱内装抗体，靠抗原抗体特异结合富集黄曲霉素 <span class="loc">〔说话人1 32:11〕</span></li>
+<li>洗脱靠破坏抗原抗体结合力（改 pH、甲醇或酸） <span class="loc">〔说话人1 32:38〕</span></li>
+<li>SPME：1991 年首发论文、1993 年实现商业化 <span class="loc">〔说话人1 33:23〕</span></li>
+<li>SPME 结构类似注射器，内为涂覆固相涂层的石英／钢丝细针 <span class="loc">〔说话人1 33:49〕</span></li>
+<li>SPME 浸入法测难挥发组分，顶空法（head space）测易挥发组分 <span class="loc">〔说话人1 34:36〕</span></li>
+<li>SPME 优点：操作时间短、样品量少、无需萃取剂、重复性好、可自动化 <span class="loc">〔说话人1 33:23〕</span></li>
+<li>SPME 针套可保护涂层针，收针后带样品直接进样 <span class="loc">〔说话人1 35:21〕</span></li>
+<li>沉淀法主要用于去除蛋白质 <span class="loc">〔说话人1 35:44〕</span></li>
+<li>SPE 硅球表面接出很多 C18 长链，像小毛球一样吸附有机物 <span class="loc">〔说话人1 01:44:45〕</span></li>
+<li>固相微萃取：注射器推出涂层针，刺穿瓶盖吸附后收针保护 <span class="loc">〔说话人1 01:46:04〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>对比项</th><th>固相萃取 SPE</th><th>固相微萃取 SPME</th></tr>
+<tr><td>装置</td><td>针筒状小柱，内装固相填料</td><td>注射器式装置，内为涂层细针</td></tr>
+<tr><td>原理</td><td>填料吸附目标物，溶剂洗脱</td><td>涂层吸附达平衡，热脱附进样</td></tr>
+<tr><td>特点</td><td>富集倍数高、净化好、可自动化</td><td>无需溶剂、样品少、重复性好</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>C18＝碳十八烷基键合硅胶，是固相萃取最常用填料 <span class="loc">〔说话人1 30:38〕</span></div>
+<div class="def">SPME 集采样、萃取、浓缩、进样于一体，是绿色分析技术的代表 <span class="loc">〔说话人1 33:23〕</span></div>
 </div>
-
-<!-- Page 7: 总结 -->
-<div class="page">
-  <div class="page-header">
-    <span class="chapter-badge">总结</span>
-    <span class="page-title">核心知识脉络</span>
-    <span class="page-num">7 / 7</span>
-  </div>
-
-  <div class="section">
-    <div class="section-title">萃取技术体系总览</div>
-    <div class="section-body">
-      <div class="flow-chart" style="flex-direction:column;align-items:stretch;gap:2mm">
-        <div style="display:flex;align-items:center;gap:2mm">
-          <div class="flow-node" style="flex:1">液液萃取</div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-node light" style="flex:2">直接萃取 / 加速溶剂 / 超临界流体 / 微波辅助 / 超声辅助</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:2mm">
-          <div class="flow-node" style="flex:1">操作类型</div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-node light" style="flex:2">单级萃取 / 多级逆流（稀土分离）/ 连续萃取（索氏）</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:2mm">
-          <div class="flow-node" style="flex:1">固相萃取</div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-node light" style="flex:2">SPE（C18小柱）/ SPME（涂层丝针，无溶剂）</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">萃取核心公式链</div>
-    <div class="flow-chart">
-      <div class="flow-node light">分配系数KD<br><span style="font-size:7.5pt">[A]O/[A]W</span></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">分配比D<br><span style="font-size:7.5pt">CO/CW（总浓度）</span></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node light">萃取率E%<br><span style="font-size:7.5pt">DV_O/(DV_O+V_W)</span></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">n次残留<br><span style="font-size:7.5pt">m₀[V_W/(DV_O+V_W)]ⁿ</span></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">UV-VIS核心逻辑链</div>
-    <div class="flow-chart">
-      <div class="flow-node light">分子结构<br><span style="font-size:7.5pt">共轭不饱和键</span></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">电子跃迁<br><span style="font-size:7.5pt">π→π*为主</span></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node light">吸收光谱<br><span style="font-size:7.5pt">连续带状谱</span></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">定性定量<br><span style="font-size:7.5pt">峰特征/λmax</span></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">必背核心结论</div>
-    <div class="highlight-box">
-      <div class="label">📌 萃取</div>
-      ① 少量多次 > 一次全量 ② D覆盖所有形态，KD只看单形态 ③ 超临界CO₂无溶剂残留 ④ SPE用C18，SPME无溶剂可自动化
-    </div>
-    <div class="highlight-box" style="background:linear-gradient(135deg,#eaf2f8,#d4e6f1);border-left-color:#2e86c1;margin-top:2mm">
-      <div class="label" style="color:#1a5276">📌 UV-VIS</div>
-      ① 分子光谱是连续谱（电子跃迁伴振动转动）② π→π*是主要检测跃迁（ε=10⁴~10⁵）③ 共轭越大→红移→波长越长 ④ 生色团=共轭结构，助色团=孤对电子基团（引发红移）⑤ 定量选最大吸收波长（灵敏度最高）
-    </div>
-  </div>
-
-  <div class="footer"><span>分析化学 · 萃取技术与UV-VIS</span><span>第 7 页</span></div>
+<div class="page"><h2 class="h2">7. 紫外可见分光光度法概述与电磁波谱</h2>
+<p class="lead">UV-VIS 属分子吸收光谱法，以电磁辐射为探针；须记可见光 400-760 nm、紫外 200-400 nm 及波粒二象性。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>紫外可见分光光度法缩写 UV-VIS：ultraviolet 紫外的、visible 可见的、spectral photometry 分光光度法 <span class="loc">〔说话人1 43:10〕</span></li>
+<li>分光光度法比分光前的光度法多一个「分光」 <span class="loc">〔说话人1 43:55〕</span></li>
+<li>光学分析法按对象分：原子光谱法／分子光谱法 <span class="loc">〔说话人1 56:08〕</span></li>
+<li>光学分析法按过程分：吸收光谱法／发射光谱法 <span class="loc">〔说话人1 56:08〕</span></li>
+<li>光学分析法建立在电磁辐射与物质相互作用的基础上 <span class="loc">〔说话人1 44:31〕</span></li>
+<li>UV-VIS 属分子吸收光谱法，研究分子对紫外可见光的吸收 <span class="loc">〔说话人1 56:34〕</span></li>
+<li>以电磁辐射为探针，探测物质的性质、结构与含量 <span class="loc">〔说话人1 44:53〕</span></li>
+<li>相互作用一般伴随能量的吸收 <span class="loc">〔说话人1 44:53〕</span></li>
+<li>光具波粒二象性：波长、频率表波动性，光子表粒子性 <span class="loc">〔说话人1 44:53〕</span></li>
+<li>能量公式 E = hν = hC/λ <span class="loc">〔说话人1 45:56〕</span></li>
+<li>波长越短、能量越高 <span class="loc">〔说话人1 01:01:28〕</span></li>
+<li>电磁波谱波长由长到短：无线电波→微波→红外→可见光→紫外→X 射线→γ 射线 <span class="loc">〔说话人1 01:00:45〕</span></li>
+<li>无线电波波长千米级，微波波长厘米级 <span class="loc">〔说话人1 01:00:02〕</span></li>
+<li>紫外能量高可晒伤皮肤，X 射线穿透性强，γ 射线有伽马刀 <span class="loc">〔说话人1 01:01:28〕</span></li>
+<li>可见光波长 400-760 nm（以本人课本为准） <span class="loc">〔说话人1 01:01:50〕</span></li>
+<li>可见范围存在个体与物种差异（400-750／760／780 nm；视锥细胞 3 或 4 种） <span class="loc">〔说话人1 01:02:17〕</span></li>
+<li>单色光是单一波长的光，实际仍存在一定带宽 <span class="loc">〔说话人1 01:03:27〕</span></li>
+<li>复色光由不同波长组成，如太阳光、LED 白光 <span class="loc">〔说话人1 01:04:03〕</span></li>
+<li>互补光：两种单色光按一定比例混合可得白光 <span class="loc">〔说话人1 01:04:03〕</span></li>
+<li>LED 白光是红、绿、蓝复合而成 <span class="loc">〔说话人1 01:05:12〕</span></li>
+<li>互补色示例：红对青、橙对蓝、绿对紫 <span class="loc">〔说话人1 01:07:13〕</span></li>
+<li>透明溶液呈色＝其吸收光的互补色（如橙汁吸收 460-480 nm 蓝光） <span class="loc">〔说话人1 01:07:13〕</span></li>
+<li>深海生物不感可见光，因环境本无可见光 <span class="loc">〔说话人1 01:06:04〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>波段</th><th>相对波长</th><th>相对能量</th></tr>
+<tr><td>无线电波</td><td>最长（千米级）</td><td>最低</td></tr>
+<tr><td>微波</td><td>厘米级</td><td>低</td></tr>
+<tr><td>红外</td><td>比可见光长</td><td>较低</td></tr>
+<tr><td>可见光</td><td>400-760 nm</td><td>中</td></tr>
+<tr><td>紫外</td><td>200-400 nm</td><td>高</td></tr>
+<tr><td>X 射线</td><td>比紫外更短</td><td>更高</td></tr>
+<tr><td>γ 射线</td><td>最短</td><td>最高</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>可见光 400-760 nm、紫外 200-400 nm 要记；考试不考可见光具体上限（750／760 均算对） <span class="loc">〔说话人1 01:02:17〕</span></div>
 </div>
-
-</body>
-</html>
+<div class="page"><h2 class="h2">8. 分子能级与紫外可见吸收光谱</h2>
+<p class="lead">分子有电子、振动、转动三类能级，能级差依次递减；电子跃迁必伴振转跃迁，故分子吸收光谱为连续带状谱。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>分子有三种运动形式：电子绕核运动、原子在平衡位置振动、分子整体转动 <span class="loc">〔说话人1 01:08:34〕</span></li>
+<li>原子在平衡位置附近做微小振动，使分子能量改变 <span class="loc">〔说话人1 01:09:56〕</span></li>
+<li>振动分伸缩振动与弯曲振动，均对应不同能级 <span class="loc">〔说话人1 01:10:22〕</span></li>
+<li>分子整体转动因空间取向不同而有不同能量 <span class="loc">〔说话人1 01:11:28〕</span></li>
+<li>三种能级为电子能级、振动能级、转动能级 <span class="loc">〔说话人1 01:11:54〕</span></li>
+<li>能级差大小：电子能级 &gt; 振动能级 &gt; 转动能级 <span class="loc">〔说话人1 01:12:50〕</span></li>
+<li>能级图纵坐标代表能量，从下往上能量升高 <span class="loc">〔说话人1 01:12:18〕</span></li>
+<li>分子通常处于最低能级（电子、振动、转动均为 0） <span class="loc">〔说话人1 01:12:50〕</span></li>
+<li>获得能量满足某能级差，即发生相应能级的跃迁 <span class="loc">〔说话人1 01:14:00〕</span></li>
+<li>转动能级跃迁对应远红外 <span class="loc">〔说话人1 01:14:44〕</span></li>
+<li>振动能级跃迁对应红外 <span class="loc">〔说话人1 01:15:53〕</span></li>
+<li>电子（价电子）跃迁对应紫外可见 <span class="loc">〔说话人1 01:15:53〕</span></li>
+<li>电子能级跃迁必然伴随振动、转动能级的跃迁 <span class="loc">〔说话人1 01:15:53〕</span></li>
+<li>振动、转动能级密集，故分子吸收光谱为连续带状谱 <span class="loc">〔说话人1 01:15:53〕</span></li>
+<li>吸光度代表吸收光的程度，是吸收曲线的纵坐标 <span class="loc">〔说话人1 01:16:36〕</span></li>
+<li>吸收曲线以波长为横坐标、吸光度为纵坐标，又称吸收光谱 <span class="loc">〔说话人1 01:17:36〕</span></li>
+<li>不同分子结构→能级不同→吸收曲线不同 <span class="loc">〔说话人1 01:16:36〕</span></li>
+<li>定性三特征：峰位置、峰个数、各峰相对高度 <span class="loc">〔说话人1 01:18:10〕</span></li>
+<li>最大吸收峰位置记为 λmax <span class="loc">〔说话人1 01:19:02〕</span></li>
+<li>末端吸收在 200 nm 附近、单边上升，不用于定性 <span class="loc">〔说话人1 01:19:02〕</span></li>
+<li>末端吸收源自 σ→σ* 的真空紫外区 <span class="loc">〔说话人1 01:32:30〕</span></li>
+<li>灵敏度即标准（校准）曲线的斜率 <span class="loc">〔说话人1 01:20:25〕</span></li>
+<li>定量选最大吸收波长，因其灵敏度最高 <span class="loc">〔说话人1 01:21:08〕</span></li>
+<li>定量做法：固定波长测吸光度，作浓度-吸光度校准曲线 <span class="loc">〔说话人1 01:22:51〕</span></li>
+<li>溶剂效应：气态有锯齿状振转精细结构，水溶液因氢键束缚而平滑 <span class="loc">〔说话人1 01:23:34〕</span></li>
+<li>只有共轭不饱和结构影响紫外吸收，其余结构几乎无贡献 <span class="loc">〔说话人1 01:25:40〕</span></li>
+<li>共轭体系相近的分子，吸收曲线相近 <span class="loc">〔说话人1 01:25:05〕</span></li>
+<li>入射光能量恰好符合某能级差时即被吸收 <span class="loc">〔说话人1 01:47:20〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>能级</th><th>对应运动</th><th>对应波段</th></tr>
+<tr><td>电子能级</td><td>电子绕核运动</td><td>紫外可见（能级差最大）</td></tr>
+<tr><td>振动能级</td><td>原子平衡位置振动</td><td>红外</td></tr>
+<tr><td>转动能级</td><td>分子整体转动</td><td>远红外（能级差最小）</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>转动→远红外、振动→红外、价电子跃迁→紫外可见，三句对应关系要记 <span class="loc">〔说话人1 01:15:53〕</span></div>
+<div class="def">溶剂效应提示：气态精细结构更原始，水溶液曲线平滑；本专业多用水溶液，两种图都不能判对错 <span class="loc">〔说话人1 01:23:34〕</span></div>
+</div>
+<div class="page"><h2 class="h2">9. 电子跃迁类型</h2>
+<p class="lead">价电子轨道能级 σ&lt;π&lt;n&lt;π*&lt;σ*；π→π* 是 UV-VIS 主要检测对象，共轭增大则能级差减小、波长红移。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>甲醛中电子分三类：σ（单键）、π（双键）、n（孤对电子） <span class="loc">〔说话人1 01:27:14〕</span></li>
+<li>孤对电子即不成键电子（nonbonding，n 电子） <span class="loc">〔说话人1 01:27:14〕</span></li>
+<li>价电子轨道能级顺序 σ &lt; π &lt; n &lt; π* &lt; σ* <span class="loc">〔说话人1 01:28:09〕</span></li>
+<li>常见跃迁：σ→σ*、n→σ*、π→π*、n→π*；σ 不跃迁到 π* <span class="loc">〔说话人1 01:28:58〕</span></li>
+<li>σ→σ*：甲烷 125 nm、乙烷 135 nm，均在真空紫外（小于 200 nm） <span class="loc">〔说话人1 01:30:16〕</span></li>
+<li>紫外区为 200-400 nm <span class="loc">〔说话人1 01:30:16〕</span></li>
+<li>真空紫外需抽真空，因空气中含 σ 轨道物质会产生干扰 <span class="loc">〔说话人1 01:31:52〕</span></li>
+<li>只含 σ 单键的烷烃在紫外可见无吸收，可作溶剂 <span class="loc">〔说话人1 01:30:58〕</span></li>
+<li>n→σ*：甲醇 183 nm、碘代物 258 nm <span class="loc">〔说话人1 01:33:21〕</span></li>
+<li>n→σ* 摩尔吸收系数约 10²（150-350），灵敏度低 <span class="loc">〔说话人1 01:33:21〕</span></li>
+<li>紫外可见一般要求 ε 约 10⁴-10⁵ 才有较高灵敏度 <span class="loc">〔说话人1 01:33:21〕</span></li>
+<li>n→σ* 波长约 150-250 nm，可作溶剂 <span class="loc">〔说话人1 01:34:46〕</span></li>
+<li>π→π*：乙烯 165 nm、ε 大于 10⁴ <span class="loc">〔说话人1 01:34:46〕</span></li>
+<li>π→π*：苯 184 nm、ε 约 6.8×10⁴ <span class="loc">〔说话人1 01:35:42〕</span></li>
+<li>苯／萘／蒽 λmax 依次 184、221、251 nm，共轭增大而红移 <span class="loc">〔说话人1 01:37:18〕</span></li>
+<li>n→π*：丙酮 186 nm（ε 约 10³）与 280 nm（ε 仅 16） <span class="loc">〔说话人1 01:36:22〕</span></li>
+<li>n→π* 存在一定干扰，不宜作溶剂 <span class="loc">〔说话人1 01:36:51〕</span></li>
+<li>红移＝吸收波长向长波方向移动；紫移（蓝移）＝向短波方向移动 <span class="loc">〔说话人1 01:37:18〕</span></li>
+<li>共轭体系越大，能级差越小、吸收波长越长 <span class="loc">〔说话人1 01:38:15〕</span></li>
+<li>番茄红素共轭大，吸收已进入可见光区 <span class="loc">〔说话人1 01:38:15〕</span></li>
+<li>衍生化：使无紫外吸收的组分形成大共轭以进入检测范围 <span class="loc">〔说话人1 01:37:49〕</span></li>
+<li>π→π* 灵敏度高且处于检测范围，是 UV-VIS 的主要检测对象 <span class="loc">〔说话人1 01:34:46〕</span></li>
+<li>跃迁能级差理论上可用薛定谔方程计算（研究生内容，了解） <span class="loc">〔说话人1 01:49:18〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>跃迁</th><th>例／波长</th><th>ε</th><th>特点</th></tr>
+<tr><td>σ→σ*</td><td>甲烷 125、乙烷 135 nm</td><td>—</td><td>真空紫外，测不了，可作溶剂</td></tr>
+<tr><td>n→σ*</td><td>甲醇 183、碘代物 258 nm</td><td>约 10²</td><td>灵敏度低，可作溶剂</td></tr>
+<tr><td>π→π*</td><td>乙烯 165、苯 184 nm</td><td>10⁴-10⁵</td><td>共轭后红移、灵敏度高，主要检测对象</td></tr>
+<tr><td>n→π*</td><td>丙酮 186／280 nm</td><td>约 10³／低</td><td>有干扰，不宜作溶剂</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>π→π* 是主力（高灵敏、在检测范围）；σ→σ* 在真空紫外，勿混淆波长范围与灵敏度 <span class="loc">〔说话人1 01:34:46〕</span></div>
+<div class="exam"><span class="tag">★考点</span>共轭体系越大→能级差越小→波长越长（红移）；据此可判断分子有无紫外可见吸收 <span class="loc">〔说话人1 01:38:15〕</span></div>
+</div>
+<div class="page"><h2 class="h2">10. 生色团与助色团</h2>
+<p class="lead">有大共轭体系才有紫外可见吸收；生色团产生吸收，助色团经 p-π 共轭扩展共轭并引发红移。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>生色团＝含不饱和键的共轭结构，如 C=C、C=O、苯环 <span class="loc">〔说话人1 01:39:43〕</span></li>
+<li>助色团＝含孤对电子、本身不吸收紫外可见光的基团 <span class="loc">〔说话人1 01:39:43〕</span></li>
+<li>助色团含 n 电子，与生色团发生 p-π 共轭使共轭体系扩展 <span class="loc">〔说话人1 01:39:43〕</span></li>
+<li>常见助色团：-OH、-NH₂、-OR、-X（卤素） <span class="loc">〔说话人1 01:39:43〕</span></li>
+<li>助色团与生色团相连可引发红移并增大吸收 <span class="loc">〔说话人1 01:40:42〕</span></li>
+<li>核心判据：有大共轭体系才有紫外可见吸收，共轭越大吸收波长越长 <span class="loc">〔说话人1 01:39:12〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>类型</th><th>结构特征</th><th>作用</th></tr>
+<tr><td>生色团</td><td>含不饱和键的共轭结构（C=C、C=O、苯环）</td><td>产生紫外可见吸收（π→π*）</td></tr>
+<tr><td>助色团</td><td>含孤对电子（-OH、-NH₂、-OR、-X）</td><td>本身不吸收，经 p-π 共轭助红移、增吸光</td></tr></table>
+<div class="def">红移＝向长波方向移动（共轭增大／助色效应）；蓝移（紫移）＝向短波方向移动 <span class="loc">〔说话人1 01:37:18〕</span></div>
+</div>
+<div class="page"><h2 class="h2">附录 A · 必背清单</h2>
+<p class="lead">全课要背的条目，最短句式，可直接背。</p>
+<ul class="kv">
+<li>水→有机＝萃取；有机→水＝反萃取 <span class="loc">〔说话人1 04:40〕</span></li>
+<li>K_D=[A]ₒ/[A]_w（单形态平衡浓度）；D=Cₒ/C_w（总浓度） <span class="loc">〔说话人1 09:06〕</span></li>
+<li>E%=D·V_O/(D·V_O＋V_W)×100%；等体积 E%=D/(D＋1)×100% <span class="loc">〔说话人1 11:24〕</span></li>
+<li>少量多次回收率更高；m_n=m_0(V_W/(D·V_O＋V_W))^n <span class="loc">〔说话人1 11:58〕</span></li>
+<li>石油醚＝低分子量烃类混合物，按沸点分规格 <span class="loc">〔说话人1 14:49〕</span></li>
+<li>ASE≈10 MPa 高压＋较高温；SFE 超临界 CO₂ 约 31 ℃、7.39 MPa、无残留 <span class="loc">〔说话人1 19:11〕</span></li>
+<li>索氏提取咖啡因一般三次，每次用新鲜乙醇 <span class="loc">〔说话人1 24:47〕</span></li>
+<li>稀土分离核心＝多级逆流萃取；徐光宪＝稀土之父 <span class="loc">〔说话人1 25:54〕</span></li>
+<li>SPE 常用填料 C18；SPME 1991 首发、1993 商业化 <span class="loc">〔说话人1 33:23〕</span></li>
+<li>SPME：浸入法测难挥发、顶空法测易挥发 <span class="loc">〔说话人1 34:36〕</span></li>
+<li>可见光 400-760 nm；紫外 200-400 nm <span class="loc">〔说话人1 01:01:50〕</span></li>
+<li>E=hν=hC/λ，波长越短能量越高 <span class="loc">〔说话人1 45:56〕</span></li>
+<li>能级差 电子&gt;振动&gt;转动；转动→远红外、振动→红外、电子→紫外可见 <span class="loc">〔说话人1 01:15:53〕</span></li>
+<li>分子吸收光谱＝连续带状谱 <span class="loc">〔说话人1 01:15:53〕</span></li>
+<li>定性三特征：峰位置（λmax）、峰个数、峰相对高度 <span class="loc">〔说话人1 01:18:10〕</span></li>
+<li>定量选 λmax，灵敏度最高 <span class="loc">〔说话人1 01:21:08〕</span></li>
+<li>价电子能级顺序 σ&lt;π&lt;n&lt;π*&lt;σ* <span class="loc">〔说话人1 01:28:09〕</span></li>
+<li>π→π* 是 UV-VIS 主要检测对象；σ→σ* 在真空紫外 <span class="loc">〔说话人1 01:34:46〕</span></li>
+<li>有大共轭才有紫外可见吸收；生色团吸光、助色团助红移 <span class="loc">〔说话人1 01:39:12〕</span></li>
+</ul>
+</div>
+<div class="page"><h2 class="h2">附录 B · 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>易错（错）</th><th>正确（对）</th></tr>
+<tr><td>把 K_D 与 D 当成一回事</td><td>K_D 用单形态平衡浓度，D 用总浓度</td></tr>
+<tr><td>以为方括号表示总浓度</td><td>方括号＝某一形态平衡浓度，C＝总浓度</td></tr>
+<tr><td>认为萃取率能达到 100%</td><td>分配平衡决定水相必有残留，属系统误差</td></tr>
+<tr><td>一次用大量有机相更好</td><td>少量多次萃取回收率更高</td></tr>
+<tr><td>用四氯化碳萃取脂肪</td><td>水中的碘用 CCl₄，食品脂肪用石油醚</td></tr>
+<tr><td>以为石油醚是醚</td><td>石油醚是低分子量烃类混合物，脂溶性好</td></tr>
+<tr><td>以为多级逆流是国外主流稀土法</td><td>国外用离子交换法，我国用多级逆流萃取</td></tr>
+<tr><td>用末端吸收做定性</td><td>末端吸收不用于定性，只看 λmax</td></tr>
+<tr><td>以为分子光谱是线状谱</td><td>电子跃迁伴振转跃迁，分子光谱为连续带状谱</td></tr>
+<tr><td>以为 σ→σ* 在紫外可见区</td><td>σ→σ* 在真空紫外（小于 200 nm），紫外可见测不了</td></tr>
+<tr><td>以为 n→σ* 灵敏度高</td><td>n→σ* 的 ε 约 10²，灵敏度低，只能作溶剂</td></tr>
+<tr><td>以为生色团本身不吸收</td><td>生色团产生吸收，助色团本身不吸收</td></tr></table>
+</div>
+<div class="page"><h2 class="h2">附录 C · 考点索引表</h2>
+<table class="idx"><tr><th>考点</th><th>出处小节</th><th>定位</th><th>可能题型</th></tr>
+<tr><td>萃取与反萃取的方向</td><td>§1</td><td>〔说话人1 04:40〕</td><td>填空/选择</td></tr>
+<tr><td>分配系数 K_D 与分配比 D 的区别</td><td>§2</td><td>〔说话人1 09:06〕</td><td>简答/辨析</td></tr>
+<tr><td>萃取百分率 E% 的计算</td><td>§2</td><td>〔说话人1 11:24〕</td><td>计算</td></tr>
+<tr><td>少量多次萃取与残留公式</td><td>§3</td><td>〔说话人1 11:58〕</td><td>推导/计算</td></tr>
+<tr><td>各主流萃取方法条件与特点</td><td>§4</td><td>〔说话人1 19:11〕</td><td>选择/简答/设计</td></tr>
+<tr><td>多级逆流萃取与稀土分离</td><td>§5</td><td>〔说话人1 28:00〕</td><td>简答</td></tr>
+<tr><td>SPE 填料 C18 与 SPME 操作方式</td><td>§6</td><td>〔说话人1 34:36〕</td><td>选择/简答</td></tr>
+<tr><td>电磁波谱顺序与波长能量关系</td><td>§7</td><td>〔说话人1 01:00:45〕</td><td>填空/选择</td></tr>
+<tr><td>可见光与紫外波长范围</td><td>§7</td><td>〔说话人1 01:01:50〕</td><td>填空</td></tr>
+<tr><td>互补光与溶液颜色</td><td>§7</td><td>〔说话人1 01:07:13〕</td><td>选择/简答</td></tr>
+<tr><td>三类能级与对应波段</td><td>§8</td><td>〔说话人1 01:15:53〕</td><td>填空/简答</td></tr>
+<tr><td>吸收曲线定性三特征与定量波长选择</td><td>§8</td><td>〔说话人1 01:18:10〕</td><td>简答</td></tr>
+<tr><td>四类电子跃迁的波长与灵敏度</td><td>§9</td><td>〔说话人1 01:35:42〕</td><td>选择/表格</td></tr>
+<tr><td>共轭、红移与生色团/助色团</td><td>§10</td><td>〔说话人1 01:39:12〕</td><td>简答/推断</td></tr></table>
+</div>
+<div class="page"><h2 class="h2">附录 D · 知识点清单</h2>
+<table class="idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>干法灰化、湿法消化、常用消化液</td><td>方法</td><td>§1</td><td>1 01:09</td></tr>
+<tr><td>2</td><td>低温等离子体氧灰化（强氧化性）</td><td>原理</td><td>§1</td><td>1 01:09</td></tr>
+<tr><td>3</td><td>密闭罐消化、微波溶样；极性分子旋转摩擦分解有机物</td><td>方法</td><td>§1</td><td>1 01:09</td></tr>
+<tr><td>4</td><td>部分分解法（水解，加淀粉酶、蛋白酶）</td><td>方法</td><td>§1</td><td>1 02:08</td></tr>
+<tr><td>5</td><td>溶剂萃取原理（溶解度/分配差异）</td><td>定义</td><td>§1</td><td>1 02:29</td></tr>
+<tr><td>6</td><td>四氯化碳萃取碘，有机相显紫色</td><td>实例</td><td>§1</td><td>1 03:25</td></tr>
+<tr><td>7</td><td>CCl₄ 密度大于水，有机相位于下层</td><td>现象</td><td>§1</td><td>1 03:49</td></tr>
+<tr><td>8</td><td>水相残留碘浅黄/棕红；一次萃取不完全</td><td>现象</td><td>§1</td><td>1 03:49</td></tr>
+<tr><td>9</td><td>萃取（水→有机）、反萃取（有机→水）</td><td>定义</td><td>§1</td><td>1 04:40</td></tr>
+<tr><td>10</td><td>锂电池回收＝萃取＋反萃取；锂离子需螯合抓取</td><td>应用</td><td>§1</td><td>1 04:40</td></tr>
+<tr><td>11</td><td>亲水（氢键）/疏水（烃链、卤代烃）基团</td><td>原理</td><td>§1</td><td>1 06:00</td></tr>
+<tr><td>12</td><td>萃取剂（抓取）vs 萃取溶剂（氯仿）</td><td>概念</td><td>§1</td><td>1 01:43:34</td></tr>
+<tr><td>13</td><td>分配系数 K_D=[A]ₒ/[A]_w；方括号＝平衡浓度</td><td>定义</td><td>§2</td><td>1 07:15</td></tr>
+<tr><td>14</td><td>A 代表单一形态（如碘分子）</td><td>术语</td><td>§2</td><td>1 07:15</td></tr>
+<tr><td>15</td><td>O=organic/oil、W=water</td><td>术语</td><td>§2</td><td>1 07:58</td></tr>
+<tr><td>16</td><td>K_D 为常数（温度、溶剂、组分确定）</td><td>性质</td><td>§2</td><td>1 08:17</td></tr>
+<tr><td>17</td><td>温度影响溶解度，故须限定温度</td><td>原理</td><td>§2</td><td>1 08:17</td></tr>
+<tr><td>18</td><td>分配比 D=Cₒ/C_w；C＝总浓度</td><td>定义</td><td>§2</td><td>1 09:06</td></tr>
+<tr><td>19</td><td>碘多形态（I₂、I⁻、次碘酸）；K_D≠D</td><td>易错</td><td>§2</td><td>1 09:06</td></tr>
+<tr><td>20</td><td>分配系数不考虑体积、分配比考虑体积</td><td>概念</td><td>§2</td><td>1 01:41:59</td></tr>
+<tr><td>21</td><td>等体积萃取时 K_D＝D；分配系数只与组分/溶剂/温度有关</td><td>性质</td><td>§2</td><td>1 01:41:59</td></tr>
+<tr><td>22</td><td>分配比与各相形态分布有关</td><td>性质</td><td>§2</td><td>1 01:42:48</td></tr>
+<tr><td>23</td><td>萃取百分率 E% 定义（有机相量/总量）</td><td>定义</td><td>§2</td><td>1 09:40</td></tr>
+<tr><td>24</td><td>E%＝有机相组分量÷总组分量×100%</td><td>公式</td><td>§2</td><td>1 10:21</td></tr>
+<tr><td>25</td><td>萃取率&lt;100%，属系统误差</td><td>结论</td><td>§2</td><td>1 10:21</td></tr>
+<tr><td>26</td><td>E% 一般式与等体积简化式</td><td>公式</td><td>§2</td><td>1 11:24</td></tr>
+<tr><td>27</td><td>E% 由 D 与两相体积比决定</td><td>结论</td><td>§2</td><td>1 11:24</td></tr>
+<tr><td>28</td><td>少量多次优于一次全量萃取</td><td>结论</td><td>§3</td><td>1 12:36</td></tr>
+<tr><td>29</td><td>m_n=m_0(V_W/(D·V_O＋V_W))^n，残留随次数递减</td><td>公式</td><td>§3</td><td>1 11:58</td></tr>
+<tr><td>30</td><td>推导作业；洗衣服类比</td><td>助记</td><td>§3</td><td>1 12:36</td></tr>
+<tr><td>31</td><td>直接萃取最常用；碘用 CCl₄、脂肪用石油醚</td><td>实例</td><td>§4</td><td>1 14:17</td></tr>
+<tr><td>32</td><td>人造奶油镍残留：丁二酮肟配位、氯仿萃取（了解）</td><td>实例</td><td>§4</td><td>1 13:37</td></tr>
+<tr><td>33</td><td>丁二酮肟与 Ni 配位成环</td><td>原理</td><td>§4</td><td>1 14:17</td></tr>
+<tr><td>34</td><td>石油醚＝低分子量烃混合物，按沸点分规格，脂溶性好</td><td>概念</td><td>§4</td><td>1 14:49</td></tr>
+<tr><td>35</td><td>ASE：约 10 MPa＋较高温</td><td>方法</td><td>§4</td><td>1 15:46</td></tr>
+<tr><td>36</td><td>10 MPa≈100 大气压（1 atm=10⁵ Pa，1 MPa=10⁶ Pa）</td><td>数据</td><td>§4</td><td>1 16:40</td></tr>
+<tr><td>37</td><td>ASE 加压加温提高效果（升温增溶解度）</td><td>原理</td><td>§4</td><td>1 17:53</td></tr>
+<tr><td>38</td><td>ASE 案例：三氯甲烷萃取生物样本</td><td>实例</td><td>§4</td><td>1 17:19</td></tr>
+<tr><td>39</td><td>超临界流体兼具气体流动性与液体溶解度</td><td>概念</td><td>§4</td><td>1 17:53</td></tr>
+<tr><td>40</td><td>超临界流体超过临界点，像气体又像液体</td><td>概念</td><td>§4</td><td>1 18:39</td></tr>
+<tr><td>41</td><td>超临界 CO₂ 约 31 ℃、7.39 MPa，条件温和</td><td>数据</td><td>§4</td><td>1 19:11</td></tr>
+<tr><td>42</td><td>超临界 CO₂ 无残留（降压 CO₂ 挥发）</td><td>优点</td><td>§4</td><td>1 19:42</td></tr>
+<tr><td>43</td><td>超临界 CO₂ 应用：柑橘精油、咖啡因</td><td>应用</td><td>§4</td><td>1 20:18</td></tr>
+<tr><td>44</td><td>水蒸气蒸馏最古老，副产物为「露」</td><td>补充</td><td>§4</td><td>1 21:34</td></tr>
+<tr><td>45</td><td>微波辅助：810 W/80% 乙醇/105 秒提酚类，优点快</td><td>方法</td><td>§4</td><td>1 21:34</td></tr>
+<tr><td>46</td><td>超声辅助（空化、超声清洗机）；提取法匹拉韦</td><td>方法</td><td>§4</td><td>1 22:44</td></tr>
+<tr><td>47</td><td>抗病毒药多以「韦」字结尾</td><td>联系</td><td>§4</td><td>1 24:04</td></tr>
+<tr><td>48</td><td>单级萃取：一次完成、最简单</td><td>概念</td><td>§5</td><td>1 24:47</td></tr>
+<tr><td>49</td><td>连续萃取（索氏提取器）与咖啡因提取（三次）</td><td>概念</td><td>§5</td><td>1 24:47</td></tr>
+<tr><td>50</td><td>多级逆流：轻重两相反向流动、逐级趋近平衡</td><td>概念</td><td>§5</td><td>1 27:06</td></tr>
+<tr><td>51</td><td>多级逆流计算复杂</td><td>原理</td><td>§5</td><td>1 27:06</td></tr>
+<tr><td>52</td><td>多级逆流＝我国稀土分离核心技术</td><td>应用</td><td>§5</td><td>1 25:54</td></tr>
+<tr><td>53</td><td>徐光宪＝「稀土之父」，早年研究电子排布</td><td>人物</td><td>§5</td><td>1 25:54</td></tr>
+<tr><td>54</td><td>国外用离子交换法（效率低、成本高）</td><td>对比</td><td>§5</td><td>1 28:00</td></tr>
+<tr><td>55</td><td>徐光宪技术无偿推广到全国工厂并亲自讲学</td><td>事迹</td><td>§5</td><td>1 28:00</td></tr>
+<tr><td>56</td><td>稀土是战略物资，受出口管制</td><td>联系</td><td>§5</td><td>1 25:54</td></tr>
+<tr><td>57</td><td>SPE 原理（针筒状小柱）与流程（上样/吸附/洗脱）</td><td>定义</td><td>§6</td><td>1 29:04</td></tr>
+<tr><td>58</td><td>SPE 柱挡板防漏；杂质流出</td><td>结构</td><td>§6</td><td>1 29:47</td></tr>
+<tr><td>59</td><td>SPE 常用填料 C18 微米级硅球</td><td>知识点</td><td>§6</td><td>1 30:38</td></tr>
+<tr><td>60</td><td>C18＝18 碳长链烷烃，疏水吸附有机物；也可选 C8 等</td><td>原理</td><td>§6</td><td>1 31:04</td></tr>
+<tr><td>61</td><td>黄曲霉素多见于久放坚果，致癌不可见</td><td>联系</td><td>§6</td><td>1 31:47</td></tr>
+<tr><td>62</td><td>抗体柱靠抗原抗体特异结合富集黄曲霉素</td><td>应用</td><td>§6</td><td>1 32:11</td></tr>
+<tr><td>63</td><td>洗脱靠破坏结合力（pH/甲醇/酸）</td><td>方法</td><td>§6</td><td>1 32:38</td></tr>
+<tr><td>64</td><td>SPME：1991 首发、1993 商业化</td><td>发展</td><td>§6</td><td>1 33:23</td></tr>
+<tr><td>65</td><td>SPME 结构：注射器式、涂层石英/钢丝细针</td><td>结构</td><td>§6</td><td>1 33:49</td></tr>
+<tr><td>66</td><td>SPME 浸入法（难挥发）/顶空法 head space（易挥发）</td><td>操作</td><td>§6</td><td>1 34:36</td></tr>
+<tr><td>67</td><td>SPME 五大优点；针套保护后直接进样</td><td>优点</td><td>§6</td><td>1 33:23</td></tr>
+<tr><td>68</td><td>沉淀法主要用于去除蛋白质</td><td>方法</td><td>§6</td><td>1 35:44</td></tr>
+<tr><td>69</td><td>SPE 硅球接 C18 长链如小毛球吸附有机物</td><td>原理</td><td>§6</td><td>1 01:44:45</td></tr>
+<tr><td>70</td><td>SPME 注射器推出涂层针，刺穿瓶盖吸附后收针</td><td>操作</td><td>§6</td><td>1 01:46:04</td></tr>
+<tr><td>71</td><td>UV-VIS 缩写与全称；分光光度法比分光前多「分光」</td><td>术语</td><td>§7</td><td>1 43:10</td></tr>
+<tr><td>72</td><td>光学分析法分类：原子/分子、吸收/发射</td><td>分类</td><td>§7</td><td>1 56:08</td></tr>
+<tr><td>73</td><td>UV-VIS 属分子吸收光谱法（电磁辐射与物质相互作用）</td><td>定位</td><td>§7</td><td>1 56:34</td></tr>
+<tr><td>74</td><td>以电磁辐射为探针探测物质；相互作用伴随能量吸收</td><td>定义</td><td>§7</td><td>1 44:53</td></tr>
+<tr><td>75</td><td>波粒二象性；E=hν=hC/λ，波长越短能量越高</td><td>公式</td><td>§7</td><td>1 45:56</td></tr>
+<tr><td>76</td><td>电磁波谱顺序：无线电→微波→红外→可见→紫外→X→γ</td><td>谱图</td><td>§7</td><td>1 01:00:45</td></tr>
+<tr><td>77</td><td>无线电波千米级、微波厘米级</td><td>数据</td><td>§7</td><td>1 01:00:02</td></tr>
+<tr><td>78</td><td>紫外晒伤、X 射线穿透、γ 射线伽马刀</td><td>联系</td><td>§7</td><td>1 01:01:28</td></tr>
+<tr><td>79</td><td>可见光 400-760 nm；存在个体/物种差异</td><td>数据</td><td>§7</td><td>1 01:01:50</td></tr>
+<tr><td>80</td><td>可见范围与视锥细胞差异（3/4 种）</td><td>补充</td><td>§7</td><td>1 01:02:17</td></tr>
+<tr><td>81</td><td>单色光/复色光/互补光；LED 白光为红绿蓝复合</td><td>定义</td><td>§7</td><td>1 01:04:03</td></tr>
+<tr><td>82</td><td>互补色对应；溶液色＝吸收的互补色；深海生物视觉</td><td>原理</td><td>§7</td><td>1 01:07:13</td></tr>
+<tr><td>83</td><td>分子三种运动：电子绕核、原子振动、分子转动</td><td>分类</td><td>§8</td><td>1 01:08:34</td></tr>
+<tr><td>84</td><td>振动分伸缩/弯曲，均改变能量；转动有空间取向</td><td>分类</td><td>§8</td><td>1 01:09:56</td></tr>
+<tr><td>85</td><td>三种能级：电子、振动、转动</td><td>分类</td><td>§8</td><td>1 01:11:54</td></tr>
+<tr><td>86</td><td>能级差 电子&gt;振动&gt;转动；分子多在最低能级</td><td>结论</td><td>§8</td><td>1 01:12:50</td></tr>
+<tr><td>87</td><td>能级图纵坐标＝能量</td><td>概念</td><td>§8</td><td>1 01:12:18</td></tr>
+<tr><td>88</td><td>满足能级差即发生相应跃迁</td><td>原理</td><td>§8</td><td>1 01:14:00</td></tr>
+<tr><td>89</td><td>转动→远红外、振动→红外、电子→紫外可见</td><td>结论</td><td>§8</td><td>1 01:15:53</td></tr>
+<tr><td>90</td><td>电子跃迁伴振转跃迁，分子光谱连续带状</td><td>结论</td><td>§8</td><td>1 01:15:53</td></tr>
+<tr><td>91</td><td>吸光度＝吸收程度；吸收曲线横轴波长纵轴吸光度</td><td>概念</td><td>§8</td><td>1 01:17:36</td></tr>
+<tr><td>92</td><td>结构不同→能级不同→吸收曲线不同</td><td>原理</td><td>§8</td><td>1 01:16:36</td></tr>
+<tr><td>93</td><td>定性三特征：峰位置 λmax、峰个数、峰相对高度</td><td>考点</td><td>§8</td><td>1 01:18:10</td></tr>
+<tr><td>94</td><td>λmax 与末端吸收（末端吸收不用于定性）</td><td>概念</td><td>§8</td><td>1 01:19:02</td></tr>
+<tr><td>95</td><td>末端吸收来自 σ→σ* 真空紫外区</td><td>原理</td><td>§8</td><td>1 01:32:30</td></tr>
+<tr><td>96</td><td>灵敏度＝校准曲线斜率；定量选 λmax</td><td>方法</td><td>§8</td><td>1 01:20:25</td></tr>
+<tr><td>97</td><td>定量做法：固定波长测吸光度作校准曲线</td><td>方法</td><td>§8</td><td>1 01:22:51</td></tr>
+<tr><td>98</td><td>溶剂效应；只有共轭结构影响吸收</td><td>结论</td><td>§8</td><td>1 01:25:40</td></tr>
+<tr><td>99</td><td>共轭体系相近则吸收曲线相近</td><td>结论</td><td>§8</td><td>1 01:25:05</td></tr>
+<tr><td>100</td><td>入射光能量符合能级差即被吸收</td><td>原理</td><td>§8</td><td>1 01:47:20</td></tr>
+<tr><td>101</td><td>甲醛电子分 σ、π、n（非键电子）</td><td>分类</td><td>§9</td><td>1 01:27:14</td></tr>
+<tr><td>102</td><td>价电子能级顺序 σ&lt;π&lt;n&lt;π*&lt;σ*</td><td>结论</td><td>§9</td><td>1 01:28:09</td></tr>
+<tr><td>103</td><td>四类跃迁 σ→σ*、n→σ*、π→π*、n→π*</td><td>分类</td><td>§9</td><td>1 01:28:58</td></tr>
+<tr><td>104</td><td>σ→σ*：甲烷 125/乙烷 135 nm，真空紫外</td><td>数据</td><td>§9</td><td>1 01:30:16</td></tr>
+<tr><td>105</td><td>紫外区 200-400 nm</td><td>数据</td><td>§9</td><td>1 01:30:16</td></tr>
+<tr><td>106</td><td>只含 σ 键烷烃在紫外可见无吸收，可作溶剂</td><td>结论</td><td>§9</td><td>1 01:30:58</td></tr>
+<tr><td>107</td><td>真空紫外需抽真空（空气含 σ 轨道干扰）</td><td>原理</td><td>§9</td><td>1 01:31:52</td></tr>
+<tr><td>108</td><td>n→σ*：甲醇 183/碘 258 nm，ε≈10²，可作溶剂</td><td>数据</td><td>§9</td><td>1 01:33:21</td></tr>
+<tr><td>109</td><td>紫外可见要求 ε 10⁴-10⁵；n→σ* 波长 150-250 nm</td><td>数据</td><td>§9</td><td>1 01:34:46</td></tr>
+<tr><td>110</td><td>π→π*：乙烯 165 nm、苯 184 nm（ε≈6.8×10⁴）</td><td>数据</td><td>§9</td><td>1 01:35:42</td></tr>
+<tr><td>111</td><td>苯/萘/蒽 184/221/251 nm，共轭增大红移</td><td>数据</td><td>§9</td><td>1 01:37:18</td></tr>
+<tr><td>112</td><td>n→π*：丙酮 186/280 nm，有干扰不宜作溶剂</td><td>数据</td><td>§9</td><td>1 01:36:22</td></tr>
+<tr><td>113</td><td>红移/蓝移；共轭越大波长越长；番茄红素；衍生化</td><td>结论</td><td>§9</td><td>1 01:38:15</td></tr>
+<tr><td>114</td><td>π→π* 是 UV-VIS 主要检测对象</td><td>结论</td><td>§9</td><td>1 01:35:42</td></tr>
+<tr><td>115</td><td>跃迁能级差理论可用薛定谔方程计算（了解）</td><td>补充</td><td>§9</td><td>1 01:49:18</td></tr>
+<tr><td>116</td><td>生色团＝含不饱和键的共轭结构</td><td>定义</td><td>§10</td><td>1 01:39:43</td></tr>
+<tr><td>117</td><td>助色团＝含孤对电子、本身不吸收</td><td>定义</td><td>§10</td><td>1 01:40:42</td></tr>
+<tr><td>118</td><td>助色团经 p-π 共轭扩展并红移（-OH/-NH₂/-OR/-X）</td><td>原理</td><td>§10</td><td>1 01:40:42</td></tr>
+<tr><td>119</td><td>核心判据：有大共轭才有紫外可见吸收</td><td>考点</td><td>§10</td><td>1 01:39:12</td></tr>
+</table>
+<p class="foot">附录 D 共登记 119 个知识点，覆盖逐字稿全部讲授内容；定位均为逐字稿真实轮次。</p>
+</div>
+</body></html>

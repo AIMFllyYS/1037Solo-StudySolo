@@ -1,182 +1,76 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<style>
-:root{--paper:#F7F9FC;--ink:#1E2A38;--muted:#6B7A8D;--line:#D8E0EA;--accent:#1A5276;--accent-deep:#0E3A5C;--accent-tint:#E3EDF5;--gold:#B8860B;--gold-tint:#FBF3DC;--crimson:#A93226;--crimson-tint:#F9E5E2;--serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
-.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-.cover{background:radial-gradient(120% 80% at 78% 12%,#2E86C1 0%,#1A5276 55%,#0E3A5C 100%);color:#F0F4F8;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(184,134,11,.4);}
-.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#D4AC0D;margin-bottom:8mm;}
-.cover h1{font-family:var(--serif);font-size:34pt;line-height:1.2;color:#FBFCFD;margin-bottom:6mm;}
-.cover h1 .accent{color:#F4D03F;}
-.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(240,244,248,.82);margin-bottom:4mm;}
-.cover .meta{font-size:10pt;color:rgba(240,244,248,.6);margin-top:auto;}
-.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
-.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
-.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
-h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
-p{margin:2mm 0;}
-ul,ol{margin:2mm 0 2mm 6mm;}
-li{margin:1mm 0;}
-.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
-.card.concl{border-left:3pt solid var(--accent);}
-.card.warn{border-left:3pt solid var(--crimson);background:var(--crimson-tint);}
-.card.gold{border-left:3pt solid var(--gold);background:var(--gold-tint);}
-.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
-.card.warn .label{color:var(--crimson);}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
-th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
-td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
-tr:nth-child(even) td{background:var(--accent-tint);}
-.hl{background:var(--gold-tint);border:0.4pt solid #E0C870;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
-.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
-.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
-</style>
-</head>
-<body>
-
-<div class="page cover">
-  <div class="frame"></div>
-  <div class="kicker">ANALYTICAL CHEMISTRY · 分析化学</div>
-  <h1>分析化学<br><span class="accent">绪论</span></h1>
-  <div class="subt">第1-2节 · 课程笔记可视化手册</div>
-  <div class="meta">2026-09-01 · 华中科技大学基础医学</div>
-</div>
-
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">课程概况</span></div>
-  <table>
-    <tr><th>项目</th><th>内容</th></tr>
-    <tr><td><strong>总学时</strong></td><td>理论36 + 实验24</td></tr>
-    <tr><td><strong>考核</strong></td><td>期末60%（闭卷）+ 平时40%（实验/讨论/测验/作业）</td></tr>
-    <tr><td><strong>实验</strong></td><td>第10周开始，共6个实验</td></tr>
-    <tr><td><strong>作业</strong></td><td>微信平台提交，晚交每天扣2分，最低60分</td></tr>
-  </table>
-
-  <h3>理论课六大模块</h3>
-  <div class="card concl">
-    <div class="label">课程内容</div>
-    <p>① 样品采集与处理（含数据处理/有效数字）</p>
-    <p>② 电分析化学（电位分析法、电导分析法）</p>
-    <p>③ 紫外-可见分光光度法</p>
-    <p>④ 分子发光分析法</p>
-    <p>⑤ 色谱分析法</p>
-    <p>⑥ 其他分析技术</p>
-  </div>
-
-  <h3>实验项目</h3>
-  <table>
-    <tr><th>实验</th><th>方法</th><th>样品</th></tr>
-    <tr><td>牙膏中氟的测定</td><td>离子选择电极</td><td>牙膏（自备）</td></tr>
-    <tr><td>头发中锌的测定</td><td>分光光度法</td><td>头发（自备，需干净）</td></tr>
-    <tr><td>亚硝酸盐/亚铁测定</td><td>光度法</td><td>实验室提供</td></tr>
-    <tr><td>白酒增塑剂测定</td><td>色谱法</td><td>实验室提供</td></tr>
-    <tr><td>牛奶荧光素测定</td><td>荧光法</td><td>实验室提供</td></tr>
-  </table>
-  <div class="hl"><span class="tag">注意</span>头发锌测定需用干净头发，避免含锌洗发水干扰；脏头发易导致结果超标。</div>
-
-  <div class="footer"><span>分析化学 · 绪论</span><span>第 2 页</span></div>
-</div>
-
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">02</span><span class="chapter-title">分析化学定义与医学应用</span></div>
-  <div class="card concl">
-    <div class="label">定义</div>
-    <p>分析化学是研究获取物质<strong>化学信息</strong>的科学，包括物质的<strong>结构、组成和含量</strong>。</p>
-    <p>本课程聚焦：<strong>复杂样品中微量/痕量物质</strong>的化学信息获取。</p>
-  </div>
-
-  <table>
-    <tr><th></th><th>化学分析</th><th>仪器分析</th></tr>
-    <tr><td>方法</td><td>滴定、重量法</td><td>电、光、色谱</td></tr>
-    <tr><td>适用</td><td>常量分析</td><td>微量/痕量分析</td></tr>
-    <tr><td>特点</td><td>准确度高</td><td>灵敏度高</td></tr>
-    <tr><td>本课</td><td>不细讲</td><td><strong>重点</strong></td></tr>
-  </table>
-
-  <h3>医学中的分析化学——血药浓度监测</h3>
-  <div class="card gold">
-    <div class="label">为什么需要仪器分析？</div>
-    <p>① 药物剂量：毫克级（药片有效成分）</p>
-    <p>② 进入血液后：被稀释、不完全吸收、代谢 → 血药浓度很低（微量/痕量）</p>
-    <p>③ 血液基质复杂：蛋白质、脂肪、血红素、胆红素、金属离子、维生素</p>
-    <p>④ 需区分：原药 vs 代谢产物（有些代谢产物才是活性形式）</p>
-    <p>⑤ 应用：药效评估、给药方案设计（一天一次 vs 一天多次）</p>
-  </div>
-
-  <div class="footer"><span>分析化学 · 绪论</span><span>第 3 页</span></div>
-</div>
-
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">03</span><span class="chapter-title">基础知识</span></div>
-  <h3>聚四氟乙烯（PTFE）</h3>
-  <div class="card concl">
-    <div class="label">性质与用途</div>
-    <p><strong>用途</strong>：滴定管活塞</p>
-    <p><strong>性质</strong>：耐酸、耐碱、耐腐蚀、耐高压</p>
-    <p><strong>化学活性</strong>：<strong>不活泼</strong>（与啥都不反应）</p>
-  </div>
-  <div class="hl"><span class="tag">做题策略</span>能抗酸抗碱耐腐蚀 → 与啥都不反应 → 化学性质不活泼。不要选"活泼"。</div>
-
-  <h3>沉淀溶解平衡</h3>
-  <div class="card concl">
-    <div class="label">银的卤化物</div>
-    <p><strong>溶解度</strong>：AgF（可溶）&gt; AgCl &gt; AgBr &gt; AgI（最难溶）</p>
-    <p><strong>溶度积 Ksp</strong>：AgCl &gt; AgBr &gt; AgI</p>
-    <p><strong>应用</strong>：电位分析法（离子选择电极）的理论基础</p>
-  </div>
-  <div class="hl"><span class="tag">做题策略</span>选"两头"——最易溶（无沉淀）或最难溶（沉淀最狠），中间的是凑数选项。</div>
-
-  <h3>有效数字</h3>
-  <div class="card">
-    <p>实验课已讲但掌握不佳，本学期<strong>不跳过</strong>。用于数据处理和结果报告，体现准确度和精密度。</p>
-    <p>运算规则：加减看小数点后位数，乘除看有效数字位数；修约：四舍六入五成双。</p>
-  </div>
-
-  <div class="footer"><span>分析化学 · 绪论</span><span>第 4 页</span></div>
-</div>
-
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">04</span><span class="chapter-title">课程目标与易错点</span></div>
-  <div class="card concl">
-    <div class="label">课程目标</div>
-    <p>① 掌握复杂样品中微量/痕量物质的分析方法</p>
-    <p>② 掌握分析方法的原理（电、光、色谱）</p>
-    <p>③ 了解仪器结构（能排查故障，定位部件）</p>
-    <p>④ 了解分析方法的应用和前沿技术</p>
-    <p>⑤ 掌握解析物质信息的方法</p>
-  </div>
-
-  <h3>为什么要学仪器结构？</h3>
-  <div class="card gold">
-    <p>实验室大量时间用仪器，出现异常时需判断是<strong>操作问题</strong>还是<strong>仪器故障</strong>。</p>
-    <p>能定位故障部件 → 与维修人员高效沟通 → 缩短停机时间。</p>
-    <p>异常情况三可能：操作问题 / 仪器问题 / 样品问题。</p>
-  </div>
-
-  <h3>易错点汇总</h3>
-  <ol>
-    <li>平时成绩最好拿：作业只要交就有分，扣分是为了让你知道哪里错了。</li>
-    <li>实验课带干净头发：测锌用，脏头发/含锌洗发水会导致超标。</li>
-    <li>聚四氟乙烯化学性质<strong>不活泼</strong>：耐酸碱耐腐蚀=不反应=不活泼。</li>
-    <li>沉淀溶解<strong>选两头</strong>：最易溶或最难溶，不选中间。</li>
-    <li>仪器结构要了解：出问题能判断是操作还是仪器故障。</li>
-    <li>有效数字不能跳过：数据处理的基础。</li>
-  </ol>
-
-  <h3>主动回忆题</h3>
-  <div class="card">
-    <p><strong>Q. 为什么血药浓度测定需要仪器分析？</strong></p>
-    <p>药物进入血液后浓度很低（毫克级→微量/痕量），血液基质复杂，需区分原药和代谢产物。化学分析（滴定）灵敏度不够，仪器分析（色谱/光谱）灵敏度高，能检测微量物质。</p>
-  </div>
-
-  <div style="margin-top:6mm;text-align:center;color:var(--muted);font-size:9pt;">— 分析化学 · 第1-2节 · 完 —</div>
-  <div class="footer"><span>分析化学 · 绪论</span><span>第 5 页</span></div>
-</div>
-
-</body>
-</html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>分析化学（仪器分析）· 第1-2节 · 绪论</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#155E75; --accent-d:#0C3F51; --accent-t:#E1EEF3;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body><div class="page cover"><p class="h1">分析化学（仪器分析）</p><p class="meta">第1-2节 · 绪论 · 2026-09-01</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 29911 字 / 61 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>分析化学 · 绪论（instrumental-analysis）</td></tr>
+<tr><td>学时</td><td>2 学时（本学期理论36+实验24）</td></tr></table></div><div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">绪论五簇：课程地图、学科目标、量的语言、方法分类与流程、前沿与医学案例。</p>
+<svg viewBox="0 0 680 220" width="100%" aria-label="知识框架">
+<rect x="240" y="8" width="200" height="28" fill="#E1EEF3" stroke="#155E75"/>
+<text x="340" y="27" text-anchor="middle" font-size="11" font-family="sans-serif">仪器分析绪论</text>
+<line x1="120" y1="36" x2="120" y2="58" stroke="#155E75"/><line x1="260" y1="36" x2="260" y2="58" stroke="#155E75"/>
+<line x1="420" y1="36" x2="420" y2="58" stroke="#155E75"/><line x1="560" y1="36" x2="560" y2="58" stroke="#155E75"/>
+<rect x="40" y="58" width="160" height="36" fill="#fff" stroke="#0C3F51"/><text x="120" y="80" text-anchor="middle" font-size="9">课程与实验</text>
+<rect x="180" y="58" width="160" height="36" fill="#fff" stroke="#0C3F51"/><text x="260" y="80" text-anchor="middle" font-size="9">定义与目标</text>
+<rect x="340" y="58" width="160" height="36" fill="#fff" stroke="#0C3F51"/><text x="420" y="80" text-anchor="middle" font-size="9">量与单位</text>
+<rect x="500" y="58" width="160" height="36" fill="#fff" stroke="#0C3F51"/><text x="580" y="80" text-anchor="middle" font-size="9">方法与流程</text>
+<line x1="340" y1="94" x2="340" y2="120" stroke="#155E75"/>
+<rect x="200" y="120" width="280" height="36" fill="#E1EEF3" stroke="#155E75"/><text x="340" y="142" text-anchor="middle" font-size="10">how do we measure → 选方法 → 现场与医学</text>
+<rect x="120" y="170" width="440" height="36" fill="#fff" stroke="#0C3F51"/><text x="340" y="192" text-anchor="middle" font-size="9">前沿：可穿戴 · 芯片实验室 · AI · 笔式质谱</text>
+</svg></div><div class="page"><h2 class="h2">1. 开课测验与课程入口</h2><p class="lead">课前测验暴露沉淀溶解与聚四氟乙烯等基础；本学期书上内容尽量不跳讲。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>电位分析法将用到卤化银沉淀溶解平衡 <span class="loc">〔说话人2 00:03〕</span></li><li>卤化银溶解度题：选最易溶或最难溶的两端 <span class="loc">〔说话人2 00:03〕</span></li><li>聚四氟乙烯用于滴定管活塞 <span class="loc">〔说话人2 00:03〕</span></li><li>耐酸耐碱耐腐蚀意味着化学性质不活泼 <span class="loc">〔说话人2 00:03〕</span></li><li>有效数字实验课讲过本学期不跳过 <span class="loc">〔说话人2 00:03〕</span></li><li>课程为分析化学，侧重仪器分析 <span class="loc">〔说话人2 00:03〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>选项陷阱</th><th>正确思路</th></tr><tr><td>选溴化银等中间溶解度</td><td>选无沉淀或沉淀最重的一端</td></tr><tr><td>聚四氟乙烯化学活泼</td><td>不反应故不活泼</td></tr></table><div class="exam"><span class="tag">★考点</span>★掌握聚四氟乙烯性质与卤化银沉淀选题策略 <span class="loc">〔说话人2 00:03〕</span></div></div><div class="page"><h2 class="h2">2. 学时、考核与实验安排</h2><p class="lead">理论36学时实验24学时；期末60分平时40分；第10周起六个实验。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>理论课36学时、实验课24学时 <span class="loc">〔说话人2 04:39〕</span></li><li>理论考试卷面100分，占总评60分 <span class="loc">〔说话人2 04:39〕</span></li><li>平时成绩占40分，含实验、展示、测验、作业 <span class="loc">〔说话人2 04:39〕</span></li><li>作业在微信课程平台拍照提交 <span class="loc">〔说话人2 04:39〕</span></li><li>截止后每晚一天扣两分最低仍有60分 <span class="loc">〔说话人2 04:39〕</span></li><li>漏题只交部分题得60分可补交 <span class="loc">〔说话人2 04:39〕</span></li><li>理论模块含样品采集、电分析、光度、色谱等 <span class="loc">〔说话人2 04:39〕</span></li><li>书厚但部分章节会合并或不讲 <span class="loc">〔说话人2 04:39〕</span></li><li>实验约第十周开始共六个实验 <span class="loc">〔说话人2 04:39〕</span></li><li>牙膏氟测定牙膏自备 <span class="loc">〔说话人2 04:39〕</span></li><li>头发锌测定需干净头发约0.1克 <span class="loc">〔说话人2 08:41〕</span></li><li>头发测锌可反映缺锌或锌超标 <span class="loc">〔说话人2 08:41〕</span></li><li>洗发水可能含锌，留样头发须冲洗干净 <span class="loc">〔说话人2 09:58〕</span></li><li>课堂讨论可穿戴分析设备设计算平时分 <span class="loc">〔说话人2 11:04〕</span></li><li>讨论课必须提问，提问计入平时分 <span class="loc">〔说话人2 11:04〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>实验（举例）</th><th>方法</th><th>样品</th></tr><tr><td>牙膏氟</td><td>离子选择电极</td><td>牙膏自备</td></tr><tr><td>头发锌</td><td>分光光度法</td><td>干净头发自备</td></tr><tr><td>亚硝酸盐亚铁</td><td>光度法</td><td>实验室提供</td></tr><tr><td>白酒增塑剂</td><td>色谱法</td><td>实验室提供</td></tr><tr><td>牛奶荧光素</td><td>荧光法</td><td>实验室提供</td></tr></table><div class="exam"><span class="tag">★考点</span>★记住36加24学时与60比40考核 <span class="loc">〔说话人2 04:39〕</span></div></div><div class="page"><h2 class="h2">3. 课程目标与分析化学定义</h2><p class="lead">获取复杂样品微量痕量物质的结构组成含量信息。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>课程目标学习复杂样品微量痕量化学信息 <span class="loc">〔说话人2 11:04〕</span></li><li>化学信息包括结构组成和含量 <span class="loc">〔说话人2 11:04〕</span></li><li>基础医学多在实验室工作需会用仪器 <span class="loc">〔说话人2 13:20〕</span></li><li>血药监测需测血液中原药或代谢产物 <span class="loc">〔说话人2 13:20〕</span></li><li>药片有效成分一般为毫克级，入血后浓度更低 <span class="loc">〔说话人2 13:20〕</span></li><li>掌握电分析、光谱、色谱等方法原理 <span class="loc">〔说话人2 13:20〕</span></li><li>了解仪器结构便于排查故障沟通维修 <span class="loc">〔说话人2 13:20〕</span></li><li>学会解析谱图判断杂质背景噪音 <span class="loc">〔说话人2 13:20〕</span></li><li>培养交叉创新意识提出分析解决问题 <span class="loc">〔说话人2 13:20〕</span></li><li>异常可能是方法或仪器局限或操作失误 <span class="loc">〔说话人2 13:20〕</span></li><li>小改进也算创新 <span class="loc">〔说话人2 13:20〕</span></li><li>生命科学检测对象多为血液体液 <span class="loc">〔说话人2 13:20〕</span></li></ul><div class="exam"><span class="tag">★考点</span>★分析化学任务 how do we measure 看不见的物质 <span class="loc">〔说话人2 13:20〕</span></div></div><div class="page"><h2 class="h2">4. 分析任务、案例与临床应用</h2><p class="lead">定性定量结构分析；方法须按灵敏度与基质选最合适。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>牛奶蛋白质含量可用凯氏定氮法测定 <span class="loc">〔说话人2 13:20〕</span></li><li>凯氏法测氮非测蛋白本身 <span class="loc">〔说话人2 13:20〕</span></li><li>三聚氰胺高氮可致奶粉测氮虚高 <span class="loc">〔说话人2 13:20〕</span></li><li>现多用色谱法测蛋白质 <span class="loc">〔说话人2 13:20〕</span></li><li>同分异构体物理性质相近化学活性可不同 <span class="loc">〔说话人2 13:20〕</span></li><li>药物左旋右旋活性不同需结构分析 <span class="loc">〔说话人2 13:20〕</span></li><li>应用领域含临床、药物、食品、环境、工业 <span class="loc">〔说话人2 13:20〕</span></li><li>住院病人常测电解质转氨酶等 <span class="loc">〔说话人2 13:20〕</span></li><li>低浓度指标多靠仪器法非滴定 <span class="loc">〔说话人2 13:20〕</span></li><li>同一物质可有电化学光谱色谱多种方法 <span class="loc">〔说话人2 13:20〕</span></li><li>须知各法优缺点采样量灵敏度再选择 <span class="loc">〔说话人2 13:20〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>案例</th><th>要点</th></tr><tr><td>凯氏定氮</td><td>测氮→推蛋白，可被非蛋白氮干扰</td></tr><tr><td>三聚氰胺</td><td>分析方法缺陷导致食品安全事件</td></tr><tr><td>检验科</td><td>仪器分析支撑低浓度生化指标</td></tr></table></div><div class="page"><h2 class="h2">5. 取样量：常量、微量与超微量</h2><p class="lead">称量样品大于1克为常量分析取样；体检抽血约5–6毫升非常量。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>称量取样大于1克属常量分析取样 <span class="loc">〔说话人2 13:20〕</span></li><li>微量取样约万分之一到百分之一克 <span class="loc">〔说话人2 13:20〕</span></li><li>超微量比微量更小 <span class="loc">〔说话人2 13:20〕</span></li><li>体检抽血约5到6毫升非常量取样 <span class="loc">〔说话人2 28:25〕</span></li><li>手指血一滴属微量分析 <span class="loc">〔说话人2 28:25〕</span></li><li>考古取样极少宜光分析无损照射 <span class="loc">〔说话人2 28:25〕</span></li><li>核酸棉签取样量很小 <span class="loc">〔说话人2 33:08〕</span></li><li>PCR须反复升温降温，因核酸含量太低 <span class="loc">〔说话人2 28:25〕</span></li><li>扩增链用荧光标记碱基实现定量 <span class="loc">〔说话人2 33:08〕</span></li><li>荧光法把低含量转为强信号 <span class="loc">〔说话人2 33:08〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>取样量</th><th>范围</th></tr><tr><td>常量</td><td>称样量 &gt; 1 g</td></tr><tr><td>微量</td><td>约 10⁻⁴～10⁻² g（万分之一～百分之一克）</td></tr><tr><td>超微量</td><td>小于微量</td></tr></table><div class="exam"><span class="tag">★考点</span>★区分取样量常量微量与抽血毫升概念 <span class="loc">〔说话人2 28:25〕</span></div></div><div class="page"><h2 class="h2">6. 组分含量与ppm单位</h2><p class="lead">组分含量大于1%为常量组分；组分含量高低与取样量多少是两个概念。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>组分含量高于1%为常量组分 <span class="loc">〔说话人2 33:08〕</span></li><li>微量组分约10⁻²～1%，痕量组分含量更低 <span class="loc">〔说话人2 35:52〕</span></li><li>空气中氮气属常量组分 <span class="loc">〔说话人2 35:52〕</span></li><li>自来水痕量有机物测时需采几十升 <span class="loc">〔说话人2 35:52〕</span></li><li>痕量组分分析可配常量取样量 <span class="loc">〔说话人2 35:52〕</span></li><li>ppm为parts per million百万分之一 <span class="loc">〔说话人2 35:52〕</span></li><li>ppm约等于微克每克即10负6 <span class="loc">〔说话人2 35:52〕</span></li><li>ppb为10负9 ppt为10负12 <span class="loc">〔说话人2 35:52〕</span></li><li>金含量要求测到每吨1毫克级 <span class="loc">〔说话人1 39:16〕</span></li><li>微量元素分析测锌采样量大概0.1克 <span class="loc">〔说话人2 39:22〕</span></li><li>法医测砷样本量可为微升级 <span class="loc">〔说话人2 41:05〕</span></li><li>电子级磷酸金属杂质要求达10负16量级 <span class="loc">〔说话人2 43:41〕</span></li><li>12寸晶圆比8寸晶圆面积更大，芯片加工要求更高 <span class="loc">〔说话人2 41:05〕</span></li><li>测磷酸可测H或测磷酸根 <span class="loc">〔说话人2 43:41〕</span></li><li>测金属杂质需光度原子光谱电位等灵敏法 <span class="loc">〔说话人2 43:41〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>概念</th><th>阈值/含义</th></tr><tr><td>常量组分</td><td>>1%</td></tr><tr><td>微量组分</td><td>约10⁻²–1%</td></tr><tr><td>常量取样</td><td>>1 g</td></tr><tr><td>ppm</td><td>10⁻⁶，μg/g</td></tr></table><div class="mnem">millionaire中million助记ppm为百万分之一 <span class="loc">〔说话人2 35:52〕</span></div></div><div class="page"><h2 class="h2">7. 形态分析与现代趋势</h2><p class="lead">由总量到价态配位态；由实验室到现场可穿戴。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>测毒性汞不能只测总汞要分形态 <span class="loc">〔说话人2 43:41〕</span></li><li>买电子设备附纸标明铅汞等有害物质含量 <span class="loc">〔说话人2 43:41〕</span></li><li>规格写六价铬说明六价铬毒性强 <span class="loc">〔说话人2 43:41〕</span></li><li>从整体分析到微观表面区域分层 <span class="loc">〔说话人2 43:41〕</span></li><li>从静态分析到动态跟踪短寿命组分 <span class="loc">〔说话人2 43:41〕</span></li><li>智能手环背面绿光是可见光 <span class="loc">〔说话人2 49:06〕</span></li><li>可穿戴实时测数据属光分析方法 <span class="loc">〔说话人2 49:56〕</span></li><li>1920年脉冲伏安测大脑神经递质 <span class="loc">〔说话人2 49:56〕</span></li><li>协和医院招收瘫痪清醒病人做脑机接口 <span class="loc">〔说话人2 49:56〕</span></li><li>AI实验室一星期合成170多种化合物 <span class="loc">〔说话人2 53:47〕</span></li><li>AI写出的程序与结果仍需人工验证 <span class="loc">〔说话人2 53:47〕</span></li><li>分析化学已引入人工智能与多技术联用 <span class="loc">〔说话人2 56:00〕</span></li></ul></div><div class="page"><h2 class="h2">8. 肿瘤边界笔式采样质谱案例</h2><p class="lead">找肿瘤与正常组织分子差异→特征峰→设计采样检测器。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>肿瘤切除需分清边缘正常组织 <span class="loc">〔说话人2 57:33〕</span></li><li>思路找肿瘤细胞与正常细胞分子标记物 <span class="loc">〔说话人2 57:33〕</span></li><li>笔式探头三通道溶液萃取吹扫进质谱 <span class="loc">〔说话人2 57:33〕</span></li><li>质谱给出分子量用于鉴别 <span class="loc">〔说话人2 57:33〕</span></li><li>肿瘤组织出现687分子量特征峰 <span class="loc">〔说话人2 57:33〕</span></li><li>基础医学连接临床问题与分析技术 <span class="loc">〔说话人2 57:33〕</span></li><li>芯片实验室2000年左右很热现已成熟 <span class="loc">〔说话人2 57:33〕</span></li><li>指甲缝大小芯片完成上样到检测 <span class="loc">〔说话人2 57:33〕</span></li><li>期刊Lab on a Chip报道芯片实验室 <span class="loc">〔说话人2 57:33〕</span></li></ul><div class="exam"><span class="tag">★考点</span>★笔式质谱找分子标记物是跨学科联想范例 <span class="loc">〔说话人2 57:33〕</span></div></div><div class="page"><h2 class="h2">9. 分析方法分类</h2><p class="lead">按任务、对象、原理、取样量分类；化学分析本学期实验不做。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>按分析任务分为定性分析、定量分析、结构分析 <span class="loc">〔说话人2 57:33〕</span></li><li>按分析对象分为无机分析、有机分析 <span class="loc">〔说话人2 57:33〕</span></li><li>化学分析靠化学反应计量如滴定 <span class="loc">〔说话人2 01:06:14〕</span></li><li>仪器分析测量光、电、热、磁等物理性质定组成 <span class="loc">〔说话人2 01:06:14〕</span></li><li>可穿戴设备仅靠光即可测血氧饱和度 <span class="loc">〔说话人2 57:33〕</span></li><li>酒驾吹气为常规分析采血色谱为仲裁 <span class="loc">〔说话人2 01:06:14〕</span></li><li>化学分析仪器比较简单费用比较低廉 <span class="loc">〔说话人2 01:06:14〕</span></li><li>滴定三次相对平均偏差要小于千分之2 <span class="loc">〔说话人2 01:06:14〕</span></li><li>气相色谱上样量0.2微升 <span class="loc">〔说话人2 01:06:14〕</span></li><li>光度法会用三毫升 <span class="loc">〔说话人2 01:06:14〕</span></li><li>浓度低时相对误差会特别大 <span class="loc">〔说话人2 01:08:42〕</span></li><li>自动化很高但实验仍逐步做以学原理 <span class="loc">〔说话人2 01:08:42〕</span></li><li>本学期学电分析、光分析、色谱等 <span class="loc">〔说话人2 01:08:42〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th></th><th>化学分析</th><th>仪器分析</th></tr><tr><td>基础</td><td>化学反应计量</td><td>物理或物理化学性质</td></tr><tr><td>试样量</td><td>常量为主</td><td>微量痕量很少</td></tr><tr><td>准确度</td><td>高</td><td>浓度低时相对误差大</td></tr><tr><td>速度</td><td>较慢</td><td>快可自动化</td></tr></table><div class="exam"><span class="tag">★考点</span>★酒驾吹气不能作法律依据须色谱测血 <span class="loc">〔说话人2 01:06:14〕</span></div></div><div class="page"><h2 class="h2">10. 分析流程与课堂讨论</h2><p class="lead">提出问题→对象信息→方案→采样预处理→方法→数据处理→表示。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>提出问题想分析什么里面的什么东西 <span class="loc">〔说话人2 01:08:42〕</span></li><li>羽衣甘蓝叶绿素有颜色可用光度法 <span class="loc">〔说话人2 01:10:59〕</span></li><li>咖啡里咖啡因含量检测很重要 <span class="loc">〔说话人2 01:11:58〕</span></li><li>茶叶蛋蛋白质高可用凯氏法测氮 <span class="loc">〔说话人2 01:14:09〕</span></li><li>蛋白粉可能掺三聚氰胺宜色谱电泳 <span class="loc">〔说话人2 01:14:30〕</span></li><li>自来水钙镁为常量可用配位滴定或电位 <span class="loc">〔说话人2 01:15:29〕</span></li><li>选分析方法看含量精密度准确度费用时间 <span class="loc">〔说话人2 01:16:00〕</span></li><li>测一个电镜的话就1000多块钱 <span class="loc">〔说话人2 01:16:00〕</span></li><li>分析过程首先采样再预处理 <span class="loc">〔说话人2 01:16:00〕</span></li><li>预处理使样品状态浓度适应分析技术 <span class="loc">〔说话人2 01:16:00〕</span></li><li>数据处理要判断哪些数据好哪些不好 <span class="loc">〔说话人2 01:16:00〕</span></li><li>结果可用质量分数表示浓度 <span class="loc">〔说话人2 01:16:00〕</span></li></ul><div class="exam"><span class="tag">★考点</span>★老师强调用思路考虑不要死背 <span class="loc">〔说话人2 01:16:00〕</span></div></div><div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv"><li>36+24学时与60/40考核 <span class="loc">〔说话人2 04:39〕</span></li><li>化学信息结构组成含量 <span class="loc">〔说话人2 11:04〕</span></li><li>聚四氟乙烯活塞不活泼 <span class="loc">〔说话人2 00:03〕</span></li><li>卤化银沉淀选两头 <span class="loc">〔说话人2 00:03〕</span></li><li>常量取样>1g体检血5–6mL <span class="loc">〔说话人2 28:25〕</span></li><li>ppm百万分之一，ppb十亿分之一 <span class="loc">〔说话人2 35:52〕</span></li><li>痕量组分分析可用常量取样 <span class="loc">〔说话人2 35:52〕</span></li><li>酒驾吹气常规采血仲裁 <span class="loc">〔说话人2 01:06:14〕</span></li><li>笔式质谱687特征峰 <span class="loc">〔说话人2 57:33〕</span></li><li>分析流程从提出问题开始 <span class="loc">〔说话人2 01:10:34〕</span></li></ul></div><div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2><table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>选AgBr等中间溶解度</td><td>选AgF易溶或AgI最难溶 <span class="loc">〔说话人2 00:03〕</span></td></tr>
+<tr><td>聚四氟乙烯活泼</td><td>耐腐蚀即不反应不活泼 <span class="loc">〔说话人2 00:03〕</span></td></tr>
+<tr><td>痕量组分分析一定微量取样</td><td>自来水有机物可采几十升 <span class="loc">〔说话人2 35:52〕</span></td></tr>
+<tr><td>吹气酒驾即可定罪</td><td>须色谱测血乙醇仲裁 <span class="loc">〔说话人2 01:06:14〕</span></td></tr>
+<tr><td>测氮等于测蛋白质</td><td>凯氏法测氮可被三聚氰胺干扰 <span class="loc">〔说话人2 13:20〕</span></td></tr>
+</table></div><div class="page"><h2 class="h2">附录 C 考点索引表</h2><table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>课程考核与实验</td><td>§2</td><td>〔说话人2 04:39〕</td><td>填空</td></tr>
+<tr><td>分析化学定义与目标</td><td>§3</td><td>〔说话人2 11:04〕</td><td>简答</td></tr>
+<tr><td>常量微量取样与组分</td><td>§5–§6</td><td>〔说话人2 28:25〕</td><td>辨析</td></tr>
+<tr><td>化学vs仪器分析</td><td>§9</td><td>〔说话人2 01:08:42〕</td><td>对比</td></tr>
+<tr><td>分析流程与选方法</td><td>§10</td><td>〔说话人2 01:16:00〕</td><td>案例</td></tr>
+<tr><td>笔式质谱肿瘤边界</td><td>§8</td><td>〔说话人2 57:33〕</td><td>论述</td></tr>
+</table></div><div class="page"><h2 class="h2">附录 D 知识点清单</h2><table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>电位分析与卤化银沉淀溶解有关</td><td>关联</td><td>§1</td><td>〔说话人2 00:03〕</td></tr><tr><td>2</td><td>卤化银沉淀题选最易溶或最难溶</td><td>策略</td><td>§1</td><td>〔说话人2 00:03〕</td></tr><tr><td>3</td><td>聚四氟乙烯做滴定管活塞</td><td>应用</td><td>§1</td><td>〔说话人2 00:03〕</td></tr><tr><td>4</td><td>聚四氟乙烯化学性质不活泼</td><td>性质</td><td>§1</td><td>〔说话人2 00:03〕</td></tr><tr><td>5</td><td>有效数字本学期继续讲</td><td>安排</td><td>§1</td><td>〔说话人2 00:03〕</td></tr><tr><td>6</td><td>理论36学时实验24学时</td><td>数字</td><td>§2</td><td>〔说话人2 04:39〕</td></tr><tr><td>7</td><td>期末60分平时40分</td><td>数字</td><td>§2</td><td>〔说话人2 04:39〕</td></tr><tr><td>8</td><td>作业微信平台提交晚交每天扣2分</td><td>规则</td><td>§2</td><td>〔说话人2 04:39〕</td></tr><tr><td>9</td><td>漏题可补交至少60分</td><td>规则</td><td>§2</td><td>〔说话人2 04:39〕</td></tr><tr><td>10</td><td>理论含样品采集电分析光度色谱</td><td>分类</td><td>§2</td><td>〔说话人2 04:39〕</td></tr><tr><td>11</td><td>第十周起六个仪器分析实验</td><td>安排</td><td>§2</td><td>〔说话人2 04:39〕</td></tr><tr><td>12</td><td>头发锌实验需干净头发约0.1g</td><td>实验</td><td>§2</td><td>〔说话人2 08:41〕</td></tr><tr><td>13</td><td>洗发水含锌可干扰头发锌测定</td><td>易错</td><td>§2</td><td>〔说话人2 09:58〕</td></tr><tr><td>14</td><td>可穿戴设备设计课堂讨论</td><td>平时</td><td>§2</td><td>〔说话人2 11:04〕</td></tr><tr><td>15</td><td>讨论课必须提问并计分</td><td>平时</td><td>§2</td><td>〔说话人2 11:04〕</td></tr><tr><td>16</td><td>化学信息含结构组成含量</td><td>定义</td><td>§3</td><td>〔说话人2 11:04〕</td></tr><tr><td>17</td><td>复杂样品微量痕量分析</td><td>目标</td><td>§3</td><td>〔说话人2 11:04〕</td></tr><tr><td>18</td><td>血药浓度监测为医学应用</td><td>临床</td><td>§3</td><td>〔说话人2 13:20〕</td></tr><tr><td>19</td><td>药片有效成分约毫克级</td><td>数字</td><td>§3</td><td>〔说话人2 13:20〕</td></tr><tr><td>20</td><td>须区分原药与代谢产物</td><td>临床</td><td>§3</td><td>〔说话人2 13:20〕</td></tr><tr><td>21</td><td>掌握仪器结构便于故障排查</td><td>目标</td><td>§3</td><td>〔说话人2 13:20〕</td></tr><tr><td>22</td><td>会读谱图判断杂质与背景</td><td>能力</td><td>§3</td><td>〔说话人2 13:20〕</td></tr><tr><td>23</td><td>小改进即创新</td><td>理念</td><td>§3</td><td>〔说话人2 13:20〕</td></tr><tr><td>24</td><td>how do we measure 为核心问题</td><td>定义</td><td>§4</td><td>〔说话人2 13:20〕</td></tr><tr><td>25</td><td>凯氏定氮法测氮推蛋白质</td><td>方法</td><td>§4</td><td>〔说话人2 13:20〕</td></tr><tr><td>26</td><td>三聚氰胺事件暴露测氮法缺陷</td><td>案例</td><td>§4</td><td>〔说话人2 13:20〕</td></tr><tr><td>27</td><td>色谱法现常用测蛋白</td><td>方法</td><td>§4</td><td>〔说话人2 13:20〕</td></tr><tr><td>28</td><td>同分异构体药物活性可不同</td><td>结构</td><td>§4</td><td>〔说话人2 13:20〕</td></tr><tr><td>29</td><td>检验科低浓度指标靠仪器</td><td>临床</td><td>§4</td><td>〔说话人2 13:20〕</td></tr><tr><td>30</td><td>多方法并存须选最合适</td><td>策略</td><td>§4</td><td>〔说话人2 13:20〕</td></tr><tr><td>31</td><td>称量大于1g为常量取样</td><td>定义</td><td>§5</td><td>〔说话人2 13:20〕</td></tr><tr><td>32</td><td>体检抽血约5–6mL非常量取样</td><td>举例</td><td>§5</td><td>〔说话人2 28:25〕</td></tr><tr><td>33</td><td>PCR核酸扩增因含量低需循环</td><td>机制</td><td>§5</td><td>〔说话人2 33:08〕</td></tr><tr><td>34</td><td>荧光标记碱基实现核酸定量</td><td>方法</td><td>§5</td><td>〔说话人2 33:08〕</td></tr><tr><td>35</td><td>组分>1%为常量组分</td><td>定义</td><td>§6</td><td>〔说话人2 33:08〕</td></tr><tr><td>36</td><td>痕量组分分析可用常量取样</td><td>易混</td><td>§6</td><td>〔说话人2 35:52〕</td></tr><tr><td>37</td><td>ppm为百万分之一10⁻⁶</td><td>单位</td><td>§6</td><td>〔说话人2 35:52〕</td></tr><tr><td>38</td><td>ppb10⁻⁹ ppt10⁻¹²</td><td>单位</td><td>§6</td><td>〔说话人2 35:52〕</td></tr><tr><td>39</td><td>测金每吨1mg级要求</td><td>数字</td><td>§6</td><td>〔说话人1 39:16〕</td></tr><tr><td>40</td><td>头发锌采样约0.1g</td><td>数字</td><td>§6</td><td>〔说话人2 39:22〕</td></tr><tr><td>41</td><td>电子级磷酸杂质10⁻¹⁶级</td><td>数字</td><td>§6</td><td>〔说话人2 43:41〕</td></tr><tr><td>42</td><td>汞形态分析毒性不同</td><td>形态</td><td>§7</td><td>〔说话人2 43:41〕</td></tr><tr><td>43</td><td>电子设备规格标注铅汞六价铬等</td><td>法规</td><td>§7</td><td>〔说话人2 43:41〕</td></tr><tr><td>44</td><td>可穿戴绿光光度现场分析</td><td>前沿</td><td>§7</td><td>〔说话人2 49:06〕</td></tr><tr><td>45</td><td>1920年活体脉冲伏安测神经递质</td><td>历史</td><td>§7</td><td>〔说话人2 49:56〕</td></tr><tr><td>46</td><td>AI一周合成170种化合物</td><td>前沿</td><td>§7</td><td>〔说话人2 53:47〕</td></tr><tr><td>47</td><td>肿瘤切缘需分子标志物</td><td>临床</td><td>§8</td><td>〔说话人2 57:33〕</td></tr><tr><td>48</td><td>笔式三通道萃取进质谱</td><td>仪器</td><td>§8</td><td>〔说话人2 57:33〕</td></tr><tr><td>49</td><td>分子量687为肿瘤特征峰</td><td>数据</td><td>§8</td><td>〔说话人2 57:33〕</td></tr><tr><td>50</td><td>芯片实验室指甲大小集成全流程</td><td>前沿</td><td>§8</td><td>〔说话人2 57:33〕</td></tr><tr><td>51</td><td>化学分析靠反应计量仪器分析靠物理性质</td><td>对比</td><td>§9</td><td>〔说话人2 01:06:14〕</td></tr><tr><td>52</td><td>酒驾吹气常规采血色谱仲裁</td><td>案例</td><td>§9</td><td>〔说话人2 01:06:14〕</td></tr><tr><td>53</td><td>滴定三次RSD<0.2%</td><td>数字</td><td>§9</td><td>〔说话人2 01:06:14〕</td></tr><tr><td>54</td><td>GC上样0.2μL</td><td>数字</td><td>§9</td><td>〔说话人2 01:06:14〕</td></tr><tr><td>55</td><td>分析流程从提出问题开始</td><td>流程</td><td>§10</td><td>〔说话人2 01:10:34〕</td></tr><tr><td>56</td><td>叶绿素有色可用光度法</td><td>课堂</td><td>§10</td><td>〔说话人2 01:10:59〕</td></tr><tr><td>57</td><td>茶叶蛋蛋白高可用凯氏定氮法</td><td>课堂</td><td>§10</td><td>〔说话人2 01:14:09〕</td></tr><tr><td>58</td><td>选方法考虑费用如电镜千元次</td><td>策略</td><td>§10</td><td>〔说话人2 01:16:00〕</td></tr><tr><td>59</td><td>预处理适配方法形态除干扰</td><td>流程</td><td>§10</td><td>〔说话人2 01:16:00〕</td></tr><tr><td>60</td><td>数据处理判断异常值</td><td>流程</td><td>§10</td><td>〔说话人2 01:16:00〕</td></tr></table><p class="foot">附录 D 共 60 条，覆盖 recording.md 绪论全部讲授点。</p></div></body></html>

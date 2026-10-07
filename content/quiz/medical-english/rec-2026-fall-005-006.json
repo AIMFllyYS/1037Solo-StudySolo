@@ -3,258 +3,609 @@
   "chapterId": "rec-2026-fall-005-006",
   "generatedAt": "2026-09-16",
   "examConfig": {
-    "source": "content/medical-english/lectures/rec-2026-fall-005-006/recording.md；content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-    "totalPoints": 110,
-    "timeLimit": 45
+    "source": "content/medical-english/lectures/rec-2026-fall-005-006/recording.md；content/medical-english/lectures/rec-2026-fall-005-006/notes.html（SOP-04 课上录音标准 24 题/100 分）",
+    "totalPoints": 100,
+    "timeLimit": 50
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-005-006",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "8b9f217858e300c77fe4dbc3cf5fdac7ae03c93a039114e99908397937740f36",
-    "notesTextHash": "5570ecc858ddb77454f29122f73a66ea9e18ea4b58750bc2eb1dfa0101c656c2"
+    "notesTextHash": "e6dbfd85f76ba06b11d3ba76171370729e19f5e7649433da439b7e72cb7bfe67"
   },
   "questions": [
     {
       "id": "q001",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "本课给出的医学术语（medical term）构成基本模式是（　）。",
+      "stem": "老师在 PPT 上给出的医学术语构词基本模式是（　）。",
       "options": [
-        "prefix + word root + suffix",
+        "prefix + word root + suffix + combining vowel",
         "prefix + word root + combining vowel + suffix",
-        "word root + prefix + suffix + vowel",
-        "prefix + suffix + word root + combining vowel"
+        "word root + prefix + combining vowel + suffix",
+        "suffix + combining vowel + word root + prefix"
       ],
       "answer": 1,
-      "hint": "口诀「前缀词根连元音，后缀结尾记心间」。",
-      "explanation": "**B 正确。** 医学术语的基本构词模式是 prefix（前缀）+ word root（词根）+ combining vowel（连接元音）+ suffix（后缀），也可以是 prefix + word root + combining vowel + word root + suffix。\n- A：缺少 connecting vowel，不是完整的基本模式；\n- C、D：顺序错误，连接元音紧跟词根之后。",
+      "hint": "回忆老师拆 radiologist 的顺序：词根在前，连接元音紧跟词根，后缀收尾。",
+      "explanation": "**B 正确。** 老师 04:32 给出的两种模式是：① prefix（前缀）+ word root（词根）+ combining vowel（连接元音）+ suffix（后缀）；② prefix + word root + combining vowel + word root + suffix（两个词根并置）。无论哪一种，连接元音都紧跟在词根之后、后缀之前。\n- A：把 connecting vowel 与 suffix 的位置对调，等于没有连接元音，构词链断裂；\n- C：把前缀排到词根之后，与英语医学术语的实际顺序不符（课堂示例 radiologist = radio + log + ist，前缀并不在词根后）；\n- D：完全倒序，词根被放到最后，与课堂给出的两种模式都不符合。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "医学术语构成模式 · prefix+root+combining vowel+suffix"
+        "label": "医学术语构词的基本模式（说话人1 04:32）"
       }
     },
     {
       "id": "q002",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "本课为什么要求同学们做同族词（cognate words）练习？下列说法最准确的是（　）。",
+      "stem": "下列对「同族词（cognate words）」的表述，与老师课堂给出的定义一致的是（　）。",
       "options": [
-        "为了练习英语口语发音",
-        "为了让同学们背诵每个单词的全部拼写",
-        "一个词根可派生至少20个词，记词根比记整个单词容易，且词根含义在任何组合中不变",
-        "为了应付期末考试的听写测试"
+        "拼写相近但含义完全不同的词",
+        "由同一个前缀派生出来的一组词",
+        "共享同一个词根、并由该词根派生的词",
+        "同一学科内部使用的全部专业术语"
       ],
       "answer": 2,
-      "hint": "词根的含义在任何组合中都不变（cardio 永远是 heart）。",
-      "explanation": "**C 正确。** 同族词共享同一个词根，一个词根加前缀、后缀或词根组合可派生至少20个词；记词根的含义比逐个记整个单词容易得多，且词根含义在任何组合中保持不变（如 cardio 永远表示 heart）。\n- A、B、D：均非本课所述同族词练习的目的；本课强调的是通过词根词缀系统记忆，而非口语或听写。",
+      "hint": "老师用了 share the same root 与「语义代码」两个说法来定义它。",
+      "explanation": "**C 正确。** 老师 03:16 的定义是：同族词就是 share the same root 的词；词根是「一个词、一个术语最根本的组成成分（the most fundamental component）」，并构成该术语的语义代码（semantic code）。\n- A：只看拼写相近，忽略了「同一词根、含义相关」这一核心，混淆了形近词与同族词；\n- B：把词根错当成前缀；同学共有的成分是词根，不是前缀；\n- D：同一学科的专业术语未必共享词根（例如眼科术中既有 retinal 也有 lens 系列），范围过大。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "同族词记忆法 · 记词根比记整词容易"
+        "label": "1.3 Task 2：Cognate Words（同族词） · 同族词（Cognate Words）与它的记忆原理（说话人1 03:16）"
       }
     },
     {
       "id": "q003",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "医学术语 Presentation 的三个任务不包括下列哪一项（　）。",
+      "stem": "老师解释「为什么要做同族词练习」时提到的关键数字是（　）。",
       "options": [
-        "Words Analysis：教材P17选7个词根分析构成",
-        "Cognate Words：每个词根找5个同族词",
-        "Medical Translation：教材P18-19翻译练习",
-        "Writing a 3000-word research paper on AI"
+        "每个词根要找 5 个同族词",
+        "一个词根至少可以派生 20 个词",
+        "教材第 17 页共列出 50 个词根",
+        "一个单元要记住 200 个术语"
       ],
-      "answer": 3,
-      "hint": "三任务口诀「分析同族加翻译」。",
-      "explanation": "**D 正确（符合题意）。** 三个任务是 Task 1 Words Analysis（P17选7个词根）、Task 2 Cognate Words（每个词根5个同族词）、Task 3 Medical Translation（P18-19）；写3000字研究论文不在其中。\n- A、B、C 均为三个任务之一。",
+      "answer": 1,
+      "hint": "老师先问学生「为什么要做同族词」，随后用派生能力回答。",
+      "explanation": "**B 正确。** 老师 07:00 的原话是「至少一个词可以派生出 20 个词」——加前缀、后缀，或词根加词根再加词根；并且「你记词根，比你记整个单词要容易的多」。\n- A：5 个同族词是 Task 2 的作业数量要求，不是「为什么要做」的理由；\n- C：课堂上说的是从第 17 页选 7 个词根，并未说该页共列 50 个词根；\n- D：课堂未出现「200 个术语」这一数字，属于编造项。",
       "sourceRef": {
-        "source": "notes",
-        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "医学术语Presentation三任务"
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/recording.md",
+        "label": "词根派生能力（说话人1 07:00「至少一个词可以派生出 20 个词」）"
       }
     },
     {
       "id": "q004",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "本课指出 Unit 1 课文的主旨句（thesis statement）及其位置是（　）。",
+      "stem": "关于 -pathy 这一成分的用法，与课堂讲解一致的是（　）。",
       "options": [
-        "\"AI will replace all doctors.\" — 在第1段",
-        "\"AI can solve all these problems.\" — 在第4段，仅一句话，既是过渡段也是全文主旨句",
-        "\"AI is dangerous and should be banned.\" — 在第10段",
-        "\"Human doctors are better than AI.\" — 在第12段"
+        "只能作后缀，含义是「疾病（disease）」",
+        "只能作词根，含义是「治疗」",
+        "作后缀时含义是疾病（disease）；作词根时去掉 y 加 o，写作 patho-",
+        "作后缀时含义是「学科」，作词根时写作 pathy-"
       ],
-      "answer": 1,
-      "hint": "口诀「主旨句在第四段，AI解决所有难题」。",
-      "explanation": "**B 正确。** 第4段只有一句话，既是过渡段（transitional paragraph）也是全文主旨句（thesis statement），内容为 \"AI can solve all these problems\"。\n- A、C、D：均非课文主旨句，且与课文主旨（AI补充而非替代）相悖。",
+      "answer": 2,
+      "hint": "老师提醒「有的词根它既可以做词根，也可以做什么？后缀」，并举了教材第 17 页上的带连字符写法。",
+      "explanation": "**C 正确。** 老师 05:30 讲得很明确：-pathy「做后缀的时候……是疾病，disease 的意思」；而当它作 word root 时，「它把 y 去掉，pass（patho），然后加 o」。也就是说这个成分身份可变，两种身份下形式不同。\n- A：只承认后缀身份，漏掉了它可以作词根这一半；\n- B：把含义说成「治疗」，与课堂给出的 disease 不符；\n- D：把后缀含义错记为「学科」（-logy/-log 才是学科），并且词根形式写成 pathy- 也不符合「去 y 加 o」的规则。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "课文主旨句 · P4 AI can solve all these problems"
+        "label": "既可作词根、又可作后缀的成分（说话人1 05:30）"
       }
     },
     {
       "id": "q005",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "在 Paragraph 5 中，本课列举的导致医生误诊的人为因素不包括（　）。",
+      "stem": "医学术语 presentation 的 Task 1（Words Analysis）要求同学完成的是（　）。",
       "options": [
-        "heavy workload（工作负担重）",
-        "lack of sufficient time（时间不足）",
-        "cognitive bandwidth（认知带宽有限）",
-        "insufficient medical insurance coverage（医保覆盖不足）"
+        "从教材第 17 页列出的词根中选 7 个，分析这些词的构成",
+        "每个词根找 5 个同族词并列成词表",
+        "把教材第 18–19 页的翻译题全部译成中文",
+        "每人写一份医学术语学习心得"
       ],
-      "answer": 3,
-      "hint": "P5 平行结构列举四个因素：heavy workload, lack of sufficient time, cognitive bandwidth, gaps of knowledge。",
-      "explanation": "**D 正确（符合题意）。** P5 列举的人为因素为 heavy workload、lack of sufficient time、cognitive bandwidth、gaps of knowledge；医保覆盖不足不在课文中。\n- A、B、C 均为课文列举的导致医生误诊的人为因素。",
+      "answer": 0,
+      "hint": "三个任务各有分工：一个分析构成，一个找同族词，一个做翻译。",
+      "explanation": "**A 正确。** 老师 02:37 讲 Task 1：「On page 17, look at the word root… you choose the words 1,2,3,4,5,6,7」，即从第 17 页的词根中选 7 个，分析教材中出现的这些词的构成（现场示范 radiologist）。\n- B：这是 Task 2（Cognate Words）的要求，把两个任务混在一起；\n- C：这是 Task 3（Medical Translation，第 18–19 页）的内容；\n- D：课堂上从未布置过这类作业，属于凭空添加。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "P5 AI优势1 · 人为因素平行结构"
+        "label": "1.2 Task 1：Words Analysis（词汇分析） · 课堂作业总纲：三个任务（说话人1 02:37）"
       }
     },
     {
       "id": "q006",
       "type": "single_choice",
-      "difficulty": "medium",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "关于 Paragraph 6 中平行结构 \"pneumonia, blood clot in the lungs, acute kidney injury\" 的排列逻辑，本课给出的分析是（　）。",
+      "stem": "Unit 1 课文的主旨句（thesis statement）及其位置是（　）。",
       "options": [
-        "完全随机排列，没有任何逻辑",
-        "按严重程度递进（普通→慢性→急性严重），且按身体部位从上到下（肺→肾）",
-        "按单词首字母字母表顺序排列",
-        "按发现时间从早到晚排列"
+        "第 1 段；AI is changing modern medicine.",
+        "第 4 段；AI can solve all these problems.",
+        "第 7 段；What about the remaining 80%?",
+        "第 12 段；Users were willing to use AI to answer simple questions."
       ],
       "answer": 1,
-      "hint": "平行结构不是随便列的，有内在逻辑——严重程度+从上到下。",
-      "explanation": "**B 正确。** 本课强调平行结构不是随意排列：①按严重程度递进——pneumonia（普通疾病）→ blood clot（慢性疾病）→ acute kidney injury（急性严重疾病）；②按身体部位从上到下——肺（呼吸）→ 肾。\n- A：与「平行结构有逻辑顺序」的强调相反；\n- C、D：课文未提及字母顺序或时间顺序。",
+      "hint": "这一段具有双重身份：既是过渡段，又是全文主旨句，而且全段只有一句话。",
+      "explanation": "**B 正确。** 学生（说话人3 16:00）先判断第 4 段是 transitional paragraph，老师 16:23–16:30 补上另一半定性：它「也是全文的 thesis statement……就是 AI can solve all these problems」，并且全段只有一句话。\n- A：课文第 1 段并未给出这句主旨；另外 AI 是否「改变医学」不是课文主旨的落点，主旨落在「能解决问题」上；\n- C：P7 末句是反问句（rhetorical question），强调 AI 能处理剩余部分，属于修辞句而不是全文主旨；\n- D：P12 的这句是调查数据的概括句，讨论用户对 AI 的信任，是分论点而非全文主旨。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "P6平行结构逻辑 · 严重程度+从上到下"
+        "label": "2.2 第 4 段：过渡段与主旨句 · P4：过渡段即全文主旨句（说话人1 16:23–16:30）"
       }
     },
     {
       "id": "q007",
       "type": "single_choice",
-      "difficulty": "medium",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "在 Paragraph 7 中，作者用 \"Consider for example, hypertrophic cardiomyopathy...\" 开头，本课指出这个句式是（　）。",
+      "stem": "下列哪一项不属于 Paragraph 5 列举的、导致医生出错的人为因素（　）。",
       "options": [
-        "感叹句（exclamatory sentence）",
-        "疑问句（interrogative sentence）",
-        "祈使句（imperative sentence），作用是吸引读者注意力",
-        "倒装句（inverted sentence），用于强调否定"
+        "heavy workload（工作负担重）",
+        "lack of sufficient time（时间不足）",
+        "cognitive bandwidth（认知带宽有限）",
+        "genetic disorder（遗传性疾病）"
       ],
-      "answer": 2,
-      "hint": "Consider 是 let's do something 型祈使句。",
-      "explanation": "**C 正确。** \"Consider for example...\" 是祈使句（imperative sentence），即使在较正式的学术文章中也使用，其功能是 attract the readers' interests（吸引读者注意力）。\n- A、B、D：均不符合 consider 开头的祈使句性质。",
+      "answer": 3,
+      "hint": "P5 的平行结构一共列举了四个短语，都是「人」的局限；遗传属性属于疾病的特征。",
+      "explanation": "**D 正确（符合题意）。** P5 的平行结构为 heavy workload、lack of sufficient time、cognitive bandwidth、gaps of knowledge 四项（老师 24:20 用它说明平行结构是医学英语的典型句式），都属于医生作为「人」所受到的局限；genetic disorder 是 P7 描述 hypertrophic cardiomyopathy 时用的疾病属性，不属于 P5 的人为因素。\n- A、B、C：都是 P5 原文列举的人为因素，属于干扰项中「真」的三项；\n- 另外漏掉的 gaps of knowledge（知识缺口）也是 P5 的成员，复习时应记全四项。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "祈使句 · Consider for example 吸引读者注意力"
+        "label": "1.5 Task 3：Medical Translation 与小组分配 · P5 四个人为因素的并列（说话人1 24:20）"
       }
     },
     {
       "id": "q008",
       "type": "single_choice",
-      "difficulty": "medium",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "在 Paragraph 9 中，作者特意选择眼科医生（ophthalmologists）作为 AI 帮助的例子之一，本课解释的原因是（　）。",
+      "stem": "老师要求用两个词概括 Paragraph 6 中 AI 优势一的细节，这两个词是（　）。",
       "options": [
-        "眼科病例数量最多，数据量最大",
-        "眼科诊断最简单，AI最容易掌握",
-        "视网膜疾病非常精密，选择眼科可以体现即使最精密的疾病 AI 也能诊断",
-        "眼科医生工资最高，经济效应最好"
+        "accuracy（准确性）与 timelessness（时效性）",
+        "workload（工作量）与 bandwidth（带宽）",
+        "definition（定义）与 mechanism（机制）",
+        "problem（问题）与 solution（解决）"
       ],
-      "answer": 2,
-      "hint": "眼科的特征是视网膜，很精密——即使最精密的也能诊断出来。",
-      "explanation": "**C 正确。** 本课解释：眼科的特征是视网膜，非常精密；作者特意选眼科而非 kidney（前面已提过 acute kidney injury），就是为了体现即使是最精密的疾病 AI 也能诊断，进一步展示 AI 的独特能力。\n- A、B、D：均非本课所述原因；课文强调的是「精密疾病也能诊断」，不是病例数量、难度或工资。",
+      "answer": 0,
+      "hint": "这一段只有两句话，第二句给出这两个关键词，并由此引出「生与死」的因果结论。",
+      "explanation": "**A 正确。** 老师 20:09 明确：「the details of AI's advantage is accuracy and timelessness」——P6 是对优势一的细节描述，回答 AI 究竟怎样解决人类诊断的问题。\n- B：workload 与 bandwidth 属于 P5 列举的人为因素，是被 AI 克服的对象，不是 AI 的能力；\n- C：definition 与 mechanism 是描写疾病的句式层次（P7），与 P6 的关键词无关；\n- D：problem and solution 是 P11 的写作风格名，属于段落组织方式，不是能力关键词。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "P9为什么选眼科 · 视网膜最精密"
+        "label": "7.1 写作风格总结 · P6：优势一的细节——accuracy 与 timelessness（说话人1 20:09）"
       }
     },
     {
       "id": "q009",
       "type": "single_choice",
-      "difficulty": "medium",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "本课总结 Paragraph 10 中 AI 面临的三个挑战，其逻辑顺序是（　）。",
+      "stem": "Paragraph 7 末句 what about the remaining 80%? 在课堂分析中被定性为（　）。",
       "options": [
-        "从简单到复杂",
-        "从创造（creative）→使用（use）→长期效果（long-term effect），即产品生命周期",
-        "从便宜到昂贵",
-        "从国内到国际"
+        "一种写作风格，属于 problem and solution",
+        "修辞手法中的反问句（rhetorical question），属于 language feature 而不是写作风格",
+        "一个必须由学生现场回答的课堂提问",
+        "一个隐喻，用 80% 指代网上不可靠的信息"
       ],
       "answer": 1,
-      "hint": "口诀「昂贵产权加激励，创造使用长期记」。",
-      "explanation": "**B 正确。** 三个挑战的逻辑顺序是从创造（AI 很昂贵，需要大规模数据训练）→ 使用（知识产权保护困难）→ 长期效果（需要财务激励才能持续发展），这就是产品的生命周期；第二位作者是经济学家，所以这部分有经济学逻辑。\n- A、C、D：均非课文所述的逻辑顺序。",
+      "hint": "学生最初把它当成 writing style，老师当场纠正了层级。",
+      "explanation": "**B 正确。** 学生（说话人2 30:22）先把它当成写作手法，老师 30:44 纠正：「This is not a writing style. This is the rhetorical devices of the last sentence… is the rhetorical question. We needn't answer because AI can help us to solve this problem. So this is language feature, not the writing style.」\n- A：problem and solution 是 P11 的写作风格，与本句无关，属于把修辞错归为段落组织方式；\n- C：反问句的特征恰恰是「不需要回答」，老师明确说了 We needn't answer；\n- D：隐喻是 P11 的 random thread，80% 在本句只是「剩余部分」的数量表达，不是隐喻。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "P10三大挑战逻辑 · 创造→使用→长期效果"
+        "label": "1.5 Task 3：Medical Translation 与小组分配 · .2 两处语言特征：反问句与祈使句（说话人1 30:44）"
       }
     },
     {
       "id": "q010",
       "type": "single_choice",
-      "difficulty": "hard",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "在 Paragraph 11 中，作者用 \"random thread\" 指代网上不可靠的信息。本课指出这里使用的修辞手法及其用意是（　）。",
+      "stem": "Paragraph 12 用来支撑「问题越复杂越不愿信任 AI」这一论点的调查数据是（　）。",
       "options": [
-        "拟人（personification），把信息当作人来描写",
-        "夸张（hyperbole），夸大信息的数量",
-        "隐喻（metaphor）：thread=线，很细经不起推敲、一扯就断，委婉表达不可靠信息，避免直接说 unbelievable",
-        "明喻（simile），用 like 把信息比作线"
+        "20%",
+        "60%",
+        "80%",
+        "5 年"
       ],
-      "answer": 2,
-      "hint": "thread 是「线」，一扯就断——经不起推敲。",
-      "explanation": "**C 正确。** \"random thread\" 是隐喻（metaphor）：thread 是线，很细、经不起推敲、一扯就断，作者用它委婉指代网上不可靠的信息（unreliable information）；因为不好直接说 unbelievable information（毕竟有人相信），所以用 thread 来暗指。\n- A、B、D：均不符合 thread 作为隐喻的分析。",
+      "answer": 1,
+      "hint": "学生指出本段第二句用的是 statistics，老师确认了这处数据。",
+      "explanation": "**B 正确。** 学生（说话人7 01:33:12–01:33:26）指出第二句用了近期调查数据「the 60 percent」，并说明它属于 statistics；老师随即追问该句的因果关系，确认本段以数据和因果链支撑论点。\n- A：20% 课堂未出现，属于编造项（容易与「一个词根派生 20 个词」混淆）；\n- C：80% 来自 P7 末句反问句 what about the remaining 80%?，与 P12 的调查数据不是同一处；\n- D：「5 年」是老师解释 chronic（慢性）时对血管堵塞过程的估计，不是调查数据。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "P11 random thread 隐喻 · 委婉表达不可靠信息"
+        "label": "6.3 第 12 段：患者与医生对 AI 的信任 · P12：患者与医生对 AI 的信任问题（说话人7 01:33:26）"
       }
     },
     {
       "id": "q011",
-      "type": "single_choice",
-      "difficulty": "hard",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "本课在翻译技巧中指出，英译汉时对英语长句的正确处理方式是（　）。",
+      "stem": "Paragraph 9 在说明「医疗数据快速增长」时并列列举了多类数据。下列哪些属于该并列结构中的成员（　）。",
       "options": [
-        "必须逐字逐句对应，一个英文长句翻成一个汉语长句",
-        "英语长句可以拆成汉语多个短句；反过来汉译英时则应按英语思维，可能合成一个句子",
-        "把所有修饰语全部删掉，只保留主干",
-        "把英语长句直接用拼音标注，不做翻译"
+        "electronic health records（电子健康记录）",
+        "imaging（影像）",
+        "genomic data（基因组数据）",
+        "behavior data（行为数据）",
+        "cardiac output（心输出量）"
       ],
-      "answer": 1,
-      "hint": "英语长句→汉语短句；英译汉按汉语思维，汉译英按英语思维。",
-      "explanation": "**B 正确。** 本课翻译技巧：英语长句在汉译时可拆成多个短句（如 P8 长句拆成两句）；反过来汉译英时要按英语思维，可能合成一个句子。同时注意近义词替换（如 help→协助/帮助/支持）避免重复。\n- A：与「长句拆短句」技巧相反；\n- C：删修饰语丢失信息，不是翻译技巧；\n- D：明显错误。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "把这段的五项数据按「从具体到一般」排一遍，注意末尾是最抽象的那一类。",
+      "explanation": "**A、B、C、D 正确。** P9 的并列结构是 electronic health records、imaging、genomic data、biometric data、behavior data 五项（老师 56:01 逐项念出，58:21 确认顺序逻辑为 from specific to general / from concrete to abstract）。本题把 biomedical data 之外的四项列出，均属该结构。\n- E 错：cardiac output 是血流动力学指标，属于检查结果而非课文列举的数据类型；它对应的是「把临床指标误当数据类型」这类常见混淆；\n- 提醒：漏选 biometric data 也常见，记忆时要把五项连成一串，顺序本身也是考点（见 q019 所属的平行结构专题）。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "翻译技巧 · 英语长句拆汉语短句"
+        "label": "3.3 因果逻辑与平行结构 · .1 五类医疗数据与它的列举逻辑（说话人1 56:01）"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "Paragraph 10 提出「机遇伴随挑战与风险」。下列哪些是课文列举的挑战（　）。",
+      "options": [
+        "AI 很昂贵，需要大规模数据来训练",
+        "相关知识产权难以保护",
+        "长期发展需要财务激励，否则发展与采用会缓慢",
+        "患者与医生完全拒绝使用 AI，导致 AI 无法落地"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "三条挑战有一条共同的上位维度，先想想它们都属于哪个领域。",
+      "explanation": "**A、B、C 正确。** 学生（说话人5 01:05:05）先列出三条，老师 01:07:13–01:07:48 逐条补出因果：①因为 AI 昂贵，所以需要大规模数据训练；②资源变得更易获取，于是知识产权保护困难；③若缺少财务支持，其发展与采用（development and adoption）可能缓慢。\n- D 错：课文 P12 说的是用户对复杂诊断的信任下降，而「愿意用 AI 回答简单问题」，因此「完全拒绝使用」与课文相反；\n- 另外要注意三条的共同点：老师强调「这一段都是讲的 financial」（01:10:06），D 项属于把信任问题误当成经济挑战。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "第6章 AI 的挑战与风险（P10-P12） · P10：三个挑战与它们的逻辑顺序（说话人5 01:05:05）"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "关于本课分析的三种修辞手法及其对应实例，下列说法正确的有（　）。",
+      "options": [
+        "Rhetorical Question：P7 末句 what about the remaining 80%?，不需要回答",
+        "Imperative Sentence：P7 的 Consider for example, hypertrophic cardiomyopathy…，用于吸引读者注意",
+        "Metaphor：P11 的 random thread，指网上不可靠的信息",
+        "Simile：P11 用 like 把网上信息比作一条线"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "先把三种修辞的名称与各自所在段落配对，再检查第四项的手法名称是否在课堂出现过。",
+      "explanation": "**A、B、C 正确。** 本课确认的修辞手法共三种：①反问句（P7 末句，老师 30:44 强调它不需回答、属 language feature）；②祈使句（P7 的 Consider for example…，学生 34:28 误判为从句加非谓语，老师指出 consider 是祈使动词，作用 attract the readers' interests）；③隐喻（P11 的 random thread，01:27:30 讲解：线很细、经不起推敲、一扯就断，指 unreliable information）。\n- D 错：课文用的是隐喻（直接以 thread 代指），并没有 like 引出的明喻；课堂也从未提到 simile。这是最常见的混淆——把「比喻」笼统当成明喻。\n- 提醒：parallel structure 虽然频繁出现，但老师称其为语言特征（language feature），不列入三种修辞手法。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "6.2 第 11 段：错误信息（Misinformation） · 三种修辞手法及课堂纠正（说话人1 30:44、34:50、01:27:30）"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "老师在精读中明确讨论过 comparison and contrast（对比）的段落有哪些（　）。",
+      "options": [
+        "P5（AI 与医生在不同情境下的比较）",
+        "P6（AI diagnosis 与 human radiologists 的比较）",
+        "P7（人类认不出的模式与 AI 可识别的模式）",
+        "P12（简单问题与复杂问题、更愿意与更不愿意信任）",
+        "P3（误诊原因的举例）"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "对比的对象通常是一对：AI 与人类、简单与复杂。P3 的功能是提出问题。",
+      "explanation": "**A、B、C、D 正确。** 课堂上被逐段确认过的 comparison and contrast 出现在：P5（老师 19:04 确认 example 与 comparison and contrast，比较对象是 AI 与医生）；P6（20:47 确认 AI diagnosis 与 human radiologists）；P7（29:00 附近确认 human 与 AI 的对比）；P12（01:35:52 确认末句是简单问题与复杂问题的对比）。\n- E 错：P3 的功能是「提出问题」——疾病特征与已知模式不匹配导致误诊，老师只补充了非常规表现的举例，未把它归入对比段落；把 P3 当成对比段是「看到举例就当成 comparison」的典型误判。\n- 补充：P9 与 P10 也出现过对比（不同科室的并列、more accessible 与过去对比），课堂上分别以平行结构与比较级的形式讨论。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "7.1 写作风格总结 · 五种写作风格及其在课文中的分布（说话人1 19:04、20:47、01:35:52）"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "本课在翻译练习中提炼出的翻译技巧包括（　）。",
+      "options": [
+        "英语长句可拆成汉语的多个短句",
+        "用近义词替换避免重复（如 help 译为协助、帮助、支持）",
+        "按目标语言的思维组织句子：英译汉按汉语思维，汉译英按英语思维",
+        "比较级要还原出比较对象（more accessible 是与过去对比）",
+        "把汉语的短句一律合并成一个英语长句，使译文更正式"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "四条技巧分别对应 P8 的长句、P9 的三个 help、老师的思维论与 P10 的比较级。",
+      "explanation": "**A、B、C、D 正确。** ①长句拆短句：老师 40:26 以 P8 为例，教材参考译文把一句拆成两句；②近义词替换：01:03:09 讲 P9 原文只用一个 help，中译用协助/帮助/支持；③按目标语言思维：40:26「尽量我们以英文的思路去思考」，英译汉则按汉语思维；④比较级还原对比对象：01:15:04 讲 more accessible 的比较对象是过去（from past to the present）。\n- E 错：老师明确反对「反向硬拼」——把汉语长句机械合成一个英语长句，恰恰是技巧③要避免的做法；E 项把「按英语思维」误解为「一律合句」。\n- 提醒：四条技巧都属于可迁移的方法，期末会从课文翻译句中选句考汉译英或英译汉。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "7.3 翻译技巧总结 · 四条翻译技巧（说话人1 40:26、01:03:09、01:15:04）"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "老师以 Paragraph 6 中 pneumonia, blood clot in the lungs, acute kidney injury 的列举为例，说明平行结构的排列顺序（　）。",
+      "options": [
+        "可以任意调换，只要句式保持一致即可",
+        "不能更换，它同时体现按严重程度递进（一般→慢性→急性）与解剖位置从上到下（呼吸道/肺→肾）两条逻辑",
+        "按疾病名称首字母的字母表顺序排列",
+        "按疾病在医学文献中出现频率由低到高排列"
+      ],
+      "answer": 1,
+      "hint": "老师先问能不能换顺序，再追问「它的逻辑是什么」，并提示从「严重程度」和「位置」两方面想。",
+      "explanation": "**B 正确。** 这是老师明确划出的重点：他先问「Can we change the order? … No.」，再强调「Parallel Structure 它不是随便列的，它不随便列，它一定有它的逻辑」（说话人1 25:30、25:43）。课堂上给出的两条逻辑是：①严重程度递进——pneumonia 是 very general 的一般疾病，blood clot in the lungs 是 chronic（长期）的慢性病，acute kidney injury 是急性的肾脏损伤；②解剖位置从上到下——从呼吸/肺到肾。老师还提醒「你以后也会写 parallel structure in this medical writing」，写作时「要给出清晰的 logical order」。\n- A：与老师的结论正相反，也是最常见的错误认识——以为排比只要求形式对称；\n- C：字母表顺序在课堂上从未出现，属于凭空添加的「形式化」逻辑；\n- D：出现频率属于数据统计，课文与课堂均未涉及，且与老师给的两条逻辑不符。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/recording.md",
+        "label": "3.3 因果逻辑与平行结构 · .2 平行结构的顺序逻辑 · 说话人1 25:43（老师：「Can we change the order? … No.」「它不是随便列的」）"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "老师以 Consider for example, hypertrophic cardiomyopathy… 为例，指出医学文献中描写一种疾病的常见句式顺序是（　）。",
+      "options": [
+        "definition（定义）→ mechanism（机制）→ process（过程）→ result（结果）",
+        "result（结果）→ definition（定义）→ mechanism（机制）→ process（过程）",
+        "example（举例）→ comparison（对比）→ contrast（反衬）→ conclusion（结论）",
+        "problem（问题）→ solution（解决）→ definition（定义）→ process（过程）"
+      ],
+      "answer": 0,
+      "hint": "把这句话拆开看：先说这是什么病，再说为什么会这样，再说会引起什么，最后说可能出现的最坏结局。",
+      "explanation": "**A 正确。** 老师 36:31 说得很清楚：「Explain a disease using the attributive clause… the first part is about mechanism and leading to eventual heart failure. It is the process. And the last is sometimes death is the result.」——句中先给出定义（这种遗传性疾病是什么）、机制（心肌异常增厚）、过程（导致心力衰竭）、结果（有时死亡），并提醒「pay attention… this pattern is a very common pattern」，所以专门选这句做翻译练习。\n- B：顺序颠倒，医学描写不会先给最坏结局再回述定义；\n- C：把段落层面的写作风格名（example / comparison / contrast）当成描写疾病的句式层次，属于层级混淆；\n- D：problem and solution 是 P11 的组织方式，与描写疾病的四步句式无关。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/recording.md",
+        "label": "6.2 第 11 段：错误信息（Misinformation） · .1 疾病描写句式 · 说话人1 36:31（老师：「pay attention… a very common pattern」）"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "老师要求「再细一点读」more accessible 这一表达，其中隐含的比较对象是（　）。",
+      "options": [
+        "与其他医院相比，指 AI 资源比别处更易获取",
+        "与过去相比：过去没有这类 AI 工具时资料 not accessible，现在才 more accessible（from past to the present）",
+        "与未来相比，暗示以后获取会越来越困难",
+        "没有比较对象，more 只是加强语气"
+      ],
+      "answer": 1,
+      "hint": "句首的 as 表示「随着」，即时间；再把 more 的比较双方补出来。",
+      "explanation": "**B 正确。** 老师 01:15:04 连续追问「more accessible compare with what?」，随后自己给出答案：「在过去我们是很难，你看没有元宝、没有 DeepSeek 的时候，我们能查找资料吗？not accessible」；而「现在出了这么多这样的 AI help us to find the information」，因此 present is more accessible——即 from the past to the present。学生把 accessible 译成「唾手可得」也正是抓住了这一层。\n- A：把比较对象错设成「其他医院」，属于把文中的时间对比误读为空间对比；\n- C：方向正好相反，课文说的是资源比过去更容易获取；\n- D：忽略了比较级必须有的比较双方，翻译时会丢掉「过去 vs 现在」的语义，这也是老师强调「再细一点读」的原因。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/recording.md",
+        "label": "6.2 第 11 段：错误信息（Misinformation） · .1 more accessible 的对比含义 · 说话人1 01:15:04（老师：「compare with what? … from past to the present」）"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "multiple_choice",
+      "points": 4,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "关于 Paragraph 10 的三个挑战，下列判断正确的有（　）。",
+      "options": [
+        "三条挑战都落在 financial（经济/财务）维度上",
+        "它们的逻辑顺序是 creative → use → long-term effect，相当于一个产品的生命周期",
+        "第二条挑战的原因是数据资源越来越容易获取，结果是公共与私人领域的投资热情受挫",
+        "第三条挑战说明 AI 不需要任何财务支持也能快速发展并被广泛采用"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "先找出三条挑战共同的上位概念，再看老师的追问：「先是……然后再……最后才怎么？」",
+      "explanation": "**A、B、C 正确。** 老师 01:10:06 明确「这一段都是讲的 financial」，并现场归纳「先是人吧，先人算法出来…然后再把它运用吧。运用到知识产权吧，最后才怎么？……发展」，即 creative（创造：AI 昂贵、需要大规模数据训练）→ use（使用：知识产权保护困难）→ long-term effect（长期：需要 financial incentive）。第二条的因果也在 01:07:13 讲清：资源变得更易获取（more accessible）→ 知识产权更难保护 → 挫伤投资热情。老师还强调「注意了，cause and effect showing your logic」——三条都是原因 + 结果的结构。\n- D 错：课文第三条挑战恰恰说「if we haven't financial support, its development and the adoption may be slow」，即没有财务支持发展就会缓慢，D 项把结论反过来了；\n- 补充：老师同时提醒作者身份——第二位作者是 Economist，所以这一段才全部落在经济维度上，这也是判断 A 项的依据。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/recording.md",
+        "label": "6.2 第 11 段：错误信息（Misinformation） · 三挑战的共同维度与逻辑顺序 · 说话人1 01:10:06、01:12:19（老师：「注意了，cause and effect showing your logic」）"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "points": 4,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "Paragraph 9 在 radiologists、pathologists 之后特意选择 ophthalmologists 作为第三个例子。老师对这一选择的解释包括（　）。",
+      "options": [
+        "眼科的特征是视网膜（retina），非常精密",
+        "这样安排说明即使是最小、最精密的器官与疾病，AI 也能诊断出来",
+        "不选 kidney 的原因之一是 P6 已经举过 acute kidney injury",
+        "选眼科是因为只有眼科才能使用影像数据"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "老师先否掉「因为眼科用影像」这个答案，再追问眼科的特征是什么。",
+      "explanation": "**A、B、C 正确。** 老师 01:00:12 追问「Why only choose ophthalmologists?」，学生（说话人4 01:00:37）答「maybe it's can use the image」，老师立即否掉——「image，很多科都能用 image」。随后给出正确答案：眼科的特征是视网膜，「很精密」，因此「即使是很精密很精密的疾病，他也可以诊断出来」；并解释为什么不用 kidney 或 liver：「他前面不是选了 acute kidney injury…… liver 对不对？这些器官都很大，一看就看得到」，即已经有例子、且器官大、体现不出「精密」这一极点。\n- D 错：老师已经明确否定了「只有眼科用影像」这一说法，属于课堂上被当场纠正的误解；\n- 提醒：A、B、C 共同构成「不同领域 + 疾病特征」双层逻辑，答题时只写「不同科室」不足以得分。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/recording.md",
+        "label": ".2 为什么偏偏选眼科 · 说话人1 01:00:12、01:00:45（老师：「Why only choose ophthalmologists?」）"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "points": 10,
+      "total_points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "stem": "请说明医学术语的构词基本模式，并结合 radiologist 与 -pathy 两个例子解释「同一成分可兼作词根与后缀」的现象；最后写出老师要求做同族词（cognate words）练习的两条理由。",
+      "answer": "① 两种构词模式：prefix（前缀）+ word root（词根）+ combining vowel（连接元音）+ suffix（后缀）；以及 prefix + word root + combining vowel + word root + suffix。\n② radiologist = radio（词根：辐射）+ log（后缀：学科）+ ist（后缀：人），合起来指放射科医生；课堂上就是用它示范 Task 1 的分析方法。\n③ -pathy 作后缀时含义是疾病（disease，教材上写作带连字符的 -pathy）；作词根时要「把 y 去掉加 o」，写作 patho-，再与后续成分组合——说明同一成分的身份可以随位置改变。\n④ 做同族词的理由：其一，一个词根至少可以派生 20 个词（加前缀、后缀或词根叠加）；其二，记词根比记整个单词容易，而且词根的含义在任何组合中都不变（cardio 永远是 heart 的意思）。",
+      "scoring_criteria": [
+        "写出两种构词模式（prefix + word root + combining vowel + suffix；prefix + word root + combining vowel + word root + suffix）：3 分",
+        "把 radiologist 拆为 radio（词根：辐射）+ log（后缀：学科）+ ist（后缀：人）：2 分",
+        "-pathy 的双重身份：作后缀时为疾病（disease），作词根时去掉 y 加 o 写作 patho-：2 分",
+        "两条理由：一个词根至少派生 20 个词；记词根比记整词容易且词根含义不变：3 分"
+      ],
+      "hint": "答题分四步：先写两种模式，再各举一个例子说明成分身份，最后回到「为什么要做同族词」的两条依据。",
+      "explanation": "本题对应第 1 章 1.1–1.4，四个得分点全部来自课堂原话：模式与例子见 04:32、02:37；-pathy 见 05:30；同族词的两条理由见 03:16、07:00。\n- 得分点 1 要注意「连接元音的位置」：它夹在词根与后缀之间，位置写错即整链不通。\n- 得分点 2 只需按成分三段式拆解；若只写词义而不拆成分，只能拿到部分分。\n- 得分点 3 的两个身份必须都写到；只写「后缀 = 疾病」会漏掉「去 y 加 o」这一机制。\n- 得分点 4 的两条理由彼此独立：一条讲派生数量（至少 20 个词），一条讲记忆效率与词根含义的稳定性（cardio 永远是 heart）。只写一条或写成「为了应付考试」都不能得分。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "1.3 Task 2：Cognate Words（同族词） · –1.4 构词模式、成分双重身份与同族词记忆原理（说话人1 02:37、04:32、05:30、07:00）"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "points": 10,
+      "total_points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "stem": "以 Paragraph 6 为例，说明 AI 优势一在细节层面依靠哪两项能力，并写出老师要求的「逻辑 chain」；再解释该段疾病列举的顺序为什么不能更换。",
+      "answer": "① 两项能力：accuracy（准确性）与 timelessness（时效性）——P6 只有两句话，是对优势一的细节描述。\n② 逻辑 chain（因果链）：正因为 AI 具备 accuracy 与 timelessness，它才可能 mean the difference between life and death；老师强调描述「好处」时不能只停在 example 与对比，一定要能追到一条因果链。\n③ 顺序不能换：列举 pneumonia、blood clot in the lungs（pulmonary embolism）、acute kidney injury 时有两条逻辑——按严重程度递进（一般疾病 → 慢性疾病 → 急性肾脏损伤），以及按解剖位置从上到下（呼吸道/肺 → 肾）；老师明确说平行结构「不是随便列的」，写作时也要给出清晰的 logical order。",
+      "scoring_criteria": [
+        "指出 accuracy（准确性）与 timelessness（时效性）两项能力：3 分",
+        "写出因果链：因为具备 accuracy 与 timelessness，所以能 mean the difference between life and death，并联系老师「描述好处一定有 logic chain」的强调：4 分",
+        "疾病列举顺序逻辑之一：按严重程度递进（一般 → 慢性 → 急性）：2 分",
+        "疾病列举顺序逻辑之二：按解剖位置从上到下（呼吸道/肺 → 肾）：1 分"
+      ],
+      "hint": "先回答「哪两个词」，再回答「因为……所以……」，最后按「严重程度」和「位置」两条线解释顺序。",
+      "explanation": "本题对应第 3 章 3.2，四个得分点分别落在：关键词（说话人1 20:09）、因果链（21:52–22:13，老师问「Is it a cause and effect?」并自答 Yes）、两条顺序逻辑（24:38、25:43）。\n- 得分点 1 只写英文或只写中文都可以，但两项能力必须齐全；写成 workload/bandwidth 会与 P5 的人为因素混淆而不得分。\n- 得分点 2 的关键是「因果方向」：不是「因为 AI 好所以准确」，而是「因为准确与时效，所以能决定生与死」。老师同时强调这类描述一定会有一条 logic chain，答题时点出这一方法论会拿满。\n- 得分点 3、4 必须分两条写：仅写「按严重程度」缺位置逻辑（或反之）会失掉对应分值；顺序本身不可调换也是老师反复追问的结论。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "3.3 因果逻辑与平行结构 · P6：优势一的细节与平行结构顺序（说话人1 20:09、21:52、24:38、25:43）"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "points": 15,
+      "total_points": 15,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "论述题",
+      "stem": "结合课文，论述作者如何从「AI 的诊断优势」过渡到「挑战与风险」：请写出 Paragraph 10 的三个挑战及其共同维度与内在逻辑顺序，说明 Paragraph 11 与 Paragraph 12 之间 general 与 specific 的推进方式，并指出老师认为阅读英文段落时最应抓住的那一层。",
+      "answer": "① 结构：P4 以 AI can solve all these problems 立起全文主旨，P5–P9 分层论证 AI 的诊断优势；P10 用 Along with opportunities also come challenges and risks 转入风险面，先立主旨再逐条分析，这是典型的英文段落结构（第一句 topic sentence）。\n② 三个挑战：一是 AI 很昂贵、需要大规模数据来训练；二是相关知识产权难以保护——原因是数据资源变得越来越易获取（more accessible），结果是公共与私人领域的投资热情受挫；三是长期发展需要财务激励（financial incentive），缺少财务支持则其发展与采用（development and adoption）可能缓慢。\n③ 共同维度与顺序：三条都落在 financial 上（老师说「这一段都是讲的 financial」），其顺序是 creative → use → long-term effect，对应一个产品的生命周期——先发展出来，再运用，最后长期运用并不断更新；这也与第二位作者的经济学家身份相呼应。\n④ 段间推进：P11 讲网上的错误信息（misinformation），属于 general；P12 落到医生与患者如何解读与部署 AI，属于 specific，两者之间由过渡词 then 衔接；老师借 this 的指代强调每一句都有逻辑，并要求学生写作时必须使用 transitional words。\n⑤ 老师的方法论：example、comparison、contrast 只是展现的形式，深层的是逻辑——cause and effect；读英文（尤其新闻与医学文献）时第一句（或最后一句）最重要，因为第一句就是 topic sentence。",
+      "scoring_criteria": [
+        "结构层面：P4 主旨句统领 P5–P9 的优势论证，P10 先立 challenges and risks 的主旨再逐条分析：4 分",
+        "完整写出三个挑战及其原因与结果（昂贵且需大规模数据训练；知识产权难保护、资源更易获取致投资热情受挫；缺财务激励则发展与采用缓慢）：4 分",
+        "指出共同维度为 financial，并写出 creative → use → long-term effect 的产品生命周期逻辑：3 分",
+        "段间推进：P11 的 misinformation（general）→ P12 的医生与患者（specific），由过渡词 then 衔接：2 分",
+        "方法论小结：example、comparison、contrast 只是形式，深层是 logic（cause and effect）：2 分"
+      ],
+      "hint": "按「总体结构 → 三条挑战 → 共同维度与顺序 → 段间推进 → 方法论」五步写，每一步都能在录音里找到老师的原话支撑。",
+      "explanation": "本题是把第 2 章 2.4–2.5 与第 4 章 4.1–4.3 串成一条线，五个得分点分别对应：P4 的主旨地位（说话人1 16:23）、三挑战与因果（01:07:13–01:07:48）、financial 与生命周期（01:10:06、01:12:19）、general → specific 与 then（01:32:12、01:32:30）、形式与逻辑的分工（01:08:51）。\n- 得分点 1 的关键是「先立主旨、再分析」这一英文段落特征；只罗列段落内容而不点出结构关系会失分。\n- 得分点 2 必须三条齐全且各自带上原因与结果；只写挑战名称（昂贵、知识产权、激励）而丢掉因果，最多拿到一半分。\n- 得分点 3 的两个要素（financial 这一上位维度、creative → use → long-term effect 的顺序）缺一不可，后者要能说明「对应产品的生命周期」才算完整。\n- 得分点 4 要写出过渡词 then 的衔接作用，并说明老师由此批评学生作文缺少 transitional words。\n- 得分点 5 是老师反复强调的核心：不写「用了 example 和 comparison」这种形式罗列，而要点出 cause and effect 才是逻辑。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "第6章 AI 的挑战与风险（P10-P12） · –2.5 与第 4 章 –4.3 · 结构过渡与段间逻辑（说话人1 16:23、01:08:51、01:12:19、01:32:30）"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "points": 15,
+      "total_points": 15,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "材料分析题",
+      "stem": "阅读下列课堂材料，回答后面的问题。\n\n> 材料一：「这一段都是讲的 financial，看到没？……先是人吧，先人算法出来，对不对？然后再把它运用吧。运用到知识产权吧，最后才怎么？最后是什么？」「对，发展，是吧？所以它就是一个什么过程？from creative to what to use it and the long term effect。」——说话人 1 · 01:10:06、01:11:45、01:12:19\n\n> 材料二：「more accessible compare with what?……就是再细一点读啊……在过去我们是很难，你看没有元宝，没有 DeepSeek 的时候，我们能查找资料吗？not accessible。」「present is more accessible. So from the past to the present.」——说话人 1 · 01:15:01–01:15:53\n\n（1）材料一中「这一段都是讲的 financial」概括了 Paragraph 10 的哪三个挑战？请逐条写出各自的原因与结果。\n（2）老师为什么说三条挑战的顺序是 creative → use → long-term effect？它与「产品生命周期」是什么关系？\n（3）材料二中 more accessible 的比较对象是什么？如果翻译时忽略这一点，会丢掉什么？",
+      "answer": "（1）① 挑战一 AI 很昂贵：原因是要用大规模数据来训练、算法成本高；结果是使用 AI 诊断必须有大笔资金支撑。② 挑战二 相关知识产权难以保护：原因是数据资源变得越来越易获取（more accessible）；结果是可能挫伤公共与私人领域的投资热情。③ 挑战三 长期发展需要财务激励（financial incentive）：原因是 AI 可能长期改善医疗质量但缺少财务支持；结果是其发展与采用（development and adoption）可能很缓慢。\n（2）因为三条挑战分别对应一个产品从产生到长期使用的三个阶段：先有人把算法做出来（creative，也解释了为什么昂贵），再把它投入使用、涉及知识产权（use），最后是长期运用并不断更新（long-term effect，AI 的数据与患者情况会持续更新，所以必须长期投入）。这正是产品的生命周期，因此顺序不能随意调整。\n（3）比较对象是「过去」：在没有元宝、没有 DeepSeek 的时候，查找资料是 not accessible 的；现在的 AI 工具让它变得 more accessible，即 from the past to the present。如果翻译时忽略这个比较对象，more 就失去了对比意义，译文只剩「更易获取」而丢掉「与过去相比」的时间对比，也就无法说明「资源普及」这一层含义。",
+      "scoring_criteria": [
+        "（1）挑战一：AI 昂贵，因为需要大规模数据训练、算法成本高：2 分",
+        "（1）挑战二：知识产权难以保护，因为资源变得更易获取（more accessible），结果是投资热情受挫：2 分",
+        "（1）挑战三：长期发展需要 financial incentive，否则发展与采用（adoption）缓慢：2 分",
+        "（2）顺序含义：先发展出来（create）→ 再运用（use）→ 最后长期运用并不断更新（long-term effect），对应一个产品的生命周期，故顺序如此：5 分",
+        "（3）比较对象是过去（from past to the present），忽略则丢掉 more 的比较意义与时间对比：4 分"
+      ],
+      "hint": "三道设问分别对应「逐条列因果」「解释顺序的产品逻辑」「把比较级还原成时间对比」，答题时可以用材料里的英文原词定位。",
+      "explanation": "本题的材料全部来自老师现场归纳，三个设问分别对应教材 P10 的三条挑战（说话人5 01:05:05、说话人1 01:07:13–01:07:48）、三挑战的顺序逻辑（01:10:06、01:12:19）与 more accessible 的比较含义（01:15:01–01:15:53）。\n- 设问（1）的评分点在「原因 + 结果」成对出现：只写「昂贵／知识产权／激励」三个名词而丢失因果，最多能拿到部分分；三个挑战的顺序也应按课文顺序（昂贵 → 知识产权 → 财务激励）作答。\n- 设问（2）必须写到「产品」这一层：老师原话是「这就是产品啊，同志们，AI 是不是个产品呢？我先发展出来，我再把它运用……我要长期运用，不断改变」，而之所以要不断改变，是因为病人的症状与数据会不断更新。只写「从创造到使用到长期」而不联系产品生命周期，会失掉核心分。\n- 设问（3）的关键是把 more 理解为「与过去相比」，并指出忽略后丢失的是比较意义与时间对比；若答成「与其他医院相比」则方向错了。\n- 这道题也提示一条通用读法：遇到比较级就找比较对象，遇到三条并列就找共同维度与顺序，这正是本课反复训练的 cause and effect 逻辑。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/recording.md",
+        "label": "6.2 第 11 段：错误信息（Misinformation） · 材料：三挑战的共同维度、生命周期与 more accessible 的对比（说话人1 01:10:06、01:12:19、01:15:04）"
       }
     }
-  ]
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "multiple_choice": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
 }

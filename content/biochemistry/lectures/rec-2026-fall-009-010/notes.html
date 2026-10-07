@@ -1,1396 +1,596 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>RNA结构功能与维生素</title>
-<style>
+﻿<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>生物化学与分子生物学 · 第9-10节 · RNA结构功能续讲与维生素</title><style>
 :root{
-  --paper: #FAF8F3;
-  --paper-card: #FFFFFF;
-  --ink: #1A1814;
-  --ink-soft: #4A453D;
-  --ink-faint: #8B8578;
-  --rule: #DDD8CC;
-  --accent: #2E7D4F;
-  --accent-soft: #2E7D4F15;
-  --accent-line: #2E7D4F40;
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#4A6B1F; --accent-d:#33490F; --accent-t:#EDF2E1;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
 }
-*{box-sizing:border-box; margin:0; padding:0;}
-html,body{background:var(--paper);}
-body{font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif; color:var(--ink); font-size:10pt; line-height:1.75;}
-.page{width:210mm; min-height:297mm; background:var(--paper); position:relative; padding:18mm 20mm 16mm 20mm; page-break-after:always;}
-.page:last-child{page-break-after:auto;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
 
-/* 封面 */
-.cover{background:linear-gradient(135deg, var(--accent) 0%, #2E7D4FCC 100%); color:#fff; padding:0;}
-.cover .inner{height:100%; min-height:261mm; padding:30mm 22mm 22mm 22mm; display:flex; flex-direction:column; justify-content:space-between;}
-.cover .eyebrow{font-size:9pt; letter-spacing:0.4em; text-transform:uppercase; opacity:0.85;}
-.cover h1{font-family:'Noto Serif CJK SC',serif; font-size:42pt; font-weight:900; line-height:1.15; margin-top:12mm;}
-.cover .subtitle{font-size:13pt; opacity:0.9; margin-top:8mm; line-height:1.7;}
-.cover .meta{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8mm; border-top:1px solid rgba(255,255,255,0.3); padding-top:8mm;}
-.cover .meta .k{font-size:7.5pt; letter-spacing:0.2em; opacity:0.7; text-transform:uppercase;}
-.cover .meta .v{font-size:11pt; font-weight:600; margin-top:2mm;}
+</style></head><body>
+<div class="page cover"><p class="h1">生物化学与分子生物学</p><p class="meta">第9-10节 · RNA结构功能续讲与维生素 · 2026-09-15</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 34505 字 / 150 轮发言。按知识点簇分章，只收结论式核心内容。</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>生物化学与分子生物学（biochemistry）</td></tr>
+<tr><td>主题</td><td>RNA空间结构与功能续讲、核酸理化性质、维生素（至B2）</td></tr>
+<tr><td>学时</td><td>2 学时（第9-10节）</td></tr>
+<tr><td>上课日期</td><td>2026-09-15</td></tr></table></div>
 
-/* 目录 */
-.toc-title{font-family:'Noto Serif CJK SC',serif; font-size:24pt; font-weight:800; margin-bottom:2mm; color:var(--accent);}
-.toc-sub{color:var(--ink-soft); font-size:9.5pt; margin-bottom:8mm;}
-.toc-list{list-style:none;}
-.toc-list li{display:flex; align-items:baseline; padding:3.5mm 0; border-bottom:1px solid var(--rule);}
-.toc-num{font-family:'Noto Serif CJK SC',serif; font-weight:800; color:var(--accent); font-size:12pt; min-width:14mm;}
-.toc-text{font-size:10.5pt; font-weight:600;}
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">三大块：RNA续讲（tRNA→rRNA→非编码RNA）；核酸理化性质（紫外→变性Tm→复性杂交）；维生素（概念分类→脂溶ADEK→水溶B1B2）。</p>
+<ul class="kv">
+<li>RNA的空间结构与功能：①tRNA三叶草二级与倒L三级 ②rRNA与核糖体 ③组成型非编码RNA ④调控型非编码RNA</li>
+<li>核酸的理化性质：①紫外吸收260nm与纯度 ②变性、增色效应与Tm ③复性退火与分子杂交</li>
+<li>维生素：①概念与分类 ②脂溶性A、D、E、K ③水溶性B1、B2</li>
+<li>课堂小测4题回顾（组成／结构／RNA加工／变复性）</li>
+</ul></div>
 
-/* 内容页 */
-.running{display:flex; justify-content:space-between; font-size:7.5pt; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-faint); border-bottom:1.5px solid var(--accent); padding-bottom:3mm; margin-bottom:8mm;}
-.running .course{color:var(--accent); font-weight:700;}
-
-h1{font-family:'Noto Serif CJK SC',serif; font-size:22pt; font-weight:900; color:var(--ink); margin:8mm 0 4mm 0; padding-bottom:3mm; border-bottom:2.5px solid var(--accent);}
-h2{font-family:'Noto Serif CJK SC',serif; font-size:16pt; font-weight:800; color:var(--accent); margin:7mm 0 3mm 0; padding-left:4mm; border-left:4px solid var(--accent);}
-h3{font-family:'Noto Serif CJK SC',serif; font-size:13pt; font-weight:700; color:var(--ink); margin:5mm 0 2.5mm 0;}
-h4{font-size:11pt; font-weight:700; color:var(--ink-soft); margin:4mm 0 2mm 0;}
-
-p{margin:2mm 0; text-align:justify;}
-ul{margin:2mm 0 2mm 6mm;}
-li{margin:1.2mm 0;}
-li.num{list-style:none; counter-increment:item;}
-li.num::before{content:counter(item) "."; font-weight:700; color:var(--accent); margin-right:2mm;}
-
-strong{color:var(--accent); font-weight:700;}
-em{color:var(--ink-soft);}
-code{background:var(--accent-soft); color:var(--accent); padding:0.5mm 1.5mm; border-radius:1mm; font-size:9pt; font-family:'Consolas',monospace;}
-
-blockquote{border-left:3px solid var(--accent); background:var(--accent-soft); padding:3mm 4mm; margin:3mm 0; border-radius:0 2mm 2mm 0;}
-blockquote p{margin:0; color:var(--ink-soft); font-style:italic;}
-
-hr{border:none; border-top:1px solid var(--rule); margin:6mm 0;}
-
-/* 表格 */
-.note-table{width:100%; border-collapse:collapse; margin:4mm 0; font-size:9.5pt;}
-.note-table th{background:var(--accent); color:#fff; padding:2.5mm 3mm; text-align:left; font-weight:700;}
-.note-table td{padding:2.5mm 3mm; border-bottom:1px solid var(--rule);}
-.note-table tr:nth-child(even) td{background:var(--accent-soft);}
-
-/* 页脚 */
-.footer{position:absolute; bottom:8mm; left:20mm; right:20mm; display:flex; justify-content:space-between; font-size:7.5pt; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:3mm;}
-</style>
-</head>
-<body>
-
-<!-- 封面 -->
-<div class="page cover">
-  <div class="inner">
-    <div>
-      <div class="eyebrow">HUST · 课堂可视化笔记</div>
-      <h1>RNA结构功能与维生素</h1>
-      <div class="subtitle">第9-10节 · RNA种类结构、核酸理化性质、维生素ADEK与B1B2</div>
-    </div>
-    <div class="meta">
-      <div><div class="k">课程</div><div class="v">生物化学与分子生物学</div></div>
-      <div><div class="k">节次</div><div class="v">第9-10节</div></div>
-      <div><div class="k">日期</div><div class="v">2026-09-15</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- 目录 -->
-<div class="page">
-  <div class="toc-title">目录</div>
-  <div class="toc-sub">本笔记基于课堂录音完整逐字稿整理，详细记录课堂讲授的核心知识点、例题强调点与复习要点。</div>
-  <ul class="toc-list">
-    <li><span class="toc-num">01</span><span class="toc-text">一、知识结构</span></li>
-<li><span class="toc-num">02</span><span class="toc-text">二、RNA空间结构与功能（续讲）</span></li>
-<li><span class="toc-num">03</span><span class="toc-text">三、核酸的理化性质</span></li>
-<li><span class="toc-num">04</span><span class="toc-text">四、核酸结构与功能总结</span></li>
-<li><span class="toc-num">05</span><span class="toc-text">五、课堂小测（4道题回顾）</span></li>
-<li><span class="toc-num">06</span><span class="toc-text">六、维生素</span></li>
-<li><span class="toc-num">07</span><span class="toc-text">七、老师强调重点汇总</span></li>
-<li><span class="toc-num">08</span><span class="toc-text">八、课程间关联</span></li>
-<li><span class="toc-num">09</span><span class="toc-text">九、复习清单</span></li>
-<li><span class="toc-num">10</span><span class="toc-text">十、主动回忆题</span></li>
-  </ul>
-</div>
-
-<!-- 内容 -->
-<div class="page">
-  <div class="running">
-    <span class="course">生物化学与分子生物学</span>
-    <span>第9-10节 · 2026-09-15</span>
-  </div>
-  <h1>生物化学与分子生物学 · 第9-10节 · RNA结构功能续讲与维生素</h1>
-
-<blockquote>**课程信息**</blockquote>
-<blockquote>- 课程：生物化学与分子生物学（BIO0501）</blockquote>
-<blockquote>- 节次：第9-10节（课程内累计）</blockquote>
-<blockquote>- 日期：2026年9月15日（周二，第3周）</blockquote>
-<blockquote>- 授课老师：郭雨松（教授，生命科学与技术学院）</blockquote>
-<blockquote>- 上课地点：东九教学楼B栋203</blockquote>
-<blockquote>- 课表标注主题：维生素、酶（实际授课内容为RNA空间结构与功能续讲+核酸理化性质+维生素（至B2），酶尚未开始，以实际内容为准）</blockquote>
-<blockquote>- 学时：2学时（10:10-11:50）</blockquote>
-
-<hr>
-
-<h2>一、知识结构</h2>
-
-<p><code>`</code>mermaid</p>
-<p>flowchart TD</p>
-<p>A[第9-10节内容] --> B[RNA空间结构与功能续讲]</p>
-<p>A --> C[核酸理化性质]</p>
-<p>A --> D[维生素]</p>
-
-<p>B --> B1[tRNA三叶草结构]</p>
-<p>B --> B2[rRNA与核糖体]</p>
-<p>B --> B3[组成型非编码RNA]</p>
-<p>B --> B4[调控型非编码RNA]</p>
-
-<p>B1 --> B1a[反密码子环/CCA末端]</p>
-<p>B1 --> B1b[倒L型三级结构]</p>
-<p>B1 --> B1c[稀有碱基]</p>
-<p>B1 --> B1d[氨酰tRNA合成酶]</p>
-
-<p>B2 --> B2a[80S=60S+40S]</p>
-<p>B2 --> B2b[沉降系数S不可加和]</p>
-<p>B2 --> B2c[茎环二级结构]</p>
-
-<p>B3 --> B3a[核酶ribozyme]</p>
-<p>B3 --> B3b[snoRNA核仁小RNA]</p>
-<p>B3 --> B3c[snRNA核小RNA]</p>
-<p>B3 --> B3d[scRNA胞质小RNA/SRP]</p>
-
-<p>B4 --> B4a[miRNA/siRNA/piRNA]</p>
-<p>B4 --> B4b[lncRNA长非编码RNA]</p>
-<p>B4b --> B4b1[读作link RNA]</p>
-<p>B4 --> B4c[circRNA环状RNA]</p>
-
-<p>C --> C1[紫外吸收260nm]</p>
-<p>C --> C2[A260/A280纯度判断]</p>
-<p>C --> C3[变性与增色效应]</p>
-<p>C --> C4[解链温度Tm]</p>
-<p>C --> C5[复性/退火]</p>
-<p>C --> C6[分子杂交/杂化双链]</p>
-
-<p>D --> D1[维生素概念与分类]</p>
-<p>D --> D2[脂溶性维生素ADEK]</p>
-<p>D --> D3[水溶性维生素B族+C]</p>
-
-<p>D2 --> D2a[维生素D]</p>
-<p>D2 --> D2b[维生素A]</p>
-<p>D2 --> D2c[维生素E]</p>
-<p>D2 --> D2d[维生素K]</p>
-
-<p>D3 --> D3a[维生素B1硫胺素/TPP]</p>
-<p>D3 --> D3b[维生素B2核黄素/FMN/FAD]</p>
-<p><code>`</code></p>
-
-<hr>
-
-<h2>二、RNA空间结构与功能（续讲）</h2>
-
-<h3>2.1 tRNA的结构与功能（复习+深化）</h3>
-
-<h4>三叶草二级结构</h4>
-
-<p>tRNA的二级结构呈三叶草形，核心区别在于<strong>茎</strong>和<strong>环</strong>：</p>
-
-<ul>
-<li><strong>茎（stem）</strong>：形成双链的部分，碱基之间通过氢键配对（图中小横杠代表氢键）</li>
-<li><strong>环（loop）</strong>：未形成双链的部分</li>
+<div class="page"><h2 class="h2">1. tRNA的结构与功能</h2>
+<p class="lead">三叶草二级、倒L三级；反密码子环识别密码子，CCA末端装载氨基酸。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>RNA核糖2'位多一个羟基，不能稳定形成双链、结构更复杂 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>tRNA二级呈三叶草形，茎为双链、环为单链 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>茎内碱基靠氢键配对成双链，环内不配对 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>反密码子环含3个碱基，与mRNA密码子互补配对 <span class="loc">〔说话人1 00:57〕</span></li>
+<li>CCA末端以共价键连接一个氨基酸 <span class="loc">〔说话人1 00:57〕</span></li>
+<li>tRNA三级为倒L型，一端识别密码子、一端接氨基酸 <span class="loc">〔说话人1 01:34〕</span></li>
+<li>tRNA富含稀有碱基，由常见碱基修饰衍生 <span class="loc">〔说话人1 02:18〕</span></li>
+<li>氨酰tRNA合成酶在对应tRNA上接对应氨基酸 <span class="loc">〔说话人1 03:17〕</span></li>
+<li>tRNA与氨基酸的正确对应是翻译准确的前提 <span class="loc">〔说话人1 03:17〕</span></li>
+<li>三叶草也称茎环（stem loop）或发夹（hairpin） <span class="loc">〔说话人1 03:17〕</span></li>
+<li>两个关键功能区：氨基酸臂（双链）与反密码子环 <span class="loc">〔说话人1 04:45〕</span></li>
 </ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>结构</th><th>是否双链</th><th>功能</th></tr>
+<tr><td>茎（stem）</td><td>是，靠碱基间氢键</td><td>构成氨基酸臂等骨架</td></tr>
+<tr><td>环（loop）</td><td>否</td><td>反密码子环识别密码子</td></tr>
+<tr><td>CCA末端</td><td>3'端氨基酸臂</td><td>共价连接氨基酸</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★反密码子环识别密码子、CCA末端接氨基酸；氨酰tRNA合成酶保证对应。 <span class="loc">〔说话人1 03:17〕</span></div></div>
 
-<p>这种茎环结构（stem loop）也叫<strong>发夹结构（hairpin）</strong>，是RNA常见的局部结构形式。</p>
-
-<h4>三个关键功能区域</h4>
-
-<ul>
-<li class="num"><strong>反密码子环（anticodon loop）</strong>：三叶草下方的一片叶子，含有3个碱基，可与mRNA上的密码子直接互补配对。这是tRNA识别密码子的关键结构。</li>
+<div class="page"><h2 class="h2">2. rRNA与核糖体</h2>
+<p class="lead">rRNA含量最高；真核80S=60S+40S，S不可加和。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>rRNA是核糖体的主要成分 <span class="loc">〔说话人1 04:45〕</span></li>
+<li>mRNA丰度最低、种类最多；rRNA种类少、丰度最高 <span class="loc">〔说话人1 04:45〕</span></li>
+<li>rRNA占RNA总量80%以上 <span class="loc">〔说话人1 04:45〕</span></li>
+<li>真核核糖体80S，由60S大亚基与40S小亚基组成 <span class="loc">〔说话人1 04:45〕</span></li>
+<li>S是沉降系数，指离心场中颗粒的沉降速度，不能相加 <span class="loc">〔说话人1 05:54〕</span></li>
+<li>60S+40S不等于100S，而为80S <span class="loc">〔说话人1 05:54〕</span></li>
+<li>大亚基含3种rRNA和49种蛋白质 <span class="loc">〔说话人1 06:18〕</span></li>
+<li>小亚基含1种rRNA和33种蛋白质 <span class="loc">〔说话人1 06:18〕</span></li>
+<li>核糖体是RNA与蛋白质的复杂复合体 <span class="loc">〔说话人1 06:18〕</span></li>
+<li>核糖体是蛋白质与核酸互作、信息传递的中心法则环节 <span class="loc">〔说话人1 06:18〕</span></li>
+<li>rRNA有茎环结构但不叫三叶草，一个茎可接多个环 <span class="loc">〔说话人1 07:00〕</span></li>
+<li>RNA任一小段互补配对即形成茎，否则成环 <span class="loc">〔说话人1 07:38〕</span></li>
+<li>蛋白质结构预测较准确，RNA结构预测仍困难 <span class="loc">〔说话人1 08:00〕</span></li>
+<li>rRNA三级可分出局部双螺旋，但不如DNA稳定 <span class="loc">〔说话人1 08:00〕</span></li>
 </ul>
-
-<ul>
-<li class="num"><strong>CCA末端（氨基酸臂）</strong>：tRNA顶端的3'端，序列为CCA，末端的A（腺嘌呤）通过共价键连接一个氨基酸。</li>
-</ul>
-
-<ul>
-<li class="num"><strong>氨基酸臂</strong>：连接氨基酸的茎部，有双链结构。</li>
-</ul>
-
-<h4>倒L型三级结构</h4>
-
-<p>tRNA进一步折叠形成<strong>倒L型（inverted L）</strong>三维结构：</p>
-<ul>
-<li>一端是反密码子环（识别密码子）</li>
-<li>另一端是CCA末端（连接氨基酸）</li>
-<li>二级结构与三级结构的颜色完全对应，可以直观看到折叠关系</li>
-</ul>
-
-<h4>稀有碱基</h4>
-
-<p>tRNA中含有大量<strong>稀有碱基</strong>（如ψ假尿嘧啶、各种甲基化碱基等），这些稀有碱基是由常见碱基经过衍生修饰而来。具体修饰机制将在RNA合成部分讲解。</p>
-
-<h4>氨酰tRNA合成酶（关键酶）</h4>
-
-<p>老师提出了一个关键问题：<strong>谁来保证特定的tRNA接上对应的氨基酸？</strong></p>
-
-<p>答案是<strong>氨酰tRNA合成酶（aminoacyl-tRNA synthetase）</strong>，它负责在对应的tRNA上接上对应的氨基酸。如果接错了，后续所有翻译都会出错。这个酶是蛋白质翻译准确性的重要前提，将在翻译章节详细讲解。</p>
-
-<blockquote>**老师强调**：tRNA的两个关键功能部分——氨基酸臂（连接氨基酸）和反密码子环（识别密码子），臂有双链，环没有双链。</blockquote>
-
-<h3>2.2 rRNA与核糖体</h3>
-
-<h4>基本特征</h4>
-
-<ul>
-<li><strong>rRNA（ribosomal RNA）</strong>：核糖体的主要成分</li>
-<li>与mRNA对比：mRNA丰度最低但种类最多；rRNA种类不多但<strong>丰度最高</strong>，占RNA总量的<strong>80%以上</strong></li>
-</ul>
-
-<h4>真核细胞核糖体的组成</h4>
-
-<table class="note-table">
-<tr><th>亚基</th><th>沉降系数</th><th>rRNA种类</th><th>蛋白质种类</th></tr>
-<tr><td>完整核糖体</td><td>80S</td><td>—</td><td>—</td></tr>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>亚基</th><th>沉降系数</th><th>rRNA</th><th>蛋白质</th></tr>
+<tr><td>完整核糖体</td><td>80S</td><td>4种</td><td>—</td></tr>
 <tr><td>大亚基</td><td>60S</td><td>3种</td><td>49种</td></tr>
-<tr><td>小亚基</td><td>40S</td><td>1种</td><td>33种</td></tr>
-</table>
+<tr><td>小亚基</td><td>40S</td><td>1种</td><td>33种</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★80S=60S+40S；S不可加和；rRNA占80%以上。 <span class="loc">〔说话人1 05:54〕</span></div></div>
 
-<h4>沉降系数S（Svedberg unit）</h4>
-
-<ul>
-<li>S是<strong>沉降系数</strong>，表示颗粒在离心场中的沉降速度</li>
-<li><strong>S不能简单加和</strong>：60S + 40S ≠ 100S，而是80S（因为沉降速度与颗粒大小、形状、密度都有关，不是线性关系）</li>
-<li>但两个亚基加起来肯定比单个大，所以变成了80S</li>
+<div class="page"><h2 class="h2">3. 组成型非编码RNA</h2>
+<p class="lead">不翻译但参与RNA修饰与蛋白质转运；除核酶外按所在区域命名。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>组成型非编码RNA参与RNA修饰和蛋白质转运 <span class="loc">〔说话人1 09:37〕</span></li>
+<li>核酶（ribozyme）是具有催化功能的RNA <span class="loc">〔说话人1 09:37〕</span></li>
+<li>核酶在tRNA或rRNA的剪切和剪接中发挥功能 <span class="loc">〔说话人1 09:37〕</span></li>
+<li>剪接是剪完之后还要再接起来，区别于剪切 <span class="loc">〔说话人1 09:37〕</span></li>
+<li>核仁小RNA（snoRNA）带O，来自nucleolar，位于核仁 <span class="loc">〔说话人1 10:31〕</span></li>
+<li>snoRNA主要功能是核糖体RNA的加工 <span class="loc">〔说话人1 10:31〕</span></li>
+<li>核小RNA（snRNA）不带O，位于细胞核但不在核仁 <span class="loc">〔说话人1 11:02〕</span></li>
+<li>snRNA主要功能是信使RNA的剪接 <span class="loc">〔说话人1 11:02〕</span></li>
+<li>mRNA剪接由剪接体完成，含6种snRNA及相关蛋白质 <span class="loc">〔说话人1 11:28〕</span></li>
+<li>胞质小RNA（scRNA）位于胞质，参与蛋白质转运 <span class="loc">〔说话人1 11:52〕</span></li>
+<li>scRNA是信号识别颗粒SRP的组成部分 <span class="loc">〔说话人1 11:52〕</span></li>
 </ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>名称</th><th>缩写</th><th>位置</th><th>功能</th></tr>
+<tr><td>核酶</td><td>ribozyme</td><td>—</td><td>tRNA/rRNA剪切与剪接</td></tr>
+<tr><td>核仁小RNA</td><td>snoRNA</td><td>核仁</td><td>rRNA加工</td></tr>
+<tr><td>核小RNA</td><td>snRNA</td><td>细胞核</td><td>mRNA剪接</td></tr>
+<tr><td>胞质小RNA</td><td>scRNA</td><td>胞质</td><td>蛋白质转运（SRP组分）</td></tr></table>
+<div class="mnem">助记（整理）：除核酶按催化命名外，其余按区域命名——核仁sno、核sn、胞质sc。</div></div>
 
-<h4>rRNA的二级结构</h4>
-
-<p>rRNA也存在茎环二级结构，但比tRNA复杂得多：</p>
-<ul>
-<li>不是简单的三叶草，而是多片叶子的复杂茎环结构</li>
-<li>一个茎上可以接多个环</li>
-<li>RNA不能稳定形成长双链双螺旋，任何一小段只要能互补配对就可以局部形成茎，旁边不能配对的就成为环</li>
-<li>因此仅给一条序列，可以组合成多种不同的二级结构形式</li>
+<div class="page"><h2 class="h2">4. 调控型非编码RNA</h2>
+<p class="lead">随环境变化，主要功能是调控基因表达；分小、长、环状三类。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>调控型非编码RNA随环境变化，主要功能是调控基因表达 <span class="loc">〔说话人1 13:05〕</span></li>
+<li>小非编码RNA（sncRNA）长约二三十nt <span class="loc">〔说话人1 13:05〕</span></li>
+<li>小非编码RNA分miRNA、siRNA、piRNA三类 <span class="loc">〔说话人1 13:05〕</span></li>
+<li>miRNA即microRNA，与mRNA不同 <span class="loc">〔说话人1 13:05〕</span></li>
+<li>siRNA即small interfering RNA，干扰小RNA <span class="loc">〔说话人1 14:23〕</span></li>
+<li>piRNA即piwi-interacting RNA，与Piwi蛋白复合体互作 <span class="loc">〔说话人1 14:23〕</span></li>
+<li>miRNA和siRNA研究曾获诺贝尔生理学或医学奖，经线虫完成 <span class="loc">〔说话人1 14:23〕</span></li>
+<li>长非编码RNA（lncRNA）即long non-coding RNA <span class="loc">〔说话人1 14:58〕</span></li>
+<li>lncRNA常被连读为link RNA <span class="loc">〔说话人1 15:23〕</span></li>
+<li>环状RNA（circRNA）的3'与5'端再成磷酸二酯键，无游离末端 <span class="loc">〔说话人1 15:59〕</span></li>
 </ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>类型</th><th>全称</th><th>要点</th></tr>
+<tr><td>miRNA</td><td>microRNA</td><td>微RNA，与mRNA不同</td></tr>
+<tr><td>siRNA</td><td>small interfering RNA</td><td>干扰小RNA</td></tr>
+<tr><td>piRNA</td><td>piwi-interacting RNA</td><td>与Piwi蛋白复合体互作</td></tr>
+<tr><td>lncRNA</td><td>long non-coding RNA</td><td>读作link RNA</td></tr>
+<tr><td>circRNA</td><td>circular RNA</td><td>无游离末端</td></tr></table></div>
 
-<h4>RNA结构预测的困难</h4>
-
-<p>老师指出：蛋白质结构预测已经比较准确，但<strong>RNA的结构预测目前还比较困难</strong>——有一条序列，但它到底二级结构长什么样、三级结构长什么样，相关信息还比较少，需要更多实验数据积累。</p>
-
-<h4>rRNA的三级结构</h4>
-
-<p>rRNA的三级结构非常复杂，不是倒L型，很难简单描述。但可以分出一些局部的双螺旋区域——当能形成双链的段有足够长度时，也会比较像双螺旋，但不像DNA那样能稳定形成长双螺旋。核糖体中还有很多蛋白质共同组成复合体。</p>
-
-<blockquote>**关联蛋白质功能**：核糖体是蛋白质与核酸相互作用的重要例子。蛋白质发挥功能的三种方式——与小分子、核酸、蛋白质相互作用，核糖体就是蛋白质与核酸相互作用的关键途径，位于中心法则中核酸信息→蛋白质信息的传递环节。</blockquote>
-
-<h3>2.3 组成型非编码RNA</h3>
-
-<blockquote>老师说明：接下来介绍很多RNA名字，前面都带小写字母，有些还很像。今天主要留个印象，之后分子生物学部分还会一个个讲到。</blockquote>
-
-<p>组成型非编码RNA的共同特点：不翻译为蛋白质，但在整个蛋白质翻译过程中发挥重要作用，主要参与<strong>RNA修饰</strong>和<strong>蛋白质转运</strong>。</p>
-
-<h4>核酶（ribozyme）</h4>
-
-<ul>
-<li><strong>定义</strong>：具有催化功能的RNA</li>
-<li>词源：ribo（核）+ enzyme（酶）的后半截 = ribozyme</li>
-<li><strong>主要功能</strong>：在tRNA或rRNA的<strong>剪切和剪接</strong>中发挥催化功能</li>
-<li>剪切（cleavage）vs 剪接（splicing）：剪接是剪完之后还要再接起来</li>
+<div class="page"><h2 class="h2">5. 核酸的紫外吸收与纯度</h2>
+<p class="lead">核酸最大吸收260nm、蛋白质280nm；A260/A280判断纯度。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>核酸紫外吸收来自含氮杂环碱基的共轭双键 <span class="loc">〔说话人1 17:19〕</span></li>
+<li>嘧啶和嘌呤都属于含氮杂环碱基 <span class="loc">〔说话人1 17:19〕</span></li>
+<li>核酸紫外吸收强于蛋白质，每个碱基都有较强吸收 <span class="loc">〔说话人1 17:19〕</span></li>
+<li>核酸最强吸收峰约在260nm <span class="loc">〔说话人1 17:48〕</span></li>
+<li>蛋白质最强吸收峰约在280nm <span class="loc">〔说话人1 17:48〕</span></li>
+<li>A260指260nm处的吸光度，A用斜体、260为下标 <span class="loc">〔说话人1 18:08〕</span></li>
+<li>纯DNA的A260/A280约为1.8 <span class="loc">〔说话人1 19:03〕</span></li>
+<li>比值小于1.8提示蛋白质杂质 <span class="loc">〔说话人1 19:03〕</span></li>
+<li>蛋白质多则A280升高、比值变小 <span class="loc">〔说话人1 19:03〕</span></li>
 </ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>样品/项目</th><th>数值</th><th>说明</th></tr>
+<tr><td>核酸</td><td>260nm</td><td>含氮杂环碱基共轭双键</td></tr>
+<tr><td>蛋白质</td><td>280nm</td><td>芳香族氨基酸</td></tr>
+<tr><td>纯DNA</td><td>A260/A280≈1.8</td><td>标准纯度</td></tr>
+<tr><td>纯RNA</td><td>A260/A280≈2.0</td><td>标准纯度</td></tr>
+<tr><td>蛋白质污染</td><td>比值&lt;1.8</td><td>A280升高致比值变小</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★核酸260nm、蛋白质280nm；A260/A280判断纯度。 <span class="loc">〔说话人1 19:03〕</span></div></div>
 
-<h4>核仁小RNA（snoRNA, small nucleolar RNA）</h4>
-
-<ul>
-<li>注意带<strong>O</strong>（nucleolar的o）</li>
-<li>位于<strong>核仁</strong>中（核仁是rRNA/rDNA主要存在的位置）</li>
-<li><strong>主要功能</strong>：核糖体RNA的加工</li>
+<div class="page"><h2 class="h2">6. 核酸的变性与解链温度</h2>
+<p class="lead">变性断氢键、双链解单链，A260升高称增色效应；Tm由长度、GC含量、离子浓度决定。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>蛋白质变性条件为强酸、强碱、高温及某些溶剂 <span class="loc">〔说话人1 19:54〕</span></li>
+<li>变性本质是空间结构破坏，次级键（氢键、离子键、二硫键）断裂 <span class="loc">〔说话人1 19:54〕</span></li>
+<li>变性不破坏一级结构，原理上仍可能复性 <span class="loc">〔说话人1 20:25〕</span></li>
+<li>核酸变性主要是维持双螺旋的碱基间氢键断裂 <span class="loc">〔说话人1 20:25〕</span></li>
+<li>升温使双链解为单链，A260增加，称增色效应 <span class="loc">〔说话人1 20:25〕</span></li>
+<li>变性进行到一半时的温度称解链温度（溶解温度）Tm <span class="loc">〔说话人1 20:25〕</span></li>
+<li>Tm越高表示双链越难被打开 <span class="loc">〔说话人1 22:09〕</span></li>
+<li>Tm主要取决于DNA长度与GC含量 <span class="loc">〔说话人1 22:38〕</span></li>
+<li>GC含量越高、链越长，Tm越高 <span class="loc">〔说话人1 22:38〕</span></li>
+<li>离子浓度也影响Tm，因氢键本质是电荷性质的键 <span class="loc">〔说话人1 22:38〕</span></li>
+<li>Tm会影响分子生物学实验条件的选择 <span class="loc">〔说话人1 23:00〕</span></li>
 </ul>
-
-<h4>核小RNA（snRNA, small nuclear RNA）</h4>
-
-<ul>
-<li><strong>不带O</strong>（nuclear，没有o），与snoRNA区分</li>
-<li>位于细胞核中，但不在核仁内</li>
-<li><strong>主要功能</strong>：信使RNA的<strong>剪接</strong></li>
-<li>剪接通过非常大的复合体——<strong>剪接体（spliceosome）</strong>完成，剪接体由6种不同的snRNA及其相关蛋白质组成</li>
-</ul>
-
-<h4>胞质小RNA（scRNA, small cytoplasmic RNA）</h4>
-
-<ul>
-<li>位于<strong>胞质</strong>中</li>
-<li><strong>主要功能</strong>：蛋白质转运</li>
-<li>是<strong>信号识别颗粒（SRP, signal recognition particle）</strong>的组成部分</li>
-<li>蛋白质翻译过程中，很多蛋白不在胞质中发挥功能，而要进入不同细胞器，需要SRP介导的转运过程</li>
-</ul>
-
-<blockquote>**记忆技巧**：除了核酶（催化功能命名），其余组成型非编码RNA都按所在区域命名——核仁(sno)、细胞核(sn)、胞质(sc)。</blockquote>
-
-<h3>2.4 调控型非编码RNA</h3>
-
-<p>调控型非编码RNA的特点：不是时刻等量存在，会随环境变化而变化，使细胞能针对不同环境因素进行调节，<strong>主要功能是调控基因表达</strong>。</p>
-
-<h4>小非编码RNA（sncRNA, small non-coding RNA）</h4>
-
-<p>长度一般二三十nt，分三类：</p>
-
-<table class="note-table">
-<tr><th>类型</th><th>全称</th><th>说明</th></tr>
-<tr><td>**miRNA**</td><td>microRNA</td><td>微RNA，与mRNA不同</td></tr>
-<tr><td>**siRNA**</td><td>small interfering RNA</td><td>干扰小RNA</td></tr>
-<tr><td>**piRNA**</td><td>piwi-interacting RNA</td><td>与Piwi蛋白复合体互作的RNA</td></tr>
-</table>
-
-<ul>
-<li>miRNA和siRNA的研究曾获诺贝尔生理学和医学奖（通过线虫研究）</li>
-<li>这些内容将在基因表达调控章节详细讲解</li>
-</ul>
-
-<h4>长非编码RNA（lncRNA, long non-coding RNA）</h4>
-
-<ul>
-<li>"long"放在前面（英文中长度修饰词都在前面）</li>
-<li><strong>注意发音</strong>：三个辅音字母连在一起，英语口语中常连读拼成一个词，读作<strong>"link RNA"</strong></li>
-<li>将来听学术报告时听到"link RNA"要知道指的就是lncRNA</li>
-</ul>
-
-<h4>环状RNA（circRNA, circular RNA）</h4>
-
-<ul>
-<li>用"环状"这种特殊形式描述</li>
-<li><strong>特点</strong>：3'端和5'端再次形成磷酸二酯键，<strong>没有游离的末端</strong></li>
-<li>变成一个环状结构，比较特别</li>
-</ul>
-
-<blockquote>老师指出：非编码调控RNA是当前研究热点，很多信息还不完全清楚，同学们将来也可以参与相关研究。</blockquote>
-
-<hr>
-
-<h2>三、核酸的理化性质</h2>
-
-<h3>3.1 紫外吸收性质</h3>
-
-<h4>原理</h4>
-
-<ul>
-<li>核酸有紫外吸收特性，原因与蛋白质类似——都来自<strong>共轭双键</strong></li>
-<li>蛋白质的共轭双键来自芳香族氨基酸（苯丙氨酸、色氨酸、酪氨酸，其中苯丙氨酸较少）</li>
-<li>核酸的共轭双键来自<strong>含氮杂环的碱基</strong>（嘧啶、嘌呤都属于这类）</li>
-<li>核酸比蛋白质有<strong>更强的紫外吸收</strong>——蛋白质20种氨基酸中只有少数几个能吸收紫外，而核酸每一对碱基对都有相当强的紫外吸收</li>
-</ul>
-
-<h4>最大吸收波长</h4>
-
-<ul>
-<li><strong>核酸：260 nm</strong>（必须记住）</li>
-<li><strong>蛋白质：280 nm</strong>（必须记住）</li>
-<li>不同的嘧啶和嘌呤具体吸收光谱有所不同，但综合起来最强吸收峰约在260nm</li>
-</ul>
-
-<h4>A260与学术写作规范</h4>
-
-<ul>
-<li>A260 = Absorbance at 260 nm（260nm处的吸光度）</li>
-<li>规范学术写作中：<strong>A用斜体</strong>（表示变量），260为下标</li>
-<li>不同期刊要求可能不同（有的不标斜体），但建议自己的毕业论文/学术写作中按斜体规范书写</li>
-</ul>
-
-<h4>A260/A280比值——核酸纯度判断</h4>
-
-<table class="note-table">
-<tr><th>样品</th><th>A260/A280理想范围</th><th>说明</th></tr>
-<tr><td>纯DNA</td><td>~1.8</td><td>标准值</td></tr>
-<tr><td>纯RNA</td><td>~2.0</td><td>标准值</td></tr>
-</table>
-
-<ul>
-<li>如果比值<strong>小于1.8</strong>，可能意味着有蛋白质杂质（蛋白质在280nm吸收多，A280升高→比值变小）</li>
-<li>这个检测在分子生物学实验课程中会经常用到（提取DNA后测A260和A280判断纯度）</li>
-</ul>
-
-<h3>3.2 核酸的变性</h3>
-
-<h4>与蛋白质变性的类比</h4>
-
-<table class="note-table">
-<tr><th>比较项</th><th>蛋白质变性</th><th>核酸变性</th></tr>
-<tr><td>诱发条件</td><td>强酸、强碱、高温、某些溶剂</td><td>高温等</td></tr>
-<tr><td>本质</td><td>空间结构破坏，次级键（氢键、离子键、二硫键）断裂</td><td>双螺旋结构解开，碱基间氢键断裂</td></tr>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>比较项</th><th>蛋白质变性</th><th>核酸变性</th></tr>
+<tr><td>条件</td><td>强酸、强碱、高温、溶剂</td><td>高温等</td></tr>
+<tr><td>本质</td><td>空间结构破坏、次级键断裂</td><td>双螺旋解开、碱基间氢键断裂</td></tr>
 <tr><td>一级结构</td><td>不破坏</td><td>不破坏</td></tr>
-<tr><td>复性</td><td>可能，但条件苛刻</td><td>可能，条件相对宽容</td></tr>
+<tr><td>吸光度</td><td>无增色效应</td><td>A260升高（增色效应）</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★增色效应；Tm定义与三因素（长度、GC含量、离子浓度）。 <span class="loc">〔说话人1 22:38〕</span></div></div>
+
+<div class="page"><h2 class="h2">7. 核酸的复性与分子杂交</h2>
+<p class="lead">受控降温恢复双链称复性（退火）；碱基互补配对是本质，不同来源单链可成杂化双链。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>变性DNA逐渐降温可恢复双链，称复性（renaturation） <span class="loc">〔说话人1 23:20〕</span></li>
+<li>复性常靠降温完成，故也称退火（annealing） <span class="loc">〔说话人1 23:20〕</span></li>
+<li>复性的本质原因是碱基互补配对 <span class="loc">〔说话人1 23:20〕</span></li>
+<li>人工设计互补序列的两条单链也能结合成双链 <span class="loc">〔说话人1 23:20〕</span></li>
+<li>不同来源单链结合成的双链称杂化双链（heteroduplex） <span class="loc">〔说话人1 24:44〕</span></li>
+<li>hetero指来源不同的杂化，duplex即双链 <span class="loc">〔说话人1 24:44〕</span></li>
+<li>分子杂交原理：局部互补配对即成双链，形成后较稳定 <span class="loc">〔说话人1 24:44〕</span></li>
+<li>温度剧烈降低时复性不一定发生，需受控逐渐降温 <span class="loc">〔说话人1 25:35〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>概念</th><th>含义</th></tr>
+<tr><td>变性</td><td>升温使氢键断裂、双链解为单链，A260升高</td></tr>
+<tr><td>复性/退火</td><td>受控降温使互补单链恢复双链，A260降低</td></tr>
+<tr><td>杂化双链</td><td>不同来源单链按碱基互补配对形成的双链</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★复性须受控逐渐降温；分子杂交依赖碱基互补配对。 <span class="loc">〔说话人1 39:28〕</span></div></div>
+
+<div class="page"><h2 class="h2">8. DNA结构的意义与DNA折纸</h2>
+<p class="lead">DNA是遗传物质基础、可稳定储存并半保留复制；折纸术把互补配对用于纳米工程。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>DNA是遗传物质基础，中心法则围绕核酸结构展开 <span class="loc">〔说话人1 25:59〕</span></li>
+<li>DNA碱基位于双螺旋内部，任意排列都保持双螺旋 <span class="loc">〔说话人1 26:26〕</span></li>
+<li>双螺旋可折叠为染色体并一代代传递 <span class="loc">〔说话人1 26:26〕</span></li>
+<li>双螺旋半保留复制，两半分别作模板稳定传递信息 <span class="loc">〔说话人1 27:00〕</span></li>
+<li>RNA性质活泼、结构复杂，承担信息传递、转运与核糖体组成 <span class="loc">〔说话人1 27:00〕</span></li>
+<li>DNA双螺旋结构获1962年诺贝尔奖，此后众多诺奖基于之 <span class="loc">〔说话人1 27:40〕</span></li>
+<li>DNA稳定又允许变异，造就生命多样性 <span class="loc">〔说话人1 28:18〕</span></li>
+<li>DNA折纸术用脚手架与订书针单链，在合适温度退火组装 <span class="loc">〔说话人1 28:43〕</span></li>
+<li>DNA纳米结构可用于纳米材料、药物递送与生物传感器 <span class="loc">〔说话人1 29:47〕</span></li>
+<li>nano sheet一侧载药，用DNA系绳卷成卷筒 <span class="loc">〔说话人1 31:03〕</span></li>
+<li>卷筒在低pH展开、高pH保持卷起；血液pH约7.35-7.45 <span class="loc">〔说话人1 31:35〕</span></li>
+<li>卷筒在病变部位展开暴露配体，降低炎症，可治关节炎 <span class="loc">〔说话人1 32:00〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">9. 课堂小测4题要点</h2>
+<p class="lead">覆盖核酸组成、DNA空间结构、RNA加工、变性与复性四类易错点。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>构成DNA的嘧啶是胞嘧啶和胸腺嘧啶 <span class="loc">〔说话人1 34:06〕</span></li>
+<li>DNA与RNA的主要区别是核糖和脱氧核糖 <span class="loc">〔说话人1 34:06〕</span></li>
+<li>cAMP是重要第二信使 <span class="loc">〔说话人1 34:06〕</span></li>
+<li>cGMP由GTP脱去焦磷酸环化生成 <span class="loc">〔说话人1 34:35〕</span></li>
+<li>腺嘌呤与胸腺嘧啶间2对氢键，胞嘧啶与鸟嘌呤间3对氢键 <span class="loc">〔说话人1 35:28〕</span></li>
+<li>维持双螺旋的作用力除氢键外还有碱基堆积力 <span class="loc">〔说话人1 35:28〕</span></li>
+<li>mRNA加工三步骤：5'加帽、3'加PolyA尾、剪接 <span class="loc">〔说话人1 36:48〕</span></li>
+<li>5'帽是修饰过的鸟嘌呤，3'尾是多聚腺苷酸PolyA <span class="loc">〔说话人1 36:48〕</span></li>
+<li>hnRNA是核不均一RNA，即mRNA前体 <span class="loc">〔说话人1 37:16〕</span></li>
+<li>成熟mRNA的5'和3'端有非翻译区，参与翻译调控 <span class="loc">〔说话人1 37:45〕</span></li>
+<li>非翻译区不是编码区，编码区即开放阅读框ORF <span class="loc">〔说话人1 37:56〕</span></li>
+<li>核酸变性一级结构不变，复性须受控逐渐冷却 <span class="loc">〔说话人1 38:42〕</span></li>
+<li>分子杂交依赖变复性，不同来源单链部分互补即可杂交 <span class="loc">〔说话人1 39:28〕</span></li>
+</ul>
+<div class="wrong"><span class="tag">易错</span>非翻译区（UTR）≠编码区；编码区是ORF，不含两端UTR。 <span class="loc">〔说话人1 37:56〕</span></div></div>
+
+<div class="page"><h2 class="h2">10. 维生素的概念与分类</h2>
+<p class="lead">低分子有机营养素；不组成机体、不供能，长期不足致病；脂溶ADEK、水溶B+C。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>维生素vitamin词根vital意为维持生命 <span class="loc">〔说话人1 44:03〕</span></li>
+<li>vital sign即血压、心跳等生命体征 <span class="loc">〔说话人1 44:03〕</span></li>
+<li>维生素是低分子量的有机营养素 <span class="loc">〔说话人1 54:53〕</span></li>
+<li>低分子量区别于核酸、蛋白质、多糖和脂质 <span class="loc">〔说话人1 54:53〕</span></li>
+<li>有机营养素区别于矿物质 <span class="loc">〔说话人1 54:53〕</span></li>
+<li>维生素不参与组成机体、也不供给能量 <span class="loc">〔说话人1 55:22〕</span></li>
+<li>维生素长期不足会导致疾病 <span class="loc">〔说话人1 55:51〕</span></li>
+<li>每种维生素掌握：化学本质、生理功能、缺乏症 <span class="loc">〔说话人1 55:51〕</span></li>
+<li>生化功能指在生化水平参与什么反应 <span class="loc">〔说话人1 55:51〕</span></li>
+<li>脂溶性维生素共四种：A、D、E、K <span class="loc">〔说话人1 57:44〕</span></li>
+<li>水溶性维生素为B族和C <span class="loc">〔说话人1 58:27〕</span></li>
+<li>B族包括B1、B2、B6、B12等，也有不按B数字命名者 <span class="loc">〔说话人1 58:27〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>分类</th><th>英文</th><th>包含</th></tr>
+<tr><td>脂溶性维生素</td><td>fat soluble</td><td>A、D、E、K（共4种）</td></tr>
+<tr><td>水溶性维生素</td><td>water soluble</td><td>B族 + C</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★维生素概念三要点；脂溶ADEK、水溶B族+C。 <span class="loc">〔说话人1 57:44〕</span></div></div>
+
+<div class="page"><h2 class="h2">11. 维生素D</h2>
+<p class="lead">环戊烷多氢菲类，由胆固醇衍生；皮肤经紫外线生成D3，肝肾两步羟化得活性形式1,25-二羟维生素D3，调控钙磷代谢。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>维生素D属环戊烷多氢菲类化合物，由胆固醇衍生 <span class="loc">〔说话人1 59:10〕</span></li>
+<li>环戊烷多氢菲是所有类固醇衍生物的共同母体 <span class="loc">〔说话人1 59:10〕</span></li>
+<li>维生素D高度脂溶性，只含一个羟基，溶于脂肪和有机溶剂 <span class="loc">〔说话人1 59:54〕</span></li>
+<li>天然两种形式：D2麦角钙化醇（植物）、D3胆钙化醇（动物） <span class="loc">〔说话人1 01:00:22〕</span></li>
+<li>皮肤中胆固醇脱氢生成7-脱氢胆固醇，B环打开 <span class="loc">〔说话人1 01:01:07〕</span></li>
+<li>7-脱氢胆固醇经紫外线照射生成维生素D3 <span class="loc">〔说话人1 01:01:07〕</span></li>
+<li>阻隔紫外线则不能合成D3，导致缺乏 <span class="loc">〔说话人1 01:01:59〕</span></li>
+<li>D3高度疏水，需维生素D结合蛋白在血液中运输 <span class="loc">〔说话人1 01:03:27〕</span></li>
+<li>结合蛋白把疏水D3包在凹陷内，外表面亲水</li>
+<li>肝微粒体25-羟化酶在25位加羟基，生成25-羟维生素D3 <span class="loc">〔说话人1 01:03:54〕</span></li>
+<li>25-羟维生素D3是血浆主要存在形式、也是肝主要储存形式 <span class="loc">〔说话人1 01:04:35〕</span></li>
+<li>肾小管上皮细胞1α-羟化酶在1位加羟基，生成1,25-二羟维生素D3 <span class="loc">〔说话人1 01:05:06〕</span></li>
+<li>1,25-二羟维生素D3是维生素D3的活性形式 <span class="loc">〔说话人1 01:05:06〕</span></li>
+<li>活性形式指体内直接发挥生理功能的状态 <span class="loc">〔说话人1 01:05:37〕</span></li>
+<li>1,25-二羟D3直接穿膜入核与核受体结合，调控靶基因 <span class="loc">〔说话人1 01:06:45〕</span></li>
+<li>靶基因多为钙磷相关基因，如钙结合蛋白、骨钙蛋白 <span class="loc">〔说话人1 01:06:45〕</span></li>
+<li>主要功能为促进钙吸收及骨骼、牙齿的钙化 <span class="loc">〔说话人1 01:06:45〕</span></li>
+<li>紫外线过少致D3过少、钙调节异常，增加骨质疏松风险 <span class="loc">〔说话人1 01:07:28〕</span></li>
+<li>维生素D缺乏：儿童可致佝偻病，成人可致骨软化症、骨质疏松 <span class="loc">〔说话人1 01:07:28〕</span></li>
+<li>紫外线双重角色：致皮肤癌与老化，又为合成维生素D所必需 <span class="loc">〔说话人1 01:10:25〕</span></li>
+<li>应对：继续防晒，紫外线弱时晒太阳，也可食物或补充剂补充 <span class="loc">〔说话人1 01:10:48〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>形式/环节</th><th>名称</th><th>要点</th></tr>
+<tr><td>维生素D2</td><td>麦角钙化醇</td><td>植物来源</td></tr>
+<tr><td>维生素D3</td><td>胆钙化醇</td><td>动物来源，重点</td></tr>
+<tr><td>血液主要形式</td><td>25-羟维生素D3</td><td>肝25-羟化酶生成，肝储存</td></tr>
+<tr><td>活性形式</td><td>1,25-二羟维生素D3</td><td>肾1α-羟化酶生成</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★皮肤紫外线合成→肝25羟化→肾1α羟化；活性形式1,25-二羟维生素D3。 <span class="loc">〔说话人1 01:05:06〕</span></div></div>
+
+<div class="page"><h2 class="h2">12. 维生素A</h2>
+<p class="lead">不饱和一元醇（视黄醇）；活性形式视黄醇、视黄醛、视黄酸；视黄醛参与视循环，缺乏致夜盲症与眼干燥症。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>维生素A化学本质为不饱和一元醇 <span class="loc">〔说话人1 01:13:43〕</span></li>
+<li>A1为视黄醇（retinol），A2为3-脱氢视黄醇 <span class="loc">〔说话人1 01:13:43〕</span></li>
+<li>双键不能自由旋转、存在顺反式，是维生素A功能的结构基础 <span class="loc">〔说话人1 01:14:34〕</span></li>
+<li>β-胡萝卜素为维生素A原，可代谢为维生素A <span class="loc">〔说话人1 01:15:27〕</span></li>
+<li>维生素A为脂溶性，血液运输需结合蛋白协助 <span class="loc">〔说话人1 01:15:59〕</span></li>
+<li>视黄醇经一步氧化生成视黄醛（retinal） <span class="loc">〔说话人1 01:15:59〕</span></li>
+<li>视黄醛有全反式与11-顺式两种形式，由光线诱导互变 <span class="loc">〔说话人1 01:17:08〕</span></li>
+<li>11-顺视黄醛与视蛋白（opsin）结合成视紫红质（rhodopsin） <span class="loc">〔说话人1 01:17:44〕</span></li>
+<li>光照使11-顺式变全反式，视紫红质构象变化、诱导信号转导 <span class="loc">〔说话人1 01:18:19〕</span></li>
+<li>全反式视黄醛与视蛋白分离，在上皮细胞异构回11-顺式循环 <span class="loc">〔说话人1 01:18:54〕</span></li>
+<li>视黄酸由视黄醛再氧化生成，与核受体结合调控基因表达 <span class="loc">〔说话人1 01:20:12〕</span></li>
+<li>维生素A三种活性形式：视黄醇、视黄醛、视黄酸 <span class="loc">〔说话人1 01:20:48〕</span></li>
+<li>缺乏使11-顺视黄醛不足、视紫红质减少、弱光敏感性降低，致夜盲症 <span class="loc">〔说话人3 01:21:33〕</span></li>
+<li>缺乏使眼结膜黏液分泌减少，致眼干燥症 <span class="loc">〔说话人3 01:22:14〕</span></li>
+<li>维生素A长期过量可中毒，症状特异性不强 <span class="loc">〔说话人3 01:22:41〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>活性形式</th><th>生成</th><th>主要功能</th></tr>
+<tr><td>视黄醇（retinol）</td><td>来自食物</td><td>基础形式</td></tr>
+<tr><td>视黄醛（retinal）</td><td>视黄醇氧化</td><td>参与视循环</td></tr>
+<tr><td>视黄酸（retinoic acid）</td><td>视黄醛再氧化</td><td>调控基因表达</td></tr></table>
+<div class="mnem">助记（整理）：维生素A缺乏的两个缺乏症都跟眼相关——夜盲症、眼干燥症。</div></div>
+
+<div class="page"><h2 class="h2">13. 维生素E</h2>
+<p class="lead">化学本质为生育酚；脂溶性抗氧化剂，主要在细胞膜发挥功能，缺乏致溶血性贫血。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>维生素E化学本质为生育酚（tocopherol），属苯并二氢吡喃衍生物 <span class="loc">〔说话人3 01:22:41〕</span></li>
+<li>维生素E为脂溶性抗氧化剂，主要在细胞膜上发挥功能 <span class="loc">〔说话人3 01:24:00〕</span></li>
+<li>与细胞质中的水溶性抗氧化剂不同，维生素E在膜上于氧化态与还原态间转化 <span class="loc">〔说话人3 01:24:00〕</span></li>
+<li>氧化后的维生素E由维生素C还原 <span class="loc">〔说话人3 01:24:00〕</span></li>
+<li>谷胱甘肽还原型GSH含巯基，氧化型GSSG由两分子经二硫键连接 <span class="loc">〔说话人3 01:25:14〕</span></li>
+<li>氧化型谷胱甘肽由NADPH还原 <span class="loc">〔说话人3 01:25:29〕</span></li>
+<li>维生素E主要功能是保护细胞膜，也可入核调节基因表达 <span class="loc">〔说话人3 01:25:29〕</span></li>
+<li>维生素E一般不易缺乏，脂质吸收障碍时可缺乏 <span class="loc">〔说话人3 01:25:58〕</span></li>
+<li>维生素E缺乏主要导致溶血性贫血，因红细胞膜发生障碍 <span class="loc">〔说话人3 01:26:26〕</span></li>
+<li>与糖代谢中的蚕豆病本质相似，均因红细胞膜被过度氧化 <span class="loc">〔说话人3 01:26:26〕</span></li>
+<li>生育酚名称源于与生育障碍相关，临床用于治疗先兆或习惯性流产 <span class="loc">〔说话人3 01:26:55〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>抗氧化链</th><th>被谁还原</th></tr>
+<tr><td>氧化型维生素E</td><td>维生素C</td></tr>
+<tr><td>氧化型维生素C</td><td>谷胱甘肽GSH</td></tr>
+<tr><td>氧化型谷胱甘肽GSSG</td><td>NADPH</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★维生素E为细胞膜上的脂溶性抗氧化剂；缺乏致溶血性贫血。 <span class="loc">〔说话人3 01:26:26〕</span></div></div>
+
+<div class="page"><h2 class="h2">14. 维生素K</h2>
+<p class="lead">二甲基异萘醌衍生物，K1/K2/K3；核心理联想到凝血，是γ-谷氨酸羧化酶辅因子。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>维生素K为二甲基异萘醌衍生物，共K1、K2、K3三种 <span class="loc">〔说话人3 01:27:18〕</span></li>
+<li>K1为叶绿醌，来自深绿色蔬菜，长疏水尾使其呈脂溶性 <span class="loc">〔说话人3 01:27:18〕</span></li>
+<li>K2为甲基萘醌，由大肠埃希菌（肠道菌群）生成 <span class="loc">〔说话人3 01:27:18〕</span></li>
+<li>K3为人工合成，仅含甲萘醌部分，呈水溶性 <span class="loc">〔说话人3 01:27:18〕</span></li>
+<li>维生素K的活性形式是甲萘醌 <span class="loc">〔说话人3 01:28:34〕</span></li>
+<li>维生素K核心功能是凝血，是凝血因子活化所必需的辅因子 <span class="loc">〔说话人3 01:28:34〕</span></li>
+<li>维生素K是γ-谷氨酸羧化酶的辅因子 <span class="loc">〔说话人3 01:28:34〕</span></li>
+<li>凝血因子谷氨酸需再羧化才能螯合钙离子而活化 <span class="loc">〔说话人3 01:30:03〕</span></li>
+<li>维生素K缺乏使该过程不能正常发生，导致容易出血 <span class="loc">〔说话人3 01:30:03〕</span></li>
+<li>新生儿肠道菌群尚未建立，易缺乏，出生后需及时注射维生素K <span class="loc">〔说话人3 01:31:10〕</span></li>
+<li>长期应用抗生素破坏肠道菌群、脂质吸收障碍均可致缺乏 <span class="loc">〔说话人3 01:31:47〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>形式</th><th>名称</th><th>来源</th><th>溶解性</th></tr>
+<tr><td>K1</td><td>叶绿醌</td><td>深绿色蔬菜</td><td>脂溶性</td></tr>
+<tr><td>K2</td><td>甲基萘醌</td><td>大肠埃希菌</td><td>脂溶性</td></tr>
+<tr><td>K3</td><td>甲萘醌（人工合成）</td><td>人工合成</td><td>水溶性</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★维生素K→凝血：γ-谷氨酸羧化酶辅因子→凝血因子活化；新生儿需注射。 <span class="loc">〔说话人3 01:30:03〕</span></div></div>
+
+<div class="page"><h2 class="h2">15. 脂溶性维生素总结</h2>
+<p class="lead">四种脂溶性维生素A、D、E、K；按化学本质、活性形式、生理功能、缺乏症梳理。</p>
+<table class="tbl"><tr><th>维生素</th><th>化学本质</th><th>活性形式</th><th>核心功能</th><th>典型缺乏症</th></tr>
+<tr><td>A</td><td>不饱和一元醇（视黄醇）</td><td>视黄醇/视黄醛/视黄酸</td><td>视循环、调控基因表达</td><td>夜盲症、眼干燥症</td></tr>
+<tr><td>D</td><td>环戊烷多氢菲衍生物</td><td>1,25-二羟维生素D3</td><td>钙磷代谢调控</td><td>佝偻病、骨质疏松</td></tr>
+<tr><td>E</td><td>生育酚</td><td>生育酚</td><td>脂溶性抗氧化、保护细胞膜</td><td>溶血性贫血</td></tr>
+<tr><td>K</td><td>甲萘醌衍生物</td><td>甲萘醌</td><td>γ-谷氨酸羧化酶辅因子、凝血</td><td>出血</td></tr></table>
+<ul class="kv">
+<li>脂溶性维生素共四种：A、D、E、K <span class="loc">〔说话人3 01:32:33〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">16. 维生素B1</h2>
+<p class="lead">硫胺素；活性形式焦磷酸硫胺素TPP，是一系列脱羧酶的辅酶，缺乏致脚气病。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>维生素B1即硫胺素（thiamine），含噻唑环的硫和嘧啶环的氨基 <span class="loc">〔说话人3 01:33:28〕</span></li>
+<li>维生素B1活性形式为焦磷酸硫胺素（TPP） <span class="loc">〔说话人3 01:33:28〕</span></li>
+<li>B族维生素的生化功能要特别注意其作为辅酶的功能 <span class="loc">〔说话人3 01:34:20〕</span></li>
+<li>TPP不是针对一种酶，而是对一系列酶都是辅酶 <span class="loc">〔说话人3 01:34:20〕</span></li>
+<li>因此B族维生素缺乏时全身不同系统、器官都会出现问题 <span class="loc">〔说话人3 01:34:20〕</span></li>
+<li>TPP参与能量代谢，是丙酮酸脱氢酶的辅酶 <span class="loc">〔说话人3 01:34:47〕</span></li>
+<li>丙酮酸脱羧生成乙酰辅酶A，是糖代谢非常关键的步骤 <span class="loc">〔说话人3 01:34:47〕</span></li>
+<li>TPP作为脱羧酶的辅酶使α-酮酸脱羧，还参与转酮醇反应 <span class="loc">〔说话人3 01:35:18〕</span></li>
+<li>TPP还参与神经传导，如乙酰胆碱代谢 <span class="loc">〔说话人3 01:36:00〕</span></li>
+<li>维生素B1缺乏症是脚气病（Beriberi），beri意为疼痛 <span class="loc">〔说话人3 01:36:00〕</span></li>
+<li>脚气病严重时可致水肿（按压留坑）与心力衰竭 <span class="loc">〔说话人3 01:37:07〕</span></li>
+<li>脚气病与真菌感染的脚气无关，累及全身多系统 <span class="loc">〔说话人3 01:37:40〕</span></li>
+</ul>
+<div class="wrong"><span class="tag">易错</span>脚气病（Beriberi）不是真菌感染的脚气（足癣）。 <span class="loc">〔说话人3 01:37:40〕</span></div>
+<div class="exam"><span class="tag">★考点</span>★硫胺素→TPP；脱羧酶辅酶/能量代谢；缺乏致脚气病。 <span class="loc">〔说话人3 01:36:00〕</span></div></div>
+
+<div class="page"><h2 class="h2">17. 维生素B2</h2>
+<p class="lead">核黄素；两种活性形式FMN与FAD，均为核苷酸类，参与氧化还原递氢。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>维生素B2即核黄素（riboflavin），ribo意为核 <span class="loc">〔说话人3 01:37:40〕</span></li>
+<li>核黄素是核醇与带颜色化合物的缩合物，实际呈黄色 <span class="loc">〔说话人3 01:37:40〕</span></li>
+<li>核苷酸由磷酸、核糖（核醇）和碱基三部分组成 <span class="loc">〔说话人3 01:37:40〕</span></li>
+<li>黄素单核苷酸（FMN）是维生素B2的活性形式之一 <span class="loc">〔说话人3 01:37:40〕</span></li>
+<li>黄素腺嘌呤二核苷酸（FAD）是另一活性形式，比FMN多一个腺苷一磷酸 <span class="loc">〔说话人3 01:39:31〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>活性形式</th><th>结构要点</th></tr>
+<tr><td>FMN 黄素单核苷酸</td><td>含氮杂环 + 五碳糖 + 磷酸</td></tr>
+<tr><td>FAD 黄素腺嘌呤二核苷酸</td><td>比FMN多一个腺苷一磷酸（AMP）</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★核黄素→FMN与FAD两种活性形式。 <span class="loc">〔说话人3 01:37:40〕</span></div></div>
+
+<div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>tRNA二级三叶草、三级倒L；反密码子环识别密码子、CCA末端接氨基酸</li>
+<li>氨酰tRNA合成酶保证tRNA与氨基酸的正确对应</li>
+<li>rRNA占RNA总量80%以上；真核80S=60S+40S，S不可加和</li>
+<li>组成型非编码RNA：核酶、snoRNA、snRNA、scRNA</li>
+<li>调控型非编码RNA：miRNA、siRNA、piRNA、lncRNA、circRNA</li>
+<li>核酸260nm、蛋白质280nm；纯DNA A260/A280约1.8</li>
+<li>变性增色效应；Tm由长度、GC含量、离子浓度决定</li>
+<li>复性/退火须受控逐渐降温；杂化双链heteroduplex</li>
+<li>A-T间2对氢键、G-C间3对氢键；还有碱基堆积力</li>
+<li>mRNA加工：5'加帽、3'加PolyA尾、剪接；编码区即ORF</li>
+<li>维生素概念：低分子有机营养素、不组成机体不供能、长期不足致病</li>
+<li>脂溶性维生素ADEK；水溶性B族+C</li>
+<li>维生素D活性形式1,25-二羟维生素D3，调控钙磷代谢</li>
+<li>维生素A三种活性形式；视循环缺陷致夜盲症</li>
+<li>维生素E为生育酚、细胞膜脂溶性抗氧化剂；缺乏溶血性贫血</li>
+<li>维生素K为甲萘醌、γ-谷氨酸羧化酶辅因子→凝血</li>
+<li>维生素B1硫胺素→TPP，脱羧酶辅酶，缺乏脚气病</li>
+<li>维生素B2核黄素→FMN与FAD</li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>60S+40S=100S</td><td>60S+40S=80S，S不可加和</td></tr>
+<tr><td>A260/A280偏小是核酸多了</td><td>偏小提示蛋白质杂质（A280升高）</td></tr>
+<tr><td>变性能破坏一级结构</td><td>变性只断次级键，一级结构不变</td></tr>
+<tr><td>迅速冷却即可复性</td><td>复性须受控逐渐降温</td></tr>
+<tr><td>非翻译区也算编码区</td><td>编码区是ORF，不含两端UTR</td></tr>
+<tr><td>脚气病就是真菌感染的脚气</td><td>脚气病Beriberi为TPP缺乏、累及全身</td></tr>
+<tr><td>snoRNA和snRNA是一回事</td><td>snoRNA在核仁加工rRNA，snRNA在核内剪接mRNA</td></tr>
+<tr><td>维生素K3也是脂溶性</td><td>K3仅含甲萘醌部分，为水溶性</td></tr>
+<tr><td>转写「pachy-interacting RNA」</td><td>实为piwi-interacting RNA（piRNA）（整理）</td></tr>
+<tr><td>转写「FMP」「oligodna」「环纹多清飞」</td><td>应为FMN、DNA origami、环戊烷多氢菲（整理）</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>tRNA结构与氨酰tRNA合成酶</td><td>§1</td><td>〔说话人1 03:17〕</td><td>简答</td></tr>
+<tr><td>核糖体组成与沉降系数</td><td>§2</td><td>〔说话人1 05:54〕</td><td>填空</td></tr>
+<tr><td>组成型非编码RNA区分</td><td>§3</td><td>〔说话人1 11:02〕</td><td>单选</td></tr>
+<tr><td>调控型非编码RNA缩写</td><td>§4</td><td>〔说话人1 15:23〕</td><td>单选</td></tr>
+<tr><td>260nm/280nm与纯度</td><td>§5</td><td>〔说话人1 19:03〕</td><td>计算</td></tr>
+<tr><td>增色效应与Tm</td><td>§6</td><td>〔说话人1 22:38〕</td><td>简答</td></tr>
+<tr><td>复性与分子杂交</td><td>§7</td><td>〔说话人1 25:35〕</td><td>简答</td></tr>
+<tr><td>mRNA加工与ORF</td><td>§9</td><td>〔说话人1 37:56〕</td><td>判断</td></tr>
+<tr><td>维生素概念与分类</td><td>§10</td><td>〔说话人1 57:44〕</td><td>填空</td></tr>
+<tr><td>维生素D活化与功能</td><td>§11</td><td>〔说话人1 01:05:06〕</td><td>病例分析</td></tr>
+<tr><td>维生素A与视循环</td><td>§12</td><td>〔说话人3 01:21:33〕</td><td>简答</td></tr>
+<tr><td>维生素E抗氧化与缺乏症</td><td>§13</td><td>〔说话人3 01:26:26〕</td><td>简答</td></tr>
+<tr><td>维生素K与凝血</td><td>§14</td><td>〔说话人3 01:30:03〕</td><td>简答</td></tr>
+<tr><td>维生素B1与TPP</td><td>§16</td><td>〔说话人3 01:36:00〕</td><td>单选</td></tr>
+<tr><td>维生素B2活性形式</td><td>§17</td><td>〔说话人3 01:37:40〕</td><td>填空</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>RNA核糖2'羟基、不能稳定形成双链</td><td>结构</td><td>§1</td><td>〔说话人1 00:00〕</td></tr>
+<tr><td>2</td><td>tRNA二级三叶草形，茎双链、环单链；茎内氢键配对、环内不配对</td><td>结构</td><td>§1</td><td>〔说话人1 00:00〕</td></tr>
+<tr><td>3</td><td>反密码子环含3个碱基与密码子互补；CCA末端共价连接氨基酸</td><td>结构</td><td>§1</td><td>〔说话人1 00:57〕</td></tr>
+<tr><td>4</td><td>tRNA三级结构倒L型，两端分工</td><td>结构</td><td>§1</td><td>〔说话人1 01:34〕</td></tr>
+<tr><td>5</td><td>tRNA富含稀有碱基，由常见碱基衍生</td><td>结构</td><td>§1</td><td>〔说话人1 02:18〕</td></tr>
+<tr><td>6</td><td>氨酰tRNA合成酶保证tRNA与氨基酸对应</td><td>酶</td><td>§1</td><td>〔说话人1 03:17〕</td></tr>
+<tr><td>7</td><td>三叶草也称茎环stem loop与发夹hairpin</td><td>术语</td><td>§1</td><td>〔说话人1 03:17〕</td></tr>
+<tr><td>8</td><td>两个关键功能区：氨基酸臂与反密码子环</td><td>结构</td><td>§1</td><td>〔说话人1 04:45〕</td></tr>
+<tr><td>9</td><td>rRNA是核糖体的主要成分</td><td>定义</td><td>§2</td><td>〔说话人1 04:45〕</td></tr>
+<tr><td>10</td><td>mRNA丰度最低种类最多，rRNA种类少丰度高、占总量80%以上</td><td>对比</td><td>§2</td><td>〔说话人1 04:45〕</td></tr>
+<tr><td>11</td><td>真核80S=60S+40S，S不可加和</td><td>机制</td><td>§2</td><td>〔说话人1 05:54〕</td></tr>
+<tr><td>12</td><td>大亚基3种rRNA/49种蛋白，小亚基1种/33种</td><td>数字</td><td>§2</td><td>〔说话人1 06:18〕</td></tr>
+<tr><td>13</td><td>核糖体是蛋白-核酸互作的中心法则环节</td><td>关联</td><td>§2</td><td>〔说话人1 06:18〕</td></tr>
+<tr><td>14</td><td>rRNA茎环不叫三叶草、一茎可接多环；局部互补配对即成茎否则成环</td><td>结构</td><td>§2</td><td>〔说话人1 07:00〕〔说话人1 07:38〕</td></tr>
+<tr><td>15</td><td>RNA结构预测比蛋白质困难</td><td>结论</td><td>§2</td><td>〔说话人1 08:00〕</td></tr>
+<tr><td>16</td><td>组成型非编码RNA参与RNA修饰与蛋白转运</td><td>功能</td><td>§3</td><td>〔说话人1 09:37〕</td></tr>
+<tr><td>17</td><td>核酶具催化功能，作用于tRNA/rRNA剪切剪接；剪接是剪完再接</td><td>定义</td><td>§3</td><td>〔说话人1 09:37〕</td></tr>
+<tr><td>18</td><td>snoRNA位于核仁、加工rRNA</td><td>功能</td><td>§3</td><td>〔说话人1 10:31〕</td></tr>
+<tr><td>19</td><td>snRNA在核内剪接mRNA，剪接体含6种snRNA</td><td>功能</td><td>§3</td><td>〔说话人1 11:02〕</td></tr>
+<tr><td>20</td><td>scRNA参与蛋白质转运，是SRP的组分</td><td>功能</td><td>§3</td><td>〔说话人1 11:52〕</td></tr>
+<tr><td>21</td><td>调控型非编码RNA随环境变化调控基因表达</td><td>功能</td><td>§4</td><td>〔说话人1 13:05〕</td></tr>
+<tr><td>22</td><td>sncRNA约二三十nt，分miRNA/siRNA/piRNA</td><td>分类</td><td>§4</td><td>〔说话人1 13:05〕</td></tr>
+<tr><td>23</td><td>piRNA即piwi-interacting RNA；miRNA/siRNA研究经线虫获诺奖</td><td>术语</td><td>§4</td><td>〔说话人1 14:23〕</td></tr>
+<tr><td>24</td><td>lncRNA为长非编码RNA，读作link RNA</td><td>术语</td><td>§4</td><td>〔说话人1 15:23〕</td></tr>
+<tr><td>25</td><td>circRNA为环状RNA，无游离末端</td><td>结构</td><td>§4</td><td>〔说话人1 15:59〕</td></tr>
+<tr><td>26</td><td>核酸紫外吸收来自含氮杂环碱基共轭双键，强于蛋白质</td><td>原理</td><td>§5</td><td>〔说话人1 17:19〕</td></tr>
+<tr><td>27</td><td>核酸最大吸收260nm、蛋白质280nm</td><td>数字</td><td>§5</td><td>〔说话人1 17:48〕</td></tr>
+<tr><td>28</td><td>A260指260nm吸光度，A斜体260下标</td><td>规范</td><td>§5</td><td>〔说话人1 18:08〕</td></tr>
+<tr><td>29</td><td>纯DNA A260/A280约1.8，比值&lt;1.8提示蛋白质杂质</td><td>数字</td><td>§5</td><td>〔说话人1 19:03〕</td></tr>
+<tr><td>30</td><td>蛋白质变性条件与本质（次级键断裂）</td><td>机制</td><td>§6</td><td>〔说话人1 19:54〕</td></tr>
+<tr><td>31</td><td>变性不破坏一级结构</td><td>结论</td><td>§6</td><td>〔说话人1 20:25〕</td></tr>
+<tr><td>32</td><td>核酸变性为碱基间氢键断裂，增色效应</td><td>机制</td><td>§6</td><td>〔说话人1 20:25〕</td></tr>
+<tr><td>33</td><td>Tm为变性一半时温度，测双螺旋稳定性</td><td>定义</td><td>§6</td><td>〔说话人1 20:25〕</td></tr>
+<tr><td>34</td><td>Tm越高双链越难打开</td><td>结论</td><td>§6</td><td>〔说话人1 22:09〕</td></tr>
+<tr><td>35</td><td>Tm取决于DNA长度与GC含量，离子浓度也影响（氢键为电荷性质）</td><td>机制</td><td>§6</td><td>〔说话人1 22:38〕</td></tr>
+<tr><td>36</td><td>变性DNA降温复性renaturation、退火annealing，本质为碱基互补配对</td><td>术语</td><td>§7</td><td>〔说话人1 23:20〕</td></tr>
+<tr><td>37</td><td>不同来源单链形成杂化双链heteroduplex；分子杂交为局部互补配对即成双链</td><td>术语</td><td>§7</td><td>〔说话人1 24:44〕</td></tr>
+<tr><td>38</td><td>剧烈降温复性不一定发生，须受控降温</td><td>条件</td><td>§7</td><td>〔说话人1 25:35〕</td></tr>
+<tr><td>39</td><td>DNA是遗传物质基础、中心法则核心；碱基在内部，任意排列保持双螺旋并折叠成染色体</td><td>结论</td><td>§8</td><td>〔说话人1 25:59〕〔说话人1 26:26〕</td></tr>
+<tr><td>40</td><td>双螺旋半保留复制、稳定传递信息；RNA性质活泼结构复杂、功能多样</td><td>机制</td><td>§8</td><td>〔说话人1 27:00〕</td></tr>
+<tr><td>41</td><td>双螺旋获1962年诺奖，后续众多诺奖基于之</td><td>延伸</td><td>§8</td><td>〔说话人1 27:40〕</td></tr>
+<tr><td>42</td><td>DNA稳定又允许变异，造就生命多样性</td><td>结论</td><td>§8</td><td>〔说话人1 28:18〕</td></tr>
+<tr><td>43</td><td>DNA折纸：脚手架与订书针单链退火组装</td><td>技术</td><td>§8</td><td>〔说话人1 28:43〕</td></tr>
+<tr><td>44</td><td>DNA纳米结构用于材料、药物递送与传感器</td><td>应用</td><td>§8</td><td>〔说话人1 29:47〕</td></tr>
+<tr><td>45</td><td>nano sheet卷筒pH响应（血液pH7.35-7.45）；病变部位展开暴露配体，可治关节炎</td><td>机制</td><td>§8</td><td>〔说话人1 31:35〕〔说话人1 32:00〕</td></tr>
+<tr><td>46</td><td>构成DNA的嘧啶为胞嘧啶和胸腺嘧啶；DNA与RNA区别是核糖与脱氧核糖</td><td>数字</td><td>§9</td><td>〔说话人1 34:06〕</td></tr>
+<tr><td>47</td><td>cAMP是重要第二信使；cGMP由GTP脱去焦磷酸环化生成</td><td>术语</td><td>§9</td><td>〔说话人1 34:06〕〔说话人1 34:35〕</td></tr>
+<tr><td>48</td><td>A-T间2对氢键、G-C间3对氢键；维持双螺旋还有碱基堆积力</td><td>数字</td><td>§9</td><td>〔说话人1 35:28〕</td></tr>
+<tr><td>49</td><td>mRNA加工：5'加帽、3'加PolyA尾、剪接</td><td>机制</td><td>§9</td><td>〔说话人1 36:48〕</td></tr>
+<tr><td>50</td><td>hnRNA是核不均一RNA、mRNA前体</td><td>术语</td><td>§9</td><td>〔说话人1 37:16〕</td></tr>
+<tr><td>51</td><td>成熟mRNA两端有非翻译区参与翻译调控；非翻译区不是编码区，编码区即ORF</td><td>易错</td><td>§9</td><td>〔说话人1 37:45〕〔说话人1 37:56〕</td></tr>
+<tr><td>52</td><td>核酸变性一级结构不变，复性须受控降温</td><td>条件</td><td>§9</td><td>〔说话人1 38:42〕</td></tr>
+<tr><td>53</td><td>维生素vitamin词根vital意为维持生命</td><td>术语</td><td>§10</td><td>〔说话人1 44:03〕</td></tr>
+<tr><td>54</td><td>维生素是低分子量有机营养素；不参与组成机体、不供给能量</td><td>定义</td><td>§10</td><td>〔说话人1 54:53〕〔说话人1 55:22〕</td></tr>
+<tr><td>55</td><td>维生素长期不足会导致疾病</td><td>概念</td><td>§10</td><td>〔说话人1 55:51〕</td></tr>
+<tr><td>56</td><td>学习要点：化学本质、生理功能、缺乏症</td><td>方法</td><td>§10</td><td>〔说话人1 55:51〕</td></tr>
+<tr><td>57</td><td>脂溶性维生素共四种A、D、E、K</td><td>分类</td><td>§10</td><td>〔说话人1 57:44〕</td></tr>
+<tr><td>58</td><td>水溶性维生素为B族和C</td><td>分类</td><td>§10</td><td>〔说话人1 58:27〕</td></tr>
+<tr><td>59</td><td>维生素D为环戊烷多氢菲类、由胆固醇衍生；高度脂溶性只含一个羟基</td><td>结构</td><td>§11</td><td>〔说话人1 59:10〕〔说话人1 59:54〕</td></tr>
+<tr><td>60</td><td>D2麦角钙化醇（植物）、D3胆钙化醇（动物）</td><td>分类</td><td>§11</td><td>〔说话人1 01:00:22〕</td></tr>
+<tr><td>61</td><td>7-脱氢胆固醇经紫外线照射生成D3</td><td>机制</td><td>§11</td><td>〔说话人1 01:01:07〕</td></tr>
+<tr><td>62</td><td>D3由维生素D结合蛋白在血液中运输</td><td>机制</td><td>§11</td><td>〔说话人1 01:03:27〕</td></tr>
+<tr><td>63</td><td>肝25-羟化酶生成25-羟维生素D3</td><td>机制</td><td>§11</td><td>〔说话人1 01:03:54〕</td></tr>
+<tr><td>64</td><td>肾1α-羟化酶生成1,25-二羟维生素D3（活性形式）</td><td>机制</td><td>§11</td><td>〔说话人1 01:05:06〕</td></tr>
+<tr><td>65</td><td>活性形式指直接发挥生理功能的状态</td><td>术语</td><td>§11</td><td>〔说话人1 01:05:37〕</td></tr>
+<tr><td>66</td><td>1,25-二羟D3穿膜入核与核受体结合调控基因；促进钙吸收与骨骼牙齿钙化</td><td>功能</td><td>§11</td><td>〔说话人1 01:06:45〕</td></tr>
+<tr><td>67</td><td>紫外线过少增加骨质疏松风险</td><td>临床</td><td>§11</td><td>〔说话人1 01:07:28〕</td></tr>
+<tr><td>68</td><td>紫外线双重角色：致皮肤癌又为合成D所必需</td><td>结论</td><td>§11</td><td>〔说话人1 01:10:25〕</td></tr>
+<tr><td>69</td><td>维生素A为不饱和一元醇（视黄醇）；双键不能自由旋转、存在顺反式</td><td>结构</td><td>§12</td><td>〔说话人1 01:13:43〕〔说话人1 01:14:34〕</td></tr>
+<tr><td>70</td><td>β-胡萝卜素为维生素A原</td><td>机制</td><td>§12</td><td>〔说话人1 01:15:27〕</td></tr>
+<tr><td>71</td><td>视黄醇氧化生成视黄醛</td><td>机制</td><td>§12</td><td>〔说话人1 01:15:59〕</td></tr>
+<tr><td>72</td><td>11-顺视黄醛与视蛋白结合成视紫红质；光照使11-顺变全反式，诱导构象变化与信号转导</td><td>机制</td><td>§12</td><td>〔说话人1 01:17:44〕〔说话人1 01:18:19〕</td></tr>
+<tr><td>73</td><td>全反式视黄醛分离后异构回11-顺式，循环</td><td>机制</td><td>§12</td><td>〔说话人1 01:18:54〕</td></tr>
+<tr><td>74</td><td>视黄酸与核受体结合调控基因表达</td><td>功能</td><td>§12</td><td>〔说话人1 01:20:12〕</td></tr>
+<tr><td>75</td><td>维生素A三种活性形式：视黄醇/视黄醛/视黄酸</td><td>结论</td><td>§12</td><td>〔说话人1 01:20:48〕</td></tr>
+<tr><td>76</td><td>缺乏致夜盲症（视紫红质减少、弱光敏感性降低）</td><td>临床</td><td>§12</td><td>〔说话人3 01:21:33〕</td></tr>
+<tr><td>77</td><td>缺乏致眼干燥症（结膜黏液分泌减少）</td><td>临床</td><td>§12</td><td>〔说话人3 01:22:14〕</td></tr>
+<tr><td>78</td><td>维生素A过量可中毒</td><td>临床</td><td>§12</td><td>〔说话人3 01:22:41〕</td></tr>
+<tr><td>79</td><td>维生素E为生育酚、苯并二氢吡喃衍生物；为脂溶性抗氧化剂，作用在细胞膜</td><td>结构</td><td>§13</td><td>〔说话人3 01:22:41〕〔说话人3 01:24:00〕</td></tr>
+<tr><td>80</td><td>氧化型维生素E由维生素C还原</td><td>机制</td><td>§13</td><td>〔说话人3 01:24:00〕</td></tr>
+<tr><td>81</td><td>GSH含巯基、GSSG为二硫键连接，由NADPH还原</td><td>结构</td><td>§13</td><td>〔说话人3 01:25:14〕〔说话人3 01:25:29〕</td></tr>
+<tr><td>82</td><td>维生素E缺乏致溶血性贫血，与蚕豆病本质相似（红细胞膜过度氧化）</td><td>临床</td><td>§13</td><td>〔说话人3 01:26:26〕</td></tr>
+<tr><td>83</td><td>维生素K为二甲基异萘醌衍生物：K1叶绿醌、K2甲基萘醌、K3人工合成水溶性</td><td>结构</td><td>§14</td><td>〔说话人3 01:27:18〕</td></tr>
+<tr><td>84</td><td>维生素K活性形式为甲萘醌，是γ-谷氨酸羧化酶辅因子</td><td>结论</td><td>§14</td><td>〔说话人3 01:28:34〕</td></tr>
+<tr><td>85</td><td>谷氨酸再羧化螯合钙使凝血因子活化；缺乏则易出血</td><td>机制</td><td>§14</td><td>〔说话人3 01:30:03〕</td></tr>
+<tr><td>86</td><td>新生儿肠道菌群未建立，需注射维生素K</td><td>临床</td><td>§14</td><td>〔说话人3 01:31:10〕</td></tr>
+<tr><td>87</td><td>长期抗生素或脂质吸收障碍致维生素K缺乏</td><td>条件</td><td>§14</td><td>〔说话人3 01:31:47〕</td></tr>
+<tr><td>88</td><td>脂溶性维生素四种：A、D、E、K</td><td>分类</td><td>§15</td><td>〔说话人3 01:32:33〕</td></tr>
+<tr><td>89</td><td>维生素B1为硫胺素，活性形式TPP；B族维生素重在作为辅酶的功能</td><td>结论</td><td>§16</td><td>〔说话人3 01:33:28〕〔说话人3 01:34:20〕</td></tr>
+<tr><td>90</td><td>TPP参与能量代谢，是丙酮酸脱氢酶辅酶；丙酮酸脱羧生成乙酰辅酶A</td><td>功能</td><td>§16</td><td>〔说话人3 01:34:47〕</td></tr>
+<tr><td>91</td><td>TPP使α-酮酸脱羧、并参与转酮醇</td><td>功能</td><td>§16</td><td>〔说话人3 01:35:18〕</td></tr>
+<tr><td>92</td><td>TPP参与神经传导（乙酰胆碱代谢）；缺乏症为脚气病Beriberi</td><td>功能</td><td>§16</td><td>〔说话人3 01:36:00〕</td></tr>
+<tr><td>93</td><td>脚气病可致水肿、心力衰竭，非真菌脚气</td><td>临床</td><td>§16</td><td>〔说话人3 01:37:07〕</td></tr>
+<tr><td>94</td><td>维生素B2为核黄素呈黄色；FMN为黄素单核苷酸（活性形式）</td><td>结构</td><td>§17</td><td>〔说话人3 01:37:40〕</td></tr>
+<tr><td>95</td><td>FAD为黄素腺嘌呤二核苷酸，比FMN多一个AMP</td><td>结构</td><td>§17</td><td>〔说话人3 01:39:31〕</td></tr>
 </table>
-
-<h4>增色效应（hyperchromic effect）</h4>
-
-<p>核酸变性过程中一个独特的现象：</p>
-<ul>
-<li>随着温度升高，DNA双链逐渐解开为单链</li>
-<li><strong>A260吸光度增加</strong></li>
-<li>这个过程叫做<strong>增色效应</strong></li>
-</ul>
-
-<blockquote>对比：蛋白质变性不会出现这种吸光度变化（除非最后沉淀测不到了）。核酸的增色效应是因为双链状态下碱基堆积力使紫外吸收被部分遮蔽，解链后碱基暴露，吸收增强。</blockquote>
-
-<h4>解链温度（Tm, melting temperature）</h4>
-
-<ul>
-<li><strong>定义</strong>：DNA变性进行到一半时的温度</li>
-<li>当50%的双链变成单链时对应的温度</li>
-<li>学术写作规范：<strong>T用斜体，m为小写下标</strong></li>
-</ul>
-
-<h4>影响Tm的因素</h4>
-
-<p>Tm越高，意味着双链越难解开（氢键越难打破）。主要因素：</p>
-
-<ul>
-<li class="num"><strong>GC含量</strong>：G-C之间有3个氢键，A-T之间只有2个氢键，GC含量越高→氢键越多→Tm越高</li>
-<li class="num"><strong>DNA长度</strong>：长度越长→总氢键数越多→Tm越高</li>
-<li class="num"><strong>离子浓度</strong>：氢键本质上是电荷性质的键，溶液中的离子浓度会影响氢键稳定性，从而影响Tm</li>
-</ul>
-
-<blockquote>老师强调：Tm会影响将来实验室中各类分子生物学操作的实验条件选择，现在知道决定因素和大概原则就好。</blockquote>
-
-<h3>3.3 核酸的复性与分子杂交</h3>
-
-<h4>复性（renaturation）</h4>
-
-<ul>
-<li>高温使双链变成两条单链后，如果<strong>逐渐降低温度</strong>，两条链可以恢复到原来的双链状态</li>
-<li>核酸复性的条件比蛋白质<strong>更宽容</strong></li>
-<li>因为实验室中通常通过降低温度来完成复性，所以也叫<strong>退火（annealing）</strong></li>
-</ul>
-
-<h4>复性的条件</h4>
-
-<ul>
-<li>必须<strong>受控地逐渐降温</strong>，不能剧烈降温</li>
-<li>两条单链需要足够的机会去碰撞、尝试找到互补配对的对象</li>
-<li>如果温度剧烈降低，单链可能来不及找到合适的匹配对象，复性就不一定发生</li>
-</ul>
-
-<h4>杂化双链（heteroduplex）与分子杂交</h4>
-
-<ul>
-<li>碱基互补配对是复性的本质原因</li>
-<li>不仅原来的一对双链可以复性，<strong>不同来源的两条单链</strong>只要碱基序列互补配对，也可以结合形成双链</li>
-<li>这种来源不同的双链叫做<strong>杂化双链（heteroduplex）</strong></li>
-<li>hetero = 杂合/杂化（来源不同）</li>
-<li>duplex = 双链</li>
-</ul>
-
-<ul>
-<li><strong>分子杂交的原理</strong>：只要两条单链的碱基能（哪怕是局部的）互补配对，就可以在这一段形成DNA双链，形成后除非再升温，否则比较稳定</li>
-<li>这是体内分子生物学过程和实验室各种分子生物学技术的基础原理</li>
-</ul>
-
-<blockquote>老师特别说明：这个过程不是随便可以发生的，需要受控的温度条件。</blockquote>
-
-<hr>
-
-<h2>四、核酸结构与功能总结</h2>
-
-<h3>4.1 DNA的意义</h3>
-
-<p>老师以"为什么50多年前人类把DNA信息发送到外太空"引入总结：</p>
-
-<ul>
-<li class="num"><strong>遗传物质基础</strong>：所有遗传信息储存在DNA中，中心法则本质上就是围绕核酸结构进行一系列操作</li>
-</ul>
-
-<ul>
-<li class="num"><strong>储存信息的结构基础</strong>：</li>
-<li>所有碱基都在双螺旋内部</li>
-<li>不管碱基是什么（ATCG任意排列），都能保持双螺旋结构</li>
-<li>都能进一步折叠成为染色体</li>
-<li>可以一代一代传下来</li>
-<li>对比：其他小分子如果信息本身会改变其结构，就会对储存造成很大影响</li>
-</ul>
-
-<ul>
-<li class="num"><strong>半保留复制</strong>：双螺旋可以分成两半，分别作为模板进行复制，使信息稳定传递</li>
-</ul>
-
-<ul>
-<li class="num"><strong>RNA的功能多样性</strong>：RNA性质比较活泼，结构更复杂，进行信息传递（信使）、转运（tRNA）、核糖体组成等，都由其结构决定</li>
-</ul>
-
-<ul>
-<li class="num"><strong>稳定性与变化的辩证关系</strong>：几十亿年地球生命发展至今，不仅能把信息一点点传递下来，还允许信息发生一点点变化，才有了丰富多彩的生命形式</li>
-</ul>
-
-<h3>4.2 诺贝尔奖与DNA双螺旋</h3>
-
-<ul>
-<li>1962年诺贝尔奖授予DNA双螺旋结构的发现</li>
-<li>此后有非常多诺贝尔奖都基于双螺旋结构</li>
-<li>所有这些内容都会在之后的分子生物学课程中介绍</li>
-</ul>
-
-<h3>4.3 DNA折纸术（DNA origami）——拓展应用</h3>
-
-<p>老师展示了一个扫描电镜下的DNA笑脸结构，介绍了DNA纳米技术：</p>
-
-<h4>原理</h4>
-
-<ul>
-<li>利用DNA单链碱基互补配对的特性</li>
-<li>设计<strong>脚手架DNA单链</strong>（长链，图中灰色部分）</li>
-<li>设计<strong>订书针DNA单链</strong>（短链，图中蓝色部分）</li>
-<li>在合适温度下退火，单链自动配对组装</li>
-<li>设计得当就可以形成特定的纳米结构</li>
-</ul>
-
-<h4>应用</h4>
-
-<ul>
-<li class="num"><strong>纳米材料制造</strong>：通过其他方式很难高精度设计纳米材料结构，但通过DNA可以做到</li>
-<li class="num"><strong>药物递送</strong>：</li>
-<li>设计nano sheet（纸片状DNA结构），一面附加药物（如蛋白抗体）</li>
-<li>用DNA设计的"系绳"将其卷起来</li>
-<li><strong>pH响应</strong>：低pH下展开，高pH下保持卷筒状态</li>
-<li>血液pH 7.35-7.45（保持卷筒，药物包在里面）</li>
-<li>病变部位（如发炎关节腔）pH较低→展开→暴露药物配体→结合过度活跃的免疫细胞→降低炎症反应</li>
-<li>可作为关节炎治疗方案，可推广到多种疾病场景</li>
-<li class="num"><strong>生物传感器</strong></li>
-<li class="num">甚至有科学家用DNA折纸做出了<strong>中国地图</strong></li>
-</ul>
-
-<blockquote>老师总结：DNA不仅是遗传物质基础和世代传递的物质基础，由于其性质，还可以应用于很多现代生物技术和工程当中。</blockquote>
-
-<hr>
-
-<h2>五、课堂小测（4道题回顾）</h2>
-
-<p>老师通过"天天快答"进行了4道课堂测试题，以下是要点回顾：</p>
-
-<h3>第1题：核酸的化学组成</h3>
-
-<ul>
-<li>A、B错误：主要区别是核糖与脱氧核糖</li>
-<li>B选项：构成DNA的嘧啶是胞嘧啶和胸腺嘧啶</li>
-<li>正确选项涉及糖苷键</li>
-<li>cAMP（环腺苷酸，重要第二信使）由ATP环化而成（不是GMP），cGMP由GTP环化而成</li>
-<li>反应需要脱去焦磷酸供能</li>
-</ul>
-
-<h3>第2题：DNA的空间结构</h3>
-
-<ul>
-<li>A-T之间<strong>2对氢键</strong>，G-C之间<strong>3对氢键</strong></li>
-<li>换成全称也要认识：腺嘌呤-胸腺嘧啶（2对），胞嘧啶-鸟嘌呤（3对）</li>
-<li>维持双螺旋的力除了氢键还有<strong>碱基堆积力</strong></li>
-</ul>
-
-<h3>第3题：RNA的结构和功能</h3>
-
-<ul>
-<li>mRNA加工三步骤：</li>
-<li class="num">5'端加帽（修饰过的鸟嘌呤）</li>
-<li class="num">3'端加PolyA尾（多聚腺苷酸）</li>
-<li class="num">内含子剪切、外显子连接（剪接）</li>
-<li>hnRNA = 核不均一RNA（heterogeneous nuclear RNA），是mRNA前体</li>
-<li><strong>易错点</strong>：成熟mRNA的5'和3'端有非翻译区（UTR），参与翻译调控，但<strong>非翻译区不是编码区</strong>。编码区=开放阅读框（ORF），不包括两端的非翻译区</li>
-</ul>
-
-<h3>第4题：核酸的变性与复性</h3>
-
-<ul>
-<li>变性时一级结构不发生变化（与蛋白质相同）</li>
-<li><strong>错误选项</strong>：迅速冷却可以复性——错误！必须受控逐渐冷却</li>
-<li>变性过程中A260吸光度增加（增色效应）——正确</li>
-<li>分子杂交依赖变复性特性，不同来源DNA单链只要部分序列互补配对即可杂交</li>
-</ul>
-
-<hr>
-
-<h2>六、维生素</h2>
-
-<h3>6.1 维生素的概念</h3>
-
-<p>维生素（vitamin）的词源：<strong>vital</strong>（维持生命）+ amine（胺，最初发现的维生素都是胺类）</p>
-
-<ul>
-<li><strong>vital sign</strong> = 生命体征（血压、心跳等），vital = 维持生命</li>
-<li>"维生素"这个翻译非常到位</li>
-</ul>
-
-<h4>三个核心要点（概念）</h4>
-
-<ul>
-<li class="num"><strong>低分子量有机营养素</strong></li>
-<li>低分子量：与核酸、蛋白质、多糖、脂质不同，是小分子</li>
-<li>有机营养素：与矿物质不同</li>
-</ul>
-
-<ul>
-<li class="num"><strong>重要生理功能，但非组成机体、非供能</strong></li>
-<li>不参与组成机体（与蛋白质不同）</li>
-<li>不供给能量（与糖、脂质不同）</li>
-<li>但生理作用非常重要</li>
-</ul>
-
-<ul>
-<li class="num"><strong>长期不足会导致疾病</strong></li>
-</ul>
-
-<h4>学习要点（每一种维生素）</h4>
-
-<ul>
-<li class="num"><strong>化学本质</strong>（特别是活性形式）</li>
-<li class="num"><strong>生理功能</strong>（特别是生化功能——在生化水平参与什么反应）</li>
-<li class="num"><strong>缺乏症</strong>（特征性缺乏症，能迅速关联）</li>
-</ul>
-
-<blockquote>老师说明：课堂会介绍更多衍生内容，但需要特别掌握的就是以上三点，考试也会围绕这些信息。教材把关键信息都写在标题里了，复习时可以关注标题。</blockquote>
-
-<h3>6.2 维生素的分类</h3>
-
-<table class="note-table">
-<tr><th>分类</th><th>英文</th><th>包含</th></tr>
-<tr><td>**脂溶性维生素**</td><td>fat soluble</td><td>A、D、E、K（共4种，必须记住）</td></tr>
-<tr><td>**水溶性维生素**</td><td>water soluble</td><td>B族 + C</td></tr>
-</table>
-
-<p>B族维生素有很多种（B1、B2、B6、B12等），也有一些不是以"B数字"命名的（如烟酸、泛酸、叶酸、生物素等），但都属于B族。</p>
-
-<h3>6.3 维生素D</h3>
-
-<h4>引入：过度防晒与骨质疏松</h4>
-
-<p>老师以"过度防晒导致骨质疏松"的热搜引入：</p>
-<ul>
-<li>这个联系背后就是维生素D</li>
-<li>中国维生素D缺乏分布图显示缺乏率仍然较高</li>
-<li>维生素D缺乏是全球范围的重大公共卫生问题</li>
-</ul>
-
-<h4>化学本质</h4>
-
-<ul>
-<li><strong>环戊烷多氢菲类化合物</strong>（类固醇衍生物的共同母体）</li>
-<li>一个环戊烷 + 三个六元环（多氢菲）= 四环结构</li>
-<li>直接从<strong>胆固醇</strong>衍生而来</li>
-<li>高度脂溶性：结构中只有一个羟基，绝大部分是疏水的碳氢骨架</li>
-<li>溶于脂肪和有机溶剂</li>
-</ul>
-
-<h4>两种天然形式</h4>
-
-<table class="note-table">
-<tr><th>形式</th><th>名称</th><th>来源</th></tr>
-<tr><td>维生素D2</td><td>麦角钙化醇</td><td>植物</td></tr>
-<tr><td>维生素D3</td><td>胆钙化醇</td><td>动物（重点）</td></tr>
-</table>
-
-<p>两者结构高度一致，差别很小，整体都是疏水物质。</p>
-
-<h4>维生素D3的合成与活化路径</h4>
-
-<p><code>`</code></p>
-<p>胆固醇（皮肤中）</p>
-<p>↓ 脱氢（B环打开，电子重排）</p>
-<p>7-脱氢胆固醇</p>
-<p>↓ 紫外线照射（皮肤中）</p>
-<p>维生素D3（胆钙化醇）</p>
-<p>↓ 维生素D结合蛋白运输（血液中）</p>
-<p>肝脏（微粒体中）</p>
-<p>↓ 25-羟化酶（25位加羟基）</p>
-<p>25-羟维生素D3</p>
-<p>↓ 血液循环</p>
-<p>肾脏（肾小管上皮细胞）</p>
-<p>↓ 1α-羟化酶（1位加羟基）</p>
-<p>1,25-二羟维生素D3 ← 活性形式！</p>
-<p><code>`</code></p>
-
-<p><strong>关键步骤说明</strong>：</p>
-
-<ul>
-<li class="num"><strong>皮肤中合成</strong>：胆固醇→脱氢→7-脱氢胆固醇→紫外线照射→维生素D3</li>
-<li>脱氢导致B环（第二个环）电子重排，环被打破</li>
-<li>所以维生素D3看起来不像典型的四环类固醇（环已经打开了）</li>
-<li><strong>紫外线是关键</strong>：阻隔紫外线→此过程不能正常发生→维生素D缺乏</li>
-</ul>
-
-<ul>
-<li class="num"><strong>血液运输</strong>：维生素D3高度疏水，不能独立在血液（水相）中运输</li>
-<li>需要<strong>维生素D结合蛋白</strong>帮助</li>
-<li>结合蛋白将维生素D3包裹在疏水凹陷中，外表面亲水，从而可以在血液中流动</li>
-</ul>
-
-<ul>
-<li class="num"><strong>肝脏第一步羟化</strong>：</li>
-<li>部位：肝脏微粒体</li>
-<li>酶：25-羟化酶</li>
-<li>产物：<strong>25-羟维生素D3</strong></li>
-<li>这是<strong>血浆中维生素D3的主要存在形式</strong>，也是<strong>肝脏中的主要储存形式</strong></li>
-</ul>
-
-<ul>
-<li class="num"><strong>肾脏第二步羟化</strong>：</li>
-<li>部位：肾脏肾小管上皮细胞</li>
-<li>酶：1α-羟化酶</li>
-<li>产物：<strong>1,25-二羟维生素D3</strong></li>
-<li>这是维生素D3的<strong>活性形式</strong>（直接发挥生理功能的状态）</li>
-</ul>
-
-<h4>生理功能</h4>
-
-<p>1,25-二羟维生素D3是脂溶性物质，可以直接穿过细胞膜进入靶细胞，进入细胞核与<strong>核受体</strong>结合，直接调控靶基因表达。</p>
-
-<ul>
-<li>主要靶基因：与<strong>钙磷代谢</strong>相关的基因（钙结合蛋白、骨钙蛋白等）</li>
-<li><strong>主要功能</strong>：促进钙的吸收，以及钙在骨骼、牙齿等关键部位的钙化</li>
-</ul>
-
-<blockquote>这是脂溶性信号分子的共同特征：直接跨过细胞膜，很多能直接与核受体结合，调控基因表达。学完细胞信号转导后再回来看会更清楚。</blockquote>
-
-<h4>缺乏症</h4>
-
-<ul>
-<li>紫外线暴露过少→维生素D3产生过少→钙磷代谢相关基因不能正常调节→<strong>骨质疏松风险</strong></li>
-<li>儿童缺乏：<strong>佝偻病</strong></li>
-<li>成人缺乏：<strong>骨软化症/骨质疏松</strong></li>
-</ul>
-
-<h4>拓展：维生素D与肿瘤</h4>
-
-<ul>
-<li>观察：全球结直肠癌发病率地图 vs 全球平均日照时数地图→似乎日照越多癌症越少</li>
-<li>假设：日照时间长→维生素D供给充足→肿瘤发生率低</li>
-<li>验证：科学家发现肿瘤组织中维生素D代谢通常失调；更多维生素D摄入对多种肿瘤有保护性效果</li>
-<li>具体机制仍在研究中</li>
-</ul>
-
-<blockquote>这是科研思维的示例：观察现象→提出假设→实验验证。</blockquote>
-
-<h4>紫外线的双重角色</h4>
-
-<table class="note-table">
-<tr><th>坏处</th><th>好处</th></tr>
-<tr><td>皮肤癌（紫外线导致DNA损伤→基因突变→肿瘤）</td><td>维生素D合成必需</td></tr>
-<tr><td>皮肤损伤老化</td><td>（适当晒太阳对心理状况也有帮助，促进"快乐激素"）</td></tr>
-<tr><td>色素沉着</td><td></td></tr>
-</table>
-
-<p><strong>应对</strong>：继续防晒，但可以在紫外线不强的时候适当晒太阳；也可以从食物中补充，或使用维生素补充剂。</p>
-
-<blockquote>老师提到：血液中检测的维生素D形式是25-羟维生素D3（血浆主要存在形式）。</blockquote>
-
-<h3>6.4 维生素A</h3>
-
-<h4>化学本质</h4>
-
-<ul>
-<li><strong>不饱和一元醇</strong></li>
-<li>一元醇：末端有一个羟基（-OH）</li>
-<li>不饱和：分子中有丰富的双键</li>
-<li><strong>视黄醇（retinol）</strong>是维生素A1的化学名称</li>
-<li>A2 = 3-脱氢视黄醇（3号位脱氢）</li>
-</ul>
-
-<h4>双键的结构特征与功能意义</h4>
-
-<ul>
-<li>双键<strong>不能自由旋转</strong>（与单键不同），因此存在<strong>顺反式</strong>区别</li>
-<li>固定一种形式后不能随意变成另一种形式，需要特定条件刺激</li>
-<li>这是维生素A发挥重要功能的结构基础</li>
-</ul>
-
-<h4>维生素A原——β-胡萝卜素</h4>
-
-<ul>
-<li>胡萝卜素结构与视黄醇很像</li>
-<li>如果从中间劈开，两端分别就是维生素A的基本结构</li>
-<li>因此β-胡萝卜素被称为<strong>维生素A原</strong>，在体内可以代谢成为维生素A</li>
-<li>这就是"多吃胡萝卜可以补充维生素A"的原因</li>
-</ul>
-
-<h4>血液运输</h4>
-
-<ul>
-<li>维生素A也是脂溶性的，不能直接在血液中运输</li>
-<li>需要<strong>视黄醇结合蛋白</strong>和<strong>甲状腺素视黄质运载蛋白</strong>帮助</li>
-<li>名字难记，只要知道脂溶性维生素在体内运输需要蛋白质协助即可</li>
-</ul>
-
-<h4>活性形式（三种）</h4>
-
-<table class="note-table">
-<tr><th>活性形式</th><th>生成</th><th>主要功能</th></tr>
-<tr><td>**视黄醇**（retinol）</td><td>直接从食物来</td><td>基础形式</td></tr>
-<tr><td>**视黄醛**（retinal）</td><td>视黄醇氧化（醇→醛）</td><td>参与视循环</td></tr>
-<tr><td>**视黄酸**（retinoic acid）</td><td>视黄醛进一步氧化（醛→酸）</td><td>调控基因表达</td></tr>
-</table>
-
-<p>三种都可以直接发挥生理功能，都是维生素A的活性形式。</p>
-
-<h4>视循环（核心功能）</h4>
-
-<p><code>`</code></p>
-<p>11-顺视黄醛 + 视蛋白(opsin)</p>
-<p>↓ 结合</p>
-<p>视紫红质(rhodopsin)</p>
-<p>↓ 接受光线(light)</p>
-<p>11-顺视黄醛 → 全反式视黄醛（光诱导的顺反转换）</p>
-<p>↓ 视紫红质构象变化</p>
-<p>细胞信号转导（光信号→电化学信号）</p>
-<p>↓ 视网膜产生电冲动→大脑感知光线</p>
-<p>全反式视黄醛与视蛋白分离</p>
-<p>↓ 视网膜上皮细胞中异构化</p>
-<p>重新变回11-顺视黄醛 → 回到循环</p>
-<p><code>`</code></p>
-
-<p><strong>关键点</strong>：</p>
-<ul>
-<li>光使11-顺视黄醛变成全反式视黄醛→诱导视紫红质构象变化→启动细胞信号转导</li>
-<li>全反式视黄醛与视蛋白分离后，在视网膜上皮细胞中经异构化重新变回11-顺视黄醛</li>
-<li>视黄醛还可以在肝脏中还原回视黄醇（涉及NADH等还原剂）</li>
-<li><strong>本质</strong>：11号位双键的顺反式变化，由光线诱导</li>
-</ul>
-
-<h4>视黄酸的功能</h4>
-
-<ul>
-<li>视黄酸也是脂溶性信号分子</li>
-<li>进入靶细胞核，与核受体结合，<strong>调控基因表达</strong></li>
-</ul>
-
-<h4>缺乏症</h4>
-
-<ul>
-<li class="num"><strong>夜盲症</strong>（最典型）：</li>
-<li>维生素A缺乏→11-顺视黄醛补充不足→视紫红质合成减少</li>
-<li>→对弱光敏感性降低→在弱光下看不清</li>
-<li>这个关联必须非常熟悉</li>
-</ul>
-
-<ul>
-<li class="num"><strong>眼干燥症</strong>：</li>
-<li>维生素A缺乏→眼结膜中黏液分泌减少</li>
-<li>→眼干燥症</li>
-<li>两个缺乏症都跟眼相关，比较好记</li>
-</ul>
-
-<h4>过量</h4>
-
-<ul>
-<li>长期过度摄入也可能导致中毒</li>
-<li>中毒症状特异性不强，有印象即可</li>
-<li>维生素不仅可能缺乏，也可能过量导致疾病</li>
-</ul>
-
-<h3>6.5 维生素E</h3>
-
-<h4>化学本质</h4>
-
-<ul>
-<li><strong>生育酚（tocopherol）</strong>（通用名，记住这个）</li>
-<li>是苯并二氢吡喃的衍生物（结构复杂，不用细记）</li>
-<li>还有三烯生育酚形式</li>
-<li>高度脂溶性：除了一个羟基外，R基团也是疏水结构</li>
-</ul>
-
-<h4>生理功能</h4>
-
-<ul>
-<li class="num"><strong>抗氧化</strong>（核心生化功能）：</li>
-<li>维生素E是<strong>脂溶性抗氧化剂</strong></li>
-<li>主要在<strong>细胞膜</strong>中发挥功能（磷脂双分子层中）</li>
-<li>这与之前讲的水溶性抗氧化剂（在细胞质中）不同</li>
-<li>维生素E在还原态和氧化态之间转化</li>
-</ul>
-
-<ul>
-<li class="num"><strong>抗氧化串联系统</strong>：</li>
-</ul>
-<p><code>`</code></p>
-<p>维生素E（氧化态）← 维生素C还原</p>
-<p>维生素C（氧化态）← 谷胱甘肽(GSH)还原</p>
-<p>GSSG（氧化型谷胱甘肽）← NADPH还原</p>
-<p><code>`</code></p>
-<ul>
-<li>谷胱甘肽：还原型GSH（有巯基-SH），氧化型GSSG（两个谷胱甘肽通过二硫键连接）</li>
-<li>NADPH是最终的还原力来源（将在糖代谢中详细讲解）</li>
-</ul>
-
-<ul>
-<li class="num"><strong>保护细胞膜</strong>：主要生理功能</li>
-<li class="num"><strong>调控基因表达</strong>：作为脂溶性分子也可以进入核中直接调节基因表达（脂溶性维生素的共同特征）</li>
-</ul>
-
-<h4>缺乏症</h4>
-
-<ul>
-<li class="num"><strong>溶血性贫血</strong>：</li>
-<li>维生素E缺乏→红细胞细胞膜抗氧化保护障碍→红细胞膜受损→溶血</li>
-<li>与之后糖代谢中要学的<strong>蚕豆病</strong>本质相似（都是红细胞膜被过度氧化导致溶血）</li>
-</ul>
-
-<ul>
-<li class="num"><strong>生育相关问题</strong>：</li>
-<li>维生素E最早被发现时与生育障碍相关</li>
-<li>临床上用维生素E治疗<strong>先兆流产或习惯性流产</strong></li>
-<li>这也是"生育酚"名称的由来</li>
-</ul>
-
-<h4>缺乏的条件</h4>
-
-<ul>
-<li>一般<strong>不容易缺乏</strong>（来源充足）</li>
-<li>主要在<strong>脂质吸收本身发生障碍</strong>时（如肝胆功能障碍）才会缺乏</li>
-<li>只要脂质吸收正常，维生素E就可以随日常吸收的脂质一起被摄入</li>
-</ul>
-
-<h3>6.6 维生素K</h3>
-
-<h4>化学本质</h4>
-
-<ul>
-<li><strong>二甲基异萘醌衍生物</strong>（甲萘醌为核心）</li>
-<li>三种形式：</li>
-</ul>
-
-<table class="note-table">
-<tr><th>形式</th><th>名称</th><th>来源</th><th>特点</th></tr>
-<tr><td>K1</td><td>叶绿醌</td><td>深绿色蔬菜</td><td>长疏水尾巴，脂溶性</td></tr>
-<tr><td>K2</td><td>甲基萘醌</td><td>大肠埃希菌（肠道菌群）</td><td>长疏水尾巴，脂溶性</td></tr>
-<tr><td>K3</td><td>人工合成</td><td>人工合成</td><td>只有甲萘醌部分，**水溶性**</td></tr>
-</table>
-
-<ul>
-<li>维生素K的脂溶性来自后面的长疏水尾巴；如果切掉尾巴，剩下的活性形式（甲萘醌部分）实际上是水溶性的</li>
-<li>这是与其他脂溶性维生素略有不同的地方</li>
-</ul>
-
-<ul>
-<li><strong>活性形式</strong>：甲萘醌部分（核心结构）</li>
-</ul>
-
-<h4>生理功能——凝血（核心关联）</h4>
-
-<blockquote>老师要求：看到维生素K要能**条件反射般想到凝血**。</blockquote>
-
-<ul>
-<li>生化机制：维生素K是<strong>γ-谷氨酸羧化酶</strong>的<strong>辅因子</strong></li>
-<li>凝血因子（和抗凝血因子）需要在其谷氨酸残基上发生<strong>额外羧化</strong>（γ位羧化）才能发挥功能</li>
-<li>羧化后的谷氨酸可以螯合钙离子，从而使凝血因子活化</li>
-<li>这个羧化过程需要维生素K作为羧化酶的辅因子，<strong>无可取代</strong></li>
-</ul>
-
-<p><code>`</code></p>
-<p>凝血因子中的谷氨酸</p>
-<p>↓ γ-谷氨酸羧化酶（需维生素K作为辅因子）</p>
-<p>γ-羧基谷氨酸（Gla）</p>
-<p>↓ 螯合Ca²⁺</p>
-<p>凝血因子活化 → 凝血级联反应</p>
-<p><code>`</code></p>
-
-<h4>缺乏症</h4>
-
-<ul>
-<li><strong>容易出血</strong>（凝血功能障碍）</li>
-<li>因为维生素K是谷氨酸羧化酶的关键辅酶，缺乏则凝血因子不能正常活化</li>
-</ul>
-
-<h4>缺乏的高危人群/情况</h4>
-
-<ul>
-<li class="num"><strong>新生儿</strong>：</li>
-<li>肠道菌群尚未建立→不能由肠道细菌合成维生素K2</li>
-<li>出生后维生素K容易缺乏</li>
-<li><strong>新生儿出生后需及时注射维生素K</strong>（保证凝血功能尽快建立）</li>
-<li>在母体中有来自母体的维生素K，但出生后就会产生缺乏</li>
-</ul>
-
-<ul>
-<li class="num"><strong>长期应用抗生素者</strong>：</li>
-<li>抗生素破坏肠道菌群→维生素K2合成减少</li>
-<li>尽管抗生素针对的是致病菌，但肠道正常菌群也会受影响</li>
-</ul>
-
-<ul>
-<li class="num"><strong>脂质吸收障碍者</strong>：</li>
-<li>与维生素E类似，K1/K2是脂溶性的，脂质吸收障碍则不能正常吸收</li>
-</ul>
-
-<ul>
-<li class="num"><strong>深绿色蔬菜摄入不足者</strong>：K1来源不足</li>
-</ul>
-
-<blockquote>一般情况下，只要吃足够的绿色蔬菜+肠道大肠杆菌正常工作，维生素K**不易缺乏**。</blockquote>
-
-<h3>6.7 脂溶性维生素总结</h3>
-
-<p>四种脂溶性维生素：<strong>A、D、E、K</strong>（必须记住）</p>
-
-<table class="note-table">
-<tr><th>维生素</th><th>化学本质</th><th>活性形式</th><th>核心生化功能</th><th>典型缺乏症</th></tr>
-<tr><td>**A**</td><td>不饱和一元醇（视黄醇）</td><td>视黄醇、视黄醛、视黄酸</td><td>视循环（11-顺视黄醛↔全反式）、基因表达调控</td><td>夜盲症、眼干燥症</td></tr>
-<tr><td>**D**</td><td>环戊烷多氢菲衍生物</td><td>1,25-二羟维生素D3</td><td>钙磷代谢调控（核受体）、促进钙吸收和钙化</td><td>佝偻病、骨质疏松</td></tr>
-<tr><td>**E**</td><td>生育酚</td><td>生育酚</td><td>脂溶性抗氧化剂、保护细胞膜</td><td>溶血性贫血、生育障碍</td></tr>
-<tr><td>**K**</td><td>甲萘醌衍生物</td><td>甲萘醌</td><td>γ-谷氨酸羧化酶辅因子、凝血因子活化</td><td>出血（凝血障碍）</td></tr>
-</table>
-
-<p>共同特征：</p>
-<ul>
-<li>都是脂溶性的，血液运输需要结合蛋白</li>
-<li>都可以（直接或经活化后）作为脂溶性信号分子进入细胞核调控基因表达</li>
-<li>过量摄入都可能导致中毒</li>
-</ul>
-
-<h3>6.8 维生素B1（硫胺素）</h3>
-
-<h4>化学本质</h4>
-
-<ul>
-<li><strong>硫胺素（thiamine）</strong></li>
-<li>结构含<strong>硫</strong>（噻唑环）和<strong>氨</strong>（嘧啶环上的氨基），故名硫胺素</li>
-<li>在第一节课中已经介绍过</li>
-</ul>
-
-<h4>活性形式</h4>
-
-<ul>
-<li><strong>焦磷酸硫胺素（TPP, thiamine pyrophosphate）</strong></li>
-<li>在硫胺素基础上加两个磷酸（焦磷酸）</li>
-<li>看到TPP要想到就是维生素B1的活性形式</li>
-</ul>
-
-<h4>B族维生素的共同特征——辅酶功能</h4>
-
-<p>老师特别强调：B族维生素的生化功能要特别注意<strong>作为辅酶的功能</strong>。</p>
-
-<ul>
-<li>TPP不是只针对某一种酶，而是对<strong>一系列酶</strong>都是辅酶</li>
-<li>因此当B族维生素缺乏时，会导致全身不同系统、不同器官都出现问题（因为一系列酶都不能正常发挥功能）</li>
-<li>这与脂溶性维生素缺乏症相对特异（如A→眼、K→凝血）不同</li>
-</ul>
-
-<h4>生化功能</h4>
-
-<ul>
-<li class="num"><strong>能量代谢</strong>（核心）：</li>
-<li>作为<strong>脱羧酶的辅酶</strong>，参与α-酮酸的脱羧反应</li>
-<li>关键步骤：<strong>丙酮酸→乙酰辅酶A</strong>（丙酮酸脱氢酶复合体的辅酶就是TPP）</li>
-<li>这一步是糖代谢中非常关键的步骤，不能完成则全身细胞能量代谢都会出问题</li>
-</ul>
-
-<ul>
-<li class="num"><strong>转酮醇反应</strong>：</li>
-<li>在酮和醇之间进行转化</li>
-<li>也需要TPP参与</li>
-<li>整体上也属于能量代谢</li>
-</ul>
-
-<ul>
-<li class="num"><strong>神经传导</strong>：</li>
-<li>参与乙酰胆碱代谢等过程</li>
-</ul>
-
-<h4>缺乏症——脚气病（Beriberi）</h4>
-
-<ul>
-<li><strong>Beriberi</strong>的词源：当地语言中"beri"是疼痛的意思，beriberi就是病人始终觉得疼痛、在喊疼痛的状态</li>
-<li>与通常理解的"脚气"（真菌感染）完全无关</li>
-<li>症状复杂，涉及全身各处：</li>
-<li>神经系统受累（神经系统耗能多，更容易体现受累状态）</li>
-<li>严重时导致<strong>水肿</strong>（典型症状：摁下去一个坑，不能回弹，与正常组织摁下去会回弹不同）</li>
-<li><strong>心力衰竭</strong></li>
-<li>原因：TPP缺乏→全身能量代谢障碍→多系统多器官受累</li>
-</ul>
-
-<blockquote>老师在第一节课讲过一个硫胺素转运蛋白缺乏的小朋友病例，症状非常复杂，看起来关联不明显，正是因为B族维生素作为一系列酶的辅酶，缺乏时影响广泛。</blockquote>
-
-<h3>6.9 维生素B2（核黄素）</h3>
-
-<h4>化学本质</h4>
-
-<ul>
-<li><strong>核黄素（riboflavin）</strong></li>
-<li>ribo = 核（出现过很多次了）</li>
-<li>是<strong>核醇</strong>与一个具有颜色的化合物的缩合物</li>
-<li>核醇部分（图中黑色）+ 带颜色的缩合物（橙色碱基）</li>
-<li>实际上真的是<strong>黄色</strong>的</li>
-</ul>
-
-<h4>活性形式（两种）</h4>
-
-<ul>
-<li class="num"><strong>黄素单核苷酸（FMN, flavin mononucleotide）</strong>：</li>
-<li>核苷酸三要素：含氮杂环（碱基）+ 五碳糖（核醇，与核糖相似）+ 磷酸</li>
-<li>颜色是黄色的（碱基为橙色）</li>
-<li>简称FMN</li>
-</ul>
-
-<ul>
-<li class="num"><strong>黄素腺嘌呤二核苷酸（FAD, flavin adenine dinucleotide）</strong>：</li>
-<li>在FMN基础上多了一个腺苷一磷酸（AMP）</li>
-<li>通过磷酸二酯键连接</li>
-<li>是二核苷酸</li>
-</ul>
-
-<blockquote>本节课讲到维生素B2为止，下节课继续讲完剩余的水溶性维生素。</blockquote>
-
-<hr>
-
-<h2>七、老师强调重点汇总</h2>
-
-<h3>RNA部分</h3>
-<ul>
-<li class="num">tRNA三叶草结构：茎（双链+氢键）vs 环（单链）；反密码子环识别密码子；CCA末端连接氨基酸</li>
-<li class="num">tRNA三级结构：倒L型</li>
-<li class="num">氨酰tRNA合成酶保证tRNA与氨基酸的正确对应（翻译准确性前提）</li>
-<li class="num">rRNA丰度最高（>80%），种类少；80S=60S+40S，S不可加和</li>
-<li class="num">组成型非编码RNA：核酶（催化）、snoRNA（rRNA加工）、snRNA（mRNA剪接）、scRNA（蛋白质转运/SRP）</li>
-<li class="num">调控型非编码RNA：miRNA/siRNA/piRNA（小）、lncRNA（长，读作link RNA）、circRNA（环状，无游离末端）</li>
-<li class="num">RNA结构预测比蛋白质困难</li>
-</ul>
-
-<h3>核酸理化性质</h3>
-<ul>
-<li class="num">核酸紫外吸收260nm，蛋白质280nm（必须记住）</li>
-<li class="num">A260/A280判断纯度（DNA~1.8，RNA~2.0）</li>
-<li class="num">变性：氢键断裂，双链→单链，一级结构不变</li>
-<li class="num">增色效应：变性时A260增加</li>
-<li class="num">Tm（解链温度）：50%变性时的温度；影响因素：GC含量、长度、离子浓度</li>
-<li class="num">复性/退火：受控逐渐降温；杂化双链/分子杂交原理</li>
-</ul>
-
-<h3>维生素部分</h3>
-<ul>
-<li class="num">维生素概念三要点：低分子量有机营养素、非组成非供能但功能重要、长期不足致病</li>
-<li class="num">分类：脂溶性ADEK（必须记住），水溶性B族+C</li>
-<li class="num">维生素D：皮肤紫外线合成→肝25羟化→肾1α羟化→活性形式1,25-(OH)2-D3；功能钙磷代谢；缺乏佝偻病/骨质疏松</li>
-<li class="num">维生素A：活性形式视黄醇/视黄醛/视黄酸；视循环核心是11-顺视黄醛↔全反式视黄醛的光诱导转换；缺乏夜盲症/眼干燥症</li>
-<li class="num">维生素E：生育酚；脂溶性抗氧化剂保护细胞膜；缺乏溶血性贫血</li>
-<li class="num">维生素K：甲萘醌；γ-谷氨酸羧化酶辅因子→凝血；新生儿需注射；缺乏出血</li>
-<li class="num">维生素B1：硫胺素→TPP；脱羧酶辅酶/能量代谢；缺乏脚气病（Beriberi，与真菌感染无关）</li>
-<li class="num">维生素B2：核黄素→FMN和FAD</li>
-<li class="num">B族维生素共同特征：作为一系列酶的辅酶，缺乏时影响全身多系统</li>
-</ul>
-
-<hr>
-
-<h2>八、课程间关联</h2>
-
-<table class="note-table">
-<tr><th>关联课程</th><th>关联内容</th></tr>
-<tr><td>有机化学</td><td>维生素A的顺反异构、维生素D的类固醇结构、氧化还原反应（醇→醛→酸）</td></tr>
-<tr><td>分子生物学</td><td>各类非编码RNA功能、RNA剪接、分子杂交技术、基因表达调控</td></tr>
-<tr><td>细胞生物学</td><td>核受体信号通路、蛋白质转运（SRP）、溶酶体/过氧化物酶体</td></tr>
-<tr><td>生理学</td><td>钙磷代谢、凝血级联反应、视觉传导通路</td></tr>
-<tr><td>病理学</td><td>佝偻病、骨质疏松、夜盲症、溶血性贫血、水肿</td></tr>
-<tr><td>分析化学</td><td>核酸紫外吸收定量（A260）、蛋白质定量（A280）、纯度判断</td></tr>
-</table>
-
-<hr>
-
-<h2>九、复习清单</h2>
-
-<h3>RNA结构与功能</h3>
-<ul>
-<li>[ ] 能画出tRNA三叶草结构，标注反密码子环和CCA末端</li>
-<li>[ ] 理解tRNA倒L型三级结构与功能的关系</li>
-<li>[ ] 知道氨酰tRNA合成酶的作用（保证tRNA-氨基酸对应准确性）</li>
-<li>[ ] 掌握真核核糖体80S=60S+40S的组成，理解S不可加和</li>
-<li>[ ] 区分snoRNA（核仁，rRNA加工）和snRNA（核质，mRNA剪接）</li>
-<li>[ ] 知道scRNA是SRP的组成部分，参与蛋白质转运</li>
-<li>[ ] 了解miRNA/siRNA/piRNA/lncRNA/circRNA的基本概念和分类</li>
-<li>[ ] 知道lncRNA常读作"link RNA"</li>
-<li>[ ] 理解环状RNA没有游离末端的特点</li>
-</ul>
-
-<h3>核酸理化性质</h3>
-<ul>
-<li>[ ] 记住核酸260nm、蛋白质280nm的最大吸收波长</li>
-<li>[ ] 理解A260/A280比值判断核酸纯度的原理（DNA~1.8，RNA~2.0）</li>
-<li>[ ] 理解核酸变性的本质（氢键断裂，一级结构不变）</li>
-<li>[ ] 掌握增色效应的概念</li>
-<li>[ ] 理解Tm的定义和三个影响因素（GC含量、长度、离子浓度）</li>
-<li>[ ] 理解复性/退火需要受控逐渐降温</li>
-<li>[ ] 掌握分子杂交和杂化双链的原理</li>
-</ul>
-
-<h3>维生素</h3>
-<ul>
-<li>[ ] 掌握维生素概念的三个要点</li>
-<li>[ ] 记住脂溶性维生素是ADEK四种</li>
-<li>[ ] 维生素D：掌握皮肤→肝→肾的两步羟化活化路径，记住活性形式1,25-(OH)2-D3</li>
-<li>[ ] 维生素D：理解紫外线在皮肤合成中的关键作用，掌握钙磷代谢功能和缺乏症</li>
-<li>[ ] 维生素A：记住三种活性形式（视黄醇/视黄醛/视黄酸）</li>
-<li>[ ] 维生素A：掌握视循环中11-顺视黄醛↔全反式视黄醛的光诱导转换</li>
-<li>[ ] 维生素A：记住缺乏症（夜盲症、眼干燥症）</li>
-<li>[ ] 维生素E：记住生育酚，理解脂溶性抗氧化剂保护细胞膜的功能</li>
-<li>[ ] 维生素E：记住缺乏症（溶血性贫血）</li>
-<li>[ ] 维生素K：记住甲萘醌，理解γ-谷氨酸羧化酶辅因子→凝血因子活化的机制</li>
-<li>[ ] 维生素K：记住新生儿需注射维生素K，缺乏导致出血</li>
-<li>[ ] 维生素B1：记住硫胺素→TPP，理解脱羧酶辅酶/能量代谢功能</li>
-<li>[ ] 维生素B1：记住脚气病（Beriberi），知道与真菌感染的脚气无关</li>
-<li>[ ] 维生素B2：记住核黄素→FMN和FAD两种活性形式</li>
-<li>[ ] 理解B族维生素作为辅酶影响全身多系统的共同特征</li>
-</ul>
-
-<hr>
-
-<h2>十、主动回忆题</h2>
-
-<h3>题目1</h3>
-<p>为什么tRNA的二级结构呈三叶草形？茎和环的核心区别是什么？tRNA的哪两个结构域分别执行识别密码子和连接氨基酸的功能？</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p>tRNA二级结构呈三叶草形是因为RNA不能稳定形成长双链双螺旋，任何一小段只要能互补配对就局部形成茎（双链），旁边不能配对的就成为环（单链）。</p>
-
-<ul>
-<li><strong>茎（stem）</strong>：碱基之间通过氢键配对形成双链的部分</li>
-<li><strong>环（loop）</strong>：未形成双链的单链部分</li>
-</ul>
-
-<p>两个关键功能结构域：</p>
-<ul>
-<li class="num"><strong>反密码子环</strong>（三叶草下方）：含3个碱基，与mRNA密码子互补配对，执行识别密码子功能</li>
-<li class="num"><strong>CCA末端/氨基酸臂</strong>（顶端）：3'端CCA序列，末端A通过共价键连接氨基酸，执行连接氨基酸功能</li>
-</ul>
-
-<p>tRNA进一步折叠为倒L型三级结构，使这两个功能端位于分子的两端。</p>
-<p></details></p>
-
-<h3>题目2</h3>
-<p>真核细胞核糖体的完整沉降系数是80S，由60S大亚基和40S小亚基组成。为什么60S+40S不等于100S而是80S？这说明沉降系数S具有什么特性？</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p>沉降系数S（Svedberg unit）表示颗粒在离心场中的沉降速度，它与颗粒的大小、形状、密度都有关系，<strong>不是线性可加的物理量</strong>。</p>
-
-<p>当两个亚基结合成完整核糖体时，整体的形状、密度发生了变化，沉降速度并不等于两个亚基沉降速度的简单加和。因此60S+40S≠100S，而是80S。</p>
-
-<p>这说明沉降系数S具有<strong>不可加和性</strong>——不能像质量、体积那样直接相加。但两个亚基加起来肯定比单个亚基大，所以80S大于60S和40S中的任何一个。</p>
-<p></details></p>
-
-<h3>题目3</h3>
-<p>核酸变性时为什么会出现增色效应？影响解链温度Tm的因素有哪些？请从分子层面解释。</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>增色效应的原因</strong>：</p>
-<p>DNA在双链状态下，碱基之间存在碱基堆积力，碱基的π电子系统相互作用，使紫外吸收被部分遮蔽（减色效应）。当温度升高、双链解开为单链后，碱基暴露出来，不再受堆积力的遮蔽，对260nm紫外光的吸收增强，因此A260升高，这就是增色效应。</p>
-
-<p><strong>影响Tm的因素</strong>：</p>
-<ul>
-<li class="num"><strong>GC含量</strong>：G-C之间有3个氢键，A-T之间只有2个氢键。GC含量越高，总氢键数越多，打开双链需要更高温度→Tm越高。</li>
-<li class="num"><strong>DNA长度</strong>：长度越长，总氢键数越多→Tm越高。</li>
-<li class="num"><strong>离子浓度</strong>：氢键本质上是电荷性质的相互作用，溶液中的离子（如Na⁺）可以中和DNA磷酸骨架的负电荷，减少链间排斥，稳定双螺旋→离子浓度影响Tm。</li>
-</ul>
-
-<p>Tm是50%双链变性时对应的温度，是分子生物学实验中重要的参数。</p>
-<p></details></p>
-
-<h3>题目4</h3>
-<p>请详细叙述维生素D3从合成到活化的完整路径，包括每一步的部位、酶和产物，并说明为什么过度防晒可能导致骨质疏松。</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>维生素D3的合成与活化路径</strong>：</p>
-
-<ul>
-<li class="num"><strong>皮肤中合成维生素D3</strong>：</li>
-<li>皮肤中的胆固醇→脱氢→7-脱氢胆固醇（B环打开）</li>
-<li>7-脱氢胆固醇在<strong>紫外线</strong>照射下→维生素D3（胆钙化醇）</li>
-<li>部位：皮肤</li>
-</ul>
-
-<ul>
-<li class="num"><strong>血液运输</strong>：</li>
-<li>维生素D3高度疏水，与<strong>维生素D结合蛋白</strong>结合后在血液中运输</li>
-</ul>
-
-<ul>
-<li class="num"><strong>肝脏第一步羟化</strong>：</li>
-<li>部位：肝脏微粒体</li>
-<li>酶：<strong>25-羟化酶</strong></li>
-<li>产物：<strong>25-羟维生素D3</strong>（血浆中主要存在形式，也是肝脏主要储存形式）</li>
-</ul>
-
-<ul>
-<li class="num"><strong>肾脏第二步羟化</strong>：</li>
-<li>部位：肾脏肾小管上皮细胞</li>
-<li>酶：<strong>1α-羟化酶</strong></li>
-<li>产物：<strong>1,25-二羟维生素D3</strong>（活性形式）</li>
-</ul>
-
-<ul>
-<li class="num"><strong>发挥功能</strong>：</li>
-<li>1,25-二羟维生素D3是脂溶性的，直接穿过细胞膜进入靶细胞核</li>
-<li>与核受体结合，调控与钙磷代谢相关的靶基因（如钙结合蛋白、骨钙蛋白等）</li>
-<li>功能：促进肠道钙吸收，促进钙在骨骼和牙齿中的钙化</li>
-</ul>
-
-<p><strong>过度防晒与骨质疏松的关系</strong>：</p>
-<p>过度防晒→紫外线暴露不足→皮肤中7-脱氢胆固醇不能正常转化为维生素D3→体内维生素D3缺乏→经肝肾两步羟化后的活性形式1,25-二羟维生素D3不足→钙磷代谢相关基因表达异常→肠道钙吸收减少、骨骼钙化不足→骨密度下降→骨质疏松风险增加。</p>
-
-<p>儿童维生素D缺乏导致佝偻病，成人缺乏导致骨软化症/骨质疏松。</p>
-<p></details></p>
-
-<h3>题目5</h3>
-<p>维生素A是如何参与视循环的？请从分子结构和光化学反应的角度解释为什么维生素A缺乏会导致夜盲症。</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>维生素A参与视循环的机制</strong>：</p>
-
-<ul>
-<li class="num">维生素A的活性形式之一是<strong>视黄醛</strong>（由视黄醇氧化而来）。</li>
-<li class="num">视黄醛分子中有丰富的双键，双键不能自由旋转，因此存在顺反异构体。</li>
-<li class="num"><strong>11-顺视黄醛</strong>与视蛋白（opsin）结合，形成<strong>视紫红质（rhodopsin）</strong>。</li>
-<li class="num">当光线照射视网膜时，光诱导11-顺视黄醛发生顺反转换，变为<strong>全反式视黄醛</strong>。</li>
-<li class="num">这一转换导致视紫红质发生构象变化，启动细胞内信号转导级联，将光信号转化为电化学信号。</li>
-<li class="num">视网膜产生电冲动，传递到大脑，产生视觉。</li>
-<li class="num">全反式视黄醛与视蛋白分离后，在视网膜色素上皮细胞中经异构化重新变回11-顺视黄醛，回到循环中。</li>
-</ul>
-
-<p><strong>维生素A缺乏导致夜盲症的原因</strong>：</p>
-<p>维生素A缺乏→11-顺视黄醛合成不足→视紫红质合成减少→视网膜对弱光的敏感性降低→在弱光环境下（如夜晚）看不清物体→夜盲症。</p>
-
-<p>因为视循环是感受弱光（暗视觉）的关键途径，所以维生素A缺乏首先表现为暗适应能力下降，即夜盲症。此外，维生素A缺乏还会导致眼结膜黏液分泌减少，引起眼干燥症。</p>
-<p></details></p>
-
-<h3>题目6</h3>
-<p>B族维生素与脂溶性维生素在缺乏症的表现上有什么不同？为什么？以维生素B1为例说明。</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>不同点</strong>：</p>
-<ul>
-<li>脂溶性维生素缺乏症通常<strong>比较特异</strong>：如维生素A→眼（夜盲症/眼干燥症），维生素D→骨（佝偻病/骨质疏松），维生素K→凝血（出血），维生素E→红细胞（溶血性贫血）。</li>
-<li>B族维生素缺乏症通常<strong>影响全身多系统、多器官</strong>，症状复杂广泛。</li>
-</ul>
-
-<p><strong>原因</strong>：</p>
-<ul>
-<li>脂溶性维生素（活化后）多作为信号分子，调控特定的靶基因或参与特定的生化通路，功能相对集中。</li>
-<li>B族维生素的核心生化功能是<strong>作为一系列酶的辅酶</strong>，不是只针对某一种酶，而是对多种酶都起辅酶作用。因此当某种B族维生素缺乏时，依赖它的所有酶都会功能障碍，涉及多个代谢通路，导致全身不同系统、不同器官都出现问题。</li>
-</ul>
-
-<p><strong>以维生素B1为例</strong>：</p>
-<ul>
-<li>维生素B1的活性形式是<strong>焦磷酸硫胺素（TPP）</strong>，是多种脱羧酶的辅酶。</li>
-<li>关键酶包括丙酮酸脱氢酶（糖代谢关键步骤：丙酮酸→乙酰辅酶A）、α-酮戊二酸脱氢酶（三羧酸循环）、转酮醇酶（磷酸戊糖途径）等。</li>
-<li>TPP缺乏→这些酶都不能正常工作→全身能量代谢障碍→神经系统（耗能最多）首先受累→心脏功能受损→水肿、心力衰竭→全身疼痛。</li>
-<li>这就是脚气病（Beriberi），症状涉及神经、心血管、消化等多个系统，与真菌感染的"脚气"完全无关。</li>
-</ul>
-<p></details></p>
-
-<hr>
-
-<blockquote>**笔记说明**：本笔记基于2026年9月15日生物化学与分子生物学课堂完整逐字稿整理，涵盖老师讲授的全部知识点、举例、强调点和课堂互动。课表标注主题为"维生素、酶"，但实际授课内容为RNA空间结构与功能续讲+核酸理化性质+维生素（至B2），酶尚未开始讲授，命名以实际内容为准。课堂小测4道题的要点已纳入第七节。</blockquote>
-
-  <div class="footer">
-    <span>生物化学与分子生物学 · RNA结构功能与维生素</span>
-    <span>HUST课堂笔记</span>
-  </div>
-</div>
-
-</body>
-</html>
+<p class="foot">附录 D 共 95 条，与 recording.md 讲授内容逐条对应。</p></div>
+</body></html>

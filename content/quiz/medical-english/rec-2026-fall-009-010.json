@@ -3,192 +3,602 @@
   "chapterId": "rec-2026-fall-009-010",
   "generatedAt": "2026-10-01",
   "examConfig": {
-    "source": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md；content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
-    "totalPoints": 80,
-    "timeLimit": 30
+    "source": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md；content/medical-english/lectures/rec-2026-fall-009-010/notes.html（SOP-04 课上录音标准 24 题/100 分）",
+    "totalPoints": 100,
+    "timeLimit": 50
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-009-010",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "4cfe3c90f700647a279658645d7e5ce7d8d1b74c5225229fcf5bf2ea5c1aa3de",
-    "notesTextHash": "54cca945d9854757020c2fe47b68f2f1108ae8481010bda631b3a8031aeac944"
+    "notesTextHash": "73f33da073cb25c72f55fefb65a55d77ba48774235413a879ffac05bdaa9d966"
   },
   "questions": [
     {
       "id": "q001",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
-      "points": 10,
       "source": "current_chapter",
+      "stem": "课文 P2 在定义 bladder exstrophy（膀胱外翻）时使用的句式结构是？",
+      "options": [
+        "短语 + 同位语（phrase + appositive），同位语中用 where 作空间描述",
+        "单句 + 定语从句（It is a major surgery that…）",
+        "冒号引出进一步说明（colon + clause）",
+        "直接引用权威研究者的原话"
+      ],
+      "answer": 0,
+      "hint": "先把「定义对象」分成疾病、操作、新技术三类，再想哪一类用哪种语法容器；注意同位语里那个表示空间的词。",
+      "explanation": "**A 正确。**老师在 P2 连说三次 Definition，并指出作者用的是 phrase plus clause to modify this phrase——先给出一个短语（疾病名），再用同位语说明它是什么；同位语里的 where 表示 space，所以这一段是 develop by space（说话人2 30:36 / 31:23）。\n\n**B 错**：It is a major surgery that… 是课文定义手术（enterocystoplasty）时的句式，属第二种定义（说话人2 42:15）。\n**C 错**：冒号 + 从句是第八段介绍生物复合支架这一新技术时的定义方式（说话人2 01:28:44）。\n**D 错**：引用（quotation）出现在 P5 与 P8 后半，功能是提供权威性与说服力，不是定义手法。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "疾病定义句式"
-      },
-      "stem": "课文在定义疾病（如 bladder exstrophy）时，主要采用的写作手法是？",
-      "options": [
-        "短语 + 同位语（phrase + appositive）",
-        "单句 + 定语从句",
-        "冒号直接引出",
-        "直接引用权威文献"
-      ],
-      "answer": 0,
-      "explanation": "**A 正确。**第二段定义膀胱外翻时用一个短语、再用同位语（where 引导的空间描述）说明 disease。B 是手术/操作的定义句式；C 是新技术定义；D 用于增强说服力。",
-      "hint": "疾病=短语+同位语。"
+        "label": "7. P8–P9：生物复合支架 · 疾病定义：短语＋同位语 · 说话人2 30:36 / 31:23"
+      }
     },
     {
       "id": "q002",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
-      "points": 10,
       "source": "current_chapter",
+      "stem": "课文在解释具体手术 enterocystoplasty（肠膀胱成形术／膀胱扩大术）时，使用的定义句型是？",
+      "options": [
+        "短语 + 同位语",
+        "It is a major surgery that…（单句 + 定语从句）",
+        "冒号引出从句",
+        "以疑问句提出再作答"
+      ],
+      "answer": 1,
+      "hint": "老师提醒：讲「疾病」和讲「具体操作」时，作者选用了完全不同的句子容器。",
+      "explanation": "**B 正确。**老师指出：解释疾病时作者用一个 phrase，而「讲一个 operation、具体的操作的时候，他另起了一个句子，it is the major surgery that，that 是一个从句，解释它是一个什么样的手术」——这是第二种 definition 表达方法，原因是 define different aspect（说话人2 42:15）。\n\n**A 错**：短语 + 同位语是膀胱外翻（疾病）的定义方式（P2）。\n**C 错**：冒号 + 从句是生物复合支架（新技术）的定义方式（P8）。\n**D 错**：课文没有用设问句下定义；课堂上的设问（What is enterocystoplasty？）是老师提问，不是课文写法。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "手术定义句式"
-      },
-      "stem": "在解释手术/操作（如 enterocystoplasty）时，课文使用的定义句型是？",
-      "options": [
-        "短语 + 同位语",
-        "It is a major surgery that...（单句 + 定语从句）",
-        "冒号引出",
-        "疑问句"
-      ],
-      "answer": 1,
-      "explanation": "**B 正确。**讲具体手术操作时另起一句 \"It is a major surgery that...\"，用 that 定语从句解释这是一种什么手术。A 用于疾病定义；C 用于新技术。",
-      "hint": "手术=单句+定语从句。"
+        "label": "7. P8–P9：生物复合支架 · 手术定义：单句＋定语从句 · 说话人2 42:15"
+      }
     },
     {
       "id": "q003",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
-      "points": 10,
       "source": "current_chapter",
+      "stem": "第八段介绍 biological composite scaffold（生物复合支架）时，作者用哪种手法引出定义、并顺带表达对该技术的评价？",
+      "options": [
+        "分号并列两个分句",
+        "破折号插入说明",
+        "冒号（colon）＋ that 从句，冒号前先用褒义词 cutting-edge 定调",
+        "括号内加注释"
+      ],
+      "answer": 2,
+      "hint": "回忆老师问「标点符号是什么？」之后给出的答案，以及他追问「还想要表达什么？」得到的那个词。",
+      "explanation": "**C 正确。**老师说「标点符号是什么？冒号，further explain what is a biological composite scaffold。然后是一个从句……that mimic 什么什么什么」（说话人2 01:28:44），并在 01:29:45 补充这一手法的第二重功能：冒号前用 a new approach, cutting-edge approach 是为了 to praise、to give the advantage of this new approach。\n\n**A、B、D 错**：课文这一处用的是冒号，不是分号、破折号或括号；这三种标点也都不具备「解释 + 褒扬」的双重功能。老师同时强调，三种不同定义句式并存正是为了避免 repetition（01:30:41）。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "新技术定义句式"
-      },
-      "stem": "介绍新技术（biological composite scaffold）时，课文主要用哪种标点/手法引出其优势？",
-      "options": [
-        "冒号（colon）补充说明",
-        "分号并列",
-        "破折号插入",
-        "括号注释"
-      ],
-      "answer": 0,
-      "explanation": "**A 正确。**第八段介绍生物复合支架这一 cutting-edge approach 时用冒号引出，对新技术加以褒扬和补充。三种定义句式分别对应疾病、手术、新技术，以避免重复。",
-      "hint": "新技术=冒号补充。"
+        "label": "7. P8–P9：生物复合支架 · 新技术定义：冒号＋从句 · 说话人2 01:28:44 / 01:29:45"
+      }
     },
     {
       "id": "q004",
       "type": "single_choice",
-      "difficulty": "intermediate",
-      "points": 10,
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "sourceRef": {
-        "source": "recording",
-        "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
-        "label": "并发症举例顺序"
-      },
-      "stem": "第三段列举膀胱外翻并发症（kidney/bladder stone → kidney infections → cancer）的排列逻辑是？",
+      "stem": "老师用拆音节的方法带同学推测 congenital 一词：con-gen-ital。据此，该词的词根与词义分别是？",
       "options": [
-        "按严重程度递增，顺序不能调换",
-        "按字母顺序",
-        "随机列举",
-        "按就诊时间先后"
+        "词根 gen，与「出生、产生」有关，义为「先天的」",
+        "词根 con，义为「共同的」",
+        "词根 ital，义为「意大利的」",
+        "词根 gene，义为「基因突变的」"
       ],
       "answer": 0,
-      "explanation": "**A 正确。**并发症举例按疾病严重程度递进（结石→感染→癌症），是 cause-effect chain，逻辑顺序不可调换。",
-      "hint": "按严重程度递增，不可换序。"
+      "hint": "老师先问「它的词根是什么」，学生答出一个词，老师确认后由 con 与该词根「同时出现」推出词义。",
+      "explanation": "**A 正确。**课堂过程是：拆音节 con- gen- ital → 找词根 Gene → 老师说「con 与这个基因同时一起出现的，那是不是就是什么？先天的？」（说话人2 31:52 / 31:55 / 32:14）。也就是说 congenital 表示「与生俱来的、先天的」。\n\n**B 错**：con 是前缀（表示「共同、一起」），不是词根；老师是靠 con + gene 的组合关系推出词义的。\n**C 错**：ital 只是音节尾巴，老师没有赋予其含义，更不是「意大利的」。\n**D 错**：词根本身是 gene（基因），但词义不是「基因突变的」；老师说得很清楚——「和基因一起的，是不是就是先天的？」",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "词根活记 congenital · 说话人2 31:26 — 32:14"
+      }
     },
     {
       "id": "q005",
       "type": "single_choice",
-      "difficulty": "intermediate",
-      "points": 10,
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "sourceRef": {
-        "source": "notes",
-        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
-        "label": "risk 高频搭配"
-      },
-      "stem": "下列哪组动词在医学英语中都可与 risk 搭配，表示“增加风险”？",
+      "stem": "第三段列举膀胱外翻并发症（kidney / bladder stone → kidney infections → even cancer）时，其排列依据是？",
       "options": [
-        "heighten / increase / raise the risk",
-        "reduce / lower the risk",
-        "avoid / escape the risk",
-        "ignore / neglect the risk"
+        "按疾病严重程度递增（serious degree），因此顺序不能调换",
+        "按字母顺序排列，方便记忆",
+        "按患者就诊时间先后排列",
+        "随意列举，作者未考虑顺序"
       ],
       "answer": 0,
-      "explanation": "**A 正确。**heighten/increase/raise（及 intensify、amplify）the risk 都表示增加风险，是本课文高频句型。B、C、D 方向相反或无关。",
-      "hint": "heighten/increase/raise=增加风险。"
+      "hint": "老师先问「What's the logic of this listing?」，然后把答案归结为一个关于「程度」的词。",
+      "explanation": "**A 正确。**老师直接给出答案：「serious degree, right? the seriousness degree of the disease. 这个病它的严重的程度，最后会引引发什么？cancer.」随后下结论：「so we can't change this order because there is logic.」（说话人2 37:13 / 37:28）句末的 even cancer 本身就是「递进到顶点」的语言标记。\n\n**B、C、D 错**：课文既非字母序也非时间序，老师专门用「can we change the order」追问来排除「随意排列」的可能。注意与 P7 的三类风险区分：那一处依据的是手术过程（术前→术后），不是严重程度。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
+        "label": "6. P7：三类风险与 process 逻辑 · P3 举例顺序 · 说话人2 36:34 / 36:56 / 37:13 / 37:28"
+      }
     },
     {
       "id": "q006",
       "type": "single_choice",
-      "difficulty": "intermediate",
-      "points": 10,
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "sourceRef": {
-        "source": "recording",
-        "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
-        "label": "三类风险排列逻辑"
-      },
-      "stem": "第七段列出肠膀胱成形术三类风险时，其排列遵循的逻辑是？",
+      "stem": "老师追问「these three risks, can we change the order?」，并指出不能换序。第七段三类风险的排列依据是？",
       "options": [
-        "按手术过程（术前/术中/术后 process）顺序，不可调换",
-        "按风险出现概率从高到低",
-        "按作者喜好任意排列",
-        "按字母顺序"
+        "手术的过程逻辑（process logic）：术前 → 术后 → 术后后期",
+        "风险出现的概率从高到低",
+        "英文单词长度从短到长",
+        "作者的写作习惯，无特定依据"
       ],
       "answer": 0,
-      "explanation": "**A 正确。**三类风险按手术 process 逻辑排列：器官功能冲突（术前即存在）→术后新环境致感染/结石与社会 stigma→膀胱过度膨胀致穿孔（术后）。逻辑顺序不可换。",
-      "hint": "按术前术后过程排。"
+      "hint": "老师说「surgery 是一个什么？是个 procedure，process」；再看 meanwhile 指向的时间位置。",
+      "explanation": "**A 正确。**老师的推理链是：「讲 surgery 对不对？surgery 是一个什么？是个 procedure，process……它是按照什么？process logic，术前术后是不是？」并指出 meanwhile 就是 after surgery／post surgery；「只有术后它才会膨大，它那个膀胱会大，大了以后就会什么？perforation。」（说话人2 01:15:05 / 01:15:39）因此顺序即手术的时间轴。\n\n**B 错**：概率排序是干扰项，课文并未按概率组织。\n**C、D 错**：均无依据；老师说「we can't change this order because there is logic」式的判断同样适用于这一段——顺序本身承载信息。注意别与 P3 的「严重程度递增」混用。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "6. P7：三类风险与 process 逻辑 · 顺序不可换：process logic · 说话人2 01:14:36 / 01:15:05 / 01:15:39"
+      }
     },
     {
       "id": "q007",
       "type": "single_choice",
-      "difficulty": "advanced",
-      "points": 10,
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "sourceRef": {
-        "source": "recording",
-        "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
-        "label": "in sync 词义"
-      },
-      "stem": "在本课语境中，短语 in sync (with the body) 的含义是？",
+      "stem": "第六段用 as a stop-gap measure 评价 enterocystoplasty。这个评价的实际含义是？",
       "options": [
-        "与身体协调、相容、不排异；out of sync 即排异",
-        "与身体完全不同步、必然排斥",
-        "指手术速度快",
-        "指支架坚硬不变形"
+        "它是权宜之计，评价不高，说明一百年来该手术没有突破",
+        "它是里程碑式的完美术式",
+        "它是唯一被认可的术式",
+        "它是近期才出现的新技术"
       ],
       "answer": 0,
-      "explanation": "**A 正确。**in sync with 指（支架与身体组织）协调、和谐、不排异；out of sync 即排异。这与支架可 expand/contract synchronously with bladder movement 相呼应。",
-      "hint": "in sync=同步不排异。"
+      "hint": "老师说这两个词「都不是好词」，还把它的反面点出来了一次。",
+      "explanation": "**A 正确。**老师说 stop 与 gap 两个词都不是好词，「所以呢，汉语我们翻成权宜之计，实际上它这个评价是不高的。但是呢，没有突破……一百年来，这个手术都没有突破」；并点明它的反面是 perfect measure（说话人2 50:17 / 51:01）。\n\n**B 错**：perfect measure 正是老师用来对比的反面说法。\n**C 错**：课文说的是「一百多年一直依赖它」，用现在完成时强调历史延续，但评价是负面的（temporary solution），不是「唯一被认可」。\n**D 错**：恰恰相反，这是一条用了一百多年的老术式；老师还提示「看到 stop gap 这个词，实际上是有研究空间」。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "stop-gap measure 的评价 · 说话人2 49:39 / 50:17 / 51:01"
+      }
     },
     {
       "id": "q008",
       "type": "single_choice",
-      "difficulty": "advanced",
-      "points": 10,
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
+      "stem": "第五段几乎整段都是 quotation（引用）。老师认为作者使用引用的目的是？",
+      "options": [
+        "让论述更可信、更具权威性与说服力（believable / authoritative / persuasive）",
+        "为了凑够文章篇幅",
+        "为了引出下一段的新技术名称",
+        "为了回避作者自己的观点"
+      ],
+      "answer": 0,
+      "hint": "老师的问题是「Why do you also use quotation?」，学生的回答是 believable，老师又补了两个词。",
+      "explanation": "**A 正确。**课堂问答是：学生答 Make his words more believable，老师追问 Who's believable and authoritative? 并给出 Persuasive（说话人2 44:56 / 45:09）。老师还评价 quotation 在医学文献中「非常典型」（46:03）。\n\n**B、C、D 错**：凑篇幅与回避观点都不是课堂提到的功能；老师强调引用的作用是把权威性注入「现有手术仍有局限」这一判断，为主张背书。D 类误解（用引用回避自己的观点）在学术写作中恰恰是反面。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "quotation 的功能 · 说话人2 44:56 / 45:09 / 46:03"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "在医学语境中，老师把 in sync (with) 与 out of sync 分别解释为？",
+      "options": [
+        "in sync＝协调、与身体组织相容、不排异；out of sync＝排异",
+        "in sync＝时间同步；out of sync＝提前或延迟",
+        "in sync＝排异；out of sync＝不排异",
+        "in sync＝手术速度快；out of sync＝手术速度慢"
+      ],
+      "answer": 0,
+      "hint": "老师用「要不要吃排异药」把这两个词组落到了临床上，并说 graft rejection 就是其中之一。",
+      "explanation": "**A 正确。**老师先给英文释义：in this context means moving or operating in coordination or harmony without any delay or mismatch；if two things are out of sync, they do not match。再给医学解释：支架若与身体组织相排斥就要吃排异药，因此「in sync with 是不排异，与你的身体是相符合的……那 out of sync 是什么呢？排异」（说话人2 01:39:10 / 01:39:27）。后来他直接把 graft rejection 与 out of sync 划等号（01:45:38）。\n\n**B 错**：英文释义里确实有 without any delay，但医学落点是相容／排异，不是「提前或延迟」。\n**C 错**：正好反了。\n**D 错**：与手术速度无关。",
       "sourceRef": {
         "source": "recording",
         "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
-        "label": "自身干细胞消除排斥"
-      },
-      "stem": "生物复合支架使用患者自身干细胞（seeded stem cells）的主要目的是？",
+        "label": "in sync / out of sync · 说话人2 01:39:10 / 01:39:27 / 01:45:38"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "老师专门讲了 degrade 的两个义项。该词在本文（支架语境）中的意思是？",
       "options": [
-        "从根本上消除移植物排斥（graft rejection）风险，并促组织再生",
-        "让支架永久留在体内不降解",
-        "增加手术费用",
-        "减少手术时间"
+        "降解——变成更简单的化学形态（change to a simple chemical form）",
+        "贬低、侮辱（treat somebody without respect）",
+        "加速、促进",
+        "移植、接种"
       ],
       "answer": 0,
-      "explanation": "**A 正确。**用患者自身细胞可消除 graft rejection（移植物排斥），干细胞协同（synergistic）促进膀胱组织确定性再生；同时支架会随时间 degrade（降解）。B、C、D 均与课文原理相反。",
-      "hint": "用自身细胞=消除排斥。"
+      "hint": "老师用自己做过的手术打比方：有一种线放在体内会自己「消化掉」，不用拆线。",
+      "explanation": "**A 正确。**老师的对照是：degrade 的一般常用义是 treat somebody without respect（贬低）；but in this text, it means change to a simple chemical form——就分解降解，「所以支架放到体内以后，它会慢慢的什么？降解。消化掉」（说话人2 01:40:17 / 01:40:30）。他还用可吸收缝线的例子作类比，并指出降解出来的成分能帮助再生缺失的 tissue（01:41:11）。\n\n**B 错**：这是 degrade 的一般义，正是老师要求区分开的那一项。\n**C 错**：与「分解」相反。\n**D 错**：描述的是 seed（接种）这一步骤，不是 degrade。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "degrade 的本文义 · 说话人2 01:40:17 / 01:40:30 / 01:41:11"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "老师在第七段特别要求「记住这个动词，connect with risk」。下列哪些动词与 risk 搭配后可表示「增加风险」？",
+      "options": [
+        "heighten the risk",
+        "intensify the risk",
+        "amplify the risk",
+        "avoid the risk"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "老师把这一串动词一次性列完，并说它们「都表示增加它的危险性」；只有一项的方向不同。",
+      "explanation": "**A、B、C 正确。**老师原话：「please remember this verb, connect with risk. For example, heightened risk, increase the risk……raise the risk，intensify，amplify，你看，都可以接后面什么？risk，就 risk 和这些词搭配，都表示什么？增加它的危险性。」（说话人2 01:22:41 / 01:23:00）五个「增加方向」的动词是 heighten / increase / raise / intensify / amplify。\n\n**D 错**：avoid the risk 表示「规避风险」，方向完全不同；表示相反方向（降低风险）的搭配是 reduce / lower the risk，本课应用段段首用的就是 reducing the risk of…（01:49:30）。答题时先判断动词方向，再判断因果。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "risk 的动词搭配族 · 说话人2 01:22:41 / 01:23:00"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "老师逐项追问后确认，第七段同时使用了下列哪几类写作手法？",
+      "options": [
+        "comparison / contrast（对比）",
+        "listing（列举）",
+        "process analysis（过程分析）",
+        "quotation（引用权威）"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "先把这一段的三条风险数清楚，再想「为什么不能换序」——那个理由对应一种手法；引用权威在本课出现在别处。",
+      "explanation": "**A、B、C 正确。**老师在 01:06:30 确认 very typical comparison（While bowel tissue is designed for absorption, the bladder's primary function is excretion）；在 01:12:29 指出写作手法是 listing（So we can say the writing style is listing）；在 01:20:48 补上 process analysis，并在 01:22:09 总结「在 process 的分析过程当中是 cause and effect，逻辑是什么？procedure analysis」。老师还强调这一段「这里多的就是每一句都有 cause and effect」（01:19:30）。\n\n**D 错**：quotation 出现在第五段（整段几乎全是引用）与第八段后半（展示 advantage、显示 authoritative），不是第七段的手法。注意本段还有 cause and effect，本题未列出，答题时应一并掌握。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "6. P7：三类风险与 process 逻辑 · / / 第七段的四类手法 · 说话人2 01:06:30 / 01:12:29 / 01:19:30 / 01:20:48"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "医学英语假期项目采用「334」评分制。下列哪些属于这个 334 的分项？",
+      "options": [
+        "小组协作／配合度 3 分",
+        "PPT 内容 3 分",
+        "现场展示 4 分",
+        "课堂出勤 3 分"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "把三个数字对应回「协作、内容、展示」三个环节，并回忆每一项由谁来评。",
+      "explanation": "**A、B、C 正确。**老师讲评分时先讲第一个 3（组长给组员打协调合作与配合度，「比如说在查找资料啊，讨论呐，制作 PPT 啊，这些分工协作」），再讲第二个 3（内容 PPT 制作结构完整、内容清晰、逻辑合理，show you logic），最后讲 4（展示时大方得体、准确使用医学学术词汇与表达方式、语言流畅）——合起来是「334」（说话人2 21:55 / 23:01）。\n\n**D 错**：老师说的 334 只含协作、内容、展示三项，没有「课堂出勤 3 分」这一项。老师另有一句关于总分的提醒（项目 10 分 + 平时 20 分 = 30 分），但那不是 334 的分项。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "展示与评分 334 · 说话人2 21:55 / 23:01"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "第四段（膀胱扩大术）一段之内叠了多种写作手法。下列哪些是老师在第四段明确分析过的手法？",
+      "options": [
+        "exemplification（举例，such as）",
+        "cause and effect（此处表现为手术的目的：enlarge the bladder → more urine）",
+        "contrast / comparison（more urine 与 reduce internal pressure 的对比）",
+        "quotation（整段引用权威研究者原话）"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "回忆老师在这一段连续追问的三次「any other writing style」，以及每次得到的答案。",
+      "explanation": "**A、B、C 正确。**老师先确认 exemplification（such as，40:03）；再追问 cause，答案是手术目的——「because enlarge the bladder then so more urine，就是他目的，为什么他要做这个 bladder augmentation」（41:32）；再由学生答出 contrast，老师补充 more urine and reduce internal pressure，more urine comparing with without enlarge bladder（42:06 / 42:12 / 42:15）。\n\n**D 错**：整段引用权威是第五段的特征（老师：「你看这一句，这一段全是 Quotation」，44:55）。另外要注意：第四段确实还出现了 definition（It is a major surgery that… 定义 enterocystoplasty），只是本题未把它列为选项。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "6. P7：三类风险与 process 逻辑 · 第四段的四种手法 · 说话人2 39:52 / 41:32 / 42:15"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "关于第八段的 biological composite scaffold（生物复合支架），下列表述正确的有？",
+      "options": [
+        "把患者自身的细胞接种（seed）到支架上",
+        "支架能够随膀胱的自然运动同步舒张与收缩",
+        "由于使用患者自身细胞，可消除移植物排斥（graft rejection）的风险",
+        "支架会永久留在体内，不会降解"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "回忆老师讲的 process 五个步骤，特别是 extract 与 seed 之后的那一步，以及「用自身细胞」带来的因果结果。",
+      "explanation": "**A、B、C 正确。**老师把过程串成「第一步 extract，第二步 and seat them on」；支架的作用是 can expand and contract，并与膀胱的自然运动同步；用患者自身（自体）干细胞的结果是 eliminate the risk of graft rejection（说话人2 01:32:48 / 01:33:18 / 01:45:30）。\n\n**D 错**：与课文相反——原文明确 it decreases over time，老师也解释过支架会慢慢 degrade（降解、消化掉），降解出来的成分还能帮助再生缺失的 tissue（01:33:22 / 01:41:11）。这也是 paraphrase 环节重点改写的句子之一。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "7. P8–P9：生物复合支架 · 过程分析与 自身细胞的因果 · 说话人2 01:32:48 / 01:45:30"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "老师把「不同定义对象要用不同定义句式」列为本课重点。下列「定义对象—句式」的对应关系中，与课文完全相符的一组是？",
+      "options": [
+        "疾病＝短语＋同位语；手术＝单句＋定语从句（It is a major surgery that…）；新技术＝冒号＋从句",
+        "疾病＝冒号＋从句；手术＝短语＋同位语；新技术＝单句＋定语从句",
+        "疾病＝单句＋定语从句；手术＝冒号＋从句；新技术＝短语＋同位语",
+        "三者都用短语＋同位语，只是出现的位置不同"
+      ],
+      "answer": 0,
+      "hint": "回忆老师在 01:29 处总结的顺序：他先问「第一个 disease 用了什么」，再问「第二个 surgery」，最后问第八段。",
+      "explanation": "**A 正确。**老师的总结过程是：第一个是 Disease——「We use the phrase」；第二个是 Surgery——「It's a major surgery，什么什么什么，就是操作」；第三个是第八段的新技术——「标点符号直接说明了」（冒号）。（说话人2 01:29:07 – 01:29:45，另见 30:36 与 42:15）\n\n**B 错**：把三种容器整体错位——冒号是新技术（生物复合支架）用的，不是疾病。\n**C 错**：与 B 同样属于错位，且把「短语＋同位语」错给了新技术。\n**D 错**：老师强调的恰恰是三者不同：「你不同的、不同类型的定义，可以用不同类型的句型，这就是避免了我们的 repetition」（01:30:41）。若三者都用短语＋同位语，就回到了他批评的重复写法。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "7. P8–P9：生物复合支架 · 三种定义句式总结 · 说话人2 01:29:07 – 01:29:45"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "老师在分析第七段时强调，标识三类风险层次的小词「并不是我们经常写作写的 first、second、third」。作者实际使用的是哪一组标记？",
+      "options": [
+        "the key challenge / meanwhile / last also",
+        "firstly / secondly / thirdly",
+        "on the one hand / on the other hand / in conclusion",
+        "because / so / therefore"
+      ],
+      "answer": 0,
+      "hint": "这三个标记分别指向「最显著的那一条」「术后那个阶段」「最后一项」；其中一个词在第 4 段也出现过。",
+      "explanation": "**A 正确。**老师原话：「你看他用的并不是我们经常写作写的 first、second、third，所以你对 first、second、third 是非常敏感的，但是你对这个呢？the key challenge，meanwhile and last also，你看 also 好几次在用了」（说话人2 01:13:30）。他还追问「第哪一段还有一个 also」，答案正是第四段（01:14:03 / 01:14:04）。\n\n**B 错**：first / second / third 系列正是老师用来对比的「我们熟悉的写法」，课文并没有用。\n**C 错**：这一组是对比与总结的连接语，课文没有使用。\n**D 错**：because / so / therefore 是因果连接词，虽然本段因果密集（「每一句都有 cause and effect」，01:19:30），但它们不是分层的标记。老师由此强调：对这些小词不敏感，「你就读不出来」段落逻辑（01:14:04）。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
+        "label": "小词标记层次 · 说话人2 01:13:30 / 01:14:04"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "老师判定第八段讲的是 theory（原理），紧接着的应用段讲的是 practice。这一「段落之间的连接」说明作者组织后两段的逻辑是？",
+      "options": [
+        "先讲技术原理，再讲它在临床上的应用，构成 theory and practice 的推进",
+        "先讲临床应用，再回头补讲原理",
+        "两段是并列的两个互不相干的方案",
+        "后一段是对前一段技术原理的否定与修正"
+      ],
+      "answer": 0,
+      "hint": "注意老师那句反问：「要不然他写这一段的目的是干嘛呢？」以及他把两段各归给哪个词。",
+      "explanation": "**A 正确。**老师原话：「刚才那一段是讲到它的原理，是吧？它的 theory，那么这一段应该是讲它的什么？应用。对啦，practice，是不是的？对，application or practice，明白了段落与段落之间它的连接啊，是不是的？theory and practice」（说话人2 01:49:01）。\n\n**B 错**：顺序正好相反——先 theory（第八段讲支架怎么起作用），后 practice（应用段讲外科医生怎么做）。\n**C 错**：两段不是并列，而是「原理—应用」的承接；老师正是用「段落与段落之间的连接」来提示这层关系。\n**D 错**：应用段并未否定原理，它延续了「降低风险、促进再生」的思路；老师还说这一段段首第一句就是 cause and effect（reducing the risk of … so，01:49:30）。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "段落连接 theory → practice · 说话人2 01:48:13 / 01:49:01"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "multiple_choice",
+      "points": 4,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "老师对项目展示环节做了「重点强调」。下列哪些说法符合他的要求？",
+      "options": [
+        "展示时间是 6–10 分钟，超过 10 分钟会被 cut",
+        "与其把三篇文献什么都讲，不如把其中一个内容解释清楚",
+        "用英文汇报，汇报人数由小组自行安排（可以 4–5 人都上，也可以一个人讲）",
+        "若内容确实丰富，可以申请把展示延长到 15 分钟"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "把老师用「重点强调」标出的那个时间区间记牢，并回忆他对「什么都想讲」的批评。",
+      "explanation": "**A、B、C 正确。**老师原话：「项目展示的时候，时间是 6 到 10 分钟，超过 10 分钟我就 cut。这一个我要重点强调一下啊。」（说话人2 20:17）他解释了同学超时的原因——三篇的写作特征、语言特征、内容、研究结果都想讲，并给出对策：「你把这其中一个内容解释清楚……这样肯定 10 分钟可以完成。」同处他还说明「汇报人数是由小组自行安排，有的小组是比如说 4 个人、5 个人都上啊，有的是一个人讲啊，反正是能够体现你们这一组最佳的，就 OK 了」。\n\n**D 错**：老师没有给出任何延长机制；超时的处理是直接 cut，这是全课唯一被标记为「重点强调」的硬约束。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
+        "label": "展示 6–10 分钟与 334 · 说话人2 20:17"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "points": 4,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "关于假期脑机接口项目的要求，下列哪些与老师课堂宣布的一致？",
+      "options": [
+        "查找 2–3 篇最新的（latest）文献，并与第三单元的文章作对比",
+        "以小组为单位，相互合作、互相探讨、brainstorm、share ideas",
+        "第 10 周和第 13 周利用不上课的时间查文献、做 PPT，学期最后一次课展示",
+        "考试前学院只收 PPT 一份，文献和小组打分都不需要提交"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "先想项目包要交几样东西，再核对时间节点里出现过哪几个周次。",
+      "explanation": "**A、B、C 正确。**老师要求查找 2 到 3 篇文献，且必须是「最新的、最近的、latest information」，并与第三单元文章对比以发现更新的研究方向（说话人2 14:18 / 17:11）；他强调以小组为单位合作、brainstorm，并用英文重复「Brainstorm and share your ideas when you read these different materials or literatures」（17:50）；时间安排是「第 10 周和第 13 周……大家不上课的时间……查找文献，制作 PPT」，展示放在「这学期的最后一次课」（20:17）。\n\n**D 错**：项目包要交三部分——「请同学们给我们查找的文献，PPT 的内容，以及小组的打分，三个部分」（24:33），缺一不可；学院检查的口径是「主要是查你们做了没有」。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "1. 假期项目：Unit 3 脑机接口（BCI） · 文献要求 / 时间节点 / 项目包三部分 · 说话人2 14:18 / 17:50 / 20:17 / 24:33"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "stem": "医学英语文本中，定义（definition）可以针对不同对象采用不同句式。请回答：\n（1）本课课文中「疾病」「手术」「新技术」三类定义分别使用了什么句式？请各举出课文中的对应对象。\n（2）作者为什么要为不同对象换用不同句式？请结合课文与老师的讲解说明理由。",
+      "answer": "（1）三类定义的句式：① 疾病（bladder exstrophy，P2）＝短语＋同位语（phrase + appositive），同位语中用 where 作空间描述，属 develop by space；② 手术／操作（enterocystoplasty，P4）＝单句＋定语从句，即「It is a major surgery that…」；③ 新技术（biological composite scaffold，P8）＝冒号＋从句，冒号进一步解释支架是什么，从句用 that 说明其特征。\n\n（2）换句式的理由：三类定义对象的性质不同（疾病是一种状态、手术是一个操作过程、新技术是一个方案），可用的语法容器因此不同，老师称之为 define different aspect；换句式既避免了 repetition，又让新技术定义获得评价空间——冒号前用 a cutting-edge approach 是为了 to praise、to give the advantage of this new approach。",
+      "scoring_criteria": [
+        "① 疾病定义＝短语＋同位语（phrase + appositive），并指出同位语中用 where 作空间描述，举例 bladder exstrophy（P2）——3 分",
+        "② 手术定义＝单句＋定语从句「It is a major surgery that…」，举例 enterocystoplasty（P4）——3 分",
+        "③ 新技术定义＝冒号＋从句，冒号前用 cutting-edge 作褒义评价，举例 biological composite scaffold（P8）——2 分",
+        "④ 换句式的理由：define different aspect，避免 repetition，并为新技术定义留出 to praise／展示 advantage 的空间——2 分"
+      ],
+      "total_points": 10,
+      "hint": "先把三个定义对象按课文顺序排好（疾病—手术—新技术），再各自回忆它的语法容器；理由部分回到老师讲「repetition」和「to praise」的那两处。",
+      "explanation": "本题的三个得分点就是老师 01:29:07 – 01:29:45 的总结顺序：他先问第一个 disease 用了什么，得到 phrase；再问第二个 surgery，得到 It is a major surgery…；最后问第八段，学生答「标点符号直接说明了」，即冒号＋从句。第③点还要答出冒号的第二重功能——老师追问 What do you also want to express? 答案是 To praise、to give the advantage of this new approach。第④点对应老师的两句总结：一是 42:15 的「这是第二种 definition 的表达方法，因为它 define different aspect」，二是 01:30:41 的「这就是避免了我们的 repetition」。常见失分是把疾病与手术的句式对调，或只答句式不举对象。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "3. 医学定义三种句式 · –3.4 三种定义句式 · 说话人2 30:36 / 42:15 / 01:28:44 / 01:29:45 / 01:30:41"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "stem": "本课有两处「列举」被老师强调顺序不能调换。请回答：\n（1）第三段列举并发症时依据什么逻辑？列举了哪三项？\n（2）第七段列举三类风险时依据什么逻辑？三类风险分别用什么小词标记、各属什么层面？\n（3）为什么这两处的排序依据不同？作答时把两者混用会犯什么错误？",
+      "answer": "（1）P3 按疾病严重程度递增（serious degree）：结石（kidney / bladder stone）→ 肾感染（kidney infections）→ 甚至癌症（even cancer），句末的 even 就是递进到顶点的语言标记。\n\n（2）P7 按手术的过程逻辑（process logic，术前 → 术后 → 术后后期）：① the key challenge——两个器官功能冲突（肠管主吸收 vs 膀胱主排泄），属 physical；② meanwhile——术后新环境使肠管分泌更多黏液，升高尿路感染与膀胱结石风险，属 physical，其中 low compliance 与 social stigma 属 mental；③ last also——膀胱过度膨胀（未规律排空）导致膀胱穿孔，属 physical。\n\n（3）两处依据不同，因为 P3 讲的是「病得怎么样」（疾病后果的严重度），P7 讲的是「手术走到哪一步」（手术是一个 process）。混用会破坏原文逻辑：若把 P7 按严重度排，就解释不了为什么穿孔必须排在最后（只有术后膀胱才会膨大）；若把 P3 按病程排，就丢掉了 even cancer 所标记的严重度递进。",
+      "scoring_criteria": [
+        "① P3 依据严重程度递增（serious degree），三项为结石（kidney / bladder stone）→ 肾感染（kidney infections）→ 甚至癌症（even cancer）——3 分",
+        "② P7 依据手术过程逻辑（process logic，术前→术后），标记词为 the key challenge / meanwhile / last also——3 分",
+        "③ P7 三类风险的内容与层面：术前器官功能冲突（physical）／术后新环境致黏液增多、感染与结石（physical）以及依从性低与社会污名（mental）／术后膀胱过度膨胀致穿孔（physical）——2 分",
+        "④ 指出两处依据不同（一处是疾病严重度、一处是手术过程），若混用会破坏原文的因果与过程逻辑——2 分"
+      ],
+      "total_points": 10,
+      "hint": "一句话区分两处：一处答案是「serious degree」，另一处答案是「process logic」；再想每一处的三项内容与标记词。",
+      "explanation": "逐点呼应得分点：①②分别对应老师的两处结论——「yes, serious degree, right? the seriousness degree of the disease……so we can't change this order because there is logic」（37:13 / 37:28）与「surgery 是一个什么？是个 procedure，process……它是按照什么？process logic，术前术后是不是？」（01:15:05 / 01:15:39）。③对应课堂上逐一确认的三条：the key challenge（功能冲突）、meanwhile（new environment 与 social stigma）、第三条（overdistension → perforation）；老师还明确把 first 归为 physical、把 social stigma 归为 mental health（01:18:33 – 01:18:45）。④是本课最典型的易混点：P3 是「严重度」，P7 是「病程」，两者不可互换。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "6. P7：三类风险与 process 逻辑 · 与第 5 章 –5.4 两处列举逻辑 · 说话人2 37:13 / 01:13:30 / 01:15:05 / 01:18:45"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "points": 15,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "论述题",
+      "stem": "请结合 Unit 5 课文从第二段到应用段的推进，论述这篇医学文本是如何用「写作手法」搭建起一条完整逻辑链的。要求：\n（1）概括全文的段落逻辑链；\n（2）指出课文出现的写作手法（至少五类），说明各自主要出现在哪些段落、承担什么功能；\n（3）结合老师「understand this paragraph for analyze the structure, not translate」以及他对「只会 example 不会 discussion」的批评，谈谈这种读法对医学英语写作的启示。",
+      "answer": "（1）段落逻辑链：P2 用病例给出疾病定义 → P3 讲疾病的后果（并发症）→ P4 给出第二个方案（膀胱扩大术）→ P5 指出手术仍有局限 → P6 对老术式 enterocystoplasty 作出评价（权宜之计、百年未突破）→ P7 列出术后的三类风险 → P8 提出新方案（生物复合支架）并讲其原理 → 应用段讲临床 practice。段落之间靠 also、unfortunately、To address these limitations、theory → practice 这些小词与大结构扣合。\n\n（2）写作手法及功能：① definition（P2 疾病／P4 手术／P8 新技术）——区分定义对象、避免 repetition，并为新技术留出褒扬空间；② cause and effect（P3、P4、P6、P7、P8、应用段）——本课最密集的手法，把疾病的后果、手术的目的、风险的机制逐层拆开；③ exemplification（P3、P4、P5）——用 such as／include 给出具体并发症与例子；④ comparison / contrast（P4、P7）——把 more urine 与 reduce internal pressure、肠管吸收与膀胱排泄对照，突出功能冲突；⑤ listing（P7）——把风险分条列举，并用小词而非 first/second/third 标层次；⑥ process analysis（P6、P7、P8、应用段）——用 excising→producing、术前→术后、extract→seed、before→once implanted 组织过程；⑦ quotation（P5、P8 后半）——提供权威性与说服力，并展示新技术的优势。\n\n（3）启示：阅读医学文本要先概括 main idea，再逐句细读，最后回看整段逻辑；写作不能停在 topic sentence + example，必须补上因果分析——这正是老师批评的「中国学生做完实验数据很好但不会 discussion」的短板。",
+      "scoring_criteria": [
+        "① 段落逻辑链：P2 疾病定义 → P3 疾病后果 → P4 第二个方案（膀胱扩大术）→ P5 手术局限 → P6 对老术式的评价 → P7 三类风险 → P8 新方案（生物复合支架）→ 应用段谈 practice——4 分",
+        "② 写出至少五类写作手法并落到具体段落：definition、cause and effect、exemplification、comparison/contrast、listing、process analysis、quotation——5 分",
+        "③ 说明各手法的功能：定义区分对象避免重复；因果分析是学术写作的核心（discussion 的语言形态）；对比突出功能冲突；列举与过程为风险排序提供依据；引用提供权威与说服力——3 分",
+        "④ 指出段落之间的连接靠 also / unfortunately / To address these limitations / theory → practice 等小词与结构标记——2 分",
+        "⑤ 启示部分：先概括 main idea 再细读再回看整段；写作不能停留在 topic sentence + example，必须补上因果分析（discussion）——1 分"
+      ],
+      "total_points": 15,
+      "hint": "先用一句话把八段的链条念一遍，再把七类写作手法像贴标签一样贴到各段上，最后回到老师的两句方法论收尾。",
+      "explanation": "本题覆盖全课结构，得分点与课堂内容一一对应：①链条来自第 2 章 2.2 总表，是老师逐段追问 main idea 的结果；②③的手法与功能分别落在 3.1–3.4（definition）、4.1–4.7（cause and effect 与 exemplification）、5.1（comparison）、5.2（listing）、5.6 与 7.3（process）、6.2 与 7.7（quotation）；④的段落连接见 2.3（also 39:07、unfortunately 44:14、To address these limitations 01:34:32、theory → practice 01:49:01）；⑤对应老师的两句原话——「understand this paragraph for analyze the structure, not translate」（37:28）与对「一个 topic sentence，然后 example……其实没有任何的逻辑分析和逻辑思考」的批评（40:03 / 40:23）。失分点通常是把手法孤立罗列而不落段，或漏掉 theory → practice 这一处段间连接。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "2. Unit 5 课文地图（P2–P9） · 段落总表 + 第 0 章 两条主线 · 说话人2 37:28 / 40:03 / 01:29:45 / 01:49:01"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "points": 15,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "材料分析题",
+      "stem": "阅读下面这段课文材料（老师在本课课堂上朗读并逐句分析的第七段，以「……」表示省略），回答后面的问题。\n\n> While bowel tissue is designed for absorption, the bladder's primary function is excretion. …… this physiological disparity may heighten the risk of cancer development. …… Meanwhile, the new environment prompts the bowel to release more mucus, raising the risk of urinary tract infections and bladder stone formation. …… This is particularly challenging in the pediatric population due to low compliance and social stigma. …… risking bladder overdistension if not routinely drained.\n\n（1）第一句使用了什么写作手法？它在整段中承担什么作用？\n（2）老师一共数出这段有几类风险？分别是什么？各属于 physical 还是 mental 层面？\n（3）为什么这三类风险的排列顺序不能调换？依据的是哪种逻辑？\n（4）请从材料中找出至少两条 cause–effect 链，并分别标出 cause 与 effect。",
+      "answer": "（1）第一句是 comparison / contrast（对比）：用 While 引出肠管（bowel tissue）主吸收（absorption）与膀胱（bladder）主排泄（excretion）这两种相反的功能，作用是突出两个器官的 conflicting roles——这正是第一类风险「显而易见」的原因，所以被排在最前面。\n\n（2）三类风险：① the key challenge——术前两个器官的功能冲突，属 physical，其后果是 physiological disparity may heighten the risk of cancer development；② meanwhile——术后新环境（the new environment）促使肠管分泌更多黏液，升高尿路感染与膀胱结石风险，属 physical，其中 low compliance 与 social stigma 属 mental（老师明确说 social stigma 就是 mental health）；③ 第三条（last also）——膀胱若未规律排空则过度膨胀，导致膀胱穿孔（bladder perforation），属 physical。\n\n（3）不能调换，因为依据是 process logic——手术是一个 procedure、一个过程，顺序按术前→术后排列：功能冲突在术前已存在，术后才有新环境带来的问题，也只有术后膀胱才会膨大进而穿孔，所以穿孔必须排在最后。\n\n（4）材料中的因果链示例（任答两条即可）：① cause＝physiological disparity（两器官生理差异）→ effect＝heightened risk of cancer development；② cause＝the new environment（术后新环境）→ effect＝prompts the bowel to release more mucus →（进一步）raising the risk of urinary tract infections and bladder stone formation；③ cause＝low compliance and social stigma → effect＝this is particularly challenging in the pediatric population；④ cause＝bladder overdistension（if not routinely drained）→ effect＝bladder perforation。",
+      "scoring_criteria": [
+        "① 第一句是 comparison／contrast（用 While 引出吸收与排泄两种相反功能），作用是突出 conflicting roles，并说明第一类风险为何最显而易见——3 分",
+        "② 答出三类风险并各给层面：the key challenge（术前功能冲突，physical）／meanwhile（术后新环境致黏液增多、感染与结石，physical，其中依从性低与社会污名属 mental）／第三条（膀胱过度膨胀致穿孔，physical）——5 分",
+        "③ 顺序不可调换，依据 process logic（术前→术后→术后后期）；只有术后膀胱才会膨大进而穿孔，故穿孔排在最后——4 分",
+        "④ 至少两条因果链并标出 cause 与 effect，例如生理差异→癌症风险升高；术后新环境→黏液增多→尿路感染与结石；依从性低与社会污名→儿童群体尤其困难；膀胱过度膨胀→穿孔——3 分"
+      ],
+      "total_points": 15,
+      "hint": "先给第一句贴手法标签（注意关系连词），再按「术前／术后」的时间轴数风险，最后把每条风险的 cause 与 effect 各写一栏。",
+      "explanation": "逐点对应课堂内容：（1）老师在 01:06:30 确认 very typical comparison，并把该句念给学生听；（2）老师先问 How many risks，学生答 Two，老师纠正为 three，并逐条给出 the key challenge、meanwhile、last also（01:09:00 – 01:13:30）；层面归属出自老师的追问「第一个肯定术后是有什么？physical health……那么 social stigma 是什么？mental health」（01:18:33 – 01:18:45）；（3）依据出自老师连问三次 why 后给出的 process logic 解释，以及「只有术后它才会膨大，大了以后就会 perforation」（01:14:36 – 01:15:39）；（4）四组因果链全部来自该段原文与老师的逐句拆解（01:10:44 / 01:17:44 / 01:19:48 / 01:21:47）。常见失分：把风险数成两条（漏掉 social stigma 或膀胱过度膨胀）、把顺序解释成「严重程度」、或因果链只写 effect 不写 cause。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-009-010/recording.md",
+        "label": "6. P7：三类风险与 process 逻辑 · –5.4 第七段三类风险材料分析 · 说话人2 01:06:30 / 01:09:00 / 01:12:29 / 01:15:39 / 01:18:45 / 01:21:47"
+      }
     }
-  ]
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "multiple_choice": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
 }

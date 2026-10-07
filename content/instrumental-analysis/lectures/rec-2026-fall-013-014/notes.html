@@ -1,271 +1,406 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>分析化学 · 第13-14节 · 分子荧光分析法</title><style>
-    :root{--accent:#0E5C52;--accent-deep:#0A463E;--accent-tint:#E7F0EB;--paper:#FAF8F1;--ink:#24201A;--ink-soft:#4A4337;--muted:#857B68;--line:#E6DECC;--mnem:#A2630C;--mnem-tint:#F8ECD3;--crimson:#B23A2E;}
-    *{box-sizing:border-box;} body{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--paper);max-width:900px;margin:0 auto;padding:40px 32px;line-height:1.8;font-size:15px;}
-    h1{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:28px;border-bottom:3px solid var(--accent);padding-bottom:12px;}
-    h2{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:22px;background:var(--accent-tint);padding:10px 16px;border-left:5px solid var(--accent);border-radius:0 6px 6px 0;margin-top:36px;}
-    h3{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:18px;margin-top:28px;border-bottom:1.5px solid #ccc;padding-bottom:6px;}
-    h4{color:var(--accent-deep);font-size:16px;margin-top:20px;}
-    blockquote{background:var(--mnem-tint);border-left:4px solid var(--mnem);padding:12px 18px;margin:16px 0;border-radius:0 6px 6px 0;color:var(--ink-soft);font-size:14px;}
-    table.vt{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;}
-    table.vt th{background:var(--accent);color:#fff;padding:10px 12px;text-align:left;font-weight:600;}
-    table.vt td{padding:8px 12px;border-bottom:1px solid var(--line);}
-    table.vt tr:nth-child(even){background:#fff;}
-    .checklist{list-style:none;padding-left:8px;} strong{color:var(--accent-deep);}
-    details.qa{margin:12px 0;padding:10px 14px;background:#fff;border:1px solid #ddd;border-radius:6px;}
-    details.qa summary{cursor:pointer;font-weight:600;color:var(--accent-deep);}
-    details.qa .qa-answer{margin-top:8px;color:var(--ink-soft);}
-    @media print{body{padding:20px;}h2{page-break-after:avoid;}table.vt{page-break-inside:avoid;}}
-    </style></head><body><h1>分析化学 · 分子荧光分析法（MFS）</h1>
-<h2>课程信息</h2>
-<table class="vt">
-<tr><th>项目</th><th>内容</th></tr>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>分析化学 · 第13-14节 · 分子荧光分析法（MFS）</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#155E75; --accent-d:#0C3F51; --accent-t:#E1EEF3;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.card h4{margin:0 0 2mm;font-size:10pt;color:var(--accent-d);}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body>
+<div class="page cover"><p class="h1">分析化学（仪器分析）</p>
+<p class="meta">第13-14节 · 分子荧光分析法（MFS） · 2026-09-21（周一）</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 33418 字 / 143 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>分析化学 · 第13-14节</td></tr>
+<tr><td>学时</td><td>2 学时（理论课）</td></tr>
+<tr><td>主题</td><td>作业讲评、双波长与导数光谱、催化动力学光度法、分子荧光分析法（MFS）</td></tr>
+<tr><td>素材规模</td><td>逐字稿 33418 字 / 143 轮发言</td></tr></table>
+<p class="foot">核心内容版笔记 · 结论式短句 · 每条附逐字稿定位</p></div>
+
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">由吸收定量延伸到发射光谱：先巩固双波长与导数法，再经催化动力学测酶活，最后系统建立分子荧光（光致发光）的能级、散射干扰与结构判据。</p>
+<svg viewBox="0 0 680 300" width="100%" aria-label="知识框架">
+<rect x="240" y="4" width="200" height="28" fill="#E1EEF3" stroke="#155E75"/>
+<text x="340" y="22" text-anchor="middle" font-size="11">第13-14节主线</text>
+<rect x="20" y="44" width="150" height="26" fill="#fff" stroke="#0C3F51"/><text x="95" y="61" text-anchor="middle" font-size="9">① 作业·朗伯比尔</text>
+<rect x="180" y="44" width="150" height="26" fill="#fff" stroke="#0C3F51"/><text x="255" y="61" text-anchor="middle" font-size="9">② 双波长·血氧</text>
+<rect x="340" y="44" width="150" height="26" fill="#fff" stroke="#0C3F51"/><text x="415" y="61" text-anchor="middle" font-size="9">③ 导数光谱</text>
+<rect x="500" y="44" width="160" height="26" fill="#fff" stroke="#0C3F51"/><text x="580" y="61" text-anchor="middle" font-size="9">④ 催化动力学</text>
+<rect x="20" y="88" width="310" height="26" fill="#E1EEF3" stroke="#155E75"/><text x="175" y="105" text-anchor="middle" font-size="9">⑤ MFS 定义·特点·时间分辨荧光</text>
+<rect x="340" y="88" width="320" height="26" fill="#E1EEF3" stroke="#155E75"/><text x="500" y="105" text-anchor="middle" font-size="9">⑥ 多重态·Jablonski 图·荧光/磷光</text>
+<rect x="20" y="132" width="200" height="26" fill="#fff" stroke="#0C3F51"/><text x="120" y="149" text-anchor="middle" font-size="9">⑦ 瑞利/拉曼散射</text>
+<rect x="230" y="132" width="200" height="26" fill="#fff" stroke="#0C3F51"/><text x="330" y="149" text-anchor="middle" font-size="9">⑧ 激发/荧光光谱</text>
+<rect x="440" y="132" width="220" height="26" fill="#fff" stroke="#0C3F51"/><text x="550" y="149" text-anchor="middle" font-size="9">⑨ 量子效率·共轭·共平面</text>
+<rect x="20" y="176" width="640" height="40" fill="#FBF0DC" stroke="#A9660A"/><text x="340" y="194" text-anchor="middle" font-size="9">★ 掌握：双波长选点；导数法提选择性；催化动力学测催化剂；荧光从 S₁V₀ 出发</text>
+<text x="340" y="210" text-anchor="middle" font-size="9">波长顺序 激发光 &lt; 荧光 &lt; 磷光；拉曼干扰大，可调激发波长消除</text>
+</svg></div>
+
+<div class="page"><h2 class="h2">1. 作业讲评：有机溶剂中的朗伯-比尔定律</h2>
+<p class="lead">澄清透明溶液即可用朗伯-比尔定律；未用有机溶剂扣空白时截距反映溶剂吸收，斜率仍为待测物摩尔吸光系数。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>有机溶剂中溶解待测物测吸光度，仍符合朗伯-比尔定律 <span class="loc">〔说话人2 01:35〕</span></li>
+<li>要求溶液澄清透明、单色光照射，溶剂不必是水 <span class="loc">〔说话人2 01:35〕</span></li>
+<li>含数据表格的作业须附拟合曲线图，以后未附图将扣分 <span class="loc">〔说话人2 02:49〕</span></li>
+<li>直线拟合常不过原点；未用有机溶剂作空白参比时截距不为零属正常 <span class="loc">〔说话人2 02:49〕</span></li>
+<li>参比为空白吸收池、未放入有机溶剂时，截距来自溶剂本身微弱吸收 <span class="loc">〔说话人2 03:50〕</span></li>
+<li>摩尔吸光系数 ε 取拟合直线斜率，截距可忽略（属溶剂贡献） <span class="loc">〔说话人2 04:28〕</span></li>
+<li>已知溶剂浓度时，可用截距作吸光度 A 反算溶剂摩尔吸光系数 <span class="loc">〔说话人2 04:28〕</span></li>
+<li>以有机溶剂作参比溶液重复实验，截距消除，直线过原点 <span class="loc">〔说话人2 04:50〕</span></li>
+<li>有机溶剂参比下 A=Kbc 成立，由透光率得 A 再算 ε <span class="loc">〔说话人2 05:23〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>参比方式</th><th>拟合直线</th><th>ε 的读取</th></tr>
+<tr><td>空白池（未扣溶剂）</td><td>有截距，不过原点</td><td>斜率=待测物 ε</td></tr>
+<tr><td>有机溶剂参比</td><td>过原点</td><td>斜率=待测物 ε</td></tr></table>
+</div>
+
+<div class="page"><h2 class="h2">2. 上节复习：仪器、显色与双波长找法</h2>
+<p class="lead">巩固分光光度法部件与显色条件；双波长先画吸收曲线，再在干扰组分上等吸收点选第二波长。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>单波长双光束可消除光源与检测器不稳定误差 <span class="loc">〔说话人2 07:10〕</span></li>
+<li>双波长双光束只用一个比色皿，浑浊液可测，并可双波长消干扰 <span class="loc">〔说话人2 07:10〕</span></li>
+<li>显色条件靠实验优化：显色剂、pH、温度、反应时间等 <span class="loc">〔说话人2 07:10〕</span></li>
+<li>选波长原则：吸收大、干扰小 <span class="loc">〔说话人2 08:01〕</span></li>
+<li>参比溶液：除待测外谁有吸收就选谁作参比 <span class="loc">〔说话人2 08:01〕</span></li>
+<li>吸光度测量宜在 0.2–0.8；0.434 为最佳条件（要求掌握） <span class="loc">〔说话人2 08:01〕</span></li>
+<li>双波长：先做待测与干扰组分吸收曲线（要求掌握、常用） <span class="loc">〔说话人2 08:29〕</span></li>
+<li>从待测组分选一波长 λ₁，再在干扰组分曲线上找等吸收点 λ₂ <span class="loc">〔说话人2 08:29〕</span></li>
+<li>双波长定量关系 ΔA=ΔK·b·c；ΔK 越大、两波长处待测吸光度差越大则越灵敏 <span class="loc">〔说话人2 08:29〕</span></li>
+</ul>
+</div>
+
+<div class="page"><h2 class="h2">3. 双波长选点原则与血氧饱和度测定</h2>
+<p class="lead">干扰在两波长处吸光度相等、待测在两波长处吸光度差足够大；血氧仪用氧合与脱氧血红蛋白的双波长分光。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>选波长原则一：干扰组分在两波长的等吸收点 <span class="loc">〔说话人2 10:00〕</span></li>
+<li>选波长原则二：待测组分在两波长吸光度差足够大（ΔK 大），灵敏度高 <span class="loc">〔说话人2 10:00〕</span></li>
+<li>血氧饱和度：HbO₂ 与 Hb 吸收曲线不同且重叠，可用双波长法 <span class="loc">〔说话人2 10:42〕</span></li>
+<li>常用波长约 660 nm 与 940 nm（近红外），属双波长双光路 <span class="loc">〔说话人2 10:42〕</span></li>
+<li>不同厂家波长可略有差异，只要满足上述选点原则 <span class="loc">〔说话人2 11:43〕</span></li>
+<li>血氧探头无创：光照射组织，反射光由接收器检测 <span class="loc">〔说话人2 12:20〕</span></li>
+<li>智能手表测心率亦基于类似光度法交替测量 <span class="loc">〔说话人2 12:20〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>双波长两原则：干扰等吸收点 + 待测 ΔK 大 <span class="loc">〔说话人2 10:00〕</span></div>
+</div>
+
+<div class="page"><h2 class="h2">4. 导数光谱法</h2>
+<p class="lead">对吸收光谱求导：峰位不变利于定性，峰形变窄可分辨重叠峰并扣除与波长无关的背景；信噪比下降。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>对 A(λ) 求零至四阶导数；零阶为原始吸收峰 <span class="loc">〔说话人2 13:54〕</span></li>
+<li>求导后吸收峰对应波长位置不变：一次导为 0，二次为最低，三次为 0，四次为最高 <span class="loc">〔说话人2 14:55〕</span></li>
+<li>高阶导数使峰上半部分变窄，重叠峰可能分开 <span class="loc">〔说话人2 15:55〕</span></li>
+<li>最大优点：选择性提高（分辨重叠峰、看微弱杂质） <span class="loc">〔说话人2 15:55〕</span></li>
+<li>背景若与波长无关，求导后常数背景消除 <span class="loc">〔说话人2 16:47〕</span></li>
+<li>缺点：信噪比降低，灵敏度可能有损失 <span class="loc">〔说话人2 16:47〕</span></li>
+<li>现代仪器可软件直接输出各阶导数谱 <span class="loc">〔说话人2 17:19〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>项目</th><th>优点</th><th>缺点</th></tr>
+<tr><td>导数光谱法</td><td>峰位不变；峰变窄；扣背景</td><td>信噪比下降</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>导数法最大优点：提高选择性 <span class="loc">〔说话人2 15:55〕</span></div>
+</div>
+
+<div class="page"><h2 class="h2">5. 紫外光谱鉴别分子间相互作用（拓展）</h2>
+<p class="lead">分别扫描两组分与混合液；若无相互作用，混合谱应等于两谱加和，否则存在相互作用生成新物种。</p>
+<ul class="kv">
+<li>例：胆红素与蛋白质分别扫谱后混合再扫谱 <span class="loc">〔说话人2 18:07〕</span></li>
+<li>吸光度具有加和性；混合曲线与加和曲线一致则为简单混合 <span class="loc">〔说话人2 19:08〕</span></li>
+<li>不一致则存在相互作用；本课不考，科研中便捷 <span class="loc">〔说话人2 19:08〕</span></li>
+</ul>
+</div>
+
+<div class="page"><h2 class="h2">6. 催化动力学光度法</h2>
+<p class="lead">测反应过程中指示物吸光度变化速率；对象是催化剂（酶）浓度，底物过量、催化剂少量。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>热力学讲平衡，动力学讲反应速率 <span class="loc">〔说话人2 20:00〕</span></li>
+<li>通过化学反应速率测定浓度；与静态测蛋白等不同 <span class="loc">〔说话人2 20:00〕</span></li>
+<li>目的：测定催化剂的量（如酶活性），非反应物 <span class="loc">〔说话人2 21:07〕</span></li>
+<li>选本征慢反应，加少量催化剂加速；催化剂过量则瞬间完成无法测 <span class="loc">〔说话人2 21:07〕</span></li>
+<li>底物浓度远大于催化剂，反应中底物浓度近似不变 <span class="loc">〔说话人2 23:29〕</span></li>
+<li>反应速率在控制条件下主要与催化剂浓度相关 <span class="loc">〔说话人2 23:06〕</span></li>
+<li>监测吸光度随时间变化，时间须卡准；时间不准则结果不准 <span class="loc">〔说话人2 25:41〕</span></li>
+<li>标准曲线：多管相同底物，不同催化剂量，须同时加入（多道移液枪） <span class="loc">〔说话人2 26:34〕</span></li>
+<li>终止反应：加酶抑制剂、沸水浴或破坏酶活性等 <span class="loc">〔说话人2 25:00〕</span></li>
+<li>酶催化动力学光度法灵敏度极高：约 10⁻⁶–10⁻⁹ g/mL，有的达 10⁻¹² g/mL <span class="loc">〔说话人2 27:24〕</span></li>
+<li>缺点：影响因素多，起止时间不易严格控制 <span class="loc">〔说话人2 27:24〕</span></li>
+<li>催化动力学讲完后进入分子荧光；中间红外章节本班不讲（化学、药化等专业用） <span class="loc">〔说话人2 27:24〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>催化动力学光度法测催化剂（酶），灵敏度高 <span class="loc">〔说话人2 27:24〕</span></div>
+</div>
+
+<div class="page"><h2 class="h2">7. 分子荧光分析法（MFS）总论</h2>
+<p class="lead">分子荧光属光致发光：受光激发发射荧光，停光即停；与化学发光（荧光棒）不同。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>MFS = Molecular Fluorescence Spectroscopy（分子荧光光谱法，要求掌握） <span class="loc">〔说话人2 30:00〕</span></li>
+<li>AFS = Atomic Fluorescence Spectroscopy（原子荧光，本课不讲） <span class="loc">〔说话人2 30:00〕</span></li>
+<li>荧光棒属化学发光（化学反应供能），非本章 MFS <span class="loc">〔说话人2 28:29〕</span></li>
+<li>分子荧光：有光照才发光，无光照外观无变化；光照停止发光停止 <span class="loc">〔说话人2 35:51〕</span></li>
+<li>荧光粉、验钞笔照射发亮等属分子荧光现象 <span class="loc">〔说话人2 31:03〕</span></li>
+<li>洗衣液加蓝色素、粉底用绿/紫互补色增白，属色光互补而非荧光；受光照才发蓝光者才是荧光 <span class="loc">〔说话人2 32:25〕</span></li>
+<li>GFP/RFP/BFP/YFP 等为不同颜色荧光蛋白标记 <span class="loc">〔说话人2 35:04〕</span></li>
+<li>荧光法灵敏度高（如测核酸、DNA 测序） <span class="loc">〔说话人2 42:37〕</span></li>
+<li>选择性好：发荧光物质不常见、发荧光者少，干扰相对少 <span class="loc">〔说话人2 42:37〕</span></li>
+<li>荧光有寿命：激发停止后荧光按寿命衰减（荧光寿命常小于微秒） <span class="loc">〔说话人2 43:40〕</span></li>
+</ul>
+<div class="def"><strong>定义</strong> 受紫外/可见光照射发射荧光，停光即停，属分子发光（光致发光）分析法 <span class="loc">〔说话人2 37:40〕</span></div>
+</div>
+
+<div class="page"><h2 class="h2">8. 荧光寿命与时间分辨荧光</h2>
+<p class="lead">不同荧光物质寿命不同；停激发后短寿命组分先灭，可延迟检测以提选择性。</p>
+<ul class="kv">
+<li>时间分辨荧光：横轴时间、纵轴荧光强度，停光后强度逐级下降 <span class="loc">〔说话人2 52:27〕</span></li>
+<li>寿命到则该组分荧光熄灭，剩余为长寿命组分；可分离混合荧光 <span class="loc">〔说话人2 53:20〕</span></li>
+<li>纳秒级仪器昂贵；普通约万元级仪器多为毫秒级 <span class="loc">〔说话人2 53:20〕</span></li>
+<li>利用寿命差异可提高选择性、减少干扰 <span class="loc">〔说话人2 54:30〕</span></li>
+<li>最早荧光记录：植物学家泡植物浸出液见蓝光（停光恢复本色） <span class="loc">〔说话人2 37:00〕</span></li>
+<li>早期记载：Shoemaker 见太阳晒过的石头入屋后仍发光，说明发光需一定时间（余辉/寿命） <span class="loc">〔说话人2 44:36〕</span></li>
+</ul>
+</div>
+
+<div class="page"><h2 class="h2">9. 分子多重态与 Jablonski 能级图</h2>
+<p class="lead">M=2S+1 区分单线态与三线态；荧光一律从 S₁ 的 V₀ 发射，磷光从 T₁ 的 V₀ 发射。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>分子多重态 M=2S+1，S 为总自旋量子数 <span class="loc">〔说话人2 55:54〕</span></li>
+<li>成对电子自旋相反（+1/2 与 -1/2），S=0，M=1，为单线态（singlet） <span class="loc">〔说话人2 55:54〕</span></li>
+<li>激发后若两电子自旋仍相反，仍为单线激发态 S <span class="loc">〔说话人2 55:54〕</span></li>
+<li>一电子跃迁且自旋平行时 S=1，M=3，为三线态（triplet） <span class="loc">〔说话人2 57:10〕</span></li>
+<li>单个未成对电子：双线态（M=2） <span class="loc">〔说话人2 57:42〕</span></li>
+<li>紫外可见吸收对应电子能级跃迁（非单纯振动/转动） <span class="loc">〔说话人2 59:17〕</span></li>
+<li>防晒霜吸光后能量多以热能等形式耗散，一般不发光 <span class="loc">〔说话人2 59:43〕</span></li>
+<li>振动弛豫（vibrational relaxation）：同一电子态内振动能级逐级下降，失热/动能 <span class="loc">〔说话人2 01:01:48〕</span></li>
+<li>内转换：S₂ 单线激发态 → S₁ 单线激发态（同为 S） <span class="loc">〔说话人2 01:02:38〕</span></li>
+<li>系间窜越 S→T：自旋翻转；重原子（I、Br）或顺磁性 O₂ 促进 <span class="loc">〔说话人2 01:02:38〕</span></li>
+<li>S→T 跃迁较难，低能级到高能级自旋翻转更受禁 <span class="loc">〔说话人2 57:42〕</span></li>
+<li>荧光：自 S₁ 的 V₀ → S₀ 各振动能级发射光子 <span class="loc">〔说话人2 01:04:06〕</span></li>
+<li>所有荧光均从 S₁V₀ 出发，与最初吸收能量高低无关 <span class="loc">〔说话人2 01:04:06〕</span></li>
+<li>到三线态后也可能发光，称磷光（phosphorescence）；荧光与磷光均属光致发光</li>
+<li>吸光到激发态后，能量经振动弛豫、内转换、系间窜越等耗散；荧光自 S₁V₀ 回基态，磷光自 T₁V₀ 回基态 <span class="loc">〔说话人2 01:06:19〕</span></li>
+</ul>
+<h3 class="h3">B. 波长比较</h3>
+<table class="tbl"><tr><th>光</th><th>能级差</th><th>波长</th></tr>
+<tr><td>激发光（吸收）</td><td>最大</td><td>最短</td></tr>
+<tr><td>荧光</td><td>较小</td><td>长于激发光（斯托克斯位移）</td></tr>
+<tr><td>磷光</td><td>最小</td><td>最长</td></tr></table>
+<ul class="kv">
+<li>波长与能级差成反比；荧光波长长于激发光 <span class="loc">〔说话人2 01:06:19〕</span></li>
+<li>荧光谱与磷光谱形状可相似（终点 S₀ 振动能级分布相同） <span class="loc">〔说话人2 01:07:15〕</span></li>
+<li>激发谱与荧光谱可略像；吸收与发射大致镜像对称（振动能级分布相近时） <span class="loc">〔说话人2 01:09:02〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>荧光必从 S₁V₀ 出发；波长顺序 激发 &lt; 荧光 &lt; 磷光 <span class="loc">〔说话人2 01:06:19〕</span></div>
+</div>
+
+<div class="page"><h2 class="h2">10. 瑞利散射与拉曼散射</h2>
+<p class="lead">瑞利散射波长等于激发光；拉曼散射波长位移，易掩蔽荧光峰，可调激发波长分离。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>瑞利散射：弹性散射，吸多少发多少，散射光波长=激发波长 <span class="loc">〔说话人2 01:09:46〕</span></li>
+<li>散射强度 ∝ 1/λ⁴；天蓝因短波散射强而人眼对蓝敏感 <span class="loc">〔说话人2 01:10:54〕</span></li>
+<li>拉曼散射：非弹性，散射光波长≠激发波长，有固定拉曼位移 <span class="loc">〔说话人2 01:14:32〕</span></li>
+<li>荧光发射波长与激发波长无关（总在 S₁V₀→S₀），强度随激发波长变 <span class="loc">〔说话人2 01:15:03〕</span></li>
+<li>硫酸奎宁：448 nm 峰用 320 与 350 nm 激发均出现→荧光 <span class="loc">〔说话人2 01:16:50〕</span></li>
+<li>320/350 nm 峰与激发波长相同、硫酸空白也有→瑞利散射（用什么激发就发什么波长） <span class="loc">〔说话人2 01:18:13〕</span></li>
+<li>360/400 nm 峰随激发波长移动→拉曼散射 <span class="loc">〔说话人2 01:18:33〕</span></li>
+<li>拉曼散射对荧光测定干扰大于瑞利（峰小易忽略） <span class="loc">〔说话人2 01:18:42〕</span></li>
+<li>消除拉曼干扰：改变激发光波长，使拉曼峰离开荧光峰 <span class="loc">〔说话人2 01:19:09〕</span></li>
+<li>拉曼增强技术可用于安检、炸药（如 TNT）便携检测 <span class="loc">〔说话人2 01:20:35〕</span></li>
+</ul>
+<div class="mnem">助记（整理）：瑞利同波，拉曼位移，调激发波长避荧光。</div>
+</div>
+
+<div class="page"><h2 class="h2">11. 激发光谱、荧光光谱与三维指纹图谱</h2>
+<p class="lead">激发谱扫激发波长（固定发射检测）；荧光谱用最佳激发波长扫发射；三维谱两维波长+强度，指纹唯一。</p>
+<ul class="kv">
+<li>荧光光谱：固定激发光，扫描发射波长得到的谱 <span class="loc">〔说话人2 01:21:44〕</span></li>
+<li>激发光谱：变激发波长，固定检测最强荧光发射波长 <span class="loc">〔说话人2 01:22:44〕</span></li>
+<li>可同样得到磷光光谱（若物质发磷光） <span class="loc">〔说话人2 01:23:17〕</span></li>
+<li>波长从短到长顺序：激发、荧光、磷光 <span class="loc">〔说话人2 01:23:17〕</span></li>
+<li>二维图横轴虽均为波长，但激发谱为激发光波长、荧光谱为荧光波长 <span class="loc">〔说话人2 01:24:09〕</span></li>
+<li>三维荧光谱：激发波长 × 发射波长 × 强度，称指纹图谱 <span class="loc">〔说话人2 01:25:22〕</span></li>
+<li>固定激发波长可在三维谱上切出荧光光谱切片 <span class="loc">〔说话人2 01:25:22〕</span></li>
+<li>三维谱信息量大，选择性优于一般紫外可见 <span class="loc">〔说话人2 01:26:02〕</span></li>
+</ul>
+</div>
+
+<div class="page"><h2 class="h2">12. 荧光量子效率与分子结构</h2>
+<p class="lead">须有大共轭才能吸光再发光；共轭越大、共平面越好，量子效率越高。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>荧光量子效率 Φ=发射荧光光子数/吸收激发光子数（亦言激发分子中用于发荧光的分数）；Φ≤1（要求掌握） <span class="loc">〔说话人2 01:27:32〕</span></li>
+<li>发荧光须先吸光，故需大共轭 π 体系（与紫外可见发色团一致） <span class="loc">〔说话人2 01:26:02〕</span></li>
+<li>苯、萘、蒽共轭增大，最佳激发波长与荧光波长均红移；苯 Φ≈0.11 弱，萘、蒽 Φ 依次升高 <span class="loc">〔说话人2 01:29:01〕</span></li>
+<li>β-胡萝卜素无苯环但大共轭，国标测维生素 A 用荧光法 <span class="loc">〔说话人2 01:29:38〕</span></li>
+<li>芘共平面 Φ 可达约 1.0；联苯两苯环可旋转、电子云难重叠，Φ 约 20% <span class="loc">〔说话人2 01:31:30〕</span></li>
+<li>荧光素与酚酞结构极近，荧光素氧桥锁共平面而强荧光，酚酞几乎不发光 <span class="loc">〔说话人2 01:32:21〕</span></li>
+<li>牛奶核黄素（维生素 B₂）约 10 kg 含 18 mg；荧光法测定，见光易分解 <span class="loc">〔说话人2 01:33:17〕</span></li>
+<li>荧光法亦可测细菌等（异常高信号可能样品变质） <span class="loc">〔说话人2 01:33:54〕</span></li>
+<li>取代基对荧光的影响下节课续讲 <span class="loc">〔说话人2 01:35:50〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>判能否荧光：大共轭 + 共平面；Φ 定义 <span class="loc">〔说话人2 01:32:21〕</span></div>
+</div>
+
+<div class="page"><h2 class="h2">附录 A · 必背清单</h2>
+<ul class="kv">
+<li>有机溶剂中澄清溶液仍符合朗伯-比尔定律；ε=斜率 <span class="loc">〔说话人2 01:35〕</span></li>
+<li>未扣溶剂空白→截距=溶剂吸收；有机溶剂参比→过原点 <span class="loc">〔说话人2 03:50〕</span></li>
+<li>吸光度测量范围 0.2–0.8；0.434 最佳 <span class="loc">〔说话人2 08:01〕</span></li>
+<li>双波长：干扰等吸收点 + 待测 ΔK 大；ΔA=ΔKbc <span class="loc">〔说话人2 10:00〕</span></li>
+<li>血氧常用 660 nm 与 940 nm <span class="loc">〔说话人2 10:42〕</span></li>
+<li>导数法：选择性↑、峰窄、扣背景；信噪比↓ <span class="loc">〔说话人2 16:47〕</span></li>
+<li>催化动力学测催化剂（酶）；10⁻⁶–10⁻⁹ g/mL <span class="loc">〔说话人2 27:24〕</span></li>
+<li>MFS 光致发光；荧光棒是化学发光 <span class="loc">〔说话人2 28:29〕</span></li>
+<li>M=2S+1；荧光从 S₁V₀，磷光从 T₁V₀ <span class="loc">〔说话人2 01:04:06〕</span></li>
+<li>波长：激发 &lt; 荧光 &lt; 磷光 <span class="loc">〔说话人2 01:06:19〕</span></li>
+<li>瑞利 λ 相同；拉曼有位移；调激发波长消拉曼 <span class="loc">〔说话人2 01:18:42〕</span></li>
+<li>Φ=发射光子/吸收光子；大共轭+共平面 <span class="loc">〔说话人2 01:27:32〕</span></li>
+</ul>
+</div>
+
+<div class="page"><h2 class="h2">附录 B · 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>有机溶剂体系不符合朗伯-比尔定律</td><td>澄清透明即可，溶剂可为有机相</td></tr>
+<tr><td>拟合截距大说明定律失效</td><td>未扣溶剂空白时截距多来自溶剂吸收</td></tr>
+<tr><td>截距也计入待测物 ε</td><td>ε 取斜率，截距对应溶剂</td></tr>
+<tr><td>荧光棒是分子荧光</td><td>荧光棒是化学发光，MFS 是光致发光</td></tr>
+<tr><td>洗衣液蓝色就是荧光</td><td>多为色素互补色增白，非荧光</td></tr>
+<tr><td>夜光表就是荧光</td><td>夜光余辉属磷光类现象，荧光寿命极短</td></tr>
+<tr><td>磷光=鬼火</td><td>课堂磷光指 T₁ 发射的光致发光，≠白磷自燃</td></tr>
+<tr><td>荧光波长随激发波长变</td><td>荧光峰位基本不变，强度变</td></tr>
+<tr><td>瑞利散射干扰最大</td><td>拉曼峰小易忽略，对定量干扰常更大</td></tr>
+<tr><td>催化动力学测反应物</td><td>测催化剂（酶）浓度/活性</td></tr>
+<tr><td>催化剂加越多越好</td><td>须少量，否则反应过快无法测速率</td></tr>
+<tr><td>无苯环一定不能荧光</td><td>β-胡萝卜素等大共轭无苯环亦可</td></tr>
+<tr><td>联苯与芘共轭程度相同</td><td>联苯可旋转破坏共平面，Φ 低</td></tr></table>
+</div>
+
+<div class="page"><h2 class="h2">附录 C · 考点索引表</h2>
+<table class="idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>有机溶剂朗伯-比尔与截距</td><td>§1</td><td>〔说话人2 04:28〕</td><td>计算/简答</td></tr>
+<tr><td>吸光度 0.2–0.8 与 0.434</td><td>§2</td><td>〔说话人2 08:01〕</td><td>填空</td></tr>
+<tr><td>双波长选点两原则</td><td>§3</td><td>〔说话人2 10:00〕</td><td>简答</td></tr>
+<tr><td>血氧双波长原理</td><td>§3</td><td>〔说话人2 10:42〕</td><td>简答</td></tr>
+<tr><td>导数光谱优缺点</td><td>§4</td><td>〔说话人2 16:47〕</td><td>简答</td></tr>
+<tr><td>催化动力学测谁、灵敏度</td><td>§6</td><td>〔说话人2 27:24〕</td><td>选择/简答</td></tr>
+<tr><td>MFS 与化学发光区别</td><td>§7</td><td>〔说话人2 28:29〕</td><td>辨析</td></tr>
+<tr><td>荧光三大特点</td><td>§7</td><td>〔说话人2 43:40〕</td><td>简答</td></tr>
+<tr><td>时间分辨荧光</td><td>§8</td><td>〔说话人2 53:20〕</td><td>简答</td></tr>
+<tr><td>M=2S+1 与单/三线态</td><td>§9</td><td>〔说话人2 57:10〕</td><td>填空</td></tr>
+<tr><td>Jablonski 过程名称</td><td>§9</td><td>〔说话人2 01:02:38〕</td><td>简答/作图</td></tr>
+<tr><td>荧光起点 S₁V₀</td><td>§9</td><td>〔说话人2 01:04:06〕</td><td>必考</td></tr>
+<tr><td>波长顺序比较</td><td>§9</td><td>〔说话人2 01:06:19〕</td><td>选择</td></tr>
+<tr><td>瑞利 vs 拉曼</td><td>§10</td><td>〔说话人2 01:14:32〕</td><td>简答</td></tr>
+<tr><td>硫酸奎宁谱图判别</td><td>§10</td><td>〔说话人2 01:16:50〕</td><td>分析题</td></tr>
+<tr><td>激发谱与荧光谱做法</td><td>§11</td><td>〔说话人2 01:22:44〕</td><td>简答</td></tr>
+<tr><td>三维荧光指纹图谱</td><td>§11</td><td>〔说话人2 01:25:22〕</td><td>简答</td></tr>
+<tr><td>荧光量子效率定义</td><td>§12</td><td>〔说话人2 01:27:32〕</td><td>定义</td></tr>
+<tr><td>共轭与共平面</td><td>§12</td><td>〔说话人2 01:31:30〕</td><td>结构题</td></tr></table>
+</div>
+
+<div class="page"><h2 class="h2">附录 D · 知识点清单</h2>
+<table class="idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>作业数据须附曲线图</td><td>要求</td><td>§1</td><td>2 02:49</td></tr>
+<tr><td>2</td><td>有机溶剂中朗伯-比尔定律成立</td><td>结论</td><td>§1</td><td>2 01:35</td></tr>
+<tr><td>3</td><td>澄清透明+单色光</td><td>条件</td><td>§1</td><td>2 01:35</td></tr>
+<tr><td>4</td><td>未扣溶剂→截距、不过原点</td><td>结论</td><td>§1</td><td>2 02:49</td></tr>
+<tr><td>5</td><td>空白池参比截距=溶剂吸收</td><td>原理</td><td>§1</td><td>2 03:50</td></tr>
+<tr><td>6</td><td>ε=拟合斜率</td><td>公式</td><td>§1</td><td>2 04:28</td></tr>
+<tr><td>7</td><td>溶剂 ε 由截距与浓度算</td><td>方法</td><td>§1</td><td>2 04:28</td></tr>
+<tr><td>8</td><td>有机溶剂参比消截距</td><td>操作</td><td>§1</td><td>2 04:50</td></tr>
+<tr><td>9</td><td>单波长双光束消光源/检测器漂移</td><td>复习</td><td>§2</td><td>2 07:10</td></tr>
+<tr><td>10</td><td>双波长双光束单皿、浊液可测</td><td>复习</td><td>§2</td><td>2 07:10</td></tr>
+<tr><td>11</td><td>显色条件实验优化</td><td>方法</td><td>§2</td><td>2 07:10</td></tr>
+<tr><td>12</td><td>λ 选吸收大干扰小</td><td>原则</td><td>§2</td><td>2 08:01</td></tr>
+<tr><td>13</td><td>参比选有吸收组分</td><td>原则</td><td>§2</td><td>2 08:01</td></tr>
+<tr><td>14</td><td>A 在 0.2–0.8；0.434 最佳</td><td>数据</td><td>§2</td><td>2 08:01</td></tr>
+<tr><td>15</td><td>双波长先画吸收曲线</td><td>步骤</td><td>§2</td><td>2 08:29</td></tr>
+<tr><td>16</td><td>干扰组分等吸收点 λ₂</td><td>步骤</td><td>§3</td><td>2 08:29</td></tr>
+<tr><td>17</td><td>ΔA=ΔKbc</td><td>公式</td><td>§3</td><td>2 08:29</td></tr>
+<tr><td>18</td><td>待测 ΔK 要大</td><td>原则</td><td>§3</td><td>2 10:00</td></tr>
+<tr><td>19</td><td>HbO₂/Hb 血氧双波长</td><td>应用</td><td>§3</td><td>2 10:42</td></tr>
+<tr><td>20</td><td>660 nm 与 940 nm</td><td>数据</td><td>§3</td><td>2 10:42</td></tr>
+<tr><td>21</td><td>无创反射式血氧探头</td><td>应用</td><td>§3</td><td>2 12:20</td></tr>
+<tr><td>22</td><td>导数峰位不变</td><td>原理</td><td>§4</td><td>2 14:55</td></tr>
+<tr><td>23</td><td>导数峰变窄分重叠峰</td><td>原理</td><td>§4</td><td>2 15:55</td></tr>
+<tr><td>24</td><td>导数扣常数背景</td><td>原理</td><td>§4</td><td>2 16:47</td></tr>
+<tr><td>25</td><td>导数法信噪比下降</td><td>缺点</td><td>§4</td><td>2 16:47</td></tr>
+<tr><td>26</td><td>加和性鉴别分子相互作用</td><td>拓展</td><td>§5</td><td>2 19:08</td></tr>
+<tr><td>27</td><td>催化动力学测酶活</td><td>定义</td><td>§6</td><td>2 21:07</td></tr>
+<tr><td>28</td><td>催化剂少量、底物过量</td><td>条件</td><td>§6</td><td>2 23:29</td></tr>
+<tr><td>29</td><td>同时加催化剂与终止</td><td>操作</td><td>§6</td><td>2 26:34</td></tr>
+<tr><td>30</td><td>灵敏度 10⁻⁶–10⁻⁹ g/mL</td><td>数据</td><td>§6</td><td>2 27:24</td></tr>
+<tr><td>31</td><td>红外本章不讲</td><td>说明</td><td>§6</td><td>2 27:24</td></tr>
+<tr><td>32</td><td>MFS 缩写</td><td>术语</td><td>§7</td><td>2 30:00</td></tr>
+<tr><td>33</td><td>化学发光 vs 光致发光</td><td>辨析</td><td>§7</td><td>2 28:29</td></tr>
+<tr><td>34</td><td>荧光定义（停光停发）</td><td>定义</td><td>§7</td><td>2 35:51</td></tr>
+<tr><td>35</td><td>荧光灵敏度高</td><td>特点</td><td>§7</td><td>2 42:37</td></tr>
+<tr><td>36</td><td>荧光选择性好</td><td>特点</td><td>§7</td><td>2 43:40</td></tr>
+<tr><td>37</td><td>荧光寿命 &lt; 微秒</td><td>特点</td><td>§7</td><td>2 43:40</td></tr>
+<tr><td>38</td><td>时间分辨荧光原理</td><td>方法</td><td>§8</td><td>2 53:20</td></tr>
+<tr><td>39</td><td>M=2S+1</td><td>公式</td><td>§9</td><td>2 55:54</td></tr>
+<tr><td>40</td><td>单线态 S 与三线态 T</td><td>概念</td><td>§9</td><td>2 57:10</td></tr>
+<tr><td>41</td><td>振动弛豫 VR</td><td>过程</td><td>§9</td><td>2 01:01:48</td></tr>
+<tr><td>42</td><td>内转换 IC（S₂→S₁）</td><td>过程</td><td>§9</td><td>2 01:02:38</td></tr>
+<tr><td>43</td><td>系间窜越（S→T）</td><td>过程</td><td>§9</td><td>2 01:02:38</td></tr>
+<tr><td>44</td><td>荧光从 S₁V₀ 发射</td><td>考点</td><td>§9</td><td>2 01:04:06</td></tr>
+<tr><td>45</td><td>磷光从 T₁V₀ 发射</td><td>考点</td><td>§9</td><td>2 01:05:30</td></tr>
+<tr><td>46</td><td>激发&lt;荧光&lt;磷光波长</td><td>结论</td><td>§9</td><td>2 01:06:19</td></tr>
+<tr><td>47</td><td>瑞利散射 λ 相等</td><td>散射</td><td>§10</td><td>2 01:09:46</td></tr>
+<tr><td>48</td><td>拉曼散射有位移</td><td>散射</td><td>§10</td><td>2 01:14:32</td></tr>
+<tr><td>49</td><td>奎宁 448 nm 荧光峰</td><td>实例</td><td>§10</td><td>2 01:16:50</td></tr>
+<tr><td>50</td><td>调激发波长消拉曼</td><td>方法</td><td>§10</td><td>2 01:19:09</td></tr>
+<tr><td>51</td><td>激发谱与荧光谱测量方式</td><td>方法</td><td>§11</td><td>2 01:22:44</td></tr>
+<tr><td>52</td><td>三维荧光指纹图谱</td><td>概念</td><td>§11</td><td>2 01:25:22</td></tr>
+<tr><td>53</td><td>荧光量子效率 Φ 定义</td><td>定义</td><td>§12</td><td>2 01:27:32</td></tr>
+<tr><td>54</td><td>苯 Φ≈0.11；萘蒽更高</td><td>数据</td><td>§12</td><td>2 01:29:38</td></tr>
+<tr><td>55</td><td>芘 vs 联苯共平面</td><td>结构</td><td>§12</td><td>2 01:31:30</td></tr>
+<tr><td>56</td><td>荧光素 vs 酚酞</td><td>结构</td><td>§12</td><td>2 01:32:21</td></tr>
+<tr><td>57</td><td>牛奶核黄素 10 kg/18 mg</td><td>数据</td><td>§12</td><td>2 01:33:17</td></tr>
+<tr><td>58</td><td>取代基影响下节讲</td><td>预告</td><td>§12</td><td>2 01:35:50</td></tr>
 </table>
-<table class="vt">
-<tr><th>课程名称</th><th>分析化学（仪器分析）</th></tr>
-<tr><td>节次</td><td>第13-14节（课程内累计）</td></tr>
-<tr><td>日期</td><td>2026年9月21日（周一）16:15-17:55</td></tr>
-<tr><td>主题</td><td>双波长法应用回顾、导数光谱法、催化动力学光度法、分子荧光分析法（MFS）</td></tr>
-<tr><td>授课教师</td><td>老师（仪器分析）</td></tr>
-<tr><td>教学方式</td><td>理论课</td></tr>
-<tr><td>学时</td><td>2学时</td></tr>
-</table>
-<hr>
-<h2>课堂导入</h2>
-<p>先讲评上次作业（朗伯比尔定律的有机溶剂体系、截距问题），然后复习上节课内容（双波长分光光度法），接着讲导数光谱法、催化动力学光度法，最后进入新章节——分子荧光分析法。</p>
-<blockquote>💬 <strong>老师开场</strong>："以后凡是涉及数据表格的作业，都要求附曲线图。"</blockquote>
-<hr>
-<h2>按讲解顺序的详细笔记</h2>
-<h3>一、作业讲评（01:20-06:55）</h3>
-<h4>1.1 有机溶剂中朗伯比尔定律的应用</h4>
-<ul>
-<li>有机溶剂中测新普林（新霉素类？）：仍符合朗伯比尔定律</li>
-<li><strong>关键</strong>：澄清透明溶液即可，不限定溶剂必须是水</li>
-<li><strong>截距问题</strong>：用空白吸收池作参比（未用有机溶剂调零）→截距=有机溶剂本身的吸收</li>
-<li>摩尔吸光系数=拟合直线的<strong>斜率</strong>（与截距无关）</li>
-<li>若改用有机溶剂作参比→截距消除→直线过原点</li>
-</ul>
-<blockquote>🔔 <strong>作业要点</strong>：斜率=待测物摩尔吸光系数；截距=溶剂吸收。</blockquote>
-<h3>二、双波长法复习与应用（07:10-13:54）</h3>
-<h4>2.1 双波长法选波长原则（⭐重点）</h4>
-<p>回顾上节课内容：</p>
-<ol>
-<li>先做待测组分和干扰组分的吸收曲线</li>
-<li>从待测组分选择一个波长λ₁</li>
-<li>在干扰组分的吸收曲线上找<strong>等吸收点</strong>λ₂（干扰组分在λ₁和λ₂处吸光度相等）</li>
-<li><strong>ΔA = ΔK·b·c</strong>——与干扰无关，仅与待测组分浓度成正比</li>
-</ul>
-<p><strong>选波长两个原则</strong>：</p>
-<ul>
-<li>干扰组分在两波长处吸光度<strong>相等</strong>（等吸收点）</li>
-<li>待测组分在两波长处吸光度差<strong>ΔK足够大</strong>（灵敏度高）</li>
-</ul>
-<h4>2.2 血氧饱和度测定（双波长法实例）</h4>
-<ul>
-<li>原理：氧合血红蛋白（HbO₂）和去氧血红蛋白（Hb）吸收曲线不同但有重叠</li>
-<li>常用波长：<strong>660nm（红光）和940nm（近红外）</strong></li>
-<li>无创测量：光线照射→反射光被接收器接收</li>
-<li>不同厂家波长略有不同，但都满足双波长选点原则</li>
-<li>可穿戴设备（手表、戒指、眼镜）原理类似</li>
-</ul>
-<blockquote>💬 <strong>老师拓展</strong>：智能手表测心率、血氧都是光度法原理。</blockquote>
-<h3>三、导数光谱法（13:54-18:07）</h3>
-<h4>3.1 原理</h4>
-<p>对吸收光谱A(λ)求n阶导数。零阶（不导）→一阶→二阶→三阶→四阶。</p>
-<p><strong>两大优点</strong>：</p>
-<ol>
-<li><strong>峰位不变</strong>：零阶峰的极大处→一阶导数为0、二阶导数为极小、三阶导数为0、四阶导数为极大。峰始终在原波长位置，不漂移——<strong>有利于定性</strong>。</li>
-<li><strong>峰变窄（收缩）</strong>：高阶导数使峰围绕各自中心变窄→原本重叠的两个峰可能被分开——<strong>提高选择性/分辨率</strong>。</li>
-</ul>
-<ol>
-<li><strong>背景扣除</strong>：若背景与波长无关（常数），求导后背景自动消除。</li>
-</ul>
-<p><strong>缺点</strong>：信噪比降低（灵敏度损失）。</p>
-<blockquote>🔔 <strong>考试要点</strong>：导数法最大优点是<strong>提高选择性</strong>（分辨重叠峰）、扣除背景。</blockquote>
-<h3>四、催化动力学光度法（20:00-27:24）</h3>
-<h4>4.1 基本原理</h4>
-<ul>
-<li><strong>热力学讲平衡，动力学讲速率</strong></li>
-<li>通过测量化学反应速率来测定物质浓度</li>
-<li><strong>测的是催化剂（如酶）的浓度/活性</strong>，不是反应物</li>
-<li>选择一个本身反应很慢的反应，加入催化剂后加速</li>
-</ul>
-<h4>4.2 实验设计要点</h4>
-<ul>
-<li>催化剂用量<strong>少</strong>（过量则反应瞬间完成无法测量）</li>
-<li>底物（反应物）浓度<strong>大且过量</strong>→反应过程中浓度变化可忽略</li>
-<li>反应速率只与催化剂浓度成正比</li>
-<li>监测指标：反应物或产物的吸光度随时间的变化速率</li>
-<li><strong>关键是时间控制</strong>：同时加催化剂、同时终止反应</li>
-</ul>
-<p><strong>终止方法</strong>：加抑制剂（如重金属离子抑制酶）、沸水浴、稀释等。</p>
-<h4>4.3 灵敏度</h4>
-<ul>
-<li>灵敏度极高：10⁻⁶~10⁻⁹ g/mL，最高可达10⁻¹² g/mL</li>
-<li>缺点：影响因素多，时间不易严格控制</li>
-</ul>
-<blockquote>🔔 <strong>核心记忆</strong>：催化动力学光度法测的是<strong>催化剂（酶）</strong>，灵敏度极高。</blockquote>
-<h3>五、分子荧光分析法（MFS）（28:19-结束）</h3>
-<h4>5.1 基本概念</h4>
-<p><strong>定义</strong>：某些物质受到紫外/可见光照射时，发射出不同颜色、不同强度的光；光照停止则发光停止。</p>
-<p><strong>缩写</strong>：</p>
-<ul>
-<li>MFS = Molecular Fluorescence Spectroscopy（分子荧光光谱法）</li>
-<li>AFS = Atomic Fluorescence Spectroscopy（原子荧光，不讲）</li>
-</ul>
-<blockquote>🔔 <strong>荧光 vs 化学发光</strong>：荧光棒是化学发光（化学反应供能）；MFS是<strong>光致发光</strong>（光激发供能），不涉及化学反应本身。</blockquote>
-<h4>5.2 荧光方法的特点</h4>
-<ol>
-<li><strong>灵敏度高</strong>：比紫外可见法高2-4个数量级（测核酸、DNA测序都用荧光法）</li>
-<li><strong>选择性好</strong>：因为能发荧光的物质少——别人不发它发，自然干扰少</li>
-<li><strong>时间分辨</strong>：荧光有寿命（微秒/纳秒级），可利用寿命差异区分不同荧光物质</li>
-</ul>
-<p><strong>荧光寿命</strong>：激发光停止后荧光并不立即消失，而是按指数衰减。利用寿命差异可设计<strong>时间分辨荧光技术</strong>——关掉激发光后延迟检测，等短寿命干扰物熄灭后再测长寿命待测物，进一步消除散射和背景干扰。</p>
-<blockquote>🔍 <strong>老师讲历史</strong>：最早记录荧光的是16世纪植物学家泡树皮发现蓝光；最早记录余辉（磷光）的是一个鞋匠（Shoemaker）发现晒过的石头进屋后还亮。</blockquote>
-<h4>5.3 分子能级与多重态</h4>
-<p><strong>电子自旋与分子多重态</strong>：M = 2S + 1（S=总自旋量子数）</p>
-<table class="vt">
-<tr><th>状态</th><th>电子自旋</th><th>M=2S+1</th><th>名称</th></tr>
-</table>
-<table class="vt">
-<tr><th>基态单线态S₀</th><th>↑↓（相反）</th><th>1</th><th>单线态</th></tr>
-<tr><td>激发单线态S₁/S₂</td><td>↑↓（仍相反）</td><td>1</td><td>单线激发态</td></tr>
-<tr><td>三线态T₁</td><td>↑↑（平行）</td><td>3</td><td>三线态（三重态）</td></tr>
-</table>
-<blockquote>🔔 <strong>S→T跃迁是自旋禁阻的</strong>，概率小。含有重原子（I、Br）或有氧（顺磁性）时更容易发生。</blockquote>
-<h4>5.4 Jablonski能级图（⭐核心）</h4>
-<p><strong>激发后能量弛豫路径</strong>：</p>
-<ol>
-<li><strong>吸收（激发）</strong>：S₀的V₀ → S₂或S₁的不同振动能级</li>
-<li><strong>振动弛豫（VR）</strong>：同一电子态内，从高振动能级→低振动能级，以热能/动能形式释放</li>
-<li><strong>内转换（IC）</strong>：S₂的V₀ → S₁的高振动能级（都是单线态）</li>
-<li><strong>系间窜越（ISC）</strong>：S₁ → T₁（自旋改变，重原子/氧气促进）</li>
-<li><strong>荧光</strong>：<strong>从S₁的V₀ → S₀的各振动能级</strong>，以光子形式释放</li>
-<li><strong>磷光</strong>：从T₁的V₀ → S₀的各振动能级，以光子形式释放</li>
-</ul>
-<blockquote>🔔 <strong>关键结论</strong>：所有荧光都从<strong>S₁的V₀</strong>出发！不管激发到哪个能级，最终都要弛豫到S₁V₀才发荧光。</blockquote>
-<h4>5.5 荧光vs磷光vs激发光的波长比较</h4>
-<p><strong>波长与能级差成反比</strong>（能级差越小→波长越长）：</p>
-<ul>
-<li>激发光（吸收）：能量最大→波长最短</li>
-<li>荧光：能量较小→波长比激发光<strong>长</strong>（斯托克斯位移）</li>
-<li>磷光：能量最小（T₁比S₁还低）→波长<strong>最长</strong></li>
-</ul>
-<blockquote>🔔 <strong>必考结论</strong>：波长顺序：激发光 < 荧光 < 磷光。</blockquote>
-<h4>5.6 散射光及其干扰</h4>
-<p><strong>瑞利散射</strong>：</p>
-<ul>
-<li>散射光波长=激发光波长（弹性碰撞，吸多少发多少）</li>
-<li>原因：微小颗粒尺寸与波长可比拟</li>
-<li>天为什么是蓝的？散射强度∝1/λ⁴（紫光散射最强，但人眼对蓝敏感）</li>
-</ul>
-<p><strong>拉曼散射</strong>：</p>
-<ul>
-<li>散射光波长≠激发光波长（非弹性碰撞），有固定位移</li>
-<li>对荧光测定干扰<strong>更大</strong>——因为波长与激发光不同，可能落在荧光峰附近</li>
-<li><strong>消除方法</strong>：改变激发光波长→拉曼散射位置随之移动，与荧光峰分开</li>
-</ul>
-<blockquote>🔍 <strong>例题（硫酸奎宁）</strong>：</blockquote>
-<blockquote>- 448nm峰：用320和350激发都出现，且与激发波长无关→<strong>荧光</strong></blockquote>
-<blockquote>- 320/350nm处：波长=激发波长，空白硫酸也有→<strong>瑞利散射</strong></blockquote>
-<blockquote>- 360/400nm处：随激发波长移动而位移→<strong>拉曼散射</strong></blockquote>
-<blockquote>- 拉曼散射干扰更大，但可通过改变激发波长消除</blockquote>
-<h4>5.7 激发光谱与荧光光谱</h4>
-<table class="vt">
-<tr><th>光谱类型</th><th>做法</th><th>横坐标</th></tr>
-</table>
-<table class="vt">
-<tr><th><strong>激发光谱</strong></th><th>固定荧光发射波长，扫描激发波长</th><th>激发光波长</th></tr>
-<tr><td><strong>荧光光谱</strong></td><td>固定最佳激发波长，扫描发射波长</td><td>荧光波长</td></tr>
-</table>
-<ul>
-<li>激发光谱形状≈吸收光谱形状（但取决于振动能级分布是否相似）</li>
-<li>荧光光谱与吸收光谱大致呈<strong>镜像对称</strong></li>
-<li>激发光波长改变→荧光波长不变（始终在S₁V₀→S₀），但强度改变</li>
-</ul>
-<p><strong>三维荧光光谱（指纹图谱）</strong>：</p>
-<ul>
-<li>两个变量（激发波长×发射波长）→荧光强度的等高线图</li>
-<li>每个物质的三维光谱独一无二→"荧光指纹"</li>
-<li>应用：纵火案油品溯源、复杂体系定性</li>
-</ul>
-<h4>5.8 荧光量子效率（⭐概念）</h4>
-<p><strong>定义</strong>：发出荧光的光子数 / 吸收激发光的光子数。</p>
-<ul>
-<li>Φ_f ≤ 1（最大为1）</li>
-<li>数值越大，荧光越强</li>
-</ul>
-<h4>5.9 荧光与分子结构的关系</h4>
-<p><strong>前提条件</strong>：必须有<strong>大的共轭π键体系</strong>（先吸光才能发光）</p>
-<p><strong>影响因素</strong>：</p>
-<ol>
-<li><strong>共轭程度</strong>：苯(Φ=0.11) < 萘(Φ增大) < 蒽(Φ更大)——共轭越大，荧光量子效率越高</li>
-<li><strong>共平面性</strong>：分子越共平面，电子云重叠越好，共轭越好→荧光越强</li>
-<li>芘（平面）Φ≈1.0 vs 联苯（可旋转）Φ≈0.2</li>
-<li><strong>荧光素 vs 酚酞</strong>：结构极相似，荧光素有氧桥固定共平面→强荧光；酚酞可旋转→无荧光</li>
-<li><strong>取代基</strong>：给电子基团（-NH₂、-OH）增强荧光；吸电子基团（-NO₂、-COOH）减弱荧光</li>
-</ul>
-<blockquote>💬 <strong>老师举例</strong>：β-胡萝卜素（无苯环但有大共轭）→有荧光；国标测维生素A用荧光法；牛奶中核黄素（维生素B2）用荧光法测定，但见光易分解。</blockquote>
-<hr>
-<h2>老师强调的重点/考点汇总</h2>
-<ol>
-<li><strong>双波长法选波长原则</strong>：干扰组分等吸收点+待测组分ΔK足够大</li>
-<li><strong>导数光谱法</strong>：优点=提高选择性、扣除背景；缺点=信噪比下降</li>
-<li><strong>催化动力学光度法</strong>：测催化剂（酶）活性，灵敏度极高</li>
-<li><strong>MFS定义</strong>：光致发光，光照停止发光停止</li>
-<li><strong>荧光三大特点</strong>：灵敏度高、选择性好、有寿命（时间分辨）</li>
-<li><strong>分子多重态</strong>：单线态(S) vs 三线态(T)，M=2S+1</li>
-<li><strong>Jablonski图</strong>：振动弛豫、内转换、系间窜越、荧光、磷光</li>
-<li><strong>荧光都从S₁V₀出发</strong></li>
-<li><strong>波长顺序</strong>：激发光 < 荧光 < 磷光</li>
-<li><strong>瑞利vs拉曼散射</strong>：瑞利波长=激发波长；拉曼波长≠激发波长，干扰更大</li>
-<li><strong>消除拉曼干扰</strong>：改变激发光波长</li>
-<li><strong>荧光量子效率</strong>：发射光子数/吸收光子数</li>
-<li><strong>荧光结构条件</strong>：大共轭体系+共平面性</li>
-<li><strong>三维荧光光谱=指纹图谱</strong></li>
-</ul>
-<hr>
-<h2>课程间关联汇总</h2>
-<table class="vt">
-<tr><th>本节内容</th><th>关联课程/已学内容</th></tr>
-</table>
-<table class="vt">
-<tr><th>朗伯比尔定律</th><th>上节课紫外可见分光光度法</th></tr>
-<tr><td>双波长法</td><td>上节课内容；血氧仪应用</td></tr>
-<tr><td>电子自旋、能级跃迁</td><td>已学物理化学/量子力学基础</td></tr>
-<tr><td>荧光蛋白（GFP）</td><td>后续细胞生物学实验——荧光标记</td></tr>
-<tr><td>催化动力学法测酶</td><td>后续生物化学——酶活性测定</td></tr>
-<tr><td>共轭体系、发色团</td><td>已学有机化学——共轭π键</td></tr>
-<tr><td>维生素A/B2检测</td><td>后续生物化学/分析化学实验</td></tr>
-</table>
-<hr>
-<h2>复习清单</h2>
-<ul class="checklist">
-<li><input type="checkbox"  disabled> 双波长法两个选波长原则</li>
-<li><input type="checkbox"  disabled> 导数光谱法的优缺点</li>
-<li><input type="checkbox"  disabled> 催化动力学法测什么、为什么灵敏度高</li>
-<li><input type="checkbox"  disabled> 荧光的定义和MFS缩写</li>
-<li><input type="checkbox"  disabled> 荧光三大特点</li>
-<li><input type="checkbox"  disabled> 单线态vs三线态（M=2S+1）</li>
-<li><input type="checkbox"  disabled> Jablonski图中各过程名称和能量顺序</li>
-<li><input type="checkbox"  disabled> 荧光为什么都从S₁V₀出发</li>
-<li><input type="checkbox"  disabled> 激发光、荧光、磷光波长大小比较</li>
-<li><input type="checkbox"  disabled> 瑞利散射vs拉曼散射的区别和干扰</li>
-<li><input type="checkbox"  disabled> 如何消除拉曼散射干扰</li>
-<li><input type="checkbox"  disabled> 荧光量子效率的定义</li>
-<li><input type="checkbox"  disabled> 物质能发荧光的结构条件（共轭+共平面）</li>
-<li><input type="checkbox"  disabled> 三维荧光光谱为什么叫指纹图谱</li>
-</ul>
-<hr>
-<h2>主动回忆题</h2>
-<p><strong>Q1</strong>：双波长分光光度法选择两个波长的原则是什么？</p>
-<details class="qa"><summary>答案要点</summary><div class="qa-answer"><p>①干扰组分在两个波长处吸光度相等（等吸收点）；②待测组分在两个波长处的吸光度差ΔK足够大（灵敏度高）。这样ΔA=ΔKbc，只与待测组分浓度成正比。</p></div></details>
-<p><strong>Q2</strong>：导数光谱法有什么优点和缺点？</p>
-<details class="qa"><summary>答案要点</summary><div class="qa-answer"><p>优点：峰位不变（利于定性）；高阶导数使峰变窄→分辨重叠峰（提高选择性）；线性背景自动扣除。缺点：信噪比下降，灵敏度降低。</p></div></details>
-<p><strong>Q3</strong>：催化动力学光度法测量的是什么物质？为什么灵敏度高？</p>
-<details class="qa"><summary>答案要点</summary><div class="qa-answer"><p>测量催化剂（如酶）的浓度/活性。因为催化剂微量即可显著加速反应，在底物过量、催化剂不足的条件下，反应速率与催化剂浓度成正比。灵敏度可达10⁻⁶~10⁻⁹ g/mL。缺点是时间不易严格控制。</p></div></details>
-<p><strong>Q4</strong>：画出Jablonski能级图并说明荧光和磷光的产生过程。</p>
-<details class="qa"><summary>答案要点</summary><div class="qa-answer"><p>吸收→S₂/S₁激发；振动弛豫（同一电子态内降振动能级）；内转换（S₂→S₁）；系间窜越（S₁→T₁，自旋翻转）。荧光=从S₁V₀→S₀各振动能级发光；磷光=从T₁V₀→S₀发光。所有荧光都从S₁V₀出发。</p></div></details>
-<p><strong>Q5</strong>：瑞利散射和拉曼散射有什么区别？哪种对荧光测定干扰更大？如何消除？</p>
-<details class="qa"><summary>答案要点</summary><div class="qa-answer"><p>瑞利散射：波长=激发波长（弹性散射）；拉曼散射：波长≠激发波长（非弹性散射，有固定位移）。拉曼散射干扰更大，因为它的波长可能落在荧光峰附近。消除方法：改变激发光波长，使拉曼散射峰移到荧光峰以外。</p></div></details>
-<p><strong>Q6</strong>：什么样结构的物质容易发荧光？</p>
-<details class="qa"><summary>答案要点</summary><div class="qa-answer"><p>①必须有大的共轭π键体系（先能吸光）；②分子共平面性好（电子云重叠充分）；③给电子取代基增强荧光，吸电子取代基减弱荧光。荧光量子效率=发射光子数/吸收光子数，≤1。</p></div></details></body></html>
+<p class="foot">附录 D 登记 58 条，与正文及逐字稿 143 轮对照零遗漏自查。</p>
+</div>
+
+</body></html>

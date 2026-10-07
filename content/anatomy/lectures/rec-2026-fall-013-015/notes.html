@@ -1,1122 +1,713 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>肌总论·头颈肌·躯干肌</title>
-<style>
-:root{
-  --paper: #FAF8F3;
-  --paper-card: #FFFFFF;
-  --ink: #1A1814;
-  --ink-soft: #4A453D;
-  --ink-faint: #8B8578;
-  --rule: #DDD8CC;
-  --accent: #0E7C7B;
-  --accent-soft: #0E7C7B15;
-  --accent-line: #0E7C7B40;
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>系统解剖学 · 第13-15节 · 肌总论、头颈肌与躯干肌</title><style>:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#B4531F; --accent-d:#7A3413; --accent-t:#F7E7DE;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
 }
-*{box-sizing:border-box; margin:0; padding:0;}
-html,body{background:var(--paper);}
-body{font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif; color:var(--ink); font-size:10pt; line-height:1.75;}
-.page{width:210mm; min-height:297mm; background:var(--paper); position:relative; padding:18mm 20mm 16mm 20mm; page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-
-/* 封面 */
-.cover{background:linear-gradient(135deg, var(--accent) 0%, #0E7C7BCC 100%); color:#fff; padding:0;}
-.cover .inner{height:100%; min-height:261mm; padding:30mm 22mm 22mm 22mm; display:flex; flex-direction:column; justify-content:space-between;}
-.cover .eyebrow{font-size:9pt; letter-spacing:0.4em; text-transform:uppercase; opacity:0.85;}
-.cover h1{font-family:'Noto Serif CJK SC',serif; font-size:42pt; font-weight:900; line-height:1.15; margin-top:12mm;}
-.cover .subtitle{font-size:13pt; opacity:0.9; margin-top:8mm; line-height:1.7;}
-.cover .meta{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8mm; border-top:1px solid rgba(255,255,255,0.3); padding-top:8mm;}
-.cover .meta .k{font-size:7.5pt; letter-spacing:0.2em; opacity:0.7; text-transform:uppercase;}
-.cover .meta .v{font-size:11pt; font-weight:600; margin-top:2mm;}
-
-/* 目录 */
-.toc-title{font-family:'Noto Serif CJK SC',serif; font-size:24pt; font-weight:800; margin-bottom:2mm; color:var(--accent);}
-.toc-sub{color:var(--ink-soft); font-size:9.5pt; margin-bottom:8mm;}
-.toc-list{list-style:none;}
-.toc-list li{display:flex; align-items:baseline; padding:3.5mm 0; border-bottom:1px solid var(--rule);}
-.toc-num{font-family:'Noto Serif CJK SC',serif; font-weight:800; color:var(--accent); font-size:12pt; min-width:14mm;}
-.toc-text{font-size:10.5pt; font-weight:600;}
-
-/* 内容页 */
-.running{display:flex; justify-content:space-between; font-size:7.5pt; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-faint); border-bottom:1.5px solid var(--accent); padding-bottom:3mm; margin-bottom:8mm;}
-.running .course{color:var(--accent); font-weight:700;}
-
-h1{font-family:'Noto Serif CJK SC',serif; font-size:22pt; font-weight:900; color:var(--ink); margin:8mm 0 4mm 0; padding-bottom:3mm; border-bottom:2.5px solid var(--accent);}
-h2{font-family:'Noto Serif CJK SC',serif; font-size:16pt; font-weight:800; color:var(--accent); margin:7mm 0 3mm 0; padding-left:4mm; border-left:4px solid var(--accent);}
-h3{font-family:'Noto Serif CJK SC',serif; font-size:13pt; font-weight:700; color:var(--ink); margin:5mm 0 2.5mm 0;}
-h4{font-size:11pt; font-weight:700; color:var(--ink-soft); margin:4mm 0 2mm 0;}
-
-p{margin:2mm 0; text-align:justify;}
-ul{margin:2mm 0 2mm 6mm;}
-li{margin:1.2mm 0;}
-li.num{list-style:none; counter-increment:item;}
-li.num::before{content:counter(item) "."; font-weight:700; color:var(--accent); margin-right:2mm;}
-
-strong{color:var(--accent); font-weight:700;}
-em{color:var(--ink-soft);}
-code{background:var(--accent-soft); color:var(--accent); padding:0.5mm 1.5mm; border-radius:1mm; font-size:9pt; font-family:'Consolas',monospace;}
-
-blockquote{border-left:3px solid var(--accent); background:var(--accent-soft); padding:3mm 4mm; margin:3mm 0; border-radius:0 2mm 2mm 0;}
-blockquote p{margin:0; color:var(--ink-soft); font-style:italic;}
-
-hr{border:none; border-top:1px solid var(--rule); margin:6mm 0;}
-
-/* 表格 */
-.note-table{width:100%; border-collapse:collapse; margin:4mm 0; font-size:9.5pt;}
-.note-table th{background:var(--accent); color:#fff; padding:2.5mm 3mm; text-align:left; font-weight:700;}
-.note-table td{padding:2.5mm 3mm; border-bottom:1px solid var(--rule);}
-.note-table tr:nth-child(even) td{background:var(--accent-soft);}
-
-/* 页脚 */
-.footer{position:absolute; bottom:8mm; left:20mm; right:20mm; display:flex; justify-content:space-between; font-size:7.5pt; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:3mm;}
-</style>
-</head>
-<body>
-
-<!-- 封面 -->
-<div class="page cover">
-  <div class="inner">
-    <div>
-      <div class="eyebrow">HUST · 课堂可视化笔记</div>
-      <h1>肌总论·头颈肌·躯干肌</h1>
-      <div class="subtitle">第13-15节 · 肌肉分类构造、面肌咀嚼肌、颈肌群、背肌胸肌、膈肌、腹肌与腹股沟疝</div>
-    </div>
-    <div class="meta">
-      <div><div class="k">课程</div><div class="v">系统解剖学</div></div>
-      <div><div class="k">节次</div><div class="v">第13-15节</div></div>
-      <div><div class="k">日期</div><div class="v">2026-09-14</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- 目录 -->
-<div class="page">
-  <div class="toc-title">目录</div>
-  <div class="toc-sub">本笔记基于课堂录音完整逐字稿整理，详细记录课堂讲授的核心知识点、例题强调点与复习要点。</div>
-  <ul class="toc-list">
-    <li><span class="toc-num">01</span><span class="toc-text">一、知识结构</span></li>
-<li><span class="toc-num">02</span><span class="toc-text">二、肌总论</span></li>
-<li><span class="toc-num">03</span><span class="toc-text">三、头肌</span></li>
-<li><span class="toc-num">04</span><span class="toc-text">四、颈肌</span></li>
-<li><span class="toc-num">05</span><span class="toc-text">五、躯干肌</span></li>
-<li><span class="toc-num">06</span><span class="toc-text">六、老师强调重点汇总</span></li>
-<li><span class="toc-num">07</span><span class="toc-text">七、复习清单</span></li>
-<li><span class="toc-num">08</span><span class="toc-text">八、主动回忆题</span></li>
-  </ul>
-</div>
-
-<!-- 内容 -->
-<div class="page">
-  <div class="running">
-    <span class="course">系统解剖学</span>
-    <span>第13-15节 · 2026-09-14</span>
-  </div>
-  <h1>系统解剖学 · 第13-15节 · 肌总论、头颈肌与躯干肌</h1>
-
-<blockquote>**课程信息**</blockquote>
-<blockquote>- 课程：系统解剖学</blockquote>
-<blockquote>- 节次：第13-15节（课程内累计，3学时）</blockquote>
-<blockquote>- 日期：2026年9月14日（周一，第3周）</blockquote>
-<blockquote>- 授课老师：人体解剖学系</blockquote>
-<blockquote>- 上课时间：14:30-17:10（第5-7节）</blockquote>
-<blockquote>- 教学内容：肌总论、头颈肌、躯干肌</blockquote>
-<blockquote>- 本次为系统解剖学第5次课（前4次：8/31绪论+骨及骨连接总论+躯干骨，9/2躯干骨连接+上肢骨及其连接，9/7下肢骨及其连接，9/9颅骨及其连接）</blockquote>
-
-<hr>
-
-<h2>一、知识结构</h2>
-
-<p><code>`</code>mermaid</p>
-<p>flowchart TD</p>
-<p>A[肌学] --> B[肌总论]</p>
-<p>A --> C[头肌]</p>
-<p>A --> D[颈肌]</p>
-<p>A --> E[躯干肌]</p>
-
-<p>B --> B1[分类:平滑肌/心肌/骨骼肌,随意/不随意,横纹/非横纹]</p>
-<p>B --> B2[形态:长肌/短肌/扁肌/轮匝肌]</p>
-<p>B --> B3[构造:肌腹/肌腱/腱膜/腱划]</p>
-<p>B --> B4[起止点:起点/止点,可互换]</p>
-<p>B --> B5[配布:协同肌/拮抗肌,与关节运动轴一致]</p>
-<p>B --> B6[命名:形状/位置/起止/功能/大小]</p>
-<p>B --> B7[辅助装置:筋膜/滑膜囊/腱鞘/籽骨]</p>
-<p>B --> B8[血供淋巴神经]</p>
-<p>B --> B9[发生与变异:肌节/鳃弓来源,进化退化趋势]</p>
-
-<p>C --> C1[面肌/表情肌:枕额肌/眼轮匝肌/口轮匝肌/颊肌]</p>
-<p>C --> C2[咀嚼肌:咬肌/颞肌/翼内肌/翼外肌,三叉神经支配]</p>
-
-<p>D --> D1[颈浅/外侧:颈阔肌/胸锁乳突肌]</p>
-<p>D --> D2[颈前:舌骨上肌/舌骨下肌]</p>
-<p>D --> D3[颈深:前中后斜角肌/斜角肌间隙]</p>
-<p>D --> D4[颈部筋膜:封套筋膜/内脏筋膜/椎前筋膜]</p>
-
-<p>E --> E1[背肌:斜方肌/背阔肌/肩胛提肌/菱形肌/竖脊肌/胸腰筋膜]</p>
-<p>E --> E2[胸肌:胸上肢肌(胸大肌/胸小肌/前锯肌)/固有胸肌(肋间外肌/肋间内肌/肋间最内肌/胸横肌)]</p>
-<p>E --> E3[膈:胸骨部/肋部/腰部,三裂孔,胸肋三角/腰肋三角,膈疝]</p>
-<p>E --> E4[腹肌:腹外斜肌/腹内斜肌/腹横肌/腹直肌,腹直肌鞘/白线/弓状线]</p>
-<p>E --> E5[腹股沟管:四壁两口,男性精索/女性子宫圆韧带,腹股沟斜疝]</p>
-<p>E --> E6[海氏三角:腹直肌外侧缘/腹股沟韧带/腹壁下动脉,腹股沟直疝]</p>
-<p><code>`</code></p>
-
-<hr>
-
-<h2>二、肌总论</h2>
-
-<h3>2.1 肌肉分类</h3>
-
-<p>根据构造不同，肌肉可分为三类：</p>
-
-<table class="note-table">
-<tr><th>类型</th><th>分布</th><th>特点</th><th>神经支配</th></tr>
-<tr><td>**平滑肌**</td><td>管腔器官管壁内（血管、肠道等）</td><td>肌纤维走形不明显，无横纹</td><td>自主神经（不随意肌）</td></tr>
-<tr><td>**心肌**</td><td>心脏</td><td>有横纹</td><td>自主神经（不随意肌）</td></tr>
-<tr><td>**骨骼肌**</td><td>外周骨骼肌肉</td><td>有明显横纹，肌纤维呈束状</td><td>躯体神经（随意肌）</td></tr>
-</table>
-
-<p><strong>交叉分类</strong>：</p>
-<ul>
-<li><strong>不随意肌</strong> = 平滑肌 + 心肌（不能随主观意愿运动）</li>
-<li><strong>随意肌</strong> = 骨骼肌</li>
-<li><strong>横纹肌</strong> = 心肌 + 骨骼肌（可见明显肌纤维走形）</li>
-</ul>
-
-<blockquote>**老师举例**：平时吃肥肠（平滑肌）看不到肌纤维走形，吃瘦肉（骨骼肌）能看到明显的一束一束的肌纤维。</blockquote>
-
-<h3>2.2 肌肉数量与重量</h3>
-
-<ul>
-<li>全身肌肉约<strong>600多块</strong>（不像骨骼可精确定义为206块，肌肉变异常见，每人多几块少几块很正常）</li>
-<li>肌肉重量约占体重的<strong>40%</strong></li>
-<li>每块肌肉都有独立的血供、神经和淋巴，因此每块肌肉均可看成一个<strong>器官</strong></li>
-</ul>
-
-<h3>2.3 肌肉形态分类</h3>
-
-<table class="note-table">
-<tr><th>类型</th><th>特点</th><th>分布</th><th>功能</th></tr>
-<tr><td>**长肌**</td><td>收缩时显著缩短，可引起大幅度运动</td><td>多位于四肢</td><td>大幅度运动</td></tr>
-<tr><td>**短肌**</td><td>有明显节段性，收缩幅度小</td><td>椎骨之间（如棘间肌、横突间肌）</td><td>节段性小幅度运动</td></tr>
-<tr><td>**扁肌**</td><td>呈片状</td><td>胸、腹、背</td><td>运动+保护（保护内脏）</td></tr>
-<tr><td>**轮匝肌**</td><td>环形肌纤维，位于孔裂周围</td><td>眼眶、口周</td><td>关闭孔裂（闭眼、闭口）</td></tr>
-</table>
-
-<p><strong>特殊形态结构</strong>：</p>
-<ul>
-<li><strong>腱膜</strong>：扁肌上的腱性结构呈片状，称为腱膜（区别于长肌的条索状肌腱）</li>
-<li><strong>腱划</strong>：长肌内的节段性腱性结构，如腹直肌的3-4个腱划（男性锻炼的8块腹肌就是腱划分隔的肌腹）</li>
-<li><strong>梭形肌</strong>、<strong>二腹肌</strong>（中间有腱划）、<strong>三腹肌</strong>、<strong>三角肌</strong>（三角形）、<strong>羽状肌</strong>（像羽毛）、<strong>阔肌</strong>等</li>
-</ul>
-
-<h3>2.4 肌肉构造</h3>
-
-<p>每块骨骼肌由两部分构成：</p>
-<ul>
-<li><strong>肌腹</strong>：中间红色部分，由肌纤维（肌细胞）构成，具有收缩功能</li>
-<li><strong>肌腱</strong>：两端白色部分，由平行致密的胶原纤维束构成，无收缩功能，将肌肉附着于骨骼</li>
-</ul>
-
-<blockquote>肌腱的性质与韧带相同（都是致密胶原纤维束），区别在于：韧带连接骨骼（在关节囊内或囊外），肌腱位于肌腹两端。</blockquote>
-
-<p><strong>红肌与白肌</strong>：</p>
-<ul>
-<li><strong>红肌</strong>：肌纤维较细小，收缩慢，但作用持久（适合马拉松等长时间运动）</li>
-<li><strong>白肌</strong>：肌纤维较宽大，收缩幅度大，但作用不持久（适合爆发力运动）</li>
-</ul>
-
-<h3>2.5 肌肉起止点</h3>
-
-<ul>
-<li><strong>起点（始点）</strong>：靠近躯干或身体正中面的一端</li>
-<li><strong>止点（终点）</strong>：另一端</li>
-<li><strong>起止点可互换</strong>：并不是起点不动、止点运动。例如：</li>
-<li>正常屈肘时：肱二头肌起点（肩胛骨）不动，止点（桡骨）运动</li>
-<li>引体向上时：止点（桡骨）固定，起点（肩胛骨）带动躯干向上运动</li>
-</ul>
-
-<h3>2.6 肌肉配布</h3>
-
-<ul>
-<li>肌肉配布在关节周围，与关节的运动轴一致</li>
-<li>关节能在哪个方向运动，哪里才有相应的肌肉</li>
-<li>例如：指间关节是滑车关节，只能做屈伸运动，两侧就没有必要存在肌肉</li>
-</ul>
-
-<p><strong>协同肌与拮抗肌</strong>：</p>
-<ul>
-<li><strong>协同肌</strong>：对同一种运动，两块肌肉都参与收缩（如肱二头肌和肱肌都参与屈肘）</li>
-<li><strong>拮抗肌</strong>：对相反方向运动的肌肉（如肱二头肌屈肘 vs 肱三头肌伸肘）</li>
-</ul>
-
-<blockquote>**核心要点**：肌肉只有收缩功能，没有推开功能。关节从屈到伸，不是屈肌把骨推开，而是伸肌收缩产生的。</blockquote>
-
-<h3>2.7 肌肉命名</h3>
-
-<p>肌肉命名非常复杂，常见命名方式：</p>
-<ul>
-<li><strong>按形状</strong>：三角肌、斜方肌</li>
-<li><strong>按位置</strong>：冈上肌（冈上窝）、冈下肌</li>
-<li><strong>按形态+部位</strong>：肱三头肌（肱骨处，三个头）、肱二头肌</li>
-<li><strong>按大小+位置</strong>：腰大肌</li>
-<li><strong>按起止点</strong>：胸锁乳突肌（胸骨+锁骨→乳突）</li>
-<li><strong>按功能</strong>：如伸肌、屈肌</li>
-<li><strong>按位置+方向</strong>：腹外斜肌</li>
-</ul>
-
-<h3>2.8 肌肉辅助装置</h3>
-
-<h4>筋膜</h4>
-
-<p>位于肌肉周围，功能：保持肌肉位置、减少摩擦、保护肌肉。</p>
-
-<table class="note-table">
-<tr><th>类型</th><th>别名</th><th>构成</th><th>特点</th></tr>
-<tr><td>**浅筋膜**</td><td>皮下筋膜</td><td>疏松结缔组织，富含脂肪</td><td>即皮下脂肪层</td></tr>
-<tr><td>**深筋膜**</td><td>固有筋膜</td><td>致密结缔组织</td><td>完全贴合包裹肌肉，与肌关系密切</td></tr>
-</table>
-
-<p><strong>深筋膜的特殊功能</strong>：</p>
-<ul>
-<li>包裹肌肉：相邻肌肉运动时不会互相摩擦</li>
-<li>包裹血管神经：形成<strong>神经血管鞘</strong>，保护血管神经不被肌肉直接摩擦</li>
-<li>形成肌间隔：分隔不同肌群</li>
-</ul>
-
-<h4>滑膜囊</h4>
-
-<ul>
-<li>关节囊的滑膜层突出关节囊，在肌肉和骨表面形成的囊状结构</li>
-<li>功能：减少摩擦</li>
-<li>例如：肩部三角肌和肱骨之间的滑膜囊</li>
-</ul>
-
-<h4>腱鞘</h4>
-
-<p>完全包裹在肌腱外头的结构，分为两层：</p>
-<ul>
-<li><strong>腱纤维鞘</strong>：外层（类似关节囊纤维层）</li>
-<li><strong>腱滑膜鞘</strong>：内层（类似关节囊滑膜层），又分内外两层</li>
-<li>实际上是一张滑膜通过卷曲形成两层，不是真正的两层</li>
-<li>功能：分泌滑液，减少摩擦，营养滋润肌腱</li>
-<li><strong>腱系膜（间隙膜）</strong>：滑膜鞘内外两层之间的开口，有血管神经穿过，营养肌腱、感觉支配</li>
-</ul>
-
-<h4>籽骨</h4>
-
-<ul>
-<li>全身最大的籽骨是<strong>髌骨</strong></li>
-<li>功能：改变力的方向，减少摩擦</li>
-</ul>
-
-<h3>2.9 肌肉血液供应与淋巴回流</h3>
-
-<ul>
-<li>肌肉代谢旺盛，血供丰富</li>
-<li>每块肌肉都有自己的血液供应</li>
-<li>淋巴回流起于肌肉的毛细淋巴管</li>
-</ul>
-
-<h3>2.10 肌肉神经支配</h3>
-
-<ul>
-<li>骨骼肌由<strong>躯体神经</strong>支配</li>
-<li>注意：这里讲的肌肉是指骨骼肌，不是心肌</li>
-</ul>
-
-<h3>2.11 肌肉发生与变异</h3>
-
-<h4>肌肉发生</h4>
-
-<ul>
-<li>骨骼肌在胚胎期由<strong>躯干两侧的肌节</strong>和<strong>头部的鳃弓间充质</strong>演化而来</li>
-<li><strong>肌节演化的肌肉</strong>：躯干肌、四肢肌及部分头部肌肉，由躯体神经支配</li>
-<li><strong>鳃弓演化的肌肉</strong>：主要是头颈部肌肉和背部的斜方肌，由<strong>特殊内脏神经</strong>支配</li>
-</ul>
-
-<blockquote>**进化解释**：人从水生动物进化而来。鱼类和两栖动物的鳃弓分化成鳃，参与呼吸运动（属于内脏），由内脏神经支配。人类的鳃弓分化出来的肌肉，支配神经也叫特殊内脏神经。</blockquote>
-
-<h4>肌肉变异</h4>
-
-<p>肌肉异常比较多见（缺少一块或多出一块都很常见），因为人不是进化的最终形态。</p>
-
-<p><strong>进化趋势</strong>：</p>
-<ul>
-<li><strong>新发生/逐渐分化的肌肉</strong>：如小指伸肌、第三腓骨肌（因为人类用手增多，手部肌肉功能增强）</li>
-<li><strong>退化/消失趋势的肌肉</strong>：如运动耳廓的肌肉（原始人类有被捕猎风险，需要耳听八方，现在已无此风险）</li>
-<li><strong>返祖现象</strong>：退化后又重新出现的肌肉</li>
-</ul>
-
-<hr>
-
-<h2>三、头肌</h2>
-
-<p>头肌分为<strong>面肌（表情肌）</strong>和<strong>咀嚼肌</strong>。</p>
-
-<h3>3.1 面肌（表情肌）</h3>
-
-<ul>
-<li>又称<strong>皮肌</strong>：一侧肌腱不附着在骨骼表面，直接连在皮肤上</li>
-<li>位置较浅，一端连颅骨（不动），一端连皮肤</li>
-<li>收缩时使面部皮肤产生变化，形成各种表情</li>
-<li>分为<strong>环形肌</strong>（轮匝肌）和<strong>辐射状肌</strong></li>
-<li>由<strong>面神经</strong>支配</li>
-<li>单侧面神经炎/面神经麻痹 → <strong>面瘫</strong>（一侧面部肌肉不能动）</li>
-</ul>
-
-<h4>枕额肌</h4>
-
-<ul>
-<li>位于颅顶，有两个肌腹：</li>
-<li><strong>枕腹</strong>：后方，起自枕骨，止于帽状腱膜</li>
-<li><strong>额腹</strong>：前方，起自帽状腱膜，止于眉部皮下</li>
-<li><strong>帽状腱膜</strong>：中间的腱性结构，像帽子一样盖在头顶</li>
-<li><strong>功能</strong>：</li>
-<li>额腹收缩 → 皱眉头（提眉）</li>
-<li>枕腹收缩 → 向后牵拉帽状腱膜</li>
-<li><strong>临床意义</strong>：帽状腱膜张力很大。颅顶外伤切割伤露颅骨时，不能简单缝合皮肤，必须单独缝合帽状腱膜（否则帽状腱膜展开，皮肤对合不良）</li>
-</ul>
-
-<h4>眼轮匝肌</h4>
-
-<ul>
-<li>围绕眼眶的环形肌</li>
-<li>功能：闭眼（眼睑部收缩轻轻闭眼，全部收缩紧紧闭眼）</li>
-<li>睁眼由上睑提肌完成（不是眼轮匝肌的拮抗肌）</li>
-</ul>
-
-<h4>口轮匝肌</h4>
-
-<ul>
-<li>围绕口裂的环形肌</li>
-<li>功能：闭合口腔，将双唇压在一起</li>
-<li>深层纤维与颊肌连续</li>
-</ul>
-
-<h4>颊肌</h4>
-
-<ul>
-<li>位于面颊深部，咬肌深面</li>
-<li>功能：保持颊部紧张，辅助咀嚼和吸吮</li>
-<li>颊肌和咬肌之间的深凹充满<strong>颊脂肪垫</strong></li>
-</ul>
-
-<h4>其他面肌</h4>
-
-<ul>
-<li><strong>颧大肌</strong>、<strong>颧小肌</strong>：起自颧骨，拉动口轮匝肌向上（微笑时使用）</li>
-<li><strong>笑肌</strong>：从后方拉动口角</li>
-<li><strong>口角提肌</strong>、<strong>鼻唇提肌</strong>：抬起上唇</li>
-<li><strong>鼻肌</strong>：皱鼻子</li>
-<li><strong>降口角肌</strong>、<strong>降下唇肌</strong>、<strong>颏肌</strong>：下拉下唇，皱紧下巴</li>
-</ul>
-
-<h3>3.2 咀嚼肌</h3>
-
-<ul>
-<li>配布于下颌关节周围，参与咀嚼运动</li>
-<li>主要为<strong>闭口肌</strong>（收缩使嘴巴闭上）</li>
-<li><strong>翼外肌</strong>是张口肌（使嘴巴张开）</li>
-<li>由<strong>三叉神经</strong>支配</li>
-<li>包括：咬肌、颞肌、翼内肌、翼外肌</li>
-</ul>
-
-<h4>咬肌</h4>
-
-<ul>
-<li><strong>起点</strong>：颧弓下缘和内侧面</li>
-<li><strong>走形</strong>：纤维斜向后下</li>
-<li><strong>止点</strong>：下颌支下端外侧面的咬肌粗隆</li>
-<li><strong>功能</strong>：上提下颌（闭口），同时使下颌骨向前（因为肌纤维斜向后下）</li>
-</ul>
-
-<h4>颞肌</h4>
-
-<ul>
-<li><strong>起点</strong>：颞窝（颧骨上方的凹陷）</li>
-<li><strong>走形</strong>：从颧弓深面内侧穿过</li>
-<li><strong>止点</strong>：下颌骨冠突</li>
-<li><strong>功能</strong>：上提下颌（闭口），后部纤维可使下颌骨向后拉（后退下颌）</li>
-</ul>
-
-<h4>翼内肌</h4>
-
-<ul>
-<li><strong>起点</strong>：翼突窝（蝶骨翼突内侧板和外侧板之间）</li>
-<li><strong>走形</strong>：与咬肌纤维方向一致，但位置更深、更靠内侧</li>
-<li><strong>止点</strong>：下颌骨内侧面的翼肌粗隆</li>
-<li><strong>功能</strong>：上提下颌，使下颌骨向前</li>
-</ul>
-
-<h4>翼外肌</h4>
-
-<ul>
-<li><strong>起点</strong>：蝶骨大翼下面和翼突外侧面</li>
-<li><strong>止点</strong>：下颌颈（髁突关节头下方狭窄处），也止于颞下颌关节囊和关节盘前缘</li>
-<li><strong>走形</strong>：水平前后方向</li>
-<li><strong>功能</strong>：</li>
-<li>两侧同时收缩 → 张口运动（使下颌骨向前）</li>
-<li>一侧收缩 → 使下颌骨向对侧移动</li>
-<li><strong>注意</strong>：翼外肌只是前后走形的肌肉，张口作用不是最主要的（主要张口肌是舌骨上肌群下拉下颌骨）</li>
-</ul>
-
-<h4>舌骨上肌群与张口</h4>
-
-<ul>
-<li>包括：二腹肌、下颌舌骨肌、茎突舌骨肌、颏舌骨肌</li>
-<li>当舌骨位置固定时：下颌舌骨肌、颏舌骨肌、二腹肌前腹收缩 → 下拉下颌骨 → 张口</li>
-<li>当闭口时：这些肌肉收缩 → 上提舌骨 → 参与吞咽</li>
-</ul>
-
-<blockquote>**下颌关节自然姿势是闭口**（咀嚼肌主要是闭口肌，维持闭口状态）。张口需要舌骨上肌主动收缩下拉下颌。</blockquote>
-
-<hr>
-
-<h2>四、颈肌</h2>
-
-<p>颈肌分为三大群：<strong>颈浅和颈外侧肌群</strong>、<strong>颈前肌群</strong>、<strong>颈深肌群</strong>。</p>
-
-<h3>4.1 颈浅和颈外侧肌群</h3>
-
-<h4>颈阔肌</h4>
-
-<ul>
-<li>最浅表的肌肉</li>
-<li>一端连下颌，一端连胸部上方皮肤</li>
-<li>功能：紧张颈部表面皮肤</li>
-<li>属于皮肌（面肌的延续）</li>
-</ul>
-
-<h4>胸锁乳突肌</h4>
-
-<ul>
-<li>位于颈阔肌深面，是颈部最重要的标志肌</li>
-<li><strong>起点</strong>：胸骨柄前面 + 锁骨胸骨端（跨过胸锁关节）</li>
-<li><strong>走形</strong>：向上、外、后走形</li>
-<li><strong>止点</strong>：颞骨乳突（耳后）</li>
-<li><strong>功能</strong>：</li>
-<li>一侧收缩 → 头向同侧倾斜，脸转向对侧</li>
-<li>两侧同时收缩 → 头后仰</li>
-<li><strong>神经支配</strong>：副神经</li>
-<li><strong>临床意义</strong>：维持头的正常位置和端正姿势</li>
-</ul>
-
-<h3>4.2 颈前肌群</h3>
-
-<p>以舌骨为界，分为<strong>舌骨上肌</strong>和<strong>舌骨下肌</strong>。</p>
-
-<h4>舌骨上肌群</h4>
-
-<table class="note-table">
-<tr><th>肌肉</th><th>位置/特点</th><th>功能</th></tr>
-<tr><td>**二腹肌**</td><td>有前腹和后腹两个肌腹，中间肌腱连于舌骨</td><td>前腹下拉下颌（张口），后腹上提舌骨</td></tr>
-<tr><td>**下颌舌骨肌**</td><td>连于下颌骨和舌骨之间，构成口腔底</td><td>下拉下颌（张口）/上提舌骨（吞咽）</td></tr>
-<tr><td>**茎突舌骨肌**</td><td>起自颞骨茎突，止于舌骨大角</td><td>上提舌骨（不参与张口闭口）</td></tr>
-<tr><td>**颏舌骨肌**</td><td>起自颏棘（下颌体正中深面），止于舌骨</td><td>下拉下颌（张口）/上提舌骨</td></tr>
-</table>
-
-<blockquote>除二腹肌外，其他三块都按起止点命名。</blockquote>
-
-<h4>舌骨下肌群</h4>
-
-<p>分浅深两层：</p>
-<ul>
-<li><strong>浅层</strong>：胸骨舌骨肌、肩胛舌骨肌</li>
-<li><strong>深层</strong>：胸骨甲状肌、甲状舌骨肌</li>
-</ul>
-
-<p>这些肌肉也都按起止点命名，功能主要是下拉舌骨和喉（吞咽后复位）。</p>
-
-<h3>4.3 颈深肌群</h3>
-
-<h4>外侧群——斜角肌</h4>
-
-<p>包括三块：<strong>前斜角肌</strong>、<strong>中斜角肌</strong>、<strong>后斜角肌</strong></p>
-
-<ul>
-<li><strong>起点</strong>：颈椎横突</li>
-<li><strong>止点</strong>：</li>
-<li>前、中斜角肌 → 第一肋</li>
-<li>后斜角肌 → 第二肋</li>
-<li><strong>功能</strong>：</li>
-<li>胸廓固定时：一侧收缩 → 颈向同侧屈；两侧收缩 → 屈颈</li>
-<li>颈部固定时：上提肋骨 → 助吸气</li>
-</ul>
-
-<p><strong>斜角肌间隙</strong>：</p>
-<ul>
-<li>由前斜角肌、中斜角肌和第一肋围成的间隙</li>
-<li>有<strong>臂丛神经</strong>和<strong>锁骨下动脉</strong>穿过</li>
-<li>临床重要结构（斜角肌间隙综合征可压迫臂丛和锁骨下动脉）</li>
-</ul>
-
-<h4>内侧群</h4>
-
-<p>包括颈长肌、头长肌等，主要功能是屈头、屈颈。</p>
-
-<h3>4.4 颈部筋膜</h3>
-
-<p>颈部深筋膜分为三层（注意：这里讲的是深筋膜，不是浅筋膜/皮下脂肪）：</p>
-
-<table class="note-table">
-<tr><th>层次</th><th>别名</th><th>位置</th><th>特点</th></tr>
-<tr><td>**浅层**</td><td>封套筋膜</td><td>最外层</td><td>把整个颈部肌肉完全包裹住</td></tr>
-<tr><td>**中层**</td><td>内脏筋膜/气管前筋膜</td><td>颈椎前方</td><td>包裹气管、食管、甲状腺等内脏</td></tr>
-<tr><td>**深层**</td><td>椎前筋膜</td><td>颈椎和椎旁肌前方</td><td>覆盖颈椎和椎旁肌</td></tr>
-</table>
-
-<blockquote>**临床重要性**：颈部筋膜非常关键！颈部重要结构太多（气管、食管、动静脉、神经、甲状腺）。手术时如果筋膜缝错，可能限制血管活动，危及生命。除颈部外，盆底筋膜也很关键。</blockquote>
-
-<hr>
-
-<h2>五、躯干肌</h2>
-
-<p>躯干肌根据部位分为：<strong>背肌</strong>、<strong>胸肌</strong>、<strong>腹肌</strong>、<strong>膈</strong>，以及会阴肌。</p>
-
-<h3>5.1 背肌</h3>
-
-<p>分为<strong>背浅肌群</strong>和<strong>背深肌群</strong>。</p>
-
-<h4>背浅肌群</h4>
-
-<p>起自脊柱，止于上肢，包括：斜方肌、背阔肌、肩胛提肌、菱形肌。</p>
-
-<p>##### 斜方肌</p>
-
-<ul>
-<li>面积非常大的扁肌，覆盖颈后和背部上方</li>
-<li><strong>起点</strong>：上项线、枕外隆凸、项韧带、全部胸椎棘突</li>
-<li><strong>项韧带</strong>：棘上韧带在颈部的延续，呈扇状片状结构，止于枕外隆凸</li>
-<li><strong>止点</strong>：锁骨外侧1/3、肩峰、肩胛冈</li>
-<li><strong>功能</strong>：</li>
-<li>使肩胛骨向脊柱靠拢（内收肩胛骨）</li>
-<li>肩胛骨固定时：一侧收缩 → 颈向同侧屈，脸转向对侧；两侧收缩 → 头后仰</li>
-</ul>
-
-<p>##### 背阔肌</p>
-
-<ul>
-<li>全身最大的扁阔肌</li>
-<li>位于斜方肌下方，与斜方肌在脊柱端有重叠（背阔肌在深层）</li>
-<li><strong>起点</strong>：下6个胸椎棘突、全部腰椎棘突、骶正中嵴、髂嵴后部</li>
-<li><strong>止点</strong>：肱骨小结节嵴（从腋下绕到前方）</li>
-<li><strong>功能</strong>：</li>
-<li>使肩关节内收、旋内、后伸</li>
-<li>上肢固定时：可引体向上（拉躯干向上）</li>
-</ul>
-
-<p>##### 肩胛提肌</p>
-
-<ul>
-<li>被斜方肌覆盖</li>
-<li><strong>起点</strong>：上4个颈椎横突</li>
-<li><strong>止点</strong>：肩胛骨上角</li>
-<li><strong>功能</strong>：上提肩胛骨，使肩胛骨下角旋内；肩胛骨固定时 → 颈向同侧屈</li>
-</ul>
-
-<p>##### 菱形肌</p>
-
-<ul>
-<li>被斜方肌覆盖</li>
-<li><strong>起点</strong>：第6、7颈椎和第1-4胸椎横突</li>
-<li><strong>止点</strong>：肩胛骨内侧缘</li>
-<li><strong>功能</strong>：牵引肩胛骨向上并向脊柱靠拢</li>
-</ul>
-
-<h4>背深肌群</h4>
-
-<p>起自脊柱两侧，分为长肌和短肌，功能：维持人体直立姿势，加强脊柱稳固。</p>
-
-<p>##### 竖脊肌（骶棘肌）</p>
-
-<ul>
-<li>最长最大的背肌（注意：不是人体最长的肌肉）</li>
-<li><strong>起点</strong>：骶骨背面、髂嵴后部、腰椎棘突</li>
-<li><strong>走形</strong>：向上分散成三个肌束</li>
-<li><strong>止点</strong>：颞骨乳突（中间跨过肋骨和椎骨都有止点）</li>
-<li><strong>功能</strong>：</li>
-<li>一侧收缩 → 脊柱向同侧屈</li>
-<li>两侧收缩 → 脊柱后伸和仰头</li>
-</ul>
-
-<p>##### 其他背深短肌</p>
-
-<ul>
-<li>枕下肌</li>
-<li>棘间肌（相邻棘突之间）</li>
-<li>横突间肌（相邻横突之间）</li>
-<li>肋肌（肋骨之间）</li>
-</ul>
-
-<h4>胸腰筋膜</h4>
-
-<ul>
-<li>包裹竖脊肌和腰方肌的深筋膜，分为三层：</li>
-<li><strong>浅层</strong>：在竖脊肌浅面，向内附着于棘上韧带，向外附着于肋角，向下到髂嵴（也是背阔肌的起始点）</li>
-<li><strong>中层</strong>：分隔腰方肌和竖脊肌</li>
-<li><strong>深层</strong>：从内侧面覆盖腰方肌</li>
-<li>三层筋膜在腰方肌外侧面汇合</li>
-<li>也是腹内斜肌和腹横肌的起点</li>
-<li><strong>临床意义</strong>：腰部剧烈运动时，胸腰筋膜可能扭伤，是<strong>腰背劳损</strong>的病因之一（俗称"扭了腰"）</li>
-</ul>
-
-<h3>5.2 胸肌</h3>
-
-<p>分为<strong>胸上肢肌</strong>和<strong>固有胸肌</strong>。</p>
-
-<h4>胸上肢肌</h4>
-
-<p>一侧在胸廓，一侧在上肢骨，包括：胸大肌、胸小肌、前锯肌。</p>
-
-<p>##### 胸大肌</p>
-
-<ul>
-<li><strong>起点</strong>：锁骨内侧半、胸骨前面、第1-6肋软骨前面</li>
-<li><strong>止点</strong>：肱骨大结节嵴</li>
-<li><strong>功能</strong>：</li>
-<li>使肩关节内收、旋内、前屈</li>
-<li>上肢固定时：上提躯干（如引体向上辅助）</li>
-<li>连接胸廓 → 上提胸廓，助吸气</li>
-</ul>
-
-<p>##### 胸小肌</p>
-
-<ul>
-<li>位于胸大肌深面</li>
-<li><strong>起点</strong>：第3-5肋</li>
-<li><strong>止点</strong>：肩胛骨喙突</li>
-<li><strong>功能</strong>：拉肩胛骨向前下；肩胛骨固定时 → 上提胸廓，助吸气</li>
-</ul>
-
-<p>##### 前锯肌</p>
-
-<ul>
-<li><strong>起点</strong>：上8或上9肋骨（呈锯齿状）</li>
-<li><strong>止点</strong>：肩胛骨内侧缘和下角</li>
-<li><strong>功能</strong>：</li>
-<li>拉肩胛骨向前紧贴胸壁</li>
-<li>下部肌束 → 使肩胛骨下角旋外，助臂上举</li>
-<li>肩胛骨固定时 → 提肋助吸气</li>
-<li><strong>临床意义</strong>：一侧前锯肌受损 → 肩胛骨不能紧贴胸廓 → <strong>翼状肩</strong>（肩胛骨内侧缘翘起）</li>
-</ul>
-
-<h4>固有胸肌</h4>
-
-<p>位于胸廓内部骨骼之间，包括：肋间外肌、肋间内肌、肋间最内肌、胸横肌。</p>
-
-<p>##### 肋间外肌</p>
-
-<ul>
-<li>位于肋间隙浅层</li>
-<li><strong>起点</strong>：上位肋骨下面</li>
-<li><strong>走形</strong>：肌纤维斜向前下</li>
-<li><strong>止点</strong>：下位肋骨上缘</li>
-<li><strong>范围</strong>：从脊柱到肋骨与肋软骨结合处，向前移行为肋间外膜</li>
-<li><strong>功能</strong>：提肋助吸气</li>
-</ul>
-
-<p>##### 肋间内肌</p>
-
-<ul>
-<li>位于肋间外肌深面</li>
-<li><strong>走形</strong>：肌纤维斜向后下（与肋间外肌垂直交叉）</li>
-<li><strong>范围</strong>：从胸骨外侧缘到肋角，向后移行为肋间内膜</li>
-<li><strong>功能</strong>：降肋助呼气</li>
-</ul>
-
-<p>##### 肋间最内肌</p>
-
-<ul>
-<li>位于肋间最内层，肋角附近</li>
-<li>两边都不靠（既不到胸骨也不到脊柱）</li>
-</ul>
-
-<p>##### 胸横肌</p>
-
-<ul>
-<li>位于胸前壁最深层，肋软骨到胸骨之间</li>
-</ul>
-
-<h4>胸部筋膜</h4>
-
-<p>以胸大肌为界分浅深两层：</p>
-<ul>
-<li><strong>浅层</strong>：较薄弱，位于胸大肌外表面</li>
-<li><strong>深层</strong>：在胸大肌深面，包裹胸小肌</li>
-<li>胸小肌和锁骨之间增厚部分 → <strong>锁胸筋膜</strong>，有血管神经穿出</li>
-</ul>
-
-<h3>5.3 膈（膈肌）</h3>
-
-<ul>
-<li>位于胸腹腔之间，分隔胸腔和腹腔</li>
-<li>形状：向上呈穹窿状（中间高，四周低）</li>
-<li>构成胸腔的底和腹腔的顶</li>
-<li>是主要的呼吸肌</li>
-<li>打嗝就是膈肌的收缩</li>
-</ul>
-
-<h4>膈肌分部</h4>
-
-<p>膈肌是扁阔肌，中间是腱性结构（<strong>中心腱</strong>），肌束分为三部：</p>
-
-<table class="note-table">
-<tr><th>部分</th><th>起点</th><th>位置</th></tr>
-<tr><td>**胸骨部**</td><td>胸骨剑突</td><td>前方小部分</td></tr>
-<tr><td>**肋部**</td><td>下6对肋骨和肋软骨</td><td>侧方大部分</td></tr>
-<tr><td>**腰部**</td><td>左右两个膈脚（起自上2-3个腰椎）+ 腰大肌和腰方肌表面腱膜</td><td>后方</td></tr>
-</table>
-
-<h4>膈肌三个裂孔</h4>
-
-<table class="note-table">
-<tr><th>裂孔</th><th>位置（椎体水平）</th><th>穿行结构</th></tr>
-<tr><td>**主动脉裂孔**</td><td>第12胸椎前方（最后侧，紧贴脊柱）</td><td>主动脉、胸导管</td></tr>
-<tr><td>**食管裂孔**</td><td>第10胸椎偏左</td><td>食管、迷走神经</td></tr>
-<tr><td>**腔静脉裂孔**</td><td>第8胸椎偏右（在中心腱上，最前侧最高）</td><td>下腔静脉</td></tr>
-</table>
-
-<blockquote>三个裂孔高度不一致（12胸椎→10胸椎→8胸椎），因为膈肌穹窿向上，越靠中心位置越高。</blockquote>
-
-<h4>膈肌薄弱区与膈疝</h4>
-
-<p>胸骨部、肋部、腰部交界处的三角形区域，肌纤维覆盖不完全，只有腱性结构，非常薄弱：</p>
-<ul>
-<li><strong>胸肋三角</strong>：胸骨部和肋部之间</li>
-<li><strong>腰肋三角</strong>：腰部和肋部之间</li>
-</ul>
-
-<p>腹腔压力大时，腹腔器官（主要是胃肠道，活动度大）可通过这些薄弱区凸向胸腔 → <strong>膈疝</strong>（最常见通过腰肋三角）</p>
-
-<h4>膈肌功能</h4>
-
-<ul>
-<li><strong>主要呼吸肌</strong>：</li>
-<li>收缩 → 穹窿下降 → 胸腔变大 → 助吸气</li>
-<li>松弛 → 胸腔容积减小 → 助呼气</li>
-<li><strong>增加腹压</strong>：收缩时腹腔体积被压缩，腹压增加（辅助排便、呕吐、分娩）</li>
-<li>神经支配：<strong>膈神经</strong></li>
-</ul>
-
-<h3>5.4 腹肌</h3>
-
-<p>位于胸廓和骨盆之间，包括<strong>腹前外侧群</strong>和<strong>后群</strong>。</p>
-
-<h4>腹前外侧群</h4>
-
-<p>包括三块扁肌（腹外斜肌、腹内斜肌、腹横肌）和一块长肌（腹直肌）。</p>
-
-<p>##### 腹外斜肌</p>
-
-<ul>
-<li>最外层</li>
-<li><strong>起点</strong>：以8个肌齿起自下8位肋骨外面（锯齿状，与前锯肌、背阔肌交错）</li>
-<li><strong>走形</strong>：肌纤维斜向前下</li>
-<li><strong>止点</strong>：</li>
-<li>后部肌束 → 髂嵴后部</li>
-<li>其余肌束 → 向内移行为腱膜，参与构成腹直肌鞘前层和白线</li>
-<li><strong>特殊结构</strong>：</li>
-<li><strong>腹股沟韧带</strong>：腹外斜肌腱膜下缘卷曲增厚，连于髂前上棘和耻骨结节之间</li>
-<li><strong>耻骨梳韧带</strong>：腹股沟韧带在耻骨结节处向上反折，附着于耻骨梳</li>
-<li><strong>腔隙韧带（陷窝韧带）</strong>：腹股沟韧带反折处的片状膜性结构</li>
-<li><strong>腹股沟管皮下环（浅环）</strong>：腹外斜肌腱膜在耻骨结节外上方形成的三角形裂隙</li>
-</ul>
-
-<p>##### 腹内斜肌</p>
-
-<ul>
-<li>位于腹外斜肌深面</li>
-<li><strong>起点</strong>：胸腰筋膜、髂嵴、腹股沟韧带外侧1/3</li>
-<li><strong>走形</strong>：肌纤维斜向内上（与腹外斜肌垂直交叉）</li>
-<li><strong>止点</strong>：</li>
-<li>后部肌束 → 下3位肋骨</li>
-<li>大部分 → 向内延续为腱膜，参与构成腹直肌鞘，终于白线</li>
-<li><strong>特殊结构</strong>：</li>
-<li>下部肌束与腹横肌一起跨过腹股沟管，在内侧融合 → <strong>联合腱（腹股沟镰）</strong></li>
-<li>部分肌束向下延续 → 参与构成提睾肌</li>
-</ul>
-
-<p>##### 腹横肌</p>
-
-<ul>
-<li>位于腹内斜肌深面（最深层扁肌）</li>
-<li><strong>起点</strong>：下6对肋软骨内面、胸腰筋膜、髂嵴、腹股沟韧带外侧1/3</li>
-<li><strong>走形</strong>：肌纤维横向走形</li>
-<li><strong>止点</strong>：向内移行为腱膜，构成腹直肌鞘，终于白线</li>
-<li>与腹内斜肌一起构成联合腱和提睾肌</li>
-</ul>
-
-<p>##### 腹直肌</p>
-
-<ul>
-<li>位于腹壁前正中线两旁</li>
-<li><strong>起点</strong>：耻骨联合和耻骨嵴</li>
-<li><strong>止点</strong>：剑突和第5-7肋软骨前面</li>
-<li><strong>特点</strong>：</li>
-<li>上宽下窄</li>
-<li>有3-4个<strong>腱划</strong>（节段性腱性结构），将肌腹分成多个肌腹（男性锻炼的"8块腹肌"）</li>
-<li>被<strong>腹直肌鞘</strong>包裹</li>
-</ul>
-
-<h4>腹直肌鞘</h4>
-
-<ul>
-<li>包绕腹直肌，由腹前外侧三块扁肌的腱膜构成</li>
-<li><strong>上部（弓状线以上）</strong>：</li>
-<li>前层：腹外斜肌腱膜 + 腹内斜肌腱膜前层</li>
-<li>后层：腹内斜肌腱膜后层 + 腹横肌腱膜</li>
-<li><strong>下部（弓状线以下）</strong>：</li>
-<li>三块扁肌的腱膜全部从前面覆盖腹直肌</li>
-<li>腹直肌鞘后层缺如，腹直肌后面直接贴<strong>腹横筋膜</strong></li>
-<li><strong>弓状线</strong>：腹直肌鞘后层的游离下缘，呈弧形，位于脐下方4-5cm处</li>
-</ul>
-
-<h4>白线</h4>
-
-<ul>
-<li>位于腹前壁正中线，左右两个腹直肌鞘之间</li>
-<li>上方起自剑突，下方到耻骨联合</li>
-<li>由三块扁肌腱膜纤维交织而成</li>
-<li>特点：坚韧、少血管</li>
-<li><strong>脐环</strong>：白线在肚脐处的薄弱区，是腹壁薄弱区</li>
-<li><strong>脐疝</strong>：腹腔器官通过脐环突出到皮下</li>
-</ul>
-
-<h4>腹后群</h4>
-
-<ul>
-<li><strong>腰大肌</strong>：紧贴脊柱椎体前方</li>
-<li><strong>腰方肌</strong>：位于腰大肌后侧，表面覆盖胸腰筋膜</li>
-<li>腰大肌和腰方肌前面的腱膜参与构成膈肌腰部起点</li>
-</ul>
-
-<h4>腹部浅筋膜特点</h4>
-
-<p>腹部浅筋膜（皮下脂肪）分为两层：</p>
-<ul>
-<li>浅层：含脂肪，叫Camper筋膜</li>
-<li>深层：含弹性纤维，叫Scarpa筋膜</li>
-<li>这两层不仅在腹部，还延续到股部（大腿上部）和臀部</li>
-<li>临床意义：尿道损伤时尿液可渗到浅筋膜深浅两层之间，渗出范围只限于此区域（因为再往上/往下浅筋膜又变成一层）</li>
-</ul>
-
-<h3>5.5 腹股沟管</h3>
-
-<ul>
-<li>位于腹股沟韧带内侧半的上方</li>
-<li>长度约4.5cm</li>
-<li>是由肌肉筋膜围绕形成的斜行管道（从内向外斜向下）</li>
-<li>男性走行<strong>精索</strong>，女性走行<strong>子宫圆韧带</strong></li>
-</ul>
-
-<h4>腹股沟管两口</h4>
-
-<table class="note-table">
-<tr><th>口</th><th>别名</th><th>构成</th></tr>
-<tr><td>**内口**</td><td>深环/腹环</td><td>腹横筋膜向外突出形成</td></tr>
-<tr><td>**外口**</td><td>浅环/皮下环</td><td>腹外斜肌腱膜的薄弱处（三角形裂隙）</td></tr>
-</table>
-
-<h4>腹股沟管四壁</h4>
-
-<table class="note-table">
-<tr><th>壁</th><th>构成</th></tr>
-<tr><td>**前壁**</td><td>腹外斜肌腱膜 + 腹内斜肌（外侧1/3）</td></tr>
-<tr><td>**后壁**</td><td>腹横筋膜 + 联合腱（腹股沟镰，内侧1/3）</td></tr>
-<tr><td>**上壁**</td><td>腹内斜肌和腹横肌的弓状下缘</td></tr>
-<tr><td>**下壁**</td><td>腹股沟韧带</td></tr>
-</table>
-
-<h4>腹股沟斜疝</h4>
-
-<p>腹腔内器官（如肠管）因腹压过大，经腹股沟管深环进入腹股沟管，再经浅环突出 → <strong>腹股沟斜疝</strong></p>
-<ul>
-<li>尤其在小孩子常见（筋膜发育不完善，有薄弱或缺损）</li>
-<li>男性斜疝可降入阴囊</li>
-</ul>
-
-<h3>5.6 海氏三角（腹股沟三角）</h3>
-
-<ul>
-<li>由三个结构围成的近似三角形区域：</li>
-<li>内侧界：腹直肌外侧缘</li>
-<li>下界：腹股沟韧带</li>
-<li>外侧界：腹壁下动脉</li>
-<li>此区域也是腱性结构薄弱区</li>
-<li><strong>腹股沟直疝</strong>：腹腔内容物经海氏三角向前突出（不经腹股沟管深环），在皮下形成鼓包</li>
-<li>直疝 vs 斜疝的关键区别：直疝从海氏三角突出，斜疝从腹股沟管深环进入腹股沟管</li>
-</ul>
-
-<hr>
-
-<h2>六、老师强调重点汇总</h2>
-
-<ul>
-<li class="num"><strong>肌肉只有收缩功能</strong>：没有推开功能，关节运动靠拮抗肌收缩</li>
-<li class="num"><strong>起止点可互换</strong>：引体向上时肱二头肌起止点功能互换</li>
-<li class="num"><strong>肌肉配布与关节运动轴一致</strong>：关节不能运动的方向没有肌肉</li>
-<li class="num"><strong>面肌是皮肌</strong>：一端连皮肤，收缩产生表情；面神经损伤→面瘫</li>
-<li class="num"><strong>咀嚼肌主要是闭口肌</strong>：翼外肌是张口肌但作用有限，主要张口肌是舌骨上肌</li>
-<li class="num"><strong>胸锁乳突肌功能</strong>：一侧收缩头向同侧屈脸转向对侧，两侧收缩头后仰</li>
-<li class="num"><strong>斜角肌间隙</strong>：前中斜角肌+第一肋围成，臂丛和锁骨下动脉穿过</li>
-<li class="num"><strong>颈部筋膜三层</strong>：封套筋膜/内脏筋膜/椎前筋膜，临床手术关键</li>
-<li class="num"><strong>斜方肌 vs 背阔肌</strong>：斜方肌内收肩胛骨，背阔肌使肩关节内收旋内后伸（全身最大扁阔肌）</li>
-<li class="num"><strong>前锯肌损伤→翼状肩</strong>：肩胛骨不能紧贴胸壁</li>
-<li class="num"><strong>肋间外肌提肋吸气，肋间内肌降肋呼气</strong>：肌纤维方向垂直交叉</li>
-<li class="num"><strong>膈肌三裂孔</strong>：主动脉裂孔（T12）/食管裂孔（T10）/腔静脉裂孔（T8），高度依次升高</li>
-<li class="num"><strong>膈疝</strong>：通过胸肋三角/腰肋三角突出</li>
-<li class="num"><strong>腹直肌鞘上下构成不同</strong>：弓状线以上有后层，以下后层缺如（直接贴腹横筋膜）</li>
-<li class="num"><strong>腹股沟管四壁两口</strong>：前壁腹外斜肌腱膜，后壁腹横筋膜+联合腱，上壁弓状下缘，下壁腹股沟韧带</li>
-<li class="num"><strong>腹股沟斜疝 vs 直疝</strong>：斜疝经深环入腹股沟管，直疝经海氏三角突出</li>
-<li class="num"><strong>帽状腱膜缝合</strong>：颅顶外伤必须单独缝合帽状腱膜（张力大）</li>
-<li class="num"><strong>胸腰筋膜扭伤→腰背劳损</strong></li>
-</ul>
-
-<hr>
-
-<h2>七、复习清单</h2>
-
-<ul>
-<li>[ ] 能区分平滑肌/心肌/骨骼肌，随意/不随意，横纹/非横纹的分类</li>
-<li>[ ] 掌握肌肉四种形态（长肌/短肌/扁肌/轮匝肌）及分布</li>
-<li>[ ] 理解肌腹vs肌腱，腱膜vs腱划的概念</li>
-<li>[ ] 理解起止点可互换（引体向上例子）</li>
-<li>[ ] 掌握协同肌与拮抗肌概念</li>
-<li>[ ] 掌握肌肉辅助装置（筋膜/滑膜囊/腱鞘/籽骨）</li>
-<li>[ ] 理解肌肉发生（肌节vs鳃弓来源）和进化变异趋势</li>
-<li>[ ] 掌握面肌组成和功能（枕额肌/眼轮匝肌/口轮匝肌/颊肌）</li>
-<li>[ ] 掌握四块咀嚼肌的起止和功能（咬肌/颞肌/翼内肌/翼外肌）</li>
-<li>[ ] 掌握胸锁乳突肌的起止和功能</li>
-<li>[ ] 掌握舌骨上肌群和舌骨下肌群的组成</li>
-<li>[ ] 掌握斜角肌间隙的构成和穿行结构</li>
-<li>[ ] 掌握颈部深筋膜三层</li>
-<li>[ ] 掌握背浅肌群四块肌肉（斜方肌/背阔肌/肩胛提肌/菱形肌）</li>
-<li>[ ] 掌握竖脊肌的功能</li>
-<li>[ ] 掌握胸腰筋膜的分层和临床意义</li>
-<li>[ ] 掌握胸上肢肌（胸大肌/胸小肌/前锯肌）</li>
-<li>[ ] 掌握固有胸肌（肋间外肌/肋间内肌）的功能</li>
-<li>[ ] 掌握膈肌的分部、三裂孔、薄弱区和功能</li>
-<li>[ ] 掌握腹前外侧群四块肌肉（腹外斜肌/腹内斜肌/腹横肌/腹直肌）</li>
-<li>[ ] 掌握腹直肌鞘的构成（弓状线上下不同）</li>
-<li>[ ] 掌握白线和脐疝</li>
-<li>[ ] 掌握腹股沟管的四壁两口和穿行结构</li>
-<li>[ ] 掌握腹股沟斜疝的形成机制</li>
-<li>[ ] 掌握海氏三角的构成和腹股沟直疝</li>
-</ul>
-
-<hr>
-
-<h2>八、主动回忆题</h2>
-
-<h3>题目1</h3>
-<p>肌肉按构造可分为哪三类？各有何特点？为什么骨骼肌和心肌合称横纹肌？为什么平滑肌和心肌合称不随意肌？</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>三类肌肉</strong>：</p>
-<ul>
-<li class="num"><strong>平滑肌</strong>：配布在管腔器官管壁内（如血管、肠道），肌纤维走形不明显，无横纹，由自主神经支配（不随意肌）</li>
-<li class="num"><strong>心肌</strong>：特指心脏肌肉，有横纹，由自主神经支配（不随意肌）</li>
-<li class="num"><strong>骨骼肌</strong>：外周骨骼肌肉，有明显横纹（一束一束的肌纤维），由躯体神经支配（随意肌）</li>
-</ul>
-
-<p><strong>为什么合称横纹肌</strong>：心肌和骨骼肌在显微镜下都能看到明显的横纹（肌节结构），而平滑肌没有横纹。</p>
-
-<p><strong>为什么合称不随意肌</strong>：平滑肌和心肌的收缩不受主观意识控制（不能凭意志让心跳加快或肠道蠕动加快），而骨骼肌可以随意志控制收缩。</p>
-
-<blockquote>交叉分类记忆：随意肌=骨骼肌；不随意肌=平滑肌+心肌；横纹肌=心肌+骨骼肌；非横纹肌=平滑肌。</blockquote>
-<p></details></p>
-
-<h3>题目2</h3>
-<p>膈肌有哪三个裂孔？分别在什么椎体水平？穿行什么结构？为什么三个裂孔的高度不一样？</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>膈肌三个裂孔</strong>：</p>
-
-<table class="note-table">
-<tr><th>裂孔</th><th>椎体水平</th><th>穿行结构</th></tr>
-<tr><td>**主动脉裂孔**</td><td>第12胸椎前方（最后侧，紧贴脊柱）</td><td>主动脉、胸导管</td></tr>
-<tr><td>**食管裂孔**</td><td>第10胸椎偏左</td><td>食管、迷走神经</td></tr>
-<tr><td>**腔静脉裂孔**</td><td>第8胸椎偏右（在中心腱上，最前侧）</td><td>下腔静脉</td></tr>
-</table>
-
-<p><strong>为什么高度不一样</strong>：</p>
-<p>膈肌整体呈向上的穹窿状（中间高、四周低）。三个裂孔从后向前依次排列：主动脉裂孔在最后方（膈肌边缘，位置最低），食管裂孔在中间，腔静脉裂孔在最前方中心腱上（位置最高）。因此椎体水平依次为T12→T10→T8，越来越高。</p>
-
-<p><strong>记忆口诀</strong>：主动脉裂孔T12（"主12"），食管裂孔T10（"食10"），腔静脉裂孔T8（"腔8"）——从后往前，12、10、8递减。</p>
-<p></details></p>
-
-<h3>题目3</h3>
-<p>腹股沟管的四壁和两口分别由什么构成？腹股沟斜疝和直疝有什么区别？</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>腹股沟管四壁</strong>：</p>
-<ul>
-<li><strong>前壁</strong>：腹外斜肌腱膜（外侧1/3还有腹内斜肌加强）</li>
-<li><strong>后壁</strong>：腹横筋膜（内侧1/3有联合腱/腹股沟镰加强）</li>
-<li><strong>上壁</strong>：腹内斜肌和腹横肌的弓状下缘</li>
-<li><strong>下壁</strong>：腹股沟韧带</li>
-</ul>
-
-<p><strong>腹股沟管两口</strong>：</p>
-<ul>
-<li><strong>内口（深环/腹环）</strong>：腹横筋膜向外突出形成</li>
-<li><strong>外口（浅环/皮下环）</strong>：腹外斜肌腱膜在耻骨结节外上方的三角形裂隙</li>
-</ul>
-
-<p><strong>穿行结构</strong>：男性→精索；女性→子宫圆韧带</p>
-
-<p><strong>斜疝 vs 直疝的区别</strong>：</p>
-
-<table class="note-table">
-<tr><th>比较项</th><th>腹股沟斜疝</th><th>腹股沟直疝</th></tr>
-<tr><td>突出途径</td><td>经腹股沟管深环→腹股沟管→浅环突出</td><td>经海氏三角（腹股沟三角）直接向前突出</td></tr>
-<tr><td>是否进入腹股沟管</td><td>是</td><td>否（不经深环）</td></tr>
-<tr><td>海氏三角</td><td>不经过</td><td>经过（腹直肌外侧缘+腹股沟韧带+腹壁下动脉围成）</td></tr>
-<tr><td>男性可降入</td><td>可降入阴囊</td><td>一般不降入阴囊</td></tr>
-<tr><td>好发人群</td><td>儿童、青壮年</td><td>老年人</td></tr>
-</table>
-
-<blockquote>关键鉴别：疝囊颈与腹壁下动脉的关系——斜疝疝囊颈在腹壁下动脉外侧，直疝疝囊颈在腹壁下动脉内侧。</blockquote>
-<p></details></p>
-
-<h3>题目4</h3>
-<p>四块咀嚼肌分别是什么？各有什么功能？为什么说下颌关节的自然姿势是闭口？</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>四块咀嚼肌</strong>（均由三叉神经支配）：</p>
-
-<table class="note-table">
-<tr><th>肌肉</th><th>起点</th><th>止点</th><th>主要功能</th></tr>
-<tr><td>**咬肌**</td><td>颧弓下缘和内侧面</td><td>下颌支外侧面咬肌粗隆</td><td>上提下颌（闭口），使下颌前伸</td></tr>
-<tr><td>**颞肌**</td><td>颞窝</td><td>下颌骨冠突</td><td>上提下颌（闭口），后部纤维后退下颌</td></tr>
-<tr><td>**翼内肌**</td><td>翼突窝</td><td>下颌骨内侧面翼肌粗隆</td><td>上提下颌（闭口），使下颌前伸</td></tr>
-<tr><td>**翼外肌**</td><td>蝶骨大翼下面和翼突外侧面</td><td>下颌颈、关节囊和关节盘</td><td>两侧收缩→张口（前伸下颌）；一侧收缩→下颌向对侧移动</td></tr>
-</table>
-
-<p><strong>为什么自然姿势是闭口</strong>：</p>
-<p>四块咀嚼肌中，三块（咬肌、颞肌、翼内肌）都是闭口肌（上提下颌），只有翼外肌参与张口且作用有限（它是水平前后走形的肌肉，下拉下颌的力量弱）。真正的主要张口肌是舌骨上肌群（二腹肌前腹、下颌舌骨肌、颏舌骨肌），需要主动收缩才能下拉下颌骨张口。因此，在没有主动张口的情况下，闭口肌的静息张力维持下颌关节处于闭口姿势。</p>
-
-<blockquote>记忆：咀嚼肌"三闭一张"——咬肌、颞肌、翼内肌闭口，翼外肌张口（但主力张口肌是舌骨上肌）。</blockquote>
-<p></details></p>
-
-<hr>
-
-<blockquote>**笔记说明**：本笔记基于2026年9月14日系统解剖学实验课完整逐字稿整理（82KB，约2小时15分钟），涵盖肌学总论、头肌（面肌+咀嚼肌）、颈肌（浅外侧+前+深+筋膜）、躯干肌（背肌+胸肌+膈+腹肌+腹股沟管+海氏三角）全部内容。课程内节次为第13-15节（累计3学时）。课表标注教学内容"肌总论、头颈肌、躯干肌"与实际授课内容一致。</blockquote>
-
-  <div class="footer">
-    <span>系统解剖学 · 肌总论·头颈肌·躯干肌</span>
-    <span>HUST课堂笔记</span>
-  </div>
-</div>
-
-</body>
-</html>
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}</style></head><body>
+<div class="page cover"><p class="h1">系统解剖学 · 第13-15节</p><p class="meta">肌总论、头颈肌与躯干肌 · 上课日期 2026-09-14（第3周）</p><p class="lead" style="text-align:left">素材规模：逐字稿约 2.87 万字 / 130 轮发言（讲授 113 轮 + 视频旁白 17 轮）；辅助材料 minutes.md、cards.md（手卡已核实）。</p><table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课次</td><td>rec-2026-fall-013-015（课程内第13-15节，3学时）</td></tr>
+<tr><td>课程名</td><td>系统解剖学（anatomy）</td></tr>
+<tr><td>主题</td><td>肌总论；头肌（面肌、咀嚼肌）；颈肌（浅外侧、前、深、筋膜）；躯干肌（背肌、胸肌、膈、腹肌、腹股沟区）</td></tr>
+<tr><td>配套</td><td>minutes.md（知识结构/重点汇总）、cards.md（9 张复习手卡，结论已核实）</td></tr></table></div>
+<div class="page"><h2 class="h2">0. 知识框架</h2><p class="lead">先立肌学总论（分类·构造·配布·辅助装置·发生变异），再分头、颈、躯干三大部分逐个突破，腹股沟区收口于斜疝与直疝的鉴别。</p>
+<ul class="kv"><li>肌总论（§1-4）：分类 · 构造 · 起止与配布 · 辅助装置 · 发生与变异</li><li>头肌（§5-6）：面肌（皮肌、面神经）· 咀嚼肌（三叉神经，「三闭一张」）</li><li>颈肌（§7-10）：颈浅外侧 · 颈前（舌骨上/下肌）· 颈深（斜角肌间隙）· 颈部筋膜三层</li><li>躯干肌（§11-15）：背肌 · 胸肌 · 膈 · 腹肌 · 腹股沟管与海氏三角</li><li>全身肌分头、颈、躯干、四肢四部分；本课讲前三类，躯干肌含背胸腹膈，四肢肌分上下肢（后续课） <span class="loc">〔说话人1 20:12〕</span></li></ul></div>
+<div class="page"><h2 class="h2">1. 肌总论：分类与构造</h2><p class="lead">肌肉按构造分三类，用「随意/不随意」「横纹/非横纹」两把尺子交叉归类；每块肌肉由肌腹与肌腱构成，按形态分四种。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>肌肉根据构造不同可分为平滑肌、心肌和骨骼肌 <span class="loc">〔说话人1 00:11〕</span></li>
+<li>平滑肌配布在管腔器官的管壁内（如血管壁、肠壁） <span class="loc">〔说话人1 00:11〕</span></li><li>心肌特指心脏的肌肉 <span class="loc">〔说话人1 00:11〕</span></li>
+<li>主要分布在外周、附着于骨的肌肉叫骨骼肌 <span class="loc">〔说话人1 00:11〕</span></li>
+<li>平滑肌和心肌合称不随意肌，不能随主观意愿运动 <span class="loc">〔说话人1 00:11〕</span></li>
+<li>骨骼肌叫随意肌 <span class="loc">〔说话人1 00:11〕</span></li>
+<li>心肌和骨骼肌合称横纹肌，能看见明显的肌纤维走形 <span class="loc">〔说话人1 00:11〕</span></li>
+<li>平滑肌肌纤维走形不明显，骨骼肌与心肌呈明显的一束一束 <span class="loc">〔说话人1 01:42〕</span></li>
+<li>吃肥肠看不到肌纤维走形，吃瘦肉能看到一束一束的肌纤维 <span class="loc">〔说话人1 01:42〕</span></li>
+<li>全身肌肉约有600多块，而骨骼能精确定义为206块 <span class="loc">〔说话人1 02:13〕</span></li>
+<li>肌肉每人多几块少几块很常见，变异比骨骼常见 <span class="loc">〔说话人1 02:13〕</span></li>
+<li>肌肉重量约占体重的40% <span class="loc">〔说话人1 02:13〕</span></li>
+<li>每块肌肉都有独立的血供、神经和淋巴，故每块肌肉均可看成一个器官 <span class="loc">〔说话人1 02:13〕</span></li>
+<li>肌腹位于肌肉中间、呈红色，由肌纤维（肌细胞）构成 <span class="loc">〔说话人1 02:51〕</span></li>
+<li>肌束由许多肌细胞（肌纤维）构成 <span class="loc">〔说话人1 02:51〕</span></li>
+<li>肌腱位于肌肉两端、呈白色，由平行致密的胶原纤维束构成 <span class="loc">〔说话人1 02:51〕</span></li>
+<li>肌腱与韧带的性质相同，都是致密胶原纤维束 <span class="loc">〔说话人1 02:51〕</span></li>
+<li>韧带连接骨骼、位于关节囊内或囊外，肌腱位于肌腹两端 <span class="loc">〔说话人1 02:51〕</span></li>
+<li>红肌肌纤维较细小，收缩慢，但作用持久 <span class="loc">〔说话人1 02:51〕</span></li>
+<li>白肌肌纤维较宽大，收缩幅度大，但作用不持久 <span class="loc">〔说话人1 02:51〕</span></li>
+<li>长时间运动（如马拉松）中红肌作用明显 <span class="loc">〔说话人1 02:51〕</span></li>
+<li>肌肉按形态分为长肌、短肌、扁肌和轮匝肌 <span class="loc">〔说话人1 04:21〕</span></li>
+<li>长肌收缩时显著缩短，可引起大幅度运动，多位于四肢 <span class="loc">〔说话人1 04:21〕</span></li>
+<li>长肌见于二腹肌、二头肌等四肢肌 <span class="loc">〔说话人1 04:21〕</span></li>
+<li>短肌有明显节段性，收缩幅度小，多见于椎骨之间等躯干深层 <span class="loc">〔说话人1 04:21〕</span></li>
+<li>扁肌呈片状，多分布于胸、腹、背 <span class="loc">〔说话人1 05:22〕</span></li>
+<li>扁肌除运动功能外，还有保护功能 <span class="loc">〔说话人1 05:22〕</span></li>
+<li>轮匝肌由环形肌纤维构成，位于孔裂周围（如眼眶、口周） <span class="loc">〔说话人1 05:22〕</span></li>
+<li>轮匝肌收缩能关闭孔裂（闭口、闭眼） <span class="loc">〔说话人1 05:22〕</span></li>
+<li>扁肌上的腱性结构呈片状，叫腱膜 <span class="loc">〔说话人1 05:22〕</span></li>
+<li>长肌内出现的节段性腱性结构叫腱划 <span class="loc">〔说话人1 06:43〕</span></li>
+<li>腱划以腹直肌最典型，即健身练出的「腹肌块」 <span class="loc">〔说话人1 06:43〕</span></li>
+<li>按形态还有梭形肌、二腹肌、三腹肌、三角肌、羽状肌、阔肌 <span class="loc">〔说话人1 06:43〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>类型</th><th>分布</th><th>横纹</th><th>随意性</th><th>支配神经</th></tr>
+<tr><td>平滑肌</td><td>管腔器官管壁内（血管、肠道）</td><td>无</td><td>不随意</td><td>自主神经</td></tr>
+<tr><td>心肌</td><td>心脏</td><td>有</td><td>不随意</td><td>自主神经</td></tr>
+<tr><td>骨骼肌</td><td>外周、附着于骨</td><td>有</td><td>随意</td><td>躯体神经</td></tr></table>
+<table class="tbl"><tr><th>形态</th><th>特点</th><th>分布 / 例子</th></tr>
+<tr><td>长肌</td><td>收缩显著缩短、引起大幅度运动</td><td>四肢（二腹肌、二头肌）</td></tr>
+<tr><td>短肌</td><td>节段性、收缩幅度小</td><td>椎骨之间</td></tr>
+<tr><td>扁肌</td><td>片状、兼具保护功能</td><td>胸、腹、背</td></tr>
+<tr><td>轮匝肌</td><td>环形、关闭孔裂</td><td>眼眶、口周</td></tr></table>
+<p><span class="tag">★考点</span>交叉归类：随意肌＝骨骼肌；不随意肌＝平滑肌＋心肌；横纹肌＝心肌＋骨骼肌（非横纹肌只有平滑肌）。</p></div>
+<div class="page"><h2 class="h2">2. 肌总论：起止、配布与命名</h2><p class="lead">起点与止点是相对的、可互换的；配布与关节运动轴一致；命名依据形状、位置、起止点、功能等。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>靠近躯干或身体正中面的一端叫起点（始点），另一端叫止点（终点） <span class="loc">〔说话人1 06:43〕</span></li>
+<li>起止点可互换，并非起点不动、止点才运动 <span class="loc">〔说话人1 06:43〕</span></li>
+<li>做引体向上时止点固定、起点带动躯干向上，起止点互换 <span class="loc">〔说话人1 08:20〕</span></li>
+<li>肌肉配布在关节周围，与关节的运动轴一致 <span class="loc">〔说话人1 08:50〕</span></li>
+<li>关节不能在某个方向运动，那个方向就无需配布肌肉 <span class="loc">〔说话人1 08:50〕</span></li>
+<li>指间关节是滑车关节，只能做屈伸，两侧没有肌肉 <span class="loc">〔说话人1 08:50〕</span></li>
+<li>对同一种运动两块肌肉都参与收缩，二者互为协同肌 <span class="loc">〔说话人1 08:50〕</span></li>
+<li>肱二头肌与肱肌都参与屈肘，互为协同肌 <span class="loc">〔说话人1 08:50〕</span></li>
+<li>肱二头肌屈肘、肱三头肌伸肘，二者互称拮抗肌 <span class="loc">〔说话人1 08:50〕</span></li>
+<li>肌肉的作用是牵引骨而产生运动 <span class="loc">〔说话人1 10:47〕</span></li>
+<li>肌肉的辅助装置有筋膜、滑膜囊、腱鞘和籽骨 <span class="loc">〔说话人1 10:47〕</span></li>
+<li>按形状命名：三角肌、斜方肌 <span class="loc">〔说话人1 10:47〕</span></li>
+<li>按位置命名：冈上肌（两冈之上） <span class="loc">〔说话人1 10:47〕</span></li>
+<li>按形态和部位命名：肱三头肌（肱骨处，一侧三个头） <span class="loc">〔说话人1 10:47〕</span></li>
+<li>按大小和位置命名：腰大肌 <span class="loc">〔说话人1 10:47〕</span></li>
+<li>按起止点命名：胸锁乳突肌（胸、锁骨连到乳突） <span class="loc">〔说话人1 10:47〕</span></li>
+<li>按功能、按位置方向命名：如腹外斜肌 <span class="loc">〔说话人1 10:47〕</span></li>
+<li>肌肉只有收缩功能，没有推开功能 <span class="loc">〔说话人1 20:51〕</span></li>
+<li>关节从屈到伸不是被推开的，而是反向肌肉收缩产生 <span class="loc">〔说话人1 20:51〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>命名依据</th><th>例子</th></tr>
+<tr><td>形状</td><td>三角肌、斜方肌</td></tr>
+<tr><td>位置</td><td>冈上肌</td></tr>
+<tr><td>形态＋部位</td><td>肱三头肌</td></tr>
+<tr><td>大小＋位置</td><td>腰大肌</td></tr>
+<tr><td>起止点</td><td>胸锁乳突肌</td></tr>
+<tr><td>功能 / 位置方向</td><td>腹外斜肌</td></tr></table>
+<table class="tbl"><tr><th>概念</th><th>含义</th><th>例子</th></tr>
+<tr><td>协同肌</td><td>同一运动都参与收缩</td><td>肱二头肌与肱肌（同屈肘）</td></tr>
+<tr><td>拮抗肌</td><td>相反方向运动，互为拮抗</td><td>肱二头肌（屈肘）与肱三头肌（伸肘）</td></tr></table>
+<p><span class="tag">★考点</span>起止点可互换（引体向上）、肌肉只有收缩功能，是本章最常考的结论。</p></div>
+<div class="page"><h2 class="h2">3. 肌总论：辅助装置、血供与神经</h2><p class="lead">筋膜、滑膜囊、腱鞘、籽骨是四大辅助装置；肌肉血供丰富，由躯体神经支配。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>筋膜位于肌肉周围，功能是保持肌肉位置、减少摩擦、保护肌肉 <span class="loc">〔说话人1 12:00〕</span></li>
+<li>筋膜分浅筋膜和深筋膜 <span class="loc">〔说话人1 12:00〕</span></li>
+<li>浅筋膜又叫皮下筋膜，由疏松结缔组织构成，富含脂肪 <span class="loc">〔说话人1 12:00〕</span></li>
+<li>深筋膜又叫固有筋膜，由致密结缔组织构成，完全贴合包裹肌肉 <span class="loc">〔说话人1 12:00〕</span></li>
+<li>深筋膜包裹血管神经形成神经血管鞘，保护并减少摩擦 <span class="loc">〔说话人1 12:00〕</span></li>
+<li>滑膜囊由关节囊滑膜层突出，在肌肉与骨表面之间形成，减少摩擦 <span class="loc">〔说话人1 13:44〕</span></li><li>腱鞘是完全包裹在肌腱外头的结构 <span class="loc">〔说话人1 13:44〕</span></li>
+<li>腱鞘分两层：外层腱纤维鞘、内层腱滑膜鞘 <span class="loc">〔说话人1 14:31〕</span></li>
+<li>腱纤维鞘类似关节囊纤维层，腱滑膜鞘类似滑膜层 <span class="loc">〔说话人1 14:31〕</span></li>
+<li>腱滑膜鞘分内外两层，实际是一张滑膜卷曲而成 <span class="loc">〔说话人1 14:31〕</span></li>
+<li>腱滑膜鞘分泌滑液，减少摩擦、营养滋润肌腱 <span class="loc">〔说话人1 14:31〕</span></li>
+<li>滑膜两层之间的开口叫腱系膜，有血管神经穿过，营养、感觉支配肌腱 <span class="loc">〔说话人1 14:31〕</span></li>
+<li>髌骨是全身最大的籽骨 <span class="loc">〔说话人1 16:05〕</span></li>
+<li>肌肉代谢旺盛，血供丰富，每块肌肉都有自己的血液供应 <span class="loc">〔说话人1 16:20〕</span></li>
+<li>肌肉的淋巴回流起于肌肉的毛细淋巴管 <span class="loc">〔说话人1 16:20〕</span></li>
+<li>骨骼肌由躯体神经支配，不是心肌 <span class="loc">〔说话人1 16:20〕</span></li>
+</ul><h3 class="h3">B. 辅助装置对比</h3><table class="tbl"><tr><th>装置</th><th>位置 / 构成</th><th>功能</th></tr>
+<tr><td>筋膜</td><td>肌肉周围：浅筋膜（皮下筋膜）＋深筋膜（固有筋膜）</td><td>保持肌肉位置、减少摩擦、保护肌肉</td></tr>
+<tr><td>滑膜囊</td><td>关节囊滑膜层突出，位于肌肉与骨表面之间</td><td>减少摩擦（如三角肌与肱骨之间）</td></tr>
+<tr><td>腱鞘</td><td>包裹肌腱：外层腱纤维鞘＋内层腱滑膜鞘</td><td>分泌滑液、减少摩擦、营养滋润</td></tr>
+<tr><td>籽骨</td><td>位于肌腱内，全身最大为髌骨</td><td>改变力的方向、减少摩擦</td></tr></table></div>
+<div class="page"><h2 class="h2">4. 肌总论：发生与变异</h2><p class="lead">骨骼肌来自肌节与鳃弓两处，分别由躯体神经与特殊内脏神经支配；进化中肌肉有分化与退化两种趋势。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>骨骼肌在胚胎期由躯干两侧的肌节和头部的鳃弓间充质演化而来 <span class="loc">〔说话人1 16:20〕</span></li>
+<li>肌节演化的肌肉分布到躯干肌、四肢肌及部分头部肌肉，由躯体神经支配 <span class="loc">〔说话人1 16:20〕</span></li>
+<li>鳃弓演化的肌肉主要是头颈部肌肉和背部的斜方肌，由特殊内脏神经支配 <span class="loc">〔说话人1 16:20〕</span></li>
+<li>鱼类和两栖动物的鳃弓分化为鳃，参与呼吸，属内脏，由内脏神经支配 <span class="loc">〔说话人1 17:46〕</span></li>
+<li>人类鳃弓来源肌肉的支配神经沿称特殊内脏神经 <span class="loc">〔说话人1 17:46〕</span></li>
+<li>肌肉异常多见，缺少一块或多出一块都很常见 <span class="loc">〔说话人1 18:34〕</span></li>
+<li>小指伸肌、第三腓骨肌属新发生、逐渐分化的肌肉 <span class="loc">〔说话人1 18:34〕</span></li>
+<li>运动耳廓的肌肉有退化、消失趋势 <span class="loc">〔说话人1 18:34〕</span></li>
+<li>退化后又重新出现的肌肉叫返祖现象 <span class="loc">〔说话人1 18:34〕</span></li>
+</ul><h3 class="h3">B. 来源对比表</h3><table class="tbl"><tr><th>来源</th><th>演化的肌肉</th><th>支配神经</th></tr>
+<tr><td>肌节</td><td>躯干肌、四肢肌及部分头部肌肉</td><td>躯体神经</td></tr>
+<tr><td>鳃弓间充质</td><td>头颈部肌肉、背部的斜方肌</td><td>特殊内脏神经</td></tr></table>
+<table class="tbl"><tr><th>进化趋势</th><th>例子</th></tr>
+<tr><td>新发生 / 逐渐分化</td><td>小指伸肌、第三腓骨肌</td></tr>
+<tr><td>退化 / 消失</td><td>运动耳廓的肌肉</td></tr>
+<tr><td>返祖（退化后又出现）</td><td>退化后重新出现的肌肉</td></tr></table></div>
+<div class="page"><h2 class="h2">5. 头肌：面肌（表情肌）</h2><p class="lead">面肌是皮肌，一端连颅骨、一端连皮肤，牵动皮肤产生表情，由面神经支配；临床对应面瘫。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>头肌分为面肌和咀嚼肌 <span class="loc">〔说话人1 20:51〕</span></li><li>面肌又称皮肌，其一侧肌腱不附着于骨面、直接连在皮肤上 <span class="loc">〔说话人1 21:44〕</span></li>
+<li>面肌位置较浅，一端连颅骨（不能动）、一端连皮肤 <span class="loc">〔说话人1 21:44〕</span></li>
+<li>面肌分环形肌（轮匝肌）和辐射状肌 <span class="loc">〔说话人1 21:44〕</span></li>
+<li>面肌又称表情肌，做任何表情都有面肌参与收缩 <span class="loc">〔说话人1 21:44〕</span></li>
+<li>单侧面神经炎或一侧面神经麻痹导致面瘫，该侧面肌不能动 <span class="loc">〔说话人1 21:44〕</span></li>
+<li>枕额肌位于颅顶，有两个肌腹（后为枕腹、前为额腹） <span class="loc">〔说话人1 23:27〕</span></li>
+<li>两肌腹之间的腱性结构叫帽状腱膜，像帽子一样盖在头顶 <span class="loc">〔说话人1 23:27〕</span></li>
+<li>额腹起自帽状腱膜、止于眉部皮下，收缩起皱眉头作用 <span class="loc">〔说话人1 23:27〕</span></li>
+<li>枕腹起自枕骨、止于帽状腱膜，向后牵拉帽状腱膜 <span class="loc">〔说话人1 23:27〕</span></li>
+<li>肌肉起止点太多太复杂，考试不考起止点 <span class="loc">〔说话人1 23:27〕</span></li>
+<li>帽状腱膜张力很大，颅顶切割伤不能只缝皮肤，必须单独缝合帽状腱膜 <span class="loc">〔说话人1 23:27〕</span></li>
+<li>眼轮匝肌是围绕眼眶的环形肌，功能是闭眼 <span class="loc">〔说话人1 25:47〕</span></li>
+<li>口轮匝肌是围绕口腔周围的一圈肌肉 <span class="loc">〔说话人1 25:47〕</span></li>
+<li>颊肌位于口腔侧壁、咬肌深面 <span class="loc">〔说话人1 25:47〕</span></li>
+<li>眼轮匝肌分睑部（极薄）和眶部（很厚） <span class="loc">〔说话人2 47:33〕</span></li>
+<li>眼轮匝肌睑部收缩时眼睑轻轻闭合，整块收缩时紧紧闭合 <span class="loc">〔说话人2 47:33〕</span></li>
+<li>睁眼由上睑提肌和弹性力完成 <span class="loc">〔说话人2 47:33〕</span></li>
+<li>口轮匝肌的作用是闭合口腔、将双唇压在一起 <span class="loc">〔说话人2 49:07〕</span></li>
+<li>口轮匝肌更深层的纤维与颊肌纤维连续 <span class="loc">〔说话人2 49:07〕</span></li>
+<li>颊肌与咬肌之间的深凹处充满颊脂肪垫 <span class="loc">〔说话人2 49:07〕</span></li>
+<li>颧大肌从上方和后面拉动口轮匝肌，笑肌从后面拉动 <span class="loc">〔说话人2 50:07〕</span></li><li>颧小肌、口角提肌和鼻唇提肌一起抬起上唇 <span class="loc">〔说话人2 50:07〕</span></li>
+<li>鼻肌有助于皱鼻子 <span class="loc">〔说话人2 50:07〕</span></li>
+<li>降口角肌、降下唇肌和颏肌从下方连接口轮匝肌，下拉下唇、皱紧下巴 <span class="loc">〔说话人2 50:07〕</span></li>
+<li>颈阔肌部分在面部、主要位于颈部，位于颈皮下筋膜内 <span class="loc">〔说话人2 51:31〕</span></li>
+<li>颈阔肌大部分纤维沿下颌骨下缘附着，后部纤维止于口轮匝肌复合体 <span class="loc">〔说话人2 51:31〕</span></li>
+<li>颈阔肌向下、向后拉动嘴角，在皮下产生皱纹 <span class="loc">〔说话人2 51:31〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>要点</th><th>面肌（表情肌）</th><th>咀嚼肌</th></tr>
+<tr><td>附着</td><td>一端连骨/颅骨、一端连皮肤</td><td>起止于骨/下颌骨</td></tr>
+<tr><td>别名</td><td>又称皮肌、表情肌</td><td>无专有别称</td></tr>
+<tr><td>支配神经</td><td>面神经</td><td>三叉神经</td></tr>
+<tr><td>损伤表现</td><td>面瘫</td><td>咀嚼运动障碍</td></tr></table>
+<table class="tbl"><tr><th>面肌</th><th>功能</th></tr>
+<tr><td>枕额肌额腹</td><td>皱眉头</td></tr>
+<tr><td>枕额肌枕腹</td><td>向后牵拉帽状腱膜</td></tr>
+<tr><td>眼轮匝肌</td><td>闭眼</td></tr>
+<tr><td>口轮匝肌</td><td>闭合口腔、将双唇压在一起</td></tr>
+<tr><td>颊肌</td><td>保持颊部紧张，与口轮匝肌协同</td></tr></table>
+<p><span class="tag">★考点</span>面肌是皮肌、由面神经支配；单侧损伤表现为面瘫。</p></div>
+<div class="page"><h2 class="h2">6. 头肌：咀嚼肌</h2><p class="lead">四块咀嚼肌配布于下颌关节周围，同由三叉神经支配，「三闭一张」；下颌关节自然姿势是闭口。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>咀嚼肌主要为闭口肌，收缩使嘴巴闭上 <span class="loc">〔说话人1 25:47〕</span></li>
+<li>翼外肌是张口肌，收缩能使嘴巴张开 <span class="loc">〔说话人1 25:47〕</span></li>
+<li>咀嚼肌由三叉神经支配 <span class="loc">〔说话人1 25:47〕</span></li>
+<li>咀嚼肌有咬肌、颞肌、翼内肌和翼外肌四块 <span class="loc">〔说话人1 25:47〕</span></li>
+<li>咬肌起自颧弓下缘和内侧面，纤维斜向后下 <span class="loc">〔说话人1 25:47〕</span></li>
+<li>咬肌止于下颌支下端外侧面的咬肌粗隆 <span class="loc">〔说话人1 25:47〕</span></li>
+<li>咬肌功能上提下颌，因纤维斜向后下还使下颌骨向前 <span class="loc">〔说话人1 25:47〕</span></li>
+<li>颞肌起自颞窝（颧骨上方的凹陷） <span class="loc">〔说话人1 28:26〕</span></li>
+<li>颞肌止于下颌骨冠突 <span class="loc">〔说话人1 28:26〕</span></li>
+<li>颞肌穿过颧弓的深面内侧 <span class="loc">〔说话人1 28:26〕</span></li>
+<li>颞肌前部纤维上提下颌，后部纤维使下颌骨向后 <span class="loc">〔说话人1 29:05〕</span></li>
+<li>翼内肌起自翼突窝（蝶骨翼突内侧板和外侧板之间） <span class="loc">〔说话人1 29:05〕</span></li>
+<li>翼内肌纤维方向与咬肌相同，但位置更深、更靠内侧 <span class="loc">〔说话人1 29:05〕</span></li>
+<li>翼内肌止于下颌骨内侧面的翼肌粗隆 <span class="loc">〔说话人1 29:05〕</span></li>
+<li>翼内肌功能上提下颌，并使下颌骨向前 <span class="loc">〔说话人1 30:11〕</span></li>
+<li>翼外肌起自蝶骨大翼下面和翼突外侧面 <span class="loc">〔说话人1 30:11〕</span></li>
+<li>翼外肌止于下颌颈（髁突关节头下方的狭窄处） <span class="loc">〔说话人1 31:00〕</span></li>
+<li>翼外肌前后走行，收缩使下颌骨向前 <span class="loc">〔说话人1 31:00〕</span></li>
+<li>翼外肌两侧同时收缩可做张口运动，一侧收缩使下颌向对侧移动 <span class="loc">〔说话人1 31:00〕</span></li>
+<li>翼外肌纤维水平前后，参与张口运动并不是主要的 <span class="loc">〔说话人1 31:45〕</span></li>
+<li>舌骨上肌群有肌肉连到下颌骨，其收缩才下拉下颌骨 <span class="loc">〔说话人1 32:22〕</span></li>
+<li>主要张口肌是舌骨上肌 <span class="loc">〔说话人1 32:22〕</span></li>
+<li>下颌关节的自然姿势是闭口 <span class="loc">〔说话人1 33:01〕</span></li>
+<li>关闭下颌的肌肉比张开下颌的肌肉更有力 <span class="loc">〔说话人2 52:52〕</span></li>
+<li>闭合由咬肌、颞肌和翼内肌产生，张口由翼外肌及下颌骨下方小肌产生 <span class="loc">〔说话人2 52:52〕</span></li>
+<li>翼外肌很小，部分起自蝶骨大翼下侧、部分起自外侧翼板外侧 <span class="loc">〔说话人2 53:51〕</span></li>
+<li>翼外肌主要附着于髁突前部的凹陷，也止于颞下颌关节囊和关节盘前缘 <span class="loc">〔说话人2 54:10〕</span></li>
+<li>翼内肌起于两翼板，纤维向下、向后外侧延伸，沿下颌角内侧止于下颌角 <span class="loc">〔说话人2 54:10〕</span></li>
+<li>颞肌是最大的咀嚼肌，形状像一把扇子 <span class="loc">〔说话人2 55:36〕</span></li>
+<li>颞肌纤维从上方和后方汇聚，止于冠突及下颌支前部 <span class="loc">〔说话人2 55:36〕</span></li>
+<li>颞肌被致密的颞筋膜覆盖 <span class="loc">〔说话人2 56:32〕</span></li>
+<li>咬肌浅头起自颧弓下缘前2/3，深头起自颧弓全长 <span class="loc">〔说话人2 56:32〕</span></li>
+<li>咬肌浅头纤维向下后、深头纤维直接向下，止于下颌角和下颌支 <span class="loc">〔说话人2 56:32〕</span></li>
+<li>闭合颌骨由颞肌、咬肌和翼内肌向上拉动完成 <span class="loc">〔说话人2 58:07〕</span></li>
+<li>张口部分由重力、翼外肌向前拉动和舌骨肌向后下拉动共同完成 <span class="loc">〔说话人2 58:07〕</span></li>
+<li>限制下颌骨向前的副韧带有茎突下颌韧带和蝶下颌韧带 <span class="loc">〔说话人2 58:07〕</span></li>
+<li>茎突下颌韧带从茎突延伸到下颌角 <span class="loc">〔说话人2 58:07〕</span></li>
+<li>蝶下颌韧带从蝶骨棘延伸到下颌小舌 <span class="loc">〔说话人2 58:07〕</span></li>
+</ul><h3 class="h3">B. 四块咀嚼肌对比</h3><table class="tbl"><tr><th>肌肉</th><th>起点</th><th>止点</th><th>功能</th></tr>
+<tr><td>咬肌</td><td>颧弓下缘和内侧面</td><td>下颌支外侧面咬肌粗隆</td><td>上提下颌、使下颌前伸</td></tr>
+<tr><td>颞肌</td><td>颞窝</td><td>下颌骨冠突</td><td>上提下颌、后部纤维使下颌后退</td></tr>
+<tr><td>翼内肌</td><td>翼突窝</td><td>下颌骨内侧面翼肌粗隆</td><td>上提下颌、使下颌前伸</td></tr>
+<tr><td>翼外肌</td><td>蝶骨大翼下面和翼突外侧面</td><td>下颌颈、颞下颌关节囊和关节盘前缘</td><td>两侧收缩张口，一侧收缩下颌向对侧</td></tr></table>
+<table class="tbl"><tr><th>闭口肌（上提下颌）</th><th>张口肌</th></tr>
+<tr><td>咬肌、颞肌、翼内肌</td><td>翼外肌（作用有限）；主要张口肌为舌骨上肌群</td></tr></table>
+<p><span class="tag">★考点</span>「三闭一张」：咬肌、颞肌、翼内肌为闭口肌，翼外肌为咀嚼肌中唯一张口肌；真正下拉下颌的是舌骨上肌群。</p></div>
+<div class="page"><h2 class="h2">7. 颈肌：颈浅与颈外侧肌群</h2><p class="lead">颈肌分三群；颈浅外侧群两块最常考——颈阔肌（皮肌）与胸锁乳突肌（斜颈肌）。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>颈肌分三大群：颈浅和颈外侧肌群、颈前肌群、颈深肌群 <span class="loc">〔说话人1 33:01〕</span></li>
+<li>颈前肌群以舌骨为界，分舌骨上肌和舌骨下肌 <span class="loc">〔说话人1 33:01〕</span></li>
+<li>颈阔肌是颈部最浅表的肌肉，一端连下颌、一端连胸部上方皮肤 <span class="loc">〔说话人1 34:08〕</span></li>
+<li>颈阔肌功能是紧张颈前部的表面皮肤 <span class="loc">〔说话人1 34:08〕</span></li>
+<li>胸锁乳突肌位于颈阔肌深面 <span class="loc">〔说话人1 34:08〕</span></li>
+<li>胸锁乳突肌起点为胸骨柄前面和锁骨胸骨端，跨过胸锁关节 <span class="loc">〔说话人1 34:08〕</span></li>
+<li>胸锁乳突肌纤维向上、外、后走行，止于颞骨乳突（耳后） <span class="loc">〔说话人1 34:08〕</span></li>
+<li>胸锁乳突肌一侧收缩：头向同侧倾斜、脸转向对侧 <span class="loc">〔说话人1 35:15〕</span></li>
+<li>胸锁乳突肌两侧同时收缩：头后仰 <span class="loc">〔说话人1 35:15〕</span></li>
+<li>胸锁乳突肌功能是维持头的正常位置、端正姿势 <span class="loc">〔说话人1 36:01〕</span></li>
+<li>真实运动中很少有一块肌肉单独运动，任何动作都是多块肌肉参与的复杂运动 <span class="loc">〔说话人1 36:01〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>肌肉</th><th>位置</th><th>起点→止点</th><th>功能</th></tr>
+<tr><td>颈阔肌</td><td>最浅表（皮肌）</td><td>下颌→胸部上方皮肤</td><td>紧张颈部表面皮肤</td></tr>
+<tr><td>胸锁乳突肌</td><td>颈阔肌深面</td><td>胸骨柄前面＋锁骨胸骨端→颞骨乳突</td><td>一侧：头向同侧倾、脸转向对侧；两侧：头后仰</td></tr></table>
+<p><span class="tag">★考点</span>胸锁乳突肌单侧收缩「头向同侧倾斜、脸转向对侧」，不要记反。</p></div>
+<div class="page"><h2 class="h2">8. 颈肌：颈前肌群（舌骨上、下肌）</h2><p class="lead">以舌骨为界分上、下肌群；舌骨固定时下拉下颌张口，闭口吞咽时上提舌骨。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>舌骨上肌群包括二腹肌、下颌舌骨肌、茎突舌骨肌和颏舌骨肌 <span class="loc">〔说话人1 36:41〕</span></li>
+<li>舌骨上肌群中除二腹肌外，其余都按起止点命名 <span class="loc">〔说话人1 36:41〕</span></li>
+<li>二腹肌有前腹和后腹两个肌腹 <span class="loc">〔说话人1 36:41〕</span></li>
+<li>舌骨固定时下颌舌骨肌、颏舌骨肌和二腹肌前腹收缩下拉下颌骨、做张口运动 <span class="loc">〔说话人1 36:41〕</span></li>
+<li>闭嘴（吞咽）时舌骨上肌收缩上提舌骨 <span class="loc">〔说话人1 36:41〕</span></li>
+<li>下颌舌骨肌连在下颌骨与舌骨之间 <span class="loc">〔说话人1 37:54〕</span></li>
+<li>颏舌骨肌起自颏棘（下颌体正中深面），连于舌骨 <span class="loc">〔说话人1 37:54〕</span></li>
+<li>下颌体正中深面的凸起叫颏棘，其外面的凸起叫颏隆突 <span class="loc">〔说话人1 37:54〕</span></li>
+<li>二腹肌前腹连在下颌骨与舌骨之间 <span class="loc">〔说话人1 37:54〕</span></li>
+<li>茎突舌骨肌起自颞骨茎突，不参与张口闭口，只能上提舌骨 <span class="loc">〔说话人1 38:47〕</span></li>
+<li>二腹肌后腹收缩只上提舌骨、不下拉下颌 <span class="loc">〔说话人1 38:47〕</span></li>
+<li>舌骨下肌群分浅深两层 <span class="loc">〔说话人1 39:29〕</span></li>
+<li>舌骨下肌浅层为胸骨舌骨肌、肩胛舌骨肌，深层为胸骨甲状肌、甲状舌骨肌 <span class="loc">〔说话人1 39:29〕</span></li>
+<li>舌骨下肌群按起止点命名 <span class="loc">〔说话人1 41:00〕</span></li>
+<li>胸骨舌骨肌连接胸骨与舌骨 <span class="loc">〔说话人1 41:00〕</span></li>
+<li>肩胛舌骨肌连到肩胛骨 <span class="loc">〔说话人1 39:29〕</span></li>
+<li>甲状软骨即喉结；胸骨甲状肌连胸骨与甲状软骨，甲状舌骨肌连甲状软骨与舌骨 <span class="loc">〔说话人1 41:00〕</span></li>
+<li>舌骨下肌群把舌骨向下拉，与二腹肌一起有助于张口 <span class="loc">〔说话人2 01:02:34〕</span></li>
+</ul><h3 class="h3">B. 舌骨肌群对比</h3><table class="tbl"><tr><th>舌骨上肌</th><th>起止 / 特点</th><th>功能</th></tr>
+<tr><td>二腹肌</td><td>前、后腹，中间腱连于舌骨</td><td>前腹下拉下颌（张口）；后腹上提舌骨</td></tr>
+<tr><td>下颌舌骨肌</td><td>下颌骨—舌骨</td><td>下拉下颌（张口）/上提舌骨（吞咽）</td></tr>
+<tr><td>颏舌骨肌</td><td>颏棘—舌骨</td><td>下拉下颌（张口）/上提舌骨</td></tr>
+<tr><td>茎突舌骨肌</td><td>颞骨茎突—舌骨</td><td>仅上提舌骨，不参与张口闭口</td></tr></table>
+<table class="tbl"><tr><th>舌骨下肌</th><th>层次</th><th>连接</th></tr>
+<tr><td>胸骨舌骨肌</td><td>浅层</td><td>胸骨—舌骨</td></tr>
+<tr><td>肩胛舌骨肌</td><td>浅层</td><td>肩胛骨—舌骨</td></tr>
+<tr><td>胸骨甲状肌</td><td>深层</td><td>胸骨—甲状软骨</td></tr>
+<tr><td>甲状舌骨肌</td><td>深层</td><td>甲状软骨—舌骨</td></tr></table>
+<p><span class="tag">★考点</span>真正下拉下颌开口的是舌骨上肌（下颌舌骨肌、颏舌骨肌、二腹肌前腹）；闭口吞咽时反之上提舌骨。</p></div>
+<div class="page"><h2 class="h2">9. 颈肌：颈深肌群与斜角肌间隙</h2><p class="lead">外侧群为三块斜角肌，其间隙穿行臂丛与锁骨下动脉；内侧群屈头屈颈。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>颈深肌群外侧群有三块斜角肌：前斜角肌、中斜角肌、后斜角肌 <span class="loc">〔说话人1 42:29〕</span></li>
+<li>三块斜角肌都起自颈椎横突 <span class="loc">〔说话人1 42:29〕</span></li>
+<li>前、中斜角肌止于第一肋，后斜角肌止于第二肋 <span class="loc">〔说话人1 42:29〕</span></li>
+<li>胸廓固定时，斜角肌一侧收缩使颈向同侧屈 <span class="loc">〔说话人1 43:12〕</span></li>
+<li>颈部固定时，斜角肌收缩上提第一、二肋，助吸气 <span class="loc">〔说话人1 43:12〕</span></li>
+<li>斜角肌间隙由前斜角肌、中斜角肌和第一肋围成 <span class="loc">〔说话人1 43:12〕</span></li>
+<li>斜角肌间隙内有臂丛和锁骨下动脉穿过 <span class="loc">〔说话人1 43:12〕</span></li>
+<li>颈深肌群内侧群主要有屈头、屈颈的作用 <span class="loc">〔说话人1 44:30〕</span></li>
+<li>头长肌起自枕骨底部、止于C3~C5横突；颈长肌起于C1~C4椎体、止于C5~T4 <span class="loc">〔说话人2 01:04:09〕</span></li>
+<li>颈长肌与头长肌是头颈部的弱屈肌 <span class="loc">〔说话人2 01:04:09〕</span></li>
+<li>前斜角肌起自前结节，中、后斜角肌起自后结节 <span class="loc">〔说话人2 01:04:56〕</span></li>
+<li>斜角肌参与深吸气时上抬肋骨，与锁骨下动脉、臂丛关系密切 <span class="loc">〔说话人2 01:04:56〕</span></li>
+</ul><h3 class="h3">B. 斜角肌对比表</h3><table class="tbl"><tr><th>肌肉</th><th>起点</th><th>止点</th></tr>
+<tr><td>前斜角肌</td><td>颈椎横突前结节</td><td>第一肋</td></tr>
+<tr><td>中斜角肌</td><td>颈椎横突后结节</td><td>第一肋</td></tr>
+<tr><td>后斜角肌</td><td>颈椎横突后结节</td><td>第二肋</td></tr></table>
+<p><span class="tag">★考点</span>斜角肌间隙＝前斜角肌＋中斜角肌＋第一肋，穿行臂丛与锁骨下动脉。</p></div>
+<div class="page"><h2 class="h2">10. 颈肌：颈部筋膜</h2><p class="lead">颈深筋膜分三层：封套筋膜、内脏筋膜、椎前筋膜；颈部筋膜是手术关键结构。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>颈部深筋膜大致分为三层 <span class="loc">〔说话人1 44:46〕</span></li>
+<li>浅层叫封套筋膜，把整个颈部肌肉完全包裹 <span class="loc">〔说话人1 44:46〕</span></li>
+<li>这里讲的是颈深筋膜，不是皮下的浅筋膜 <span class="loc">〔说话人1 45:13〕</span></li>
+<li>中层叫颈筋膜中层，又叫内脏筋膜或气管前筋膜，位于颈椎前方 <span class="loc">〔说话人1 45:13〕</span></li>
+<li>深层叫椎前筋膜，覆盖颈椎和椎旁肌 <span class="loc">〔说话人1 45:13〕</span></li>
+<li>外周手术中筋膜缝错最多限制肌肉活动 <span class="loc">〔说话人1 45:13〕</span></li>
+<li>颈部重要结构多（气管、食管、动静脉、神经、甲状腺），筋膜缝错会限制血管、危及生命 <span class="loc">〔说话人1 46:12〕</span></li>
+<li>盆底筋膜与颈部筋膜同样关键 <span class="loc">〔说话人1 46:12〕</span></li>
+</ul><h3 class="h3">B. 颈部筋膜三层</h3><table class="tbl"><tr><th>层次</th><th>别名</th><th>位置 / 特点</th></tr>
+<tr><td>浅层</td><td>封套筋膜</td><td>最外层，完全包裹颈部肌肉</td></tr>
+<tr><td>中层</td><td>内脏筋膜 / 气管前筋膜</td><td>颈椎前方，包绕气管、食管、甲状腺等内脏</td></tr>
+<tr><td>深层</td><td>椎前筋膜</td><td>覆盖颈椎和椎旁肌</td></tr></table>
+<p><span class="tag">★考点</span>颈部筋膜缝错可限制血管、危及生命；是颈部手术最需重视的结构之一。</p></div>
+<div class="page"><h2 class="h2">11. 躯干肌：背肌</h2><p class="lead">背浅群四肌起自脊柱、止于上肢；背深群维持直立，竖脊肌为最长最大的背肌；胸腰筋膜三层。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>躯干肌根据部位分为背肌、胸肌、腹肌和膈，还有会阴部肌肉 <span class="loc">〔说话人1 01:06:45〕</span></li>
+<li>背肌分背浅肌群和背深肌群 <span class="loc">〔说话人1 01:06:45〕</span></li>
+<li>背浅肌群起自脊柱、止于上肢，包括斜方肌、背阔肌、肩胛提肌和菱形肌 <span class="loc">〔说话人1 01:06:45〕</span></li>
+<li>斜方肌是面积非常大的一块扁肌 <span class="loc">〔说话人1 01:07:28〕</span></li>
+<li>斜方肌起点：上项线、枕外隆凸、项韧带和全部胸椎棘突 <span class="loc">〔说话人1 01:07:28〕</span></li>
+<li>上项线是枕外隆凸向两侧连续下来的凸起骨脊 <span class="loc">〔说话人1 01:07:28〕</span></li>
+<li>项韧带是棘上韧带在颈部的延续，成扇状片状结构、止于枕外隆凸 <span class="loc">〔说话人1 01:07:28〕</span></li>
+<li>斜方肌绕过肩到前面，止于锁骨外侧1/3、肩峰和肩胛冈 <span class="loc">〔说话人1 01:08:32〕</span></li>
+<li>斜方肌功能是使肩胛骨向脊柱靠拢 <span class="loc">〔说话人1 01:08:32〕</span></li>
+<li>肩胛骨固定时，斜方肌一侧收缩使颈向同侧屈、脸转向对侧，两侧收缩使头后仰 <span class="loc">〔说话人1 01:08:32〕</span></li>
+<li>背阔肌是全身最大的扁阔肌 <span class="loc">〔说话人1 01:11:33〕</span></li>
+<li>背阔肌位于斜方肌下方，脊柱端与斜方肌重叠、重叠处在斜方肌深层 <span class="loc">〔说话人1 01:11:33〕</span></li>
+<li>背阔肌起点是下6个胸椎棘突（斜方肌起点为全部胸椎棘突） <span class="loc">〔说话人1 01:11:33〕</span></li>
+<li>背阔肌起点还有全部腰椎棘突、骶正中嵴和髂嵴后部 <span class="loc">〔说话人1 01:12:04〕</span></li>
+<li>背阔肌从腋下绕到前方，止于肱骨小结节嵴 <span class="loc">〔说话人1 01:12:04〕</span></li>
+<li>背阔肌功能：使肩关节内收、旋内和后伸 <span class="loc">〔说话人1 01:12:04〕</span></li>
+<li>上肢固定时背阔肌可引体向上、拉躯干向上 <span class="loc">〔说话人1 01:12:04〕</span></li>
+<li>肩胛提肌和菱形肌都被斜方肌覆盖 <span class="loc">〔说话人1 01:13:25〕</span></li>
+<li>肩胛提肌起自上4个颈椎横突，止于肩胛骨上角 <span class="loc">〔说话人1 01:13:25〕</span></li>
+<li>肩胛提肌功能：上提肩胛骨、使下角旋内；肩胛骨固定时使颈向同侧屈 <span class="loc">〔说话人1 01:13:25〕</span></li>
+<li>菱形肌起自第6、7颈椎和第1~4胸椎横突，止于肩胛骨内侧缘 <span class="loc">〔说话人1 01:13:25〕</span></li>
+<li>菱形肌功能：牵引肩胛骨向上并向脊柱靠拢 <span class="loc">〔说话人1 01:13:25〕</span></li>
+<li>背深肌群起自脊柱两侧，分长肌和短肌 <span class="loc">〔说话人1 01:14:58〕</span></li>
+<li>背深肌群功能是维持人体直立姿势、加强脊柱稳固 <span class="loc">〔说话人1 01:14:58〕</span></li>
+<li>竖脊肌是最长最大的背肌（人体最长的肌肉不是竖脊肌） <span class="loc">〔说话人1 01:14:58〕</span></li>
+<li>竖脊肌起自骶骨背面、髂嵴后部和腰椎棘突，向上分散成三个肌束，止于颞骨乳突 <span class="loc">〔说话人1 01:14:58〕</span></li>
+<li>竖脊肌一侧收缩使脊柱向同侧屈，两侧收缩使脊柱后伸和转头 <span class="loc">〔说话人1 01:14:58〕</span></li><li>背深短肌有枕下肌、棘间肌、横突间肌和肋肌 <span class="loc">〔说话人1 01:16:40〕</span></li>
+<li>棘间肌位于相邻棘突之间，横突间肌位于相邻横突之间，肋肌位于肋骨之间 <span class="loc">〔说话人1 01:16:40〕</span></li>
+<li>胸腰筋膜包裹竖脊肌和腰方肌，分浅、中、深三层 <span class="loc">〔说话人1 01:17:47〕</span></li>
+<li>胸腰筋膜浅层在竖脊肌浅面，向内附着于棘上韧带、向外附着于肋角、向下到髂嵴 <span class="loc">〔说话人1 01:17:47〕</span></li>
+<li>胸腰筋膜浅层也是背阔肌的起始点 <span class="loc">〔说话人1 01:18:59〕</span></li>
+<li>胸腰筋膜中层分隔腰方肌与竖脊肌，深层从内侧面覆盖腰方肌 <span class="loc">〔说话人1 01:18:59〕</span></li>
+<li>三层筋膜在腰方肌外侧面汇合 <span class="loc">〔说话人1 01:18:59〕</span></li>
+<li>胸腰筋膜也是腹内斜肌和腹横肌的起点 <span class="loc">〔说话人1 01:18:59〕</span></li>
+<li>腰部剧烈运动时胸腰筋膜可扭伤，是腰背劳损的病因之一 <span class="loc">〔说话人1 01:18:59〕</span></li>
+</ul><h3 class="h3">B. 背浅肌群对比</h3><table class="tbl"><tr><th>肌肉</th><th>起点</th><th>止点</th><th>功能</th></tr>
+<tr><td>斜方肌</td><td>上项线、枕外隆凸、项韧带、全部胸椎棘突</td><td>锁骨外侧1/3、肩峰、肩胛冈</td><td>肩胛骨向脊柱靠拢</td></tr>
+<tr><td>背阔肌</td><td>下6个胸椎棘突、全部腰椎棘突、骶正中嵴、髂嵴后部</td><td>肱骨小结节嵴</td><td>肩关节内收、旋内、后伸</td></tr>
+<tr><td>肩胛提肌</td><td>上4个颈椎横突</td><td>肩胛骨上角</td><td>上提肩胛骨、下角旋内</td></tr>
+<tr><td>菱形肌</td><td>第6、7颈椎及第1~4胸椎横突</td><td>肩胛骨内侧缘</td><td>牵引肩胛骨向上、向脊柱靠拢</td></tr></table>
+<p><span class="tag">★考点</span>背阔肌是全身最大的扁阔肌（不是最大/最长的肌）；斜方肌与背阔肌起点棘突范围不同（全部 vs 下6个）。</p></div>
+<div class="page"><h2 class="h2">12. 躯干肌：胸肌</h2><p class="lead">胸上肢肌动肩胛、固有胸肌主呼吸；前锯肌损伤致翼状肩，肋间外提肋吸气、肋间内降肋呼气。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>胸肌分胸上肢肌和固有胸肌 <span class="loc">〔说话人1 01:20:31〕</span></li>
+<li>胸上肢肌一侧在胸廓、一侧在上肢骨，包括胸大肌、胸小肌和前锯肌 <span class="loc">〔说话人1 01:20:31〕</span></li>
+<li>胸大肌起点：锁骨内侧半、胸骨前面和第1~6肋软骨前面 <span class="loc">〔说话人1 01:20:31〕</span></li>
+<li>胸大肌止于肱骨大结节嵴 <span class="loc">〔说话人1 01:21:30〕</span></li>
+<li>胸大肌功能：使肩关节内收、旋内和前屈；上肢固定时可提躯干；上提胸廓助吸气 <span class="loc">〔说话人1 01:21:30〕</span></li>
+<li>胸小肌起自第3~5肋，止于肩胛骨喙突 <span class="loc">〔说话人1 01:21:30〕</span></li>
+<li>胸小肌功能：拉肩胛骨向前下；肩胛骨固定时上提胸廓、助吸气 <span class="loc">〔说话人1 01:21:30〕</span></li>
+<li>前锯肌起自上8或上9肋骨，止于肩胛骨内侧缘和下角 <span class="loc">〔说话人1 01:21:30〕</span></li>
+<li>前锯肌功能：拉肩胛骨向前紧贴胸壁 <span class="loc">〔说话人1 01:21:30〕</span></li>
+<li>一侧前锯肌受损时肩胛骨不紧贴胸廓，形成翼状肩 <span class="loc">〔说话人1 01:21:30〕</span></li>
+<li>前锯肌下部肌束使肩胛骨下角旋外、助臂上举；肩胛骨固定时提肋助吸气 <span class="loc">〔说话人1 01:24:33〕</span></li>
+<li>固有胸肌位于胸廓内部的骨骼之间 <span class="loc">〔说话人1 01:24:33〕</span></li>
+<li>肋间外肌位于肋间隙浅层 <span class="loc">〔说话人1 01:25:22〕</span></li>
+<li>肋间外肌起自上位肋骨下面，肌纤维斜向前下，止于下位肋骨上缘 <span class="loc">〔说话人1 01:25:22〕</span></li>
+<li>肋间外肌前缘只到肋骨与肋软骨结合处，再往前移行为肋间外膜 <span class="loc">〔说话人1 01:25:22〕</span></li>
+<li>肋间外肌功能：提肋助吸气 <span class="loc">〔说话人1 01:25:22〕</span></li>
+<li>肋间内肌肌纤维斜向后下，与肋间外肌方向相反 <span class="loc">〔说话人1 01:25:22〕</span></li>
+<li>肋间内肌前部达胸骨外缘、后部只到肋角，向后移行为肋间内膜 <span class="loc">〔说话人1 01:25:22〕</span></li>
+<li>肋间内肌功能：降肋助呼气 <span class="loc">〔说话人1 01:25:22〕</span></li>
+<li>肋间最内肌位于肋角附近，两边都不靠 <span class="loc">〔说话人1 01:27:35〕</span></li>
+<li>胸横肌位于胸前壁最深层（肋软骨到胸骨之间） <span class="loc">〔说话人1 01:27:35〕</span></li>
+<li>胸部筋膜以胸大肌为界分浅深两层，均指深筋膜 <span class="loc">〔说话人1 01:28:47〕</span></li>
+<li>胸部筋膜浅层较薄弱、位于胸大肌外表面，深层包裹胸小肌 <span class="loc">〔说话人1 01:28:47〕</span></li>
+<li>深层在胸小肌与锁骨之间增厚形成锁胸筋膜，有血管神经穿出 <span class="loc">〔说话人1 01:28:47〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>胸上肢肌</th><th>起止</th><th>功能</th></tr>
+<tr><td>胸大肌</td><td>锁骨内侧半＋胸骨＋第1~6肋软骨→肱骨大结节嵴</td><td>肩关节内收、旋内、前屈；上提胸廓助吸气</td></tr>
+<tr><td>胸小肌</td><td>第3~5肋→肩胛骨喙突</td><td>拉肩胛骨向前下；上提胸廓助吸气</td></tr>
+<tr><td>前锯肌</td><td>上8~9肋→肩胛骨内侧缘和下角</td><td>拉肩胛骨向前紧贴胸壁；下角旋外助臂上举</td></tr></table>
+<table class="tbl"><tr><th>固有胸肌</th><th>位置 / 纤维 / 功能</th></tr>
+<tr><td>肋间外肌</td><td>肋间隙浅层，纤维斜向前下，提肋助吸气</td></tr>
+<tr><td>肋间内肌</td><td>肋间外肌深面，纤维斜向后下，降肋助呼气</td></tr>
+<tr><td>肋间最内肌</td><td>肋间最内层，位于肋角附近，两边都不靠</td></tr>
+<tr><td>胸横肌</td><td>胸前壁最深层，位于肋软骨与胸骨之间</td></tr></table>
+<p><span class="tag">★考点</span>肋间外肌提肋吸气、肋间内肌降肋呼气；前锯肌损伤→翼状肩。</p></div>
+<div class="page"><h2 class="h2">13. 躯干肌：膈</h2><p class="lead">膈分隔胸腹腔，分胸骨部、肋部、腰部；三裂孔水平 T12→T10→T8；胸肋三角、腰肋三角薄弱，是膈疝好发处。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>膈位于胸腹腔之间，穹窿向上，为胸腔底与腹腔顶；打嗝为膈肌收缩 <span class="loc">〔说话人1 01:28:47〕</span></li>
+<li>膈肌是扁阔肌，中间为腱性结构（中心腱），肌束分胸骨部、肋部、腰部三部 <span class="loc">〔说话人1 01:31:33〕</span></li>
+<li>胸骨部起自胸骨剑突、止于中心腱，只占前方一小部分 <span class="loc">〔说话人1 01:31:33〕</span></li>
+<li>肋部起自下6对肋骨和肋软骨、止于中心腱，占侧方大部分 <span class="loc">〔说话人1 01:31:33〕</span></li>
+<li>腰部起自左右两个膈脚（起自上2~3个腰椎） <span class="loc">〔说话人1 01:32:47〕</span></li>
+<li>腰部还起自腰大肌和腰方肌表面的腱性组织 <span class="loc">〔说话人1 01:32:47〕</span></li>
+<li>膈肌有三个裂孔 <span class="loc">〔说话人1 01:34:08〕</span></li>
+<li>主动脉裂孔在最后侧、紧贴脊柱，平第12胸椎，有主动脉和胸导管穿过 <span class="loc">〔说话人1 01:34:08〕</span></li>
+<li>食管裂孔平第10胸椎偏左，因食管为肌性结构而形状不规则 <span class="loc">〔说话人1 01:35:13〕</span></li>
+<li>腔静脉裂孔在中心腱、最前侧，平第8胸椎偏右，有下腔静脉穿过 <span class="loc">〔说话人1 01:35:53〕</span></li>
+<li>三个裂孔水平依次为第12、10、8胸椎，越靠中心位置越高 <span class="loc">〔说话人1 01:35:53〕</span></li>
+<li>胸骨部、肋部、腰部交界处由腱性结构覆盖，形成三角形区域 <span class="loc">〔说话人1 01:36:38〕</span></li>
+<li>胸骨部与肋部交界的三角形区域叫胸肋三角 <span class="loc">〔说话人1 01:37:15〕</span></li>
+<li>肋部与腰部交界的三角形区域叫腰肋三角 <span class="loc">〔说话人1 01:37:15〕</span></li>
+<li>胸肋三角与腰肋三角很薄弱，腹压大时腹腔器官可经此凸向胸腔 <span class="loc">〔说话人1 01:37:15〕</span></li>
+<li>器官经膈肌移位的疾病叫疝，经膈肌产生的叫膈疝 <span class="loc">〔说话人1 01:38:07〕</span></li>
+<li>支配膈肌的神经叫膈神经 <span class="loc">〔说话人1 01:38:07〕</span></li>
+<li>膈肌是主要呼吸肌：收缩时穹窿下降、胸腔变大助吸气，松弛时胸腔变小助呼气 <span class="loc">〔说话人1 01:38:07〕</span></li>
+<li>膈肌收缩时还可压缩腹腔、增加腹压 <span class="loc">〔说话人1 01:38:07〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>部</th><th>起点</th><th>止点</th></tr>
+<tr><td>胸骨部</td><td>胸骨剑突</td><td>中心腱</td></tr>
+<tr><td>肋部</td><td>下6对肋骨和肋软骨</td><td>中心腱</td></tr>
+<tr><td>腰部</td><td>左右膈脚（上2~3腰椎）＋腰大肌、腰方肌表面腱膜</td><td>中心腱</td></tr></table>
+<table class="tbl"><tr><th>裂孔</th><th>椎体水平</th><th>穿行结构</th></tr>
+<tr><td>主动脉裂孔</td><td>第12胸椎前方（最后侧）</td><td>主动脉、胸导管</td></tr>
+<tr><td>食管裂孔</td><td>第10胸椎偏左</td><td>食管</td></tr>
+<tr><td>腔静脉裂孔</td><td>第8胸椎偏右（中心腱上）</td><td>下腔静脉</td></tr></table><p><span class="tag">★考点</span>三裂孔水平顺序（T12/T10/T8）与薄弱区（胸肋三角、腰肋三角）→膈疝，最常考。</p></div>
+<div class="page"><h2 class="h2">14. 躯干肌：腹肌与腹直肌鞘</h2><p class="lead">腹前外侧群三层扁肌＋腹直肌；腹直肌鞘上下构成不同，弓状线以下后层缺如；白线与脐疝。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>腹肌位于胸廓和骨盆之间，分腹前外侧群和腹后群 <span class="loc">〔说话人1 01:39:33〕</span></li>
+<li>腹前外侧群有腹外斜肌、腹内斜肌、腹横肌和腹直肌 <span class="loc">〔说话人1 01:39:33〕</span></li>
+<li>腹后群为腰大肌、腰方肌表面的腱膜，属胸腰筋膜的一部分 <span class="loc">〔说话人1 01:39:33〕</span></li>
+<li>腹外斜肌位于腹部最外层，以8个肌齿起自下8位肋骨外面 <span class="loc">〔说话人1 01:41:19〕</span></li>
+<li>腹外斜肌后部肌束止于髂嵴后部 <span class="loc">〔说话人1 01:41:48〕</span></li>
+<li>腹外斜肌其余肌束向内移行为腱膜，参与构成腹直肌鞘前层和白线 <span class="loc">〔说话人1 01:41:48〕</span></li>
+<li>腹外斜肌腱膜下缘卷曲增厚，连于髂前上棘与耻骨结节，形成腹股沟韧带 <span class="loc">〔说话人1 01:43:05〕</span></li>
+<li>腹股沟韧带在耻骨结节处向上反折附着于耻骨梳，形成耻骨梳韧带 <span class="loc">〔说话人1 01:43:05〕</span></li>
+<li>腹股沟韧带反折处为片状膜性结构，叫腔隙韧带（陷窝韧带） <span class="loc">〔说话人1 01:44:02〕</span></li>
+<li>腹外斜肌腱膜向下形成腹股沟管皮下环（浅环） <span class="loc">〔说话人1 01:44:44〕</span></li>
+<li>腹股沟管位于腹股沟韧带上方，由内向外斜向下 <span class="loc">〔说话人1 01:44:44〕</span></li>
+<li>腹股沟管浅侧由腹外斜肌腱膜构成，深部由腹内斜肌腱膜和腹横筋膜构成 <span class="loc">〔说话人1 01:44:44〕</span></li><li>腹内斜肌位于腹外斜肌深面，起点为胸腰筋膜、髂嵴和腹股沟韧带外侧缘 <span class="loc">〔说话人1 01:45:40〕</span></li>
+<li>腹内斜肌肌纤维斜向内上，与腹外斜肌垂直交叉 <span class="loc">〔说话人1 01:47:42〕</span></li>
+<li>腹内斜肌后部肌束止于下3位肋骨，大部分向内延续为腱膜参与构成腹直肌鞘、终于白线 <span class="loc">〔说话人1 01:47:42〕</span></li>
+<li>腹内斜肌下部肌束与腹横肌一起跨过腹股沟管，在内侧连于耻骨，形成联合腱（腹股沟镰） <span class="loc">〔说话人1 01:48:28〕</span></li>
+<li>腹内斜肌部分肌束向下延续，构成提睾肌 <span class="loc">〔说话人1 01:48:28〕</span></li>
+<li>腹横肌位于腹内斜肌深面，起自下6对肋软骨内面、胸腰筋膜、髂嵴和腹股沟韧带外侧1/3 <span class="loc">〔说话人1 01:49:30〕</span></li>
+<li>腹横肌肌纤维横向走行，向内移行为腱膜、构成腹直肌鞘、终于白线 <span class="loc">〔说话人1 01:49:30〕</span></li>
+<li>腹横肌与腹内斜肌一起跨过腹股沟管，腱性结构融合形成联合腱 <span class="loc">〔说话人1 01:50:47〕</span></li>
+<li>腹直肌位于腹壁前正中线两旁，起自耻骨联合和耻骨嵴 <span class="loc">〔说话人1 01:50:47〕</span></li>
+<li>腹直肌肌束上下走行，止于剑突和第5~7肋前面 <span class="loc">〔说话人1 01:51:43〕</span></li>
+<li>腹直肌有3~4个腱划，故有多个肌腹，整体上宽下窄 <span class="loc">〔说话人1 01:51:43〕</span></li>
+<li>腹直肌鞘包绕腹直肌，由腹外斜肌、腹内斜肌、腹横肌三块扁肌的腱膜构成 <span class="loc">〔说话人1 01:53:39〕</span></li>
+<li>腹直肌鞘上部前层为腹外斜肌腱膜加腹内斜肌腱膜前层，后层为腹内斜肌腱膜后层加腹横肌腱膜 <span class="loc">〔说话人1 01:53:39〕</span></li>
+<li>腹直肌鞘下部三块扁肌腱膜全部从前面覆盖腹直肌，后层缺如、直接贴腹横筋膜 <span class="loc">〔说话人1 01:53:39〕</span></li>
+<li>腹直肌鞘后层缺如处形成弓状线，位于脐下4~5cm <span class="loc">〔说话人1 01:53:39〕</span></li>
+<li>腹外斜肌、腹内斜肌、腹横肌的腱膜构成腹直肌鞘后均汇入白线 <span class="loc">〔说话人1 01:55:15〕</span></li>
+<li>白线位于腹前壁正中线，是左右两个腹直肌鞘之间的分隔 <span class="loc">〔说话人1 01:55:25〕</span></li>
+<li>白线上方起自剑突、下方到耻骨联合，完全腱性、没有肌肉穿过 <span class="loc">〔说话人1 01:55:25〕</span></li>
+<li>白线由三块扁肌腱膜纤维交织而成 <span class="loc">〔说话人1 01:56:00〕</span></li>
+<li>白线坚韧、少血管 <span class="loc">〔说话人1 01:56:00〕</span></li>
+<li>白线在脐处有脐环，是腹壁薄弱区，腹腔器官经此突出形成脐疝 <span class="loc">〔说话人1 01:56:00〕</span></li>
+<li>腹横肌深面的筋膜叫腹横筋膜 <span class="loc">〔说话人1 01:57:13〕</span></li>
+<li>腹直肌与三块扁肌的功能：保护、维持腹腔脏器位置、调节腹压、参与呼吸和脊柱运动 <span class="loc">〔说话人1 01:57:13〕</span></li>
+<li>腹后群有腰大肌和腰方肌 <span class="loc">〔说话人1 01:58:24〕</span></li>
+<li>腰大肌紧贴脊柱椎体前端 <span class="loc">〔说话人1 01:58:24〕</span></li>
+<li>腰大肌、腰方肌前面的腱膜参与构成膈肌腰部起点 <span class="loc">〔说话人1 01:58:24〕</span></li>
+<li>腰方肌位于腰大肌后侧，表面覆盖胸腰筋膜 <span class="loc">〔说话人1 01:58:24〕</span></li>
+<li>腹部浅筋膜分浅、深两层：浅层含脂肪（Camper筋膜），深层含弹性纤维（Scarpa筋膜） <span class="loc">〔说话人1 02:08:14〕</span></li>
+<li>腹部浅筋膜两层延续到股部（大腿上部）和臀部 <span class="loc">〔说话人1 02:08:14〕</span></li>
+<li>尿道损伤时尿液可渗到浅筋膜深浅两层之间，渗出范围限于此区域 <span class="loc">〔说话人1 02:08:14〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>扁肌（层次/走行）</th><th>起点</th><th>腱膜去向</th></tr>
+<tr><td>腹外斜肌（最外层，斜向前下）</td><td>下8位肋骨外面（8个肌齿）</td><td>构成腹直肌鞘前层与白线；下缘成腹股沟韧带</td></tr>
+<tr><td>腹内斜肌（中层，斜向内上）</td><td>胸腰筋膜、髂嵴、腹股沟韧带外侧缘</td><td>构成腹直肌鞘、终于白线；下部成联合腱</td></tr>
+<tr><td>腹横肌（最深层，横行）</td><td>下6对肋软骨内面、胸腰筋膜、髂嵴、腹股沟韧带外侧1/3</td><td>构成腹直肌鞘、终于白线；下部成联合腱</td></tr></table>
+<table class="tbl"><tr><th>腹直肌鞘</th><th>前层</th><th>后层</th></tr>
+<tr><td>弓状线以上</td><td>腹外斜肌腱膜＋腹内斜肌腱膜前层</td><td>腹内斜肌腱膜后层＋腹横肌腱膜</td></tr>
+<tr><td>弓状线以下</td><td>三块扁肌腱膜全部覆盖于前面</td><td>缺如（腹直肌直接贴腹横筋膜）</td></tr></table>
+<p><span class="tag">★考点</span>腹直肌鞘上下差异＋弓状线（脐下4~5cm）；白线为腹前壁薄弱区，脐环处易发脐疝。</p></div>
+<div class="page"><h2 class="h2">15. 躯干肌：腹股沟管与海氏三角</h2><p class="lead">腹股沟管四壁两口，男性走精索、女性走子宫圆韧带；斜疝经深环，直疝经海氏三角。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>腹股沟管位于腹股沟韧带内侧半上方 <span class="loc">〔说话人1 01:59:29〕</span></li>
+<li>腹股沟管长约4.5cm <span class="loc">〔说话人1 01:59:29〕</span></li>
+<li>腹股沟管内口叫腹股沟管深环（腹环），由腹横筋膜围绕形成 <span class="loc">〔说话人1 01:59:29〕</span></li>
+<li>腹股沟管外口叫浅环（皮下环），是腹外斜肌腱膜的薄弱处 <span class="loc">〔说话人1 01:59:29〕</span></li>
+<li>腹股沟管前壁为腹外斜肌腱膜，外侧还有腹内斜肌 <span class="loc">〔说话人1 02:00:37〕</span></li>
+<li>腹股沟管后壁为腹横筋膜和联合腱 <span class="loc">〔说话人1 02:01:27〕</span></li>
+<li>腹股沟管上壁为腹内斜肌和腹横肌的弓状下缘 <span class="loc">〔说话人1 02:02:18〕</span></li>
+<li>腹股沟管下壁为腹股沟韧带 <span class="loc">〔说话人1 02:02:18〕</span></li>
+<li>管内男性走精索，女性走子宫圆韧带 <span class="loc">〔说话人1 02:02:18〕</span></li>
+<li>腹腔器官经深环进入腹股沟管、再经浅环突出，形成腹股沟斜疝 <span class="loc">〔说话人1 02:03:02〕</span></li>
+<li>小儿筋膜发育不完善、有薄弱或缺损，易发腹股沟斜疝 <span class="loc">〔说话人1 02:03:02〕</span></li>
+<li>海氏三角（腹股沟三角）由腹直肌外侧缘、腹股沟韧带和腹壁下动脉围成 <span class="loc">〔说话人1 02:05:09〕</span></li>
+<li>海氏三角是腱性结构薄弱区 <span class="loc">〔说话人1 02:05:09〕</span></li>
+<li>经海氏三角向前突出、不经深环，形成腹股沟直疝 <span class="loc">〔说话人1 02:05:09〕</span></li>
+<li>跨过腹股沟管内侧的腱性结构叫联合腱（腹股沟镰） <span class="loc">〔说话人1 02:06:44〕</span></li>
+<li>联合腱上方是腹内斜肌和腹横肌的弓状下缘 <span class="loc">〔说话人1 02:06:44〕</span></li>
+<li>腹股沟韧带与髋骨之间有腔隙，可形成股疝 <span class="loc">〔说话人1 02:07:20〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>壁 / 口</th><th>构成</th></tr>
+<tr><td>前壁</td><td>腹外斜肌腱膜（外侧还有腹内斜肌）</td></tr>
+<tr><td>后壁</td><td>腹横筋膜＋联合腱（腹股沟镰）</td></tr>
+<tr><td>上壁</td><td>腹内斜肌和腹横肌的弓状下缘</td></tr>
+<tr><td>下壁</td><td>腹股沟韧带</td></tr>
+<tr><td>内口（深环/腹环）</td><td>腹横筋膜围绕形成</td></tr>
+<tr><td>外口（浅环/皮下环）</td><td>腹外斜肌腱膜的薄弱处</td></tr></table>
+<table class="tbl"><tr><th>比较</th><th>腹股沟斜疝</th><th>腹股沟直疝</th></tr>
+<tr><td>突出路径</td><td>经深环入腹股沟管、再经浅环突出</td><td>经海氏三角直接向前突出</td></tr>
+<tr><td>是否经深环</td><td>是</td><td>否</td></tr>
+<tr><td>围成结构</td><td>腹股沟管</td><td>腹直肌外侧缘＋腹股沟韧带＋腹壁下动脉</td></tr></table>
+<p><span class="tag">★考点</span>斜疝经深环、直疝经海氏三角；四壁两口与走行结构（精索/子宫圆韧带）必考。</p></div>
+<div class="page"><h2 class="h2">附录 A · 必背清单</h2><ul class="kv">
+<li>三类肌交叉归类：随意＝骨骼肌；不随意＝平滑肌＋心肌；横纹＝心肌＋骨骼肌 <span class="loc">〔说话人1 00:11〕</span></li>
+<li>全身肌约600多块、约占体重40% <span class="loc">〔说话人1 02:13〕</span></li>
+<li>起止点可互换（引体向上） <span class="loc">〔说话人1 06:43〕</span></li>
+<li>肌肉只有收缩功能、没有推开功能 <span class="loc">〔说话人1 20:51〕</span></li>
+<li>四大辅助装置：筋膜、滑膜囊、腱鞘、籽骨 <span class="loc">〔说话人1 10:47〕</span></li>
+<li>髌骨是全身最大的籽骨 <span class="loc">〔说话人1 16:05〕</span></li>
+<li>面肌是皮肌、由面神经支配，损伤致面瘫 <span class="loc">〔说话人1 21:44〕</span></li>
+<li>咀嚼肌「三闭一张」、由三叉神经支配 <span class="loc">〔说话人1 25:47〕</span></li>
+<li>咬肌、颞肌、翼内肌上提下颌，翼外肌张口 <span class="loc">〔说话人1 31:00〕</span></li>
+<li>下颌关节自然姿势是闭口 <span class="loc">〔说话人1 33:01〕</span></li>
+<li>胸锁乳突肌：一侧头向同侧倾、脸转向对侧；两侧头后仰 <span class="loc">〔说话人1 35:15〕</span></li>
+<li>舌骨上肌群：二腹肌、下颌舌骨肌、茎突舌骨肌、颏舌骨肌 <span class="loc">〔说话人1 36:41〕</span></li>
+<li>舌骨下肌浅层：胸骨舌骨肌、肩胛舌骨肌；深层：胸骨甲状肌、甲状舌骨肌 <span class="loc">〔说话人1 39:29〕</span></li>
+<li>斜角肌间隙＝前中斜角肌＋第一肋，穿行臂丛与锁骨下动脉 <span class="loc">〔说话人1 43:12〕</span></li>
+<li>颈部筋膜三层：封套筋膜、内脏筋膜、椎前筋膜 <span class="loc">〔说话人1 44:46〕</span></li>
+<li>背阔肌是全身最大的扁阔肌 <span class="loc">〔说话人1 01:11:33〕</span></li>
+<li>竖脊肌是最长最大的背肌 <span class="loc">〔说话人1 01:14:58〕</span></li>
+<li>前锯肌损伤→翼状肩 <span class="loc">〔说话人1 01:21:30〕</span></li>
+<li>肋间外肌提肋吸气、肋间内肌降肋呼气 <span class="loc">〔说话人1 01:25:22〕</span></li>
+<li>膈三裂孔：主动脉T12、食管T10、腔静脉T8 <span class="loc">〔说话人1 01:34:08〕</span></li>
+<li>膈疝好发于胸肋三角、腰肋三角 <span class="loc">〔说话人1 01:37:15〕</span></li>
+<li>腹直肌鞘下部后层缺如，形成弓状线（脐下4~5cm） <span class="loc">〔说话人1 01:53:39〕</span></li>
+<li>白线为腹前壁薄弱区，脐环处易发脐疝 <span class="loc">〔说话人1 01:56:00〕</span></li>
+<li>腹股沟管四壁两口，男性走精索、女性走子宫圆韧带 <span class="loc">〔说话人1 02:02:18〕</span></li>
+<li>斜疝经深环、直疝经海氏三角 <span class="loc">〔说话人1 02:05:09〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">附录 B · 易错点 · 易混对照</h2><table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>平滑肌有横纹</td><td>平滑肌无横纹，心肌与骨骼肌才有横纹 <span class="loc">〔说话人1 00:11〕</span></td></tr>
+<tr><td>横纹肌＝平滑肌＋骨骼肌</td><td>横纹肌＝心肌＋骨骼肌 <span class="loc">〔说话人1 00:11〕</span></td></tr>
+<tr><td>起止点固定、起点不动</td><td>起止点可互换（引体向上时互换） <span class="loc">〔说话人1 06:43〕</span></td></tr>
+<tr><td>关节从屈到伸是屈肌把骨推开</td><td>是反向的伸肌收缩产生 <span class="loc">〔说话人1 20:51〕</span></td></tr>
+<tr><td>腱鞘只有一层</td><td>分腱纤维鞘与腱滑膜鞘两层 <span class="loc">〔说话人1 14:31〕</span></td></tr>
+<tr><td>咀嚼肌主要是张口肌</td><td>咀嚼肌主要为闭口肌，只有翼外肌张口 <span class="loc">〔说话人1 25:47〕</span></td></tr>
+<tr><td>翼外肌是主要张口肌</td><td>翼外肌张口作用有限，主要张口肌是舌骨上肌群 <span class="loc">〔说话人1 31:45〕</span></td></tr>
+<tr><td>胸锁乳突肌一侧收缩脸转向同侧</td><td>脸转向对侧（头向同侧倾斜） <span class="loc">〔说话人1 35:15〕</span></td></tr>
+<tr><td>茎突舌骨肌参与张口闭口</td><td>茎突舌骨肌不参与张口闭口，只上提舌骨 <span class="loc">〔说话人1 38:47〕</span></td></tr>
+<tr><td>背阔肌是全身最大/最长的肌肉</td><td>背阔肌是最大扁阔肌；最长最大的背肌是竖脊肌 <span class="loc">〔说话人1 01:11:33〕</span></td></tr>
+<tr><td>斜方肌起点是下6个胸椎棘突</td><td>斜方肌起点为全部胸椎棘突，背阔肌才是下6个 <span class="loc">〔说话人1 01:11:33〕</span></td></tr>
+<tr><td>肋间内肌提肋吸气</td><td>肋间内肌降肋呼气，肋间外肌提肋吸气 <span class="loc">〔说话人1 01:25:22〕</span></td></tr>
+<tr><td>膈三裂孔从高到低为T12、T10、T8</td><td>越靠中心越高：主动脉T12→食管T10→腔静脉T8 <span class="loc">〔说话人1 01:35:53〕</span></td></tr>
+<tr><td>腹直肌鞘后层全程存在</td><td>弓状线以下后层缺如，腹直肌直接贴腹横筋膜 <span class="loc">〔说话人1 01:53:39〕</span></td></tr>
+<tr><td>腹股沟直疝经深环突出</td><td>直疝经海氏三角突出，斜疝才经深环进入腹股沟管 <span class="loc">〔说话人1 02:05:09〕</span></td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 C · 考点索引表</h2><table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>三类肌交叉归类</td><td>§1</td><td>〔说话人1 00:11〕</td><td>选择/填空</td></tr>
+<tr><td>长/短/扁/轮匝四形态</td><td>§1</td><td>〔说话人1 04:21〕</td><td>选择</td></tr>
+<tr><td>起止点可互换</td><td>§2</td><td>〔说话人1 06:43〕</td><td>选择</td></tr>
+<tr><td>肌肉只有收缩功能</td><td>§2</td><td>〔说话人1 20:51〕</td><td>选择</td></tr>
+<tr><td>辅助装置四项与腱鞘分层</td><td>§3</td><td>〔说话人1 14:31〕</td><td>填空</td></tr>
+<tr><td>髌骨为最大籽骨</td><td>§3</td><td>〔说话人1 16:05〕</td><td>填空</td></tr>
+<tr><td>肌节/鳃弓来源与支配神经</td><td>§4</td><td>〔说话人1 16:20〕</td><td>选择</td></tr>
+<tr><td>面肌是皮肌、面瘫</td><td>§5</td><td>〔说话人1 21:44〕</td><td>临床</td></tr>
+<tr><td>咀嚼肌「三闭一张」</td><td>§6</td><td>〔说话人1 25:47〕</td><td>选择</td></tr>
+<tr><td>四块咀嚼肌起止与功能</td><td>§6</td><td>〔说话人1 31:00〕</td><td>综合</td></tr>
+<tr><td>胸锁乳突肌功能</td><td>§7</td><td>〔说话人1 35:15〕</td><td>选择</td></tr>
+<tr><td>舌骨上/下肌群组成</td><td>§8</td><td>〔说话人1 36:41〕</td><td>填空</td></tr>
+<tr><td>斜角肌间隙穿行结构</td><td>§9</td><td>〔说话人1 43:12〕</td><td>填空</td></tr>
+<tr><td>颈部筋膜三层</td><td>§10</td><td>〔说话人1 44:46〕</td><td>选择</td></tr>
+<tr><td>背浅肌群四肌与止点</td><td>§11</td><td>〔说话人1 01:12:04〕</td><td>填空</td></tr>
+<tr><td>竖脊肌与胸腰筋膜</td><td>§11</td><td>〔说话人1 01:14:58〕</td><td>选择</td></tr>
+<tr><td>前锯肌与翼状肩</td><td>§12</td><td>〔说话人1 01:21:30〕</td><td>临床</td></tr>
+<tr><td>肋间肌呼吸功能</td><td>§12</td><td>〔说话人1 01:25:22〕</td><td>选择</td></tr>
+<tr><td>膈三部与三裂孔</td><td>§13</td><td>〔说话人1 01:34:08〕</td><td>填空</td></tr>
+<tr><td>膈疝薄弱区</td><td>§13</td><td>〔说话人1 01:37:15〕</td><td>临床</td></tr>
+<tr><td>腹直肌鞘与弓状线</td><td>§14</td><td>〔说话人1 01:53:39〕</td><td>填空</td></tr>
+<tr><td>白线与脐疝</td><td>§14</td><td>〔说话人1 01:56:00〕</td><td>临床</td></tr>
+<tr><td>腹股沟管四壁两口</td><td>§15</td><td>〔说话人1 02:02:18〕</td><td>综合</td></tr>
+<tr><td>斜疝 vs 直疝</td><td>§15</td><td>〔说话人1 02:05:09〕</td><td>临床</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 D · 知识点清单</h2><table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>肌肉按构造分平滑肌、心肌、骨骼肌</td><td>分类</td><td>§1</td><td>〔说话人1 00:11〕</td></tr>
+<tr><td>2</td><td>平滑肌位于管腔器官管壁内</td><td>分布</td><td>§1</td><td>〔说话人1 00:11〕</td></tr>
+<tr><td>3</td><td>心肌位于心脏</td><td>分布</td><td>§1</td><td>〔说话人1 00:11〕</td></tr>
+<tr><td>4</td><td>骨骼肌附着于骨、位于外周</td><td>分布</td><td>§1</td><td>〔说话人1 00:11〕</td></tr>
+<tr><td>5</td><td>平滑肌＋心肌＝不随意肌</td><td>分类</td><td>§1</td><td>〔说话人1 00:11〕</td></tr>
+<tr><td>6</td><td>骨骼肌＝随意肌</td><td>分类</td><td>§1</td><td>〔说话人1 00:11〕</td></tr>
+<tr><td>7</td><td>心肌＋骨骼肌＝横纹肌</td><td>分类</td><td>§1</td><td>〔说话人1 00:11〕</td></tr>
+<tr><td>8</td><td>平滑肌无横纹、肌纤维走形不明显</td><td>特征</td><td>§1</td><td>〔说话人1 01:42〕</td></tr>
+<tr><td>9</td><td>全身肌肉约600多块</td><td>数字</td><td>§1</td><td>〔说话人1 02:13〕</td></tr>
+<tr><td>10</td><td>肌肉重量约占体重的40%</td><td>数字</td><td>§1</td><td>〔说话人1 02:13〕</td></tr>
+<tr><td>11</td><td>每块肌肉有独立血供、神经、淋巴，可看作器官</td><td>概念</td><td>§1</td><td>〔说话人1 02:13〕</td></tr>
+<tr><td>12</td><td>肌腹由肌纤维构成、有收缩功能</td><td>构造</td><td>§1</td><td>〔说话人1 02:51〕</td></tr>
+<tr><td>13</td><td>肌腱由平行致密胶原纤维束构成</td><td>构造</td><td>§1</td><td>〔说话人1 02:51〕</td></tr>
+<tr><td>14</td><td>肌腱与韧带性质相同</td><td>概念</td><td>§1</td><td>〔说话人1 02:51〕</td></tr>
+<tr><td>15</td><td>红肌收缩慢、作用持久</td><td>特征</td><td>§1</td><td>〔说话人1 02:51〕</td></tr>
+<tr><td>16</td><td>白肌收缩幅度大、不持久</td><td>特征</td><td>§1</td><td>〔说话人1 02:51〕</td></tr>
+<tr><td>17</td><td>肌肉按形态分长肌、短肌、扁肌、轮匝肌</td><td>分类</td><td>§1</td><td>〔说话人1 04:21〕</td></tr>
+<tr><td>18</td><td>长肌多位于四肢、引起大幅度运动</td><td>形态</td><td>§1</td><td>〔说话人1 04:21〕</td></tr>
+<tr><td>19</td><td>短肌位于椎骨之间、具节段性</td><td>形态</td><td>§1</td><td>〔说话人1 04:21〕</td></tr>
+<tr><td>20</td><td>扁肌呈片状、兼具保护功能</td><td>形态</td><td>§1</td><td>〔说话人1 05:22〕</td></tr>
+<tr><td>21</td><td>轮匝肌位于孔裂周围、关闭孔裂</td><td>形态</td><td>§1</td><td>〔说话人1 05:22〕</td></tr>
+<tr><td>22</td><td>腱膜：扁肌的片状腱性结构</td><td>构造</td><td>§1</td><td>〔说话人1 05:22〕</td></tr>
+<tr><td>23</td><td>腱划：长肌的节段性腱性结构</td><td>构造</td><td>§1</td><td>〔说话人1 06:43〕</td></tr>
+<tr><td>24</td><td>其他形态肌：梭形肌、二腹肌、三腹肌、三角肌、羽状肌、阔肌</td><td>形态</td><td>§1</td><td>〔说话人1 06:43〕</td></tr>
+<tr><td>25</td><td>起点：靠近躯干或身体正中面的一端</td><td>概念</td><td>§2</td><td>〔说话人1 06:43〕</td></tr>
+<tr><td>26</td><td>起止点可互换</td><td>考点</td><td>§2</td><td>〔说话人1 06:43〕</td></tr>
+<tr><td>27</td><td>引体向上时起止点互换</td><td>举例</td><td>§2</td><td>〔说话人1 08:20〕</td></tr>
+<tr><td>28</td><td>肌肉配布与关节运动轴一致</td><td>机制</td><td>§2</td><td>〔说话人1 08:50〕</td></tr>
+<tr><td>29</td><td>协同肌：同一运动都参与收缩</td><td>概念</td><td>§2</td><td>〔说话人1 08:50〕</td></tr>
+<tr><td>30</td><td>拮抗肌：相反方向运动</td><td>概念</td><td>§2</td><td>〔说话人1 08:50〕</td></tr>
+<tr><td>31</td><td>肌肉只有收缩功能、无推开功能</td><td>考点</td><td>§2</td><td>〔说话人1 20:51〕</td></tr>
+<tr><td>32</td><td>肌肉命名依据：形状/位置/起止/功能/大小</td><td>分类</td><td>§2</td><td>〔说话人1 10:47〕</td></tr>
+<tr><td>33</td><td>肌肉辅助装置四项</td><td>分类</td><td>§2</td><td>〔说话人1 10:47〕</td></tr>
+<tr><td>34</td><td>筋膜位于肌肉周围、保护并减少摩擦</td><td>筋膜</td><td>§3</td><td>〔说话人1 12:00〕</td></tr>
+<tr><td>35</td><td>浅筋膜＝皮下筋膜、富含脂肪</td><td>筋膜</td><td>§3</td><td>〔说话人1 12:00〕</td></tr>
+<tr><td>36</td><td>深筋膜＝固有筋膜、致密结缔组织</td><td>筋膜</td><td>§3</td><td>〔说话人1 12:00〕</td></tr>
+<tr><td>37</td><td>深筋膜形成神经血管鞘</td><td>筋膜</td><td>§3</td><td>〔说话人1 12:00〕</td></tr>
+<tr><td>38</td><td>滑膜囊减少摩擦</td><td>辅助装置</td><td>§3</td><td>〔说话人1 13:44〕</td></tr>
+<tr><td>39</td><td>腱鞘分腱纤维鞘与腱滑膜鞘</td><td>辅助装置</td><td>§3</td><td>〔说话人1 14:31〕</td></tr>
+<tr><td>40</td><td>腱滑膜鞘分泌滑液、营养肌腱</td><td>辅助装置</td><td>§3</td><td>〔说话人1 14:31〕</td></tr>
+<tr><td>41</td><td>腱系膜有血管神经穿过</td><td>辅助装置</td><td>§3</td><td>〔说话人1 14:31〕</td></tr>
+<tr><td>42</td><td>髌骨是全身最大的籽骨</td><td>数字</td><td>§3</td><td>〔说话人1 16:05〕</td></tr>
+<tr><td>43</td><td>肌肉血供丰富、淋巴起于毛细淋巴管</td><td>血供</td><td>§3</td><td>〔说话人1 16:20〕</td></tr>
+<tr><td>44</td><td>骨骼肌由躯体神经支配</td><td>神经</td><td>§3</td><td>〔说话人1 16:20〕</td></tr>
+<tr><td>45</td><td>骨骼肌来自肌节和鳃弓间充质</td><td>发生</td><td>§4</td><td>〔说话人1 16:20〕</td></tr>
+<tr><td>46</td><td>肌节来源肌肉由躯体神经支配</td><td>发生</td><td>§4</td><td>〔说话人1 16:20〕</td></tr>
+<tr><td>47</td><td>鳃弓来源肌肉由特殊内脏神经支配</td><td>发生</td><td>§4</td><td>〔说话人1 16:20〕</td></tr>
+<tr><td>48</td><td>鳃弓与鳃的进化关系</td><td>发生</td><td>§4</td><td>〔说话人1 17:46〕</td></tr>
+<tr><td>49</td><td>肌肉变异常见</td><td>变异</td><td>§4</td><td>〔说话人1 18:34〕</td></tr>
+<tr><td>50</td><td>小指伸肌、第三腓骨肌为新分化肌</td><td>变异</td><td>§4</td><td>〔说话人1 18:34〕</td></tr>
+<tr><td>51</td><td>运动耳廓肌退化与返祖现象</td><td>变异</td><td>§4</td><td>〔说话人1 18:34〕</td></tr>
+<tr><td>52</td><td>头肌分面肌与咀嚼肌</td><td>分类</td><td>§5</td><td>〔说话人1 20:51〕</td></tr>
+<tr><td>53</td><td>面肌是皮肌、一端连皮肤</td><td>概念</td><td>§5</td><td>〔说话人1 21:44〕</td></tr>
+<tr><td>54</td><td>面肌由面神经支配、损伤致面瘫</td><td>临床</td><td>§5</td><td>〔说话人1 21:44〕</td></tr>
+<tr><td>55</td><td>枕额肌两腹与帽状腱膜</td><td>肌肉</td><td>§5</td><td>〔说话人1 23:27〕</td></tr>
+<tr><td>56</td><td>帽状腱膜张力大、须单独缝合</td><td>临床</td><td>§5</td><td>〔说话人1 23:27〕</td></tr>
+<tr><td>57</td><td>眼轮匝肌睑部与眶部</td><td>肌肉</td><td>§5</td><td>〔说话人2 47:33〕</td></tr>
+<tr><td>58</td><td>口轮匝肌闭合口腔、深层连颊肌</td><td>肌肉</td><td>§5</td><td>〔说话人2 49:07〕</td></tr>
+<tr><td>59</td><td>颊肌与颊脂肪垫</td><td>肌肉</td><td>§5</td><td>〔说话人2 49:07〕</td></tr>
+<tr><td>60</td><td>面肌诸肌：颧大肌、笑肌、鼻肌等</td><td>肌肉</td><td>§5</td><td>〔说话人2 50:07〕</td></tr>
+<tr><td>61</td><td>颈阔肌位于颈皮下筋膜层内</td><td>肌肉</td><td>§5</td><td>〔说话人2 51:31〕</td></tr>
+<tr><td>62</td><td>咀嚼肌四块、由三叉神经支配</td><td>分类</td><td>§6</td><td>〔说话人1 25:47〕</td></tr>
+<tr><td>63</td><td>咬肌起止与功能</td><td>肌肉</td><td>§6</td><td>〔说话人1 25:47〕</td></tr>
+<tr><td>64</td><td>颞肌起止与功能</td><td>肌肉</td><td>§6</td><td>〔说话人1 28:26〕</td></tr>
+<tr><td>65</td><td>翼内肌起止与功能</td><td>肌肉</td><td>§6</td><td>〔说话人1 30:11〕</td></tr>
+<tr><td>66</td><td>翼外肌起止与功能</td><td>肌肉</td><td>§6</td><td>〔说话人1 31:00〕</td></tr>
+<tr><td>67</td><td>翼外肌非主要张口肌</td><td>考点</td><td>§6</td><td>〔说话人1 31:45〕</td></tr>
+<tr><td>68</td><td>下颌关节自然姿势为闭口</td><td>考点</td><td>§6</td><td>〔说话人1 33:01〕</td></tr>
+<tr><td>69</td><td>闭口肌比张口肌有力</td><td>功能</td><td>§6</td><td>〔说话人2 52:52〕</td></tr>
+<tr><td>70</td><td>限制下颌骨向前的副韧带</td><td>结构</td><td>§6</td><td>〔说话人2 58:07〕</td></tr>
+<tr><td>71</td><td>舌骨肌群共7对</td><td>数字</td><td>§6</td><td>〔说话人2 59:20〕</td></tr>
+<tr><td>72</td><td>头长肌与颈长肌为弱屈肌</td><td>肌肉</td><td>§9</td><td>〔说话人2 01:04:09〕</td></tr>
+<tr><td>73</td><td>颈肌分三大群</td><td>分类</td><td>§7</td><td>〔说话人1 33:01〕</td></tr>
+<tr><td>74</td><td>颈阔肌位置与功能</td><td>肌肉</td><td>§7</td><td>〔说话人1 34:08〕</td></tr>
+<tr><td>75</td><td>胸锁乳突肌起止</td><td>肌肉</td><td>§7</td><td>〔说话人1 34:08〕</td></tr>
+<tr><td>76</td><td>胸锁乳突肌功能</td><td>功能</td><td>§7</td><td>〔说话人1 35:15〕</td></tr>
+<tr><td>77</td><td>舌骨上肌群组成</td><td>分类</td><td>§8</td><td>〔说话人1 36:41〕</td></tr>
+<tr><td>78</td><td>舌骨上肌群下拉下颌张开、上提舌骨</td><td>功能</td><td>§8</td><td>〔说话人1 36:41〕</td></tr>
+<tr><td>79</td><td>颏棘与颏隆突</td><td>结构</td><td>§8</td><td>〔说话人1 37:54〕</td></tr>
+<tr><td>80</td><td>茎突舌骨肌不参与张口闭口</td><td>考点</td><td>§8</td><td>〔说话人1 38:47〕</td></tr>
+<tr><td>81</td><td>舌骨下肌群组成与层次</td><td>分类</td><td>§8</td><td>〔说话人1 39:29〕</td></tr>
+<tr><td>82</td><td>三块斜角肌名称</td><td>分类</td><td>§9</td><td>〔说话人1 42:29〕</td></tr>
+<tr><td>83</td><td>斜角肌止点与功能</td><td>功能</td><td>§9</td><td>〔说话人1 43:12〕</td></tr>
+<tr><td>84</td><td>斜角肌间隙构成与穿行结构</td><td>考点</td><td>§9</td><td>〔说话人1 43:12〕</td></tr>
+<tr><td>85</td><td>颈部筋膜分三层</td><td>筋膜</td><td>§10</td><td>〔说话人1 44:46〕</td></tr>
+<tr><td>86</td><td>颈部筋膜的临床意义</td><td>临床</td><td>§10</td><td>〔说话人1 46:12〕</td></tr>
+<tr><td>87</td><td>躯干肌分部</td><td>分类</td><td>§11</td><td>〔说话人1 01:06:45〕</td></tr>
+<tr><td>88</td><td>背浅肌群四肌</td><td>分类</td><td>§11</td><td>〔说话人1 01:06:45〕</td></tr>
+<tr><td>89</td><td>斜方肌起止与功能</td><td>肌肉</td><td>§11</td><td>〔说话人1 01:08:32〕</td></tr>
+<tr><td>90</td><td>背阔肌起止与功能</td><td>肌肉</td><td>§11</td><td>〔说话人1 01:12:04〕</td></tr>
+<tr><td>91</td><td>肩胛提肌与菱形肌</td><td>肌肉</td><td>§11</td><td>〔说话人1 01:13:25〕</td></tr>
+<tr><td>92</td><td>竖脊肌为最长最大的背肌</td><td>肌肉</td><td>§11</td><td>〔说话人1 01:14:58〕</td></tr>
+<tr><td>93</td><td>背深短肌：枕下肌、棘间肌、横突间肌、肋肌</td><td>肌肉</td><td>§11</td><td>〔说话人1 01:16:40〕</td></tr>
+<tr><td>94</td><td>胸腰筋膜三层与腰背劳损</td><td>筋膜</td><td>§11</td><td>〔说话人1 01:18:59〕</td></tr>
+<tr><td>95</td><td>胸上肢肌三块</td><td>分类</td><td>§12</td><td>〔说话人1 01:20:16〕</td></tr>
+<tr><td>96</td><td>胸大肌起止与功能</td><td>肌肉</td><td>§12</td><td>〔说话人1 01:21:30〕</td></tr>
+<tr><td>97</td><td>胸小肌起止与功能</td><td>肌肉</td><td>§12</td><td>〔说话人1 01:21:30〕</td></tr>
+<tr><td>98</td><td>前锯肌与翼状肩</td><td>临床</td><td>§12</td><td>〔说话人1 01:21:30〕</td></tr>
+<tr><td>99</td><td>肋间外肌与肋间内肌</td><td>肌肉</td><td>§12</td><td>〔说话人1 01:25:22〕</td></tr>
+<tr><td>100</td><td>肋间最内肌、胸横肌</td><td>肌肉</td><td>§12</td><td>〔说话人1 01:27:35〕</td></tr>
+<tr><td>101</td><td>胸部筋膜与锁胸筋膜</td><td>筋膜</td><td>§12</td><td>〔说话人1 01:28:47〕</td></tr>
+<tr><td>102</td><td>膈肌三部与中心腱</td><td>结构</td><td>§13</td><td>〔说话人1 01:31:33〕</td></tr>
+<tr><td>103</td><td>膈肌腰部起点与膈脚</td><td>结构</td><td>§13</td><td>〔说话人1 01:32:47〕</td></tr>
+<tr><td>104</td><td>膈肌三裂孔及穿行结构</td><td>考点</td><td>§13</td><td>〔说话人1 01:34:08〕</td></tr>
+<tr><td>105</td><td>胸肋三角、腰肋三角与膈疝</td><td>临床</td><td>§13</td><td>〔说话人1 01:37:15〕</td></tr>
+<tr><td>106</td><td>膈肌功能与膈神经</td><td>功能</td><td>§13</td><td>〔说话人1 01:38:07〕</td></tr>
+<tr><td>107</td><td>腹肌分腹前外侧群与腹后群</td><td>分类</td><td>§14</td><td>〔说话人1 01:39:33〕</td></tr>
+<tr><td>108</td><td>腹外斜肌起止</td><td>肌肉</td><td>§14</td><td>〔说话人1 01:41:48〕</td></tr>
+<tr><td>109</td><td>腹股沟韧带与耻骨梳韧带</td><td>结构</td><td>§14</td><td>〔说话人1 01:43:05〕</td></tr>
+<tr><td>110</td><td>腔隙韧带与腹股沟管浅环</td><td>结构</td><td>§14</td><td>〔说话人1 01:44:02〕</td></tr>
+<tr><td>111</td><td>腹内斜肌起止与走行</td><td>肌肉</td><td>§14</td><td>〔说话人1 01:47:42〕</td></tr>
+<tr><td>112</td><td>联合腱与提睾肌</td><td>结构</td><td>§14</td><td>〔说话人1 01:48:28〕</td></tr>
+<tr><td>113</td><td>腹横肌起止与走行</td><td>肌肉</td><td>§14</td><td>〔说话人1 01:49:30〕</td></tr>
+<tr><td>114</td><td>腹直肌起止与腱划</td><td>肌肉</td><td>§14</td><td>〔说话人1 01:51:43〕</td></tr>
+<tr><td>115</td><td>腹直肌鞘上下构成差异</td><td>考点</td><td>§14</td><td>〔说话人1 01:53:39〕</td></tr>
+<tr><td>116</td><td>弓状线位置</td><td>考点</td><td>§14</td><td>〔说话人1 01:53:39〕</td></tr>
+<tr><td>117</td><td>白线、脐环与脐疝</td><td>临床</td><td>§14</td><td>〔说话人1 01:56:00〕</td></tr>
+<tr><td>118</td><td>腹横筋膜</td><td>筋膜</td><td>§14</td><td>〔说话人1 01:57:13〕</td></tr>
+<tr><td>119</td><td>腹后群腰大肌、腰方肌</td><td>肌肉</td><td>§14</td><td>〔说话人1 01:58:24〕</td></tr>
+<tr><td>120</td><td>腹部浅筋膜两层（Camper/Scarpa）</td><td>筋膜</td><td>§14</td><td>〔说话人1 02:08:14〕</td></tr>
+<tr><td>121</td><td>腹股沟管位置与长度</td><td>结构</td><td>§15</td><td>〔说话人1 01:59:29〕</td></tr>
+<tr><td>122</td><td>腹股沟管两口（深环、浅环）</td><td>结构</td><td>§15</td><td>〔说话人1 01:59:29〕</td></tr>
+<tr><td>123</td><td>腹股沟管四壁</td><td>考点</td><td>§15</td><td>〔说话人1 02:02:18〕</td></tr>
+<tr><td>124</td><td>腹股沟斜疝</td><td>临床</td><td>§15</td><td>〔说话人1 02:03:02〕</td></tr>
+<tr><td>125</td><td>海氏三角构成</td><td>考点</td><td>§15</td><td>〔说话人1 02:04:33〕</td></tr>
+<tr><td>126</td><td>腹股沟直疝</td><td>临床</td><td>§15</td><td>〔说话人1 02:05:09〕</td></tr>
+<tr><td>127</td><td>联合腱与弓状下缘</td><td>结构</td><td>§15</td><td>〔说话人1 02:06:44〕</td></tr>
+<tr><td>128</td><td>股疝</td><td>临床</td><td>§15</td><td>〔说话人1 02:07:20〕</td></tr>
+<tr><td>129</td><td>全身肌四分法、本课前三类与四肢肌上下肢</td><td>分类</td><td>§0</td><td>〔说话人1 20:12〕</td></tr>
+<tr><td>130</td><td>膈位置穹窿、胸腹分界与打嗝</td><td>结构</td><td>§13</td><td>〔说话人1 01:28:47〕</td></tr>
+<tr><td>131</td><td>腹股沟管内精索与子宫圆韧带</td><td>结构</td><td>§15</td><td>〔说话人1 02:02:18〕</td></tr>
+</table><p class="foot">附录 D 共 131 条；对照 recording.md 讲授段登记，课后闲聊未收录。</p></div>
+</body></html>

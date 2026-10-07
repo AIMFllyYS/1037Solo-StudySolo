@@ -1,813 +1,436 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>细胞传代培养·冻存·复苏</title>
-<style>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>细胞生物学实验 第5-8节 细胞传代培养、冻存与复苏</title><style>
 :root{
-  --paper: #FAF8F3;
-  --paper-card: #FFFFFF;
-  --ink: #1A1814;
-  --ink-soft: #4A453D;
-  --ink-faint: #8B8578;
-  --rule: #DDD8CC;
-  --accent: #2E7D4F;
-  --accent-soft: #2E7D4F15;
-  --accent-line: #2E7D4F40;
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#2F5D50; --accent-d:#1E3F36; --accent-t:#E6EFEC;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
 }
-*{box-sizing:border-box; margin:0; padding:0;}
-html,body{background:var(--paper);}
-body{font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif; color:var(--ink); font-size:10pt; line-height:1.75;}
-.page{width:210mm; min-height:297mm; background:var(--paper); position:relative; padding:18mm 20mm 16mm 20mm; page-break-after:always;}
-.page:last-child{page-break-after:auto;}
+body{margin:0;padding:10mm 0;background:var(--paper);color:var(--ink);font:10.5pt/1.75 var(--sans);}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+h1,h2,h3{font-family:var(--serif);color:var(--accent-d);margin:0.4em 0;}
+h1{font-size:19pt;border-bottom:2.5px solid var(--accent);padding-bottom:4px;}
+h2{font-size:14.5pt;margin-top:14px;border-left:5px solid var(--accent);padding-left:8px;}
+h3{font-size:11.5pt;margin-top:10px;color:var(--accent);}
+.cover{text-align:center;padding:24mm 6mm 10mm;border-bottom:3px double var(--line);margin-bottom:8mm;}
+.cover .h1{font-size:26pt;}
+.cover .h2{font-size:15pt;border:none;padding:0;margin:6px 0;color:var(--ink2);}
+.cover .meta{margin-top:10mm;font-size:10pt;color:var(--muted);line-height:2.1;}
+.lead{background:var(--accent-t);border:1px solid var(--line);border-left:4px solid var(--accent);padding:6px 10px;margin:8px 0;color:var(--ink2);}
+.kv{margin:6px 0;padding-left:0;list-style:none;}
+.kv li{margin:4px 0;padding-left:1.4em;text-indent:-1.4em;}
+.kv li::before{content:"▪ ";color:var(--accent);font-weight:bold;}
+.loc{color:var(--muted);font-size:9pt;font-family:var(--sans);}
+.tbl{width:100%;border-collapse:collapse;margin:8px 0;font-size:10pt;}
+.tbl th{background:var(--accent);color:#fff;padding:5px 7px;border:1px solid var(--accent-d);text-align:left;}
+.tbl td{padding:5px 7px;border:1px solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam{background:var(--exam-t);border:1px solid var(--exam);border-radius:4px;padding:7px 10px;margin:8px 0;break-inside:avoid;}
+.wrong{background:var(--wrong-t);border:1px solid var(--wrong);border-radius:4px;padding:7px 10px;margin:8px 0;break-inside:avoid;}
+.mnem{background:var(--mnem-t);border:1px solid var(--mnem);border-radius:4px;padding:7px 10px;margin:8px 0;break-inside:avoid;}
+.def{background:var(--def-t);border:1px solid var(--def);border-radius:4px;padding:7px 10px;margin:8px 0;break-inside:avoid;}
+.tag{display:inline-block;background:var(--exam);color:#fff;font-size:8.5pt;border-radius:3px;padding:0 5px;margin-right:4px;vertical-align:middle;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(46%,1fr));gap:8px;margin:8px 0;}
+.card{border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:4px;padding:8px 10px;background:#fff;break-inside:avoid;}
+.foot{margin-top:10mm;padding-top:4px;border-top:1px solid var(--line);color:var(--muted);font-size:9pt;text-align:center;}
+.idx{width:100%;border-collapse:collapse;margin:8px 0;font-size:9pt;}
+.idx th{background:var(--accent-d);color:#fff;padding:4px 6px;border:1px solid var(--accent-d);text-align:left;}
+.idx td{padding:4px 6px;border:1px solid var(--line);vertical-align:top;}
+.idx tr:nth-child(even) td{background:var(--paper2);}
+.fr{margin:6px 0 6px 0;padding:0;list-style:none;}
+.fr li{margin:2px 0;}
+.fr .l1{font-weight:bold;color:var(--accent-d);}
+.fr .l2{margin-left:1.6em;color:var(--ink2);}
+@media print{.page{margin:0}}
+</style></head><body>
 
-/* 封面 */
-.cover{background:linear-gradient(135deg, var(--accent) 0%, #2E7D4FCC 100%); color:#fff; padding:0;}
-.cover .inner{height:100%; min-height:261mm; padding:30mm 22mm 22mm 22mm; display:flex; flex-direction:column; justify-content:space-between;}
-.cover .eyebrow{font-size:9pt; letter-spacing:0.4em; text-transform:uppercase; opacity:0.85;}
-.cover h1{font-family:'Noto Serif CJK SC',serif; font-size:42pt; font-weight:900; line-height:1.15; margin-top:12mm;}
-.cover .subtitle{font-size:13pt; opacity:0.9; margin-top:8mm; line-height:1.7;}
-.cover .meta{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8mm; border-top:1px solid rgba(255,255,255,0.3); padding-top:8mm;}
-.cover .meta .k{font-size:7.5pt; letter-spacing:0.2em; opacity:0.7; text-transform:uppercase;}
-.cover .meta .v{font-size:11pt; font-weight:600; margin-top:2mm;}
-
-/* 目录 */
-.toc-title{font-family:'Noto Serif CJK SC',serif; font-size:24pt; font-weight:800; margin-bottom:2mm; color:var(--accent);}
-.toc-sub{color:var(--ink-soft); font-size:9.5pt; margin-bottom:8mm;}
-.toc-list{list-style:none;}
-.toc-list li{display:flex; align-items:baseline; padding:3.5mm 0; border-bottom:1px solid var(--rule);}
-.toc-num{font-family:'Noto Serif CJK SC',serif; font-weight:800; color:var(--accent); font-size:12pt; min-width:14mm;}
-.toc-text{font-size:10.5pt; font-weight:600;}
-
-/* 内容页 */
-.running{display:flex; justify-content:space-between; font-size:7.5pt; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-faint); border-bottom:1.5px solid var(--accent); padding-bottom:3mm; margin-bottom:8mm;}
-.running .course{color:var(--accent); font-weight:700;}
-
-h1{font-family:'Noto Serif CJK SC',serif; font-size:22pt; font-weight:900; color:var(--ink); margin:8mm 0 4mm 0; padding-bottom:3mm; border-bottom:2.5px solid var(--accent);}
-h2{font-family:'Noto Serif CJK SC',serif; font-size:16pt; font-weight:800; color:var(--accent); margin:7mm 0 3mm 0; padding-left:4mm; border-left:4px solid var(--accent);}
-h3{font-family:'Noto Serif CJK SC',serif; font-size:13pt; font-weight:700; color:var(--ink); margin:5mm 0 2.5mm 0;}
-h4{font-size:11pt; font-weight:700; color:var(--ink-soft); margin:4mm 0 2mm 0;}
-
-p{margin:2mm 0; text-align:justify;}
-ul{margin:2mm 0 2mm 6mm;}
-li{margin:1.2mm 0;}
-li.num{list-style:none; counter-increment:item;}
-li.num::before{content:counter(item) "."; font-weight:700; color:var(--accent); margin-right:2mm;}
-
-strong{color:var(--accent); font-weight:700;}
-em{color:var(--ink-soft);}
-code{background:var(--accent-soft); color:var(--accent); padding:0.5mm 1.5mm; border-radius:1mm; font-size:9pt; font-family:'Consolas',monospace;}
-
-blockquote{border-left:3px solid var(--accent); background:var(--accent-soft); padding:3mm 4mm; margin:3mm 0; border-radius:0 2mm 2mm 0;}
-blockquote p{margin:0; color:var(--ink-soft); font-style:italic;}
-
-hr{border:none; border-top:1px solid var(--rule); margin:6mm 0;}
-
-/* 表格 */
-.note-table{width:100%; border-collapse:collapse; margin:4mm 0; font-size:9.5pt;}
-.note-table th{background:var(--accent); color:#fff; padding:2.5mm 3mm; text-align:left; font-weight:700;}
-.note-table td{padding:2.5mm 3mm; border-bottom:1px solid var(--rule);}
-.note-table tr:nth-child(even) td{background:var(--accent-soft);}
-
-/* 页脚 */
-.footer{position:absolute; bottom:8mm; left:20mm; right:20mm; display:flex; justify-content:space-between; font-size:7.5pt; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:3mm;}
-</style>
-</head>
-<body>
-
-<!-- 封面 -->
-<div class="page cover">
-  <div class="inner">
-    <div>
-      <div class="eyebrow">HUST · 课堂可视化笔记</div>
-      <h1>细胞传代培养·冻存·复苏</h1>
-      <div class="subtitle">第5-8节 · 细胞培养基础、传代培养、细胞计数、冻存复苏技术</div>
-    </div>
-    <div class="meta">
-      <div><div class="k">课程</div><div class="v">细胞生物学实验</div></div>
-      <div><div class="k">节次</div><div class="v">第5-8节</div></div>
-      <div><div class="k">日期</div><div class="v">2026-09-15</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- 目录 -->
 <div class="page">
-  <div class="toc-title">目录</div>
-  <div class="toc-sub">本笔记基于课堂录音完整逐字稿整理，详细记录课堂讲授的核心知识点、例题强调点与复习要点。</div>
-  <ul class="toc-list">
-    <li><span class="toc-num">01</span><span class="toc-text">一、知识结构</span></li>
-<li><span class="toc-num">02</span><span class="toc-text">二、实验概述与背景</span></li>
-<li><span class="toc-num">03</span><span class="toc-text">三、实验原理</span></li>
-<li><span class="toc-num">04</span><span class="toc-text">四、详细操作步骤</span></li>
-<li><span class="toc-num">05</span><span class="toc-text">五、实验报告要求</span></li>
-<li><span class="toc-num">06</span><span class="toc-text">六、关键知识点与考点</span></li>
-<li><span class="toc-num">07</span><span class="toc-text">七、老师强调重点汇总</span></li>
-<li><span class="toc-num">08</span><span class="toc-text">八、常见问题与易错点</span></li>
-<li><span class="toc-num">09</span><span class="toc-text">九、复习清单</span></li>
-<li><span class="toc-num">10</span><span class="toc-text">十、主动回忆题</span></li>
-  </ul>
-</div>
-
-<!-- 内容 -->
-<div class="page">
-  <div class="running">
-    <span class="course">细胞生物学实验</span>
-    <span>第5-8节 · 2026-09-15</span>
-  </div>
-  <h1>细胞生物学实验 · 第5-8节 · 细胞传代培养、冻存与复苏</h1>
-
-<blockquote>**课程信息**</blockquote>
-<blockquote>- 课程：细胞生物学实验</blockquote>
-<blockquote>- 节次：第5-8节（课程内累计，4学时）</blockquote>
-<blockquote>- 日期：2026年9月15日（周二，第3周）</blockquote>
-<blockquote>- 授课老师：彭挺（生命科学与技术学院）</blockquote>
-<blockquote>- 上课地点：细胞生物学实验室（东九楼）</blockquote>
-<blockquote>- 实验内容：细胞传代培养（HeLa细胞系）、细胞冻存与复苏</blockquote>
-<blockquote>- 学时：4学时（14:30-18:00）</blockquote>
-<blockquote>- 本次为第二次细胞生物学实验课（第一次为9月8日细胞原代培养）</blockquote>
-
-<hr>
-
-<h2>一、知识结构</h2>
-
-<p><code>`</code>mermaid</p>
-<p>flowchart TD</p>
-<p>A[细胞传代培养实验] --> B[实验前准备]</p>
-<p>A --> C[传代培养操作]</p>
-<p>A --> D[细胞计数与活力测定]</p>
-<p>A --> E[细胞冻存]</p>
-<p>A --> F[细胞复苏]</p>
-
-<p>B --> B1[无菌装备:帽子/手套/口罩/鞋套]</p>
-<p>B --> B2[试剂:胰蛋白酶/PBS/含血清培养基/DMSO]</p>
-<p>B --> B3[耗材:培养瓶/离心管/冻存管/吹打管]</p>
-
-<p>C --> C1[观察细胞:倒置显微镜/贴壁多边形]</p>
-<p>C --> C2[去培养基→PBS漂洗→胰酶消化]</p>
-<p>C --> C3[消化判断:变圆/脱落/缝隙增大]</p>
-<p>C --> C4[加血清培养基终止消化]</p>
-<p>C --> C5[吹打:底部朝上/对着底部吹]</p>
-<p>C --> C6[第一次离心:1000rpm/5min/3mL]</p>
-<p>C --> C7[重悬:2mL培养基]</p>
-
-<p>D --> D1[台盼蓝染色:50μL细胞+50μL台盼蓝]</p>
-<p>D --> D2[计数:16格总数/蓝染死细胞数]</p>
-<p>D --> D3[活力计算:(总-蓝)/总×100%]</p>
-<p>D --> D4[浓度校正:×2(1倍稀释)]</p>
-
-<p>E --> E1[取1.5mL剩余细胞]</p>
-<p>E --> E2[实验组:0.9mL细胞+0.1mL DMSO=10%]</p>
-<p>E --> E3[对照组:1mL细胞不加DMSO]</p>
-<p>E --> E4[-20度预冻:正常2h/今天5min(违规)]</p>
-<p>E --> E5[液氮-196度长期保存]</p>
-<p>E --> E6[原理:慢速冻存/防冰晶/DMSO降冰点]</p>
-
-<p>F --> F1[快速复苏:37-40度水浴/快速震荡]</p>
-<p>F --> F2[融化至剩少量冰即可]</p>
-<p>F --> F3[转入离心管+培养基冲洗]</p>
-<p>F --> F4[第二次离心:1000rpm/5min]</p>
-<p>F --> F5[重悬→再次计数活力测定]</p>
-<p>F --> F6[原理:快速复苏/避免冰晶再形成]</p>
-<p><code>`</code></p>
-
-<hr>
-
-<h2>二、实验概述与背景</h2>
-
-<h3>2.1 上次实验回顾（细胞原代培养）</h3>
-
-<p>老师首先回顾了第一次实验（9月8日细胞原代培养）的情况：</p>
-
-<ul>
-<li><strong>本班成功率较高</strong>：约一半以上同学需要稀释（细胞浓度超过100万/mL），说明取材和消化效果好</li>
-<li><strong>基础医学班成功率较低</strong>：没有太多同学超过100万/mL</li>
-<li><strong>失败原因分析</strong>：</li>
-<li class="num"><strong>取材错误</strong>：有的同学取的根本不是肝脏——剪了一块肌肉（也是红色的），肌肉在胰酶消化中效果很低，可能一个细胞都没有</li>
-<li class="num">甚至有同学剪了胃的结构（胃是白色的，肝是红色的）</li>
-<li class="num"><strong>无菌操作不规范</strong>：部分同学做着做着手就从超净台里拿出来到外面操作，理论上就不是无菌操作了</li>
-</ul>
-
-<blockquote>**老师强调**：这些细节要在后续实验中注意。当发现问题时及时纠正，不是要拿今天的实验结果做后续工作，而是要养好习惯、形成肌肉记忆。</blockquote>
-
-<h3>2.2 原代培养 vs 传代培养</h3>
-
-<table class="note-table">
-<tr><th>比较项</th><th>原代培养</th><th>传代培养</th></tr>
-<tr><td>细胞来源</td><td>直接来自机体组织</td><td>已培养的细胞经多次分裂传代，或来自细胞系</td></tr>
-<tr><td>典型例子</td><td>小鼠肝脏原代细胞</td><td>HeLa细胞系、293细胞系</td></tr>
-<tr><td>细胞状态</td><td>刚从组织分离，基本无凋亡</td><td>传代过程中有部分细胞凋亡、衰老死亡</td></tr>
-<tr><td>活力测定</td><td>基本都是活细胞，不需要活力测定</td><td>需要区分活细胞和死细胞比例</td></tr>
-</table>
-
-<h3>2.3 本次实验三件事</h3>
-
-<ul>
-<li class="num"><strong>传代培养</strong>：将HeLa细胞从原始培养瓶消化下来，传到新培养瓶（1:1传代，一瓶传一瓶）</li>
-<li class="num"><strong>细胞冻存</strong>：剩余细胞冻存于液氮（-196℃）长期保存</li>
-<li class="num"><strong>细胞复苏</strong>：将冻存细胞取出复苏，测定活力</li>
-</ul>
-
-<blockquote>一瓶长满的细胞理论上可以传2-3瓶，所以1:1传代后剩余的细胞不浪费，用来做冻存和复苏。</blockquote>
-
-<hr>
-
-<h2>三、实验原理</h2>
-
-<h3>3.1 细胞贴壁与消化</h3>
-
-<ul>
-<li><strong>贴壁培养</strong>：HeLa细胞贴在培养瓶底部生长，培养基覆盖在上方。细胞呈多边形，彼此紧紧贴附在一起，细胞核可见。</li>
-<li><strong>悬浮培养</strong>：血液来源的细胞不与器皿接触或接触微弱，晃一晃就浮起来。</li>
-<li><strong>胰蛋白酶消化</strong>：0.25%胰蛋白酶可以分解细胞与培养瓶底之间的黏附蛋白，使细胞从瓶壁脱落。</li>
-<li><strong>血清抑制胰酶</strong>：培养基中的血清会抑制胰蛋白酶活性，所以消化前要用PBS漂洗清除血清。</li>
-</ul>
-
-<h3>3.2 细胞冻存原理</h3>
-
-<h4>冰晶损伤</h4>
-
-<ul>
-<li>在<strong>0℃到-20℃</strong>这个阶段，细胞内部会形成冰晶</li>
-<li>冰晶会对细胞内部结构造成物理损伤（刺破细胞膜、细胞器等）</li>
-<li>这是冻存过程中细胞损伤的主要原因</li>
-</ul>
-
-<h4>DMSO保护剂</h4>
-
-<ul>
-<li><strong>二甲基亚砜（DMSO）</strong>和甘油类似，可以<strong>降低冰点</strong></li>
-<li>加入DMSO后，细胞在0到-20℃过程中不至于形成冰晶</li>
-<li>常用浓度：<strong>10% DMSO</strong>（0.9mL细胞悬液 + 0.1mL DMSO）</li>
-<li>不加DMSO和加DMSO的结果完全不同——本次实验设置了对比组</li>
-</ul>
-
-<h4>慢速冻存原则</h4>
-
-<ul>
-<li><strong>分步缓慢降温</strong>：目的是尽量不形成冰晶</li>
-<li>正常冻存流程：</li>
-<li class="num">-20℃预冻存（约2小时）</li>
-<li class="num">转移到-80℃冰箱或液氮口悬浮（30-40分钟）</li>
-<li class="num">最终放入液氮（-196℃）长期保存</li>
-<li>今天实验为时间考虑，采用<strong>违规操作</strong>：-20℃只放5分钟，直接放入液氮（跳过-80度过渡），因此细胞损伤会更明显</li>
-</ul>
-
-<h4>液氮保存</h4>
-
-<ul>
-<li>液氮温度：<strong>-196℃</strong></li>
-<li>细胞在液氮中停止一切生物学行为</li>
-<li>保存时间可以是5分钟、一天、一年、更多年（如冷冻胚胎可以保存很多年）</li>
-<li>也可以从液氮取出后放在-80℃冰箱长期保存，但多数情况下冻在液氮里</li>
-</ul>
-
-<h3>3.3 细胞复苏原理</h3>
-
-<ul>
-<li><strong>快速复苏</strong>：与慢速冻存完全相反，复苏要求<strong>速度非常快</strong></li>
-<li>目的：快速通过0到-20℃的危险温度区间，避免冰晶再次形成或长大</li>
-<li>操作：37-40℃水浴中快速震荡，使冰快速融化</li>
-<li>融化程度：摇到只剩一点点冰时即可（约0℃冰水混合物温度），不能摇太过（温度太高可能损伤细胞）</li>
-</ul>
-
-<h3>3.4 台盼蓝活力测定原理</h3>
-
-<ul>
-<li><strong>台盼蓝（Trypan Blue）</strong>：一种蓝色染料</li>
-<li><strong>活细胞</strong>：细胞膜完整封闭，外界物质不能通过自由扩散进入细胞，台盼蓝无法染色→活细胞呈透明无色</li>
-<li><strong>死细胞</strong>：细胞膜上自然出现孔洞，台盼蓝分子可以渗透进入→死细胞被染成蓝色</li>
-<li>因此在计数时同时数总细胞数和蓝色细胞数，即可计算细胞活力</li>
-</ul>
-
-<hr>
-
-<h2>四、详细操作步骤</h2>
-
-<h3>4.1 实验前准备</h3>
-
-<ul>
-<li class="num"><strong>个人防护</strong>：更换手术帽、手套、口罩、鞋套</li>
-<li class="num"><strong>进入超净台</strong>：酒精棉球消毒双手，所有操作在超净台内进行</li>
-<li class="num"><strong>试剂准备</strong>：</li>
-<li>0.25%胰蛋白酶</li>
-<li>PBS（磷酸盐缓冲液，用于漂洗）</li>
-<li>含10%血清的培养基</li>
-<li>DMSO（二甲基亚砜，冻存保护剂）</li>
-<li>台盼蓝染料</li>
-<li class="num"><strong>耗材准备</strong>：</li>
-<li>塑料培养瓶（红色盖子，已接种HeLa细胞）</li>
-<li>15mL离心管</li>
-<li>2mL冻存管（黄色螺旋盖，注意不是EP管！）</li>
-<li>吹打管</li>
-<li>EP管（用于取细胞样品计数）</li>
-</ul>
-
-<blockquote>**重要提醒**：冻存管必须是**螺旋盖**的，不能用卡扣式EP管——冻存时热胀冷缩会导致EP管炸开。</blockquote>
-
-<h3>4.2 观察细胞（消化前）</h3>
-
-<ul>
-<li class="num">从培养箱中取出已长满的HeLa细胞培养瓶</li>
-<li class="num">在<strong>倒置显微镜</strong>下观察：</li>
-<li>倒置显微镜：镜头从下往上看细胞底面</li>
-<li>正置显微镜：从上往下看标本（超净台外的那台）</li>
-<li>HeLa细胞呈<strong>多边形</strong>，彼此紧紧贴附在一起，细胞核可见</li>
-<li>细胞密度约85%左右</li>
-<li class="num">观察清楚后进入超净台开始操作</li>
-</ul>
-
-<blockquote>**对比**：上堂课做的原代干细胞和今天的HeLa细胞都是贴壁培养类型。</blockquote>
-
-<h3>4.3 去除培养基与PBS漂洗</h3>
-
-<ul>
-<li class="num"><strong>去除培养基</strong>：打开培养瓶盖，将培养瓶直接对着废液缸倒掉培养基</li>
-<li>不要让培养瓶口接触到废液缸</li>
-<li>一般不需要用吸管吸，直接倒即可</li>
-<li class="num"><strong>PBS漂洗</strong>：加入约3mL PBS，盖好盖子，轻轻晃动，然后倒掉PBS</li>
-<li><strong>目的</strong>：清除残留培养基中的血清，因为血清会抑制胰蛋白酶活性</li>
-<li>如果不漂洗直接加胰酶，胰酶活性可能受抑制</li>
-</ul>
-
-<h3>4.4 胰蛋白酶消化</h3>
-
-<ul>
-<li class="num">将0.25%胰蛋白酶全部加入培养瓶中，使其覆盖细胞层</li>
-<li>可以倒进去，也可以用吸管吸进去</li>
-<li class="num">盖好盖子，将培养瓶放入<strong>37℃培养箱</strong>（不是水浴锅！）</li>
-<li class="num"><strong>消化时间</strong>：约5-10分钟</li>
-<li>去年胰酶批次不同，有的5分钟已经全部脱落，有的10分钟还没掉</li>
-<li>消化到5分钟左右时，取出放到倒置显微镜下观察</li>
-</ul>
-
-<h3>4.5 消化效果判断</h3>
-
-<p>在倒置显微镜下观察：</p>
-
-<table class="note-table">
-<tr><th>消化状态</th><th>细胞形态</th><th>操作</th></tr>
-<tr><td>未消化</td><td>贴壁、多边形、紧密排列</td><td>继续消化</td></tr>
-<tr><td>开始消化</td><td>细胞**变圆**，细胞间距离变大，出现缝隙</td><td>已有消化作用</td></tr>
-<tr><td>消化良好</td><td>很多细胞在**脱落、运动**，已与瓶底部分开</td><td>可以停止消化</td></tr>
-<tr><td>消化过度</td><td>—</td><td>应避免</td></tr>
-</table>
-
-<ul>
-<li>如果5分钟后细胞仍贴壁没有任何形态学变化，要提醒老师（可能胰酶批次有问题）</li>
-<li>多数同学5分钟左右细胞就会变形脱落</li>
-</ul>
-
-<h3>4.6 终止消化与吹打</h3>
-
-<ul>
-<li class="num"><strong>终止消化</strong>：直接加入2mL含血清的培养基</li>
-<li>血清的作用是<strong>终止胰蛋白酶消化</strong></li>
-<li class="num"><strong>吹打操作</strong>（关键步骤，方向很重要！）：</li>
-</ul>
-
-<p><strong>正确方向</strong>：</p>
-<ul>
-<li>培养瓶开口朝一侧，<strong>底部朝上</strong>（细胞贴在朝上的这一面）</li>
-<li>液体在下方</li>
-<li>用吹打管吸上液体，<strong>剧烈地吹细胞贴附的那个平面</strong></li>
-<li>可以清楚看到细胞层被吹下来</li>
-<li>把每一个角落可能残存的贴附细胞都吹下来，不浪费细胞</li>
-<li>吹完后再用吹打管对液体进行剧烈吹打，使细胞变成单个悬浮细胞</li>
-</ul>
-
-<p><strong>错误方向</strong>（不要这样做）：</p>
-<ul>
-<li>瓶口朝一个方向，细胞在这一面，液体也在这一面</li>
-<li>这种情况下很难看清楚哪里有细胞，吹不到，会浪费大面积细胞</li>
-</ul>
-
-<blockquote>**老师反复强调**：一定要养好这个习惯，不要拿反了。部分同学消化非常完美，只需要对液体吹打即可；但有残留细胞时必须对着底部吹。</blockquote>
-
-<h3>4.7 第一次离心</h3>
-
-<ul>
-<li class="num">将细胞悬液转入15mL离心管</li>
-<li>约1mL胰酶 + 2mL培养基 = 约3mL体积</li>
-<li class="num"><strong>平衡到3mL刻度线</strong>：多的去掉，少的补培养基</li>
-<li class="num"><strong>离心条件</strong>：1000转/分钟，5分钟</li>
-<li class="num">离心后弃上清，细胞沉淀在管底</li>
-<li class="num">加入2mL培养基，重新吹打悬浮细胞</li>
-</ul>
-
-<blockquote>到这一步，每个同学的材料就是2mL悬浮细胞，细胞量应该非常充足，大概率不会出现大的差异。</blockquote>
-
-<h3>4.8 细胞计数与活力测定（第一次）</h3>
-
-<ul>
-<li class="num"><strong>取样品</strong>：从2mL细胞悬液中吸出<strong>50μL</strong>，放入一个有盖的EP管中</li>
-<li>体积要稍微准确，不要乱吸</li>
-<li>这个EP管可以带离超净台去计数</li>
-<li class="num"><strong>台盼蓝染色</strong>：</li>
-<li>在水浴锅处有蓝色的台盼蓝染料管</li>
-<li>加入<strong>50μL台盼蓝</strong>（对半加入，1:1比例）</li>
-<li>用枪混匀，静置约1分钟</li>
-<li class="num"><strong>计数</strong>：</li>
-<li>在血球计数板的16个格子中计数</li>
-<li>数出<strong>总细胞数</strong>（不管蓝的不蓝的都数）</li>
-<li>数出<strong>蓝色细胞数</strong>（死细胞）</li>
-<li class="num"><strong>活力计算</strong>：</li>
-</ul>
-<p><code>`</code></p>
-<p>细胞活力 = (总细胞数 - 蓝色细胞数) / 总细胞数 × 100%</p>
-<p><code>`</code></p>
-<ul>
-<li class="num"><strong>浓度校正</strong>（非常重要！）：</li>
-<li>因为加入了等体积台盼蓝（50+50），进行了<strong>1倍稀释</strong></li>
-<li>所以计数得到的浓度需要<strong>乘以2</strong>才是真实浓度</li>
-<li>上堂课没有稀释，直接换算即可；今天稀释过一倍，千万不要忘记乘2</li>
-<li>这就是为什么体积很重要——不能体积乱加，否则不确定真实浓度</li>
-</ul>
-
-<blockquote>**预期结果**：今天细胞浓度会很高，基本在300万/mL左右。</blockquote>
-
-<h3>4.9 传代接种</h3>
-
-<ul>
-<li class="num"><strong>计算接种量</strong>：</li>
-<li>一个培养瓶最终培养体系是4mL培养基</li>
-<li>要保证<strong>50万/mL</strong>的接种密度</li>
-<li>所以4mL中需要<strong>200万个细胞</strong></li>
-<li>例如：如果细胞浓度是400万/mL，吸出0.5mL刚好是200万个细胞</li>
-<li class="num"><strong>操作</strong>：</li>
-<li>从细胞悬液中吸出约0.5mL（含约200万细胞）</li>
-<li>加入新培养瓶中</li>
-<li>补足培养基至4mL总体积</li>
-<li>轻轻混匀</li>
-<li class="num"><strong>标记</strong>：在培养瓶上做好标记</li>
-<li class="num"><strong>放入培养箱</strong>：37℃、5% CO₂培养箱培养</li>
-</ul>
-
-<blockquote>**注意**：2mL细胞悬液中已经吸出了50μL用于计数，这点体积可以忽略不计。剩下约1.5mL用于冻存。</blockquote>
-<p>></p>
-<blockquote>**特殊情况**：如果计算后细胞不足，也吸0.5mL来接种（浓度达不到也接种），因为需要后面的1.5mL做冻存复苏，不能最后一点细胞都没有。不管怎样都控制在0.5mL左右。</blockquote>
-
-<h3>4.10 观察贴壁现象</h3>
-
-<ul>
-<li>刚接种时细胞是漂浮的、圆形的</li>
-<li>大约<strong>十几分钟到20分钟</strong>后，细胞会发生贴壁现象</li>
-<li>等冻存复苏操作完成后，可以再拿出培养瓶观察：细胞已经变成多边形，贴在瓶壁上，不再漂浮</li>
-</ul>
-
-<h3>4.11 细胞冻存</h3>
-
-<h4>准备冻存细胞</h4>
-
-<ul>
-<li>传代接种后剩余约<strong>1.5mL</strong>细胞悬液</li>
-<li>这1.5mL用于冻存（今天实验中老师说不用再次离心，直接重悬后用）</li>
-</ul>
-
-<h4>实验组（加DMSO）</h4>
-
-<ul>
-<li class="num">从1.5mL细胞悬液中吸出<strong>0.9mL</strong>，加入2mL冻存管中</li>
-<li class="num">加入<strong>100μL（0.1mL）DMSO</strong></li>
-<li class="num">最终体积1mL，DMSO浓度为<strong>10%</strong>（1:9的关系）</li>
-<li class="num">吹打混匀</li>
-</ul>
-
-<h4>对照组（不加DMSO）</h4>
-
-<ul>
-<li class="num">相邻同学做对照组</li>
-<li class="num">直接将<strong>1mL细胞悬液</strong>加入冻存管中，不加DMSO</li>
-<li class="num">两个同学的数据共享分析</li>
-</ul>
-
-<blockquote>**冻存管确认**：是黄色螺旋盖的2mL冻存管，不是卡扣式EP管。冻存时热胀冷缩会导致EP管炸开，必须用螺旋盖扭紧。</blockquote>
-
-<h4>预冻存</h4>
-
-<ul>
-<li class="num">做好标记</li>
-<li class="num">放入细胞房冰箱底层的<strong>-20℃</strong>进行预冻存</li>
-<li class="num"><strong>正常操作</strong>：-20℃放置<strong>2小时</strong></li>
-<li class="num"><strong>今天实验（违规操作）</strong>：只放<strong>5分钟</strong>（因为不可能等2小时下课）</li>
-<li>违规操作会看到细胞损伤现象</li>
-</ul>
-
-<h4>转移与液氮冻存</h4>
-
-<ul>
-<li class="num"><strong>正常操作第二步</strong>：从-20℃取出后，进行液氮口悬浮或-80℃冰箱转移，放置30-40分钟</li>
-<li>目的：分步缓慢降温，尽量不形成冰晶</li>
-<li class="num"><strong>今天实验（违规操作）</strong>：跳过这一步，从-20℃5分钟后<strong>直接丢进液氮</strong></li>
-<li>理论上细胞会有更多损伤，今天就是要比较这个效果</li>
-<li class="num"><strong>液氮保存</strong>：-196℃，细胞停止一切生物学行为</li>
-<li>今天实际冻5分钟即可（模拟冻存）</li>
-</ul>
-
-<blockquote>**老师总结冻存原则**：分步缓慢——分步逐渐降低温度，时间比较缓慢，目的是尽量不形成冰晶。</blockquote>
-
-<h3>4.12 细胞复苏</h3>
-
-<h4>取出冻存管</h4>
-
-<ul>
-<li class="num">5分钟后从液氮中取出冻存管</li>
-<li class="num"><strong>拿取方式</strong>：拿冻存管的<strong>盖子上方</strong>，不要拿下面</li>
-<li>下面温度很低（-196℃），普通手套戴着可能会冻伤（手会变白）</li>
-<li>盖子上方温度相对较高，普通手套不会冻伤</li>
-</ul>
-
-<h4>快速融化</h4>
-
-<ul>
-<li class="num"><strong>正常操作</strong>：准备37-40℃的小杯子（因为液氮罐和细胞房往往分开，走很远的距离，来不及到细胞房水浴锅），从液氮取出后迅速将冻存管放入杯中，<strong>快速震荡</strong>使冰快速融化</li>
-<li class="num"><strong>今天操作</strong>：在旁边准备室拿到细胞后，快速跑到细胞房，放入水浴锅，按同样速度摇晃</li>
-<li class="num"><strong>融化程度判断</strong>：</li>
-<li>摇一下看一下，摇到<strong>只有一点点冰</strong>的时候就可以了</li>
-<li>不能摇太过——温度太高可能损伤细胞</li>
-<li>剩一点点冰时刚好是冰水混合物约0℃</li>
-</ul>
-
-<blockquote>**老师强调**：复苏操作和冻存完全相反——冻存要求慢速，复苏要求**速度非常快**。快速升温，避免冰晶出现。一定要做到快速震荡，不能慢悠悠的。</blockquote>
-
-<h4>复苏后处理</h4>
-
-<ul>
-<li class="num">进超净台前，用酒精棉球擦冻存管外壁（经过了外面环境）</li>
-<li class="num">将1mL冻存细胞吹打出来，加入新的15mL离心管</li>
-<li class="num">补足2mL培养基，再用培养基冲洗冻存管，尽量收集所有细胞</li>
-<li class="num">平衡到3mL刻度线</li>
-<li class="num"><strong>第二次离心</strong>：1000转/分钟，5分钟</li>
-<li class="num">弃上清，加入2mL培养基重悬细胞</li>
-</ul>
-
-<h4>第二次计数与活力测定</h4>
-
-<ul>
-<li>与第一次计数步骤完全相同：50μL细胞 + 50μL台盼蓝，计数，计算活力</li>
-<li>两个同学（加DMSO组 vs 不加DMSO组）比较结果</li>
-<li><strong>预期</strong>：经过短暂快速冻存（包括今天的违规操作），细胞活力会受到影响</li>
-<li>此时每个同学的数据会出现<strong>重大差异</strong>（操作中细胞掉了、没有离心下来等等），而第一次计数时数据差异不大</li>
-</ul>
-
-<blockquote>复苏后的细胞不接种，只用于活力测定和分析。</blockquote>
-
-<hr>
-
-<h2>五、实验报告要求</h2>
-
-<ul>
-<li class="num"><strong>两个同学一组</strong>，共享实验数据</li>
-<li class="num">分析冻存复苏操作中<strong>各个实验环节对细胞活力的影响</strong></li>
-<li class="num">比较<strong>加DMSO保护</strong>和<strong>不加DMSO保护</strong>的细胞活力差异</li>
-<li class="num">报告中需要记录的关键数据：</li>
-<li>第一次计数：细胞浓度、死细胞数、细胞活力</li>
-<li>传代接种量计算</li>
-<li>第二次计数（复苏后）：细胞浓度、死细胞数、细胞活力</li>
-<li>DMSO组 vs 对照组的比较分析</li>
-<li class="num">今天的操作步骤与讲义有区别，老师修改过的位置要标红</li>
-<li class="num">两次实验报告一起由学习委员今天交给老师</li>
-</ul>
-
-<hr>
-
-<h2>六、关键知识点与考点</h2>
-
-<h3>6.1 细胞培养基础</h3>
-
-<table class="note-table">
-<tr><th>知识点</th><th>内容</th></tr>
-<tr><td>原代培养</td><td>直接从机体组织取材培养的细胞</td></tr>
-<tr><td>传代培养</td><td>将原代培养或细胞系的细胞转移到新培养瓶继续培养</td></tr>
-<tr><td>细胞系</td><td>经过多次传代、能稳定增殖的细胞群体（如HeLa、293）</td></tr>
-<tr><td>贴壁培养</td><td>细胞贴附在培养器皿表面生长（如HeLa）</td></tr>
-<tr><td>悬浮培养</td><td>细胞不贴壁，在培养基中悬浮生长（如血液细胞）</td></tr>
-</table>
-
-<h3>6.2 胰蛋白酶消化</h3>
-
-<ul>
-<li><strong>浓度</strong>：0.25%胰蛋白酶</li>
-<li><strong>温度</strong>：37℃（培养箱，不是水浴锅）</li>
-<li><strong>时间</strong>：5-10分钟</li>
-<li><strong>消化标志</strong>：细胞变圆、细胞间隙增大、细胞脱落运动</li>
-<li><strong>终止</strong>：加入含血清的培养基（血清抑制胰酶活性）</li>
-<li><strong>消化前必须PBS漂洗</strong>：清除残留血清，避免抑制胰酶</li>
-</ul>
-
-<h3>6.3 细胞计数</h3>
-
-<ul>
-<li><strong>工具</strong>：血球计数板，16个格子计数</li>
-<li><strong>细胞活力</strong>：台盼蓝排斥法</li>
-<li>活细胞：细胞膜完整，台盼蓝不能进入，无色透明</li>
-<li>死细胞：细胞膜破损，台盼蓝进入，染成蓝色</li>
-<li>活力 = (总细胞 - 蓝染细胞) / 总细胞 × 100%</li>
-<li><strong>稀释校正</strong>：50μL细胞 + 50μL台盼蓝 = 1倍稀释，浓度需×2</li>
-</ul>
-
-<h3>6.4 细胞冻存</h3>
-
-<table class="note-table">
-<tr><th>项目</th><th>内容</th></tr>
-<tr><td>保护剂</td><td>DMSO（二甲基亚砜），常用10%浓度</td></tr>
-<tr><td>DMSO作用</td><td>降低冰点，防止0~-20℃区间冰晶形成</td></tr>
-<tr><td>冻存原则</td><td>**分步缓慢降温**</td></tr>
-<tr><td>正常流程</td><td>-20℃(2h) → -80℃或液氮口(30-40min) → 液氮(-196℃)</td></tr>
-<tr><td>冻存管</td><td>必须用螺旋盖（不能用EP管，热胀冷缩会炸）</td></tr>
-<tr><td>保存温度</td><td>液氮-196℃，细胞停止一切生物学行为</td></tr>
-<tr><td>保存时间</td><td>可长期保存（数年甚至更久）</td></tr>
-</table>
-
-<h3>6.5 细胞复苏</h3>
-
-<table class="note-table">
-<tr><th>项目</th><th>内容</th></tr>
-<tr><td>复苏原则</td><td>**快速升温**（与慢速冻存相反）</td></tr>
-<tr><td>温度</td><td>37-40℃水浴</td></tr>
-<tr><td>操作</td><td>快速震荡，使冰快速融化</td></tr>
-<tr><td>终点</td><td>剩少量冰即可（约0℃），不要过度融化</td></tr>
-<tr><td>目的</td><td>快速通过危险温度区间，避免冰晶再形成</td></tr>
-<tr><td>拿取</td><td>拿盖子上方，避免冻伤</td></tr>
-</table>
-
-<h3>6.6 无菌操作要点</h3>
-
-<ul>
-<li class="num">帽子、手套、口罩、鞋套全部更换</li>
-<li class="num">所有操作在超净台内进行</li>
-<li class="num">手不要从超净台内拿出来到外面操作</li>
-<li class="num">培养瓶口不要接触废液缸</li>
-<li class="num">进超净台前酒精棉球消毒双手和物品外壁</li>
-<li class="num">养成肌肉记忆，形成良好的无菌操作习惯</li>
-</ul>
-
-<hr>
-
-<h2>七、老师强调重点汇总</h2>
-
-<ul>
-<li class="num"><strong>取材准确性</strong>：肝是红色的，胃是白色的，肌肉虽然也是红色但胰酶消化效果差——取材错误会导致完全没有细胞</li>
-<li class="num"><strong>无菌操作</strong>：手不要拿出超净台，所有操作在台内完成</li>
-<li class="num"><strong>PBS漂洗</strong>：消化前必须漂洗清除血清，否则抑制胰酶活性</li>
-<li class="num"><strong>消化判断</strong>：5分钟后镜下观察，细胞变圆、脱落即可停止，不要消化过度</li>
-<li class="num"><strong>吹打方向</strong>：底部朝上，对着底部吹，把每个角落的细胞都吹下来，不浪费</li>
-<li class="num"><strong>离心配平</strong>：离心机一定要配平，平衡到3mL刻度线</li>
-<li class="num"><strong>台盼蓝稀释</strong>：1倍稀释，浓度必须乘以2，这是最容易出错的地方</li>
-<li class="num"><strong>冻存管类型</strong>：必须用螺旋盖冻存管，不能用EP管（会炸）</li>
-<li class="num"><strong>DMSO浓度</strong>：10%（0.9mL细胞+0.1mL DMSO）</li>
-<li class="num"><strong>慢速冻存</strong>：分步缓慢降温，防止冰晶形成</li>
-<li class="num"><strong>快速复苏</strong>：与冻存相反，快速升温，快速震荡</li>
-<li class="num"><strong>复苏融化终点</strong>：剩少量冰即可，不要摇太过</li>
-<li class="num"><strong>拿冻存管</strong>：拿盖子上方，不要拿底部（-196℃会冻伤）</li>
-<li class="num"><strong>今天违规操作</strong>：-20℃只放5分钟（正常2小时），直接液氮（跳过-80度过渡），用于观察细胞损伤</li>
-</ul>
-
-<hr>
-
-<h2>八、常见问题与易错点</h2>
-
-<table class="note-table">
-<tr><th>易错点</th><th>正确做法</th><th>后果</th></tr>
-<tr><td>不漂洗直接加胰酶</td><td>先PBS漂洗清除血清</td><td>血清抑制胰酶，消化不完全</td></tr>
-<tr><td>消化时间过长</td><td>5分钟后镜下观察，变圆脱落即停止</td><td>细胞损伤过度，活力下降</td></tr>
-<tr><td>吹打方向错误</td><td>底部朝上，对着底部吹</td><td>细胞吹不下来，浪费大量细胞</td></tr>
-<tr><td>离心不配平</td><td>平衡到3mL刻度线</td><td>离心机损坏或离心管破裂</td></tr>
-<tr><td>忘记稀释校正</td><td>计数浓度×2</td><td>细胞浓度计算错误</td></tr>
-<tr><td>用EP管冻存</td><td>用螺旋盖冻存管</td><td>热胀冷缩导致管子炸开</td></tr>
-<tr><td>DMSO浓度错误</td><td>10%（0.9+0.1）</td><td>保护不足或毒性过大</td></tr>
-<tr><td>冻存降温过快</td><td>分步缓慢降温</td><td>冰晶形成，细胞损伤</td></tr>
-<tr><td>复苏速度过慢</td><td>快速震荡融化</td><td>冰晶再形成，细胞损伤</td></tr>
-<tr><td>复苏过度融化</td><td>剩少量冰即取出</td><td>温度过高损伤细胞</td></tr>
-<tr><td>拿冻存管底部</td><td>拿盖子上方</td><td>冻伤手指</td></tr>
-</table>
-
-<hr>
-
-<h2>九、复习清单</h2>
-
-<ul>
-<li>[ ] 能区分原代培养和传代培养的概念</li>
-<li>[ ] 能区分贴壁培养和悬浮培养</li>
-<li>[ ] 掌握胰蛋白酶消化的原理、条件和判断标准</li>
-<li>[ ] 理解消化前PBS漂洗的目的（清除血清抑制）</li>
-<li>[ ] 掌握正确的吹打方向和操作</li>
-<li>[ ] 掌握台盼蓝排斥法测定细胞活力的原理和计算</li>
-<li>[ ] 记住1倍稀释后浓度需要乘以2</li>
-<li>[ ] 掌握细胞冻存的原理（冰晶损伤、DMSO降冰点）</li>
-<li>[ ] 记住慢速冻存、快速复苏的原则</li>
-<li>[ ] 掌握正常冻存的分步降温流程</li>
-<li>[ ] 知道冻存管必须用螺旋盖，不能用EP管</li>
-<li>[ ] 掌握DMSO的常用浓度（10%）和作用</li>
-<li>[ ] 掌握复苏的操作要点（快速震荡、剩少量冰即可）</li>
-<li>[ ] 知道拿冻存管的正确方式（拿盖子上方）</li>
-<li>[ ] 理解无菌操作的各个要点</li>
-<li>[ ] 能分析实验中各个环节对细胞活力的影响</li>
-</ul>
-
-<hr>
-
-<h2>十、主动回忆题</h2>
-
-<h3>题目1</h3>
-<p>为什么细胞传代培养前要用胰蛋白酶消化？消化前为什么要用PBS漂洗？如何判断消化是否完成？</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>为什么用胰蛋白酶消化</strong>：</p>
-<p>HeLa细胞是贴壁培养的，细胞通过黏附蛋白贴在培养瓶底部。胰蛋白酶可以分解这些黏附蛋白，使细胞从瓶壁脱落下来，形成细胞悬液，才能进行传代、计数和冻存等操作。</p>
-
-<p><strong>消化前为什么用PBS漂洗</strong>：</p>
-<p>培养基中含有血清，血清会抑制胰蛋白酶的活性。如果不漂洗直接加胰酶，残留的血清会抑制胰酶活性，导致消化不完全或消化时间过长。因此需要用PBS漂洗1-2次，清除残留血清后再加胰酶。</p>
-
-<p><strong>如何判断消化是否完成</strong>：</p>
-<p>在倒置显微镜下观察：</p>
-<ul>
-<li class="num">细胞从贴壁的多边形逐渐<strong>变圆</strong></li>
-<li class="num">细胞之间的距离变大，出现缝隙</li>
-<li class="num">很多细胞开始<strong>脱落、运动</strong>，与瓶底部分开</li>
-</ul>
-<p>达到以上状态即可停止消化（加入含血清培养基终止）。一般5-10分钟。如果5分钟后细胞仍贴壁没有变化，要考虑胰酶是否失效。</p>
-<p></details></p>
-
-<h3>题目2</h3>
-<p>细胞冻存时为什么要加入DMSO？为什么要"慢速冻存、快速复苏"？请从冰晶形成的角度解释。</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>为什么加入DMSO</strong>：</p>
-<p>在0℃到-20℃的降温过程中，细胞内部的水分会形成冰晶。冰晶会对细胞膜和细胞器造成物理损伤（刺破、挤压），导致细胞死亡。DMSO（二甲基亚砜）是一种冻存保护剂，它可以<strong>降低溶液的冰点</strong>，使细胞在降温过程中不至于形成冰晶，从而减少细胞损伤。常用浓度为10%。</p>
-
-<p><strong>为什么慢速冻存</strong>：</p>
-<p>如果降温速度过快，细胞内水分来不及渗出，在细胞内形成大量冰晶，造成严重损伤。分步缓慢降温（-20℃→-80℃→液氮）使细胞内水分逐渐渗出到细胞外，减少细胞内冰晶形成，同时细胞外形成的冰晶对细胞损伤较小。</p>
-
-<p><strong>为什么快速复苏</strong>：</p>
-<p>复苏时如果升温速度过慢，在通过0℃到-20℃的危险温度区间时，已形成的冰晶会重新结晶或长大，对细胞造成二次损伤。快速升温（37-40℃水浴快速震荡）可以迅速通过危险温度区间，避免冰晶再形成，从而提高细胞存活率。</p>
-
-<p>因此，冻存和复苏的温度控制原则是完全相反的：<strong>慢速冻存，快速复苏</strong>。</p>
-<p></details></p>
-
-<h3>题目3</h3>
-<p>用台盼蓝染色法测定细胞活力时，取了50μL细胞悬液，加入50μL台盼蓝，混匀后计数16个格子，得到总细胞数200个，其中蓝色细胞20个。请计算细胞活力和原始细胞浓度（假设计数板每个格子体积为0.1μL，16格共1.6μL）。</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>细胞活力计算</strong>：</p>
-<ul>
-<li>总细胞数 = 200个</li>
-<li>蓝色细胞数（死细胞）= 20个</li>
-<li>活细胞数 = 200 - 20 = 180个</li>
-<li>细胞活力 = 活细胞数 / 总细胞数 × 100% = 180/200 × 100% = <strong>90%</strong></li>
-</ul>
-
-<p><strong>计数浓度计算</strong>：</p>
-<ul>
-<li>16个格子的总体积 = 1.6μL</li>
-<li>计数浓度 = 200个 / 1.6μL = 125个/μL = <strong>125,000个/mL</strong></li>
-</ul>
-
-<p><strong>原始浓度校正</strong>：</p>
-<ul>
-<li>因为50μL细胞 + 50μL台盼蓝 = 1倍稀释</li>
-<li>原始浓度 = 计数浓度 × 2 = 125,000 × 2 = <strong>250,000个/mL（25万/mL）</strong></li>
-</ul>
-
-<blockquote>注意：最容易出错的地方就是忘记乘以稀释倍数。今天的实验中是1:1稀释（1倍稀释），所以乘以2。</blockquote>
-<p></details></p>
-
-<h3>题目4</h3>
-<p>吹打细胞时正确的操作方向是什么？为什么不能拿反？冻存时为什么必须用螺旋盖冻存管而不能用普通EP管？</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>吹打正确方向</strong>：</p>
-<ul>
-<li>培养瓶开口朝一侧，<strong>底部朝上</strong>（细胞贴在朝上的这一面）</li>
-<li>用吹打管吸上液体，<strong>剧烈地吹细胞贴附的那个平面</strong></li>
-<li>把每一个角落残存的贴附细胞都吹下来</li>
-<li>吹完后再对液体进行剧烈吹打，使细胞团分散成单个悬浮细胞</li>
-</ul>
-
-<p><strong>为什么不能拿反</strong>：</p>
-<p>如果方向错误（瓶口朝上、细胞面和液体在同一面），很难看清楚哪里有细胞，吹打管无法有效接触细胞层，会导致大量细胞没有被吹下来，浪费细胞，最终细胞产量不足。</p>
-
-<p><strong>为什么必须用螺旋盖冻存管</strong>：</p>
-<p>细胞冻存需要经历降温（-20℃→-80℃→-196℃）和复苏（快速升温）的过程，存在剧烈的<strong>热胀冷缩</strong>。普通EP管是卡扣式盖子，在热胀冷缩过程中管内压力变化会导致盖子弹开或管子炸裂，使细胞悬液泄漏或污染。螺旋盖冻存管通过螺纹拧紧，可以承受温度剧烈变化带来的压力变化，保证密封安全。</p>
-<p></details></p>
-
-<hr>
-
-<blockquote>**笔记说明**：本笔记基于2026年9月15日细胞生物学实验课完整逐字稿整理，涵盖老师讲解的全部实验原理、详细操作步骤、注意事项、易错点和实验报告要求。本次实验为第二次细胞生物学实验课（4学时），课程内节次为第5-8节。实验内容包括HeLa细胞传代培养、细胞冻存（DMSO保护剂对比实验）和细胞复苏。今天实验采用了违规操作（缩短预冻时间、跳过-80度过渡）用于观察细胞损伤效果。</blockquote>
-
-  <div class="footer">
-    <span>细胞生物学实验 · 细胞传代培养·冻存·复苏</span>
-    <span>HUST课堂笔记</span>
+<div class="cover">
+  <div class="h1">细胞生物学实验</div>
+  <div class="h2">第 5-8 节 · 细胞传代培养、冻存与复苏</div>
+  <div class="h2">HeLa 细胞系传代 · 台盼蓝活力测定 · DMSO 冻存保护对比实验</div>
+  <div class="meta">
+    上课日期：2026-09-15<br>
+    素材规模：逐字稿 12,533 字 / 125 轮<br>
+    笔记性质：核心内容结论式笔记（定位标注〔说话人N HH:MM〕可直接回溯逐字稿原轮次）
   </div>
 </div>
 
-</body>
-</html>
+<h1>0. 知识框架</h1>
+<ul class="fr">
+  <li><span class="l1">一、上次实验回顾与无菌要求</span> —— 取材准确（肝红胃白）＋ 手不出超净台</li>
+  <li><span class="l1">二、基本概念</span> —— 原代/传代培养、贴壁/悬浮培养、正置/倒置显微镜</li>
+  <li><span class="l1">三、传代培养操作</span>
+    <div class="l2">去培养基 → PBS 漂洗 → 胰酶消化（5~10 min）→ 加血清培养基终止 → 对着瓶底吹打 → 第一次离心（1000 转 5 min）→ 2 mL 重悬</div></li>
+  <li><span class="l1">四、计数与活力测定（第一次）</span>
+    <div class="l2">50 μL 细胞 + 50 μL 台盼蓝 → 16 格计数 → 活力 =（总 - 蓝）/ 总 → 浓度 ×2 校正 → 按 50 万/mL 算接种量</div></li>
+  <li><span class="l1">五、细胞冻存</span>
+    <div class="l2">冰晶损伤（0~-20 ℃）→ DMSO 降冰点 → 0.9 mL 细胞 + 0.1 mL DMSO（10%）→ 分步缓慢降温 → 液氮 -196 ℃</div></li>
+  <li><span class="l1">六、细胞复苏</span>
+    <div class="l2">快速复苏（与冻存相反）→ 37~40 ℃ 快摇至剩少量冰 → 离心重悬 → 第二次计数与活力测定</div></li>
+  <li><span class="l1">七、实验报告要求</span> —— 两人一组共享数据，比较加与不加 DMSO 的活力差异</li>
+</ul>
+<h1>一、上次实验回顾与无菌要求</h1>
+<p class="lead">主旨：上一堂原代培养课的成败差在「取材准不准」和「无菌严不严」，本课起把规范操作养成肌肉记忆。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li>上次课约一半同学细胞浓度超过 100 万个/mL 需要稀释，本班取材与消化成功率较高。<span class="loc">〔说话人1 00:02〕</span></li>
+<li>基础医学班没有太多同学超过 100 万/mL，两个班在手术操作和细节注意上存在差异。<span class="loc">〔说话人1 00:02〕</span></li>
+<li><span class="tag">★考点</span>取材必须准确取到肝脏：有同学剪下肌肉（也是红色），肌肉在胰酶消化中效果很低，可能一个细胞都见不到。<span class="loc">〔说话人1 00:45〕</span></li>
+<li>胃是白色、肝是红色；有同学把胃的结构剪下来，属于色觉与形态辨识不过关的取材错误。<span class="loc">〔说话人1 00:45〕</span></li>
+<li><span class="tag">★考点</span>无菌操作红线：操作过程中把手伸出超净台外，理论上就不是无菌操作，后续实验必须注意。<span class="loc">〔说话人1 01:27〕</span></li>
+<li>发现操作有问题要及时回去纠正；目的是养好习惯、形成肌肉记忆，而不是拿本次实验结果做后续工作。<span class="loc">〔说话人1 01:58〕</span></li>
+<li>今天实验完成后，两次实验报告一起由学习委员当天交给老师。<span class="loc">〔说话人1 01:58〕</span></li>
+</ul>
+<h3>B. 对比表</h3>
+<table class="tbl">
+<tr><th>回顾项</th><th>本班</th><th>基础医学班</th><th>定位</th></tr>
+<tr><td>原代培养计数结果</td><td>约一半同学浓度超 100 万/mL，需稀释</td><td>没有太多同学超过 100 万/mL</td><td class="loc">〔说话人1 00:02〕</td></tr>
+<tr><td>反映的问题</td><td>取材、消化效果好</td><td>手术操作与细节存在差距</td><td class="loc">〔说话人1 00:02〕</td></tr>
+</table>
+<h1>二、基本概念：原代/传代、贴壁/悬浮、两种显微镜</h1>
+<p class="lead">主旨：先分清概念与细胞状态，再看清消化前的细胞形态，之后才动手。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li><span class="tag">★考点</span>原代培养：直接来自机体组织的培养；传代培养：已培养的细胞经多次分裂传代，或来自细胞系。<span class="loc">〔说话人1 01:58〕</span></li>
+<li>经典细胞系举例：HeLa 细胞系、293 细胞系；本课用 HeLa 细胞系传代，每个同学一瓶已长满了的培养瓶。<span class="loc">〔说话人1 01:58〕</span></li>
+<li>今天做三件事：①消化传代（一瓶传一瓶）；②剩余细胞冻存；③冻存后复苏并测活力。<span class="loc">〔说话人1 03:07〕</span></li>
+<li>一瓶长满的细胞理论上可以传 2 到 3 瓶；今天做 1:1 传代，一个瓶传出的细胞种到另一个瓶里。<span class="loc">〔说话人1 03:07〕</span></li>
+<li>贴壁培养：细胞贴在培养瓶底部生长，培养基覆盖在上方；上堂课的细胞与本课 HeLa 细胞都是贴壁培养。<span class="loc">〔说话人1 07:15〕</span></li>
+<li>悬浮培养：血液当中来源的细胞不与器皿接触（或接触微弱），晃一晃就会浮下来。<span class="loc">〔说话人1 07:15〕</span></li>
+<li>正置显微镜从上往下去看标本（超净台外那台）；细胞房的倒置显微镜镜头从下往上看细胞的底面。<span class="loc">〔说话人1 07:15〕</span></li>
+<li>消化前形态：HeLa 细胞呈多边形，彼此紧紧地贴附在一起，细胞核可以看到。<span class="loc">〔说话人1 07:15〕</span></li>
+<li>传代培养必须做活力测定：传代过程中一部分细胞会凋亡、衰老死亡，要区分活细胞比例；上堂课组织来源的细胞基本全是活细胞，没做活力测定。<span class="loc">〔说话人1 04:52〕</span></li>
+<li>开始操作时细胞密度约 85% 左右；密度是否达标以镜下实际观察为准。<span class="loc">〔说话人2 36:41〕</span></li>
+</ul>
+<h3>B. 对比表</h3>
+<table class="tbl">
+<tr><th>比较项</th><th>原代培养</th><th>传代培养</th><th>定位</th></tr>
+<tr><td>细胞来源</td><td>直接来自机体组织</td><td>已培养细胞经多次分裂传代，或来自细胞系</td><td class="loc">〔说话人1 01:58〕</td></tr>
+<tr><td>典型例子</td><td>上堂课的小鼠肝脏细胞</td><td>HeLa 细胞系、293 细胞系</td><td class="loc">〔说话人1 01:58〕</td></tr>
+<tr><td>细胞状态</td><td>刚从组织分离，基本没有凋亡</td><td>传代过程中有部分细胞凋亡、衰老死亡</td><td class="loc">〔说话人1 04:52〕</td></tr>
+<tr><td>活力测定</td><td>不需要，基本都是活细胞</td><td>必须区分活细胞与死细胞比例</td><td class="loc">〔说话人1 04:52〕</td></tr>
+</table>
+<table class="tbl">
+<tr><th>培养状态</th><th>定义</th><th>代表</th><th>定位</th></tr>
+<tr><td>贴壁培养</td><td>细胞贴在培养瓶底部，培养基覆盖在上方</td><td>HeLa 细胞、上堂课的细胞</td><td class="loc">〔说话人1 07:15〕</td></tr>
+<tr><td>悬浮培养</td><td>不与器皿接触或接触微弱，晃一晃就浮下来</td><td>血液当中来源的细胞</td><td class="loc">〔说话人1 07:15〕</td></tr>
+</table>
+<table class="tbl">
+<tr><th>显微镜</th><th>观察方向</th><th>本课用途</th><th>定位</th></tr>
+<tr><td>正置显微镜</td><td>从上往下去看标本</td><td>超净台外观察</td><td class="loc">〔说话人1 07:15〕</td></tr>
+<tr><td>倒置显微镜</td><td>镜头从下往上看细胞的底面</td><td>看贴壁细胞形态、判断消化</td><td class="loc">〔说话人1 07:15〕</td></tr>
+</table>
+<div class="def"><b>定义框：</b>原代培养＝直接来自机体；传代培养＝已培养细胞多次分裂传代或来自细胞系；贴壁培养＝贴瓶底生长，悬浮培养＝不贴壁、晃一晃浮起来。</div>
+<h1>三、传代培养操作全流程</h1>
+<p class="lead">主旨：去培养基 → PBS 漂洗 → 0.25% 胰酶 37 ℃ 消化 5~10 分钟 → 血清培养基终止 → 对着瓶底吹打 → 第一次离心 → 2 mL 培养基重悬。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li>进入超净台前：手术帽、手套、口罩、鞋套都更换，酒精棉球把手消毒好；今天不需解剖器械，饭盒里只有塑料培养瓶和若干离心管。<span class="loc">〔说话人1 05:50〕</span></li>
+<li>从培养箱取出自己那瓶红色盖子的接种好的培养瓶，带入超净台。<span class="loc">〔说话人1 05:50〕</span></li>
+<li>去培养基：打开瓶盖，直接把培养瓶对着废液缸倒掉，不要让瓶口接触到废液缸。<span class="loc">〔说话人1 09:21〕</span></li>
+<li><span class="tag">★考点</span>PBS 漂洗的目的：培养基中有血清，直接加胰蛋白酶会使胰酶活性受抑制；加约 3 mL PBS 盖好盖子晃一晃再倒掉，清除血清。<span class="loc">〔说话人1 09:21〕</span></li>
+<li>加入 0.25% 胰蛋白酶（每人一支），倒进去或吸进去，使胰酶盖住细胞层。<span class="loc">〔说话人1 09:56〕</span></li>
+<li>盖好盖子把培养瓶放入 37 ℃ 培养箱（不是水浴锅）。<span class="loc">〔说话人1 09:56〕</span></li>
+<li>消化时间约 5~10 分钟；胰酶批次不同有差异，有的 5 分钟已全部脱落，有的 10 分钟还没掉。<span class="loc">〔说话人1 10:41〕</span></li>
+<li>消化到 5 分钟左右取出，放倒置显微镜下观察判断。<span class="loc">〔说话人1 10:41〕</span></li>
+<li>消化起效的形态：原本贴壁、紧紧绷着的细胞会变圆，细胞之间的距离变大、出现缝隙。<span class="loc">〔说话人1 10:41〕</span></li>
+<li>消化良好：看到很多细胞在脱落、在运动，已经与器皿底部分开，此时即可停止，没必要再消化。<span class="loc">〔说话人1 10:41〕</span></li>
+<li><span class="tag">★考点</span>若 5 分钟细胞仍贴壁、没有任何形态学变化，要提醒老师，很可能胰酶或批次有问题、没有发挥作用。<span class="loc">〔说话人1 11:35〕</span></li>
+<li>终止消化：往瓶里直接加入 2 mL 有血清的培养基；血清在这里的作用是终止胰蛋白酶消化。<span class="loc">〔说话人1 11:35〕</span></li>
+<li>消化非常完美的同学基本只需对液体吹打即可；有残留细胞贴壁时必须对着瓶底吹下来。<span class="loc">〔说话人1 11:35〕</span></li>
+<li><span class="tag">★考点</span>吹打姿势：瓶口朝一侧、底部朝上（不是斜下方），细胞贴在朝上的这一面，液体在下方。<span class="loc">〔说话人1 12:32〕</span></li>
+<li>用吹打管吸上液体，剧烈地吹细胞贴附的平面；有的细胞脱落、有的仍贴壁时，肉眼就能看见。<span class="loc">〔说话人1 13:30〕</span></li>
+<li>把每一个角落残存的贴附细胞层都吹下来，不浪费细胞；一定要养成这个习惯，不要把瓶子拿反。<span class="loc">〔说话人1 13:30〕</span></li>
+<li>错误拿法：细胞面和液体在同一面，很难看清楚哪里有细胞，吹不到，会浪费大面积的细胞。<span class="loc">〔说话人1 14:04〕</span></li>
+<li>对着瓶底吹完，再用吹打管对液体剧烈吹打，使细胞成为单个悬浮细胞。<span class="loc">〔说话人1 14:04〕</span></li>
+</ul>
+<h3>B. 第一次离心</h3>
+<ul class="kv">
+<li>把细胞悬液转入 15 mL 离心管：约 1 mL 胰酶 + 2 mL 培养基，体积接近 3 mL。<span class="loc">〔说话人1 14:31〕</span></li>
+<li>平衡到 3 mL 刻度线：多的去掉一点，少的补一点培养基，控制在 3 mL 刻度线的位置。<span class="loc">〔说话人1 14:31〕</span></li>
+<li><span class="tag">★考点</span>离心条件：1000 转离心 5 分钟；离心后上清不要，管底的细胞就是今天的细胞。<span class="loc">〔说话人1 14:31〕</span></li>
+<li>细胞量应非常充足：加入 2 mL 培养基，重新吹打悬浮细胞。<span class="loc">〔说话人1 14:31〕</span></li>
+<li>此刻每个同学的材料都是 2 mL 悬浮细胞，大概率不会出现很大差异，后面的操作才会分出差异。<span class="loc">〔说话人1 14:31〕</span></li>
+</ul>
+<table class="tbl">
+<tr><th>步骤</th><th>关键数字</th><th>易错提醒</th><th>定位</th></tr>
+<tr><td>PBS 漂洗</td><td>约 3 mL，盖盖晃一晃倒掉</td><td>不漂洗则血清抑制胰酶</td><td class="loc">〔说话人1 09:56〕</td></tr>
+<tr><td>胰酶消化</td><td>0.25% 胰蛋白酶，37 ℃ 培养箱 5~10 分钟</td><td>放培养箱，不是水浴锅</td><td class="loc">〔说话人1 09:56〕</td></tr>
+<tr><td>终止消化</td><td>2 mL 含血清培养基</td><td>血清终止胰酶作用</td><td class="loc">〔说话人1 11:35〕</td></tr>
+<tr><td>第一次离心</td><td>3 mL 刻度线平衡，1000 转 5 分钟</td><td>一定要配平</td><td class="loc">〔说话人1 14:31〕</td></tr>
+<tr><td>重悬</td><td>加 2 mL 培养基吹打悬浮</td><td>得到 2 mL 细胞悬液</td><td class="loc">〔说话人1 14:31〕</td></tr>
+</table>
+<div class="wrong"><b>方向错误警示：</b>吹打时若瓶底朝下、细胞面与液面同侧，则看不清细胞层、吹不到，浪费大面积细胞；正确姿势永远是底部朝上、对着贴细胞的那一面吹。</div>
+<h1>四、细胞计数与活力测定（第一次）</h1>
+<p class="lead">主旨：台盼蓝染色区分死活，16 格计数算活力；50+50 一倍稀释，浓度必须 ×2 才是真实浓度。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li>从 2 mL 细胞悬液中吸出 50 μL（体积要吸准确，不要乱吸），放入有盖子的 EP 管。<span class="loc">〔说话人1 15:40〕</span></li>
+<li>这个 EP 管可以带离超净台，是拿去做计数的；取样后原管先放在超净台上等。<span class="loc">〔说话人1 15:40〕</span></li>
+<li>在水浴锅处有蓝色的台盼蓝染料管；对半加入 50 μL 台盼蓝（1:1），用枪混匀一下，静置一分钟左右。<span class="loc">〔说话人1 16:19〕</span></li>
+<li><span class="tag">★考点</span>台盼蓝原理：正常细胞的细胞膜是封闭的，外界物质不能自由扩散进入细胞，台盼蓝无法对活细胞染色，活细胞透明无色。<span class="loc">〔说话人1 16:19〕</span></li>
+<li>死细胞的膜上自然出现一些孔洞，足以让台盼蓝分子渗透进来，死细胞被染成蓝色。<span class="loc">〔说话人1 16:19〕</span></li>
+<li>观察指标：数细胞的同时判断有多少是蓝色的，以蓝色的作为死细胞，即可计算细胞活率。<span class="loc">〔说话人1 16:19〕</span></li>
+<li>计数方法：在 16 个格子里数出总细胞数（不管蓝不蓝的都数），再把蓝色的数出来。<span class="loc">〔说话人1 17:37〕</span></li>
+<li><span class="tag">★考点</span>细胞活力 ＝（总细胞数 − 蓝色细胞数）÷ 总细胞数 × 100%。<span class="loc">〔说话人1 17:37〕</span></li>
+<li><span class="tag">★考点</span>一倍稀释校正：50 μL 细胞 + 50 μL 台盼蓝，这不是原始浓度；计数浓度再 ×2 才是真实浓度，这点千万不要忘记。<span class="loc">〔说话人1 18:03〕</span></li>
+<li>体积之所以重要：体积乱加就无法确定真实浓度；上堂课没有稀释直接换算即可，今天稀释过一倍必须 ×2。<span class="loc">〔说话人1 18:03〕</span></li>
+<li>今天的第一个数值：细胞浓度、死细胞数、细胞活力，要算出来写进实验报告。<span class="loc">〔说话人1 18:29〕</span></li>
+<li>预期：今天细胞浓度很高，基本在 300 万个/mL 左右（两三百万的量级）。<span class="loc">〔说话人1 18:29〕</span></li>
+</ul>
+<h3>B. 接种量计算</h3>
+<ul class="kv">
+<li>一个培养瓶最终是 4 mL 培养基，要保证 50 万个/mL，所以 4 mL 里面应该有 200 万个细胞。<span class="loc">〔说话人1 18:29〕</span></li>
+<li>举例：细胞浓度 400 万个/mL 时，吸出 0.5 mL 刚好是 200 万个细胞；补足 3.5 mL 培养基，凑成 4 mL 培养体系即可培养。<span class="loc">〔说话人1 18:29〕</span></li>
+<li>2 mL 悬液已吸走 50 μL 用于计数，这点体积可忽略；剩余约 1.5 mL 就是待会做冻存复苏的细胞，不要浪费。<span class="loc">〔说话人1 19:43〕</span></li>
+<li>若计算后细胞不足：浓度达不到也照样吸约 0.5 mL 接种，完成传代过程；因为后面必须要留出约 1.5 mL 做冻存复苏，不能最后一点细胞都没有。<span class="loc">〔说话人1 19:43〕</span></li>
+<li>接种后标记培养瓶放入培养箱；刚接种时细胞漂浮、变圆，冻存复苏做完后再看，细胞已变多边形贴在瓶壁上。<span class="loc">〔说话人1 20:25〕</span></li>
+<li>贴壁现象：接种后大概十几分钟到 20 分钟，细胞就会发生贴壁，不再漂浮。<span class="loc">〔说话人1 20:25〕</span></li>
+</ul>
+<div class="mnem"><b>助记（整理）：</b>「50 加 50，稀释一倍，浓度乘 2」——台盼蓝对半加，真实浓度等于计数浓度 ×2。</div>
+<h1>五、细胞冻存</h1>
+<p class="lead">主旨：0~-20 ℃ 细胞内会形成冰晶造成损伤；DMSO 降低冰点防冰晶；冻存讲「分步缓慢」，最终入液氮 -196 ℃ 长期保存。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li>冻存是长期保存细胞的经典方式：液氮 -196 ℃ 环境下理论上可长期保存。<span class="loc">〔说话人1 03:38〕</span></li>
+<li>液氮冻存后拿出来放 -80 ℃ 冰箱也可以长期保存，但多数情况下都会把它冻在液氮里。<span class="loc">〔说话人1 03:38〕</span></li>
+<li>液氮中细胞停止一切的生物学行为；保存时间可以是 5 分钟、一天、一年、更多年（如冷冻胚胎可以冻很多年）。<span class="loc">〔说话人1 03:38〕</span></li>
+<li><span class="tag">★考点</span>冰晶损伤：在 0 到 -20 ℃ 这个阶段，细胞内部会形成冰晶，冰晶会对细胞内部结构造成损伤，这是冻存要防的核心。<span class="loc">〔说话人1 04:16〕</span></li>
+<li>防止冰晶的办法：用保护剂 DMSO 降低冰点，使细胞在 0 到 -20 ℃ 这个阶段不会形成冰晶。<span class="loc">〔说话人1 04:16〕</span></li>
+<li>DMSO（二甲基亚砜）和甘油类似，都可以降低冰点；这是非常重要的保护剂，加和不加完全不同。<span class="loc">〔说话人1 05:50〕</span></li>
+<li>对比实验：相邻同学分组，一个加 DMSO、一个不加 DMSO，看最终计数结果里细胞会不会出现损伤。<span class="loc">〔说话人1 05:50〕</span></li>
+<li>冻存材料：传代接种后剩下的 1.5 mL 细胞悬液；今天不再离心，直接重悬后使用。<span class="loc">〔说话人1 20:55〕</span></li>
+<li>实验组配比：从 1.5 mL 细胞中吸 0.9 mL 到冻存管，加 100 μL（0.1 mL）DMSO，总体积 1 mL。<span class="loc">〔说话人1 21:45〕</span></li>
+<li><span class="tag">★考点</span>DMSO 终浓度：0.9 mL 细胞 + 0.1 mL DMSO 是 1:9 的关系，即 10% 的 DMSO 浓度，加好后吹打混匀。<span class="loc">〔说话人1 21:45〕</span></li>
+<li><span class="tag">★考点</span>冻存管是黄盖子的 2 mL 刻度冻存管，不是 EP 管；EP 管是卡扣型的，冻存时热胀冷缩会炸掉，必须用旋钮盖扭紧。<span class="loc">〔说话人1 23:00〕</span></li>
+<li>对照组：另一位同学不加 DMSO，直接取 1 mL 细胞悬液放入冻存管；两个同学的数据要共享分析。<span class="loc">〔说话人1 23:37〕</span></li>
+<li>做好标记，放入细胞房冰箱底层的 -20 ℃ 进行预冻存；正常情况预冻 2 小时，这个以后工作中要记住。<span class="loc">〔说话人1 23:37〕</span></li>
+<li>今天课堂违规操作：-20 ℃ 只放 5 分钟（不可能两小时才下课），是极限操作、违规操作，会看到细胞的损伤现象。<span class="loc">〔说话人1 23:37〕</span></li>
+<li>正常流程第二步：-20 ℃ 取出后进行液氮口悬浮或 -80 ℃ 冰箱的转移，这个过程放 30~40 分钟。<span class="loc">〔说话人1 23:37〕</span></li>
+<li><span class="tag">★考点</span>冻存总结「分步缓慢」：分步逐渐降低温度、时间比较缓慢地进行冻存，目的就是为了尽量不形成冰晶。<span class="loc">〔说话人1 24:47〕</span></li>
+<li>今天同样违规跳过第二步：-20 ℃ 5 分钟后直接丢进液氮，理论上细胞会有更多损伤，今天就是要比较这个效果。<span class="loc">〔说话人1 24:47〕</span></li>
+<li>冻存时间可模拟：5 分钟、10 分钟、1 个小时都可以；今天实际冻 5 分钟即可。<span class="loc">〔说话人1 24:47〕</span></li>
+</ul>
+<h3>B. 冻存流程表</h3>
+<table class="tbl">
+<tr><th>阶段</th><th>正常操作</th><th>今天课堂（违规对照）</th><th>定位</th></tr>
+<tr><td>配冻存液</td><td>0.9 mL 细胞 + 0.1 mL DMSO（10%），对照组不加 DMSO</td><td>同正常操作</td><td class="loc">〔说话人1 21:45〕</td></tr>
+<tr><td>-20 ℃ 预冻</td><td>放 2 小时</td><td>只放 5 分钟</td><td class="loc">〔说话人1 23:37〕</td></tr>
+<tr><td>过渡阶段</td><td>液氮口悬浮或 -80 ℃ 冰箱转移 30~40 分钟</td><td>跳过，直接入液氮</td><td class="loc">〔说话人1 24:47〕</td></tr>
+<tr><td>最终保存</td><td>液氮 -196 ℃ 长期保存，细胞停止一切生物学行为</td><td>冻 5 分钟后即取出复苏</td><td class="loc">〔说话人1 03:38〕</td></tr>
+</table>
+<div class="mnem"><b>口诀（老师原话）：</b>冻存操作「分步缓慢」——分步、逐渐、缓慢地降温，目的就是不形成冰晶。</div>
+<h1>六、细胞复苏</h1>
+<p class="lead">主旨：复苏与冻存完全相反——快速复苏、快速升温，抢过 0~-20 ℃ 危险区间，避免冰晶再出现；摇到剩少量冰即停。</p>
+<h3>A. 核心结论</h3>
+<ul class="kv">
+<li><span class="tag">★考点</span>复苏与冻存完全相反：复苏操作的要求是速度非常快、快速升温；冻存讲慢速，复苏讲快速，目的都是避免冰晶出现。<span class="loc">〔说话人1 24:47〕</span></li>
+<li>取冻存管时握住上方的帽子处，不要拿管底；管底温度为 -196 ℃，握帽子处戴普通手套不会冻伤。<span class="loc">〔说话人1 26:30〕</span></li>
+<li>常规场景：液氮罐和细胞房往往分开、距离很远，来不及送到细胞房的水浴锅；准备一个 37 ℃ 到 40 ℃ 的小杯子，从液氮取出后迅速把试管放入杯中快速震荡，使冰快速融化。<span class="loc">〔说话人1 26:30〕</span></li>
+<li>今天课堂做法：在准备室拿到细胞以后，快速跑到细胞房，放进水浴锅按同样速度摇，摇一下看一下。<span class="loc">〔说话人1 27:50〕</span></li>
+<li><span class="tag">★考点</span>融化终点：摇到只剩一点点冰的时候就停，不能摇得太过，温度太高有可能会损伤细胞；此刻刚好是约 0 ℃ 的冰水混合物。<span class="loc">〔说话人1 28:15〕</span></li>
+<li>进超净台前用酒精棉球把冻存管外壁擦一下（毕竟经过了外面的环境）；把约 1 mL 冻存细胞吹打出来，加入一个新的 15 mL 离心管。<span class="loc">〔说话人1 28:15〕</span></li>
+<li>再补足 2 mL 培养基，冲洗冻存管，把里面的细胞尽量都收集起来。<span class="loc">〔说话人1 28:15〕</span></li>
+<li>在 3 mL 刻度线平衡后，1000 转离心 5 分钟，弃上清。<span class="loc">〔说话人1 29:02〕</span></li>
+<li>复苏细胞不接种：加入 2 mL 培养基重悬细胞，只做第二次细胞计数与活力测定，步骤与第一次完全一样（50 μL 就够）。<span class="loc">〔说话人1 29:02〕</span></li>
+<li>分析目标：比较加了 DMSO 保护和没加 DMSO 保护的两组，看冻存复苏操作是否对细胞活力产生影响。<span class="loc">〔说话人1 29:02〕</span></li>
+<li>预期：这种短暂的、快速的冻存，包括今天的违规操作，都会对细胞活力产生影响；第二次计数时每个同学的数据会出现重大差异，而第一次计数数据差异不大。<span class="loc">〔说话人1 29:02〕</span></li>
+</ul>
+<h3>B. 冻存 vs 复苏对照表</h3>
+<table class="tbl">
+<tr><th>比较项</th><th>冻存</th><th>复苏</th><th>定位</th></tr>
+<tr><td>速度原则</td><td>分步缓慢降温</td><td>速度非常快、快速升温</td><td class="loc">〔说话人1 24:47〕</td></tr>
+<tr><td>目的</td><td>尽量不形成冰晶</td><td>避免冰晶再出现</td><td class="loc">〔说话人1 24:47〕</td></tr>
+<tr><td>温度</td><td>-20 ℃ → -80 ℃/液氮口 → 液氮 -196 ℃</td><td>37~40 ℃ 水浴快速震荡</td><td class="loc">〔说话人1 26:30〕</td></tr>
+<tr><td>终点判断</td><td>到达液氮即长期保存</td><td>摇到剩一点点冰即停（约 0 ℃）</td><td class="loc">〔说话人1 28:15〕</td></tr>
+</table>
+<div class="mnem"><b>口诀（老师原话）：</b>「慢速冻存，快速的复苏」——两者完全相反，核心都是不让冰晶形成。</div>
+<h1>七、实验报告要求</h1>
+<p class="lead">主旨：两人一组共享数据，围绕「各实验环节对细胞活力的影响」写分析，重点是加与不加 DMSO 的对比。</p>
+<ul class="kv">
+<li>两人一组，共享实验数据，提出并分析冻存复苏操作当中各个实验环节对细胞活力的影响。<span class="loc">〔说话人1 30:17〕</span></li>
+<li>报告核心数据：第一次计数的细胞浓度、死细胞数、细胞活力；接种量计算；第二次（复苏后）计数与活力；DMSO 组与对照组的比较。<span class="loc">〔说话人1 30:17〕</span></li>
+<li>复苏后剩下的细胞不用接种，直接计数即可。<span class="loc">〔说话人1 30:17〕</span></li>
+<li>今天的操作步骤与讲义上面会有一些区别，注意把老师修改过的位置标红。<span class="loc">〔说话人1 30:17〕</span></li>
+<li>两次实验报告一起，由学习委员今天实验完成后交给老师（见 §1）。<span class="loc">〔说话人1 01:58〕</span></li>
+</ul>
+<div class="exam"><b>分析思路提示（依老师要求整理）：</b>第一次计数各组差异不大；冻存复苏（尤其违规快速操作）后第二次计数差异显著——报告应把差异归因到具体环节：有无 DMSO 保护、降温是否分步缓慢、复苏是否够快、离心是否收集到细胞。</div>
+<h1>附录 A　必背清单</h1>
+<ul class="kv">
+<li>原代培养＝直接来自机体；传代培养＝已培养细胞多次分裂传代或来自细胞系。</li>
+<li>经典细胞系：HeLa、293；本课用 HeLa。</li>
+<li>贴壁培养＝贴瓶底生长（HeLa）；悬浮培养＝不贴壁、晃一晃浮起来（血液细胞）。</li>
+<li>正置显微镜从上往下看；倒置显微镜从下往上看细胞底面。</li>
+<li>消化前 HeLa 呈多边形、彼此紧贴、可见细胞核。</li>
+<li>去培养基直接对废液缸倒，瓶口不接触废液缸。</li>
+<li>消化前必须 PBS 漂洗（约 3 mL），清除血清对胰酶的抑制。</li>
+<li>0.25% 胰蛋白酶，37 ℃ 培养箱（不是水浴锅）消化 5~10 分钟。</li>
+<li>消化标志：细胞变圆、间距变大出现缝隙；大量脱落运动即可停止。</li>
+<li>5 分钟仍无形态变化 → 提醒老师，胰酶可能失效。</li>
+<li>终止消化：加 2 mL 含血清培养基，血清终止胰酶。</li>
+<li>吹打姿势：瓶口朝一侧、底部朝上，对着贴细胞面吹每个角落。</li>
+<li>第一次离心：3 mL 刻度线平衡，1000 转 5 分钟，弃上清。</li>
+<li>重悬：2 mL 培养基，得 2 mL 细胞悬液。</li>
+<li>台盼蓝：活细胞拒染透明，死细胞染蓝。</li>
+<li>活力 ＝（总 − 蓝）/ 总 × 100%；16 格计数。</li>
+<li>50 μL 细胞 + 50 μL 台盼蓝＝一倍稀释，真实浓度 ＝ 计数浓度 ×2。</li>
+<li>接种基准：4 mL 培养基、50 万/mL，共需 200 万个细胞。</li>
+<li>冻存液：0.9 mL 细胞 + 0.1 mL DMSO ＝ 10% DMSO（1:9）。</li>
+<li>冻存管＝黄盖旋钮式 2 mL 冻存管，禁用卡扣 EP 管（热胀冷缩会炸）。</li>
+<li>冻存原则「分步缓慢」：-20 ℃ 2 h →（液氮口悬浮或 -80 ℃）30~40 min → 液氮 -196 ℃。</li>
+<li>冰晶损伤区间：0~-20 ℃；DMSO 降冰点防冰晶。</li>
+<li>复苏原则「快速复苏」：37~40 ℃ 快速震荡，摇到剩一点点冰即停（约 0 ℃）。</li>
+<li>拿冻存管拿帽子处，不拿 -196 ℃ 的管底。</li>
+<li>复苏后：3 mL 平衡、1000 转 5 分钟、2 mL 重悬，只做计数活力测定、不接种。</li>
+<li>报告：两人一组共享数据，比较加与不加 DMSO 的活力差异；改动处标红。</li>
+</ul>
+
+<h1>附录 B　易错点 · 易混对照</h1>
+<table class="tbl">
+<tr><th>错</th><th>对</th><th>后果/说明</th></tr>
+<tr><td>把肌肉或胃当成肝取材</td><td>肝是红色、胃是白色，肌肉消化效果极低</td><td>可能一个细胞都见不到</td></tr>
+<tr><td>手拿出超净台外操作</td><td>全部操作在超净台内进行</td><td>理论上就不是无菌操作</td></tr>
+<tr><td>不漂洗直接加胰酶</td><td>先加约 3 mL PBS 漂洗倒掉</td><td>血清抑制胰酶活性，消化不完全</td></tr>
+<tr><td>把培养瓶放水浴锅消化</td><td>放 37 ℃ 培养箱</td><td>消化条件错误</td></tr>
+<tr><td>消化到细胞全掉下来还继续</td><td>大量细胞脱落运动即停止</td><td>过度消化损伤细胞</td></tr>
+<tr><td>5 分钟无变化就硬等</td><td>提醒老师，疑胰酶失效</td><td>批次问题被漏掉</td></tr>
+<tr><td>吹打时瓶底朝下</td><td>底部朝上、对着贴细胞面吹</td><td>看不清细胞层，浪费大面积细胞</td></tr>
+<tr><td>离心管不配平</td><td>平衡到 3 mL 刻度线</td><td>离心机损坏或管子破裂</td></tr>
+<tr><td>忘记稀释校正</td><td>计数浓度 ×2 ＝ 真实浓度</td><td>报告浓度差一倍</td></tr>
+<tr><td>用卡扣 EP 管冻存</td><td>用黄盖旋钮式冻存管并扭紧</td><td>热胀冷缩把管子炸掉</td></tr>
+<tr><td>DMSO 随意加量</td><td>0.9 mL 细胞 + 0.1 mL DMSO（10%）</td><td>保护不足或毒性过大</td></tr>
+<tr><td>-20 ℃ 预冻正常放 5 分钟</td><td>正常预冻 2 小时、再过渡 30~40 分钟</td><td>冰晶大量形成、细胞损伤</td></tr>
+<tr><td>复苏慢悠悠晃</td><td>37~40 ℃ 快速震荡</td><td>通过危险区间太慢，冰晶再形成</td></tr>
+<tr><td>复苏摇到全化</td><td>剩一点点冰即停（约 0 ℃）</td><td>温度过高损伤细胞</td></tr>
+<tr><td>手抓冻存管底部</td><td>拿帽子处</td><td>-196 ℃ 端冻伤手</td></tr>
+<tr><td>复苏后细胞拿去接种</td><td>只做第二次计数与活力测定</td><td>本课只需对比活力数据</td></tr>
+</table>
+
+<h1>附录 C　考点索引表</h1>
+<table class="idx">
+<tr><th>考点</th><th>出处小节</th><th>定位</th><th>可能题型</th></tr>
+<tr><td>取材辨识（肝红、胃白、肌肉消化差）</td><td>§1</td><td>〔说话人1 00:45〕</td><td>简答、分析</td></tr>
+<tr><td>无菌操作红线</td><td>§1</td><td>〔说话人1 01:27〕</td><td>判断改错</td></tr>
+<tr><td>原代 vs 传代培养定义</td><td>§2</td><td>〔说话人1 01:58〕</td><td>名词解释</td></tr>
+<tr><td>贴壁 vs 悬浮培养</td><td>§2</td><td>〔说话人1 07:15〕</td><td>选择、简答</td></tr>
+<tr><td>正置 vs 倒置显微镜</td><td>§2</td><td>〔说话人1 07:15〕</td><td>选择</td></tr>
+<tr><td>PBS 漂洗目的（血清抑制胰酶）</td><td>§3</td><td>〔说话人1 09:21〕</td><td>简答</td></tr>
+<tr><td>消化条件与判断标准</td><td>§3</td><td>〔说话人1 09:56〕〔说话人1 10:41〕</td><td>简答、操作</td></tr>
+<tr><td>5 分钟无变化的处理</td><td>§3</td><td>〔说话人1 11:35〕</td><td>分析</td></tr>
+<tr><td>吹打正确方向</td><td>§3</td><td>〔说话人1 12:32〕〔说话人1 14:04〕</td><td>操作、改错</td></tr>
+<tr><td>第一次离心条件</td><td>§3</td><td>〔说话人1 14:31〕</td><td>填空、操作</td></tr>
+<tr><td>台盼蓝染色原理</td><td>§4</td><td>〔说话人1 16:19〕</td><td>简答</td></tr>
+<tr><td>活力计算公式</td><td>§4</td><td>〔说话人1 17:37〕</td><td>计算</td></tr>
+<tr><td>一倍稀释 ×2 校正</td><td>§4</td><td>〔说话人1 18:03〕</td><td>计算（最高频失分点）</td></tr>
+<tr><td>接种量计算（4 mL、50 万/mL、200 万）</td><td>§4</td><td>〔说话人1 18:29〕</td><td>计算</td></tr>
+<tr><td>冰晶损伤区间 0~-20 ℃</td><td>§5</td><td>〔说话人1 04:16〕</td><td>选择、简答</td></tr>
+<tr><td>DMSO 作用与 10% 配比</td><td>§5</td><td>〔说话人1 05:50〕〔说话人1 21:45〕</td><td>填空、计算</td></tr>
+<tr><td>冻存管选型（旋钮 vs 卡扣）</td><td>§5</td><td>〔说话人1 23:00〕</td><td>判断改错</td></tr>
+<tr><td>分步缓慢降温流程</td><td>§5</td><td>〔说话人1 23:37〕〔说话人1 24:47〕</td><td>简答、排序</td></tr>
+<tr><td>今天违规操作及其观察目的</td><td>§5</td><td>〔说话人1 23:37〕</td><td>分析</td></tr>
+<tr><td>慢速冻存、快速复苏</td><td>§6</td><td>〔说话人1 24:47〕</td><td>简答</td></tr>
+<tr><td>融化终点（剩少量冰，约 0 ℃）</td><td>§6</td><td>〔说话人1 28:15〕</td><td>操作、选择</td></tr>
+<tr><td>拿冻存管方式</td><td>§6</td><td>〔说话人1 26:30〕</td><td>判断改错</td></tr>
+<tr><td>第二次离心与计数目的</td><td>§6</td><td>〔说话人1 29:02〕</td><td>简答</td></tr>
+<tr><td>报告分组与数据分析要求</td><td>§7</td><td>〔说话人1 30:17〕</td><td>报告写作</td></tr>
+</table>
+
+<h1>附录 D　知识点清单（零遗漏自查表）</h1>
+<table class="idx">
+<tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>上次课约一半同学浓度超 100 万/mL 需稀释</td><td>数字</td><td>§1</td><td>〔说话人1 00:02〕</td></tr>
+<tr><td>2</td><td>基础医学班成功率对比、两班操作差异</td><td>结论</td><td>§1</td><td>〔说话人1 00:02〕</td></tr>
+<tr><td>3</td><td>取材错误：剪下肌肉（红色）消化效果极低</td><td>易错点</td><td>§1</td><td>〔说话人1 00:45〕</td></tr>
+<tr><td>4</td><td>胃白色、肝红色的取材辨识</td><td>易错点</td><td>§1</td><td>〔说话人1 00:45〕</td></tr>
+<tr><td>5</td><td>手拿出超净台即非无菌操作</td><td>考点</td><td>§1</td><td>〔说话人1 01:27〕</td></tr>
+<tr><td>6</td><td>及时纠正、养成肌肉记忆</td><td>要求</td><td>§1</td><td>〔说话人1 01:58〕</td></tr>
+<tr><td>7</td><td>两次实验报告由学习委员当天交</td><td>要求</td><td>§1/§7</td><td>〔说话人1 01:58〕</td></tr>
+<tr><td>8</td><td>原代培养定义：直接来自机体</td><td>定义</td><td>§2</td><td>〔说话人1 01:58〕</td></tr>
+<tr><td>9</td><td>传代培养定义：多次分裂传代或来自细胞系</td><td>定义</td><td>§2</td><td>〔说话人1 01:58〕</td></tr>
+<tr><td>10</td><td>经典细胞系 HeLa、293</td><td>举例</td><td>§2</td><td>〔说话人1 01:58〕</td></tr>
+<tr><td>11</td><td>本课用 HeLa，每人一瓶长满的细胞</td><td>安排</td><td>§2</td><td>〔说话人1 01:58〕</td></tr>
+<tr><td>12</td><td>今天三件事：传代、冻存、复苏</td><td>框架</td><td>§2</td><td>〔说话人1 03:07〕</td></tr>
+<tr><td>13</td><td>一瓶长满理论可传 2~3 瓶，今天做 1:1</td><td>数字</td><td>§2</td><td>〔说话人1 03:07〕</td></tr>
+<tr><td>14</td><td>传代细胞有部分凋亡，需做活力测定</td><td>结论</td><td>§2</td><td>〔说话人1 04:52〕</td></tr>
+<tr><td>15</td><td>上堂课细胞基本全活，未做活力测定</td><td>对比</td><td>§2</td><td>〔说话人1 04:52〕</td></tr>
+<tr><td>16</td><td>液氮 -196 ℃ 长期保存，也可 -80 ℃</td><td>数字</td><td>§5</td><td>〔说话人1 03:38〕</td></tr>
+<tr><td>17</td><td>液氮中细胞停止一切生物学行为</td><td>结论</td><td>§5</td><td>〔说话人1 03:38〕</td></tr>
+<tr><td>18</td><td>保存时间可 5 分钟至多年（冷冻胚胎）</td><td>举例</td><td>§5</td><td>〔说话人1 03:38〕</td></tr>
+<tr><td>19</td><td>0~-20 ℃ 细胞内形成冰晶损伤结构</td><td>机制</td><td>§5</td><td>〔说话人1 04:16〕</td></tr>
+<tr><td>20</td><td>DMSO 降低冰点防冰晶</td><td>机制</td><td>§5</td><td>〔说话人1 04:16〕</td></tr>
+<tr><td>21</td><td>DMSO 与甘油类似，加与不加完全不同</td><td>结论</td><td>§5</td><td>〔说话人1 05:50〕</td></tr>
+<tr><td>22</td><td>加/不加 DMSO 两组对比实验设计</td><td>设计</td><td>§5</td><td>〔说话人1 05:50〕</td></tr>
+<tr><td>23</td><td>帽子手套口罩鞋套更换、手消毒</td><td>操作</td><td>§3</td><td>〔说话人1 05:50〕</td></tr>
+<tr><td>24</td><td>红色盖子培养瓶从培养箱取出带台</td><td>操作</td><td>§3</td><td>〔说话人1 05:50〕</td></tr>
+<tr><td>25</td><td>今天不用解剖器械，饭盒装培养瓶离心管</td><td>操作</td><td>§3</td><td>〔说话人1 07:15〕</td></tr>
+<tr><td>26</td><td>正置显微镜从上往下看标本</td><td>定义</td><td>§2</td><td>〔说话人1 07:15〕</td></tr>
+<tr><td>27</td><td>倒置显微镜从下往上看细胞底面</td><td>定义</td><td>§2</td><td>〔说话人1 07:15〕</td></tr>
+<tr><td>28</td><td>贴壁培养：贴瓶底、培养基覆盖上方</td><td>定义</td><td>§2</td><td>〔说话人1 07:15〕</td></tr>
+<tr><td>29</td><td>悬浮培养：血液细胞不贴壁、晃一晃浮下</td><td>定义</td><td>§2</td><td>〔说话人1 07:15〕</td></tr>
+<tr><td>30</td><td>消化前细胞多边形、紧贴、核可见</td><td>形态</td><td>§2</td><td>〔说话人1 07:15〕</td></tr>
+<tr><td>31</td><td>操作前细胞密度约 85%</td><td>数字</td><td>§2</td><td>〔说话人2 36:41〕</td></tr>
+<tr><td>32</td><td>去培养基直接对废液缸倒、瓶口不接触</td><td>操作</td><td>§3</td><td>〔说话人1 09:21〕</td></tr>
+<tr><td>33</td><td>血清抑制胰酶，故先 PBS 漂洗</td><td>机制</td><td>§3</td><td>〔说话人1 09:21〕</td></tr>
+<tr><td>34</td><td>PBS 约 3 mL，盖盖晃一晃倒掉</td><td>操作</td><td>§3</td><td>〔说话人1 09:56〕</td></tr>
+<tr><td>35</td><td>0.25% 胰蛋白酶盖住细胞层</td><td>数字</td><td>§3</td><td>〔说话人1 09:56〕</td></tr>
+<tr><td>36</td><td>放 37 ℃ 培养箱，不是水浴锅</td><td>易错点</td><td>§3</td><td>〔说话人1 09:56〕</td></tr>
+<tr><td>37</td><td>消化 5~10 分钟，批次有差异</td><td>数字</td><td>§3</td><td>〔说话人1 10:41〕</td></tr>
+<tr><td>38</td><td>消化判断：变圆、间距变大、缝隙</td><td>判断标准</td><td>§3</td><td>〔说话人1 10:41〕</td></tr>
+<tr><td>39</td><td>大量细胞脱落运动即停，不必再消化</td><td>判断标准</td><td>§3</td><td>〔说话人1 10:41〕</td></tr>
+<tr><td>40</td><td>5 分钟无变化→提醒老师查胰酶</td><td>易错点</td><td>§3</td><td>〔说话人1 11:35〕</td></tr>
+<tr><td>41</td><td>终止消化：2 mL 含血清培养基</td><td>操作</td><td>§3</td><td>〔说话人1 11:35〕</td></tr>
+<tr><td>42</td><td>吹打姿势：瓶口朝侧、底部朝上</td><td>操作</td><td>§3</td><td>〔说话人1 12:32〕</td></tr>
+<tr><td>43</td><td>吸液体剧烈吹贴壁面，肉眼可见分层</td><td>操作</td><td>§3</td><td>〔说话人1 13:30〕</td></tr>
+<tr><td>44</td><td>每个角落残存细胞层都吹下，不浪费</td><td>操作</td><td>§3</td><td>〔说话人1 13:30〕</td></tr>
+<tr><td>45</td><td>拿反方向则看不清、吹不到、浪费细胞</td><td>易错点</td><td>§3</td><td>〔说话人1 14:04〕</td></tr>
+<tr><td>46</td><td>吹打液体使成单个悬浮细胞</td><td>操作</td><td>§3</td><td>〔说话人1 14:04〕</td></tr>
+<tr><td>47</td><td>消化完美者只需对液体吹打</td><td>操作</td><td>§3</td><td>〔说话人1 11:35〕</td></tr>
+<tr><td>48</td><td>1 mL 胰酶+2 mL 培养基≈3 mL 入 15 mL 管</td><td>数字</td><td>§3</td><td>〔说话人1 14:31〕</td></tr>
+<tr><td>49</td><td>平衡到 3 mL 刻度线</td><td>操作</td><td>§3</td><td>〔说话人1 14:31〕</td></tr>
+<tr><td>50</td><td>1000 转离心 5 分钟，弃上清</td><td>数字</td><td>§3</td><td>〔说话人1 14:31〕</td></tr>
+<tr><td>51</td><td>2 mL 培养基重悬，各组此时差异小</td><td>操作</td><td>§3</td><td>〔说话人1 14:31〕</td></tr>
+<tr><td>52</td><td>准确吸 50 μL 入有盖 EP 管，可带离超净台</td><td>操作</td><td>§4</td><td>〔说话人1 15:40〕</td></tr>
+<tr><td>53</td><td>加 50 μL 台盼蓝，枪混匀静置约 1 分钟</td><td>操作</td><td>§4</td><td>〔说话人1 16:19〕</td></tr>
+<tr><td>54</td><td>活细胞膜封闭，台盼蓝进不去、透明无色</td><td>机制</td><td>§4</td><td>〔说话人1 16:19〕</td></tr>
+<tr><td>55</td><td>死细胞膜有孔洞，被染成蓝色</td><td>机制</td><td>§4</td><td>〔说话人1 16:19〕</td></tr>
+<tr><td>56</td><td>16 格数总数与蓝色数</td><td>操作</td><td>§4</td><td>〔说话人1 17:37〕</td></tr>
+<tr><td>57</td><td>活力＝(总−蓝)/总×100%</td><td>公式</td><td>§4</td><td>〔说话人1 17:37〕</td></tr>
+<tr><td>58</td><td>50+50 一倍稀释，浓度 ×2 才是真实浓度</td><td>考点</td><td>§4</td><td>〔说话人1 18:03〕</td></tr>
+<tr><td>59</td><td>体积不能乱加，否则真实浓度不确定</td><td>易错点</td><td>§4</td><td>〔说话人1 18:03〕</td></tr>
+<tr><td>60</td><td>第一个数值（浓度、死细胞、活力）写报告</td><td>要求</td><td>§4</td><td>〔说话人1 18:29〕</td></tr>
+<tr><td>61</td><td>预期浓度约 300 万/mL</td><td>数字</td><td>§4</td><td>〔说话人1 18:29〕</td></tr>
+<tr><td>62</td><td>4 mL、50 万/mL → 需 200 万个细胞</td><td>计算</td><td>§4</td><td>〔说话人1 18:29〕</td></tr>
+<tr><td>63</td><td>例：400 万/mL 吸 0.5 mL，补 3.5 mL 凑 4 mL</td><td>计算</td><td>§4</td><td>〔说话人1 18:29〕</td></tr>
+<tr><td>64</td><td>不足也吸 0.5 mL 接种，保住 1.5 mL 冻存</td><td>易错点</td><td>§4</td><td>〔说话人1 19:43〕</td></tr>
+<tr><td>65</td><td>接种后十几分钟~20 分钟贴壁变多边形</td><td>现象</td><td>§4</td><td>〔说话人1 20:25〕</td></tr>
+<tr><td>66</td><td>冻存用剩余 1.5 mL，不再次离心</td><td>操作</td><td>§5</td><td>〔说话人1 20:55〕</td></tr>
+<tr><td>67</td><td>0.9 mL 细胞+0.1 mL DMSO＝1 mL、10%</td><td>数字</td><td>§5</td><td>〔说话人1 21:45〕</td></tr>
+<tr><td>68</td><td>黄盖旋钮冻存管 2 mL 刻度，非卡扣 EP 管</td><td>易错点</td><td>§5</td><td>〔说话人1 23:00〕</td></tr>
+<tr><td>69</td><td>EP 管冻存热胀冷缩会炸，须旋钮扭紧</td><td>机制</td><td>§5</td><td>〔说话人1 23:00〕</td></tr>
+<tr><td>70</td><td>对照组 1 mL 悬液不加 DMSO，数据共享</td><td>设计</td><td>§5</td><td>〔说话人1 23:37〕</td></tr>
+<tr><td>71</td><td>-20 ℃ 预冻正常 2 小时，今天 5 分钟（违规）</td><td>考点</td><td>§5</td><td>〔说话人1 23:37〕</td></tr>
+<tr><td>72</td><td>过渡：液氮口悬浮或 -80 ℃ 转移 30~40 分钟</td><td>操作</td><td>§5</td><td>〔说话人1 23:37〕</td></tr>
+<tr><td>73</td><td>冻存原则「分步缓慢」，目的不形成冰晶</td><td>口诀</td><td>§5</td><td>〔说话人1 24:47〕</td></tr>
+<tr><td>74</td><td>今天跳过过渡直接入液氮，损伤更多</td><td>分析</td><td>§5</td><td>〔说话人1 24:47〕</td></tr>
+<tr><td>75</td><td>冻存可模拟 5 分钟~1 小时，今天冻 5 分钟</td><td>操作</td><td>§5</td><td>〔说话人1 24:47〕</td></tr>
+<tr><td>76</td><td>复苏与冻存相反：速度非常快、快速升温</td><td>考点</td><td>§6</td><td>〔说话人1 24:47〕</td></tr>
+<tr><td>77</td><td>拿冻存管拿帽子处，管底 -196 ℃ 会冻伤</td><td>易错点</td><td>§6</td><td>〔说话人1 26:30〕</td></tr>
+<tr><td>78</td><td>常规用 37~40 ℃ 小杯快速震荡融冰</td><td>操作</td><td>§6</td><td>〔说话人1 26:30〕</td></tr>
+<tr><td>79</td><td>今天跑回细胞房水浴锅按同速摇</td><td>操作</td><td>§6</td><td>〔说话人1 27:50〕</td></tr>
+<tr><td>80</td><td>摇到剩一点点冰即停，约 0 ℃，不能太过</td><td>考点</td><td>§6</td><td>〔说话人1 28:15〕</td></tr>
+<tr><td>81</td><td>进台前酒精棉球擦管壁，转入 15 mL 管</td><td>操作</td><td>§6</td><td>〔说话人1 28:15〕</td></tr>
+<tr><td>82</td><td>补 2 mL 培养基冲洗冻存管尽量收集细胞</td><td>操作</td><td>§6</td><td>〔说话人1 28:15〕</td></tr>
+<tr><td>83</td><td>3 mL 平衡，1000 转 5 分钟，弃上清</td><td>数字</td><td>§6</td><td>〔说话人1 29:02〕</td></tr>
+<tr><td>84</td><td>2 mL 重悬做第二次计数活力，不接种</td><td>操作</td><td>§6</td><td>〔说话人1 29:02〕</td></tr>
+<tr><td>85</td><td>比较有无 DMSO 对活力的影响</td><td>分析</td><td>§6</td><td>〔说话人1 29:02〕</td></tr>
+<tr><td>86</td><td>快速冻存含违规操作都会损伤活力，二计差异大</td><td>结论</td><td>§6</td><td>〔说话人1 29:02〕</td></tr>
+<tr><td>87</td><td>两人一组共享数据、分析各环节影响</td><td>要求</td><td>§7</td><td>〔说话人1 30:17〕</td></tr>
+<tr><td>88</td><td>操作与讲义有别，修改处标红</td><td>要求</td><td>§7</td><td>〔说话人1 30:17〕</td></tr>
+</table>
+<div class="foot">本笔记按《课堂笔记重写规范》生成：每条结论标注逐字稿真实定位，附录 D 逐条登记全部知识点用于零遗漏自查。</div>
+</div>
+</body></html>

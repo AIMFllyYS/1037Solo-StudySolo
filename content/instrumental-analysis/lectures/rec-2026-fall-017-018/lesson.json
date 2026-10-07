@@ -10,7 +10,7 @@
   },
   "taughtOn": "2026-09-28",
   "topic": "化学发光收尾与磷光补充、原子吸收光谱法(AAS)开篇：原子吸收基本原理、锐线光源与原子化器",
-  "revision": 1,
+  "revision": 3,
   "materials": {
     "recording": {
       "file": "recording.md",

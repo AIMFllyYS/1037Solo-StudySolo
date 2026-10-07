@@ -9,9 +9,9 @@
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-025-026",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "8ef072bae078e0783bb4c81d6606bf657844dfc9918ae9d49a2be46598ba19d6",
-    "notesTextHash": "84f4df8fc785fa36cebb08898195d660fe343aa05920cc62eea0d3cbff50aca2"
+    "notesTextHash": "e8f06756e59c0a9a6d77beed918eaf200c6d85e1dbbb43ec73531bfb395c990b"
   },
   "questions": [
     {
@@ -23,7 +23,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
-        "label": "泌尿系统四器官功能"
+        "label": "6. 输尿管 · 泌尿系统四器官功能"
       },
       "stem": "泌尿系统由四个器官组成，下列哪项功能配对完全正确？",
       "options": [
@@ -45,7 +45,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
-        "label": "肾门平面与左右肾高低"
+        "label": "2. 肾的位置、形态与体表投影 · 肾门平面与左右肾高低"
       },
       "stem": "关于肾的位置与形态，下列描述正确的是？",
       "options": [
@@ -67,7 +67,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
-        "label": "肾被膜四层顺序"
+        "label": "4. 肾被膜（重点） · 肾被膜四层顺序"
       },
       "stem": "紧贴肾实质由内向外，肾的被膜层次正确排列是？",
       "options": [
@@ -89,7 +89,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
-        "label": "输尿管三个狭窄"
+        "label": "6. 输尿管 · 输尿管三个狭窄"
       },
       "stem": "输尿管全长有三个生理性狭窄，其中最狭窄、输尿管结石最易嵌顿的部位是？",
       "options": [
@@ -155,7 +155,7 @@
       "sourceRef": {
         "source": "recording",
         "path": "content/anatomy/lectures/rec-2026-fall-025-026/recording.md",
-        "label": "肾筋膜下方不愈着与肾下垂"
+        "label": "6. 输尿管 · 肾筋膜下方不愈着与肾下垂"
       },
       "stem": "肾筋膜在下方前后两层相互分离、不愈着，可导致的临床现象是？",
       "options": [
@@ -177,7 +177,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
-        "label": "膀胱三角黏膜下组织缺如"
+        "label": "6. 输尿管 · 膀胱三角黏膜下组织缺如"
       },
       "stem": "膀胱三角成为肿瘤、结核、炎症好发区，其最重要的解剖学基础是？",
       "options": [
@@ -199,7 +199,7 @@
       "sourceRef": {
         "source": "recording",
         "path": "content/anatomy/lectures/rec-2026-fall-025-026/recording.md",
-        "label": "充盈膀胱耻骨上穿刺层次"
+        "label": "7. 膀胱 · 充盈膀胱耻骨上穿刺层次"
       },
       "stem": "膀胱充盈时，在耻骨联合上方行膀胱穿刺，为何不伤及腹膜、不污染腹腔？",
       "options": [
@@ -221,7 +221,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/anatomy/lectures/rec-2026-fall-025-026/notes.html",
-        "label": "尿液排出途径"
+        "label": "6. 输尿管 · 尿液排出途径"
       },
       "stem": "尿液由肾乳头排出体外，正确的途经顺序是？",
       "options": [

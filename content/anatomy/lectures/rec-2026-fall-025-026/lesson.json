@@ -4,15 +4,30 @@
   "courseInstanceId": "rec-2026-fall",
   "lessonId": "rec-2026-fall-025-026",
   "courseName": "系统解剖学",
-  "sessionRange": { "start": 25, "end": 26 },
+  "sessionRange": {
+    "start": 25,
+    "end": 26
+  },
   "taughtOn": "2026-09-28",
   "topic": "泌尿系统——肾的大体结构与被膜、肾单位、输尿管、膀胱、尿道",
-  "revision": 1,
+  "revision": 3,
   "materials": {
-    "recording": { "file": "recording.md", "format": "text" },
-    "minutes": { "file": "minutes.md", "format": "markdown" },
-    "notes": { "file": "notes.html", "format": "html" },
-    "cards": { "file": "cards.md", "format": "markdown" }
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
   },
   "quizId": "rec-2026-fall-025-026"
 }

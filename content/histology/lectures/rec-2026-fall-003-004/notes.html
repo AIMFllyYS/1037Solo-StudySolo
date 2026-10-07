@@ -1,209 +1,320 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<style>
-:root{--paper:#FAF8F1;--ink:#24201A;--muted:#857B68;--line:#E6DECC;--accent:#1F5C39;--accent-deep:#143D27;--accent-tint:#E8F1EA;--gold:#A2630C;--gold-tint:#F8ECD3;--crimson:#B23A2E;--crimson-tint:#F7E4DF;--serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
-.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-.cover{background:radial-gradient(120% 80% at 78% 12%,#2F8557 0%,#1F5C39 55%,#143D27 100%);color:#F3EEE2;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(231,206,156,.55);}
-.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#E7CE9C;margin-bottom:8mm;}
-.cover h1{font-family:var(--serif);font-size:34pt;line-height:1.2;color:#FBF7EC;margin-bottom:6mm;}
-.cover h1 .accent{color:#E7CE9C;}
-.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(243,238,226,.82);margin-bottom:4mm;}
-.cover .meta{font-size:10pt;color:rgba(243,238,226,.6);margin-top:auto;}
-.toc h2{font-family:var(--serif);font-size:22pt;color:var(--accent-deep);margin-bottom:8mm;border-bottom:2pt solid var(--accent);padding-bottom:3mm;}
-.toc-item{display:flex;justify-content:space-between;align-items:baseline;padding:3mm 0;border-bottom:0.5pt solid var(--line);}
-.toc-item .num{font-family:var(--serif);font-weight:700;color:var(--accent);min-width:12mm;}
-.toc-item .title{font-family:var(--serif);font-size:12pt;font-weight:600;flex:1;}
-.toc-item .desc{font-size:8.5pt;color:var(--muted);margin-left:4mm;}
-.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
-.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
-.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
-h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
-p{margin:2mm 0;}
-ul,ol{margin:2mm 0 2mm 6mm;}
-li{margin:1mm 0;}
-.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
-.card.concl{border-left:3pt solid var(--accent);}
-.card.warn{border-left:3pt solid var(--crimson);background:var(--crimson-tint);}
-.card.gold{border-left:3pt solid var(--gold);background:var(--gold-tint);}
-.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
-.card.warn .label{color:var(--crimson);}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
-th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
-td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
-tr:nth-child(even) td{background:var(--accent-tint);}
-.hl{background:var(--gold-tint);border:0.4pt solid #E7CE9C;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
-.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
-.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
-</style>
-</head>
-<body>
-
-<div class="page cover">
-  <div class="frame"></div>
-  <div class="kicker">HISTOLOGY · 人体组织学</div>
-  <h1>腺上皮与<br><span class="accent">结缔组织</span></h1>
-  <div class="subt">第3-4节 · 课程笔记可视化手册</div>
-  <div class="meta">2026-09-01 · 李和教授 · 华中科技大学基础医学</div>
-</div>
-
-<div class="page">
-  <div class="toc">
-    <h2>目 录</h2>
-    <div class="toc-item"><span class="num">01</span><span class="title">腺上皮与腺体</span><span class="desc">外分泌/内分泌·腺细胞类型</span></div>
-    <div class="toc-item"><span class="num">02</span><span class="title">上皮特化结构</span><span class="desc">微绒毛·纤毛·细胞连接·基膜</span></div>
-    <div class="toc-item"><span class="num">03</span><span class="title">结缔组织总论</span><span class="desc">特点·分类</span></div>
-    <div class="toc-item"><span class="num">04</span><span class="title">疏松结缔组织细胞</span><span class="desc">成纤维·浆细胞·巨噬·肥大</span></div>
-    <div class="toc-item"><span class="num">05</span><span class="title">三种纤维</span><span class="desc">胶原·弹性·网状</span></div>
-    <div class="toc-item"><span class="num">06</span><span class="title">易错点与回忆题</span><span class="desc">高频考点·核心问答</span></div>
-  </div>
-  <div class="footer"><span>人体组织学 · 腺上皮与结缔组织</span><span>第 2 页</span></div>
-</div>
-
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">腺上皮与腺体</span></div>
-  <table>
-    <tr><th>类型</th><th>特点</th><th>例子</th></tr>
-    <tr><td><strong>外分泌腺</strong></td><td>有导管，分泌物经导管排出</td><td>唾液腺、汗腺、消化腺</td></tr>
-    <tr><td><strong>内分泌腺</strong></td><td>无导管，激素直接入血</td><td>胰岛、肾上腺、甲状腺</td></tr>
-  </table>
-  <div class="card concl">
-    <div class="label">腺细胞类型</div>
-    <p><strong>浆液性细胞</strong>：胞质嗜碱性，核上方酶原颗粒，分泌稀薄浆液（含酶）。</p>
-    <p><strong>黏液性细胞</strong>：胞质空泡状（黏原颗粒溶解），分泌黏稠黏液（黏蛋白）。</p>
-    <p><strong>混合性腺泡</strong>：两种细胞都有，常见浆半月。腺泡外周有肌上皮细胞（收缩促排泌）。</p>
-  </div>
-
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">02</span><span class="chapter-title">上皮特化结构</span></div>
-  <h3>游离面</h3>
-  <table>
-    <tr><th></th><th>微绒毛</th><th>纤毛</th></tr>
-    <tr><td>直径</td><td>0.1μm（光镜不可分辨单根）</td><td>0.3-0.5μm（光镜可分辨）</td></tr>
-    <tr><td>内部</td><td>纵行微丝（肌动蛋白）</td><td>9+2微管（动力蛋白滑动）</td></tr>
-    <tr><td>功能</td><td>扩大表面积</td><td>节律摆动，推动物质</td></tr>
-    <tr><td>光镜</td><td>纹状缘（小肠）/刷状缘（肾小管）</td><td>呼吸道/输卵管可见</td></tr>
-  </table>
-  <div class="hl"><span class="tag">9+2微管</span>中央1对+周围9组双联微管，动力蛋白使微管滑动→纤毛摆动。基体是微管生长点。</div>
-
-  <div class="footer"><span>人体组织学 · 腺上皮与结缔组织</span><span>第 3 页</span></div>
-</div>
-
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">02</span><span class="chapter-title">细胞连接（4种，从顶端到基底）</span></div>
-  <table>
-    <tr><th>连接</th><th>间隙</th><th>结构</th><th>功能</th></tr>
-    <tr><td><strong>紧密连接</strong></td><td>封闭</td><td>网格嵴融合（拉链样）</td><td>机械连接+封闭屏障</td></tr>
-    <tr><td><strong>中间连接</strong></td><td>15-20nm</td><td>丝状物连接，终末网附着</td><td>连接+传递收缩力</td></tr>
-    <tr><td><strong>桥粒</strong></td><td>约30nm</td><td>附着板+中间丝袢（铆钉样）</td><td><strong>最牢固</strong></td></tr>
-    <tr><td><strong>缝隙连接</strong></td><td>2-3nm</td><td>连接小体，中央2nm管</td><td>离子/小分子/电冲动传递</td></tr>
-  </table>
-  <div class="hl"><span class="tag">连接复合体</span>2种以上连接同时存在于同一部位。细胞连接不仅见于上皮，也见于心肌（桥粒+缝隙连接）、神经细胞（电突触）。</div>
-
-  <h3>基底面</h3>
-  <div class="card concl">
-    <div class="label">基膜</div>
-    <p><strong>基板</strong>（上皮产生）：透明层+致密层+透明层。<strong>网板</strong>（结缔组织产生）：网状纤维+基质。</p>
-    <p>功能：支持连接 + 半透膜（物质交换，上皮无血管）。HE粉红，PAS阳性，镀银黑色。</p>
-  </div>
-  <div class="card concl">
-    <div class="label">质膜内褶 + 半桥粒</div>
-    <p><strong>质膜内褶</strong>：基膜向胞内折叠，褶间杆状线粒体→基底纵纹，扩大面积+主动转运（肾小管）。</p>
-    <p><strong>半桥粒</strong>：上皮侧半个桥粒，将上皮牢固附着于基膜。</p>
-  </div>
-
-  <div class="footer"><span>人体组织学 · 腺上皮与结缔组织</span><span>第 4 页</span></div>
-</div>
-
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">03</span><span class="chapter-title">结缔组织总论</span></div>
-  <table>
-    <tr><th>特征</th><th>上皮组织</th><th>结缔组织</th></tr>
-    <tr><td>细胞</td><td>多，排列紧密</td><td>少，分散</td></tr>
-    <tr><td>细胞外基质</td><td>极少</td><td>大量</td></tr>
-    <tr><td>细胞种类</td><td>少（常1种）</td><td>多</td></tr>
-    <tr><td>极性</td><td>明显</td><td>无明显顶底极性</td></tr>
-    <tr><td>血管</td><td>无</td><td>有</td></tr>
-  </table>
-  <div class="hl"><span class="tag">分类</span>固有结缔组织：疏松、致密、脂肪、网状。特殊结缔组织：软骨、骨、血液、淋巴。</div>
-  <p>疏松结缔组织 = 蜂窝组织：纤维少而松散，基质丰富。</p>
-
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">04</span><span class="chapter-title">疏松结缔组织细胞</span></div>
-  <div class="card gold">
-    <div class="label">成纤维细胞 vs 纤维细胞</div>
-    <p><strong>成纤维细胞</strong>：大、核大浅染核仁清、胞质弱嗜碱性、RER丰富→合成纤维和基质。功能活跃（-blast结尾）。</p>
-    <p><strong>纤维细胞</strong>：小细长、核小深染→静止状态。两者可互相转化（损伤时激活）。</p>
-  </div>
-  <div class="card gold">
-    <div class="label">浆细胞（标志特征）</div>
-    <p>核偏位，染色质<strong>车轮状</strong>，胞质强嗜碱性，<strong>核周淡染区</strong>（高尔基+中心体）。</p>
-    <p>来源：B淋巴细胞受抗原刺激。功能：合成抗体（免疫球蛋白），体液免疫。</p>
-  </div>
-
-  <div class="footer"><span>人体组织学 · 腺上皮与结缔组织</span><span>第 5 页</span></div>
-</div>
-
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">04</span><span class="chapter-title">巨噬细胞与肥大细胞</span></div>
-  <div class="card concl">
-    <div class="label">巨噬细胞</div>
-    <p>来源：血液单核细胞穿出血管。形态不规则有伪足，核小深染，胞质嗜酸性含吞噬颗粒。电镜：大量溶酶体。</p>
-    <p>功能：①吞噬（异物/病原体/衰老细胞，趋化运动）②分泌（溶菌酶/补体）③抗原呈递 ④免疫监视。</p>
-    <p>显示：活体注射台盼蓝/墨汁→吞噬染料。组织细胞=静止型巨噬细胞。</p>
-  </div>
-  <div class="card warn">
-    <div class="label">肥大细胞与过敏反应（高频考点）</div>
-    <p>胞质含嗜碱性颗粒（水溶性，HE不着色），甲苯胺蓝→紫红色（<strong>异染性</strong>）。</p>
-    <p>颗粒内含：组胺、肝素、嗜酸性粒细胞趋化因子。胞质释放白三烯。</p>
-    <p><strong>过敏机制</strong>：IgE致敏→再次接触过敏原→抗原抗体结合→脱颗粒→组胺+白三烯→血管扩张通透性↑（荨麻疹/水肿）、支气管收缩（哮喘）、严重过敏性休克。</p>
-    <p>抗过敏：嗜酸性粒细胞趋化因子→吸引嗜酸性粒细胞吞噬抗原抗体复合物；肝素→抗凝。</p>
-  </div>
-
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">05</span><span class="chapter-title">三种纤维</span></div>
-  <table>
-    <tr><th>纤维</th><th>组成</th><th>染色</th><th>特点</th></tr>
-    <tr><td><strong>胶原纤维</strong>（白纤维）</td><td>I型胶原</td><td>HE粉红</td><td>67nm横纹，韧性大抗拉力强，无弹性</td></tr>
-    <tr><td><strong>弹性纤维</strong>（黄纤维）</td><td>弹性蛋白+微原纤维</td><td>HE淡红（特殊染色）</td><td>有弹性，韧性差</td></tr>
-    <tr><td><strong>网状纤维</strong>（嗜银纤维）</td><td>III型胶原</td><td>镀银黑色/PAS阳性</td><td>细有分支成网，也有67nm横纹</td></tr>
-  </table>
-  <div class="hl"><span class="tag">网状纤维分布</span>基膜网板、造血器官（骨髓/淋巴）、内分泌器官、上皮-结缔交界处。</div>
-
-  <div class="footer"><span>人体组织学 · 腺上皮与结缔组织</span><span>第 6 页</span></div>
-</div>
-
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">06</span><span class="chapter-title">易错点与回忆题</span></div>
-  <ol>
-    <li>微绒毛0.1μm（光镜不可分辨单根），纤毛0.3-0.5μm（可分辨）。</li>
-    <li>纤毛9+2微管，动力蛋白滑动产生摆动。</li>
-    <li>4种细胞连接顺序：紧密→中间→桥粒→缝隙；桥粒最牢固，缝隙连接通讯。</li>
-    <li>基膜=基板（上皮产生）+网板（结缔组织产生）。</li>
-    <li>浆细胞：车轮状核+核周淡染区，来源于B细胞，产抗体。</li>
-    <li>成纤维细胞（活跃）vs纤维细胞（静止），可互相转化。</li>
-    <li>肥大细胞脱颗粒=过敏反应；异染性（甲苯胺蓝→紫红）。</li>
-    <li>胶原纤维I型/67nm横纹；网状纤维III型/嗜银/PAS阳性。</li>
-    <li>结缔组织：细胞少种类多、ECM多、无极性、有血管。</li>
-  </ol>
-  <h3>主动回忆题</h3>
-  <div class="card">
-    <p><strong>Q1. 纤毛为什么能摆动？</strong></p>
-    <p>内部9+2微管，双联微管上的动力蛋白利用ATP使相邻微管滑动，导致纤毛弯曲摆动。</p>
-  </div>
-  <div class="card">
-    <p><strong>Q2. 桥粒为什么最牢固？</strong></p>
-    <p>膜内侧有附着板，中间丝袢状附着并折回胞质（铆钉样），两侧通过跨膜蛋白相连，结合非常牢固。</p>
-  </div>
-  <div class="card">
-    <p><strong>Q3. 肥大细胞如何参与过敏反应？</strong></p>
-    <p>IgE致敏→再次接触过敏原→脱颗粒释放组胺/白三烯→血管扩张通透性↑+支气管收缩→荨麻疹/哮喘/休克。同时释放嗜酸性粒细胞趋化因子和肝素起抗过敏/抗凝作用。</p>
-  </div>
-  <div style="margin-top:6mm;text-align:center;color:var(--muted);font-size:9pt;">— 人体组织学 · 第3-4节 · 完 —</div>
-  <div class="footer"><span>人体组织学 · 腺上皮与结缔组织</span><span>第 7 页</span></div>
-</div>
-
-</body>
-</html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>人体组织学 · 第3-4节 · 腺上皮与结缔组织</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#8A5A2B; --accent-d:#5F3D1B; --accent-t:#F4EADF;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body><div class="page cover"><p class="h1">人体组织学 · 第3-4节</p><p class="meta">腺上皮与结缔组织 · 2026-09-01</p><p class="lead" style="text-align:left">素材规模：逐字稿 22690 字 / 1 轮发言</p><table><tr><th>项目</th><th>内容</th></tr><tr><td>课程</td><td>人体组织学（histology / rec-2026-fall-003-004）</td></tr><tr><td>主题</td><td>腺上皮与结缔组织</td></tr><tr><td>学时</td><td>第 3–4 节（2 学时）</td></tr></table></div><div class="page"><h2 class="h2">0. 知识框架</h2><p class="lead">补全腺上皮与上皮三面特化结构，转入结缔组织并重点讲疏松结缔组织的细胞与纤维。</p>
+<svg viewBox="0 0 680 240" width="100%" aria-label="知识框架"><rect x="240" y="4" width="200" height="32" fill="#F4EADF" stroke="#8A5A2B"/><text x="340" y="26" text-anchor="middle" font-size="12" font-family="sans-serif">第3-4节主线</text>
+<line x1="340" y1="36" x2="120" y2="70" stroke="#8A5A2B"/><line x1="340" y1="36" x2="340" y2="70" stroke="#8A5A2B"/><line x1="340" y1="36" x2="560" y2="70" stroke="#8A5A2B"/>
+<rect x="40" y="70" width="160" height="40" fill="#fff" stroke="#5F3D1B"/><text x="120" y="96" text-anchor="middle" font-size="10">腺上皮·外分泌腺</text>
+<rect x="260" y="70" width="160" height="40" fill="#fff" stroke="#5F3D1B"/><text x="340" y="96" text-anchor="middle" font-size="10">三面特化结构</text>
+<rect x="480" y="70" width="160" height="40" fill="#fff" stroke="#5F3D1B"/><text x="560" y="96" text-anchor="middle" font-size="10">结缔组织总论</text>
+<line x1="340" y1="110" x2="340" y2="140" stroke="#8A5A2B"/>
+<rect x="200" y="140" width="280" height="36" fill="#F4EADF" stroke="#8A5A2B"/><text x="340" y="164" text-anchor="middle" font-size="11">疏松结缔组织：四细胞+三纤维</text>
+<text x="120" y="200" font-size="9" fill="#6B7480">游离面/侧面/基底面</text><text x="560" y="200" font-size="9" fill="#6B7480">蜂窝组织</text></svg></div><div class="page"><h2 class="h2">1. 腺上皮与腺体分类</h2><p class="lead">腺上皮以分泌为主；按分泌物排出途径分外分泌腺与内分泌腺。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>腺上皮（glandular epithelium）：以分泌功能为主的上皮组织 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>腺体（gland）：以腺上皮为主要成分构成的器官 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>外分泌腺：分泌物经各级导管运输排泄 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>外分泌腺例：唾液腺、消化腺、汗腺等 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>汗腺分泌物经导管排到体表 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>内分泌腺：分泌物（激素）直接进入血液循环，无导管 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>内分泌腺例：胰岛、肾上腺、甲状腺 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>胰岛分泌胰岛素等激素入周围毛细血管 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>内分泌腺属内分泌系统，后续专章讲授 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>外分泌腺按腺细胞数量分单细胞腺与多细胞腺 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>单细胞腺例：小肠与气管的杯状细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>杯状细胞无独立导管，分泌物直接排入所在管腔 <span class="loc">〔说话人1 00:00〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>类型</th><th>导管</th><th>分泌物去向</th><th>例子</th></tr>
+<tr><td>外分泌腺</td><td>有</td><td>经导管排出</td><td>唾液腺、汗腺、胰腺外分泌部</td></tr>
+<tr><td>内分泌腺</td><td>无</td><td>直接入血（激素）</td><td>胰岛、甲状腺、肾上腺</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★外分泌腺有导管；内分泌腺无导管、激素入血。 <span class="loc">〔说话人1 00:00〕</span></div></div><div class="page"><h2 class="h2">2. 多细胞外分泌腺结构</h2><p class="lead">分泌部（腺泡）+导管；腺细胞分浆液性与黏液性，腺泡可混合。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>多细胞外分泌腺由多个腺细胞构成，分泌物经导管排泄 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>分泌部呈泡状结构称腺泡（acinus） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>腺泡外周常见肌上皮细胞，收缩促进分泌物排出 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>多细胞腺基本结构：分泌部+导管 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>导管由单层或复层上皮构成，自腺泡向体表逐级变化 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>导管上皮可由单层扁平→单层立方→单层柱状→复层上皮 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>浆液性细胞：胞质基底部嗜碱性强，核上方有酶原颗粒 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>浆液性细胞分泌稀薄含酶的浆液 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>黏液性细胞：胞质着色浅、空泡状（黏原颗粒制片溶解） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>黏液性细胞分泌黏稠黏液（黏蛋白） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>全浆液性腺泡：腺细胞均为浆液性细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>全黏液性腺泡：腺细胞均为黏液性细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>混合性腺泡：兼有浆液性与黏液性细胞，可见浆半月 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>按导管与腺泡形态及是否分支：单管状腺、单泡状腺、复管状腺、复泡状腺、复管泡状腺 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>无分支导管+管状分泌部为单管状腺 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>无分支导管+泡状分泌部为单泡状腺 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>导管或腺泡有分支则为复管状腺、复泡状腺或复管泡状腺 <span class="loc">〔说话人1 00:00〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>腺细胞</th><th>光镜</th><th>分泌物</th></tr>
+<tr><td>浆液性</td><td>嗜碱性强，核上酶原颗粒</td><td>浆液（含酶）</td></tr>
+<tr><td>黏液性</td><td>浅染空泡状</td><td>黏液（黏蛋白）</td></tr></table>
+<div class="mnem">外有导管内入血，浆稀黏混半月。（整理） <span class="loc">〔说话人1 00:00〕</span></div></div><div class="page"><h2 class="h2">3. 上皮极性与游离面特化</h2><p class="lead">上皮细胞有极性；游离面以微绒毛扩面积、纤毛作定向摆动。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>上皮组织细胞有明显极性：游离面、侧面、基底面结构与功能各异 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>三个面均可形成特化结构 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>微绒毛（microvillus）：顶端细胞膜与胞质向外指状突起 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>微绒毛直径约0.1μm <span class="loc">〔说话人1 00:00〕</span></li>
+<li>光镜分辨率约0.2μm，光镜下不能分辨单根微绒毛 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>密集微绒毛光镜呈纹状缘（小肠）或刷状缘（肾小管） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>微绒毛内部有与长轴平行的微丝（肌动蛋白） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>微绒毛根部有终末网，含肌球蛋白 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>终末网末端附着于细胞侧面的连接结构 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>微绒毛具一定收缩能力（肌动蛋白+肌球蛋白） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>微绒毛主要功能：显著扩大细胞表面积 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>小肠吸收细胞（单层柱状上皮）游离面微绒毛利于营养吸收 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>纤毛（cilium）：顶端膜连胞质伸出，较微绒毛粗长 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>纤毛直径约0.3–0.5μm，长可达约10μm <span class="loc">〔说话人1 00:00〕</span></li>
+<li>纤毛在光镜下可分辨单根 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>纤毛定义：能朝一定方向节律性摆动的突起 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>呼吸道纤毛推动灰尘等向咽方向排出 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>输卵管上皮纤毛向子宫腔推送卵子 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>纤毛摆动呈波浪式（人浪样），各根倾斜角度可不同 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>纤毛纵切面可见与长轴平行的小管（微管） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>纤毛内部微管呈9+2排列：中央1对+周围9组双联微管 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>双联微管上的动力蛋白（dynein）使微管滑动→纤毛摆动 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>纤毛根部基体（basal body）为微管生长点 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>微管由基体形成后进入纤毛 <span class="loc">〔说话人1 00:00〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>结构</th><th>大小</th><th>内部</th><th>功能</th></tr>
+<tr><td>微绒毛</td><td>直径0.1μm</td><td>微丝（肌动蛋白）</td><td>扩大表面积</td></tr>
+<tr><td>纤毛</td><td>0.3–0.5μm粗，长约10μm</td><td>9+2微管</td><td>节律性摆动推物质</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★9+2微管与动力蛋白滑动是纤毛摆动的结构基础。 <span class="loc">〔说话人1 00:00〕</span></div></div><div class="page"><h2 class="h2">4. 侧面特化：细胞连接</h2><p class="lead">相邻上皮细胞侧面自顶向底依次形成四种连接，可并存为连接复合体。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>细胞连接位于相邻上皮细胞侧面，自顶端向基底端依次分布 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>紧密连接（闭锁小带）：位于最顶端，环绕细胞如箍 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>紧密连接处相邻细胞膜网格状嵴对接融合，如拉链咬合 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>一般细胞间隙约10–15nm，紧密连接处封闭顶部间隙 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>紧密连接：机械连接+封闭屏障（顶侧与外界） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>中间连接（黏着小带）：位于紧密连接下方 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>中间连接间隙约15–20nm，内有丝状物连两侧膜 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>中间连接膜内侧有致密附着物，膜局部增厚 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>微绒毛终末网末端附着于中间连接处 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>中间连接：连接细胞、维持形状、传递收缩力 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>桥粒（黏着斑）：间隙更宽，约30nm <span class="loc">〔说话人1 00:00〕</span></li>
+<li>桥粒间隙内丝状物交织形成中间线 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>桥粒膜内侧致密附着板，较中间连接处更厚 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>中间丝袢状附着于附着板再折回，如铆钉 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>桥粒为最牢固的细胞连接 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>缝隙连接：间隙约2–3nm，最窄 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>缝隙连接由连接蛋白6亚单位形成连接小体 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>连接小体中央有小管，直径约2nm <span class="loc">〔说话人1 00:00〕</span></li>
+<li>两侧连接小体相对时小管相通，形成细胞间通道 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>通道允许离子、小分子与水通过，电阻低 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>缝隙连接可传递电冲动与化学信息 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>缝隙连接亦称通讯连接；神经细胞中称电突触 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>两种及以上连接同时存在称连接复合体（junctional complex） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>细胞连接不仅见于上皮，也见于心肌、骨细胞、神经细胞等 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>心肌细胞间可见桥粒、缝隙连接与中间连接 <span class="loc">〔说话人1 00:00〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>连接</th><th>间隙</th><th>要点</th><th>功能</th></tr>
+<tr><td>紧密连接</td><td>封闭</td><td>嵴融合如拉链</td><td>屏障+连接</td></tr>
+<tr><td>中间连接</td><td>15–20nm</td><td>丝连膜，终末网附着</td><td>形状与收缩力</td></tr>
+<tr><td>桥粒</td><td>约30nm</td><td>附着板+中间丝</td><td>最牢固</td></tr>
+<tr><td>缝隙连接</td><td>2–3nm</td><td>2nm通道</td><td>通讯/电突触</td></tr></table>
+<div class="mnem">紧封中黏桥最牢，缝隙通讯电传递。（整理） <span class="loc">〔说话人1 00:00〕</span></div></div><div class="page"><h2 class="h2">5. 基底面特化结构</h2><p class="lead">基膜连接上皮与结缔组织并实现半透交换；质膜内褶与半桥粒强化基底功能。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>基膜（basement membrane）：上皮基底面与结缔组织之间的薄膜 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>光镜HE染色基膜呈粉红色（嗜酸性） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>基膜PAS反应阳性；镀银染色呈黑或棕褐色 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>电镜基膜分基板与网板 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>基板（basal lamina）由上皮细胞产生 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>基板含致密层及两侧透明层（三层结构） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>网板（reticular lamina）由结缔组织产生 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>网板含网状纤维与基质 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>基板+网板共同构成完整基膜 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>基膜支持、连接上皮与结缔组织 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>基膜为半透膜，选择性通透物质 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>上皮无血管，营养由深层结缔组织经基膜扩散供给 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>上皮代谢产物可经基膜扩散至结缔组织入血 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>质膜内褶：基底面细胞膜向细胞内折叠再反折 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>质膜内褶与微绒毛方向相反（向内折） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>质膜内褶间有细长杆状线粒体 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>光镜基底部可见基底纵纹（质膜内褶+线粒体） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>质膜内褶扩大基底面面积，参与离子与物质转运 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>质膜内褶转运为主动转运，线粒体供能 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>质膜内褶常见于肾小管上皮 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>半桥粒：上皮基底面与结缔组织之间仅上皮侧有半个桥粒 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>半桥粒将上皮细胞牢固附着于基膜 <span class="loc">〔说话人1 00:00〕</span></li>
+</ul><div class="exam"><span class="tag">★考点</span>★基膜=基板（上皮产生）+网板（结缔组织产生）。 <span class="loc">〔说话人1 00:00〕</span></div></div><div class="page"><h2 class="h2">6. 结缔组织总论</h2><p class="lead">与上皮相反：细胞少而散、种类多、细胞外基质丰富、无明显顶底极性、有血管。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>结缔组织与上皮比较：细胞外基质多、细胞少且分散 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>上皮细胞排列紧密；结缔组织细胞数量少、种类多 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>结缔组织细胞无明显顶底极性（一般细胞均有极性） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>结缔组织含血管；上皮无血管 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>结缔组织广义分固有结缔组织与特殊结缔组织 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>固有结缔组织（狭义）：疏松、致密、脂肪、网状四种 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>特殊结缔组织：软骨组织、骨组织、血液与淋巴 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>本课重点：固有结缔组织中的疏松结缔组织 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>疏松结缔组织又称蜂窝组织：纤维少、较松散柔软 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>疏松结缔组织细胞外基质相对多，但纤维少于致密结缔组织 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>疏松结缔组织含细胞、纤维与基质（含组织液） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>类比：基质如湖水，细胞如游鱼，纤维如水草（整理比喻） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>本课重点介绍四类细胞：成纤维细胞（含纤维细胞）、浆细胞、巨噬细胞、肥大细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>其他结缔组织细胞在后续章节介绍 <span class="loc">〔说话人1 00:00〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>特征</th><th>上皮组织</th><th>结缔组织</th></tr>
+<tr><td>细胞量</td><td>多、紧密</td><td>少、分散</td></tr>
+<tr><td>ECM</td><td>极少</td><td>大量</td></tr>
+<tr><td>极性</td><td>明显</td><td>无明显顶底</td></tr>
+<tr><td>血管</td><td>无</td><td>有</td></tr></table></div><div class="page"><h2 class="h2">7. 成纤维细胞与纤维细胞</h2><p class="lead">同一细胞的活跃与静止两种功能状态，词尾-blast表活跃。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>成纤维细胞（fibroblast）：疏松结缔组织中合成纤维与基质的主力 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>成纤维细胞体积较大、形态不规则，可有突起 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>成纤维细胞核较大、着色浅，核仁清楚 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>成纤维细胞胞质弱嗜碱性（偏蓝紫） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>胞质嗜碱性提示粗面内质网等细胞器较丰富 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>成纤维细胞电镜见丰富粗面内质网与高尔基复合体 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>成纤维细胞合成并分泌胶原蛋白、弹性蛋白及基质蛋白 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>分泌胶原原纤维前体，组装为胶原纤维 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>词尾-blast（如成纤维细胞、成骨细胞）表示功能活跃细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>词尾-cyte表示一般细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>纤维细胞（fibrocyte）：成纤维细胞的功能静止状态 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>纤维细胞体积小、细长，核小深染，细胞器少 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>成纤维细胞与纤维细胞可互相转化 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>组织损伤需大量纤维形成时纤维细胞可恢复为成纤维细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+</ul><div class="exam"><span class="tag">★考点</span>★成纤维细胞活跃合成；纤维细胞静止，二者可互变。 <span class="loc">〔说话人1 00:00〕</span></div></div><div class="page"><h2 class="h2">8. 浆细胞</h2><p class="lead">B细胞分化而来，强嗜碱性胞质与车轮状核，分泌抗体参与体液免疫。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>浆细胞（plasma cell）：圆形或卵圆形，体积较大 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>浆细胞核圆形，常偏位于一端 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>染色质沿核膜内侧呈块状放射状排列 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>染色质分布称车轮状或钟表状，为光镜识别浆细胞的重要依据 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>浆细胞胞质强嗜碱性 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>核旁淡染区称核周晕（核周淡染区） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>核周晕因核旁高尔基复合体与中心体占据所致 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>电镜见大量板层状粗面内质网 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>浆细胞特征性结构：密集RER+偏位核，为浆细胞所特有 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>浆细胞来源于B淋巴细胞受抗原刺激后转化 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>浆细胞合成并分泌抗体（免疫球蛋白，如IgG等） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>抗体与相应抗原结合，中和毒性抗原 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>抗体存在于血液、淋巴液与组织液，属体液免疫 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>T细胞介导的细胞免疫与浆细胞途径不同 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>疫苗为抗原，可刺激机体产生特异性抗体（灭活病原体等） <span class="loc">〔说话人1 00:00〕</span></li>
+</ul><div class="exam"><span class="tag">★考点</span>★车轮状核+核周晕+强嗜碱性胞质=浆细胞。 <span class="loc">〔说话人1 00:00〕</span></div></div><div class="page"><h2 class="h2">9. 巨噬细胞</h2><p class="lead">单核细胞来源，吞噬、分泌、抗原呈递与免疫监视。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>巨噬细胞（macrophage）：词根表巨大与吞噬 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>光镜胞质嗜酸性偏红，核小居中 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>胞质可见吞噬的尘埃、异物颗粒（吞噬体） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>活体注射染料或墨汁后，吞噬颗粒的巨噬细胞可特异性显示 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>表面可有微绒毛或尾足，便于阿米巴样运动 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>电镜胞质富含溶酶体 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>溶酶体分初级溶酶体（小、均匀）与次级溶酶体（大、含吞噬物、不均质） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>巨噬细胞主要来源：血液单核细胞穿出血管壁分化 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>组织内静止的称组织细胞，游走活跃者称巨噬细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>趋化运动：沿趋化因子浓度梯度游走至病变处 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>功能1：吞噬异物、病原体及衰老异常细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>例：吞噬棘球状异常红细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>功能2：分泌溶菌酶、补体等生物活性物质 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>功能3：抗原呈递——吞噬加工抗原后呈递给淋巴细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>抗原须经巨噬细胞处理才能有效刺激B/T细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>功能4：免疫监视，监视并处理异常肿瘤细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>巨噬细胞数量或功能不足时肿瘤风险上升 <span class="loc">〔说话人1 00:00〕</span></li>
+</ul></div><div class="page"><h2 class="h2">10. 肥大细胞与过敏反应</h2><p class="lead">甲苯胺蓝异染性颗粒；IgE致敏后再次接触过敏原脱颗粒。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>肥大细胞（mast cell）：圆形或卵圆形，核小居中 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>胞质含嗜碱性颗粒，水溶性，普通HE染色常不显色 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>甲苯胺蓝染色颗粒呈紫红色，为异染性 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>电镜颗粒有膜包裹，内部结构多样（网状、晶格等） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>颗粒含组胺、肝素、嗜酸性粒细胞趋化因子、蛋白多糖等 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>胞质还可释放白三烯 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>肥大细胞表面有IgE的Fc受体 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>初次接触过敏原：产生IgE结合肥大细胞表面，致敏但通常无过敏症状 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>再次接触相同过敏原：抗原与表面IgE结合，激活肥大细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>激活后脱颗粒：颗粒释出，膜可破裂 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>组胺使血管扩张、通透性增加→荨麻疹、水肿、瘙痒 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>组胺使支气管平滑肌收缩→哮喘 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>严重时可血压下降→过敏性休克 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>白三烯作用与组胺类似，参与过敏反应 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>嗜酸性粒细胞趋化因子吸引嗜酸性粒细胞吞噬抗原抗体复合物 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>肝素抗凝，减轻过敏时凝血并发症 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>肥大细胞既参与过敏，也通过趋化因子与肝素起保护调节作用 <span class="loc">〔说话人1 00:00〕</span></li>
+</ul><div class="exam"><span class="tag">★考点</span>★脱颗粒与二次接触过敏原；组胺/白三烯致过敏，趋化因子与肝素拮抗调节。 <span class="loc">〔说话人1 00:00〕</span></div></div><div class="page"><h2 class="h2">11. 疏松结缔组织纤维</h2><p class="lead">胶原、弹性、网状纤维组成、染色与分布各异。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>疏松结缔组织细胞外基质含三种纤维：胶原、弹性、网状纤维 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>胶原纤维：新鲜标本呈白色，称白纤维 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>胶原纤维韧性强、抗拉力大，无弹性、不易拉长 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>HE染色胶原纤维嗜酸性呈粉红色条索，粗细不等、交织 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>胶原纤维由I型胶原蛋白构成 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>先形成胶原原纤维，再组装为胶原纤维 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>胶原原纤维间隙沉积重金属盐形成周期性横纹 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>胶原纤维电镜周期性横纹周期约67nm <span class="loc">〔说话人1 00:00〕</span></li>
+<li>弹性纤维：新鲜呈黄色，称黄纤维 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>弹性纤维有弹性，韧性差，易拉断 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>HE染色弹性纤维与胶原纤维不易区分 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>地衣红或醛复红等特殊染色可显示弹性纤维 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>弹性纤维核心为弹性蛋白，周边为微原纤维 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>弹性纤维较细，铺片时末端可卷曲 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>网状纤维：HE染色与胶原纤维不易区分 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>网状纤维含蛋白多糖，PAS阳性 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>镀银染色网状纤维呈黑色丝状，有分支互连成网 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>网状纤维由III型胶原蛋白构成，亦有67nm周期性横纹 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>产生网状纤维：成纤维细胞、网状组织中的网状细胞 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>肝脾等器官贮脂细胞（肝星状细胞）也可产生网状纤维 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>网状纤维分布于基膜网板、上皮与结缔交界处 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>网状纤维丰富于造血器官（骨髓）、淋巴器官（淋巴结、脾） <span class="loc">〔说话人1 00:00〕</span></li>
+<li>内分泌器官内亦常见网状纤维支架 <span class="loc">〔说话人1 00:00〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>纤维</th><th>颜色/染色</th><th>组成</th><th>特点</th></tr>
+<tr><td>胶原（白纤维）</td><td>HE粉红</td><td>I型胶原</td><td>韧、无弹性，67nm横纹</td></tr>
+<tr><td>弹性（黄纤维）</td><td>特殊染色</td><td>弹性蛋白+微原纤维</td><td>有弹性、易断</td></tr>
+<tr><td>网状（嗜银纤维）</td><td>镀银黑/PAS</td><td>III型胶原</td><td>细、分支成网</td></tr></table>
+<div class="mnem">胶原白韧弹黄弹，网状嗜银III型。（整理） <span class="loc">〔说话人1 00:00〕</span></div></div><div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv">
+<li>外分泌腺有导管；内分泌腺激素入血无导管 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>浆液性 vs 黏液性腺细胞与混合性腺泡 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>微绒毛0.1μm/微丝/扩面积；纤毛9+2/摆动 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>四种细胞连接顺序与间隙宽度 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>连接复合体；缝隙连接=电突触 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>基膜=基板+网板；半透交换 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>质膜内褶+基底纵纹；半桥粒 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>结缔组织特点：细胞少、种类多、基质多、无极性、有血管 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>成纤维细胞 vs 纤维细胞；-blast活跃 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>浆细胞：车轮状核+核周晕+抗体 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>巨噬细胞：吞噬、抗原呈递、单核细胞来源 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>肥大细胞：异染性、IgE、脱颗粒、组胺 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>三种纤维：I型胶原、弹性蛋白、III型网状 <span class="loc">〔说话人1 00:00〕</span></li>
+</ul></div><div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2><table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>微绒毛光镜可分辨单根</td><td>直径0.1μm小于光镜0.2μm分辨率 <span class="loc">〔说话人1 00:00〕</span></td></tr>
+<tr><td>纤毛内部为微丝</td><td>纤毛为9+2微管；微绒毛为微丝 <span class="loc">〔说话人1 00:00〕</span></td></tr>
+<tr><td>桥粒间隙最窄</td><td>缝隙连接2–3nm最窄；桥粒约30nm且最牢 <span class="loc">〔说话人1 00:00〕</span></td></tr>
+<tr><td>基膜全由结缔组织形成</td><td>基板上皮产生，网板结缔组织产生 <span class="loc">〔说话人1 00:00〕</span></td></tr>
+<tr><td>浆细胞核居中对称</td><td>核偏位、车轮状染色质 <span class="loc">〔说话人1 00:00〕</span></td></tr>
+<tr><td>肥大细胞HE见紫色颗粒</td><td>颗粒水溶性，需甲苯胺蓝异染 <span class="loc">〔说话人1 00:00〕</span></td></tr>
+<tr><td>成纤维细胞与纤维细胞是两种细胞</td><td>同一细胞功能活跃与静止态，可互变 <span class="loc">〔说话人1 00:00〕</span></td></tr>
+<tr><td>网状纤维与胶原纤维组成相同</td><td>网状为III型胶原，胶原纤维主要为I型 <span class="loc">〔说话人1 00:00〕</span></td></tr>
+</table></div><div class="page"><h2 class="h2">附录 C 考点索引表</h2><table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>内外分泌腺区分</td><td>§1</td><td>〔说话人1 00:00〕</td><td>单选</td></tr>
+<tr><td>浆液/黏液腺细胞</td><td>§2</td><td>〔说话人1 00:00〕</td><td>对比</td></tr>
+<tr><td>微绒毛 vs 纤毛</td><td>§3</td><td>〔说话人1 00:00〕</td><td>易错</td></tr>
+<tr><td>9+2与动力蛋白</td><td>§3</td><td>〔说话人1 00:00〕</td><td>简答</td></tr>
+<tr><td>四种细胞连接</td><td>§4</td><td>〔说话人1 00:00〕</td><td>默写</td></tr>
+<tr><td>基膜分层</td><td>§5</td><td>〔说话人1 00:00〕</td><td>简答</td></tr>
+<tr><td>上皮 vs 结缔</td><td>§6</td><td>〔说话人1 00:00〕</td><td>对比</td></tr>
+<tr><td>浆细胞识别</td><td>§8</td><td>〔说话人1 00:00〕</td><td>光镜</td></tr>
+<tr><td>肥大细胞过敏</td><td>§10</td><td>〔说话人1 00:00〕</td><td>病例</td></tr>
+<tr><td>三种纤维比较</td><td>§11</td><td>〔说话人1 00:00〕</td><td>表格</td></tr>
+</table></div><div class="page"><h2 class="h2">附录 D 知识点清单</h2><table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>腺上皮定义：以分泌为主的上皮</td><td>定义</td><td>§1</td><td>〔说话人1 00:00〕</td></tr><tr><td>2</td><td>腺体：以腺上皮构成器官</td><td>定义</td><td>§1</td><td>〔说话人1 00:00〕</td></tr><tr><td>3</td><td>外分泌腺有导管</td><td>分类</td><td>§1</td><td>〔说话人1 00:00〕</td></tr><tr><td>4</td><td>内分泌腺无导管、激素入血</td><td>分类</td><td>§1</td><td>〔说话人1 00:00〕</td></tr><tr><td>5</td><td>外分泌腺例：唾液腺、汗腺、消化腺</td><td>分布</td><td>§1</td><td>〔说话人1 00:00〕</td></tr><tr><td>6</td><td>内分泌腺例：胰岛、甲状腺、肾上腺</td><td>分布</td><td>§1</td><td>〔说话人1 00:00〕</td></tr><tr><td>7</td><td>单细胞腺：杯状细胞</td><td>分类</td><td>§1</td><td>〔说话人1 00:00〕</td></tr><tr><td>8</td><td>多细胞腺：腺泡+导管</td><td>结构</td><td>§2</td><td>〔说话人1 00:00〕</td></tr><tr><td>9</td><td>肌上皮细胞促分泌</td><td>结构</td><td>§2</td><td>〔说话人1 00:00〕</td></tr><tr><td>10</td><td>浆液性细胞：嗜碱、酶原颗粒</td><td>分类</td><td>§2</td><td>〔说话人1 00:00〕</td></tr><tr><td>11</td><td>黏液性细胞：空泡状、黏液</td><td>分类</td><td>§2</td><td>〔说话人1 00:00〕</td></tr><tr><td>12</td><td>浆液性/黏液性/混合性腺泡</td><td>分类</td><td>§2</td><td>〔说话人1 00:00〕</td></tr><tr><td>13</td><td>浆半月</td><td>结构</td><td>§2</td><td>〔说话人1 00:00〕</td></tr><tr><td>14</td><td>导管上皮由单层到复层渐变</td><td>结构</td><td>§2</td><td>〔说话人1 00:00〕</td></tr><tr><td>15</td><td>单管状腺、单泡状腺</td><td>分类</td><td>§2</td><td>〔说话人1 00:00〕</td></tr><tr><td>16</td><td>复管状腺、复泡状腺、复管泡状腺</td><td>分类</td><td>§2</td><td>〔说话人1 00:00〕</td></tr><tr><td>17</td><td>上皮细胞三面极性</td><td>定义</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>18</td><td>微绒毛直径0.1μm</td><td>数字</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>19</td><td>光镜分辨率0.2μm与纹状缘/刷状缘</td><td>考点</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>20</td><td>微绒毛：微丝+终末网（肌球蛋白）</td><td>结构</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>21</td><td>微绒毛扩大表面积</td><td>功能</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>22</td><td>小肠吸收细胞微绒毛</td><td>分布</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>23</td><td>纤毛0.3–0.5μm粗、长约10μm</td><td>数字</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>24</td><td>纤毛节律摆动推物质</td><td>功能</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>25</td><td>呼吸道与输卵管纤毛功能</td><td>分布</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>26</td><td>纤毛9+2微管</td><td>结构</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>27</td><td>动力蛋白致微管滑动</td><td>机制</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>28</td><td>纤毛基体为微管生长点</td><td>结构</td><td>§3</td><td>〔说话人1 00:00〕</td></tr><tr><td>29</td><td>四种细胞连接自上而下</td><td>分类</td><td>§4</td><td>〔说话人1 00:00〕</td></tr><tr><td>30</td><td>紧密连接：10–15nm间隙封闭</td><td>结构</td><td>§4</td><td>〔说话人1 00:00〕</td></tr><tr><td>31</td><td>中间连接：15–20nm、终末网附着</td><td>结构</td><td>§4</td><td>〔说话人1 00:00〕</td></tr><tr><td>32</td><td>桥粒：30nm、附着板+中间丝</td><td>结构</td><td>§4</td><td>〔说话人1 00:00〕</td></tr><tr><td>33</td><td>缝隙连接：2–3nm、2nm通道</td><td>结构</td><td>§4</td><td>〔说话人1 00:00〕</td></tr><tr><td>34</td><td>连接蛋白6亚单位</td><td>结构</td><td>§4</td><td>〔说话人1 00:00〕</td></tr><tr><td>35</td><td>缝隙连接=通讯连接/电突触</td><td>术语</td><td>§4</td><td>〔说话人1 00:00〕</td></tr><tr><td>36</td><td>连接复合体定义</td><td>定义</td><td>§4</td><td>〔说话人1 00:00〕</td></tr><tr><td>37</td><td>细胞连接也见于心肌等</td><td>分布</td><td>§4</td><td>〔说话人1 00:00〕</td></tr><tr><td>38</td><td>基膜HE粉红、PAS+、镀银</td><td>染色</td><td>§5</td><td>〔说话人1 00:00〕</td></tr><tr><td>39</td><td>基板三层（上皮产生）</td><td>结构</td><td>§5</td><td>〔说话人1 00:00〕</td></tr><tr><td>40</td><td>网板：网状纤维+基质（结缔产生）</td><td>结构</td><td>§5</td><td>〔说话人1 00:00〕</td></tr><tr><td>41</td><td>基膜半透与物质交换</td><td>功能</td><td>§5</td><td>〔说话人1 00:00〕</td></tr><tr><td>42</td><td>质膜内褶与基底纵纹</td><td>结构</td><td>§5</td><td>〔说话人1 00:00〕</td></tr><tr><td>43</td><td>质膜内褶间杆状线粒体</td><td>结构</td><td>§5</td><td>〔说话人1 00:00〕</td></tr><tr><td>44</td><td>质膜内褶主动转运</td><td>功能</td><td>§5</td><td>〔说话人1 00:00〕</td></tr><tr><td>45</td><td>半桥粒附着上皮于基膜</td><td>结构</td><td>§5</td><td>〔说话人1 00:00〕</td></tr><tr><td>46</td><td>结缔：细胞少、ECM多</td><td>对比</td><td>§6</td><td>〔说话人1 00:00〕</td></tr><tr><td>47</td><td>结缔种类多、无极性、有血管</td><td>对比</td><td>§6</td><td>〔说话人1 00:00〕</td></tr><tr><td>48</td><td>固有结缔四型与特殊结缔</td><td>分类</td><td>§6</td><td>〔说话人1 00:00〕</td></tr><tr><td>49</td><td>疏松结缔=蜂窝组织</td><td>术语</td><td>§6</td><td>〔说话人1 00:00〕</td></tr><tr><td>50</td><td>本课四细胞重点</td><td>范围</td><td>§6</td><td>〔说话人1 00:00〕</td></tr><tr><td>51</td><td>成纤维细胞形态与弱嗜碱</td><td>光镜</td><td>§7</td><td>〔说话人1 00:00〕</td></tr><tr><td>52</td><td>成纤维细胞合成胶原/弹性/基质蛋白</td><td>功能</td><td>§7</td><td>〔说话人1 00:00〕</td></tr><tr><td>53</td><td>-blast词尾表活跃</td><td>规则</td><td>§7</td><td>〔说话人1 00:00〕</td></tr><tr><td>54</td><td>纤维细胞为静止状态</td><td>定义</td><td>§7</td><td>〔说话人1 00:00〕</td></tr><tr><td>55</td><td>成纤维细胞与纤维细胞互变</td><td>机制</td><td>§7</td><td>〔说话人1 00:00〕</td></tr><tr><td>56</td><td>浆细胞车轮状/钟表状核</td><td>光镜</td><td>§8</td><td>〔说话人1 00:00〕</td></tr><tr><td>57</td><td>浆细胞核周晕</td><td>光镜</td><td>§8</td><td>〔说话人1 00:00〕</td></tr><tr><td>58</td><td>浆细胞强嗜碱与板层状RER</td><td>电镜</td><td>§8</td><td>〔说话人1 00:00〕</td></tr><tr><td>59</td><td>浆细胞来源于B细胞</td><td>来源</td><td>§8</td><td>〔说话人1 00:00〕</td></tr><tr><td>60</td><td>浆细胞分泌抗体Ig、体液免疫</td><td>功能</td><td>§8</td><td>〔说话人1 00:00〕</td></tr><tr><td>61</td><td>疫苗刺激抗体原理</td><td>临床</td><td>§8</td><td>〔说话人1 00:00〕</td></tr><tr><td>62</td><td>巨噬细胞嗜酸胞质与吞噬颗粒</td><td>光镜</td><td>§9</td><td>〔说话人1 00:00〕</td></tr><tr><td>63</td><td>墨汁/染料显示巨噬细胞</td><td>技术</td><td>§9</td><td>〔说话人1 00:00〕</td></tr><tr><td>64</td><td>巨噬细胞溶酶体初级/次级</td><td>电镜</td><td>§9</td><td>〔说话人1 00:00〕</td></tr><tr><td>65</td><td>单核细胞来源与趋化运动</td><td>来源</td><td>§9</td><td>〔说话人1 00:00〕</td></tr><tr><td>66</td><td>巨噬细胞吞噬与抗原呈递</td><td>功能</td><td>§9</td><td>〔说话人1 00:00〕</td></tr><tr><td>67</td><td>巨噬细胞免疫监视肿瘤</td><td>功能</td><td>§9</td><td>〔说话人1 00:00〕</td></tr><tr><td>68</td><td>肥大细胞HE不着色、甲苯胺蓝异染</td><td>染色</td><td>§10</td><td>〔说话人1 00:00〕</td></tr><tr><td>69</td><td>肥大细胞颗粒成分（组胺等）</td><td>组成</td><td>§10</td><td>〔说话人1 00:00〕</td></tr><tr><td>70</td><td>IgE致敏与二次脱颗粒</td><td>机制</td><td>§10</td><td>〔说话人1 00:00〕</td></tr><tr><td>71</td><td>组胺/白三烯过敏表现</td><td>临床</td><td>§10</td><td>〔说话人1 00:00〕</td></tr><tr><td>72</td><td>嗜酸性粒细胞趋化因子与肝素</td><td>调节</td><td>§10</td><td>〔说话人1 00:00〕</td></tr><tr><td>73</td><td>胶原纤维I型、67nm横纹</td><td>纤维</td><td>§11</td><td>〔说话人1 00:00〕</td></tr><tr><td>74</td><td>胶原原纤维组装</td><td>机制</td><td>§11</td><td>〔说话人1 00:00〕</td></tr><tr><td>75</td><td>弹性纤维弹性蛋白+微原纤维</td><td>纤维</td><td>§11</td><td>〔说话人1 00:00〕</td></tr><tr><td>76</td><td>网状纤维III型、镀银/PAS</td><td>纤维</td><td>§11</td><td>〔说话人1 00:00〕</td></tr><tr><td>77</td><td>网状纤维分布：基膜、淋巴、骨髓、内分泌</td><td>分布</td><td>§11</td><td>〔说话人1 00:00〕</td></tr><tr><td>78</td><td>肝贮脂细胞产生网状纤维</td><td>细胞</td><td>§11</td><td>〔说话人1 00:00〕</td></tr><tr><td>79</td><td>课前希望归纳：类型-形态-分布（承上节）</td><td>方法</td><td>§1</td><td>〔说话人1 00:00〕</td></tr></table><p class="foot">附录 D 共 79 条，与 recording.md 讲授内容逐条对应。</p></div></body></html>

@@ -1,250 +1,500 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<title>分析化学 · 第5-6节 · 可视化笔记</title>
-<style>
-:root{--accent:#0E5C52;--accent-deep:#0A463E;--accent-tint:#E7F0EB;--accent-line:#BFD8CF;--mnem:#A2630C;--mnem-tint:#F8ECD3;--paper:#FAF7F0;--ink:#24201A;--ink-soft:#4A4337;--muted:#857B68;--line:#E6DECC;--crimson:#B23A2E;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;background:var(--paper);color:var(--ink);font-size:10pt;line-height:1.7;padding:0;}
-.cover{width:210mm;min-height:297mm;background:linear-gradient(135deg,#12685C 0%,#0A463E 55%,#07372F 100%);color:#F3EEE2;padding:25mm 20mm;display:flex;flex-direction:column;page-break-after:always;position:relative;overflow:hidden;}
-.cover::before{content:"";position:absolute;right:-30mm;top:-20mm;width:120mm;height:120mm;border:1pt solid rgba(231,206,156,.15);border-radius:50%;}
-.cover .kicker{font-size:9pt;letter-spacing:.4em;text-transform:uppercase;color:#E7CE9C;margin-bottom:8mm;}
-.cover h1{font-family:"Noto Serif CJK SC",serif;font-size:36pt;font-weight:700;line-height:1.2;margin-bottom:6mm;}
-.cover h1 .accent{color:#E7CE9C;}
-.cover .sub{font-size:13pt;color:rgba(243,238,226,.85);margin-bottom:4mm;}
-.cover .meta{font-size:10pt;color:rgba(243,238,226,.6);margin-top:auto;line-height:2;}
-.cover .meta b{color:#E7CE9C;}
-.page{padding:18mm 16mm;page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-h2.sec-title{font-family:"Noto Serif CJK SC",serif;font-size:17pt;color:var(--accent-deep);border-bottom:2pt solid var(--accent);padding-bottom:2mm;margin-bottom:5mm;}
-h3.sub-title{font-size:12pt;color:var(--accent-deep);margin:5mm 0 2mm;font-weight:700;}
-p{margin-bottom:2.5mm;text-align:justify;}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
-th{background:var(--accent);color:#fff;padding:2mm 2.5mm;text-align:left;font-weight:600;}
-td{padding:1.8mm 2.5mm;border-bottom:0.5pt solid var(--line);vertical-align:top;}
-tr:nth-child(even) td{background:rgba(231,240,235,.4);}
-.hl-box{background:var(--mnem-tint);border-left:3pt solid var(--mnem);padding:3mm 4mm;margin:3mm 0;border-radius:0 2mm 2mm 0;}
-.hl-box .tag{display:inline-block;background:var(--mnem);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;letter-spacing:.05em;}
-.warn-box{background:#F7E4DF;border-left:3pt solid var(--crimson);padding:3mm 4mm;margin:3mm 0;border-radius:0 2mm 2mm 0;color:#7E2A20;}
-.warn-box .tag{display:inline-block;background:var(--crimson);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
-.kv{margin:1.5mm 0;}
-.kv .k{font-weight:700;color:var(--accent-deep);}
-.kv .k::after{content:"｜";color:var(--accent-line);margin:0 .3em;font-weight:400;}
-ul,ol{margin:2mm 0 2mm 6mm;}
-li{margin-bottom:1mm;}
-.toc{columns:2;column-gap:8mm;}
-.toc-item{break-inside:avoid;margin-bottom:2mm;font-size:9.5pt;}
-.toc-item .num{color:var(--accent);font-weight:700;margin-right:2mm;}
-.checklist li{list-style:none;margin-left:-4mm;}
-.checklist li::before{content:"☐ ";color:var(--accent);font-weight:700;}
-.qa{margin-bottom:4mm;}
-.qa .q{font-weight:700;color:var(--accent-deep);margin-bottom:1.5mm;}
-.qa .a{color:var(--ink-soft);padding-left:4mm;border-left:1.5pt solid var(--accent-line);}
-.flow{display:flex;align-items:center;flex-wrap:wrap;gap:1mm;margin:3mm 0;font-size:8.5pt;}
-.flow .step{background:var(--accent-tint);border:0.5pt solid var(--accent-line);color:var(--accent-deep);padding:1.5mm 3mm;border-radius:2mm;font-weight:600;}
-.flow .arrow{color:var(--muted);font-weight:700;}
-</style>
-</head>
-<body>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>分析化学 · 第5-6节 · 检出限与试样采集预处理</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#155E75; --accent-d:#0C3F51; --accent-t:#E1EEF3;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body><div class="page cover"><p class="h1">分析化学</p><p class="meta">第5-6节 · 检出限与试样采集预处理 · 2026-09-08（周二）</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 34157 字 / 144 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>分析化学 · 第5-6节（instrumental-analysis）</td></tr>
+<tr><td>学时</td><td>2 学时</td></tr>
+<tr><td>日期</td><td>2026-09-08（周二）</td></tr>
+<tr><td>素材规模</td><td>逐字稿 34157 字 / 144 轮发言</td></tr></table></div><div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">两块：先补检出限的数据处理；再进入分析试样的采集（气/液/固/生物）与样品预处理。</p>
+<svg viewBox="0 0 700 336" width="100%" aria-label="知识框架">
+<rect x="250" y="6" width="200" height="30" fill="#E1EEF3" stroke="#155E75"/>
+<text x="350" y="26" text-anchor="middle" font-size="11" font-family="sans-serif">第5-6节 核心内容</text>
+<line x1="140" y1="36" x2="140" y2="62" stroke="#155E75"/><line x1="420" y1="36" x2="420" y2="62" stroke="#155E75"/>
+<rect x="40" y="62" width="200" height="30" fill="#fff" stroke="#0C3F51"/><text x="140" y="82" text-anchor="middle" font-size="9">检出限（补讲） §1</text>
+<rect x="320" y="62" width="200" height="30" fill="#fff" stroke="#0C3F51"/><text x="420" y="82" text-anchor="middle" font-size="9">试样采集与预处理 §2-§10</text>
+<line x1="60" y1="92" x2="60" y2="112" stroke="#155E75"/><line x1="220" y1="92" x2="220" y2="112" stroke="#155E75"/>
+<rect x="12" y="112" width="98" height="46" fill="#F7F6F2" stroke="#D8D6CE"/><text x="61" y="132" text-anchor="middle" font-size="8">信号检出限</text><text x="61" y="148" text-anchor="middle" font-size="8">3×空白标准偏差</text>
+<rect x="172" y="112" width="98" height="46" fill="#F7F6F2" stroke="#D8D6CE"/><text x="221" y="132" text-anchor="middle" font-size="8">浓度检出限</text><text x="221" y="148" text-anchor="middle" font-size="8">(Y_L−A)/S</text>
+<line x1="380" y1="92" x2="380" y2="112" stroke="#155E75"/><line x1="470" y1="92" x2="470" y2="112" stroke="#155E75"/>
+<rect x="325" y="112" width="108" height="46" fill="#F7F6F2" stroke="#D8D6CE"/><text x="379" y="132" text-anchor="middle" font-size="8">采集：总体/个体</text><text x="379" y="148" text-anchor="middle" font-size="8">代表性·典型·实时</text>
+<rect x="445" y="112" width="108" height="46" fill="#F7F6F2" stroke="#D8D6CE"/><text x="499" y="132" text-anchor="middle" font-size="8">预处理：便分析</text><text x="499" y="148" text-anchor="middle" font-size="8">除干扰·浓缩</text>
+<line x1="60" y1="158" x2="60" y2="182" stroke="#155E75"/><line x1="221" y1="158" x2="221" y2="182" stroke="#155E75"/><line x1="379" y1="158" x2="379" y2="182" stroke="#155E75"/><line x1="499" y1="158" x2="499" y2="182" stroke="#155E75"/>
+<rect x="12" y="182" width="664" height="30" fill="#E1EEF3" stroke="#155E75"/><text x="344" y="201" text-anchor="middle" font-size="9">采集对象：气体（直接/富集）· 液体（垂线/深度/容器）· 固体（双螺旋/四分法）· 生物（尿/血/毛发）</text>
+<rect x="12" y="222" width="664" height="30" fill="#FBF0DC" stroke="#A9660A"/><text x="344" y="241" text-anchor="middle" font-size="9">★掌握：浓度检出限换算；代表性；垂线与深度规则；三目标二要求；干/低温/湿三种分解法</text>
+<rect x="12" y="262" width="664" height="62" fill="#fff" stroke="#0C3F51"/><text x="344" y="281" text-anchor="middle" font-size="9">预处理两大路径：溶解法（水/酸/碱/有机溶剂，按性质选）→ 直接上样</text><text x="344" y="299" text-anchor="middle" font-size="9">分解法：干法灰化 400-700℃ / 低温灰化 ~100℃（氧自由基）/ 湿法消化（沸点控温）</text><text x="344" y="317" text-anchor="middle" font-size="9">安全：高氯酸遇酚易爆·变黑即停；氢氟酸＝化骨水·全套防护；微波＝极性分子摩擦生热</text>
+</svg></div><div class="page"><h2 class="h2">1. 检出限与定量限（数据处理补讲）</h2><p class="lead">检出限由空白噪音求出：信号检出限取空白标准偏差 3 倍，再借校准曲线换算为浓度检出限。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>检出限做法：先测空白，空白随时间的波动即噪音；纵轴为信号 Y <span class="loc">〔说话人1 00:23〕</span></li>
+<li>空白即无待测组分、只用溶剂测得的信号，其偏差属系统误差 <span class="loc">〔说话人1 00:58〕</span></li>
+<li>空白信号叠加随机误差后，会在基准值上下波动 <span class="loc">〔说话人1 01:27〕</span></li>
+<li>信号检出限 = 空白的标准偏差的 3 倍 <span class="loc">〔说话人1 01:43〕</span></li>
+<li>部分方法规定 2 倍，倍数按各方法空白的实际情况确定 <span class="loc">〔说话人1 01:43〕</span></li>
+<li>以 ±3 倍空白标准偏差为界限，超过该范围的信号才可与噪音区分 <span class="loc">〔说话人1 02:17〕</span></li>
+<li>信号检出限记作 Y_L（limit 即检出限）<span class="loc">〔说话人1 02:38〕</span></li>
+<li>校准曲线：纵轴为信号 Y、横轴为浓度 C，配系列标准溶液测信号得直线 <span class="loc">〔说话人1 02:38〕</span></li>
+<li>校准曲线经线性回归得 Y = A + S·C <span class="loc">〔说话人1 02:38〕</span></li>
+<li>A 为截距，即背景（系统误差）；S 为斜率，即方法灵敏度 <span class="loc">〔说话人1 04:38〕</span></li>
+<li>扣除系统误差后，由信号 Y 除以斜率 S 即可求出浓度 C <span class="loc">〔说话人1 04:54〕</span></li>
+<li>浓度检出限 =（最小可检出信号 − 背景截距 A）÷ 斜率 S <span class="loc">〔说话人1 04:54〕</span></li>
+<li>色谱法中系数 k 有时取 2 <span class="loc">〔说话人1 04:54〕</span></li>
+<li>定量限指能够准确定量的最低量，其 k 一般取 10 <span class="loc">〔说话人1 04:54〕</span></li>
+<li>定量限不作要求，检出限在实验中用得更多 <span class="loc">〔说话人1 06:29〕</span></li>
+</ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>项目</th><th>检出限</th><th>定量限</th></tr>
+<tr><td>含义</td><td>能测出该物质存在</td><td>能很准确地定量</td></tr>
+<tr><td>系数 k</td><td>常见 3（也有 2）</td><td>10</td></tr>
+<tr><td>要求</td><td>掌握</td><td>了解即可</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>浓度检出限换算：C =（信号检出限 − 截距 A）÷ 斜率 S <span class="loc">〔说话人1 04:54〕</span></div>
+<div class="mnem">口诀（整理）：检出限三倍空白，定量限十倍空白，浓度换算扣截距除斜率。</div></div>
 
-<div class="cover">
-  <div class="kicker">ANALYTICAL CHEMISTRY · 可视化笔记</div>
-  <h1>分析化学<span class="accent">速查</span></h1>
-  <div class="sub">第5-6节 · 检出限 + 试样采集与预处理</div>
-  <div class="meta">
-    <b>授课教师</b>：刘敏 副教授<br>
-    <b>日期</b>：2026-09-08（周二）<br>
-    <b>课程内节次</b>：第5-6节<br>
-    <b>主题</b>：检出限换算 · 采样三大原则 · 气液固生物样品采集 · 样品保存 · 预处理方法 · 实验安全
-  </div>
-</div>
+<div class="page"><h2 class="h2">2. 试样采集基础：概念与原则</h2><p class="lead">采样是从总体抽取有代表性的样本；采样原则核心只有三个字——代表性。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>完整流程：采样→前处理→测定→数据处理→出具报告 <span class="loc">〔说话人1 06:29〕</span></li>
+<li>制样与前处理耗时最长；测定与数据处理可由计算机快速完成 <span class="loc">〔说话人1 07:26〕</span></li>
+<li>总体 = 分析对象的全体 <span class="loc">〔说话人1 08:08〕</span></li>
+<li>个体 = 总体中的每一个单位 <span class="loc">〔说话人1 08:08〕</span></li>
+<li>采样 = 从总体中抽取样品的过程 <span class="loc">〔说话人1 08:08〕</span></li>
+<li>采样量国标有规定，若干个体才构成一个样本 <span class="loc">〔说话人1 08:08〕</span></li>
+<li>样本须具代表性，应能代表整批物料 <span class="loc">〔说话人1 09:14〕</span></li>
+<li>样本容量 = 样本中个体的数目 <span class="loc">〔说话人1 09:14〕</span></li>
+<li>采样每一步的误差都应控制在可控范围内 <span class="loc">〔说话人1 09:49〕</span></li>
+<li>采样原则三个字：代表性，为要求掌握的核心 <span class="loc">〔说话人1 09:49〕</span></li>
+<li>代表性 = 取少量物料的检验结果可代表整批 <span class="loc">〔说话人1 09:49〕</span></li>
+<li>典型性 = 针对检测目的选取特定范围，如某批被污染奶粉 <span class="loc">〔说话人1 10:40〕</span></li>
+<li>实时性 = 易变质样品须严格控制采样与检测的时间间隔 <span class="loc">〔说话人1 11:26〕</span></li>
+<li>采样三原则为代表性、典型性、实时性；记不住也要先记代表性 <span class="loc">〔说话人1 12:20〕</span></li>
+<li>采样点选择决定取样是否具代表性，须目的明确（如月球采样取正面还是背面、表层还是深层）<span class="loc">〔说话人1 13:40〕</span></li>
+<li>表取：机械臂与机械爪配合从月球表面抓取 <span class="loc">〔说话人1 14:14〕</span></li>
+<li>钻取：特殊钻头钻至月壳下约 2 米处取出土壤 <span class="loc">〔说话人1 14:14〕</span></li>
+<li>表层样品受周围环境变化影响大，应取较深层的样品 <span class="loc">〔说话人1 14:14〕</span></li>
+<li>采样方式分随机采样、系统采样与判断采样 <span class="loc">〔说话人1 14:33〕</span></li>
+<li>随机采样并非随便采样，取样点更多以保证代表性 <span class="loc">〔说话人1 14:33〕</span></li>
+<li>系统采样按一定规则进行，可减少采样量 <span class="loc">〔说话人1 14:33〕</span></li>
+<li>判断采样先作判断，再决定采哪些点 <span class="loc">〔说话人1 14:33〕</span></li>
+<li>采样代表性取决于采样数目与原始样品采集量，具体可查国标 <span class="loc">〔说话人1 14:33〕</span></li>
+</ul><h3 class="h3">B. 对比表 · 核心术语</h3><table class="tbl"><tr><th>术语</th><th>定义</th></tr>
+<tr><td>总体</td><td>分析对象的全体</td></tr>
+<tr><td>个体</td><td>总体中的每一个单位</td></tr>
+<tr><td>样本</td><td>从总体中抽取的代表性个体集合</td></tr>
+<tr><td>样本容量</td><td>样本中个体的数目</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>采样的核心原则只有三个字：代表性 <span class="loc">〔说话人1 09:49〕</span></div></div>
 
-<div class="page">
-  <h2 class="sec-title">知识结构总览</h2>
-  <div class="toc">
-    <div class="toc-item"><span class="num">01</span>检出限定义与浓度换算</div>
-    <div class="toc-item"><span class="num">02</span>定量限与检出限的区别</div>
-    <div class="toc-item"><span class="num">03</span>采样三大原则（代表性/典型性/事实性）</div>
-    <div class="toc-item"><span class="num">04</span>采样方法（随机/系统/判断）</div>
-    <div class="toc-item"><span class="num">05</span>气体样品采集（直接/富集）</div>
-    <div class="toc-item"><span class="num">06</span>地表水采样垂线与深度规范</div>
-    <div class="toc-item"><span class="num">07</span>容器选择（金属用塑料/有机物用玻璃）</div>
-    <div class="toc-item"><span class="num">08</span>固体与生物样品采集</div>
-    <div class="toc-item"><span class="num">09</span>样品保存（密封/冷藏/防腐剂）</div>
-    <div class="toc-item"><span class="num">10</span>预处理三大目标与两项要求</div>
-    <div class="toc-item"><span class="num">11</span>干法灰化/低温灰化/湿法消化</div>
-    <div class="toc-item"><span class="num">12</span>消化液组合与操作安全</div>
-    <div class="toc-item"><span class="num">13</span>密闭罐消解与微波消解</div>
-  </div>
+<div class="page"><h2 class="h2">3. 气体样品采集</h2><p class="lead">高浓度直接采样、低浓度富集；采样必须定量，须知道所采气体的体积。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>气体样品用滤膜采集，白色滤膜采样后会变黑 <span class="loc">〔说话人1 15:40〕</span></li>
+<li>PM2.5 指颗粒直径为 2.5 微米的颗粒物 <span class="loc">〔说话人1 16:27〕</span></li>
+<li>PM5 = 5 微米，PM10 = 10 微米，目前测 2.5 较多 <span class="loc">〔说话人1 16:27〕</span></li>
+<li>采样须有定量概念，必须知道所采气体的体积 <span class="loc">〔说话人1 17:08〕</span></li>
+<li>注射器有体积刻度可定量，塑料袋无法定量 <span class="loc">〔说话人1 18:21〕</span></li>
+<li>注射器体积太小，但抽气定量的思路正确 <span class="loc">〔说话人1 18:21〕</span></li>
+<li>改用抽气泵：泵有固定流量，持续抽气使之通过滤膜 <span class="loc">〔说话人1 19:25〕</span></li>
+<li>滤膜孔径与 2.5 微米相匹配，可将 PM2.5 颗粒截留富集在膜上 <span class="loc">〔说话人1 19:25〕</span></li>
+<li>PM2.5 滤膜采样需抽气 24 小时（污染较重处）<span class="loc">〔说话人1 19:25〕</span></li>
+<li>我国环境空气质量标准：苯并芘日均值 0.0025 微克/立方米 <span class="loc">〔说话人1 20:29〕</span></li>
+<li>苯并芘为致癌、致畸物，做饭油锅油烟也会产生 <span class="loc">〔说话人1 20:29〕</span></li>
+<li>气体采样装置由采集器、流量计与抽气泵组成 <span class="loc">〔说话人1 21:15〕</span></li>
+<li>高浓度组分用直接采样法，注射器直接抽取即可 <span class="loc">〔说话人1 21:15〕</span></li>
+<li>正己烷对油脂的溶解性优于酒精，但挥发强、有毒 <span class="loc">〔说话人1 22:33〕</span></li>
+<li>正己烷车间空气浓度极高，可直接采集，无需过滤 <span class="loc">〔说话人1 23:29〕</span></li>
+<li>低浓度样品需富集：滤膜阻留、固体吸附、低温冷凝 <span class="loc">〔说话人1 24:19〕</span></li>
+<li>低温冷凝：抽入后降温，使组分冷凝留在溶液里 <span class="loc">〔说话人1 24:19〕</span></li>
+<li>国标环境空气氟化物测定用滤膜采样 + 氟离子选择电极法 <span class="loc">〔说话人1 24:19〕</span></li>
+<li>气溶胶病毒采集课题源于冬奥会场馆需检测空气病毒 <span class="loc">〔说话人1 25:34〕</span></li>
+<li>方案一：抽气泵定量记录流量 Q 与时间算体积，选择性透过膜筛选 <span class="loc">〔说话人2 34:42〕</span></li>
+<li>方案一用抗原抗体杂交 + 荧光标记：病毒抗原与标记抗体结合后发荧光 <span class="loc">〔说话人2 34:42〕</span></li>
+<li>方案一分多个空气室、各配不同抗体，可一次采样测多种病毒 <span class="loc">〔说话人2 36:15〕</span></li>
+<li>方案二：抽气泵抽入圆桶，桶内放溶剂，旋转离心使病毒进入溶剂后收集送检 <span class="loc">〔说话人3 36:52〕</span></li>
+<li>方案二须用提前测定的采样率进行换算并校正系统误差 <span class="loc">〔说话人1 41:21〕</span></li>
+<li>病毒颗粒小，可透过选择性膜，灰尘等被阻留 <span class="loc">〔说话人1 41:38〕</span></li>
+<li>病毒与抗体结合后可能仍具活性 <span class="loc">〔说话人1 42:08〕</span></li>
+<li>须增设灭活处理，避免病毒集中残留 <span class="loc">〔说话人1 42:59〕</span></li>
+<li>两方案组合：选择性透过膜筛选 + 溶剂加灭病毒成分 + 分别测不同类型病毒 <span class="loc">〔说话人1 44:00〕</span></li>
+</ul><h3 class="h3">B. 对比表 · 采样策略</h3><table class="tbl"><tr><th>场景</th><th>方法</th><th>说明</th></tr>
+<tr><td>高浓度</td><td>直接采样</td><td>注射器／泵直接抽取，无需过滤</td></tr>
+<tr><td>低浓度</td><td>富集</td><td>滤膜阻留／固体吸附／低温冷凝</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>高浓度直接采样与低浓度富集的分界；PM2.5 滤膜采样需定量体积 <span class="loc">〔说话人1 24:19〕</span></div></div>
 
-  <h2 class="sec-title" style="margin-top:8mm;">01 · 检出限</h2>
-  <div class="flow">
-    <span class="step">空白信号</span><span class="arrow">→</span>
-    <span class="step">3×空白标准偏差</span><span class="arrow">→</span>
-    <span class="step">信号检出限</span><span class="arrow">→</span>
-    <span class="step">(信号检出限-A)/S</span><span class="arrow">→</span>
-    <span class="step">浓度检出限</span>
-  </div>
-  <div class="kv"><span class="k">空白信号</span>无待测组分的纯溶剂检测信号偏差=系统误差，叠加随机误差后在基准值上下波动</div>
-  <div class="kv"><span class="k">信号检出限</span>通用规则=空白标准偏差的3倍（不同方法可调整为2倍）</div>
-  <div class="kv"><span class="k">校准曲线</span>Y = A + S·C；Y=信号，C=浓度，A=截距（背景），S=斜率（灵敏度）</div>
-  <div class="hl-box"><span class="tag">必背公式</span>浓度检出限 = (信号检出限 - 截距A) / 斜率S</div>
-  <div class="kv"><span class="k">定量限</span>空白标准偏差的10倍，用于准确定量（区别于仅判断存在的检出限）</div>
-  <div class="warn-box"><span class="tag">⚠ 易混</span>检出限仅判断"有没有"（3倍空白SD），定量限才能判断"有多少"（10倍空白SD）。</div>
-</div>
+<div class="page"><h2 class="h2">4. 液体（地表水）样品采集</h2><p class="lead">地表水按河宽定采样垂线、按水深定采样层；容器选择取决于待测物，避免容器引入干扰。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>我国地表水按水质分类，分为一类、二类、三类等 <span class="loc">〔说话人1 44:55〕</span></li>
+<li>采样垂线按河宽确定：小于 50 米在正中间采 1 条 <span class="loc">〔说话人1 55:24〕</span></li>
+<li>河宽 50 到 100 米设 2 条垂线，大于 100 米设 3 条 <span class="loc">〔说话人1 55:24〕</span></li>
+<li>采样深度按水深确定：水深小于 5 米只采上层 <span class="loc">〔说话人1 55:24〕</span></li>
+<li>水深 5 到 10 米采上下两层，大于 10 米采上中下三层 <span class="loc">〔说话人1 55:24〕</span></li>
+<li>东湖每月都测，湖面小船上的红白桶即采样装置 <span class="loc">〔说话人1 55:24〕</span></li>
+<li>水质：一级很好，二级可作饮用水，三级为劣质水不可饮用 <span class="loc">〔说话人1 56:29〕</span></li>
+<li>东湖水质现基本为三、四级，夏季高温时降为四级 <span class="loc">〔说话人1 56:29〕</span></li>
+<li>小体积液体样品搅匀即可；大体积按位置与深度分层采样 <span class="loc">〔说话人1 58:26〕</span></li>
+<li>容器可用塑料容器或玻璃瓶 <span class="loc">〔说话人1 59:03〕</span></li>
+<li>测金属离子宜用塑料容器 <span class="loc">〔说话人1 59:03〕</span></li>
+<li>玻璃为硅酸钠，含离子可能渗出，故测离子不用玻璃瓶 <span class="loc">〔说话人1 59:45〕</span></li>
+<li>测有机物宜用玻璃瓶，避免塑料单体渗出干扰 <span class="loc">〔说话人1 59:45〕</span></li>
+<li>容器不得额外引入干扰 <span class="loc">〔说话人1 59:45〕</span></li>
+<li>保存时间：清洁水最长，轻污染较短，重污染最短 <span class="loc">〔说话人1 01:00:21〕</span></li>
+<li>余氯、细菌总数、pH 值须采样后立即测定 <span class="loc">〔说话人1 01:01:46〕</span></li>
+<li>余氯用于消毒，管道中须保留余氯，打开水龙头即逸失 <span class="loc">〔说话人1 01:02:27〕</span></li>
+</ul><h3 class="h3">B. 对比表 · 采样规则</h3><table class="tbl"><tr><th>依据</th><th>范围</th><th>采样点/层</th></tr>
+<tr><td>河宽</td><td>&lt; 50 米</td><td>正中间 1 条垂线</td></tr>
+<tr><td>河宽</td><td>50–100 米</td><td>2 条垂线</td></tr>
+<tr><td>河宽</td><td>&gt; 100 米</td><td>3 条垂线</td></tr>
+<tr><td>水深</td><td>&lt; 5 米</td><td>上层</td></tr>
+<tr><td>水深</td><td>5–10 米</td><td>上下两层</td></tr>
+<tr><td>水深</td><td>&gt; 10 米</td><td>上中下三层</td></tr></table>
+<h3 class="h3">C. 对比表 · 容器选择</h3><table class="tbl"><tr><th>待测物</th><th>容器</th><th>原因</th></tr>
+<tr><td>金属离子</td><td>塑料容器</td><td>避免玻璃（硅酸钠）离子渗出干扰</td></tr>
+<tr><td>有机物</td><td>玻璃瓶</td><td>避免塑料单体渗出干扰</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>垂线（50/100 米）与深度（5/10 米）规则；金属用塑料、有机物用玻璃 <span class="loc">〔说话人1 55:24〕</span></div></div>
 
-<div class="page">
-  <h2 class="sec-title">02-04 · 试样采集基础</h2>
-  <div class="kv"><span class="k">实验流程</span>采样→制样前处理→测定→数据处理→出具报告；制样前处理占整体实验时长的最大比例</div>
+<div class="page"><h2 class="h2">5. 固体与生物样品采集</h2><p class="lead">粮食用双螺旋套管、果蔬用四分法缩分；生物样品以尿液最常见，瘦肉精靠尿液试纸快筛。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>散装粮食用双螺旋套管采样器，管身带凹槽 <span class="loc">〔说话人1 01:04:56〕</span></li>
+<li>采样器插入粮堆后转动，可从不同深度取粮，无需拆封 <span class="loc">〔说话人1 01:05:20〕</span></li>
+<li>果蔬农残检测先挖去不可食用部分 <span class="loc">〔说话人1 01:06:16〕</span></li>
+<li>四分法缩分：取对角线部分样品捣碎后制样测定 <span class="loc">〔说话人1 01:06:46〕</span></li>
+<li>国标规定各类果蔬取样量，如西兰花取 10 个、西瓜南瓜取 5 个 <span class="loc">〔说话人1 01:06:46〕</span></li>
+<li>植物样品处理：清洗→干燥→粉碎→保存 <span class="loc">〔说话人1 01:07:44〕</span></li>
+<li>血液样品需离心、抗凝处理 <span class="loc">〔说话人1 01:07:44〕</span></li>
+<li>血、尿用聚乙烯或聚丙烯容器（无取代基较纯净）或硬质玻璃管 <span class="loc">〔说话人1 01:08:35〕</span></li>
+<li>毛发贴近头皮的部分反映近期情况，测当前情况须贴头皮采样 <span class="loc">〔说话人1 01:08:35〕</span></li>
+<li>瘦肉精（β-兴奋剂）属禁用，猪食用后兴奋、消耗脂肪而变瘦 <span class="loc">〔说话人1 01:09:25〕</span></li>
+<li>瘦肉精活体检测取尿液，样品须来自同一家畜个体 <span class="loc">〔说话人1 01:09:25〕</span></li>
+<li>瘦肉精现场检测每份样品不少于 10 毫升，当场检测 <span class="loc">〔说话人1 01:09:25〕</span></li>
+<li>瘦肉精快筛用试纸，试剂与待测物反应显色后与色卡比对 <span class="loc">〔说话人1 01:10:35〕</span></li>
+<li>结果阴性即结束，不必再测 <span class="loc">〔说话人1 01:10:57〕</span></li>
+<li>结果阳性须封存备份样品复检 <span class="loc">〔说话人1 01:10:57〕</span></li>
+<li>常规送检样品备两份：一份当场测、一份保存 <span class="loc">〔说话人1 01:10:57〕</span></li>
+</ul><h3 class="h3">B. 对比表 · 样品与工具</h3><table class="tbl"><tr><th>样品</th><th>采样/处理方法</th></tr>
+<tr><td>散装粮食</td><td>双螺旋套管采样器，多深度取样</td></tr>
+<tr><td>果蔬</td><td>去不可食部分 → 四分法缩分</td></tr>
+<tr><td>尿液/血液</td><td>聚乙烯、聚丙烯容器或硬质玻璃管</td></tr>
+<tr><td>毛发</td><td>贴近头皮部分反映近期情况</td></tr>
+<tr><td>瘦肉精</td><td>尿液试纸快筛，≥10 mL，备双份</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>四分法缩分：取对角线部分样品捣碎制样 <span class="loc">〔说话人1 01:06:46〕</span></div>
+<div class="exam"><span class="tag">★考点</span>瘦肉精初筛阳性须多备一份样品封存复检 <span class="loc">〔说话人1 01:10:57〕</span></div></div>
 
-  <h3 class="sub-title">核心术语</h3>
-  <table>
-    <tr><th>术语</th><th>定义</th></tr>
-    <tr><td>总体</td><td>分析对象的全体</td></tr>
-    <tr><td>个体</td><td>总体内的单个单位</td></tr>
-    <tr><td>样本</td><td>从总体中抽取的代表性个体集合</td></tr>
-    <tr><td>样本容量</td><td>样本包含的个体数量</td></tr>
-  </table>
+<div class="page"><h2 class="h2">6. 样品保存</h2><p class="lead">保存方式随样品特性而定：密封、冷藏、化学防腐；易挥发水样须装满溢流后密封。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>保存方式：密封、冷藏、化学保存（加杀菌剂/防腐剂）<span class="loc">〔说话人1 01:11:30〕</span></li>
+<li>密封一般为必要措施 <span class="loc">〔说话人1 01:11:30〕</span></li>
+<li>易坏的样品须冷藏 <span class="loc">〔说话人1 01:11:30〕</span></li>
+<li>加酸可防止金属离子沉淀与水解 <span class="loc">〔说话人1 01:11:30〕</span></li>
+<li>保存须与后续分析方法配合，不得引入干扰离子 <span class="loc">〔说话人1 01:12:08〕</span></li>
+<li>保存措施：低温保存、酸化处理、碱化处理 <span class="loc">〔说话人1 01:12:08〕</span></li>
+<li>测易挥发组分的水样须充满容器至溢流后密封 <span class="loc">〔说话人1 01:12:08〕</span></li>
+<li>顶空空间会使易挥发组分逸失，导致测定结果偏低 <span class="loc">〔说话人1 01:13:03〕</span></li>
+</ul><h3 class="h3">B. 对比表 · 保存方式</h3><table class="tbl"><tr><th>方式</th><th>作用</th></tr>
+<tr><td>密封</td><td>防止挥发与污染，一般为必要</td></tr>
+<tr><td>冷藏</td><td>抑制微生物与化学反应</td></tr>
+<tr><td>化学保存</td><td>加防腐剂／杀菌剂，或酸化、碱化</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>易挥发水样须装满容器至溢流后密封 <span class="loc">〔说话人1 01:12:08〕</span></div></div>
 
-  <h3 class="sub-title">采样三大原则</h3>
-  <div class="kv"><span class="k">代表性（核心）</span>少量样品的检测结果可代表整批分析对象的整体情况——必须掌握</div>
-  <div class="kv"><span class="k">典型性</span>匹配检测目标的特定范围（如检测污染需在污染源附近采样）</div>
-  <div class="kv"><span class="k">事实性</span>易变质样品需严格控制采样与检测的时间间隔</div>
+<div class="page"><h2 class="h2">7. 样品预处理：目标与溶解法</h2><p class="lead">预处理三目标、两要求；溶解法按待测组分性质选择水、酸、碱或有机溶剂。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>预处理三目标：①使样品便于分析；②除去干扰物质；③浓缩低浓度待测组分 <span class="loc">〔说话人1 01:14:30〕</span></li>
+<li>使样品便于分析：如把固体样品转变为液体便于上样 <span class="loc">〔说话人1 01:14:30〕</span></li>
+<li>两项要求：①减少待测成分损失；②不得引入干扰物质 <span class="loc">〔说话人1 01:15:17〕</span></li>
+<li>溶解法适用于可溶组分，水溶性组分直接用水溶解 <span class="loc">〔说话人1 01:16:02〕</span></li>
+<li>色素、苯甲酸、山梨酸等水溶性组分可用水溶解配制 <span class="loc">〔说话人1 01:16:02〕</span></li>
+<li>碳酸饮料（可乐、雪碧等）含苯甲酸钠、山梨酸钾等防腐剂 <span class="loc">〔说话人1 01:17:09〕</span></li>
+<li>山梨酸钾的防腐效果优于苯甲酸钠 <span class="loc">〔说话人1 01:17:09〕</span></li>
+<li>罐头不加防腐剂，靠高糖防腐（糖分高使细菌死亡）<span class="loc">〔说话人1 01:17:53〕</span></li>
+<li>酱油富含氨基酸须加防腐剂；无防腐剂者盐分高，靠高盐防腐 <span class="loc">〔说话人1 01:19:11〕</span></li>
+<li>按国标添加防腐剂即无安全问题 <span class="loc">〔说话人1 01:19:11〕</span></li>
+<li>酸性溶液浸出可测油脂中的金属，如测铁生成铁离子 <span class="loc">〔说话人1 01:19:55〕</span></li>
+<li>酚类等弱酸性物质（药物、多酚、茶多酚）可用碱性溶液浸出 <span class="loc">〔说话人1 01:19:55〕</span></li>
+<li>有机氯农药残留等有机物用有机溶剂提取 <span class="loc">〔说话人1 01:19:55〕</span></li>
+</ul><h3 class="h3">B. 对比表 · 溶解法溶剂选择</h3><table class="tbl"><tr><th>待测组分</th><th>溶剂</th></tr>
+<tr><td>色素、苯甲酸、山梨酸</td><td>水</td></tr>
+<tr><td>油脂中的金属（铁等）</td><td>酸性溶液浸出</td></tr>
+<tr><td>酚类、弱酸性药物、多酚</td><td>碱性溶液浸出</td></tr>
+<tr><td>有机氯农药残留</td><td>有机溶剂提取</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>预处理三目标（便于分析、除干扰、浓缩）与两要求（不损失待测物、不引入干扰）<span class="loc">〔说话人1 01:15:17〕</span></div></div>
 
-  <h3 class="sub-title">采样方法</h3>
-  <div class="kv"><span class="k">随机采样</span>需足够样本量保障代表性</div>
-  <div class="kv"><span class="k">系统采样</span>按固定规则采样，可减少样本量</div>
-  <div class="kv"><span class="k">判断采样</span>基于专业判断选择采样点</div>
-  <div class="hl-box"><span class="tag">金句</span>"样品采集的原则，其实只有三个字，叫做代表性"</div>
-</div>
+<div class="page"><h2 class="h2">8. 分解法：干法灰化 / 低温灰化 / 湿法消化</h2><p class="lead">测金属前须破坏有机物；干法靠高温、低温靠氧自由基、湿法靠强氧化剂加热。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>分解法分干法灰化与湿法消化两类 <span class="loc">〔说话人1 01:20:30〕</span></li>
+<li>测头发中的锌：头发不能直接上样（会堵塞损坏仪器），须先制成溶液并过滤 <span class="loc">〔说话人1 01:21:01〕</span></li>
+<li>干法灰化：样品置坩埚，马弗炉 400 至 700 ℃ 高温氧化，只余无机待测组分 <span class="loc">〔说话人1 01:21:43〕</span></li>
+<li>干法灰化分高温灰化与低温灰化两种 <span class="loc">〔说话人1 01:21:43〕</span></li>
+<li>低温灰化用射频放电产生氧自由基 <span class="loc">〔说话人1 01:21:43〕</span></li>
+<li>低温灰化约 100 ℃ 即可快速完成氧化分解 <span class="loc">〔说话人1 01:21:43〕</span></li>
+<li>干法灰化不加任何试剂，直接灼烧 <span class="loc">〔说话人1 01:22:25〕</span></li>
+<li>湿法消化加入浓硝酸、高氯酸、硫酸等强氧化剂，加热分解有机物 <span class="loc">〔说话人1 01:22:25〕</span></li>
+<li>湿法消化温度由试剂沸点控制，低于干法灰化温度 <span class="loc">〔说话人1 01:22:25〕</span></li>
+<li>湿法消化适用于易挥发组分，温度较低可减少挥发损失 <span class="loc">〔说话人1 01:22:25〕</span></li>
+<li>湿法消化缺点：产生酸雾与有害气体，且要求试剂纯度高以免引入干扰 <span class="loc">〔说话人1 01:22:25〕</span></li>
+<li>有机物分解结果：碳变二氧化碳、硫变二氧化硫、氢变水 <span class="loc">〔说话人1 01:24:00〕</span></li>
+<li>无机物以离子形式保留下来 <span class="loc">〔说话人1 01:24:00〕</span></li>
+<li>干法与湿法目的一致，只是过程不同 <span class="loc">〔说话人1 01:24:00〕</span></li>
+<li>低温灰化能量并不低，只是不需要那么高的温度 <span class="loc">〔说话人1 01:28:34〕</span></li>
+<li>等离子体 = 电离度大于千分之一的电离气体 <span class="loc">〔说话人1 01:27:10〕</span></li>
+<li>空气击穿即空气导电，分子电离生成离子与电子 <span class="loc">〔说话人1 01:27:33〕</span></li>
+<li>电离气体中电子数与离子数基本相等 <span class="loc">〔说话人1 01:28:05〕</span></li>
+<li>闪电即天然等离子体 <span class="loc">〔说话人1 01:27:33〕</span></li>
+</ul><h3 class="h3">B. 对比表 · 三种分解法</h3><table class="tbl"><tr><th>方法</th><th>原理/温度</th><th>试剂</th><th>适用</th></tr>
+<tr><td>干法灰化</td><td>马弗炉 400–700 ℃ 氧化</td><td>不加试剂</td><td>不易挥发组分</td></tr>
+<tr><td>低温灰化</td><td>射频放电氧自由基，约 100 ℃</td><td>氧自由基</td><td>易挥发组分</td></tr>
+<tr><td>湿法消化</td><td>强氧化剂加热，由沸点控温</td><td>硝酸/高氯酸/硫酸</td><td>易挥发组分</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>干法 400–700 ℃、低温约 100 ℃（氧自由基）、湿法由沸点控温且低于干法 <span class="loc">〔说话人1 01:21:43〕</span></div></div>
 
-<div class="page">
-  <h2 class="sec-title">05 · 气体样品采集</h2>
-  <table>
-    <tr><th>场景</th><th>方法</th><th>示例</th></tr>
-    <tr><td>高浓度</td><td>直接采样法</td><td>正己烷车间空气（浓度极高直接采集）</td></tr>
-    <tr><td>低浓度</td><td>滤膜阻留</td><td>PM2.5检测（抽气泵+特定孔径滤膜，抽气24h富集）</td></tr>
-    <tr><td>低浓度</td><td>固体吸附</td><td>吸附剂管富集</td></tr>
-    <tr><td>低浓度</td><td>低温冷凝</td><td>低温冷凝富集</td></tr>
-  </table>
-  <div class="kv"><span class="k">苯并芘标准</span>我国环境空气质量标准：苯并芘日均值=0.0025 μg/m³；超标时段与肺癌发病率存在相关性</div>
-  <div class="kv"><span class="k">气溶胶病毒采集</span>方案一=抽气→选择性透过膜→抗原抗体荧光直测；方案二=抽气→带溶剂离心装置富集→送检。优化：滤膜预筛杂质+溶剂提前灭活+多病毒并行检测</div>
+<div class="page"><h2 class="h2">9. 消化液选择与操作安全</h2><p class="lead">硝酸适配易消解、硫酸升沸点、高氯酸强氧化高沸点；高氯酸与氢氟酸操作须格外小心。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>消化液种类：硝酸、硝酸硫酸、硝酸高氯酸、硫酸、高氯酸、氢氟酸等 <span class="loc">〔说话人1 01:28:57〕</span></li>
+<li>浓硝酸氧化性强但沸点低，温度太高会分解，适用于易消解的样品 <span class="loc">〔说话人1 01:28:57〕</span></li>
+<li>硫酸沸点较高且具强脱水性，与硝酸配合可提升反应温度 <span class="loc">〔说话人1 01:28:57〕</span></li>
+<li>部分物质会与硫酸根生成沉淀，须根据待测物选择 <span class="loc">〔说话人1 01:28:57〕</span></li>
+<li>高氯酸兼具氧化性与脱水性，沸点非常高 <span class="loc">〔说话人1 01:29:51〕</span></li>
+<li>实验常用硝酸与高氯酸组合消化 <span class="loc">〔说话人1 01:29:51〕</span></li>
+<li>高氯酸遇酚类、羟基类有机物会生成易爆的高氯酸酯 <span class="loc">〔说话人1 01:29:51〕</span></li>
+<li>操作时应先加硝酸再加高氯酸，使酚羟基先被氧化 <span class="loc">〔说话人1 01:31:22〕</span></li>
+<li>样品颜色变黑变暗即氧化不完全，须立即停止加热、撤去热源 <span class="loc">〔说话人1 01:31:22〕</span></li>
+<li>冷却后补加硝酸使溶液清亮，再重新加热 <span class="loc">〔说话人1 01:32:27〕</span></li>
+<li>消解全程不得离人 <span class="loc">〔说话人1 01:32:27〕</span></li>
+<li>消解在通风橱中进行，留小缝，不得将头伸入 <span class="loc">〔说话人1 01:31:22〕</span></li>
+<li>氢氟酸与二氧化硅反应，用于处理玻璃、土壤（硅酸盐）等含硅样品 <span class="loc">〔说话人1 01:33:03〕</span></li>
+<li>氢氟酸可刻蚀玻璃 <span class="loc">〔说话人2 01:33:52〕</span></li>
+<li>氢氟酸与骨骼中的钙结合生成氟化钙，造成不可逆损伤，严重时须截肢 <span class="loc">〔说话人1 01:34:13〕</span></li>
+<li>氢氟酸俗称"化骨水" <span class="loc">〔说话人1 01:35:47〕</span></li>
+<li>氢氟酸操作必须戴手套、口罩，做好全套防护 <span class="loc">〔说话人1 01:35:00〕</span></li>
+<li>观察实验现象只能从侧面看，不得从正上方俯视 <span class="loc">〔说话人1 01:35:00〕</span></li>
+<li>事故发生前必有无数先兆，须全程警惕 <span class="loc">〔说话人1 01:30:51〕</span></li>
+</ul><h3 class="h3">B. 对比表 · 消化液作用</h3><table class="tbl"><tr><th>试剂</th><th>特性</th><th>作用</th></tr>
+<tr><td>硝酸</td><td>氧化性强、沸点低</td><td>基础消解，适配易消解样品</td></tr>
+<tr><td>硫酸</td><td>沸点高、强脱水性</td><td>提升反应温度</td></tr>
+<tr><td>高氯酸</td><td>强氧化性、高沸点</td><td>彻底消解，遇酚类易爆</td></tr>
+<tr><td>氢氟酸</td><td>与二氧化硅反应</td><td>处理含硅样品，剧毒防钙</td></tr></table>
+<div class="wrong"><span class="tag">★考点</span>高氯酸遇酚类/羟基类易爆，变黑即停加热；氢氟酸为"化骨水"，与骨骼钙结合不可逆损伤 <span class="loc">〔说话人1 01:34:13〕</span></div></div>
 
-  <h2 class="sec-title" style="margin-top:8mm;">06-07 · 液体样品采集</h2>
-  <h3 class="sub-title">地表水采样垂线（按河流宽度）</h3>
-  <table>
-    <tr><th>河流宽度</th><th>采样垂线数</th></tr>
-    <tr><td>&lt; 50米</td><td>1条</td></tr>
-    <tr><td>50-100米</td><td>2条</td></tr>
-    <tr><td>&gt; 100米</td><td>3条</td></tr>
-  </table>
-  <h3 class="sub-title">地表水采样深度（按水深）</h3>
-  <table>
-    <tr><th>水深</th><th>采样层</th></tr>
-    <tr><td>&lt; 5米</td><td>上层</td></tr>
-    <tr><td>5-10米</td><td>上下两层</td></tr>
-    <tr><td>&gt; 10米</td><td>上中下三层</td></tr>
-  </table>
-  <div class="warn-box"><span class="tag">⚠ 反直觉</span>测金属离子用塑料容器（防玻璃离子渗出），测有机物用玻璃容器（防塑料单体溶出）。与直觉相反！</div>
-  <div class="kv"><span class="k">立即测定指标</span>余氯、细菌总数、pH值（避免组分挥发或环境干扰）</div>
-</div>
+<div class="page"><h2 class="h2">10. 特殊消解技术：密闭罐与微波</h2><p class="lead">密闭罐靠高压、微波靠分子级摩擦生热，二者都能大幅提升消解效率。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>改进消解方法包括密闭罐消解、微波消解与部分分解法 <span class="loc">〔说话人1 01:35:24〕</span></li>
+<li>密闭罐结构：不锈钢外壳 + 聚四氟乙烯或聚乙烯耐酸内衬 <span class="loc">〔说话人1 01:35:47〕</span></li>
+<li>氢氟酸须用聚四氟乙烯或聚乙烯内衬托容器，不能用玻璃瓶 <span class="loc">〔说话人1 01:35:47〕</span></li>
+<li>密闭罐加混酸、拧盖后加热，形成高压环境，消解更快 <span class="loc">〔说话人1 01:36:41〕</span></li>
+<li>密闭罐原理类似高压锅 <span class="loc">〔说话人1 01:36:41〕</span></li>
+<li>微波是波长为厘米级的交变电场（电磁波）<span class="loc">〔说话人1 01:38:13〕</span></li>
+<li>微波炉门上的金属网尺寸与波长相当，起屏蔽作用（笼状效应）<span class="loc">〔说话人1 01:39:27〕</span></li>
+<li>微波消解原理：极性分子（如水）在交变电场中快速转动摩擦生热 <span class="loc">〔说话人1 01:40:00〕</span></li>
+<li>微波消解从分子层面加热，故均匀且快速 <span class="loc">〔说话人1 01:40:00〕</span></li>
+<li>气罐颜色标识：氧气蓝罐、氢气绿罐、氮气黑罐 <span class="loc">〔说话人1 01:25:25〕</span></li>
+<li>乙炔气体易燃易爆，用灰色钢罐 <span class="loc">〔说话人1 01:25:25〕</span></li>
+<li>不认识的气罐不得随意拧动，须保持敬畏 <span class="loc">〔说话人1 01:26:12〕</span></li>
+</ul><h3 class="h3">B. 对比表 · 特殊消解</h3><table class="tbl"><tr><th>方法</th><th>原理</th><th>特点</th></tr>
+<tr><td>密闭罐消解</td><td>密闭加热形成高压</td><td>类似高压锅，快，适配氢氟酸</td></tr>
+<tr><td>微波消解</td><td>交变电场使极性分子摩擦生热</td><td>分子级均匀加热，效率高</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>微波消解原理：极性分子在厘米级交变电场中转动摩擦生热 <span class="loc">〔说话人1 01:40:00〕</span></div></div>
 
-<div class="page">
-  <h2 class="sec-title">08 · 固体与生物样品采集</h2>
-  <div class="kv"><span class="k">散装粮食</span>双螺旋套管采样器（带凹槽），插入粮堆采不同深度样本，无需拆封整袋包装</div>
-  <div class="kv"><span class="k">果蔬缩分</span>去除不可食用部分→四分法（取对角线部分）→捣碎制备待测样</div>
-  <table>
-    <tr><th>样品类型</th><th>容器/要求</th></tr>
-    <tr><td>尿液、血液</td><td>聚乙烯、聚丙烯容器或硬质玻璃管</td></tr>
-    <tr><td>毛发</td><td>贴近头皮部分反映近期情况</td></tr>
-    <tr><td>唾液</td><td>同尿液/血液容器要求</td></tr>
-  </table>
-  <div class="hl-box"><span class="tag">瘦肉精检测</span>家畜瘦肉精检测可采集尿液样本→试纸条现场快速筛查→现场采样≥10mL→样本备双份（一份当场检测+一份封存留作阳性复检用，避免争议）</div>
+<div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv">
+<li>信号检出限 = 3 × 空白标准偏差 <span class="loc">〔说话人1 01:43〕</span></li>
+<li>定量限 = 10 × 空白标准偏差（了解）<span class="loc">〔说话人1 04:54〕</span></li>
+<li>校准曲线 Y = A + S·C，A 为截距（背景）、S 为斜率（灵敏度）<span class="loc">〔说话人1 04:38〕</span></li>
+<li>浓度检出限 =（信号检出限 − A）÷ S <span class="loc">〔说话人1 04:54〕</span></li>
+<li>采样核心原则：代表性 <span class="loc">〔说话人1 12:20〕</span></li>
+<li>采样三原则：代表性、典型性、实时性 <span class="loc">〔说话人1 12:20〕</span></li>
+<li>垂线：&lt;50 米 1 条、50–100 米 2 条、&gt;100 米 3 条 <span class="loc">〔说话人1 55:24〕</span></li>
+<li>深度：&lt;5 米上层、5–10 米上下层、&gt;10 米上中下三层 <span class="loc">〔说话人1 55:24〕</span></li>
+<li>金属离子用塑料、有机物用玻璃 <span class="loc">〔说话人1 59:45〕</span></li>
+<li>余氯、细菌总数、pH 值立即测定 <span class="loc">〔说话人1 01:01:46〕</span></li>
+<li>双螺旋套管采样器采粮食 <span class="loc">〔说话人1 01:04:56〕</span></li>
+<li>四分法取对角线部分缩分 <span class="loc">〔说话人1 01:06:46〕</span></li>
+<li>瘦肉精检测取尿，每份 ≥10 mL，备双份 <span class="loc">〔说话人1 01:09:25〕</span></li>
+<li>易挥发水样装满至溢流密封 <span class="loc">〔说话人1 01:12:08〕</span></li>
+<li>预处理三目标：便于分析、除干扰、浓缩 <span class="loc">〔说话人1 01:14:30〕</span></li>
+<li>预处理两要求：不损失待测物、不引入干扰 <span class="loc">〔说话人1 01:15:17〕</span></li>
+<li>干法灰化 400–700 ℃，不加试剂 <span class="loc">〔说话人1 01:21:43〕</span></li>
+<li>低温灰化用氧自由基，约 100 ℃ <span class="loc">〔说话人1 01:21:43〕</span></li>
+<li>湿法消化：强氧化剂加热，由沸点控温 <span class="loc">〔说话人1 01:22:25〕</span></li>
+<li>高氯酸遇酚类易爆，变黑即停加热 <span class="loc">〔说话人1 01:31:22〕</span></li>
+<li>氢氟酸＝化骨水，与钙结合，须全套防护 <span class="loc">〔说话人1 01:34:13〕</span></li>
+<li>微波消解：极性分子摩擦生热，分子级均匀加热 <span class="loc">〔说话人1 01:40:00〕</span></li>
+</ul></div>
 
-  <h2 class="sec-title" style="margin-top:8mm;">09 · 样品保存</h2>
-  <div class="kv"><span class="k">通用方式</span>①密封（防挥发污染）②冷藏（低温抑制微生物和反应）③添加化学防腐剂（抑制微生物）</div>
-  <div class="kv"><span class="k">核心目标</span>避免样品组分变质、待测物损失，同时避免引入干扰后续检测的杂质</div>
-  <div class="warn-box"><span class="tag">⚠ 特殊</span>检测易挥发组分的水样：需将容器装满至溢流后密封，避免顶空空间导致待测组分挥发→最终检测结果偏低。</div>
-</div>
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2><table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>空白信号偏差算随机误差</td><td>空白偏差属系统误差 <span class="loc">〔说话人1 00:58〕</span></td></tr>
+<tr><td>检出限倍数固定为 3</td><td>通用 3 倍，部分方法规定 2 倍 <span class="loc">〔说话人1 01:43〕</span></td></tr>
+<tr><td>定量限与检出限相同</td><td>定量限 k=10，检出限常见 k=3 <span class="loc">〔说话人1 04:54〕</span></td></tr>
+<tr><td>随机采样=随便采样</td><td>随机采样仍需满足代表性 <span class="loc">〔说话人1 14:33〕</span></td></tr>
+<tr><td>塑料容器适合所有样品</td><td>测金属用塑料，测有机物用玻璃 <span class="loc">〔说话人1 59:45〕</span></td></tr>
+<tr><td>易挥发水样装半瓶即可</td><td>须装满至溢流后密封 <span class="loc">〔说话人1 01:12:40〕</span></td></tr>
+<tr><td>干法灰化适用于易挥发组分</td><td>干法适用不易挥发；易挥发用湿法或低温灰化 <span class="loc">〔说话人1 01:22:25〕</span></td></tr>
+<tr><td>高氯酸见样品变黑继续加热</td><td>变黑即氧化不完全，立即停加热补硝酸 <span class="loc">〔说话人1 01:31:22〕</span></td></tr>
+<tr><td>氢氟酸只是普通强酸</td><td>氢氟酸与骨骼钙结合，可致不可逆损伤 <span class="loc">〔说话人1 01:34:13〕</span></td></tr>
+<tr><td>微波靠加热容器传热</td><td>微波使极性分子转动摩擦生热 <span class="loc">〔说话人1 01:40:00〕</span></td></tr>
+</table></div>
 
-<div class="page">
-  <h2 class="sec-title">10 · 样品预处理目标与要求</h2>
-  <div class="hl-box"><span class="tag">三大目标</span>①便于分析（将样品处理为适配检测的形态）②除干扰（去除检测干扰组分）③浓缩（浓缩低浓度待测组分）</div>
-  <div class="hl-box"><span class="tag">两项要求</span>①严格避免待测组分损失 ②不得引入新的干扰物质</div>
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2><table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>信号检出限定义</td><td>§1</td><td>〔说话人1 01:43〕</td><td>填空</td></tr>
+<tr><td>浓度检出限换算</td><td>§1</td><td>〔说话人1 04:54〕</td><td>计算</td></tr>
+<tr><td>定量限与检出限区别</td><td>§1</td><td>〔说话人1 04:54〕</td><td>辨析</td></tr>
+<tr><td>采样三原则</td><td>§2</td><td>〔说话人1 12:20〕</td><td>简答</td></tr>
+<tr><td>气体高低浓度采样</td><td>§3</td><td>〔说话人1 24:19〕</td><td>简答</td></tr>
+<tr><td>地表水垂线规则</td><td>§4</td><td>〔说话人1 55:24〕</td><td>填空</td></tr>
+<tr><td>地表水深度规则</td><td>§4</td><td>〔说话人1 55:24〕</td><td>填空</td></tr>
+<tr><td>容器选择</td><td>§4</td><td>〔说话人1 59:45〕</td><td>辨析</td></tr>
+<tr><td>四分法缩分</td><td>§5</td><td>〔说话人1 01:06:46〕</td><td>简答</td></tr>
+<tr><td>易挥发水样保存</td><td>§6</td><td>〔说话人1 01:13:03〕</td><td>简答</td></tr>
+<tr><td>预处理三目标两要求</td><td>§7</td><td>〔说话人1 01:15:17〕</td><td>简答</td></tr>
+<tr><td>三种分解法</td><td>§8</td><td>〔说话人1 01:21:43〕</td><td>简答</td></tr>
+<tr><td>高氯酸/氢氟酸安全</td><td>§9</td><td>〔说话人1 01:34:13〕</td><td>简答</td></tr>
+<tr><td>微波消解原理</td><td>§10</td><td>〔说话人1 01:40:00〕</td><td>简答</td></tr>
+<tr><td>设计题：整套流程</td><td>§2–§10</td><td>〔说话人1 01:13:03〕</td><td>设计</td></tr>
+</table></div>
 
-  <h2 class="sec-title" style="margin-top:8mm;">11 · 分解法预处理</h2>
-  <table>
-    <tr><th>方法</th><th>条件</th><th>特点</th><th>适用范围</th></tr>
-    <tr><td>干法灰化</td><td>400-700℃马弗炉</td><td>高温氧化分解，无需额外试剂，仅剩余无机组分</td><td>不易挥发的待测组分</td></tr>
-    <tr><td>低温灰化</td><td>~100℃，氧自由基</td><td>射频放电产生氧自由基，低温氧化</td><td>易挥发待测组分</td></tr>
-    <tr><td>湿法消化</td><td>强氧化剂加热</td><td>浓硝酸/高氯酸/硫酸，温度由试剂沸点控制（低于干法）</td><td>易挥发组分</td></tr>
-  </table>
-  <div class="kv"><span class="k">溶解法</span>水溶性组分直接用水溶解；油脂中金属离子用酸性溶液浸出；有机氯农药用有机溶剂提取</div>
-
-  <h2 class="sec-title" style="margin-top:8mm;">12 · 消化液组合与安全</h2>
-  <table>
-    <tr><th>试剂</th><th>特性</th><th>作用</th></tr>
-    <tr><td>硝酸</td><td>适配易消解样品</td><td>基础消解</td></tr>
-    <tr><td>硫酸</td><td>高沸点</td><td>提升反应温度</td></tr>
-    <tr><td>高氯酸</td><td>强氧化性+高沸点</td><td>彻底消解</td></tr>
-  </table>
-  <div class="warn-box"><span class="tag">⚠ 高氯酸</span>接触酚类、羟基类有机物易生成易爆物质！消解全程不得离人！若发现样品变黑→立即停止加热→冷却后补加硝酸！</div>
-  <div class="warn-box"><span class="tag">⚠ 氢氟酸</span>可与骨骼中的钙结合造成不可逆损伤（俗称"化骨水"）！操作时必须全程佩戴全套防护用具，避免直接接触！</div>
-  <div class="hl-box"><span class="tag">安全金句</span>"凡是发生事故的，一定有无数个先兆在提醒你，都没有被发现，才会出现事故"</div>
-</div>
-
-<div class="page">
-  <h2 class="sec-title">13 · 特殊消解技术</h2>
-  <div class="kv"><span class="k">密闭罐消解</span>带聚四氟乙烯/聚乙烯内衬的不锈钢密闭罐；类似高压锅的高压环境→大幅提升消解效率；适配氢氟酸等强腐蚀性试剂</div>
-  <div class="kv"><span class="k">微波消解</span>微波=厘米级波长的交变电场；使样品中极性分子快速转动摩擦生热；实现从分子层面的均匀加热；消解效率远高于常规方法</div>
-
-  <h2 class="sec-title" style="margin-top:8mm;">复习清单</h2>
-  <ul class="checklist">
-    <li>空白信号的误差来源（系统误差+随机误差）</li>
-    <li>信号检出限定义（3倍空白标准偏差）</li>
-    <li>浓度检出限换算公式（Y=A+S·C）</li>
-    <li>定量限与检出限的区别（10倍 vs 3倍）</li>
-    <li>采样三大原则（代表性/典型性/事实性）</li>
-    <li>随机/系统/判断采样的区别</li>
-    <li>气体样品高浓度vs低浓度采集方法</li>
-    <li>PM2.5滤膜采样与苯并芘标准（0.0025 μg/m³）</li>
-    <li>地表水采样垂线规则（按宽度：50/100米分界）</li>
-    <li>地表水采样深度规则（按水深：5/10米分界）</li>
-    <li>金属离子vs有机物的容器选择（塑料vs玻璃）</li>
-    <li>余氯/细菌/pH需立即测定</li>
-    <li>双螺旋套管采样器的使用</li>
-    <li>四分法缩分操作</li>
-    <li>瘦肉精检测流程（快筛+双份备份）</li>
-    <li>样品保存三种方式（密封/冷藏/化学防腐剂）</li>
-    <li>易挥发水样装满溢流保存</li>
-    <li>预处理三大目标与两项要求</li>
-    <li>干法灰化/低温灰化/湿法消化的原理与适用范围</li>
-    <li>消化液组合规则（硝酸+硫酸+高氯酸）</li>
-    <li>高氯酸与氢氟酸的操作安全</li>
-    <li>密闭罐消解与微波消解的原理</li>
-  </ul>
-</div>
-
-<div class="page">
-  <h2 class="sec-title">主动回忆题</h2>
-  <div class="qa">
-    <div class="q">Q1：如何从信号检出限换算得到浓度检出限？</div>
-    <div class="a">首先建立校准曲线Y = A + S·C，其中Y为检测信号，C为待测物浓度，A为截距（背景信号），S为斜率（方法灵敏度）。信号检出限通常取空白标准偏差的3倍。将信号检出限代入校准曲线，扣除背景截距A后除以斜率S，即得到浓度检出限：C检出限 = (信号检出限 - A) / S。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q2：样品采集的核心原则是什么？地表水采样垂线和采样深度如何确定？</div>
-    <div class="a">采样的核心原则是代表性——少量送检样品的检验结果能代表整批物料。此外还有典型性（匹配检测目标范围）和事实性（易变质样品注意时效性）。地表水采样垂线按河流宽度确定：&lt;50米设1条，50-100米设2条，&gt;100米设3条。采样深度按水深确定：&lt;5米采上层，5-10米采上下两层，&gt;10米采上中下三层。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q3：干法灰化、低温灰化和湿法消化三种分解法各有什么特点和适用范围？</div>
-    <div class="a">干法灰化在400-700℃马弗炉中高温氧化分解，无需额外试剂，适用于不易挥发的待测组分，但高温可能导致易挥发组分损失。低温灰化通过射频放电产生氧自由基，在约100℃即可氧化分解，适用于易挥发待测组分。湿法消化加入浓硝酸、高氯酸、硫酸等强氧化剂，加热分解有机物，反应温度由试剂沸点控制（低于干法灰化温度），也适用于易挥发组分，温度较低可减少挥发损失。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q4：样品预处理的三大目标和两项关键要求是什么？为什么高氯酸和氢氟酸操作需要特别注意安全？</div>
-    <div class="a">预处理三大目标：①将样品处理为适配检测的形态（便于分析）；②去除检测干扰组分；③浓缩低浓度待测组分。两项关键要求：①严格避免待测组分损失；②不得引入新的干扰物质。高氯酸接触酚类、羟基类有机物易生成易爆物质，消解全程不得离人，样品变黑需立即停止加热。氢氟酸可与骨骼中的钙结合造成不可逆损伤（俗称"化骨水"），必须全程佩戴全套防护用具。</div>
-  </div>
-</div>
-
-</body>
-</html>
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2><table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>检出限做法：测空白、看噪音</td><td>方法</td><td>§1</td><td>〔说话人1 00:23〕</td></tr>
+<tr><td>2</td><td>空白信号偏差属系统误差</td><td>概念</td><td>§1</td><td>〔说话人1 00:58〕</td></tr>
+<tr><td>3</td><td>空白信号叠加随机误差后波动</td><td>概念</td><td>§1</td><td>〔说话人1 01:27〕</td></tr>
+<tr><td>4</td><td>信号检出限=空白标准偏差 3 倍</td><td>定义</td><td>§1</td><td>〔说话人1 01:43〕</td></tr>
+<tr><td>5</td><td>倍数可按方法取 2 倍</td><td>易错</td><td>§1</td><td>〔说话人1 01:43〕</td></tr>
+<tr><td>6</td><td>±3 倍标准偏差为区分界限</td><td>机制</td><td>§1</td><td>〔说话人1 02:17〕</td></tr>
+<tr><td>7</td><td>信号检出限记作 Y_L</td><td>记号</td><td>§1</td><td>〔说话人1 02:38〕</td></tr>
+<tr><td>8</td><td>校准曲线定义（纵信号横浓度）</td><td>定义</td><td>§1</td><td>〔说话人1 02:38〕</td></tr>
+<tr><td>9</td><td>校准曲线表达式 Y=A+S·C</td><td>公式</td><td>§1</td><td>〔说话人1 02:38〕</td></tr>
+<tr><td>10</td><td>截距 A 为背景（系统误差）</td><td>概念</td><td>§1</td><td>〔说话人1 04:38〕</td></tr>
+<tr><td>11</td><td>斜率 S 为灵敏度</td><td>概念</td><td>§1</td><td>〔说话人1 04:38〕</td></tr>
+<tr><td>12</td><td>由信号除以斜率求浓度</td><td>方法</td><td>§1</td><td>〔说话人1 04:54〕</td></tr>
+<tr><td>13</td><td>浓度检出限换算公式</td><td>公式</td><td>§1</td><td>〔说话人1 04:54〕</td></tr>
+<tr><td>14</td><td>色谱 k 取 2</td><td>数字</td><td>§1</td><td>〔说话人1 04:54〕</td></tr>
+<tr><td>15</td><td>定量限 k 取 10</td><td>数字</td><td>§1</td><td>〔说话人1 04:54〕</td></tr>
+<tr><td>16</td><td>完整分析流程五步</td><td>流程</td><td>§2</td><td>〔说话人1 06:29〕</td></tr>
+<tr><td>17</td><td>制样前处理耗时最长</td><td>要点</td><td>§2</td><td>〔说话人1 07:26〕</td></tr>
+<tr><td>18</td><td>总体定义</td><td>定义</td><td>§2</td><td>〔说话人1 08:08〕</td></tr>
+<tr><td>19</td><td>个体；采样；样本量国标规定</td><td>定义</td><td>§2</td><td>〔说话人1 08:08〕</td></tr>
+<tr><td>20</td><td>样本须具代表性；样本容量</td><td>定义</td><td>§2</td><td>〔说话人1 09:14〕</td></tr>
+<tr><td>21</td><td>采样误差须控制在可控范围</td><td>要点</td><td>§2</td><td>〔说话人1 09:49〕</td></tr>
+<tr><td>22</td><td>采样原则：代表性（核心）</td><td>考点</td><td>§2</td><td>〔说话人1 09:49〕</td></tr>
+<tr><td>23</td><td>典型性：针对检测目的选范围</td><td>要点</td><td>§2</td><td>〔说话人1 10:40〕</td></tr>
+<tr><td>24</td><td>实时性：控制采样与检测时间</td><td>要点</td><td>§2</td><td>〔说话人1 11:26〕</td></tr>
+<tr><td>25</td><td>采样三原则并记</td><td>考点</td><td>§2</td><td>〔说话人1 12:20〕</td></tr>
+<tr><td>26</td><td>采样点选择须目的明确</td><td>要点</td><td>§2</td><td>〔说话人1 13:40〕</td></tr>
+<tr><td>27</td><td>表取与钻取（月壳下约 2 米）</td><td>分类</td><td>§2</td><td>〔说话人1 14:14〕</td></tr>
+<tr><td>28</td><td>表层受环境影响大需取深层</td><td>要点</td><td>§2</td><td>〔说话人1 14:14〕</td></tr>
+<tr><td>29</td><td>随机/系统/判断采样</td><td>分类</td><td>§2</td><td>〔说话人1 14:33〕</td></tr>
+<tr><td>30</td><td>样品过滤膜；PM2.5 颗粒</td><td>概念</td><td>§3</td><td>〔说话人1 15:40〕</td></tr>
+<tr><td>31</td><td>PM2.5/PM5/PM10 粒径</td><td>数字</td><td>§3</td><td>〔说话人1 16:27〕</td></tr>
+<tr><td>32</td><td>采样须定量体积</td><td>要点</td><td>§3</td><td>〔说话人1 17:08〕</td></tr>
+<tr><td>33</td><td>注射器可定量、体积太小</td><td>要点</td><td>§3</td><td>〔说话人1 18:21〕</td></tr>
+<tr><td>34</td><td>抽气泵+滤膜孔径阻留</td><td>方法</td><td>§3</td><td>〔说话人1 19:25〕</td></tr>
+<tr><td>35</td><td>PM2.5 采样抽气 24 小时</td><td>数字</td><td>§3</td><td>〔说话人1 19:25〕</td></tr>
+<tr><td>36</td><td>苯并芘日均值 0.0025 微克/立方米</td><td>数字</td><td>§3</td><td>〔说话人1 20:29〕</td></tr>
+<tr><td>37</td><td>苯并芘致癌致畸、油烟产生</td><td>应用</td><td>§3</td><td>〔说话人1 20:29〕</td></tr>
+<tr><td>38</td><td>采样装置：采集器/流量计/抽气泵；直接采样</td><td>方法</td><td>§3</td><td>〔说话人1 21:15〕</td></tr>
+<tr><td>39</td><td>正己烷溶解油脂优于酒精</td><td>要点</td><td>§3</td><td>〔说话人1 22:33〕</td></tr>
+<tr><td>40</td><td>高浓度直接采集无需过滤</td><td>要点</td><td>§3</td><td>〔说话人1 23:29〕</td></tr>
+<tr><td>41</td><td>低浓度富集：滤膜/吸附/冷凝</td><td>方法</td><td>§3</td><td>〔说话人1 24:19〕</td></tr>
+<tr><td>42</td><td>氟化物测定氟离子选择电极法</td><td>应用</td><td>§3</td><td>〔说话人1 24:19〕</td></tr>
+<tr><td>43</td><td>气溶胶病毒采集课题背景</td><td>应用</td><td>§3</td><td>〔说话人1 25:34〕</td></tr>
+<tr><td>44</td><td>方案一：抽气定量+选择性膜</td><td>方案</td><td>§3</td><td>〔说话人2 34:13〕</td></tr>
+<tr><td>45</td><td>方案一：抗原抗体+荧光标记</td><td>方案</td><td>§3</td><td>〔说话人2 34:13〕</td></tr>
+<tr><td>46</td><td>方案一：多空气室测多种病毒</td><td>方案</td><td>§3</td><td>〔说话人2 36:15〕</td></tr>
+<tr><td>47</td><td>方案二：溶剂+离心富集送检</td><td>方案</td><td>§3</td><td>〔说话人3 36:52〕</td></tr>
+<tr><td>48</td><td>方案二：采样率换算校正</td><td>要点</td><td>§3</td><td>〔说话人1 41:21〕</td></tr>
+<tr><td>49</td><td>方案一：病毒小可透膜、灰尘阻留</td><td>要点</td><td>§3</td><td>〔说话人1 41:38〕</td></tr>
+<tr><td>50</td><td>病毒须灭活处理</td><td>要点</td><td>§3</td><td>〔说话人1 42:59〕</td></tr>
+<tr><td>51</td><td>两方案组合优化</td><td>要点</td><td>§3</td><td>〔说话人1 44:00〕</td></tr>
+<tr><td>52</td><td>地表水水质分类</td><td>分类</td><td>§4</td><td>〔说话人1 44:55〕</td></tr>
+<tr><td>53</td><td>采样垂线规则（50/100 米）</td><td>数字</td><td>§4</td><td>〔说话人1 55:24〕</td></tr>
+<tr><td>54</td><td>采样深度规则（5/10 米）</td><td>数字</td><td>§4</td><td>〔说话人1 55:24〕</td></tr>
+<tr><td>55</td><td>水质分级与东湖现状</td><td>应用</td><td>§4</td><td>〔说话人1 56:29〕</td></tr>
+<tr><td>56</td><td>小/大体积液体采样方式</td><td>方法</td><td>§4</td><td>〔说话人1 58:26〕</td></tr>
+<tr><td>57</td><td>容器：塑料或玻璃</td><td>概念</td><td>§4</td><td>〔说话人1 59:03〕</td></tr>
+<tr><td>58</td><td>金属用塑料、有机物用玻璃</td><td>考点</td><td>§4</td><td>〔说话人1 59:45〕</td></tr>
+<tr><td>59</td><td>保存时间随污染程度递减</td><td>要点</td><td>§4</td><td>〔说话人1 01:00:21〕</td></tr>
+<tr><td>60</td><td>余氯/细菌总数/pH 立即测定</td><td>考点</td><td>§4</td><td>〔说话人1 01:01:46〕</td></tr>
+<tr><td>61</td><td>余氯作用与逸失特性</td><td>应用</td><td>§4</td><td>〔说话人1 01:02:27〕</td></tr>
+<tr><td>62</td><td>双螺旋套管采样器</td><td>工具</td><td>§5</td><td>〔说话人1 01:04:56〕</td></tr>
+<tr><td>63</td><td>采样器可采不同深度粮食</td><td>要点</td><td>§5</td><td>〔说话人1 01:05:20〕</td></tr>
+<tr><td>64</td><td>果蔬去不可食部分</td><td>方法</td><td>§5</td><td>〔说话人1 01:06:16〕</td></tr>
+<tr><td>65</td><td>四分法缩分；国标取样量</td><td>考点</td><td>§5</td><td>〔说话人1 01:06:46〕</td></tr>
+<tr><td>66</td><td>植物样品处理流程</td><td>流程</td><td>§5</td><td>〔说话人1 01:07:44〕</td></tr>
+<tr><td>67</td><td>血液离心抗凝</td><td>要点</td><td>§5</td><td>〔说话人1 01:07:44〕</td></tr>
+<tr><td>68</td><td>血尿容器与毛发取样部位</td><td>要点</td><td>§5</td><td>〔说话人1 01:08:35〕</td></tr>
+<tr><td>69</td><td>瘦肉精性质与检测取尿</td><td>应用</td><td>§5</td><td>〔说话人1 01:09:25〕</td></tr>
+<tr><td>70</td><td>瘦肉精每份 ≥10 mL、当场检测</td><td>数字</td><td>§5</td><td>〔说话人1 01:09:25〕</td></tr>
+<tr><td>71</td><td>试纸快筛显色比色卡</td><td>方法</td><td>§5</td><td>〔说话人1 01:10:35〕</td></tr>
+<tr><td>72</td><td>阳性须封存备份复检</td><td>要点</td><td>§5</td><td>〔说话人1 01:10:57〕</td></tr>
+<tr><td>73</td><td>保存方式：密封/冷藏/化学</td><td>分类</td><td>§6</td><td>〔说话人1 01:11:30〕</td></tr>
+<tr><td>74</td><td>加酸防金属沉淀水解</td><td>要点</td><td>§6</td><td>〔说话人1 01:11:30〕</td></tr>
+<tr><td>75</td><td>保存须配合分析方法、不引干扰</td><td>要点</td><td>§6</td><td>〔说话人1 01:12:08〕</td></tr>
+<tr><td>76</td><td>易挥发水样装满溢流密封</td><td>考点</td><td>§6</td><td>〔说话人1 01:12:08〕</td></tr>
+<tr><td>77</td><td>顶空致挥发使结果偏低</td><td>易错</td><td>§6</td><td>〔说话人1 01:13:03〕</td></tr>
+<tr><td>78</td><td>预处理三目标</td><td>考点</td><td>§7</td><td>〔说话人1 01:14:30〕</td></tr>
+<tr><td>79</td><td>预处理两要求</td><td>考点</td><td>§7</td><td>〔说话人1 01:15:17〕</td></tr>
+<tr><td>80</td><td>溶解法：水溶性组分用水</td><td>方法</td><td>§7</td><td>〔说话人1 01:16:02〕</td></tr>
+<tr><td>81</td><td>饮料防腐剂：苯甲酸钠/山梨酸钾</td><td>应用</td><td>§7</td><td>〔说话人1 01:17:09〕</td></tr>
+<tr><td>82</td><td>罐头靠高糖防腐</td><td>应用</td><td>§7</td><td>〔说话人1 01:17:53〕</td></tr>
+<tr><td>83</td><td>酱油高盐防腐</td><td>应用</td><td>§7</td><td>〔说话人1 01:19:11〕</td></tr>
+<tr><td>84</td><td>酸/碱/有机溶剂浸出选择</td><td>方法</td><td>§7</td><td>〔说话人1 01:19:55〕</td></tr>
+<tr><td>85</td><td>分解法分干法/湿法</td><td>分类</td><td>§8</td><td>〔说话人1 01:20:30〕</td></tr>
+<tr><td>86</td><td>头发测锌须先制溶液过滤</td><td>应用</td><td>§8</td><td>〔说话人1 01:21:01〕</td></tr>
+<tr><td>87</td><td>干法灰化 400–700 ℃</td><td>数字</td><td>§8</td><td>〔说话人1 01:21:43〕</td></tr>
+<tr><td>88</td><td>低温灰化氧自由基约 100 ℃</td><td>数字</td><td>§8</td><td>〔说话人1 01:21:43〕</td></tr>
+<tr><td>89</td><td>湿法消化加氧化剂加热</td><td>方法</td><td>§8</td><td>〔说话人1 01:22:25〕</td></tr>
+<tr><td>90</td><td>湿法由沸点控温、适用易挥发</td><td>要点</td><td>§8</td><td>〔说话人1 01:22:25〕</td></tr>
+<tr><td>91</td><td>湿法缺点：酸雾、试剂纯度</td><td>易错</td><td>§8</td><td>〔说话人1 01:22:25〕</td></tr>
+<tr><td>92</td><td>有机物分解产物 C/S/H</td><td>机制</td><td>§8</td><td>〔说话人1 01:22:25〕</td></tr>
+<tr><td>93</td><td>无机物以离子形式留存</td><td>机制</td><td>§8</td><td>〔说话人1 01:24:00〕</td></tr>
+<tr><td>94</td><td>等离子体定义</td><td>定义</td><td>§8</td><td>〔说话人1 01:27:10〕</td></tr>
+<tr><td>95</td><td>空气击穿与电离、闪电</td><td>概念</td><td>§8</td><td>〔说话人1 01:27:33〕</td></tr>
+<tr><td>96</td><td>电子数与离子数基本相等</td><td>概念</td><td>§8</td><td>〔说话人1 01:28:05〕</td></tr>
+<tr><td>97</td><td>低温灰化能量并不低</td><td>易错</td><td>§8</td><td>〔说话人1 01:28:34〕</td></tr>
+<tr><td>98</td><td>消化液种类</td><td>分类</td><td>§9</td><td>〔说话人1 01:28:57〕</td></tr>
+<tr><td>99</td><td>硝酸强氧化低沸点</td><td>要点</td><td>§9</td><td>〔说话人1 01:28:57〕</td></tr>
+<tr><td>100</td><td>硫酸高沸点强脱水</td><td>要点</td><td>§9</td><td>〔说话人1 01:28:57〕</td></tr>
+<tr><td>101</td><td>高氯酸强氧化高沸点</td><td>要点</td><td>§9</td><td>〔说话人1 01:29:51〕</td></tr>
+<tr><td>102</td><td>高氯酸遇酚类生成易爆酯</td><td>易错</td><td>§9</td><td>〔说话人1 01:29:51〕</td></tr>
+<tr><td>103</td><td>先加硝酸再加高氯酸</td><td>操作</td><td>§9</td><td>〔说话人1 01:31:22〕</td></tr>
+<tr><td>104</td><td>变黑即停加热撤热源</td><td>操作</td><td>§9</td><td>〔说话人1 01:31:22〕</td></tr>
+<tr><td>105</td><td>冷却补硝酸再加热；全程不离人</td><td>操作</td><td>§9</td><td>〔说话人1 01:32:27〕</td></tr>
+<tr><td>106</td><td>通风橱留缝、不伸头</td><td>操作</td><td>§9</td><td>〔说话人1 01:31:22〕</td></tr>
+<tr><td>107</td><td>氢氟酸与二氧化硅反应</td><td>要点</td><td>§9</td><td>〔说话人1 01:33:03〕</td></tr>
+<tr><td>108</td><td>氢氟酸刻蚀玻璃</td><td>要点</td><td>§9</td><td>〔说话人1 01:33:53〕</td></tr>
+<tr><td>109</td><td>氢氟酸与钙结合致不可逆损伤</td><td>易错</td><td>§9</td><td>〔说话人1 01:34:13〕</td></tr>
+<tr><td>110</td><td>氢氟酸俗称化骨水</td><td>要点</td><td>§9</td><td>〔说话人1 01:35:47〕</td></tr>
+<tr><td>111</td><td>戴手套口罩、不从上俯视</td><td>操作</td><td>§9</td><td>〔说话人1 01:35:00〕</td></tr>
+<tr><td>112</td><td>事故必有先兆</td><td>要点</td><td>§9</td><td>〔说话人1 01:35:24〕</td></tr>
+<tr><td>113</td><td>改进消解：密闭罐/微波/部分分解</td><td>分类</td><td>§10</td><td>〔说话人1 01:35:24〕</td></tr>
+<tr><td>114</td><td>密闭罐结构与内衬</td><td>要点</td><td>§10</td><td>〔说话人1 01:35:47〕</td></tr>
+<tr><td>115</td><td>氢氟酸须用耐酸内衬容器</td><td>要点</td><td>§10</td><td>〔说话人1 01:36:41〕</td></tr>
+<tr><td>116</td><td>密闭罐高压类似高压锅</td><td>机制</td><td>§10</td><td>〔说话人1 01:36:41〕</td></tr>
+<tr><td>117</td><td>微波=厘米级交变电场</td><td>定义</td><td>§10</td><td>〔说话人1 01:38:13〕</td></tr>
+<tr><td>118</td><td>微波炉金属网笼状屏蔽</td><td>要点</td><td>§10</td><td>〔说话人1 01:39:27〕</td></tr>
+<tr><td>119</td><td>微波加热：极性分子摩擦生热</td><td>机制</td><td>§10</td><td>〔说话人1 01:40:00〕</td></tr>
+<tr><td>120</td><td>气罐颜色标识：氧蓝氢绿氮黑乙炔灰</td><td>常识</td><td>§10</td><td>〔说话人1 01:25:25〕</td></tr>
+<tr><td>121</td><td>不认识的气罐不得乱拧</td><td>安全</td><td>§10</td><td>〔说话人1 01:26:12〕</td></tr>
+</table>
+<p class="foot">附录 D 共 121 条，对照 recording.md 全课讲授点登记。</p></div>
+</body></html>

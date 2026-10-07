@@ -1,260 +1,614 @@
 {
   "subjectId": "medical-english",
   "chapterId": "rec-2026-fall-003-004",
-  "generatedAt": "2026-09-14",
+  "generatedAt": "2026-09-09",
   "examConfig": {
-    "source": "content/medical-english/lectures/rec-2026-fall-003-004/recording.md；content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-    "totalPoints": 110,
-    "timeLimit": 45
+    "source": "content/medical-english/lectures/rec-2026-fall-003-004/recording.md；content/medical-english/lectures/rec-2026-fall-003-004/notes.html（SOP-04 课上录音标准 24 题/100 分）",
+    "totalPoints": 100,
+    "timeLimit": 50
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-003-004",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "d43dcb9aef4ceb1c63eab967f873c9044bf6e8de4a62de7c23a0093f39b71e68",
-    "notesTextHash": "0432db5282c0d95732d9e733556691c6659b2f07159c9a0bd8ec9b72c7435911"
+    "notesTextHash": "6e2016fd204bf6d2b1d66e5f471ea48ba16918ba3ffc94d1f612c421dea270cc"
   },
   "questions": [
     {
       "id": "q001",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "关于 Paraphrasing（释义改写）的核心要求，下列说法正确的是（　）。",
+      "stem": "老师在课堂上给 paraphrasing 下的定义是（　）。",
       "options": [
-        "逐词替换原文每一个词，改动幅度越大越好",
-        "大幅缩写原文，只保留最主干的意思",
-        "用不同词语重述他人内容，完全保留原意而不加歪曲",
-        "先把原文翻译成中文再背下来"
+        "把原文逐词替换成同义词，改写后的句子长度必须与原句一致",
+        "用不同的词语表达别人说过或写过的话（using different words）",
+        "把英文原文译成中文，再用中文复述一遍",
+        "对原文进行概括缩写，只保留最主干的意思"
       ],
-      "answer": 2,
-      "hint": "必背句：fully retaining the original semantic meaning without distortion。",
-      "explanation": "**C 正确。** Paraphrasing 是用不同词语重述他人书面或口头内容，第一原则是 fully retaining the original semantic meaning without distortion（完全保留原意、不歪曲），三大价值为帮助理解原文、高效笔记总结、避免抄袭降重。\n- A：不是逐词替换、幅度越大越好；\n- B：缩写丢失细节不等于释义；\n- D：翻译成中文不是本课讲的 paraphrasing。",
+      "answer": 1,
+      "hint": "回忆老师说过的 using different words，以及他给出的中文译名。",
+      "explanation": "**B 正确。** 逐字稿 01:00 老师的原话是 to express what someone else has said or written using different words，中文译名为「同义复述」。\n\n**逐项辨析：**\n- A 错：不是逐词等长替换；改写可以合并句子、也可以改变长度，**唯一不能变的是意思**。\n- C 错：把英文译成中文属于 translation（翻译），是跨语言操作；paraphrasing 通常在同一语言内进行。\n- D 错：概括缩写（summary）会丢失细节，不等于「换语言、保原意」。\n\n**思路提示：**定义的两个要件是「内容是别人的」＋「语言是换过的」，只满足一个的选项都要排除。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-        "label": "Paraphrasing · 定义与核心原则"
+        "label": "第1章 Paraphrasing：定义与三大价值 · 定义：换语言，不换意思（说话人1 01:00）"
       }
     },
     {
       "id": "q002",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "下列哪一项不属于本课所讲的四大常用释义技巧（　）。",
+      "stem": "老师列出 paraphrasing 对学生的三大价值，下列哪一项不属于这三大价值（　）。",
       "options": [
-        "同义词替换（synonyms）",
-        "词性转换（part of speech）",
-        "主被动转换（active ↔ passive）",
-        "模仿录音语音语调反复朗读背诵"
+        "加深对原文的理解（better understanding）",
+        "支持记笔记与写摘要（note taking and summary）",
+        "写学术论文并避免抄袭（writing academic papers / avoid copying）",
+        "提高英语口语发音的准确度"
       ],
       "answer": 3,
-      "hint": "口诀「同义、词性、主被动、句型」。",
-      "explanation": "**D 正确（符合题意）。** 四大技巧是同义词替换、词性转换、主被动转换、句型改写；模仿语音语调朗读不属于释义改写技巧。\n- A、B、C 均为四大技巧之一，如 important→crucial、analysis(n.)→analyze(v.)、The doctor diagnosed→It was diagnosed。",
+      "hint": "老师按「读懂 — 记下 — 写出来」三个场景依次讲下来，与口语发音无关。",
+      "explanation": "**D 正确（符合题意）。** 三大价值是：① better understanding，能用自己的话说出来才证明读懂了；② note taking and summary，笔记与摘要要用自己的话记，不是照抄；③ writing academic papers，毕业论文与投稿论文不能照抄原文，要 paraphrase 以避免抄袭、把查重率控制住（说话人1 01:28—02:04）。\n\n**逐项辨析：**\n- A、B、C 都是老师逐条列出的价值，且有明确原话支撑。\n- D 错：本课没有把发音列为 paraphrasing 的价值；这是一道「混入相邻技能」的干扰项——口语与写作是两套不同的产出能力。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-        "label": "四大释义技巧 · 同义/词性/主被动/句型"
+        "label": "第1章 Paraphrasing：定义与三大价值 · 三大价值（说话人1 01:28—02:04）"
       }
     },
     {
       "id": "q003",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "按本课给出的标准流程，进行 Paraphrasing 的第一步应当是（　）。",
+      "stem": "老师总结的四大释义技术中，不包括下列哪一项（　）。",
       "options": [
-        "通读并充分理解原文",
-        "直接把所有专业术语换成同义词",
-        "先查词典找出全部生僻词",
-        "把原文逐字翻译成中文"
+        "同义词替换（synonyms）",
+        "词性转换（part of speech）",
+        "主动语态与被动语态互换（voices）",
+        "把每个长句一律拆成两个短句"
       ],
-      "answer": 0,
-      "hint": "流程四步：通读理解 → 识别核心词 → 替换重组 → 对照确认。",
-      "explanation": "**A 正确。** 标准操作第一步是 read and fully understand the original text（通读理解），之后才识别核心关键词、替换重组、最后与原文对照确认意思一致。\n- B：专业术语恰恰不能替换，也不是第一步；\n- C、D：查词典或逐字翻译都不在该流程内。",
+      "answer": 3,
+      "hint": "四把刀是 words、phrases、voices、sentence pattern；注意老师给的句型改写例子是「合并」而不是「一律拆开」。",
+      "explanation": "**D 正确（符合题意）。** 四大技术是：同义词替换、词性转换、主被动转换、句型改写（说话人1 03:15、04:28、05:26）。\n\n**逐项辨析：**\n- A、B、C 都是清单内的技术，各有课堂例子：delicious → tasty；The bomb exploded → The bomb explosion；宾语提前作主语。\n- D 错：句型改写讲的是**调整句子结构**——老师给的例子恰恰相反，是把两个简单句**合并**成一个复合句（combine two simple sentences into one complex sentence，05:26）。把「长句一律拆短」当成定义，属于把一种可能的操作误当成规则。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-        "label": "释义操作四步骤 · 通读理解先行"
+        "label": "四大技术总表（说话人1 03:15、05:26）"
       }
     },
     {
       "id": "q004",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "在该 AI 医学诊断文本的三段式结构中，Section 2（Para 4-9）的核心内容是（　）。",
+      "stem": "老师用 The bomb exploded and caused many casualties. 演示词性转换：把动词 exploded 改成名词后，改写出的句子是（　）。",
       "options": [
-        "人类医学诊断现存问题与误诊两大原因",
-        "AI 应用于医学诊断的核心优势（准确性+时效性）",
-        "AI 诊断的立法建议与医疗事故赔偿",
-        "医学院校招生与教育改革方向"
+        "The bomb explosion caused many casualties.",
+        "The bomb exploded and causing many casualties.",
+        "The bomb was exploded by many casualties.",
+        "The bomb explosion was caused by many casualties."
       ],
-      "answer": 1,
-      "hint": "口诀「问题→优势→挑战」三段递进。",
-      "explanation": "**B 正确。** Section 1（Para 1-3）讲人类诊断现存问题+误诊两大原因；Section 2（Para 4-9）讲 AI 的核心优势，即海量数据支撑带来的准确性与时效性提升；Section 3（Para 10-14）讲 AI 的挑战与未来方向。\n- A 是 Section 1 的内容；\n- C、D 在本课文本中无依据。",
+      "answer": 0,
+      "hint": "老师说 Exploded is the verb，要 change into the noun——先想「爆炸」变名词后长什么样，再想原来的 caused 该由谁承担。",
+      "explanation": "**A 正确。** 老师原话是 Exploded is the verb，所以 change into the noun，答案是 explosion；改后由名词短语 the bomb explosion 作主语，原句的 caused many casualties 继续作谓语（说话人1 10:05）。\n\n**逐项辨析：**\n- B 错：exploded 与 causing 两个谓语形式冲突，语法不成立。\n- C 错：把主被动关系弄反了——many casualties 是受害者，不能成为 exploded 的施动者。\n- D 错：同样颠倒了因果关系，还把原句的主动改成了被动，语义角色错位。\n\n**考点联系：**词性一动，句型必动——这正是老师强调「改一个词会让整句结构跟着变」的实例。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-        "label": "文本三段式结构 · Section 2 AI优势"
+        "label": "词性转换实例（说话人1 10:05）"
       }
     },
     {
       "id": "q005",
       "type": "single_choice",
-      "difficulty": "medium",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "关于 paraphrasing 中专业术语（如 photosynthesis、药名等 fixed proper nouns）的处理，下列做法正确的是（　）。",
+      "stem": "按老师归纳的释义操作流程，第一步应当是（　）。",
       "options": [
-        "用最通俗的普通英语词替换，方便大众阅读",
-        "换成同义词以最大限度降低查重率",
-        "必须原样保留、不可替换，否则会造成术语错误",
-        "用汉语拼音标注后再替换"
+        "read the original text carefully，通读并理解原句",
+        "先合上原文，凭记忆直接写出自己的版本",
+        "先查词典，把所有生词替换成同义词",
+        "先判断句子是简单句还是复合句"
       ],
-      "answer": 2,
-      "hint": "易错提醒：专业术语和专有名词绝对不能替换。",
-      "explanation": "**C 正确。** 专业术语、药名等 fixed proper nouns 有标准化特定含义，同义词无法准确传达，替换会引入术语错误，故必须保留；其余内容才应充分改写以降低查重率。\n- A、B：把正式术语换成普通词既不准确，还会降低学术文本的正式性；\n- D：本课无此做法。",
+      "answer": 0,
+      "hint": "老师说：if you can use your own words to express it out, we think that you understand the original text。",
+      "explanation": "**A 正确。** 流程第一步是 read the original text carefully / read for comprehension，先读懂再动笔（说话人1 03:50、14:15）。\n\n**逐项辨析：**\n- B 错：把原文蒙住（cover all）再写是理想状态，老师说这一步他自己都做不到，除非把句子背下来（22:48、23:23），所以它不是课堂流程的第一步。\n- C 错：术语与专业名词本来就不能换（12:56），「把所有生词换成同义词」既不是流程也不是正确做法。\n- D 错：判断简单句／复合句属于**翻译取分法**的步骤（01:24:17），不是释义流程的第一步。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-        "label": "特殊规则 · 专业术语不可替换"
+        "label": "11.2 Para 2 · 四步操作流程（说话人1 03:50、14:15）"
       }
     },
     {
       "id": "q006",
       "type": "single_choice",
-      "difficulty": "medium",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "对于谚语/习语（idiom）的释义改写，本课建议的正确做法是（　）。",
+      "stem": "对谚语 Don't count your chickens before they hatch.，老师给出的释义是（　）。",
       "options": [
-        "逐字直译每个词，保持字面一一对应",
-        "先完全掌握其核心隐含意义，再用平实语言重述内涵",
-        "直接删掉不译，以免读者困惑",
-        "原文习语整体保留不动，仅在句末加注释"
+        "不要在鸡蛋孵化前清点数量，做事要精确",
+        "不要在实际成功之前就假定自己会成功",
+        "不要过早下结论，因为医生无法预测疾病",
+        "养鸡要趁早，学习也要趁早"
       ],
       "answer": 1,
-      "hint": "口诀「术语不动，谚语译意」——译的是意，不是字。",
-      "explanation": "**B 正确。** 谚语/习语必须先把握其核心隐含意义（core implied meaning），再用平实语言重述其内涵；直接按字面翻译会丢失其比喻义。\n- A：字面翻译正是被批评的做法；\n- C、D：既不符合 paraphrasing 要求，也不是本课讲的方法。",
+      "hint": "老师先讲「这个蛋还没孵，我们就想数数」，再落到一句英文上。",
+      "explanation": "**B 正确。** 老师现场解释：hatch 是「孵」，蛋还没孵就想数数——所以含义是 shouldn't assume success well before it actually happens（不要在实际成功之前就假定自己会成功）（说话人1 12:04—12:56）。\n\n**逐项辨析：**\n- A 错：这是字面直译，正是老师批评的做法；谚语的比喻义在字面翻译中会丢失。\n- C 错：把谚语硬套到医学情境上，原文并无此义。\n- D 错：属于望文生义，与本句的隐含意义无关。\n\n**方法提示：**谚语／习语先理解整句的 core implied meaning，再用平实语言重述内涵。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-        "label": "特殊规则 · 谚语习语先译隐含意义"
+        "label": "谚语与习语：先译意，再换语言（说话人1 12:04）"
       }
     },
     {
       "id": "q007",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "medium",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "本课指出医生通常靠记忆 illness scripts（疾病脚本）识别疾病，由此导致误诊的两大原因是（　）。",
+      "stem": "老师以 Photosynthesis is the process by which plants convert sunlight into energy. 为例，把它改写成 Through photosynthesis, plants use sunlight to create energy. 之后，查重率仍至少有（　）。",
       "options": [
-        "忽略患者关键特异因素；非典型疾病表现不符合标准模式",
-        "医生学历偏低；临床病例总量不足",
-        "检查仪器精度不够；检验试剂过期",
-        "患者隐瞒病史；家属过度干预治疗"
+        "0%",
+        "10%",
+        "30%",
+        "50%"
       ],
-      "answer": 0,
-      "hint": "这两点恰好对应 AI 能解决的优势——海量数据+发现新模式。",
-      "explanation": "**A 正确。** 两大误诊原因为：①忽略患者关键特异因素（neglect critical specific factors）；②非典型疾病表现不符合标准模式（atypical presentations）。\n- B、C、D：均为材料未提及的臆测项，不是本课所讲的两大原因。",
+      "answer": 2,
+      "hint": "老师说这句话里有几个词 we can't paraphrase——那些名词还在，比例自然降不下来。",
+      "explanation": "**C 正确。** 老师原话是这个百分比 a little higher, at least 30%（说话人1 13:56）：因为 photosynthesis、sunlight、energy、plants 都是不可替换的术语与名词，改写只能动句型与普通词。\n\n**逐项辨析：**\n- A 错：术语原样保留，重复率不可能为 0。\n- B（10%）与 D（50%）错：这两个数值出现在老师讲「查重率过高论文过不了」的时候（02:04），说的是论文能否通过的阈值语境，**不是这句改写后的比例**——本题的迷惑点正是把两处数字互换。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-        "label": "Illness Script · 误诊两大原因"
+        "label": "11.3 Para 3 · 查重数字一览（说话人1 13:56）"
       }
     },
     {
       "id": "q008",
       "type": "single_choice",
-      "difficulty": "medium",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "本课对 AI 在医学领域定位的总结，正确的表述是（　）。",
+      "stem": "课文 Para 2 给 illness script 下的定义是（　）。",
       "options": [
-        "AI 应尽快完全替代医生进行独立诊断",
-        "AI 只能用于挂号分诊，不能辅助诊断",
-        "AI 与医学诊断毫无关系，纯属娱乐用途",
-        "AI 应补充（complement）而非替代（replace）人类专业知识，并需充足资金投入"
+        "一组成片的体征、症状与诊断发现，它们是某种疾病的标志性表现",
+        "医生在临床工作中逐渐积累的手术操作流程",
+        "医院内部用于疾病编码与分组的标准化表格",
+        "AI 训练时使用的大型病历数据库"
       ],
-      "answer": 3,
-      "hint": "必背原句：AI should complement rather than replace human expertise。",
-      "explanation": "**D 正确。** 核心原则是 AI 应 complement rather than replace 人类专业知识，技术稳定迭代还需充足资金投入与有效数据支撑。\n- A：与「补充而非替代」相反；\n- B：AI 在本课中正是辅助诊断的工具，如快速识别缺血性中风；\n- C：明显错误。",
+      "answer": 0,
+      "hint": "回想 definition 那句里的三个并列名词，以及老师对 cluster「成片成片」的解释。",
+      "explanation": "**A 正确。** 定义原文是 clusters of signs, symptoms, and diagnostic findings that are hallmarks of disease（说话人1 01:29:30）。老师还把 cluster 解释为「一大块一大块」「成片成片」——即一整套绑在一起出现的表现，而不是零散的一条症状。\n\n**逐项辨析：**\n- B 错：把 diagnosis 的定义偷换成 treatment（手术流程）。\n- C 错：疾病编码表是医院管理工具，与「医生记忆中的诊断模式」不是一回事。\n- D 错：病历数据库是 AI 的素材，不是 illness script 本身——课文明确说 illness script 是医生记忆并用来匹配的那套表现组合。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-        "label": "AI定位 · 补充而非替代人类专家"
+        "label": "11.2 Para 2 · illness script 的定义与它的重量（说话人1 01:29:30）"
       }
     },
     {
       "id": "q009",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "medium",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "在本课列出的 8 种学术段落展开方法中，「按时间先后顺序组织内容」对应的英文术语是（　）。",
+      "stem": "课文 Section 1 指出，医生依靠记忆 illness scripts 诊断容易失误，两个原因是（　）。",
       "options": [
-        "cause and effect",
-        "definition",
-        "time order / time sequence",
-        "space description"
+        "忽略患者特异的关键细节；非典型表现不符合标准模式",
+        "医生经验不足；医院检查设备落后",
+        "患者不配合问诊；家属过度干预治疗",
+        "疾病种类过多；医生人数太少"
       ],
-      "answer": 2,
-      "hint": "口诀「时过空举比因类定」，第一个就是时间顺序。",
-      "explanation": "**C 正确。** time order / time sequence（时间顺序）按时间先后组织内容，Para 1 医学诊断发展史即属此法。\n- A：因果关系；\n- B：定义法；\n- D：空间描述——三者均与「按时间先后」不符。",
+      "answer": 0,
+      "hint": "两个原因的英文都以 pattern 为核心：一个是漏掉模式内的细节，一个是对不上模式。",
+      "explanation": "**A 正确。** 两个原因是：① critical details of patient-specific factors may be neglected（患者特异的关键细节被忽略）；② diseases with atypical presentation do not conform to standard patterns（非典型表现不符合标准模式）（说话人1 36:18）。\n\n**逐项辨析：**\n- B、C、D 都是医学现实中可能存在、但课文没有列出的困难——课文只列 AI 能解决的问题，这是老师特意点明的（01:40:22）。这些选项属于「合理但非本课依据」的干扰项。\n- 记忆锚点：两条都是「实际表现与记忆中的 pattern 不匹配」的两种形态。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-        "label": "8种段落展开方法 · time order"
+        "label": "两大误诊原因（说话人1 36:18）"
       }
     },
     {
       "id": "q010",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "hard",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "下列关于 AI 医学诊断所面临挑战的说法，错误的是（　）。",
+      "stem": "老师在讲 Para 2 时反复追问：作者在这里使用 definition 的根本目的是（　）。",
       "options": [
-        "开发成本高，且系统可能输出错误信息",
-        "欧洲出于伦理与就业保护，大力推动 AI 全面替代医生",
-        "在缺乏充分有效数据时，患者对 AI 诊断的信任度较低",
-        "过度依赖 AI 可能造成大规模失业，人口基数大的地区尤甚"
+        "因为作者与读者都不懂 illness script，需要从头扫盲",
+        "让读者看清按 illness script 诊断是多大的工作量，从而引出人类诊断的问题，为 AI 出场铺垫",
+        "让段落显得更长、更符合论文的格式要求",
+        "因为医学论文规定每个段落都必须包含一个定义"
       ],
       "answer": 1,
-      "hint": "题目选「错误」项；欧洲的策略恰恰相反——保守研发。",
-      "explanation": "**B 错误（符合题意）。** 出于伦理与就业保护，欧洲采取的是保守（conservative）研发策略，而非推动 AI 全面替代医生。\n- A、C、D 均为材料所列挑战：高开发成本、潜在错误信息输出、有效数据不足时患者信任度低、过度依赖导致大规模失业的伦理担忧。",
+      "hint": "老师追问 to show what? 时，学生先答「让读者知道医生怎么诊断」，老师随后补上了更关键的一层。",
+      "explanation": "**B 正确。** 老师的追问链是：定义一出，读者才看清按 illness script 诊断是 heavy workload（01:31:52）；学医之所以难，就是这些都要记（01:32:00）；而这一段的用意，是让读者（包括非医学专业读者）看到人类诊断的问题，从而自然引出 AI（01:33:00—01:33:39）。\n\n**逐项辨析：**\n- A 错：老师说作者本人和读这篇文章的医生当然知道 illness script，定义是给**非医学专业读者**看的；说「作者与读者都不懂」过头了。\n- C、D 错：录音中没有任何「凑篇幅」或「论文强制每段有定义」的说法，属于凭空添加的写作规范。\n\n**加分点：**definition 还有 show authority 的作用（57:43）。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-        "label": "AI诊断四大挑战 · 欧洲保守研发策略"
+        "label": "11.2 Para 2 · definition 的写作目的（说话人1 01:30:08—01:33:39）"
       }
     },
     {
       "id": "q011",
-      "type": "single_choice",
-      "difficulty": "hard",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "对课文 Para 1（医学诊断发展史）这一段落，本课给出的分析结论是（　）。",
+      "stem": "关于 paraphrasing 的操作与原则，下列说法正确的有（　）。",
       "options": [
-        "采用时间顺序+举例展开，并用 \"history is a march\" 这一隐喻增强表达",
-        "纯空间描述段落，不含任何修辞手法",
-        "采用因果关系展开，直接论证 AI 必然取代医生",
-        "采用定义法，先定义 illness script 这一概念"
+        "改写前必须先通读并理解原文",
+        "改写完成后要拿自己的版本与原文对照，确认意思一致",
+        "专业术语、药名等固定专有名词不可替换",
+        "逐词替换的幅度越大，改写质量就越高",
+        "只要换成同义词，句子结构不必调整"
       ],
-      "answer": 0,
-      "hint": "口诀「一段时间加隐喻，二段定义长复合」。",
-      "explanation": "**A 正确。** Para 1 按时间顺序回顾医学诊断发展史并举例，修辞上使用了 \"history is a march\" 的隐喻；本课还指出连医学学术文本也常用 metaphor、irony 增强可读性。\n- B：含隐喻修辞，并非纯空间描述；\n- C：因果展开、讲误诊两大原因的是 Para 3，且文本主旨是「补充而非替代」；\n- D：定义 illness script 的是 Para 2。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "把四步流程与「不可替换清单」各回忆一遍，再看有没有「改动幅度」「只换词不动结构」这类过头表述。",
+      "explanation": "**A、B、C 正确。**\n- A：流程第一步是 read for comprehension（03:50）。\n- B：最后一步 compare with the original，check the meaning is the same（23:35）。\n- C：术语、药名、病名等不可替换（12:56、18:43、20:11）。\n\n**D、E 为什么错：**\n- D 是常见误解——把改写理解成「改得越多越好」。评价标准是**意思一致 + 语言不同**，不是改动量；改动过大反而可能歪曲原意（第 1 章底线原则）。\n- E 忽略了「词性一动、句型必动」（04:28），而且句型改写本身就是四大技术之一（05:26）。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
-        "label": "段落分析实例 · Para 1 时间顺序+隐喻"
+        "label": "11.2 Para 2 · 、2.4 与第 4 章 · 综合（说话人1 23:35、12:56）"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "关于 metformin 长句中的词汇线索，下列说法正确的有（　）。",
+      "options": [
+        "glycemic 中 glyco- 表 sugar（糖）、-emic 表 blood（血），合起来指「血糖」",
+        "glycemic、glucose 与 blood sugar 都含「糖」义，同一概念有多种来源的说法，因此医学语篇的 paraphrase 有更多同义词可用",
+        "pharmacotherapy 相当于 common English 的 drug treatment",
+        "以 -in 结尾的词（如 penicillin）来自拉丁语，多为药物名称",
+        "metformin 可以随意换成任意同义词，以最大限度降低查重率"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "前四项都能在老师拆词根、讲 -in 结尾、讲「一词三式」时找到；最后一项想一想老师反复强调的那个「不能变」。",
+      "explanation": "**A、B、C、D 正确。**\n- A：glucose 的词根是 sugar，emic 是 blood，所以 glycemic control 就是血糖的控制（16:32）。\n- B：老师用「一词三式」形容这种同义资源（19:21），并说医学里的 paraphrasing 更容易。\n- C：老师用 drug treatment 解释 pharmacotherapy（17:34）。\n- D：-in 结尾的词常常是药，penicillin 来自拉丁语（17:46）。\n\n**E 错：**metformin 是药名，属于不可替换项（20:11）；换掉会使句子失去临床对应物，正是第 4 章要禁止的做法。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "11.1 Para 1 · 猜词线索（说话人1 16:32、17:46）"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "关于本课列出的八种段落展开方法，下列说法正确的有（　）。",
+      "options": [
+        "example and generalization（举例与概括）是老师所说的 most common way",
+        "comparison and contrast 在 Reading 2 中用于比较人类诊断与 AI 诊断",
+        "classification 是把有相似特征的事物归为一组，division 是把一组内部特征不同的事物拆成几部分",
+        "definition（定义法）的作用之一是 show authority",
+        "正式学术段落应当只使用一种展开方法，以免结构混乱"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "前四项都能对应老师的原话；最后一项与他说过的「组合」规则相反。",
+      "explanation": "**A、B、C、D 正确。**\n- A：老师说 most common way is example and generalization（55:08）。\n- B：In this unit, reading 2, we compare human diagnosis with AI diagnosis（57:01）。\n- C：若若干事物有相似特征就归为一组，若一组内部特征各不相同就拆成几部分（57:22）。\n- D：定义往往由名人或词典给出，作用之一是显示权威（57:43）。\n\n**E 错：**老师明确说一段甚至一篇会把多种方法 combine together（57:43）。Para 2 就是「举例与概括 + 定义」的组合，正是反例。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "B. 对比表：八种段落展开方法 · /9.2/9.3 八法总表与组合规则（说话人1 55:08—57:43）"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "关于医学英语的句子特征与阅读策略，下列说法正确的有（　）。",
+      "options": [
+        "常用「简单句 ＋ 丰富修饰成分」的结构",
+        "也常用「极简主句 ＋ 层层从句」的复合句",
+        "被动语态可以把动作的承受者（如 techniques）放到句首加以强调",
+        "长句中只要抓住主句主干，就能把握整句的主旨大意",
+        "遇到长句必须先逐词翻译，再按中文语序重排"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "两种句法画像各有课文实例；最后一项与老师给出的取分顺序相反。",
+      "explanation": "**A、B、C、D 正确。**\n- A：老师说这是医学英语的语言特点之一（01:25:30），实例是 Para 1 的 techniques ... were developed and refined, serving as ...。\n- B：A remains B 这类极简主句 + 从句（01:36:54），实例是 diagnosis remains a human endeavor。\n- C：被动语态用来强调技术的被发展与完善（01:25:00）。\n- D：抓出主句，句子主旨就明白了（01:37:30）。\n\n**E 错：**老师给的顺序是**先判句子类型、先抓主句主谓、先译主要成分**（01:24:17、01:26:12），而不是先逐词翻译；先抠词会让长句越读越乱。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "11.1 Para 1 · 两种句法画像（说话人1 01:25:30、01:36:54）"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "stem": "关于课文中 AI 医学诊断的优势与挑战，下列说法正确的有（　）。",
+      "options": [
+        "AI 拥有海量数据与模型，老师在课上形容它「不止一个脑子」",
+        "AI 的优势被课文概括为 accuracy 与 timeliness 的提升，并能发现新的、创造性的模式",
+        "high development cost 被列为 AI 的第一项挑战",
+        "课文认为 AI 应当完全替代医生进行独立诊断",
+        "患者对 AI 诊断的信任度较低，除非有大量数据证明其判断正确"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "hint": "把优势清单与挑战清单各过一遍，再检查「替代」这个方向词。",
+      "explanation": "**A、B、C、E 正确。**\n- A：AI is not only one brain, there are thousands of brains. Data（36:18）。\n- B：improvement in accuracy and timeliness（38:05）；能发现 new / creative pattern（38:22）。\n- C：第一项挑战是 high development cost（39:00）。\n- E：low trust，除非 AI 有大量数据证明其诊断正确（42:18）。\n\n**D 错：**课文的落点恰恰相反——AI should complement rather than replace human expertise（43:21）。这是本章最容易被「AI 很强」的直觉带偏的一处，请务必记住 complement 一词。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "11.3 Para 3 · 优势清单 与 第 8 章 · 四大挑战（说话人1 38:05、39:00、43:21）"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "basic",
+      "label": "考试重点",
+      "source": "current_chapter",
+      "stem": "老师用 metformin 那一句练习改写时，反复强调整句里不能变的是（　）。",
+      "options": [
+        "type 2 diabetes 与 metformin",
+        "lifestyle modification 与 pharmacotherapy",
+        "patients 与 individuals",
+        "are typically initiated 与 usually prescribe"
+      ],
+      "answer": 0,
+      "hint": "老师点名了两个「不能动」的成分：一个是全句讨论的疾病，一个是治这个病的药。",
+      "explanation": "**A 正确。** 老师说「我们整个句子都讲的是什么？Type 2 diabetes，所以这个我们不变」（18:43）；又说「Metformin 我们不能变，因为它这个药就是治这个病的」（20:11）。疾病名与药名是术语锚点，换掉句子就失去临床对应物。\n\n**B、C、D 为什么错——它们恰恰都是被替换掉的成分：**\n- B：lifestyle modification → diet and exercise changes（20:00）/ lifestyle adjustment（21:08）；pharmacotherapy → the initial drug treatment（20:11）/ first medication（21:08）。\n- C：patients → individuals（18:43）。\n- D：are typically initiated（被动）→ usually prescribe（主动）（20:11）。\n\n**迷惑点：**四个选项都在原句里出现，必须分清「术语锚点」与「可替换表达」。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "11.1 Para 1 · 版本一与不变项（说话人1 18:43「Type 2 diabetes，所以这个我们不变」；20:11「Metformin 我们不能变」）"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "basic",
+      "label": "考试重点",
+      "source": "current_chapter",
+      "stem": "课文中 AI 面临的第一项挑战是 high ___ cost，老师特别纠正了同学的第一反应。正确答案是（　）。",
+      "options": [
+        "investment（投资）",
+        "development（开发）",
+        "maintenance（维护）",
+        "training（培训）"
+      ],
+      "answer": 1,
+      "hint": "老师先反问「一看到 cost 就觉得应该是 investment 吗？」，随后点出课文原词。",
+      "explanation": "**B 正确。** 老师明确否定学生凭直觉填的 investment：it's not investment, it is the high development cost（39:00）；40:58 又补了一句解释——development cost 是「高速发展的费用」。\n\n**逐项辨析：**\n- A 错（本题最大迷惑点）：investment 确实出现在课文里，但在结论句 AI success requires sufficient investment（43:50），指 AI 成功所需的资金投入，不是挑战清单的第一项。两处不可对调。\n- C、D 错：maintenance、training 在录音中未出现，属于以常见「IT 成本」印象设的干扰项。\n\n**记忆钩子：**挑战里的 cost 是「开发」的钱；结论里的 investment 是「成功所需」的钱。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "四大挑战逐条核对（说话人1 39:00「不是 investment cost，是 high development cost」）"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "basic",
+      "label": "考试重点",
+      "source": "current_chapter",
+      "stem": "Para 1 的首句 The history is a march.，老师用它讲的是（　）。",
+      "options": [
+        "明喻 simile，因为句中隐含 like 的比较",
+        "隐喻 metaphor（A is B），作用是吸引读者，正如 Life is a journey",
+        "反讽 irony，字面意思与真意相反",
+        "拟人 personification，把历史当作人来描写"
+      ],
+      "answer": 1,
+      "hint": "老师强调这个句子的形式是 A is B，并当场给了一个同类句子作类比。",
+      "explanation": "**B 正确。** 老师说 the history is a march，你看 A is B，这是一个 metaphor；随后类比 Life is a journey，everyone have different stops（01:21:40—01:22:07）。\n\n**逐项辨析：**\n- A 错：句中并没有 like / as；明喻才需要比较词，A is B 是隐喻的典型形式。\n- C 错：irony 是本课标题 AI in Medical Diagnosis Is Not Just Hype 的修辞（01:05:06），不在 Para 1。\n- D 错：拟人要求把非人事物当人描写，本句是把历史比作行进，不是赋予人格。\n\n**设错来源：**课堂上全班一致回答「Para 1 没有修辞」，老师说学生对修辞 less sensitive——这正是本题要检验的敏感度。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "11.1 Para 1 · Para 1 的修辞（说话人1 01:21:40「the history is a march，A is B，这是一个 metaphor」）"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "multiple_choice",
+      "points": 4,
+      "difficulty": "basic",
+      "label": "考试重点",
+      "source": "current_chapter",
+      "stem": "关于小组展示任务，老师明确提出的要求有哪些（　）。",
+      "options": [
+        "课文 14 段分成 5 部分，每组选择一部分讲解",
+        "每组要讲四点：段落主旨、写作风格、修辞手法、关键句的释义与翻译",
+        "其他小组若能回答出该组没答出的问题，可以给该组加分",
+        "每组只需讲段落主旨，其余三点可以省略",
+        "选段后给 5 分钟准备，小组成员坐在一起讨论"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "hint": "回忆老师说的 to explain the four points，以及他安排的分组与加分方式。",
+      "explanation": "**A、B、C、E 正确。**\n- A：Para 1-3 / 4-6 / 7-9 / 10-11 / 12-14，五组各选一部分（01:04:17）。\n- B：to explain the four points，一共要解释四点哦（01:04:36）——main idea、writing style、rhetorical devices、paraphrasing and translation。\n- C：课堂上整个小组加分（01:21:19）。\n- E：prepare for 5 minutes，小组成员坐在一起（01:07:06）。\n\n**D 错：**四点是必答项；正因为缺一不可，老师才用「其他组补答加分」来刺激全班参与。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "11.1 Para 1 · 五组 × 四维度（说话人1 01:04:36「一共要解释四点哦」）"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "points": 4,
+      "difficulty": "hard",
+      "label": "考试重点",
+      "source": "current_chapter",
+      "stem": "关于课文 Para 1-3 的写作风格与修辞，下列说法正确的有（　）。",
+      "options": [
+        "Para 1 用时间顺序回顾医学诊断发展史，并用举例（如 palpation、percussion）支撑",
+        "Para 1 首句是隐喻；Para 2 经老师确认没有修辞手法",
+        "Para 2 用举例与概括展开，并对 illness script 下定义；首句是 topic sentence",
+        "Para 3 用举例与因果关系分析误诊的两大原因，目的是为 AI 能解决这两个问题做铺垫",
+        "Para 1、Para 2、Para 3 三段都使用了反讽"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "逐段回忆：Para 1 有时间线，Para 2 有 definition，Para 3 有 cause and effect；再想反讽究竟出现在哪里。",
+      "explanation": "**A、B、C、D 正确。**\n- A：time sequence（01:18:46）+ example（01:19:19）。\n- B：The history is a march 是隐喻（01:21:40）；Para 2 老师问 is there any rhetorical devices，学生答 No，老师认可（01:34:09）。\n- C：example and generalization（01:28:33）+ definition（01:29:30），首句是 topic sentence（01:27:00）。\n- D：example + cause and effect（01:38:42、01:39:27），目的是说明这两个问题 AI 能解决（01:40:22）。\n\n**E 错：**irony 只出现在标题（01:05:06）；三段正文的修辞判定已逐段确认——Para 1 有隐喻，Para 2、Para 3 均无。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "11.2 Para 2 · 三段落对照表（说话人1 01:38:42「the main idea is the human will do misdiagnosis」）"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "points": 10,
+      "difficulty": "basic",
+      "label": "简答题",
+      "source": "current_chapter",
+      "stem": "请写出 paraphrasing 的定义，列举四种常用释义技术，并写清标准操作步骤。",
+      "answer": "**定义**：paraphrasing 是用不同的词语表达别人说过或写过的话（to express what someone else has said or written using different words），核心要求是完全保留原意而不歪曲；老师在课上把它的中文译名定为「同义复述」。\n\n**四种常用技术**：① 同义词替换（synonyms），如 delicious → tasty；② 词性转换（part of speech），如 The bomb exploded → The bomb explosion；③ 主被动转换（voices），主动语态与被动语态互换；④ 句型改写（sentence pattern），如把两个简单句合并成一个复合句。\n\n**标准操作步骤**：① 通读并理解原文（read for comprehension）；② 找出关键词与表达（keywords and expressions，即有意义的实词）；③ 替换并重排句子（substitute and rearrange）；④ 与原文对照，确认意思一致，且自己的版本通顺清楚（compare with the original, check the meaning is the same, clear and flows well）。",
+      "scoring_criteria": [
+        "2 分：定义准确——用不同词语重述他人内容，并点出「完全保留原意、不歪曲」这一底线",
+        "4 分：四种技术齐全且正确（同义词替换、词性转换、主被动转换、句型改写），每答对一种得 1 分",
+        "4 分：四步流程齐全且顺序正确（通读理解 → 抓关键词 → 替换并重排 → 回原文核对），每答对一步得 1 分"
+      ],
+      "total_points": 10,
+      "hint": "按「是什么 — 有哪四把刀 — 按什么顺序动刀」三段来组织答案；每一步最好带上英文关键词。",
+      "explanation": "**得分点 1（2 分）**：定义必须同时含「different words」与「原意不变」两层；只写「换词」而漏掉保原意，只能得 1 分。\n**得分点 2（4 分）**：四种技术是固定清单；写成「缩写、翻译、引用」等其他动作不得分。能附课堂例子（delicious → tasty；exploded → explosion）说明真正掌握。\n**得分点 3（4 分）**：四步顺序不可颠倒；第三步要写出「替换＋重排」两层动作（很多人只写替换，会丢分）；第四步要写「与原文对照、确认意思一致」，只写「检查语法」不得分。\n**常见失分：**把 paraphrase 与 summary / translation 混为一谈；漏写第四步；把「把原文蒙住再写」误当成流程第一步（老师说他自己都做不到，22:48）。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "第2章 Paraphrasing：四大技巧与四步骤 · 定义；第 2 章 · 四大技术 / 四步流程（说话人1 01:00、03:50、14:15）"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "points": 10,
+      "difficulty": "basic",
+      "label": "简答题",
+      "source": "current_chapter",
+      "stem": "为什么 paraphrasing 时有些内容不能替换？谚语与习语应如何处理？改写时还要注意哪些语境与正式性问题？",
+      "answer": "**一、不可替换的内容**：专业术语、药名等固定专有名词（fixed proper nouns）具有标准化的特定含义，同义词无法准确传达，替换会造成术语错误，因此必须原样保留。课上的例子是 photosynthesis、sunlight、energy、plants，以及 metformin、type 2 diabetes、signs / symptoms / diagnostic findings。\n\n**二、谚语与习语**：必须先完全掌握整句的 core implied meaning，再用平实的语言重述其内涵，不能逐词直译。例：Don't count your chickens before they hatch 的含义是「不要在实际成功之前就假定自己会成功」。\n\n**三、语境匹配**：有些词的含义由语境决定。aspect 是抽象词，所以该语境下的 looking at 可以改成 observe；而 look at this cup 中的 look at 是具体动作，不能换成 observe。\n\n**四、正式性**：把希腊／拉丁来源的正式术语换成人人看得懂的 common English（glycemic → blood sugar、pharmacotherapy → drug treatment）会降低学术文本的正式度，正式论文不宜这样改；改写练习的目的是加深理解、扩大词汇量，与正式写作的目标不同。",
+      "scoring_criteria": [
+        "3 分：专业术语、药名等固定专有名词有标准化含义，同义词无法准确传达，替换会造成术语错误，必须原样保留（须举出至少两个课堂实例）",
+        "3 分：谚语与习语必须先掌握核心隐含意义，再用平实语言重述内涵，不能逐词直译（须给出谚语例子的含义）",
+        "2 分：语境匹配——抽象语境中的词不能按字面换同义词，如 aspect 语境下的 looking at 应改为 observe，而 look at this cup 不行",
+        "2 分：正式性——把希腊／拉丁来源的正式术语换成 common English 会降低学术正式性，正式论文不宜这样改"
+      ],
+      "total_points": 10,
+      "hint": "这道题就是第 4 章的「四条边界纪律」，可以按「术语—谚语—语境—正式度」四点作答。",
+      "explanation": "**得分点 1（3 分）**：核心是「标准化含义无法用同义词替代」这一理由，若只答「因为是专业词」而没有理由，最多得 1—2 分。\n**得分点 2（3 分）**：必须体现两步动作——先理解隐含意义、再平实重述；只写「意译」而不说明「先懂含义」会丢分。\n**得分点 3（2 分）**：关键在于区分抽象与具体语境，能举 looking at → observe 的例子即可得分。\n**得分点 4（2 分）**：要落到「语域下降」这一后果，而不是笼统地说「不好」。\n**常见失分：**把「不可替换」误答成「要尽量少改」；把谚语处理与 paraphrasing 定义混在一起答。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "11.2 Para 2 · —4.4 释义的边界纪律（说话人1 12:56、12:04、06:10、21:39）"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "points": 15,
+      "difficulty": "medium",
+      "label": "论述题",
+      "source": "current_chapter",
+      "stem": "请结合课文与课堂讲解，论述 AI 在医学诊断中的优势、面临的挑战，以及作者给出的定位，并说明为什么「补充而非替代」是自洽的结论。",
+      "answer": "**一、优势**：AI 拥有海量数据与模型，老师在课上形容它「不止一个脑子，而是有上千个脑子」；这带来两条课文原词概括的结果——accuracy（准确性）与 timeliness（时效性）的提升，并能发现新的、创造性的模式（new / creative pattern），例如以秒计识别缺血性中风（ischemic stroke）。\n\n**二、挑战**：① high development cost（高开发成本）；② risk of misinformation（可能输出错误信息，AI 存储量大但不等于不出错）；③ low patient trust（在缺乏大量有效数据证明之前，患者更相信人的判断）；④ 伦理与就业冲击（ethical design；过度依赖可能导致大规模失业，欧洲因此采取保守的研发策略）。\n\n**三、定位**：AI 应当 complement（补充）而不是 replace（替代）人类的专业知识；AI 的成功还需要 sufficient investment（充足的资金投入）；老师反复强调「人还是最根本的」。\n\n**四、为什么自洽**：人类诊断失误的根源是记忆容量与模式匹配的极限——患者特异的关键细节被忽略、非典型表现不符合标准模式；AI 恰好补上「记忆」与「模式发现」这两处短板。但 AI 会出错、成本高、且尚未取得患者信任，所以最优组合只能是「AI 补位 ＋ 人把关」，而不是单方面替代。",
+      "scoring_criteria": [
+        "4 分：优势——海量数据与模型（「不止一个脑子」），带来 accuracy 与 timeliness 的提升，能发现新的、创造性的模式（new / creative pattern），如秒级识别 ischemic stroke",
+        "4 分：挑战——high development cost、risk of misinformation、low patient trust、伦理与就业冲击（ethical design / unemployment，欧洲采取保守研发策略），四点齐全",
+        "4 分：定位——AI 应 complement 而非 replace 人类专业知识，还需要 sufficient investment，人仍然是最根本的",
+        "3 分：推理——说明人类失误源于记忆容量与模式匹配的极限（漏细节 / 非典型对不上），AI 恰好补位，但因会出错、成本高、不被信任，最优组合是「AI 补位 ＋ 人把关」"
+      ],
+      "total_points": 15,
+      "hint": "按「优势 — 挑战 — 定位 — 为什么自洽」四段写，能引课文原词（accuracy and timeliness、complement rather than replace）就尽量引。",
+      "explanation": "**得分点 1（4 分）**：必须出现 accuracy 与 timeliness 这对课文原词，以及至少一个新模式的例子（ischemic stroke 加分）。只泛泛说「AI 很准很快」不能拿满。\n**得分点 2（4 分）**：四点挑战按条给分；把第一项写成 investment cost 直接丢该点的分——那是本文最容易混的一处（39:00 老师专门纠正过）。\n**得分点 3（4 分）**：定位句要写出 complement 与 replace 的对立关系，并带上 sufficient investment；只说「AI 不能取代人」得一半分。\n**得分点 4（3 分）**：这一步考的是逻辑衔接——必须把「两大误诊原因」与「AI 的优势」对应起来（漏细节 ↔ 海量数据；非典型对不上 ↔ 新模式发现），只罗列不贯通最多得 1 分。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/recording.md",
+        "label": "第6章 人工诊断机制、误诊原因与 AI 优势 · 说话人1 36:18（两大误诊原因与 ischemic stroke）；38:05（accuracy and timeliness）；39:00（high development cost）；41:43—43:50（misinformation / low trust / complement / sufficient investment）"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "points": 15,
+      "difficulty": "medium",
+      "label": "材料分析题",
+      "source": "current_chapter",
+      "stem": "> **材料一（课堂给出的原句，转写为 global emic control，实为 glycemic control）**：Patients with type 2 diabetes who fail to achieve glycemic control through lifestyle modification alone are typically initiated metformin as first-line pharmacotherapy.\n>\n> **材料二（课堂改写版本二）**：Metformin, as the subject, is generally the first medication given to type 2 diabetes patients whose blood sugar remains poorly managed despite lifestyle adjustment.\n>\n> **补充说明**：课堂上还给出了一个只换词、不改句型的「版本一」——patients → individuals；fail to achieve glycemic control → cannot maintain adequate blood glucose；lifestyle modification → diet and exercise changes；are typically initiated → usually prescribe；pharmacotherapy → drug treatment。\n\n请回答下列问题：\n1) 材料一里哪些成分是不可替换的？为什么？\n2) 材料二改变了原句的什么？保留了原句的什么？\n3) 老师说这两个改写版本都不够 formal，为什么？如果要写成正式论文应该怎么办？",
+      "answer": "**1) 不可替换的成分**：type 2 diabetes 与 metformin。它们是疾病名与药名，属于有标准化含义的术语（fixed proper nouns / 术语锚点），一旦被同义词替换，句子就失去临床对应物，读者无法把句子对应回真实的临床场景。同类还有课文中的 signs、symptoms、diagnostic findings。\n\n**2) 材料二改了什么、留了什么**：改的是句型与主语——把原句中作宾语的 metformin 提前作主语，句子视角从「患者被给药」切换为「什么药被给」；同时部分词层表达也被替换（glycemic control → blood sugar；lifestyle modification → lifestyle adjustment；pharmacotherapy → first medication；are typically initiated → is generally given）。保留的是原意：二型糖尿病患者在生活方式调整后血糖仍控制不佳时，二甲双胍通常是一线药物治疗。因此两个版本都满足「意思一致、语言不同」。\n\n**3) 为什么不够 formal，正式论文怎么办**：两个版本都把希腊／拉丁来源的正式术语降级为 common English（glycemic → blood sugar、pharmacotherapy → drug treatment / first medication），学术语域随之下移，所以老师判定它们都不够 formal；他强调要 formal 就得用希腊语或拉丁语的术语。正式论文的处理办法是：保留正式术语不改语域，只在句型、语态、词性与可替换的普通词上改写（例如改句型、改被动、改词性），同时记住改写练习的目的是 further understanding and enlarge your vocabulary，并不等于论文降重的唯一手段。",
+      "scoring_criteria": [
+        "4 分：指出不可替换项是 type 2 diabetes 与 metformin（疾病名与药名），并说明理由是术语有标准化含义、替换会使句子失去临床对应物；能补充 signs / symptoms / diagnostic findings 等同类项加分",
+        "5 分：说明材料二改变了句型与主语（metformin 提前作主语）以及词层表达（glycemic control → blood sugar；lifestyle modification → lifestyle adjustment；pharmacotherapy → first medication；initiated → given），同时指出保留的是原意——二型糖尿病患者的血糖仍控制不佳时二甲双胍通常是一线用药",
+        "6 分：解释两个版本把希腊／拉丁正式术语换成 common English 导致正式度下降，故不够 formal（3 分）；并给出正式论文的处理办法——保留正式术语、只改句型语态词性与普通词，且说明改写练习的目的是加深理解与扩大词汇量（3 分）"
+      ],
+      "total_points": 15,
+      "hint": "第 1 问回到「不可替换清单」；第 2 问把两个版本的成分逐项对照；第 3 问想想血糖那一组词的三个档位（glycemic / blood glucose / blood sugar）。",
+      "explanation": "**得分点 1（4 分）**：必须点名 type 2 diabetes 与 metformin 两项并给出理由；只说「专有名词不能换」而没有指出材料中的具体词，得 2 分。\n**得分点 2（5 分）**：要点是「改形式、留意思」——能分列「改变项」与「保留项」即可拿满；只答「换了说法、意思没变」不给结构分。注意材料二把 metformin 提前作主语只是句型变化，**不是语义反转**（仍有「血糖控制不佳」这一条件），这是最常见的误判。\n**得分点 3（6 分）**：前半必须落到「正式术语被降级为 common English」这一机制上；后半要给出可操作的办法，并区分「练习改写」与「正式论文写作」两个目标——这正是老师课上对比 original 与两个版本时反复强调的（20:45、21:39、21:55）。\n**常见失分：**把 version 2 说成「改变了意思」；把 materials 里的 blood sugar 直接当成更优表达而忽略语域问题。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/recording.md",
+        "label": "11.3 Para 3 · 说话人1 14:40（metformin 原句）；18:43—20:11（版本一与不变项）；21:08（版本二）；20:45—21:39（正式性判断）"
       }
     }
-  ]
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "multiple_choice": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
 }

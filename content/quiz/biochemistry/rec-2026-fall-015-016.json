@@ -9,9 +9,9 @@
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-015-016",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "6940bd4d28a2489681fe7c02ae1f24d3dddd30034c06b56cd188937ec3067958",
-    "notesTextHash": "b039523a07928791143b4a1c08bc88104618cc48218b70c2556d527ce302d2d4"
+    "notesTextHash": "64dbc72236c99becf640888435315f455e908de2a60fc10f592ea54513acc152"
   },
   "questions": [
     {
@@ -45,7 +45,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "合成代谢与分解代谢"
+        "label": "4. 合成代谢、分解代谢与动态平衡 · 合成代谢与分解代谢"
       },
       "stem": "关于合成代谢（anabolism）与分解代谢（catabolism），下列对应正确的是：",
       "options": [
@@ -111,7 +111,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "糖的生理功能"
+        "label": "7. 糖的三大生理功能 · 糖的生理功能"
       },
       "stem": "下列哪一项不属于糖类在人体内的主要生理功能：",
       "options": [
@@ -133,7 +133,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "糖的消化过程"
+        "label": "8. 糖的消化、吸收与SGLT · 糖的消化过程"
       },
       "stem": "食物中淀粉的消化，作用最强、最主要的部位和酶是：",
       "options": [
@@ -155,7 +155,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "小肠葡萄糖吸收——SGLT"
+        "label": "8. 糖的消化、吸收与SGLT · 小肠葡萄糖吸收——SGLT"
       },
       "stem": "小肠上皮细胞吸收葡萄糖（和半乳糖）主要通过 SGLT（钠-葡萄糖协同转运体），其转运方式属于：",
       "options": [
@@ -177,7 +177,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "GLUT4 的胰岛素调控"
+        "label": "8. 糖的消化、吸收与SGLT · GLUT4 的胰岛素调控"
       },
       "stem": "GLUT4 主要分布于骨骼肌和脂肪组织，胰岛素促进这些组织摄取葡萄糖的机制是：",
       "options": [
@@ -221,7 +221,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "血糖稳态调控——肝脏"
+        "label": "10. 血糖稳态与运动 · 血糖稳态调控——肝脏"
       },
       "stem": "在血糖稳态调节中起核心作用的器官及其在饥饿时的主要变化是：",
       "options": [
@@ -243,7 +243,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/biochemistry/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "糖无氧氧化与糖酵解的概念区分"
+        "label": "11. 糖酵解、无氧氧化与有氧氧化概念 · 糖无氧氧化与糖酵解的概念区分"
       },
       "stem": "关于“糖酵解”与“糖无氧氧化”的关系，下列叙述正确的是：",
       "options": [

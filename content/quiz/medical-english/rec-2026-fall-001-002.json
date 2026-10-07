@@ -3,192 +3,602 @@
   "chapterId": "rec-2026-fall-001-002",
   "generatedAt": "2026-09-14",
   "examConfig": {
-    "source": "content/medical-english/lectures/rec-2026-fall-001-002/recording.md；content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
-    "totalPoints": 80,
-    "timeLimit": 45
+    "source": "content/medical-english/lectures/rec-2026-fall-001-002/recording.md；content/medical-english/lectures/rec-2026-fall-001-002/notes.html（SOP-04 课上录音标准 24 题/100 分）",
+    "totalPoints": 100,
+    "timeLimit": 50
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-001-002",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "0151bd85e3ef3a66a141e92a839b7e2d6c8907a8a5b51dd290d8b794a7cff754",
-    "notesTextHash": "04fd9020a99dd0ca26048c85aaca1cdee8340ff2282f8aea0f993b33404ff209"
+    "notesTextHash": "289d40dd2737373af56bea3d346404dd8fa3d5b0939d3c102535eb00dedc9962"
   },
   "questions": [
     {
       "id": "q001",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "医学英语课程总评成绩由课堂表现、项目（Project）和期末考试三部分构成，其中期末考试卷面满分为（　）。",
+      "stem": "老师在课上给出结论：现行医学英语术语的构成来源主要是（　）。",
       "options": [
-        "100 分，卷面满分即总评满分",
-        "70 分，卷面总分 70 分",
-        "30 分，仅为平时成绩的一部分",
-        "20 分，仅相当于课堂表现"
+        "希腊语与拉丁语，另有一部分来自盎格鲁-撒克逊语",
+        "葡萄牙语与西班牙语，希腊语只出现在神话名称里",
+        "法语与德语，拉丁语已被完全淘汰",
+        "盎格鲁-撒克逊语与古英语，希腊语仅用于药名"
       ],
-      "answer": 1,
-      "hint": "助记口诀「二加十加七十」。",
-      "explanation": "**B 正确。** 课堂表现 20 分 + 项目 10 分 = 平时 30 分，期末考试卷面总分 70 分，合计 100 分；老师特别强调卷面本身就只有 70 分。\n- A：卷面并非 100 分；\n- C：30 分是平时成绩（课堂表现+项目），不是期末卷面；\n- D：20 分只是课堂表现一项。",
+      "answer": 0,
+      "hint": "回想老师抛出的那道「医学英语来自哪几种语言」的提问，以及下课前她重复的结论句：the majority of the medical terms...",
+      "explanation": "**A 正确。** 老师先以选择题式提问列出拉丁语、希腊语、葡萄牙语、法语、西班牙语与盎格鲁-撒克逊语，学生在答出拉丁语后被她纠正为「对，但不准确」——一部分来自拉丁语、一部分来自希腊语，另有盎格鲁-撒克逊来源；下课前她再次收束结论：绝大多数医学术语由希腊语与拉丁语构成，另有一部分来自盎格鲁-撒克逊语。\n- B：葡萄牙语、西班牙语只是提问时的干扰选项，老师明确否定了它们。\n- C：拉丁语并没有被淘汰，恰恰相反，它作为「死语言」仍大量留在医学英语中。\n- D：希腊语不是只管药名，它是占比最大的一支，原因是西方医学起源于希腊。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
-        "label": "课程考核 · 成绩构成 20+10+70"
+        "label": "问题一：医学英语来自哪几种语言（说话人2 21:33；结论复述见 末尾，说话人2 01:04:43）"
       }
     },
     {
       "id": "q002",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "关于本课程的出勤扣分规则，下列说法正确的是（　）。",
+      "stem": "本课程总评由课堂表现、项目（Project）与期末考试三部分构成。下列关于分值构成的对应，正确的是（　）。",
       "options": [
-        "缺勤每次扣 5 分，最多可缺勤 4 次",
-        "缺勤每次扣 2 分，3 次以内迟到不扣分",
-        "缺勤每次扣 3 分、最多缺勤 6 次，迟到允许 1 次",
-        "缺勤不扣分，只记录考勤名单"
+        "课堂表现 20 分、项目 10 分、期末考试卷面 70 分",
+        "课堂表现 30 分、项目 0 分、期末考试卷面 70 分",
+        "课堂表现 10 分、项目 20 分、期末考试卷面 70 分",
+        "课堂表现 20 分、项目 10 分、期末考试卷面 100 分"
       ],
-      "answer": 2,
-      "hint": "口诀「缺勤扣三限六次」，迟到另有一次宽容度。",
-      "explanation": "**C 正确。** 缺勤每次扣 3 分，最多缺勤 6 次（扣完 20 分课堂表现）；迟到允许 1 次。\n- A、B：每次扣分数与次数上限均与材料不符；\n- D：缺勤明确要扣分。",
+      "answer": 0,
+      "hint": "三块相加正好等于 100，但老师反复要学生确认：期末卷面本身并不是 100 分。",
+      "explanation": "**A 正确。** 课堂表现 20 分 + 项目 10 分 = 平时 30 分，期末卷面 70 分，合计 100 分；老师强调 the final examination is only 70 points，即卷面总分只有 70 分。\n- B：30 分是课堂表现与项目的合计数，不是课堂表现单独一项的分值。\n- C：把课堂表现与项目的分值对调了，课堂表现是 20 分，项目是 10 分。\n- D：若卷面为 100 分，总评就无法由「20 + 10 + 70」相加得到 100 分，与老师当堂反复确认的说法矛盾。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
-        "label": "课程考核 · 缺勤每次扣3分限6次、迟到允许1次"
+        "label": "总评构成：20 + 10 + 70（说话人2 06:34，老师：「the final examination is only 70 points」）"
       }
     },
     {
       "id": "q003",
       "type": "single_choice",
+      "points": 2,
       "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "本课程教材共 15 个单元，本学期计划学习的单元数是（　）。",
+      "stem": "关于本课的考勤扣分规则，下列哪一项与老师当堂宣布的一致？（　）",
       "options": [
-        "5 个单元，其中含 1 个期末项目单元",
-        "15 个单元全部学完",
-        "3 个单元",
-        "8 个单元"
+        "缺勤每次扣 3 分、最多 6 次，迟到允许 1 次",
+        "缺勤每次扣 5 分、最多 4 次，迟到一次即扣分",
+        "缺勤每次扣 2 分、最多 10 次，迟到不受限制",
+        "缺勤不扣分，只登记考勤名单"
       ],
       "answer": 0,
-      "hint": "助记口诀「五单元两阅读」。",
-      "explanation": "**A 正确。** 教材共 15 个单元，本学期学 5 个单元：每个单元按 Reading 1（自学）+ Reading 2（精讲）推进，另有 1 个单元用于期末项目。\n- B：本学期不要求学完全部 15 单元；\n- C、D：数字在材料中无依据。",
+      "hint": "用课堂表现的总分去除以单次扣分，就能反推出次数上限；迟到另有一条独立的宽容度说明。",
+      "explanation": "**A 正确。** 老师原话：absence, 3 points will be deducted each time；并当场提问「20 分里最多能缺几次」，答案是 six；随后补充 you have one time for being late（迟到允许 1 次）。\n- B、C：单次扣分与次数上限都与材料不符——每次扣 3 分、上限 6 次，正好对应课堂表现 20 分的额度。\n- D：缺勤明确要扣分，且老师强调一学期只有 24 次课堂学习，要珍惜。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
-        "label": "学习内容 · 教材15单元本学期学5个"
+        "label": "出勤、迟到与 24 次课（说话人2 06:34）"
       }
     },
     {
       "id": "q004",
       "type": "single_choice",
-      "difficulty": "medium",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "关于每个单元两篇 Reading 的学习方式，下列安排正确的是（　）。",
+      "stem": "老师把第一节课称为 business course orientation，并追问学生这个词的意思。她给出的解释是（　）。",
       "options": [
-        "Reading 1 课堂精讲，Reading 2 课后自学",
-        "两篇均由老师在课堂上逐句精讲",
-        "两篇均要求学生课后自学，老师不讲",
-        "Reading 1 自学以了解背景知识，Reading 2 课堂精讲"
+        "direction / guideline，即指导方向、指南；用它替代 direction 是为了体现大学阶段的正式语域",
+        "大学的入学登记与选课手续",
+        "教学楼内的方位指示牌与楼层索引",
+        "本学期期末考试的考查范围说明"
       ],
-      "answer": 3,
-      "hint": "一篇自己读背景，一篇老师带读。",
-      "explanation": "**D 正确。** Reading 1 由学生自学，目的是熟悉单元主题的背景知识；Reading 2 才是课堂精讲内容。\n- A：两篇的分工说反了；\n- B、C：与课堂实际安排不符。",
+      "answer": 0,
+      "hint": "课堂上学生先猜了 direction 并被肯定，老师随后又补了一个更书面的同义说法。",
+      "explanation": "**A 正确。** 老师确认 orientation 可以理解为 direction（方向）与 guideline（指南），并补充它还可表示 instruction（指示）；她进一步解释：direction 是高中阶段学的词，用 orientation 才说明你已经是大学生。\n- B、C：把 orientation 当成「报到日」「方位标示」这类同形词的日常用法，与本课释义无关。\n- D：课程导学不等于考试范围说明，材料中也没有这种表述。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
-        "label": "学习内容 · Reading 1自学背景 / Reading 2精讲"
+        "label": "orientation：为什么开学讲的是「导学」而不是「方向」（说话人2 02:38）"
       }
     },
     {
       "id": "q005",
       "type": "single_choice",
-      "difficulty": "medium",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "老师指出，英语国家人们日常对话的开场寒暄，常用的说法是（　）。",
+      "stem": "关于本学期的学习任务与单元安排，下列说法正确的是（　）。",
       "options": [
-        "一见面就问 \"How are you?\"",
-        "聊天气，如 \"It's a fine day today.\"",
-        "正式问候 \"How do you do?\"",
-        "直接自报姓名 \"I'm a medical student.\""
+        "教材共 15 个单元，本学期学 5 个单元，其中 1 个单元用于期末项目",
+        "教材 15 个单元全部在课堂精讲完",
+        "本学期只学 3 个单元，其余全部由学生自学",
+        "项目单元在开学前就已由老师指定，与学生水平无关"
       ],
-      "answer": 1,
-      "hint": "聊天气是英语寒暄的经典开场，不涉及个人隐私。",
-      "explanation": "**B 正确。** 老师举例说明：英语国家日常对话常以天气话题开场（It's a fine day today），而不是像中国学生那样开口就 How are you。\n- A：并非日常开场的首选；\n- C：How do you do 只用于非常正式的场合；\n- D：与课堂所讲寒暄方式无关。",
+      "answer": 0,
+      "hint": "每个单元有两篇 Reading，而项目本身还要占用一个单元，把这两点合起来数一数。",
+      "explanation": "**A 正确。** 老师说明教材共 15 个单元，本学期学 5 个单元：每个单元 Reading 1 由学生自学背景知识、Reading 2 在课堂精讲，另外「项目也会选一个单元」，所以合计 5 个单元。\n- B：本学期并不要求学完全部 15 个单元，只学 5 个。\n- C：「3 个单元」在材料中无依据；被略去的单元也不是全部自学，Reading 2 是课堂精讲内容。\n- D：老师明确说要先了解你们的英语与医学英语水平（proficiency），之后才决定项目单元，现在还没有决定。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
-        "label": "课堂口语 · 日常开场说天气而非 How are you"
+        "label": "学习任务：教材单元、Reading 1/2 与项目单元（说话人2 09:30）"
       }
     },
     {
       "id": "q006",
       "type": "single_choice",
-      "difficulty": "medium",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "老师在课堂上提问 orientation 的含义，并强调它是大学阶段比 direction 更正式的用词。该词意为（　）。",
+      "stem": "教学视频用「火车车厢」作比喻，说术语中间那一节车厢叫 word root。下列对 word root 的描述，与视频一致的是（　）。",
       "options": [
-        "罗盘上的方位角读数",
-        "大学新生报到日",
-        "direction / guideline，即指导方向、指南",
-        "手术室内的方位示意图"
+        "它本身就是一个完整单词，通常表示某种手术操作",
+        "它是术语的基础，通常指身体部位，而且每个医学术语至少有一个",
+        "它只出现在术语末尾，用来表示炎症",
+        "它可有可无，一个术语可以完全没有词根"
       ],
-      "answer": 2,
-      "hint": "课堂上学生猜 direction 被老师肯定，另补充 guideline。",
-      "explanation": "**C 正确。** 老师明确 orientation = direction / guideline；用它替代高中阶段学的 direction，以体现大学阶段更书面、更正式的用词。\n- A、D：是对「方向」一词的望文生义；\n- B：报到日只是同形词的误用，与本课释义无关。",
+      "answer": 1,
+      "hint": "视频先讲的是中间那节蓝色车厢，作者称它为 the foundation，并说明它 usually refers to...",
+      "explanation": "**B 正确。** 视频原话：word root 是整段术语的基础（the foundation of what that whole term is trying to say），它通常指身体部位（usually refers to a body part, not always but usually），并且每个术语至少有一个词根（there is at least one word root in every medical term）。\n- A：视频明确说它不是完整单词，而是一个片段（fragment）；「表示手术操作」的是后缀一类构件（如 -ectomy），不是词根。\n- C：位置描述反了——出现在术语末尾的是后缀；视频正是用「末尾」来定义 suffix。\n- D：与「每个术语至少有一个词根」直接矛盾。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
-        "label": "课堂词汇 · orientation = direction/guideline"
+        "label": "7. 连接元音 letter o · 词根 word root：术语的基础零件（说话人3 44:05，教学视频）"
       }
     },
     {
       "id": "q007",
       "type": "single_choice",
-      "difficulty": "hard",
+      "points": 2,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "下列关于本课程考核与学习要求的说法，错误的是（　）。",
+      "stem": "课本把词条写成 cardi/o 这种形式。老师强调斜线后面的那个 o 属于（　），因此 cardi/o 应当称为（　）。",
       "options": [
-        "课堂表现 20 分、项目 10 分，老师称这平时 30 分是「送分题」",
-        "课堂学习共 24 次，老师强调要珍惜每一次机会",
-        "作业只要按时交就有分，扣分是为了让你知道错在哪里",
-        "项目单元由老师在开学前直接指定，与学生英语水平无关"
+        "词根的一部分；word root",
+        "连接元音；combining form",
+        "后缀；suffix",
+        "前缀；prefix"
       ],
-      "answer": 3,
-      "hint": "题目选「错误」项；项目单元要在做完医学英语水平测试后才选定。",
-      "explanation": "**D 错误（符合题意）。** 项目单元并非课前指定，而是在医学英语水平测试之后、根据学生水平选定的。\n- A、B、C 均为材料原文：平时 30 分是送分题、共 24 次课堂学习、作业交了就有分。",
+      "answer": 1,
+      "hint": "老师特意要求把这两个名词的区别搞清楚，并说课本用斜线是为了把某个字母「隔开」。",
+      "explanation": "**B 正确。** 老师指出：词条里的 o 不是词根本身的一部分，而是一个连接元音（combining vowel），课本因此用斜线把它与词根隔开；带 o 的形式叫 combining form，即 word root + o。\n- A：把连接元音误当成词根的组成部分，正是老师预判的常见混淆点（她说这个区别是重点也是难点）。\n- C、D：suffix 位于术语末尾、prefix 位于词根之前，与 cardi/o 中 o 的性质完全不符。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
-        "label": "学习要求 · 项目单元按水平测试后选定"
+        "label": "6. 词根与连接形式 combining form · 连接元音 o 与 combining form（说话人2 34:24 与 39:16）"
       }
     },
     {
       "id": "q008",
       "type": "single_choice",
-      "difficulty": "hard",
+      "points": 2,
+      "difficulty": "medium",
       "source": "current_chapter",
-      "points": 10,
-      "stem": "按课堂口语要求，老师进教室说 \"Good morning, everyone\" 时，学生最合适的回应是（　）。",
+      "stem": "若把表示「胃」的词根 gastr- 与表示炎症的后缀 -itis 组合，正确形式与规则是（　）。",
       "options": [
-        "齐声回应 \"Good morning\"，主动开口",
-        "只微笑看着老师、点头示意即可",
-        "保持沉默，等老师继续讲课",
-        "齐声说 \"It's a fine day today.\""
+        "gastroitis，因为词根后面必须补上连接元音",
+        "gastritis，因为后缀以元音开头时要删掉连接元音 o",
+        "gastr-itis，两个构件之间必须用连字符连接",
+        "gastrosis，因为 -itis 只能接在名词性词根之后"
+      ],
+      "answer": 1,
+      "hint": "先看 -itis 的首字母属于元音还是辅音，再回想老师讲的那条关于「删不删 o」的规则。",
+      "explanation": "**B 正确。** 视频与老师都强调：如果后缀以元音开头，连接元音 o 就要被删掉，所以这个词读 gastritis，不读 gastroitis（so we do not pronounce as gastroitis, we pronounce the gastritis）。-itis 以元音 i 开头，正好触发这条规则。\n- A：把规则反用了——需要补 o 的情形是后面接的构件以辅音开头。\n- C：英文术语由构件直接拼接，不用连字符连接词根与后缀。\n- D：属于虚构规则；gastr- 表示胃，-itis 表示炎症，组合结果就是 gastritis（胃炎）。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/recording.md",
+        "label": "7. 连接元音 letter o · 连接元音的两条规则（规则 A，说话人2 40:01）"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "points": 2,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "stem": "视频给出的两个心率阈值是：tachycardia 通常指心率（　），bradycardia 通常指心率（　）。",
+      "options": [
+        "超过 100 次/分；低于 60 次/分",
+        "超过 60 次/分；低于 100 次/分",
+        "超过 120 次/分；低于 80 次/分",
+        "超过 90 次/分；低于 50 次/分"
       ],
       "answer": 0,
-      "hint": "老师反复强调：不要只看着老师，要开口回应。",
-      "explanation": "**A 正确。** 老师每堂课说 Good morning / Good afternoon 时，学生都应回应同样的问候，不能只是看着老师。\n- B、C：正是老师点名批评的错误做法；\n- D：聊天气是陌生人寒暄的开场方式，不是对老师问候的回应。",
+      "hint": "把 tachy-（快）与 brady-（慢）配上各自的那个整数门槛——速记「一百以上、六十以下」。",
+      "explanation": "**A 正确。** 视频原话：tachycardia means literally a heart rate that is faster than normal limits, generally that's over 100 beats a minute；而 bradycardia 是 a heart rate that's slower than normal limits, generally somewhere below 60。\n- B：把两个门槛对调，等于把快慢的判定标准互换。\n- C、D：120 / 80、90 / 50 这两个组数字在录音中均未出现，属于编造阈值。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
-        "label": "课堂口语 · Good morning 应主动回应"
+        "label": "tachy- 与 brady-：快与慢（说话人3 56:14 与 58:32）"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "词根 splen-（脾）加上后缀 -ectomy 构成 splenectomy，这个术语的意思是（　）。",
+      "options": [
+        "脾的炎症",
+        "脾的肿块",
+        "脾的手术切除",
+        "脾的影像检查"
+      ],
+      "answer": 2,
+      "hint": "-ectomy 属于视频所说的「有实义后缀」，讲脾的例词时作者直接给出了它的中文含义。",
+      "explanation": "**C 正确。** 视频原话：splenectomy means surgical removal of the spleen，其中 -ectomy 表示手术切除；一个旁证是：脾的单词 spleen 用作词根时要去掉一个 e，变成 splen-。\n- A：表示炎症的是 -itis（如 gastritis、dermatitis）。\n- B：表示肿块 / 肿瘤的是 -oma。\n- D：影像检查在视频与课堂内容中均无对应后缀依据。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "8. 词根示例（视频与课堂） · 有实义后缀逐一拆解：-ectomy（说话人3 01:00:28）"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "老师把学生在课堂上的责任写成若干条学习习惯（study habits）。下列哪几项属于她当堂列出的要求？（　）",
+      "options": [
+        "be punctual（守时）",
+        "be honest（诚信，含考试不作弊与 AI 使用边界）",
+        "preview the content assigned by the teacher（预习老师布置的内容）",
+        "平时不必参与课堂互动，只在期末考试前集中复习即可"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "那七条要求以 be / preview / participate / complete 等祈使句开头，其中有一条与 AI 的使用直接相关。",
+      "explanation": "**A、B、C 正确。** 七条学习习惯分别是：be punctual、be honest、preview the content assigned by the teacher、participate actively in class activities、be a positive force for your classmates、complete your assignment or homework on time、full attendance to class。\n- D 与 participate actively 的要求正面冲突：老师明确说她不想整堂课一个人讲，希望学生主动回应并在小组内协作（collaborate with your group members）；此外她还把「全勤」列为第七条，反对把学习压缩到考前。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "7. 连接元音 letter o · 七条学习习惯（说话人2 11:34 · 14:27 · 15:06 · 17:18）"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "视频把后缀分成「有实义」与「只表词性」两类。下列哪几项属于只表词性（pertaining to，与……相关）、本身没有实义的后缀？（　）",
+      "options": [
+        "-ic",
+        "-ous",
+        "-itis",
+        "-ac"
+      ],
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "hint": "视频说有一类后缀并不 exciting，它们加在词尾的含义只相当于「我们说的就是这个东西」。",
+      "explanation": "**A、B、D 正确。** -ic、-ous、-ac 都属于「只表词性」的后缀，含义固定为 pertaining to（与……相关），老师的中文解释是：它没有意义，只是表示这个术语是什么词性。\n- C 不选：-itis 表示炎症（inflammation），是典型的有实义后缀，视频正是用 dermatitis、gastritis 这类例词说明「exciting」的后缀会带来真实含义。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "后缀 suffix：分「有实义」与「只表词性」（说话人3 50:01；老师解释见 说话人2 01:03:14）"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "stem": "下列前缀与其含义的对应，哪几项是正确的？（　）",
+      "options": [
+        "hyper- = 过多、过度",
+        "hypo- = 不足、缺乏",
+        "a- / an- = 没有、缺失",
+        "brady- = 比正常快"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "前缀常常成对出现：先把「多 / 少」与「快 / 慢」两组配对，再逐项判断。",
+      "explanation": "**A、B、C 正确。** 视频定义：hyper- 表示 too much / excessive（过多）；hypo- 表示 not enough / deficient（不足）；a- 及变体 an- 表示 without or absent（没有、缺失），例词 asymptomatic 与 asystole。\n- D 不选：brady- 与 tachy- 被对调了。brady- 表示慢于正常（bradycardia 一般低于 60 次/分），表示「快于正常」的是 tachy-（tachycardia 一般超过 100 次/分）。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "10. 前缀系统 · / / 前缀系统（说话人3 53:55 · 56:14 · 58:32）"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "stem": "关于老师反复强调的「一词三式」（synonyms of medicine），下列哪些说法是正确的？（　）",
+      "options": [
+        "body 的三式是 body / corpus / soma",
+        "它指同一个含义有三种形式，三种形式可能来自不同语言",
+        "肺的一词三式是 lung / pulmo / pneumon",
+        "三个形式在任何语域中都可以随意互换，使用频率完全相同"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "先想老师举例用的那个中文词（身体），再想课堂练习里她要求「肺的三个单词都要记住」的那句话。",
+      "explanation": "**A、B、C 正确。** 老师把 synonyms of medicine 定义为「一个意思、三副形式」：body 对应 body（盎格鲁-撒克逊）/ corpus（拉丁）/ soma（希腊）；课堂练习中又明确要求把肺的三个单词、一词三式都记住，即 lung / pulmo / pneumon。\n- D 不选：老师专门讲了语域差别——面向大众的科普文献用 stomach body，专业医学文献用 gastric corpus，并强调「要记得对的是 gastric」，说明三式并不能随意互换。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "5. 词源与「一词三式」 · 一词三式（说话人2 25:29）；肺的三式见第 8 章 （说话人2 01:22:17）"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "points": 2,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "stem": "下列例词与其含义的对应，哪几项是正确的？（　）",
+      "options": [
+        "hematuria = 尿中出现血液",
+        "hemiplegia = 身体一侧瘫痪",
+        "bacteremia = 血液中出现细菌",
+        "asymptomatic = 症状非常严重"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "逐个把构件拆开再判断：hemi-、-uria、-emia 与 a- 各自管什么。",
+      "explanation": "**A、B、C 正确。** hematuria = hemat（血）+ -uria（与尿相关），视频明确说 blood in the urine is hematuria，并补充正常尿中不应有血，出现常提示感染或肾结石；hemiplegia = hemi（一半）+ -plegia（瘫痪），视频用中风后一侧身体瘫痪举例；bacteremia = bacteri（细菌）+ -emia（在血中），即血中有细菌。\n- D 不选：a- 表示「没有、缺失」，asymptomatic 是「无症状」；视频还强调这类人自己没症状却可能把病毒传给别人，所以 D 恰好说反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "a- / an- 与第 6 章 有实义后缀（说话人3 56:14 · 50:01）"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "老师在课本 Page 17 处强调 word root 与 combining form 的区别「这个要搞清楚，这个是重点也是难点」。下列判断正确的是（　）。",
+      "options": [
+        "word root 是词根本身；combining form = word root + 连接元音 o，因此 cardi 是词根、cardi/o 是 combining form",
+        "combining form 就是 word root，斜线只是排版习惯，o 属于词根的组成部分",
+        "word root 必须带 o 才能出现，不带 o 的形式只能作后缀使用",
+        "两者的区别在于：word root 表示器官，combining form 表示手术操作"
+      ],
+      "answer": 0,
+      "hint": "课本用斜线把那个字母「隔开」，而不是把它包含进来；再想「模式 1」里说的词根能否独立成词。",
+      "explanation": "**A 正确。** 老师原话要求把这个区别搞清楚并称其为重点与难点：词根是词本身，combining form 则是词根再加上连接元音 o；课本写成 cardi/o，用斜线表明 o 并不属于词根本身。\n- B：把连接元音误当词根成分，这正是老师预判的常见错误；若 o 属于词根，课本就无需用斜线分隔。\n- C：编造了「必须带 o」的规则，与构词模式 1（词根本身即可成词）矛盾。\n- D：混淆了构件的形态与语义——表示手术操作的是 -ectomy 一类的后缀，word root 通常指身体部位。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/recording.md",
+        "label": "6. 词根与连接形式 combining form · 连接元音 o 与 combining form（说话人2 34:24，老师：「这个要搞清楚，这个是重点也是难点」）"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "multiple_choice",
+      "points": 4,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "老师在视频之外专门增加了一段讲解，并说「大家一定要记住这句话」「这一条我要增加讲解」。关于连接元音 o 的取舍，下列哪几项判断正确？（　）",
+      "options": [
+        "后缀以元音开头时应删掉连接元音 o，因此是 gastritis 而不是 gastroitis",
+        "两个词根相连时，即使第二个词根以元音开头也保留 o，因此是 gastroenteritis",
+        "若一个词在两个元音之间仍夹着 o，可反推该词两侧都是词根",
+        "连接元音只在辅音与辅音之间才需要，只要遇到元音就一律补上 o"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "注意区分两种位置：o 后面接的是「后缀」还是「另一个词根」——老师的补充规则与视频里的那条方向相反。",
+      "explanation": "**A、B、C 正确。** A 是规则 A（说话人2 40:01：when it is a vowel, delete... so we do not pronounce as gastroitis）；B 是老师额外强调的规则 B（说话人2 01:11:45：Keep the combining vowel between two word roots even if the second root begins with a vowel），例词 gastroenteritis = gastr + o + enter + itis；C 是老师教的逆推技巧（说话人2 01:13:19）：前后都是元音却还夹着 o，说明两侧都是词根。\n- D 不选：这条把两条规则混成了一条错误规则。遇到元音时并不「一律补 o」，而要先判断这个元音属于后缀还是属于第二个词根——属于后缀就删 o（gastritis），属于第二个词根就留 o（gastroenteritis）。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/recording.md",
+        "label": "7. 连接元音 letter o · 连接元音两条规则（说话人2 40:01 规则 A；说话人2 01:11:45 规则 B；说话人2 01:13:19 反推技巧）"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "视频讲到 hematuria 时，老师当堂插话说「这个要记，我们课文里面有尿」。下列关于 hematuria 的说法正确的是（　）。",
+      "options": [
+        "由 hemat（血）+ -uria 构成，指尿中出现血液；正常尿中不应有血，常提示感染或肾结石",
+        "指血液中尿素升高，属于肾功能指标",
+        "由 hemi（一半）+ -uria 构成，指排尿量减少一半",
+        "属于炎症，因为词尾含有表示炎症的 -itis"
+      ],
+      "answer": 0,
+      "hint": "把它拆成前后两段：前半段是「血」，后半段与尿有关；老师当时提醒的关键词是「课文里面有尿」。",
+      "explanation": "**A 正确。** 视频的拆解路径是 blood（hema）+ urine（uria）→ hematuria，并给出临床判断：尿里本来不该有血，出现血通常提示感染、肾结石，甚至更糟的情况；老师因此要求记住这个词。\n- B：把 hem(o)-（血）与尿素 urea 混为一谈，属于认错构件。\n- C：把 hemi-（一半）当成了 hemat-；而且 -uria 只表示「与尿相关」，并不表示尿量减半。\n- D：本词不含 -itis；表示炎症的后缀出现在 dermatitis、gastritis 这类词里。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "hematuria 的构成与临床含义（说话人3 50:01；老师强调见说话人2 49:46）"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "points": 4,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "老师把哪一项称为记忆医学词汇的「核心」（the core of remembering the medical terms）？（　）",
+      "options": [
+        "记住「一个熟悉的含义 + 两副新的词源形式」，也就是一词三式",
+        "按字母顺序把整本医学词汇表抄写多遍",
+        "只记盎格鲁-撒克逊来源的日常说法，放弃专业形式",
+        "先系统学完希腊语与拉丁语语法，再开始背术语"
+      ],
+      "answer": 0,
+      "hint": "老师用一句话收束 synonyms 那一节，并把这条方法与「降低记忆量」联系在一起。",
+      "explanation": "**A 正确。** 老师讲完 synonyms of medicine 后收束道：This is remember the core of remembering the medical terms——你已经认识 body，只需要再记 corpus 与 soma 两副新形式，不必从零背整词，这就是记忆量下降的来源。\n- B：正是老师明确否定的高中式做法（读很多遍再记），她要求改成「先找规则、再按理解记」。\n- C：与「专业文献用 gastric corpus」的结论冲突——专业形式恰恰是必须掌握的部分。\n- D：课上没有这门先修课；老师反而说因为你们不学拉丁语，所以很多词不认识，并给出构件规律作为替代路径。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/recording.md",
+        "label": "A. 核心结论 · 一词三式（说话人2 25:29；核心地位强调见说话人2 34:24）"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "points": 4,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "stem": "老师在播完教学视频后给出构词的总规律。下列哪几项与她的说法一致？（　）",
+      "options": [
+        "大多数医学术语以器官作为词根",
+        "后缀常表示某种手术操作或状态（如切除、成型、炎症）",
+        "掌握 prefix、suffix 与 combining form 之后再组合起来，就能理解大部分术语",
+        "医学术语没有规律可循，只能逐个死记硬背"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "回想视频结束后老师那句总结：她先讲「器官 + 做什么」，再说「你只要记 prefix、suffix 和 combining form」。",
+      "explanation": "**A、B、C 正确。** 老师原话：the most key medical terms usually use the organs as the word root and do something or surgical operation as the suffix，即器官作词根、手术操作作后缀；随后她说「你只要记 prefix、suffix 和 combining form，把它们组合起来」，并强调要分段记忆而不是整词硬背。\n- D 不选：这一项与老师的核心主张完全相反——她整节课都在论证医学词汇有规则（regulations / rules），并说「不要怕，因为有规律」。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/recording.md",
+        "label": "6. 词根与连接形式 combining form · 机制小结：分类逻辑（说话人2 41:43，老师：「器官作词根 + 操作作后缀」）"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "total_points": 10,
+      "stem": "老师用「一词三式」（synonyms of medicine）解释医学英语为什么难、又为什么可记。请回答：\n① 说明「一词三式」的含义；\n② 以 body 为例写出三种形式，并标注每种形式的来源语言；\n③ 说明 stomach body 与 gastric corpus 分别出现在什么语域；\n④ 老师要求学生「记得对的」是哪一个形式？",
+      "answer": "① 一词三式指同一个意思有三种形式（one word, one meaning, but three forms），三种形式可能来自不同语言；老师称之为 synonyms of medicine，并说这是记忆医学词汇的核心。\n② body 的三种形式：body（盎格鲁-撒克逊来源）、corpus / corpor-（拉丁语来源）、soma / somat-（希腊语来源）。\n③ stomach body 出现在面向大众的科普文献（general scientific paper connecting with medicine）；gastric corpus 出现在专业医学文献、研究论文（research paper）中。\n④ 老师原话是「要记得对的就是 gastric」——即专业文献使用的 gastric 一系才是必须记住的形式。",
+      "hint": "先锁定老师举例的那个中文词（身体），再回忆她随后举的「科普用词 vs 论文用词」这一组对照。",
+      "explanation": "**得分点对应：** ①对应「同一含义、三种形式」的定义；②对应 body / corpus / soma 三式与来源语言标注，注意不能把拉丁与希腊两列对调；③对应语域区别，答成「任何时候都能互换」不得分；④对应老师对专业形式的强调。\n**常见失分：** 把 o 之类的连接元音写进三式里（那不是第三种「形式」，而是拼装手段）；只写 body 与 corpus 两式而漏掉 soma；把 stomach body 说成专业用法。",
+      "scoring_criteria": [
+        "① 准确说明「一词三式」＝同一含义、三种形式，且三种形式可来自不同语言，2 分",
+        "② 写全 body 的三种形式并正确标注来源语言：body（盎格鲁-撒克逊）、corpus / corpor-（拉丁）、soma / somat-（希腊），3 分",
+        "③ 正确区分语域：科普文献用 stomach body，专业医学文献用 gastric corpus，3 分",
+        "④ 明确指出老师要求记住的是 gastric 一系（专业形式），2 分"
+      ],
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "5. 词源与「一词三式」 · 一词三式：一个意思，三种形式（说话人2 25:29）"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "total_points": 10,
+      "stem": "请按老师的讲解回答：\n① 医学术语的四种构件分别是什么？各自在术语中的位置如何？\n② 连接元音 o 存在的唯一职能是什么？为什么需要它？\n③ 后缀可以分成哪两类？各举两个例词。\n④ 为什么「只表词性」的那一类后缀在翻译时不需要强行译出实义？",
+      "answer": "① 四种构件：word root（词根，术语的基础，通常指身体部位，位于术语中段）、combining vowel（连接元音，跟在词根之后）、suffix（后缀，位于术语末尾）、prefix（前缀，位于词根之前，且并非每个术语都有）。\n② 连接元音 o 的唯一职能是发音：词根以辅音结尾、后面又接一个以辅音开头的构件时读不出来，必须在中间补一个元音，o 因此成为最常见的连接元音。\n③ 有实义后缀：-itis（炎症，如 dermatitis、gastritis）、-oma（肿块，如 hematoma）、-plegia（瘫痪，如 hemiplegia）、-emia（在血中，如 bacteremia）、-ectomy（手术切除，如 splenectomy）；只表词性后缀：-ic、-ous（如 hepatic、cardiac、venous 一类），还可以包括 -ac 与 -ia。\n④ 因为这一类后缀只表示 word 的词性（the part of speech），含义固定为 pertaining to（与……相关），本身不携带医学信息；老师原话说得很直接：-ic 没有意义，它只是表示与什么相关。",
+      "hint": "按「词根 → 连接元音 → 后缀 → 前缀」的位置顺序回忆；再想视频里作者把后缀分成 exciting 与 boring 两类的那段。",
+      "explanation": "**得分点对应：** ①四种构件的名称与位置缺一不可，尤其要说明前缀不是每个词都有；②必须落到「发音」，只写「习惯用法」不得分；③两类各举两个例词，注意的是 -itis 属有实义而非只表词性；④能解释「只表词性后缀无医学信息」即可。\n**常见失分：** 把连接元音写成词根的组成部分（老师称此为需要搞清楚的混淆点）；把 -oma 归入只表词性（它表示肿块，是有实义的）。",
+      "scoring_criteria": [
+        "① 说出四种构件（word root / combining vowel / suffix / prefix）及其位置，并指出前缀并非每个术语都有，3 分",
+        "② 说明连接元音 o 的唯一职能是发音，能解释两个辅音相连读不出来，2 分",
+        "③ 正确区分有实义后缀（如 -itis 炎症、-oma 肿块、-ectomy 切除）与只表词性后缀（如 -ic、-ous，表示 pertaining to），3 分",
+        "④ 指出只表词性的后缀没有医学实义、只标词性，翻译时不必强行寻找实义，2 分"
+      ],
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "4. 术语构件：前缀、后缀与词根 · –4.4 构词四构件（说话人3 44:05 · 47:05；老师补充见说话人2 39:16 · 01:03:14）"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "points": 15,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "论述题",
+      "total_points": 15,
+      "stem": "以 gastroenteritis 与 splenectomy 为例，论述连接元音 o 的添加与省略规则，并说明这套规则如何把「背单词」变成「拆单词」。\n要求：① 写出两条规则，各以本课例词说明；② 说明判断 o 是否出现时最关键的区分依据；③ 说明 o 被优先选作连接元音的理由；④ 举出词根位置引起的拼写变化至少两例；⑤ 论述「拆构件」对记忆长词的意义。",
+      "answer": "① 规则 A（省略）：后缀以元音开头时，连接元音 o 要被删掉，所以 gastr- 与 -itis 组合成 gastritis，而不是 gastroitis。规则 B（保留）：两个词根相连时，即使第二个词根以元音开头也要保留 o，所以 gastr + o + enter + itis = gastroenteritis。\n② 关键区分依据是 o 后面接的东西是什么：接「后缀」且该后缀以元音开头→删 o；接「第二个词根」→无论它是否以元音开头都要保留 o。反推技巧：若一个词在两个元音之间仍夹着 o，说明它两侧都是词根。\n③ o 被优先选用的理由是发音：o 在任何位置都只有一个发音，不会产生歧义、读起来也方便；i 有两个发音但不造成歧义，排第二；a 有多个发音、读起来不流畅，e 的发音随位置变化，所以少用。老师由此给出通则：发音越简单的音越容易流传下来。\n④ 词根位置引起的拼写变化：spleen 作词根时去掉一个 e 变成 splen-（splenectomy）；-pathy 作后缀时以 y 结尾，作为词根表示疾病时去 y 变成 -path；同理 cardi 在接后缀时常写作 cardi/o。\n⑤ 拆构件的意义在于把记忆单位从「整词」缩小到「构件」：本课举例的术语可达二十几个字母，有学生找到过 40 个字母的单词，医学词典里最长的词有 72 个字母——这样的词不可能整体背，但只要认出前缀、词根、后缀，就能推知整词含义；splenectomy 与 gastroenteritis 正是同一套规则的两次应用。",
+      "hint": "先写两条方向相反的规则（一个删 o、一个留 o），再用 gastroenteritis 检验第二条，最后把 o/i/a/e 的选择理由与「发音」这条主线串起来。",
+      "explanation": "**得分点对应：** ①必须两条规则齐全，并落到 gastritis（A）与 gastroenteritis（B）两个例词上，只写一条最多拿一半；②的关键是说明「后面接的是后缀还是词根」，这一句是老师「增加讲解」的核心；③必须归因于发音（唯一发音、不歧义、方便），并把 o 与 i、a、e 的排序讲清；④两例可取自 spleen→splen、-pathy→-path；⑤论述需要体现「构件可复用」的方法论价值。\n**常见失分：** 把两条规则混成「遇元音一律补 o」；只举例不写规则；把 o 首选的原因说成「习惯」。",
+      "scoring_criteria": [
+        "① 写出规则 A：后缀以元音开头时删掉连接元音 o，故为 gastritis 而非 gastroitis，4 分",
+        "② 写出规则 B：两个词根之间即使第二个词根以元音开头也保留 o，故为 gastroenteritis，并给出「两个元音间夹 o 说明两侧都是词根」的反推技巧，4 分",
+        "③ 说明 o 首选的理由（发音唯一、不产生歧义、发音方便），并说明 i 次之、a 与 e 因发音多而不常用，3 分",
+        "④ 举出词根位置引起的拼写变化至少两例（spleen→splen、-pathy→-path，或 cardi→cardi/o），2 分",
+        "⑤ 论述「拆构件」的意义：能推知二十几个字母乃至最长 72 个字母的术语，以构件理解代替整词死记，2 分"
+      ],
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/recording.md",
+        "label": "7. 连接元音 letter o · –7.4 连接元音的取舍与拼写变形（说话人2 40:01 · 01:11:45 · 01:13:19 · 01:22:17；长词数字见 01:06:44）"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "points": 15,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "材料分析题",
+      "total_points": 15,
+      "stem": "阅读下列材料（教学视频旁白节选，个别词依上下文整理）：\n\n> The analogy I'm gonna use here is a train... with medical terminology, it's all about breaking it down just like railroad cars on the train... even the most complicated medical term can be broken down into the pieces that make it up. This middle part is called the word root... it's the foundation of what that whole term is trying to say. ... The suffix refers to something at the end. ... Anytime you see -ous, -ia, -ic, any of these little fragments attached on the end of the word, they're not very exciting... Some suffixes are kind of exciting... -oma is a tumor or a mass... hemi is half, plegia means paralysis, hemiplegia. -emia means in the blood; bacteremia, bacteria in the blood.\n\n请回答：\n① 用材料中「拆火车车厢」的比喻，说明 hematuria 的构成与含义，并指出它的临床提示；\n② 材料把后缀分成哪两类？各举一例，并说明为什么「不 exciting」的那一类在翻译时不能强行译出实义；\n③ 结合 cardiothoracic，说明一个术语里出现两个词根时，连接元音应当如何处理。",
+      "answer": "① 按「拆车厢」的思路，hematuria 由两节车厢拼成：hemat（血）+ -uria（与尿相关，材料中对应的说法是 urine），合起来表示「尿中出现血液」。视频补充：正常情况下尿里不该有血，出现血通常提示感染（infection）或肾结石（kidney stone），也可能是更严重的问题。\n② 材料把后缀分成两类：一类「有实义」（exciting），例如 -oma 表示肿瘤 / 肿块、-plegia 表示瘫痪、-emia 表示在血中；另一类「只表词性」（not very exciting），例如 -ous、-ia、-ic，它们的含义固定为 pertaining to（与……相关）。之所以不能强行译出实义，是因为这一类后缀只标词性、不携带医学信息，老师的中文解释是「它没有意义，只是表示它是什么词性」。\n③ cardiothoracic 包含两个词根：cardi（心）+ thorac（胸，材料中未提前告知，视频在拆词时补充其含义）+ -ic（与……相关）。两个词根之间必须保留连接元音 o，得到 cardi + o + thorac + ic；这与规则 A（后缀以元音开头时删 o）并不矛盾，因为此处 o 后面接的是第二个词根，而不是后缀。\n④ 材料的价值在于给出可复用的方法：把陌生长词分解为已知构件，就能推知整词含义，这也是老师所说的「用构件理解代替整词死记」。",
+      "hint": "先用材料里的比喻把 hematuria 拆成两节车厢，再用材料中 exciting / not exciting 的对比回答第②问，最后去想 cardiothoracic 中间为什么还留着一个 o。",
+      "explanation": "**得分点对应：** ①要求拆解正确（hemat + uria）并写出临床提示（感染或肾结石），只写「血尿」两字不足以拿满分；②要求两类各举一例，且解释「只表词性」的含义为 pertaining to；③要求指出两个词根之间必须保留 o（规则 B），能说出与规则 A 的适用位置差别更好；④要求提炼方法论，可与老师「器官作词根 + 操作作后缀」「前缀、后缀、combining form 组合」的总结呼应。\n**常见失分：** 把 hematuria 拆成 hemi（一半）+ uria；把 -oma 归入「只表词性」；在 cardiothoracic 里把 o 删掉（误用规则 A）。",
+      "scoring_criteria": [
+        "① 用「拆车厢」的比喻说明 hematuria = hemat（血）+ -uria（尿），并指出临床提示感染或肾结石，5 分",
+        "② 两类后缀划分正确：有实义（-oma 肿块 / -plegia 瘫痪 / -emia 血中 / -itis 炎症）与只表词性（-ous、-ia、-ic 表示 pertaining to），并说明后者不含医学信息、不能强行译出实义，4 分",
+        "③ 说明 cardiothoracic = cardi + o + thorac（胸）+ -ic，两个词根之间必须保留连接元音 o，4 分",
+        "④ 提炼比喻的方法论价值：把陌生长词分解为已知构件即可推知整词含义，2 分"
+      ],
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/recording.md",
+        "label": "7. 连接元音 letter o · / 例词拆解与 cardiothoracic（说话人3 44:05 · 50:01 · 01:04:14）"
       }
     }
-  ]
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "multiple_choice": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
 }

@@ -1,404 +1,375 @@
-<!DOCTYPE html><html lang='zh-CN'><head><meta charset='utf-8'><style>
-@page { size: A4; margin: 0; }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: "Noto Sans CJK SC","Microsoft YaHei",sans-serif; color: #1a2e35; background: #f5f7f8; font-size: 10.5pt; line-height: 1.7; }
-.page { width: 210mm; min-height: 297mm; padding: 18mm 16mm 16mm; background: #f5f7f8; page-break-after: always; position: relative; }
-.page:last-child { page-break-after: auto; }
-.cover { background: linear-gradient(135deg, #0a5c5b 0%, #0d7a79 40%, #063e3d 100%); color: #e8f4f4; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-.cover .kicker { font-size: 11pt; letter-spacing: .5em; color: #7fd4d3; margin-bottom: 12mm; text-transform: uppercase; }
-.cover h1 { font-size: 36pt; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 6mm; }
-.cover h1 .accent { color: #7fd4d3; }
-.cover .sub { font-size: 14pt; color: rgba(232,244,244,.8); margin-bottom: 4mm; }
-.cover .meta { font-size: 10pt; color: rgba(232,244,244,.6); margin-top: 20mm; line-height: 2; }
-.cover .divider { width: 60mm; height: 2px; background: #7fd4d3; margin: 8mm auto; }
-h2 { font-size: 18pt; color: #0a5c5b; border-bottom: 3px solid #0d7a79; padding-bottom: 3mm; margin-bottom: 6mm; margin-top: 4mm; }
-h3 { font-size: 13pt; color: #0d7a79; margin: 5mm 0 3mm; padding-left: 3mm; border-left: 4px solid #0d7a79; }
-h4 { font-size: 11.5pt; color: #1a4a49; margin: 4mm 0 2mm; }
-p { margin-bottom: 2.5mm; text-align: justify; }
-ul, ol { margin: 2mm 0 3mm 6mm; }
-li { margin-bottom: 1.5mm; }
-table { width: 100%; border-collapse: collapse; margin: 3mm 0; font-size: 9.5pt; }
-th { background: #0d7a79; color: #fff; padding: 2.5mm 3mm; text-align: left; font-weight: 600; }
-td { padding: 2mm 3mm; border-bottom: 1px solid #c8d8d8; }
-tr:nth-child(even) td { background: #eaf2f2; }
-.highlight { background: linear-gradient(180deg, transparent 60%, #b8e8e7 60%); padding: 0 1mm; font-weight: 600; }
-.warn-box { background: #fdf0ef; border-left: 4px solid #c0392b; padding: 3mm 4mm; margin: 3mm 0; border-radius: 0 2mm 2mm 0; }
-.warn-box .label { color: #c0392b; font-weight: 700; font-size: 9.5pt; }
-.tip-box { background: #eaf6f6; border-left: 4px solid #0d7a79; padding: 3mm 4mm; margin: 3mm 0; border-radius: 0 2mm 2mm 0; }
-.tip-box .label { color: #0a5c5b; font-weight: 700; font-size: 9.5pt; }
-.mnem-box { background: #fef9e7; border-left: 4px solid #d4a017; padding: 3mm 4mm; margin: 3mm 0; border-radius: 0 2mm 2mm 0; }
-.mnem-box .label { color: #8a6d0c; font-weight: 700; font-size: 9.5pt; }
-.kv { display: flex; margin-bottom: 1.5mm; }
-.kv .k { font-weight: 600; color: #0a5c5b; min-width: 32mm; flex-shrink: 0; }
-.kv .v { flex: 1; }
-.toc { background: #fff; border: 1px solid #c8d8d8; border-radius: 3mm; padding: 6mm 8mm; margin: 4mm 0; }
-.toc h3 { border: none; padding: 0; margin-bottom: 3mm; }
-.toc ol { margin-left: 5mm; }
-.toc li { margin-bottom: 1.5mm; font-size: 10pt; }
-.footer { position: absolute; bottom: 8mm; left: 16mm; right: 16mm; font-size: 8pt; color: #8aa0a0; display: flex; justify-content: space-between; border-top: 1px solid #c8d8d8; padding-top: 2mm; }
-.section-break { page-break-before: always; }
-</style></head><body>
-<div class="page cover">
-  <div class="kicker">SYSTEMIC ANATOMY · LAB</div>
-  <h1>系统解剖学<span class="accent">实验</span></h1>
-  <div class="divider"></div>
-  <div class="sub">上下肢肌 · 局部解剖 · 标本实操</div>
-  <div class="meta">
-    课程：系统解剖学（实验）<br>
-    节次：第4-6节（课程内累计）<br>
-    日期：2026-09-16<br>
-    基于课堂录音完整逐字稿整理
-  </div>
-</div>
-<div class="page">
-<h2>目录</h2>
-<div class="toc">
-  <ol>
-    <li>上肢肌——上肢带肌与肌腱袖</li>
-    <li>上肢肌——臂肌与前臂肌</li>
-    <li>上肢局部解剖——腋窝、三边孔、四边孔</li>
-    <li>上肢局部解剖——肘窝与腕管</li>
-    <li>下肢肌——髋肌</li>
-    <li>下肢肌——大腿肌与小腿肌</li>
-    <li>下肢局部解剖——梨状肌孔与腔隙</li>
-    <li>下肢局部解剖——股三角、收肌管、腘窝</li>
-    <li>标本实操要点</li>
-    <li>高频考点与易混淆点</li>
-  </ol>
-</div>
-<div class="tip-box">
-  <div class="label">学习提示</div>
-  本笔记基于课堂录音完整逐字稿整理，详细记录老师讲授的每一个有价值的知识点。肌肉起止点中属于考试范围的已重点标注，非考试内容仅作了解。支配神经待神经系统模块统一学习。
-</div>
-<div class="footer"><span>系统解剖学实验 · 上下肢肌与局部解剖</span><span>2 / 10</span></div></div><div class="page">
-<h2>一、上肢肌——上肢带肌与肌腱袖</h2>
-
-<h3>1.1 上肢带肌（6块）</h3>
-<p>均起自上肢带骨（肩胛骨和锁骨），配布于肩关节周围，止于肱骨。功能是运动肩关节、增强肩关节稳定性。</p>
-
-<div class="kv"><span class="k">三角肌</span><span class="v">起锁骨外侧端、肩峰、肩胛冈 → 止肱骨三角肌粗隆。整体收缩外展；前束屈+旋内；后束伸+旋外。腋神经支配。<span class="highlight">瘫痪→方肩畸形</span></span></div>
-<div class="kv"><span class="k">肩胛下肌</span><span class="v">起肩胛下窝 → 止肱骨小结节</span></div>
-<div class="kv"><span class="k">冈上肌</span><span class="v">起冈上窝 → 止肱骨大结节上部。<span class="highlight">从喙肩韧带下方穿过</span>（不是上面绕过），贴着关节囊走行</span></div>
-<div class="kv"><span class="k">冈下肌</span><span class="v">起冈下窝 → 止肱骨大结节</span></div>
-<div class="kv"><span class="k">小圆肌</span><span class="v">起肩胛骨外侧缘靠上 → 止肱骨大结节</span></div>
-<div class="kv"><span class="k">大圆肌</span><span class="v">止肱骨小结节下方（小结节嵴）。<span class="highlight">不参与肌腱袖构成</span></span></div>
-
-<div class="warn-box">
-  <div class="label">考试范围说明</div>
-  上肢带肌的起止点不属于考试范围，支配神经待神经系统模块统一学习，无需提前记忆。重点掌握肌腱袖构成和三角肌瘫痪表现。
-</div>
-
-<h3>1.2 肌腱袖（肩袖/旋转袖）</h3>
-<div class="tip-box">
-  <div class="label">核心考点</div>
-  <strong>构成：</strong>肩胛下肌 + 冈上肌 + 冈下肌 + 小圆肌的肌腱<br>
-  <strong>不含：</strong>大圆肌（关键考点）<br>
-  <strong>结构：</strong>肌腱与肩关节囊纤维融合交织，像袖子一样包裹肩关节<br>
-  <strong>功能：</strong>加强肩关节稳固性，防止脱位<br>
-  <strong>临床：</strong>肩袖损伤常见，冈上肌肌腱最易受损（穿过喙肩韧带下方，易受挤压）
-</div>
-<div class="footer"><span>系统解剖学实验 · 上下肢肌与局部解剖</span><span>3 / 10</span></div></div><div class="page">
-<h2>二、上肢肌——臂肌与前臂肌</h2>
-
-<h3>2.1 臂肌（前群3块 + 后群1块）</h3>
-<p>以深筋膜的内侧肌间隔和外侧肌间隔分隔为前后群。</p>
-
-<h4>前群</h4>
-<div class="kv"><span class="k">肱二头肌</span><span class="v">长头穿结节间沟（滑膜鞘包裹）→ 盂上结节；短头起喙突。止桡骨粗隆（主腱）+前臂尺侧筋膜（腱膜）。功能：屈肘+协助屈肩</span></div>
-<div class="kv"><span class="k">喙肱肌</span><span class="v">起喙突 → 止肱骨体中部内侧。<span class="highlight">不跨过肘关节</span>，只参与肩关节运动。为什么是臂肌？肌腹在上臂（判断标准是肌腹位置，不是功能）</span></div>
-<div class="kv"><span class="k">肱肌</span><span class="v">起肱骨体下半前面 → 止尺骨粗隆。只跨过肘关节。功能：屈肘。与肱二头肌是协同肌</span></div>
-
-<h4>后群</h4>
-<div class="kv"><span class="k">肱三头肌</span><span class="v">长头起盂下结节；内侧头起桡神经沟内下方；外侧头起桡神经沟外下方。止尺骨鹰嘴。功能：伸肘；长头协助肩内收后伸</span></div>
-
-<div class="mnem-box">
-  <div class="label">对比记忆</div>
-  肱二头肌长头 → 盂上结节；肱三头肌长头 → 盂下结节。一个在上一个在下，别记反。
-</div>
-
-<h3>2.2 前臂肌（前群4层9块 + 后群2层10块）</h3>
-
-<h4>前群（屈肌群）</h4>
-<table>
-  <tr><th>层次</th><th>肌肉</th><th>要点</th></tr>
-  <tr><td>第一层（浅）</td><td>肱桡肌、旋前圆肌、桡侧腕屈肌、掌长肌、尺侧腕屈肌</td><td>肱桡肌不跨腕关节，仅屈肘（桡神经支配）</td></tr>
-  <tr><td>第二层</td><td>指浅屈肌</td><td>止中节指骨，只能屈近侧指间关节</td></tr>
-  <tr><td>第三层</td><td>拇长屈肌、指深屈肌</td><td>指深屈肌止远节指骨，能屈近侧+远侧指间关节</td></tr>
-  <tr><td>第四层</td><td>旋前方肌</td><td>紧贴桡尺骨远端，前臂旋前</td></tr>
-</table>
-
-<h4>后群（伸肌群）</h4>
-<p>浅层5块以伸肌总腱共同起自肱骨外上髁：桡侧腕长伸肌、桡侧腕短伸肌、指伸肌、小指伸肌、尺侧腕伸肌。深层5块对照教材了解。</p>
-
-<div class="tip-box">
-  <div class="label">腕关节运动总结</div>
-  屈=前群；伸=后群；内收（尺偏）=尺侧腕屈肌+尺侧腕伸肌；外展（桡偏）=桡侧腕屈肌+桡侧腕长/短伸肌。<span class="highlight">腕关节是椭圆关节，不能旋转</span>
-</div>
-
-<h3>2.3 手肌</h3>
-<div class="kv"><span class="k">鱼际群（外侧）</span><span class="v">4块，使拇指展/屈/对掌/收。拇指对掌的解剖学基础：第一掌骨发育时轴就有90度角度</span></div>
-<div class="kv"><span class="k">小鱼际群（内侧）</span><span class="v">3块，使小指屈/外展/对掌。小指对掌不典型</span></div>
-<div class="kv"><span class="k">中间群</span><span class="v">蚓状肌4块+骨间掌侧肌3块+骨间背侧肌4块，手指精细运动控制</span></div>
-<div class="footer"><span>系统解剖学实验 · 上下肢肌与局部解剖</span><span>4 / 10</span></div></div><div class="page">
-<h2>三、上肢局部解剖</h2>
-
-<h3>3.1 腋窝</h3>
-<div class="kv"><span class="k">顶</span><span class="v">锁骨 + 肩胛骨上缘（上角）+ 第一肋骨上面</span></div>
-<div class="kv"><span class="k">前壁</span><span class="v">胸大肌 + 胸小肌</span></div>
-<div class="kv"><span class="k">后壁</span><span class="v">肩胛下肌 + 大圆肌 + 背阔肌 + 肩胛骨</span></div>
-<div class="kv"><span class="k">内侧壁</span><span class="v">上部胸壁 + 前锯肌。<span class="highlight">前锯肌瘫痪→翼状肩畸形</span>（肩胛骨不能贴胸廓）</span></div>
-<div class="kv"><span class="k">外侧壁</span><span class="v">喙肱肌 + 肱二头肌短头 + 肱骨</span></div>
-<div class="kv"><span class="k">内容</span><span class="v">腋动脉、腋静脉、臂丛及其分支</span></div>
-<p>三角胸肌肩沟：三角肌和胸大肌之间，有头静脉走行。</p>
-
-<h3>3.2 三边孔与四边孔</h3>
-<table>
-  <tr><th>结构</th><th>围成</th><th>穿行结构</th></tr>
-  <tr><td><strong>三边孔</strong></td><td>小圆肌（上）+ 大圆肌（下）+ 肱三头肌长头（外侧）</td><td><span class="highlight">旋肩胛动脉</span></td></tr>
-  <tr><td><strong>四边孔</strong></td><td>上述三边 + 肱骨（外侧）</td><td><span class="highlight">旋肱后动脉 + 腋神经</span></td></tr>
-</table>
-
-<div class="mnem-box">
-  <div class="label">助记口诀</div>
-  三边旋肩胛，四边旋肱后加腋神经。四边比三边多一个肱骨，所以多一个腋神经。
-</div>
-
-<h3>3.3 肘窝</h3>
-<p>肘关节前方，皮肤深面无肌肉，有血管神经。穿行结构（从外向内）：</p>
-<ol>
-  <li><strong>肱二头肌肌腱</strong>（止于桡骨粗隆）</li>
-  <li><strong>肱动脉</strong></li>
-  <li><strong>肱静脉</strong></li>
-  <li><strong>正中神经</strong></li>
-</ol>
-
-<h3>3.4 腕管</h3>
-<div class="tip-box">
-  <div class="label">核心考点</div>
-  <strong>构成：</strong>屈肌支持带（腕横韧带，腕部深筋膜增厚）+ 腕骨沟围成的骨性纤维管道<br>
-  <strong>穿行：</strong>指浅屈肌腱4条 + 指深屈肌腱4条 + 拇长屈肌腱1条 + 正中神经 = <span class="highlight">9条肌腱 + 1条神经</span><br>
-  <strong>腕管综合征：</strong>正中神经受压 → 拇指、食指、中指麻木疼痛<br>
-  <strong>割腕：</strong>一般不致死，多仅导致手部瘫痪（正中神经损伤），出血量通常不足以致死
-</div>
-<div class="footer"><span>系统解剖学实验 · 上下肢肌与局部解剖</span><span>5 / 10</span></div></div><div class="page">
-<h2>四、下肢肌——髋肌</h2>
-
-<p>下肢肌比上肢肌粗大，功能是维持直立姿势、支持体重、行走。对应关系：上肢带肌↔髋肌，臂肌↔大腿肌，前臂肌↔小腿肌，手肌↔足肌。</p>
-
-<h3>4.1 髋肌前群（2块）</h3>
-
-<h4>髂腰肌</h4>
-<div class="kv"><span class="k">构成</span><span class="v">腰大肌 + 髂肌（两个相对独立的肌腹，有共同止点）</span></div>
-<div class="kv"><span class="k">为什么是两块</span><span class="v">肌腹不融合（与肱二头肌不同，肱二头肌肌腹在一起）</span></div>
-<div class="kv"><span class="k">起点</span><span class="v">腰大肌起腰椎椎体侧面和横突；髂肌起髂窝</span></div>
-<div class="kv"><span class="k">走行</span><span class="v">汇合后经腹股沟韧带深面穿出</span></div>
-<div class="kv"><span class="k">止点</span><span class="v"><span class="highlight">股骨小转子</span></span></div>
-<div class="kv"><span class="k">功能</span><span class="v">髋关节前屈和旋外；下肢固定时使躯干前屈（如仰卧起坐）</span></div>
-<p>腰小肌：在腰大肌表面，斜向下，作用是紧张髂筋膜（非重点）。</p>
-
-<h4>阔筋膜张肌</h4>
-<div class="kv"><span class="k">位置</span><span class="v">大腿上部前外侧</span></div>
-<div class="kv"><span class="k">起点</span><span class="v">髂前上棘</span></div>
-<div class="kv"><span class="k">走行</span><span class="v">肌腹在阔筋膜两层之间，向下移行为髂胫束</span></div>
-<div class="kv"><span class="k">止点</span><span class="v">胫骨外侧髁（通过髂胫束）</span></div>
-<div class="kv"><span class="k">特点</span><span class="v">肌腹只在大腿上1/3，下方变为坚韧的肌腱（髂胫束）</span></div>
-<div class="kv"><span class="k">功能</span><span class="v">紧张阔筋膜 + 屈髋</span></div>
-
-<h3>4.2 髋肌后群（7块，多位于臀部）</h3>
-<table>
-  <tr><th>肌肉</th><th>起点</th><th>止点</th><th>功能</th></tr>
-  <tr><td><strong>臀大肌</strong></td><td>髂骨翼外面+骶骨背面</td><td>髂胫束+臀肌粗隆</td><td>髋伸+旋外</td></tr>
-  <tr><td><strong>臀中肌</strong></td><td>髂骨翼外面</td><td>股骨大转子</td><td>髋外展（前束旋内/后束旋外）</td></tr>
-  <tr><td><strong>臀小肌</strong></td><td>髂骨翼外面</td><td>股骨大转子</td><td>同臀中肌（完全并行）</td></tr>
-  <tr><td><strong>梨状肌</strong></td><td>盆内骶骨前面</td><td>股骨大转子</td><td>髋外展+旋外。<span class="highlight">穿坐骨大孔，分上下孔</span></td></tr>
-  <tr><td>闭孔内肌</td><td>闭孔膜内面</td><td>转子窝</td><td>髋旋外（经坐骨小孔出孔）</td></tr>
-  <tr><td>股方肌</td><td>坐骨结节</td><td>转子间嵴</td><td>髋旋外</td></tr>
-  <tr><td>闭孔外肌</td><td>闭孔膜外面</td><td>转子窝</td><td>髋旋外</td></tr>
-</table>
-
-<div class="tip-box">
-  <div class="label">臀中肌/臀小肌特点</div>
-  二者完全并行，臀中肌更大。只有髂骨翼起点（没有骶骨背面，与臀大肌不同）。类似三角肌：跨的范围大，前后部肌束功能相反（前束旋内，后束旋外）。
-</div>
-<div class="footer"><span>系统解剖学实验 · 上下肢肌与局部解剖</span><span>6 / 10</span></div></div><div class="page">
-<h2>五、下肢肌——大腿肌与小腿肌</h2>
-
-<h3>5.1 大腿肌前群（2块）</h3>
-
-<h4>缝匠肌</h4>
-<div class="kv"><span class="k">地位</span><span class="v"><span class="highlight">全身最长的肌</span>（注意：竖脊肌是躯干最长的肌肉，且有多个止点；缝匠肌起止点各一个）</span></div>
-<div class="kv"><span class="k">起点</span><span class="v">髂前上棘</span></div>
-<div class="kv"><span class="k">止点</span><span class="v">胫骨上端内侧</span></div>
-<div class="kv"><span class="k">走行</span><span class="v">斜过大腿前面</span></div>
-<div class="kv"><span class="k">功能</span><span class="v">屈髋关节 + 屈膝关节 + 使已屈的膝关节旋内</span></div>
-<div class="kv"><span class="k">命名由来</span><span class="v">缝匠（裁缝）肌，因裁缝盘腿坐姿时该肌处于紧张状态</span></div>
-
-<h4>股四头肌</h4>
-<div class="kv"><span class="k">构成</span><span class="v">四块独立肌肉，下端肌腱融合</span></div>
-<div class="kv"><span class="k">股直肌</span><span class="v">起<span class="highlight">髂前下棘</span>（注意：缝匠肌是髂前上棘）</span></div>
-<div class="kv"><span class="k">股内侧肌</span><span class="v">起股骨粗线内侧唇</span></div>
-<div class="kv"><span class="k">股外侧肌</span><span class="v">起股骨粗线外侧唇</span></div>
-<div class="kv"><span class="k">股中间肌</span><span class="v">起股骨前面（在股直肌深面）</span></div>
-<div class="kv"><span class="k">止点</span><span class="v">四头向下包绕髌骨，形成髌韧带，止于胫骨粗隆</span></div>
-<div class="kv"><span class="k">髌韧带</span><span class="v">就是股四头肌的肌腱（内含髌骨），<span class="highlight">膝跳反射即敲击髌韧带引出</span></span></div>
-<div class="kv"><span class="k">功能</span><span class="v">股直肌：屈髋（因到髂骨）；其余三块：伸膝（因跨过膝关节）</span></div>
-
-<h3>5.2 大腿肌内侧群（内收肌群，5块）</h3>
-<p>共同特点：均起自闭孔周围。</p>
-<ul>
-  <li><strong>耻骨肌</strong>：止于耻骨肌线</li>
-  <li><strong>股薄肌</strong>：止于胫骨上端内侧（唯一止于胫骨的内收肌）</li>
-  <li><strong>长收肌、短收肌、大收肌</strong>：止于股骨粗线。大收肌还止收肌结节（股骨内上髁上方）</li>
-</ul>
-<p>功能：髋关节内收 + 旋转。</p>
-
-<h3>5.3 大腿肌后群（腘绳肌，3块）</h3>
-<table>
-  <tr><th>肌肉</th><th>起点</th><th>止点</th></tr>
-  <tr><td><strong>半腱肌</strong></td><td>坐骨结节</td><td>胫骨上端内侧</td></tr>
-  <tr><td><strong>半膜肌</strong></td><td>坐骨结节</td><td>胫骨内侧髁（靠后）</td></tr>
-  <tr><td><strong>股二头肌</strong></td><td>长头：坐骨结节；短头：股骨粗线</td><td>腓骨（外侧）</td></tr>
-</table>
-<p>功能：屈膝 + 伸髋。</p>
-<div class="mnem-box">
-  <div class="label">记忆口诀</div>
-  半膜半腱在内侧（胫骨），股二头在外侧（腓骨）。共同起点坐骨结节（股二头肌短头除外）。
-</div>
-
-<h3>5.4 小腿肌</h3>
-<div class="kv"><span class="k">分组</span><span class="v">前群、外侧群、后群（内侧群无肌肉，胫骨直接在皮下）</span></div>
-<div class="kv"><span class="k">前群（3块）</span><span class="v">胫骨前肌（伸踝+足内翻）、趾长伸肌（伸踝+伸第2-4趾）、拇长伸肌（伸踝+伸拇指）</span></div>
-<div class="kv"><span class="k">外侧群（2块）</span><span class="v">腓骨长肌+腓骨短肌。功能：足外翻+屈踝。<span class="highlight">重要功能：维持足横弓</span></span></div>
-<div class="kv"><span class="k">后群浅层</span><span class="v"><span class="highlight">小腿三头肌</span>=腓肠肌（外侧，浅层）+比目鱼肌（内侧，深层）</span></div>
-<div class="kv"><span class="k">跟腱</span><span class="v">小腿三头肌下端肌腱融合，止于跟骨。<span class="highlight">人体最粗大的肌腱</span></span></div>
-<div class="kv"><span class="k">小腿三头肌功能</span><span class="v">屈踝 + 屈膝 + 维持直立</span></div>
-<div class="kv"><span class="k">后群深层</span><span class="v">跖肌、胫骨后肌、趾长屈肌、拇长屈肌。功能：屈踝、屈趾、足内翻</span></div>
-<div class="warn-box">
-  <div class="label">注意</div>
-  下肢的"趾"和"拇"与上肢不同，别弄错（上肢是"指"和"拇"）。足弓三条：内侧纵弓、外侧纵弓、横弓。
-</div>
-<div class="footer"><span>系统解剖学实验 · 上下肢肌与局部解剖</span><span>7 / 10</span></div></div><div class="page">
-<h2>六、下肢局部解剖</h2>
-
-<h3>6.1 梨状肌上孔与下孔</h3>
-<p>梨状肌起自骶骨前面，穿坐骨大孔，将坐骨大孔分为上下两部分。</p>
-<div class="kv"><span class="k">坐骨大孔围成</span><span class="v">坐骨大切迹 + 骶棘韧带</span></div>
-<div class="kv"><span class="k">坐骨小孔围成</span><span class="v">骶棘韧带 + 骶结节韧带 + 坐骨小切迹</span></div>
-
-<table>
-  <tr><th>孔</th><th>穿行结构</th></tr>
-  <tr><td><strong>梨状肌上孔</strong></td><td>臀上血管（动脉、静脉）+ 臀上神经</td></tr>
-  <tr><td><strong>梨状肌下孔</strong></td><td><span class="highlight">坐骨神经</span>（最粗大）+ 股后皮神经 + 臀下血管神经 + 阴部血管神经</td></tr>
-</table>
-
-<div class="tip-box">
-  <div class="label">临床联系</div>
-  <strong>梨状肌综合征：</strong>梨状肌痉挛或肥厚压迫坐骨神经，导致下肢放射痛。坐骨神经是人体最粗大的神经，从梨状肌下孔穿出后一直在下肢后面走行。
-</div>
-
-<h3>6.2 肌腔隙与血管腔隙</h3>
-<p>位置：腹股沟韧带与髋骨之间的腔隙。分隔：髂耻弓（中间的韧带）。</p>
-
-<table>
-  <tr><th>腔隙</th><th>位置</th><th>穿行结构</th></tr>
-  <tr><td><strong>肌腔隙</strong></td><td>后上侧</td><td>髂腰肌 + 股神经（股神经从前边出来）</td></tr>
-  <tr><td><strong>血管腔隙</strong></td><td>前内侧</td><td>股动脉 + 股静脉 + 股管</td></tr>
-</table>
-
-<h4>股管与股疝</h4>
-<div class="kv"><span class="k">股管位置</span><span class="v">股静脉内侧，是一个盲管（不通到其他地方，下端盲端）</span></div>
-<div class="kv"><span class="k">股管内容</span><span class="v">少量淋巴结和脂肪组织</span></div>
-<div class="kv"><span class="k">股环</span><span class="v">股管上端开口</span></div>
-<div class="kv"><span class="k">股疝</span><span class="v">腹腔器官经股环→股管突出，在大腿根部形成鼓包。<span class="highlight">股疝女性多见</span>（关键考点）</span></div>
-
-<h4>股管四壁</h4>
-<div class="kv"><span class="k">前壁</span><span class="v">腹股沟韧带</span></div>
-<div class="kv"><span class="k">后壁</span><span class="v">耻骨梳韧带</span></div>
-<div class="kv"><span class="k">内侧壁</span><span class="v">腔隙韧带（又名旋窝韧带，是腹股沟韧带连向耻骨梳的片状韧带）</span></div>
-<div class="kv"><span class="k">外侧壁</span><span class="v">股动静脉的血管鞘</span></div>
-
-<div class="mnem-box">
-  <div class="label">股管四壁口诀</div>
-  前腹股沟后耻骨梳，内腔隙外血管鞘，股疝女多见。
-</div>
-
-<p>其他疝类型：腹股沟斜疝（经腹股沟管突出，男性可降至阴囊）、腹股沟直疝（经海氏三角从后向前突出）。</p>
-<div class="footer"><span>系统解剖学实验 · 上下肢肌与局部解剖</span><span>8 / 10</span></div></div><div class="page">
-<h2>七、下肢局部解剖（续）</h2>
-
-<h3>7.1 股三角</h3>
-<div class="kv"><span class="k">位置</span><span class="v">大腿前上部</span></div>
-<div class="kv"><span class="k">上界</span><span class="v">腹股沟韧带</span></div>
-<div class="kv"><span class="k">内侧界</span><span class="v">长收肌内侧缘</span></div>
-<div class="kv"><span class="k">外侧界</span><span class="v">缝匠肌内侧缘</span></div>
-<div class="kv"><span class="k">前壁</span><span class="v">阔筋膜（大腿深筋膜）+ 皮肤</span></div>
-<div class="kv"><span class="k">后壁（底）</span><span class="v">髂腰肌、耻骨肌、长收肌</span></div>
-<div class="kv"><span class="k">穿行结构（外→内）</span><span class="v">股神经 → 股动脉 → 股静脉 → 淋巴结</span></div>
-<p>股神经下行后像扫把一样分散，其中最长的分支是<strong>隐神经</strong>。</p>
-
-<h3>7.2 收肌管（Hunter管）</h3>
-<div class="kv"><span class="k">位置</span><span class="v">大腿中部前内侧，股三角下方</span></div>
-<div class="kv"><span class="k">前壁</span><span class="v">大收肌腱膜（板腱）</span></div>
-<div class="kv"><span class="k">后壁</span><span class="v">大收肌</span></div>
-<div class="kv"><span class="k">外侧壁</span><span class="v">股内侧肌</span></div>
-<div class="kv"><span class="k">上口</span><span class="v">股三角尖（与股三角相通）</span></div>
-<div class="kv"><span class="k">下口</span><span class="v">通腘窝</span></div>
-
-<div class="warn-box">
-  <div class="label">关键考点</div>
-  <strong>只有股动脉、股静脉穿收肌管向后入腘窝。</strong><br>
-  <strong>隐神经从收肌管前壁（大收肌腱膜）穿出，不入腘窝。</strong><br>
-  这是考试高频考点，务必记住隐神经的特殊走行。
-</div>
-
-<h3>7.3 腘窝</h3>
-<div class="kv"><span class="k">位置</span><span class="v">膝关节后方（菱形凹陷）</span></div>
-<div class="kv"><span class="k">上外侧界</span><span class="v">股二头肌</span></div>
-<div class="kv"><span class="k">上内侧界</span><span class="v">半膜肌、半腱肌</span></div>
-<div class="kv"><span class="k">下外侧界</span><span class="v">腓肠肌外侧头</span></div>
-<div class="kv"><span class="k">下内侧界</span><span class="v">腓肠肌内侧头</span></div>
-<div class="kv"><span class="k">穿行结构（浅→深）</span><span class="v">坐骨神经（最浅层，一直从后边走行下来）→ 腘动脉（股动脉移行）→ 腘静脉（股静脉移行）</span></div>
-
-<div class="mnem-box">
-  <div class="label">腘窝边界口诀</div>
-  上外股二头，上内半膜半腱，下外下内腓肠肌两头。
-</div>
-<div class="footer"><span>系统解剖学实验 · 上下肢肌与局部解剖</span><span>9 / 10</span></div></div><div class="page">
-<h2>八、标本实操要点</h2>
-
-<h3>8.1 腹直肌鞘与弓状线</h3>
-<div class="kv"><span class="k">弓状线位置</span><span class="v"><span class="highlight">肚脐以下4-5cm</span>（又名半环线）</span></div>
-<div class="kv"><span class="k">意义</span><span class="v">腹直肌鞘后壁的下界</span></div>
-
-<table>
-  <tr><th>部位</th><th>前层构成</th><th>后层构成</th></tr>
-  <tr><td><strong>弓状线以上</strong></td><td>腹外斜肌腱膜 + 腹内斜肌腱膜前层</td><td>腹内斜肌腱膜后层 + 腹横肌腱膜</td></tr>
-  <tr><td><strong>弓状线以下</strong></td><td>三块肌肉腱膜都只构成前层</td><td><span class="highlight">无鞘后壁</span>，腹直肌后面直接是腹横筋膜</td></tr>
-</table>
-
-<p>标本观察：腹直肌鞘后壁在下1/3缺失，可见弓状线的弧形边缘。</p>
-
-<h3>8.2 腹壁三层扁肌</h3>
-<div class="kv"><span class="k">腹外斜肌</span><span class="v">最浅层，肌纤维从外上斜向内下。下缘腱膜增厚 → <span class="highlight">腹股沟韧带</span>（髂前上棘→耻骨结节）</span></div>
-<div class="kv"><span class="k">腹内斜肌</span><span class="v">中间层，肌纤维从外下斜向内上（与腹外斜肌垂直）</span></div>
-<div class="kv"><span class="k">腹横肌</span><span class="v">最深层，肌纤维横行</span></div>
-
-<h3>8.3 胸部与颈部结构</h3>
-<div class="kv"><span class="k">胸大肌</span><span class="v">胸前壁浅层</span></div>
-<div class="kv"><span class="k">胸小肌</span><span class="v">胸大肌深面</span></div>
-<div class="kv"><span class="k">锁胸筋膜</span><span class="v">胸小肌上方，锁骨下方，筋膜增厚，有血管穿出（头静脉、胸肩峰动脉等）</span></div>
-<div class="kv"><span class="k">颈阔肌</span><span class="v"><span class="highlight">皮肌</span>（位于浅筋膜内），连到锁骨前部皮肤</span></div>
-<div class="kv"><span class="k">胸锁乳突肌</span><span class="v">起胸骨柄和锁骨内侧端 → 止颞骨乳突。颈部重要标志</span></div>
-
-<h3>8.4 实操安全与学习方法</h3>
-<div class="warn-box">
-  <div class="label">安全提示</div>
-  <strong>标本固定液甲醛：</strong>具有刺激性，明确致癌性。实操时必须佩戴口罩减少吸入，避免长时间近距离无防护接触。<br>
-  <strong>废料处理：</strong>使用后的手套、口罩统一投放至<strong>生物废料垃圾桶</strong>，不得混入普通垃圾桶。
-</div>
-
-<div class="tip-box">
-  <div class="label">学习方法</div>
-  先背再来看标本，对照教材和解剖图谱逐一识别。优先识别体表大块肌肉（三角肌、肱二头肌、肱三头肌、臀大肌、股四头肌、缝匠肌）和标志性腔隙结构（三边孔、四边孔、腕管、股三角、收肌管、腘窝）。深层结构无需强行辨认。
-</div>
-<div class="footer"><span>系统解剖学实验 · 上下肢肌与局部解剖</span><span>10 / 10</span></div></div></body></html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>系统解剖学 · 第16-18节 · 上下肢肌学</title><style>:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#B4531F; --accent-d:#7A3413; --accent-t:#F7E7DE;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}</style></head><body>
+<div class="page cover"><p class="h1">系统解剖学 · 第16-18节</p><p class="meta">上下肢肌学 · 上课日期 2026-09-16（第3周）</p><p class="lead" style="text-align:left">素材规模：逐字稿 24,007 字 / 229 轮发言</p><table><tr><th>项目</th><th>内容</th></tr><tr><td>课次</td><td>rec-2026-fall-016-018</td></tr><tr><td>主题</td><td>上下肢肌、局部解剖、标本实操（运动系统收尾）</td></tr>
+<tr><td>学时</td><td>3学时（第16-18节）</td></tr></table></div>
+<div class="page"><h2 class="h2">0. 知识框架</h2><p class="lead">上肢带肌—臂肌—前臂肌—手肌；下肢髋肌—大腿肌—小腿肌—足肌；局解围绕神经血管通道与疝。</p><svg viewBox="0 0 640 200" width="100%" aria-label="框架"><rect x="220" y="8" width="200" height="28" fill="#F7E7DE" stroke="#B4531F"/><text x="320" y="26" text-anchor="middle" font-size="11">上下肢肌学</text><rect x="30" y="48" width="280" height="22" fill="#fff" stroke="#7A3413"/><text x="170" y="63" text-anchor="middle" font-size="9">上肢：带肌·臂·前臂·手</text><rect x="330" y="48" width="280" height="22" fill="#fff" stroke="#7A3413"/><text x="470" y="63" text-anchor="middle" font-size="9">下肢：髋肌·大腿·小腿·足</text><text x="320" y="100" text-anchor="middle" font-size="9" fill="#6B7480">局解：腋窝/三边孔/四边孔/腕管；梨状肌孔/肌血管腔隙/股三角/收肌管/腘窝</text></svg></div>
+<div class="page"><h2 class="h2">1. 上肢带肌与肌腱袖</h2><p class="lead">六肌包肩；肩袖四肌稳固关节，大圆肌不参与。</p><ul class="kv">
+<li>运动系统最后一部分讲上下肢肌，可与下肢对应学习 <span class="loc">〔说话人2 02:23〕</span></li>
+<li>上肢肌分上肢带肌、臂肌、前臂肌和手肌 <span class="loc">〔说话人2 02:23〕</span></li>
+<li>下肢肌分髋肌、大腿肌、小腿肌和足肌 <span class="loc">〔说话人2 02:23〕</span></li>
+<li>髋肌相当于下肢带肌，配布于髋关节周围 <span class="loc">〔说话人2 02:23〕</span></li>
+<li>上肢带肌起自上肢带骨，配布肩关节周围，止于肱骨 <span class="loc">〔说话人2 02:23〕</span></li>
+<li>上肢带肌功能：运动肩关节并增强其稳定性 <span class="loc">〔说话人2 02:23〕</span></li>
+<li>上肢带肌六块：三角肌、冈上肌、冈下肌、大圆肌、小圆肌、肩胛下肌 <span class="loc">〔说话人2 02:23〕</span></li>
+<li>三角肌起锁骨外侧端、肩峰和肩胛冈，止肱骨三角肌粗隆 <span class="loc">〔说话人2 02:23〕</span></li>
+<li>三角肌维持肩部外形，并使肩关节外展 <span class="loc">〔说话人2 02:23〕</span></li>
+<li>三角肌前部肌束屈肩并旋内，后部肌束伸肩并旋外 <span class="loc">〔说话人2 04:14〕</span></li>
+<li>三角肌由臂丛发出的腋神经支配 <span class="loc">〔说话人2 04:14〕</span></li>
+<li>三角肌瘫痪致方肩畸形，肩部圆润消失见骨轮廓 <span class="loc">〔说话人2 04:14〕</span></li>
+<li>翼状肩为前锯肌不工作，肩胛骨不能贴胸廓 <span class="loc">〔说话人2 04:14〕</span></li>
+<li>上肢带肌起止点不在考试范围，神经待神经系统再学 <span class="loc">〔说话人2 05:18〕</span></li>
+<li>肩胛下肌在肩胛骨前面，起肩胛下窝止肱骨小结节 <span class="loc">〔说话人2 05:18〕</span></li>
+<li>冈上肌在肩胛冈上方，止肱骨大结节上部 <span class="loc">〔说话人2 06:12〕</span></li>
+<li>冈上肌经喙肩韧带下方穿过，贴关节囊走行 <span class="loc">〔说话人2 06:12〕</span></li>
+<li>冈下肌止肱骨大结节；小圆肌起肩胛骨外侧缘上部止大结节 <span class="loc">〔说话人2 06:12〕</span></li>
+<li>大圆肌止肱骨小结节下方，非大结节 <span class="loc">〔说话人2 06:12〕</span></li>
+<li>肌腱袖肌腱贴肩关节囊，像袖子包裹肩关节 <span class="loc">〔说话人2 07:44〕</span></li>
+<li>肌腱袖含肩胛下肌、冈上肌、冈下肌和小圆肌肌腱 <span class="loc">〔说话人2 08:09〕</span></li>
+<li>肌腱袖不含大圆肌 <span class="loc">〔说话人2 08:09〕</span></li>
+<li>肌腱与关节囊纤维融合交织，加强肩关节稳固防脱位 <span class="loc">〔说话人2 08:09〕</span></li>
+</ul><div class="exam"><span class="tag">★考点</span>肌腱袖没有大圆肌；肌腱与关节囊纤维融合加强稳固性。 <span class="loc">〔说话人2 08:09〕</span></div></div>
+<div class="page"><h2 class="h2">2. 臂肌</h2><p class="lead">前群屈肘为主，后群肱三头肌伸肘；肌腹位置决定归属。</p><ul class="kv">
+<li>臂肌分前群和后群，深筋膜肌间隔分隔 <span class="loc">〔说话人2 08:46〕</span></li>
+<li>内侧肌间隔与外侧肌间隔分隔前群和后群 <span class="loc">〔说话人2 08:46〕</span></li>
+<li>臂肌主要参与肘关节屈伸 <span class="loc">〔说话人2 08:46〕</span></li>
+<li>肱二头肌长头经结节间沟，滑膜包裹形成滑膜鞘 <span class="loc">〔说话人2 08:46〕</span></li>
+<li>肱二头肌长头穿肩关节囊止盂上结节 <span class="loc">〔说话人2 08:46〕</span></li>
+<li>肱二头肌短头起喙突 <span class="loc">〔说话人2 08:46〕</span></li>
+<li>肱二头肌主腱止桡骨粗隆，腱膜与前臂尺侧筋膜融合 <span class="loc">〔说话人2 10:25〕</span></li>
+<li>肱二头肌屈肘，并协助屈肩 <span class="loc">〔说话人2 10:54〕</span></li>
+<li>肱肌起肱骨体下半前面，止尺骨粗隆，仅跨肘关节屈肘 <span class="loc">〔说话人2 10:54〕</span></li>
+<li>肱肌与肱二头肌为屈肘协同肌 <span class="loc">〔说话人2 10:54〕</span></li>
+<li>喙肱肌起肩胛骨喙突，止肱骨体中部内侧 <span class="loc">〔说话人2 11:43〕</span></li>
+<li>喙肱肌不跨肘关节，只参与肩关节屈和内收 <span class="loc">〔说话人2 11:43〕</span></li>
+<li>肌腹在上臂者归为臂肌，不以是否动肩为唯一标准 <span class="loc">〔说话人2 11:43〕</span></li>
+<li>肱三头肌长头止盂下结节，内侧头与外侧头起桡神经沟内下方与外下方 <span class="loc">〔说话人2 12:57〕</span></li>
+<li>肱三头肌三头汇合止尺骨鹰嘴，主功能伸肘 <span class="loc">〔说话人2 13:30〕</span></li>
+<li>肱三头肌长头跨肩，参与肩内收和后伸 <span class="loc">〔说话人2 13:30〕</span></li>
+</ul><table class="tbl"><tr><th>对比</th><th>肱二头肌长头</th><th>肱三头肌长头</th></tr><tr><td>盂结节</td><td>盂上结节</td><td>盂下结节</td></tr></table></div>
+<div class="page"><h2 class="h2">3. 前臂肌</h2><p class="lead">前群四层屈腕指，后群两层伸腕指；腕为椭圆关节不能旋转。</p><ul class="kv">
+<li>前臂肌分前群和后群，前群屈肘屈腕屈掌指 <span class="loc">〔说话人2 14:28〕</span></li>
+<li>前臂前群第一层浅层五肌：肱桡肌、旋前圆肌、桡侧腕屈肌、掌长肌、尺侧腕屈肌 <span class="loc">〔说话人2 15:21〕</span></li>
+<li>肱桡肌起肱骨外上髁上方，止桡骨茎突，仅屈肘，桡神经支配 <span class="loc">〔说话人2 15:21〕</span></li>
+<li>旋前圆肌等四肌以屈肌总腱起肱骨内上髁 <span class="loc">〔说话人2 15:21〕</span></li>
+<li>旋前圆肌止桡骨外侧面中部，屈肘并前臂旋前 <span class="loc">〔说话人2 15:21〕</span></li>
+<li>桡侧腕屈肌止第二掌骨底，屈肘并屈腕 <span class="loc">〔说话人2 16:58〕</span></li>
+<li>掌长肌止掌腱膜，屈腕并紧张掌腱膜 <span class="loc">〔说话人2 17:28〕</span></li>
+<li>尺侧腕屈肌止豌豆骨，屈腕并使腕内收 <span class="loc">〔说话人2 17:28〕</span></li>
+<li>指浅屈肌分四条肌腱穿腕管，止中节指骨体两侧 <span class="loc">〔说话人2 18:10〕</span></li>
+<li>指浅屈肌起自肱骨内上髁、尺骨和桡骨前面 <span class="loc">〔说话人2 18:10〕</span></li>
+<li>指浅屈肌屈第2–5指近侧指骨间关节和掌指关节，不能屈远侧指间关节 <span class="loc">〔说话人2 19:00〕</span></li>
+<li>拇长屈肌屈拇指指骨间关节和掌指关节，不屈肘 <span class="loc">〔说话人2 19:00〕</span></li>
+<li>拇长屈肌起自桡骨前面和前臂骨间膜 <span class="loc">〔说话人2 19:00〕</span></li>
+<li>指深屈肌止远节指骨底，屈近侧与远侧指骨间关节 <span class="loc">〔说话人2 20:35〕</span></li>
+<li>旋前方肌起尺骨止桡骨，前臂旋前 <span class="loc">〔说话人2 21:58〕</span></li>
+<li>前臂后群浅深两层共10块，深层起止对照教材 <span class="loc">〔说话人2 21:58〕</span></li>
+<li>前臂后群浅层五肌以伸肌总腱起肱骨外上髁 <span class="loc">〔说话人2 21:58〕</span></li>
+<li>前臂肌支配神经待神经系统学习，课堂不强行记忆 <span class="loc">〔说话人2 21:58〕</span></li>
+<li>前臂后群小指伸肌伸小指；尺侧腕伸肌止第五掌骨 <span class="loc">〔说话人2 21:58〕</span></li>
+<li>桡侧腕长伸肌止第二掌骨，伸腕；桡侧腕短伸肌止第三掌骨伸腕外展 <span class="loc">〔说话人2 21:58〕</span></li>
+<li>指伸肌肌腱止于第2–5指中节和远节，伸各指间关节并伸腕 <span class="loc">〔说话人2 21:58〕</span></li>
+<li>尺侧腕伸肌伸腕并使腕内收 <span class="loc">〔说话人2 24:28〕</span></li>
+<li>腕关节为椭圆关节，不能旋转 <span class="loc">〔说话人2 24:28〕</span></li>
+<li>腕关节可屈、伸、内收和外展 <span class="loc">〔说话人2 24:28〕</span></li>
+<li>示指即食指，英文 index finger，因常用以指示 <span class="loc">〔说话人2 25:34〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">4. 手肌</h2><p class="lead">鱼际管拇指，小鱼际管小指，中间群为蚓状肌与骨间肌。</p><ul class="kv">
+<li>手肌分外侧鱼际、中间和内侧小鱼际三部 <span class="loc">〔说话人2 26:07〕</span></li>
+<li>鱼际肌使拇指展、屈、对掌和收 <span class="loc">〔说话人2 26:07〕</span></li>
+<li>拇指对掌因第一掌骨发育时轴成90°角，非单纯骨旋转 <span class="loc">〔说话人2 26:52〕</span></li>
+<li>小鱼际肌使小指屈、外展和对掌 <span class="loc">〔说话人2 26:52〕</span></li>
+<li>小指对掌由小指对掌肌参与，活动度远小于拇指对掌 <span class="loc">〔说话人2 26:52〕</span></li>
+<li>中间群含蚓状肌、骨间掌侧肌和骨间背侧肌 <span class="loc">〔说话人2 27:45〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">5. 上肢局部解剖</h2><p class="lead">腋窝壁与孔道；肘窝与腕管为神经血管关键通道。</p><ul class="kv">
+<li>腋窝顶由锁骨、肩胛骨上缘和第一肋上面围成 <span class="loc">〔说话人2 27:45〕</span></li>
+<li>腋窝前壁为胸大肌和胸小肌，后壁含肩胛下肌、大圆肌、背阔肌 <span class="loc">〔说话人2 27:45〕</span></li>
+<li>腋窝内侧壁为胸壁和前锯肌，前锯肌瘫痪致翼状肩 <span class="loc">〔说话人2 27:45〕</span></li>
+<li>腋窝外侧壁为肱骨结节间沟，有喙肱肌与肱二头肌短头经过 <span class="loc">〔说话人2 27:45〕</span></li>
+<li>腋窝内有腋动静脉与臂丛等神经血管走行 <span class="loc">〔说话人2 29:32〕</span></li>
+<li>三角胸肌间沟有头静脉走行 <span class="loc">〔说话人2 29:53〕</span></li>
+<li>三边孔由小圆肌、大圆肌和肱三头肌长头围成，旋肩胛动脉穿过 <span class="loc">〔说话人2 29:53〕</span></li>
+<li>四边孔再加肱骨围成，旋肱后动脉和腋神经穿过 <span class="loc">〔说话人2 29:53〕</span></li>
+<li>肘窝浅层为肱二头肌肌腱、肱动静脉和正中神经 <span class="loc">〔说话人2 29:53〕</span></li>
+<li>肘窝皮肤下少肌，神经血管贴骨面走行 <span class="loc">〔说话人2 29:53〕</span></li>
+<li>腕管由腕部筋膜增厚与腕骨围成管道 <span class="loc">〔说话人2 31:16〕</span></li>
+<li>腕管内有指浅屈肌、指深屈肌、拇长屈肌腱及正中神经 <span class="loc">〔说话人2 31:16〕</span></li>
+<li>腕管处割腕多致手部瘫痪而非致死 <span class="loc">〔说话人2 31:16〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">6. 髋肌与臀肌</h2><p class="lead">前群髂腰肌与阔筋膜张肌；后群七肌，梨状肌分孔道。</p><ul class="kv">
+<li>下肢肌粗大，维持直立、支持体重和行走 <span class="loc">〔说话人2 32:07〕</span></li>
+<li>髋肌分前群和后群，后群肌肉多 <span class="loc">〔说话人2 32:07〕</span></li>
+<li>髋肌后群起骨盆内侧面，跨髋止股骨上部 <span class="loc">〔说话人2 32:07〕</span></li>
+<li>髋肌后群有7块肌肉 <span class="loc">〔说话人2 37:31〕</span></li>
+<li>股方肌与闭孔外肌功能为使髋关节旋外 <span class="loc">〔说话人2 41:09〕</span></li>
+<li>大腿深筋膜厚呈筒状，称阔筋膜 <span class="loc">〔说话人2 37:31〕</span></li>
+<li>坐骨大孔由坐骨大切迹与骶棘韧带围成；坐骨小孔由骶结节韧带与坐骨小切迹围成 <span class="loc">〔说话人2 40:05〕</span></li>
+<li>髂腰肌由腰大肌和髂肌构成，两独立肌腹有共同止点 <span class="loc">〔说话人2 33:25〕</span></li>
+<li>腰大肌起腰椎椎体侧面和横突 <span class="loc">〔说话人2 34:10〕</span></li>
+<li>腰大肌外侧为腰方肌，胸腰筋膜覆盖腰方肌与竖脊肌 <span class="loc">〔说话人2 34:10〕</span></li>
+<li>髂肌起髂窝，与腰大肌汇合经腹股沟韧带深面 <span class="loc">〔说话人2 34:48〕</span></li>
+<li>髂腰肌止股骨小转子，屈髋并旋外；下肢固定时屈躯干 <span class="loc">〔说话人2 34:48〕</span></li>
+<li>腰小肌紧张髂筋膜（非重点） <span class="loc">〔说话人2 36:08〕</span></li>
+<li>阔筋膜张肌起髂前上棘，肌腹在阔筋膜间，移行为髂胫束止胫骨外侧髁 <span class="loc">〔说话人2 36:08〕</span></li>
+<li>阔筋膜张肌紧张阔筋膜并屈髋 <span class="loc">〔说话人2 36:08〕</span></li>
+<li>臀大肌起髂骨翼外面和骶骨背面，止髂胫束和臀肌粗隆 <span class="loc">〔说话人2 37:31〕</span></li>
+<li>臀大肌伸髋并旋外 <span class="loc">〔说话人2 38:15〕</span></li>
+<li>臀中肌与臀小肌并行，起髂骨翼外面止股骨大转子 <span class="loc">〔说话人2 38:51〕</span></li>
+<li>臀中肌臀小肌主髋外展，前束旋内后束旋外 <span class="loc">〔说话人2 38:51〕</span></li>
+<li>梨状肌起盆内骶骨前面，穿坐骨大孔止大转子 <span class="loc">〔说话人2 40:05〕</span></li>
+<li>梨状肌将坐骨大孔分为梨状肌上孔和梨状肌下孔 <span class="loc">〔说话人2 40:05〕</span></li>
+<li>梨状肌使髋关节外展并旋外 <span class="loc">〔说话人2 41:09〕</span></li>
+<li>闭孔内肌起闭孔膜内面，经坐骨小孔出，止转子窝，旋外 <span class="loc">〔说话人2 41:09〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">7. 大腿肌</h2><p class="lead">前群缝匠肌与股四头肌；内侧群内收；后群腘绳肌。</p><ul class="kv">
+<li>大腿肌分前群、内侧群和后群 <span class="loc">〔说话人2 42:54〕</span></li>
+<li>缝匠肌为全身最长肌，起髂前上棘止胫骨上端内侧 <span class="loc">〔说话人2 42:54〕</span></li>
+<li>竖脊肌为躯干最长肌，缝匠肌为全身最长肌，两者起止各一 <span class="loc">〔说话人2 42:54〕</span></li>
+<li>缝匠肌屈髋、屈膝，并使已屈的膝旋内 <span class="loc">〔说话人2 44:04〕</span></li>
+<li>股四头肌含股直肌、股内侧肌、股外侧肌和股中间肌四头 <span class="loc">〔说话人2 45:02〕</span></li>
+<li>股直肌起髂前下棘，其余三头起股骨粗线或前面 <span class="loc">〔说话人2 45:02〕</span></li>
+<li>股中间肌起股骨前面，位于股直肌深面 <span class="loc">〔说话人2 46:13〕</span></li>
+<li>股内侧肌、股外侧肌起股骨粗线内、外侧唇 <span class="loc">〔说话人2 46:13〕</span></li>
+<li>四头向下包绕髌骨形成髌韧带，止胫骨粗隆 <span class="loc">〔说话人2 46:13〕</span></li>
+<li>髌韧带即股四头肌腱，膝跳反射叩击髌韧带 <span class="loc">〔说话人2 46:13〕</span></li>
+<li>股直肌屈髋，其余三头伸膝 <span class="loc">〔说话人2 47:26〕</span></li>
+<li>大腿内侧群起自闭孔周围，主髋内收和旋转 <span class="loc">〔说话人2 47:26〕</span></li>
+<li>耻骨肌止于耻骨肌线；长收肌、短收肌止于股骨粗线 <span class="loc">〔说话人2 47:26〕</span></li>
+<li>股薄肌止胫骨上端内侧；大收肌还止收肌结节 <span class="loc">〔说话人2 49:32〕</span></li>
+<li>后群半膜肌、半腱肌和股二头肌称腘绳肌 <span class="loc">〔说话人2 49:32〕</span></li>
+<li>半膜肌半腱肌和股二头肌长头起坐骨结节，短头起股骨粗线 <span class="loc">〔说话人2 50:30〕</span></li>
+<li>半膜肌、半腱肌止于胫骨内侧，股二头肌肌腱止于腓骨外侧 <span class="loc">〔说话人2 51:06〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">8. 小腿肌与足肌</h2><p class="lead">小腿三群；小腿三头肌跟腱；足肌非考试重点。</p><ul class="kv">
+<li>小腿肌分前群、外侧群和后群，胫骨内侧无肌覆盖 <span class="loc">〔说话人2 52:18〕</span></li>
+<li>胫骨前肌伸踝并足内翻；趾长伸肌伸2–4趾；拇长伸肌伸拇趾 <span class="loc">〔说话人2 53:14〕</span></li>
+<li>腓骨长肌和腓骨短肌使足外翻、屈踝并维持足横弓 <span class="loc">〔说话人2 53:14〕</span></li>
+<li>足弓分内侧纵弓、外侧纵弓和横弓 <span class="loc">〔说话人2 53:14〕</span></li>
+<li>小腿三头肌由腓肠肌和比目鱼肌组成 <span class="loc">〔说话人2 55:09〕</span></li>
+<li>小腿三头肌腱融合为跟腱，止于跟骨 <span class="loc">〔说话人2 55:09〕</span></li>
+<li>小腿三头肌屈踝、屈膝并维持直立 <span class="loc">〔说话人2 55:09〕</span></li>
+<li>小腿后群深层有胫骨后肌、趾长屈肌和拇长屈肌，屈踝屈趾足内翻 <span class="loc">〔说话人2 55:09〕</span></li>
+<li>小腿后群浅、深两层由小腿横肌间隔分开 <span class="loc">〔说话人2 53:14〕</span></li>
+<li>跖肌位于腘窝下方（了解即可） <span class="loc">〔说话人2 55:09〕</span></li>
+<li>下肢趾与拇的命名与上肢指、拇不同，勿混 <span class="loc">〔说话人2 55:09〕</span></li>
+<li>足肌对照教材了解即可，非考试重点 <span class="loc">〔说话人2 55:09〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">9. 下肢局部解剖</h2><p class="lead">梨状肌孔道、肌血管腔隙、股三角、收肌管与腘窝为走行枢纽。</p><ul class="kv">
+<li>梨状肌上孔走臀上血管和臀上神经 <span class="loc">〔说话人2 01:14:58〕</span></li>
+<li>梨状肌下孔走坐骨神经、股后皮神经、臀下血管神经及阴部血管神经 <span class="loc">〔说话人2 01:14:58〕</span></li>
+<li>髂耻弓将腹股沟韧带与髋骨间腔隙分为肌腔隙和血管腔隙 <span class="loc">〔说话人2 01:17:15〕</span></li>
+<li>肌腔隙有髂腰肌和股神经 <span class="loc">〔说话人2 01:17:15〕</span></li>
+<li>血管腔隙有股动脉、股静脉；股管在股静脉内侧为盲管 <span class="loc">〔说话人2 01:17:15〕</span></li>
+<li>股管上端开口为股环，腹腔脏器经股环入股管为股疝 <span class="loc">〔说话人2 01:18:50〕</span></li>
+<li>股疝女性多见；另有腹股沟斜疝和直疝 <span class="loc">〔说话人2 01:18:50〕</span></li>
+<li>腹股沟斜疝经腹股沟管；直疝经海氏三角由后向前 <span class="loc">〔说话人2 01:18:50〕</span></li>
+<li>股三角底为髂腰肌、耻骨肌和长收肌 <span class="loc">〔说话人2 01:20:56〕</span></li>
+<li>股三角前壁为阔筋膜和皮肤 <span class="loc">〔说话人2 01:20:56〕</span></li>
+<li>股管前壁腹股沟韧带，后壁耻骨梳韧带，内侧腔隙韧带，外侧股血管鞘 <span class="loc">〔说话人2 01:19:46〕</span></li>
+<li>股三角上界腹股沟韧带，内侧长收肌内侧缘，外侧缝匠肌内侧缘 <span class="loc">〔说话人2 01:20:56〕</span></li>
+<li>股三角内有股神经、股动脉、股静脉和淋巴结 <span class="loc">〔说话人2 01:20:56〕</span></li>
+<li>股神经下行最长分支为隐神经 <span class="loc">〔说话人2 01:20:56〕</span></li>
+<li>收肌管前壁大收肌腱膜，后壁大收肌，外侧壁股内侧肌 <span class="loc">〔说话人2 01:20:56〕</span></li>
+<li>股动静脉穿收肌管向后入腘窝，隐神经从前壁穿出 <span class="loc">〔说话人2 01:22:53〕</span></li>
+<li>腘窝上外侧界股二头肌，上内侧半膜肌半腱肌，下为腓肠肌内外侧头 <span class="loc">〔说话人2 01:22:53〕</span></li>
+<li>腘窝内有股动脉股静脉移行的腘动脉腘静脉，还有坐骨神经 <span class="loc">〔说话人2 01:22:53〕</span></li>
+<li>运动系统肌学讲授至此结束 <span class="loc">〔说话人2 01:24:00〕</span></li>
+<li>局部解剖结构为手术与疾病诊治的重要解剖标志 <span class="loc">〔说话人2 27:45〕</span></li>
+<li>股管下端为盲端，内含少量淋巴结和脂肪组织 <span class="loc">〔说话人2 01:17:15〕</span></li>
+<li>腔隙韧带又名旋窝韧带，连于腹股沟韧带与耻骨梳 <span class="loc">〔说话人2 01:19:46〕</span></li>
+<li>收肌管下口通向腘窝，上口与股三角尖相通 <span class="loc">〔说话人2 01:20:56〕</span></li>
+</ul><div class="exam"><span class="tag">★考点</span>隐神经不穿收肌管入腘窝；股疝女多见；梨状肌下孔坐骨神经。 <span class="loc">〔说话人2 01:22:53〕</span></div></div>
+<div class="page"><h2 class="h2">10. 标本实操要点</h2><p class="lead">腹直肌鞘弓状线、三层腹肌、胸肌与颈肌；对照图谱认大块肌。</p><ul class="kv">
+<li>标本观察腹股沟韧带、股三角、收肌管和腘窝走行 <span class="loc">〔说话人3 01:29:11〕</span></li>
+<li>标本观察应结合图谱，优先辨认体表大块肌与腔隙结构 <span class="loc">〔说话人3 01:47:15〕</span></li>
+<li>腹股沟管女性穿出子宫圆韧带，结构斜向下穿出 <span class="loc">〔说话人3 01:29:11〕</span></li>
+<li>肌腔隙过髂腰肌，血管腔隙过股动静脉，内侧为股管股环 <span class="loc">〔说话人3 01:30:11〕</span></li>
+<li>坐骨神经一直在下肢后面走行，非前方穿过 <span class="loc">〔说话人3 01:31:39〕</span></li>
+<li>股四头肌四头：股直肌、股内侧肌、股外侧肌、股中间肌 <span class="loc">〔说话人3 01:31:39〕</span></li>
+<li>标本上小圆肌大圆肌肱三头肌长头围三边孔，与肱骨围四边孔 <span class="loc">〔说话人3 01:32:59〕</span></li>
+<li>腕管为增厚筋膜与骨面围成的管道，有肌腱穿过 <span class="loc">〔说话人3 01:34:04〕</span></li>
+<li>腹外斜肌腱膜下缘增厚形成腹股沟韧带 <span class="loc">〔说话人3 01:34:04〕</span></li>
+<li>腹壁三层扁肌由外向内依次为腹外斜肌、腹内斜肌和腹横肌 <span class="loc">〔说话人3 01:34:04〕</span></li>
+<li>弓状线在脐下4–5 cm，为腹直肌鞘后壁下界 <span class="loc">〔说话人3 01:36:12〕</span></li>
+<li>弓状线以上腹直肌鞘有前后两层，以下仅前层 <span class="loc">〔说话人3 01:36:50〕</span></li>
+<li>胸小肌上方筋膜增厚有血管穿出，为锁胸筋膜 <span class="loc">〔说话人3 01:36:50〕</span></li>
+<li>颈阔肌为皮肌，连于锁骨前部皮肤；胸锁乳突肌位于颈侧部 <span class="loc">〔说话人3 01:37:50〕</span></li>
+<li>腓肠肌与比目鱼肌肌腱汇合为跟腱 <span class="loc">〔说话人3 01:48:39〕</span></li>
+<li>拇指背侧有拇长伸肌腱与拇短伸肌腱两条肌腱 <span class="loc">〔说话人3 01:50:32〕</span></li>
+<li>甲醛固定液刺激性强且致癌，实操应戴口罩 <span class="loc">〔说话人3 01:51:06〕</span></li>
+<li>手套口罩投入生物废料垃圾桶 <span class="loc">〔说话人2 01:38:31〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">附录 A · 必背清单</h2><ul class="kv">
+<li>上肢带肌六块名称 <span class="loc">〔说话人2 02:23〕</span></li>
+<li>肌腱袖四肌，不含大圆肌 <span class="loc">〔说话人2 08:09〕</span></li>
+<li>三角肌瘫痪方肩，腋神经 <span class="loc">〔说话人2 04:14〕</span></li>
+<li>肱二头肌长头盂上结节，肱三头肌长头盂下结节 <span class="loc">〔说话人2 12:57〕</span></li>
+<li>三边孔旋肩胛动脉；四边孔旋肱后动脉和腋神经 <span class="loc">〔说话人2 29:53〕</span></li>
+<li>腕管九条屈肌腱加正中神经 <span class="loc">〔说话人2 31:16〕</span></li>
+<li>髂腰肌腰大肌加髂肌，止小转子 <span class="loc">〔说话人2 34:48〕</span></li>
+<li>股四头肌四头与髌韧带膝跳反射 <span class="loc">〔说话人2 46:13〕</span></li>
+<li>缝匠肌全身最长肌 <span class="loc">〔说话人2 42:54〕</span></li>
+<li>小腿三头肌跟腱 <span class="loc">〔说话人2 55:09〕</span></li>
+<li>梨状肌上下孔内容 <span class="loc">〔说话人2 01:14:58〕</span></li>
+<li>肌腔隙髂腰肌股神经；血管腔隙股动静脉股管 <span class="loc">〔说话人2 01:17:15〕</span></li>
+<li>股疝女性多见 <span class="loc">〔说话人2 01:18:50〕</span></li>
+<li>隐神经从收肌管前壁穿出 <span class="loc">〔说话人2 01:22:53〕</span></li>
+<li>弓状线脐下4–5 cm及鞘前后层差异 <span class="loc">〔说话人3 01:36:12〕</span></li>
+<li>肱二头肌长头过结节间沟连肩胛骨（标本） <span class="loc">〔说话人3 01:34:04〕</span></li>
+<li>腓肠肌位于浅层，比目鱼肌位于其深面 <span class="loc">〔说话人3 01:48:28〕</span></li>
+<li>上肢带肌起止点非考试范围 <span class="loc">〔说话人2 05:18〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">附录 B · 易错点 · 易混对照</h2><table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>肩袖含大圆肌</td><td>大圆肌不参与肌腱袖 <span class="loc">〔说话人2 08:09〕</span></td></tr>
+<tr><td>喙肱肌是上肢带肌</td><td>肌腹在上臂，属臂肌 <span class="loc">〔说话人2 11:43〕</span></td></tr>
+<tr><td>指深屈肌只屈近侧指间关节</td><td>指深屈肌可屈远侧指间关节 <span class="loc">〔说话人2 20:35〕</span></td></tr>
+<tr><td>腕可旋转</td><td>腕为椭圆关节，不能旋转 <span class="loc">〔说话人2 24:28〕</span></td></tr>
+<tr><td>髂腰肌是一块肌腹</td><td>腰大肌与髂肌两肌腹 <span class="loc">〔说话人2 33:25〕</span></td></tr>
+<tr><td>股神经穿收肌管入腘窝</td><td>隐神经前壁穿出，股动静脉向后 <span class="loc">〔说话人2 01:22:53〕</span></td></tr>
+<tr><td>坐骨神经经前方入腿</td><td>坐骨神经一直在后面 <span class="loc">〔说话人3 01:31:39〕</span></td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 C · 考点索引表</h2><table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>肌腱袖不含大圆肌</td><td>§1</td><td>〔说话人2 08:09〕</td><td>选择/填空</td></tr>
+<tr><td>三角肌瘫痪方肩畸形</td><td>§1</td><td>〔说话人2 04:14〕</td><td>临床</td></tr>
+<tr><td>冈上肌穿喙肩韧带下</td><td>§1</td><td>〔说话人2 06:12〕</td><td>选择</td></tr>
+<tr><td>肱二头与肱三头肌长头盂结节对比</td><td>§2</td><td>〔说话人2 12:57〕</td><td>填空</td></tr>
+<tr><td>指浅屈与中节、指深屈与远节</td><td>§3</td><td>〔说话人2 19:00〕</td><td>选择</td></tr>
+<tr><td>三边孔与四边孔穿行结构</td><td>§5</td><td>〔说话人2 29:53〕</td><td>填空</td></tr>
+<tr><td>腕管内容</td><td>§5</td><td>〔说话人2 31:16〕</td><td>选择</td></tr>
+<tr><td>股四头肌四头与髌韧带</td><td>§7</td><td>〔说话人2 46:13〕</td><td>综合</td></tr>
+<tr><td>腘绳肌止点内胫外腓</td><td>§7</td><td>〔说话人2 52:10〕</td><td>选择</td></tr>
+<tr><td>梨状肌上下孔</td><td>§9</td><td>〔说话人2 01:14:58〕</td><td>填空</td></tr>
+<tr><td>股管四壁与股疝</td><td>§9</td><td>〔说话人2 01:19:46〕</td><td>临床</td></tr>
+<tr><td>收肌管隐神经走行</td><td>§9</td><td>〔说话人2 01:22:53〕</td><td>选择</td></tr>
+<tr><td>弓状线与腹直肌鞘</td><td>§10</td><td>〔说话人3 01:36:12〕</td><td>填空</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 D · 知识点清单</h2><table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>上肢肌分带肌、臂肌、前臂肌、手肌</td><td>分类</td><td>§1</td><td>〔说话人2 02:23〕</td></tr>
+<tr><td>2</td><td>下肢肌分髋肌、大腿肌、小腿肌、足肌</td><td>分类</td><td>§1</td><td>〔说话人2 02:23〕</td></tr>
+<tr><td>3</td><td>上肢带肌六块名称</td><td>分类</td><td>§1</td><td>〔说话人2 02:23〕</td></tr>
+<tr><td>4</td><td>三角肌起止与分区功能</td><td>肌肉</td><td>§1</td><td>〔说话人2 04:14〕</td></tr>
+<tr><td>5</td><td>三角肌腋神经与方肩畸形</td><td>临床</td><td>§1</td><td>〔说话人2 04:14〕</td></tr>
+<tr><td>6</td><td>翼状肩与前锯肌</td><td>临床</td><td>§1</td><td>〔说话人2 04:14〕</td></tr>
+<tr><td>7</td><td>肩胛下肌位置与止点</td><td>肌肉</td><td>§1</td><td>〔说话人2 05:18〕</td></tr>
+<tr><td>8</td><td>冈上肌走行穿喙肩韧带下</td><td>肌肉</td><td>§1</td><td>〔说话人2 06:12〕</td></tr>
+<tr><td>9</td><td>冈下肌小圆肌大圆肌止点区别</td><td>肌肉</td><td>§1</td><td>〔说话人2 06:12〕</td></tr>
+<tr><td>10</td><td>肌腱袖四肌构成</td><td>考点</td><td>§1</td><td>〔说话人2 08:09〕</td></tr>
+<tr><td>11</td><td>肌腱袖不含大圆肌</td><td>考点</td><td>§1</td><td>〔说话人2 08:09〕</td></tr>
+<tr><td>12</td><td>臂肌前群后群与肌间隔</td><td>分类</td><td>§2</td><td>〔说话人2 08:46〕</td></tr>
+<tr><td>13</td><td>肱二头肌长头滑膜鞘与盂上结节</td><td>肌肉</td><td>§2</td><td>〔说话人2 08:46〕</td></tr>
+<tr><td>14</td><td>肱二头肌止点桡骨粗隆与腱膜</td><td>肌肉</td><td>§2</td><td>〔说话人2 10:25〕</td></tr>
+<tr><td>15</td><td>肱肌尺骨粗隆屈肘</td><td>肌肉</td><td>§2</td><td>〔说话人2 10:54〕</td></tr>
+<tr><td>16</td><td>喙肱肌肩关节屈内收</td><td>肌肉</td><td>§2</td><td>〔说话人2 11:43〕</td></tr>
+<tr><td>17</td><td>肱三头肌三头与鹰嘴</td><td>肌肉</td><td>§2</td><td>〔说话人2 13:30〕</td></tr>
+<tr><td>18</td><td>肱三头肌长头肩内收后伸</td><td>肌肉</td><td>§2</td><td>〔说话人2 13:30〕</td></tr>
+<tr><td>19</td><td>前臂前群四层划分</td><td>分类</td><td>§3</td><td>〔说话人2 15:21〕</td></tr>
+<tr><td>20</td><td>肱桡肌仅屈肘桡神经</td><td>肌肉</td><td>§3</td><td>〔说话人2 15:21〕</td></tr>
+<tr><td>21</td><td>屈肌总腱起肱骨内上髁</td><td>肌肉</td><td>§3</td><td>〔说话人2 15:21〕</td></tr>
+<tr><td>22</td><td>桡侧腕屈肌第二掌骨底</td><td>肌肉</td><td>§3</td><td>〔说话人2 16:58〕</td></tr>
+<tr><td>23</td><td>掌长肌掌腱膜</td><td>肌肉</td><td>§3</td><td>〔说话人2 17:28〕</td></tr>
+<tr><td>24</td><td>指浅屈肌中节止点</td><td>肌肉</td><td>§3</td><td>〔说话人2 19:00〕</td></tr>
+<tr><td>25</td><td>指深屈肌远节止点</td><td>肌肉</td><td>§3</td><td>〔说话人2 20:35〕</td></tr>
+<tr><td>26</td><td>旋前方肌旋前</td><td>肌肉</td><td>§3</td><td>〔说话人2 21:58〕</td></tr>
+<tr><td>27</td><td>伸肌总腱与后群浅层</td><td>肌肉</td><td>§3</td><td>〔说话人2 21:58〕</td></tr>
+<tr><td>28</td><td>腕关节椭圆关节不旋转</td><td>关节</td><td>§3</td><td>〔说话人2 24:28〕</td></tr>
+<tr><td>29</td><td>示指即食指 index finger</td><td>术语</td><td>§3</td><td>〔说话人2 25:34〕</td></tr>
+<tr><td>30</td><td>鱼际小鱼际与中间群</td><td>分类</td><td>§4</td><td>〔说话人2 26:07〕</td></tr>
+<tr><td>31</td><td>拇指对掌第一掌骨90°</td><td>机制</td><td>§4</td><td>〔说话人2 26:52〕</td></tr>
+<tr><td>32</td><td>蚓状肌与骨间肌</td><td>肌肉</td><td>§4</td><td>〔说话人2 27:45〕</td></tr>
+<tr><td>33</td><td>腋窝各壁构成</td><td>局解</td><td>§5</td><td>〔说话人2 27:45〕</td></tr>
+<tr><td>34</td><td>三角胸肌间沟头静脉</td><td>局解</td><td>§5</td><td>〔说话人2 29:53〕</td></tr>
+<tr><td>35</td><td>三边孔旋肩胛动脉</td><td>局解</td><td>§5</td><td>〔说话人2 29:53〕</td></tr>
+<tr><td>36</td><td>四边孔旋肱后动脉腋神经</td><td>局解</td><td>§5</td><td>〔说话人2 29:53〕</td></tr>
+<tr><td>37</td><td>肘窝神经血管排列</td><td>局解</td><td>§5</td><td>〔说话人2 29:53〕</td></tr>
+<tr><td>38</td><td>腕管构成与内容</td><td>局解</td><td>§5</td><td>〔说话人2 31:16〕</td></tr>
+<tr><td>39</td><td>下肢肌粗大与功能</td><td>特征</td><td>§6</td><td>〔说话人2 32:07〕</td></tr>
+<tr><td>40</td><td>髂腰肌两肌腹构成</td><td>肌肉</td><td>§6</td><td>〔说话人2 33:25〕</td></tr>
+<tr><td>41</td><td>髂腰肌止小转子与屈髋</td><td>肌肉</td><td>§6</td><td>〔说话人2 34:48〕</td></tr>
+<tr><td>42</td><td>阔筋膜张肌髂胫束</td><td>肌肉</td><td>§6</td><td>〔说话人2 36:08〕</td></tr>
+<tr><td>43</td><td>臀大肌起止与伸髋旋外</td><td>肌肉</td><td>§6</td><td>〔说话人2 37:31〕</td></tr>
+<tr><td>44</td><td>臀中臀小肌外展与前后束</td><td>肌肉</td><td>§6</td><td>〔说话人2 38:51〕</td></tr>
+<tr><td>45</td><td>梨状肌穿坐骨大孔</td><td>肌肉</td><td>§6</td><td>〔说话人2 40:05〕</td></tr>
+<tr><td>46</td><td>闭孔内肌股方肌闭孔外肌旋外</td><td>肌肉</td><td>§6</td><td>〔说话人2 41:09〕</td></tr>
+<tr><td>47</td><td>缝匠肌全身最长</td><td>考点</td><td>§7</td><td>〔说话人2 42:54〕</td></tr>
+<tr><td>48</td><td>股四头肌四头名称</td><td>分类</td><td>§7</td><td>〔说话人2 45:02〕</td></tr>
+<tr><td>49</td><td>股直肌髂前下棘</td><td>肌肉</td><td>§7</td><td>〔说话人2 45:02〕</td></tr>
+<tr><td>50</td><td>髌韧带与膝跳反射</td><td>临床</td><td>§7</td><td>〔说话人2 46:13〕</td></tr>
+<tr><td>51</td><td>股直肌屈髋余三头伸膝</td><td>功能</td><td>§7</td><td>〔说话人2 47:26〕</td></tr>
+<tr><td>52</td><td>大腿内侧群内收</td><td>肌肉</td><td>§7</td><td>〔说话人2 47:26〕</td></tr>
+<tr><td>53</td><td>大收肌收肌结节</td><td>肌肉</td><td>§7</td><td>〔说话人2 49:32〕</td></tr>
+<tr><td>54</td><td>腘绳肌三块名称</td><td>分类</td><td>§7</td><td>〔说话人2 49:32〕</td></tr>
+<tr><td>55</td><td>坐骨结节共同起点</td><td>肌肉</td><td>§7</td><td>〔说话人2 50:30〕</td></tr>
+<tr><td>56</td><td>半腱半膜胫骨股二头腓骨</td><td>肌肉</td><td>§7</td><td>〔说话人2 51:06〕</td></tr>
+<tr><td>57</td><td>小腿三群划分</td><td>分类</td><td>§8</td><td>〔说话人2 52:18〕</td></tr>
+<tr><td>58</td><td>胫骨前肌伸踝内翻</td><td>肌肉</td><td>§8</td><td>〔说话人2 53:14〕</td></tr>
+<tr><td>59</td><td>腓骨肌外翻维持横弓</td><td>肌肉</td><td>§8</td><td>〔说话人2 53:14〕</td></tr>
+<tr><td>60</td><td>三条足弓</td><td>结构</td><td>§8</td><td>〔说话人2 53:14〕</td></tr>
+<tr><td>61</td><td>小腿三头肌跟腱</td><td>肌肉</td><td>§8</td><td>〔说话人2 55:09〕</td></tr>
+<tr><td>62</td><td>后群深层屈肌</td><td>肌肉</td><td>§8</td><td>〔说话人2 55:09〕</td></tr>
+<tr><td>63</td><td>足肌非重点</td><td>范围</td><td>§8</td><td>〔说话人2 55:09〕</td></tr>
+<tr><td>64</td><td>梨状肌上孔臀上血管神经</td><td>局解</td><td>§9</td><td>〔说话人2 01:14:58〕</td></tr>
+<tr><td>65</td><td>梨状肌下孔坐骨神经等</td><td>局解</td><td>§9</td><td>〔说话人2 01:14:58〕</td></tr>
+<tr><td>66</td><td>髂耻弓分肌腔隙血管腔隙</td><td>局解</td><td>§9</td><td>〔说话人2 01:17:15〕</td></tr>
+<tr><td>67</td><td>股管股环与股疝</td><td>临床</td><td>§9</td><td>〔说话人2 01:18:50〕</td></tr>
+<tr><td>68</td><td>股管四壁</td><td>局解</td><td>§9</td><td>〔说话人2 01:19:46〕</td></tr>
+<tr><td>69</td><td>股三角边界与内容</td><td>局解</td><td>§9</td><td>〔说话人2 01:20:56〕</td></tr>
+<tr><td>70</td><td>隐神经最长分支</td><td>神经</td><td>§9</td><td>〔说话人2 01:20:56〕</td></tr>
+<tr><td>71</td><td>收肌管壁与走行</td><td>局解</td><td>§9</td><td>〔说话人2 01:22:53〕</td></tr>
+<tr><td>72</td><td>腘窝境界与内容</td><td>局解</td><td>§9</td><td>〔说话人2 01:22:53〕</td></tr>
+<tr><td>73</td><td>运动系统肌学讲完</td><td>范围</td><td>§9</td><td>〔说话人2 01:24:00〕</td></tr>
+<tr><td>74</td><td>弓状线位置</td><td>标本</td><td>§10</td><td>〔说话人3 01:36:12〕</td></tr>
+<tr><td>75</td><td>腹直肌鞘弓状线上下差异</td><td>标本</td><td>§10</td><td>〔说话人3 01:36:50〕</td></tr>
+<tr><td>76</td><td>腹股沟韧带腹外斜肌腱膜</td><td>标本</td><td>§10</td><td>〔说话人3 01:34:04〕</td></tr>
+<tr><td>77</td><td>锁胸筋膜位置</td><td>标本</td><td>§10</td><td>〔说话人3 01:36:50〕</td></tr>
+<tr><td>78</td><td>颈阔肌胸锁乳突肌</td><td>标本</td><td>§10</td><td>〔说话人3 01:38:06〕</td></tr>
+<tr><td>79</td><td>标本甲醛与废料处理</td><td>安全</td><td>§10</td><td>〔说话人3 01:51:06〕</td></tr>
+<tr><td>80</td><td>前臂后群10块肌</td><td>分类</td><td>§3</td><td>〔说话人2 21:58〕</td></tr>
+<tr><td>81</td><td>腕管与指屈肌腱走行</td><td>局解</td><td>§3</td><td>〔说话人2 18:10〕</td></tr>
+<tr><td>82</td><td>髋肌后群7块</td><td>数字</td><td>§6</td><td>〔说话人2 37:31〕</td></tr>
+<tr><td>83</td><td>阔筋膜筒状结构</td><td>筋膜</td><td>§6</td><td>〔说话人2 37:31〕</td></tr>
+<tr><td>84</td><td>腹股沟斜疝与直疝路径</td><td>临床</td><td>§9</td><td>〔说话人2 01:18:50〕</td></tr>
+<tr><td>85</td><td>标本子宫圆韧带与腹股沟管</td><td>标本</td><td>§10</td><td>〔说话人3 01:29:11〕</td></tr>
+<tr><td>86</td><td>三边孔四边孔标本辨认</td><td>标本</td><td>§10</td><td>〔说话人3 01:32:59〕</td></tr>
+<tr><td>87</td><td>腹壁三层扁肌层次</td><td>标本</td><td>§10</td><td>〔说话人3 01:34:04〕</td></tr>
+<tr><td>88</td><td>指浅屈肌起点</td><td>肌肉</td><td>§3</td><td>〔说话人2 18:10〕</td></tr>
+<tr><td>89</td><td>拇长屈肌起点</td><td>肌肉</td><td>§3</td><td>〔说话人2 19:00〕</td></tr>
+</table><p class="foot">附录 D 共 89 条，对照 recording.md 讲授点登记；正文逐条覆盖 recording 肌学与局解讲授（不含课后无关闲聊）。</p></div>
+</body></html>

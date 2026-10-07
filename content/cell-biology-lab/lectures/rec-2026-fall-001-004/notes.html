@@ -1,70 +1,461 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
-<style>
-@page{size:A4;margin:0;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"Noto Sans CJK SC",sans-serif;color:#24201A;background:#FAF8F1;font-size:10pt;line-height:1.6;}
-.cover{width:210mm;height:297mm;background:radial-gradient(120% 80% at 78% 12%,#2E7D4F 0%,#1F5C39 55%,#062E25 100%);color:#F3EEE2;position:relative;overflow:hidden;page-break-after:always;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(231,206,156,.55);}
-.cover-inner{position:absolute;inset:13mm;padding:22mm 20mm;display:flex;flex-direction:column;}
-.kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#E7CE9C;font-weight:500;}
-.cover-rule{width:46mm;height:1.4pt;background:#E7CE9C;margin:9mm 0 11mm;}
-.cover h1{font-family:"Noto Serif CJK SC",serif;font-weight:700;font-size:36pt;line-height:1.16;color:#FBF7EC;}
-.cover .subt{margin-top:7mm;font-family:"Noto Serif CJK SC",serif;font-size:16pt;color:rgba(243,238,226,.82);}
-.cover .meta{margin-top:5mm;font-size:10.5pt;color:rgba(243,238,226,.6);}
-.cover .spacer{flex:1;}
-.cover .by{font-size:8.6pt;color:rgba(243,238,226,.55);letter-spacing:.04em;}
-.content{padding:15mm 18mm;}
-.content-title{font-family:"Noto Serif CJK SC",serif;font-size:22pt;font-weight:700;color:#1F5C39;margin-bottom:2mm;}
-.content-sub{color:#857B68;font-size:10pt;margin-bottom:8mm;}
-.sec{margin-bottom:6mm;break-inside:avoid;}
-.sec-head{display:flex;align-items:center;gap:4mm;padding-bottom:2mm;margin-bottom:3mm;border-bottom:1.6pt solid #2E7D4F;}
-.sec-no{font-family:"Noto Serif CJK SC",serif;font-weight:700;font-size:10pt;color:#fff;background:#2E7D4F;padding:1mm 3mm;border-radius:1.6mm;}
-.sec-title{font-family:"Noto Serif CJK SC",serif;font-weight:700;font-size:14pt;color:#1F5C39;}
-.sec-body{background:#fff;border:0.5pt solid #E6DECC;border-radius:2.4mm;padding:4mm 5mm;}
-.kv{display:flex;gap:3mm;margin:1.5mm 0;font-size:9.5pt;}
-.kv .k{font-weight:600;color:#1F5C39;min-width:28mm;flex:none;}
-.kv .k::after{content:"｜";color:#C3D9C9;margin-left:.3em;font-weight:400;}
-.kv .v{color:#4A4337;flex:1;}
-.p{margin:1.5mm 0;font-size:9.5pt;color:#4A4337;}
-.hl{background:linear-gradient(180deg,#F8ECD3,#F8ECD3);border:0.4pt solid #E7CE9C;border-radius:1.8mm;padding:2mm 3mm;margin:2mm 0;font-size:9.5pt;color:#24201A;font-weight:500;}
-.warn{background:#F7E4DF;border:0.4pt solid #E6BDB4;border-radius:1.8mm;padding:2mm 3mm;margin:2mm 0;font-size:9.3pt;color:#7E2A20;}
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>细胞生物学实验 第1-4节 小鼠原代肝细胞培养 · 核心笔记</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#2F5D50; --accent-d:#1E3F36; --accent-t:#E6EFEC;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff}
+.cover{text-align:center;border-bottom:2px solid var(--accent);padding:10mm 0 8mm;margin-bottom:8mm}
+.cover .k{color:var(--muted);letter-spacing:.35em;font-size:10pt}
+.cover .h1{font-size:21pt;font-weight:700;color:var(--accent-d);margin:4mm 0 2mm}
+.cover .h2{font-size:12.5pt;color:var(--ink2);margin:1mm 0}
+.cover .meta{margin-top:6mm;color:var(--muted);font-size:9pt}
+.h2{font-size:14pt;font-weight:700;color:var(--accent-d);border-left:5px solid var(--accent);padding-left:3mm;margin:9mm 0 2mm;break-after:avoid}
+.h3{font-size:11.5pt;font-weight:700;color:var(--accent);margin:5mm 0 1.5mm;break-after:avoid}
+.lead{background:var(--accent-t);border-left:4px solid var(--accent);padding:2mm 4mm;margin:2mm 0 3mm}
+.kv{list-style:none;padding-left:0;margin:2mm 0}
+.kv li{position:relative;padding-left:6mm;margin:1mm 0}
+.kv li::before{content:"▪";color:var(--accent);position:absolute;left:1mm}
+.tbl{width:100%;border-collapse:collapse;margin:2mm 0 3mm;font-size:9.5pt;break-inside:avoid}
+.tbl th{background:var(--accent);color:#fff;padding:1.5mm 2mm;text-align:left;border:1px solid var(--accent-d)}
+.tbl td{border:1px solid var(--line);padding:1.5mm 2mm;vertical-align:top}
+.exam{background:var(--exam-t);border-left:4px solid var(--exam);padding:2mm 4mm;margin:3mm 0;break-inside:avoid}
+.wrong{background:var(--wrong-t);border-left:4px solid var(--wrong);padding:2mm 4mm;margin:3mm 0;break-inside:avoid}
+.mnem{background:var(--mnem-t);border-left:4px solid var(--mnem);padding:2mm 4mm;margin:3mm 0;break-inside:avoid}
+.def{background:var(--def-t);border-left:4px solid var(--def);padding:2mm 4mm;margin:3mm 0;break-inside:avoid}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0}
+.card{border:1px solid var(--line);border-radius:2mm;padding:2.5mm 3mm;background:var(--paper2);break-inside:avoid}
+.card .h3{margin-top:0}
+.tag{display:inline-block;background:var(--exam);color:#fff;font-size:8.5pt;line-height:1.6;padding:0 2mm;border-radius:1mm;margin-right:1.5mm}
+.loc{color:var(--muted);font-size:8.5pt;white-space:nowrap}
+.tree{list-style:none;padding-left:0;margin:2mm 0}
+.tree li{margin:.8mm 0}
+.tree ul{list-style:none;padding-left:5mm;border-left:1px dashed var(--line);margin:1mm 0}
+.foot{color:var(--muted);font-size:8.5pt;text-align:center;margin-top:10mm;border-top:1px solid var(--line);padding-top:3mm}
+.idx{width:100%;border-collapse:collapse;margin:2mm 0;font-size:8.5pt}
+.idx th{background:var(--accent);color:#fff;padding:1.2mm 1.8mm;text-align:left;border:1px solid var(--accent-d)}
+.idx td{border:1px solid var(--line);padding:1.2mm 1.8mm;vertical-align:top}
+@media print{.page{margin:0}}
 </style></head><body>
-<div class="cover"><div class="frame"></div>
-<div class="cover-inner">
-<div class="kicker">CELL BIOLOGY LAB</div>
-<div class="cover-rule"></div>
-<h1>细胞生物学实验</h1>
-<div class="subt">小鼠原代肝细胞培养</div>
-<div class="meta">HUST 基础医学 · 可视化笔记</div>
-<div class="spacer"></div>
-<div class="by">课堂录音整理 · 结构化可视化</div>
-</div></div>
-<div class="content">
-<div class="content-title">细胞生物学实验 · 核心知识图谱</div>
-<div class="content-sub">小鼠原代肝细胞培养 · 关键知识点结构化呈现</div>
 
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">01</span><span class="sec-title">课程定位与成绩</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">课程设置</span><span class="v">8周8次实验，彭明老师全程指导</span></div><div class="kv"><span class="k">内容级别</span><span class="v">研究生级实验（原代培养、间充质干细胞）</span></div><div class="kv"><span class="k">培养室</span><span class="v">正压层流细胞培养室（国内顶尖）</span></div><div class="hl">目标：8次后达到硕士一年级细胞生物学实验操作水平</div><div class="kv"><span class="k">成绩构成</span><span class="v">理论课50% + 实验课30% + 实验报告20%</span></div><div class="kv"><span class="k">容错规则</span><span class="v">前两次允许犯错，后续不得重复同类错误</span></div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">02</span><span class="sec-title">无菌操作核心规范</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">进入前</span><span class="v">缓冲间戴手术帽、无菌手套、鞋套、口罩</span></div><div class="kv"><span class="k">超净台</span><span class="v">推拉罩留20-25cm，仅伸手，禁探头</span></div><div class="hl">酒精灯：从后方绕路点燃（正压气流防引燃酒精）</div><div class="kv"><span class="k">器械</span><span class="v">大镊子夹取，金属/玻璃过火3-5秒，塑料禁过火</span></div><div class="kv"><span class="k">使用过的器械</span><span class="v">不得放回无菌容器</span></div><div class="kv"><span class="k">移液器</span><span class="v">斜向插入旋转固定枪头，禁敲击</span></div><div class="warn">⚠ 正压气流+手上酒精=引燃风险，必须从后方绕路点燃</div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">03</span><span class="sec-title">原代培养：处死取材漂洗</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">处死</span><span class="v">新生乳鼠断颈处死，75%酒精消毒</span></div><div class="kv"><span class="k">取材</span><span class="v">平皿盖作解剖盘，取肝脏（暗红最大脏器），半个黄豆大小</span></div><div class="hl">PBS漂洗3次至上清无红色（去血液，防血清抑制胰酶）</div><div class="warn">⚠ 取材过多→胰酶消化不充分→无法得到足够单细胞悬液</div><div class="p">肝组织内储存大量血液，血清成分会直接抑制胰蛋白酶消化活性，残留过多导致消化完全失败。</div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">04</span><span class="sec-title">原代培养：消化终止吹打</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">剪碎</span><span class="v">EP管内尽力剪碎，无需量化1mm³</span></div><div class="hl">消化：1ml胰蛋白酶，37℃水浴30分钟，每3-5分钟震荡</div><div class="hl">消化时间绝对不超过30分钟（防损伤细胞）</div><div class="kv"><span class="k">终止</span><span class="v">2ml含10%FBS培养基终止胰酶</span></div><div class="kv"><span class="k">吹打</span><span class="v">玻璃吹打管反复吹打，先排气防气泡</span></div><div class="p">胰蛋白酶除消化细胞外基质外，还会损伤完整细胞，超时导致大量死细胞。血清含胰蛋白酶抑制剂可终止消化。</div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">05</span><span class="sec-title">原代培养：离心重悬计数接种</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">静置转移</span><span class="v">静置1分钟，取上层上清至15ml管，补至3ml</span></div><div class="hl">离心：1000转/分钟，5分钟</div><div class="hl">重悬：玻璃吹打管，严禁用移液器（非无菌区域污染）</div><div class="hl">计数规则：「数上不数下、数左不数右」</div><div class="hl">四角大方格×1万=细胞/ml</div><div class="hl">标准接种：50ml瓶，4ml培养基，200万细胞（50万/ml）</div><div class="kv"><span class="k">失败判定</span><span class="v">计数<100万/ml→基本失败，全量接种如实记录</span></div></div>
-        </section>
-        <section class="sec">
-          <div class="sec-head"><span class="sec-no">06</span><span class="sec-title">实验后收尾</span></div>
-          <div class="sec-body"><div class="kv"><span class="k">通用</span><span class="v">关酒精灯，玻璃器皿洗净放烤箱，塑料丢弃</span></div><div class="kv"><span class="k">废液</span><span class="v">倒入指定废液缸，不得倒普通水槽</span></div><div class="kv"><span class="k">培养瓶</span><span class="v">标注信息，放入CO₂培养箱</span></div><div class="kv"><span class="k">值日</span><span class="v">整理桌面，耗材器械归位</span></div></div>
-        </section>
-</div></body></html>
+<div class="page">
+<div class="cover">
+  <div class="k">细胞生物学实验 · 核心内容笔记</div>
+  <div class="h1">小鼠原代肝细胞培养</div>
+  <div class="h2">原代培养原理、取材分离与无菌操作</div>
+  <div class="h2">第 1–4 节（课程第 1 次实验课）· 2026-09-08 · 授课：彭明 老师</div>
+  <div class="meta">素材规模：逐字稿 21,256 字 / 81 轮 ｜ 本笔记只写结论式核心内容，定位〔说话人N HH:MM〕可从逐字稿原样核查</div>
+</div>
+
+<h2 class="h2">0. 知识框架</h2>
+<ul class="tree">
+  <li>一、课程定位与考核：8周8次研究生级实验；理论50%＋实验30%＋报告20%</li>
+  <li>二、原代培养的概念与意义：HeLa；原代→传代；组织特异性</li>
+  <li>三、无菌操作（本次核心训练目标）
+    <ul>
+      <li>缓冲间四件套 → 超净台留20–25cm、禁探头 → 酒精灯后方绕点</li>
+      <li>手＝大镊子；金属/玻璃过火3–5秒，塑料禁过火；移液器斜插旋转</li>
+    </ul>
+  </li>
+  <li>四、处死与取材：断颈、75%酒精、平皿盖作解剖盘、半个黄豆大小</li>
+  <li>五、PBS漂洗去血清：3次至上清无红色；玻璃套管与移液器规范</li>
+  <li>六、胰酶消化与终止：1ml胰酶37℃30分钟；2ml含10%FBS培养基终止</li>
+  <li>七、吹打、离心与重悬：先排气；3ml定容；1000转5分钟；禁移液器重悬</li>
+  <li>八、细胞计数：四角大方格×1万＝个/ml；数上不数下、数左不数右</li>
+  <li>九、接种计算：50ml瓶、4ml培养基、200万细胞（50万/ml）</li>
+  <li>十、收尾：关酒精灯、洗玻璃、废液入缸、标瓶入CO₂培养箱</li>
+    </ul>
+</ul>
+
+<h2 class="h2">第一章 课程定位与考核要求</h2>
+<p class="lead">本课为 8 周 8 次研究生级实验训练，考核宽严相济：操作入理论考、报告重分析、纪律零容忍。</p>
+<ul class="kv">
+  <li>细胞生物学实验全程由彭明老师一人指导，共 8 周 8 次实验。<span class="loc">〔说话人1 01:15〕</span></li>
+  <li>实验内容为研究生级：小鼠原代培养、间充质干细胞培养等，普通本科不开设。<span class="loc">〔说话人1 02:01〕</span></li>
+  <li>培养目标：8 次实验后达到硕士一年级应有的细胞生物学实验操作水平。<span class="loc">〔说话人1 02:01〕</span></li>
+  <li>实验资源来之不易，禁止走过场；我们是来训练技术的。<span class="loc">〔说话人1 02:01〕</span></li>
+  <li>第 1、2 次实验允许犯各种错误，但细节必须刻入肌肉记忆，此后不得重犯。<span class="loc">〔说话人1 03:33〕</span></li>
+  <li>成绩构成：理论课 50%＋实验课 30%＋实验报告 20%。<span class="loc">〔说话人1 06:50〕</span></li>
+  <li>实验课占 30%，其内容来自两块：操作入理论考、平时实验报告。<span class="loc">〔说话人1 04:49〕</span></li>
+  <li>实验操作内容纳入理论考试出题范围，约占 3–5 分，由老师供题。<span class="loc">〔说话人1 05:28〕</span></li>
+  <li>实验报告禁止大段抄录，写清操作步骤与实际结果，失败也要如实写出。<span class="loc">〔说话人1 05:28〕</span></li>
+  <li>报告核心评价维度：结果的原因分析与错误点推论，重在自我剖析。<span class="loc">〔说话人1 06:02〕</span></li>
+  <li>无重大违纪不拉分差；缺课当场记录在案，不要缺课。<span class="loc">〔说话人1 06:50〕</span></li>
+  <li>请假必须课前当面告知，事后补假一律不予认可。<span class="loc">〔说话人1 08:00〕</span></li>
+  <li>主培养室仅 16 个座位，余 4 人到隔壁完全同配置的实验室，固定或轮换自选。<span class="loc">〔说话人1 08:37〕</span></li>
+  <li>实验报告册为 8 次实验专用本，课后经学习委员联系领取。<span class="loc">〔说话人1 09:59〕</span></li>
+  <li>每次报告写正反两页；首份报告（第 1、2 次实验）于下次课中途等待时上交。<span class="loc">〔说话人1 11:00〕</span></li>
+  <li>每次实验留 2–3 人值日，8 次任务全班平均分配。<span class="loc">〔说话人1 11:31〕</span></li>
+  <li>进培养间必须穿统一实验工作服，吊带背心等一律不允许进入。<span class="loc">〔说话人1 12:08〕</span></li>
+  <li>动物伦理：敬畏生命，快速操作减少动物痛苦，不流露情绪化怜悯。<span class="loc">〔说话人1 16:36〕</span></li>
+  <li>操作要求准、快、狠，快速完成。<span class="loc">〔说话人1 17:24〕</span></li>
+  <li>抱有过度怜悯心态者，不适合从事生物医学。<span class="loc">〔说话人1 16:09〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>本次实验每人操作一只新生乳鼠；实验核心目标见第三章无菌操作。<span class="loc">〔说话人1 14:51〕</span></div>
+
+<h2 class="h2">第二章 原代培养的概念与意义</h2>
+<p class="lead">原代＝来自原始个体的第一批细胞；原代细胞保留组织特异性功能，是细胞系之源。</p>
+<ul class="kv">
+  <li>原代培养定义：从原始个体的某个组织、器官分离获得的第一批培养细胞。<span class="loc">〔说话人1 12:08〕</span></li>
+  <li>HeLa 细胞系：源自美国黑人妇女 Henrietta Lacks 的宫颈癌组织（1951 年）。<span class="loc">〔说话人1 12:08〕</span></li>
+  <li>原代细胞经扩增繁殖、不断复制后得到的培养物即传代培养（下节课内容）。<span class="loc">〔说话人1 13:27〕</span></li>
+  <li>原代细胞代表来源组织的功能特点，具组织特异性。<span class="loc">〔说话人1 13:48〕</span></li>
+  <li>原代细胞研究价值优于 HeLa、293 等通用肿瘤细胞系。<span class="loc">〔说话人1 13:48〕</span></li>
+  <li>一切传代细胞系均来源于原代培养产物。<span class="loc">〔说话人1 13:48〕</span></li>
+</ul>
+<div class="def">跨科关联：肝是机体血液的重要储备器官（血液大部分储备在肝，组织学将详讲）。<span class="loc">〔说话人1 37:41〕</span></div>
+<h2 class="h2">第三章 无菌操作技术（本次核心训练目标）</h2>
+<p class="lead">无菌操作是本课必须刻入肌肉记忆的核心；超净台内按「万物皆有菌」对待，一切经火、经镊子。</p>
+<ul class="kv">
+  <li>本次实验重点是掌握无菌操作技术，原代培养具体方法看书即可。<span class="loc">〔说话人1 14:51〕</span></li>
+  <li>超净台理论上无菌（紫外消毒），但操作者按「有菌」怀疑处理。<span class="loc">〔说话人1 18:24〕</span></li>
+  <li>进细胞房前在缓冲间戴手术帽、无菌橡胶手套、鞋套、口罩，完成全身物理隔离。<span class="loc">〔说话人1 17:57〕</span></li>
+  <li>超净台罩子上下推拉，不许全部推到顶。<span class="loc">〔说话人1 18:24〕</span></li>
+  <li>推拉罩保留约 20–25 cm 操作高度，只许伸手、严禁探头。<span class="loc">〔说话人1 18:49〕</span></li>
+  <li>把头伸进超净台看，即失去无菌操作的意义。<span class="loc">〔说话人1 18:49〕</span></li>
+  <li>进台先看灯：紫外开着就先关紫外、开普通照明，这是习惯。<span class="loc">〔说话人1 21:35〕</span></li>
+  <li>进台先用酒精喷壶喷满戴手套的双手（或用酒精棉球擦拭）。<span class="loc">〔说话人1 20:59〕</span></li>
+  <li>超净台为正压气流（空气由内向外压），酒精灯须从后方绕路点燃。<span class="loc">〔说话人1 22:07〕</span></li>
+  <li>正面点火会让气流把火焰带到喷满酒精的手上，极易烧手。<span class="loc">〔说话人1 22:07〕</span></li>
+  <li>烧到手不必慌：戴着手套，稍晃即可；慌乱打翻酒精灯才会烧桌。<span class="loc">〔说话人1 22:07〕</span></li>
+  <li>短暂等待（约半小时内）不灭酒精灯；长时间不用才盖上灭掉。<span class="loc">〔说话人1 22:07〕</span></li>
+  <li>核心口诀：进入超净台后「手不是手」，手＝大镊子。<span class="loc">〔说话人1 24:36〕</span></li>
+  <li>严禁用手直接拿取无菌容器内的任何器械，违规即扣分。<span class="loc">〔说话人1 24:36〕</span></li>
+  <li>大镊子先在酒精灯上过火后再使用（尽管已照过紫外）。<span class="loc">〔说话人1 24:36〕</span></li>
+  <li>过火：让器械多个面在火焰最高处加热约 3–5 秒即可，不必烧到烫手。<span class="loc">〔说话人1 25:39〕</span></li>
+  <li>金属、玻璃器械可且必须过火；塑料管、塑料器皿严禁过火。<span class="loc">〔说话人1 29:56〕</span></li>
+  <li>平皿等塑料制品从无菌盒取出后即可用手拿，无需再过火。<span class="loc">〔说话人1 26:16〕</span></li>
+  <li>剪刀、镊子用完以后不能再放回去，这一套就结束了。<span class="loc">〔说话人1 29:56〕</span></li>
+  <li>解剖时盖子不彻底打开只露口；器械夹取后架在皿架上操作。<span class="loc">〔说话人1 29:30〕</span></li>
+  <li>移液器装枪头：斜着放上去、用力一转即紧，绝对不要敲。<span class="loc">〔说话人1 36:55〕</span></li>
+  <li>敲击会损伤移液器量程精度且扣不紧；微量加样会失准（0.5 μl 变 1 μl）。<span class="loc">〔说话人1 36:55〕</span></li>
+</ul>
+<table class="tbl">
+  <tr><th>项目</th><th>规范</th><th>理由</th></tr>
+  <tr><td>酒精灯点燃</td><td>从超净台后方绕路点燃<span class="loc">〔说话人1 22:07〕</span></td><td>正压气流会引燃手上酒精致灼伤</td></tr>
+  <tr><td>器械取用</td><td>一律用大镊子夹取<span class="loc">〔说话人1 24:36〕</span></td><td>手按有菌处理，直接拿即污染</td></tr>
+  <tr><td>金属/玻璃</td><td>过火 3–5 秒<span class="loc">〔说话人1 25:39〕</span></td><td>养成肌肉记忆，补紫外消毒之不足</td></tr>
+  <tr><td>塑料耗材</td><td>严禁过火<span class="loc">〔说话人1 29:56〕</span></td><td>塑料会烧坏，取出后即可用手</td></tr>
+  <tr><td>移液器装头</td><td>斜着放上去一转即紧，绝对不要敲<span class="loc">〔说话人1 36:55〕</span></td><td>保量程精度、防扣不紧</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>无菌操作是本次实验核心训练目标；前两节课的名词必须刻入肌肉记忆。<span class="loc">〔说话人1 14:51〕</span></div>
+<div class="mnem">无菌操作口诀：</div>
+<ul class="kv">
+  <li>罩留二五只伸手，严禁探头。</li>
+  <li>酒精灯从后方绕路点。<span class="loc">〔说话人1 22:07〕</span></li>
+  <li>手不是手，就是大镊子；金属玻璃过火三五秒，塑料不过火。<span class="loc">〔说话人1 24:36〕</span></li>
+  <li>枪头斜着放上去一转扣紧，绝对不要敲。<span class="loc">〔说话人1 36:55〕</span></li>
+</ul>
+
+<h2 class="h2">第四章 处死与取材</h2>
+<p class="lead">乳鼠断颈要快而不恋战；肝脏是暗红色最大脏器，只取半个黄豆大小。</p>
+<ul class="kv">
+  <li>每人在超净台内对一只新生乳鼠断颈处死。<span class="loc">〔说话人1 19:15〕</span></li>
+  <li>乳鼠体嫩难断颈（扯不了尾巴），可用大镊子辅助找到颈部适当拉扯。<span class="loc">〔说话人1 19:15〕</span></li>
+  <li>不要反复折腾处死；优先考虑组织鲜活性，尽快拿到结果。<span class="loc">〔说话人1 19:15〕</span></li>
+  <li>断颈处死后用 75% 酒精擦拭乳鼠全身消毒。<span class="loc">〔说话人1 20:59〕</span></li>
+  <li>平皿盖子作初期解剖盘：小鼠置盖上，75% 酒精擦拭后开腹解剖。<span class="loc">〔说话人1 26:16〕</span></li>
+  <li>解剖器械为眼科剪、眼科镊等小型器械，每套两人共用、人手若干。<span class="loc">〔说话人1 23:35〕</span></li>
+  <li>肝位于右上腹（胃在中左，肝在右侧，空间关系要熟）。<span class="loc">〔说话人1 27:13〕</span></li>
+  <li>肝是剖开腹腔后暗红色、最大的一整块脏器，方向不确定就找最大最红的那块。<span class="loc">〔说话人1 28:12〕</span></li>
+  <li>取肝后剥掉表面结缔组织等纤维结构，放入平皿底子。<span class="loc">〔说话人1 28:12〕</span></li>
+  <li>取材量约半个黄豆大小（稍大绿豆亦可），务必完整，忌稀碎成小米粒。<span class="loc">〔说话人1 28:12〕</span></li>
+  <li>取材过多→胰酶消化不充分→得不到足够单细胞悬液。<span class="loc">〔说话人1 42:31〕</span></li>
+</ul>
+<div class="wrong">反例：贪多把肝的大部分甚至肾一起取 → 消化不了，实验必败。<span class="loc">〔说话人1 42:31〕</span></div>
+
+<h2 class="h2">第五章 PBS 漂洗与器械操作（去血清）</h2>
+<p class="lead">漂洗三次洗到上清无红色，目的是去净血清，解除对胰蛋白酶的抑制。</p>
+<ul class="kv">
+  <li>漂洗目的：去除肝组织内残留的血液，因为血清会抑制胰蛋白酶。<span class="loc">〔说话人1 37:41〕</span></li>
+  <li>肝内储存机体大量血液（血液的重要储备器官，组织学内容）。<span class="loc">〔说话人1 37:41〕</span></li>
+  <li>血清存在时胰蛋白酶活性被抑制，组织消化不了，故必须尽量去除。<span class="loc">〔说话人1 37:41〕</span></li>
+  <li>试管架上：红色标记管＝培养基，透明管＝无菌 PBS。<span class="loc">〔说话人1 29:56〕</span></li>
+  <li>取 PBS 两法：移液器，或玻璃套管；大量细胞培养更多用玻璃套管。<span class="loc">〔说话人1 29:56〕</span></li>
+  <li>玻璃套管两特征：前细后粗的吹导管，后端带棉花塞。<span class="loc">〔说话人1 31:53〕</span></li>
+  <li>取套管：镊子夹取过火后抽出一根，只露出一端，不全部抽出（防摔碎）。<span class="loc">〔说话人1 29:56〕</span></li>
+  <li>手捏在棉花塞附近，始终按「最小可接触范围」拿取。<span class="loc">〔说话人1 31:53〕</span></li>
+  <li>棉花塞作用：套筒内紫外照不到、灭不到菌，无棉则细菌吹入管路。<span class="loc">〔说话人1 32:22〕</span></li>
+  <li>棉塞若扣不紧有缝隙会漏气、吸不了液；套胶头前先挑掉小棉花。<span class="loc">〔说话人1 32:22〕</span></li>
+  <li>套胶头：食指在一侧捏住边缘一翻扣紧；手不往下滑（下方约 15 cm 会污染）。<span class="loc">〔说话人1 33:11〕</span></li>
+  <li>套管不得伸出超净台之外操作，否则可能污染。<span class="loc">〔说话人1 32:22〕</span></li>
+  <li>开 PBS 盖后烧晃一下瓶口，套管整根插入 PBS，默认无菌，两人共用一管。<span class="loc">〔说话人1 33:40〕</span></li>
+  <li>吸几滴滴加漂洗、不必计量；用完的套管丢入废液缸。<span class="loc">〔说话人1 33:40〕</span></li>
+  <li>节约套管：悬空未接触任何物即默认无污染，可插架上连续多次使用。<span class="loc">〔说话人1 35:06〕</span></li>
+  <li>以后套管须自己准备（约 20 根），灭菌后降温要等数小时，用完即无。<span class="loc">〔说话人1 33:40〕</span></li>
+  <li>组织剪碎后再漂洗时，枪头抵住管壁吸液，避免把碎组织一起吸出。<span class="loc">〔说话人1 39:37〕</span></li>
+  <li>PBS 漂洗 3 次，至上清液基本不再发红，即血液漂洗干净。<span class="loc">〔说话人1 39:37〕</span></li>
+  <li>最后尽量吸净 PBS：剩一点无妨，剩 1–2 ml 则不行。<span class="loc">〔说话人1 40:46〕</span></li>
+  <li>移液器量程：最粗 1 ml（蓝枪头）、200 μl（黄枪头），不得超过量程。<span class="loc">〔说话人1 35:32〕</span></li>
+  <li>无固定体积需求时调到 1 ml 即可；超量程扭爆要赔偿。<span class="loc">〔说话人1 35:58〕</span></li>
+  <li>枪头节约：只吸废液且未触碰任何物时，可架在镊子上连续使用。<span class="loc">〔说话人1 36:55〕</span></li>
+  <li>漂洗完最后一次废液吸弃后，枪头直接弃掉。<span class="loc">〔说话人1 37:41〕</span></li>
+</ul>
+<div class="def">两次「血清逻辑」：</div>
+<ul class="kv">
+  <li>先尽量去血清——防血液中的血清抑制胰蛋白酶活性。<span class="loc">〔说话人1 37:41〕</span></li>
+  <li>后加含血清培养基——利用血清终止胰酶消化。<span class="loc">〔说话人1 42:57〕</span></li>
+</ul>
+<h2 class="h2">第六章 胰酶消化与终止</h2>
+<p class="lead">1 ml 胰酶 37 ℃消化 30 分钟、每 3–5 分钟震荡；到点即用 2 ml 含 10% FBS 培养基终止。</p>
+<ul class="kv">
+  <li>剪碎：EP 管内尽力剪碎即可，无法也不需量化为 1 mm³，用最大能力剪。<span class="loc">〔说话人1 37:41〕</span></li>
+  <li>剪的时候把剪刀垂直反过来握，看得清、剪得碎。<span class="loc">〔说话人1 39:37〕</span></li>
+  <li>剪碎后血液流出更多，需再漂洗，直至上清基本不红。<span class="loc">〔说话人1 39:37〕</span></li>
+  <li>加 1 ml 胰蛋白酶：分装在小 EP 管上写「E」（enzyme），分红或透明均正常。<span class="loc">〔说话人1 40:46〕</span></li>
+  <li>37 ℃水浴锅孵育 30 分钟；放入前先震荡观察组织块状态。<span class="loc">〔说话人1 41:24〕</span></li>
+  <li>每 3–5 分钟取出摇一次，使消化更顺畅、更均匀。<span class="loc">〔说话人1 41:24〕</span></li>
+  <li>约 20 多分钟后组织块周围出现不太透明的「悬浮现象」。<span class="loc">〔说话人1 41:24〕</span></li>
+  <li>消化时间绝对不超过 30 分钟：胰酶既消化细胞外基质，也损伤完整细胞。<span class="loc">〔说话人1 41:24〕</span></li>
+  <li>超时细胞会破裂，悬液中出现大量死细胞。<span class="loc">〔说话人1 41:24〕</span></li>
+  <li>终止：加入 2 ml 含 10% FBS 的培养基（红色、管上标 FBS）。<span class="loc">〔说话人1 42:57〕</span></li>
+  <li>加血清的目的：利用里面的血清终止胰酶消化。<span class="loc">〔说话人1 42:57〕</span></li>
+  <li>加完终止液总体积约 3.5 ml（1 ml 胰酶＋残留漂洗液约 1.5 ml＋2 ml 培养基）。<span class="loc">〔说话人1 42:57〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>不可能所有组织块都被消化完；取材适当就好，贪心（肝取太多、混入肾）必致消化失败。<span class="loc">〔说话人1 42:31〕</span></div>
+
+<h2 class="h2">第七章 吹打、离心与重悬</h2>
+<p class="lead">吹打先排气体防起泡；上清定容 3 ml 天然平衡，1000 转离心 5 分钟，玻璃吹打管重悬。</p>
+<ul class="kv">
+  <li>吹打两法：移液器吹打多见于分子克隆；细胞培养用玻璃吹打管。<span class="loc">〔说话人1 44:03〕</span></li>
+  <li>吹打管＝前端细长的普通玻璃管，能产生更强压力，口大得足以吸进组织块。<span class="loc">〔说话人1 44:30〕</span></li>
+  <li>吹打是使组织分散，而不是吹泡泡。<span class="loc">〔说话人1 44:30〕</span></li>
+  <li>吹泡泡＝管子插入前没有排空里面气体，一压泡泡就出来了。<span class="loc">〔说话人1 45:08〕</span></li>
+  <li>吹打前先排空管内气体。<span class="loc">〔说话人1 45:33〕</span></li>
+  <li>不排气则压出大量气泡，血清中粘稠蛋白随之起泡、越吹越多直至溢出试管，极易污染。<span class="loc">〔说话人1 45:08〕</span></li>
+  <li>正确节奏：先排气，吸上来、压下去，吸压动作要快，做到一个泡泡都不出现。<span class="loc">〔说话人1 45:33〕</span></li>
+  <li>吹打后静置约 1 分钟，未消化的大块组织沉到底部。<span class="loc">〔说话人1 45:33〕</span></li>
+  <li>上层即细胞悬浊液（约 3.5 ml），转移到 15 ml 离心管（黄袋装、带刻度）。<span class="loc">〔说话人1 46:30〕</span></li>
+  <li>只转到 3 ml 刻度线：转液与配平一次完成，每管天然平衡、无需称重。<span class="loc">〔说话人1 47:00〕</span></li>
+  <li>不足 3 ml 补培养基调至 3 ml；多出的弃掉，差零点几 ml 不影响成败。<span class="loc">〔说话人1 47:00〕</span></li>
+  <li>平衡是离心操作的首要条件；高速离心不平衡会甩坏转子，损失数十万。<span class="loc">〔说话人1 47:23〕</span></li>
+  <li>今天 1000 转/分钟离心 5 分钟；细胞充分沉淀管底，上清可直接倾倒。<span class="loc">〔说话人1 47:23〕</span></li>
+  <li>倒上清入废液缸，标准操作沉淀不会掉；实在害怕可用枪吸，但没必要。<span class="loc">〔说话人1 47:23〕</span></li>
+  <li>重悬：加 2 ml 含血清培养基，换一根新玻璃吹打管充分吹打。<span class="loc">〔说话人1 48:59〕</span></li>
+  <li>严禁用移液器伸入管内重悬：只有枪头无菌、其余部位无法过火，伸入即致命污染。<span class="loc">〔说话人1 49:31〕</span></li>
+  <li>最终得到约 2 ml 细胞悬液，即用于培养的那份。<span class="loc">〔说话人1 49:31〕</span></li>
+</ul>
+<div class="wrong">错：拿移液器（枪）在火焰上烧、伸入管底重悬。对：玻璃吹打管重悬，枪绝不伸入无菌容器。<span class="loc">〔说话人1 49:31〕</span></div>
+
+<h2 class="h2">第八章 细胞计数板与计数规则</h2>
+<p class="lead">四角大方格细胞总数×1万＝个/ml；数上不数下、数左不数右，防重复计数。</p>
+<ul class="kv">
+  <li>计数板每桌两块，属玻璃器材易碎，使用时爱护。<span class="loc">〔说话人1 51:30〕</span></li>
+  <li>每次用完必须洗净、酒精擦拭后再收，否则细胞干涸下次计数不准。<span class="loc">〔说话人1 51:30〕</span></li>
+  <li>板上有两块玻璃刻度区域，区域间以沟槽分隔，刻痕呈十字形。<span class="loc">〔说话人1 52:35〕</span></li>
+  <li>专用厚盖玻片恰好盖住两块刻度区域；擦拭吹干后再盖片。<span class="loc">〔说话人1 52:35〕</span></li>
+  <li>四角大方格计普通细胞；中间细十字区域计红细胞，不是我们要看的。<span class="loc">〔说话人1 53:22〕</span></li>
+  <li>每个角的大方格由 16 个小正方形组成。<span class="loc">〔说话人1 53:22〕</span></li>
+  <li>大方格边长 1 mm，面积 1 mm²；计数室深度 0.1 mm，体积 0.1 mm³。<span class="loc">〔说话人1 53:22〕</span></li>
+  <li>0.1 mm³＝1/10000 ml，故所数细胞数×1万＝每毫升细胞数。<span class="loc">〔说话人1 55:23〕</span></li>
+  <li>加样：吸一滴悬液（以后约 50 μl 足够），滴在盖玻片与计数板的缝隙处。<span class="loc">〔说话人1 56:08〕</span></li>
+  <li>液体靠表面张力扩散铺满两玻片之间，看到铺满即够，置 10 倍低倍镜下观察。<span class="loc">〔说话人1 57:06〕</span></li>
+  <li>今天不台盼蓝染色（下节课看死细胞），全部按活细胞计。<span class="loc">〔说话人1 57:46〕</span></li>
+  <li>做得好的标本每个小格约 20–30 个细胞；差的只有 1–2 个甚至没有，需分析原因。<span class="loc">〔说话人1 58:12〕</span></li>
+  <li>换算实例：平均每小格 3 个＝48 万个/ml；数出 90 个＝90 万个/ml。<span class="loc">〔说话人1 58:12〕</span></li>
+  <li>标准培养浓度 50 万个/ml，相当于每小格约 3 个细胞。<span class="loc">〔说话人1 59:04〕</span></li>
+  <li>至少数 4 个角的大方格取平均；想更准可数 8 个（两侧都数）。<span class="loc">〔说话人1 59:38〕</span></li>
+  <li>计数口诀：数上不数下、数左不数右，避免压线细胞被重复计数。<span class="loc">〔说话人1 59:38〕</span></li>
+</ul>
+<div class="mnem">计数口诀（老师原话）：数上不数下、数左不数右。<span class="loc">〔说话人1 59:38〕</span></div>
+<h2 class="h2">第九章 接种计算与培养体系</h2>
+<p class="lead">标准体系：50 ml 培养瓶＋4 ml 培养基＋200 万个细胞（50 万个/ml）；按成本思维只取所需。</p>
+<ul class="kv">
+  <li>经典培养浓度 50 万个/ml；4 ml 培养液共需 200 万个细胞。<span class="loc">〔说话人1 56:08〕</span></li>
+  <li>培养瓶为 50 ml 培养瓶（经典款，瓶身有 40 ml 刻度）。<span class="loc">〔说话人1 50:14〕</span></li>
+  <li>培养基 4–5 ml 即够（今天用 4 ml），以正好盖住瓶底为度，多了用不起。<span class="loc">〔说话人1 50:14〕</span></li>
+  <li>瓶盖内有纤维素膜：隔绝细菌但不隔绝空气，CO₂ 培养箱气体可进入。<span class="loc">〔说话人1 50:58〕</span></li>
+  <li>开关培养瓶等操作一律在酒精灯火焰附近进行；入箱时瓶盖端朝上。<span class="loc">〔说话人1 50:58〕</span></li>
+  <li>计数后按成本思维取样：不做全量稀释，只取够 200 万个细胞的体积。<span class="loc">〔说话人1 01:01:24〕</span></li>
+  <li>刚好达标：100 万个/ml × 现有 2 ml＝200 万个，全加后再补 2 ml 培养基。<span class="loc">〔说话人1 01:01:24〕</span></li>
+  <li>低于 100 万个/ml：基本判定失败，2 ml 全加、补 2 ml，如实写报告。<span class="loc">〔说话人1 01:02:45〕</span></li>
+  <li>例：400 万个/ml 只需吸出含 200 万个的体积（0.5 ml 或 1 ml）再补足培养基。<span class="loc">〔说话人1 01:02:45〕</span></li>
+  <li>例：200 万个/ml 吸 1 ml，再加 3 ml 培养基，其余不用。<span class="loc">〔说话人1 01:02:45〕</span></li>
+  <li>数学关系：500 万个/ml 变 50 万个/ml 是 10 倍稀释，但生物学按成本取样。<span class="loc">〔说话人1 01:01:24〕</span></li>
+  <li>培养基和血清都很贵，按需取用，不浪费一瓶好细胞以外的悬液。<span class="loc">〔说话人1 01:03:51〕</span></li>
+  <li>数得满头细胞＝结果好；一个细胞都没有＝实验失败。<span class="loc">〔说话人1 01:00:48〕</span></li>
+</ul>
+<table class="tbl">
+  <tr><th>计数结果</th><th>处理</th><th>依据</th></tr>
+  <tr><td>100 万个/ml（刚好）</td><td>2 ml 全加＋补 2 ml 培养基<span class="loc">〔说话人1 01:02:45〕</span></td><td>2 ml×100 万＝200 万个，达标</td></tr>
+  <tr><td>低于 100 万个/ml</td><td>全部接种＋补足 4 ml，如实记录<span class="loc">〔说话人1 01:02:45〕</span></td><td>无法凑够 200 万个，基本失败</td></tr>
+  <tr><td>400 万个/ml</td><td>吸 0.5 ml（200 万个）＋补足培养基<span class="loc">〔说话人1 01:02:45〕</span></td><td>只取所需，节约成本</td></tr>
+  <tr><td>200 万个/ml</td><td>吸 1 ml＋3 ml 培养基<span class="loc">〔说话人1 01:02:45〕</span></td><td>1 ml×200 万＝200 万个</td></tr>
+</table>
+<div class="exam"><span class="tag">★考点</span>50 ml 瓶、4 ml 培养基、200 万细胞（50 万/ml）——今天必须记住的肌肉记忆。<span class="loc">〔说话人1 50:14〕</span></div>
+
+<h2 class="h2">第十章 实验后收尾</h2>
+<p class="lead">收尾一条线：关灯、洗玻璃、塑料丢弃、废液入缸、标瓶入箱、值日归位。</p>
+<ul class="kv">
+  <li>操作结束先关闭酒精灯。<span class="loc">〔说话人1 01:03:51〕</span></li>
+  <li>用过的剪刀、镊子等玻璃器皿带至水槽洗净，放入准备室烤箱备用。<span class="loc">〔说话人1 01:03:51〕</span></li>
+  <li>用过的 EP 管等塑料耗材直接丢弃。<span class="loc">〔说话人1 01:03:51〕</span></li>
+  <li>所有废液倒入指定废液缸，不得倒入普通水槽。<span class="loc">〔说话人1 01:03:51〕</span></li>
+  <li>细胞计数板必须洗净收好。<span class="loc">〔说话人1 01:03:51〕</span></li>
+  <li>培养瓶加完培养基后盖好、做好个人信息与实验内容标记，放入 CO₂ 培养箱。<span class="loc">〔说话人1 01:03:51〕</span></li>
+  <li>当日值日同学整理整个操作区桌面，耗材器械归位。<span class="loc">〔说话人1 01:03:51〕</span></li>
+</ul>
+<h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+  <li>8 周 8 次实验，研究生级内容，目标硕士一年级操作水平。<span class="loc">〔说话人1 02:01〕</span></li>
+  <li>成绩：理论 50%＋实验 30%＋报告 20%；操作入理论考。<span class="loc">〔说话人1 06:50〕</span></li>
+  <li>报告重原因分析与错误推论，失败也如实记录，禁抄录。<span class="loc">〔说话人1 06:02〕</span></li>
+  <li>缓冲间四件套：手术帽、无菌手套、鞋套、口罩。<span class="loc">〔说话人1 17:57〕</span></li>
+  <li>推拉罩留 20–25 cm，只伸手，严禁探头。<span class="loc">〔说话人1 18:49〕</span></li>
+  <li>关紫外→开照明→酒精喷手；酒精灯从后方绕路点燃。<span class="loc">〔说话人1 21:35〕</span></li>
+  <li>手＝大镊子；金属/玻璃过火 3–5 秒，塑料禁过火。<span class="loc">〔说话人1 25:39〕</span></li>
+  <li>移液器斜向插入旋转固定枪头，禁敲击。<span class="loc">〔说话人1 36:55〕</span></li>
+  <li>新生乳鼠断颈处死，75% 酒精擦拭消毒。<span class="loc">〔说话人1 20:59〕</span></li>
+  <li>肝为暗红色最大脏器，取半个黄豆大小，忌稀碎。<span class="loc">〔说话人1 28:12〕</span></li>
+  <li>PBS 漂洗 3 次至上清无红色，去除血清防抑制胰酶。<span class="loc">〔说话人1 39:37〕</span></li>
+  <li>剪碎不量化，1 ml 胰酶 37 ℃消化 30 分钟，每 3–5 分钟震荡。<span class="loc">〔说话人1 41:24〕</span></li>
+  <li>消化绝不超 30 分钟；2 ml 含 10% FBS 培养基终止。<span class="loc">〔说话人1 42:57〕</span></li>
+  <li>吹打先排气体防气泡；静置 1 分钟取上清至 3 ml 刻度线。<span class="loc">〔说话人1 47:00〕</span></li>
+  <li>1000 转/分钟离心 5 分钟；玻璃吹打管重悬，严禁移液器。<span class="loc">〔说话人1 49:31〕</span></li>
+  <li>数上不数下、数左不数右；四角大方格×1万＝个/ml。<span class="loc">〔说话人1 59:38〕</span></li>
+  <li>标准接种：50 ml 瓶、4 ml 培养基、200 万细胞（50 万/ml）。<span class="loc">〔说话人1 50:14〕</span></li>
+  <li>计数低于 100 万个/ml 基本失败，全量接种如实记录。<span class="loc">〔说话人1 01:02:45〕</span></li>
+</ul>
+
+<h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl">
+  <tr><th>错</th><th>对</th></tr>
+  <tr><td>把头伸进超净台看操作</td><td>罩留 20–25 cm，只伸手不探头。<span class="loc">〔说话人1 18:49〕</span></td></tr>
+  <tr><td>正面点燃酒精灯</td><td>正压气流会引燃手上酒精，从后方绕路点燃。<span class="loc">〔说话人1 22:07〕</span></td></tr>
+  <tr><td>用手直接拿无菌器械</td><td>手＝大镊子，一切用镊子夹取。<span class="loc">〔说话人1 24:36〕</span></td></tr>
+  <tr><td>金属、玻璃器械不过火</td><td>可且必须过火 3–5 秒。<span class="loc">〔说话人1 29:56〕</span></td></tr>
+  <tr><td>塑料管也过火消毒</td><td>塑料严禁过火，取出后即可用手。<span class="loc">〔说话人1 29:56〕</span></td></tr>
+  <tr><td>用过的器械放回无菌盒</td><td>用过的不得放回，该套即用完。<span class="loc">〔说话人1 29:30〕</span></td></tr>
+  <tr><td>敲击枪头安装</td><td>斜向插入后旋转固定，保护量程精度。<span class="loc">〔说话人1 36:55〕</span></td></tr>
+  <tr><td>取材越多越好</td><td>半个黄豆大小即可，过多消化不充分。<span class="loc">〔说话人1 42:31〕</span></td></tr>
+  <tr><td>漂洗一次或上清仍红就继续</td><td>PBS 漂洗 3 次至上清无红色。<span class="loc">〔说话人1 39:37〕</span></td></tr>
+  <tr><td>PBS 留着 1–2 ml 无所谓</td><td>尽量吸净，只剩组织块带一点液体。<span class="loc">〔说话人1 40:46〕</span></td></tr>
+  <tr><td>胰酶消化越久越充分</td><td>绝不超 30 分钟，超时细胞破裂死亡。<span class="loc">〔说话人1 41:24〕</span></td></tr>
+  <tr><td>吹打前不排气，吹出大量泡泡</td><td>先排气体、快吸快压，一个泡泡都不出现。<span class="loc">〔说话人1 45:33〕</span></td></tr>
+  <tr><td>用移液器伸入管内重悬细胞</td><td>只枪头无菌且无法过火，必须用玻璃吹打管。<span class="loc">〔说话人1 49:31〕</span></td></tr>
+  <tr><td>把全部悬液稀释成 50 万个/ml</td><td>只吸取含 200 万个细胞的体积，补足 4 ml。<span class="loc">〔说话人1 01:01:24〕</span></td></tr>
+  <tr><td>废液倒入普通水槽</td><td>统一倒入指定废液缸。<span class="loc">〔说话人1 01:03:51〕</span></td></tr>
+  <tr><td>「HeLa 源自 1979 年 Helen 的宫颈癌」</td><td>HeLa 源自 1951 年美国黑人妇女 Henrietta Lacks 的宫颈癌组织。<span class="loc">〔说话人1 12:08〕</span></td></tr>
+</table>
+
+<h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl">
+  <tr><th>考点</th><th>出处小节</th><th>定位</th><th>可能题型</th></tr>
+  <tr><td>本次实验核心目标＝无菌操作技术</td><td>第三章</td><td><span class="loc">〔说话人1 14:51〕</span></td><td>名词解释 / 简答</td></tr>
+  <tr><td>超净台只伸手禁探头，留 20–25 cm</td><td>3.1</td><td><span class="loc">〔说话人1 18:49〕</span></td><td>填空 / 判断</td></tr>
+  <tr><td>酒精灯从后方绕路点燃（正压气流）</td><td>3.2</td><td><span class="loc">〔说话人1 22:07〕</span></td><td>简答（为什么）</td></tr>
+  <tr><td>过火 3–5 秒；塑料禁过火；器械不放回</td><td>3.3</td><td><span class="loc">〔说话人1 25:39〕</span></td><td>填空 / 选择</td></tr>
+  <tr><td>枪头斜插旋转固定、禁敲击</td><td>3.4</td><td><span class="loc">〔说话人1 36:55〕</span></td><td>判断 / 操作</td></tr>
+  <tr><td>取材半个黄豆、肝为暗红最大脏器</td><td>第四章</td><td><span class="loc">〔说话人1 28:12〕</span></td><td>填空</td></tr>
+  <tr><td>PBS 漂洗 3 次至上清无红；血清抑酶</td><td>第五章</td><td><span class="loc">〔说话人1 37:41〕</span></td><td>简答（原理）</td></tr>
+  <tr><td>1 ml 胰酶 37 ℃ 30 分钟、每 3–5 分钟震荡</td><td>第六章</td><td><span class="loc">〔说话人1 41:24〕</span></td><td>填空 / 计算时间</td></tr>
+  <tr><td>消化绝不超 30 分钟的理由</td><td>第六章</td><td><span class="loc">〔说话人1 41:24〕</span></td><td>简答</td></tr>
+  <tr><td>2 ml 含 10% FBS 培养基终止胰酶</td><td>第六章</td><td><span class="loc">〔说话人1 42:57〕</span></td><td>填空</td></tr>
+  <tr><td>吹打先排气；1000 转 5 分钟；3 ml 定容平衡</td><td>第七章</td><td><span class="loc">〔说话人1 47:23〕</span></td><td>填空 / 简答</td></tr>
+  <tr><td>严禁移液器重悬，只用玻璃吹打管</td><td>第七章</td><td><span class="loc">〔说话人1 49:31〕</span></td><td>判断 / 简答</td></tr>
+  <tr><td>计数×1万＝个/ml；数上不数下、数左不数右</td><td>第八章</td><td><span class="loc">〔说话人1 59:38〕</span></td><td>计算 / 口诀默写</td></tr>
+  <tr><td>50 ml 瓶＋4 ml 培养基＋200 万细胞</td><td>第九章</td><td><span class="loc">〔说话人1 56:08〕</span></td><td>计算</td></tr>
+  <tr><td>低于 100 万个/ml 判定失败并如实记录</td><td>第九章</td><td><span class="loc">〔说话人1 01:02:45〕</span></td><td>分析题</td></tr>
+  <tr><td>成绩构成 50%＋30%＋20%</td><td>第一章</td><td><span class="loc">〔说话人1 06:50〕</span></td><td>填空</td></tr>
+</table>
+
+<h2 class="h2">附录 D 知识点清单（零遗漏自查）</h2>
+<table class="idx">
+  <tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+  <tr><td>1</td><td>8 周 8 次实验，彭明全程指导</td><td>数字</td><td>一</td><td><span class="loc">〔说话人1 01:15〕</span></td></tr>
+  <tr><td>2</td><td>研究生级内容：原代培养、间充质干细胞</td><td>分类</td><td>一</td><td><span class="loc">〔说话人1 02:01〕</span></td></tr>
+  <tr><td>3</td><td>目标：达硕士一年级操作水平</td><td>考点</td><td>一</td><td><span class="loc">〔说话人1 02:01〕</span></td></tr>
+  <tr><td>4</td><td>前两次允许犯错，细节刻入肌肉记忆</td><td>考点</td><td>一</td><td><span class="loc">〔说话人1 03:33〕</span></td></tr>
+  <tr><td>5</td><td>成绩＝理论 50%＋实验 30%＋报告 20%</td><td>数字</td><td>一</td><td><span class="loc">〔说话人1 06:50〕</span></td></tr>
+  <tr><td>6</td><td>操作内容入理论考，约 3–5 分</td><td>考点</td><td>一</td><td><span class="loc">〔说话人1 05:28〕</span></td></tr>
+  <tr><td>7</td><td>报告禁抄录、重原因分析与推论、失败如实</td><td>考点</td><td>一</td><td><span class="loc">〔说话人1 05:28〕</span></td></tr>
+  <tr><td>8</td><td>请假课前告知，事后补假不认</td><td>易错</td><td>一</td><td><span class="loc">〔说话人1 08:00〕</span></td></tr>
+  <tr><td>9</td><td>分组：主室 16 人＋隔壁同配置 4 人</td><td>数字</td><td>一</td><td><span class="loc">〔说话人1 08:37〕</span></td></tr>
+  <tr><td>10</td><td>值日每次 2–3 人，8 次平均</td><td>数字</td><td>一</td><td><span class="loc">〔说话人1 11:31〕</span></td></tr>
+  <tr><td>11</td><td>必须穿工作服，禁吊带背心入培养间</td><td>易错</td><td>一</td><td><span class="loc">〔说话人1 12:08〕</span></td></tr>
+  <tr><td>12</td><td>动物伦理：敬畏生命、快速减痛、不情绪化</td><td>伦理</td><td>一</td><td><span class="loc">〔说话人1 16:36〕</span></td></tr>
+  <tr><td>13</td><td>操作准、快、狠</td><td>考点</td><td>一</td><td><span class="loc">〔说话人1 17:24〕</span></td></tr>
+  <tr><td>14</td><td>原代培养定义：来自原始个体的第一批细胞</td><td>定义</td><td>二</td><td><span class="loc">〔说话人1 12:08〕</span></td></tr>
+  <tr><td>15</td><td>HeLa：Henrietta Lacks 宫颈癌，1951 年</td><td>名词</td><td>二</td><td><span class="loc">〔说话人1 12:08〕</span></td></tr>
+  <tr><td>16</td><td>原代扩增后即为传代培养（下节课）</td><td>定义</td><td>二</td><td><span class="loc">〔说话人1 13:27〕</span></td></tr>
+  <tr><td>17</td><td>原代具组织特异性，优于 HeLa/293</td><td>机制</td><td>二</td><td><span class="loc">〔说话人1 13:48〕</span></td></tr>
+  <tr><td>18</td><td>一切传代系来源于原代产物</td><td>结论</td><td>二</td><td><span class="loc">〔说话人1 13:48〕</span></td></tr>
+  <tr><td>19</td><td>肝＝机体血液重要储备器官（组织学）</td><td>关联</td><td>二/五</td><td><span class="loc">〔说话人1 37:41〕</span></td></tr>
+  <tr><td>20</td><td>本次核心目标＝无菌操作技术</td><td>考点</td><td>三</td><td><span class="loc">〔说话人1 14:51〕</span></td></tr>
+  <tr><td>21</td><td>缓冲间：手术帽＋无菌手套＋鞋套＋口罩</td><td>步骤</td><td>三</td><td><span class="loc">〔说话人1 17:57〕</span></td></tr>
+  <tr><td>22</td><td>罩留 20–25 cm，只伸手</td><td>数字</td><td>三</td><td><span class="loc">〔说话人1 18:49〕</span></td></tr>
+  <tr><td>23</td><td>严禁探头入台</td><td>易错</td><td>三</td><td><span class="loc">〔说话人1 18:49〕</span></td></tr>
+  <tr><td>24</td><td>进台顺序：关紫外→开照明→酒精喷手</td><td>步骤</td><td>三</td><td><span class="loc">〔说话人1 21:35〕</span></td></tr>
+  <tr><td>25</td><td>酒精灯从后方绕路点燃</td><td>考点</td><td>三</td><td><span class="loc">〔说话人1 22:07〕</span></td></tr>
+  <tr><td>26</td><td>正压气流原理：气由内向外压</td><td>机制</td><td>三</td><td><span class="loc">〔说话人1 22:07〕</span></td></tr>
+  <tr><td>27</td><td>过火＝多面接触火焰最高处，3–5 秒</td><td>定义</td><td>三</td><td><span class="loc">〔说话人1 25:39〕</span></td></tr>
+  <tr><td>28</td><td>金属/玻璃必须过火，塑料严禁过火</td><td>易错</td><td>三</td><td><span class="loc">〔说话人1 29:56〕</span></td></tr>
+  <tr><td>29</td><td>手＝大镊子（手不是手）</td><td>口诀</td><td>三</td><td><span class="loc">〔说话人1 24:36〕</span></td></tr>
+  <tr><td>30</td><td>用后器械不得放回无菌容器</td><td>易错</td><td>三</td><td><span class="loc">〔说话人1 29:30〕</span></td></tr>
+  <tr><td>31</td><td>枪头斜插旋转固定，禁敲击</td><td>考点</td><td>三</td><td><span class="loc">〔说话人1 36:55〕</span></td></tr>
+  <tr><td>32</td><td>断颈处死新生乳鼠，大镊子辅助</td><td>步骤</td><td>四</td><td><span class="loc">〔说话人1 19:15〕</span></td></tr>
+  <tr><td>33</td><td>不恋战，优先组织鲜活性</td><td>易错</td><td>四</td><td><span class="loc">〔说话人1 19:15〕</span></td></tr>
+  <tr><td>34</td><td>75% 酒精擦拭消毒</td><td>数字</td><td>四</td><td><span class="loc">〔说话人1 20:59〕</span></td></tr>
+  <tr><td>35</td><td>平皿盖作初期解剖盘</td><td>步骤</td><td>四</td><td><span class="loc">〔说话人1 26:16〕</span></td></tr>
+  <tr><td>36</td><td>肝在右上腹，暗红色、最大脏器</td><td>名词</td><td>四</td><td><span class="loc">〔说话人1 27:13〕</span></td></tr>
+  <tr><td>37</td><td>取材半个黄豆大小，忌稀碎</td><td>数字</td><td>四</td><td><span class="loc">〔说话人1 28:12〕</span></td></tr>
+  <tr><td>38</td><td>取材过多→消化不充分→无单细胞悬液</td><td>机制</td><td>四</td><td><span class="loc">〔说话人1 42:31〕</span></td></tr>
+  <tr><td>39</td><td>器械：眼科剪、眼科镊</td><td>名词</td><td>四</td><td><span class="loc">〔说话人1 23:35〕</span></td></tr>
+  <tr><td>40</td><td>漂洗目的＝去除血液（血清抑酶）</td><td>机制</td><td>五</td><td><span class="loc">〔说话人1 37:41〕</span></td></tr>
+  <tr><td>41</td><td>红色管＝培养基，透明管＝PBS</td><td>分类</td><td>五</td><td><span class="loc">〔说话人1 29:56〕</span></td></tr>
+  <tr><td>42</td><td>玻璃套管：前细后粗、后端棉花塞</td><td>名词</td><td>五</td><td><span class="loc">〔说话人1 31:53〕</span></td></tr>
+  <tr><td>43</td><td>棉塞防菌入管，扣紧防漏液</td><td>机制</td><td>五</td><td><span class="loc">〔说话人1 32:22〕</span></td></tr>
+  <tr><td>44</td><td>最小可接触范围拿套管</td><td>步骤</td><td>五</td><td><span class="loc">〔说话人1 31:53〕</span></td></tr>
+  <tr><td>45</td><td>套管悬空未触物即默认无菌可续用</td><td>步骤</td><td>五</td><td><span class="loc">〔说话人1 35:06〕</span></td></tr>
+  <tr><td>46</td><td>PBS 漂洗 3 次至上清无红</td><td>数字</td><td>五</td><td><span class="loc">〔说话人1 39:37〕</span></td></tr>
+  <tr><td>47</td><td>吸净 PBS，不可剩 1–2 ml</td><td>易错</td><td>五</td><td><span class="loc">〔说话人1 40:46〕</span></td></tr>
+  <tr><td>48</td><td>1 ml 蓝枪头、200 μl 黄枪头，不超量程</td><td>数字</td><td>五</td><td><span class="loc">〔说话人1 35:32〕</span></td></tr>
+  <tr><td>49</td><td>剪碎不量化 1 mm³，剪刀反握看得清</td><td>步骤</td><td>六</td><td><span class="loc">〔说话人1 39:37〕</span></td></tr>
+  <tr><td>50</td><td>加 1 ml 胰蛋白酶（E 管，分红或透明）</td><td>数字</td><td>六</td><td><span class="loc">〔说话人1 40:46〕</span></td></tr>
+  <tr><td>51</td><td>37 ℃水浴 30 分钟，每 3–5 分钟震荡</td><td>数字</td><td>六</td><td><span class="loc">〔说话人1 41:24〕</span></td></tr>
+  <tr><td>52</td><td>20 多分钟出现悬浮现象</td><td>现象</td><td>六</td><td><span class="loc">〔说话人1 41:24〕</span></td></tr>
+  <tr><td>53</td><td>绝不超 30 分钟：胰酶损伤完整细胞</td><td>考点</td><td>六</td><td><span class="loc">〔说话人1 41:24〕</span></td></tr>
+  <tr><td>54</td><td>2 ml 含 10% FBS 培养基终止（血清抑酶）</td><td>数字</td><td>六</td><td><span class="loc">〔说话人1 42:57〕</span></td></tr>
+  <tr><td>55</td><td>终止后总体积约 3.5 ml（4 ml 管）</td><td>数字</td><td>六</td><td><span class="loc">〔说话人1 42:57〕</span></td></tr>
+  <tr><td>56</td><td>玻璃吹打管口大压强高，优于枪</td><td>机制</td><td>七</td><td><span class="loc">〔说话人1 44:30〕</span></td></tr>
+  <tr><td>57</td><td>吹打先排气，防泡泡溢出污染</td><td>考点</td><td>七</td><td><span class="loc">〔说话人1 45:08〕</span></td></tr>
+  <tr><td>58</td><td>静置 1 分钟，大块沉淀取上清</td><td>数字</td><td>七</td><td><span class="loc">〔说话人1 45:33〕</span></td></tr>
+  <tr><td>59</td><td>上清转入 15 ml 管至 3 ml 刻度线</td><td>数字</td><td>七</td><td><span class="loc">〔说话人1 47:00〕</span></td></tr>
+  <tr><td>60</td><td>平衡是离心首要条件，不平衡毁转子</td><td>机制</td><td>七</td><td><span class="loc">〔说话人1 47:23〕</span></td></tr>
+  <tr><td>61</td><td>1000 转/分钟离心 5 分钟</td><td>数字</td><td>七</td><td><span class="loc">〔说话人1 47:23〕</span></td></tr>
+  <tr><td>62</td><td>直接倒弃上清，沉淀不会掉</td><td>易错</td><td>七</td><td><span class="loc">〔说话人1 47:23〕</span></td></tr>
+  <tr><td>63</td><td>加 2 ml 含血清培养基，新吹打管重悬</td><td>步骤</td><td>七</td><td><span class="loc">〔说话人1 48:59〕</span></td></tr>
+  <tr><td>64</td><td>严禁移液器重悬（仅枪头无菌）</td><td>考点</td><td>七</td><td><span class="loc">〔说话人1 49:31〕</span></td></tr>
+  <tr><td>65</td><td>计数板两块刻度区＋沟槽，十字刻度</td><td>结构</td><td>八</td><td><span class="loc">〔说话人1 52:35〕</span></td></tr>
+  <tr><td>66</td><td>中间计红细胞，四角计普通细胞</td><td>分类</td><td>八</td><td><span class="loc">〔说话人1 53:22〕</span></td></tr>
+  <tr><td>67</td><td>大方格 16 小格，1 mm²×0.1 mm</td><td>数字</td><td>八</td><td><span class="loc">〔说话人1 53:22〕</span></td></tr>
+  <tr><td>68</td><td>0.1 mm³＝1/10000 ml，数×1万＝个/ml</td><td>公式</td><td>八</td><td><span class="loc">〔说话人1 55:23〕</span></td></tr>
+  <tr><td>69</td><td>滴缝隙靠张力扩散，10 倍镜观察</td><td>步骤</td><td>八</td><td><span class="loc">〔说话人1 57:06〕</span></td></tr>
+  <tr><td>70</td><td>每小格 3 个≈48 万/ml；90 个＝90 万/ml</td><td>数字</td><td>八</td><td><span class="loc">〔说话人1 58:12〕</span></td></tr>
+  <tr><td>71</td><td>标准 50 万/ml≈每小格 3 个</td><td>数字</td><td>八</td><td><span class="loc">〔说话人1 59:04〕</span></td></tr>
+  <tr><td>72</td><td>至少数 4 个大方格取平均</td><td>步骤</td><td>八</td><td><span class="loc">〔说话人1 59:38〕</span></td></tr>
+  <tr><td>73</td><td>数上不数下、数左不数右</td><td>口诀</td><td>八</td><td><span class="loc">〔说话人1 59:38〕</span></td></tr>
+  <tr><td>74</td><td>计数板用后洗净＋酒精擦拭再收</td><td>易错</td><td>八</td><td><span class="loc">〔说话人1 51:30〕</span></td></tr>
+  <tr><td>75</td><td>今天不台盼蓝染色，全按活细胞计</td><td>关联</td><td>八</td><td><span class="loc">〔说话人1 57:46〕</span></td></tr>
+  <tr><td>76</td><td>50 ml 培养瓶（40 ml 刻度），4–5 ml 培养基</td><td>数字</td><td>九</td><td><span class="loc">〔说话人1 50:14〕</span></td></tr>
+  <tr><td>77</td><td>50 万/ml×4 ml＝200 万个细胞</td><td>公式</td><td>九</td><td><span class="loc">〔说话人1 56:08〕</span></td></tr>
+  <tr><td>78</td><td>纤维素膜隔菌不隔空气，CO₂ 可入</td><td>机制</td><td>九</td><td><span class="loc">〔说话人1 50:58〕</span></td></tr>
+  <tr><td>79</td><td>开关瓶在火焰附近，入箱瓶盖朝上</td><td>步骤</td><td>九</td><td><span class="loc">〔说话人1 50:58〕</span></td></tr>
+  <tr><td>80</td><td>不全量稀释，只取 200 万个（成本思维）</td><td>机制</td><td>九</td><td><span class="loc">〔说话人1 01:01:24〕</span></td></tr>
+  <tr><td>81</td><td>100 万/ml×2 ml 刚好＝200 万，全加补 2 ml</td><td>计算</td><td>九</td><td><span class="loc">〔说话人1 01:02:45〕</span></td></tr>
+  <tr><td>82</td><td>低于 100 万/ml 基本失败，全量如实记</td><td>易错</td><td>九</td><td><span class="loc">〔说话人1 01:02:45〕</span></td></tr>
+  <tr><td>83</td><td>400 万/ml 吸 0.5 ml；200 万/ml 吸 1 ml</td><td>计算</td><td>九</td><td><span class="loc">〔说话人1 01:02:45〕</span></td></tr>
+  <tr><td>84</td><td>数得多＝结果好，零细胞＝失败</td><td>判读</td><td>九</td><td><span class="loc">〔说话人1 01:00:48〕</span></td></tr>
+  <tr><td>85</td><td>收尾：关灯→洗玻璃入烤箱→塑料丢弃</td><td>步骤</td><td>十</td><td><span class="loc">〔说话人1 01:03:51〕</span></td></tr>
+  <tr><td>86</td><td>废液入指定废液缸；标瓶入 CO₂ 培养箱</td><td>易错</td><td>十</td><td><span class="loc">〔说话人1 01:03:51〕</span></td></tr>
+</table>
+
+<div class="foot">本笔记依据 rec-2026-fall-001-004 逐字稿（21,256 字 / 81 轮）重写，全部定位可在 recording.md 原样核查；仅覆盖 notes.html 一个文件。</div>
+</div>
+</body></html>

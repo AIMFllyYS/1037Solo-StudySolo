@@ -1,480 +1,287 @@
-<!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<title>人体组织学 · 第9-11节 · 上皮组织与固有结缔组织实验</title>
-<style>
-:root{--accent:#2E7D4F;--accent-deep:#1F5C39;--accent-tint:#E8F1EA;--paper:#FAF8F1;--ink:#24201A;--ink-soft:#4A4337;--muted:#857B68;--line:#E6DECC;--mnem:#A2630C;--mnem-tint:#F8ECD3;--crimson:#B23A2E;--crimson-tint:#F7E4DF;}
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>人体组织学 · 第9-11节 · 上皮组织与固有结缔组织实验</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#8A5A2B; --accent-d:#5F3D1B; --accent-t:#F4EADF;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
 *{box-sizing:border-box;}
-body{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--paper);max-width:900px;margin:0 auto;padding:40px 32px;line-height:1.8;font-size:15px;}
-h1{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:28px;border-bottom:3px solid var(--accent);padding-bottom:12px;margin-top:0;}
-h2{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:22px;background:var(--accent-tint);padding:10px 16px;border-left:5px solid var(--accent);border-radius:0 6px 6px 0;margin-top:36px;}
-h3{font-family:"Noto Serif CJK SC",serif;color:var(--accent-deep);font-size:18px;margin-top:28px;border-bottom:1.5px solid #C3D9C9;padding-bottom:6px;}
-h4{color:var(--accent-deep);font-size:16px;margin-top:20px;}
-p{margin:10px 0;}
-ul,ol{margin:8px 0;padding-left:28px;}
-li{margin:5px 0;}
-blockquote{background:var(--mnem-tint);border-left:4px solid var(--mnem);padding:12px 18px;margin:16px 0;border-radius:0 6px 6px 0;color:var(--ink-soft);font-size:14px;}
-blockquote strong{color:var(--mnem);}
-table.vt{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;}
-table.vt th{background:var(--accent);color:#fff;padding:10px 12px;text-align:left;font-weight:600;}
-table.vt td{padding:8px 12px;border-bottom:1px solid var(--line);}
-table.vt tr:nth-child(even){background:#fff;}
-code{background:#f0ebe0;padding:2px 6px;border-radius:3px;font-size:13px;color:var(--accent-deep);}
-hr{border:none;border-top:2px solid var(--line);margin:32px 0;}
-.checklist{list-style:none;padding-left:8px;}
-.checklist li{margin:6px 0;}
-.checklist input[type=checkbox]{margin-right:8px;accent-color:var(--accent);}
-strong{color:var(--accent-deep);}
-@media print{body{padding:20px;}h2{page-break-after:avoid;}table.vt{page-break-inside:avoid;}}
-</style></head><body>
-<h1>人体组织学与胚胎学 · 第9-11节 · 上皮组织与固有结缔组织实验</h1>
-<h2>课程信息</h2>
-<table class="vt">
-<tr><th>项目</th><th>内容</th></tr>
-<tr><td>课程名</td><td>人体组织学与胚胎学（实验课）</td></tr>
-<tr><td>节次</td><td>第9-11节（课程内累计，首次实验课）</td></tr>
-<tr><td>日期</td><td>2026年9月18日（周五）</td></tr>
-<tr><td>全天节次</td><td>第5-7节（14:30-17:10）</td></tr>
-<tr><td>授课教师</td><td>朱琳 老师（本学期与叶翠芳老师轮流带实验）</td></tr>
-<tr><td>主题</td><td>上皮组织、固有结缔组织实验观察</td></tr>
-<tr><td>授课形式</td><td>形态学实验室（切片观察 + 显微镜操作）</td></tr>
-<tr><td>逐字稿大小</td><td>80,718字节</td></tr>
-</table>
-<hr>
-<h2>课堂导入</h2>
-<h3>实验室管理规范（课前视频播放 + 教师补充）</h3>
-<p><strong>场地配置</strong>：形态学二楼共设4间教学实验室（第五~第八实验室），为组织学与胚胎学、病理学、口腔组织病理学三门课程共用。</p>
-<p><strong>切片存放规则</strong>：</p>
-<ul>
-<li>每个实验室切片柜存放组胚、病理教学切片各<strong>50盒</strong></li>
-<li><strong>组胚切片盒及标签为绿色</strong></li>
-<li><strong>病理切片盒及标签为白色</strong></li>
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body><div class="page cover"><p class="h1">人体组织学 · 第9-11节</p><p class="meta">上皮组织与固有结缔组织实验 · 2026-09-18</p><p class="lead" style="text-align:left">素材规模：逐字稿 29553 字 / 244 轮</p><table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>人体组织学（histology / rec-2026-fall-009-011）</td></tr>
+<tr><td>主题</td><td>上皮组织与固有结缔组织实验</td></tr>
+<tr><td>学时</td><td>第 9–11 节（3 学时，首次实验课）</td></tr>
+<tr><td>教师</td><td>朱琳、叶翠芳（实验）</td></tr></table></div><div class="page"><h2 class="h2">0. 知识框架</h2><p class="lead">实验规范→平台考核→上皮结缔总论→六种被覆上皮→结缔细胞与纤维→镜检操作。</p>
+<svg viewBox="0 0 680 260" width="100%" aria-label="知识框架"><rect x="220" y="4" width="240" height="32" fill="#F4EADF" stroke="#8A5A2B"/><text x="340" y="26" text-anchor="middle" font-size="11" font-family="sans-serif">第9-11节实验课</text>
+<line x1="340" y1="36" x2="100" y2="72" stroke="#8A5A2B"/><line x1="340" y1="36" x2="340" y2="72" stroke="#8A5A2B"/><line x1="340" y1="36" x2="580" y2="72" stroke="#8A5A2B"/>
+<rect x="20" y="72" width="160" height="34" fill="#fff" stroke="#5F3D1B"/><text x="100" y="94" text-anchor="middle" font-size="9">切片管理·三平台</text>
+<rect x="260" y="72" width="160" height="34" fill="#fff" stroke="#5F3D1B"/><text x="340" y="94" text-anchor="middle" font-size="9">上皮vs结缔</text>
+<rect x="500" y="72" width="160" height="34" fill="#fff" stroke="#5F3D1B"/><text x="580" y="94" text-anchor="middle" font-size="9">六种被覆上皮</text>
+<line x1="340" y1="106" x2="340" y2="140" stroke="#8A5A2B"/>
+<rect x="200" y="140" width="280" height="34" fill="#F4EADF" stroke="#8A5A2B"/><text x="340" y="162" text-anchor="middle" font-size="10">疏松结缔：细胞+胶原/弹性/网状纤维</text>
+<line x1="200" y1="158" x2="120" y2="200" stroke="#8A5A2B"/><line x1="480" y1="158" x2="560" y2="200" stroke="#8A5A2B"/>
+<text x="100" y="218" font-size="8" fill="#6B7480">6·12·43·46·60号片</text><text x="560" y="218" font-size="8" fill="#6B7480">显微镜·Imageview</text></svg></div><div class="page"><h2 class="h2">1. 形态学实验室与切片管理</h2><p class="lead">切片柜、编号与收尾流程是实验课前提。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>形态学二楼四间教学实验室：第五、六、七、八实验室 <span class="loc">〔说话人1 01:01〕</span></li>
+<li>组胚、病理、口腔组织病理三门课共用上述实验室 <span class="loc">〔说话人1 01:01〕</span></li>
+<li>每实验室切片柜存组胚、病理教学切片各50盒 <span class="loc">〔说话人1 01:01〕</span></li>
+<li>组胚切片盒及标签为绿色，病理为白色 <span class="loc">〔说话人1 01:39〕</span></li>
+<li>座位号、切片盒号、显微镜号、座凳号须一致 <span class="loc">〔说话人1 01:39〕</span></li>
+<li>按盒面切片清单清点并在名单页登记盒号与缺损片号 <span class="loc">〔说话人1 01:39〕</span></li>
+<li>卡槽数字为顺序号，切片标签号为片号 <span class="loc">〔说话人2 07:53〕</span></li>
+<li>看46号片须查目录对应卡槽位再取片 <span class="loc">〔说话人2 07:53〕</span></li>
+<li>看哪张切片拿出哪张，随即关上盒子并推至台内 <span class="loc">〔说话人2 09:16〕</span></li>
+<li>课后切片对号入盒、盖紧盒盖归柜 <span class="loc">〔说话人1 02:54〕</span></li>
+<li>避免光照防切片褪色；损坏丢失可能赔偿 <span class="loc">〔说话人2 09:16〕</span></li>
+<li>收尾：片归位、平板关机、光强最小关电源 <span class="loc">〔说话人1 02:54〕</span></li>
+<li>4倍物镜转光轴中心、载物台降至最低 <span class="loc">〔说话人1 02:54〕</span></li>
+<li>座凳归位、盖防尘罩、切片盒归还切片柜 <span class="loc">〔说话人1 02:54〕</span></li>
+<li>值日生复核收尾与卫生并在运行日志登记签名 <span class="loc">〔说话人1 02:54〕</span></li>
+<li>领取切片按排从靠柜同学开始，避免拥挤 <span class="loc">〔说话人2 04:21〕</span></li>
+<li>下次课坐同位领同盒切片，课前可先取片 <span class="loc">〔说话人2 06:53〕</span></li>
 </ul>
-<p><strong>【老师强调】领取与核对流程</strong>：</p>
-<ol>
-<li>按排次从靠近切片柜的同学开始依次领取，避免拥挤</li>
-<li>领取后必须保证<strong>四个号码一致</strong>：座位号 = 切片盒号 = 显微镜号 = 座凳号</li>
-<li>打开切片盒，按盒面目录清点切片</li>
-<li>在学生名单页登记切片盒号和缺损切片号</li>
-<li>发现切片缺损、错放 → 告知教师统一置换，<strong>不得自行调整位置</strong></li>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>项目</th><th>组胚</th><th>病理</th></tr>
+<tr><td>切片盒颜色</td><td>绿色</td><td>白色</td></tr>
+<tr><td>存放数量</td><td>每室50盒</td><td>每室50盒</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>片号≠卡槽顺序号，须对照目录。 <span class="loc">〔说话人2 07:53〕</span></div></div><div class="page"><h2 class="h2">2. 学习平台、考核与教师</h2><p class="lead">三平台支撑实习与平时分；标本号指玻片标签第二列片号。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>学习通智慧课程：章节实习指导、中英文图片与习题 <span class="loc">〔说话人2 16:21〕</span></li>
+<li>学习通登录选其他方式，初始密码SS654321SS <span class="loc">〔说话人2 15:34〕</span></li>
+<li>章节点上皮组织可见切片号如6号单层扁平上皮 <span class="loc">〔说话人2 16:21〕</span></li>
+<li>低倍镜、高倍镜观察要点列于平台即实验教材 <span class="loc">〔说话人2 16:21〕</span></li>
+<li>中国大学慕课Spark组胚：大课授课视频预习复习 <span class="loc">〔说话人2 17:24〕</span></li>
+<li>数字切片平台全景扫描，可切换4/10/40倍课后复习 <span class="loc">〔说话人2 17:51〕</span></li>
+<li>平时成绩15分：章节习题、视频、实验室考勤管理 <span class="loc">〔说话人2 18:59〕</span></li>
+<li>切片考试25分；期末理论卷面100分折算60分 <span class="loc">〔说话人2 18:59〕</span></li>
+<li>考勤与值日清洁属送分项，勿忽视平时分 <span class="loc">〔说话人2 18:59〕</span></li>
+<li>实验课可顺带做本章十几道单选题 <span class="loc">〔说话人2 19:27〕</span></li>
+<li>朱琳老师QQ156419；与叶翠芳老师轮流带实验 <span class="loc">〔说话人2 20:38〕</span></li>
+<li>本学期组胚各专业集中，可能有课表冲突换老师 <span class="loc">〔说话人2 20:38〕</span></li>
+<li>黑板与标本所列数字均为玻片标签片号非顺序号 <span class="loc">〔说话人2 20:38〕</span></li>
 </ul>
-<p><strong>【老师强调】切片卡槽编号规则</strong>：</p>
-<ul>
-<li>切片卡槽位置上的数字 = <strong>顺序号</strong>（1, 2, 3...）</li>
-<li>切片上的标签号 = <strong>片号</strong>（如46号）</li>
-<li>需要对照盒面目录查找：例如要看46号切片，先在目录上找到46对应的顺序号位置（如第38位），再到该卡槽取片</li>
+<table class="tbl"><tr><th>成绩项</th><th>分值</th><th>内容</th></tr>
+<tr><td>平时</td><td>15</td><td>学习通习题、Spark视频、考勤管理</td></tr>
+<tr><td>切片考试</td><td>25</td><td>镜下辨认</td></tr>
+<tr><td>期末理论</td><td>60</td><td>卷面100分折算</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>平时15分占比高，勿期末集中刷平台。 <span class="loc">〔说话人2 19:27〕</span></div></div><div class="page"><h2 class="h2">3. 四大基本组织与上皮/结缔对比</h2><p class="lead">腔面或表面找上皮；上皮下必有结缔组织供营养。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>四大基本组织：上皮、结缔、肌组织、神经组织 <span class="loc">〔说话人2 20:38〕</span></li>
+<li>器官切片常多种组织共存，须按位置分辨 <span class="loc">〔说话人2 22:11〕</span></li>
+<li>上皮位于体表或腔面：皮肤表皮、消化管腔等 <span class="loc">〔说话人2 22:11〕</span></li>
+<li>有腔器官腔面均有上皮：心腔血管、气管肺泡等 <span class="loc">〔说话人2 22:11〕</span></li>
+<li>腺体及导管、膀胱输尿管、生精小管腔面亦有上皮 <span class="loc">〔说话人2 23:26〕</span></li>
+<li>空白区与组织交界处常见上皮 <span class="loc">〔说话人2 24:02〕</span></li>
+<li>结缔组织一般不位于最表面，多在上皮下方 <span class="loc">〔说话人2 24:02〕</span></li>
+<li>上皮无血管，营养废物经基膜由结缔组织血管供给 <span class="loc">〔说话人2 24:44〕</span></li>
+<li>结缔组织血管丰富；上皮细胞紧密、间质少 <span class="loc">〔说话人2 25:27〕</span></li>
+<li>结缔组织细胞松散，间质含血管神经淋巴管纤维基质 <span class="loc">〔说话人2 25:27〕</span></li>
+<li>上皮与结缔组织均有神经分布 <span class="loc">〔说话人2 26:20〕</span></li>
+<li>游离面、基底面、侧面细胞器与形态不同，称上皮有极性 <span class="loc">〔说话人2 27:50〕</span></li>
+<li>结缔组织细胞散在间质中，无极性 <span class="loc">〔说话人2 27:50〕</span></li>
 </ul>
-<p><strong>实验使用注意事项</strong>：</p>
-<ul>
-<li>按需取片，取后及时盖紧盒盖</li>
-<li>切片盒放在实验台内侧，避免掉落</li>
-<li><strong>避免长时间光照</strong>（防止染色褪色）</li>
-<li>切片制作成本高，损坏需赔偿</li>
+<table class="tbl"><tr><th>特征</th><th>上皮</th><th>结缔组织</th></tr>
+<tr><td>血管</td><td>无</td><td>丰富</td></tr>
+<tr><td>排列</td><td>紧密、间质少</td><td>松散、间质多</td></tr>
+<tr><td>极性</td><td>有</td><td>无</td></tr>
+<tr><td>位置</td><td>表面或腔面</td><td>上皮下方、分布最广</td></tr></table>
+<div class="mnem">上皮无血有极性，结缔有血无极性。（整理）</div>
+<div class="exam"><span class="tag">★考点</span>上皮无血管靠基膜下结缔组织血管代谢。 <span class="loc">〔说话人2 24:44〕</span></div></div><div class="page"><h2 class="h2">4. 被覆上皮分类</h2><p class="lead">层数加表层细胞形态命名；假复层实为单层。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>上皮大类：被覆上皮、腺上皮及感觉、肌上皮等 <span class="loc">〔说话人2 28:32〕</span></li>
+<li>本节重点为被覆上皮 <span class="loc">〔说话人2 28:32〕</span></li>
+<li>分类依据一：细胞层数（单层/复层） <span class="loc">〔说话人2 29:02〕</span></li>
+<li>分类依据二：细胞形态；复层以最浅表一层为准 <span class="loc">〔说话人2 29:02〕</span></li>
+<li>单纯的扁平、立方、柱状即单层扁平、立方、柱状 <span class="loc">〔说话人2 30:06〕</span></li>
+<li>假复层：细胞均附基膜，核高低不一似复层 <span class="loc">〔说话人2 30:42〕</span></li>
+<li>复层扁平：表层扁平；复层立方本次未观察 <span class="loc">〔说话人2 30:42〕</span></li>
+<li>变移上皮随充盈改变形态，非恒定立方或扁平 <span class="loc">〔说话人2 30:42〕</span></li>
+<li>复层柱状上皮在眼睑，本次未安排观察 <span class="loc">〔说话人2 31:47〕</span></li>
+<li>今天主要看到须辨认单层扁平、单层立方、单层柱状、假复层纤毛柱状、复层扁平、变移上皮 <span class="loc">〔说话人2 31:47〕</span></li>
 </ul>
-<p><strong>实验收尾流程</strong>：</p>
-<ol>
-<li>切片按编号放回卡槽，盖紧盒盖</li>
-<li>正常关闭平板（Windows关机流程）</li>
-<li>显微镜光亮旋钮调至最小 → 关闭电源 → 4倍物镜转至光轴中心 → 载物台降至最低</li>
-<li>座凳归位，盖好显微镜防尘罩，清理台面</li>
-<li>切片盒归还切片柜对应位置</li>
-<li>值日生复核全室收尾 + 室内卫生 + 在实验室运行日志登记签名</li>
+<div class="exam"><span class="tag">★考点</span>假复层实质单层，细胞都站在基膜上。 <span class="loc">〔说话人2 30:42〕</span></div></div><div class="page"><h2 class="h2">5. 单层扁平上皮：间皮与内皮</h2><p class="lead">6号银染正面观；46号小肠侧面观间皮与内皮。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>6号大网膜铺片：仅上皮，银染最难在调焦找组织块 <span class="loc">〔说话人2 32:08〕</span></li>
+<li>6号银染不如HE鲜艳，会调焦找到组织块即找到上皮 <span class="loc">〔说话人2 32:46〕</span></li>
+<li>银染：硝酸银加还原剂，膜与少量间质银颗粒沉着 <span class="loc">〔说话人2 33:31〕</span></li>
+<li>正面观多边形细胞，核椭圆形，细胞排列紧密 <span class="loc">〔说话人2 32:46〕</span></li>
+<li>46号小肠切片侧面观见扁平细胞核排成一层，为单层扁平上皮 <span class="loc">〔说话人2 34:01〕</span></li>
+<li>体腔浆膜表面单层扁平上皮称间皮 <span class="loc">〔说话人2 36:33〕</span></li>
+<li>三大体腔：腹膜腔最大、胸膜腔、心包腔 <span class="loc">〔说话人2 36:33〕</span></li>
+<li>积液时出现胸腔积液、心包积液等临床征象 <span class="loc">〔说话人2 36:12〕</span></li>
+<li>血管淋巴管及心腔腔面单层扁平上皮称内皮 <span class="loc">〔说话人2 37:55〕</span></li>
+<li>HE切片核蓝质红；红细胞无核只见红色 <span class="loc">〔说话人2 36:33〕</span></li>
+<li>今日间皮须找到；内皮找不到可后续学血管再看 <span class="loc">〔说话人2 38:24〕</span></li>
+<li>46号间皮难找可换60号膀胱切片找间皮 <span class="loc">〔说话人2 45:41〕</span></li>
 </ul>
-<p><strong>课堂插曲</strong>：清点时发现有之前班级同学将切片放错位置（如61号切片放在了57号位置），老师逐一追溯并纠正。</p>
-<hr>
-<h2>一、学习平台与课程考核</h2>
-<h3>1.1 三个学习平台</h3>
-<table class="vt">
-<tr><th>平台</th><th>用途</th><th>登录方式</th></tr>
-<tr><td><strong>学习通（智慧课程平台）</strong></td><td>实习指导、中英文对照习题</td><td>选"其他方式登录"→输学校码+学号+初始密码<strong>SS654321SS</strong>（可修改）</td></tr>
-<tr><td><strong>中国大学MOOC（Spark组胚）</strong></td><td>完整授课视频，课前预习/课后复习</td><td>搜索"Spark 组胚"课程</td></tr>
-<tr><td><strong>数字切片平台</strong></td><td>实体切片全景扫描，不同放大倍数切换，课后随时复习</td><td>个人账号登录</td></tr>
-</table>
-<p><strong>【老师强调】</strong> "数字切片平台就像谷歌地图一样……课后可以方便大家去复习。"</p>
-<h3>1.2 成绩构成</h3>
-<table class="vt">
-<tr><th>成绩组成</th><th>占比</th><th>内容</th></tr>
-<tr><td>平时成绩</td><td><strong>15分</strong></td><td>学习通章节习题 + Spark视频观看 + 实验室考勤与管理表现</td></tr>
-<tr><td>切片考试</td><td><strong>25分</strong></td><td>镜下典型结构识别</td></tr>
-<tr><td>期末考试</td><td><strong>60分</strong></td><td>期末理论卷面100分折算</td></tr>
-</table>
-<p><strong>【老师强调】</strong> "15分其实还是比较多的……学生的考勤和管理，我感觉这个基本上就是送分，大家都来呀。不要到最后的时候所有的考试集中了，再去刷这些东西，就会觉得很浪费时间。"</p>
-<h3>1.3 教师联系方式</h3>
-<ul>
-<li>朱琳老师 QQ：156419</li>
-<li>也可通过智慧课程平台通知栏反馈</li>
+<table class="tbl"><tr><th>名称</th><th>分布</th></tr>
+<tr><td>间皮</td><td>腹膜腔、胸膜腔、心包腔表面</td></tr>
+<tr><td>内皮</td><td>心、血管、淋巴管腔面</td></tr></table></div><div class="page"><h2 class="h2">6. 单层柱状上皮与杯状细胞</h2><p class="lead">46号小肠腔面柱上皮、纹状缘与微绒毛；外侧间皮。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>柱状上皮在空白腔面邻接处，中间为结缔组织 <span class="loc">〔说话人2 39:02〕</span></li>
+<li>结缔组织HE表现多变，勿将组织液空隙当腔 <span class="loc">〔说话人2 39:37〕</span></li>
+<li>斜切或切偏可使单层看似复层或不见核 <span class="loc">〔说话人2 40:15〕</span></li>
+<li>游离面嗜酸性红带为纹状缘 <span class="loc">〔说话人2 41:59〕</span></li>
+<li>电镜下纹状缘由整齐微绒毛构成 <span class="loc">〔说话人2 41:59〕</span></li>
+<li>微绒毛增大吸收面积，小肠消化吸收最重要 <span class="loc">〔说话人2 45:18〕</span></li>
+<li>杯状细胞像高脚酒杯，三角形深染核位于基底 <span class="loc">〔说话人2 43:09〕</span></li>
+<li>杯状细胞胞质浅染因黏液颗粒被酒精溶解 <span class="loc">〔说话人2 43:31〕</span></li>
+<li>杯状细胞处纹状缘中断，因其表面微绒毛少 <span class="loc">〔说话人2 44:03〕</span></li>
+<li>同一器官可有两种上皮：胃肠腔面柱上皮外表面间皮 <span class="loc">〔说话人2 44:35〕</span></li>
+<li>看46号先找单层柱状上皮，再看对侧间皮 <span class="loc">〔说话人2 45:41〕</span></li>
+<li>间皮过薄制作不良可撕脱致难辨认 <span class="loc">〔说话人2 45:41〕</span></li>
 </ul>
-<hr>
-<h2>二、上皮组织概述</h2>
-<h3>2.1 四大基本组织</h3>
-<p><strong>老师引导提问</strong>："上皮和结缔组织是两种完全不一样的组织，也是我们体内四大基本组织……除了上皮和结缔组织还有什么组织？"</p>
-<p>学生回答：<strong>肌组织、神经组织</strong>。</p>
-<h3>2.2 上皮组织的分布规律</h3>
-<p><strong>老师讲解</strong>："上皮组织，它通常在哪里？对，它一定是在表面。"</p>
-<p><strong>分布规律</strong>：</p>
-<ul>
-<li><strong>体表</strong>：皮肤表皮</li>
-<li><strong>所有有腔器官的腔面</strong>：</li>
-<li>消化管（胃、小肠、大肠）</li>
-<li>心血管系统（心脏、动脉、静脉、毛细血管）</li>
-<li>呼吸管道（气管、支气管、肺泡）</li>
-<li>泌尿系统（膀胱、输尿管）</li>
-<li>生殖系统（生精小管等）</li>
-<li>腺体及导管（有腔和导管）</li>
+<table class="tbl"><tr><th>结构</th><th>光镜</th><th>电镜</th><th>功能</th></tr>
+<tr><td>微绒毛</td><td>纹状缘</td><td>表面小突起</td><td>增大吸收面积</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>纹状缘=光镜所见，微绒毛=电镜结构基础。 <span class="loc">〔说话人2 41:59〕</span></div></div><div class="page"><h2 class="h2">7. 假复层纤毛柱状上皮</h2><p class="lead">纤毛粗长可动；主要分布于呼吸管道。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>游离面纤毛较微绒毛粗长，光镜可见突起 <span class="loc">〔说话人2 46:26〕</span></li>
+<li>似复层且表面有纤毛即为假复层纤毛柱状上皮 <span class="loc">〔说话人2 46:26〕</span></li>
+<li>纤毛可摆动推送分泌物与粉尘细菌 <span class="loc">〔说话人2 49:29〕</span></li>
+<li>假复层纤毛柱状上皮基膜常较明显 <span class="loc">〔说话人2 47:30〕</span></li>
+<li>假复层中可找杯状细胞 <span class="loc">〔说话人2 47:30〕</span></li>
+<li>微绒毛主要增大面积，纤毛主要运动排出 <span class="loc">〔说话人2 46:26〕</span></li>
 </ul>
-<p><strong>【老师强调·镜下定位技巧】</strong> "你怎么去找上皮呢？它的位置很重要……你会发现，这个组织切片可能有一块是空白的区域，另外开始出现了组织了，对不对？那它交界的地方可能就有上皮了。"</p>
-<h3>2.3 ★★★上皮组织 vs 结缔组织的核心区别</h3>
-<table class="vt">
-<tr><th>特征</th><th>上皮组织</th><th>结缔组织</th></tr>
-<tr><td><strong>位置</strong></td><td>体表或腔面（最表面）</td><td>上皮下方，体内分布最广</td></tr>
-<tr><td><strong>血管</strong></td><td><strong>无血管</strong></td><td><strong>有丰富血管</strong></td></tr>
-<tr><td><strong>细胞排列</strong></td><td>紧密，间质少</td><td>松散，间质丰富</td></tr>
-<tr><td><strong>极性</strong></td><td><strong>有极性</strong>（游离面、基底面、侧面）</td><td><strong>无极性</strong></td></tr>
-<tr><td><strong>功能</strong></td><td>保护、吸收、分泌、排泄</td><td>缓冲、营养、支持、连接</td></tr>
-</table>
-<p><strong>【老师强调·金句】</strong> "它没有血管，有些上皮又特别厚，比如说我们皮肤的表皮，那所有这些细胞，它的营养怎么来？它代谢的废物怎么排走？所以结缔组织里面是有非常丰富的血管的，所以它就可以透过基膜，通过结缔组织的血管来给它进行这样的一个代谢。"</p>
-<h3>2.4 上皮组织的极性</h3>
-<p><strong>老师讲解</strong>："什么叫极性？就如果完全是一个圆圆的东西，我们就说它没有极性，就它在哪个方向上看起来都是一样的，但是我们说上皮组织有极性，结缔组织没极性。"</p>
-<p>上皮组织的三个面：</p>
-<ul>
-<li><strong>游离面</strong>：朝向外界/腔面</li>
-<li><strong>基底面</strong>：朝向结缔组织（通常有基膜）</li>
-<li><strong>侧面</strong>：与相邻细胞连接</li>
+<div class="exam"><span class="tag">★考点</span>假复层纤毛柱状上皮主要分布于呼吸管道。 <span class="loc">〔说话人2 49:08〕</span></div></div><div class="page"><h2 class="h2">8. 复层扁平与变移上皮</h2><p class="lead">43号食管未角化复层扁平；60号膀胱变移上皮。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>复层扁平：层数多，浅表细胞扁平 <span class="loc">〔说话人2 48:08〕</span></li>
+<li>分角化与未角化；今日为未角化（浅层仍有核） <span class="loc">〔说话人2 48:08〕</span></li>
+<li>角化型浅层无核，皮肤章节再讲；今日未角化 <span class="loc">〔说话人2 48:08〕</span></li>
+<li>复层扁平与结缔交界凹凸不平因上皮厚需营养 <span class="loc">〔说话人2 48:41〕</span></li>
+<li>凹凸增大接触面利于营养渗透 <span class="loc">〔说话人2 49:08〕</span></li>
+<li>变移上皮：复层但表层非扁平，膀胱空虚时立方样 <span class="loc">〔说话人2 49:51〕</span></li>
+<li>表层大细胞称盖细胞，可见双核 <span class="loc">〔说话人2 49:51〕</span></li>
+<li>膀胱充盈时细胞变扁、层数减少 <span class="loc">〔说话人2 49:51〕</span></li>
+<li>变移上皮与结缔交界较平坦 <span class="loc">〔说话人2 49:51〕</span></li>
+<li>膀胱尿液接触面为变移上皮，顶部腹盆腔侧有间皮 <span class="loc">〔说话人2 49:51〕</span></li>
+<li>43号食管：临界复层扁平，下方疏松结缔组织 <span class="loc">〔说话人2 51:13〕</span></li>
 </ul>
-<p>"这三个面上它的细胞器，它的形态结构，包括它的外观看起来都不太一样。"</p>
-<p><strong>共同特征</strong>：两种组织都有神经分布（皮肤的触觉、温度觉就是上皮内的神经末梢感受的）。</p>
-<h3>2.5 上皮的分类</h3>
-<p><strong>大分类</strong>：</p>
-<ul>
-<li><strong>被覆上皮</strong>（本节重点）</li>
-<li><strong>腺上皮</strong></li>
-<li>还有感觉上皮、肌上皮等</li>
+<div class="exam"><span class="tag">★考点</span>未角化复层扁平浅层仍有核。 <span class="loc">〔说话人2 48:08〕</span></div></div><div class="page"><h2 class="h2">9. 疏松结缔组织与43号食管</h2><p class="lead">固有结缔组织含疏松、致密、脂肪等；细胞种类多。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>43号低倍：上皮下方为结缔组织，再下为肌组织 <span class="loc">〔说话人2 51:13〕</span></li>
+<li>食管分层明显，以后讲消化管时再分层 <span class="loc">〔说话人2 51:13〕</span></li>
+<li>腺上皮围腔形成腺体，43号食管可见腺样结构 <span class="loc">〔说话人2 52:27〕</span></li>
+<li>疏松结缔组织细胞稀疏、间质多含纤维基质组织液 <span class="loc">〔说话人2 52:27〕</span></li>
+<li>结缔组织细胞类型远多于上皮 <span class="loc">〔说话人2 52:27〕</span></li>
+<li>成纤维细胞与纤维细胞为同一细胞两种功能状态 <span class="loc">〔说话人2 52:27〕</span></li>
+<li>静止态纤维细胞多；损伤后成纤维细胞合成胶原 <span class="loc">〔说话人2 52:27〕</span></li>
+<li>巨噬细胞吞噬异物；肥大细胞与过敏相关 <span class="loc">〔说话人2 54:10〕</span></li>
+<li>浆细胞产生抗体；炎症时白细胞可穿出血管 <span class="loc">〔说话人2 54:10〕</span></li>
+<li>脂肪细胞、网状细胞、未分化间充质细胞等 <span class="loc">〔说话人2 54:46〕</span></li>
+<li>HE下辨认结缔细胞困难，多靠特染 <span class="loc">〔说话人2 56:07〕</span></li>
+<li>HE下梭形深染核多为纤维细胞 <span class="loc">〔说话人2 56:07〕</span></li>
+</ul></div><div class="page"><h2 class="h2">10. 12号切片：巨噬细胞与纤维</h2><p class="lead">台盼蓝示吞噬；醛复红示弹性纤维。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>12号皮下铺片：兔皮下注射台盼蓝染料 <span class="loc">〔说话人2 56:07〕</span></li>
+<li>巨噬细胞吞噬染料颗粒，胞质核旁蓝色颗粒 <span class="loc">〔说话人2 57:18〕</span></li>
+<li>无吞噬颗粒者不能据此判为巨噬细胞 <span class="loc">〔说话人2 58:35〕</span></li>
+<li>巨噬细胞形态不规则，可圆形卵圆或伪足 <span class="loc">〔说话人2 57:18〕</span></li>
+<li>胶原纤维HE粉红、边界模糊、粗细不一最多 <span class="loc">〔说话人2 58:35〕</span></li>
+<li>弹性纤维醛复红深染发丝状可卷曲 <span class="loc">〔说话人2 58:35〕</span></li>
+<li>网状纤维镀银染色，另片观察本次未染 <span class="loc">〔说话人2 58:35〕</span></li>
+<li>另染核固红使核呈红色 <span class="loc">〔说话人2 57:18〕</span></li>
 </ul>
-<p><strong>被覆上皮分类依据</strong>：</p>
-<ol>
-<li><strong>细胞层数</strong>：单层 vs 复层</li>
-<li><strong>表层细胞形态</strong>：</li>
-<li>单层按细胞整体形态分类</li>
-<li><strong>复层以最表层细胞形态分类</strong></li>
+<table class="tbl"><tr><th>纤维</th><th>染色</th><th>形态</th></tr>
+<tr><td>胶原纤维</td><td>HE粉红</td><td>粗细不均、波浪</td></tr>
+<tr><td>弹性纤维</td><td>醛复红</td><td>发丝状、紫红</td></tr>
+<tr><td>网状纤维</td><td>镀银</td><td>纤细网状</td></tr></table></div><div class="page"><h2 class="h2">11. 肉芽组织片：浆细胞、成纤维细胞、肥大细胞与脂肪</h2><p class="lead">病理肉芽组织片只认典型浆细胞与成纤维细胞。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>肉芽组织为损伤后新生组织，病理切片细胞混杂 <span class="loc">〔说话人2 59:43〕</span></li>
+<li>浆细胞核偏心位为最明显特征 <span class="loc">〔说话人2 01:01:00〕</span></li>
+<li>浆细胞胞质丰富嗜碱，HE偏蓝紫边界清楚 <span class="loc">〔说话人2 01:01:40〕</span></li>
+<li>异染色质沿核膜下方排列，呈车辐状或车轮状 <span class="loc">〔说话人2 01:02:11〕</span></li>
+<li>浆细胞旁可见核周浅染区 <span class="loc">〔说话人2 01:03:19〕</span></li>
+<li>浆细胞须综合偏心核、嗜碱胞质、车辐状核判断 <span class="loc">〔说话人2 01:02:11〕</span></li>
+<li>浆细胞由B淋巴细胞分化，低倍找偏蓝深染区 <span class="loc">〔说话人2 01:06:28〕</span></li>
+<li>损伤后成纤维细胞核胖浅染、核仁明显 <span class="loc">〔说话人2 01:04:31〕</span></li>
+<li>肥大细胞甲苯胺蓝染，颗粒异染呈偏紫色 <span class="loc">〔说话人2 01:07:19〕</span></li>
+<li>肥大细胞圆形卵圆，轮廓清晰，核浅因染料在颗粒 <span class="loc">〔说话人2 01:07:43〕</span></li>
+<li>肥大细胞数量少，先肉眼定位组织块再镜检 <span class="loc">〔说话人2 01:08:12〕</span></li>
+<li>脂肪组织：大空泡为脂滴被酒精溶解 <span class="loc">〔说话人2 01:09:22〕</span></li>
+<li>每脂肪细胞一个大脂滴，核挤向边缘 <span class="loc">〔说话人2 01:09:22〕</span></li>
+<li>黄白色脂肪与棕色脂肪两类，今日见黄白色 <span class="loc">〔说话人2 01:08:12〕</span></li>
 </ul>
-<hr>
-<h2>三、各类被覆上皮的镜下识别</h2>
-<h3>3.1 分类总览</h3>
-<p><code>`</code></p>
-<p>被覆上皮</p>
-<p>├── 单层上皮</p>
-<p>│   ├── 单层扁平上皮</p>
-<p>│   ├── 单层立方上皮</p>
-<p>│   └── 单层柱状上皮</p>
-<p>├── 假复层纤毛柱状上皮（实为单层，看似复层）</p>
-<p>└── 复层上皮</p>
-<p>├── 复层扁平上皮（角化/未角化）</p>
-<p>└── 变移上皮</p>
-<p><code>`</code></p>
-<p><strong>【老师强调】</strong> "假复层实质是单层，对吧？看起来是复层……就像大家出去在操场上排队一样吧，虽然高矮不一样，对吧？那都站在地面上。"</p>
-<h3>3.2 ★单层扁平上皮</h3>
-<p><strong>两种类型</strong>：</p>
-<table class="vt">
-<tr><th>类型</th><th>分布</th><th>备注</th></tr>
-<tr><td><strong>间皮</strong></td><td>腹膜腔、胸膜腔、心包腔表面</td><td>体腔浆膜的上皮</td></tr>
-<tr><td><strong>内皮</strong></td><td>心脏、血管、淋巴管腔面</td><td>脉管系统的上皮</td></tr>
-</table>
-<p><strong>三大体腔</strong>：</p>
-<ol>
-<li><strong>腹膜腔</strong>（最大，含胃肠等腹腔盆腔脏器）</li>
-<li><strong>胸膜腔</strong>（含肺，积液=胸腔积液）</li>
-<li><strong>心包腔</strong>（含心脏，积液=心包积液）</li>
-</ul>
-<p><strong>🔍网络验证</strong>：间皮（mesothelium）由中胚层体腔上皮发育而来，分泌少量浆液起润滑作用。内皮（endothelium）由血管内皮细胞构成，参与血管通透性调节。</p>
-<p><strong>观察切片</strong>：</p>
-<ul>
-<li><strong>6号切片</strong>：大网膜铺片，<strong>银染</strong>——今天最好找的切片，只有上皮组织</li>
-<li>银染原理：硝酸银染色 + 还原剂 → 细胞膜和细胞间质处银颗粒沉着，勾勒细胞轮廓</li>
-<li>正面观：多边形细胞紧密排列，棕褐色边线</li>
-<li><strong>46号切片（小肠）</strong>：HE染色——观察侧面观</li>
-<li>腔面：单层柱状上皮</li>
-<li>外表面：单层扁平上皮（间皮）</li>
-</ul>
-<p><strong>【老师提示】</strong> "6号切片……它的困难在于它的颜色不像HE染色切片那么的鲜艳，它是一个银染的，有一些可能还褪色了，你的问题就是你要能够会调焦，调到焦距，找到组织块，那你就找到上皮了。"</p>
-<h3>3.3 ★单层柱状上皮</h3>
-<p><strong>分布</strong>：消化管道腔面（胃、肠）</p>
-<p><strong>镜下识别要点</strong>：</p>
-<ol>
-<li>单层细胞，柱状排列</li>
-<li><strong>游离面纹状缘</strong>（光镜下的嗜酸性红染带）</li>
-<li><strong>杯状细胞</strong>散在其中</li>
-</ul>
-<p><strong>纹状缘 vs 微绒毛</strong>：</p>
-<ul>
-<li><strong>纹状缘</strong>：光镜下所见，游离面一条致密的嗜酸性红带</li>
-<li><strong>微绒毛</strong>：电镜下所见，纹状缘的超微结构基础——大量整齐排列的细胞表面微小突起</li>
-<li>功能：<strong>增大吸收面积</strong></li>
-</ul>
-<p><strong>杯状细胞特征</strong>：</p>
-<ul>
-<li>形态：高脚酒杯状</li>
-<li>胞质浅染（黏液颗粒被HE染色中的酒精溶解）</li>
-<li>核：三角形深染，位于细胞基底部</li>
-<li>纹状缘在杯状细胞处中断（因杯状细胞表面无微绒毛）</li>
-</ul>
-<p><strong>切片方向的影响</strong>：</p>
-<ul>
-<li>垂直切面 → 清楚显示单层</li>
-<li>斜切面 → 看似复层（同时切到前后几个细胞）</li>
-<li>切偏 → 可能看不到核（"你把鸡蛋切开，你也不一定每一刀都可以切到黄"）</li>
-</ul>
-<p><strong>46号切片观察建议</strong>：</p>
-<ol>
-<li>先找<strong>单层柱状上皮</strong>（更容易）</li>
-<li>再推到组织块边缘找<strong>间皮</strong>（单层扁平上皮）</li>
-<li>间皮如制作缺损脱落 → 换<strong>60号膀胱切片</strong>观察</li>
-</ul>
-<h3>3.4 ★假复层纤毛柱状上皮</h3>
-<p><strong>关键识别点</strong>：</p>
-<ol>
-<li><strong>看似复层</strong>（核位置高低不一），<strong>实为单层</strong>（所有细胞都附着在基膜上）</li>
-<li><strong>游离面有纤毛</strong>（比微绒毛粗长，光镜下可见明显突起）</li>
-<li><strong>基膜明显</strong></li>
-<li>常含杯状细胞</li>
-</ul>
-<p><strong>微绒毛 vs 纤毛</strong>：</p>
-<table class="vt">
-<tr><th>特征</th><th>微绒毛</th><th>纤毛</th></tr>
-<tr><td>光镜表现</td><td>纹状缘（一条线）</td><td>可见明显突起</td></tr>
-<tr><td>运动性</td><td><strong>不可动</strong></td><td><strong>可摆动</strong></td></tr>
-<tr><td>功能</td><td>增大吸收面积</td><td>推送分泌物/异物排出</td></tr>
-</table>
-<p><strong>分布</strong>：<strong>呼吸管道</strong>（气管、支气管等）</p>
-<p><strong>【老师强调·结构与功能关联】</strong> "这些纤毛为什么可以动？也是跟这个上皮它分布的位置有关系，假复层纤毛柱状上皮主要分布在呼吸管道，就是我们吸进来的这些空气里面可能有一些粉尘、细菌之类的，有时候我们这个纤毛的摆动可以把它慢慢的排出去。"</p>
-<h3>3.5 ★复层扁平上皮</h3>
-<p><strong>特征</strong>：</p>
-<ul>
-<li>层数多</li>
-<li>表层细胞扁平</li>
-<li>与结缔组织交界<strong>凹凸不平</strong></li>
-</ul>
-<p><strong>角化 vs 未角化</strong>：</p>
-<ul>
-<li><strong>未角化</strong>：浅层细胞仍有细胞核（本次观察的类型）</li>
-<li><strong>角化</strong>：浅层细胞核消失，细胞透明化（如皮肤表皮）——后续皮肤章节讲</li>
-</ul>
-<p><strong>交界凹凸的功能意义</strong>：</p>
-<ul>
-<li>上皮较厚，营养来自下方结缔组织</li>
-<li>凹凸交界 → <strong>增大接触面积</strong> → 更好地获取营养</li>
-</ul>
-<p><strong>分布</strong>：未角化型分布于口腔、食管、阴道等；角化型分布于皮肤表皮。</p>
-<p><strong>观察切片</strong>：43号（食管）</p>
-<h3>3.6 ★变移上皮</h3>
-<p><strong>特征</strong>：</p>
-<ul>
-<li>复层上皮</li>
-<li>表层细胞大，覆盖下方多个细胞——<strong>盖细胞</strong></li>
-<li>部分盖细胞可见<strong>双核</strong></li>
-<li>与结缔组织交界较平坦</li>
-</ul>
-<p><strong>形态随充盈状态变化</strong>：</p>
-<ul>
-<li><strong>空虚状态</strong>（膀胱无尿）：表层细胞大，呈立方形/多边形，层数多</li>
-<li><strong>充盈状态</strong>（膀胱充盈）：细胞被拉平，变扁平，层数减少</li>
-</ul>
-<p><strong>分布</strong>：膀胱、输尿管、肾盂等泌尿系统腔面</p>
-<p><strong>观察切片</strong>：60号（膀胱）</p>
-<p><strong>【老师提示】</strong> "膀胱同样也是，它有一面就是跟尿液接触的一面是变移上皮，对不对？另外呢，它的这个顶部大部分都是位于盆腔或者是这个腹腔偏下的地方，所以它也会有一层间皮。"</p>
-<hr>
-<h2>四、固有结缔组织</h2>
-<h3>4.1 结缔组织概述</h3>
-<p><strong>老师讲解</strong>："结缔组织是体内分布最广的组织……细胞排列相对松散一点的……除了细胞以外，还有一些细胞外的间质，包括血管、神经、淋巴管，还有一些纤维，还有一些基质。"</p>
-<p><strong>分类</strong>：</p>
-<ul>
-<li>固有结缔组织（疏松结缔组织、致密结缔组织、脂肪组织、网状组织）</li>
-<li>软骨组织</li>
-<li>骨组织</li>
-<li>血液</li>
-</ul>
-<p><strong>【老师强调】</strong> "上皮组织虽然它排列的很紧密，但它的种类其实相对比较单一哈。结缔组织里面细胞类型是非常多样化的。"</p>
-<h3>4.2 ★疏松结缔组织的细胞</h3>
-<h4>（1）成纤维细胞 vs 纤维细胞</h4>
-<table class="vt">
-<tr><th>特征</th><th>成纤维细胞</th><th>纤维细胞</th></tr>
-<tr><td>状态</td><td><strong>激活状态</strong>（损伤修复时）</td><td><strong>静止状态</strong></td></tr>
-<tr><td>核</td><td>大、卵圆形、染色浅、核仁清晰</td><td>细长梭形、染色深</td></tr>
-<tr><td>胞质</td><td>较丰富</td><td>不明显</td></tr>
-<tr><td>功能</td><td>合成纤维和基质</td><td>静止储备</td></tr>
-</table>
-<p><strong>【老师强调】</strong> "纤维细胞与成纤维细胞为同一细胞的不同功能状态。"</p>
-<h4>（2）巨噬细胞</h4>
-<p><strong>识别方法</strong>：12号切片（皮下铺片）</p>
-<ul>
-<li>实验方法：家兔皮下注射<strong>台盼蓝</strong>（蓝色染料）</li>
-<li>原理：巨噬细胞吞噬染料颗粒 → 胞质内可见蓝色颗粒</li>
-<li>形态：不规则形，可有伪足，核周围胞质内含蓝色吞噬颗粒</li>
-</ul>
-<p><strong>【老师强调】</strong> "只要是你在核的旁边，看到这样子的颗粒的，这些都是巨噬细胞……它不吞噬，那它有可能是纤维或者成纤维细胞，或者是肥大细胞。"</p>
-<h4>（3）★浆细胞</h4>
-<p><strong>识别特征（综合判断）</strong>：</p>
-<ol>
-<li><strong>核偏位</strong>（偏心位）——最明显特征</li>
-<li><strong>胞质丰富、嗜碱性</strong>（HE染色偏蓝紫色，比周围细胞深）</li>
-<li><strong>核染色质呈车辐状（车轮状）排列</strong>——异染色质沿核膜下方分布</li>
-<li><strong>核周浅染区</strong>（部分可见）</li>
-<li>细胞边界较清楚（因胞质嗜碱性深染）</li>
-</ul>
-<p><strong>来源</strong>：B淋巴细胞（浆细胞由B细胞分化而来）</p>
-<p><strong>功能</strong>：分泌抗体（体液免疫）</p>
-<p><strong>镜下找法</strong>：</p>
-<ul>
-<li>低倍镜下找<strong>偏蓝色/深蓝色区域</strong>（浆细胞密集区）</li>
-<li>换高倍镜逐一确认核偏位、车辐状核等特征</li>
-</ul>
-<p><strong>【老师强调】</strong> "浆细胞需逐枚镜下查找，不能一看一片都是浆细胞……你说这是不是一个浆细胞呢？这肯定不是。"</p>
-<h4>（4）肥大细胞</h4>
-<p><strong>识别特征</strong>：</p>
-<ul>
-<li>形态：圆形或卵圆形，<strong>细胞轮廓清晰</strong></li>
-<li>染色：<strong>甲苯胺蓝染色</strong> → 胞质颗粒呈紫红色（异染性）</li>
-<li>核：小而圆，染色浅（因染料结合在胞质颗粒上）</li>
-</ul>
-<p><strong>功能</strong>：与过敏反应相关（释放组胺、肝素等）</p>
-<p><strong>【老师提示】</strong> "肥大细胞数量少、调焦有难度，不好找……只要你找到，你一定能认出来，因为它和别的细胞不一样。"</p>
-<h4>（5）脂肪细胞</h4>
-<p><strong>HE染色特征</strong>：</p>
-<ul>
-<li>细胞中央大空泡状（脂滴被酒精溶解）</li>
-<li>胞质和细胞核被挤到细胞边缘</li>
-<li>核扁卵圆形，贴于细胞边缘</li>
-</ul>
-<p><strong>脂肪组织分类</strong>：</p>
-<ul>
-<li><strong>黄/白色脂肪组织</strong>：单泡性脂肪细胞（本次观察）</li>
-<li><strong>棕色脂肪组织</strong>：多泡性（产热，婴幼儿较多）</li>
-</ul>
-<h4>（6）其他细胞</h4>
-<ul>
-<li><strong>未分化间充质细胞</strong>：结缔组织的干细胞，可分化为其他细胞</li>
-<li><strong>白细胞</strong>：炎症时从血管游出</li>
-</ul>
-<h3>4.3 ★结缔组织的三种纤维</h3>
-<table class="vt">
-<tr><th>纤维类型</th><th>染色方法</th><th>形态特征</th></tr>
-<tr><td><strong>胶原纤维</strong></td><td>HE染色粉红色</td><td>粗细不均、边界模糊、波浪状</td></tr>
-<tr><td><strong>弹性纤维</strong></td><td>醛复红染色紫色</td><td>发丝状、粗细较均、可有卷曲</td></tr>
-<tr><td><strong>网状纤维</strong></td><td>镀银染色黑色</td><td>纤细网状（本次不观察）</td></tr>
-</table>
-<p><strong>【老师强调】</strong> "粉红色、边界模糊的为胶原纤维，深紫色、发丝状的为弹性纤维。"</p>
-<h3>4.4 肉芽组织</h3>
-<p><strong>定义</strong>：损伤修复过程中新生的幼稚结缔组织</p>
-<ul>
-<li>外观：鲜红色、颗粒状、柔软易出血</li>
-<li>镜下：新生毛细血管 + 大量炎性细胞浸润 + 成纤维细胞</li>
-<li>性质：<strong>非正常组织，属病理切片</strong></li>
-<li>本次要求识别：其中的浆细胞和成纤维细胞即可</li>
-</ul>
-<hr>
-<h2>五、显微镜操作规范</h2>
-<h3>5.1 基本操作</h3>
-<ol>
-<li><strong>低倍定位</strong>：先用4倍或10倍物镜找到组织</li>
-<li><strong>调焦顺序</strong>：眼睛从侧面注视，先将载物台升至接近物镜 → 再从目镜观察，缓慢下调载物台（避免压碎切片）</li>
-<li><strong>载物台移动</strong>：使用载物台下方旋钮，<strong>禁止用手直接推动切片</strong></li>
-<li><strong>粗准焦螺旋</strong>：快速定位</li>
-<li><strong>细准焦螺旋</strong>：微调至清晰</li>
-</ul>
-<h3>5.2 物镜使用</h3>
-<ul>
-<li>物镜倍数：4×、10×、40×、100×</li>
-<li><strong>禁止使用100×油镜</strong>（空气介质下无法正常成像）</li>
-<li>通常从低倍开始（10×或4×），再换高倍</li>
-</ul>
-<h3>5.3 电脑软件</h3>
-<ul>
-<li>打开 <strong>Imageview</strong> 软件</li>
-<li>选择相机设备 <strong>YW1600</strong></li>
-<li>可在电脑屏幕同步观察镜下视野</li>
-<li>故障时：关闭软件重启 → 仍异常则重启电脑或换设备</li>
-</ul>
-<h3>5.4 切片编号识别</h3>
-<ul>
-<li>切片上的标签号为<strong>片号</strong>（如46）</li>
-<li>部分未更换的白色标签切片：以<strong>标签最右下角数字</strong>为片号</li>
-</ul>
-<hr>
-<h2>老师强调的重点/考点汇总</h2>
-<h3>上皮组织</h3>
-<ol>
-<li><strong>上皮组织无血管</strong>——靠下方结缔组织血管透过基膜供营养</li>
-<li><strong>上皮有极性，结缔组织无极性</strong>——三个面（游离面、基底面、侧面）</li>
-<li><strong>被覆上皮分类依据</strong>：层数 + 表层细胞形态</li>
-<li><strong>六种需辨认的被覆上皮</strong>：单层扁平（间皮/内皮）、单层立方、单层柱状、假复层纤毛柱状、复层扁平、变移上皮</li>
-<li><strong>丝状乳头无味蕾</strong>（注意：这是系统解剖学内容，组织学中对应微绒毛）</li>
-<li><strong>纹状缘=电镜下微绒毛</strong>（光镜/电镜对应关系）</li>
-<li><strong>杯状细胞</strong>：高脚杯状，胞质浅染，三角核</li>
-<li><strong>假复层纤毛柱状</strong>：呼吸管道，纤毛可动排异物</li>
-<li><strong>复层扁平未角化</strong>：食管等，与结缔组织交界凹凸</li>
-<li><strong>变移上皮</strong>：膀胱等，盖细胞可双核，形态随充盈度变化</li>
-</ul>
-<h3>结缔组织</h3>
-<ol>
-<li><strong>细胞松散、间质丰富、无极性、有血管</strong></li>
-<li><strong>成纤维细胞 vs 纤维细胞</strong>：激活/静止两种状态</li>
-<li><strong>巨噬细胞</strong>：台盼蓝染色显示吞噬颗粒</li>
-<li><strong>浆细胞四要素</strong>：核偏位 + 胞质嗜碱 + 车辐状核 + 核周浅染区</li>
-<li><strong>肥大细胞</strong>：甲苯胺蓝染色紫红色颗粒</li>
-<li><strong>脂肪细胞</strong>：HE空泡状，核偏位</li>
-<li><strong>三种纤维</strong>：胶原（粉红）、弹性（醛复红紫）、网状（镀银黑）</li>
-</ul>
-<hr>
-<h2>课程间关联汇总</h2>
-<table class="vt">
-<tr><th>关联课程</th><th>关联内容</th></tr>
-<tr><td><strong>系统解剖学</strong></td><td>食管分层（黏膜→黏膜下层→肌层→外膜）；各器官腔面上皮类型</td></tr>
-<tr><td><strong>病理学</strong></td><td>肉芽组织、炎症细胞浸润、肿瘤</td></tr>
-<tr><td><strong>生物化学</strong></td><td>胶原纤维（胶原蛋白）、弹性蛋白</td></tr>
-<tr><td><strong>生理学</strong></td><td>上皮吸收、纤毛摆动机制</td></tr>
-</table>
-<hr>
-<h2>复习清单</h2>
-<h3>必须掌握</h3>
-<ul class="checklist">
-<li><input type="checkbox"  disabled> 上皮组织的四大特征（分布、无血管、极性、细胞紧密）</li>
-<li><input type="checkbox"  disabled> 结缔组织的四大特征（松散、间质多、无极性、有血管）</li>
-<li><input type="checkbox"  disabled> 六种被覆上皮的名称、分布和镜下识别要点</li>
-<li><input type="checkbox"  disabled> 间皮 vs 内皮的区别</li>
-<li><input type="checkbox"  disabled> 纹状缘与微绒毛的关系</li>
-<li><input type="checkbox"  disabled> 杯状细胞的形态特征</li>
-<li><input type="checkbox"  disabled> 假复层纤毛柱状上皮的结构和功能</li>
-<li><input type="checkbox"  disabled> 复层扁平上皮未角化型的特点</li>
-<li><input type="checkbox"  disabled> 变移上皮的形态变化和分布</li>
-<li><input type="checkbox"  disabled> 疏松结缔组织的主要细胞类型</li>
-<li><input type="checkbox"  disabled> 浆细胞的四个识别特征</li>
-<li><input type="checkbox"  disabled> 巨噬细胞的识别方法（台盼蓝）</li>
-<li><input type="checkbox"  disabled> 三种纤维的染色和形态</li>
-<li><input type="checkbox"  disabled> 脂肪细胞的HE染色特征</li>
-</ul>
-<h3>实验技能</h3>
-<ul class="checklist">
-<li><input type="checkbox"  disabled> 切片编号规则（顺序号 vs 片号）</li>
-<li><input type="checkbox"  disabled> 显微镜低倍定位、高倍观察</li>
-<li><input type="checkbox"  disabled> 禁止使用油镜</li>
-<li><input type="checkbox"  disabled> Imageview软件连接YW1600相机</li>
-</ul>
-<hr>
-<h2>主动回忆题</h2>
-<p><strong>Q1：上皮组织和结缔组织在血管、排列、极性三方面有什么核心区别？</strong></p>
-<blockquote>答案要点：上皮无血管、细胞紧密排列、有极性（游离面/基底面/侧面）；结缔组织有丰富血管、细胞松散间质多、无极性。上皮营养来自下方结缔组织血管透过基膜供给。</blockquote>
-<p><strong>Q2：单层扁平上皮分为哪两种？分别分布在哪里？</strong></p>
-<blockquote>答案要点：间皮——分布于胸膜腔、腹膜腔、心包腔表面（体腔浆膜）；内皮——分布于心脏、血管、淋巴管腔面（脉管系统）。</blockquote>
-<p><strong>Q3：什么是纹状缘？电镜下对应的结构是什么？</strong></p>
-<blockquote>答案要点：纹状缘是单层柱状上皮游离面在光镜下所见的一条嗜酸性红带。电镜下对应大量整齐排列的微绒毛，功能为增大吸收面积。纹状缘在杯状细胞处中断。</blockquote>
-<p><strong>Q4：假复层纤毛柱状上皮为什么叫"假复层"？分布在哪里？</strong></p>
-<blockquote>答案要点：所有细胞都附着在基膜上（实为单层），但细胞核位置高低不一，镜下看似复层，故称假复层。主要分布于呼吸管道，游离面有可摆动的纤毛，可推送粉尘和分泌物排出。</blockquote>
-<p><strong>Q5：浆细胞的四个识别特征是什么？来源于哪种细胞？</strong></p>
-<blockquote>答案要点：①核偏位（偏心位）；②胞质丰富、嗜碱性（HE偏蓝紫）；③核染色质呈车辐状沿核膜排列；④核周可有浅染区。浆细胞来源于B淋巴细胞，功能为分泌抗体。</blockquote>
-<p><strong>Q6：HE染色下如何区分胶原纤维和弹性纤维？</strong></p>
-<blockquote>答案要点：HE染色中胶原纤维呈粉红色、边界模糊、粗细不均；弹性纤维需醛复红染色呈深紫色、发丝状、可有卷曲。网状纤维需镀银染色呈黑色。</blockquote>
-<p><strong>Q7：变移上皮的形态如何随膀胱充盈状态变化？</strong></p>
-<blockquote>答案要点：空虚时表层盖细胞大、呈立方形/多边形、层数多；充盈时被拉平变扁平、层数减少。分布于膀胱、输尿管等泌尿系统腔面。</blockquote>
-<p><strong>Q8：为什么复层扁平上皮与结缔组织的交界呈凹凸不平状？</strong></p>
-<blockquote>答案要点：复层扁平上皮较厚且无血管，营养全部来自下方结缔组织。凹凸交界增大了上皮与结缔组织的接触面积，有利于营养物质的渗透和吸收。</blockquote>
-<hr>
-<p>*笔记完成 · 基于完整课堂逐字稿整理 · 约1.6万字*</p>
-</body></html>
+<div class="exam"><span class="tag">★考点</span>浆细胞四要素：偏心核、嗜碱胞质、车轮核、核周浅染。 <span class="loc">〔说话人2 01:01:00〕</span></div></div><div class="page"><h2 class="h2">12. 显微镜与Imageview</h2><p class="lead">低倍定位；禁100倍油镜空介质使用。</p>
+<h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>46号切片颜色偏红，练习显微镜操作 <span class="loc">〔说话人2 01:09:22〕</span></li>
+<li>开关与光强旋钮在镜臂左侧 <span class="loc">〔说话人2 01:10:30〕</span></li>
+<li>粗准焦螺旋载物台升降快，细准焦微调 <span class="loc">〔说话人2 01:10:30〕</span></li>
+<li>载物台下方旋钮移动切片，勿手推 <span class="loc">〔说话人2 01:10:30〕</span></li>
+<li>目镜固定10倍；物镜四个为4×、10×、40×、100×，通常从10×低倍起（4×亦为低倍） <span class="loc">〔说话人2 01:12:06〕</span></li>
+<li>10×低倍物镜转盘标识为黄色，勿与蓝色高倍混淆 <span class="loc">〔说话人2 01:12:06〕</span></li>
+<li>侧视载物台，先升至近物镜再从目镜下调，防压碎切片 <span class="loc">〔说话人2 01:12:35〕</span></li>
+<li>Imageview选相机YW1600同步视野 <span class="loc">〔说话人2 01:14:16〕</span></li>
+<li>100倍为油镜需油介质，空气介质勿用 <span class="loc">〔说话人2 01:24:02〕</span></li>
+<li>白色标签切片以右下角数字为片号 <span class="loc">〔说话人2 01:22:56〕</span></li>
+<li>看上皮较易，结缔组织细胞辨认更难 <span class="loc">〔说话人2 01:38:51〕</span></li>
+<li>气管组织看假复层纤毛柱状上皮与杯状细胞 <span class="loc">〔说话人2 47:30〕</span></li>
+</ul></div><div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv">
+<li>片号对照目录取片，四号一致 <span class="loc">〔说话人2 07:53〕</span></li>
+<li>平时15+切片考25+期末折算60 <span class="loc">〔说话人2 18:59〕</span></li>
+<li>学习通密码SS654321SS <span class="loc">〔说话人2 15:34〕</span></li>
+<li>上皮无血管有极性；结缔有血管无极性 <span class="loc">〔说话人2 24:44〕</span></li>
+<li>间皮=体腔浆膜；内皮=脉管腔面 <span class="loc">〔说话人2 37:55〕</span></li>
+<li>纹状缘与微绒毛；杯状细胞黏液HE浅染 <span class="loc">〔说话人2 41:59〕</span></li>
+<li>假复层纤毛柱状在呼吸管道 <span class="loc">〔说话人2 49:29〕</span></li>
+<li>未角化复层扁平浅层有核 <span class="loc">〔说话人2 48:08〕</span></li>
+<li>变移上皮盖细胞与充盈形态变化 <span class="loc">〔说话人2 49:51〕</span></li>
+<li>巨噬细胞台盼蓝吞噬颗粒 <span class="loc">〔说话人2 57:18〕</span></li>
+<li>浆细胞偏心核嗜碱胞质车轮核 <span class="loc">〔说话人2 01:01:00〕</span></li>
+<li>胶原粉红弹性醛复红紫网状镀银 <span class="loc">〔说话人2 58:35〕</span></li>
+<li>100倍油镜勿在空气介质使用 <span class="loc">〔说话人2 01:24:02〕</span></li>
+</ul></div><div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2><table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>卡槽号即片号</td><td>卡槽为顺序号，片号为标签号 <span class="loc">〔说话人2 07:53〕</span></td></tr>
+<tr><td>微绒毛可摆动排尘</td><td>纤毛可动排异物；微绒毛增大吸收面积 <span class="loc">〔说话人2 46:26〕</span></td></tr>
+<tr><td>假复层是真复层</td><td>细胞均附基膜，属单层 <span class="loc">〔说话人2 30:42〕</span></td></tr>
+<tr><td>间皮与内皮类型不同</td><td>均为单层扁平，分布不同 <span class="loc">〔说话人2 37:55〕</span></td></tr>
+<tr><td>HE见空泡即脂肪核必属该细胞</td><td>核可能来自邻接结缔组织细胞 <span class="loc">〔说话人2 01:09:22〕</span></td></tr>
+<tr><td>无蓝颗粒的吞噬细胞</td><td>12号片无台盼蓝颗粒不能判巨噬细胞 <span class="loc">〔说话人2 58:35〕</span></td></tr>
+<tr><td>100倍常规高倍观察</td><td>100倍为油镜需油介质 <span class="loc">〔说话人2 01:24:02〕</span></td></tr>
+<tr><td>结缔组织空白区都是腔</td><td>组织液多或切片脱落可似空白 <span class="loc">〔说话人2 39:37〕</span></td></tr>
+</table></div><div class="page"><h2 class="h2">附录 C 考点索引表</h2><table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>片号与卡槽顺序号</td><td>§1</td><td>〔说话人2 07:53〕</td><td>操作</td></tr>
+<tr><td>成绩构成15/25/60</td><td>§2</td><td>〔说话人2 18:59〕</td><td>单选</td></tr>
+<tr><td>上皮无血管与极性</td><td>§3</td><td>〔说话人2 24:44〕</td><td>简答</td></tr>
+<tr><td>被覆上皮分类依据</td><td>§4</td><td>〔说话人2 29:02〕</td><td>单选</td></tr>
+<tr><td>间皮与内皮</td><td>§5</td><td>〔说话人2 37:55〕</td><td>单选</td></tr>
+<tr><td>纹状缘与微绒毛</td><td>§6</td><td>〔说话人2 41:59〕</td><td>简答</td></tr>
+<tr><td>假复层纤毛分布</td><td>§7</td><td>〔说话人2 49:29〕</td><td>单选</td></tr>
+<tr><td>变移上皮形态变化</td><td>§8</td><td>〔说话人2 49:51〕</td><td>简答</td></tr>
+<tr><td>浆细胞四要素</td><td>§11</td><td>〔说话人2 01:01:00〕</td><td>镜检</td></tr>
+<tr><td>三种纤维染色</td><td>§10</td><td>〔说话人2 58:35〕</td><td>单选</td></tr>
+</table></div><div class="page"><h2 class="h2">附录 D 知识点清单</h2><table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>形态学第五至第八实验室</td><td>事实</td><td>§1</td><td>〔说话人1 01:01〕</td></tr><tr><td>2</td><td>三门课共用形态学实验室</td><td>事实</td><td>§1</td><td>〔说话人1 01:01〕</td></tr><tr><td>3</td><td>每室组胚病理切片各50盒</td><td>数字</td><td>§1</td><td>〔说话人1 01:01〕</td></tr><tr><td>4</td><td>组胚盒绿色标签</td><td>事实</td><td>§1</td><td>〔说话人1 01:39〕</td></tr><tr><td>5</td><td>病理盒白色标签</td><td>事实</td><td>§1</td><td>〔说话人1 01:39〕</td></tr><tr><td>6</td><td>四号一致核对</td><td>流程</td><td>§1</td><td>〔说话人1 01:39〕</td></tr><tr><td>7</td><td>登记缺损切片</td><td>流程</td><td>§1</td><td>〔说话人1 01:39〕</td></tr><tr><td>8</td><td>按需取片盖盒避光</td><td>流程</td><td>§1</td><td>〔说话人2 09:16〕</td></tr><tr><td>9</td><td>实验收尾显微镜与平板步骤</td><td>流程</td><td>§1</td><td>〔说话人1 02:54〕</td></tr><tr><td>10</td><td>值日生运行日志登记</td><td>流程</td><td>§1</td><td>〔说话人1 02:54〕</td></tr><tr><td>11</td><td>学习通智慧课程实习指导</td><td>平台</td><td>§2</td><td>〔说话人2 16:21〕</td></tr><tr><td>12</td><td>初始密码SS654321SS</td><td>数字</td><td>§2</td><td>〔说话人2 15:34〕</td></tr><tr><td>13</td><td>Spark慕课授课视频</td><td>平台</td><td>§2</td><td>〔说话人2 17:24〕</td></tr><tr><td>14</td><td>数字切片平台多倍放大</td><td>平台</td><td>§2</td><td>〔说话人2 17:51〕</td></tr><tr><td>15</td><td>平时成绩15分构成</td><td>数字</td><td>§2</td><td>〔说话人2 18:59〕</td></tr><tr><td>16</td><td>切片考试25分</td><td>数字</td><td>§2</td><td>〔说话人2 18:59〕</td></tr><tr><td>17</td><td>期末100分折算60分</td><td>数字</td><td>§2</td><td>〔说话人2 18:59〕</td></tr><tr><td>18</td><td>朱琳QQ156419</td><td>联系</td><td>§2</td><td>〔说话人2 20:38〕</td></tr><tr><td>19</td><td>标本号指玻片标签片号</td><td>易错</td><td>§2</td><td>〔说话人2 20:38〕</td></tr><tr><td>20</td><td>四大基本组织名称</td><td>分类</td><td>§3</td><td>〔说话人2 22:11〕</td></tr><tr><td>21</td><td>上皮位于腔面或表面</td><td>分布</td><td>§3</td><td>〔说话人2 22:11〕</td></tr><tr><td>22</td><td>消化管心血管呼吸泌尿生殖腔面上皮</td><td>分布</td><td>§3</td><td>〔说话人2 23:26〕</td></tr><tr><td>23</td><td>腺体导管腔面上皮</td><td>分布</td><td>§3</td><td>〔说话人2 23:26〕</td></tr><tr><td>24</td><td>上皮下方必有结缔组织</td><td>机制</td><td>§3</td><td>〔说话人2 24:02〕</td></tr><tr><td>25</td><td>上皮无血管</td><td>考点</td><td>§3</td><td>〔说话人2 24:44〕</td></tr><tr><td>26</td><td>结缔有丰富血管</td><td>考点</td><td>§3</td><td>〔说话人2 24:44〕</td></tr><tr><td>27</td><td>基膜透过结缔组织代谢</td><td>机制</td><td>§3</td><td>〔说话人2 24:44〕</td></tr><tr><td>28</td><td>上皮紧密结缔松散</td><td>对比</td><td>§3</td><td>〔说话人2 25:27〕</td></tr><tr><td>29</td><td>两种组织均有神经</td><td>结论</td><td>§3</td><td>〔说话人2 26:20〕</td></tr><tr><td>30</td><td>极性三面：游离基底侧面</td><td>定义</td><td>§3</td><td>〔说话人2 27:10〕</td></tr><tr><td>31</td><td>结缔组织无极性</td><td>定义</td><td>§3</td><td>〔说话人2 27:50〕</td></tr><tr><td>32</td><td>被覆上皮为本节重点</td><td>范围</td><td>§4</td><td>〔说话人2 28:32〕</td></tr><tr><td>33</td><td>分类：层数+表层形态</td><td>规则</td><td>§4</td><td>〔说话人2 29:02〕</td></tr><tr><td>34</td><td>单层扁平立方柱状</td><td>分类</td><td>§4</td><td>〔说话人2 30:06〕</td></tr><tr><td>35</td><td>假复层实质单层</td><td>考点</td><td>§4</td><td>〔说话人2 30:42〕</td></tr><tr><td>36</td><td>变移上皮形态可变</td><td>定义</td><td>§4</td><td>〔说话人2 30:42〕</td></tr><tr><td>37</td><td>今日六种被覆上皮列表</td><td>考点</td><td>§4</td><td>〔说话人2 31:47〕</td></tr><tr><td>38</td><td>6号大网膜银染铺片</td><td>切片</td><td>§5</td><td>〔说话人2 32:46〕</td></tr><tr><td>39</td><td>硝酸银还原银染原理</td><td>机制</td><td>§5</td><td>〔说话人2 33:31〕</td></tr><tr><td>40</td><td>46号小肠侧面观单层扁平</td><td>切片</td><td>§5</td><td>〔说话人2 34:01〕</td></tr><tr><td>41</td><td>三大体腔与间皮</td><td>分布</td><td>§5</td><td>〔说话人2 36:33〕</td></tr><tr><td>42</td><td>内皮衬脉管腔面</td><td>分布</td><td>§5</td><td>〔说话人2 37:55〕</td></tr><tr><td>43</td><td>红细胞无核HE红色</td><td>镜检</td><td>§5</td><td>〔说话人2 36:33〕</td></tr><tr><td>44</td><td>60号膀胱找间皮备选</td><td>技巧</td><td>§5</td><td>〔说话人2 45:41〕</td></tr><tr><td>45</td><td>46号腔面单层柱状上皮</td><td>切片</td><td>§6</td><td>〔说话人2 39:02〕</td></tr><tr><td>46</td><td>斜切使单层似复层</td><td>易错</td><td>§6</td><td>〔说话人2 40:15〕</td></tr><tr><td>47</td><td>纹状缘嗜酸性红带</td><td>镜检</td><td>§6</td><td>〔说话人2 41:59〕</td></tr><tr><td>48</td><td>微绒毛电镜结构</td><td>术语</td><td>§6</td><td>〔说话人2 41:59〕</td></tr><tr><td>49</td><td>杯状细胞高脚酒杯状</td><td>镜检</td><td>§6</td><td>〔说话人2 43:31〕</td></tr><tr><td>50</td><td>黏液颗粒酒精溶解浅染</td><td>机制</td><td>§6</td><td>〔说话人2 43:31〕</td></tr><tr><td>51</td><td>杯状细胞处纹状缘中断</td><td>镜检</td><td>§6</td><td>〔说话人2 44:03〕</td></tr><tr><td>52</td><td>同一器官两种上皮</td><td>分布</td><td>§6</td><td>〔说话人2 44:35〕</td></tr><tr><td>53</td><td>纤毛粗长可见可动</td><td>镜检</td><td>§7</td><td>〔说话人2 46:26〕</td></tr><tr><td>54</td><td>假复层基膜明显</td><td>镜检</td><td>§7</td><td>〔说话人2 47:30〕</td></tr><tr><td>55</td><td>呼吸管道纤毛排尘</td><td>功能</td><td>§7</td><td>〔说话人2 49:29〕</td></tr><tr><td>56</td><td>复层扁平未角化有核</td><td>镜检</td><td>§8</td><td>〔说话人2 48:08〕</td></tr><tr><td>57</td><td>上皮结缔交界凹凸不平</td><td>结构</td><td>§8</td><td>〔说话人2 48:41〕</td></tr><tr><td>58</td><td>变移上皮盖细胞双核</td><td>镜检</td><td>§8</td><td>〔说话人2 49:51〕</td></tr><tr><td>59</td><td>膀胱充盈细胞变扁</td><td>机制</td><td>§8</td><td>〔说话人2 49:51〕</td></tr><tr><td>60</td><td>43号食管上皮与结缔</td><td>切片</td><td>§8</td><td>〔说话人2 51:13〕</td></tr><tr><td>61</td><td>食管下方肌组织嗜酸强</td><td>镜检</td><td>§9</td><td>〔说话人2 51:13〕</td></tr><tr><td>62</td><td>疏松结缔固有类型</td><td>分类</td><td>§9</td><td>〔说话人2 52:27〕</td></tr><tr><td>63</td><td>成纤维细胞与纤维细胞同一细胞</td><td>考点</td><td>§9</td><td>〔说话人2 52:27〕</td></tr><tr><td>64</td><td>巨噬肥大浆细胞等</td><td>分类</td><td>§9</td><td>〔说话人2 54:10〕</td></tr><tr><td>65</td><td>间充质干细胞</td><td>细胞</td><td>§9</td><td>〔说话人2 54:46〕</td></tr><tr><td>66</td><td>HE结缔细胞难辨靠特染</td><td>方法</td><td>§9</td><td>〔说话人2 56:07〕</td></tr><tr><td>67</td><td>12号台盼蓝示巨噬细胞</td><td>切片</td><td>§10</td><td>〔说话人2 56:07〕</td></tr><tr><td>68</td><td>吞噬颗粒在胞质非核内</td><td>镜检</td><td>§10</td><td>〔说话人2 57:18〕</td></tr><tr><td>69</td><td>胶原纤维最多HE粉红</td><td>纤维</td><td>§10</td><td>〔说话人2 58:35〕</td></tr><tr><td>70</td><td>弹性纤维醛复红</td><td>纤维</td><td>§10</td><td>〔说话人2 58:35〕</td></tr><tr><td>71</td><td>网状纤维镀银另片</td><td>纤维</td><td>§10</td><td>〔说话人2 58:35〕</td></tr><tr><td>72</td><td>肉芽组织病理片性质</td><td>定义</td><td>§11</td><td>〔说话人2 59:43〕</td></tr><tr><td>73</td><td>浆细胞核偏心位</td><td>考点</td><td>§11</td><td>〔说话人2 01:01:00〕</td></tr><tr><td>74</td><td>浆细胞胞质嗜碱</td><td>考点</td><td>§11</td><td>〔说话人2 01:01:40〕</td></tr><tr><td>75</td><td>车辐状核染色质</td><td>镜检</td><td>§11</td><td>〔说话人2 01:02:11〕</td></tr><tr><td>76</td><td>浆细胞来源B淋巴细胞</td><td>来源</td><td>§11</td><td>〔说话人2 01:06:28〕</td></tr><tr><td>77</td><td>成纤维细胞核浅核仁清</td><td>镜检</td><td>§11</td><td>〔说话人2 01:04:31〕</td></tr><tr><td>78</td><td>肥大细胞甲苯胺蓝异染</td><td>染色</td><td>§11</td><td>〔说话人2 01:07:19〕</td></tr><tr><td>79</td><td>脂肪细胞单大脂滴HE空泡</td><td>镜检</td><td>§11</td><td>〔说话人2 01:09:22〕</td></tr><tr><td>80</td><td>目镜10倍物镜4/10/40/100</td><td>操作</td><td>§12</td><td>〔说话人2 01:12:06〕</td></tr><tr><td>81</td><td>Imageview相机YW1600</td><td>操作</td><td>§12</td><td>〔说话人2 01:14:16〕</td></tr><tr><td>82</td><td>油镜100倍禁空气介质</td><td>操作</td><td>§12</td><td>〔说话人2 01:24:02〕</td></tr><tr><td>83</td><td>白色标签右下角为片号</td><td>操作</td><td>§12</td><td>〔说话人2 01:22:56〕</td></tr><tr><td>84</td><td>软骨下次实验观察</td><td>范围</td><td>§12</td><td>〔说话人2 01:38:51〕</td></tr><tr><td>85</td><td>10×物镜黄色标识</td><td>操作</td><td>§12</td><td>〔说话人2 01:12:06〕</td></tr></table><p class="foot">附录 D 共 85 条。</p></div></body></html>

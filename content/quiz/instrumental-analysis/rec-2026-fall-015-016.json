@@ -9,9 +9,9 @@
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-015-016",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "b2c0d99fadb26d2b9117d8d369ea4eeb6129d19f855daa07baab12957e24aef9",
-    "notesTextHash": "25dab3eb2d15e7f035e191a886b335eb5d33977048a9a3678dd5855ba6b75dbb"
+    "notesTextHash": "6945291fcd899824de38e83a08f2fc907702f89ff84181307d54ae95a2b57171"
   },
   "questions": [
     {
@@ -23,7 +23,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "荧光与磷光的能级起源"
+        "label": "10. 激发光源 · 荧光与磷光的能级起源"
       },
       "stem": "关于荧光与磷光的跃迁来源，下列叙述正确的是：",
       "options": [
@@ -45,7 +45,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "荧光仪器的结构特点"
+        "label": "10. 激发光源 · 荧光仪器的结构特点"
       },
       "stem": "荧光分光光度计在仪器结构上区别于紫外-可见分光光度计的三个典型特点是：",
       "options": [
@@ -67,7 +67,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "荧光比色皿与检测器"
+        "label": "12. 比色皿与检测器 · 荧光比色皿与检测器"
       },
       "stem": "荧光分析所用比色皿和常用检测器通常是：",
       "options": [
@@ -89,7 +89,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "化学发光与荧光的能量来源区别"
+        "label": "10. 激发光源 · 化学发光与荧光的能量来源区别"
       },
       "stem": "化学发光分析区别于荧光分析的根本点是：",
       "options": [
@@ -111,7 +111,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "荧光发射光谱形状与激发波长的关系"
+        "label": "8. 影响荧光强度的因素 · 荧光发射光谱形状与激发波长的关系"
       },
       "stem": "关于荧光发射光谱的形状与荧光强度随激发波长的变化，正确的是：",
       "options": [
@@ -133,7 +133,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "取代基对荧光强度的影响"
+        "label": "2. 取代基对荧光的影响 · 取代基对荧光强度的影响"
       },
       "stem": "取代基对分子荧光的影响，下列对应正确的是：",
       "options": [
@@ -155,7 +155,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "荧光定量公式与线性条件"
+        "label": "5. 荧光定量公式推导 · 荧光定量公式与线性条件"
       },
       "stem": "荧光定量分析中，低浓度下荧光强度与浓度呈线性关系 F=Kc，其成立的浓度条件及 K 的含义是：",
       "options": [
@@ -177,7 +177,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "高浓度下荧光偏离线性的原因"
+        "label": "6. 高浓度偏差与定量方法 · 高浓度下荧光偏离线性的原因"
       },
       "stem": "高浓度时荧光强度偏离（甚至低于）线性关系，下列哪一组属于其典型原因：",
       "options": [
@@ -199,7 +199,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "荧光法灵敏度高于紫外-可见法的原因"
+        "label": "7. 灵敏度、选择性与紫外可见对比 · 荧光法灵敏度高于紫外-可见法的原因"
       },
       "stem": "为什么在相同条件下荧光分析法灵敏度通常高于紫外-可见吸收法？",
       "options": [
@@ -221,7 +221,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-015-016/notes.html",
-        "label": "溶剂与环境因素对荧光的影响"
+        "label": "8. 影响荧光强度的因素 · 溶剂与环境因素对荧光的影响"
       },
       "stem": "关于溶剂与环境因素对荧光强度的影响，下列组合正确的是：",
       "options": [

@@ -1,145 +1,51 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<style>
-:root{--paper:#FAF6F4;--ink:#2A1810;--muted:#8A6B5D;--line:#E8D8CE;--accent:#8B3A1A;--accent-deep:#5C2510;--accent-tint:#F5E6DE;--gold:#B8860B;--gold-tint:#FBF3DC;--crimson:#A93226;--crimson-tint:#F9E5E2;--serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
-.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-.cover{background:radial-gradient(120% 80% at 78% 12%,#B85C3A 0%,#8B3A1A 55%,#5C2510 100%);color:#F5EDE0;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(212,175,55,.45);}
-.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#D4AF37;margin-bottom:8mm;}
-.cover h1{font-family:var(--serif);font-size:30pt;line-height:1.2;color:#FBF7F0;margin-bottom:6mm;}
-.cover h1 .accent{color:#F4D03F;}
-.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(245,237,224,.82);margin-bottom:4mm;}
-.cover .meta{font-size:10pt;color:rgba(245,237,224,.6);margin-top:auto;}
-.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
-.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
-.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
-h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
-p{margin:2mm 0;}
-.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
-.card.concl{border-left:3pt solid var(--accent);}
-.card.warn{border-left:3pt solid var(--crimson);background:var(--crimson-tint);}
-.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
-th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
-td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
-tr:nth-child(even) td{background:var(--accent-tint);}
-.hl{background:var(--gold-tint);border:0.4pt solid #E0C870;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
-.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
-.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
-</style>
-</head>
-<body>
-<div class="page cover">
-  <div class="frame"></div>
-  <div class="kicker">SYSTEMATIC ANATOMY · 系统解剖学</div>
-  <h1>脊柱连接与<br><span class="accent">胸廓</span></h1>
-  <div class="subt">第4-6节 · 实验课 · 课程笔记可视化手册</div>
-  <div class="meta">2026-09-02 · 华中科技大学基础医学</div>
-</div>
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">椎间盘与椎体韧带</span></div>
-  <div class="card concl">
-    <div class="label">椎间盘（23个，C2-S1）</div>
-    <p><strong>纤维环</strong>：外周多层同心圆纤维软骨，前厚后薄。</p>
-    <p><strong>髓核</strong>：中央胶状物质，含细胞和水分。</p>
-    <p><strong>功能</strong>：弹性垫，承受压力、减轻震荡、辅助运动。</p>
-    <p><strong>特点</strong>：无血管，损伤后难以修复。</p>
-  </div>
-  <div class="card warn">
-    <div class="label">腰椎间盘突出症</div>
-    <p>腰部承重最大 → 纤维环破裂 → 髓核<strong>向后外侧</strong>突出 → 压迫脊神经根。</p>
-    <p>不能向正后方突出，因为后方有<strong>后纵韧带</strong>阻挡。</p>
-  </div>
-  <table>
-    <tr><th>韧带</th><th>位置</th><th>功能</th></tr>
-    <tr><td><strong>前纵韧带</strong></td><td>椎体前面</td><td>防止脊柱过度<strong>后伸</strong>，限制间盘前突</td></tr>
-    <tr><td><strong>后纵韧带</strong></td><td>椎体后面（椎管前壁）</td><td>防止脊柱过度<strong>前屈</strong>，限制间盘后突</td></tr>
-  </table>
-  <div class="hl"><span class="tag">记忆</span>前纵防后伸，后纵防前屈——不要记反！</div>
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">02</span><span class="chapter-title">椎弓间连接</span></div>
-  <table>
-    <tr><th>结构</th><th>位置</th><th>特点/功能</th></tr>
-    <tr><td><strong>黄韧带</strong></td><td>相邻椎弓板间</td><td>黄色，椎管后壁，防过度前屈，韧性远高于普通韧带</td></tr>
-    <tr><td>棘间韧带</td><td>相邻棘突间</td><td>连接棘突</td></tr>
-    <tr><td>棘上韧带</td><td>棘突尖端</td><td>C7→骶骨纵行</td></tr>
-    <tr><td><strong>项韧带</strong></td><td>颈椎部</td><td>棘上韧带向上延续为三角形弹性膜，维持头部姿势</td></tr>
-    <tr><td>横突间韧带</td><td>相邻横突间</td><td>连接横突</td></tr>
-    <tr><td>关节突关节</td><td>上下关节突</td><td>微动平面关节</td></tr>
-  </table>
-  <div class="footer"><span>系统解剖学 · 脊柱连接与胸廓</span><span>第 2 页</span></div>
-</div>
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">03</span><span class="chapter-title">寰枕关节与寰枢关节</span></div>
-  <table>
-    <tr><th>关节</th><th>构成</th><th>类型</th><th>运动</th></tr>
-    <tr><td><strong>寰枕关节</strong></td><td>寰椎上关节凹 + 枕骨髁</td><td>椭圆关节</td><td>屈/伸（低头仰头）、侧屈</td></tr>
-    <tr><td><strong>寰枢正中关节</strong></td><td>枢椎齿突 + 寰椎齿突凹</td><td>车轴关节</td><td>以齿突为轴旋转（转头）</td></tr>
-    <tr><td>寰枢外侧关节</td><td>寰椎下关节面 + 枢椎上关节面</td><td>平面关节</td><td>微动</td></tr>
-  </table>
-  <div class="card concl">
-    <div class="label">加固韧带</div>
-    <p><strong>寰椎横韧带</strong>：横过齿突后方，两端附于寰椎侧块，将齿突固定于前弓后方，<strong>防止齿突后移压迫脊髓</strong>。</p>
-    <p><strong>齿突尖韧带</strong>：齿突尖 → 枕骨大孔前缘。</p>
-    <p><strong>翼状韧带</strong>：齿突上部两侧 → 枕骨髁，限制过度旋转。</p>
-  </div>
-  <div class="card warn">
-    <div class="label">临床意义</div>
-    <p>寰椎横韧带断裂 → 齿突后移 → 脊髓损伤 → 危及生命。</p>
-  </div>
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">04</span><span class="chapter-title">脊柱四个生理弯曲</span></div>
-  <table>
-    <tr><th>弯曲</th><th>凸向</th><th>形成时期</th></tr>
-    <tr><td><strong>颈曲</strong></td><td>凸向前</td><td>婴儿3个月抬头时（后天）</td></tr>
-    <tr><td><strong>胸曲</strong></td><td>凸向后</td><td>胚胎时期（先天/原始）</td></tr>
-    <tr><td><strong>腰曲</strong></td><td>凸向前</td><td>婴儿1岁站立行走时（后天）</td></tr>
-    <tr><td><strong>骶曲</strong></td><td>凸向后</td><td>胚胎时期（先天/原始）</td></tr>
-  </table>
-  <div class="hl"><span class="tag">功能</span>缓冲震荡、维持重心、扩大胸腔和盆腔容积。</div>
-  <div class="hl"><span class="tag">记忆</span>颈腰凸向前（后天形成），胸骶凸向后（先天原始）。</div>
-  <div class="footer"><span>系统解剖学 · 脊柱连接与胸廓</span><span>第 3 页</span></div>
-</div>
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">05</span><span class="chapter-title">脊柱整体观与功能</span></div>
-  <div class="card concl">
-    <div class="label">三面观</div>
-    <p><strong>前面观</strong>：椎体从上到下逐渐变大（承重增加），骶骨后又变小（重量转移至下肢）。</p>
-    <p><strong>后面观</strong>：棘突形成纵嵴。颈椎棘突短、末端分叉（C2-C6）；胸椎细长、斜向后下呈叠瓦状；腰椎板状、水平向后、间隙大（腰椎穿刺部位）。</p>
-    <p><strong>侧面观</strong>：四个生理弯曲（见前页）。</p>
-  </div>
-  <div class="card concl">
-    <div class="label">长度与年龄变化</div>
-    <p>成年男性约<strong>70cm</strong>，女性约<strong>60cm</strong>。</p>
-    <p>椎间盘总长度约占脊柱全长的<strong>1/4</strong>。</p>
-    <p>老年人脊柱变短原因：①椎间盘萎缩变薄 ②骨质疏松椎体压缩 ③驼背（弯曲加重）。</p>
-  </div>
-  <h3>脊柱功能</h3>
-  <div class="card">
-    <p>① <strong>支持躯干</strong>：承受体重</p>
-    <p>② <strong>保护脊髓</strong>：椎管容纳脊髓</p>
-    <p>③ <strong>运动</strong>：屈、伸、侧屈、旋转、环转</p>
-  </div>
-  <div class="hl"><span class="tag">注意</span>单个椎间盘活动度很小，脊柱大幅度运动是多个椎间盘+关节突关节累计的结果。</div>
-  <h3>胸廓（简要）</h3>
-  <div class="card">
-    <p><strong>组成</strong>：12块胸椎 + 12对肋 + 1块胸骨。</p>
-    <p><strong>功能</strong>：保护胸腔脏器、参与呼吸运动。</p>
-  </div>
-  <h3>易错点汇总</h3>
-  <ol>
-    <li>椎间盘无血管，损伤难修复；突出向后外侧（后纵韧带阻挡正后方）。</li>
-    <li>前纵韧带防后伸，后纵韧带防前屈。</li>
-    <li>黄韧带黄色，韧性远高于普通韧带。</li>
-    <li>寰枢正中关节是车轴关节，以齿突为轴旋转；寰椎横韧带防止齿突后移。</li>
-    <li>颈曲/腰曲凸向前（后天），胸曲/骶曲凸向后（先天）。</li>
-    <li>椎间盘占脊柱1/4；老年人变矮三大原因。</li>
-  </ol>
-  <div style="margin-top:4mm;text-align:center;color:var(--muted);font-size:9pt;">— 系统解剖学 · 第4-6节 · 完 —</div>
-  <div class="footer"><span>系统解剖学 · 脊柱连接与胸廓</span><span>第 4 页</span></div>
-</div>
-</body>
-</html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>系统解剖学 · 第4-6节 · 脊柱连接与胸廓·上肢骨及连接</title><style>:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#B4531F; --accent-d:#7A3413; --accent-t:#F7E7DE;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}</style></head><body><div class="page cover"><p class="h1">系统解剖学 · 第4-6节</p><p class="meta">脊柱连接与胸廓 · 上肢骨及其连接 · 2026-09-02</p><p class="lead" style="text-align:left">素材规模：逐字稿 35502 字 / 234 轮发言</p><table><tr><th>项目</th><th>内容</th></tr><tr><td>课次</td><td>rec-2026-fall-004-006（第4–6节，3学时）</td></tr><tr><td>主题</td><td>脊柱连接、胸廓、上肢骨与主要关节（lesson.json）</td></tr></table></div><div class="page"><h2 class="h2">0. 知识框架</h2><p class="lead">中轴骨连接承上启下，胸廓围护胸腔；上肢骨与关节实现肩肘腕手运动。</p><svg viewBox="0 0 640 200" width="100%" aria-label="框架"><rect x="220" y="6" width="200" height="34" fill="#F7E7DE" stroke="#B4531F"/><text x="320" y="28" text-anchor="middle" font-size="12">运动系统连接</text><line x1="120" y1="40" x2="320" y2="40" stroke="#B4531F"/><line x1="520" y1="40" x2="320" y2="40" stroke="#B4531F"/><rect x="40" y="48" width="160" height="28" fill="#fff" stroke="#7A3413"/><text x="120" y="66" text-anchor="middle" font-size="10">脊柱·胸廓</text><rect x="440" y="48" width="160" height="28" fill="#fff" stroke="#7A3413"/><text x="520" y="66" text-anchor="middle" font-size="10">上肢骨·关节</text></svg></div><div class="page"><h2 class="h2">1. 关节总论复习</h2><p class="lead">以标准姿势与关节基本结构开场，为各关节分析提供模板。</p><ul class="kv"><li>描述运动须标准解剖学姿势，掌心向前 <span class="loc">〔说话人2 01:00〕</span></li><li>关节基本结构：关节面、关节囊、关节腔 <span class="loc">〔说话人2 02:17〕</span></li><li>关节可有韧带等辅助结构；滑膜可较丰厚 <span class="loc">〔说话人2 02:25〕</span></li></ul></div><div class="page"><h2 class="h2">2. 椎体间连接：椎间盘与纵韧带</h2><p class="lead">椎体间以椎间盘为主，前后纵韧带限制屈伸并防间盘突出。</p><ul class="kv"><li>连接系统承上启下：脊柱连接椎骨，胸廓围护胸腔 <span class="loc">〔说话人2 02:25〕</span></li><li>椎骨间连接分椎体间连接与椎弓间连接 <span class="loc">〔说话人2 02:25〕</span></li><li>椎体间最明显软骨连接为椎间盘 <span class="loc">〔说话人2 02:25〕</span></li><li>脊柱前面贴前纵韧带，椎体后面有后纵韧带 <span class="loc">〔说话人2 02:25〕</span></li><li>椎间盘为纤维软骨盘，外周纤维环多层同心圆 <span class="loc">〔说话人2 02:25〕</span></li><li>纤维环前厚后薄；中央柔软部为髓核 <span class="loc">〔说话人2 02:25〕</span></li><li>髓核含细胞与水分，具弹性垫作用 <span class="loc">〔说话人2 02:25〕</span></li><li>椎间盘承受压力、减轻震荡、辅助运动 <span class="loc">〔说话人2 02:25〕</span></li><li>单个椎间盘活动度很小，大幅度靠多节段累计 <span class="loc">〔说话人2 02:25〕</span></li><li>腰椎间盘突出腰部多见：腰部承重最大 <span class="loc">〔说话人2 02:25〕</span></li><li>髓核多向后外侧突出压迫神经，少向正后方 <span class="loc">〔说话人2 02:25〕</span></li><li>后纵韧带贴椎管前壁，阻挡间盘向正后突出 <span class="loc">〔说话人2 02:25〕</span></li><li>前纵韧带防止脊柱过度后伸，限制间盘前突 <span class="loc">〔说话人2 02:25〕</span></li><li>后纵韧带防止脊柱过度前屈，限制间盘后突 <span class="loc">〔说话人2 02:25〕</span></li><li>椎间盘无血管，损伤后难修复 <span class="loc">〔说话人2 02:25〕</span></li></ul><table class="tbl"><tr><th>韧带</th><th>位置</th><th>功能</th></tr><tr><td>前纵韧带</td><td>椎体前面</td><td>防过度后伸；防间盘前突</td></tr><tr><td>后纵韧带</td><td>椎体后面（椎管前壁）</td><td>防过度前屈；防间盘后突</td></tr></table><div class="exam"><span class="tag">★考点</span>前纵防后伸、后纵防前屈；腰突向后外侧，后纵韧带挡正后方。 <span class="loc">〔说话人2 02:25〕</span></div><div class="def"><strong>连接系统</strong>：脊柱连接椎骨承上启下，胸廓由胸椎、肋骨与胸骨围成，保护胸腔脏器并参与呼吸。教材个别用字以课堂与标本为准。 <span class="loc">〔说话人2 02:25〕</span></div><p class="lead">椎弓间韧带一览</p><table class="tbl"><tr><th>韧带</th><th>连接</th><th>功能</th></tr><tr><td>黄韧带</td><td>椎弓板间</td><td>椎管后壁；防前屈</td></tr><tr><td>棘间韧带</td><td>棘突间</td><td>连棘突</td></tr><tr><td>棘上韧带</td><td>棘突尖</td><td>纵行连接</td></tr><tr><td>项韧带</td><td>颈椎棘突向上</td><td>三角形弹性膜</td></tr><tr><td>横突间韧带</td><td>横突间</td><td>连横突</td></tr></table></div><div class="page"><h2 class="h2">3. 椎弓间连接</h2><p class="lead">椎弓间韧带与关节突关节维持椎管并限制过度前屈。</p><ul class="kv"><li>椎弓间连接含椎板、棘突、横突间韧带及关节突关节 <span class="loc">〔说话人2 02:25〕</span></li><li>上下关节突构成关节突关节，滑膜关节、微动 <span class="loc">〔说话人2 02:25〕</span></li><li>黄韧带位于相邻椎弓板间，黄色，参与椎管后壁 <span class="loc">〔说话人2 02:25〕</span></li><li>黄韧带防止脊柱过度前屈；韧性远高于普通韧带 <span class="loc">〔说话人2 02:25〕</span></li><li>棘突尖端连棘上韧带；棘突间为棘间韧带 <span class="loc">〔说话人2 10:06〕</span></li><li>颈椎区棘上韧带向上延续为片状项韧带 <span class="loc">〔说话人2 10:06〕</span></li></ul></div><div class="page"><h2 class="h2">4. 寰枕关节与寰枢关节</h2><p class="lead">寰枕点头，寰枢转头；寰椎横韧带固定齿突。</p><ul class="kv"><li>寰枕关节：第一颈椎与枕骨之间 <span class="loc">〔说话人2 10:06〕</span></li><li>寰枢关节：寰椎与枢椎之间 <span class="loc">〔说话人2 10:06〕</span></li><li>寰枢正中关节：枢椎齿突与寰椎齿突凹 <span class="loc">〔说话人2 10:06〕</span></li><li>寰枢外侧关节：寰椎下关节面与枢椎上关节面 <span class="loc">〔说话人2 10:06〕</span></li><li>寰椎横韧带横过齿突后方，固定齿突防后移 <span class="loc">〔说话人2 10:06〕</span></li><li>覆膜为后纵韧带向上延续 <span class="loc">〔说话人2 10:06〕</span></li><li>翼状韧带与齿突尖韧带连枕骨大孔前缘等 <span class="loc">〔说话人2 14:33〕</span></li></ul><div class="exam"><span class="tag">★考点</span>寰椎横韧带防止齿突后移压迫脊髓。 <span class="loc">〔说话人2 10:06〕</span></div></div><div class="page"><h2 class="h2">5. 脊柱整体观与功能</h2><p class="lead">三面观把握棘突与生理弯曲，理解长度与老年变矮。</p><ul class="kv"><li>前面观椎体自上而下渐大，骶骨后渐小 <span class="loc">〔说话人2 14:33〕</span></li><li>后面观棘突成纵嵴，两侧为纵沟 <span class="loc">〔说话人2 14:33〕</span></li><li>颈椎棘突短，第2–6节末端分叉 <span class="loc">〔说话人2 14:33〕</span></li><li>胸椎棘突细长斜向下，叠瓦状 <span class="loc">〔说话人2 14:33〕</span></li><li>腰椎棘突板状水平向后，间隙大 <span class="loc">〔说话人2 14:33〕</span></li><li>颈曲、腰曲凸向前；胸曲、骶曲凸向后 <span class="loc">〔说话人2 14:33〕</span></li><li>生理弯曲缓冲震荡、维持重心、扩大胸盆腔 <span class="loc">〔说话人2 14:33〕</span></li><li>脊柱支持躯干、保护脊髓 <span class="loc">〔说话人2 14:33〕</span></li><li>成年男性脊柱约70cm，女性约60cm <span class="loc">〔说话人2 14:33〕</span></li><li>椎间盘长度约占脊柱全长1/4 <span class="loc">〔说话人2 14:33〕</span></li><li>老年变矮：间盘萎缩、骨质疏松压缩、驼背加重 <span class="loc">〔说话人2 14:33〕</span></li></ul><table class="tbl"><tr><th>弯曲</th><th>凸向</th><th>功能要点</th></tr><tr><td>颈曲</td><td>前</td><td>缓冲震荡、维持重心</td></tr><tr><td>胸曲</td><td>后</td><td>扩大胸腔</td></tr><tr><td>腰曲</td><td>前</td><td>维持重心</td></tr><tr><td>骶曲</td><td>后</td><td>扩大盆腔</td></tr></table><div class="def"><strong>脊柱长度</strong>：成年男性约70cm、女性约60cm；椎间盘约占全长1/4；老年变矮与间盘萎缩、骨质疏松及驼背有关。 <span class="loc">〔说话人2 14:33〕</span></div></div><div class="page"><h2 class="h2">6. 胸廓</h2><p class="lead">12胸椎+12对肋+1胸骨；肋关节参与呼吸。</p><ul class="kv"><li>胸廓由12块胸椎、12对肋和1块胸骨构成 <span class="loc">〔说话人2 22:44〕</span></li><li>锁骨、肩胛骨属上肢带骨，不计入胸廓 <span class="loc">〔说话人2 22:44〕</span></li><li>第1肋与胸骨柄相关节；第1–7肋为真肋（第2–7肋直连胸骨） <span class="loc">〔说话人2 22:44〕</span></li><li>第8–10肋为假肋，肋软骨连第7肋软骨成肋弓 <span class="loc">〔说话人2 22:44〕</span></li><li>第11–12肋为浮肋，前端游离 <span class="loc">〔说话人2 24:44〕</span></li><li>肋头关节：肋头与椎体肋凹相关节 <span class="loc">〔说话人2 24:44〕</span></li><li>肋横突关节：肋结节与横突肋凹相关节 <span class="loc">〔说话人2 24:44〕</span></li><li>部分肋头与上下两个椎体共同成关节 <span class="loc">〔说话人2 24:44〕</span></li><li>第11–12肋无肋横突关节 <span class="loc">〔说话人2 24:44〕</span></li><li>肋关节上提下降肋骨，参与呼吸 <span class="loc">〔说话人2 24:44〕</span></li><li>胸廓形态近似圆锥形上窄下宽，横径长于前后径 <span class="loc">〔说话人2 24:44〕</span></li><li>胸廓上口：胸骨柄上缘、第1肋、第1胸椎 <span class="loc">〔说话人2 26:50〕</span></li><li>胸廓下口：剑突、第7–10肋软骨、第11–12肋及第12胸椎 <span class="loc">〔说话人2 26:50〕</span></li><li>胸廓下口外侧壁最长，后壁次之，前壁最短 <span class="loc">〔说话人2 26:50〕</span></li><li>胸廓保护肺、心等；参与呼吸与胸腔负压 <span class="loc">〔说话人2 26:50〕</span></li></ul><h3 class="h3">B. 肋与胸骨连接对照</h3><table class="tbl"><tr><th>肋</th><th>胸骨连接</th><th>名称</th></tr><tr><td>第1肋</td><td>胸骨柄肋切迹</td><td>真肋，活动度低</td></tr><tr><td>第2–7肋</td><td>肋软骨直连胸骨</td><td>真肋</td></tr><tr><td>第8–10肋</td><td>肋软骨连第7肋软骨</td><td>假肋，形成肋弓</td></tr><tr><td>第11–12肋</td><td>前端游离</td><td>浮肋</td></tr></table><h3 class="h3">C. 肋与椎骨连接</h3><table class="tbl"><tr><th>关节</th><th>组成</th></tr><tr><td>肋头关节</td><td>肋头与胸椎椎体肋凹</td></tr><tr><td>肋横突关节</td><td>肋结节与横突肋凹</td></tr><tr><td>例外</td><td>第11–12肋无肋横突关节</td></tr></table></div><div class="page"><h2 class="h2">7. 上肢骨：带骨与分部</h2><p class="lead">带骨锁骨肩胛骨；自由上肢骨肱骨、桡尺骨及手骨。</p><ul class="kv"><li>上肢骨分上肢带骨与自由上肢骨 <span class="loc">〔说话人2 26:50〕</span></li><li>上肢带骨：锁骨与肩胛骨 <span class="loc">〔说话人2 29:07〕</span></li><li>自由上肢骨：肱骨、桡骨、尺骨及手骨 <span class="loc">〔说话人2 29:07〕</span></li><li>单侧手骨：腕骨8、掌骨5、指骨14 <span class="loc">〔说话人2 29:07〕</span></li><li>锁骨S形弯曲，内侧2/3凸向前 <span class="loc">〔说话人2 29:07〕</span></li><li>锁骨内侧端胸锁关节；外侧端与肩峰相关节 <span class="loc">〔说话人2 29:07〕</span></li><li>锁骨上表面光滑、下面粗糙供韧带肌腱附着 <span class="loc">〔说话人2 29:07〕</span></li><li>肩胛骨三角形，两面三缘三角三窝 <span class="loc">〔说话人2 29:07〕</span></li><li>前面肩胛窝；后面肩胛冈，外侧末端肩峰 <span class="loc">〔说话人2 29:07〕</span></li><li>冈上窝、冈下窝；内侧缘、外侧缘、上缘 <span class="loc">〔说话人2 32:55〕</span></li><li>外侧缘上关节盂，盂上结节与盂下结节 <span class="loc">〔说话人2 32:55〕</span></li><li>肩胛切迹韧带封闭，肩胛上神经血管经此 <span class="loc">〔说话人2 32:55〕</span></li><li>喙突向前；上角平第2肋，下角平第7肋 <span class="loc">〔说话人2 34:49〕</span></li><li>冈上冈下窝薄处可缺损，多不影响功能 <span class="loc">〔说话人2 36:02〕</span></li></ul></div><div class="page"><h2 class="h2">8. 肱骨、桡骨、尺骨与手骨</h2><p class="lead">肱骨肩肘杠杆；桡尺旋前旋后；尺骨不参与桡腕关节。</p><ul class="kv"><li>肱骨头与肩胛骨关节盂构成肩关节 <span class="loc">〔说话人2 37:21〕</span></li><li>解剖颈：肱骨头下狭窄，关节囊上附着 <span class="loc">〔说话人2 37:21〕</span></li><li>大结节、小结节与结节间沟；肱二头肌长头穿关节囊 <span class="loc">〔说话人2 37:21〕</span></li><li>外科颈：大小结节下，常见骨折处 <span class="loc">〔说话人2 37:21〕</span></li><li>三角肌粗隆；肱骨体后面桡神经沟 <span class="loc">〔说话人2 37:21〕</span></li><li>下端肱骨滑车与尺骨滑车切迹成滑车关节 <span class="loc">〔说话人2 37:21〕</span></li><li>肱骨小头与桡骨头相关节；冠突窝、桡窝 <span class="loc">〔说话人2 37:21〕</span></li><li>内上髁、外上髁；内上髁后方尺神经沟 <span class="loc">〔说话人2 42:27〕</span></li><li>桡骨头、桡骨颈；桡骨粗隆为肱二头肌止点 <span class="loc">〔说话人2 44:40〕</span></li><li>桡骨尺切迹与尺骨构成桡尺远侧关节 <span class="loc">〔说话人2 46:59〕</span></li><li>尺骨并不参与构成腕关节；桡骨有腕关节面 <span class="loc">〔说话人2 01:31:53〕</span></li><li>尺骨滑车切迹与肱骨滑车相关节；鹰嘴、冠突 <span class="loc">〔说话人2 49:21〕</span></li><li>桡尺骨间骨间膜相连 <span class="loc">〔说话人2 49:21〕</span></li><li>手骨腕骨8块，相邻骨之间都有关节面 <span class="loc">〔说话人2 49:21〕</span></li><li>腕骨由外向内：近侧列舟、月、三角、豌豆，远侧列大多角、小多角、头状、钩 <span class="loc">〔说话人2 52:40〕</span></li><li>第1掌骨在生长过程中由近向远轴向内旋转 <span class="loc">〔说话人2 52:40〕</span></li><li>掌骨5块；指骨14块，每指分近、中、远三节，拇指仅两节 <span class="loc">〔说话人2 54:31〕</span></li><li>指间关节为滑车关节，仅能做屈伸 <span class="loc">〔说话人2 01:38:00〕</span></li></ul><h3 class="h3">B. 肱骨下端与肘相关结构</h3><table class="tbl"><tr><th>结构</th><th>位置/关系</th></tr><tr><td>肱骨滑车</td><td>内侧，与尺骨滑车切迹相关节</td></tr><tr><td>肱骨小头</td><td>外侧，与桡骨头相关节</td></tr><tr><td>冠突窝、桡窝</td><td>前面，屈肘时容纳冠突与桡骨头</td></tr><tr><td>鹰嘴窝</td><td>后面，伸肘时容纳鹰嘴</td></tr><tr><td>内上髁、外上髁</td><td>两侧隆起；内上髁后尺神经沟</td></tr></table></div><div class="page"><h2 class="h2">9. 胸锁、肩锁与肩关节</h2><p class="lead">胸锁为上肢连躯干唯一关节；肩关节囊薄，肱骨头大、关节盂窝浅。</p><ul class="kv"><li>胸锁关节：锁骨胸骨端与胸骨柄，有关节盘 <span class="loc">〔说话人2 01:12:10〕</span></li><li>胸锁多轴但活动度小，可作上肢运动支点 <span class="loc">〔说话人2 01:12:10〕</span></li><li>肩锁关节：肩峰与锁骨外侧端，平面关节 <span class="loc">〔说话人2 01:12:10〕</span></li><li>喙锁韧带防止肱骨向上错位 <span class="loc">〔说话人2 01:12:10〕</span></li><li>肩关节由肱骨头与关节盂构成，球窝关节 <span class="loc">〔说话人2 01:14:24〕</span></li><li>肱骨头大、关节盂窝浅而小，活动范围非常大 <span class="loc">〔说话人2 01:14:24〕</span></li><li>肩关节囊薄而松弛，全身活动度最大易脱位 <span class="loc">〔说话人2 01:15:01〕</span></li><li>肱二头肌长头经滑膜鞘穿囊止于盂上结节 <span class="loc">〔说话人2 01:15:01〕</span></li><li>关节盂缘盂唇加深关节窝 <span class="loc">〔说话人2 01:16:32〕</span></li><li>肩袖肌腱与关节囊融合加强 <span class="loc">〔说话人2 01:16:32〕</span></li><li>肩关节脱位多见肱骨头向下脱至关节盂前下方 <span class="loc">〔说话人2 01:16:32〕</span></li></ul><div class="exam"><span class="tag">★考点</span>肩关节脱位多见肱骨头向下（前下方）。 <span class="loc">〔说话人2 01:16:32〕</span></div><table class="tbl"><tr><th>关节</th><th>构成</th><th>类型</th></tr><tr><td>胸锁关节</td><td>锁骨胸骨端+胸骨柄</td><td>多轴，有盘</td></tr><tr><td>肩锁关节</td><td>肩峰+锁骨外侧端</td><td>平面关节</td></tr><tr><td>肩关节</td><td>肱骨头+关节盂</td><td>球窝，囊薄</td></tr></table></div><div class="page"><h2 class="h2">10. 肘关节、前臂与手关节</h2><p class="lead">肘为复关节；骨间膜半旋前最紧；桡腕为椭圆关节。</p><ul class="kv"><li>肘关节复关节：肱尺、肱桡、桡尺近侧 <span class="loc">〔说话人2 01:26:46〕</span></li><li>肱尺关节：肱骨滑车与尺骨滑车切迹，滑车关节 <span class="loc">〔说话人2 01:26:46〕</span></li><li>肱桡关节：肱骨小头与桡骨头 <span class="loc">〔说话人2 01:26:46〕</span></li><li>桡尺近侧关节：桡骨头与尺骨桡切迹 <span class="loc">〔说话人2 01:26:46〕</span></li><li>桡骨环状韧带起止均在尺骨，包绕桡骨头，小儿易半脱位 <span class="loc">〔说话人2 01:29:39〕</span></li><li>滑车结构使肱骨不易后移；跌倒时尺骨鹰嘴后移，故肘关节后脱位多见 <span class="loc">〔说话人2 01:29:39〕</span></li><li>肘关节囊前后薄松弛，两侧厚有韧带加强 <span class="loc">〔说话人2 01:29:39〕</span></li><li>肘伸直内上髁外上髁与鹰嘴一线；屈90°成三角 <span class="loc">〔说话人2 01:31:53〕</span></li><li>上臂与前臂纵轴夹角为提携角，约163° <span class="loc">〔说话人2 01:31:53〕</span></li><li>桡尺远侧关节与骨间膜参与旋前旋后 <span class="loc">〔说话人2 01:31:53〕</span></li><li>前臂固定常用半旋前位使骨间膜紧张 <span class="loc">〔说话人2 01:31:53〕</span></li><li>桡腕关节由桡骨腕关节面与腕骨构成，尺骨下端不参与 <span class="loc">〔说话人2 01:31:53〕</span></li><li>桡腕关节椭圆关节，屈伸收展，不能旋转 <span class="loc">〔说话人2 01:38:00〕</span></li><li>腕骨间关节微动；腕中关节近远侧腕骨间 <span class="loc">〔说话人2 01:38:00〕</span></li><li>拇指腕掌关节鞍状，可屈伸收展与对掌，对掌为人类与灵长类特有 <span class="loc">〔说话人2 01:38:00〕</span></li><li>掌指关节韧带紧张，不能旋转 <span class="loc">〔说话人2 01:38:00〕</span></li><li>指间关节滑车关节，仅屈伸 <span class="loc">〔说话人2 01:38:00〕</span></li></ul><table class="tbl"><tr><th>关节</th><th>运动</th><th>类型</th></tr><tr><td>肱尺关节</td><td>屈伸</td><td>滑车</td></tr><tr><td>肱桡关节</td><td>屈伸与旋转辅助</td><td>球窝（浅）</td></tr><tr><td>桡尺近/远侧</td><td>旋前旋后</td><td>车轴</td></tr><tr><td>桡腕关节</td><td>屈伸收展</td><td>椭圆</td></tr><tr><td>拇指腕掌</td><td>屈伸收展对掌</td><td>鞍状</td></tr><tr><td>掌指/指间</td><td>屈伸（掌指可收展）</td><td>球窝/滑车</td></tr></table><div class="mnem"><strong>肘后三角与提携角（整理）</strong>：肘伸直时内上髁、外上髁与鹰嘴成一线；屈90°成肘后三角。上臂与前臂纵轴成提携角，约163°。 <span class="loc">〔说话人2 01:31:53〕</span></div></div><div class="page"><h2 class="h2">11. 课堂影像与标本识图要点</h2><p class="lead">影像片强化间盘与脱位概念；下课前对照标本回顾上肢关键标志。</p><ul class="kv"><li>课堂播放英文脊柱片，内容与椎间盘纤维环髓核一致 <span class="loc">〔说话人2 02:25〕</span></li><li>影像提示间盘退变髓核可突出并压迫神经（腰背痛） <span class="loc">〔说话人2 02:25〕</span></li><li>课堂强调肩关节脱位多见肱骨头向下脱位 <span class="loc">〔说话人2 01:16:32〕</span></li><li>肩胛切迹有韧带封闭，肩胛上神经血管经此 <span class="loc">〔说话人2 32:55〕</span></li><li>标本外侧凸起为肩峰，浅凹为关节盂，下有盂下结节 <span class="loc">〔说话人2 01:51:32〕</span></li><li>锁骨上表面光滑，下面粗糙有肌腱韧带附着 <span class="loc">〔说话人2 01:52:02〕</span></li><li>豌豆骨很小，不参与构成桡腕关节，桡腕关节主要由舟骨、月骨、三角骨参与 <span class="loc">〔说话人2 01:56:04〕</span></li><li>脊柱24块独立椎骨加骶骨尾骨，连接系统承上启下 <span class="loc">〔说话人2 02:25〕</span></li><li>运动系统韧带与间盘血供少，损伤后难修复 <span class="loc">〔说话人2 02:25〕</span></li><li>第1肋胸肋关节活动度很低 <span class="loc">〔说话人2 22:44〕</span></li><li>临床上手足外科很多医院从骨科独立出来 <span class="loc">〔说话人2 49:21〕</span></li><li>指骨远端粗糙面供肌腱韧带附着 <span class="loc">〔说话人2 55:43〕</span></li><li>肩关节囊外侧止于解剖颈，内侧达外科颈 <span class="loc">〔说话人2 01:16:32〕</span></li><li>肘关节以屈伸为主；滑车结构使肱骨不易后移 <span class="loc">〔说话人2 01:29:39〕</span></li><li>腕掌关节腔相通 <span class="loc">〔说话人2 01:38:00〕</span></li></ul><div class="mnem"><strong>腕骨口诀</strong>：近侧列由外向内舟、月、三角、豌豆（舟月三角豆），远侧列大多角、小多角、头状、钩（大小头状钩）。课堂要求记住名称与排列即可。 <span class="loc">〔说话人2 52:40〕</span></div><div class="grid"><div class="card"><strong>脊柱</strong><br>间盘无血管；腰突后外侧；纵韧带方向勿反。</div><div class="card"><strong>胸廓</strong><br>真假浮肋；上下口界标；肋关节呼吸。</div><div class="card"><strong>上肢骨</strong><br>带骨2+2；手骨8-5-14；尺骨不下腕。</div><div class="card"><strong>上肢关节</strong><br>胸锁唯一；肩最活最易脱；肘屈伸为主。</div></div></div><div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv"><li>前纵防后伸，后纵防前屈 <span class="loc">〔说话人2 02:25〕</span></li><li>椎间盘无血管、腰突后外侧 <span class="loc">〔说话人2 02:25〕</span></li><li>黄韧带黄色防前屈 <span class="loc">〔说话人2 02:25〕</span></li><li>寰椎横韧带固定齿突 <span class="loc">〔说话人2 10:06〕</span></li><li>颈腰前凸，胸骶后凸 <span class="loc">〔说话人2 14:33〕</span></li><li>真肋1–7，假肋8–10，浮肋11–12 <span class="loc">〔说话人2 24:44〕</span></li><li>胸锁为上肢连躯干唯一关节 <span class="loc">〔说话人2 01:12:10〕</span></li><li>尺骨不参与桡腕关节 <span class="loc">〔说话人2 46:59〕</span></li><li>寰枕屈伸寰枢旋转 <span class="loc">〔说话人2 10:06〕</span></li><li>肋弓由第7肋软骨延续 <span class="loc">〔说话人2 22:44〕</span></li><li>桡神经沟在肱骨体后内侧 <span class="loc">〔说话人2 37:21〕</span></li><li>肘后三角与提携角 <span class="loc">〔说话人2 01:31:53〕</span></li><li>骨间膜半旋前最紧张 <span class="loc">〔说话人2 01:31:53〕</span></li><li>掌指韧带限制旋转 <span class="loc">〔说话人2 01:38:00〕</span></li><li>豌豆骨不参与桡腕 <span class="loc">〔说话人2 01:56:04〕</span></li><li>指骨分近节中节远节，远节背面粗糙 <span class="loc">〔说话人2 55:43〕</span></li><li>肩袖冈上冈下肩胛下肌等加强关节囊 <span class="loc">〔说话人2 01:16:32〕</span></li></ul></div><div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2><table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>间盘向正后方突出</td><td>后纵韧带阻挡；多后外侧 〔说话人2 02:25〕</td></tr>
+<tr><td>前纵韧带防前屈</td><td>前纵防后伸；后纵防前屈 〔说话人2 02:25〕</td></tr>
+<tr><td>肩胛骨计入胸廓</td><td>胸廓仅胸椎肋胸骨 〔说话人2 22:44〕</td></tr>
+<tr><td>尺骨参与腕关节</td><td>桡腕关节不含尺骨下端 〔说话人2 01:31:53〕</td></tr>
+<tr><td>寰枕与寰枢运动混淆</td><td>寰枕屈伸点头；寰枢旋转转头 〔说话人2 10:06〕</td></tr>
+<tr><td>将肱桡关节当滑车关节</td><td>肱尺滑车；肱桡浅球窝 〔说话人2 01:26:46〕</td></tr>
+<tr><td>掌指关节可环转</td><td>韧带紧张，仅屈伸收展 〔说话人2 01:38:00〕</td></tr>
+</table></div><div class="page"><h2 class="h2">附录 C 考点索引表</h2><table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr><tr><td>纵韧带与间盘突出</td><td>§2</td><td>〔说话人2 02:25〕</td><td>单选</td></tr><tr><td>寰椎横韧带</td><td>§4</td><td>〔说话人2 10:06〕</td><td>名解</td></tr><tr><td>四生理弯曲</td><td>§5</td><td>〔说话人2 14:33〕</td><td>单选</td></tr><tr><td>胸廓上下口</td><td>§6</td><td>〔说话人2 26:50〕</td><td>标本</td></tr><tr><td>尺神经沟</td><td>§8</td><td>〔说话人2 42:27〕</td><td>标本</td></tr><tr><td>肩脱位方向</td><td>§9</td><td>〔说话人2 01:16:32〕</td><td>临床</td></tr><tr><td>肘后三角提携角</td><td>§10</td><td>〔说话人2 01:31:53〕</td><td>单选</td></tr><tr><td>豌豆骨不参与桡腕关节</td><td>§11</td><td>〔说话人2 01:56:04〕</td><td>标本</td></tr><tr><td>肩袖肌腱袖加强关节囊</td><td>§9</td><td>〔说话人2 01:16:32〕</td><td>名解</td></tr><tr><td>桡骨头半脱位与环状韧带</td><td>§10</td><td>〔说话人2 01:29:39〕</td><td>儿科</td></tr></table></div><div class="page"><h2 class="h2">附录 D 知识点清单</h2><table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>关节面关节囊关节腔</td><td>复习</td><td>§1</td><td>〔说话人2 02:17〕</td></tr><tr><td>2</td><td>椎体间与椎弓间连接</td><td>分类</td><td>§2</td><td>〔说话人2 02:25〕</td></tr><tr><td>3</td><td>椎间盘纤维环髓核</td><td>结构</td><td>§2</td><td>〔说话人2 02:25〕</td></tr><tr><td>4</td><td>纤维环前厚后薄</td><td>形态</td><td>§2</td><td>〔说话人2 02:25〕</td></tr><tr><td>5</td><td>椎间盘弹性垫功能</td><td>功能</td><td>§2</td><td>〔说话人2 02:25〕</td></tr><tr><td>6</td><td>单间盘活动度小</td><td>运动</td><td>§2</td><td>〔说话人2 02:25〕</td></tr><tr><td>7</td><td>腰椎间盘突出腰部多见</td><td>临床</td><td>§2</td><td>〔说话人2 02:25〕</td></tr><tr><td>8</td><td>髓核后外侧突出</td><td>临床</td><td>§2</td><td>〔说话人2 02:25〕</td></tr><tr><td>9</td><td>后纵韧带挡正后突出</td><td>机制</td><td>§2</td><td>〔说话人2 02:25〕</td></tr><tr><td>10</td><td>前纵韧带防后伸</td><td>韧带</td><td>§2</td><td>〔说话人2 02:25〕</td></tr><tr><td>11</td><td>后纵韧带防前屈</td><td>韧带</td><td>§2</td><td>〔说话人2 02:25〕</td></tr><tr><td>12</td><td>椎间盘无血管</td><td>特点</td><td>§2</td><td>〔说话人2 02:25〕</td></tr><tr><td>13</td><td>关节突关节微动</td><td>关节</td><td>§3</td><td>〔说话人2 02:25〕</td></tr><tr><td>14</td><td>黄韧带黄色</td><td>韧带</td><td>§3</td><td>〔说话人2 02:25〕</td></tr><tr><td>15</td><td>黄韧带椎管后壁</td><td>韧带</td><td>§3</td><td>〔说话人2 02:25〕</td></tr><tr><td>16</td><td>棘上韧带</td><td>韧带</td><td>§3</td><td>〔说话人2 10:06〕</td></tr><tr><td>17</td><td>棘间韧带</td><td>韧带</td><td>§3</td><td>〔说话人2 10:06〕</td></tr><tr><td>18</td><td>项韧带</td><td>韧带</td><td>§3</td><td>〔说话人2 10:06〕</td></tr><tr><td>19</td><td>寰枕关节</td><td>关节</td><td>§4</td><td>〔说话人2 10:06〕</td></tr><tr><td>20</td><td>寰枢关节</td><td>关节</td><td>§4</td><td>〔说话人2 10:06〕</td></tr><tr><td>21</td><td>寰枢正中关节齿突</td><td>关节</td><td>§4</td><td>〔说话人2 10:06〕</td></tr><tr><td>22</td><td>寰枢外侧关节</td><td>关节</td><td>§4</td><td>〔说话人2 10:06〕</td></tr><tr><td>23</td><td>寰椎横韧带</td><td>韧带</td><td>§4</td><td>〔说话人2 10:06〕</td></tr><tr><td>24</td><td>覆膜</td><td>韧带</td><td>§4</td><td>〔说话人2 10:06〕</td></tr><tr><td>25</td><td>翼状韧带齿突尖韧带</td><td>韧带</td><td>§4</td><td>〔说话人2 14:33〕</td></tr><tr><td>26</td><td>枕骨大孔前缘</td><td>韧带</td><td>§4</td><td>〔说话人2 14:33〕</td></tr><tr><td>27</td><td>椎体由大变小</td><td>整体</td><td>§5</td><td>〔说话人2 14:33〕</td></tr><tr><td>28</td><td>棘突纵嵴纵沟</td><td>整体</td><td>§5</td><td>〔说话人2 14:33〕</td></tr><tr><td>29</td><td>颈椎棘突分叉</td><td>形态</td><td>§5</td><td>〔说话人2 14:33〕</td></tr><tr><td>30</td><td>胸椎棘突叠瓦</td><td>形态</td><td>§5</td><td>〔说话人2 14:33〕</td></tr><tr><td>31</td><td>腰椎棘突板状</td><td>形态</td><td>§5</td><td>〔说话人2 14:33〕</td></tr><tr><td>32</td><td>颈曲腰曲凸向前</td><td>弯曲</td><td>§5</td><td>〔说话人2 14:33〕</td></tr><tr><td>33</td><td>胸曲骶曲凸向后</td><td>弯曲</td><td>§5</td><td>〔说话人2 14:33〕</td></tr><tr><td>34</td><td>男70cm女60cm</td><td>数据</td><td>§5</td><td>〔说话人2 14:33〕</td></tr><tr><td>35</td><td>间盘占脊柱1/4</td><td>数据</td><td>§5</td><td>〔说话人2 14:33〕</td></tr><tr><td>36</td><td>老年变矮三原因</td><td>临床</td><td>§5</td><td>〔说话人2 14:33〕</td></tr><tr><td>37</td><td>脊柱支持保护脊髓</td><td>功能</td><td>§5</td><td>〔说话人2 14:33〕</td></tr><tr><td>38</td><td>胸廓12胸12肋1胸骨</td><td>构成</td><td>§6</td><td>〔说话人2 22:44〕</td></tr><tr><td>39</td><td>锁骨肩胛骨不属于胸廓</td><td>构成</td><td>§6</td><td>〔说话人2 22:44〕</td></tr><tr><td>40</td><td>真肋1-7</td><td>肋</td><td>§6</td><td>〔说话人2 22:44〕</td></tr><tr><td>41</td><td>假肋8-10肋弓</td><td>肋</td><td>§6</td><td>〔说话人2 22:44〕</td></tr><tr><td>42</td><td>浮肋11-12</td><td>肋</td><td>§6</td><td>〔说话人2 24:44〕</td></tr><tr><td>43</td><td>肋头关节</td><td>关节</td><td>§6</td><td>〔说话人2 24:44〕</td></tr><tr><td>44</td><td>肋横突关节</td><td>关节</td><td>§6</td><td>〔说话人2 24:44〕</td></tr><tr><td>45</td><td>11-12肋无肋横突关节</td><td>关节</td><td>§6</td><td>〔说话人2 24:44〕</td></tr><tr><td>46</td><td>胸廓横径>前后径</td><td>形态</td><td>§6</td><td>〔说话人2 26:40〕</td></tr><tr><td>47</td><td>胸廓上口</td><td>形态</td><td>§6</td><td>〔说话人2 26:50〕</td></tr><tr><td>48</td><td>胸廓下口</td><td>形态</td><td>§6</td><td>〔说话人2 26:50〕</td></tr><tr><td>49</td><td>外侧壁>后壁>前壁</td><td>形态</td><td>§6</td><td>〔说话人2 26:50〕</td></tr><tr><td>50</td><td>胸廓呼吸功能</td><td>功能</td><td>§6</td><td>〔说话人2 26:50〕</td></tr><tr><td>51</td><td>上肢带骨锁骨肩胛骨</td><td>骨</td><td>§7</td><td>〔说话人2 29:07〕</td></tr><tr><td>52</td><td>肱骨桡尺骨</td><td>骨</td><td>§7</td><td>〔说话人2 29:07〕</td></tr><tr><td>53</td><td>腕8掌5指14</td><td>骨</td><td>§7</td><td>〔说话人2 29:07〕</td></tr><tr><td>54</td><td>锁骨S形胸锁肩峰</td><td>骨</td><td>§7</td><td>〔说话人2 29:07〕</td></tr><tr><td>55</td><td>肩胛骨两面三缘</td><td>骨</td><td>§7</td><td>〔说话人2 29:07〕</td></tr><tr><td>56</td><td>关节盂肩峰喙突</td><td>骨</td><td>§7</td><td>〔说话人2 32:55〕</td></tr><tr><td>57</td><td>肩胛切迹</td><td>骨</td><td>§7</td><td>〔说话人2 32:55〕</td></tr><tr><td>58</td><td>上角第2肋下角第7肋</td><td>骨</td><td>§7</td><td>〔说话人2 34:49〕</td></tr><tr><td>59</td><td>肱骨头解剖颈外科颈</td><td>骨</td><td>§8</td><td>〔说话人2 37:21〕</td></tr><tr><td>60</td><td>结节间沟肱二头肌长头</td><td>骨</td><td>§8</td><td>〔说话人2 37:21〕</td></tr><tr><td>61</td><td>肱骨滑车与小头</td><td>骨</td><td>§8</td><td>〔说话人2 37:21〕</td></tr><tr><td>62</td><td>尺神经沟</td><td>骨</td><td>§8</td><td>〔说话人2 42:27〕</td></tr><tr><td>63</td><td>桡骨头尺切迹</td><td>骨</td><td>§8</td><td>〔说话人2 44:40〕</td></tr><tr><td>64</td><td>尺骨不参与腕关节</td><td>骨</td><td>§8</td><td>〔说话人2 46:59〕</td></tr><tr><td>65</td><td>鹰嘴冠突滑车切迹</td><td>骨</td><td>§8</td><td>〔说话人2 49:21〕</td></tr><tr><td>66</td><td>骨间膜</td><td>连接</td><td>§8</td><td>〔说话人2 49:21〕</td></tr><tr><td>67</td><td>腕骨8块</td><td>骨</td><td>§8</td><td>〔说话人2 52:40〕</td></tr><tr><td>68</td><td>掌骨第1内旋</td><td>骨</td><td>§8</td><td>〔说话人2 54:31〕</td></tr><tr><td>69</td><td>指骨滑车关节</td><td>骨</td><td>§8</td><td>〔说话人2 55:17〕</td></tr><tr><td>70</td><td>胸锁关节盘</td><td>关节</td><td>§9</td><td>〔说话人2 01:12:10〕</td></tr><tr><td>71</td><td>肩锁喙锁韧带</td><td>关节</td><td>§9</td><td>〔说话人2 01:12:10〕</td></tr><tr><td>72</td><td>肩囊薄肱骨头大盂窝浅</td><td>关节</td><td>§9</td><td>〔说话人2 01:15:01〕</td></tr><tr><td>73</td><td>盂唇肩袖</td><td>关节</td><td>§9</td><td>〔说话人2 01:16:32〕</td></tr><tr><td>74</td><td>肘三关节</td><td>关节</td><td>§10</td><td>〔说话人2 01:26:46〕</td></tr><tr><td>75</td><td>桡骨环状韧带</td><td>韧带</td><td>§10</td><td>〔说话人2 01:29:39〕</td></tr><tr><td>76</td><td>肘后三角提携角</td><td>体征</td><td>§10</td><td>〔说话人2 01:31:53〕</td></tr><tr><td>77</td><td>骨间膜半旋前</td><td>临床</td><td>§10</td><td>〔说话人2 01:31:53〕</td></tr><tr><td>78</td><td>桡腕椭圆关节</td><td>关节</td><td>§10</td><td>〔说话人2 01:38:00〕</td></tr><tr><td>79</td><td>鞍状拇指腕掌</td><td>关节</td><td>§10</td><td>〔说话人2 01:38:00〕</td></tr><tr><td>80</td><td>掌指不能旋转</td><td>关节</td><td>§10</td><td>〔说话人2 01:38:00〕</td></tr><tr><td>81</td><td>课堂英文脊柱片对应间盘</td><td>影像</td><td>§11</td><td>〔说话人2 02:25〕</td></tr><tr><td>82</td><td>间盘突出压神经</td><td>影像</td><td>§11</td><td>〔说话人2 02:25〕</td></tr><tr><td>83</td><td>肩胛切迹横韧带</td><td>标本</td><td>§11</td><td>〔说话人2 01:51:20〕</td></tr><tr><td>84</td><td>肩峰关节盂标本</td><td>标本</td><td>§11</td><td>〔说话人2 01:51:32〕</td></tr><tr><td>85</td><td>豌豆骨不参与桡腕</td><td>标本</td><td>§11</td><td>〔说话人2 01:56:04〕</td></tr><tr><td>86</td><td>手足外科独立</td><td>临床</td><td>§11</td><td>〔说话人2 49:21〕</td></tr><tr><td>87</td><td>指骨远端粗糙</td><td>骨</td><td>§11</td><td>〔说话人2 55:43〕</td></tr><tr><td>88</td><td>肱二头肌长头穿囊</td><td>关节</td><td>§9</td><td>〔说话人2 01:15:01〕</td></tr><tr><td>89</td><td>冠突窝桡窝</td><td>骨</td><td>§8</td><td>〔说话人2 37:21〕</td></tr><tr><td>90</td><td>桡尺骨骨间膜</td><td>连接</td><td>§8</td><td>〔说话人2 49:21〕</td></tr><tr><td>91</td><td>横突间韧带</td><td>韧带</td><td>§3</td><td>〔说话人2 02:25〕</td></tr><tr><td>92</td><td>关节突微动</td><td>关节</td><td>§3</td><td>〔说话人2 02:25〕</td></tr><tr><td>93</td><td>胸廓参与负压</td><td>功能</td><td>§6</td><td>〔说话人2 26:50〕</td></tr><tr><td>94</td><td>喙突与肩峰膨大</td><td>骨</td><td>§7</td><td>〔说话人2 34:49〕</td></tr><tr><td>95</td><td>三角肌粗隆</td><td>骨</td><td>§8</td><td>〔说话人2 37:21〕</td></tr><tr><td>96</td><td>桡骨粗隆</td><td>骨</td><td>§8</td><td>〔说话人2 44:40〕</td></tr><tr><td>97</td><td>滑膜鞘包肱二头肌长头</td><td>关节</td><td>§9</td><td>〔说话人2 01:15:01〕</td></tr><tr><td>98</td><td>腕中关节</td><td>关节</td><td>§10</td><td>〔说话人2 01:38:00〕</td></tr><tr><td>99</td><td>掌骨间关节</td><td>关节</td><td>§10</td><td>〔说话人2 01:38:00〕</td></tr><tr><td>100</td><td>锁骨胸锁肩锁复习</td><td>标本</td><td>§11</td><td>〔说话人2 01:52:02〕</td></tr></table><p class="foot">附录 D 登记 100 条，与 recording.md 讲授点及正文 §1–§11 交叉对照，供零遗漏自查。</p></div></body></html>

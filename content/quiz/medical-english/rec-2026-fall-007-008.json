@@ -3,192 +3,614 @@
   "chapterId": "rec-2026-fall-007-008",
   "generatedAt": "2026-09-25",
   "examConfig": {
-    "source": "content/medical-english/lectures/rec-2026-fall-007-008/recording.md；content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
-    "totalPoints": 80,
-    "timeLimit": 30
+    "source": "content/medical-english/lectures/rec-2026-fall-007-008/recording.md；content/medical-english/lectures/rec-2026-fall-007-008/notes.html（SOP-04 课上录音标准 24 题/100 分）",
+    "totalPoints": 100,
+    "timeLimit": 50
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-007-008",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "b13231b87de2b18c28dc6d2ed849dd79ae9c5b2f7586120c6fe8269841d75f06",
-    "notesTextHash": "707b638490b1c84743bfda4cc2eb3dad3640627c0e62911c0dc902210f963ef5"
+    "notesTextHash": "46979c9c07108ff6d01b24502cd49f9f920249637ca6330edbe52592694a6df5"
   },
   "questions": [
     {
       "id": "q001",
       "type": "single_choice",
       "difficulty": "basic",
-      "points": 10,
       "source": "current_chapter",
+      "points": 2,
+      "stem": "下列“构词手段—例词”的对应关系中，正确的一项是：",
+      "options": [
+        "conversion（词义转换）：flu ← influenza",
+        "blending（拼缀法）：genome = gene + chromosome",
+        "back formation（逆构法）：ICU ← Intensive Care Unit",
+        "clipping（截短法）：contract 由“合同”变为“患病”"
+      ],
+      "answer": 1,
+      "hint": "先想清每一种手段的机制：拼合、反向削词、截短，还是取首字母。",
+      "explanation": "**B 正确。** 老师说 blending 是把两个词根各取一段拼成一个新词，genome 就是 gene（基因）+ chromosome（染色体）拼合而成，意为基因组（说话人1 58:49 / 59:30）。\n\n- A 错：flu ← influenza 是 clipping（截短法），老师 01:02:44 专门讲过，把它记成 conversion 是把“截短”与“词义转换”混为一谈。\n- C 错：ICU ← Intensive Care Unit 是把首字母组合成新词并全部大写，属 acronyms（首字母缩略法，说话人1 01:03:17）；逆构法的典型例是 diagnose ← diagnosis。\n- D 错：contract 由“合同”到“患病”是同一词形的义项改变，属 conversion（词义转换，说话人1 58:11），词的形态没有截短。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "医学英语六种构词方式"
-      },
-      "stem": "下列医学英语构词方式中，最常见、由“词根+前缀+后缀”构成新词的是：",
-      "options": [
-        "截短法（clipping）",
-        "逆构法（back-formation）",
-        "派生法（derivation）",
-        "拼缀法（blending）"
-      ],
-      "answer": 2,
-      "explanation": "**C 正确。**派生法通过词根加上前缀、后缀构成新词，是医学英语最常见的构词方式。截短法如 flu←influenza；逆构法如 diagnose(v.)←diagnosis(n.)；拼缀法如 genome=gene+chromosome。",
-      "hint": "词根+前缀+后缀=派生法。"
+        "label": "五类构词手段总表（说话人1 58:11 / 01:03:17）"
+      }
     },
     {
       "id": "q002",
       "type": "single_choice",
       "difficulty": "basic",
-      "points": 10,
       "source": "current_chapter",
+      "points": 2,
+      "stem": "老师把派生法（前缀 + 词根 + 后缀）视为医学英语最常见的构词方式。按这一方式，electrocardiogram 的三个部件依次是：",
+      "options": [
+        "electro-（电）+ cardio（心）+ -gram（记录 / 图）",
+        "electro-（心）+ cardio（电）+ -gram（治疗）",
+        "cardio（电）+ -gram（心）+ -logist（记录）",
+        "electro-（电）+ -logist（研究者）+ -tomy（切开）"
+      ],
+      "answer": 0,
+      "hint": "先定词根 cardio 指哪个器官，再看 -gram 在课堂上被解释成什么。",
+      "explanation": "**A 正确。** 说话人3 在 10:33 逐段拆解：electro 是 electric（电）的词根，cardio 意为“心”，-gram 意为“记录 / 图”（photo or record），三者相加就是心电图。\n\n- B 错：把 electro 与 cardio 的义项对调，并把 -gram 说成“治疗”——课堂上 -gram 明确讲为“记录 / 图”。\n- C 错：cardio 不是“电”，-gram 也不是“心”；-logist 表示“研究者 / 专家”（如 cardiologist），与“记录”无关。\n- D 错：-logist 表示人、-tomy 表示切开（造口）术，两个后缀都解释不了“心电图”这个义项。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "cyst 词族后缀含义"
-      },
-      "stem": "在 cyst 词族中，cystitis、cystoscopy、cystectomy、cystotomy 的后缀依次表示：",
-      "options": [
-        "炎症、镜检查、切除术、切开/造口术",
-        "切除术、炎症、切开术、镜检查",
-        "镜检查、切开术、炎症、切除术",
-        "切开术、切除术、镜检查、炎症"
-      ],
-      "answer": 0,
-      "explanation": "**A 正确。**-itis 表示炎症（cystitis 膀胱炎）；-scopy 表示（内镜）检查（cystoscopy 膀胱镜检查）；-ectomy 表示切除术（cystectomy 膀胱切除术）；-tomy 表示切开/造口术（cystotomy 膀胱造口术）。",
-      "hint": "-itis炎、-scopy镜、-ectomy切、-tomy切开口。"
+        "label": "第6章 医学英语构词法（六类） · 派生法与他 electrocardiogram 拆解（说话人3 10:33）"
+      }
     },
     {
       "id": "q003",
       "type": "single_choice",
       "difficulty": "basic",
-      "points": 10,
       "source": "current_chapter",
+      "points": 2,
+      "stem": "在 cyst 词族中，cystitis、cystoscopy、cystectomy、cystotomy 的语义依次是：",
+      "options": [
+        "膀胱炎、膀胱镜检查、膀胱切除术、膀胱造口术",
+        "膀胱切除术、膀胱炎、膀胱造口术、膀胱镜检查",
+        "膀胱镜检查、膀胱造口术、膀胱炎、膀胱切除术",
+        "膀胱造口术、膀胱切除术、膀胱镜检查、膀胱炎"
+      ],
+      "answer": 0,
+      "hint": "按“炎症—检查—切除—切开”的顺序把四个后缀排一遍，注意 -ectomy 与 -tomy 不同。",
+      "explanation": "**A 正确。** 说话人2 在 02:50 与 04:39 逐个给出中文义：cystitis 膀胱炎、cystoscopy（即 cystoscopic examination）膀胱镜检查、cystectomy 膀胱切除术、cystotomy 膀胱造口术，并强调这些词都保留 cyst 这个词族，代表膀胱相关。\n\n- B、C、D 都是后缀义项错位排列，其中最典型的错误是把 -ectomy（切除）与 -tomy（切开 / 造口）对调，或把 -scopy（内镜检查）当成手术操作。\n- 记法：-itis 炎症、-scopy 镜检查、-ectomy 切掉、-tomy 切开。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "常见词根含义"
-      },
-      "stem": "词根/前缀 electro-、cardio-、-gram、gen- 的含义对应正确的是：",
-      "options": [
-        "电、心、记录/图、基因",
-        "心、电、治疗、产生",
-        "记录、电、心、火",
-        "向外、电、记录、生长"
-      ],
-      "answer": 0,
-      "explanation": "**A 正确。**electro-=电，cardio-=心，-gram=记录/图（如 ECG/electrocardiogram 心电图），gen-=基因/产生。-logist/-ist 表示“研究者/从事……的人”，ex-=向外，troph=生长/营养。",
-      "hint": "electro电、cardio心、-gram图、gen基因。"
+        "label": "1.1 cyst 词族（膀胱） · cyst 词族（说话人2 02:50 / 04:39）"
+      }
     },
     {
       "id": "q004",
       "type": "single_choice",
-      "difficulty": "intermediate",
-      "points": 10,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "sourceRef": {
-        "source": "notes",
-        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "逆构法与截短法举例"
-      },
-      "stem": "下列构词举例与方式对应错误的是：",
+      "points": 2,
+      "stem": "词根 troph、gen、ophthalm、fibr 的含义依次是：",
       "options": [
-        "diagnose(v.) ← diagnosis(n.) —— 逆构法",
-        "flu ← influenza —— 截短法",
-        "genome = gene + chromosome —— 拼缀法",
-        "contract 作“合同”与“患病”讲 —— 派生法"
+        "生长、基因、眼、纤维",
+        "眼、纤维、生长、基因",
+        "基因、生长、纤维、眼",
+        "纤维、眼、基因、生长"
       ],
-      "answer": 3,
-      "explanation": "**D 错误（即本题答案）。**contract 兼有“合同”与“患（病）”（contract a disease）是同形异义/多义词（词义转换），并非“词根+前后缀”的派生法。A、B、C 的逆构、截短、拼缀举例均正确。",
-      "hint": "contract 多义是词义转换，不是派生法。"
+      "answer": 0,
+      "hint": "从最熟的两个词入手：ophthalmologist 是眼科医生，fibrosis 是纤维化。",
+      "explanation": "**A 正确。** troph = 生长，老师在讲 Unit 5 时用 hypertrophic cardiomyopathy（肥厚型心肌病）说明“troph 是什么呀？生长”，并据此推出 exstrophy（说话人1 01:22:11 / 01:23:00）；gen = 基因，说话人3 13:57 讲 genomic 时点明，老师 01:23:51 又用 congenital = con + gen 解释“与生俱来的”；ophthalm = 眼（ophthalmologist 眼科医生，说话人3 19:36）；fibr = 纤维（fibrosis 纤维化，说话人3 18:37）。\n\n- B、C、D 都是四个词根含义的整体错位；只要抓住 ophthalmologist 与 fibrosis 两个熟词，就能锁定 ophthalm 与 fibr 的位置，其余两项用排除法即可确定。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/recording.md",
+        "label": "词根表（说话人1 01:22:11 / 说话人3 18:37）"
+      }
     },
     {
       "id": "q005",
       "type": "single_choice",
-      "difficulty": "intermediate",
-      "points": 10,
+      "difficulty": "basic",
       "source": "current_chapter",
+      "points": 2,
+      "stem": "下列关于后缀与“类别”的对应，正确的一项是：",
+      "options": [
+        "-logist：疾病状态",
+        "-osis：研究者 / 专家",
+        "-itis：炎症",
+        "-ectomy：切开（造口）术"
+      ],
+      "answer": 2,
+      "hint": "把后缀分成“状态、操作、人”三类，再逐个对号入座。",
+      "explanation": "**C 正确。** -itis 表示炎症，cystitis 即膀胱炎（说话人2 02:50）。\n\n- A 错：-logist 表示“研究者 / 研究什么的人”，如 cardiologist（心脏病专家）、radiologist（放射科医生）、ophthalmologist（眼科医生）（说话人3 11:44 / 14:43 / 19:36）；“疾病状态”是 -osis。\n- B 错：-osis 表示疾病状态（fibrosis 纤维化、diagnosis 诊断，说话人3 18:37）；“研究者 / 专家”是 -logist。\n- D 错：-ectomy 表示切除术（cystectomy 膀胱切除术），“切开 / 造口”是 -tomy（cystotomy 膀胱造口术）——这是本课最容易对调的一对后缀。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "Unit 1 关于 AI 与医生的核心主旨"
-      },
-      "stem": "Unit 1 关于人工智能与医生关系的核心观点，正确的表述是：",
-      "options": [
-        "AI will fully substitute for human doctors in diagnosis",
-        "AI is a complement rather than a substitute for human doctors（AI 是补充而非替代，诊断核心权限不应完全移交 AI）",
-        "Doctors should leave all decisions to AI",
-        "AI has no place in clinical practice"
-      ],
-      "answer": 1,
-      "explanation": "**B 正确。**课文主旨强调 AI 是医生的补充（complement）而非替代（substitute），医生不能把诊断核心权限完全交给 AI。A、C 主张 AI 完全替代/包办，与主旨相反；D 完全否定 AI 的临床价值，也与课文不符。",
-      "hint": "complement not substitute。"
+        "label": "1.1 cyst 词族（膀胱） · 后缀表（说话人3 11:44 / 18:37）"
+      }
     },
     {
       "id": "q006",
       "type": "single_choice",
-      "difficulty": "intermediate",
-      "points": 10,
+      "difficulty": "basic",
       "source": "current_chapter",
+      "points": 2,
+      "stem": "关于 regenerate 词族，下列表述正确的是：",
+      "options": [
+        "regeneration 是形容词，表示“已经再生的”",
+        "regenerative 表示“已经再生的”，regenerated 表示“与再生相关的”",
+        "regenerative 表示“与再生相关的”，regenerated 表示“已经再生的”",
+        "regenerate 是名词，意为“再生”"
+      ],
+      "answer": 2,
+      "hint": "-ive 谈属性，-ed 谈结果，先分清这两个形容词再判断词性。",
+      "explanation": "**C 正确。** 说话人2 在 05:50 特意把这一族拆开：regenerate 是动词“再生”，regeneration 是名词“再生”，regenerative 表示“与再生相关的”，regenerated 是过去分词形式、表示“已经再生的”，例如 regenerated tissue 指已再生的组织。\n\n- A 错：-tion 结尾是名词，不是形容词，也不表示“已经”。\n- B 错：把两个形容词的义项对调，是本课最常见的混淆；判别方法是看 -ive（与……相关的属性）与 -ed（已经完成的结果）。\n- D 错：regenerate 是动词，名词形式是 regeneration。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "pneumonia 与 UTI 构词"
-      },
-      "stem": "pneumonia 与 UTI（urinary tract infection）的构词/缩写解读正确的是：",
-      "options": [
-        "pneumonia = pneumon（肺）+ -ia（疾病状态）；UTI = 尿路感染",
-        "pneumonia = pneum（气）+ -onia（炎症的缩写）",
-        "UTI = 上呼吸道感染（upper tract infection）",
-        "pneumonia 是由 cardio（心）构成的心脏病"
-      ],
-      "answer": 0,
-      "explanation": "**A 正确。**pneumonia（肺炎）由词根 pneumon（肺）加后缀 -ia（表示疾病状态）构成；UTI = urinary tract infection 即尿路感染。C 错：UTI 是泌尿（urinary）而非呼吸道。D 错：pneumo-/pneumon 与肺/气相关，与 cardio（心）无关。",
-      "hint": "pneumon肺+-ia病；UTI=尿路感染。"
+        "label": "regenerate 词族（说话人2 05:50）"
+      }
     },
     {
       "id": "q007",
       "type": "single_choice",
-      "difficulty": "advanced",
-      "points": 10,
+      "difficulty": "basic",
       "source": "current_chapter",
-      "sourceRef": {
-        "source": "notes",
-        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "医生与 AI 协作的三项技能"
-      },
-      "stem": "要把 AI 正确整合到临床实践中，医生需要具备的三项关键能力是：",
+      "points": 2,
+      "stem": "在句子 The patient contracted a serious disease during the trip. 中，contract 的意思最可能是：",
       "options": [
-        "背诵全部医学指南、手写病历、参加会诊",
-        "概率化思维（probabilistic thinking）、了解 AI 所依据的训练数据（understand the data AI uses）、将 AI 整合进临床实践（integrate AI into clinical practice）",
-        "完全依赖 AI 出报告、不再查房、不做体格检查",
-        "自行编写 AI 算法、替换放射科、关闭 AI 解释功能"
+        "签订了（合同）",
+        "患（病）、感染",
+        "收缩了（肌肉）",
+        "缩短了（行程）"
       ],
       "answer": 1,
-      "explanation": "**B 正确。**课文提出医生与 AI 协作需三技能：概率化思维、了解 AI 训练数据的局限、把 AI 合理整合进临床实践，医生始终掌握判断与决策权。A 与题目所指无关；C、D 走向全盘依赖或排斥两个极端，均与“AI 是补充”主旨相悖。",
-      "hint": "概率思维+懂数据+整合进临床。"
+      "hint": "先看宾语是什么：disease 能与哪一类动词搭配？",
+      "explanation": "**B 正确。** 老师用 contract 演示词义转换（conversion）：它作名词在普通英语里是“合同”，进入医学英语后意为 get an illness（患病），并强调“这个一定要在上下文里面看”（说话人1 58:11）。句中宾语是 a serious disease，只有“患病、感染”能与之搭配。\n\n- A 错：把普通英语的常用义项直接搬进医学语境，正是老师提醒要避免的判断方式。\n- C 错：contract 确有“收缩”义（如肌肉收缩），但“收缩”不能带 disease 作宾语，也不是本课强调的医学义项。\n- D 错：把 contract 与 trip 连成“缩短行程”，属于按语境词随意联想，同样不能与 disease 搭配。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/recording.md",
+        "label": "词义转换与 contract（说话人1 58:11）"
+      }
     },
     {
       "id": "q008",
       "type": "single_choice",
-      "difficulty": "advanced",
-      "points": 10,
+      "difficulty": "basic",
       "source": "current_chapter",
+      "points": 2,
+      "stem": "老师把 back formation（逆构法）定义为“从名词反向削掉词尾造出更短的动词”。下列哪一组完全符合这一过程？",
+      "options": [
+        "influenza → flu；ICU ← Intensive Care Unit",
+        "diagnosis → diagnose；palpitation → palpitate",
+        "genome = gene + chromosome；pulse + oximeter = pulse ox",
+        "contract 的名词义“合同”→ 动词义“患病”"
+      ],
+      "answer": 1,
+      "hint": "先看每一组里“谁造出了谁”，再判断方向是不是“名词→动词”。",
+      "explanation": "**B 正确。** 老师举的三对正是 diagnosis → diagnose、palpitation → palpitate、ovulation → ovulate，都是名词反向削出动词（说话人1 01:01:32）。\n\n- A 错：influenza → flu 是截短（clipping），ICU ← Intensive Care Unit 是首字母缩略（acronyms），都与“名词反向造动词”无关。\n- C 错：genome 与 pulse ox 都是拼缀法（blending），是把两个词拼起来，不是从名词削出动词。\n- D 错：contract 由“合同”到“患病”是词义转换（conversion），词的形态没有增减。",
       "sourceRef": {
         "source": "notes",
         "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "exstrophy 膀胱外翻的构词"
-      },
-      "stem": "Unit 5 导入的膀胱外翻（bladder exstrophy）一词中，exstrophy 的构词拆解正确的是：",
+        "label": "逆构法（说话人1 01:01:32）"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "关于截短法（clipping）产出的短形式，老师的说法是：",
       "options": [
-        "ex-（向内）+ strophy（关闭）",
-        "ex-（向外）+ strophy（翻转），指膀胱外翻于腹腔外的罕见先天畸形",
-        "ex-（前）+ strophy（生长），指膀胱过度生长",
-        "ex-（无）+ strophy（炎症），指膀胱无炎症"
+        "短形式与全称一样正式，可以直接用于论文标题",
+        "短形式不正式，只有全称才是正式形式",
+        "短形式只能口头使用，任何书面材料中都禁止出现",
+        "短形式必须全部字母大写"
       ],
       "answer": 1,
-      "explanation": "**B 正确。**exstrophy = ex-（向外）+ strophy（翻转），膀胱外翻是一种罕见先天畸形，膀胱位于腹腔外，常需多次手术，并涉及再生工程（regenerative engineering）与细胞生物学、工程学、医学的跨学科治疗。A、C、D 对 ex- 与 strophy 的释义均不正确。",
-      "hint": "ex向外+strophy翻转=膀胱外翻。"
+      "hint": "回忆老师比较 full form 与 short form 时对“正式性”的判断。",
+      "explanation": "**B 正确。** 老师讲 clipping 时说：用短形式时 it is not a formal one，the whole word is the formal one——flu 是短形式，influenza 才是正式形式（说话人1 01:02:44）。\n\n- A 错：正因短形式不正式，老师在对比 Unit 5 两个标题时才强调正式语域不能随便用口语化动词（说话人1 01:28:05）。\n- C 错：老师说的是“不正式”，并非“禁止书面使用”；flu 在阅读文章里很常见。\n- D 错：全部大写是首字母缩略法（acronyms）的要求，如 ICU、ECG，与截短法无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "截短法与语域（说话人1 01:02:44）"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "cardiologist、internist、diagnostician 依次指“心脏病专家 / 内科医生 / 诊断医师”。下列对三者“表示人”的后缀判断正确的是：",
+      "options": [
+        "cardiologist 用 -ist；internist 用 -logist；diagnostician 用 -ian",
+        "三者依次用 -logist、-ist、-cian",
+        "三者都用 -ist",
+        "cardiologist 用 -cian；internist 用 -ist；diagnostician 用 -logist"
+      ],
+      "answer": 1,
+      "hint": "注意 cardio 后面那个 o 是连接元音，然后才是表示“研究者”的后缀。",
+      "explanation": "**B 正确。** 说话人3 逐个拆解：cardiologist = cardio + o（连接元音）+ logist（研究者）；internist = intern（内部）+ ist（从事……的人）；diagnostician 用 -cian，老师说这是“一个很常见的关于人的一个后缀”（说话人3 10:33 / 11:44）。\n\n- A 错：把 -logist 与 -ist 对调，且 -ian 不是诊断医师的后缀形式（该词拼作 -cian）。\n- C 错：三个词的后缀形式并不相同，统一说成 -ist 就丢掉了 -logist 表示“研究 / 专家”这一层信息。\n- D 错：把 cardiologist 的后缀说成 -cian、diagnostician 的后缀说成 -logist，两处都错位。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "后缀与人（说话人3 10:33 / 11:44）"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "关于英语构词方式与其例词的对应关系，下列说法正确的有：",
+      "options": [
+        "词义转换（conversion）：contract 由「合同」转为动词「患病」，如 contract a disease",
+        "拼缀法（blending）：genome 由 gene 与 chromosome 拼合而成",
+        "逆构法（back formation）：动词 diagnose 由名词 diagnosis 反向削去词尾而来",
+        "截短法（clipping）：flu 是 influenza 的缩写形式，属首字母缩略法"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "前三个选项逐个核对「构词手段—例词」是否自洽；最后一项要判一判 flu 到底属于哪一种。",
+      "explanation": "**A、B、C 正确。** 词义转换是同一个词形承担新的词性与词义（contract：名词「合同」→ 动词「患病」）；拼缀法是两个词各取一部分拼成新词（gene + chromosome → genome）；逆构法是从一个较长的名词反向削去词尾造出更短的动词（diagnosis → diagnose）。\n**D 错：** flu 确实是 influenza 的缩短形式，但它属于**截短法（clipping）**，不是**首字母缩略法（acronym／initialism）**——首字母缩略是把词组中各词的首字母连起来（如 ICU、ECG）。把截短法与首字母缩略混为一谈是常见错误。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "截短法 clipping：长术语砍成短形式"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "关于 cyst 词族各词的含义，下列说法正确的有：",
+      "options": [
+        "cystitis 指膀胱炎（-itis 表示炎症）",
+        "cystoscopy 指膀胱镜检查（-scopy 表示检查／观察）",
+        "cystectomy 指膀胱切除术（-ectomy 表示切除术）",
+        "cystotomy 指膀胱造口术（-tomy 表示切开／造口）"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "把每个词拆成「词根 + 后缀」，再核对后缀与中文释义是否一一对应。",
+      "explanation": "**四项均正确。** cyst 词族的四个词都由同一词根 cyst（膀胱；亦指囊）加上不同后缀构成：**-itis** 表示炎症 → cystitis 膀胱炎；**-scopy** 表示检查、观察 → cystoscopy 膀胱镜检查；**-ectomy** 表示切除 → cystectomy 膀胱切除术；**-tomy** 表示切开、造口 → cystotomy 膀胱造口术。这类词的记忆方法是先牢固掌握后缀含义，再往词根上套。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "1.1 cyst 词族（膀胱） · cyst 词族（膀胱 / 囊）：本课最完整的一条词根链"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "关于医学英语常用词根／词缀的含义，下列说法正确的有：",
+      "options": [
+        "electro- 表示「电」，cardio 表示「心」",
+        "-gram 表示「记录、图」，如 electrocardiogram",
+        "troph 表示「生长」，gen- 表示「基因」，ex- 表示「向外」",
+        "-logist 与 -ist 都表示「从事……的人／研究者」"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "把每个词缀拿出来单独回忆含义，再想它出现在哪个已学词里。",
+      "explanation": "**四项均正确。** 本课要求掌握的词根／词缀包括：**electro-**＝电、**cardio**＝心、**-gram**＝记录／图（electrocardiogram 心电图）、**-logist**＝研究者／专家、**-ist**＝从事……的人、**gen-**＝基因、**ex-**＝向外、**troph**＝生长。把这些词缀与已学词族（如 regenerate 的 gen-、troph-）绑定记忆，遇到生词即可先拆后猜。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "regenerate 词族：动词、名词、两个形容词要分清"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "关于同一个词族内部词性变化所对应的含义，下列说法正确的有：",
+      "options": [
+        "diagnosis（名词，诊断）／diagnostic（形容词，诊断的）／diagnostician（名词，诊断医师）",
+        "regenerate（动词，再生）／regeneration（名词，再生）／regenerative（形容词，与再生相关的）",
+        "clinical（形容词，临床的）／clinic（名词，诊所）／clinician（名词，临床医生）／preclinical（形容词，临床前的）",
+        "urine（名词，尿液）／urinary（形容词，泌尿的）／urination（名词，排尿）"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "看每个词的词尾（-is／-ic／-ian／-ion／-ive／-al），词尾往往直接决定词性与含义。",
+      "explanation": "**四项均正确。** 医学英语中同一个词根通过后缀变化可以派生出成组的词，且**词性与含义的对应非常规律**：-is／-ion 多为名词（诊断、再生、排尿），-ic／-al／-ive 多为形容词（诊断的、临床的、与再生相关的），-ian／-ist／-logist 多指「从事某职业的人」（诊断医师、临床医生）。掌握这一规律后，遇到未见过的同族词也能判断其词性与大致含义。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "医学英语 · 课堂可视化笔记"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "下列医学英语术语与其汉语释义的对应中，正确的有：",
+      "options": [
+        "urinary tract infection 尿路感染",
+        "palpation 触诊；percussion 叩诊",
+        "ischemic stroke 缺血性卒中",
+        "pneumonia 肺炎（pneumon- 表示肺，-ia 表示疾病状态）"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "先看每个术语里能不能拆出已学词根，再核对中文释义。",
+      "explanation": "**四项均正确。** 这些术语都出自本课的词汇包：**urinary tract infection**＝尿路感染；**palpation**＝触诊、**percussion**＝叩诊（两者是体格检查的两项基本手法，需成对记住）；**ischemic stroke**＝缺血性卒中；**pneumonia**＝肺炎，其中 **pneumon-** 表示肺、**-ia** 表示疾病状态，正好体现了「词根 + 后缀」的构词方式。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "第6章 医学英语构词法（六类） · 派生法 derivation：前缀 + 词根 + 后缀（最常用）"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "Unit 1 的核心观点被老师反复强调，并要求作为答题要点记忆。该观点是：",
+      "options": [
+        "AI is a complement instead of a substitute for human doctors.（AI 是人类医生的补充而非替代）",
+        "AI will soon replace human doctors in most diagnostic tasks.（AI 将很快在多数诊断任务中取代医生）",
+        "AI should be given full authority over the final diagnosis.（应把最终诊断权完全交给 AI）",
+        "AI is only useful for administrative work and has no clinical value.（AI 只对行政工作有用）"
+      ],
+      "answer": 0,
+      "hint": "回忆老师在讲 AI 与医生关系时用的那组对立词：一个是「补充」，一个是「替代」。",
+      "explanation": "**A 正确。** Unit 1 的核心主旨是 **AI is a complement instead of a substitute for human doctors**——AI 是医生的**补充**而不是**替代**；因此**不可将诊断的核心权限完全移交给 AI**。这一句既是课文主旨，也是本课要求记住的答题要点。\n**B、C 错：** 两项都把 AI 说成替代者甚至诊断权的接管者，与课文主旨方向相反（C 尤其违背了「不可把核心诊断权移交 AI」这一限定）。\n**D 错：** 课文并不否认 AI 的临床价值，只是限定其角色为补充——把它说成只有行政价值是对课文立场的另一种曲解。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "Unit 1 课文的进度：上次停在第 13 段"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "关于逆构法（back formation）与截短法（clipping），下列表述正确的是：",
+      "options": [
+        "逆构法是从较长的名词反向削去词尾造出更短的动词（diagnosis → diagnose）；截短法是直接截去原词的一部分（influenza → flu）",
+        "逆构法与截短法是同一种构词手段的两种叫法，都只是把词变短",
+        "逆构法截去的是词的中间部分，截短法截去的是词的首字母",
+        "逆构法用于构成名词，截短法用于构成动词"
+      ],
+      "answer": 0,
+      "hint": "两者都让词变短，区别在于「变短之后词性变没变」以及「是砍词尾还是砍一段」。",
+      "explanation": "**A 正确。** 两种手段都会让词变短，但机制不同：**逆构法**是「**反向**推导」——由较长的名词削去后缀造出一个**新词性的词（通常是动词）**，如由名词 diagnosis 得到动词 diagnose；**截短法**则只是把原词**截去一部分**，词性与基本词义不变，如 flu ← influenza。\n**B 错：** 把两者混为一谈，忽略了逆构法会改变词性这一关键差别。\n**C 错：** 截短法截去的通常是词尾或首部从而得到更短的形式，与「截去首字母构成缩写」是两回事（后者属首字母缩略法）。\n**D 错：** 词性与构词手段没有这种固定绑定，逆构法最常见的产物恰恰是动词。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "逆构法 back formation：从名词倒推回动词"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "Unit 5 的课文围绕一种罕见的先天性疾病展开，并涉及跨学科治疗思路。该疾病与其词源解释是：",
+      "options": [
+        "bladder exstrophy（膀胱外翻）；exstrophy 由 ex-（向外）+ strophy（翻转）构成，指膀胱生长于腹腔之外",
+        "ischemic stroke（缺血性卒中）；stroke 意为「打击」，故指脑血管被打断",
+        "urinary tract infection（尿路感染）；infection 由 in-（向内）+ fect（做）构成",
+        "pneumonia（肺炎）；pneumon- 意为「气」，故指气体进入肺内引发炎症"
+      ],
+      "answer": 0,
+      "hint": "回忆课文讲的那个「出生时膀胱不在正常位置」的病例，以及那个词里前缀表示的方向。",
+      "explanation": "**A 正确。** Unit 5 的主题是**用再生工程治疗膀胱外翻（bladder exstrophy）**。**exstrophy** 一词可拆为 **ex-（向外）+ strophy（翻转）**，字面即「向外翻转」——该病患者膀胱生长于腹腔之外，属**罕见先天疾病**，往往需要多次手术。课文的用意正在于指出这类疾病需要**细胞生物学、工程学与医学的跨学科协作**（再生工程即其中的代表方向）。\n**B、C、D 错：** 三项都是本课词汇包里真实出现的术语，但都不是 Unit 5 课文的主题疾病；把它们当作课文主题即为张冠李戴。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "第8章 Unit 5 导入：膀胱外翻与再生工程 · Unit 5 导入：膀胱外翻与再生工程"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "老师把医生与 AI 协作所需的能力归纳为几项技能。下列说法正确的有：",
+      "options": [
+        "概率化思维（probabilistic thinking）",
+        "了解 AI 所使用／训练所依据的数据（understand the data AI uses）",
+        "把 AI 整合进临床实践（integrate AI into clinical practice）",
+        "把最终诊断决定权完全交给 AI，以提高效率"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "三项技能都围绕「医生如何使用 AI」展开；有一项与 Unit 1 的核心主旨直接冲突。",
+      "explanation": "**A、B、C 正确。** Unit 1 提出医生与 AI 协作需要三项能力：**概率化思维**（AI 给出的是概率性判断，医生须按概率而非确定性来理解与使用）、**了解 AI 训练所依据的数据**（数据的来源与偏倚直接决定结论的适用范围）、**把 AI 整合进临床实践**（落到具体诊疗流程中而非停留在工具层面）。\n**D 错：** 把最终诊断决定权完全交给 AI，与 Unit 1 的核心主旨 **AI is a complement instead of a substitute for human doctors** 直接冲突——课文明确不主张将诊断的核心权限完全移交 AI。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "Unit 1 课文的进度：上次停在第 13 段"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "关于拼缀法（blending）与派生法（derivation）的区别，下列说法正确的有：",
+      "options": [
+        "拼缀法是把两个词各取一部分拼成一个新词，如由 gene 与 chromosome 得到 genome",
+        "派生法是在词根上添加前缀／后缀构成新词，是最常见的构词方式",
+        "electrocardiogram 属于派生法构成的词，由前缀 electro-、词根 cardio 与后缀 -gram 组合而成",
+        "两种方法都必须使用词根，因此可视为同一种构词法"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "看一个词是「两个词剪接」还是「词根加减词缀」；最后一项在问两者能不能划等号。",
+      "explanation": "**A、B、C 正确。** **拼缀法**的特点是**两个词各取一部分**拼合：gene + chromosome → **genome**；**派生法**是在**词根上添加前缀或后缀**构成新词，是医学英语中**最常见**的构词方式；**electrocardiogram** 正是一个典型的派生词——前缀 **electro-**（电）＋词根 **cardio**（心）＋后缀 **-gram**（记录／图）。\n**D 错：** 两者机制不同：拼缀法的素材来自两个**独立的词**，派生法的素材是**词根加词缀**。虽然拼缀形成的词也可能含有词根性成分，但把两种方法视为同一种会丢掉「拼缀＝词的剪接」这一判据。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "第6章 医学英语构词法（六类） · 派生法 derivation：前缀 + 词根 + 后缀（最常用）"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "请以 contract / diagnose / flu / genome / ICU 五个例子，分别说明它们各自对应的构词方式、该方式的定义，并指出六种构词方式中最常见的是哪一种、为什么。",
+      "answer": "**（1）逐例判定（6 分）**\n- **contract**：属**词义转换（conversion）**——同一个词形由名词「合同」转为动词「患病」，如 **contract a disease**；词形不变而词性与词义发生转移。\n- **diagnose**：属**逆构法（back formation）**——由名词 **diagnosis** 反向削去词尾造出更短的**动词**。\n- **flu**：属**截短法（clipping）**——把 **influenza** 直接截短成更短的形式，词性与基本含义不变。\n- **genome**：属**拼缀法（blending）**——由 **gene** 与 **chromosome** 各取一部分拼合而成。\n- **ICU**：属**首字母缩略法**——把词组中各词的首字母连在一起形成缩写（ECG 同理）。\n**（2）最常见的一种（4 分）**：**派生法（derivation）**——在词根上添加前缀／后缀构成新词。它最常见的原因在于：医学英语的术语体系高度依赖「同一词根 + 不同后缀」来表达同族概念（如 diagnosis／diagnostic／diagnostician，cystitis／cystoscopy／cystectomy／cystotomy），只要掌握有限的词根与词缀，就能成批地识别与生成术语，因此它是医学英语词汇扩张效率最高的方式。其余五种（转换、拼缀、逆构、截短、缩略）各有适用场景，但生成能力远不及派生法。",
+      "scoring_criteria": [
+        "contract＝词义转换，并说明词形不变而词性/词义转移（1.2 分）",
+        "diagnose＝逆构法，说明由 diagnosis 反向削去词尾造出动词（1.2 分）",
+        "flu＝截短法，说明由 influenza 截短而来（1.2 分）",
+        "genome＝拼缀法，说明由 gene + chromosome 拼合（1.2 分）",
+        "ICU＝首字母缩略法，说明取各词首字母（1.2 分）",
+        "指出派生法（词根 + 前缀/后缀）是最常见的构词方式（2 分）",
+        "说明其原因：术语体系依赖同一词根加不同后缀成组生成，掌握词根词缀即可成批识词（2 分）"
+      ],
+      "hint": "先给五个例子各贴一个标签，再回答「哪一种最常见」并说出理由（提示：想想 cyst 词族为什么能一口气记四个词）。",
+      "explanation": "本题把「六种构词方式」这一识记点转成实例判定，评分按「例子判对 + 理由说清」两块：\n1. **五个例子**必须逐一贴对标签，其中最容易错的是 **flu（截短法，不是首字母缩略）** 与 **diagnose（逆构法，产物是不同词性的词）**。\n2. **最常见的方式**是**派生法**，理由必须落到「词根＋词缀的成组生成能力」，只答「最常见」而不给理由会丢掉后一个得分点。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "六种构词方式（高频）"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "结合 cyst 词族与 diagnosis / regenerate 词族，写出你在遇到一个**未见过的医学英语生词**时的推断步骤，并各举一例说明如何推断其大致含义。",
+      "answer": "**推断步骤（6 分）**\n1. **先拆词**：从词中找出**词根**与**前缀／后缀**，把词切成「前缀 + 词根 + 后缀」三段（没有前缀或后缀时按两段处理）。\n2. **定词根义**：回忆词根的含义（如 **cyst**＝膀胱／囊，**gen-**＝基因，**troph**＝生长，**diagno-** 与「诊断」相关）。\n3. **定词缀义与词性**：由后缀判断词性与类别——**-itis**＝炎症、**-scopy**＝检查、**-ectomy**＝切除、**-tomy**＝切开／造口、**-ion**／**-is** 多为名词、**-ive**／**-ic**／**-al** 多为形容词、**-ian**／**-ist**／**-logist** 指从事该职业的人。\n4. **合成释义**：把词根义与词缀义按顺序组合，得到「部位／对象 + 动作或性质」的初步释义。\n5. **回句验证**：把初步释义放回上下文，检查是否与句子的医学语境自洽；若不通再调整拆词方式。\n**示例（4 分）**\n- **cystotomy**：拆为 cyst（膀胱）+ -tomy（切开／造口）→ 膀胱造口术；与已学 **cystectomy**（-ectomy 切除 → 膀胱切除术）只差一个后缀，可成对记忆。\n- **regenerative**：拆为 **regenerate**（再生）+ **-ive**（形容词后缀）→ 「与再生相关的」；同族还有 regeneration（名词，再生），可由词尾的 -ion／-ive 直接判断词性，**无需死记每个词**。",
+      "scoring_criteria": [
+        "步骤①：先拆出词根与前缀/后缀（1.5 分）",
+        "步骤②：回忆词根含义（1.5 分）",
+        "步骤③：用后缀判断词性与类别（-itis/-scopy/-ectomy/-tomy 等）（1.5 分）",
+        "步骤④⑤：合成释义后放回上下文验证（1.5 分）",
+        "示例一：cystotomy 拆 cyst + -tomy → 膀胱造口术（2 分）",
+        "示例二：regenerative 由 regenerate + -ive 判断为形容词「与再生相关的」，并说明同族词性变化（2 分）"
+      ],
+      "hint": "把「拆—认词根—认后缀定词性—合义—回句验证」写成有序步骤；举例时优先挑和已学词只差一个后缀的词（如 -tomy 与 -ectomy）。",
+      "explanation": "本题考的是**方法**而非记忆量，评分看两步：\n1. **步骤是否完整有序**：至少要有「拆词 → 词根义 → 后缀义与词性 → 合成 → 回句验证」五个动作，缺一即扣分；其中「由后缀判断词性」是很多同学生词推断失败的关键。\n2. **示例是否自洽**：cystotomy 与 cystectomy 的对照能体现「同词根换后缀」的高效记忆法；regenerative 则体现由 -ive/-ion 判断词性。示例必须能把步骤真正用一遍，而不是只列词义。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "1.1 cyst 词族（膀胱） · cyst 词族（膀胱）"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "论述题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "请围绕 Unit 1 的核心观点「**AI is a complement instead of a substitute for human doctors**」展开论述：① 这一观点的含义与它明确排除的做法；② 医生与 AI 协作所需的三项技能及其理由；③ 结合这一观点，说明为什么「把诊断的核心权限完全移交 AI」是不可取的。",
+      "answer": "**① 观点含义与排除的做法（5 分）**：核心主张是 **AI 是人类医生的补充（complement），而不是替代者（substitute）**。其含义有两层：一是承认 AI 在医学实践中确实具有临床价值，可以作为辅助手段参与诊疗；二是明确医生的主体地位与最终责任不被取代。由此**明确排除**的做法是：把 AI 当作医生的替代者、乃至**将诊断的核心权限完全移交 AI**。\n**② 三项协作技能及理由（7 分）**\n- **概率化思维（probabilistic thinking）**：AI 输出的是概率性判断而非确定性结论，医生必须按概率来理解与使用这些输出，才能避免把「高风险提示」误读为「确诊」。\n- **了解 AI 所使用／训练所依据的数据（understand the data AI uses）**：数据的来源、覆盖人群与偏倚直接决定结论的适用范围；不了解数据就无法判断某个输出在本患者身上是否可信。\n- **把 AI 整合进临床实践（integrate AI into clinical practice）**：只有落到具体的诊疗流程、分工与复核机制中，AI 的价值才能实现，同时避免「工具与流程两张皮」。\n**③ 为什么不能把诊断权全部交给 AI（3 分）**：其一，AI 的判断本质上带有概率性与不确定性，而临床决策还需要结合患者具体情境、价值取向与伦理判断，这些无法由模型单独承担；其二，责任主体必须是医生——一旦把核心诊断权限完全移交，出现错误时无法界定并落实责任；其三，课文所主张的是「补充」关系，完全移交实质上是把补充者变成替代者，违背了 Unit 1 的核心立场。因此正确的做法是让 AI 提供概率性判断与数据支持，由医生完成整合、决策与担责。",
+      "scoring_criteria": [
+        "准确表述观点：AI 是医生的补充而非替代（2 分）",
+        "指出该观点排除的做法：把 AI 当作替代者／将诊断核心权限完全移交（3 分）",
+        "技能一：概率化思维，并说明 AI 输出为概率性判断（2.5 分）",
+        "技能二：了解 AI 所使用/训练的数据，并说明数据来源与偏倚影响适用范围（2.5 分）",
+        "技能三：把 AI 整合进临床实践，并说明需落到诊疗流程（2 分）",
+        "说明完全移交不可取：概率性与不确定性、责任主体、以及违背「补充而非替代」的立场（3 分）"
+      ],
+      "hint": "把课文主旨先复述准确，再逐项写三项技能并各给一句「为什么要它」；最后一问从「谁负责」与「AI 的判断是什么性质」两个角度切入。",
+      "explanation": "本题对应 Unit 1，评分分三块：\n1. **观点表述**必须出现 complement／substitute 这组对立，并落到「不把核心诊断权移交 AI」这一限定，只说「AI 有用」不构成观点。\n2. **三项技能**每项都要配理由：概率化思维对应「AI 输出的概率性」，了解数据对应「数据偏倚决定适用边界」，整合进临床对应「工具必须进流程」。\n3. **不可取的理由**要给出至少两条独立论证（概率性与不确定性、责任主体），并回扣课文主旨；只重复「AI 不能替代医生」而不给论证会失分。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "Unit 1 核心主旨"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "材料分析题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "阅读下列课堂材料，回答问题。\n\n> **【Unit 5 病例（据逐字稿整理）】** 一名患儿出生即被诊断为 **bladder exstrophy**：膀胱生长于腹腔之外，出生后需要经历**多次手术**。课文由此引入**再生工程（regenerative engineering）** 的治疗思路——用组织工程与再生医学的方法尝试重建膀胱。\n\n**设问：**\n（1）请拆分 **exstrophy** 一词的构词成分，说明其字面含义与疾病表现之间的关系。\n（2）课文中这一疾病为什么被作为「**跨学科协作**」的例证？请指出至少两个参与学科并说明各自的作用。\n（3）以该病例为例，说明再生工程类治疗方案在**技术**与**伦理**两个层面需要额外考虑的问题。",
+      "answer": "**（1）构词拆分（4 分）**：**exstrophy = ex-（向外）+ strophy（翻转）**，字面含义为「**向外翻转**」。这与疾病表现直接对应：患者的膀胱**向外翻出、生长于腹腔之外**，而非位于正常解剖位置。也就是说，词缀本身就提示了病变的方向与形态，属于「由构词推知病征」的典型例子。\n**（2）跨学科协作（6 分）**：该病涉及从组织结构到器官重建的整条链条，单靠一个学科无法完成，至少包括：\n- **细胞生物学／再生医学**：提供细胞来源（如干细胞或自体细胞）、增殖与分化调控的知识，回答「用什么细胞、怎样让细胞长成膀胱组织」；\n- **工程学（生物材料／组织工程）**：提供支架材料的选型与设计、力学性能与降解速率的匹配，回答「细胞长在什么基底上、如何维持形态与承力」；\n- **临床医学（泌尿外科等）**：负责疾病诊断、手术时机与方式选择、术后功能评估与随访，回答「什么时候做、做成什么样才算有效」。\n（答出上述任意两个学科并说明其作用即可得分；三者都答且作用清楚为满分。）\n**（3）技术与伦理的额外问题（5 分）**\n- **技术层面**：其一，再生组织的**功能成熟度**——重建的膀胱不仅要「长出来」，还要具备储尿、排空与屏障等生理功能；其二，**长期安全性**——植入细胞与支架的长期存活、降解产物与免疫排斥、是否存在致瘤风险；其三，**可重复性与个体化**——不同患者的解剖与病情差异大，方案能否稳定复现。\n- **伦理层面**：受试者是**新生儿／儿童**，无法自主知情同意，须由监护人代为决定；试验性治疗须经过严格的伦理审查与风险收益权衡；还需考虑**长期随访义务**、隐私与数据保护，以及当出现疗效不确定时如何避免给家庭带来过高期望。",
+      "scoring_criteria": [
+        "拆出 ex-（向外）与 strophy（翻转）并给出字面义「向外翻转」（2 分）",
+        "将字面义与疾病表现（膀胱翻出、位于腹腔外，且为罕见先天病、需多次手术）对应（2 分）",
+        "指出至少两个参与学科并分别说明作用（细胞生物学/再生医学、工程学、临床医学）（4 分）",
+        "说明协作的必要性：从细胞到器官、从材料到手术，单学科无法覆盖（2 分）",
+        "技术层面问题：功能成熟度、长期安全性（免疫排斥/降解/致瘤）、可重复性与个体化（2.5 分）",
+        "伦理层面问题：儿童受试者的知情同意、伦理审查、长期随访与期望管理（2.5 分）"
+      ],
+      "hint": "第一问只看词缀方向；第二问先想「从细胞到器官要经过哪些环节」；第三问抓「受试者是新生儿」这一点，伦理问题就自然出来了。",
+      "explanation": "本题以 Unit 5 的膀胱外翻病例为材料，三问分别考词源、跨学科与思辨：\n1. **构词题**要求把 ex- 与 strophy 拆开并把字面义与病征对上（3.3 节：exstrophy = ex- 向外 + strophy 翻转），这是本课诊断「会拆词」能力的直接体现。\n2. **跨学科题**要落到「各自解决哪一段问题」：细胞生物学解决细胞来源与分化，工程学解决支架与力学，临床解决时机与评估——只罗列学科名称而不说作用不得满分。\n3. **思辨题**的关键切入点是受试者为新生儿：由此推出知情同意、伦理审查与长期随访；技术面则围绕功能成熟度、长期安全性与个体化，体现对再生治疗局限的认识。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "第8章 Unit 5 导入：膀胱外翻与再生工程 · Unit 5：膀胱外翻"
+      }
     }
-  ]
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "multiple_choice": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
 }

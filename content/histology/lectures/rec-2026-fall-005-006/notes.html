@@ -1,258 +1,748 @@
-<!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-@page{size:A4;margin:0}
-body{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;color:#24201A;background:#FAF8F1;font-size:10pt;line-height:1.7}
-.cover{width:210mm;height:297mm;background:linear-gradient(135deg,#2F8557 0%,#1F5C39 55%,#143D27 100%);color:#FBF7EC;display:flex;flex-direction:column;justify-content:center;padding:30mm 25mm;page-break-after:always}
-.cover .kicker{font-size:9pt;letter-spacing:.4em;text-transform:uppercase;color:#E7CE9C;margin-bottom:8mm}
-.cover h1{font-family:"Noto Serif CJK SC",serif;font-size:36pt;font-weight:700;line-height:1.2;margin-bottom:6mm}
-.cover .sub{font-size:14pt;color:rgba(251,247,236,.8);margin-bottom:12mm}
-.cover .meta{display:grid;grid-template-columns:1fr 1fr;gap:5mm;font-size:10pt;color:rgba(251,247,236,.7);border-top:1px solid rgba(231,206,156,.3);padding-top:8mm}
-.cover .meta b{color:#E7CE9C;display:block;font-size:8pt;letter-spacing:.15em;margin-bottom:1mm}
-.page{padding:18mm 20mm;page-break-after:always}
-.page:last-child{page-break-after:auto}
-h2.sec{font-family:"Noto Serif CJK SC",serif;font-size:18pt;color:#1F5C39;border-bottom:2.5pt solid #2F8557;padding-bottom:2mm;margin-bottom:6mm;display:flex;align-items:baseline;gap:4mm}
-h2.sec .num{background:#2F8557;color:#fff;font-size:11pt;padding:1mm 3mm;border-radius:2mm}
-h3.subsec{font-size:13pt;color:#1F5C39;margin:5mm 0 2.5mm;padding-left:3mm;border-left:3pt solid #A2630C}
-p{margin-bottom:2.5mm;color:#4A4337}
-.kv-grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0}
-.kv-card{background:#fff;border:0.5pt solid #C3D9C9;border-radius:2mm;padding:3mm 4mm}
-.kv-card .k{font-weight:700;color:#1F5C39;font-size:9.5pt;margin-bottom:1mm}
-.kv-card .v{font-size:9pt;color:#4A4337;line-height:1.55}
-.highlight{background:linear-gradient(180deg,#F8ECD3,#F8ECD3);border:0.5pt solid #E7CE9C;border-radius:2mm;padding:3mm 4mm;margin:3mm 0;font-size:9.5pt}
-.highlight .tag{display:inline-block;background:#A2630C;color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;letter-spacing:.08em}
-.warn{background:#F7E4DF;border:0.5pt solid #E6BDB4;border-radius:2mm;padding:3mm 4mm;margin:3mm 0;font-size:9.5pt;color:#7E2A20}
-.warn .tag{display:inline-block;background:#B23A2E;color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt}
-th{background:#2F8557;color:#fff;padding:2mm 3mm;text-align:left;font-weight:600}
-td{padding:2mm 3mm;border-bottom:0.5pt solid #C3D9C9;color:#4A4337;vertical-align:top}
-tr:nth-child(even) td{background:#F3EFE5}
-.checklist{list-style:none;margin:3mm 0}
-.checklist li{padding:1.5mm 0 1.5mm 7mm;position:relative;font-size:9.5pt;color:#4A4337;border-bottom:0.3pt dashed #C3D9C9}
-.checklist li::before{content:"☐";position:absolute;left:0;color:#2F8557;font-weight:700}
-.qa{margin:3mm 0}
-.qa .q{font-weight:700;color:#1F5C39;font-size:10pt;margin-bottom:1.5mm;padding-left:3mm;border-left:3pt solid #2F8557}
-.qa .a{font-size:9.5pt;color:#4A4337;padding-left:6mm;line-height:1.65}
-.toc{margin:5mm 0}
-.toc-item{display:flex;align-items:baseline;gap:3mm;padding:2mm 0;border-bottom:0.3pt solid #C3D9C9;font-size:10.5pt}
-.toc-item .tn{font-weight:700;color:#2F8557;min-width:12mm}
-.toc-item .tt{color:#24201A;font-weight:600}
-.structure{background:#fff;border:0.5pt solid #C3D9C9;border-radius:2mm;padding:5mm;margin:4mm 0;font-size:9pt;line-height:2}
-.structure .l1{font-weight:700;color:#1F5C39}
-.structure .l2{padding-left:6mm;color:#4A4337}
-.structure .l3{padding-left:12mm;color:#857B68;font-size:8.5pt}
+﻿<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>人体组织学 · 第5-6节 · 软骨骨骨发生</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#8A5A2B; --accent-d:#5F3D1B; --accent-t:#F4EADF;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75}
+h1,h2,h3{font-family:var(--serif);line-height:1.35;margin:0}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff}
+.cover{margin:0 0 6mm}
+.h1{font-size:24pt;color:var(--ink);margin:6mm 0 2mm}
+.h2{font-size:13.5pt;color:var(--accent-d);border-bottom:1pt solid var(--accent);padding-bottom:1.4mm;margin:7mm 0 3mm}
+.h3{font-size:11.5pt;color:var(--accent-d);margin:4.5mm 0 1.5mm}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;font-size:10pt;margin:0 0 4mm}
+.kv{list-style:none;margin:0 0 3mm;padding:0}
+.kv li{position:relative;padding:1.1mm 0 1.1mm 5.5mm;border-bottom:.5pt dotted var(--line);break-inside:avoid}
+.kv li::before{content:"\25B8";position:absolute;left:0;color:var(--accent)}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0 4mm;font-size:9.5pt;break-inside:avoid}
+.tbl th{background:var(--accent);color:#fff;text-align:left;font-weight:600}
+.tbl td,.tbl th{padding:1.8mm 2.4mm;border-bottom:.5pt solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.exam,.wrong,.mnem,.def{border:.5pt solid var(--line);border-left:4pt solid var(--accent);padding:2.5mm 3.5mm;margin:3mm 0;break-inside:avoid}
+.exam{border-left-color:var(--exam);background:var(--exam-t)}
+.wrong{border-left-color:var(--wrong);background:var(--wrong-t)}
+.mnem{border-left-color:var(--mnem);background:var(--mnem-t)}
+.def{border-left-color:var(--def);background:var(--def-t)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0}
+.card{border:.5pt solid var(--line);border-top:3pt solid var(--accent);background:var(--paper);padding:2.5mm 3mm;break-inside:avoid;font-size:9.5pt}
+.card b{color:var(--accent-d)}
+.tag{display:inline-block;background:var(--exam);color:#fff;font-size:8pt;padding:.3mm 2mm;margin-right:2mm;vertical-align:1px}
+.foot{margin-top:7mm;border-top:.5pt solid var(--line);padding-top:2mm;font-size:8pt;color:var(--muted);display:flex;justify-content:space-between}
+.idx{font-size:8.6pt}
+.idx td,.idx th{padding:1.1mm 1.8mm}
+@media print{.page{margin:0}}
 </style></head><body>
 
+<div class="page">
 <div class="cover">
-  <div class="kicker">HUST · 基础医学 · 可视化笔记</div>
-  <h1>人体组织学<br><span style="color:#E7CE9C">软骨 · 骨 · 骨发生</span></h1>
-  <div class="sub">第5-6节 · 2026-09-07 · 李和教授</div>
-  <div class="meta">
-    <div><b>课程</b>人体组织学</div>
-    <div><b>节次</b>课程内第5-6节</div>
-    <div><b>主题</b>固有结缔组织续、软骨组织、骨组织与骨发生</div>
-    <div><b>类型</b>课堂可视化笔记</div>
-  </div>
+<div class="h1">人体组织学 · 第5-6节</div>
+<h2 class="h2">软骨骨骨发生 · 核心笔记</h2>
+<table class="tbl">
+<tr><th>课程</th><td>人体组织学</td></tr>
+<tr><th>节次</th><td>第 5–6 节</td></tr>
+<tr><th>主题</th><td>软骨骨骨发生</td></tr>
+<tr><th>上课日期</th><td>2026-09-07</td></tr>
+<tr><th>素材规模</th><td>28133字106轮</td></tr>
+</table>
+</div>
+
+<h2 class="h2">0. 知识框架</h2>
+<div class="lead">胶状固有结缔组织→固态软骨→钙化骨（管道输送营养）。</div>
+<svg viewBox="0 0 720 260" width="100%" aria-label="知识框架"><rect x="260" y="6" width="200" height="32" fill="#F4EADF" stroke="#8A5A2B"/><text x="360" y="28" text-anchor="middle" font-size="12" font-family="sans-serif">第5-6节主线</text>
+<line x1="360" y1="38" x2="120" y2="78" stroke="#8A5A2B"/><line x1="360" y1="38" x2="360" y2="78" stroke="#8A5A2B"/><line x1="360" y1="38" x2="600" y2="78" stroke="#8A5A2B"/>
+<rect x="40" y="78" width="160" height="44" fill="#fff" stroke="#5F3D1B"/><text x="120" y="98" text-anchor="middle" font-size="10">固有结缔组织续</text><text x="120" y="112" text-anchor="middle" font-size="9" fill="#6B7480">基质·致密·脂肪·网状</text>
+<rect x="280" y="78" width="160" height="44" fill="#fff" stroke="#5F3D1B"/><text x="360" y="98" text-anchor="middle" font-size="10">软骨组织</text><text x="360" y="112" text-anchor="middle" font-size="9" fill="#6B7480">三类·膜·发生生长</text>
+<rect x="520" y="78" width="160" height="44" fill="#fff" stroke="#5F3D1B"/><text x="600" y="98" text-anchor="middle" font-size="10">骨组织</text><text x="600" y="112" text-anchor="middle" font-size="9" fill="#6B7480">基质·四细胞·长骨</text>
+<line x1="360" y1="122" x2="360" y2="152" stroke="#8A5A2B"/>
+<rect x="180" y="152" width="360" height="36" fill="#F4EADF" stroke="#8A5A2B"/><text x="360" y="176" text-anchor="middle" font-size="11">骨发生：膜内成骨 / 软骨内成骨 · 骺板五区加长</text></svg>
+<ul class="kv">
+<li>固有结缔组织（续）：网状纤维；基质与分子筛；致密结缔组织三类；脂肪组织与网状组织</li>
+<li>软骨组织：透明／弹性／纤维软骨；透明软骨结构；间充质发生；外加生长与间质生长</li>
+<li>骨组织：骨基质 35%／65%；四类细胞；编织骨与板层骨；密质骨三种骨板两种管道；骨膜；膜内／软骨内成骨与骺板五区</li>
+</ul>
 </div>
 
 <div class="page">
-  <h2 class="sec"><span class="num">00</span>知识结构与目录</h2>
-  <div class="structure">
-    <div class="l1">一、固有结缔组织（续）</div>
-    <div class="l2">1. 网状纤维 — 镀银染色、Ⅲ型胶原、分布</div>
-    <div class="l2">2. 基质 — 蛋白聚糖、分子筛、组织液</div>
-    <div class="l2">3. 致密结缔组织 — 规则/不规则/弹性</div>
-    <div class="l2">4. 脂肪组织 — 白色单泡 vs 棕色多泡</div>
-    <div class="l2">5. 网状组织 — 网状细胞+网状纤维</div>
-    <div class="l1">二、软骨组织</div>
-    <div class="l2">1. 分类 — 透明/弹性/纤维软骨</div>
-    <div class="l2">2. 透明软骨结构 — 基质、陷窝、同源细胞群</div>
-    <div class="l2">3. 软骨膜与生长 — 外加生长+间质生长</div>
-    <div class="l1">三、骨组织</div>
-    <div class="l2">1. 骨基质 — 有机35%/无机65%、类骨质</div>
-    <div class="l2">2. 四类细胞 — 祖/成骨/骨/破骨</div>
-    <div class="l2">3. 密质骨结构 — 三种骨板+哈佛系统</div>
-    <div class="l2">4. 骨发生 — 膜内成骨 vs 软骨内成骨</div>
-    <div class="l2">5. 骺板五区与激素调控</div>
-  </div>
-  <div class="toc">
-    <div class="toc-item"><span class="tn">01</span><span class="tt">固有结缔组织（续）</span></div>
-    <div class="toc-item"><span class="tn">02</span><span class="tt">软骨组织</span></div>
-    <div class="toc-item"><span class="tn">03</span><span class="tt">骨组织与骨发生</span></div>
-    <div class="toc-item"><span class="tn">04</span><span class="tt">复习清单与主动回忆题</span></div>
-  </div>
+<h2 class="h2">1. 网状纤维</h2>
+<div class="lead">HE 不可辨，镀银显示；Ⅲ型胶原，电镜有横纹。</div>
+
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>网状纤维在 HE 染色下与胶原纤维无法分辨，须用镀银染色（银染法）特异性显示。〔说话人1 01:09〕</li>
+<li>网状纤维本质也是胶原蛋白，以Ⅲ型胶原蛋白为主。〔说话人1 01:09〕</li>
+<li>电镜下网状纤维可见周期性横纹。〔说话人1 01:09〕</li>
+<li>分布一：参与构成基膜的网板，网板由结缔组织这一侧产生。〔说话人1 01:09〕</li>
+<li>分布二：淋巴器官（淋巴结皮质）。〔说话人1 01:09〕</li>
+<li>分布三：脾。〔说话人1 01:09〕</li>
+<li>分布四：内分泌腺。〔说话人1 01:09〕</li>
+<li>分布五：肝小叶；肝内储脂细胞也可产生网状纤维。〔说话人1 01:09〕</li>
+</ul>
+
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>观察层次</th><th>网状纤维的表现</th><th>关键差异点</th></tr>
+<tr><td>光镜（HE）</td><td>与胶原纤维无法分辨，呈「隐身」</td><td>须改用镀银染色（嗜银性）才可特异显示</td></tr>
+<tr><td>电镜</td><td>由胶原蛋白构成，可见周期性横纹</td><td>以Ⅲ型胶原蛋白为主（胶原纤维以Ⅰ型为主）</td></tr>
+<tr><td>特殊染色</td><td>镀银染色后特异显示</td><td>故网状纤维又称嗜银纤维</td></tr>
+</table>
+
+<div class="exam"><span class="tag">考点</span>镀银染色；Ⅲ型胶原；分布与储脂细胞。</div>
 </div>
 
 <div class="page">
-  <h2 class="sec"><span class="num">01</span>固有结缔组织（续）</h2>
+<h2 class="h2">2. 基质（ground substance）：蛋白聚糖、分子筛与组织液</h2>
+<div class="lead">基质三成分；蛋白聚糖聚合体形成分子筛，屏障有限。</div>
 
-  <h3 class="subsec">1.1 网状纤维</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">染色特性</div><div class="v">HE染色无法与胶原纤维区分；需镀银染色特异性显示，故又称嗜银纤维</div></div>
-    <div class="kv-card"><div class="k">分子组成</div><div class="v">Ⅲ型胶原蛋白；电镜下可见典型周期性横纹；较胶原纤维细，分支多交织成网</div></div>
-  </div>
-  <p><b>分布：</b>基膜网板、淋巴结皮质、脾、内分泌腺、肝小叶。肝内储脂细胞可合成网状纤维。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>基质是位于纤维之间、细胞之间的无定型胶状物质，无固定形状、呈胶状、有一定粘性。〔说话人1 03:40〕</li>
+<li>基质由三大成分构成：蛋白聚糖、多联糖蛋白、组织液。〔说话人1 03:40〕</li>
+<li>蛋白聚糖由糖胺聚糖加上蛋白质构成。〔说话人1 04:34〕</li>
+<li>糖胺聚糖分两类：一类是小分子、发生硫酸化的，如硫酸软骨素、硫酸角质素、硫酸皮肤素等。〔说话人1 04:34〕</li>
+<li>另一类是无硫酸化的长链大分子——透明质酸，即护肤品所说的玻尿酸。〔说话人1 05:16〕</li>
+<li>蛋白聚糖的蛋白质包括核心蛋白与结合（连接）蛋白。〔说话人1 05:16〕</li>
+<li>核心蛋白＋四种硫酸化糖胺聚糖＝蛋白聚糖亚单位。〔说话人1 05:58〕</li>
+<li>亚单位再经结合蛋白连接到长链透明质酸上。〔说话人1 05:58〕</li>
+<li>大量亚单位挂到透明质酸骨架上，构成蛋白聚糖聚合体。〔说话人1 05:58〕</li>
+<li>聚合体在空间上呈带网孔的分子筛。〔说话人1 07:39〕</li>
+<li>分子筛可阻止大分子物质与细菌通过，只有水溶性小分子、离子等可通过。〔说话人1 07:39〕</li>
+<li>屏障作用使感染局限在局部，皮下仅形成一个小结子而不扩散。〔说话人1 08:30〕</li>
+<li>屏障作用是非常有限的。〔说话人1 08:30〕</li>
+<li>透明质酸酶可降解透明质酸骨架，分子筛屏障随之被破坏。〔说话人1 08:30〕</li>
+<li>溶血性链球菌含透明质酸酶，感染后屏障被破坏，感染因而扩散。〔说话人1 08:30〕</li>
+<li>肿瘤细胞含比较丰富的透明质酸酶，局部形成大量肿瘤细胞后可扩散。〔说话人1 08:30〕</li>
+<li>多联糖蛋白起联合作用，把细胞、纤维、基质与其他成分联合在一起。〔说话人1 09:51〕</li>
+<li>组织液从毛细血管与动脉相连的一端（动脉端）渗透到血管外形成。〔说话人1 10:20〕</li>
+<li>组织液很快在静脉端回收回流，其产生与回流保持动态平衡。〔说话人1 10:20〕</li>
+<li>若组织液的产生与回流出现异常，就会出现脱水或水肿。〔说话人1 10:20〕</li>
+</ul>
 
-  <h3 class="subsec">1.2 基质的组成与分子筛功能</h3>
-  <div class="highlight"><span class="tag">核心</span>基质=蛋白聚糖+多联糖蛋白+组织液。蛋白聚糖以透明质酸为骨架，结合蛋白连接亚单位（核心蛋白+硫酸化糖胺聚糖），形成带网孔的分子筛结构。</div>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">分子筛功能</div><div class="v">阻挡大分子、细菌扩散，局限感染；营养物质和代谢废物可通过</div></div>
-    <div class="kv-card"><div class="k">屏障破坏</div><div class="v">透明质酸酶可破坏骨架；溶血性链球菌、肿瘤细胞分泌该酶→感染/肿瘤扩散</div></div>
-  </div>
-  <p><b>糖胺聚糖分类：</b>硫酸化小分子（硫酸软骨素、硫酸角质素等）+ 非硫酸化长链（透明质酸=玻尿酸）。组织液由毛细血管动脉端渗出，静脉端回流；失衡→水肿或脱水。</p>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>糖胺聚糖类别</th><th>分子大小／形态</th><th>是否硫酸化</th><th>成员</th></tr>
+<tr><td>第一类</td><td>小分子</td><td>发生硫酸化</td><td>硫酸软骨素、硫酸角质素、硫酸皮肤素等</td></tr>
+<tr><td>第二类</td><td>长链状大分子</td><td>没有硫酸化</td><td>透明质酸（即玻尿酸）——构成基质骨架</td></tr>
+</table>
+<table class="tbl">
+<tr><th>基质成分</th><th>结构要点</th><th>作用</th></tr>
+<tr><td>蛋白聚糖</td><td>核心蛋白＋硫酸化糖胺聚糖＝亚单位；经结合蛋白挂到透明质酸骨架</td><td>主要成分；聚合形成分子筛，起屏障作用</td></tr>
+<tr><td>多联糖蛋白</td><td>连接性糖蛋白</td><td>联合作用：把细胞、纤维、基质与其他成分联合</td></tr>
+<tr><td>组织液</td><td>动脉端渗出、静脉端回流</td><td>完成物质交换；产生与回流保持动态平衡</td></tr>
+</table>
 
-  <h3 class="subsec">1.3 致密结缔组织三类</h3>
-  <table>
-    <tr><th>类型</th><th>纤维排列</th><th>分布</th><th>特点</th></tr>
-    <tr><td>规则型</td><td>胶原纤维平行排列</td><td>肌腱、韧带、腱膜</td><td>成纤维细胞特化为腱细胞</td></tr>
-    <tr><td>不规则型</td><td>纤维交织无定向</td><td>真皮、硬脑膜、巩膜、内脏被膜</td><td>抗多方向拉力</td></tr>
-    <tr><td>弹性组织</td><td>弹性纤维为主</td><td>项韧带、黄韧带、大动脉根部弹性膜</td><td>大动脉弹性膜将间断射血转为连续血流</td></tr>
-  </table>
-
-  <h3 class="subsec">1.4 脂肪组织与网状组织</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">白色/黄色脂肪</div><div class="v">单泡脂肪细胞；一个大脂滴；HE呈空泡状；核挤至边缘；功能=储能、保温、缓冲</div></div>
-    <div class="kv-card"><div class="k">棕色脂肪</div><div class="v">多泡脂肪细胞；多个小脂滴；核位于中央；富含线粒体；功能=产热；新生儿/冬眠动物多</div></div>
-  </div>
-  <p><b>网状组织：</b>由网状细胞（星状多突起，胞质弱嗜碱性，核大圆核仁清，突起互联成网架）+网状纤维+基质构成。功能类似成纤维细胞，合成网状纤维与基质，为造血/淋巴/内分泌组织提供支架。</p>
+<div class="exam"><span class="tag">考点</span>基质三成分；分子筛；透明质酸酶；组织液平衡。</div>
 </div>
 
 <div class="page">
-  <h2 class="sec"><span class="num">02</span>软骨组织</h2>
+<h2 class="h2">3. 致密结缔组织</h2>
+<div class="lead">按纤维排列与成分分规则、不规则与弹性组织。</div>
 
-  <h3 class="subsec">2.1 软骨分类</h3>
-  <table>
-    <tr><th>类型</th><th>纤维种类</th><th>分布</th><th>软骨膜</th></tr>
-    <tr><td>透明软骨</td><td>Ⅱ型胶原原纤维（折光率与基质接近，光镜不可见）</td><td>肋软骨、关节面、呼吸道管壁、早期胚胎骨架</td><td>有（关节面无）</td></tr>
-    <tr><td>弹性软骨</td><td>大量弹性纤维</td><td>耳郭、外耳道、会厌</td><td>有</td></tr>
-    <tr><td>纤维软骨</td><td>大量粗大胶原纤维</td><td>椎间盘、关节盘、耻骨联合</td><td>无</td></tr>
-  </table>
-  <div class="highlight"><span class="tag">助记</span>透明肋关呼吸胚，弹性耳外会厌飞，纤维椎间关节盘，耻骨联合无膜被。</div>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>致密结缔组织的纤维成分多、排列密集，使整个结缔组织很紧密。〔说话人1 11:08〕</li>
+<li>分类依据：纤维的排列方式，以及纤维成分的种类。〔说话人1 11:08〕</li>
+<li>据此分为规则的致密结缔组织、不规则的致密结缔组织与弹性组织。〔说话人1 11:08〕</li>
+<li>规则型：大量胶原纤维朝一个方向平行排列。〔说话人1 11:58〕</li>
+<li>规则型分布：肌腱、韧带、腱膜。〔说话人1 11:58〕</li>
+<li>规则型中成纤维细胞少，核沿胶原纤维长轴平行排列，位于胶原纤维束之间。〔说话人1 11:58〕</li>
+<li>肌腱或腱膜内的这类成纤维细胞呈细长梭形，特称腱细胞，实质就是成纤维细胞。〔说话人1 12:42〕</li>
+<li>不规则型：纤维方向不平行、交织在一起，很不规律。〔说话人1 13:12〕</li>
+<li>不规则型分布：真皮、硬脑膜、巩膜以及一些器官的被膜。〔说话人1 13:12〕</li>
+<li>弹性组织：纤维不是胶原纤维，而是以弹性纤维为主。〔说话人1 13:35〕</li>
+<li>弹性组织举例：项韧带、黄韧带，可伸缩、有弹性。〔说话人1 13:35〕</li>
+<li>大动脉根部弹性膜：弹性纤维方向各个方向都有，故大动脉有弹性。〔说话人1 14:14〕</li>
+<li>心脏约每分钟跳 60 次，其中一半时间在收缩排血、另一半在舒张不排血。〔说话人1 14:14〕</li>
+<li>收缩期大量血液射入大动脉根部，根部靠弹性伸展储能，一部分流出、一部分暂存。〔说话人1 14:14〕</li>
+<li>舒张期心脏不排血时，靠动脉弹性回缩把暂存血液继续送出。〔说话人1 15:47〕</li>
+<li>因此心脏的间断射血在机体里变成连续血流，与血液循环的连续性有关。〔说话人1 14:14〕</li>
+</ul>
 
-  <h3 class="subsec">2.2 透明软骨结构</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">软骨基质</div><div class="v">坚硬凝胶状，HE嗜碱性；Ⅱ型胶原细原纤维；含大量硫酸软骨素</div></div>
-    <div class="kv-card"><div class="k">软骨陷窝</div><div class="v">基质内空腔，软骨细胞位于其中；紧邻陷窝的基质称软骨囊（嗜碱性强）</div></div>
-  </div>
-  <p><b>细胞分布规律：</b>近软骨膜处细胞小而单个（幼稚）；内部细胞大，形成<b>同源细胞群</b>（同一个幼稚软骨细胞分裂增殖形成的细胞团，是软骨内部增殖的形态学标志）。</p>
-  <p><b>超微结构：</b>丰富粗面内质网，线粒体极少→无氧糖酵解供能。软骨作为器官由软骨组织+软骨膜构成（关节面无软骨膜）。</p>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>类型</th><th>纤维成分与排列</th><th>典型分布</th><th>本课特有细节</th></tr>
+<tr><td>规则致密结缔组织</td><td>胶原纤维平行排列</td><td>肌腱、韧带、腱膜</td><td>腱细胞即梭形成纤维细胞</td></tr>
+<tr><td>不规则致密结缔组织</td><td>纤维交织</td><td>真皮、硬脑膜、巩膜、器官被膜</td><td>多方向拉力</td></tr>
+<tr><td>弹性组织</td><td>弹性纤维为主</td><td>项韧带、黄韧带；大动脉根部</td><td>大动脉弹性膜保连续血流</td></tr>
+</table>
 
-  <h3 class="subsec">2.3 软骨膜与软骨生长</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">软骨膜外层</div><div class="v">纤维多、细胞少；保护和固定作用</div></div>
-    <div class="kv-card"><div class="k">软骨膜内层</div><div class="v">纤维少、细胞丰富，含软骨祖细胞→分化为软骨细胞</div></div>
-  </div>
-  <table>
-    <tr><th>生长方式</th><th>机制</th><th>结果</th></tr>
-    <tr><td>外加生长（软骨膜下生长）</td><td>软骨膜内层祖细胞分化为软骨细胞，在外周形成新软骨</td><td>软骨向外增厚</td></tr>
-    <tr><td>间质生长（软骨内生长）</td><td>内部软骨细胞增殖、合成基质</td><td>软骨从内向外生长</td></tr>
-  </table>
-  <p><b>软骨发生起源：</b>胚胎间充质→间充质细胞密集→软骨形成中心→软骨祖细胞→成软骨细胞→软骨细胞。</p>
+<div class="exam"><span class="tag">考点</span>致密结缔组织三类；腱细胞；大动脉弹性膜。</div>
 </div>
 
 <div class="page">
-  <h2 class="sec"><span class="num">03</span>骨组织与骨发生</h2>
+<h2 class="h2">4. 脂肪组织与网状组织</h2>
+<div class="lead">单泡／多泡定两类脂肪；网状组织作造血与淋巴支架。</div>
 
-  <h3 class="subsec">3.1 骨基质</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">有机成分（35%）</div><div class="v">95%为Ⅰ型胶原蛋白；其余为骨黏连蛋白、骨钙素等；提供骨的韧性</div></div>
-    <div class="kv-card"><div class="k">无机成分（65%）</div><div class="v">羟基磷灰石结晶（针状/片状）；提供骨的硬度</div></div>
-  </div>
-  <div class="highlight"><span class="tag">定义</span><b>类骨质</b>=未钙化的骨基质有机成分。钙化条件：维生素D介导钙磷吸收；缺阳光→维生素D不足→软骨病。</div>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>脂肪组织以脂肪细胞为主要成分，加上少量的结缔组织构成。〔说话人1 16:35〕</li>
+<li>构成脂肪组织的脂肪细胞有两种类型，故脂肪组织有两种：黄色（白色）脂肪与棕色脂肪。〔说话人1 16:35〕</li>
+<li>黄色脂肪由单泡脂肪细胞构成：细胞呈圆形或椭圆形，含一个大的脂滴。〔说话人1 16:35〕</li>
+<li>单泡脂肪细胞在 HE 染色时呈大的空泡状，细胞核被脂滴挤到细胞边缘。〔说话人1 16:35〕</li>
+<li>棕色脂肪由多泡脂肪细胞构成：一个脂肪细胞含多个小的脂肪滴。〔说话人1 18:02〕</li>
+<li>多泡脂肪细胞的核不被挤到边缘，仍位于细胞中央。〔说话人1 18:02〕</li>
+<li>网状组织由网状细胞加上网状纤维构成，此外还有基质。〔说话人1 18:35〕</li>
+<li>网状细胞胞体较大、有大量凸起，整体呈星状。〔说话人1 18:35〕</li>
+<li>网状细胞胞质呈一定的碱性，细胞核比较大、比较圆，核仁比较清楚。〔说话人1 19:32〕</li>
+<li>网状细胞的突起相互连接，构成一个细胞网架。〔说话人1 19:32〕</li>
+<li>网状细胞功能与成纤维细胞非常像：可产生网状纤维，也可产生基质。〔说话人1 19:32〕</li>
+<li>网状组织作为造血组织、淋巴组织、内分泌组织的支架。〔说话人1 19:32〕</li>
+<li>网状细胞构成细胞支架、网状纤维构成纤维网架，为血细胞发生与淋巴细胞发育提供微环境。〔说话人1 19:32〕</li>
+</ul>
 
-  <h3 class="subsec">3.2 骨组织四类细胞</h3>
-  <table>
-    <tr><th>细胞</th><th>形态</th><th>位置</th><th>功能</th></tr>
-    <tr><td>骨祖细胞</td><td>梭形</td><td>骨表面</td><td>干细胞，分化为成骨细胞</td></tr>
-    <tr><td>成骨细胞</td><td>立方/矮柱状，嗜碱性</td><td>骨组织表面</td><td>分泌类骨质+基质小泡启动钙化；10-15%被包埋→骨细胞</td></tr>
-    <tr><td>骨细胞</td><td>扁椭圆，多突起</td><td>骨陷窝中，突起入骨小管</td><td>功能静止，保留成骨/破骨能力；维持骨基质</td></tr>
-    <tr><td>破骨细胞</td><td>多核巨细胞（单核融合），嗜酸性</td><td>骨吸收面</td><td>皱折缘+亮区→酸性溶解骨基质；受PTH/降钙素调控</td></tr>
-  </table>
-  <div class="warn"><span class="tag">血钙调控</span>甲状旁腺激素（PTH）→促进破骨→升高血钙；降钙素→促进成骨→降低血钙。骨细胞与骨陷窝关系类似手掌与手套：胞体在陷窝，突起在骨小管。</div>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>比较项</th><th>黄色（白色）脂肪</th><th>棕色脂肪</th></tr>
+<tr><td>脂肪细胞类型</td><td>单泡脂肪细胞</td><td>多泡脂肪细胞</td></tr>
+<tr><td>脂滴</td><td>一个大的脂滴</td><td>多个小的脂肪滴</td></tr>
+<tr><td>HE 染色表现</td><td>每个细胞呈大的空泡状</td><td>泡状结构变小、变多</td></tr>
+<tr><td>细胞核位置</td><td>被脂滴挤到细胞边缘，中间看不到核</td><td>不被挤到边缘，仍位于细胞中央</td></tr>
+</table>
 
-  <h3 class="subsec">3.3 编织骨与板层骨</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">初级（编织骨）</div><div class="v">胶原粗大排列紊乱；钙盐少、骨细胞多；有机成分高；胚胎/骨折修复期</div></div>
-    <div class="kv-card"><div class="k">次级（板层骨）</div><div class="v">胶原细、排列规律；相邻骨板胶原相互垂直；钙盐充分；成人骨主体</div></div>
-  </div>
+<div class="exam"><span class="tag">考点</span>脂肪组织两类；网状组织支架。</div>
 </div>
 
 <div class="page">
-  <h2 class="sec"><span class="num">03</span>骨组织与骨发生（续）</h2>
+<h2 class="h2">5. 软骨总论与透明软骨</h2>
+<div class="lead">特殊结缔组织：基质固态、无血管；透明软骨为代表。</div>
 
-  <h3 class="subsec">3.4 密质骨三种骨板</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">外环骨板</div><div class="v">环绕骨干外表面，厚、规则</div></div>
-    <div class="kv-card"><div class="k">内环骨板</div><div class="v">衬骨髓腔面，薄、不规则</div></div>
-    <div class="kv-card"><div class="k">骨单位（哈佛系统）</div><div class="v">中央哈佛管+同心圆骨单位骨板；骨单位核心结构；内骨小管逐层相通连中央管</div></div>
-    <div class="kv-card"><div class="k">间骨板</div><div class="v">骨改建残留的旧骨单位片段，无中央管，扇形</div></div>
-  </div>
-  <p><b>穿通管：</b>垂直长轴走行，穿环骨板，连接骨膜与内部，导入血管神经。<b>松质骨：</b>由骨小梁交织成网，网孔填充骨髓。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>软骨与骨属广义结缔组织中的特殊结缔组织，其特殊性在于细胞外基质呈固态、里面没有血管。〔说话人1 20:49〕</li>
+<li>对照：固有结缔组织的细胞外基质呈液态、呈胶状，里面含有比较多的血管。〔说话人1 20:49〕</li>
+<li>骨骼系统举例：关节表面是关节软骨，耳郭是弹性软骨，椎间盘是纤维软骨，胚胎时期整个骨架是软骨，成年以后骨骼由骨组织构成。〔说话人1 20:49〕</li>
+<li>软骨（cartilage）是由软骨细胞加上软骨基质所构成的软骨组织。〔说话人1 22:59〕</li>
+<li>软骨分类依据：细胞外基质当中纤维的种类。〔说话人1 22:59〕</li>
+<li>据此分为透明软骨、弹性软骨与纤维软骨三种。〔说话人1 22:59〕</li>
+<li>透明软骨分布一：肋软骨，把肋骨连接到胸骨。〔说话人1 23:41〕</li>
+<li>透明软骨分布二：关节面，很多关节表面终身保留一层透明软骨。〔说话人1 23:41〕</li>
+<li>透明软骨分布三：呼吸道管壁的软骨环，如气管、支气管管壁。〔说话人1 23:41〕</li>
+<li>透明软骨分布四：早期胚胎的骨架都是透明软骨。〔说话人1 23:41〕</li>
+<li>透明软骨作为器官＝软骨组织＋软骨膜；气管壁内即一个 C 字形软骨环加表面的软骨膜。〔说话人1 24:43〕</li>
+<li>软骨基质是无定型基质，呈凝胶状，比疏松结缔组织的胶状要硬。〔说话人1 24:43〕</li>
+<li>基质组成：糖胺聚糖（含蛋白聚糖）＋糖蛋白，糖蛋白如软骨黏连蛋白、多黏糖蛋白。〔说话人1 26:11〕</li>
+<li>基质中的纤维是由Ⅱ型胶原蛋白构成的胶原原纤维，以原纤维形式存在。〔说话人1 26:11〕</li>
+<li>胶原原纤维很细，且折光率与基质相近，故光镜下无法分辨纤维。〔说话人1 26:43〕</li>
+<li>若聚集成为大量粗大胶原纤维，在 HE 染色里就能一条一条地看出来。〔说话人1 26:43〕</li>
+<li>HE 染色时软骨基质呈紫红色、嗜碱性，因其含糖胺聚糖、蛋白聚糖等成分。〔说话人1 27:28〕</li>
+<li>软骨陷窝：软骨基质中容纳一个软骨细胞的空腔。〔说话人1 27:28〕</li>
+<li>软骨囊：紧靠软骨陷窝的一段软骨基质，含硫酸软骨素特别多，故嗜碱性特别强。〔说话人1 28:39〕</li>
+<li>软骨囊实质上仍是软骨基质，与周围软骨基质连续，并非一层独立膜。〔说话人1 28:39〕</li>
+<li>软骨基质无血管，但含水多、通透性很强，可完成营养供应与代谢产物扩散。〔说话人1 29:44〕</li>
+<li>HE 切片上陷窝与软骨囊之间空隙，多为制片时软骨细胞收缩所致的人工假象。〔说话人1 29:44〕</li>
+<li>靠近软骨膜处软骨细胞较小、往往单个分散，是比较幼稚的软骨细胞。〔说话人1 31:34〕</li>
+<li>向内部移动时软骨细胞体积增大，且几个软骨细胞聚集成一团。〔说话人1 31:34〕</li>
+<li>同源细胞群：来自同一个幼稚软骨细胞分裂增殖形成的细胞团。〔说话人1 32:24〕</li>
+<li>分裂方式为「一分二、二分四、四分八」。〔说话人1 32:24〕</li>
+<li>软骨细胞胞质呈比较强的嗜碱性，因其中含大量粗面内质网。〔说话人1 32:24〕</li>
+<li>软骨细胞的线粒体非常少。〔说话人1 33:27〕</li>
+<li>因其环境无血管、相对缺氧，主要靠无氧糖酵解的方式产能。〔说话人1 33:27〕</li>
+<li>软骨细胞功能：产生纤维和基质，与成纤维细胞非常像。〔说话人1 34:01〕</li>
+<li>软骨膜是一种致密结缔组织，分成外层与内层。〔说话人1 34:01〕</li>
+<li>软骨膜外层纤维比较多、细胞比较少；内层纤维比较少、细胞比较多。〔说话人1 34:01〕</li>
+<li>软骨膜内层含软骨祖细胞，勿与骨祖细胞混淆。〔说话人1 35:37〕</li>
+<li>分化路线：软骨祖细胞→成软骨细胞→软骨细胞。〔说话人1 35:37〕</li>
+<li>关节面没有软骨膜；除关节面以外的其他部位软骨周围都含有软骨膜。〔说话人1 35:37〕</li>
+<li>软骨膜功能一：保护支持作用。〔说话人1 36:36〕</li>
+<li>软骨膜功能二：营养作用——软骨组织里没有血管，营养来自软骨膜，特别是内层。〔说话人1 36:36〕</li>
+<li>软骨膜功能三：生长作用——内层软骨祖细胞产生新的软骨细胞，与生长修复有关。〔说话人1 37:15〕</li>
+</ul>
 
-  <h3 class="subsec">3.5 骨膜</h3>
-  <p>除关节面外所有骨表面均有骨膜。骨外膜外层纤维多（穿通纤维固定于骨表面），内层细胞丰富含骨祖细胞。骨内膜为薄层结缔组织，覆盖骨髓腔/骨小梁/中央管内壁，含骨祖细胞。</p>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>判据</th><th>固有结缔组织</th><th>软骨（特殊结缔组织）</th></tr>
+<tr><td>细胞外基质状态</td><td>液态、胶状</td><td>固态（软骨基质），凝胶状、较硬</td></tr>
+<tr><td>血管</td><td>含有比较多的血管</td><td>没有血管（软骨膜内层有血管）</td></tr>
+<tr><td>营养方式</td><td>直接由血液供给</td><td>由软骨膜（尤其内层）经基质扩散供给</td></tr>
+</table>
+<table class="tbl">
+<tr><th>结构层次</th><th>内容</th><th>要点</th></tr>
+<tr><td>软骨器官</td><td>软骨组织＋软骨膜</td><td>关节面没有软骨膜</td></tr>
+<tr><td>软骨组织</td><td>软骨基质＋软骨细胞</td><td>基质固态、无血管</td></tr>
+<tr><td>软骨基质</td><td>糖胺聚糖＋蛋白聚糖＋糖蛋白；纤维为Ⅱ型胶原原纤维</td><td>原纤维细、折光率近基质→光镜不可见</td></tr>
+<tr><td>软骨细胞</td><td>位于软骨陷窝中，周围嗜碱性强者为软骨囊</td><td>近膜小、单个幼稚；内部大成同源细胞群</td></tr>
+</table>
 
-  <h3 class="subsec">3.6 骨发生两种方式</h3>
-  <table>
-    <tr><th>方式</th><th>分布</th><th>过程</th></tr>
-    <tr><td>膜内成骨</td><td>颅骨、顶骨、锁骨</td><td>间充质膜→骨化中心→初级松质骨→密质骨</td></tr>
-    <tr><td>软骨内成骨</td><td>四肢骨、躯干骨</td><td>透明软骨雏形→骨领→初级骨髓腔→次级骨化中心</td></tr>
-  </table>
-  <p><b>骨领：</b>软骨雏形中段软骨膜转骨膜，内层成骨细胞以膜内成骨方式形成领状骨套层。关节面处永久保留透明软骨作为关节软骨。</p>
-
-  <h3 class="subsec">3.7 骺板五区与骨生长调控</h3>
-  <div class="highlight"><span class="tag">必背排序</span>骺板五区：软骨储备区 → 软骨增生区 → 软骨成熟区 → 软骨钙化区 → 成骨区</div>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">生长激素（GH）</div><div class="v">促进骺板软骨增殖；不足→侏儒症（仅身材矮小，智力正常）；过量→巨人症</div></div>
-    <div class="kv-card"><div class="k">甲状腺激素</div><div class="v">调控骺板生长+神经发育；不足→呆小症（身材矮小+智力障碍）</div></div>
-  </div>
-  <div class="warn"><span class="tag">易混</span>侏儒症 vs 呆小症：生长激素缺乏→仅身材矮小、智力正常；甲状腺激素缺乏→身材矮小+智力障碍。长骨增粗靠骨膜内层成骨细胞在骨干外周成新骨。</div>
+<div class="exam"><span class="tag">考点</span>透明软骨结构；同源细胞群；软骨膜。</div>
 </div>
 
 <div class="page">
-  <h2 class="sec"><span class="num">04</span>复习清单与主动回忆题</h2>
+<h2 class="h2">6. 弹性软骨、纤维软骨与软骨的发生和生长</h2>
+<div class="lead">三类软骨比纤维；发生自间充质，外加与间质生长。</div>
 
-  <h3 class="subsec">复习清单（10-15分钟）</h3>
-  <ul class="checklist">
-    <li>网状纤维的染色方法、分子类型和主要分布</li>
-    <li>基质的三大成分及分子筛功能机制</li>
-    <li>透明质酸酶与感染扩散的关系</li>
-    <li>致密结缔组织三类的分布与特点</li>
-    <li>白色脂肪与棕色脂肪的形态区别</li>
-    <li>软骨三类的纤维种类、分布、有无软骨膜</li>
-    <li>透明软骨基质、陷窝、软骨囊、同源细胞群</li>
-    <li>软骨外加生长与间质生长的区别</li>
-    <li>骨基质有机/无机成分比例及功能</li>
-    <li>类骨质的定义与钙化条件</li>
-    <li>骨组织四类细胞的形态、位置、功能</li>
-    <li>血钙调控（PTH vs 降钙素）</li>
-    <li>密质骨三种骨板+骨单位结构</li>
-    <li>膜内成骨 vs 软骨内成骨的分布与过程</li>
-    <li>骺板五区顺序及激素调控（侏儒症 vs 呆小症）</li>
-  </ul>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>弹性软骨分布：耳郭、外耳道以及会厌（会厌软骨）。〔说话人1 37:50〕</li>
+<li>弹性软骨有弹性，例如把耳郭压下来、放开后会再弹起。〔说话人1 37:50〕</li>
+<li>弹性软骨与透明软骨非常像，区别在于纤维不是胶原原纤维，而是大量的弹性纤维。〔说话人1 37:50〕</li>
+<li>弹性纤维在 HE 染色看不到，须用弹性染色（地衣红等）显示，呈紫红色、网状细丝状。〔说话人1 38:39〕</li>
+<li>纤维软骨含大量胶原纤维。〔说话人1 39:09〕</li>
+<li>纤维软骨分布：椎间盘、关节盘以及耻骨联合。〔说话人1 39:09〕</li>
+<li>纤维软骨的胶原纤维层层排列，某一层平行、另一层垂直，交替排列构成软骨。〔说话人1 39:09〕</li>
+<li>三色法染色下纤维软骨中的胶原纤维呈蓝色。〔说话人1 39:50〕</li>
+<li>纤维软骨没有软骨膜，因为它与周围结缔组织连续在一起、无法分辨。〔说话人1 39:50〕</li>
+<li>★三种软骨须从基质纤维种类、分布、有无软骨膜等方面对比归纳。〔说话人1 40:19〕</li>
+<li>软骨起源于胚胎时期的间充质。〔说话人1 40:19〕</li>
+<li>间充质细胞在要形成软骨的地方密集增殖成间充质细胞团，中心部位称软骨形成中心。〔说话人1 40:19〕</li>
+<li>间充质细胞先分化为软骨祖细胞，再进一步分化为成软骨细胞。〔说话人1 40:19〕</li>
+<li>成软骨细胞功能比较活跃、大量增殖，形成软骨形成中心。〔说话人1 41:48〕</li>
+<li>成软骨细胞产生大量软骨基质后，自身转化为软骨细胞（进一步成熟）。〔说话人1 41:48〕</li>
+<li>成熟后的软骨细胞也会有一定程度分裂，形成很多同源细胞群。〔说话人1 42:42〕</li>
+<li>周边的间充质细胞则主要产生软骨膜。〔说话人1 42:42〕</li>
+<li>外加生长（外生长）：软骨膜内层的软骨祖细胞分化，在软骨外周产生新软骨，使软骨向外扩大、延长、增厚。〔说话人1 42:42〕</li>
+<li>间质性生长（内积生长）：在已有软骨组织的中央内部，由内部软骨细胞产生新软骨，从内部向外生长。〔说话人1 42:42〕</li>
+</ul>
 
-  <h3 class="subsec">主动回忆题</h3>
-  <div class="qa">
-    <div class="q">Q1：为什么透明软骨中的Ⅱ型胶原纤维在光镜下不可见？</div>
-    <div class="a">A：Ⅱ型胶原原纤维的折光率与周围基质接近，因此在HE染色光镜下无法分辨；但在电镜下可见其典型周期性横纹。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q2：破骨细胞如何实现骨基质的溶解吸收？</div>
-    <div class="a">A：破骨细胞紧贴骨吸收面形成皱折缘（扩大表面积）和亮区（封闭微环境），在封闭区内释放酸性物质（H+）溶解无机成分（羟基磷灰石），同时释放溶酶体酶降解有机成分（胶原）。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q3：骨单位（哈佛系统）的营养通路是如何建立的？</div>
-    <div class="a">A：骨单位中央为哈佛管（含血管神经），周围同心圆排列骨单位骨板。骨细胞位于骨陷窝，其突起伸入骨小管。骨小管逐层相通，最内层骨小管直接连中央管，从而建立从中央管到最外层骨细胞的营养通路。穿通管垂直长轴走行，连接骨膜血管与哈佛管。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q4：软骨内成骨过程中，骨领是如何形成的？</div>
-    <div class="a">A：在透明软骨雏形的中段，软骨膜先转变为骨膜，骨膜内层的骨祖细胞分化为成骨细胞，以膜内成骨的方式在软骨雏形表面形成领状的骨套层，即骨领。骨领的出现标志着软骨内成骨的开始。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q5：生长激素缺乏和甲状腺激素缺乏导致的身材矮小有何本质区别？</div>
-    <div class="a">A：生长激素（GH）主要促进骺板软骨细胞增殖，缺乏时仅导致长骨生长障碍→侏儒症，患者智力发育正常。甲状腺激素既调控骺板生长又调控神经系统发育，缺乏时同时导致身材矮小和智力障碍→呆小症（克汀病）。</div>
-  </div>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>类型</th><th>基质中纤维种类</th><th>典型分布</th><th>软骨膜</th><th>镜下辨认要点</th></tr>
+<tr><td>透明软骨</td><td>Ⅱ型胶原原纤维</td><td>肋软骨、关节面、呼吸道软骨环、胚胎骨架</td><td>有（关节面无）</td><td>光镜不见纤维；陷窝与软骨囊</td></tr>
+<tr><td>弹性软骨</td><td>大量弹性纤维</td><td>耳郭、外耳道、会厌</td><td>有</td><td>弹性染色紫红色细丝</td></tr>
+<tr><td>纤维软骨</td><td>粗大胶原纤维</td><td>椎间盘、关节盘、耻骨联合</td><td>无</td><td>层内平行层间垂直；三色法蓝色</td></tr>
+</table>
+<table class="tbl">
+<tr><th>生长方式</th><th>别称</th><th>来源细胞</th><th>发生位置</th><th>结果</th></tr>
+<tr><td>外加生长</td><td>外生长</td><td>软骨膜内层软骨祖细胞→成软骨细胞→软骨细胞</td><td>软骨外周（软骨膜内层）</td><td>软骨向外扩大、延长、增厚</td></tr>
+<tr><td>间质性生长</td><td>内积生长</td><td>软骨内部已有的软骨细胞</td><td>软骨组织中央内部</td><td>软骨从内部向外生长</td></tr>
+</table>
+
+<div class="exam"><span class="tag">考点</span>三类软骨；软骨发生与生长。</div>
 </div>
 
+<div class="page">
+<h2 class="h2">7. 骨基质与四类骨细胞</h2>
+<div class="lead">骨基质有机 35%／无机 65%；四类骨细胞分工。</div>
+
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>骨由骨组织加上骨膜，以及中央的骨髓构成。〔说话人1 45:26〕</li>
+<li>骨的功能：支持、保护内脏、运动杠杆；钙磷储存库（机体 99% 钙在骨中）。〔说话人1 45:26〕</li>
+<li>骨髓与血的发生有关。〔说话人1 46:50〕</li>
+<li>骨组织由骨基质加上里面的细胞构成；骨基质就是钙化（矿化）的细胞外基质。〔说话人1 56:09〕</li>
+<li>骨基质包括有机质与无机质两部分。〔说话人1 56:09〕</li>
+<li>骨组织里的细胞主要有四种：骨祖细胞、成骨细胞、骨细胞、破骨细胞。〔说话人1 56:09〕</li>
+<li>骨基质有机成分从重量讲占 35%。〔说话人1 57:09〕</li>
+<li>有机成分中 95% 都是胶原纤维。〔说话人1 58:11〕</li>
+<li>胶原原纤维以Ⅰ型胶原蛋白为主，因而也有周期性横纹。〔说话人1 58:11〕</li>
+<li>胶原纤维间的基质为无定型凝胶状、但比较坚硬；其中的多糖蛋白以骨黏连蛋白为主。〔说话人1 59:04〕</li>
+<li>骨组织特有蛋白：骨特异性的维生素 K 依赖性蛋白，如骨钙素、S 蛋白等。〔说话人1 59:04〕</li>
+<li>骨基质中还含有一些生长因子和细胞因子。〔说话人1 59:04〕</li>
+<li>除胶原纤维以外的有机基质成分起粘合作用、把胶原纤维联合起来构成骨板，并与钙化调控有关、促进钙化。〔说话人1 59:04〕</li>
+<li>类骨质：没有钙盐沉着的骨基质有机成分。〔说话人1 01:00:21〕</li>
+<li>无机成分即钙盐（骨盐），从重量讲占 65%。〔说话人1 01:00:54〕</li>
+<li>骨盐实际上是羟基磷灰石结晶，在胶原纤维之间呈针状或片状分布，增加骨的硬度。〔说话人1 01:00:54〕</li>
+<li>钙化是否完全、是否足够与钙磷吸收有关，影响钙磷吸收的维生素是维生素 D。〔说话人1 01:00:54〕</li>
+<li>维生素 D 要受阳光照射才能产生。〔说话人1 01:01:54〕</li>
+<li>长期没有阳光照射，维生素 D 合成缺乏，钙吸收障碍或不足，就会出现缺钙。〔说话人1 01:01:54〕</li>
+<li>婴幼儿缺钙表现为颅骨软的「大头娃娃」、鸡胸、X 型腿等，即软骨病。〔说话人1 01:02:37〕</li>
+<li>骨组织细胞分两类：骨形成细胞（骨祖细胞、成骨细胞、骨细胞）与骨吸收改建细胞（破骨细胞）。〔说话人1 01:02:37〕</li>
+<li>骨祖细胞主要分布在骨组织表面，比较小、呈梭形、染色性比较弱。〔说话人1 01:03:53〕</li>
+<li>骨祖细胞与骨的生长改建有关，是成骨细胞的来源。〔说话人1 01:03:53〕</li>
+<li>成骨细胞也位于骨组织表面，但比骨祖细胞大，往往呈立方状或矮柱状、排成一排。〔说话人1 01:03:53〕</li>
+<li>成骨细胞在 HE 染色时呈嗜碱性，往往还有一些凸起，凸起之间有缝隙连接。〔说话人1 01:05:04〕</li>
+<li>成骨细胞胞质内含丰富的内质网以及高尔基复合体。〔说话人1 01:05:04〕</li>
+<li>成骨细胞功能一：分泌胶原纤维与有机基质，形成类骨质。〔说话人1 01:05:33〕</li>
+<li>成骨细胞功能二：通过形成基质小泡使类骨质矿化起始、开始钙化。〔说话人1 01:06:13〕</li>
+<li>基质小泡膜上含钙结合蛋白、碱性磷酸酶、焦磷酸酶以及 ATP 酶等。〔说话人1 01:06:13〕</li>
+<li>可以以碱性磷酸酶的活性高低作为临床判断骨组织形成活跃程度的标准。〔说话人1 01:07:03〕</li>
+<li>成骨细胞功能三：分泌生长因子、细胞因子，调节骨组织的生成、吸收和代谢。〔说话人1 01:07:03〕</li>
+<li>成骨细胞 osteoblast（blast＝形成）；破骨细胞 osteoclast（clast＝破坏），二者来源与功能完全不同。〔说话人1 01:13:10〕</li>
+<li>大概有 10%~15% 的成骨细胞转化成骨细胞。〔说话人1 01:07:45〕</li>
+<li>成骨细胞转归：部分成为骨被覆细胞（表面静止，类似成纤维细胞→纤维细胞）；另有大量凋亡。〔说话人1 01:07:45〕</li>
+<li>骨被覆细胞呈梭形、细长、染色较深，位于骨组织表面（骨单位腔面），需要时也可再转回成骨细胞。〔说话人1 01:08:48〕</li>
+<li>骨细胞位于骨组织内部、被骨基质包埋，呈扁椭圆形。〔说话人1 01:09:46〕</li>
+<li>骨陷窝：骨基质里面的一个容纳骨细胞胞体的腔。〔说话人1 01:10:19〕</li>
+<li>骨小管里面含有骨细胞的凸起；骨细胞是一个多凸起的细胞。〔说话人1 01:10:19〕</li>
+<li>手掌与手套比喻：胞体相当于手掌、凸起相当于指头，骨陷窝相当于手套、骨小管相当于指套。〔说话人1 01:10:19〕</li>
+<li>骨陷窝与骨小管内含组织液，为骨细胞提供营养、转运代谢产物。〔说话人1 01:12:18〕</li>
+<li>骨细胞的细胞器相对较少，有少量粗面内质网和高尔基复合体。〔说话人1 01:13:10〕</li>
+<li>骨细胞在某种程度上、某些情况下也能产生骨基质。〔说话人1 01:13:10〕</li>
+<li>破骨细胞存在于骨基质的一些凹陷处。〔说话人1 01:14:12〕</li>
+<li>破骨细胞胞体很大、有多个核、胞质是酸性的（嗜酸性）。〔说话人1 01:14:12〕</li>
+<li>破骨细胞由多个单核细胞（巨噬细胞）融合形成，实际上是骨组织里的巨噬细胞。〔说话人1 01:14:56〕</li>
+<li>破骨细胞来源于骨髓的粒单核细胞系祖细胞，与单核细胞同源。〔说话人1 01:14:56〕</li>
+<li>皱褶缘：靠近骨组织一面形成向细胞内凹陷、呈条纹状的结构（不同于向外凸出的微绒毛）。〔说话人1 01:15:28〕</li>
+<li>皱褶缘就是破骨细胞吸收骨基质的所在部位。〔说话人1 01:15:28〕</li>
+<li>破骨细胞附着在骨组织表面、产生酸性物质并释放酶把骨基质溶解，再吸收进去、经溶酶体消化。〔说话人1 01:16:19〕</li>
+<li>破骨细胞基底部含有很多溶酶体和吞饮小泡。〔说话人1 01:16:19〕</li>
+<li>皱褶缘周围细胞器比较少，光镜下颜色比较浅，称亮区（clear zone）。〔说话人1 01:17:20〕</li>
+<li>亮区（clear zone）紧贴骨质围成封闭微环境，酸与酶不扩散；远离皱褶缘侧胞质细胞器较多。〔说话人1 01:17:20〕</li>
+<li>破骨细胞的功能是溶解和吸收骨基质。〔说话人1 01:18:19〕</li>
+<li>破骨细胞释放的酶有组织蛋白酶、基质金属蛋白酶等；释放的酸有盐酸（氢离子）、乳酸、柠檬酸等。〔说话人1 01:18:19〕</li>
+<li>破骨细胞分解骨基质里的有机成分和钙盐结晶。〔说话人1 01:18:19〕</li>
+<li>血钙升高：甲状旁腺激素经成骨细胞产生一种配体，再由配体激活破骨细胞。〔说话人1 01:19:27〕</li>
+<li>血钙降低：在降钙素的作用下大量成骨，钙沉积到骨组织里，血钙降低。〔说话人1 01:19:27〕</li>
+<li>大量的破骨细胞最后都会凋亡掉。〔说话人1 01:19:27〕</li>
+<li>★成骨细胞、骨细胞、破骨细胞的位置、形态、功能与转归须作对比。〔说话人1 01:19:27〕</li>
+</ul>
+
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>骨基质</th><th>占比（重量）</th><th>内容</th></tr>
+<tr><td>有机成分</td><td>35%</td><td>95% 为Ⅰ型胶原纤维（有周期性横纹）；其余为骨黏连蛋白、骨钙素等</td></tr>
+<tr><td>无机成分</td><td>65%</td><td>羟基磷灰石结晶，针状或片状分布于胶原纤维间</td></tr>
+</table>
+<table class="tbl">
+<tr><th>细胞</th><th>形态与位置</th><th>来源</th><th>功能</th><th>转归</th></tr>
+<tr><td>骨祖细胞</td><td>小、梭形、染色浅；位于骨组织表面</td><td>骨组织内的干细胞性细胞</td><td>与骨生长改建有关；分化为成骨细胞</td><td>分化为成骨细胞</td></tr>
+<tr><td>成骨细胞</td><td>立方／矮柱状、嗜碱；骨表面成排</td><td>骨祖细胞分化</td><td>造类骨质；基质小泡启动钙化；分泌因子</td><td>10%~15%→骨细胞；部分→骨被覆细胞；多凋亡</td></tr>
+<tr><td>骨细胞</td><td>扁椭圆、多突起；骨陷窝与骨小管</td><td>成骨细胞包埋</td><td>较静止；可少量成骨；组织液营养</td><td>长期留于骨质内</td></tr>
+<tr><td>破骨细胞</td><td>巨大多核、嗜酸；皱褶缘与亮区</td><td>单核细胞融合</td><td>酸与酶溶解吸收骨基质；调血钙</td><td>最终凋亡</td></tr>
+</table>
+
+<div class="exam"><span class="tag">考点</span>骨基质占比；四类骨细胞；基质小泡；皱褶缘与亮区；PTH／降钙素。</div>
+</div>
+
+<div class="page">
+<h2 class="h2">8. 骨组织类型与长骨密质骨</h2>
+<div class="lead">编织骨与板层骨；密质骨三种骨板两种管道。</div>
+
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>骨组织类型分成两种：初级骨组织与次级骨组织。〔说话人1 01:20:52〕</li>
+<li>初级骨组织又称编织骨：胶原纤维比较粗大、排列很紊乱、呈编织状交织。〔说话人1 01:20:52〕</li>
+<li>初级骨组织骨盐沉着得很少、骨细胞相对很多、有机成分多。〔说话人1 01:20:52〕</li>
+<li>经过改建后成为次级骨组织，胶原纤维变细、排列很规律。〔说话人1 01:23:01〕</li>
+<li>次级骨组织相邻骨板之间胶原纤维互相垂直，并有大量钙盐沉着，增加硬度与韧性。〔说话人1 01:20:52〕</li>
+<li>次级骨组织形成了骨板，故又称板层骨。〔说话人1 01:23:01〕</li>
+<li>板层骨有两种承载形式：密质骨与松质骨。〔说话人1 01:23:01〕</li>
+<li>长骨分两端的骨骺、中间的骨干，以及两者之间的干骺端。〔说话人1 01:23:32〕</li>
+<li>长骨表面外周与腔面都含有覆盖的骨膜。〔说话人1 01:23:32〕</li>
+<li>关节面处有一层关节软骨，它是透明软骨，且表面没有软骨膜。〔说话人1 01:24:07〕</li>
+<li>骨组织里面还有骨髓，骨膜与骨髓里面还有一些血管、神经等成分。〔说话人1 01:24:07〕</li>
+<li>密质骨分布在骨干和骨两端骨骺的外侧面。〔说话人1 01:24:36〕</li>
+<li>密质骨的结构由三种骨板、两种管道构成。〔说话人1 01:24:36〕</li>
+<li>环骨板分内环骨板与外环骨板两种。〔说话人1 01:25:22〕</li>
+<li>外环骨板环绕整个骨干外周，相对比较厚、比较规律。〔说话人1 01:25:22〕</li>
+<li>内环骨板衬在骨髓腔整个内表面，比较薄、不那么规则。〔说话人1 01:25:22〕</li>
+<li>穿通管位于环骨板里面，穿过骨膜、与长骨长轴垂直，穿过整个密质骨。〔说话人1 01:26:17〕</li>
+<li>穿通管开口于骨小管和中间的一些管道。〔说话人1 01:26:17〕</li>
+<li>最浅层的骨小管末端是开放的，开放到骨膜，与骨膜的血管相通。〔说话人1 01:26:17〕</li>
+<li>骨单位骨板为第二种骨板；骨单位亦称哈佛系统，是长骨骨干的结构单位。〔说话人1 01:28:23〕</li>
+<li>骨单位＝中央管（哈佛管）＋围绕它多层同心圆排列的骨单位骨板。〔说话人1 01:28:23〕</li>
+<li>中央管里面有血管、神经和结缔组织。〔说话人1 01:28:23〕</li>
+<li>穿通管与中央管相通，把结缔组织和血管带入中央管，从而与骨膜的血管连起来。〔说话人1 01:28:23〕</li>
+<li>同一层的骨小管在内部彼此相通。〔说话人1 01:30:06〕</li>
+<li>最内层的骨单位骨板的骨小管与中央管相通。〔说话人1 01:30:06〕</li>
+<li>因此每一层骨板里的骨细胞都能通过骨小管从中央管获取营养。〔说话人1 01:30:06〕</li>
+<li>但骨单位最外层的骨小管与另一个骨单位外层的骨小管不相通，终止为盲端。〔说话人1 01:30:06〕</li>
+<li>联合线：每个骨单位周围颜色较浅的边界，里面主要只有胶原纤维。〔说话人1 01:30:58〕</li>
+<li>间骨板位于相邻的骨单位之间。〔说话人1 01:32:11〕</li>
+<li>间骨板是骨生长改建过程中没有完全吸收、残留的骨单位骨板。〔说话人1 01:32:11〕</li>
+<li>间骨板呈扇形，相当于骨干骨板的四分之一或五分之一，且没有中央管。〔说话人1 01:32:49〕</li>
+<li>松质骨位于骨骺两端内侧深部、骨髓腔等处。〔说话人1 01:32:49〕</li>
+<li>松质骨由条索状骨板互相交织成网状，故称骨小梁。〔说话人1 01:34:08〕</li>
+<li>骨小梁的网孔里面含有骨髓。〔说话人1 01:34:08〕</li>
+<li>X 光透视片上白色条索状、互相连接成网的结构就是骨小梁，其外表面为密质骨。〔说话人1 01:34:08〕</li>
+</ul>
+
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>比较项</th><th>初级骨组织（编织骨）</th><th>次级骨组织（板层骨）</th></tr>
+<tr><td>出现时机</td><td>刚开始形成的骨组织</td><td>经改建后形成；成年时内部组织都是这种</td></tr>
+<tr><td>胶原纤维</td><td>粗大、排列紊乱呈编织状</td><td>变细、排列规律；相邻骨板胶原纤维互相垂直</td></tr>
+<tr><td>钙盐</td><td>沉着很少，有机成分多</td><td>沉着多，胶原纤维之间有大量羟基磷灰石结晶</td></tr>
+<tr><td>骨细胞数量</td><td>相对很多</td><td>相对较少</td></tr>
+<tr><td>结构形式</td><td>无骨板，编织状</td><td>形成骨板，故称板层骨；分密质骨与松质骨</td></tr>
+</table>
+<table class="tbl">
+<tr><th>密质骨结构</th><th>位置与形态</th><th>要点</th></tr>
+<tr><td>外环骨板</td><td>环绕整个骨干外周</td><td>比较厚、比较规律</td></tr>
+<tr><td>内环骨板</td><td>衬在骨髓腔整个内表面</td><td>比较薄、不那么规则</td></tr>
+<tr><td>骨单位骨板</td><td>内、外环骨板之间，围绕中央管多层同心圆排列</td><td>与中央管合称骨单位（哈佛系统）</td></tr>
+<tr><td>间骨板</td><td>相邻骨单位之间</td><td>改建未完全吸收的残留骨板，呈扇形、无中央管</td></tr>
+<tr><td>穿通管</td><td>环骨板内，与长骨长轴垂直</td><td>从骨膜穿过密质骨，与中央管相通</td></tr>
+<tr><td>中央管（哈佛管）</td><td>骨单位中央</td><td>含血管、神经与结缔组织，与穿通管相通</td></tr>
+</table>
+
+<div class="exam"><span class="tag">考点</span>编织骨与板层骨；三种骨板两种管道；骨小管盲端。</div>
+</div>
+
+<div class="page">
+<h2 class="h2">9. 骨膜、骨发生与骨生长</h2>
+<div class="lead">膜内／软骨内成骨；骺板五区加长，骨膜成骨增粗。</div>
+
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>长骨除关节面以外，其他地方都包绕着骨膜，包括骨髓腔、中央管与穿通管的内表面。〔说话人1 01:34:48〕</li>
+<li>骨膜又分骨外膜与骨内膜。〔说话人1 01:34:48〕</li>
+<li>骨外膜位于骨表面、外周，结构又分外层与内层，就像软骨膜一样。〔说话人1 01:35:14〕</li>
+<li>骨外膜外层纤维多、细胞少；内层纤维少、细胞多，还有一些血管，结构比较疏松。〔说话人1 01:35:14〕</li>
+<li>骨外膜内层含有骨祖细胞和骨被覆细胞。〔说话人1 01:35:14〕</li>
+<li>骨外膜里面有穿通纤维，穿过外环骨板，把骨膜固定在骨组织表面。〔说话人1 01:35:14〕</li>
+<li>骨内膜位于骨髓腔面、骨小梁表面，以及中央管和穿通管内表面。〔说话人1 01:36:07〕</li>
+<li>骨内膜是薄层结缔组织，同样含骨祖细胞和骨被覆细胞。〔说话人1 01:36:07〕</li>
+<li>骨膜功能一：支持保护作用。〔说话人1 01:37:02〕</li>
+<li>骨膜功能二：与骨的生长和修复有关，靠骨祖细胞分化为成骨细胞产生骨质。〔说话人1 01:37:02〕</li>
+<li>骨膜营养作用：骨膜内含血管，支持骨组织营养。〔说话人1 01:37:38〕</li>
+<li>骨发生的方式有两种：膜内成骨与软骨内成骨。〔说话人1 01:37:38〕</li>
+<li>膜内成骨见于顶骨、颅骨、锁骨这些地方。〔说话人1 01:37:38〕</li>
+<li>软骨内成骨见于四肢骨、躯干骨，是先形成软骨、然后再形成骨。〔说话人1 01:37:38〕</li>
+<li>膜内成骨：间充质形成胚胎结缔组织膜，细胞分化为骨祖细胞与成骨细胞。〔说话人1 01:37:38〕</li>
+<li>中央骨化中心形成针状或片状初级骨小梁，先为类骨质，随后钙化。〔说话人1 01:37:38〕</li>
+<li>成骨细胞继续在初级骨小梁表面成骨，骨小梁变粗变大、连接成网，形成初级松质骨。〔说话人1 01:39:41〕</li>
+<li>骨小梁之间的间充质分化为骨髓，骨小梁表面的间充质形成骨膜、骨内膜。〔说话人1 01:39:41〕</li>
+<li>随后改建：骨膜内层成骨形成密质骨（内外板），初级松质骨改为松质骨。〔说话人1 01:39:41〕</li>
+<li>颅腔的曲度随脑发育而变化，其改建依赖破骨细胞在里面吸收、破坏。〔说话人1 01:41:13〕</li>
+<li>软骨内成骨：先以软骨发生的方式形成透明软骨，即软骨雏形，其形状与将来要形成的骨非常相似。〔说话人1 01:42:32〕</li>
+<li>软骨雏形形成后，其中段的软骨膜内层开始出现血管，软骨膜就变成了骨膜。〔说话人1 01:43:54〕</li>
+<li>其中的细胞增殖、转化为骨祖细胞，再形成成骨细胞。〔说话人1 01:43:54〕</li>
+<li>成骨细胞在软骨表面（包着骨干的中间段）形成一圈像衣领一样的骨组织，即骨领，形成方式是膜内成骨。〔说话人1 01:43:54〕</li>
+<li>骨领形成后，中间软骨细胞退化肥大，软骨基质发生钙化。〔说话人1 01:43:54〕</li>
+<li>骨膜芽：骨膜内层结缔组织凸出并带入血管，单核细胞在此转化成破骨细胞。〔说话人1 01:43:54〕</li>
+<li>骨膜芽进入退化软骨基质后，破骨细胞把它溶解吸收，形成最初始的骨髓腔，即初级骨髓腔。〔说话人1 01:45:21〕</li>
+<li>成骨细胞继续在残留的软骨基质里形成新骨质，与软骨基质原有的骨小梁共同构成过渡型骨小梁。〔说话人1 01:45:21〕</li>
+<li>过渡型骨小梁再被吸收，初级骨髓腔就进一步扩大。〔说话人1 01:45:21〕</li>
+<li>次级骨化中心出现在长骨两端（骨骺处），形成方式与初级骨化中心相同，并向四周扩展。〔说话人1 01:45:21〕</li>
+<li>骨骺随后改建成松质骨和外表面的密质骨。〔说话人1 01:46:51〕</li>
+<li>关节面处始终保留一层透明软骨，即关节软骨。〔说话人1 01:46:51〕</li>
+<li>骨骺与骨干之间一段时间内也保留一层透明软骨，即骺板。〔说话人1 01:46:51〕</li>
+<li>骺板可以不断长出新的软骨，使骨干加长，因此又称生长板。〔说话人1 01:47:46〕</li>
+<li>骺板五区（骨骺→骨干）：软骨储备区、软骨增生区、软骨成熟区、软骨钙化区、成骨区。〔说话人1 01:48:22〕</li>
+<li>储备区为静止透明软骨；增生区细胞增殖成条索状同源细胞群；成熟区退化；钙化区基质钙化；成骨区改建为骨。〔说话人1 01:48:22〕</li>
+<li>生长激素促进骺板的软骨不断生长。〔说话人1 01:49:22〕</li>
+<li>生长激素在青春期前分泌不足→侏儒症；分泌过量→巨人症（身高多在两米二以上）。〔说话人1 01:49:22〕</li>
+<li>骺板的生长停止大约在 17 岁到 20 岁左右。〔说话人1 01:49:22〕</li>
+<li>骺板停止生长并钙化后，骨骺与骨干之间的透明软骨代之以骺线。〔说话人1 01:49:22〕</li>
+<li>生长激素对神经细胞的发育没有影响，故侏儒症患者智力正常。〔说话人1 01:49:22〕</li>
+<li>甲状腺激素既调控骺板的生长，也对神经系统的生长发育有调节作用。〔说话人1 01:51:28〕</li>
+<li>甲状腺激素不足→呆小症，表现为身材矮小加智力障碍。〔说话人1 01:51:28〕</li>
+<li>长骨增粗主要在骨领处的骨膜：骨膜内层不断产生骨领、逐渐增厚，最后钙化，仍以膜内成骨方式完成。〔说话人1 01:51:28〕</li>
+<li>骨干的密质骨主要形成骨单位，骨单位还会不断改建，从第一代到第二代、第三代。〔说话人1 01:52:27〕</li>
+<li>改建中没有完全吸收的旧骨单位骨板残留下来，就是间骨板。〔说话人1 01:52:27〕</li>
+<li>骨单位逐代改建使骨干密质骨变得非常坚固。〔说话人1 01:52:53〕</li>
+</ul>
+
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl">
+<tr><th>方式</th><th>代表骨</th><th>起点</th><th>关键过程</th></tr>
+<tr><td>膜内成骨</td><td>顶骨、颅骨、锁骨</td><td>间充质结缔组织膜</td><td>骨化中心→初级骨小梁→初级松质骨→密质骨改建</td></tr>
+<tr><td>软骨内成骨</td><td>四肢骨、躯干骨</td><td>透明软骨雏形</td><td>骨领→骨膜芽→初级骨髓腔→次级骨化中心→骺板</td></tr>
+</table>
+<table class="tbl">
+<tr><th>激素</th><th>作用</th><th>不足</th><th>过量</th><th>智力影响</th></tr>
+<tr><td>生长激素</td><td>促进骺板软骨不断生长</td><td>侏儒症</td><td>巨人症（身高多在两米二以上）</td><td>无，侏儒症智力正常</td></tr>
+<tr><td>甲状腺激素</td><td>调控骺板生长＋神经系统的生长发育</td><td>呆小症（身材矮小＋智力障碍）</td><td>本课未讲</td><td>有，神经发育出现障碍</td></tr>
+</table>
+
+<div class="exam"><span class="tag">考点</span>膜内／软骨内成骨；骺板五区；生长／甲状腺激素。</div>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 A 必背清单</h2>
+<div class="lead">全课必背条目；出处见正文与附录 C。</div>
+<ul class="kv">
+<li>网状纤维：HE 与胶原纤维无法分辨，镀银染色（嗜银纤维）显示。</li>
+<li>网状纤维：Ⅲ型胶原，电镜有周期性横纹。</li>
+<li>网状纤维分布：基膜网板、淋巴结皮质、脾、内分泌腺、肝小叶；肝内储脂细胞可产生。</li>
+<li>基质三成分：蛋白聚糖＋多联糖蛋白＋组织液。</li>
+<li>糖胺聚糖两大类：硫酸化小分子（硫酸软骨素等）／无硫酸化长链（透明质酸＝玻尿酸）。</li>
+<li>蛋白聚糖亚单位＝核心蛋白＋四种硫酸化糖胺聚糖；经结合蛋白连透明质酸骨架→聚合体。</li>
+<li>分子筛：带网孔，挡大分子与细菌、局限感染；屏障非常有限。</li>
+<li>破坏屏障者：透明质酸酶；溶血性链球菌、肿瘤细胞可扩散。</li>
+<li>组织液：动脉端渗出、静脉端回流；失衡→脱水或水肿。</li>
+<li>致密结缔组织分类依据：纤维排列方式＋纤维成分种类。</li>
+<li>规则型：肌腱、韧带、腱膜，胶原平行；腱细胞实质是成纤维细胞。</li>
+<li>不规则型：真皮、硬脑膜、巩膜、器官被膜，纤维交织。</li>
+<li>弹性组织：项韧带、黄韧带、大动脉根部弹性膜；间断射血→连续血流。</li>
+<li>脂肪组织：单泡→黄色（白色）脂肪，核靠边；多泡→棕色脂肪，核居中。</li>
+<li>网状组织：网状细胞＋网状纤维＋基质；作造血／淋巴／内分泌组织的支架。</li>
+<li>软骨／骨＝特殊结缔组织：基质固态、无血管。</li>
+<li>软骨分类依据：基质中纤维种类→透明／弹性／纤维软骨。</li>
+<li>透明软骨分布：肋软骨、关节面、呼吸道管壁软骨环、早期胚胎骨架。</li>
+<li>软骨器官＝软骨组织＋软骨膜；关节面无软骨膜。</li>
+<li>透明软骨纤维：Ⅱ型胶原原纤维，细且折光率近基质→光镜不可见。</li>
+<li>软骨陷窝与软骨囊：陷窝容细胞；软骨囊为硫酸软骨素多的基质。</li>
+<li>软骨细胞分布：近膜小、单个（幼稚）；内部大成同源细胞群。</li>
+<li>同源细胞群＝同一幼稚软骨细胞分裂增殖形成；软骨细胞线粒体少→无氧糖酵解。</li>
+<li>软骨膜：外层纤维多细胞少／内层纤维少细胞多（含软骨祖细胞）；功能保护、营养、生长。</li>
+<li>弹性软骨：耳郭、外耳道、会厌；弹性纤维须弹性染色显示。</li>
+<li>纤维软骨：椎间盘、关节盘、耻骨联合；无软骨膜。</li>
+<li>软骨发生：间充质→软骨祖细胞→成软骨细胞→软骨细胞；周边→软骨膜。</li>
+<li>软骨生长：外加生长／间质性生长。</li>
+<li>骨＝骨组织＋骨膜＋骨髓；99% 钙在骨中。</li>
+<li>骨基质：有机 35%（95% 为Ⅰ型胶原纤维）／无机 65%（羟基磷灰石，针状或片状）。</li>
+<li>类骨质＝未钙化的有机骨基质。</li>
+<li>维生素 D 需日照；缺乏→软骨病（鸡胸、X 型腿等）。</li>
+<li>四类骨细胞：骨祖、成骨、骨、破骨细胞。</li>
+<li>成骨细胞：骨表面嗜碱；造类骨质、基质小泡钙化；10%~15%→骨细胞。</li>
+<li>骨细胞：骨陷窝＋骨小管（手掌—手套）。</li>
+<li>破骨细胞：多核巨噬样；皱褶缘＋亮区溶解吸收骨基质。</li>
+<li>血钙：PTH 激活破骨升钙；降钙素促成骨降钙。</li>
+<li>骨组织：初级编织骨／次级板层骨。</li>
+<li>密质骨：三种骨板＋两种管道（穿通管、中央管）；间骨板为残留片。</li>
+<li>骨单位：哈佛管＋同心圆骨板；骨小管相通、外层盲端。</li>
+<li>松质骨：骨骺深部等，骨小梁交织成网，网孔含骨髓；X 光片上白色网状条索即骨小梁。</li>
+<li>骨膜：骨外膜＋骨内膜；穿通纤维固定；保护、生长修复、营养。</li>
+<li>骨发生：膜内成骨（颅骨／顶骨／锁骨）／软骨内成骨（四肢骨／躯干骨）。</li>
+<li>软骨内成骨：软骨雏形→骨领→骨膜芽→初级骨髓腔→次级骨化中心→骺板。</li>
+<li>骺板五区：储备区→增生区→成熟区→钙化区→成骨区。</li>
+<li>生长激素：不足侏儒、过量巨人；甲状腺激素不足→呆小症。</li>
+<li>骺板闭合→骺线；约 17–20 岁停止生长。</li>
+<li>长骨增粗靠骨膜内层成骨；密质骨靠骨单位改建与间骨板。</li>
+</ul>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<div class="lead">左错右对。</div>
+<table class="tbl">
+<tr><th>易混点</th><th>错（容易写成的说法）</th><th>对（正确结论）</th></tr>
+<tr><td>网状纤维／胶原纤维</td><td>网状纤维非胶原蛋白</td><td>仍为Ⅲ型胶原；HE 与胶原纤维不分，须镀银染色</td></tr>
+<tr><td>透明质酸／硫酸软骨素</td><td>透明质酸属硫酸化糖胺聚糖</td><td>透明质酸为无硫酸化长链骨架；硫酸软骨素等为硫酸化小分子</td></tr>
+<tr><td>分子筛屏障</td><td>分子筛绝对挡菌</td><td>屏障非常有限；透明质酸酶可破坏骨架</td></tr>
+<tr><td>规则致密／弹性组织</td><td>项韧带、黄韧带属规则致密型</td><td>二者属弹性组织，以弹性纤维为主</td></tr>
+<tr><td>单泡／多泡脂肪细胞</td><td>白脂核居中、棕脂核靠边</td><td>单泡核靠边；多泡核居中</td></tr>
+<tr><td>软骨膜／骨膜</td><td>软骨膜有穿通纤维</td><td>穿通纤维属骨外膜；软骨膜无穿通纤维</td></tr>
+<tr><td>软骨陷窝／软骨囊</td><td>软骨囊是真膜</td><td>软骨囊为硫酸软骨素多的基质，与周围连续</td></tr>
+<tr><td>软骨囊／软骨膜</td><td>囊膜都在外面</td><td>软骨囊在内部属基质；软骨膜在外为结缔组织</td></tr>
+<tr><td>透明软骨有无纤维</td><td>透明软骨无纤维</td><td>有Ⅱ型胶原原纤维，光镜不可见</td></tr>
+<tr><td>两种「无软骨膜」</td><td>原因相同</td><td>关节面为自由面；纤维软骨与周围连续</td></tr>
+<tr><td>外加／间质生长</td><td>间质生长靠膜内层</td><td>外加靠膜内层；间质靠内部软骨细胞</td></tr>
+<tr><td>类骨质／骨基质</td><td>类骨质即成熟骨基质</td><td>类骨质为未钙化有机质</td></tr>
+<tr><td>骨黏连蛋白／软骨黏连蛋白</td><td>骨以软骨黏连蛋白为主</td><td>骨黏连蛋白 vs 软骨黏连蛋白各主其组织</td></tr>
+<tr><td>成骨细胞／破骨细胞</td><td>来源相同仅功能相反</td><td>成骨细胞来自骨祖细胞；破骨细胞为单核细胞融合</td></tr>
+<tr><td>骨陷窝／骨小管</td><td>突起在骨陷窝内</td><td>陷窝容胞体；骨小管容突起</td></tr>
+<tr><td>骨单位骨板／间骨板</td><td>间骨板有中央管</td><td>间骨板为残留骨板片段、无中央管</td></tr>
+<tr><td>骨小管相通范围</td><td>相邻骨单位骨小管相通</td><td>单位内相通通中央管；单位间外层为盲端</td></tr>
+<tr><td>侏儒症／呆小症</td><td>均身材矮加智力障碍</td><td>生长激素缺→侏儒（智力正常）；甲状腺激素缺→呆小</td></tr>
+</table>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 C 考点索引表</h2>
+<div class="lead">考点与定位对照。</div>
+<table class="tbl idx">
+<tr><th>考点</th><th>出处小节</th><th>定位</th><th>可能题型</th></tr>
+<tr><td>网状纤维需镀银染色显示（嗜银纤维），HE 与胶原纤维无法分辨</td><td>1</td><td>说话人1 01:09</td><td>单选／多选</td></tr>
+<tr><td>网状纤维以Ⅲ型胶原蛋白为主，电镜下有周期性横纹</td><td>1</td><td>说话人1 01:09</td><td>单选／填空</td></tr>
+<tr><td>网状纤维分布五部位；肝内储脂细胞可产生</td><td>1</td><td>说话人1 01:09</td><td>多选／简答</td></tr>
+<tr><td>基质三大成分：蛋白聚糖＋多联糖蛋白＋组织液</td><td>2</td><td>说话人1 03:40</td><td>多选／简答</td></tr>
+<tr><td>糖胺聚糖两大类及成员（硫酸软骨素等；透明质酸）</td><td>2</td><td>说话人1 04:34</td><td>多选</td></tr>
+<tr><td>蛋白聚糖亚单位＝核心蛋白＋四种硫酸化糖胺聚糖；经结合蛋白连透明质酸骨架</td><td>2</td><td>说话人1 05:58</td><td>单选／简答</td></tr>
+<tr><td>蛋白聚糖聚合体形成带网孔的分子筛，起屏障作用</td><td>2</td><td>说话人1 07:39</td><td>单选／论述</td></tr>
+<tr><td>透明质酸酶破坏骨架；溶血性链球菌、肿瘤细胞致扩散</td><td>2</td><td>说话人1 08:30</td><td>单选／临床</td></tr>
+<tr><td>组织液动脉端渗出、静脉端回流；失衡→水肿或脱水</td><td>2</td><td>说话人1 10:20</td><td>单选／简答</td></tr>
+<tr><td>致密结缔组织两条分类依据</td><td>3</td><td>说话人1 11:08</td><td>单选／简答</td></tr>
+<tr><td>规则型＝肌腱／韧带／腱膜；腱细胞实质是成纤维细胞</td><td>3</td><td>说话人1 11:58</td><td>单选／名词解释</td></tr>
+<tr><td>大动脉根部弹性膜把间断射血转为连续血流</td><td>3</td><td>说话人1 14:14</td><td>简答／论述</td></tr>
+<tr><td>单泡脂肪细胞→黄色（白色）脂肪、核靠边；多泡→棕色脂肪、核居中</td><td>4</td><td>说话人1 16:35</td><td>单选／对比</td></tr>
+<tr><td>网状组织＝网状细胞＋网状纤维＋基质；为造血／淋巴／内分泌组织支架</td><td>4</td><td>说话人1 19:32</td><td>多选／名词解释</td></tr>
+<tr><td>软骨／骨为特殊结缔组织：基质固态、无血管</td><td>5</td><td>说话人1 20:49</td><td>单选／简答</td></tr>
+<tr><td>软骨分类依据＝基质中纤维种类；三类软骨分布与有无软骨膜</td><td>5、6</td><td>说话人1 22:59</td><td>表格题／多选</td></tr>
+<tr><td>透明软骨纤维为Ⅱ型胶原原纤维，折光率近基质→光镜不可见</td><td>5</td><td>说话人1 26:43</td><td>单选／简答</td></tr>
+<tr><td>软骨陷窝与软骨囊的定义；软骨囊实质是软骨基质</td><td>5</td><td>说话人1 28:39</td><td>名词解释</td></tr>
+<tr><td>软骨细胞分布规律与同源细胞群定义</td><td>5</td><td>说话人1 32:24</td><td>简答／单选</td></tr>
+<tr><td>软骨细胞线粒体极少、靠无氧糖酵解供能</td><td>5</td><td>说话人1 33:27</td><td>简答</td></tr>
+<tr><td>软骨膜两层结构与三重功能（保护、营养、生长）</td><td>5</td><td>说话人1 36:36</td><td>多选／简答</td></tr>
+<tr><td>软骨发生链条与两种生长方式（外加生长／间质性生长）</td><td>6</td><td>说话人1 42:42</td><td>简答／论述</td></tr>
+<tr><td>骨基质有机 35%（95% 为Ⅰ型胶原）／无机 65%（羟基磷灰石）</td><td>7</td><td>说话人1 57:09</td><td>单选／填空</td></tr>
+<tr><td>类骨质＝未钙盐沉着的骨基质有机成分</td><td>7</td><td>说话人1 01:00:21</td><td>名词解释</td></tr>
+<tr><td>四类骨细胞的位置、形态、功能与转归（对比归纳）</td><td>7</td><td>说话人1 01:19:27</td><td>大表题／论述</td></tr>
+<tr><td>成骨细胞经基质小泡启动钙化；碱性磷酸酶活性判成骨活跃度</td><td>7</td><td>说话人1 01:06:13</td><td>简答／临床</td></tr>
+<tr><td>约 10%~15% 成骨细胞转化为骨细胞</td><td>7</td><td>说话人1 01:07:45</td><td>单选／填空</td></tr>
+<tr><td>骨细胞与骨陷窝／骨小管的「手掌—手套」关系</td><td>7</td><td>说话人1 01:10:19</td><td>简答／图示</td></tr>
+<tr><td>破骨细胞来源（单核细胞融合）与皱褶缘＋亮区吸收机制</td><td>7</td><td>说话人1 01:14:56</td><td>简答／论述</td></tr>
+<tr><td>血钙双向调节：PTH 经成骨细胞配体激活破骨升钙；降钙素促成骨降钙</td><td>7</td><td>说话人1 01:19:27</td><td>简答／单选</td></tr>
+<tr><td>编织骨（初级）与板层骨（次级）的区别</td><td>8</td><td>说话人1 01:20:52</td><td>对比题</td></tr>
+<tr><td>密质骨＝三种骨板＋两种管道</td><td>8</td><td>说话人1 01:24:36</td><td>简答／图示</td></tr>
+<tr><td>骨单位＝中央管＋同心圆骨单位骨板；骨小管逐层相通、最外层盲端</td><td>8</td><td>说话人1 01:30:06</td><td>简答／判断</td></tr>
+<tr><td>联合线与间骨板的定义及区别</td><td>8</td><td>说话人1 01:30:58</td><td>名词解释</td></tr>
+<tr><td>松质骨由骨小梁交织成网，网孔含骨髓</td><td>8</td><td>说话人1 01:32:49</td><td>单选／简答</td></tr>
+<tr><td>X 光透视片上白色条索状骨小梁与表面密质骨</td><td>8</td><td>说话人1 01:34:08</td><td>识图／单选</td></tr>
+<tr><td>骨膜两种、骨外膜两层、穿通纤维固定、三重功能</td><td>9</td><td>说话人1 01:37:38</td><td>多选／简答</td></tr>
+<tr><td>膜内成骨与软骨内成骨的代表骨与起点</td><td>9</td><td>说话人1 01:37:38</td><td>单选／简答</td></tr>
+<tr><td>软骨内成骨关键结构：软骨雏形、骨领、骨膜芽、初级骨髓腔、过渡型骨小梁、次级骨化中心</td><td>9</td><td>说话人1 01:43:54</td><td>排序题／简答</td></tr>
+<tr><td>骺板五区顺序：储备→增生→成熟→钙化→成骨</td><td>9</td><td>说话人1 01:48:22</td><td>排序／填空</td></tr>
+<tr><td>生长激素不足→侏儒症（智力正常）；过量→巨人症</td><td>9</td><td>说话人1 01:49:22</td><td>单选／临床</td></tr>
+<tr><td>甲状腺激素不足→呆小症（身材＋智力双障碍）</td><td>9</td><td>说话人1 01:51:28</td><td>单选／临床</td></tr>
+<tr><td>维生素 D 需阳光照射；缺乏→软骨病（大头娃娃／鸡胸／X 型腿）</td><td>7</td><td>说话人1 01:01:54</td><td>临床单选／简答</td></tr>
+<tr><td>长骨增粗靠骨领处骨膜内层成骨；密质骨坚固靠骨单位改建</td><td>9</td><td>说话人1 01:52:27</td><td>简答</td></tr>
+</table>
+</div>
+
+<div class="page">
+<h2 class="h2">附录 D 知识点清单</h2>
+<div class="lead">全课知识点登记（定位可核对逐字稿）。</div>
+<table class="tbl idx">
+<tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>网状纤维 HE 下与胶原纤维无法分辨，须镀银染色（嗜银纤维）显示</td><td>名词</td><td>1</td><td>说话人1 01:09</td></tr>
+<tr><td>2</td><td>网状纤维本质为胶原蛋白，以Ⅲ型胶原为主、有周期性横纹</td><td>结构</td><td>1</td><td>说话人1 01:09</td></tr>
+<tr><td>3</td><td>网状纤维分布：基膜网板、淋巴结皮质、脾、内分泌腺、肝小叶</td><td>结构</td><td>1</td><td>说话人1 01:09</td></tr>
+<tr><td>4</td><td>肝内储脂细胞可产生网状纤维</td><td>举例</td><td>1</td><td>说话人1 01:09</td></tr>
+<tr><td>5</td><td>基质定义与性状：纤维间、细胞间无定型胶状物，无固定形状、有粘性</td><td>定义</td><td>2</td><td>说话人1 03:40</td></tr>
+<tr><td>6</td><td>基质三大成分：蛋白聚糖、多联糖蛋白、组织液</td><td>分类</td><td>2</td><td>说话人1 03:40</td></tr>
+<tr><td>7</td><td>蛋白聚糖＝糖胺聚糖＋蛋白质</td><td>定义</td><td>2</td><td>说话人1 04:34</td></tr>
+<tr><td>8</td><td>糖胺聚糖两类：硫酸化小分子（硫酸软骨素等）／无硫酸化长链（透明质酸）</td><td>分类</td><td>2</td><td>说话人1 04:34</td></tr>
+<tr><td>9</td><td>蛋白聚糖亚单位＝核心蛋白＋四种硫酸化糖胺聚糖</td><td>机制</td><td>2</td><td>说话人1 05:58</td></tr>
+<tr><td>10</td><td>亚单位经结合蛋白连透明质酸骨架，构成聚合体</td><td>机制</td><td>2</td><td>说话人1 05:58</td></tr>
+<tr><td>11</td><td>聚合体成带网孔分子筛，挡大分子与细菌、只过水溶性小分子与离子</td><td>机制</td><td>2</td><td>说话人1 07:39</td></tr>
+<tr><td>12</td><td>屏障把感染局限在局部，但作用非常有限</td><td>考点</td><td>2</td><td>说话人1 08:30</td></tr>
+<tr><td>13</td><td>透明质酸酶破坏骨架；溶血性链球菌、肿瘤细胞致扩散</td><td>临床</td><td>2</td><td>说话人1 08:30</td></tr>
+<tr><td>14</td><td>多联糖蛋白起联合作用；组织液动脉端渗出、静脉端回流，失衡→脱水或水肿</td><td>机制</td><td>2</td><td>说话人1 10:20</td></tr>
+<tr><td>15</td><td>致密结缔组织：纤维多而密；分类依据＝纤维排列方式＋纤维成分</td><td>定义</td><td>3</td><td>说话人1 11:08</td></tr>
+<tr><td>16</td><td>规则型：胶原纤维平行排列，见肌腱、韧带、腱膜；腱细胞实质是成纤维细胞</td><td>分类</td><td>3</td><td>说话人1 11:58</td></tr>
+<tr><td>17</td><td>不规则型：纤维交织，见真皮、硬脑膜、巩膜、器官被膜</td><td>分类</td><td>3</td><td>说话人1 13:12</td></tr>
+<tr><td>18</td><td>弹性组织：以弹性纤维为主，见项韧带、黄韧带、大动脉根部弹性膜</td><td>分类</td><td>3</td><td>说话人1 13:35</td></tr>
+<tr><td>19</td><td>大动脉弹性膜使间断射血转为连续血流</td><td>机制</td><td>3</td><td>说话人1 14:14</td></tr>
+<tr><td>20</td><td>脂肪组织：脂肪细胞为主＋少量结缔组织</td><td>定义</td><td>4</td><td>说话人1 16:35</td></tr>
+<tr><td>21</td><td>单泡脂肪细胞→黄色（白色）脂肪：一个大脂滴、核被挤到边缘</td><td>结构</td><td>4</td><td>说话人1 16:35</td></tr>
+<tr><td>22</td><td>多泡脂肪细胞→棕色脂肪：多个小脂滴、核在中央</td><td>结构</td><td>4</td><td>说话人1 18:02</td></tr>
+<tr><td>23</td><td>网状组织＝网状细胞＋网状纤维＋基质</td><td>定义</td><td>4</td><td>说话人1 18:35</td></tr>
+<tr><td>24</td><td>网状细胞星状多突起、弱嗜碱性；为造血／淋巴／内分泌组织支架</td><td>结构</td><td>4</td><td>说话人1 19:32</td></tr>
+<tr><td>25</td><td>软骨／骨为特殊结缔组织：基质固态、无血管</td><td>定义</td><td>5</td><td>说话人1 20:49</td></tr>
+<tr><td>26</td><td>软骨＝软骨细胞＋软骨基质；分类依据＝基质中纤维种类</td><td>定义</td><td>5</td><td>说话人1 22:59</td></tr>
+<tr><td>27</td><td>透明软骨分布：肋软骨、关节面、呼吸道软骨环、早期胚胎骨架</td><td>结构</td><td>5</td><td>说话人1 23:41</td></tr>
+<tr><td>28</td><td>软骨器官＝软骨组织＋软骨膜（气管 C 字形软骨环；关节面无软骨膜）</td><td>结构</td><td>5</td><td>说话人1 24:43</td></tr>
+<tr><td>29</td><td>软骨基质纤维为Ⅱ型胶原原纤维、细且折光率近基质，光镜不可见</td><td>结构</td><td>5</td><td>说话人1 26:43</td></tr>
+<tr><td>30</td><td>软骨陷窝＝容纳软骨细胞的空腔；软骨囊＝紧邻陷窝、硫酸软骨素多、嗜碱性强</td><td>定义</td><td>5</td><td>说话人1 28:39</td></tr>
+<tr><td>31</td><td>软骨基质无血管，含水多、通透性强</td><td>结构</td><td>5</td><td>说话人1 29:44</td></tr>
+<tr><td>32</td><td>软骨细胞分布：近膜处小、单个幼稚；向内部大成同源细胞群</td><td>结构</td><td>5</td><td>说话人1 32:24</td></tr>
+<tr><td>33</td><td>同源细胞群＝同一幼稚软骨细胞分裂增殖形成</td><td>定义</td><td>5</td><td>说话人1 32:24</td></tr>
+<tr><td>34</td><td>软骨细胞线粒体极少，靠无氧糖酵解供能</td><td>机制</td><td>5</td><td>说话人1 33:27</td></tr>
+<tr><td>35</td><td>软骨膜两层：外层纤维多细胞少／内层纤维少细胞多（含软骨祖细胞）</td><td>结构</td><td>5</td><td>说话人1 34:01</td></tr>
+<tr><td>36</td><td>软骨膜功能：保护支持、营养、生长</td><td>结构</td><td>5</td><td>说话人1 36:36</td></tr>
+<tr><td>37</td><td>弹性软骨：耳郭、外耳道、会厌；纤维为大量弹性纤维</td><td>结构</td><td>6</td><td>说话人1 37:50</td></tr>
+<tr><td>38</td><td>纤维软骨：椎间盘、关节盘、耻骨联合；大量胶原纤维、无软骨膜</td><td>结构</td><td>6</td><td>说话人1 39:09</td></tr>
+<tr><td>39</td><td>软骨发生：间充质→软骨形成中心→软骨祖细胞→成软骨细胞→软骨细胞</td><td>机制</td><td>6</td><td>说话人1 40:19</td></tr>
+<tr><td>40</td><td>软骨生长：外加生长（外生长）／间质性生长（内积生长）</td><td>机制</td><td>6</td><td>说话人1 42:42</td></tr>
+<tr><td>41</td><td>骨＝骨组织＋骨膜＋骨髓；机体 99% 的钙在骨组织中</td><td>定义</td><td>7</td><td>说话人1 45:26</td></tr>
+<tr><td>42</td><td>骨组织＝骨基质＋细胞；骨基质是钙化的细胞外基质</td><td>定义</td><td>7</td><td>说话人1 56:09</td></tr>
+<tr><td>43</td><td>骨基质：有机 35%（95% 为Ⅰ型胶原纤维）／无机 65%（羟基磷灰石）</td><td>数字</td><td>7</td><td>说话人1 57:09</td></tr>
+<tr><td>44</td><td>类骨质＝没有钙盐沉着的骨基质有机成分</td><td>定义</td><td>7</td><td>说话人1 01:00:21</td></tr>
+<tr><td>45</td><td>维生素 D 需阳光照射；缺乏→钙吸收障碍→软骨病（大头娃娃、鸡胸、X 型腿）</td><td>临床</td><td>7</td><td>说话人1 01:01:54</td></tr>
+<tr><td>46</td><td>四类骨细胞：骨祖细胞、成骨细胞、骨细胞、破骨细胞</td><td>分类</td><td>7</td><td>说话人1 56:09</td></tr>
+<tr><td>47</td><td>成骨细胞：骨表面、立方／矮柱状、嗜碱；造类骨质、基质小泡启动钙化</td><td>机制</td><td>7</td><td>说话人1 01:06:13</td></tr>
+<tr><td>48</td><td>约 10%~15% 成骨细胞转化为骨细胞</td><td>数字</td><td>7</td><td>说话人1 01:07:45</td></tr>
+<tr><td>49</td><td>骨细胞位于骨陷窝（胞体）与骨小管（凸起）中；手掌—手套比喻</td><td>结构</td><td>7</td><td>说话人1 01:10:19</td></tr>
+<tr><td>50</td><td>破骨细胞：单核细胞融合、多核、嗜酸；皱褶缘＋亮区吸收骨基质</td><td>结构</td><td>7</td><td>说话人1 01:16:19</td></tr>
+<tr><td>51</td><td>血钙：PTH 经成骨细胞配体激活破骨升钙；降钙素促成骨降钙</td><td>机制</td><td>7</td><td>说话人1 01:19:27</td></tr>
+<tr><td>52</td><td>骨组织类型：初级编织骨／次级板层骨</td><td>分类</td><td>8</td><td>说话人1 01:20:52</td></tr>
+<tr><td>53</td><td>密质骨＝三种骨板（外环／内环／骨单位骨板）＋两种管道（穿通管／中央管）</td><td>分类</td><td>8</td><td>说话人1 01:24:36</td></tr>
+<tr><td>54</td><td>骨单位＝中央管＋同心圆骨单位骨板；骨小管逐层相通、最外层为盲端</td><td>结构</td><td>8</td><td>说话人1 01:30:06</td></tr>
+<tr><td>55</td><td>联合线为骨单位边界；间骨板是未完全吸收的残留骨板、无中央管</td><td>定义</td><td>8</td><td>说话人1 01:32:11</td></tr>
+<tr><td>56</td><td>松质骨由骨小梁交织成网，网孔含骨髓</td><td>结构</td><td>8</td><td>说话人1 01:32:49</td></tr>
+<tr><td>57</td><td>骨膜：骨外膜（外层纤维多／内层含祖细胞，穿通纤维固定）＋骨内膜</td><td>结构</td><td>9</td><td>说话人1 01:35:14</td></tr>
+<tr><td>58</td><td>骨膜功能：保护、生长修复、营养</td><td>结构</td><td>9</td><td>说话人1 01:37:38</td></tr>
+<tr><td>59</td><td>骨发生两方式：膜内成骨（颅骨、顶骨、锁骨）／软骨内成骨（四肢骨、躯干骨）</td><td>分类</td><td>9</td><td>说话人1 01:37:38</td></tr>
+<tr><td>60</td><td>膜内成骨：间充质膜→骨化中心→初级骨小梁→初级松质骨→密质骨</td><td>机制</td><td>9</td><td>说话人1 01:39:41</td></tr>
+<tr><td>61</td><td>软骨内成骨：软骨雏形→骨领→骨膜芽→初级骨髓腔→次级骨化中心</td><td>机制</td><td>9</td><td>说话人1 01:43:54</td></tr>
+<tr><td>62</td><td>骺板（生长板）与五区：储备→增生→成熟→钙化→成骨</td><td>分类</td><td>9</td><td>说话人1 01:48:22</td></tr>
+<tr><td>63</td><td>生长激素不足→侏儒症／过量→巨人症；甲状腺激素不足→呆小症</td><td>临床</td><td>9</td><td>说话人1 01:49:22</td></tr>
+<tr><td>64</td><td>长骨增粗靠骨领处骨膜内层成骨；密质骨坚固靠骨单位改建</td><td>机制</td><td>9</td><td>说话人1 01:52:53</td></tr>
+<tr><td>65</td><td>HE 切片软骨陷窝周围空隙为制片收缩人工假象</td><td>易错</td><td>5</td><td>说话人1 29:44</td></tr>
+<tr><td>66</td><td>骨形成细胞包括骨祖细胞、成骨细胞、骨细胞；破骨细胞属骨吸收改建细胞</td><td>分类</td><td>7</td><td>说话人1 01:02:37</td></tr>
+<tr><td>67</td><td>成骨细胞 osteoblast（形成）与破骨细胞 osteoclast（破坏）词尾与功能对应</td><td>名词</td><td>7</td><td>说话人1 01:13:10</td></tr>
+<tr><td>68</td><td>骺板钙化闭合后骨骺与骨干之间形成骺线；生长停止约 17–20 岁</td><td>结构</td><td>9</td><td>说话人1 01:49:22</td></tr>
+<tr><td>69</td><td>破骨细胞皱褶缘对侧（远离骨质）细胞器丰富；亮区（clear zone）紧贴骨质</td><td>结构</td><td>7</td><td>说话人1 01:17:20</td></tr>
+<tr><td>70</td><td>软骨内成骨两端出现次级骨化中心，向四周扩展形成骨骺</td><td>机制</td><td>9</td><td>说话人1 01:46:51</td></tr>
+<tr><td>71</td><td>X 光透视片上白色条索状互相成网的结构为骨小梁，外为密质骨</td><td>结构</td><td>8</td><td>说话人1 01:34:08</td></tr>
+</table>
+</div>
 </body></html>

@@ -1,96 +1,332 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
-<title>化学发光与原子吸收·可视化笔记</title>
-<style>
-:root{--paper:#FAF7F0;--ink:#24201A;--soft:#4A4337;--muted:#857B68;--line:#E6DECC;
---accent:#0E5C52;--accent-d:#0A463E;--accent-t:#E7F0EB;--mnem:#A2630C;--mnem-t:#F8ECD3;--red:#B23A2E;--red-t:#F7E4DF;}
-*{box-sizing:border-box}body{font-family:"Microsoft YaHei",sans-serif;background:var(--paper);color:var(--ink);margin:0;line-height:1.7;font-size:10.5pt}
-.page{width:210mm;min-height:297mm;margin:0 auto;padding:18mm 16mm;background:var(--paper)}
-h1{font-family:serif;color:var(--accent-d);font-size:24pt;margin:0 0 3mm;border-bottom:2.5pt solid var(--accent);padding-bottom:3mm}
-h2{font-family:serif;color:var(--accent-d);font-size:15pt;margin:7mm 0 3mm;border-left:4pt solid var(--accent);padding-left:3mm}
-.cover{display:flex;flex-direction:column;justify-content:center;min-height:260mm}
-.cover h1{font-size:28pt;border:none}.cover .sub{font-size:13pt;color:var(--soft);margin-top:3mm}
-.meta{margin-top:8mm;font-size:10pt;color:var(--muted);line-height:2}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt}
-th{background:var(--accent);color:#fff;padding:2mm;text-align:left}td{padding:2mm;border-bottom:.5pt solid var(--line)}
-tr:nth-child(even) td{background:#fff}
-.box{background:#fff;border:.5pt solid var(--line);border-radius:2mm;padding:3mm 4mm;margin:3mm 0}
-.formula{background:var(--accent-t);border-left:3pt solid var(--accent);padding:3mm;text-align:center;font-family:serif;font-size:13pt;margin:3mm 0}
-.warn{background:var(--red-t);border:.5pt solid #E6BDB4;padding:3mm;margin:3mm 0;border-radius:2mm}
-.tip{background:var(--mnem-t);border-left:3pt solid var(--mnem);padding:3mm;margin:3mm 0;border-radius:0 2mm 2mm 0}
-ul{margin:2mm 0;padding-left:6mm}li{margin:1mm 0}
-.flow{display:flex;align-items:center;gap:2mm;flex-wrap:wrap;margin:3mm 0}
-.node{background:var(--accent);color:#fff;padding:2mm 3mm;border-radius:1.5mm;font-size:9pt}
-.arr{color:var(--muted);font-weight:bold}
-</style></head><body>
-<div class="page cover">
-<div style="letter-spacing:.3em;color:var(--mnem);font-size:10pt">ANALYTICAL CHEMISTRY</div>
-<h1>化学发光与原子吸收<span style="color:var(--mnem)">可视化笔记</span></h1>
-<div class="sub">分析化学 第17-18节 · 2026-09-28</div>
-<div class="meta">课程：分析化学（仪器分析）<br>主题：化学发光 · 磷光 · AAS 概述与仪器</div>
-</div>
-
-<div class="page">
-<h2>一、荧光 vs UV-Vis 仪器对比</h2>
-<table><tr><th>部件</th><th>UV-Vis</th><th>荧光</th></tr>
-<tr><td>光源</td><td>一般强度</td><td><b>强度更大</b></td></tr>
-<tr><td>单色器</td><td>1个</td><td><b>2个（前后）+直角光路</b></td></tr>
-<tr><td>样品池</td><td>两面透光</td><td><b>四面透光石英</b></td></tr>
-<tr><td>检测器</td><td>常规</td><td>高灵敏、大放大倍数</td></tr></table>
-
-<h2>二、化学发光</h2>
-<div class="formula">荧光=光致发光(需光源) ｜ 化学发光=化学反应供能(不需光源)</div>
-<div class="box"><b>鲁米诺（发光胺）：</b>强碱 NaOH + Fe²⁺/Cu²⁺ 催化 → 发光<br>
-🔍 刑侦测血：血红蛋白含铁催化，喷后关灯血迹发蓝光；Cu²⁺ 干扰致假阳性</div>
-<div class="formula">定量：I = Kc（峰值或积分面积）</div>
-<div class="tip">仪器极简：反应池+暗箱+光电倍增管，<b>无光源</b>。手持ATP检测仪、流动注射化学发光仪。</div>
-<h3>磷光两要点</h3>
-<ul><li><b>低温</b>下磷光明显</li><li><b>时间分辨</b>：磷光寿命微秒~毫秒，等荧光(纳秒)熄灭后再测</li></ul>
-</div>
-
-<div class="page">
-<h2>三、AAS 历史与特点</h2>
-<div class="box">
-<b>历史线：</b>夫琅禾费(发现太阳暗线) → 本生+基尔霍夫(焰色反应对应暗线=原子吸收) → 1955 Walsh(首台AAS仪)
-</div>
-<table><tr><th>特点</th><th>说明</th></tr>
-<tr><td>灵敏度</td><td>高（比UV-Vis更高）</td></tr>
-<tr><td>选择性</td><td>好（谱线 vs 谱带，重叠少）</td></tr>
-<tr><td>准确度</td><td>相对误差<2%</td></tr>
-<tr><td>速度</td><td>进样~10秒出结果</td></tr></table>
-
-<h2>四、基本原理</h2>
-<div class="formula">原子吸收 = 气态基态原子对共振线的吸收</div>
-<div class="box">
-<b>共振线：</b>基态→第一激发态，最强最灵敏<br>
-<b>Boltzmann：</b>3000K时 N_J/N₀ 仅 5.88×10⁻⁴ → 激发态可忽略 → A=Kc
-</div>
-<h3>谱线变宽（半峰宽描述）</h3>
-<table><tr><th>类型</th><th>别名</th><th>数量级</th><th>重要性</th></tr>
-<tr><td>自然宽度</td><td>—</td><td>10⁻⁵nm</td><td>可忽略</td></tr>
-<tr><td><b>多普勒</b></td><td><b>热变宽</b></td><td>10⁻³nm</td><td>★主要</td></tr>
-<tr><td><b>压力</b></td><td><b>碰撞变宽</b></td><td>10⁻³nm</td><td>★主要</td></tr>
-<tr><td>斯塔克</td><td>场变宽</td><td>—</td><td>可屏蔽</td></tr></table>
-</div>
-
-<div class="page">
-<h2>五、仪器——锐线光源</h2>
-<div class="box">
-<b>空心阴极灯 HCL：</b>阴极=待测元素本身，充Ar，抽真空<br>
-锐线原因：<b>①毫安小电流→低温→热变宽小 ②抽真空→压力变宽小</b>
-</div>
-<div class="box"><b>无极放电灯：</b>无电极，卤化物+高频线圈；强度高(HCL 10~100倍)，仅十几种元素。</div>
-
-<h2>六、原子化器</h2>
-<h3>火焰法</h3>
-<div class="flow"><span class="node">样品液</span><span class="arr">→</span><span class="node">雾化器</span><span class="arr">→</span><span class="node">撞击球</span><span class="arr">→</span><span class="node">燃烧头</span></div>
-<table><tr><th>火焰</th><th>配比</th><th>特点</th><th>用途</th></tr>
-<tr><td><b>中性</b></td><td>化学计量比</td><td><b>温度最高</b></td><td>难解离物质</td></tr>
-<tr><td><b>富燃</b></td><td>燃气多</td><td><b>还原性</b></td><td>易氧化物</td></tr>
-<tr><td>贫燃</td><td>助燃气多</td><td>氧化性</td><td>—</td></tr></table>
-<div class="tip">温度排序：笑气-乙炔(~3000K) > 空气-乙炔(~2450K, 常用) > 空气-氢气/丙烷<br>仅~10%样品到达火焰，90%废液。</div>
-
-<h3>石墨炉三阶段</h3>
-<div class="flow"><span class="node">干燥~100℃<br>除水</span><span class="arr">→</span><span class="node">灰化数百度<br>除有机物</span><span class="arr">→</span><span class="node" style="background:#B23A2E">原子化上千K<br>测吸收</span></div>
-<div class="warn">⚠️ 必须先通Ar/N₂再升温！否则石墨管氧化成CO₂烧没。</div>
-</div>
-</body></html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>分析化学 · 第17-18节 · 化学发光与原子吸收开篇</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#155E75; --accent-d:#0C3F51; --accent-t:#E1EEF3;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body><div class="page cover"><p class="h1">分析化学（仪器分析）</p>
+<p class="meta">第17-18节 · 化学发光收尾、磷光补充与原子吸收光谱法开篇 · 2026-09-28</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 34244 字 / 126 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>节次</td><td>第17-18节（2学时）</td></tr>
+<tr><td>主题</td><td>化学发光、磷光、AAS 原理、锐线光源与原子化器</td></tr>
+<tr><td>素材规模</td><td>逐字稿 34244 字 / 126 轮</td></tr></table>
+<p class="foot">核心内容版笔记 · 结论式短句</p></div><div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">仪器四部件对比 → 化学发光无光源定量 → 磷光低温与时间分辨 → AAS 共振吸收与锐线光源 → 火焰/石墨炉原子化。</p>
+<svg viewBox="0 0 640 170" width="100%" aria-label="知识框架">
+<rect x="10" y="14" width="95" height="24" fill="#E1EEF3" stroke="#155E75"/><text x="57" y="30" text-anchor="middle" font-size="8">仪器对比</text>
+<rect x="115" y="14" width="95" height="24" fill="#E1EEF3" stroke="#155E75"/><text x="162" y="30" text-anchor="middle" font-size="8">化学发光</text>
+<rect x="220" y="14" width="70" height="24" fill="#E1EEF3" stroke="#155E75"/><text x="255" y="30" text-anchor="middle" font-size="8">磷光</text>
+<rect x="300" y="14" width="95" height="24" fill="#FBF0DC" stroke="#A9660A"/><text x="347" y="30" text-anchor="middle" font-size="8">AAS</text>
+<rect x="405" y="14" width="95" height="24" fill="#E1EEF3" stroke="#155E75"/><text x="452" y="30" text-anchor="middle" font-size="8">谱线变宽</text>
+<rect x="115" y="58" width="110" height="24" fill="#fff" stroke="#0C3F51"/><text x="170" y="74" text-anchor="middle" font-size="8">空心阴极灯</text>
+<rect x="240" y="58" width="110" height="24" fill="#fff" stroke="#0C3F51"/><text x="295" y="74" text-anchor="middle" font-size="8">无极放电灯</text>
+<rect x="365" y="58" width="130" height="24" fill="#E6F1EA" stroke="#2E6B4F"/><text x="430" y="74" text-anchor="middle" font-size="8">火焰/石墨炉</text>
+</svg>
+<ul class="kv"><li>仪器对比从光源、单色器、样品池、检测器说起 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>36 学时以课堂讲授为准，书上光学拓展作参考书 <span class="loc">〔说话人1 02:29〕</span></li></ul></div><div class="page"><h2 class="h2">1. 荧光与紫外可见仪器对比（复习）</h2>
+<p class="lead">同一套四部件拆解法，可与后续原子吸收等仪器互相比。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>荧光光源比紫外可见光源强度更大 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>荧光需激发光谱与荧光光谱，故有两个单色器 <span class="loc">〔说话人1 00:40〕</span></li>
+<li>两单色器分别在样品池前与后，光路呈直角关系 <span class="loc">〔说话人1 00:40〕</span></li>
+<li>紫外可见比色皿两面透光两面毛；荧光比色皿四面透光 <span class="loc">〔说话人1 00:40〕</span></li>
+<li>紫外可见可用石英或玻璃池；荧光基本用石英池 <span class="loc">〔说话人1 01:37〕</span></li>
+<li>荧光检测器放大倍数与灵敏度要求更高 <span class="loc">〔说话人1 01:37〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>部件</th><th>UV-Vis</th><th>荧光</th></tr>
+<tr><td>光源</td><td>强度一般</td><td>强度大</td></tr>
+<tr><td>单色器</td><td>1 个</td><td>2 个，直角布局</td></tr>
+<tr><td>样品池</td><td>两面透光</td><td>四面透光石英</td></tr>
+<tr><td>检测器</td><td>常规</td><td>高灵敏、高放大</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>四部件对比答题模板 <span class="loc">〔说话人1 00:00〕</span></div></div><div class="page"><h2 class="h2">2. 化学发光本质与鲁米诺</h2>
+<p class="lead">化学反应供能发光，与光致荧光相对；生物发光属体内化学发光。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>荧光为光致发光，须先照光再发光 <span class="loc">〔说话人1 03:19〕</span></li>
+<li>化学发光由化学反应提供激发能量 <span class="loc">〔说话人1 03:19〕</span></li>
+<li>生物发光为生物体内化学反应，常由荧光素酶催化 <span class="loc">〔说话人1 03:48〕</span></li>
+<li>鲁米诺（发光胺）为应记的代表性化学发光剂 <span class="loc">〔说话人1 03:48〕</span></li>
+<li>鲁米诺发光须在强碱下并加 NaOH，且需催化剂 <span class="loc">〔说话人1 03:48〕</span></li>
+<li>催化剂可为 Fe²⁺、Cu²⁺ 等金属离子 <span class="loc">〔说话人1 03:48〕</span></li>
+<li>刑侦喷鲁米诺关灯可见血迹蓝光，因血红蛋白含铁催化 <span class="loc">〔说话人1 05:04〕</span></li>
+<li>反应较快，完全后发光消失 <span class="loc">〔说话人1 05:04〕</span></li>
+<li>灵敏度极高，一大缸水加一滴血可检出 <span class="loc">〔说话人1 05:04〕</span></li>
+<li>Cu²⁺ 等可致假阳性，快速筛查后须其他方法确证 <span class="loc">〔说话人1 06:26〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>鲁米诺强碱+催化剂与测血原理 <span class="loc">〔说话人1 05:04〕</span></div></div><div class="page"><h2 class="h2">3. 化学发光定量与简易装置</h2>
+<p class="lead">时间曲线积分或峰高定量；无激发光源，反应池+检测即可。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>化学发光仪器不需外加光源 <span class="loc">〔说话人1 07:33〕</span></li>
+<li>横坐标为时间，发光上升后下降，曲线下面积为光积分 <span class="loc">〔说话人1 08:12〕</span></li>
+<li>积分强度或峰值强度均与浓度成正比 <span class="loc">〔说话人1 08:12〕</span></li>
+<li>必背定量式 I = Kc <span class="loc">〔说话人1 09:56〕</span></li>
+<li>I 可为积分 I 或峰值 I <span class="loc">〔说话人1 09:56〕</span></li>
+<li>积分面积比峰高更常用，因加样速度影响峰高 <span class="loc">〔说话人1 08:12〕</span></li>
+<li>化学发光仪：反应池、暗箱与光电倍增管，可不分光 <span class="loc">〔说话人1 09:56〕</span></li>
+<li>懂原理后可拆旧部件临时搭机 <span class="loc">〔说话人1 10:35〕</span></li>
+</ul>
+<div class="def"><strong>定义</strong>化学发光选择性在反应本身，测总光强或单波长均可 <span class="loc">〔说话人1 08:12〕</span></div>
+<div class="exam"><span class="tag">★考点</span>I=Kc 及峰面积与峰高 <span class="loc">〔说话人1 08:12〕</span></div></div><div class="page"><h2 class="h2">4. 便携式 ATP 与流动注射化学发光</h2>
+<p class="lead">ATP 仪名为荧光实为化学发光；流动注射实现自动加料与重复测定。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>手持 ATP 检测仪本质为化学发光检测 <span class="loc">〔说话人1 11:25〕</span></li>
+<li>开机预热约 30 秒，棉签采样后插入触发试剂反应 <span class="loc">〔说话人1 11:42〕</span></li>
+<li>ATP 在荧光素酶与 O₂ 下反应发光 <span class="loc">〔说话人1 12:16〕</span></li>
+<li>可检细菌污染；人体细胞 ATP 约 10⁻¹⁵ mol，细菌约 10⁻¹⁸ mol 量级 <span class="loc">〔说话人1 12:57〕</span></li>
+<li>亦可用于细胞凋亡相关 ATP 变化监测 <span class="loc">〔说话人1 12:57〕</span></li>
+<li>流动注射用蠕动泵载流与多试剂自动加料 <span class="loc">〔说话人1 14:06〕</span></li>
+<li>可间歇分步加料、连续测定并取平均 <span class="loc">〔说话人1 14:06〕</span></li>
+<li>流动注射化学发光仪 20 世纪 90 年代较流行 <span class="loc">〔说话人1 15:06〕</span></li>
+</ul></div><div class="page"><h2 class="h2">5. 磷光（自学要点）</h2>
+<p class="lead">低温利于观测；时间分辨利用磷光寿命长于荧光。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>磷光在低温时较易观测 <span class="loc">〔说话人1 16:08〕</span></li>
+<li>仪器要点一为低温槽，二为时间分辨（磷光镜） <span class="loc">〔说话人1 16:08〕</span></li>
+<li>磷光寿命约微秒至毫秒级 <span class="loc">〔说话人1 17:25〕</span></li>
+<li>荧光寿命很短（纳秒级），宜延迟检测避荧光干扰 <span class="loc">〔说话人1 17:25〕</span></li>
+<li>时间分辨磷光仪比时间分辨荧光仪便宜 <span class="loc">〔说话人1 17:25〕</span></li>
+<li>磷光与荧光相似，浓度过高也会猝灭 <span class="loc">〔说话人1 17:57〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>低温 + 时间分辨 <span class="loc">〔说话人1 16:08〕</span></div></div><div class="page"><h2 class="h2">6. AAS 缩写、历史与夫琅禾费线</h2>
+<p class="lead">太阳光暗线引路；本生焰色数据与暗线对应，1955 年 Walsh 首台仪器。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>荧光缩写 MF；紫外可见 UV-Vis；原子吸收 AAS <span class="loc">〔说话人1 17:57〕</span></li>
+<li>AAS 即原子吸收光谱法（Atomic Absorption Spectrophotometry） <span class="loc">〔说话人1 17:57〕</span></li>
+<li>夫琅禾费在高放大倍数天文望远镜上加分光装置观测太阳，见连续谱中暗线 <span class="loc">〔说话人1 21:05〕</span></li>
+<li>暗线命名夫琅禾费线，当时不知成因 <span class="loc">〔说话人1 21:53〕</span></li>
+<li>暗线表示该波长光被吸收 <span class="loc">〔说话人1 22:26〕</span></li>
+<li>分子吸收为带状，暗线为线状，推测为原子吸收 <span class="loc">〔说话人1 22:26〕</span></li>
+<li>本生灯可调燃气与空气流量，火焰无色且稳定 <span class="loc">〔说话人1 23:10〕</span></li>
+<li>本生与基尔霍夫（Kirchhoff）用焰色反应波长数据与夫琅禾费暗线一一对应 <span class="loc">〔说话人1 24:55〕</span></li>
+<li>太阳光谱有地球上未合成元素的线，指引新元素研究 <span class="loc">〔说话人1 26:22〕</span></li>
+<li>1955 年 Alan Walsh 自制首台原子吸收分光光度计并发文 <span class="loc">〔说话人1 28:33〕</span></li>
+</ul></div><div class="page"><h2 class="h2">7. AAS 方法特点</h2>
+<p class="lead">灵敏度高、选择性好、准确度高、速度快、操作简便（前提是仪器调好）。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>灵敏度高于紫外可见分光光度法 <span class="loc">〔说话人1 28:54〕</span></li>
+<li>选择性好因谱线重叠难、谱带重叠易 <span class="loc">〔说话人1 29:36〕</span></li>
+<li>相对误差可控制在约 2% 以内（UV-Vis 约 4%） <span class="loc">〔说话人1 30:18〕</span></li>
+<li>单元素分析进样约十秒内出结果 <span class="loc">〔说话人1 30:18〕</span></li>
+<li>仪器调好则操作简单，调试本身较难 <span class="loc">〔说话人1 30:59〕</span></li>
+<li>实验前预备实验调好条件可加快测定 <span class="loc">〔说话人1 30:59〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>指标</th><th>AAS</th><th>UV-Vis（课堂对比）</th></tr>
+<tr><td>选择性</td><td>谱线，干扰少</td><td>谱带易重叠</td></tr>
+<tr><td>准确度</td><td>RE 约 &lt;2%</td><td>约 4% 内</td></tr></table></div><div class="page"><h2 class="h2">8. 能级跃迁、共振线与吸收本质</h2>
+<p class="lead">原子仅电子跃迁；共振线最灵敏；吸收对象为气态基态原子。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>原子无振动与转动跃迁，仅电子能级跃迁 <span class="loc">〔说话人1 31:35〕</span></li>
+<li>同一原子可有多条吸收谱线（多种跃迁可能） <span class="loc">〔说话人1 32:30〕</span></li>
+<li>共振线（resonance line）：基态→第一激发态，几率最大、强度最大 <span class="loc">〔说话人1 33:31〕</span></li>
+<li>原子吸收指气态基态原子对光的吸收 <span class="loc">〔说话人1 33:31〕</span></li>
+<li>分析常用共振线对应波长 <span class="loc">〔说话人1 33:31〕</span></li>
+<li>左图宽带有振转结构为分子吸收；右图为原子吸收 <span class="loc">〔说话人1 34:21〕</span></li>
+<li>真实原子能级跃迁复杂，故主要用共振线 <span class="loc">〔说话人1 34:21〕</span></li>
+</ul>
+<div class="def"><strong>定义</strong>气态 + 基态 + 共振线 <span class="loc">〔说话人1 33:31〕</span></div>
+<div class="exam"><span class="tag">★考点</span>共振线含义与 AAS 定义 <span class="loc">〔说话人1 33:31〕</span></div></div><div class="page"><h2 class="h2">9. 谱线形状与变宽因素</h2>
+<p class="lead">描述谱线用中心波长、强度、半峰宽；热变宽与压力变宽为主。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>原子吸收为谱线，对单色光要求更严 <span class="loc">〔说话人1 36:14〕</span></li>
+<li>实测谱线呈峰形，非理想细线 <span class="loc">〔说话人1 37:15〕</span></li>
+<li>描述谱线：中心波长、强度、半峰宽（非峰底宽） <span class="loc">〔说话人1 38:00〕</span></li>
+<li>半峰宽为峰高一半处的宽度 <span class="loc">〔说话人1 38:00〕</span></li>
+<li>自然宽度约 10⁻⁵ nm，相对 10⁻²~10⁻³ nm 谱线可忽略 <span class="loc">〔说话人1 39:33〕</span></li>
+<li>原子谱线总宽约 10⁻²~10⁻³ nm <span class="loc">〔说话人1 38:43〕</span></li>
+<li>多普勒变宽即热变宽，约 10⁻³ nm，不可忽略 <span class="loc">〔说话人1 39:51〕</span></li>
+<li>压力变宽即碰撞变宽，含洛伦兹变宽与霍尔马兹克变宽 <span class="loc">〔说话人1 41:11〕</span></li>
+<li>压力大可抽真空使谱线更锐 <span class="loc">〔说话人1 41:11〕</span></li>
+<li>斯塔克变宽为场致变宽，可屏蔽电磁场 <span class="loc">〔说话人1 41:41〕</span></li>
+<li>四名称都要认识；最重要的是热变宽与压力变宽 <span class="loc">〔说话人1 41:59〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>类型</th><th>别名</th><th>量级</th><th>重要性</th></tr>
+<tr><td>自然宽度</td><td>—</td><td>10⁻⁵ nm</td><td>可忽略</td></tr>
+<tr><td>多普勒变宽</td><td>热变宽</td><td>10⁻³ nm</td><td>重要</td></tr>
+<tr><td>压力变宽</td><td>碰撞变宽</td><td>10⁻³ nm</td><td>重要</td></tr>
+<tr><td>斯塔克变宽</td><td>场致变宽</td><td>—</td><td>可屏蔽</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>半峰宽与热/压力变宽 <span class="loc">〔说话人1 40:43〕</span></div></div><div class="page"><h2 class="h2">10. 锐线光源、Walsh 公式与 A=Kc</h2>
+<p class="lead">锐线测峰值吸收满足朗伯定律；N₀ 经 Boltzmann 表可换为 c。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>理想超锐单色光源难实现，改测峰值吸收 <span class="loc">〔说话人1 42:55〕</span></li>
+<li>光源需比吸收线锐约 1/10~1/100 <span class="loc">〔说话人1 42:55〕</span></li>
+<li>低浓度下得 A = 0.434 K N₀ L（与朗伯定律一致） <span class="loc">〔说话人1 43:47〕</span></li>
+<li>L 为光程长度 <span class="loc">〔说话人1 43:47〕</span></li>
+<li>N₀ 为单位体积内基态原子数，具浓度含义 <span class="loc">〔说话人1 43:47〕</span></li>
+<li>样品经约 2300 K 高温原子化，可能存在激发态 <span class="loc">〔说话人1 50:16〕</span></li>
+<li>故先写 N₀ 而非直接写 c <span class="loc">〔说话人1 50:16〕</span></li>
+<li>Boltzmann 表给 N_J/N₀；值越小越可忽略激发态 <span class="loc">〔说话人1 51:23〕</span></li>
+<li>表内最大约 5.88×10⁻⁴（3000 K、Na），实验一般约 2500 K <span class="loc">〔说话人1 51:23〕</span></li>
+<li>激发态极少，N₀ 可换为 c，得 A = Kc <span class="loc">〔说话人1 52:54〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>A=Kc 为掌握内容，Boltzmann 表判 N₀ 可换 c <span class="loc">〔说话人1 53:25〕</span></div></div><div class="page"><h2 class="h2">11. 空心阴极灯（HCL）</h2>
+<p class="lead">阴极用待测元素，充氩抽真空，小电流低温减宽。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>AAS 需锐线光源，至少提供共振线 <span class="loc">〔说话人1 53:58〕</span></li>
+<li>锐线光源带宽约 10⁻³~10⁻⁴ nm <span class="loc">〔说话人1 53:58〕</span></li>
+<li>光源要求稳定、强度高、背景小 <span class="loc">〔说话人1 54:32〕</span></li>
+<li>空心阴极灯：阴极空心圆筒，由待测元素制成 <span class="loc">〔说话人1 54:32〕</span></li>
+<li>测 K 用 K 阴极，测 Zn 用 Zn 阴极 <span class="loc">〔说话人1 55:26〕</span></li>
+<li>灯电流毫安级温度低，减多普勒热变宽 <span class="loc">〔说话人1 56:51〕</span></li>
+<li>抽真空充氩气，减压力碰撞变宽 <span class="loc">〔说话人1 56:51〕</span></li>
+<li>加电压使 Ar 电离，Ar⁺ 撞击阴极使原子激发后发射特征线 <span class="loc">〔说话人1 58:39〕</span></li>
+<li>空心结构使光聚焦；难加工元素可用不干扰合金阴极 <span class="loc">〔说话人1 59:39〕</span></li>
+<li>高性能空心阴极灯增设辅阴极增强强度 <span class="loc">〔说话人1 01:00:30〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>阴极材料与锐线两原因 <span class="loc">〔说话人1 01:00:30〕</span></div></div><div class="page"><h2 class="h2">12. 无极放电灯（EDL）</h2>
+<p class="lead">无电极石英管装卤化物，高频放电解离发光，强度大。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>无极放电灯管内无电极 <span class="loc">〔说话人1 01:01:46〕</span></li>
+<li>石英小窗管内放元素卤化物，低压 Ar 与卤素 <span class="loc">〔说话人1 01:02:36〕</span></li>
+<li>外绕线圈通交流电放电，离子碰撞解离并激发原子 <span class="loc">〔说话人1 01:03:10〕</span></li>
+<li>仅十几种卤化物易解离激发的元素可制灯 <span class="loc">〔说话人1 01:03:10〕</span></li>
+<li>强度可达汞灯约 100 倍，至少也有十几倍 <span class="loc">〔说话人1 01:04:27〕</span></li>
+<li>无极放电灯便宜且光强高 <span class="loc">〔说话人1 01:04:27〕</span></li>
+</ul>
+<div class="mnem">助记：EDL 最大特点是<strong>强</strong> <span class="loc">〔说话人1 01:04:27〕</span></div></div><div class="page"><h2 class="h2">13. 火焰原子化器结构与雾化</h2>
+<p class="lead">溶液雾化入长焰燃烧头；约九成废液，仅约一成到达火焰。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>样品池在 AAS 中称为原子化器，产生气态基态原子 <span class="loc">〔说话人1 01:04:53〕</span></li>
+<li>需约 2000 K 以上高温，本生灯火苗光程 L 太短 <span class="loc">〔说话人1 01:06:24〕</span></li>
+<li>原子化器为较长燃烧火焰 <span class="loc">〔说话人1 01:06:24〕</span></li>
+<li>上样须雾化小雾滴，不能直接上大体积液体 <span class="loc">〔说话人1 01:06:24〕</span></li>
+<li>助燃气高速喷出负压，毛细管吸样成雾 <span class="loc">〔说话人1 01:08:31〕</span></li>
+<li>燃气与助燃气同时用于雾化和燃烧 <span class="loc">〔说话人1 01:08:31〕</span></li>
+<li>撞击球使雾滴更细，利于溶剂快速蒸发 <span class="loc">〔说话人1 01:09:29〕</span></li>
+<li>扰流器混匀燃气与雾滴；大液滴沉降约 90% 为废液 <span class="loc">〔说话人1 01:09:58〕</span></li>
+<li>仅约 10% 细雾到达燃烧头，灵敏度仍高 <span class="loc">〔说话人1 01:09:58〕</span></li>
+<li>燃烧头长约 5~10 cm，中间为狭缝 <span class="loc">〔说话人1 01:11:53〕</span></li>
+<li>光源与检测器横向通过狭缝以增大光程 L <span class="loc">〔说话人1 01:12:32〕</span></li>
+<li>狭缝防回火熄火，类比燃气灶多小孔 <span class="loc">〔说话人1 01:14:23〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>90% 废液与横缝增 L <span class="loc">〔说话人1 01:09:58〕</span></div></div><div class="page"><h2 class="h2">14. 火焰类型、温度与背景</h2>
+<p class="lead">中性焰最热；富燃焰还原；远紫外须看火焰分子背景透光率。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>火焰分中性焰、富燃焰、贫燃焰 <span class="loc">〔说话人1 01:14:46〕</span></li>
+<li>中性焰按化学计量比，如 H₂:O₂=2:1，温度最高 <span class="loc">〔说话人1 01:15:15〕</span></li>
+<li>富燃焰燃气多，温度较低，还原性强 <span class="loc">〔说话人1 01:15:59〕</span></li>
+<li>贫燃焰助燃气多，温度较低，氧化性强 <span class="loc">〔说话人1 01:15:15〕</span></li>
+<li>难解离元素用中性高温焰 <span class="loc">〔说话人1 01:16:53〕</span></li>
+<li>火焰中需解离，忌电离与生成氧化物；还原反应有利 <span class="loc">〔说话人1 01:17:44〕</span></li>
+<li>富燃焰燃气作还原剂，利于氧化物还原 <span class="loc">〔说话人1 01:18:28〕</span></li>
+<li>实验常用空气-乙炔焰 <span class="loc">〔说话人1 01:19:30〕</span></li>
+<li>空气-乙炔化学计量焰约 2450 K，富燃约 2300 K <span class="loc">〔说话人1 01:20:12〕</span></li>
+<li>笑气-乙炔焰温度最高约 3000 K 级，用于更高温需求 <span class="loc">〔说话人1 01:20:49〕</span></li>
+<li>笑气（N₂O）为麻醉剂，勿随意嗅闻 <span class="loc">〔说话人1 01:20:49〕</span></li>
+<li>温度序：笑气-乙炔 &gt; 空气-乙炔 &gt; 空气-氢气/丙烷 <span class="loc">〔说话人1 01:21:39〕</span></li>
+<li>火焰透光率图：短波处分子背景吸收不同 <span class="loc">〔说话人1 01:22:42〕</span></li>
+<li>测 Se（196 nm）宜选氢气-空气焰等高透光率火焰 <span class="loc">〔说话人1 01:24:03〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>火焰</th><th>配比</th><th>温度/性质</th><th>用途</th></tr>
+<tr><td>中性焰</td><td>化学计量</td><td>最高</td><td>难解离</td></tr>
+<tr><td>富燃焰</td><td>燃气多</td><td>较低，还原</td><td>易氧化元素</td></tr>
+<tr><td>贫燃焰</td><td>助燃气多</td><td>较低，氧化</td><td>—</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>三种焰温与还原性 <span class="loc">〔说话人1 01:15:59〕</span></div></div><div class="page"><h2 class="h2">15. 石墨炉原子化器</h2>
+<p class="lead">高纯石墨大电流加热；惰性气氛；干燥-灰化-原子化程序升温。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>非火焰法即石墨炉，以电加热为主 <span class="loc">〔说话人1 01:25:02〕</span></li>
+<li>石墨良导体、高纯高密，适合高温 <span class="loc">〔说话人1 01:26:04〕</span></li>
+<li>加热电流可达约 500 A 量级，远高于 HCL 毫安级 <span class="loc">〔说话人1 01:27:50〕</span></li>
+<li>炉内须通 Ar/N₂ 等惰性气，否则石墨氧化损毁 <span class="loc">〔说话人1 01:28:58〕</span></li>
+<li>炉外循环水冷却，两端石英窗口透光 <span class="loc">〔说话人1 01:31:21〕</span></li>
+<li>进样量微升级，可直接测固体（样品舟） <span class="loc">〔说话人1 01:30:48〕</span></li>
+<li>测原子灵敏度可达 10⁻⁹，须高纯石墨 <span class="loc">〔说话人1 01:26:04〕</span></li>
+<li>放射性样品宜石墨法而非火焰法 <span class="loc">〔说话人1 01:27:50〕</span></li>
+<li>阶段一干燥（drying）：约 90~100°C 除溶剂 <span class="loc">〔说话人1 01:33:08〕</span></li>
+<li>阶段二灰化（ashing）：数百度除有机物 <span class="loc">〔说话人1 01:33:55〕</span></li>
+<li>阶段三原子化：上千 K 测吸收 <span class="loc">〔说话人1 01:33:55〕</span></li>
+<li>分阶段为避免溶剂与有机物同时蒸发致宽带背景 <span class="loc">〔说话人1 01:32:34〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>三阶段升温目的 <span class="loc">〔说话人1 01:33:08〕</span></div></div><div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>荧光 vs UV-Vis 四部件对比 <span class="loc">〔说话人1 00:40〕</span></li>
+<li>化学发光 I=Kc；无光源 <span class="loc">〔说话人1 09:56〕</span></li>
+<li>鲁米诺：强碱 NaOH + Fe/Cu 催化；测血 <span class="loc">〔说话人1 05:04〕</span></li>
+<li>磷光：低温、时间分辨 <span class="loc">〔说话人1 16:08〕</span></li>
+<li>AAS；气态基态原子吸共振线 <span class="loc">〔说话人1 33:31〕</span></li>
+<li>共振线=基态→第一激发态 <span class="loc">〔说话人1 33:31〕</span></li>
+<li>半峰宽；热变宽+压力变宽 <span class="loc">〔说话人1 41:59〕</span></li>
+<li>A=Kc（Boltzmann 后） <span class="loc">〔说话人1 53:25〕</span></li>
+<li>HCL：待测元素阴极、毫安、抽真空+Ar <span class="loc">〔说话人1 56:51〕</span></li>
+<li>EDL 特点：强 <span class="loc">〔说话人1 01:04:27〕</span></li>
+<li>雾化约 90% 废液；燃烧头横缝增 L <span class="loc">〔说话人1 01:09:58〕</span></li>
+<li>中性焰最热；富燃焰还原 <span class="loc">〔说话人1 01:16:53〕</span></li>
+<li>空气-乙炔常用；笑气-乙炔最热 <span class="loc">〔说话人1 01:20:12〕</span></li>
+<li>石墨炉：干燥→灰化→原子化 <span class="loc">〔说话人1 01:33:08〕</span></li>
+</ul></div><div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>ATP 仪是分子荧光</td><td>属化学发光 <span class="loc">〔说话人1 11:25〕</span></td></tr>
+<tr><td>化学发光需要激发灯</td><td>不需光源 <span class="loc">〔说话人1 07:33〕</span></td></tr>
+<tr><td>谱线宽度用峰底宽</td><td>用半峰宽 <span class="loc">〔说话人1 38:43〕</span></td></tr>
+<tr><td>自然宽度是主因</td><td>热变宽与压力变宽为主 <span class="loc">〔说话人1 41:59〕</span></td></tr>
+<tr><td>空心阴极灯测 K 用 Na 灯</td><td>阴极用待测元素 <span class="loc">〔说话人1 55:26〕</span></td></tr>
+<tr><td>燃烧头用圆孔增 L</td><td>用狭缝且横排光路 <span class="loc">〔说话人1 01:12:32〕</span></td></tr>
+<tr><td>富燃焰温度最高</td><td>中性焰温度最高 <span class="loc">〔说话人1 01:16:53〕</span></td></tr>
+<tr><td>石墨炉开机直接升温</td><td>先通惰性气再升温 <span class="loc">〔说话人1 01:28:58〕</span></td></tr>
+</table></div><div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>荧光与 UV-Vis 四部件</td><td>§1</td><td>〔说话人1 00:00〕</td><td>简答</td></tr>
+<tr><td>鲁米诺条件与测血</td><td>§2</td><td>〔说话人1 05:04〕</td><td>简答</td></tr>
+<tr><td>化学发光 I=Kc</td><td>§3</td><td>〔说话人1 09:56〕</td><td>公式</td></tr>
+<tr><td>磷光两要点</td><td>§5</td><td>〔说话人1 16:08〕</td><td>选择</td></tr>
+<tr><td>AAS 定义与共振线</td><td>§8</td><td>〔说话人1 33:31〕</td><td>名词</td></tr>
+<tr><td>谱线变宽四类</td><td>§9</td><td>〔说话人1 41:59〕</td><td>选择</td></tr>
+<tr><td>A=Kc 推导</td><td>§10</td><td>〔说话人1 53:25〕</td><td>论述</td></tr>
+<tr><td>空心阴极灯锐线原因</td><td>§11</td><td>〔说话人1 56:51〕</td><td>简答</td></tr>
+<tr><td>三种火焰</td><td>§14</td><td>〔说话人1 01:16:53〕</td><td>对比</td></tr>
+<tr><td>石墨炉三阶段</td><td>§15</td><td>〔说话人1 01:33:08〕</td><td>程序</td></tr>
+</table></div><div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>荧光光源强度大于 UV-Vis</td><td>对比</td><td>§1</td><td>〔说话人1 00:00〕</td></tr><tr><td>2</td><td>荧光两个单色器前后布置</td><td>仪器</td><td>§1</td><td>〔说话人1 00:40〕</td></tr><tr><td>3</td><td>荧光光路直角</td><td>仪器</td><td>§1</td><td>〔说话人1 00:40〕</td></tr><tr><td>4</td><td>荧光四面透光石英池</td><td>仪器</td><td>§1</td><td>〔说话人1 01:37〕</td></tr><tr><td>5</td><td>荧光检测器高灵敏</td><td>仪器</td><td>§1</td><td>〔说话人1 01:37〕</td></tr><tr><td>6</td><td>化学发光化学反应供能</td><td>定义</td><td>§2</td><td>〔说话人1 03:19〕</td></tr><tr><td>7</td><td>生物发光与荧光素酶</td><td>定义</td><td>§2</td><td>〔说话人1 03:48〕</td></tr><tr><td>8</td><td>鲁米诺别名发光胺</td><td>试剂</td><td>§2</td><td>〔说话人1 03:48〕</td></tr><tr><td>9</td><td>鲁米诺强碱与催化剂</td><td>条件</td><td>§2</td><td>〔说话人1 03:48〕</td></tr><tr><td>10</td><td>Fe/Cu 催化鲁米诺</td><td>机制</td><td>§2</td><td>〔说话人1 03:48〕</td></tr><tr><td>11</td><td>鲁米诺刑侦测血原理</td><td>应用</td><td>§2</td><td>〔说话人1 05:04〕</td></tr><tr><td>12</td><td>鲁米诺假阳性干扰</td><td>易错</td><td>§2</td><td>〔说话人1 06:26〕</td></tr><tr><td>13</td><td>化学发光无光源</td><td>仪器</td><td>§3</td><td>〔说话人1 07:33〕</td></tr><tr><td>14</td><td>发光曲线时间积分</td><td>定量</td><td>§3</td><td>〔说话人1 08:12〕</td></tr><tr><td>15</td><td>I=Kc 必背</td><td>公式</td><td>§3</td><td>〔说话人1 09:56〕</td></tr><tr><td>16</td><td>峰值 I 与积分 I</td><td>定量</td><td>§3</td><td>〔说话人1 09:56〕</td></tr><tr><td>17</td><td>暗箱+PMT 简易装置</td><td>仪器</td><td>§3</td><td>〔说话人1 10:35〕</td></tr><tr><td>18</td><td>ATP 仪为化学发光</td><td>应用</td><td>§4</td><td>〔说话人1 11:25〕</td></tr><tr><td>19</td><td>ATP 酶促发光测污染</td><td>应用</td><td>§4</td><td>〔说话人1 12:16〕</td></tr><tr><td>20</td><td>流动注射蠕动泵自动加料</td><td>仪器</td><td>§4</td><td>〔说话人1 14:06〕</td></tr><tr><td>21</td><td>磷光低温观测</td><td>磷光</td><td>§5</td><td>〔说话人1 16:08〕</td></tr><tr><td>22</td><td>磷光时间分辨</td><td>磷光</td><td>§5</td><td>〔说话人1 16:08〕</td></tr><tr><td>23</td><td>磷光寿命 μs~ms</td><td>数据</td><td>§5</td><td>〔说话人1 17:25〕</td></tr><tr><td>24</td><td>AAS 缩写</td><td>术语</td><td>§6</td><td>〔说话人1 17:57〕</td></tr><tr><td>25</td><td>夫琅禾费太阳暗线</td><td>历史</td><td>§6</td><td>〔说话人1 21:53〕</td></tr><tr><td>26</td><td>暗线为原子吸收</td><td>历史</td><td>§6</td><td>〔说话人1 22:26〕</td></tr><tr><td>27</td><td>本生、基尔霍夫与焰色数据</td><td>历史</td><td>§6</td><td>〔说话人1 24:55〕</td></tr><tr><td>28</td><td>1955 Walsh 首台 AAS</td><td>历史</td><td>§6</td><td>〔说话人1 28:33〕</td></tr><tr><td>29</td><td>AAS 灵敏度高</td><td>特点</td><td>§7</td><td>〔说话人1 28:54〕</td></tr><tr><td>30</td><td>AAS 选择性好</td><td>特点</td><td>§7</td><td>〔说话人1 29:36〕</td></tr><tr><td>31</td><td>AAS RE<2%</td><td>数据</td><td>§7</td><td>〔说话人1 30:18〕</td></tr><tr><td>32</td><td>原子仅电子跃迁</td><td>原理</td><td>§8</td><td>〔说话人1 31:35〕</td></tr><tr><td>33</td><td>共振线定义</td><td>原理</td><td>§8</td><td>〔说话人1 33:31〕</td></tr><tr><td>34</td><td>气态基态原子吸收</td><td>定义</td><td>§8</td><td>〔说话人1 33:31〕</td></tr><tr><td>35</td><td>分子谱带 vs 原子谱线</td><td>对比</td><td>§8</td><td>〔说话人1 34:21〕</td></tr><tr><td>36</td><td>谱线半峰宽描述</td><td>术语</td><td>§9</td><td>〔说话人1 38:43〕</td></tr><tr><td>37</td><td>自然宽度 10⁻⁵ nm</td><td>数据</td><td>§9</td><td>〔说话人1 39:33〕</td></tr><tr><td>38</td><td>谱线宽 10⁻²~10⁻³ nm</td><td>数据</td><td>§9</td><td>〔说话人1 39:33〕</td></tr><tr><td>39</td><td>多普勒热变宽</td><td>变宽</td><td>§9</td><td>〔说话人1 39:51〕</td></tr><tr><td>40</td><td>压力碰撞变宽</td><td>变宽</td><td>§9</td><td>〔说话人1 41:11〕</td></tr><tr><td>41</td><td>斯塔克场致变宽</td><td>变宽</td><td>§9</td><td>〔说话人1 41:41〕</td></tr><tr><td>42</td><td>锐线测峰值吸收</td><td>定量</td><td>§10</td><td>〔说话人1 42:55〕</td></tr><tr><td>43</td><td>A=0.434KN₀L</td><td>公式</td><td>§10</td><td>〔说话人1 43:47〕</td></tr><tr><td>44</td><td>N₀ 单位体积基态原子数</td><td>术语</td><td>§10</td><td>〔说话人1 44:29〕</td></tr><tr><td>45</td><td>Boltzmann N_J/N₀ 表</td><td>数据</td><td>§10</td><td>〔说话人1 52:54〕</td></tr><tr><td>46</td><td>A=Kc 简化</td><td>公式</td><td>§10</td><td>〔说话人1 53:25〕</td></tr><tr><td>47</td><td>空心阴极灯名称</td><td>光源</td><td>§11</td><td>〔说话人1 54:32〕</td></tr><tr><td>48</td><td>阴极待测元素</td><td>光源</td><td>§11</td><td>〔说话人1 55:26〕</td></tr><tr><td>49</td><td>毫安级电流减热变宽</td><td>光源</td><td>§11</td><td>〔说话人1 56:51〕</td></tr><tr><td>50</td><td>抽真空充 Ar</td><td>光源</td><td>§11</td><td>〔说话人1 58:02〕</td></tr><tr><td>51</td><td>Ar⁺ 撞阴极发光</td><td>机制</td><td>§11</td><td>〔说话人1 58:39〕</td></tr><tr><td>52</td><td>高性能辅阴极</td><td>光源</td><td>§11</td><td>〔说话人1 01:00:30〕</td></tr><tr><td>53</td><td>无极放电灯无电极</td><td>光源</td><td>§12</td><td>〔说话人1 01:01:46〕</td></tr><tr><td>54</td><td>EDL 强度大</td><td>光源</td><td>§12</td><td>〔说话人1 01:04:27〕</td></tr><tr><td>55</td><td>原子化器定义</td><td>部件</td><td>§13</td><td>〔说话人1 01:05:45〕</td></tr><tr><td>56</td><td>雾化器与撞击球</td><td>火焰</td><td>§13</td><td>〔说话人1 01:09:29〕</td></tr><tr><td>57</td><td>约 90% 废液</td><td>数据</td><td>§13</td><td>〔说话人1 01:09:58〕</td></tr><tr><td>58</td><td>燃烧头狭缝横光路</td><td>火焰</td><td>§13</td><td>〔说话人1 01:12:32〕</td></tr><tr><td>59</td><td>中性焰温度最高</td><td>火焰</td><td>§14</td><td>〔说话人1 01:16:53〕</td></tr><tr><td>60</td><td>富燃焰还原性</td><td>火焰</td><td>§14</td><td>〔说话人1 01:18:28〕</td></tr><tr><td>61</td><td>空气-乙炔常用</td><td>火焰</td><td>§14</td><td>〔说话人1 01:19:30〕</td></tr><tr><td>62</td><td>笑气-乙炔最热</td><td>火焰</td><td>§14</td><td>〔说话人1 01:20:49〕</td></tr><tr><td>63</td><td>Se 196 nm 选氢焰</td><td>背景</td><td>§14</td><td>〔说话人1 01:24:03〕</td></tr><tr><td>64</td><td>石墨炉高纯石墨</td><td>石墨炉</td><td>§15</td><td>〔说话人1 01:26:04〕</td></tr><tr><td>65</td><td>500 A 级加热电流</td><td>数据</td><td>§15</td><td>〔说话人1 01:27:50〕</td></tr><tr><td>66</td><td>先通气再升温</td><td>安全</td><td>§15</td><td>〔说话人1 01:28:58〕</td></tr><tr><td>67</td><td>干燥灰化原子化三阶段</td><td>程序</td><td>§15</td><td>〔说话人1 01:33:08〕</td></tr><tr><td>68</td><td>微升级固体进样</td><td>石墨炉</td><td>§15</td><td>〔说话人1 01:30:48〕</td></tr></table><p class="foot">附录 D 共 68 条，对照 recording.md 126 轮零遗漏自查。</p></div></body></html>

@@ -1,20 +1,242 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>医学英语Unit5·可视化</title>
-<style>
-body{font-family:"Microsoft YaHei",sans-serif;background:#FAF7F2;color:#24201A;margin:0;line-height:1.7;font-size:10.5pt}
-.page{width:210mm;min-height:297mm;margin:0 auto;padding:18mm 16mm}
-h1{color:#5C2540;font-size:24pt;border-bottom:2.5pt solid #7A3350;padding-bottom:3mm}
-h2{color:#5C2540;font-size:15pt;margin:7mm 0 3mm;border-left:4pt solid #7A3350;padding-left:3mm}
-table{width:100%;border-collapse:collapse;margin:3mm 0}th{background:#7A3350;color:#fff;padding:2mm;text-align:left}td{padding:2mm;border-bottom:.5pt solid #E6DECC}
-tr:nth-child(even) td{background:#fff}
-</style></head><body>
-<div class="page"><h1>医学英语 Unit 5<span style="color:#9C7A1C">膀胱外翻</span></h1>
-<h2>写作句式</h2>
-<table><tr><th>类型</th><th>句式</th></tr>
-<tr><td>疾病定义</td><td>短语+同位语</td></tr>
-<tr><td>手术定义</td><td>单句+定语从句</td></tr>
-<tr><td>新技术</td><td>冒号补充</td></tr></table>
-<h2>高频搭配</h2>
-<p>heighten/increase/raise risk = 增加风险<br>in sync = 同步；degrade = 降解/退化</p>
-<h2>项目安排</h2>
-<p>Unit 3 脑机接口，全英文PPT 6-10分钟，334评分制</p>
-</div></body></html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>医学英语 · 第9-10节 · Unit 5 膀胱外翻与 BCI 项目</title><style>:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#7A2E4A; --accent-d:#542033; --accent-t:#F4E4EA;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}</style></head><body>
+
+<div class="page cover"><p class="h1">医学英语</p><p class="meta">第9-10节 · Unit 5 膀胱外翻课文结构与医学写作 · 2026-09-30</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 34218 字 / 262 轮</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>主题</td><td>Unit 5 bladder exstrophy 段落逻辑与写作手法；假期 Unit 3 脑机接口（BCI）项目</td></tr>
+<tr><td>学时</td><td>2 学时（第9-10节连堂）</td></tr></table></div>
+
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">双线：假期 BCI 文献项目 + Unit 5 八段课文（定义→后果→方案→局限→风险→新支架）。</p>
+<svg viewBox="0 0 700 200" width="100%" aria-label="框架">
+<rect x="250" y="10" width="200" height="26" fill="#F4E4EA" stroke="#7A2E4A"/>
+<text x="350" y="28" text-anchor="middle" font-size="11">第9-10节</text>
+<line x1="350" y1="36" x2="120" y2="65" stroke="#7A2E4A"/><line x1="350" y1="36" x2="350" y2="65" stroke="#7A2E4A"/><line x1="350" y1="36" x2="580" y2="65" stroke="#7A2E4A"/>
+<rect x="40" y="65" width="160" height="32" fill="#fff" stroke="#542033"/><text x="120" y="85" text-anchor="middle" font-size="9">BCI 项目 334</text>
+<rect x="270" y="65" width="160" height="32" fill="#fff" stroke="#542033"/><text x="350" y="85" text-anchor="middle" font-size="9">P2-P6 旧术链</text>
+<rect x="500" y="65" width="160" height="32" fill="#fff" stroke="#542033"/><text x="580" y="85" text-anchor="middle" font-size="9">P7-P9 风险与新支架</text>
+<rect x="120" y="120" width="460" height="28" fill="#EDEBE4" stroke="#D8D6CE"/><text x="350" y="138" text-anchor="middle" font-size="9">读法：main idea → 段间连接词 → 写作手法 → 因果/过程</text>
+</svg></div>
+
+<div class="page"><h2 class="h2">1. 假期项目：Unit 3 脑机接口（BCI）</h2>
+<p class="lead">国庆自学项目：用最新文献对比第三单元，训练医学论文语篇与思辨。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>项目选题 Unit 3：neuroscience、BCI（brain-computer interface） <span class="loc">〔说话人2 11:38〕</span></li>
+<li>脑机接口为跨学科前沿；本校今年设脑机接口博士点 <span class="loc">〔说话人2 13:00〕</span></li>
+<li>同济医院脑机接口由材料学、生命科学、医学三板块构成博士点 <span class="loc">〔说话人2 13:00〕</span></li>
+<li>基本阅读任务：掌握医学术语与医学类文章语言特征 <span class="loc">〔说话人2 14:18〕</span></li>
+<li>更高目标：读文献理解神经科学与健康、BCI 在神经医学的应用展望 <span class="loc">〔说话人2 14:18〕</span></li>
+<li>查 2–3 篇相关文献，须为 latest information（25/26 年亦可） <span class="loc">〔说话人2 14:18〕</span></li>
+<li>论文发表有周期，所读成果常滞后一至两年 <span class="loc">〔说话人2 14:18〕</span></li>
+<li>以小组为单位合作、brainstorm，对比课文与不同材料 <span class="loc">〔说话人2 17:11〕</span></li>
+<li>项目四目标：语言（标题摘要方法结果等）、知识、核心素养、思政（研究方向） <span class="loc">〔说话人2 18:03〕</span></li>
+<li>核心素养：分析思维与思辨思维，读的时候找逻辑点 <span class="loc">〔说话人2 18:03〕</span></li>
+<li>第五周发项目；第六周自学第三单元</li>
+<li>第10周和第13周不上课时间查文献、制作 PPT <span class="loc">〔说话人2 18:59〕</span></li>
+<li>学期最后一次课英文展示 <span class="loc">〔说话人2 20:17〕</span></li>
+<li>展示 6–10 分钟，超过 10 分钟 cut <span class="loc">〔说话人2 20:17〕</span></li>
+<li>展示时把其中一个内容解释清楚，10分钟可以完成 <span class="loc">〔说话人2 20:17〕</span></li>
+<li>评分 334：组长协作3 + PPT 内容3 + 展示4 = 10 分 <span class="loc">〔说话人2 23:01〕</span></li>
+<li>须选 group leader；组长协调查找资料、讨论、制作 PPT <span class="loc">〔说话人2 21:55〕</span></li>
+<li>项目 10 分加平时 20 分；期末卷面 35 分即及格 <span class="loc">〔说话人2 23:48〕</span></li>
+<li>提交查找的文献、PPT 内容、小组打分三部分 <span class="loc">〔说话人2 24:33〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>维度</th><th>要求</th></tr>
+<tr><td>文献</td><td>2–3 篇，前沿、可与 Unit 3 对比</td></tr>
+<tr><td>展示</td><td>全英文 PPT，6–10 分钟</td></tr>
+<tr><td>评分</td><td>协作3 + 内容3 + 展示4</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>334 分值与 6–10 分钟时限。 <span class="loc">〔说话人2 23:01〕</span></div></div>
+
+<div class="page"><h2 class="h2">2. Unit 5 课文地图（P2–P9）</h2>
+<p class="lead">段落按「病→后果→旧术→局限→风险→新术」推进，段间靠 also、unfortunately、to address 衔接。</p>
+<ul class="kv">
+<li>上课继续 Unit 5，上次仅完成 paragraph 1 <span class="loc">〔说话人2 25:42〕</span></li>
+<li>P2 主旨是定义疾病，而非 Becker 出生那句 <span class="loc">〔说话人2 27:30〕</span></li>
+<li>P3 一 solution（重建修复）；P4 also 为 another solution <span class="loc">〔说话人2 39:07〕</span></li>
+<li>P5 两种旧术后 unfortunately 仍存问题 <span class="loc">〔说话人2 44:14〕</span></li>
+<li>P6 评价肠膀胱成形术百年 stop-gap <span class="loc">〔说话人2 49:39〕</span></li>
+<li>P7–P8 难点：risks 与 new therapeutic measure <span class="loc">〔说话人2 01:06:30〕</span></li>
+<li>P9 承接 P8 的 theory，讲 application/practice <span class="loc">〔说话人2 01:49:01〕</span></li>
+</ul>
+<table class="tbl"><tr><th>段</th><th>主旨</th><th>关键手法</th></tr>
+<tr><td>P2</td><td>bladder exstrophy 定义</td><td>短语+同位语；space（where）</td></tr>
+<tr><td>P3</td><td>并发症后果</td><td>因果链；举例递增强度</td></tr>
+<tr><td>P4</td><td>bladder augmentation</td><td>举例；因果；对比；手术定义</td></tr>
+<tr><td>P5</td><td>手术局限</td><td>quotation；短/长期并发症</td></tr>
+<tr><td>P6</td><td>enterocystoplasty 评价</td><td>stop-gap；因果解释</td></tr>
+<tr><td>P7</td><td>三类风险</td><td>process；listing；contrast；因果</td></tr>
+<tr><td>P8</td><td>生物复合支架</td><td>冒号定义；process；因果</td></tr>
+<tr><td>P9</td><td>临床应用</td><td>因果；time 序（before/once）</td></tr></table></div>
+
+<div class="page"><h2 class="h2">3. 医学定义三种句式</h2>
+<p class="lead">定义对象不同则句型不同，避免 repetition。</p>
+<ul class="kv">
+<li>疾病（P2）：phrase + 同位语；where 表空间，属 develop by space <span class="loc">〔说话人2 30:36〕</span></li>
+<li>先天 congenital：词根 gen，与基因同时出现即先天 <span class="loc">〔说话人2 31:55〕</span></li>
+<li>手术 enterocystoplasty：It is a major surgery that… 定语从句 <span class="loc">〔说话人2 42:15〕</span></li>
+<li>新技术 scaffold（P8）：冒号 further explain + that 从句 <span class="loc">〔说话人2 01:28:44〕</span></li>
+<li>冒号前概括 cutting edge approach，后接优势说明 <span class="loc">〔说话人2 01:29:45〕</span></li>
+</ul>
+<div class="def">三种定义对应 disease / surgery(operation) / new approach 不同 aspect。 <span class="loc">〔说话人2 01:30:41〕</span></div>
+<div class="exam"><span class="tag">★考点</span>enterocystoplasty 用 It is a major surgery that 定义。 <span class="loc">〔说话人2 42:15〕</span></div></div>
+
+<div class="page"><h2 class="h2">4. P2–P3：定义与并发症因果链</h2>
+<p class="lead">P3 用 cause-effect chain 与按严重程度排序的举例。</p>
+<ul class="kv">
+<li>P2 写作：definition，先 background/cause 再 effect（手术） <span class="loc">〔说话人2 29:30〕</span></li>
+<li>P3 主旨：bladder exstrophy 的 result / complications <span class="loc">〔说话人2 32:42〕</span></li>
+<li>P3 手法：examples（such complications include）+ cause and effect 分析 <span class="loc">〔说话人2 32:57〕</span></li>
+<li>单句链：外翻为 cause→尿失禁；失禁亦为 cause→需定期导尿 <span class="loc">〔说话人2 33:54〕</span></li>
+<li>since 指 time：自初次修复后多次 reconstructive surgeries <span class="loc">〔说话人2 35:30〕</span></li>
+<li>举例顺序：kidney、bladder stone、infections、cancer 表 serious degree <span class="loc">〔说话人2 37:13〕</span></li>
+<li>complications 按 serious degree 排列，不可 change order <span class="loc">〔说话人2 37:13〕</span></li>
+<li>Becker 出生第 19 小时即初次修复手术 <span class="loc">〔说话人2 37:54〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>并发症按严重程度递增，最后引发 cancer，顺序不可换。 <span class="loc">〔说话人2 37:13〕</span></div></div>
+
+<div class="page"><h2 class="h2">5. P4–P6：扩大术、局限与权宜之计</h2>
+<p class="lead">第三段手术不够→第四段 augmentation；第五段引权威；第六段百年传统术评价。</p>
+<ul class="kv">
+<li>P4：bladder augmentation，目的因果为扩大膀胱、贮尿更多 <span class="loc">〔说话人2 41:32〕</span></li>
+<li>P4 对比 more urine 与 reduce internal pressure <span class="loc">〔说话人2 42:15〕</span></li>
+<li>学术写作不能只堆 example，需 discussion 分析 <span class="loc">〔说话人2 40:23〕</span></li>
+<li>使用 quotation 使引用更可信、更具权威性（more believable） <span class="loc">〔说话人2 45:09〕</span></li>
+<li>被引者：biomedical engineer，儿科泌尿再生医学 <span class="loc">〔说话人2 45:30〕</span></li>
+<li>跨学科 interdisciplinary 才能创新 <span class="loc">〔说话人2 46:03〕</span></li>
+<li>短期并发症 bladder perforation；长期 metabolic imbalances 渐形成 <span class="loc">〔说话人2 48:13〕</span></li>
+<li>P6：enterocystoplasty 逾百年，评价为 stop-gap measure <span class="loc">〔说话人2 49:39〕</span></li>
+<li>stop-gap 复合词，汉语权宜之计，暗示仍有研究空间 <span class="loc">〔说话人2 51:01〕</span></li>
+<li>现完成时 for over 100 years 强调 traditional surgery 历史延续 <span class="loc">〔说话人2 55:32〕</span></li>
+<li>第二句用因果解释为何只是 stop-gap（借肠段作 patch） <span class="loc">〔说话人2 52:33〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">6. P7：三类风险与 process 逻辑</h2>
+<p class="lead">整段按手术过程排列风险，并对 also/meanwhile 等小词敏感。</p>
+<ul class="kv">
+<li>P7 主旨：enterocystoplasty 手术存在显著风险 <span class="loc">〔说话人2 01:06:30〕</span></li>
+<li>对比：肠组织 designed for absorption，膀胱 primary function excretion <span class="loc">〔说话人2 01:06:30〕</span></li>
+<li>共三项 risk，非两项 <span class="loc">〔说话人2 01:12:29〕</span></li>
+<li>风险1：conflicting roles of two organs→cancer development 风险 <span class="loc">〔说话人2 01:10:44〕</span></li>
+<li>meanwhile 术后 new environment 提高感染与膀胱结石风险 <span class="loc">〔说话人2 01:12:29〕</span></li>
+<li>social stigma 属 mental health；儿科 low compliance 致特别挑战 <span class="loc">〔说话人2 01:25:15〕</span></li>
+<li>风险3：bladder overdistension 未 routine drain→perforation <span class="loc">〔说话人2 01:21:47〕</span></li>
+<li>顺序为 process logic（术前→术后），不可调换 <span class="loc">〔说话人2 01:15:39〕</span></li>
+<li>路标：the key challenge、meanwhile、also（第四段亦用 also） <span class="loc">〔说话人2 01:13:30〕</span></li>
+<li>段内大量 cause and effect；physiological disparity heighten risk <span class="loc">〔说话人2 01:20:27〕</span></li>
+<li>heighten/increase/raise/intensify/amplify 均可接 risk <span class="loc">〔说话人2 01:23:00〕</span></li>
+<li>bladder irrigation：冲洗膀胱助引流、防感染结石 <span class="loc">〔说话人2 01:24:33〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>三项风险及 process 顺序；risk 动词搭配。 <span class="loc">〔说话人2 01:12:29〕</span></div></div>
+
+<div class="page"><h2 class="h2">7. P8–P9：生物复合支架</h2>
+<p class="lead">新方案以支架过程与自体细胞原理回应 P7 问题。</p>
+<ul class="kv">
+<li>P8 主旨：探索 cutting edge approach 以解决旧方案的问题 <span class="loc">〔说话人2 01:27:27〕</span></li>
+<li>biological composite scaffold：冒号定义 + mimic bladder properties <span class="loc">〔说话人2 01:28:44〕</span></li>
+<li>写作：definition + process analysis + cause and effect <span class="loc">〔说话人2 01:32:00〕</span></li>
+<li>scaffold expand contract synchronously，degrades over time 促细胞附着 <span class="loc">〔说话人3 01:41:51〕</span></li>
+<li>首句 To address these limitations 为因果（回应 P7） <span class="loc">〔说话人2 01:34:32〕</span></li>
+<li>终局：preventing stone formation；干细胞 divide/differentiate 再生组织 <span class="loc">〔说话人2 01:36:14〕</span></li>
+<li>in sync with：与机体协调、不排异；out of sync：排异 <span class="loc">〔说话人2 01:39:27〕</span></li>
+<li>degrade 文中意为分解降解，支架在体内慢慢消化 <span class="loc">〔说话人2 01:41:11〕</span></li>
+<li>后段 quotation：winning combination of features <span class="loc">〔说话人2 01:44:22〕</span></li>
+<li>自体细胞→eliminate graft rejection；synergistic 协同促再生 <span class="loc">〔说话人2 01:45:38〕</span></li>
+<li>下一段为 application/practice（theory 后接 practice） <span class="loc">〔说话人2 01:49:01〕</span></li>
+<li>临床段用 before、once implanted 等表 time process <span class="loc">〔说话人2 01:50:33〕</span></li>
+</ul>
+<div class="mnem">段间口诀（整理）：定义、后果、扩大术、局限、评价、三风险、新支架。</div></div>
+
+<div class="page"><h2 class="h2">8. 阅读方法与作业要求</h2>
+<p class="lead">main idea、paraphrase 与预习修改同等重要。</p>
+<ul class="kv">
+<li>main idea 训练总结归纳，再细致分析结构与手法 <span class="loc">〔说话人2 01:27:00〕</span></li>
+<li>读段：先逐句细读，再回整段看逻辑 <span class="loc">〔说话人2 01:14:04〕</span></li>
+<li>paraphrase 可更 informal，语义不变（如 normal function） <span class="loc">〔说话人2 01:43:30〕</span></li>
+<li>作业看你是否 check、看到修改，非与 reference answer 一模一样 <span class="loc">〔说话人2 56:20〕</span></li>
+<li>预习一遍、课堂一遍、参考答案一遍，至少三遍有印象 <span class="loc">〔说话人2 56:20〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>BCI 项目：2–3 篇文献、6–10 分钟、334 评分 <span class="loc">〔说话人2 23:01〕</span></li>
+<li>三种定义：短语+同位语 / major surgery that / 冒号+从句 <span class="loc">〔说话人2 01:29:15〕</span></li>
+<li>P3 因果链与并发症严重程度顺序 <span class="loc">〔说话人2 37:28〕</span></li>
+<li>P7 三项 risk 与 process 不可换序 <span class="loc">〔说话人2 01:15:39〕</span></li>
+<li>risk 动词：heighten、increase、raise、intensify、amplify <span class="loc">〔说话人2 01:23:00〕</span></li>
+<li>in sync / out of sync；degrade=降解；graft rejection <span class="loc">〔说话人2 01:39:27〕</span></li>
+<li>also、meanwhile、the key challenge 为段间路标 <span class="loc">〔说话人2 01:13:30〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>把 P2 首句病例当 main idea</td><td>主旨是定义 bladder exstrophy <span class="loc">〔说话人2 27:30〕</span></td></tr>
+<tr><td>认为 P7 只有两项 risk</td><td>共三项，含 overdistension→perforation <span class="loc">〔说话人2 01:12:29〕</span></td></tr>
+<tr><td>随意调换并发症或风险顺序</td><td>按严重程度或手术 process 排列 <span class="loc">〔说话人2 01:15:39〕</span></td></tr>
+<tr><td>degrade 译成贬低</td><td>文中为支架体内降解 <span class="loc">〔说话人2 01:40:30〕</span></td></tr>
+<tr><td>展示超时仍想讲三篇全部</td><td>6–10 分钟，讲清一点即可 <span class="loc">〔说话人2 20:17〕</span></td></tr>
+<tr><td>作业必须与参考答案一字不差</td><td>老师看是否 check 与修改 <span class="loc">〔说话人2 56:20〕</span></td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>334 评分与展示时限</td><td>§1</td><td>〔说话人2 23:01〕</td><td>填空</td></tr>
+<tr><td>三种医学定义句式</td><td>§3</td><td>〔说话人2 01:29:15〕</td><td>简答</td></tr>
+<tr><td>P3 因果链与并发症顺序</td><td>§4</td><td>〔说话人2 37:28〕</td><td>分析</td></tr>
+<tr><td>P5 quotation 功能</td><td>§5</td><td>〔说话人2 44:56〕</td><td>简答</td></tr>
+<tr><td>stop-gap 含义</td><td>§5</td><td>〔说话人2 50:17〕</td><td>名词解释</td></tr>
+<tr><td>P7 三项 risk 与 process</td><td>§6</td><td>〔说话人2 01:12:29〕</td><td>列举</td></tr>
+<tr><td>risk 动词搭配</td><td>§6</td><td>〔说话人2 01:23:00〕</td><td>搭配</td></tr>
+<tr><td>P8 过程与终局再生</td><td>§7</td><td>〔说话人2 01:36:14〕</td><td>简答</td></tr>
+<tr><td>in sync / degrade / graft rejection</td><td>§7</td><td>〔说话人2 01:39:27〕</td><td>词汇</td></tr>
+<tr><td>main idea 与 paraphrase 训练</td><td>§8</td><td>〔说话人2 01:27:00〕</td><td>方法</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>国庆假期布置 Unit3 脑机接口 BCI 项目</td><td>任务</td><td>§1</td><td>〔说话人2 11:38〕</td></tr><tr><td>2</td><td>选题理由：脑机接口跨学科前沿、本校设博士点</td><td>背景</td><td>§1</td><td>〔说话人2 13:00〕</td></tr><tr><td>3</td><td>同济医院脑机接口技术全国领先</td><td>背景</td><td>§1</td><td>〔说话人2 13:00〕</td></tr><tr><td>4</td><td>阅读任务：掌握医学术语与医学类文章语言特征</td><td>目标</td><td>§1</td><td>〔说话人2 14:18〕</td></tr><tr><td>5</td><td>关注神经科学与人类健康及 BCI 在神经医学应用</td><td>目标</td><td>§1</td><td>〔说话人2 14:18〕</td></tr><tr><td>6</td><td>项目文献 2–3 篇须 latest、25/26 年亦可</td><td>要求</td><td>§1</td><td>〔说话人2 14:18〕</td></tr><tr><td>7</td><td>论文发表周期约一年，所见成果常滞后两年</td><td>方法</td><td>§1</td><td>〔说话人2 14:18〕</td></tr><tr><td>8</td><td>小组合作 brainstorm 对比课文与文献</td><td>方法</td><td>§1</td><td>〔说话人2 17:11〕</td></tr><tr><td>9</td><td>项目四目标：语言、知识、核心素养、思政（方向选择）</td><td>目标</td><td>§1</td><td>〔说话人2 18:03〕</td></tr><tr><td>10</td><td>核心素养=课堂训练的逻辑与思辨思维</td><td>素养</td><td>§1</td><td>〔说话人2 18:59〕</td></tr><tr><td>11</td><td>第5周发项目；第6周自学 Unit3</td><td>时间</td><td>§1</td><td>〔说话人2 18:59〕</td></tr><tr><td>12</td><td>第10、13周查文献做 PPT</td><td>时间</td><td>§1</td><td>〔说话人2 20:17〕</td></tr><tr><td>13</td><td>学期最后一次课展示</td><td>时间</td><td>§1</td><td>〔说话人2 20:17〕</td></tr><tr><td>14</td><td>展示全英文 6–10 分钟，超时 cut</td><td>规则</td><td>§1</td><td>〔说话人2 20:17〕</td></tr><tr><td>15</td><td>三篇文献只讲清一个内容即可</td><td>技巧</td><td>§1</td><td>〔说话人2 20:17〕</td></tr><tr><td>16</td><td>评分 334：组长协作3+PPT3+展示4=10分</td><td>数字</td><td>§1</td><td>〔说话人2 23:01〕</td></tr><tr><td>17</td><td>组长由老师评，组员互评组长</td><td>规则</td><td>§1</td><td>〔说话人2 23:01〕</td></tr><tr><td>18</td><td>项目10分+平时20分；期末35分及格线</td><td>数字</td><td>§1</td><td>〔说话人2 23:48〕</td></tr><tr><td>19</td><td>提交：文献、PPT、小组打分三部分</td><td>提交</td><td>§1</td><td>〔说话人2 25:42〕</td></tr><tr><td>20</td><td>Unit5 上次仅讲完 paragraph1</td><td>进度</td><td>§2</td><td>〔说话人2 25:42〕</td></tr><tr><td>21</td><td>P2 主旨：定义 bladder exstrophy（非病例句）</td><td>段落</td><td>§3</td><td>〔说话人2 27:30〕</td></tr><tr><td>22</td><td>P2 写法：短语+同位语，where 表 space 空间描述</td><td>手法</td><td>§3</td><td>〔说话人2 30:36〕</td></tr><tr><td>23</td><td>congenital 词根 gen=基因，与基因同在即先天</td><td>词根</td><td>§3</td><td>〔说话人2 31:55〕</td></tr><tr><td>24</td><td>P3 主旨：疾病后果 result/complications</td><td>段落</td><td>§4</td><td>〔说话人2 32:42〕</td></tr><tr><td>25</td><td>P3 举例 such complications include</td><td>手法</td><td>§4</td><td>〔说话人2 32:57〕</td></tr><tr><td>26</td><td>P3 因果链：外翻→尿失禁→需定期导尿</td><td>逻辑</td><td>§4</td><td>〔说话人2 33:54〕</td></tr><tr><td>27</td><td>并发症列举按严重程度递增，末项 cancer</td><td>逻辑</td><td>§4</td><td>〔说话人2 37:13〕</td></tr><tr><td>28</td><td>并发症顺序不可调换</td><td>易错</td><td>§4</td><td>〔说话人2 37:28〕</td></tr><tr><td>29</td><td>初次修复手术在出生后第19小时</td><td>数字</td><td>§4</td><td>〔说话人2 37:54〕</td></tr><tr><td>30</td><td>since 句指 time，表多次重建修复手术</td><td>语法</td><td>§4</td><td>〔说话人2 35:30〕</td></tr><tr><td>31</td><td>P4 主旨：另一 solution 膀胱扩大 augmentation</td><td>段落</td><td>§5</td><td>〔说话人2 39:07〕</td></tr><tr><td>32</td><td>P3 一方案、P4 also 表第二方案</td><td>结构</td><td>§5</td><td>〔说话人2 39:07〕</td></tr><tr><td>33</td><td>P4 举例 such as；topic sentence+example</td><td>手法</td><td>§5</td><td>〔说话人2 40:03〕</td></tr><tr><td>34</td><td>P4 因果：扩大膀胱→贮尿增多</td><td>手法</td><td>§5</td><td>〔说话人2 41:32〕</td></tr><tr><td>35</td><td>P4 对比：more urine vs reduce internal pressure</td><td>手法</td><td>§5</td><td>〔说话人2 42:15〕</td></tr><tr><td>36</td><td>enterocystoplasty 定义：major surgery that 从句</td><td>句式</td><td>§5</td><td>〔说话人2 42:15〕</td></tr><tr><td>37</td><td>疾病与手术定义句式不同 aspect</td><td>句式</td><td>§5</td><td>〔说话人2 42:15〕</td></tr><tr><td>38</td><td>P5 主旨：手术局限，unfortunately 仍有问题</td><td>段落</td><td>§5</td><td>〔说话人2 44:14〕</td></tr><tr><td>39</td><td>P5 quotation 增强 believable authoritative</td><td>手法</td><td>§5</td><td>〔说话人2 44:56〕</td></tr><tr><td>40</td><td>引用者为 biomedical engineer 非医生</td><td>人物</td><td>§5</td><td>〔说话人2 45:30〕</td></tr><tr><td>41</td><td>儿科泌尿再生医学 pediatric regenerative medicine</td><td>术语</td><td>§5</td><td>〔说话人2 45:30〕</td></tr><tr><td>42</td><td>短期并发症 bladder perforation；长期 metabolic imbalances</td><td>对比</td><td>§5</td><td>〔说话人2 48:13〕</td></tr><tr><td>43</td><td>P6 评价 enterocystoplasty 为 stop-gap measure</td><td>段落</td><td>§5</td><td>〔说话人2 49:39〕</td></tr><tr><td>44</td><td>stop-gap 复合词，汉语译权宜之计、评价不高</td><td>词汇</td><td>§5</td><td>〔说话人2 50:17〕</td></tr><tr><td>45</td><td>百年传统术：present perfect 强调历史延续</td><td>语法</td><td>§5</td><td>〔说话人2 55:32〕</td></tr><tr><td>46</td><td>P6 第二句解释为何只是 stop-gap</td><td>逻辑</td><td>§5</td><td>〔说话人2 52:33〕</td></tr><tr><td>47</td><td>P7 主旨：术后 enterocystoplasty 显著 risks</td><td>段落</td><td>§6</td><td>〔说话人2 01:06:30〕</td></tr><tr><td>48</td><td>P7 对比 while 肠吸收 vs 膀胱排泄</td><td>手法</td><td>§6</td><td>〔说话人2 01:06:30〕</td></tr><tr><td>49</td><td>三类 risk 共三项，不可换序</td><td>逻辑</td><td>§6</td><td>〔说话人2 01:12:29〕</td></tr><tr><td>50</td><td>风险1：两器官 conflicting roles→癌症风险</td><td>内容</td><td>§6</td><td>〔说话人2 01:10:44〕</td></tr><tr><td>51</td><td>风险2：术后 new environment→感染与结石</td><td>内容</td><td>§6</td><td>〔说话人2 01:11:30〕</td></tr><tr><td>52</td><td>风险2 含 physical；social stigma 属 mental health</td><td>内容</td><td>§6</td><td>〔说话人2 01:18:42〕</td></tr><tr><td>53</td><td>风险3：overdistension 未引流→bladder perforation</td><td>内容</td><td>§6</td><td>〔说话人2 01:21:47〕</td></tr><tr><td>54</td><td>P7 逻辑为 process：术前→术后</td><td>逻辑</td><td>§6</td><td>〔说话人2 01:15:39〕</td></tr><tr><td>55</td><td>路标词 the key challenge、meanwhile、also</td><td>技巧</td><td>§6</td><td>〔说话人2 01:13:30〕</td></tr><tr><td>56</td><td>risk 搭配 heighten/increase/raise/intensify/amplify</td><td>搭配</td><td>§6</td><td>〔说话人2 01:23:00〕</td></tr><tr><td>57</td><td>P8 主旨：探索 cutting edge approach 新疗法</td><td>段落</td><td>§7</td><td>〔说话人2 01:27:39〕</td></tr><tr><td>58</td><td>生物复合支架定义：冒号+从句 mimic properties</td><td>句式</td><td>§7</td><td>〔说话人2 01:28:44〕</td></tr><tr><td>59</td><td>三种定义：短语/major surgery that/冒号</td><td>句式</td><td>§3</td><td>〔说话人2 01:29:15〕</td></tr><tr><td>60</td><td>P8 过程 extract、seed、expand、degrade over time</td><td>过程</td><td>§7</td><td>〔说话人2 01:32:48〕</td></tr><tr><td>61</td><td>To address limitations 为因果起点</td><td>逻辑</td><td>§7</td><td>〔说话人2 01:34:32〕</td></tr><tr><td>62</td><td>终局：防结石+干细胞分化再生组织</td><td>目标</td><td>§7</td><td>〔说话人2 01:36:14〕</td></tr><tr><td>63</td><td>in sync with=协调不排异；out of sync=排异</td><td>词汇</td><td>§7</td><td>〔说话人2 01:39:27〕</td></tr><tr><td>64</td><td>degrade 文中义为支架体内降解</td><td>词汇</td><td>§7</td><td>〔说话人2 01:40:30〕</td></tr><tr><td>65</td><td>自体细胞消除 graft rejection；synergistic 协同</td><td>原理</td><td>§7</td><td>〔说话人2 01:45:38〕</td></tr><tr><td>66</td><td>下段为 application/practice（theory 后接 practice）</td><td>结构</td><td>§7</td><td>〔说话人2 01:49:01〕</td></tr><tr><td>67</td><td>手术步骤用 before/once 表 time process</td><td>手法</td><td>§7</td><td>〔说话人2 01:50:33〕</td></tr><tr><td>68</td><td>作业看是否 check 修改句，非与参考答案一字不差</td><td>作业</td><td>§8</td><td>〔说话人2 59:21〕</td></tr><tr><td>69</td><td>main idea 训练总结归纳；再细读分析</td><td>方法</td><td>§8</td><td>〔说话人2 01:27:00〕</td></tr><tr><td>70</td><td>paraphrase 可比原句 informal，义不变</td><td>方法</td><td>§8</td><td>〔说话人2 01:43:30〕</td></tr>
+</table><p class="foot">附录 D 共 70 条，与 recording.md 讲授点逐条对应。</p></div>
+</body></html>

@@ -1,237 +1,51 @@
-<!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-@page{size:A4;margin:0}
-body{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;color:#24201A;background:#FAF8F1;font-size:10pt;line-height:1.7}
-.cover{width:210mm;height:297mm;background:linear-gradient(135deg,#129695 0%,#0A5C5B 55%,#063E3D 100%);color:#FBF7EC;display:flex;flex-direction:column;justify-content:center;padding:30mm 25mm;page-break-after:always}
-.cover .kicker{font-size:9pt;letter-spacing:.4em;text-transform:uppercase;color:#E7CE9C;margin-bottom:8mm}
-.cover h1{font-family:"Noto Serif CJK SC",serif;font-size:36pt;font-weight:700;line-height:1.2;margin-bottom:6mm}
-.cover .sub{font-size:14pt;color:rgba(251,247,236,.8);margin-bottom:12mm}
-.cover .meta{display:grid;grid-template-columns:1fr 1fr;gap:5mm;font-size:10pt;color:rgba(251,247,236,.7);border-top:1px solid rgba(231,206,156,.3);padding-top:8mm}
-.cover .meta b{color:#E7CE9C;display:block;font-size:8pt;letter-spacing:.15em;margin-bottom:1mm}
-.page{padding:18mm 20mm;page-break-after:always}
-.page:last-child{page-break-after:auto}
-h2.sec{font-family:"Noto Serif CJK SC",serif;font-size:18pt;color:#0A5C5B;border-bottom:2.5pt solid #0E7C7B;padding-bottom:2mm;margin-bottom:6mm;display:flex;align-items:baseline;gap:4mm}
-h2.sec .num{background:#0E7C7B;color:#fff;font-size:11pt;padding:1mm 3mm;border-radius:2mm}
-h3.subsec{font-size:13pt;color:#0A5C5B;margin:5mm 0 2.5mm;padding-left:3mm;border-left:3pt solid #A2630C}
-p{margin-bottom:2.5mm;color:#4A4337}
-.kv-grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0}
-.kv-card{background:#fff;border:0.5pt solid #BCDAD9;border-radius:2mm;padding:3mm 4mm}
-.kv-card .k{font-weight:700;color:#0A5C5B;font-size:9.5pt;margin-bottom:1mm}
-.kv-card .v{font-size:9pt;color:#4A4337;line-height:1.55}
-.highlight{background:linear-gradient(180deg,#F8ECD3,#F8ECD3);border:0.5pt solid #E7CE9C;border-radius:2mm;padding:3mm 4mm;margin:3mm 0;font-size:9.5pt}
-.highlight .tag{display:inline-block;background:#A2630C;color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;letter-spacing:.08em}
-.warn{background:#F7E4DF;border:0.5pt solid #E6BDB4;border-radius:2mm;padding:3mm 4mm;margin:3mm 0;font-size:9.5pt;color:#7E2A20}
-.warn .tag{display:inline-block;background:#B23A2E;color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt}
-th{background:#0E7C7B;color:#fff;padding:2mm 3mm;text-align:left;font-weight:600}
-td{padding:2mm 3mm;border-bottom:0.5pt solid #BCDAD9;color:#4A4337;vertical-align:top}
-tr:nth-child(even) td{background:#F3EFE5}
-.checklist{list-style:none;margin:3mm 0}
-.checklist li{padding:1.5mm 0 1.5mm 7mm;position:relative;font-size:9.5pt;color:#4A4337;border-bottom:0.3pt dashed #BCDAD9}
-.checklist li::before{content:"☐";position:absolute;left:0;color:#0E7C7B;font-weight:700}
-.qa{margin:3mm 0}
-.qa .q{font-weight:700;color:#0A5C5B;font-size:10pt;margin-bottom:1.5mm;padding-left:3mm;border-left:3pt solid #0E7C7B}
-.qa .a{font-size:9.5pt;color:#4A4337;padding-left:6mm;line-height:1.65}
-.toc{margin:5mm 0}
-.toc-item{display:flex;align-items:baseline;gap:3mm;padding:2mm 0;border-bottom:0.3pt solid #BCDAD9;font-size:10.5pt}
-.toc-item .tn{font-weight:700;color:#0E7C7B;min-width:12mm}
-.toc-item .tt{color:#24201A;font-weight:600}
-.structure{background:#fff;border:0.5pt solid #BCDAD9;border-radius:2mm;padding:5mm;margin:4mm 0;font-size:9pt;line-height:2}
-.structure .l1{font-weight:700;color:#0A5C5B}
-.structure .l2{padding-left:6mm;color:#4A4337}
-.structure .l3{padding-left:12mm;color:#857B68;font-size:8.5pt}
-</style></head><body>
-
-<div class="cover">
-  <div class="kicker">HUST · 基础医学 · 可视化笔记</div>
-  <h1>系统解剖学<br><span style="color:#E7CE9C">下肢骨及其连接</span></h1>
-  <div class="sub">第7-9节 · 2026-09-07 · 李鑫焱副教授（实验课3学时）</div>
-  <div class="meta">
-    <div><b>课程</b>系统解剖学</div>
-    <div><b>节次</b>课程内第7-9节</div>
-    <div><b>主题</b>下肢骨、下肢骨连接与骨盆、髋/膝/踝关节、足弓</div>
-    <div><b>类型</b>课堂可视化笔记</div>
-  </div>
-</div>
-
-<div class="page">
-  <h2 class="sec"><span class="num">00</span>知识结构与目录</h2>
-  <div class="structure">
-    <div class="l1">一、下肢骨</div>
-    <div class="l2">1. 下肢带骨 — 髋骨（髂骨/坐骨/耻骨）、髋臼、闭孔</div>
-    <div class="l2">2. 自由下肢骨 — 股骨、髌骨、胫骨、腓骨</div>
-    <div class="l2">3. 足骨 — 7跗骨+5跖骨+14趾骨</div>
-    <div class="l1">二、下肢骨连接与骨盆</div>
-    <div class="l2">1. 骶髂关节、坐骨大/小孔</div>
-    <div class="l2">2. 骨盆构成、界限、大/小骨盆、性别差异</div>
-    <div class="l2">3. 骨盆重力传导弓</div>
-    <div class="l1">三、下肢核心关节</div>
-    <div class="l2">1. 髋关节 — 结构、囊内外韧带、临床</div>
-    <div class="l2">2. 膝关节 — 最大最复杂、半月板、交叉韧带、抽屉试验</div>
-    <div class="l2">3. 踝关节 — 结构、内外侧韧带、崴脚机制</div>
-    <div class="l2">4. 跗横关节、足弓</div>
-  </div>
-  <div class="toc">
-    <div class="toc-item"><span class="tn">01</span><span class="tt">下肢骨</span></div>
-    <div class="toc-item"><span class="tn">02</span><span class="tt">下肢骨连接与骨盆</span></div>
-    <div class="toc-item"><span class="tn">03</span><span class="tt">下肢核心关节</span></div>
-    <div class="toc-item"><span class="tn">04</span><span class="tt">复习清单与主动回忆题</span></div>
-  </div>
-</div>
-
-<div class="page">
-  <h2 class="sec"><span class="num">01</span>下肢骨</h2>
-
-  <h3 class="subsec">1.1 髋骨——三骨融合</h3>
-  <table>
-    <tr><th>骨</th><th>髋臼占比</th><th>分部</th><th>重要结构</th></tr>
-    <tr><td>髂骨</td><td>上2/5</td><td>髂骨体+翼</td><td>髂嵴、髂前上棘、髂后上棘（骨髓穿刺优先）</td></tr>
-    <tr><td>坐骨</td><td>后下2/5</td><td>坐骨体+支</td><td>坐骨结节（坐姿承重最低点）、坐骨棘</td></tr>
-    <tr><td>耻骨</td><td>前下1/5</td><td>耻骨体+上支+下支</td><td>耻骨联合（纤维软骨盘，无关节）</td></tr>
-  </table>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">髋臼</div><div class="v">月状面（上半关节面）+髋臼窝（中间凹陷）+髋臼切迹</div></div>
-    <div class="kv-card"><div class="k">闭孔</div><div class="v">耻骨与坐骨共同围成；闭孔膜大部分封闭；闭膜管供血管神经穿行；男性椭圆形、女性近似三角形</div></div>
-  </div>
-  <div class="highlight"><span class="tag">助记</span>髂上坐后耻前下，髋臼三五要记牢；髂后上棘穿骨髓，坐骨结节坐承重。</div>
-
-  <h3 class="subsec">1.2 自由下肢骨</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">股骨</div><div class="v">人体最长最结实长骨，略向前弓；股骨头→颈→大/小转子→内外侧髁</div></div>
-    <div class="kv-card"><div class="k">髌骨</div><div class="v">人体最大籽骨，位于股四头肌肌腱内，板栗状；下延为髌韧带（膝跳反射）</div></div>
-    <div class="kv-card"><div class="k">胫骨</div><div class="v">三棱柱体，前缘/内侧缘无肌肉覆盖可触及；上端内外侧髁，下端内踝</div></div>
-    <div class="kv-card"><div class="k">腓骨</div><div class="v">上端腓骨头（与胫骨构成胫腓关节），不参与膝关节；下端外踝</div></div>
-  </div>
-  <div class="warn"><span class="tag">类比</span>腓骨不参与膝关节，类比尺骨不参与腕关节。籽骨=生长在肌腱韧带内的骨头，髌骨人人都有，其他籽骨不一定。</div>
-
-  <h3 class="subsec">1.3 足骨组成</h3>
-  <div class="highlight"><span class="tag">总数</span>7跗骨 + 5跖骨 + 14趾骨。跗骨分三列：后列（距骨、跟骨）、中列（足舟骨）、前列（3块楔骨+骰骨）。整体粗大，灵活度远低于手骨（适配负重）。</div>
-</div>
-
-<div class="page">
-  <h2 class="sec"><span class="num">02</span>下肢骨连接与骨盆</h2>
-
-  <h3 class="subsec">2.1 骶髂关节与坐骨大/小孔</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">骶髂关节</div><div class="v">髂骨与骶骨耳状面构成；囊周骶髂前后韧带加强；活动度极小；妊娠期略增</div></div>
-    <div class="kv-card"><div class="k">坐骨大孔</div><div class="v">骶结节韧带+骶棘韧带+坐骨大切迹围成</div></div>
-    <div class="kv-card"><div class="k">坐骨小孔</div><div class="v">骶结节韧带+骶棘韧带+坐骨小切迹围成</div></div>
-    <div class="kv-card"><div class="k">意义</div><div class="v">重要血管神经走行通道</div></div>
-  </div>
-
-  <h3 class="subsec">2.2 骨盆构成与分区</h3>
-  <div class="highlight"><span class="tag">界限</span>骨盆界限 = 骶骨岬 + 弓状线 + 耻骨梳 + 耻骨联合上缘</div>
-  <table>
-    <tr><th>分区</th><th>位置</th><th>别名</th><th>意义</th></tr>
-    <tr><td>大骨盆</td><td>界限以上</td><td>假骨盆</td><td>腹腔一部分</td></tr>
-    <tr><td>小骨盆</td><td>界限以下</td><td>真骨盆</td><td>女性骨性产道</td></tr>
-  </table>
-  <p><b>骨盆构成：</b>左右髋骨 + 骶骨 + 尾骨 + 骨连接。直立位时髂前上棘与耻骨结节处于同一水平面，整体向前倾斜。女性骨盆前后径、横径均大于男性，适配分娩。</p>
-
-  <h3 class="subsec">2.3 骨盆重力传导弓</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">骶股弓</div><div class="v">骶髂关节→髋关节，传导站立位重力</div></div>
-    <div class="kv-card"><div class="k">坐骶弓</div><div class="v">骶髂关节→坐骨结节，传导坐位重力</div></div>
-    <div class="kv-card"><div class="k">约束弓</div><div class="v">抵消传导应力，维持骨盆环稳定</div></div>
-    <div class="kv-card"><div class="k">骨折高发</div><div class="v">耻骨上下支（骨盆环薄弱处）</div></div>
-  </div>
-</div>
-
-<div class="page">
-  <h2 class="sec"><span class="num">03</span>下肢核心关节</h2>
-
-  <h3 class="subsec">3.1 髋关节</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">构成</div><div class="v">髋臼+股骨头（球窝/杵臼关节）</div></div>
-    <div class="kv-card"><div class="k">特点</div><div class="v">关节窝深，活动度低于肩关节，稳定性极强，囊质密坚韧</div></div>
-    <div class="kv-card"><div class="k">囊内结构</div><div class="v">股骨头韧带、髋臼横韧带</div></div>
-    <div class="kv-card"><div class="k">囊外韧带</div><div class="v">髂股韧带、耻骨韧带、坐骨韧带、轮匝带</div></div>
-  </div>
-  <div class="warn"><span class="tag">临床</span>股骨颈骨折分囊内/囊外两类，血供不足→股骨头坏死，严重时需人工髋关节置换。</div>
-
-  <h3 class="subsec">3.2 膝关节——最大最复杂关节</h3>
-  <table>
-    <tr><th>结构</th><th>详情</th></tr>
-    <tr><td>构成</td><td>股骨下端+胫骨上端+髌骨</td></tr>
-    <tr><td>运动</td><td>屈伸为主；半屈位可小幅度旋内旋外</td></tr>
-    <tr><td>囊外韧带</td><td>髌韧带、胫侧副韧带、腓侧副韧带、腘斜韧带</td></tr>
-    <tr><td>囊内韧带</td><td>前交叉韧带+后交叉韧带</td></tr>
-    <tr><td>半月板</td><td>内侧C型、外侧O型；缓冲震荡、适配关节面</td></tr>
-    <tr><td>滑膜</td><td>髌上囊、翼状襞（结构丰富）</td></tr>
-  </table>
-  <div class="highlight"><span class="tag">检查</span>抽屉试验检测交叉韧带损伤。半月板无充足血供难以愈合，非运动员可直接切除。交叉韧带断裂可自体肌腱移植替代。</div>
-
-  <h3 class="subsec">3.3 踝关节与崴脚机制</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">构成</div><div class="v">胫腓骨下端+距骨滑车（滑车关节）</div></div>
-    <div class="kv-card"><div class="k">内侧韧带</div><div class="v">三角韧带（强大）</div></div>
-    <div class="kv-card"><div class="k">外侧韧带</div><div class="v">距腓前韧带+跟腓韧带+距腓后韧带（3条，较薄弱）</div></div>
-    <div class="kv-card"><div class="k">崴脚机制</div><div class="v">跖屈位稳定性下降→外侧韧带损伤最常见（距腓前韧带最多）</div></div>
-  </div>
-  <p><b>稳定性原理：</b>背屈位距骨滑车前部较宽嵌于关节窝→稳定性高；跖屈位后部较窄→活动度增加稳定性下降。这就是为什么下楼梯/穿高跟鞋（跖屈位）容易崴脚。</p>
-
-  <h3 class="subsec">3.4 跗横关节与足弓</h3>
-  <div class="kv-grid">
-    <div class="kv-card"><div class="k">跗横关节</div><div class="v">足部前端截肢常规离断平面（截面平整）</div></div>
-    <div class="kv-card"><div class="k">足弓构成</div><div class="v">7跗骨+5跖骨借连接形成向上弓形；灵长类特有</div></div>
-    <div class="kv-card"><div class="k">内侧纵弓</div><div class="v">弹性最强、减震最显著</div></div>
-    <div class="kv-card"><div class="k">外侧纵弓</div><div class="v">适配重力传递</div></div>
-  </div>
-  <div class="warn"><span class="tag">临床</span>足弓功能=缓冲冲击、保护足底血管神经；无足弓=扁平足（不符合军校招生身体条件）。足弓与手部对掌运动同属灵长类标志性骨骼特征。</div>
-</div>
-
-<div class="page">
-  <h2 class="sec"><span class="num">04</span>复习清单与主动回忆题</h2>
-
-  <h3 class="subsec">复习清单（10-15分钟）</h3>
-  <ul class="checklist">
-    <li>髋骨三骨（髂/坐/耻）的髋臼占比与重要结构</li>
-    <li>髂后上棘作为骨髓穿刺优先部位的原因</li>
-    <li>髋臼的三部分结构（月状面/髋臼窝/髋臼切迹）</li>
-    <li>闭孔与闭膜管的构成及性别差异</li>
-    <li>股骨、髌骨、胫骨、腓骨的关键结构</li>
-    <li>髌骨作为人体最大籽骨的特点</li>
-    <li>腓骨不参与膝关节（类比尺骨不参与腕关节）</li>
-    <li>足骨组成（7跗骨三列+5跖骨+14趾骨）</li>
-    <li>骶髂关节的结构特点与活动度</li>
-    <li>坐骨大孔与小孔的围成结构</li>
-    <li>骨盆界限的四部分组成</li>
-    <li>大骨盆（假）与小骨盆（真）的区分</li>
-    <li>骨盆性别差异（女性适配分娩）</li>
-    <li>骨盆重力传导三弓（骶股弓/坐骶弓/约束弓）</li>
-    <li>髋关节的构成、特点、囊内外韧带</li>
-    <li>股骨颈骨折与股骨头坏死的关系</li>
-    <li>膝关节构成、半月板（内C外O）、交叉韧带</li>
-    <li>抽屉试验的意义</li>
-    <li>踝关节构成、三角韧带、外侧三条韧带</li>
-    <li>崴脚机制（跖屈位+外侧韧带薄弱）</li>
-    <li>跗横关节作为截肢平面的原因</li>
-    <li>足弓构成、三弓、功能与扁平足</li>
-  </ul>
-
-  <h3 class="subsec">主动回忆题</h3>
-  <div class="qa">
-    <div class="q">Q1：为什么髋关节的稳定性远强于肩关节？</div>
-    <div class="a">A：髋关节由髋臼和股骨头构成，属于球窝（杵臼）关节。髋臼深，可容纳股骨头的2/3以上，关节囊厚而坚韧，周围有髂股韧带、耻骨韧带、坐骨韧带等多条强韧韧带加强。相比之下，肩关节的关节盂浅而小，仅容纳肱骨头的1/3，关节囊薄而松弛。这种结构差异使髋关节稳定性极强但活动度较低，适配下肢负重和行走功能；肩关节活动度大但稳定性差，适配上肢灵活运动。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q2：膝关节为什么是人体最大最复杂的关节？</div>
-    <div class="a">A：膝关节由股骨下端、胫骨上端和髌骨三块骨构成，是人体最大的关节。其复杂性体现在：①关节囊内有前、后交叉韧带防止胫骨前后移位；②内外侧半月板（C型/O型）增加关节适配性并缓冲震荡；③囊外有髌韧带、胫侧/腓侧副韧带、腘斜韧带等多条韧带；④滑膜结构丰富，形成髌上囊、翼状襞等；⑤运动形式多样，以屈伸为主，半屈位还可旋内旋外。这些结构共同维持膝关节在负重和运动中的稳定性。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q3：为什么崴脚通常损伤外侧韧带而非内侧韧带？</div>
-    <div class="a">A：踝关节由胫腓骨下端和距骨滑车构成。内侧有强大的三角韧带，而外侧由距腓前韧带、跟腓韧带、距腓后韧带三条较薄弱的韧带组成。更重要的是，距骨滑车前宽后窄：当足处于跖屈位（如下楼梯、穿高跟鞋）时，较窄的距骨后部进入关节窝，关节稳定性下降，此时足内翻的力矩容易超过外侧韧带的承受能力，导致外侧韧带损伤，其中距腓前韧带最常受累。而内侧三角韧带强大，不易损伤。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q4：骨盆的界限是如何构成的？有何临床意义？</div>
-    <div class="a">A：骨盆界限由后向前依次为：骶骨岬→弓状线→耻骨梳→耻骨联合上缘，是一条环形的分界线。界限以上为大骨盆（假骨盆），属于腹腔的一部分；界限以下为小骨盆（真骨盆），其内腔即盆腔，在女性是胎儿娩出的骨性产道。临床意义：女性小骨盆的大小和形态直接影响分娩方式，骨盆测量是产前检查的重要内容。男性骨盆窄而深，女性骨盆宽而浅，这些性别差异都与小骨盆的形态相关。</div>
-  </div>
-  <div class="qa">
-    <div class="q">Q5：足弓是如何构成的？扁平足为什么会影响运动功能？</div>
-    <div class="a">A：足弓由7块跗骨和5块跖骨借助韧带和关节连接形成向上弓形的结构，包括内侧纵弓（弹性最强、减震最显著）、外侧纵弓（适配重力传递）和横弓。足弓的功能：①缓冲行走和跳跃时的冲击力，保护脑和内脏；②保护足底的血管和神经免受压迫；③使足部富有弹性，提高行走和运动效率。扁平足患者足弓塌陷，足底直接接触地面，减震功能丧失，足底血管神经易受压，长时间行走或站立易疲劳疼痛，运动能力下降，因此不符合军校等对体能要求较高的招生条件。</div>
-  </div>
-</div>
-
-</body></html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>系统解剖学 · 第7-9节 · 下肢骨及其连接</title><style>:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#B4531F; --accent-d:#7A3413; --accent-t:#F7E7DE;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}</style></head><body><div class="page cover"><p class="h1">系统解剖学 · 第7-9节</p><p class="meta">下肢骨及其连接 · 2026-09-07</p><p class="lead" style="text-align:left">素材规模：逐字稿 21615 字 / 89 轮发言</p><table><tr><th>项目</th><th>内容</th></tr><tr><td>课次</td><td>rec-2026-fall-007-009</td></tr><tr><td>主题</td><td>下肢骨及其连接（3学时实验课）</td></tr></table></div><div class="page"><h2 class="h2">0. 知识框架</h2><p class="lead">下肢骨粗大负重 → 带骨与骨盆牢固连接 → 髋膝踝关节在稳定中完成运动 → 足弓缓冲。</p><svg viewBox="0 0 640 220" width="100%" aria-label="框架"><rect x="220" y="8" width="200" height="32" fill="#F7E7DE" stroke="#B4531F"/><text x="320" y="28" text-anchor="middle" font-size="11">下肢骨及其连接</text><line x1="100" y1="42" x2="320" y2="42" stroke="#B4531F"/><line x1="540" y1="42" x2="320" y2="42" stroke="#B4531F"/><rect x="30" y="50" width="130" height="26" fill="#fff" stroke="#7A3413"/><text x="95" y="67" text-anchor="middle" font-size="9">髋骨·自由骨</text><rect x="180" y="50" width="130" height="26" fill="#fff" stroke="#7A3413"/><text x="245" y="67" text-anchor="middle" font-size="9">骨盆·带骨连接</text><rect x="330" y="50" width="130" height="26" fill="#fff" stroke="#7A3413"/><text x="395" y="67" text-anchor="middle" font-size="9">髋·膝·踝</text><rect x="480" y="50" width="130" height="26" fill="#fff" stroke="#7A3413"/><text x="545" y="67" text-anchor="middle" font-size="9">足弓</text></svg></div><div class="page"><h2 class="h2">1. 下肢骨总论与髋骨</h2><p class="lead">带骨仅髋骨一块；三骨融合成髋臼与闭孔。</p><ul class="kv"><li>下肢骨分下肢带骨与自由下肢骨，对应上肢带骨与自由上肢骨 <span class="loc">〔说话人1 00:19〕</span></li><li>下肢带骨仅1块：髋骨（hip bone） <span class="loc">〔说话人1 00:19〕</span></li><li>自由下肢骨自上而下：股骨、髌骨、胫骨、腓骨、足骨 <span class="loc">〔说话人1 00:19〕</span></li><li>足骨分跗骨、跖骨、趾骨，对应腕骨、掌骨、指骨 <span class="loc">〔说话人1 00:19〕</span></li><li>考试勿将趾（足趾）与指（手指）混写 <span class="loc">〔说话人1 00:19〕</span></li><li>下肢骨粗大坚固，承担体重并适应直立行走与运动 <span class="loc">〔说话人1 01:32〕</span></li><li>髋骨为不规则骨，中央有闭孔，构成骨盆前壁与侧壁 <span class="loc">〔说话人1 01:32〕</span></li><li>骨盆后壁主要由骶骨构成 <span class="loc">〔说话人1 01:32〕</span></li><li>髋骨由髂骨、耻骨、坐骨发育融合而成 <span class="loc">〔说话人1 01:32〕</span></li><li>髂骨构成髋臼上2/5 <span class="loc">〔说话人1 02:34〕</span></li><li>髂骨分髂骨体（髋臼部）与髂骨翼 <span class="loc">〔说话人1 02:34〕</span></li><li>髂骨翼上缘隆起为髂嵴（可读作髂棘） <span class="loc">〔说话人1 03:06〕</span></li><li>髂前上棘、髂结节、髂后上棘为翼上重要标志 <span class="loc">〔说话人1 04:24〕</span></li><li>骨髓穿刺优先取髂后上棘，困难时可抽胸骨 <span class="loc">〔说话人1 04:24〕</span></li><li>髂前下棘、髂后下棘位于前后上棘下方 <span class="loc">〔说话人1 04:24〕</span></li><li>髂骨外侧面为臀面；内侧面凹陷为髂窝 <span class="loc">〔说话人1 05:32〕</span></li><li>髂骨耳状面与骶骨耳状面构成骶髂关节 <span class="loc">〔说话人1 05:32〕</span></li><li>骶髂关节活动度很小 <span class="loc">〔说话人1 05:32〕</span></li><li>髂粗隆粗糙，有韧带纤维与骶骨固定 <span class="loc">〔说话人1 05:32〕</span></li><li>弓状线位于髂窝下缘，弓向上 <span class="loc">〔说话人1 06:26〕</span></li><li>髂后下棘下方凹陷为坐骨大切迹 <span class="loc">〔说话人1 06:26〕</span></li><li>坐骨构成髋臼后下2/5 <span class="loc">〔说话人1 07:15〕</span></li><li>坐骨分坐骨体与坐骨支 <span class="loc">〔说话人1 07:15〕</span></li><li>坐骨结节粗大，为坐姿时骨性承重点最低处 <span class="loc">〔说话人1 07:15〕</span></li><li>坐骨棘位于坐骨结节上方 <span class="loc">〔说话人1 07:15〕</span></li><li>坐骨棘下方凹陷为坐骨小切迹 <span class="loc">〔说话人1 07:15〕</span></li><li>耻骨构成髋臼前下1/5 <span class="loc">〔说话人1 08:56〕</span></li><li>耻骨分耻骨体、耻骨上支与耻骨下支 <span class="loc">〔说话人1 08:56〕</span></li><li>弓状线下延续的窄锐隆起为耻骨梳 <span class="loc">〔说话人1 08:56〕</span></li><li>髂耻隆起为髂骨与耻骨融合处向前膨大 <span class="loc">〔说话人1 10:27〕</span></li><li>耻骨结节、耻骨嵴为耻骨内侧标志 <span class="loc">〔说话人1 10:27〕</span></li><li>耻骨联合面两侧耻骨借纤维软骨盘直接连接 <span class="loc">〔说话人1 10:27〕</span></li><li>髋臼关节面仅上半为月状面（凹向上弓形） <span class="loc">〔说话人1 10:27〕</span></li><li>髋臼窝为中央非关节面凹陷，容纳囊内韧带 <span class="loc">〔说话人1 10:27〕</span></li><li>髋臼切迹为下方关节面缺如处，有韧带防髋脱位 <span class="loc">〔说话人1 10:27〕</span></li><li>闭孔由耻骨与坐骨围成，大部由闭孔膜封闭 <span class="loc">〔说话人1 12:54〕</span></li><li>闭孔沟未被闭孔膜封闭，形成闭膜管供血管神经通过 <span class="loc">〔说话人1 12:54〕</span></li><li>男性闭孔较大呈卵圆形，女性较小近似三角形 <span class="loc">〔说话人1 12:54〕</span></li><li>闭孔沟位于耻骨梳附近内侧面 <span class="loc">〔说话人1 13:50〕</span></li><li>下肢支持体重、运动并维持人体直立姿势 <span class="loc">〔说话人1 27:57〕</span></li></ul><h3 class="h3">B. 髋臼三骨比例与闭孔</h3><table class="tbl"><tr><th>骨</th><th>髋臼份额</th><th>要点</th></tr><tr><td>髂骨</td><td>上 2/5</td><td>髂嵴、髂后上棘穿刺</td></tr><tr><td>坐骨</td><td>后下 2/5</td><td>坐骨结节坐姿承重</td></tr><tr><td>耻骨</td><td>前下 1/5</td><td>耻骨联合纤维软骨盘</td></tr></table><div class="exam"><span class="tag">★考点</span>髂上坐后耻前下；髂后上棘骨髓穿刺；坐骨结节坐姿承重点。 <span class="loc">〔说话人1 04:24〕</span></div></div><div class="page"><h2 class="h2">2. 股骨·髌骨·胫骨·腓骨</h2><p class="lead">最长股骨承重；髌骨最大籽骨；胫骨可摸；腓骨不参膝。</p><ul class="kv"><li>股骨为人体最长最结实的长骨 <span class="loc">〔说话人1 14:17〕</span></li><li>股骨略向前弓，非笔直长骨 <span class="loc">〔说话人1 14:44〕</span></li><li>股骨头与髋臼构成髋关节 <span class="loc">〔说话人1 14:44〕</span></li><li>股骨头凹有囊内韧带连向髋臼窝 <span class="loc">〔说话人1 14:44〕</span></li><li>股骨颈为股骨头下狭窄部 <span class="loc">〔说话人1 14:44〕</span></li><li>大转子、小转子位于股骨颈下方（非大结节小结节） <span class="loc">〔说话人1 14:44〕</span></li><li>后方大小转子间隆起为转子间嵴，前方为转子间线 <span class="loc">〔说话人1 14:44〕</span></li><li>耻骨肌线、臀肌粗隆为骨干附着线，融合为粗线 <span class="loc">〔说话人1 17:03〕</span></li><li>粗线分内侧唇与外侧唇 <span class="loc">〔说话人1 17:58〕</span></li><li>股骨下端前面髌面与髌骨相关节 <span class="loc">〔说话人1 17:58〕</span></li><li>股骨下端后面内侧髁、外侧髁为关节面 <span class="loc">〔说话人1 17:58〕</span></li><li>内上髁、外上髁为韧带附着，非关节面 <span class="loc">〔说话人1 17:58〕</span></li><li>髁间窝位于内外侧髁之间 <span class="loc">〔说话人1 17:58〕</span></li><li>髌骨为人体最大籽骨，位于股四头肌肌腱内 <span class="loc">〔说话人1 19:28〕</span></li><li>籽骨为肌腱韧带内生长的骨；髌骨人人都有，其他籽骨不一定存在 <span class="loc">〔说话人1 19:28〕</span></li><li>髌骨板栗状，向下延续为髌韧带 <span class="loc">〔说话人1 19:28〕</span></li><li>膝跳反射叩击髌韧带 <span class="loc">〔说话人1 19:28〕</span></li><li>胫骨上端内侧髁、外侧髁与股骨髁相关节 <span class="loc">〔说话人1 20:33〕</span></li><li>髁间隆起非关节面，附着半月板与交叉韧带 <span class="loc">〔说话人1 20:33〕</span></li><li>外侧髁腓关节面与腓骨构成胫腓关节 <span class="loc">〔说话人1 21:11〕</span></li><li>胫腓远端无关节，仅韧带连接；故只称胫腓关节 <span class="loc">〔说话人1 21:11〕</span></li><li>胫骨粗隆于前下方可触及 <span class="loc">〔说话人1 22:11〕</span></li><li>胫骨后面斜行的比目鱼肌线为肌附着线 <span class="loc">〔说话人1 22:11〕</span></li><li>胫骨体为三棱柱，前缘与内侧缘无肌覆盖可触及 <span class="loc">〔说话人1 22:11〕</span></li><li>胫骨下端内侧凸起为内踝 <span class="loc">〔说话人1 22:11〕</span></li><li>腓切迹与腓骨韧带连接，非关节 <span class="loc">〔说话人1 22:11〕</span></li><li>腓骨上端为腓骨头，与胫骨成胫腓关节 <span class="loc">〔说话人1 23:56〕</span></li><li>腓骨不参与构成膝关节（类比尺骨不参与腕关节） <span class="loc">〔说话人1 23:56〕</span></li><li>腓骨下端膨大为外踝，参与踝关节 <span class="loc">〔说话人1 23:56〕</span></li></ul><table class="tbl"><tr><th>骨</th><th>易混</th><th>结论</th></tr><tr><td>股骨转子</td><td>肱骨结节</td><td>大转子、小转子</td></tr><tr><td>腓骨</td><td>尺骨与腕</td><td>不参与膝关节</td></tr></table></div><div class="page"><h2 class="h2">3. 足骨组成与排列</h2><p class="lead">七跗五跖十四趾，三列跗骨，粗大低灵活。</p><ul class="kv"><li>足骨含7跗骨、5跖骨、14趾骨 <span class="loc">〔说话人1 24:35〕</span></li><li>跗骨7块、腕骨8块；跖骨趾骨数量与手骨相同 <span class="loc">〔说话人1 24:35〕</span></li><li>足骨比手骨粗大，运动灵活度差很多，适应负重 <span class="loc">〔说话人1 24:35〕</span></li><li>跗骨后列：距骨、跟骨 <span class="loc">〔说话人1 25:16〕</span></li><li>距骨滑车与胫腓骨下端构成踝关节 <span class="loc">〔说话人1 25:16〕</span></li><li>跟骨后下端膨大为跟骨结节，即足跟骨性标志 <span class="loc">〔说话人1 25:16〕</span></li><li>跗骨中列仅足舟骨一块 <span class="loc">〔说话人1 25:56〕</span></li><li>跗骨前列：内侧三块楔骨、外侧骰骨 <span class="loc">〔说话人1 25:56〕</span></li><li>第五跖骨后端外侧隆起为第五跖骨粗隆 <span class="loc">〔说话人1 27:57〕</span></li><li>跗骨属短骨但体积大，几乎占足长一半 <span class="loc">〔说话人1 25:56〕</span></li><li>跖骨分底、体、头；趾骨形态与指骨相同 <span class="loc">〔说话人1 27:57〕</span></li></ul><table class="tbl"><tr><th>跗骨列</th><th>组成</th></tr><tr><td>后列</td><td>距骨、跟骨</td></tr><tr><td>中列</td><td>足舟骨</td></tr><tr><td>前列</td><td>3楔骨 + 骰骨</td></tr></table></div><div class="page"><h2 class="h2">4. 带骨连接与骨盆分区</h2><p class="lead">骶髂稳固；坐骨孔道；界限分真假骨盆。</p><ul class="kv"><li>下肢骨连接以牢固稳定为主，兼顾运动 <span class="loc">〔说话人1 28:37〕</span></li><li>直立位重力线依次经乳突、枢椎齿突、胸段脊柱前方、髋关节后方、膝踝关节前方、足舟骨至足弓 <span class="loc">〔说话人1 28:37〕</span></li><li>骶髂关节由骶骨与髂骨耳状面构成 <span class="loc">〔说话人1 30:45〕</span></li><li>骶髂前韧带、骶髂后韧带加强骶髂关节囊 <span class="loc">〔说话人1 31:56〕</span></li><li>妊娠期妇女骶髂关节活动度略有增加 <span class="loc">〔说话人1 30:45〕</span></li><li>髂腰韧带由第5腰椎横突发出连至髂骨 <span class="loc">〔说话人1 31:56〕</span></li><li>骶结节韧带连骶骨与坐骨结节 <span class="loc">〔说话人1 32:48〕</span></li><li>骶棘韧带连骶骨与坐骨棘 <span class="loc">〔说话人1 32:48〕</span></li><li>骶结节韧带、骶棘韧带与坐骨切迹围成坐骨大孔、坐骨小孔 <span class="loc">〔说话人1 32:48〕</span></li><li>坐骨大孔为重要血管神经通道，梨状肌经此 <span class="loc">〔说话人1 32:48〕</span></li><li>耻骨联合为纤维软骨盘直接连接，非关节 <span class="loc">〔说话人1 32:48〕</span></li><li>耻骨间盘中央有纵向裂隙；经产妇裂隙更宽 <span class="loc">〔说话人1 32:48〕</span></li><li>耻骨上韧带连两侧耻骨结节；下方为耻骨弓状韧带 <span class="loc">〔说话人1 32:48〕</span></li><li>腹股沟韧带（髂腹股沟韧带）为髋骨内侧韧带 <span class="loc">〔说话人1 30:45〕</span></li><li>骨盆由左右髋骨、骶骨、尾骨及骨连接构成 <span class="loc">〔说话人1 37:33〕</span></li><li>直立位骨盆向前倾斜；髂前上棘与耻骨结节同一水平面，耻骨结节与尾骨尖同一水平面 <span class="loc">〔说话人1 38:01〕</span></li><li>骨盆界限（入口平面）：骶骨岬、弓状线、耻骨梳、耻骨联合上缘 <span class="loc">〔说话人1 38:40〕</span></li><li>界限以上为大骨盆（假骨盆），以下为小骨盆（真骨盆） <span class="loc">〔说话人1 38:40〕</span></li><li>小骨盆（真骨盆）即女性骨性产道；临床所谓胎头过大不能通过骨盆，指的是小骨盆 <span class="loc">〔说话人1 38:40〕</span></li><li>小骨盆腔隙称骨盆腔，含直肠、膀胱及部分生殖器官 <span class="loc">〔说话人1 41:50〕</span></li><li>骨盆下口近菱形：耻骨联合下缘、耻骨下支、坐骨支、坐骨结节、骶结节韧带 <span class="loc">〔说话人1 40:18〕</span></li><li>耻骨下角、耻骨弓位于联合下方 <span class="loc">〔说话人1 41:50〕</span></li></ul><table class="tbl"><tr><th>孔</th><th>围成</th></tr><tr><td>坐骨大孔</td><td>骶结节韧带 + 骶棘韧带 + 坐骨大切迹</td></tr><tr><td>坐骨小孔</td><td>骶结节韧带 + 骶棘韧带 + 坐骨小切迹</td></tr></table></div><div class="page"><h2 class="h2">5. 骨盆径线·性别差·重力弓</h2><p class="lead">女性径线大；骶股弓与坐骶弓传力，约束弓对抗。</p><ul class="kv"><li>骨盆轴为腔中轴线，胎儿沿此轴娩出 <span class="loc">〔说话人1 43:06〕</span></li><li>女性骨盆各径线大于男性，适应妊娠与分娩 <span class="loc">〔说话人1 43:06〕</span></li><li>骨盆上口前后径：男约10 cm，女约112 mm <span class="loc">〔说话人1 43:06〕</span></li><li>骨盆上口横径：男约125 mm，女约133 mm <span class="loc">〔说话人1 43:06〕</span></li><li>骨盆上口斜径：髂耻隆起至对侧骶髂关节，男女约120 mm <span class="loc">〔说话人1 44:47〕</span></li><li>骨盆下口前后径：耻骨联合下缘至尾骨尖，女性更大 <span class="loc">〔说话人1 44:47〕</span></li><li>骨盆下口横径：两侧坐骨结节内侧面最大距离 <span class="loc">〔说话人1 44:47〕</span></li><li>骨盆下口斜径：一侧骶结节韧带中点至对侧坐骨支与耻骨下支结合处 <span class="loc">〔说话人1 44:47〕</span></li><li>骨盆作用：支持保护盆腔脏器并传递重力 <span class="loc">〔说话人1 46:39〕</span></li><li>骶股弓：第5腰椎→骶骨，经两侧骶髂关节→髋臼→下肢，传导直立位重力 <span class="loc">〔说话人1 46:39〕</span></li><li>坐位承重经骶髂关节绕闭孔后至坐骨结节（坐骶弓） <span class="loc">〔说话人1 47:56〕</span></li><li>约束弓抵消向下传导应力，防骨盆散开 <span class="loc">〔说话人1 48:52〕</span></li><li>外伤时耻骨上支、耻骨下支为骨折高发部位 <span class="loc">〔说话人1 49:45〕</span></li><li>女性骨盆短而宽，上口近圆，耻骨角较大 <span class="loc">〔说话人1 49:45〕</span></li></ul></div><div class="page"><h2 class="h2">6. 髋关节</h2><p class="lead">深窝强稳定；囊内外韧带；颈折与坏死。</p><ul class="kv"><li>髋关节由髋臼与股骨头构成球窝（杵臼）关节 <span class="loc">〔说话人1 52:08〕</span></li><li>髋臼窝深，活动度小于肩关节，稳定性极强 <span class="loc">〔说话人1 52:08〕</span></li><li>股骨头韧带为囊内韧带，连股骨头凹与髋臼窝，含血管 <span class="loc">〔说话人1 52:08〕</span></li><li>股骨颈骨折可损血供致股骨头坏死 <span class="loc">〔说话人1 52:08〕</span></li><li>髋臼横韧带封闭髋臼切迹，防股骨头向下脱位 <span class="loc">〔说话人1 53:04〕</span></li><li>髋臼唇加深关节窝 <span class="loc">〔说话人1 53:04〕</span></li><li>髋关节囊质密坚韧，上附髋臼缘及横韧带 <span class="loc">〔说话人1 53:48〕</span></li><li>关节囊下至股骨颈；前达转子间线，后仅包绕颈内侧2/3 <span class="loc">〔说话人1 54:22〕</span></li><li>股骨颈骨折分囊内骨折与囊外骨折 <span class="loc">〔说话人1 54:22〕</span></li><li>髂股韧带自髂骨向前下分散至转子间线，防大腿过伸 <span class="loc">〔说话人1 55:26〕</span></li><li>耻骨韧带起自耻骨上支，止于关节囊前下壁 <span class="loc">〔说话人2 57:22〕</span></li><li>坐骨韧带自坐骨体至大转子根部 <span class="loc">〔说话人1 57:30〕</span></li><li>轮匝带环包股骨颈，固定股骨头 <span class="loc">〔说话人1 57:30〕</span></li><li>髋关节为球窝关节，可做屈伸收展旋转与环转 <span class="loc">〔说话人1 57:30〕</span></li><li>髋关节脱位少见；先天性髋脱位较常见 <span class="loc">〔说话人1 59:15〕</span></li><li>股骨头坏死严重者需行人工髋关节置换 <span class="loc">〔说话人1 59:15〕</span></li><li>髋关节韧带与肌肉起止点繁杂，非考试重点 <span class="loc">〔说话人1 57:30〕</span></li></ul></div><div class="page"><h2 class="h2">7. 膝关节</h2><p class="lead">最大最复杂；交叉韧带与半月板；抽屉试验。</p><ul class="kv"><li>膝关节由股骨下端、胫骨上端与髌骨构成 <span class="loc">〔说话人1 59:52〕</span></li><li>膝关节为人体最大、最复杂关节 <span class="loc">〔说话人1 59:52〕</span></li><li>膝关节囊薄而松弛，靠韧带加固 <span class="loc">〔说话人1 59:52〕</span></li><li>囊外韧带：髌韧带、胫侧副韧带、腓侧副韧带、腘斜韧带 <span class="loc">〔说话人1 59:52〕</span></li><li>髌韧带止于胫骨粗隆 <span class="loc">〔说话人1 59:52〕</span></li><li>前交叉韧带起胫骨髁间隆起前内，止于股骨外侧髁内侧面 <span class="loc">〔说话人1 01:01:49〕</span></li><li>后交叉韧带较短强韧，起髁间隆起后，止于股骨内侧髁外侧面 <span class="loc">〔说话人1 01:03:09〕</span></li><li>交叉韧带限制膝过度前后移位；损伤查抽屉试验 <span class="loc">〔说话人1 01:03:09〕</span></li><li>膝关节滑膜翼状襞呈左右对称翼状 <span class="loc">〔说话人1 01:04:23〕</span></li><li>髌上囊位于股四头肌腱与股骨下端之间；另有髌下深囊 <span class="loc">〔说话人1 01:05:14〕</span></li><li>半月板为膝关节关节盘，内C型外O型 <span class="loc">〔说话人1 01:06:50〕</span></li><li>半月板上凹下平、外厚内薄，适配股骨髁与胫骨面 <span class="loc">〔说话人1 01:07:52〕</span></li><li>半月板缓冲震荡、适配关节面；软骨血供少难愈合 <span class="loc">〔说话人1 01:07:52〕</span></li><li>非运动员半月板损伤可切除；交叉韧带断可肌腱移植 <span class="loc">〔说话人1 01:09:42〕</span></li><li>膝主要屈伸；半屈位可小幅旋内旋外 <span class="loc">〔说话人1 01:09:42〕</span></li></ul><div class="mnem"><strong>内侧半月板像C型，外侧像O型；交叉韧带损伤用抽屉试验。</strong> <span class="loc">〔说话人1 01:08:56〕</span></div></div><div class="page"><h2 class="h2">8. 胫腓连接·踝·跗关节·足弓</h2><p class="lead">踝跖屈易崴脚；跗横截肢面；三足弓减震。</p><ul class="kv"><li>胫腓连接：近侧胫腓关节，远侧胫腓前后韧带，骨干骨间膜 <span class="loc">〔说话人1 01:11:55〕</span></li><li>距小腿关节即踝关节，由胫腓骨与距骨滑车组成 <span class="loc">〔说话人1 01:14:04〕</span></li><li>踝关节囊前后薄松弛，两侧韧带加强 <span class="loc">〔说话人1 01:14:04〕</span></li><li>内侧三角韧带强大；外侧距腓前、跟腓、距腓后三条 <span class="loc">〔说话人1 01:15:23〕</span></li><li>踝关节背屈稳定，跖屈时活动度大稳定性下降易崴脚 <span class="loc">〔说话人1 01:15:23〕</span></li><li>崴脚多见外侧韧带损伤，距腓前韧带最多 <span class="loc">〔说话人1 01:15:23〕</span></li><li>跗骨间关节含距跟关节；跗横关节由距跟舟关节与跟骰关节构成，为足前截肢常用平面 <span class="loc">〔说话人1 01:18:28〕</span></li><li>跗跖关节相当于腕掌关节，跖趾关节相当于掌指关节，趾骨间关节同指骨间关节 <span class="loc">〔说话人1 01:13:16〕</span></li><li>足弓为7块跗骨与5块跖骨借骨连接形成的向上弓 <span class="loc">〔说话人1 01:19:30〕</span></li><li>足弓为灵长类特有结构，对掌运动亦为灵长类标志 <span class="loc">〔说话人1 01:19:30〕</span></li><li>足弓有内侧纵弓、外侧纵弓和横弓三型 <span class="loc">〔说话人1 01:19:30〕</span></li><li>内侧纵弓由跟骨、舟骨、楔骨与内侧跖骨构成，弹性最强 <span class="loc">〔说话人1 01:21:02〕</span></li><li>外侧纵弓跟骨、骰骨与外侧跖骨相连，适宜传递重力 <span class="loc">〔说话人1 01:21:02〕</span></li><li>横弓由骰骨、三块楔骨与五块跖骨构成 <span class="loc">〔说话人1 01:21:02〕</span></li><li>足弓缓冲冲击、保护足底血管神经；无足弓为扁平足 <span class="loc">〔说话人1 01:22:35〕</span></li><li>扁平足即无足弓，军校招生不要 <span class="loc">〔说话人1 01:19:30〕</span></li></ul><div class="exam"><span class="tag">★考点</span>跖屈位崴脚伤外侧距腓前韧带；跗横关节为足前截肢平面；扁平足军检不合格。 <span class="loc">〔说话人1 01:15:23〕</span></div></div><div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv"><li>下肢带骨仅1块：髋骨（hip bone） <span class="loc">〔说话人1 00:19〕</span></li><li>考试勿将趾（足趾）与指（手指）混写 <span class="loc">〔说话人1 00:19〕</span></li><li>髂前上棘、髂结节、髂后上棘为翼上重要标志 <span class="loc">〔说话人1 04:24〕</span></li><li>骨髓穿刺优先取髂后上棘，困难时可抽胸骨 <span class="loc">〔说话人1 04:24〕</span></li><li>坐骨结节粗大，为坐姿时骨性承重点最低处 <span class="loc">〔说话人1 07:15〕</span></li><li>坐骨棘位于坐骨结节上方 <span class="loc">〔说话人1 07:15〕</span></li><li>耻骨结节、耻骨嵴为耻骨内侧标志 <span class="loc">〔说话人1 10:27〕</span></li><li>髋臼关节面仅上半为月状面（凹向上弓形） <span class="loc">〔说话人1 10:27〕</span></li><li>大转子、小转子位于股骨颈下方（非大结节小结节） <span class="loc">〔说话人1 14:44〕</span></li><li>髌骨为人体最大籽骨，位于股四头肌肌腱内 <span class="loc">〔说话人1 19:28〕</span></li><li>籽骨为肌腱韧带内生长的骨；髌骨人人都有，其他籽骨不一定存在 <span class="loc">〔说话人1 19:28〕</span></li><li>膝跳反射叩击髌韧带 <span class="loc">〔说话人1 19:28〕</span></li><li>胫腓远端无关节，仅韧带连接；故只称胫腓关节 <span class="loc">〔说话人1 21:11〕</span></li><li>胫骨体为三棱柱，前缘与内侧缘无肌覆盖可触及 <span class="loc">〔说话人1 22:11〕</span></li><li>腓骨不参与构成膝关节（类比尺骨不参与腕关节） <span class="loc">〔说话人1 23:56〕</span></li><li>跟骨后下端膨大为跟骨结节，即足跟骨性标志 <span class="loc">〔说话人1 25:16〕</span></li><li>跗骨中列仅足舟骨一块 <span class="loc">〔说话人1 25:56〕</span></li><li>骶结节韧带连骶骨与坐骨结节 <span class="loc">〔说话人1 32:48〕</span></li><li>骶结节韧带、骶棘韧带与坐骨切迹围成坐骨大孔、坐骨小孔 <span class="loc">〔说话人1 32:48〕</span></li><li>耻骨上韧带连两侧耻骨结节；下方为耻骨弓状韧带 <span class="loc">〔说话人1 32:48〕</span></li><li>直立位骨盆向前倾斜；髂前上棘与耻骨结节同一水平面，耻骨结节与尾骨尖同一水平面 <span class="loc">〔说话人1 38:01〕</span></li><li>骨盆界限（入口平面）：骶骨岬、弓状线、耻骨梳、耻骨联合上缘 <span class="loc">〔说话人1 38:40〕</span></li><li>骨盆下口近菱形：耻骨联合下缘、耻骨下支、坐骨支、坐骨结节、骶结节韧带 <span class="loc">〔说话人1 40:18〕</span></li><li>骨盆下口横径：两侧坐骨结节内侧面最大距离 <span class="loc">〔说话人1 44:47〕</span></li><li>坐位承重经骶髂关节绕闭孔后至坐骨结节（坐骶弓） <span class="loc">〔说话人1 47:56〕</span></li><li>外伤时耻骨上支、耻骨下支为骨折高发部位 <span class="loc">〔说话人1 49:45〕</span></li><li>股骨颈骨折可损血供致股骨头坏死 <span class="loc">〔说话人1 52:08〕</span></li><li>关节囊下至股骨颈；前达转子间线，后仅包绕颈内侧2/3 <span class="loc">〔说话人1 54:22〕</span></li><li>膝关节为人体最大、最复杂关节 <span class="loc">〔说话人1 59:52〕</span></li><li>交叉韧带限制膝过度前后移位；损伤查抽屉试验 <span class="loc">〔说话人1 01:03:09〕</span></li><li>半月板为膝关节关节盘，内C型外O型 <span class="loc">〔说话人1 01:06:50〕</span></li><li>踝关节背屈稳定，跖屈时活动度大稳定性下降易崴脚 <span class="loc">〔说话人1 01:15:23〕</span></li><li>崴脚多见外侧韧带损伤，距腓前韧带最多 <span class="loc">〔说话人1 01:15:23〕</span></li><li>跗骨间关节含距跟关节；跗横关节由距跟舟关节与跟骰关节构成，为足前截肢常用平面 <span class="loc">〔说话人1 01:18:28〕</span></li><li>足弓缓冲冲击、保护足底血管神经；无足弓为扁平足 <span class="loc">〔说话人1 01:22:35〕</span></li><li>扁平足即无足弓，军校招生不要 <span class="loc">〔说话人1 01:19:30〕</span></li></ul></div><div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2><table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>写指骨代趾骨</td><td>足为趾骨，手为指骨 <span class="loc">〔说话人1 00:19〕</span></td></tr>
+<tr><td>腓骨参与膝关节</td><td>不参与，类比尺骨不参与腕关节 <span class="loc">〔说话人1 23:56〕</span></td></tr>
+<tr><td>胫腓远侧成关节</td><td>远侧韧带连接，仅近侧胫腓关节 <span class="loc">〔说话人1 21:11〕</span></td></tr>
+<tr><td>耻骨联合是关节</td><td>纤维软骨直接连接，活动度极小 <span class="loc">〔说话人1 32:48〕</span></td></tr>
+<tr><td>大骨盆是产道</td><td>小骨盆（真骨盆）为骨性产道 <span class="loc">〔说话人1 40:18〕</span></td></tr>
+<tr><td>背屈时易崴脚</td><td>跖屈（伸脚尖）时稳定性下降易崴脚 <span class="loc">〔说话人1 01:15:23〕</span></td></tr>
+<tr><td>跟骨写成根骨</td><td>足跟骨为跟骨（非根骨），其结节称跟骨结节 <span class="loc">〔说话人1 25:56〕</span></td></tr>
+</table></div><div class="page"><h2 class="h2">附录 C 考点索引表</h2><table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr><tr><td>考试勿将趾（足趾）与指（手指）混写</td><td>§1</td><td>〔说话人1 00:19〕</td><td>单选/临床</td></tr><tr><td>骨髓穿刺优先取髂后上棘，困难时可抽胸骨</td><td>§1</td><td>〔说话人1 04:24〕</td><td>单选/临床</td></tr><tr><td>坐骨结节粗大，为坐姿时骨性承重点最低处</td><td>§1</td><td>〔说话人1 07:15〕</td><td>单选/临床</td></tr><tr><td>髌骨为人体最大籽骨，位于股四头肌肌腱内</td><td>§2</td><td>〔说话人1 19:28〕</td><td>单选/临床</td></tr><tr><td>膝跳反射叩击髌韧带</td><td>§2</td><td>〔说话人1 19:28〕</td><td>单选/临床</td></tr><tr><td>胫骨体为三棱柱，前缘与内侧缘无肌覆盖可触及</td><td>§2</td><td>〔说话人1 22:11〕</td><td>单选/临床</td></tr><tr><td>腓骨不参与构成膝关节（类比尺骨不参与腕关节）</td><td>§2</td><td>〔说话人1 23:56〕</td><td>单选/临床</td></tr><tr><td>骶结节韧带、骶棘韧带与坐骨切迹围成坐骨大孔、坐骨小孔</td><td>§4</td><td>〔说话人1 32:48〕</td><td>单选/临床</td></tr><tr><td>骨盆界限（入口平面）：骶骨岬、弓状线、耻骨梳、耻骨联合上缘</td><td>§4</td><td>〔说话人1 38:40〕</td><td>单选/临床</td></tr><tr><td>外伤时耻骨上支、耻骨下支为骨折高发部位</td><td>§5</td><td>〔说话人1 49:45〕</td><td>单选/临床</td></tr><tr><td>股骨颈骨折可损血供致股骨头坏死</td><td>§6</td><td>〔说话人1 52:08〕</td><td>单选/临床</td></tr><tr><td>膝关节为人体最大、最复杂关节</td><td>§7</td><td>〔说话人1 59:52〕</td><td>单选/临床</td></tr><tr><td>交叉韧带限制膝过度前后移位；损伤查抽屉试验</td><td>§7</td><td>〔说话人1 01:03:09〕</td><td>单选/临床</td></tr><tr><td>半月板为膝关节关节盘，内C型外O型</td><td>§7</td><td>〔说话人1 01:06:50〕</td><td>单选/临床</td></tr><tr><td>踝关节背屈稳定，跖屈时活动度大稳定性下降易崴脚</td><td>§8</td><td>〔说话人1 01:15:23〕</td><td>单选/临床</td></tr><tr><td>崴脚多见外侧韧带损伤，距腓前韧带最多</td><td>§8</td><td>〔说话人1 01:15:23〕</td><td>单选/临床</td></tr><tr><td>跗骨间关节含距跟关节；跗横关节由距跟舟关节与跟骰关节构成，为足前截肢常用平面</td><td>§8</td><td>〔说话人1 01:18:28〕</td><td>单选/临床</td></tr><tr><td>足弓缓冲冲击、保护足底血管神经；无足弓为扁平足</td><td>§8</td><td>〔说话人1 01:22:35〕</td><td>单选/临床</td></tr></table></div><div class="page"><h2 class="h2">附录 D 知识点清单</h2><table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>下肢骨分下肢带骨与自由下肢骨，对应上肢带骨与自由上肢骨</td><td>分类</td><td>§1</td><td>〔说话人1 00:19〕</td></tr><tr><td>2</td><td>下肢带骨仅1块：髋骨（hip bone）</td><td>分类</td><td>§1</td><td>〔说话人1 00:19〕</td></tr><tr><td>3</td><td>自由下肢骨自上而下：股骨、髌骨、胫骨、腓骨、足骨</td><td>分类</td><td>§1</td><td>〔说话人1 00:19〕</td></tr><tr><td>4</td><td>足骨分跗骨、跖骨、趾骨，对应腕骨、掌骨、指骨</td><td>分类</td><td>§1</td><td>〔说话人1 00:19〕</td></tr><tr><td>5</td><td>考试勿将趾（足趾）与指（手指）混写</td><td>考点</td><td>§1</td><td>〔说话人1 00:19〕</td></tr><tr><td>6</td><td>下肢骨粗大坚固，承担体重并适应直立行走与运动</td><td>特征</td><td>§1</td><td>〔说话人1 01:32〕</td></tr><tr><td>7</td><td>髋骨为不规则骨，中央有闭孔，构成骨盆前壁与侧壁</td><td>定义</td><td>§1</td><td>〔说话人1 01:32〕</td></tr><tr><td>8</td><td>骨盆后壁主要由骶骨构成</td><td>构成</td><td>§1</td><td>〔说话人1 01:32〕</td></tr><tr><td>9</td><td>髋骨由髂骨、耻骨、坐骨发育融合而成</td><td>构成</td><td>§1</td><td>〔说话人1 01:32〕</td></tr><tr><td>10</td><td>髂骨构成髋臼上2/5</td><td>比例</td><td>§1</td><td>〔说话人1 02:34〕</td></tr><tr><td>11</td><td>髂骨分髂骨体（髋臼部）与髂骨翼</td><td>结构</td><td>§1</td><td>〔说话人1 02:34〕</td></tr><tr><td>12</td><td>髂骨翼上缘隆起为髂嵴（可读作髂棘）</td><td>结构</td><td>§1</td><td>〔说话人1 03:06〕</td></tr><tr><td>13</td><td>髂前上棘、髂结节、髂后上棘为翼上重要标志</td><td>结构</td><td>§1</td><td>〔说话人1 04:24〕</td></tr><tr><td>14</td><td>骨髓穿刺优先取髂后上棘，困难时可抽胸骨</td><td>临床</td><td>§1</td><td>〔说话人1 04:24〕</td></tr><tr><td>15</td><td>髂前下棘、髂后下棘位于前后上棘下方</td><td>结构</td><td>§1</td><td>〔说话人1 04:24〕</td></tr><tr><td>16</td><td>髂骨外侧面为臀面；内侧面凹陷为髂窝</td><td>结构</td><td>§1</td><td>〔说话人1 05:32〕</td></tr><tr><td>17</td><td>髂骨耳状面与骶骨耳状面构成骶髂关节</td><td>关节</td><td>§1</td><td>〔说话人1 05:32〕</td></tr><tr><td>18</td><td>骶髂关节活动度很小</td><td>特征</td><td>§1</td><td>〔说话人1 05:32〕</td></tr><tr><td>19</td><td>髂粗隆粗糙，有韧带纤维与骶骨固定</td><td>结构</td><td>§1</td><td>〔说话人1 05:32〕</td></tr><tr><td>20</td><td>弓状线位于髂窝下缘，弓向上</td><td>结构</td><td>§1</td><td>〔说话人1 06:26〕</td></tr><tr><td>21</td><td>髂后下棘下方凹陷为坐骨大切迹</td><td>结构</td><td>§1</td><td>〔说话人1 06:26〕</td></tr><tr><td>22</td><td>坐骨构成髋臼后下2/5</td><td>比例</td><td>§1</td><td>〔说话人1 07:15〕</td></tr><tr><td>23</td><td>坐骨分坐骨体与坐骨支</td><td>结构</td><td>§1</td><td>〔说话人1 07:15〕</td></tr><tr><td>24</td><td>坐骨结节粗大，为坐姿时骨性承重点最低处</td><td>临床</td><td>§1</td><td>〔说话人1 07:15〕</td></tr><tr><td>25</td><td>坐骨棘位于坐骨结节上方</td><td>结构</td><td>§1</td><td>〔说话人1 07:15〕</td></tr><tr><td>26</td><td>坐骨棘下方凹陷为坐骨小切迹</td><td>结构</td><td>§1</td><td>〔说话人1 07:15〕</td></tr><tr><td>27</td><td>耻骨构成髋臼前下1/5</td><td>比例</td><td>§1</td><td>〔说话人1 08:56〕</td></tr><tr><td>28</td><td>耻骨分耻骨体、耻骨上支与耻骨下支</td><td>结构</td><td>§1</td><td>〔说话人1 08:56〕</td></tr><tr><td>29</td><td>弓状线下延续的窄锐隆起为耻骨梳</td><td>结构</td><td>§1</td><td>〔说话人1 08:56〕</td></tr><tr><td>30</td><td>髂耻隆起为髂骨与耻骨融合处向前膨大</td><td>结构</td><td>§1</td><td>〔说话人1 10:27〕</td></tr><tr><td>31</td><td>耻骨结节、耻骨嵴为耻骨内侧标志</td><td>结构</td><td>§1</td><td>〔说话人1 10:27〕</td></tr><tr><td>32</td><td>耻骨联合面两侧耻骨借纤维软骨盘直接连接</td><td>连接</td><td>§1</td><td>〔说话人1 10:27〕</td></tr><tr><td>33</td><td>髋臼关节面仅上半为月状面（凹向上弓形）</td><td>结构</td><td>§1</td><td>〔说话人1 10:27〕</td></tr><tr><td>34</td><td>髋臼窝为中央非关节面凹陷，容纳囊内韧带</td><td>结构</td><td>§1</td><td>〔说话人1 10:27〕</td></tr><tr><td>35</td><td>髋臼切迹为下方关节面缺如处，有韧带防髋脱位</td><td>结构</td><td>§1</td><td>〔说话人1 10:27〕</td></tr><tr><td>36</td><td>闭孔由耻骨与坐骨围成，大部由闭孔膜封闭</td><td>结构</td><td>§1</td><td>〔说话人1 12:54〕</td></tr><tr><td>37</td><td>闭孔沟未被闭孔膜封闭，形成闭膜管供血管神经通过</td><td>结构</td><td>§1</td><td>〔说话人1 12:54〕</td></tr><tr><td>38</td><td>男性闭孔较大呈卵圆形，女性较小近似三角形</td><td>性别</td><td>§1</td><td>〔说话人1 12:54〕</td></tr><tr><td>39</td><td>闭孔沟位于耻骨梳附近内侧面</td><td>结构</td><td>§1</td><td>〔说话人1 13:50〕</td></tr><tr><td>40</td><td>股骨为人体最长最结实的长骨</td><td>特征</td><td>§2</td><td>〔说话人1 14:17〕</td></tr><tr><td>41</td><td>股骨略向前弓，非笔直长骨</td><td>形态</td><td>§2</td><td>〔说话人1 14:44〕</td></tr><tr><td>42</td><td>股骨头与髋臼构成髋关节</td><td>关节</td><td>§2</td><td>〔说话人1 14:44〕</td></tr><tr><td>43</td><td>股骨头凹有囊内韧带连向髋臼窝</td><td>韧带</td><td>§2</td><td>〔说话人1 14:44〕</td></tr><tr><td>44</td><td>股骨颈为股骨头下狭窄部</td><td>结构</td><td>§2</td><td>〔说话人1 14:44〕</td></tr><tr><td>45</td><td>大转子、小转子位于股骨颈下方（非大结节小结节）</td><td>结构</td><td>§2</td><td>〔说话人1 14:44〕</td></tr><tr><td>46</td><td>后方大小转子间隆起为转子间嵴，前方为转子间线</td><td>结构</td><td>§2</td><td>〔说话人1 14:44〕</td></tr><tr><td>47</td><td>耻骨肌线、臀肌粗隆为骨干附着线，融合为粗线</td><td>结构</td><td>§2</td><td>〔说话人1 17:03〕</td></tr><tr><td>48</td><td>粗线分内侧唇与外侧唇</td><td>结构</td><td>§2</td><td>〔说话人1 17:58〕</td></tr><tr><td>49</td><td>股骨下端前面髌面与髌骨相关节</td><td>关节</td><td>§2</td><td>〔说话人1 17:58〕</td></tr><tr><td>50</td><td>股骨下端后面内侧髁、外侧髁为关节面</td><td>关节</td><td>§2</td><td>〔说话人1 17:58〕</td></tr><tr><td>51</td><td>内上髁、外上髁为韧带附着，非关节面</td><td>结构</td><td>§2</td><td>〔说话人1 17:58〕</td></tr><tr><td>52</td><td>髁间窝位于内外侧髁之间</td><td>结构</td><td>§2</td><td>〔说话人1 17:58〕</td></tr><tr><td>53</td><td>髌骨为人体最大籽骨，位于股四头肌肌腱内</td><td>定义</td><td>§2</td><td>〔说话人1 19:28〕</td></tr><tr><td>54</td><td>籽骨为肌腱韧带内生长的骨；髌骨人人都有，其他籽骨不一定存在</td><td>范围</td><td>§2</td><td>〔说话人1 19:28〕</td></tr><tr><td>55</td><td>髌骨板栗状，向下延续为髌韧带</td><td>结构</td><td>§2</td><td>〔说话人1 19:28〕</td></tr><tr><td>56</td><td>膝跳反射叩击髌韧带</td><td>临床</td><td>§2</td><td>〔说话人1 19:28〕</td></tr><tr><td>57</td><td>胫骨上端内侧髁、外侧髁与股骨髁相关节</td><td>关节</td><td>§2</td><td>〔说话人1 20:33〕</td></tr><tr><td>58</td><td>髁间隆起非关节面，附着半月板与交叉韧带</td><td>结构</td><td>§2</td><td>〔说话人1 20:33〕</td></tr><tr><td>59</td><td>外侧髁腓关节面与腓骨构成胫腓关节</td><td>关节</td><td>§2</td><td>〔说话人1 21:11〕</td></tr><tr><td>60</td><td>胫腓远端无关节，仅韧带连接；故只称胫腓关节</td><td>对比</td><td>§2</td><td>〔说话人1 21:11〕</td></tr><tr><td>61</td><td>胫骨粗隆于前下方可触及</td><td>体表</td><td>§2</td><td>〔说话人1 22:11〕</td></tr><tr><td>62</td><td>胫骨后面斜行的比目鱼肌线为肌附着线</td><td>结构</td><td>§2</td><td>〔说话人1 22:11〕</td></tr><tr><td>63</td><td>胫骨体为三棱柱，前缘与内侧缘无肌覆盖可触及</td><td>体表</td><td>§2</td><td>〔说话人1 22:11〕</td></tr><tr><td>64</td><td>胫骨下端内侧凸起为内踝</td><td>结构</td><td>§2</td><td>〔说话人1 22:11〕</td></tr><tr><td>65</td><td>腓切迹与腓骨韧带连接，非关节</td><td>连接</td><td>§2</td><td>〔说话人1 22:11〕</td></tr><tr><td>66</td><td>腓骨上端为腓骨头，与胫骨成胫腓关节</td><td>结构</td><td>§2</td><td>〔说话人1 23:56〕</td></tr><tr><td>67</td><td>腓骨不参与构成膝关节（类比尺骨不参与腕关节）</td><td>考点</td><td>§2</td><td>〔说话人1 23:56〕</td></tr><tr><td>68</td><td>腓骨下端膨大为外踝，参与踝关节</td><td>结构</td><td>§2</td><td>〔说话人1 23:56〕</td></tr><tr><td>69</td><td>足骨含7跗骨、5跖骨、14趾骨</td><td>组成</td><td>§3</td><td>〔说话人1 24:35〕</td></tr><tr><td>70</td><td>跗骨7块、腕骨8块；跖骨趾骨数量与手骨相同</td><td>对比</td><td>§3</td><td>〔说话人1 24:35〕</td></tr><tr><td>71</td><td>足骨比手骨粗大，运动灵活度差很多，适应负重</td><td>功能</td><td>§3</td><td>〔说话人1 24:35〕</td></tr><tr><td>72</td><td>跗骨后列：距骨、跟骨</td><td>排列</td><td>§3</td><td>〔说话人1 25:16〕</td></tr><tr><td>73</td><td>距骨滑车与胫腓骨下端构成踝关节</td><td>关节</td><td>§3</td><td>〔说话人1 25:16〕</td></tr><tr><td>74</td><td>跟骨后下端膨大为跟骨结节，即足跟骨性标志</td><td>结构</td><td>§3</td><td>〔说话人1 25:16〕</td></tr><tr><td>75</td><td>跗骨中列仅足舟骨一块</td><td>排列</td><td>§3</td><td>〔说话人1 25:56〕</td></tr><tr><td>76</td><td>跗骨前列：内侧三块楔骨、外侧骰骨</td><td>排列</td><td>§3</td><td>〔说话人1 25:56〕</td></tr><tr><td>77</td><td>第五跖骨后端外侧隆起为第五跖骨粗隆</td><td>体表</td><td>§3</td><td>〔说话人1 27:57〕</td></tr><tr><td>78</td><td>跗骨属短骨但体积大，几乎占足长一半</td><td>特征</td><td>§3</td><td>〔说话人1 25:56〕</td></tr><tr><td>79</td><td>跖骨分底、体、头；趾骨形态与指骨相同</td><td>结构</td><td>§3</td><td>〔说话人1 27:57〕</td></tr><tr><td>80</td><td>下肢支持体重、运动并维持人体直立姿势</td><td>功能</td><td>§1</td><td>〔说话人1 27:57〕</td></tr><tr><td>81</td><td>下肢骨连接以牢固稳定为主，兼顾运动</td><td>原则</td><td>§4</td><td>〔说话人1 28:37〕</td></tr><tr><td>82</td><td>直立位重力线依次经乳突、枢椎齿突、胸段脊柱前方、髋关节后方、膝踝关节前方、足舟骨至足弓</td><td>体位</td><td>§4</td><td>〔说话人1 28:37〕</td></tr><tr><td>83</td><td>骶髂关节由骶骨与髂骨耳状面构成</td><td>关节</td><td>§4</td><td>〔说话人1 30:45〕</td></tr><tr><td>84</td><td>骶髂前韧带、骶髂后韧带加强骶髂关节囊</td><td>韧带</td><td>§4</td><td>〔说话人1 31:56〕</td></tr><tr><td>85</td><td>妊娠期妇女骶髂关节活动度略有增加</td><td>生理</td><td>§4</td><td>〔说话人1 30:45〕</td></tr><tr><td>86</td><td>髂腰韧带由第5腰椎横突发出连至髂骨</td><td>韧带</td><td>§4</td><td>〔说话人1 31:56〕</td></tr><tr><td>87</td><td>骶结节韧带连骶骨与坐骨结节</td><td>韧带</td><td>§4</td><td>〔说话人1 32:48〕</td></tr><tr><td>88</td><td>骶棘韧带连骶骨与坐骨棘</td><td>韧带</td><td>§4</td><td>〔说话人1 32:48〕</td></tr><tr><td>89</td><td>骶结节韧带、骶棘韧带与坐骨切迹围成坐骨大孔、坐骨小孔</td><td>通道</td><td>§4</td><td>〔说话人1 32:48〕</td></tr><tr><td>90</td><td>坐骨大孔为重要血管神经通道，梨状肌经此</td><td>临床</td><td>§4</td><td>〔说话人1 32:48〕</td></tr><tr><td>91</td><td>耻骨联合为纤维软骨盘直接连接，非关节</td><td>连接</td><td>§4</td><td>〔说话人1 32:48〕</td></tr><tr><td>92</td><td>耻骨间盘中央有纵向裂隙；经产妇裂隙更宽</td><td>性别</td><td>§4</td><td>〔说话人1 32:48〕</td></tr><tr><td>93</td><td>耻骨上韧带连两侧耻骨结节；下方为耻骨弓状韧带</td><td>韧带</td><td>§4</td><td>〔说话人1 32:48〕</td></tr><tr><td>94</td><td>腹股沟韧带（髂腹股沟韧带）为髋骨内侧韧带</td><td>韧带</td><td>§4</td><td>〔说话人1 30:45〕</td></tr><tr><td>95</td><td>骨盆由左右髋骨、骶骨、尾骨及骨连接构成</td><td>构成</td><td>§4</td><td>〔说话人1 37:33〕</td></tr><tr><td>96</td><td>直立位骨盆向前倾斜；髂前上棘与耻骨结节同一水平面，耻骨结节与尾骨尖同一水平面</td><td>体位</td><td>§4</td><td>〔说话人1 38:01〕</td></tr><tr><td>97</td><td>骨盆界限（入口平面）：骶骨岬、弓状线、耻骨梳、耻骨联合上缘</td><td>分界</td><td>§4</td><td>〔说话人1 38:40〕</td></tr><tr><td>98</td><td>界限以上为大骨盆（假骨盆），以下为小骨盆（真骨盆）</td><td>分区</td><td>§4</td><td>〔说话人1 38:40〕</td></tr><tr><td>99</td><td>小骨盆（真骨盆）即女性骨性产道；临床所谓胎头过大不能通过骨盆，指的是小骨盆</td><td>临床</td><td>§4</td><td>〔说话人1 38:40〕</td></tr><tr><td>100</td><td>小骨盆腔隙称骨盆腔，含直肠、膀胱及部分生殖器官</td><td>内容</td><td>§4</td><td>〔说话人1 41:50〕</td></tr><tr><td>101</td><td>骨盆下口近菱形：耻骨联合下缘、耻骨下支、坐骨支、坐骨结节、骶结节韧带</td><td>形态</td><td>§4</td><td>〔说话人1 40:18〕</td></tr><tr><td>102</td><td>耻骨下角、耻骨弓位于联合下方</td><td>结构</td><td>§4</td><td>〔说话人1 41:50〕</td></tr><tr><td>103</td><td>骨盆轴为腔中轴线，胎儿沿此轴娩出</td><td>结构</td><td>§5</td><td>〔说话人1 43:06〕</td></tr><tr><td>104</td><td>女性骨盆各径线大于男性，适应妊娠与分娩</td><td>性别</td><td>§5</td><td>〔说话人1 43:06〕</td></tr><tr><td>105</td><td>骨盆上口前后径：男约10 cm，女约112 mm</td><td>数据</td><td>§5</td><td>〔说话人1 43:06〕</td></tr><tr><td>106</td><td>骨盆上口横径：男约125 mm，女约133 mm</td><td>数据</td><td>§5</td><td>〔说话人1 43:06〕</td></tr><tr><td>107</td><td>骨盆上口斜径：髂耻隆起至对侧骶髂关节，男女约120 mm</td><td>数据</td><td>§5</td><td>〔说话人1 44:47〕</td></tr><tr><td>108</td><td>骨盆下口前后径：耻骨联合下缘至尾骨尖，女性更大</td><td>数据</td><td>§5</td><td>〔说话人1 44:47〕</td></tr><tr><td>109</td><td>骨盆下口横径：两侧坐骨结节内侧面最大距离</td><td>数据</td><td>§5</td><td>〔说话人1 44:47〕</td></tr><tr><td>110</td><td>骨盆下口斜径：一侧骶结节韧带中点至对侧坐骨支与耻骨下支结合处</td><td>数据</td><td>§5</td><td>〔说话人1 44:47〕</td></tr><tr><td>111</td><td>骨盆作用：支持保护盆腔脏器并传递重力</td><td>功能</td><td>§5</td><td>〔说话人1 46:39〕</td></tr><tr><td>112</td><td>骶股弓：第5腰椎→骶骨，再分向两侧骶髂关节</td><td>力学</td><td>§5</td><td>〔说话人1 46:39〕</td></tr><tr><td>113</td><td>直立时重力经骶髂关节→髋臼→下肢（骶股弓）</td><td>力学</td><td>§5</td><td>〔说话人1 46:39〕</td></tr><tr><td>114</td><td>坐位承重经骶髂关节绕闭孔后至坐骨结节（坐骶弓）</td><td>力学</td><td>§5</td><td>〔说话人1 47:56〕</td></tr><tr><td>115</td><td>约束弓抵消向下传导应力，防骨盆散开</td><td>力学</td><td>§5</td><td>〔说话人1 48:52〕</td></tr><tr><td>116</td><td>外伤时耻骨上支、耻骨下支为骨折高发部位</td><td>临床</td><td>§5</td><td>〔说话人1 49:45〕</td></tr><tr><td>117</td><td>女性骨盆短而宽，上口近圆，耻骨角较大</td><td>性别</td><td>§5</td><td>〔说话人1 49:45〕</td></tr><tr><td>118</td><td>髋关节由髋臼与股骨头构成球窝（杵臼）关节</td><td>构成</td><td>§6</td><td>〔说话人1 52:08〕</td></tr><tr><td>119</td><td>髋臼窝深，活动度小于肩关节，稳定性极强</td><td>特征</td><td>§6</td><td>〔说话人1 52:08〕</td></tr><tr><td>120</td><td>股骨头韧带为囊内韧带，连股骨头凹与髋臼窝，含血管</td><td>韧带</td><td>§6</td><td>〔说话人1 52:08〕</td></tr><tr><td>121</td><td>股骨颈骨折可损血供致股骨头坏死</td><td>临床</td><td>§6</td><td>〔说话人1 52:08〕</td></tr><tr><td>122</td><td>髋臼横韧带封闭髋臼切迹，防股骨头向下脱位</td><td>韧带</td><td>§6</td><td>〔说话人1 53:04〕</td></tr><tr><td>123</td><td>髋臼唇加深关节窝</td><td>结构</td><td>§6</td><td>〔说话人1 53:04〕</td></tr><tr><td>124</td><td>髋关节囊质密坚韧，上附髋臼缘及横韧带</td><td>囊</td><td>§6</td><td>〔说话人1 53:48〕</td></tr><tr><td>125</td><td>关节囊下至股骨颈；前达转子间线，后仅包绕颈内侧2/3</td><td>囊</td><td>§6</td><td>〔说话人1 54:22〕</td></tr><tr><td>126</td><td>股骨颈骨折分囊内骨折与囊外骨折</td><td>临床</td><td>§6</td><td>〔说话人1 54:22〕</td></tr><tr><td>127</td><td>髂股韧带自髂骨向前下分散至转子间线，防大腿过伸</td><td>韧带</td><td>§6</td><td>〔说话人1 55:26〕</td></tr><tr><td>128</td><td>耻骨韧带起自耻骨上支，止于关节囊前下壁</td><td>韧带</td><td>§6</td><td>〔说话人2 57:22〕</td></tr><tr><td>129</td><td>坐骨韧带自坐骨体至大转子根部</td><td>韧带</td><td>§6</td><td>〔说话人1 57:30〕</td></tr><tr><td>130</td><td>轮匝带环包股骨颈，固定股骨头</td><td>韧带</td><td>§6</td><td>〔说话人1 57:30〕</td></tr><tr><td>131</td><td>髋关节为球窝关节，可做屈伸收展旋转与环转</td><td>运动</td><td>§6</td><td>〔说话人1 57:30〕</td></tr><tr><td>132</td><td>髋关节脱位少见；先天性髋脱位较常见</td><td>临床</td><td>§6</td><td>〔说话人1 59:15〕</td></tr><tr><td>133</td><td>股骨头坏死严重者需行人工髋关节置换</td><td>临床</td><td>§6</td><td>〔说话人1 59:15〕</td></tr><tr><td>134</td><td>膝关节由股骨下端、胫骨上端与髌骨构成</td><td>构成</td><td>§7</td><td>〔说话人1 59:52〕</td></tr><tr><td>135</td><td>膝关节为人体最大、最复杂关节</td><td>特征</td><td>§7</td><td>〔说话人1 59:52〕</td></tr><tr><td>136</td><td>膝关节囊薄而松弛，靠韧带加固</td><td>囊</td><td>§7</td><td>〔说话人1 59:52〕</td></tr><tr><td>137</td><td>囊外韧带：髌韧带、胫侧副韧带、腓侧副韧带、腘斜韧带</td><td>韧带</td><td>§7</td><td>〔说话人1 59:52〕</td></tr><tr><td>138</td><td>髌韧带止于胫骨粗隆</td><td>韧带</td><td>§7</td><td>〔说话人1 59:52〕</td></tr><tr><td>139</td><td>前交叉韧带起胫骨髁间隆起前内，止于股骨外侧髁内侧面</td><td>韧带</td><td>§7</td><td>〔说话人1 01:01:49〕</td></tr><tr><td>140</td><td>后交叉韧带较短强韧，起髁间隆起后，止于股骨内侧髁外侧面</td><td>韧带</td><td>§7</td><td>〔说话人1 01:03:09〕</td></tr><tr><td>141</td><td>交叉韧带限制膝过度前后移位；损伤查抽屉试验</td><td>临床</td><td>§7</td><td>〔说话人1 01:03:09〕</td></tr><tr><td>142</td><td>膝关节滑膜翼状襞呈左右对称翼状</td><td>滑膜</td><td>§7</td><td>〔说话人1 01:04:23〕</td></tr><tr><td>143</td><td>髌上囊位于股四头肌腱与股骨下端之间；另有髌下深囊</td><td>滑膜</td><td>§7</td><td>〔说话人1 01:05:14〕</td></tr><tr><td>144</td><td>半月板为膝关节关节盘，内C型外O型</td><td>结构</td><td>§7</td><td>〔说话人1 01:06:50〕</td></tr><tr><td>145</td><td>半月板上凹下平、外厚内薄，适配股骨髁与胫骨面</td><td>形态</td><td>§7</td><td>〔说话人1 01:07:52〕</td></tr><tr><td>146</td><td>半月板缓冲震荡、适配关节面；软骨血供少难愈合</td><td>功能</td><td>§7</td><td>〔说话人1 01:07:52〕</td></tr><tr><td>147</td><td>非运动员半月板损伤可切除；交叉韧带断可肌腱移植</td><td>临床</td><td>§7</td><td>〔说话人1 01:09:42〕</td></tr><tr><td>148</td><td>膝主要屈伸；半屈位可小幅旋内旋外</td><td>运动</td><td>§7</td><td>〔说话人1 01:09:42〕</td></tr><tr><td>149</td><td>胫腓连接：近侧胫腓关节，远侧胫腓前后韧带，骨干骨间膜</td><td>连接</td><td>§8</td><td>〔说话人1 01:11:55〕</td></tr><tr><td>150</td><td>距小腿关节即踝关节，由胫腓骨与距骨滑车组成</td><td>关节</td><td>§8</td><td>〔说话人1 01:14:04〕</td></tr><tr><td>151</td><td>踝关节囊前后薄松弛，两侧韧带加强</td><td>囊</td><td>§8</td><td>〔说话人1 01:14:04〕</td></tr><tr><td>152</td><td>内侧三角韧带强大；外侧距腓前、跟腓、距腓后三条</td><td>韧带</td><td>§8</td><td>〔说话人1 01:15:23〕</td></tr><tr><td>153</td><td>踝关节背屈稳定，跖屈时活动度大稳定性下降易崴脚</td><td>机制</td><td>§8</td><td>〔说话人1 01:15:23〕</td></tr><tr><td>154</td><td>崴脚多见外侧韧带损伤，距腓前韧带最多</td><td>临床</td><td>§8</td><td>〔说话人1 01:15:23〕</td></tr><tr><td>155</td><td>跗骨间关节含距跟关节；跗横关节由距跟舟关节与跟骰关节构成，为足前截肢常用平面</td><td>临床</td><td>§8</td><td>〔说话人1 01:18:28〕</td></tr><tr><td>156</td><td>跗跖关节相当于腕掌关节，跖趾关节相当于掌指关节，趾骨间关节同指骨间关节</td><td>对应</td><td>§8</td><td>〔说话人1 01:13:16〕</td></tr><tr><td>157</td><td>足弓为7块跗骨与5块跖骨借骨连接形成的向上弓</td><td>定义</td><td>§8</td><td>〔说话人1 01:19:30〕</td></tr><tr><td>158</td><td>足弓为灵长类特有结构，对掌运动亦为灵长类标志</td><td>进化</td><td>§8</td><td>〔说话人1 01:19:30〕</td></tr><tr><td>159</td><td>足弓有内侧纵弓、外侧纵弓和横弓三型</td><td>分类</td><td>§8</td><td>〔说话人1 01:19:30〕</td></tr><tr><td>160</td><td>内侧纵弓由跟骨、舟骨、楔骨与内侧跖骨构成，弹性最强</td><td>构成</td><td>§8</td><td>〔说话人1 01:21:02〕</td></tr><tr><td>161</td><td>外侧纵弓跟骨、骰骨与外侧跖骨相连，适宜传递重力</td><td>构成</td><td>§8</td><td>〔说话人1 01:21:02〕</td></tr><tr><td>162</td><td>横弓由骰骨、三块楔骨与五块跖骨构成</td><td>构成</td><td>§8</td><td>〔说话人1 01:21:02〕</td></tr><tr><td>163</td><td>足弓缓冲冲击、保护足底血管神经；无足弓为扁平足</td><td>功能</td><td>§8</td><td>〔说话人1 01:22:35〕</td></tr><tr><td>164</td><td>扁平足即无足弓，军校招生不要</td><td>临床</td><td>§8</td><td>〔说话人1 01:19:30〕</td></tr><tr><td>165</td><td>髋关节韧带与肌肉起止点繁杂，非考试重点</td><td>范围</td><td>§6</td><td>〔说话人1 57:30〕</td></tr></table><p class="foot">附录 D 共 165 条，与 recording.md 讲授点一一登记。</p></div></body></html>

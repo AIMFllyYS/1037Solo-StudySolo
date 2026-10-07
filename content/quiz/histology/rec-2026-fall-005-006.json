@@ -9,9 +9,9 @@
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-005-006",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "aed49cb5b7cdf12369ebd3502e5dbc74deebd8bbe8ba27c87226608d3c55c342",
-    "notesTextHash": "d1f1e2909c83770374e9999e255cfb32caa6bae24541cc06bd1040b237a30b03"
+    "notesTextHash": "f9dea057c89f487a5fcaf7288a252067f7ec88b26fc266c1add942ca69437870"
   },
   "questions": [
     {
@@ -33,7 +33,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "网状纤维 · 镀银染色与Ⅲ型胶原"
+        "label": "1. 网状纤维 · 网状纤维 · 镀银染色与Ⅲ型胶原"
       }
     },
     {
@@ -55,7 +55,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "基质分子筛与透明质酸酶"
+        "label": "3. 致密结缔组织 · 基质分子筛与透明质酸酶"
       }
     },
     {
@@ -99,7 +99,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "三类软骨 · 分布与纤维类型"
+        "label": "5. 软骨总论与透明软骨 · 三类软骨 · 分布与纤维类型"
       }
     },
     {
@@ -121,7 +121,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "透明软骨 · 同源细胞群"
+        "label": "5. 软骨总论与透明软骨 · 透明软骨 · 同源细胞群"
       }
     },
     {
@@ -165,7 +165,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "破骨细胞 · 皱折缘与亮区溶骨"
+        "label": "7. 骨基质与四类骨细胞 · 破骨细胞 · 皱折缘与亮区溶骨"
       }
     },
     {
@@ -209,7 +209,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "骨单位（哈佛系统）结构"
+        "label": "A. 核心结论 · 骨单位（哈佛系统）结构"
       }
     },
     {
@@ -253,7 +253,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
-        "label": "激素调控与骨发生方式 · 侏儒/呆小"
+        "label": "9. 骨膜、骨发生与骨生长 · 激素调控与骨发生方式 · 侏儒/呆小"
       }
     }
   ]

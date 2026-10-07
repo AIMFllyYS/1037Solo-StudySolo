@@ -1,116 +1,141 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<style>
-:root{--paper:#FBF7F2;--ink:#2A1F1A;--muted:#8A7568;--line:#E8DCD0;--accent:#7B3F00;--accent-deep:#5A2D00;--accent-tint:#F5E8D8;--gold:#B8860B;--gold-tint:#FBF3DC;--crimson:#A93226;--crimson-tint:#F9E5E2;--teal:#1A6B5A;--teal-tint:#DCEDE8;--serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
-.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-.cover{background:radial-gradient(120% 80% at 78% 12%,#A0522D 0%,#7B3F00 55%,#5A2D00 100%);color:#F5EDE0;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
-.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(212,175,55,.45);}
-.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#D4AF37;margin-bottom:8mm;}
-.cover h1{font-family:var(--serif);font-size:28pt;line-height:1.2;color:#FBF7F0;margin-bottom:6mm;}
-.cover h1 .accent{color:#F4D03F;}
-.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(245,237,224,.82);margin-bottom:4mm;}
-.cover .meta{font-size:10pt;color:rgba(245,237,224,.6);margin-top:auto;}
-.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
-.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
-.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
-h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
-p{margin:2mm 0;}
-.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
-.card.concl{border-left:3pt solid var(--accent);}
-.card.warn{border-left:3pt solid var(--crimson);background:var(--crimson-tint);}
-.card.teal{border-left:3pt solid var(--teal);background:var(--teal-tint);}
-.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
-table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
-th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
-td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
-tr:nth-child(even) td{background:var(--accent-tint);}
-.hl{background:var(--gold-tint);border:0.4pt solid #E0C870;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
-.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
-.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
-</style>
-</head>
-<body>
-<div class="page cover">
-  <div class="frame"></div>
-  <div class="kicker">BIOCHEMISTRY · 生物化学</div>
-  <h1>生物活性肽与<br><span class="accent">蛋白质结构</span></h1>
-  <div class="subt">第3-4节 · 课程笔记可视化手册</div>
-  <div class="meta">2026-09-03 · 华中科技大学基础医学</div>
-</div>
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">生物活性肽——"快乐激素"</span></div>
-  <table>
-    <tr><th>名称</th><th>类型</th><th>来源</th><th>功能</th></tr>
-    <tr><td><strong>血清素</strong>（5-HT）</td><td>色氨酸衍生物</td><td>色氨酸代谢</td><td>情绪、睡眠、食欲</td></tr>
-    <tr><td><strong>多巴胺</strong></td><td>酪氨酸衍生物</td><td>酪氨酸+羟基</td><td>奖赏系统、运动控制</td></tr>
-    <tr><td><strong>催产素</strong></td><td>9肽（含二硫键）</td><td>2个半胱氨酸</td><td>社交、依恋、分娩</td></tr>
-    <tr><td><strong>内啡肽</strong></td><td>多肽</td><td>结构复杂</td><td>镇痛、愉悦</td></tr>
-  </table>
-  <div class="hl"><span class="tag">注意</span>血清素和多巴胺是<strong>氨基酸衍生物</strong>（不是肽）；催产素和内啡肽才是<strong>多肽</strong>。</div>
-  <div class="card teal">
-    <div class="label">谷胱甘肽（复习）</div>
-    <p>三肽（Glu-Cys-Gly），还原型GSH ↔ 氧化型GSSG，维持细胞氧化还原状态。</p>
-    <p>GST（谷胱甘肽S-转移酶）：常用蛋白表达标签。</p>
-  </div>
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">02</span><span class="chapter-title">蛋白质四级结构概述</span></div>
-  <table>
-    <tr><th>层次</th><th>定义</th><th>维持化学键</th></tr>
-    <tr><td><strong>一级</strong></td><td>氨基酸序列（N→C端）</td><td>肽键（+二硫键位置）</td></tr>
-    <tr><td><strong>二级</strong></td><td>主链骨架原子相对空间位置</td><td>氢键</td></tr>
-    <tr><td><strong>三级</strong></td><td>整条肽链所有原子空间排布</td><td>疏水作用、氢键、离子键、范德华力、二硫键</td></tr>
-    <tr><td><strong>四级</strong></td><td>多亚基蛋白亚基空间排布</td><td>疏水作用、氢键、离子键</td></tr>
-  </table>
-  <div class="hl"><span class="tag">学习方法</span>每级结构重点关注：<strong>定义 + 维持化学键</strong>。结构图颜色约定：蓝=N/氨基，红=O，灰=C，紫=侧链。</div>
-  <div class="footer"><span>生化 · 生物活性肽与蛋白质结构</span><span>第 2 页</span></div>
-</div>
-<div class="page">
-  <div class="chapter-head"><span class="chapter-no">03</span><span class="chapter-title">一级结构</span></div>
-  <div class="card concl">
-    <div class="label">定义与要点</div>
-    <p><strong>定义</strong>：蛋白质多肽链中氨基酸的排列顺序。</p>
-    <p><strong>书写方向</strong>：从N端（氨基端）到C端（羧基端），约定俗成从左到右。</p>
-    <p><strong>维持化学键</strong>：<strong>肽键</strong>（peptide bond）。</p>
-  </div>
-  <div class="card warn">
-    <div class="label">二硫键与一级结构的关系（易错点）</div>
-    <p><strong>二硫键的位置</strong>属于一级结构范畴（哪个半胱氨酸与哪个半胱氨酸配对）。</p>
-    <p>但<strong>二硫键本身</strong>不是维持一级结构的化学键（肽键才是）。</p>
-  </div>
-  <div class="card teal">
-    <div class="label">胰岛素例子</div>
-    <p>2条肽链：A链（21个氨基酸）+ B链（30个氨基酸）。</p>
-    <p>3个二硫键：A链内1个，A-B链间2个。</p>
-  </div>
-  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">04</span><span class="chapter-title">二级结构与肽平面</span></div>
-  <div class="card concl">
-    <div class="label">肽单元/肽平面（peptide unit / peptide plane）</div>
-    <p>肽键（C-N）键长介于单键和双键之间，具有<strong>部分双键性质</strong>，不能自由旋转。</p>
-    <p><strong>6个原子共平面</strong>：Cα（前）- C（羰基）- N - H - Cα（后）。</p>
-    <p>每个肽单元是一个刚性平面。Cα两侧的单键（φ角和ψ角）可以旋转。</p>
-  </div>
-  <table>
-    <tr><th>二级结构类型</th><th>特点</th></tr>
-    <tr><td><strong>α-螺旋</strong></td><td>右手螺旋，3.6个氨基酸/圈，螺距0.54nm，氢键平行于螺旋轴</td></tr>
-    <tr><td><strong>β-折叠</strong></td><td>肽链伸展呈锯齿状，氢键垂直于肽链，平行/反平行</td></tr>
-    <tr><td><strong>β-转角</strong></td><td>180°回折，4个氨基酸，常含Gly和Pro</td></tr>
-    <tr><td>无规卷曲</td><td>无确定规律的肽段</td></tr>
-  </table>
-  <div class="hl"><span class="tag">注意</span>二级结构只考虑<strong>主链骨架原子</strong>，不考虑侧链R基团。</div>
-  <h3>易错点汇总</h3>
-  <ol>
-    <li>血清素/多巴胺是氨基酸衍生物，不是肽；催产素/内啡肽是多肽。</li>
-    <li>一级结构 = 序列 + 二硫键位置；维持化学键是肽键。</li>
-    <li>肽键有部分双键性质，不能自由旋转，形成肽平面（6原子共面）。</li>
-    <li>α-螺旋：右手，3.6aa/圈，氢键平行于轴。</li>
-    <li>β-折叠：氢键垂直于肽链，平行/反平行。</li>
-  </ol>
-  <div style="margin-top:4mm;text-align:center;color:var(--muted);font-size:9pt;">— 生物化学 · 第3-4节 · 完 —</div>
-  <div class="footer"><span>生化 · 生物活性肽与蛋白质结构</span><span>第 3 页</span></div>
-</div>
-</body>
-</html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>生物化学与分子生物学 · 第3-4节 · 生物活性肽与蛋白质结构</title><style>:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#4A6B1F; --accent-d:#33490F; --accent-t:#EDF2E1;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}</style></head><body>
+<div class="page cover"><p class="h1">生物化学与分子生物学</p><p class="meta">第3-4节 · 生物活性肽与蛋白质结构 · 2026-09-03</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 28672 字 / 123 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>生物化学与分子生物学（biochemistry）</td></tr>
+<tr><td>主题</td><td>生物活性肽；蛋白质一级至四级结构；结构决定功能</td></tr>
+<tr><td>学时</td><td>2 学时（第3-4节）</td></tr></table></div>
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">分子组成收尾→四级结构逐层拆解（定义+维持化学键）→结构决定功能（安芬森、进化树、镰状细胞贫血）。</p>
+<svg viewBox="0 0 700 220" width="100%" aria-label="知识框架">
+<rect x="250" y="6" width="200" height="26" fill="#EDF2E1" stroke="#4A6B1F"/>
+<text x="350" y="24" text-anchor="middle" font-size="11">第3-4节主线</text>
+<line x1="350" y1="32" x2="120" y2="58" stroke="#4A6B1F"/><line x1="350" y1="32" x2="350" y2="58" stroke="#4A6B1F"/><line x1="350" y1="32" x2="580" y2="58" stroke="#4A6B1F"/>
+<rect x="40" y="58" width="160" height="28" fill="#fff" stroke="#33490F"/><text x="120" y="76" text-anchor="middle" font-size="9">生物活性肽</text>
+<rect x="270" y="58" width="160" height="28" fill="#fff" stroke="#33490F"/><text x="350" y="76" text-anchor="middle" font-size="9">四级结构</text>
+<rect x="500" y="58" width="160" height="28" fill="#fff" stroke="#33490F"/><text x="580" y="76" text-anchor="middle" font-size="9">结构→功能</text>
+<line x1="350" y1="86" x2="350" y2="110" stroke="#4A6B1F"/>
+<rect x="200" y="110" width="300" height="28" fill="#EDF2E1" stroke="#4A6B1F"/><text x="350" y="128" text-anchor="middle" font-size="10">一级结构是高级结构与功能的基础</text>
+<line x1="350" y1="138" x2="180" y2="168" stroke="#4A6B1F"/><line x1="350" y1="138" x2="350" y2="168" stroke="#4A6B1F"/><line x1="350" y1="138" x2="520" y2="168" stroke="#4A6B1F"/>
+<text x="120" y="190" font-size="8">快乐激素/GSH</text><text x="320" y="190" font-size="8">α螺旋 β折叠 模体</text><text x="500" y="190" font-size="8">安芬森 分子病</text>
+</svg></div>
+<div class="page"><h2 class="h2">1. 生物活性肽与四种快乐激素</h2><p class="lead">承接上节谷胱甘肽，进入多肽类激素与神经肽；四种物质常被称作快乐激素。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>谷胱甘肽还原型与氧化型可相互转换，维持细胞氧化还原状态 <span class="loc">〔说话人1 00:28〕</span></li><li>谷胱甘肽S-转移酶（GST）常用作蛋白表达标签 <span class="loc">〔说话人1 00:28〕</span></li><li>多肽类激素与神经肽分子量较小、组成特殊 <span class="loc">〔说话人1 00:28〕</span></li><li>血清素、多巴胺、催产素、内啡肽俗称快乐激素 <span class="loc">〔说话人1 02:29〕</span></li><li>其中仅催产素与内啡肽属于神经肽类 <span class="loc">〔说话人1 02:29〕</span></li><li>血清素（5-HT）为色氨酸衍生物（吲哚环与色氨酸相似） <span class="loc">〔说话人1 02:29〕</span></li><li>多巴胺为酪氨酸衍生物（芳香族氨基酸代谢可生成此类神经递质） <span class="loc">〔说话人1 02:29〕</span></li><li>催产素肽链各残基可对照表1-1辨认，课后可练习识别N端与C端 <span class="loc">〔说话人1 02:29〕</span></li><li>催产素含1个二硫键，由两个半胱氨酸形成 <span class="loc">〔说话人1 02:29〕</span></li><li>内啡肽结构更复杂可进阶练习辨认氨基酸残基 <span class="loc">〔说话人1 02:29〕</span></li><li>上述物质主要作为神经递质调节神经活动 <span class="loc">〔说话人1 02:29〕</span></li><li>分子组成部分至此结束，接下来进入蛋白质分子结构 <span class="loc">〔说话人1 02:29〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>物质</th><th>类型</th><th>结构来源</th></tr>
+<tr><td>血清素（5-HT）</td><td>氨基酸衍生物</td><td>色氨酸</td></tr>
+<tr><td>多巴胺</td><td>氨基酸衍生物</td><td>酪氨酸（多一个羟基）</td></tr>
+<tr><td>催产素</td><td>9肽神经肽</td><td>含1个二硫键</td></tr>
+<tr><td>内啡肽</td><td>多肽</td><td>内源性阿片肽</td></tr></table><div class="exam"><span class="tag">★考点</span>★血清素与多巴胺不是肽；催产素与内啡肽是多肽。 <span class="loc">〔说话人1 02:29〕</span></div></div>
+<div class="page"><h2 class="h2">2. 四级结构总览与一级结构</h2><p class="lead">蛋白质分子结构分四个层次；每级须记定义与维持化学键。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>蛋白质分子结构分四级：一级为氨基酸序列，二级为序列上的局部主链构象，三级为更复杂立体结构，四级为多亚基蛋白的亚基排布 <span class="loc">〔说话人1 05:27〕</span></li><li>一级结构是蛋白质当中的氨基酸序列 <span class="loc">〔说话人1 05:27〕</span></li><li>二级结构是氨基酸序列之上局部主链骨架相对空间位置 <span class="loc">〔说话人1 05:27〕</span></li><li>三级结构是更加复杂的立体结构 <span class="loc">〔说话人1 05:27〕</span></li><li>多亚基蛋白可进一步形成四级结构 <span class="loc">〔说话人1 05:27〕</span></li><li>学习每级除定义外须注意维持该结构的化学键类型 <span class="loc">〔说话人1 05:27〕</span></li><li>sequence 意为氨基酸序列，-ing 形式 sequencing 指测序 <span class="loc">〔说话人1 07:08〕</span></li><li>氨基酸序列书写从N端到C端约定俗成从左到右 <span class="loc">〔说话人1 07:08〕</span></li><li>一级结构不仅含序列二硫键位置也属于一级结构范畴 <span class="loc">〔说话人1 07:08〕</span></li><li>二硫键位置指哪个半胱氨酸与哪个半胱氨酸配对 <span class="loc">〔说话人1 07:08〕</span></li><li>维持一级结构的主要化学键是肽键peptide bond <span class="loc">〔说话人1 07:08〕</span></li><li>胰岛素一级结构含两条肽链并标出二硫键位置 <span class="loc">〔说话人1 07:08〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>层次</th><th>定义要点</th><th>维持化学键（课堂强调）</th></tr>
+<tr><td>一级</td><td>氨基酸序列+二硫键配对信息</td><td>肽键</td></tr>
+<tr><td>二级</td><td>主链骨架原子相对位置</td><td>氢键</td></tr>
+<tr><td>三级</td><td>整条肽链所有残基空间排布</td><td>疏水作用、氢键、离子键等</td></tr>
+<tr><td>四级</td><td>多亚基空间排布与界面</td><td>与三级类似（链间）</td></tr></table><div class="exam"><span class="tag">★考点</span>★一级结构=序列+二硫键位置；维持一级结构的是肽键。 <span class="loc">〔说话人1 07:08〕</span></div></div>
+<div class="page"><h2 class="h2">3. 肽平面与二级结构概念</h2><p class="lead">二级结构暂不考虑侧链，只看主链；肽键部分双键性质形成刚性肽平面。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>二级结构（secondary structure）指局部主链骨架原子相对空间位置；讨论时可暂不考虑侧链 <span class="loc">〔说话人1 07:08〕</span></li><li>主链是除侧链外的部分含Cα及肽键连成的链 <span class="loc">〔说话人1 10:34〕</span></li><li>结构图约定蓝色表示氮（氨基）、红色表示氧 <span class="loc">〔说话人1 10:34〕</span></li><li>肽键由羧基与氨基脱水缩合形成主链一连串连接 <span class="loc">〔说话人1 10:34〕</span></li><li>主链骨架原子相对位置构成二级结构 <span class="loc">〔说话人1 10:34〕</span></li><li>常见二级结构有α螺旋β折叠及其他卷曲 <span class="loc">〔说话人1 10:34〕</span></li><li>α螺旋常用飘带表示β折叠常用大箭头表示 <span class="loc">〔说话人1 10:34〕</span></li><li>主链6个原子共面，构成肽平面（肽单元） <span class="loc">〔说话人1 10:34〕</span></li><li>肽键C—N键长介于单键与双键之间，具部分双键性质，不能自由旋转 <span class="loc">〔说话人1 10:34〕</span></li><li>相邻肽平面由Cα两侧单键连接，可绕该键旋转</li><li>旋转角度用φ和ψ两个二面角表示 <span class="loc">〔说话人1 14:10〕</span></li><li>φ约-57°、ψ约-47°时形成右手α螺旋 <span class="loc">〔说话人1 14:10〕</span></li></ul><div class="exam"><span class="tag">★考点</span>★二级结构只看主链；肽键不能自由旋转形成肽平面。 <span class="loc">〔说话人1 14:10〕</span></div></div>
+<div class="page"><h2 class="h2">4. α螺旋</h2><p class="lead">最重要的二级结构；氢键n与n+4；螺距0.54nm每圈3.6残基。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>α螺旋氢键在第n个氨基酸羰基氧与第n+4个氨基酸亚氨基氢之间 <span class="loc">〔说话人1 17:30〕</span></li><li>α螺旋侧链向外伸展像糖葫芦串在螺旋外侧 <span class="loc">〔说话人1 19:09〕</span></li><li>α螺旋氢键方向与中轴大致平行，使螺旋结构坚韧而常见 <span class="loc">〔说话人1 19:09〕</span></li><li>血红蛋白分子中大量区段为α螺旋 <span class="loc">〔说话人1 22:08〕</span></li><li>角蛋白几乎完全由α螺旋组成，指甲、头发很坚硬 <span class="loc">〔说话人1 22:08〕</span></li><li>两条α螺旋缠绕成coiled coil（原纤维束），更坚韧 <span class="loc">〔说话人1 22:08〕</span></li><li>α螺旋螺距0.54 nm，一个螺距含3.6个氨基酸残基 <span class="loc">〔说话人1 14:10〕</span></li><li>残基升高约 0.15 nm；细胞直径约几十 μm；细胞膜厚约 4 nm <span class="loc">〔说话人1 16:02〕</span></li><li>约十几二十个残基α螺旋可跨完整细胞膜 <span class="loc">〔说话人1 16:49〕</span></li><li>维持二级结构的关键化学键是氢键 <span class="loc">〔说话人1 16:49〕</span></li><li>蛋白质氢键多在主链羰基氧与亚氨基氢之间形成 <span class="loc">〔说话人1 17:30〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>参数</th><th>数值</th></tr>
+<tr><td>螺距</td><td>0.54 nm</td></tr>
+<tr><td>每圈残基数</td><td>3.6</td></tr>
+<tr><td>残基升高</td><td>约0.15 nm</td></tr>
+<tr><td>氢键规律</td><td>n 与 n+4</td></tr></table><div class="exam"><span class="tag">★考点</span>★α螺旋氢键n与n+4；维持二级结构靠氢键。 <span class="loc">〔说话人1 19:09〕</span></div></div>
+<div class="page"><h2 class="h2">5. β折叠与β片层</h2><p class="lead">氢键垂直肽链方向；平行与反平行；反平行通常更整齐更强。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>β折叠在示意图中常用箭头表示肽链走向 <span class="loc">〔说话人1 22:08〕</span></li><li>β折叠氢键在相邻肽链羰基氧与亚氨基氢之间形成 <span class="loc">〔说话人1 22:08〕</span></li><li>氢键方向大致垂直于肽链走向（与α螺旋氢键沿轴平行不同） <span class="loc">〔说话人1 22:08〕</span></li><li>箭头表示肽链方向（N端→C端） <span class="loc">〔说话人1 22:08〕</span></li><li>两条肽链方向相反为反平行β折叠 <span class="loc">〔说话人1 22:08〕</span></li><li>反平行β折叠氢键更整齐，通常较平行β折叠更稳定 <span class="loc">〔说话人1 22:08〕</span></li><li>反平行可用较短序列直接衔接；平行须绕较大转角才能配对 <span class="loc">〔说话人1 22:08〕</span></li><li>多条β折叠可并排形成β片层（β-sheet） <span class="loc">〔说话人1 27:15〕</span></li><li>蚕丝蛋白富含β折叠：片层间可相对滑动，片内氢键多而坚韧 <span class="loc">〔说话人1 27:41〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>类型</th><th>链方向</th><th>氢键</th></tr>
+<tr><td>反平行</td><td>相反</td><td>较整齐，较强</td></tr>
+<tr><td>平行</td><td>相同</td><td>交错，略弱</td></tr></table></div>
+<div class="page"><h2 class="h2">6. GFP、Ω环与β转角</h2><p class="lead">β片卷成β桶；其他二级结构连接或回折。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>绿色荧光蛋白GFP实验室常用融合标签表达一目了然 <span class="loc">〔说话人1 28:57〕</span></li><li>GFP结构含大量β折叠箭头围成一圈 <span class="loc">〔说话人1 28:57〕</span></li><li>β片层卷起首尾相接可形成β桶β barrel <span class="loc">〔说话人1 28:57〕</span></li><li>β桶中间空腔容纳发光小分子发光基团 <span class="loc">〔说话人1 28:57〕</span></li><li>GFP上下各有一小段α螺旋固定发光基团 <span class="loc">〔说话人1 28:57〕</span></li><li>膜蛋白常见β桶立体结构 <span class="loc">〔说话人1 28:57〕</span></li><li>Ω环（omega loop）连接不同二级结构，使肽链走向改变 <span class="loc">〔说话人1 28:57〕</span></li><li>β转角常形成180度回折是较锐的转角 <span class="loc">〔说话人1 33:10〕</span></li><li>β转角氢键在第n与第n+3个氨基酸之间 <span class="loc">〔说话人1 33:10〕</span></li><li>α螺旋氢键为n与n+4；β转角用更少残基完成回折 <span class="loc">〔说话人1 33:10〕</span></li><li>β转角常见脯氨酸因其易形成大转角 <span class="loc">〔说话人1 33:10〕</span></li><li>维持二级结构主要化学键仍是氢键 <span class="loc">〔说话人1 33:10〕</span></li></ul><div class="exam"><span class="tag">★考点</span>★β转角氢键n与n+3；常含脯氨酸。 <span class="loc">〔说话人1 33:10〕</span></div></div>
+<div class="page"><h2 class="h2">7. 侧链对二级结构的影响与预测</h2><p class="lead">带电侧链、大侧链、脯氨酸可破坏螺旋或折叠；可用二级结构预测工具。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>二级结构虽只看主链，侧链仍有影响 <span class="loc">〔说话人1 34:48〕</span></li><li>α螺旋富含谷氨酸时侧链负电荷聚集、相互排斥，可解体螺旋 <span class="loc">〔说话人1 35:52〕</span></li><li>α螺旋富含组氨酸、精氨酸时正电荷聚集同样可破坏螺旋 <span class="loc">〔说话人1 36:55〕</span></li><li>丙氨酸、亮氨酸等小疏水侧链更易形成稳定α螺旋 <span class="loc">〔说话人1 38:06〕</span></li><li>色氨酸、酪氨酸侧链大，易产生空间位阻，不利α螺旋 <span class="loc">〔说话人1 38:06〕</span></li><li>脯氨酸为亚氨基酸，成肽后氮上无氢，不能作氢键供体，破坏局部二级结构 <span class="loc">〔说话人1 38:06〕</span></li><li>α螺旋中段突变引入脯氨酸，常见螺旋拐弯位点</li><li>β折叠片层外侧的大侧链或同种电荷聚集可破坏链间氢键</li><li>可据序列理化性质与已知结构统计预测二级结构 <span class="loc">〔说话人1 38:06〕</span></li><li>蛋白质二级结构预测工具输入序列可标α螺旋与β折叠 <span class="loc">〔说话人1 43:21〕</span></li><li>连接两段β折叠的环很短时，多形成反平行β折叠 <span class="loc">〔说话人1 28:57〕</span></li><li>无规卷曲coil连接螺旋与折叠等区段 <span class="loc">〔说话人1 43:21〕</span></li></ul></div>
+<div class="page"><h2 class="h2">8. 三级结构</h2><p class="lead">整条肽链所有原子空间位置；亲水外疏水内；四类作用力。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>三级结构是整条肽链所有氨基酸残基（含侧链）的相对空间位置 <span class="loc">〔说话人1 43:21〕</span></li><li>人类历史上第一个解析的蛋白质三级结构为肌红蛋白 <span class="loc">〔说话人1 43:21〕</span></li><li>带电荷极性残基多分布在蛋白质表面 <span class="loc">〔说话人1 51:40〕</span></li><li>非极性脂肪族残基多位于内部形成疏水核心 <span class="loc">〔说话人1 51:40〕</span></li><li>蛋白质在水溶液中亲水基团在外、疏水基团在内，靠疏水相互作用折叠 <span class="loc">〔说话人1 51:40〕</span></li><li>羧基与氨基侧链可形成离子键也称盐桥 <span class="loc">〔说话人1 50:03〕</span></li><li>维持三级结构有离子键、氢键、二硫键、疏水相互作用等 <span class="loc">〔说话人1 51:40〕</span></li><li>教材示意图标出四类相互作用维持三级结构 <span class="loc">〔说话人1 51:40〕</span></li><li>疏水相互作用涉及非极性氨基酸，种类最多 <span class="loc">〔说话人1 54:23〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>作用力</th><th>要点</th></tr>
+<tr><td>离子键（盐桥）</td><td>相反电荷侧链</td></tr>
+<tr><td>氢键</td><td>供体-受体，常虚线表示</td></tr>
+<tr><td>二硫键</td><td>半胱氨酸氧化</td></tr>
+<tr><td>疏水相互作用</td><td>疏水残基聚集于内部</td></tr></table></div>
+<div class="page"><h2 class="h2">9. 结构模体与Michael Rossmann</h2><p class="lead">多个二级结构规律组合称超二级结构/模体；病毒衣壳对称性。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>多个二级结构以同一规律反复出现的组合称为结构模体，也叫超二级结构 <span class="loc">〔说话人1 54:23〕</span></li><li>Michael Rossmann 解析了大量病毒蛋白结构（含球形衣壳） <span class="loc">〔说话人1 58:36〕</span></li><li>病毒衣壳常呈正二十面体高度对称像足球 <span class="loc">〔说话人1 58:36〕</span></li><li>对称衣壳可用短基因编码同一蛋白多次重复组装 <span class="loc">〔说话人1 58:36〕</span></li><li>Rossmann折叠为βαβ反复出现的模体 <span class="loc">〔说话人1 01:00:24〕</span></li><li>Rossmann折叠常与NADH等小分子结合如乙醇脱氢酶 <span class="loc">〔说话人1 01:00:24〕</span></li><li>锌指zinc finger中锌离子与4个氨基酸配位 <span class="loc">〔说话人1 01:03:24〕</span></li><li>锌指配位常为2个半胱氨酸巯基与2个组氨酸咪唑基 <span class="loc">〔说话人1 01:03:24〕</span></li><li>锌指多结合DNA大沟 <span class="loc">〔说话人1 01:04:11〕</span></li><li>螺旋-环-螺旋HLH两螺旋经环连接各结合DNA大沟 <span class="loc">〔说话人1 01:04:11〕</span></li><li>亮氨酸拉链Leu zipper为α螺旋亮氨酸侧链疏水相联像拉链 <span class="loc">〔说话人1 01:06:16〕</span></li><li>HLH与亮氨酸拉链可组合见于转录因子结合DNA <span class="loc">〔说话人1 01:06:16〕</span></li></ul><div class="exam"><span class="tag">★考点</span>★锌指：2Cys+2His配锌；亮氨酸拉链靠疏水拉链。</div></div>
+<div class="page"><h2 class="h2">10. 结构域与四级结构</h2><p class="lead">大蛋白分结构域；血红蛋白为四亚基蛋白。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>结构域是球状蛋白中相对独立紧密折叠的功能区 <span class="loc">〔说话人1 01:08:53〕</span></li><li>病毒衣壳蛋白例可分成底部β折叠壳与外部凸起结构域 <span class="loc">〔说话人1 01:08:53〕</span></li><li>可由60个、180个甚至更多条相同的多肽链组装成高度对称的球 <span class="loc">〔说话人1 58:36〕</span></li><li>并非所有蛋白质都有四级结构只有多亚基蛋白才有 <span class="loc">〔说话人1 01:11:53〕</span></li><li>四级结构指含两条及以上多肽链的蛋白质 <span class="loc">〔说话人1 01:11:53〕</span></li><li>四级结构包括亚基空间排布与亚基间接触界面 <span class="loc">〔说话人1 01:09:09〕</span></li><li>血红蛋白为四亚基蛋白，每亚基一条多肽链 <span class="loc">〔说话人1 01:09:09〕</span></li><li>维持四级结构化学键与三级结构类似但发生在链与链之间 <span class="loc">〔说话人1 01:11:53〕</span></li><li>四级结构以氢键和离子键为主 <span class="loc">〔说话人1 01:11:53〕</span></li></ul><div class="exam"><span class="tag">★考点</span>★四级结构=多亚基排布；血红蛋白4亚基。 <span class="loc">〔说话人1 01:09:09〕</span></div></div>
+<div class="page"><h2 class="h2">11. 蛋白质功能与相互作用伙伴</h2><p class="lead">八大功能；与小分子、核酸、蛋白质三类分子相互作用。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>蛋白质是执行生命活动最主要的功能分子之一 <span class="loc">〔说话人1 01:11:53〕</span></li><li>蛋白质有八大主要功能，本课侧重催化、信息交流与代谢 <span class="loc">〔说话人1 01:11:53〕</span></li><li>蛋白质通过与其他分子相互作用发挥功能 <span class="loc">〔说话人1 01:11:53〕</span></li><li>蛋白质可结合小分子如底物辅酶代谢物信号分子 <span class="loc">〔说话人1 01:11:53〕</span></li><li>蛋白质与核酸相互作用参与复制转录翻译等基因表达 <span class="loc">〔说话人1 01:11:53〕</span></li><li>核糖体剪接体端粒酶等为蛋白-核酸复合体 <span class="loc">〔说话人1 01:11:53〕</span></li><li>蛋白质-蛋白质相互作用PPI是完成功能的常见方式 <span class="loc">〔说话人1 01:11:53〕</span></li><li>结构决定功能贯穿全课各层次讲解 <span class="loc">〔说话人1 01:11:53〕</span></li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>伙伴</th><th>主要参与</th></tr>
+<tr><td>小分子</td><td>催化、信号、代谢</td></tr>
+<tr><td>核酸</td><td>中心法则、基因表达</td></tr>
+<tr><td>蛋白质</td><td>PPI、复合功能</td></tr></table></div>
+<div class="page"><h2 class="h2">12. 一级结构与安芬森实验</h2><p class="lead">核糖核酸酶A变性与复性证明序列决定高级结构。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>一级结构是高级结构与功能的基础（结构决定功能） <span class="loc">〔说话人1 01:21:45〕</span></li><li>核糖核酸酶A天然结构含多个二硫键与二级结构元件 <span class="loc">〔说话人1 01:18:20〕</span></li><li>强还原变性条件8mol/L尿素加β巯基乙醇可破坏二硫键变性 <span class="loc">〔说话人1 01:18:20〕</span></li><li>变性后失去酶活性成为无固定结构的多肽链 <span class="loc">〔说话人1 01:18:20〕</span></li><li>去除变性剂并提供氧化环境多肽可自发折叠恢复天然结构 <span class="loc">〔说话人1 01:19:58〕</span></li><li>8个半胱氨酸形成4对二硫键，配对方式众多，仅一种对应天然构象</li><li>有时需分子伴侣协助折叠核糖核酸酶A可自发复性 <span class="loc">〔说话人1 01:19:58〕</span></li><li>安芬森（Anfinsen）实验获1972年诺贝尔化学奖</li><li>结论只要一级结构氨基酸序列不变可恢复三级结构与功能 <span class="loc">〔说话人1 01:21:45〕</span></li><li>一级结构相似蛋白高级结构与功能常相似 <span class="loc">〔说话人1 01:21:45〕</span></li></ul><div class="exam"><span class="tag">★考点</span>★一级结构是高级结构与功能的基础（安芬森）。 <span class="loc">〔说话人1 01:21:45〕</span></div></div>
+<div class="page"><h2 class="h2">13. 分子进化树与镰状细胞贫血</h2><p class="lead">保守位点与功能；谷氨酸→缬氨酸致血红蛋白聚集与溶血。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>分子进化树比较不同物种同源蛋白氨基酸序列 <span class="loc">〔说话人1 01:21:45〕</span></li><li>与人亲缘越远，序列差异越大，图上颜色越浅 <span class="loc">〔说话人1 01:21:45〕</span></li><li>序列不同但三级结构可仍相似功能可保持 <span class="loc">〔说话人1 01:21:45〕</span></li><li>结合血红素位点序列跨物种高度保守粉红色 <span class="loc">〔说话人1 01:21:45〕</span></li><li>关键位点突变可致分子病 <span class="loc">〔说话人1 01:26:32〕</span></li><li>镰状细胞贫血为经典分子病 <span class="loc">〔说话人1 01:26:32〕</span></li><li>β珠蛋白基因单碱基突变（A→T）改变密码子 <span class="loc">〔说话人1 01:26:32〕</span></li><li>第6位谷氨酸变为缬氨酸：由酸性亲水变为非极性疏水</li><li>疏水突变使血红蛋白四聚体相互聚集、成纤维 <span class="loc">〔说话人1 01:29:05〕</span></li><li>红细胞被拉成镰刀形（刚性α螺旋区不易压缩） <span class="loc">〔说话人1 01:29:05〕</span></li><li>细小毛细血管中无法变形通过，红细胞破裂溶血→贫血 <span class="loc">〔说话人1 01:29:05〕</span></li><li>突变位点为β链第6位谷氨酸 <span class="loc">〔说话人1 01:29:05〕</span></li></ul><div class="exam"><span class="tag">★考点</span>★镰状贫血：单碱基突变→Glu6变疏水→Hb聚集→镰刀形→溶血。 <span class="loc">〔说话人1 01:29:05〕</span></div></div>
+<div class="page"><h2 class="h2">14. 肌红蛋白与血红蛋白运氧</h2><p class="lead">氧解离曲线不同；协同效应下节详述。</p><h3 class="h3">A. 核心结论</h3><ul class="kv"><li>肌红蛋白与血红蛋白均结合血红素运输氧气，前者单肽链、后者四亚基</li><li>氧解离曲线以氧分压为横轴、氧饱和度为纵轴：肌红蛋白亲和力高、曲线易饱和；血红蛋白低氧分压结合少、高氧分压才饱和，便于肺结合氧、组织释放氧</li><li>与肌红蛋白的运氧功能差异主要来自四级结构形成</li><li>氧结合后构象变化产生协同效应（下节详述）</li></ul><h3 class="h3">B. 对比表</h3><table class="tbl"><tr><th>蛋白</th><th>亚基</th><th>氧亲和力</th></tr>
+<tr><td>肌红蛋白（Mb）</td><td>1</td><td>高，易饱和</td></tr>
+<tr><td>血红蛋白（Hb）</td><td>4</td><td>较低，可释放</td></tr></table></div>
+<div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv">
+<li>四种快乐激素类型与来源</li>
+<li>四级结构定义+各级维持化学键</li>
+<li>一级结构含二硫键位置肽键维持</li>
+<li>肽平面6原子φψ角</li>
+<li>α螺旋3.6残基/圈0.54nm氢键n+4</li>
+<li>β折叠平行/反平行氢键垂直链向</li>
+<li>β转角n+3常含Pro</li>
+<li>三级：亲水外疏水内四类力</li>
+<li>Rossmann锌指HLH亮氨酸拉链</li>
+<li>安芬森实验结论</li>
+<li>镰状贫血Glu→Val机制</li>
+<li>Mb与Hb氧曲线差异</li>
+</ul></div>
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>血清素、多巴胺是多肽</td><td>二者为氨基酸衍生物；催产素、内啡肽才是肽</td></tr>
+<tr><td>二硫键维持一级结构</td><td>维持一级结构的是肽键；二硫键位置信息属一级结构</td></tr>
+<tr><td>二级结构考虑侧链排布</td><td>定义只含主链骨架；侧链影响稳定性是另一层面</td></tr>
+<tr><td>α螺旋与β转角都是n+4氢键</td><td>α螺旋n与n+4；β转角n与n+3</td></tr>
+<tr><td>平行β折叠一定更强</td><td>课堂结论：反平行氢键更整齐通常更强</td></tr>
+<tr><td>所有蛋白质都有四级结构</td><td>仅多亚基蛋白具有四级结构</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>快乐激素分类</td><td>§1</td><td>〔说话人1 02:29〕</td><td>选择/填空</td></tr>
+<tr><td>四级结构与化学键</td><td>§2</td><td>〔说话人1 05:27〕</td><td>简答</td></tr>
+<tr><td>肽平面与φψ</td><td>§3</td><td>〔说话人1 14:10〕</td><td>简答</td></tr>
+<tr><td>α螺旋参数与氢键</td><td>§4</td><td>〔说话人1 19:09〕</td><td>计算/填空</td></tr>
+<tr><td>β折叠平行反平行</td><td>§5</td><td>〔说话人1 27:15〕</td><td>比较</td></tr>
+<tr><td>GFP β桶</td><td>§6</td><td>〔说话人1 28:57〕</td><td>简答</td></tr>
+<tr><td>侧链破坏螺旋</td><td>§7</td><td>〔说话人1 35:52〕</td><td>分析</td></tr>
+<tr><td>三级结构作用力</td><td>§8</td><td>〔说话人1 52:56〕</td><td>列举</td></tr>
+<tr><td>结构模体</td><td>§9</td><td>〔说话人1 01:03:24〕</td><td>简答</td></tr>
+<tr><td>安芬森实验</td><td>§12</td><td>〔说话人1 01:21:45〕</td><td>论述</td></tr>
+<tr><td>镰状细胞贫血</td><td>§13</td><td>〔说话人1 01:27:08〕</td><td>病例机制</td></tr>
+<tr><td>Hb与Mb氧曲线</td><td>§14</td><td>〔说话人1 01:34:43〕</td><td>简答</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>谷胱甘肽还原型氧化型可转换</td><td>复习</td><td>§1</td><td>〔说话人1 00:28〕</td></tr><tr><td>2</td><td>GST蛋白表达标签</td><td>术语</td><td>§1</td><td>〔说话人1 00:28〕</td></tr><tr><td>3</td><td>多肽类激素与神经肽分子小</td><td>定义</td><td>§1</td><td>〔说话人1 00:28〕</td></tr><tr><td>4</td><td>血清素为色氨酸衍生物</td><td>结构</td><td>§1</td><td>〔说话人1 02:29〕</td></tr><tr><td>5</td><td>多巴胺为酪氨酸衍生物</td><td>结构</td><td>§1</td><td>〔说话人1 02:29〕</td></tr><tr><td>6</td><td>催产素9肽含二硫键</td><td>结构</td><td>§1</td><td>〔说话人1 02:29〕</td></tr><tr><td>7</td><td>内啡肽为多肽神经递质</td><td>结构</td><td>§1</td><td>〔说话人1 02:29〕</td></tr><tr><td>8</td><td>神经肽调节神经活动</td><td>功能</td><td>§1</td><td>〔说话人1 02:29〕</td></tr><tr><td>9</td><td>蛋白质四级结构层次</td><td>分类</td><td>§2</td><td>〔说话人1 05:27〕</td></tr><tr><td>10</td><td>一级结构氨基酸序列</td><td>定义</td><td>§2</td><td>〔说话人1 05:27〕</td></tr><tr><td>11</td><td>二级结构主链局部构象</td><td>定义</td><td>§2</td><td>〔说话人1 05:27〕</td></tr><tr><td>12</td><td>三级结构整条肽链立体构象</td><td>定义</td><td>§2</td><td>〔说话人1 05:27〕</td></tr><tr><td>13</td><td>四级结构多亚基排布</td><td>定义</td><td>§2</td><td>〔说话人1 05:27〕</td></tr><tr><td>14</td><td>sequencing测序</td><td>术语</td><td>§2</td><td>〔说话人1 07:08〕</td></tr><tr><td>15</td><td>序列N端到C端书写</td><td>规则</td><td>§2</td><td>〔说话人1 07:08〕</td></tr><tr><td>16</td><td>二硫键位置属一级结构</td><td>考点</td><td>§2</td><td>〔说话人1 07:08〕</td></tr><tr><td>17</td><td>肽键维持一级结构</td><td>化学键</td><td>§2</td><td>〔说话人1 07:08〕</td></tr><tr><td>18</td><td>二级结构定义不含侧链</td><td>定义</td><td>§3</td><td>〔说话人1 07:08〕</td></tr><tr><td>19</td><td>蓝氮红氧结构图约定</td><td>规则</td><td>§3</td><td>〔说话人1 10:34〕</td></tr><tr><td>20</td><td>肽平面六个原子共面</td><td>结构</td><td>§3</td><td>〔说话人1 14:10〕</td></tr><tr><td>21</td><td>肽键部分双键不可旋转</td><td>机制</td><td>§3</td><td>〔说话人1 14:10〕</td></tr><tr><td>22</td><td>φψ二面角</td><td>术语</td><td>§3</td><td>〔说话人1 14:10〕</td></tr><tr><td>23</td><td>α螺旋右手螺旋</td><td>结构</td><td>§4</td><td>〔说话人1 14:10〕</td></tr><tr><td>24</td><td>螺距0.54nm</td><td>数字</td><td>§4</td><td>〔说话人1 16:02〕</td></tr><tr><td>25</td><td>每圈3.6残基</td><td>数字</td><td>§4</td><td>〔说话人1 16:02〕</td></tr><tr><td>26</td><td>残基升高0.15nm</td><td>数字</td><td>§4</td><td>〔说话人1 16:02〕</td></tr><tr><td>27</td><td>细胞膜厚约4nm</td><td>数字</td><td>§4</td><td>〔说话人1 16:02〕</td></tr><tr><td>28</td><td>跨膜约20残基α螺旋</td><td>应用</td><td>§4</td><td>〔说话人1 16:49〕</td></tr><tr><td>29</td><td>α螺旋氢键n与n+4</td><td>规则</td><td>§4</td><td>〔说话人1 19:09〕</td></tr><tr><td>30</td><td>侧链在螺旋外侧</td><td>结构</td><td>§4</td><td>〔说话人1 19:09〕</td></tr><tr><td>31</td><td>角蛋白α螺旋坚硬</td><td>实例</td><td>§4</td><td>〔说话人1 22:08〕</td></tr><tr><td>32</td><td>coiled coil双螺旋缠绕</td><td>结构</td><td>§4</td><td>〔说话人1 22:08〕</td></tr><tr><td>33</td><td>血红蛋白富含α螺旋</td><td>实例</td><td>§4</td><td>〔说话人1 22:08〕</td></tr><tr><td>34</td><td>二级结构氢键维持</td><td>化学键</td><td>§4</td><td>〔说话人1 17:30〕</td></tr><tr><td>35</td><td>β折叠氢键垂直肽链</td><td>结构</td><td>§5</td><td>〔说话人1 27:15〕</td></tr><tr><td>36</td><td>反平行β折叠</td><td>分类</td><td>§5</td><td>〔说话人1 27:15〕</td></tr><tr><td>37</td><td>平行β折叠</td><td>分类</td><td>§5</td><td>〔说话人1 27:15〕</td></tr><tr><td>38</td><td>反平行更强更整齐</td><td>结论</td><td>§5</td><td>〔说话人1 27:15〕</td></tr><tr><td>39</td><td>β片层sheet</td><td>术语</td><td>§5</td><td>〔说话人1 27:41〕</td></tr><tr><td>40</td><td>蚕丝蛋白β折叠</td><td>实例</td><td>§5</td><td>〔说话人1 28:46〕</td></tr><tr><td>41</td><td>GFP绿色荧光蛋白</td><td>实例</td><td>§6</td><td>〔说话人1 28:57〕</td></tr><tr><td>42</td><td>β桶结构</td><td>结构</td><td>§6</td><td>〔说话人1 28:57〕</td></tr><tr><td>43</td><td>Ω环连接二级结构</td><td>结构</td><td>§6</td><td>〔说话人1 33:06〕</td></tr><tr><td>44</td><td>β转角180°回折</td><td>结构</td><td>§6</td><td>〔说话人1 33:10〕</td></tr><tr><td>45</td><td>β转角氢键n+3</td><td>规则</td><td>§6</td><td>〔说话人1 33:10〕</td></tr><tr><td>46</td><td>脯氨酸利于β转角</td><td>机制</td><td>§6</td><td>〔说话人1 33:10〕</td></tr><tr><td>47</td><td>谷氨酸密集破坏α螺旋</td><td>机制</td><td>§7</td><td>〔说话人1 35:52〕</td></tr><tr><td>48</td><td>精氨酸密集破坏α螺旋</td><td>机制</td><td>§7</td><td>〔说话人1 36:55〕</td></tr><tr><td>49</td><td>Ala Leu利于α螺旋</td><td>机制</td><td>§7</td><td>〔说话人1 38:06〕</td></tr><tr><td>50</td><td>Trp Tyr不利α螺旋</td><td>机制</td><td>§7</td><td>〔说话人1 38:06〕</td></tr><tr><td>51</td><td>脯氨酸破坏局部氢键</td><td>机制</td><td>§7</td><td>〔说话人1 36:55〕</td></tr><tr><td>52</td><td>二级结构预测工具</td><td>方法</td><td>§7</td><td>〔说话人1 43:21〕</td></tr><tr><td>53</td><td>三级结构含侧链排布</td><td>定义</td><td>§8</td><td>〔说话人1 43:21〕</td></tr><tr><td>54</td><td>肌红蛋白首个三级结构</td><td>历史</td><td>§8</td><td>〔说话人1 43:21〕</td></tr><tr><td>55</td><td>疏水核心</td><td>结构</td><td>§8</td><td>〔说话人1 51:40〕</td></tr><tr><td>56</td><td>离子键盐桥</td><td>化学键</td><td>§8</td><td>〔说话人1 50:03〕</td></tr><tr><td>57</td><td>三级结构四类作用力</td><td>化学键</td><td>§8</td><td>〔说话人1 52:56〕</td></tr><tr><td>58</td><td>结构模体超二级结构</td><td>术语</td><td>§9</td><td>〔说话人1 56:48〕</td></tr><tr><td>59</td><td>病毒衣壳二十面体对称</td><td>实例</td><td>§9</td><td>〔说话人1 58:36〕</td></tr><tr><td>60</td><td>Rossmann折叠</td><td>模体</td><td>§9</td><td>〔说话人1 01:00:24〕</td></tr><tr><td>61</td><td>锌指2Cys2His</td><td>模体</td><td>§9</td><td>〔说话人1 01:03:24〕</td></tr><tr><td>62</td><td>DNA大沟结合</td><td>功能</td><td>§9</td><td>〔说话人1 01:04:11〕</td></tr><tr><td>63</td><td>螺旋环螺旋HLH</td><td>模体</td><td>§9</td><td>〔说话人1 01:04:11〕</td></tr><tr><td>64</td><td>亮氨酸拉链</td><td>模体</td><td>§9</td><td>〔说话人1 01:06:16〕</td></tr><tr><td>65</td><td>转录因子DNA结合</td><td>功能</td><td>§9</td><td>〔说话人1 01:06:16〕</td></tr><tr><td>66</td><td>结构域独立折叠单元</td><td>定义</td><td>§10</td><td>〔说话人1 01:08:53〕</td></tr><tr><td>67</td><td>病毒衣壳180亚基</td><td>实例</td><td>§10</td><td>〔说话人1 01:08:53〕</td></tr><tr><td>68</td><td>并非所有蛋白有四级结构</td><td>结论</td><td>§10</td><td>〔说话人1 01:11:53〕</td></tr><tr><td>69</td><td>血红蛋白四亚基</td><td>实例</td><td>§10</td><td>〔说话人1 01:11:53〕</td></tr><tr><td>70</td><td>四级结构链间氢键离子键</td><td>化学键</td><td>§10</td><td>〔说话人1 01:11:53〕</td></tr><tr><td>71</td><td>蛋白质八大功能</td><td>分类</td><td>§11</td><td>〔说话人1 01:11:53〕</td></tr><tr><td>72</td><td>蛋白-小分子相互作用</td><td>相互作用</td><td>§11</td><td>〔说话人1 01:11:53〕</td></tr><tr><td>73</td><td>蛋白-核酸相互作用</td><td>相互作用</td><td>§11</td><td>〔说话人1 01:11:53〕</td></tr><tr><td>74</td><td>PPI蛋白互作</td><td>术语</td><td>§11</td><td>〔说话人1 01:11:53〕</td></tr><tr><td>75</td><td>核糖核酸酶A变性复性</td><td>实验</td><td>§12</td><td>〔说话人1 01:18:20〕</td></tr><tr><td>76</td><td>尿素β巯基乙醇还原</td><td>条件</td><td>§12</td><td>〔说话人1 01:18:20〕</td></tr><tr><td>77</td><td>分子伴侣</td><td>术语</td><td>§12</td><td>〔说话人1 01:19:58〕</td></tr><tr><td>78</td><td>安芬森1972化学奖</td><td>历史</td><td>§12</td><td>〔说话人1 01:21:45〕</td></tr><tr><td>79</td><td>一级结构决定高级结构</td><td>结论</td><td>§12</td><td>〔说话人1 01:21:45〕</td></tr><tr><td>80</td><td>分子进化树</td><td>方法</td><td>§13</td><td>〔说话人1 01:21:45〕</td></tr><tr><td>81</td><td>保守位点结合血红素</td><td>结论</td><td>§13</td><td>〔说话人1 01:21:45〕</td></tr><tr><td>82</td><td>镰状细胞贫血分子病</td><td>临床</td><td>§13</td><td>〔说话人1 01:26:32〕</td></tr><tr><td>83</td><td>碱基A变T致密码子改变</td><td>机制</td><td>§13</td><td>〔说话人1 01:26:32〕</td></tr><tr><td>84</td><td>Hb聚集成纤维</td><td>机制</td><td>§13</td><td>〔说话人1 01:28:12〕</td></tr><tr><td>85</td><td>镰刀形溶血贫血</td><td>临床</td><td>§13</td><td>〔说话人1 01:29:05〕</td></tr><tr><td>86</td><td>Mb高氧亲和力</td><td>对比</td><td>§14</td><td>〔说话人1 01:34:43〕</td></tr><tr><td>87</td><td>Hb可释放氧</td><td>功能</td><td>§14</td><td>〔说话人1 01:34:43〕</td></tr><tr><td>88</td><td>协同效应下节讲</td><td>预告</td><td>§14</td><td>〔说话人1 01:34:59〕</td></tr></table><p class="foot">附录 D 共 88 条，覆盖 recording.md 讲授知识点。</p></div>
+</body></html>

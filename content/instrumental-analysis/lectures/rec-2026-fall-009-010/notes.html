@@ -1,1179 +1,329 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>紫外可见分光光度法与朗伯比尔定律</title>
-<style>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>分析化学 · 第9-10节 · 紫外可见分光光度法续与朗伯比尔定律</title><style>
 :root{
-  --paper: #FAF8F3;
-  --paper-card: #FFFFFF;
-  --ink: #1A1814;
-  --ink-soft: #4A453D;
-  --ink-faint: #8B8578;
-  --rule: #DDD8CC;
-  --accent: #0E5C52;
-  --accent-soft: #0E5C5215;
-  --accent-line: #0E5C5240;
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#155E75; --accent-d:#0C3F51; --accent-t:#E1EEF3;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
 }
-*{box-sizing:border-box; margin:0; padding:0;}
-html,body{background:var(--paper);}
-body{font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif; color:var(--ink); font-size:10pt; line-height:1.75;}
-.page{width:210mm; min-height:297mm; background:var(--paper); position:relative; padding:18mm 20mm 16mm 20mm; page-break-after:always;}
-.page:last-child{page-break-after:auto;}
-
-/* 封面 */
-.cover{background:linear-gradient(135deg, var(--accent) 0%, #0E5C52CC 100%); color:#fff; padding:0;}
-.cover .inner{height:100%; min-height:261mm; padding:30mm 22mm 22mm 22mm; display:flex; flex-direction:column; justify-content:space-between;}
-.cover .eyebrow{font-size:9pt; letter-spacing:0.4em; text-transform:uppercase; opacity:0.85;}
-.cover h1{font-family:'Noto Serif CJK SC',serif; font-size:42pt; font-weight:900; line-height:1.15; margin-top:12mm;}
-.cover .subtitle{font-size:13pt; opacity:0.9; margin-top:8mm; line-height:1.7;}
-.cover .meta{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8mm; border-top:1px solid rgba(255,255,255,0.3); padding-top:8mm;}
-.cover .meta .k{font-size:7.5pt; letter-spacing:0.2em; opacity:0.7; text-transform:uppercase;}
-.cover .meta .v{font-size:11pt; font-weight:600; margin-top:2mm;}
-
-/* 目录 */
-.toc-title{font-family:'Noto Serif CJK SC',serif; font-size:24pt; font-weight:800; margin-bottom:2mm; color:var(--accent);}
-.toc-sub{color:var(--ink-soft); font-size:9.5pt; margin-bottom:8mm;}
-.toc-list{list-style:none;}
-.toc-list li{display:flex; align-items:baseline; padding:3.5mm 0; border-bottom:1px solid var(--rule);}
-.toc-num{font-family:'Noto Serif CJK SC',serif; font-weight:800; color:var(--accent); font-size:12pt; min-width:14mm;}
-.toc-text{font-size:10.5pt; font-weight:600;}
-
-/* 内容页 */
-.running{display:flex; justify-content:space-between; font-size:7.5pt; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-faint); border-bottom:1.5px solid var(--accent); padding-bottom:3mm; margin-bottom:8mm;}
-.running .course{color:var(--accent); font-weight:700;}
-
-h1{font-family:'Noto Serif CJK SC',serif; font-size:22pt; font-weight:900; color:var(--ink); margin:8mm 0 4mm 0; padding-bottom:3mm; border-bottom:2.5px solid var(--accent);}
-h2{font-family:'Noto Serif CJK SC',serif; font-size:16pt; font-weight:800; color:var(--accent); margin:7mm 0 3mm 0; padding-left:4mm; border-left:4px solid var(--accent);}
-h3{font-family:'Noto Serif CJK SC',serif; font-size:13pt; font-weight:700; color:var(--ink); margin:5mm 0 2.5mm 0;}
-h4{font-size:11pt; font-weight:700; color:var(--ink-soft); margin:4mm 0 2mm 0;}
-
-p{margin:2mm 0; text-align:justify;}
-ul{margin:2mm 0 2mm 6mm;}
-li{margin:1.2mm 0;}
-li.num{list-style:none; counter-increment:item;}
-li.num::before{content:counter(item) "."; font-weight:700; color:var(--accent); margin-right:2mm;}
-
-strong{color:var(--accent); font-weight:700;}
-em{color:var(--ink-soft);}
-code{background:var(--accent-soft); color:var(--accent); padding:0.5mm 1.5mm; border-radius:1mm; font-size:9pt; font-family:'Consolas',monospace;}
-
-blockquote{border-left:3px solid var(--accent); background:var(--accent-soft); padding:3mm 4mm; margin:3mm 0; border-radius:0 2mm 2mm 0;}
-blockquote p{margin:0; color:var(--ink-soft); font-style:italic;}
-
-hr{border:none; border-top:1px solid var(--rule); margin:6mm 0;}
-
-/* 表格 */
-.note-table{width:100%; border-collapse:collapse; margin:4mm 0; font-size:9.5pt;}
-.note-table th{background:var(--accent); color:#fff; padding:2.5mm 3mm; text-align:left; font-weight:700;}
-.note-table td{padding:2.5mm 3mm; border-bottom:1px solid var(--rule);}
-.note-table tr:nth-child(even) td{background:var(--accent-soft);}
-
-/* 页脚 */
-.footer{position:absolute; bottom:8mm; left:20mm; right:20mm; display:flex; justify-content:space-between; font-size:7.5pt; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:3mm;}
-</style>
-</head>
-<body>
-
-<!-- 封面 -->
-<div class="page cover">
-  <div class="inner">
-    <div>
-      <div class="eyebrow">HUST · 课堂可视化笔记</div>
-      <h1>紫外可见分光光度法与朗伯比尔定律</h1>
-      <div class="subtitle">第9-10节 · 分光光度法原理、朗伯比尔定律、偏离因素、定量分析方法</div>
-    </div>
-    <div class="meta">
-      <div><div class="k">课程</div><div class="v">分析化学</div></div>
-      <div><div class="k">节次</div><div class="v">第9-10节</div></div>
-      <div><div class="k">日期</div><div class="v">2026-09-15</div></div>
-    </div>
-  </div>
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body>
+<div class="page cover"><p class="h1">分析化学（仪器分析）</p>
+<p class="meta">第9-10节 · 紫外可见分光光度法续与朗伯比尔定律 · 2026-09-15（周二）</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 35047 字 / 123 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>分析化学 · 第9-10节（instrumental-analysis）</td></tr>
+<tr><td>学时</td><td>2 学时</td></tr>
+<tr><td>日期</td><td>2026-09-15（周二）</td></tr>
+<tr><td>主题</td><td>紫外可见分光光度法续与朗伯比尔定律</td></tr>
+<tr><td>素材规模</td><td>逐字稿 35047 字 / 123 轮发言</td></tr></table>
+<p class="foot">核心内容版笔记 · 结论式短句 · 每条附逐字稿定位</p></div>
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">回顾 UV-VIS 归属与吸收原理；深化有机/无机跃迁与溶剂效应；经朗伯比尔定律到定量与偏离；收尾分光光度计构造。</p>
+<svg viewBox="0 0 700 320" width="100%" aria-label="知识框架">
+<rect x="250" y="6" width="200" height="28" fill="#E1EEF3" stroke="#155E75"/>
+<text x="350" y="24" text-anchor="middle" font-size="11" font-family="sans-serif">第9-10节 核心内容</text>
+<rect x="20" y="48" width="155" height="28" fill="#fff" stroke="#0C3F51"/><text x="97" y="66" text-anchor="middle" font-size="8">§1 回顾·测试安排</text>
+<rect x="185" y="48" width="155" height="28" fill="#fff" stroke="#0C3F51"/><text x="262" y="66" text-anchor="middle" font-size="8">§2-§4 有机吸收·溶剂</text>
+<rect x="350" y="48" width="155" height="28" fill="#fff" stroke="#0C3F51"/><text x="427" y="66" text-anchor="middle" font-size="8">§5-§6 无机·防晒</text>
+<rect x="515" y="48" width="165" height="28" fill="#fff" stroke="#0C3F51"/><text x="597" y="66" text-anchor="middle" font-size="8">§7-§8 朗伯比尔·定量</text>
+<rect x="20" y="88" width="660" height="28" fill="#E1EEF3" stroke="#155E75"/><text x="350" y="106" text-anchor="middle" font-size="9">§9 偏离：非单色光·杂散光·浓度过高·化学反应</text>
+<rect x="20" y="128" width="660" height="28" fill="#E1EEF3" stroke="#155E75"/><text x="350" y="146" text-anchor="middle" font-size="9">§10 仪器：光源→单色器→样品池→检测器→数据处理</text>
+<rect x="20" y="168" width="660" height="52" fill="#FBF0DC" stroke="#A9660A"/><text x="350" y="188" text-anchor="middle" font-size="9">★ 分子光谱+吸收光谱；200-400/400-780 nm；π→π*红移 n→π*蓝移</text>
+<text x="350" y="206" text-anchor="middle" font-size="9">★ A=Kbc 单色光+透明均一；不适合高浓度；卤钨灯+氘灯</text>
+</svg></div>
+<div class="page"><h2 class="h2">1. 测试安排与 UV-VIS 基本概念回顾</h2>
+<p class="lead">下次课前约 10 分钟测第一章（单选+判断）；紫外可见属分子吸收光谱，波段与定性三要素须记牢。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>下次上课前约 10 分钟测验第一章绪论（数据、样品等），题型为单选与判断 <span class="loc">〔说话人1 00:11〕</span></li>
+<li>光学分析法：电磁辐射与分子/原子作用并有能量变化 <span class="loc">〔说话人1 00:11〕</span></li>
+<li>折射、完全弹性散射等无能量损失，属非光分析，本书侧重可定性定量者 <span class="loc">〔说话人1 00:11〕</span></li>
+<li>分类含原子/分子光谱、吸收/发射光谱 <span class="loc">〔说话人1 01:36〕</span></li>
+<li>三种运动状态（电子、振动、转动）决定能级，故 UV-VIS 为分子光谱 <span class="loc">〔说话人1 02:37〕</span></li>
+<li>吸收能量后跃迁，紫外可见分光光度法属吸收光谱 <span class="loc">〔说话人1 03:18〕</span></li>
+<li>紫外波段 200-400 nm、可见 400-780 nm（按教材）须背诵 <span class="loc">〔说话人1 03:18〕</span></li>
+<li>复习概念：单色光、复色光、互补色（上节已讲） <span class="loc">〔说话人1 03:18〕</span></li>
+<li>分子能级图：电子、振动、转动三种运动状态决定能级 <span class="loc">〔说话人1 03:18〕</span></li>
+<li>纯转动跃迁对应远红外，纯振动对应红外，电子跃迁对应紫外可见 <span class="loc">〔说话人1 04:39〕</span></li>
+<li>不同分子结构能级不同，吸收光谱不同 <span class="loc">〔说话人1 04:39〕</span></li>
+<li>吸收光谱定性看峰位置、峰个数、峰相对高低 <span class="loc">〔说话人1 04:39〕</span></li>
+<li>定量选最大吸收波长 λmax，固定波长测即可不必每次扫全谱 <span class="loc">〔说话人1 04:39〕</span></li>
+<li>分光光度计分光后可做吸收曲线；光度计仅少数波长，便携常用 <span class="loc">〔说话人1 06:02〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>项目</th><th>紫外可见归属</th></tr>
+<tr><td>光谱类型</td><td>分子光谱（非原子光谱）</td></tr>
+<tr><td>吸收/发射</td><td>吸收光谱</td></tr>
+<tr><td>对应跃迁</td><td>外层电子跃迁（能级差大）</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>紫外可见分光光度法 = 分子光谱 + 吸收光谱；紫外 200-400 nm <span class="loc">〔说话人1 03:18〕</span></div>
 </div>
-
-<!-- 目录 -->
-<div class="page">
-  <div class="toc-title">目录</div>
-  <div class="toc-sub">本笔记基于课堂录音完整逐字稿整理，详细记录课堂讲授的核心知识点、例题强调点与复习要点。</div>
-  <ul class="toc-list">
-    <li><span class="toc-num">01</span><span class="toc-text">一、知识结构</span></li>
-<li><span class="toc-num">02</span><span class="toc-text">二、课前测试安排</span></li>
-<li><span class="toc-num">03</span><span class="toc-text">三、紫外可见分光光度法基本概念回顾</span></li>
-<li><span class="toc-num">04</span><span class="toc-text">四、有机化合物的紫外吸收</span></li>
-<li><span class="toc-num">05</span><span class="toc-text">五、无机化合物的紫外吸收</span></li>
-<li><span class="toc-num">06</span><span class="toc-text">六、应用实例：防晒霜的成分分析</span></li>
-<li><span class="toc-num">07</span><span class="toc-text">七、光的吸收定律——朗伯比尔定律</span></li>
-<li><span class="toc-num">08</span><span class="toc-text">八、定量分析方法</span></li>
-<li><span class="toc-num">09</span><span class="toc-text">九、朗伯比尔定律的偏离</span></li>
-<li><span class="toc-num">10</span><span class="toc-text">十、紫外可见分光光度计的构造</span></li>
-  </ul>
+<div class="page"><h2 class="h2">2. 电子跃迁类型与允许/禁阻</h2>
+<p class="lead">σ 键骨架对紫外可见无贡献；允许跃迁灵敏度高，禁阻跃迁（forbidden）灵敏度差；共轭增大→红移与增色。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>含不饱和键的吸光结构为生色团（chromophore） <span class="loc">〔说话人1 06:51〕</span></li>
+<li>仅 σ 键的碳链对紫外可见几乎无贡献，主要为 σ→σ* 跃迁 <span class="loc">〔说话人1 06:51〕</span></li>
+<li>σ→σ*、π→π* 同名跃迁几率大，称允许跃迁，检测灵敏度高 <span class="loc">〔说话人1 07:30〕</span></li>
+<li>几率极小的跃迁称禁阻跃迁（forbidden），灵敏度差 <span class="loc">〔说话人1 07:30〕</span></li>
+<li>σ→σ* 能级差大，落在真空紫外区 <span class="loc">〔说话人1 07:54〕</span></li>
+<li>真空紫外：空气含 σ 键分子干扰，需抽真空检测 <span class="loc">〔说话人1 08:15〕</span></li>
+<li>仅含 σ 键物质可作紫外可见测定时的溶剂 <span class="loc">〔说话人1 08:15〕</span></li>
+<li>n→σ* 属禁阻跃迁 <span class="loc">〔说话人1 08:36〕</span></li>
+<li>π→π* 为允许跃迁，波长可落在紫外区 <span class="loc">〔说话人1 08:36〕</span></li>
+<li>增大共轭→波长红移、吸光能力上升 <span class="loc">〔说话人1 08:36〕</span></li>
+<li>共轭时电子属整个共轭体系，束缚减小，跃迁几率增大 <span class="loc">〔说话人1 09:13〕</span></li>
+<li>红移指向长波方向移动（“红”为形容词，未必到红光） <span class="loc">〔说话人1 09:59〕</span></li>
+<li>增色即吸光增强、颜色变深，须用吸光能力比较深浅 <span class="loc">〔说话人1 09:59〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>跃迁</th><th>类型</th><th>灵敏度</th></tr>
+<tr><td>σ→σ*、π→π*</td><td>允许跃迁</td><td>高</td></tr>
+<tr><td>n→σ*、n→π*</td><td>禁阻跃迁</td><td>低</td></tr></table>
 </div>
-
-<!-- 内容 -->
-<div class="page">
-  <div class="running">
-    <span class="course">分析化学</span>
-    <span>第9-10节 · 2026-09-15</span>
-  </div>
-  <h1>分析化学 · 第9-10节 · 紫外可见分光光度法（续）与朗伯比尔定律</h1>
-
-<blockquote>**课程信息**</blockquote>
-<blockquote>- 课程：分析化学（CHE0523）</blockquote>
-<blockquote>- 节次：第9-10节（课程内累计）</blockquote>
-<blockquote>- 日期：2026年9月15日（周二，第3周）</blockquote>
-<blockquote>- 授课老师：刘敏（副教授，化学与化工学院）</blockquote>
-<blockquote>- 上课地点：PBL教学楼6中(3层)</blockquote>
-<blockquote>- 课表标注主题：电位分析法1（实际授课内容为紫外可见分光光度法续讲+朗伯比尔定律+仪器构造，以实际内容为准）</blockquote>
-<blockquote>- 学时：2学时（08:00-09:40）</blockquote>
-
-<hr>
-
-<h2>一、知识结构</h2>
-
-<p><code>`</code>mermaid</p>
-<p>flowchart TD</p>
-<p>A[紫外可见分光光度法] --> B[基本概念回顾]</p>
-<p>A --> C[有机化合物紫外吸收]</p>
-<p>A --> D[无机化合物紫外吸收]</p>
-<p>A --> E[应用实例：防晒霜]</p>
-<p>A --> F[朗伯比尔定律]</p>
-<p>A --> G[定律偏离因素]</p>
-<p>A --> H[仪器构造]</p>
-
-<p>B --> B1[分子光谱/吸收光谱]</p>
-<p>B --> B2[波长范围200-400nm/400-780nm]</p>
-<p>B --> B3[分子能级图：转动/振动/电子跃迁]</p>
-<p>B --> B4[吸收光谱定性三要素：峰位置/峰个数/峰相对高低]</p>
-<p>B --> B5[定量选λmax]</p>
-
-<p>C --> C1[跃迁类型：σ→σ<em>/n→σ</em>/π→π<em>/n→π</em>]</p>
-<p>C --> C2[允许跃迁vs禁阻跃迁]</p>
-<p>C --> C3[共轭体系：红移+增色]</p>
-<p>C --> C4[生色团与助色团]</p>
-<p>C --> C5[甲醛检测：乙酰丙酮衍生化]</p>
-<p>C --> C6[溶剂极性影响：π→π<em>红移/n→π</em>蓝移]</p>
-
-<p>D --> D1[d-d/f-f跃迁：配位场跃迁]</p>
-<p>D --> D2[电荷转移跃迁]</p>
-
-<p>E --> E1[对甲氧基肉桂酸酯类共轭结构]</p>
-<p>E --> E2[酯基侧链调节亲肤性]</p>
-<p>E --> E3[广谱防晒需多种成分]</p>
-
-<p>F --> F1[透射比T=It/I0]</p>
-<p>F --> F2[吸光度A=-logT]</p>
-<p>F --> F3[A=Kbc]</p>
-<p>F --> F4[吸光系数K与灵敏度]</p>
-<p>F --> F5[桑德尔灵敏度]</p>
-<p>F --> F6[吸光度加和性]</p>
-<p>F --> F7[标准曲线法]</p>
-<p>F --> F8[直接比较法]</p>
-
-<p>G --> G1[光学因素：非单色光/杂散光]</p>
-<p>G --> G2[物理化学因素：介质不均/浓度过高/化学反应]</p>
-
-<p>H --> H1[光源：卤钨灯350-2000nm/氘灯150-400nm]</p>
-<p>H --> H2[单色器：狭缝/准直镜/色散装置/聚焦镜]</p>
-<p>H --> H3[样品池：比色皿]</p>
-<p>H --> H4[检测器]</p>
-<p>H --> H5[数据处理/显示]</p>
-<p><code>`</code></p>
-
-<hr>
-
-<h2>二、课前测试安排</h2>
-
-<p>老师在课程开始时宣布了课前测试安排：</p>
-
-<ul>
-<li><strong>测试时间</strong>：下一次上课前占用约10分钟</li>
-<li><strong>题型</strong>：单选题与判断题</li>
-<li><strong>测试范围</strong>：完全覆盖第一章已讲授的全部内容（绪论、数据处理、样品相关），无超纲知识点</li>
-<li>老师提前告知是为了避免学生产生突兀感</li>
-</ul>
-
-<hr>
-
-<h2>三、紫外可见分光光度法基本概念回顾</h2>
-
-<h3>3.1 光学分析法与非光学分析法</h3>
-
-<ul>
-<li><strong>光学分析法</strong>：电磁辐射与分子或原子发生作用，有能量变化</li>
-<li><strong>非光学分析法</strong>：如折射（能量无损失，仅角度变化）、完全弹性碰撞的散射（无能量变化）</li>
-<li>本书主要介绍光学分析法，因为非光学分析法不好定量、定性也不好做</li>
-</ul>
-
-<h3>3.2 紫外可见分光光度法的分类归属</h3>
-
-<p>老师通过引导提问的方式回顾了关键分类：</p>
-
-<ul>
-<li class="num"><strong>原子光谱还是分子光谱？</strong> → <strong>分子光谱</strong></li>
-<li>老师引导：三种运动状态决定能级——原子中电子的运动、原子之间的振动、整个分子的转动</li>
-<li>如果只有原子，只有一种运动状态（电子运动）</li>
-<li>有三种运动状态说明研究的是<strong>分子</strong></li>
-</ul>
-
-<ul>
-<li class="num"><strong>吸收光谱还是发射光谱？</strong> → <strong>吸收光谱</strong></li>
-<li>紫外、红外都是分子吸收能量后发生能级跃迁</li>
-<li>吸收了才跃迁，所以属于吸收光谱</li>
-</ul>
-
-<blockquote>**⚠️ 必须掌握**：紫外可见分光光度法 = 分子光谱 + 吸收光谱</blockquote>
-
-<h3>3.3 波长范围（必须背诵）</h3>
-
-<ul>
-<li><strong>紫外波段</strong>：200 ~ 400 nm（必须背）</li>
-<li><strong>可见波段</strong>：400 ~ 780 nm（按教材）</li>
-</ul>
-
-<p>老师强调："有个别东西还是要背的，200到400不能说按照刻度不想背。"</p>
-
-<h3>3.4 分子能级图与跃迁类型</h3>
-
-<table class="note-table">
-<tr><th>跃迁类型</th><th>对应波段</th><th>是否本课研究对象</th></tr>
-<tr><td>纯转动跃迁</td><td>远红外</td><td>❌</td></tr>
-<tr><td>纯振动跃迁</td><td>红外</td><td>❌</td></tr>
-<tr><td>电子跃迁</td><td>紫外可见</td><td>✅</td></tr>
-</table>
-
-<ul>
-<li>电子跃迁的能级差足够大，对应的光波长恰好落在紫外可见范围内</li>
-<li>不同分子结构对应不同的能级结构，因此吸收的光也不同</li>
-</ul>
-
-<h3>3.5 吸收光谱的应用</h3>
-
-<h4>定性分析</h4>
-
-<p>定性的三个依据：</p>
-<ul>
-<li class="num"><strong>峰的位置</strong></li>
-<li class="num"><strong>峰的个数</strong></li>
-<li class="num"><strong>峰的相对高低</strong></li>
-</ul>
-
-<p>如果多条曲线的峰个数、峰位置、峰相对高低都一样，可以判断基本是同一种物质，只是浓度不同。</p>
-
-<h4>定量分析</h4>
-
-<ul>
-<li>定量时选择<strong>最大吸收波长（λmax）</strong>作为固定检测波长</li>
-<li>选择λmax的原因：灵敏度最高（峰值处吸收最强）</li>
-<li>这样做实验时不需要每次都扫一条完整曲线，只需找一个波长测量即可</li>
-</ul>
-
-<h3>3.6 分光光度计 vs 光度计</h3>
-
-<table class="note-table">
-<tr><th>仪器</th><th>特点</th><th>功能</th></tr>
-<tr><td>**分光光度计**</td><td>将一束光全部分开，每个波长都能测</td><td>可以做完整吸收光谱曲线</td></tr>
-<tr><td>**光度计**</td><td>只有一个或少数几个波长的光，不连续</td><td>不能做吸收光谱，但可以选固定波长检测</td></tr>
-</table>
-
-<ul>
-<li>便携式检测仪通常使用光度计（固定波长，仪器可以做得很小）</li>
-<li>选波长时选最大吸收波长最合适</li>
-</ul>
-
-<hr>
-
-<h2>四、有机化合物的紫外吸收</h2>
-
-<h3>4.1 生色团与助色团</h3>
-
-<h4>生色团（Chromophore）</h4>
-
-<ul>
-<li><strong>定义</strong>：含有不饱和化学键、可产生紫外可见吸收的结构基团</li>
-<li>共轭程度越高，吸收特性越显著</li>
-<li>可以产生颜色的基团</li>
-</ul>
-
-<h4>助色团（Auxochrome）</h4>
-
-<ul>
-<li><strong>定义</strong>：自身没有共轭双键的π键结构，但带有孤对电子</li>
-<li>作用：与生色团的双键或共轭体系发生进一步共轭，使颜色变深（红移+增色）</li>
-<li>老师强调："助色团是有孤对电子的，知道这就可以了"</li>
-</ul>
-
-<blockquote>**不需要背**：具体红移了多少nm不需要背，只要知道有这个现象即可</blockquote>
-
-<h3>4.2 电子跃迁类型</h3>
-
-<h4>σ→σ* 跃迁</h4>
-
-<ul>
-<li>能级差极大</li>
-<li>对应<strong>真空紫外</strong>波段</li>
-<li><strong>为什么叫真空紫外</strong>：空气中有很多含σ键的分子，会干扰检测，所以需要抽真空</li>
-<li>含σ键的物质在做紫外可见时可以当做<strong>溶剂</strong>使用</li>
-</ul>
-
-<h4>n→σ* 跃迁</h4>
-
-<ul>
-<li>属于<strong>禁阻跃迁</strong></li>
-<li>检测灵敏度较低</li>
-</ul>
-
-<h4>π→π* 跃迁</h4>
-
-<ul>
-<li>属于<strong>允许跃迁</strong></li>
-<li>灵敏度高</li>
-<li>波长有可能落在紫外附近</li>
-</ul>
-
-<h4>n→π* 跃迁</h4>
-
-<ul>
-<li>属于禁阻跃迁</li>
-<li>后面在溶剂极性影响中会详细讨论</li>
-</ul>
-
-<h3>4.3 允许跃迁与禁阻跃迁</h3>
-
-<table class="note-table">
-<tr><th>类型</th><th>跃迁概率</th><th>检测灵敏度</th><th>例子</th></tr>
-<tr><td>**允许跃迁**</td><td>几率非常大</td><td>高</td><td>σ→σ*、π→π*（名字相同的跃迁）</td></tr>
-<tr><td>**禁阻跃迁**（forbidden）</td><td>几率非常小</td><td>差</td><td>n→σ*、n→π*</td></tr>
-</table>
-
-<ul>
-<li>"允许"不是人为允许，而是规律性总结出来的——名字相同的跃迁（如σ→σ<em>、π→π</em>）几率非常大</li>
-<li>跃迁几率大 = 发生跃迁的分子多 = 检测灵敏度高</li>
-</ul>
-
-<h3>4.4 共轭体系的影响</h3>
-
-<h4>共轭增大 → 红移 + 增色</h4>
-
-<ul>
-<li><strong>红移</strong>：吸收波长向长波方向移动（"红"只是形容词，形容很长，不一定真到红色波段）</li>
-<li><strong>增色</strong>：吸光能力增强（颜色变深）</li>
-<li>例子：番茄红素（共轭体系大，有颜色）</li>
-</ul>
-
-<h4>分子轨道理论解释</h4>
-
-<ul>
-<li>共轭时，电子不再局限于某个原子所有，而是属于整个共轭体系</li>
-<li>电子受到的束缚变少，流动性增大</li>
-<li>发生跃迁的几率变大 → 灵敏度升高</li>
-<li>这就是共轭体系增大时吸光能力上升的原因</li>
-</ul>
-
-<h3>4.5 甲醛的检测——衍生化的应用</h3>
-
-<h4>甲醛本身有没有紫外可见吸收？</h4>
-
-<ul>
-<li>甲醛有双键（C=O），但是一个<strong>孤立的双键</strong></li>
-<li>氧可以提供孤对电子，但没有大的共轭体系</li>
-<li>结论：<strong>甲醛本身没有紫外可见吸收</strong>（没有颜色）</li>
-</ul>
-
-<h4>国标检测方法</h4>
-
-<ul>
-<li>国标方法：<strong>可见分光光度法</strong>（不是紫外，是可见）</li>
-<li>原理：甲醛本身无色，需要通过<strong>衍生化</strong>反应生成有大共轭体系的有色产物</li>
-</ul>
-
-<h4>乙酰丙酮法（最常用的国标方法之一）</h4>
-
-<ul>
-<li>试剂：乙酰丙酮 + 氨</li>
-<li>条件：沸水浴加热（不用沸水反应很慢）</li>
-<li>反应：甲醛与乙酰丙酮在氨存在下发生反应，<strong>成环</strong></li>
-<li>产物特点：</li>
-<li>成环后含有氮（提供孤对电子 → 助色团）</li>
-<li>有双键（生色团）</li>
-<li>同时有生色团和助色团 → 有颜色</li>
-<li>产物颜色：<strong>黄色</strong></li>
-</ul>
-
-<blockquote>**启示**：即使本来没有紫外可见吸收的物质，也可以通过特异性反应（衍生化）使其产生紫外可见吸收。这就是分光光度法应用非常广泛的原因。</blockquote>
-
-<h3>4.6 溶剂极性对紫外可见吸收的影响</h3>
-
-<blockquote>老师特别说明：这个知识点书上在后面，但因为后面讲荧光还要用一次，所以提前在这里讲。</blockquote>
-
-<h4>基本原理</h4>
-
-<p>将物质放入不同极性的溶剂中（如非极性的己烷 vs 极性的醇），吸收波长会发生变化。</p>
-
-<p>极性溶剂通过<strong>偶极-偶极作用力</strong>或<strong>氢键</strong>与溶质分子发生作用，使分子更稳定 → 能量降低。</p>
-
-<h4>π→π* 跃迁</h4>
-
-<ul>
-<li>在极性溶剂中，π*轨道降低的幅度比π轨道更大</li>
-<li>→ 能级差<strong>变小</strong></li>
-<li>→ 波长<strong>变长</strong></li>
-<li>→ <strong>红移</strong></li>
-</ul>
-
-<h4>n→π* 跃迁</h4>
-
-<ul>
-<li>n轨道（孤对电子）在极性溶剂中容易形成<strong>氢键</strong></li>
-<li>氢键作用力大于其他分子间作用力</li>
-<li>→ n轨道能量降低的幅度<strong>更大</strong></li>
-<li>→ 能级差<strong>变大</strong></li>
-<li>→ 波长<strong>变短</strong></li>
-<li>→ <strong>蓝移</strong>（又称紫移）</li>
-</ul>
-
-<blockquote>**⚠️ 必须掌握**：π→π* 在极性溶剂中红移；n→π* 在极性溶剂中蓝移</blockquote>
-
-<h4>应用实例</h4>
-
-<p>某物质在己烷中λmax=305 nm，在乙醇中λmax=307 nm，问是n→π<em>还是π→π</em>？</p>
-
-<ul>
-<li>波长从305→307，变长了 → 红移</li>
-<li>→ <strong>π→π* 跃迁</strong></li>
-</ul>
-
-<p>这个规律可以帮助解析未知分子的结构特征。</p>
-
-<hr>
-
-<h2>五、无机化合物的紫外吸收</h2>
-
-<h3>5.1 d-d / f-f 跃迁（配位场跃迁）</h3>
-
-<h4>原理</h4>
-
-<ul>
-<li>d轨道有5个简并轨道（能量相同，光谱学上叫"简并"=简单合并）</li>
-<li>当有<strong>配位场</strong>存在时，d轨道发生<strong>能级分裂</strong>（如3个轨道能量低，2个轨道能量高）</li>
-<li>分裂后产生能级差 → 电子可以在分裂后的轨道间跃迁 → 吸收能量</li>
-<li>f轨道同理（7个简并轨道）</li>
-</ul>
-
-<h4>关键前提</h4>
-
-<ul>
-<li><strong>必须有d/f轨道上的电子</strong></li>
-<li>例子：</li>
-<li>Cu²⁺有d电子 → 有颜色</li>
-<li>Cu⁺没有d电子 → 无论什么情况下都没有颜色</li>
-<li>Na⁺没有d电子 → 没有颜色</li>
-</ul>
-
-<h4>配位场的影响</h4>
-
-<ul>
-<li>配位分子不同（如水 vs 氨），能级分裂程度不同</li>
-<li>→ 吸收波长不同</li>
-<li>例子：</li>
-<li>无水CuSO₄固体：白色/无色（无可见光吸收）</li>
-<li>CuSO₄·5H₂O / CuSO₄水溶液：蓝色（水配位）</li>
-<li>加氨水后：深蓝色（氨配位，分裂程度不同）</li>
-<li>注意：深蓝和蓝不是颜色深浅的区别，而是波长变了</li>
-</ul>
-
-<h4>灵敏度特点</h4>
-
-<ul>
-<li>d-d跃迁的<strong>吸光系数不大</strong>（约几百的样子）</li>
-<li>硫酸铜溶液看起来颜色很深，是因为<strong>溶解度大、浓度高</strong>，不是因为吸光能力强</li>
-<li>低浓度的硫酸铜不好测</li>
-</ul>
-
-<h3>5.2 电荷转移跃迁</h3>
-
-<h4>原理</h4>
-
-<ul>
-<li>分子内部不同组分之间发生电子转移</li>
-<li>从一个轨道到另一个轨道的电子转移 = 能级跃迁</li>
-<li>吸光能力<strong>非常强</strong>，检测灵敏度高</li>
-<li>是无机物吸光的<strong>主要类型</strong></li>
-</ul>
-
-<h4>实例1：卤化银</h4>
-
-<table class="note-table">
-<tr><th>化合物</th><th>颜色</th><th>原因</th></tr>
-<tr><td>AgCl</td><td>白色（无颜色）</td><td>Cl电负性大，电子不易转移</td></tr>
-<tr><td>AgBr</td><td>浅黄色</td><td>Br电负性较小，较易转移</td></tr>
-<tr><td>AgI</td><td>颜色更深</td><td>I电负性最小，最易转移</td></tr>
-</table>
-
-<ul>
-<li>银有空轨道，卤素离子有孤对电子（电子多）</li>
-<li>电负性越小的卤素越容易给出电子 → 越容易发生电荷转移 → 颜色越深</li>
-</ul>
-
-<h4>实例2：硫氰化铁</h4>
-
-<ul>
-<li>颜色：<strong>血红色</strong></li>
-<li>对应电荷转移跃迁</li>
-<li>可用于<strong>三价铁离子的高灵敏检测</strong>（因为吸光能力强，只要一点点就能测出来）</li>
-</ul>
-
-<blockquote>**需要知道的**：有机化合物也可能发生电荷转移跃迁（大的有机分子中电子从一个基团跑到另一个基团）。不需要背具体波长和吸光系数，但要知道这两个名字（配位场跃迁、电荷转移跃迁）。</blockquote>
-
-<hr>
-
-<h2>六、应用实例：防晒霜的成分分析</h2>
-
-<h3>6.1 防晒的基本原理</h3>
-
-<ul>
-<li>防晒 = 防紫外线（不是防可见光，防可见光涂黑色就行）</li>
-<li>两种防晒渠道：</li>
-<li class="num"><strong>全反射</strong>：涂得很白很厚，把光全反掉（不实用）</li>
-<li class="num"><strong>吸收紫外</strong>：防晒霜本身透明无色，只吸收紫外光</li>
-</ul>
-
-<h3>6.2 防晒霜的核心活性成分</h3>
-
-<p>老师对比了多个品牌（百雀羚、资生堂、美国品牌、日本品牌、德国品牌等）的成分表：</p>
-
-<p><strong>共同的核心防晒基团</strong>：对甲氧基肉桂酸酯类</p>
-
-<ul>
-<li>对甲氧基肉桂酸辛酯</li>
-<li>四甲氧基肉桂酸二乙基己酯</li>
-</ul>
-
-<blockquote>老师指出："对甲氧基"和"四甲氧基"其实是一样的，学过化学就不会被厂家宣传糊弄。</blockquote>
-
-<h3>6.3 结构分析</h3>
-
-<ul>
-<li><strong>防晒活性部分</strong>：对甲氧基肉桂酸的共轭双键结构（所有品牌完全一样）</li>
-<li><strong>酯基侧链</strong>：</li>
-<li>辛酯（8个碳，直链）</li>
-<li>二乙基己基酯（也是8个碳，带支链）</li>
-<li>属于同分异构体</li>
-<li>酯基侧链<strong>不起防晒作用</strong>（连孤对电子都没提供）</li>
-<li>→ 对紫外吸收曲线<strong>没有影响</strong></li>
-<li>→ 不同品牌的防晒功能<strong>基本一样</strong></li>
-</ul>
-
-<h3>6.4 酯基侧链的真正作用</h3>
-
-<ul>
-<li>调节<strong>亲肤性</strong>和<strong>脂溶性</strong></li>
-<li>影响使用感受：</li>
-<li>涂脸的产品感觉不油</li>
-<li>涂手/胳膊的产品感觉油光光的</li>
-<li>有的容易推匀，有的黏糊糊推不匀</li>
-<li>所以不能说厂家完全是骗人的——化妆品需要考虑方方面面</li>
-</ul>
-
-<h3>6.5 广谱防晒</h3>
-
-<ul>
-<li>紫外波段200-400nm</li>
-<li>单一防晒成分只覆盖其中一段（对人伤害最大的那一段）</li>
-<li>要<strong>广谱防晒</strong>需要添加多种成分</li>
-<li>看防晒霜成分表会发现不止一个防晒成分</li>
-<li>标准检测方法：涂在石英板上（厚度按国标规定），测紫外吸收</li>
-</ul>
-
-<blockquote>**判断能否用紫外可见检测的方法**：先找双键、找共轭。没双键没共轭就不能直接用；有双键还可以像甲醛那样做衍生化。</blockquote>
-
-<hr>
-
-<h2>七、光的吸收定律——朗伯比尔定律</h2>
-
-<h3>7.1 基本概念</h3>
-
-<h4>光的入射与出射</h4>
-
-<ul>
-<li>I₀ = 入射光强度</li>
-<li>Iₐ = 被吸收的光强度</li>
-<li>Iₜ = 透射光强度</li>
-<li>Iᵣ = 反射光强度（通过使用同一个比色皿可以消除）</li>
-</ul>
-
-<p>当使用同一个比色皿（表面一致）时：</p>
-<p><strong>I₀ = Iₐ + Iₜ</strong></p>
-
-<h4>比色皿的使用注意事项</h4>
-
-<ul>
-<li>出厂时配套的四个比色皿表面基本一致（做过实验）</li>
-<li>但经过很多同学使用后，可能东拿西拿，就不配套了</li>
-<li>建议：做实验时尽量用同一个比色皿</li>
-<li>检查配套性的方法：装一样的东西测，看信号是否一样</li>
-<li>研究生/毕业设计可以自己有一套配套的</li>
-</ul>
-
-<h3>7.2 透射比（Transmittance, T）</h3>
-
-<ul>
-<li><strong>定义</strong>：T = Iₜ / I₀</li>
-<li>透射比与浓度<strong>不成正比</strong>（没有线性关系）</li>
-<li>但有相关性，可以拟合</li>
-</ul>
-
-<h3>7.3 吸光度（Absorbance, A）</h3>
-
-<ul>
-<li><strong>定义</strong>：A = -log T = -log(Iₜ/I₀) = log(I₀/Iₜ)</li>
-<li>为什么要定义吸光度？因为<strong>-logT与浓度成正比</strong></li>
-<li>每次写-logT太费劲，所以命名为"吸光度"</li>
-</ul>
-
-<h3>7.4 朗伯比尔定律（Lambert-Beer Law）</h3>
-
-<p><strong>A = Kbc</strong></p>
-
-<ul>
-<li>A = 吸光度（无单位）</li>
-<li>K = 吸光系数（有单位，随浓度单位变化）</li>
-<li>b = 液层厚度/光程长度（通常单位cm）</li>
-<li>c = 吸光物质的浓度</li>
-</ul>
-
-<h4>定律的完整表述</h4>
-
-<blockquote>当一定强度的**单色光**通过含有吸光物质的**透明、均一**的溶液时，溶液的吸光度与吸光物质的浓度和液层厚度成正比。</blockquote>
-
-<h4>朗伯 vs 比尔</h4>
-
-<ul>
-<li><strong>朗伯</strong>：A ∝ b（吸光度与液层厚度成正比）</li>
-<li><strong>比尔</strong>：A ∝ c（吸光度与浓度成正比）</li>
-<li>有时候别人叫"比尔定律"，其实也是同一个东西</li>
-</ul>
-
-<h4>限制条件（必须掌握）</h4>
-
-<ul>
-<li class="num"><strong>单色光</strong>——不是所有的光，必须是单色光</li>
-<li class="num"><strong>透明均一溶液</strong>——排除散射光（如果有颗粒会发生散射，I₀ ≠ Iₐ+Iₜ，还需加散射光Iₛ）</li>
-</ul>
-
-<blockquote>老师强调："不要看简单的一句话，里边每个限制词都有它的意义。"</blockquote>
-
-<h3>7.5 吸光系数K与灵敏度</h3>
-
-<h4>K的物理意义</h4>
-
-<ul>
-<li>K反映了吸光物质的<strong>灵敏度</strong></li>
-<li>A = Kbc中，K和b就是标准曲线的<strong>斜率</strong></li>
-<li>灵敏度 = 斜率</li>
-</ul>
-
-<h4>K的影响因素</h4>
-
-<ul>
-<li class="num"><strong>吸光物质本身的性质</strong>（有的物质吸光，有的不吸光）</li>
-<li class="num"><strong>入射光的波长</strong>（吸收曲线中有的波长吸收强，有的弱）</li>
-<li class="num"><strong>溶液的性质</strong>（溶剂极性，会发生红移/蓝移）</li>
-<li class="num">温度（也有关系，但主要强调前三个）</li>
-</ul>
-
-<h4>灵敏度的判断标准</h4>
-
-<ul>
-<li>K > 10⁴ → 灵敏度高</li>
-<li>硫酸铜的K约 < 10² → 比较小</li>
-<li>高锰酸钾的K约 10³ → 比硫酸铜好，可以用紫外方法</li>
-</ul>
-
-<h4>K的单位</h4>
-
-<ul>
-<li>A无单位（T是比值，取对数后无单位）</li>
-<li>b有单位（通常cm）</li>
-<li>c有单位（mol/L、g/L、百分浓度等）</li>
-<li>→ K必须有单位，且单位随浓度单位变化而变化</li>
-<li>当c用mol/L时，K常写作ε（摩尔吸光系数）</li>
-</ul>
-
-<blockquote>**考试注意**：填空题算K值时一定要带单位！不带单位会扣分（如2分题给1分，3分题给1分）。</blockquote>
-
-<h3>7.6 桑德尔灵敏度（Sandell Sensitivity）</h3>
-
-<ul>
-<li>了解即可，不需要背</li>
-<li>历史背景：1982年IUPAC统一规定"灵敏度=标准曲线斜率"之前，各领域权威人士各自规定灵敏度</li>
-<li>桑德尔灵敏度定义：当A=0.01时，单位截面积光程所能检出的吸光物质的最低含量</li>
-<li><strong>桑德尔灵敏度越小越好</strong>（注意：与常规灵敏度越大越好相反！）</li>
-<li>看到"灵敏度"要先看有没有前缀</li>
-</ul>
-
-<h3>7.7 吸光度的加和性</h3>
-
-<ul>
-<li>如果溶液中有多种吸光物质，且彼此之间<strong>没有相互作用</strong>（不反应，已平衡）</li>
-<li>→ 总吸光度 = 各物质吸光度之和</li>
-<li><strong>A总 = A₁ + A₂ + A₃ + ...</strong></li>
-</ul>
-
-<h4>对选择性的影响</h4>
-
-<ul>
-<li>仪器不知道是谁吸收的，只知道某个波长处有吸收</li>
-<li>→ 紫外可见分光光度法的<strong>选择性不好</strong></li>
-<li>干扰的根本来源就是吸光度的加和性</li>
-</ul>
-
-<h4>实例：锰的检测</h4>
-
-<ul>
-<li>测Mn²⁺时，将其氧化为MnO₄⁻（紫色，K≈10³）</li>
-<li>但Co²⁺也有类似颜色（粉红色），可能产生干扰</li>
-<li>干燥剂中的硅胶加了Co²⁺作为指示剂：无水时蓝色，吸水后变红色（配位场变化）</li>
-</ul>
-
-<hr>
-
-<h2>八、定量分析方法</h2>
-
-<h3>8.1 标准曲线法（校准曲线法）</h3>
-
-<ul>
-<li class="num">配制一系列不同浓度的标准溶液</li>
-<li class="num">测每个浓度对应的A值</li>
-<li class="num">打点、拟合一条直线 → A = Kbc</li>
-<li class="num">未知溶液测Aₓ，代入求cₓ</li>
-</ul>
-
-<ul>
-<li>优点：含的点多，拟合好，比较靠谱</li>
-<li>标准曲线至少<strong>5个点</strong>才比较靠谱</li>
-<li>应用最广泛</li>
-</ul>
-
-<h3>8.2 直接比较法（Calculation Method）</h3>
-
-<ul>
-<li>英文叫"calculation"（直接算一算），中文翻译为"直接比较法"（老师认为中文翻译得好）</li>
-<li>原理：</li>
-<li>A标 = Kb c标</li>
-<li>A样 = Kb c样</li>
-<li>两式相比，K消掉 → c样 = c标 × (A样/A标)</li>
-<li>优点：快，便携式仪器常用</li>
-<li>注意事项：<strong>标样浓度与待测溶液浓度要接近</strong>（因为标准曲线有线性范围，不知道范围在哪就只能让浓度接近以减小误差）</li>
-<li>现在仪器计算能力强了，便携式仪器也多用标准曲线法</li>
-</ul>
-
-<hr>
-
-<h2>九、朗伯比尔定律的偏离</h2>
-
-<h3>9.1 概述</h3>
-
-<ul>
-<li>朗伯比尔定律是本章最重要的定律，希望一直能用，不要有偏离</li>
-<li>偏离 = 不成线性了</li>
-<li>需要研究哪些因素会造成偏离</li>
-</ul>
-
-<h3>9.2 光学因素</h3>
-
-<h4>非单色光的影响</h4>
-
-<p><strong>影响1：灵敏度降低</strong></p>
-
-<ul>
-<li>如果光源不是单色光（谱带宽度大），会把λmax附近灵敏度低的区域也包进去</li>
-<li>测出来的整体值偏小 → 灵敏度降低</li>
-<li>实例：高锰酸钾溶液在525nm处，谱带宽度越宽，测出来的吸光度越低</li>
-</ul>
-
-<p><strong>影响2：对高浓度影响更大</strong></p>
-
-<ul>
-<li>高浓度时，非单色光造成的相对误差更大</li>
-<li>推导：真实值在λmax处，观测值是谱带宽度内的平均值；高浓度时峰更陡，平均值偏离更多</li>
-</ul>
-
-<blockquote>**⚠️ 必须掌握**：朗伯比尔定律**不适合高浓度**（只适合低浓度），原因之一就是非单色光的影响。</blockquote>
-
-<p><strong>谱带宽度（Δλ）</strong></p>
-
-<ul>
-<li>用大的Δλ表示宽度（不是波长）</li>
-<li>越窄 → 灵敏度越高</li>
-<li>这很反常识：有人觉得谱带宽度越大吸收越多，但我们看的是<strong>吸光程度</strong>，不是绝对吸收量</li>
-</ul>
-
-<h4>杂散光的影响</h4>
-
-<p><strong>散射光</strong></p>
-
-<ul>
-<li>溶液中有灰尘等颗粒时产生散射</li>
-<li>散射光无方向性，朝各个方向散</li>
-<li>→ Iₜ变小（部分光被散掉没到达检测器）</li>
-<li>→ A变大（A = log(I₀/Iₜ)）</li>
-</ul>
-
-<p><strong>仪器杂散光（Stray Light）</strong></p>
-
-<ul>
-<li>仪器内部的反射镜、镜头等落灰</li>
-<li>阻碍光路，导致数据偏离</li>
-<li>杂散光是造成朗伯比尔定律偏离的<strong>主要因素</strong></li>
-<li>偏离方向：朝下（高浓度区域弯曲）</li>
-<li>杂散光越多 → 线性范围越窄 → 高浓度越不能用</li>
-<li>新仪器比旧仪器好用（干净）</li>
-<li>仪器一般不自己拆开擦（过了保质期可以）</li>
-</ul>
-
-<h3>9.3 物理化学因素</h3>
-
-<ul>
-<li class="num"><strong>介质不均匀</strong>：有小颗粒 → 反射、散射</li>
-<li class="num"><strong>浓度过高</strong>：高浓度受非单色光影响大，且分子间碰撞等相互作用增强</li>
-<li class="num"><strong>化学反应</strong>：发生反应生成另一种物质 → 完全变了</li>
-</ul>
-
-<blockquote>这一页PPT需要知道：有哪些光学因素、哪些物理化学因素。</blockquote>
-
-<hr>
-
-<h2>十、紫外可见分光光度计的构造</h2>
-
-<h3>10.1 五大部件（必须会画排布图）</h3>
-
-<p>整本书中任何一个仪器都要求会画部件排布图：</p>
-
-<p><code>`</code></p>
-<p>光源 → 单色器 → 样品池 → 检测器 → 数据处理/显示</p>
-<p><code>`</code></p>
-
-<ul>
-<li>可以是线性布局，也可以拐弯</li>
-<li>不一定要画图标，直接写字即可（光源、单色器、样品池、检测器、数据处理）</li>
-<li>前面四个是核心</li>
-</ul>
-
-<h3>10.2 光源</h3>
-
-<h4>对光源的基本要求</h4>
-
-<ul>
-<li>强度大</li>
-<li>连续</li>
-<li>稳定性好</li>
-<li>能提供200~780nm的波长范围</li>
-</ul>
-
-<h4>钨灯/卤钨灯（可见光源）</h4>
-
-<ul>
-<li><strong>原理</strong>：钨是良导体，加电压后电流大→发热→热致发光（跟太阳一样）</li>
-<li><strong>波长范围</strong>：350 ~ 2000 nm</li>
-<li>可见（400-780nm）完全够用</li>
-<li>还包含红外（红外治疗仪的原理）</li>
-<li>350-400nm有少量紫外</li>
-<li><strong>卤钨灯的改进</strong>：</li>
-<li>纯钨灯缺点：钨会升华→钨丝变细→灯泡发黑→寿命短</li>
-<li>卤钨灯：加入卤素（碘/溴），钨升华后与卤素反应生成碘化钨/溴化钨（气态）</li>
-<li>气态化合物跑到钨丝附近（高温）→分解→钨又回到钨丝上→循环使用</li>
-<li>→ 寿命长</li>
-<li>汽车远光灯就是卤钨灯（"高强度卤素灯"）</li>
-<li><strong>光强与电压的关系</strong>：I ∝ V⁴（四次方关系）</li>
-<li>→ 电压必须非常稳定，需要<strong>稳压电源</strong></li>
-<li>微小的电压波动会造成很大的光强变化</li>
-<li>如果实验中光强非常不稳，怀疑稳压电源坏了</li>
-<li><strong>工作温度</strong>：2000~3000K，非常烫，开机时不要碰</li>
-</ul>
-
-<h4>氘灯（紫外光源）</h4>
-
-<ul>
-<li>属于放电灯</li>
-<li><strong>波长范围</strong>：150 ~ 400 nm</li>
-<li>常用范围：200 ~ 350 nm</li>
-<li>比氙灯强度更大，所以用氘灯</li>
-<li>价格较贵（大几百块钱），体积很小（笔尖大小）</li>
-</ul>
-
-<h4>双光源切换</h4>
-
-<ul>
-<li>紫外可见仪器通常配两个灯：卤钨灯（可见）+ 氘灯（紫外）</li>
-<li>紫外仪器一般多配一个钨灯就可以做可见；但可见仪器不一定配氘灯</li>
-<li>切换点通常在350nm附近（也可以自己设360nm等）</li>
-<li>扫描200~800nm时，在350nm附近会听到轻微的"咔嗒"声（换灯）</li>
-<li>老式仪器需要手动拨反光镜切换，现在仪器自动切换</li>
-</ul>
-
-<h3>10.3 单色器</h3>
-
-<ul>
-<li>作用：把复色光变成单色光</li>
-<li>是一个黑匣子（不能敞开）</li>
-<li>构造（了解即可，不用背）：</li>
-<li class="num"><strong>入射狭缝</strong>（slit）</li>
-<li class="num"><strong>准直镜</strong>（collimating mirror）：把光变成平行光</li>
-<li class="num"><strong>色散装置</strong>（dispersion）：把光分成不同颜色（棱镜或光栅）</li>
-<li class="num"><strong>聚焦镜</strong>（focusing mirror）：把选中的波长聚到出射狭缝</li>
-<li class="num"><strong>出射狭缝</strong></li>
-<li>转动色散装置可以选择不同的出射波长</li>
-</ul>
-
-<h3>10.4 样品池</h3>
-
-<ul>
-<li>即比色皿</li>
-<li>四面透光</li>
-<li>注意使用同一个比色皿以消除反射光影响</li>
-</ul>
-
-<h3>10.5 检测器与数据处理</h3>
-
-<ul>
-<li>检测器：检测透过光Iₜ</li>
-<li>数据处理/显示：读出吸光度数值</li>
-</ul>
-
-<hr>
-
-<h2>十一、老师强调重点汇总</h2>
-
-<ul>
-<li class="num"><strong>紫外可见分光光度法 = 分子光谱 + 吸收光谱</strong>（必须会判断）</li>
-<li class="num"><strong>波长范围</strong>：紫外200-400nm，可见400-780nm（必须背）</li>
-<li class="num"><strong>吸收光谱定性三要素</strong>：峰位置、峰个数、峰相对高低</li>
-<li class="num"><strong>定量选λmax</strong>（最大吸收波长）</li>
-<li class="num"><strong>允许跃迁vs禁阻跃迁</strong>：σ→σ<em>、π→π</em>是允许跃迁（灵敏度高）；n→σ<em>、n→π</em>是禁阻跃迁（灵敏度低）</li>
-<li class="num"><strong>共轭增大→红移+增色</strong></li>
-<li class="num"><strong>生色团</strong>（含不饱和键）vs <strong>助色团</strong>（含孤对电子）</li>
-<li class="num"><strong>甲醛检测</strong>：乙酰丙酮+氨衍生化，产物黄色</li>
-<li class="num"><strong>溶剂极性影响</strong>：π→π<em>红移，n→π</em>蓝移（必须掌握）</li>
-<li class="num"><strong>无机化合物两种跃迁</strong>：d-d/f-f配位场跃迁（需有d/f电子，灵敏度低）、电荷转移跃迁（灵敏度高，主要类型）</li>
-<li class="num"><strong>防晒霜核心成分</strong>：对甲氧基肉桂酸酯类共轭结构；酯基侧链调节亲肤性</li>
-<li class="num"><strong>朗伯比尔定律</strong>：A = Kbc，单色光+透明均一溶液</li>
-<li class="num"><strong>吸光度</strong>：A = -logT，无单位</li>
-<li class="num"><strong>K有单位</strong>，考试必须带单位</li>
-<li class="num"><strong>K>10⁴为高灵敏度</strong></li>
-<li class="num"><strong>吸光度加和性</strong>：A总 = A₁+A₂+...（选择性不好的根源）</li>
-<li class="num"><strong>标准曲线法</strong>至少5个点；<strong>直接比较法</strong>标样与试样浓度要接近</li>
-<li class="num"><strong>朗伯比尔定律不适合高浓度</strong>（非单色光对高浓度影响大）</li>
-<li class="num"><strong>非单色光→灵敏度降低</strong>；<strong>杂散光→主要偏离因素</strong></li>
-<li class="num"><strong>仪器五大部件</strong>：光源→单色器→样品池→检测器→数据处理（会画排布图）</li>
-<li class="num"><strong>卤钨灯</strong>：350-2000nm，热致发光，I∝V⁴需稳压</li>
-<li class="num"><strong>氘灯</strong>：150-400nm，放电灯，紫外光源</li>
-<li class="num"><strong>下次课前测试</strong>：10分钟，单选+判断，覆盖第一章全部内容</li>
-</ul>
-
-<hr>
-
-<h2>十二、课程间关联</h2>
-
-<table class="note-table">
-<tr><th>关联课程</th><th>关联内容</th></tr>
-<tr><td>有机化学</td><td>共轭体系、电子跃迁类型、生色团/助色团、甲醛与乙酰丙酮反应</td></tr>
-<tr><td>物理化学/无机化学</td><td>配位场理论、d轨道分裂、电荷转移</td></tr>
-<tr><td>仪器分析</td><td>朗伯比尔定律是所有光学分析法的基础</td></tr>
-<tr><td>生物化学</td><td>蛋白质/核酸的紫外定量（280nm/260nm）基于本定律</td></tr>
-<tr><td>医学研究规范</td><td>实验数据处理中的标准曲线法应用</td></tr>
-</table>
-
-<hr>
-
-<h2>十三、复习清单</h2>
-
-<h3>基本概念</h3>
-<ul>
-<li>[ ] 能判断紫外可见分光光度法属于分子光谱+吸收光谱</li>
-<li>[ ] 背诵紫外(200-400nm)和可见(400-780nm)波长范围</li>
-<li>[ ] 理解分子能级图中转动/振动/电子跃迁对应的波段</li>
-<li>[ ] 掌握吸收光谱定性三要素（峰位置/峰个数/峰相对高低）</li>
-<li>[ ] 理解定量选择λmax的原因</li>
-<li>[ ] 区分分光光度计与光度计</li>
-</ul>
-
-<h3>有机化合物紫外吸收</h3>
-<ul>
-<li>[ ] 掌握四种电子跃迁类型（σ→σ<em>、n→σ</em>、π→π<em>、n→π</em>）及其波段</li>
-<li>[ ] 区分允许跃迁与禁阻跃迁，理解与灵敏度的关系</li>
-<li>[ ] 理解共轭体系增大导致红移+增色的分子轨道理论解释</li>
-<li>[ ] 掌握生色团与助色团的定义和区别</li>
-<li>[ ] 理解甲醛检测的衍生化原理（乙酰丙酮法）</li>
-<li>[ ] <strong>重点掌握</strong>溶剂极性对π→π<em>（红移）和n→π</em>（蓝移）的不同影响</li>
-</ul>
-
-<h3>无机化合物紫外吸收</h3>
-<ul>
-<li>[ ] 理解d-d/f-f跃迁（配位场跃迁）的原理和前提（需有d/f电子）</li>
-<li>[ ] 掌握硫酸铜不同配位环境的颜色变化实例</li>
-<li>[ ] 理解电荷转移跃迁的原理和高灵敏度特点</li>
-<li>[ ] 掌握卤化银颜色递变和硫氰化铁的实例</li>
-</ul>
-
-<h3>应用与实例</h3>
-<ul>
-<li>[ ] 理解防晒霜的核心活性结构（对甲氧基肉桂酸酯类）</li>
-<li>[ ] 理解酯基侧链的作用（亲肤性，不影响防晒）</li>
-<li>[ ] 理解广谱防晒需要多种成分</li>
-</ul>
-
-<h3>朗伯比尔定律</h3>
-<ul>
-<li>[ ] 掌握透射比T和吸光度A的定义和关系</li>
-<li>[ ] <strong>重点掌握</strong>朗伯比尔定律A=Kbc及其限制条件（单色光、透明均一）</li>
-<li>[ ] 理解吸光系数K的物理意义和影响因素</li>
-<li>[ ] 掌握K的单位（考试必须带单位）</li>
-<li>[ ] 了解桑德尔灵敏度（越小越好）</li>
-<li>[ ] 理解吸光度加和性及其对选择性的影响</li>
-<li>[ ] 掌握标准曲线法（至少5点）和直接比较法（浓度接近）</li>
-</ul>
-
-<h3>定律偏离</h3>
-<ul>
-<li>[ ] 理解非单色光导致灵敏度降低的原理</li>
-<li>[ ] 理解非单色光对高浓度影响更大</li>
-<li>[ ] <strong>掌握</strong>朗伯比尔定律不适合高浓度</li>
-<li>[ ] 理解杂散光是主要偏离因素</li>
-<li>[ ] 了解物理化学因素（介质不均/浓度过高/化学反应）</li>
-</ul>
-
-<h3>仪器构造</h3>
-<ul>
-<li>[ ] <strong>会画</strong>紫外可见分光光度计五大部件的排布图</li>
-<li>[ ] 掌握卤钨灯的原理、波长范围、I∝V⁴需稳压</li>
-<li>[ ] 掌握氘灯的波长范围和用途</li>
-<li>[ ] 理解双光源切换机制</li>
-<li>[ ] 了解单色器的基本构造</li>
-</ul>
-
-<hr>
-
-<h2>十四、主动回忆题</h2>
-
-<h3>题目1</h3>
-<p>为什么紫外可见分光光度法属于分子光谱而不是原子光谱？请从分子运动状态的角度解释。</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p>分子有三种运动状态决定其能级：①原子中电子的运动；②原子之间的振动；③整个分子的转动。如果只有原子，只有电子运动一种状态。紫外可见分光光度法研究的是包含这三种运动状态的体系，因此属于分子光谱。具体来说，紫外可见对应的是分子外层电子的跃迁（能级差足够大，对应紫外可见波段），而纯转动跃迁对应远红外，纯振动跃迁对应红外。</p>
-<p></details></p>
-
-<h3>题目2</h3>
-<p>将某物质从非极性溶剂己烷移到极性溶剂乙醇中，发现其λmax从305nm变为307nm。请判断该跃迁类型并解释原因。</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p>波长从305nm变长到307nm → 红移 → <strong>π→π*跃迁</strong>。</p>
-
-<p>原因：在极性溶剂中，π<em>轨道（反键轨道）的能量降低幅度比π轨道更大，导致π→π</em>的能级差变小。根据E=hc/λ，能级差变小对应波长变长，即红移。</p>
-
-<p>对比：如果是n→π*跃迁，n轨道（孤对电子）在极性溶剂中容易形成氢键，能量降低幅度更大，导致能级差变大，波长变短（蓝移/紫移）。</p>
-<p></details></p>
-
-<h3>题目3</h3>
-<p>为什么无水硫酸铜是白色的，而五水硫酸铜和硫酸铜水溶液是蓝色的，加氨水后变成深蓝色？请用配位场跃迁理论解释。</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p>Cu²⁺有d电子，在配位场作用下d轨道发生能级分裂，产生能级差，电子在分裂后的d轨道间跃迁（d-d跃迁），吸收可见光，从而显示颜色。</p>
-
-<ul>
-<li>无水CuSO₄：没有配位水分子，d轨道不发生分裂（简并），无能级差，不吸收可见光 → 白色/无色</li>
-<li>CuSO₄·5H₂O/水溶液：H₂O作为配体与Cu²⁺配位，d轨道分裂 → 吸收特定波长可见光 → 蓝色</li>
-<li>加氨水后：NH₃取代H₂O成为配体，NH₃的配位场强度与H₂O不同，d轨道分裂程度不同 → 吸收波长改变 → 深蓝色（注意深蓝和蓝是波长不同，不是深浅不同）</li>
-</ul>
-
-<p>d-d跃迁的前提是必须有d轨道电子。Cu⁺没有d电子，因此无论什么配位环境都没有颜色。</p>
-<p></details></p>
-
-<h3>题目4</h3>
-<p>朗伯比尔定律A=Kbc中，为什么吸光系数K必须有单位？K的大小与哪些因素有关？</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>K必须有单位的原因</strong>：</p>
-<ul>
-<li>吸光度A = -logT，T是Iₜ/I₀的比值（无单位），取对数后仍无单位</li>
-<li>b（光程）有单位（通常cm）</li>
-<li>c（浓度）有单位（mol/L、g/L等）</li>
-<li>由A=Kbc可知，K的单位必须使Kbc的乘积无单位，因此K = A/(bc) 必有单位</li>
-<li>K的单位随浓度单位的变化而变化（c用mol/L时K写作ε，单位L·mol⁻¹·cm⁻¹）</li>
-</ul>
-
-<p><strong>K的影响因素</strong>：</p>
-<ul>
-<li class="num">吸光物质本身的性质（内因）</li>
-<li class="num">入射光的波长（不同波长吸收能力不同，λmax处K最大）</li>
-<li class="num">溶液的性质/溶剂（极性不同会导致红移/蓝移，影响K）</li>
-<li class="num">温度</li>
-</ul>
-
-<p>K反映了检测灵敏度：K>10⁴为高灵敏度；K越大，标准曲线斜率越大，灵敏度越高。</p>
-<p></details></p>
-
-<h3>题目5</h3>
-<p>为什么朗伯比尔定律只适用于低浓度溶液，而不适用于高浓度？请从非单色光的角度解释。</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>非单色光导致灵敏度降低</strong>：</p>
-<p>实际光源不可能是绝对单色光，总有一定的谱带宽度Δλ。如果Δλ较大，会把λmax附近灵敏度较低的区域也包进去，测出来的吸光度是谱带宽度内的平均值，比真实值（λmax处）偏小，导致灵敏度降低。</p>
-
-<p><strong>对高浓度影响更大</strong>：</p>
-<p>高浓度时吸收曲线更陡峭（峰更尖），谱带宽度内不同波长的吸光度差异更大，平均值偏离真实值更多；而低浓度时曲线较平缓，平均值偏离较小。因此非单色光对高浓度的相对误差更大。</p>
-
-<p>此外，高浓度时分子间距离小，碰撞等相互作用增强，也会导致偏离朗伯比尔定律。因此朗伯比尔定律有线性范围，只适用于低浓度。</p>
-<p></details></p>
-
-<h3>题目6</h3>
-<p>请画出紫外可见分光光度计的结构示意图，并说明卤钨灯和氘灯各自的作用和波长范围。</p>
-
-<p><details></p>
-<p><summary>点击查看答案</summary></p>
-
-<p><strong>结构示意图</strong>：</p>
-<p><code>`</code></p>
-<p>光源 → 单色器 → 样品池 → 检测器 → 数据处理/显示</p>
-<p><code>`</code></p>
-
-<p><strong>卤钨灯</strong>：</p>
-<ul>
-<li>可见光源（也覆盖近红外和少量紫外）</li>
-<li>波长范围：350 ~ 2000 nm</li>
-<li>原理：钨丝通电发热→热致发光；加入卤素（碘/溴）形成卤钨循环，延长寿命</li>
-<li>特点：光强I∝V⁴，需要稳压电源；工作温度高（2000-3000K）</li>
-</ul>
-
-<p><strong>氘灯</strong>：</p>
-<ul>
-<li>紫外光源</li>
-<li>波长范围：150 ~ 400 nm（常用200~350nm）</li>
-<li>原理：放电灯</li>
-<li>特点：比氙灯强度大，价格较贵，体积小</li>
-</ul>
-
-<p>双光源仪器通常在350nm附近自动切换（老式仪器需手动拨反光镜），扫描全波段时会听到轻微的"咔嗒"换灯声。</p>
-<p></details></p>
-
-<hr>
-
-<blockquote>**笔记说明**：本笔记基于2026年9月15日分析化学课堂完整逐字稿整理，涵盖老师讲授的全部知识点、举例、强调点和课堂互动。课表标注主题为"电位分析法1"，但实际授课内容为紫外可见分光光度法续讲+朗伯比尔定律+仪器构造，命名以实际内容为准。</blockquote>
-
-  <div class="footer">
-    <span>分析化学 · 紫外可见分光光度法与朗伯比尔定律</span>
-    <span>HUST课堂笔记</span>
-  </div>
+<div class="page"><h2 class="h2">3. 生色团、助色团与甲醛衍生化</h2>
+<p class="lead">生色团含不饱和键；助色团有孤对电子可延伸共轭；甲醛本身无紫外吸收，国标用可见分光光度法衍生化检测。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>生色团：含不饱和化学键，共轭时吸收更强 <span class="loc">〔说话人1 10:56〕</span></li>
+<li>助色团：无孤立 π 键但有孤对电子，可与生色团进一步共轭增色 <span class="loc">〔说话人1 10:56〕</span></li>
+<li>红移具体数值不必背，知有生色团、助色团即可 <span class="loc">〔说话人1 11:27〕</span></li>
+<li>甲醛有 C=O 孤立双键，共轭体系小，无紫外可见吸收、无色 <span class="loc">〔说话人1 12:07〕</span></li>
+<li>国标甲醛检测为可见分光光度法，须衍生化产生大共轭有色产物 <span class="loc">〔说话人1 12:07〕</span></li>
+<li>乙酰丙酮+氨（沸水浴）与甲醛反应成环，产物含助色团与生色团，呈黄色 <span class="loc">〔说话人1 13:31〕</span></li>
+<li>无紫外吸收物经特异性反应亦可进入分光光度法，故应用广 <span class="loc">〔说话人1 13:31〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>助色团特征：有孤对电子；甲醛检测思路：衍生化+共轭显色 <span class="loc">〔说话人1 11:27〕</span></div>
 </div>
-
-</body>
-</html>
+<div class="page"><h2 class="h2">4. 溶剂极性对吸收的影响</h2>
+<p class="lead">极性溶剂稳定溶质→能级整体下降；π→π* 能级差变小红移，n→π* 能级差变大蓝移（紫移）。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>溶剂极性不同（如己烷 vs 醇）会改变吸收波长 <span class="loc">〔说话人1 14:31〕</span></li>
+<li>极性溶剂经偶极-偶极作用或氢键使分子更稳定、能量降低 <span class="loc">〔说话人1 15:40〕</span></li>
+<li>π→π*：极性溶剂中 π* 降得更多→能级差变小→波长变长→红移 <span class="loc">〔说话人1 17:27〕</span></li>
+<li>n→π*：n 轨道（孤对）在极性溶剂中易氢键，降得更多→能级差变大→波长变短→蓝移 <span class="loc">〔说话人1 17:27〕</span></li>
+<li>例：己烷 305 nm→乙醇 307 nm 为红移，属 π→π* 跃迁 <span class="loc">〔说话人1 18:36〕</span></li>
+<li>换溶剂可辅助判断结合方式（生物分子等） <span class="loc">〔说话人1 19:05〕</span></li>
+<li>上述溶剂效应主要针对有机化合物；无机物通常无此共轭情形 <span class="loc">〔说话人1 19:05〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>跃迁</th><th>极性溶剂中</th><th>波长变化</th></tr>
+<tr><td>π→π*</td><td>能级差变小</td><td>红移</td></tr>
+<tr><td>n→π*</td><td>能级差变大</td><td>蓝移（紫移）</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>须掌握：π→π* 红移，n→π* 蓝移 <span class="loc">〔说话人1 18:08〕</span></div>
+</div>
+<div class="page"><h2 class="h2">5. 无机化合物吸收：d-d 与电荷转移</h2>
+<p class="lead">过渡金属需 d/f 电子才有配位场跃迁；电荷转移跃迁吸光强，为无机物主要灵敏吸收类型。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>无机离子颜色常来自配位环境变化（如 Cu²⁺水合、氨合） <span class="loc">〔说话人1 20:27〕</span></li>
+<li>无水 CuSO₄ 无色；水合或溶液蓝色；加氨呈深蓝（波长改变，非单纯变深） <span class="loc">〔说话人1 20:27〕</span></li>
+<li>水溶液中 Cu²⁺实际以水配位 <span class="loc">〔说话人1 20:27〕</span></li>
+<li>Cu²⁺ 有 d 电子，配位场下 d 轨道分裂产生能级差，电子跃迁为 d-d 跃迁 <span class="loc">〔说话人1 23:49〕</span></li>
+<li>轨道数：s 1、p 3、d 5、f 7；d 轨道五重简并（光谱学称简并） <span class="loc">〔说话人1 21:45〕</span></li>
+<li>配位场存在时 d 轨道能级分裂（如三低二高），电子在不同能级间跃迁 <span class="loc">〔说话人1 22:12〕</span></li>
+<li>配体不同（H₂O vs NH₃）分裂程度不同→吸收波长不同 <span class="loc">〔说话人1 22:41〕</span></li>
+<li>须 d/f 轨道上有电子才有颜色；Na⁺ 无 d 电子，配位场亦无色 <span class="loc">〔说话人1 23:19〕</span></li>
+<li>Cu⁺ 无 d 电子，任何配位环境均无色 <span class="loc">〔说话人1 23:49〕</span></li>
+<li>亦称配位场跃迁（d-d 或 f-f）；d-d 跃迁吸光系数不大（约 10²） <span class="loc">〔说话人1 23:49〕</span></li>
+<li>硫酸铜色深主因溶解度大、浓度高，非吸光极强 <span class="loc">〔说话人1 24:51〕</span></li>
+<li>电荷转移跃迁：分子内离子间电子转移，吸光能力很强 <span class="loc">〔说话人1 26:14〕</span></li>
+<li>AgCl 无色，AgBr 浅黄，AgI 更深：卤素电负性越小越易给电子→越易转移 <span class="loc">〔说话人1 26:14〕</span></li>
+<li>硫氰化铁血红色，电荷转移跃迁可高灵敏检测 Fe³⁺ <span class="loc">〔说话人1 26:14〕</span></li>
+<li>大有机分子亦可能发生电荷转移；须知名称，不必背具体波长与 ε <span class="loc">〔说话人1 27:47〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>类型</th><th>前提</th><th>灵敏度</th></tr>
+<tr><td>d-d / f-f（配位场跃迁）</td><td>d/f 轨道有电子</td><td>较低（ε 约 10²）</td></tr>
+<tr><td>电荷转移跃迁</td><td>电子由一物种向另一物种转移</td><td>高（无机主要类型）</td></tr></table>
+</div>
+<div class="page"><h2 class="h2">6. 应用：防晒霜成分与检测思路</h2>
+<p class="lead">防晒靠吸收紫外；活性段为肉桂酸酯类共轭双键；酯侧链调亲肤性；广谱需多组分。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>防晒针对紫外线（200-400 nm），非阻挡可见光 <span class="loc">〔说话人1 28:51〕</span></li>
+<li>全反射式涂白不实用；透明防晒剂靠吸收紫外 <span class="loc">〔说话人1 29:12〕</span></li>
+<li>多品牌共有对甲氧基/四甲氧基肉桂酸酯类，共轭双键段相同 <span class="loc">〔说话人1 29:12〕</span></li>
+<li>“对甲氧基”与“四甲氧基”在此语境下实质相同 <span class="loc">〔说话人1 29:12〕</span></li>
+<li>辛酯与二乙基己基酯均为 8 碳酯侧链，同分异构，不起防晒作用 <span class="loc">〔说话人1 30:57〕</span></li>
+<li>侧链影响亲肤性、脂溶性及涂布手感，不改变紫外吸收曲线 <span class="loc">〔说话人1 33:11〕</span></li>
+<li>单一成分不能覆盖 200-400 nm 全段，广谱须添加多种防晒剂 <span class="loc">〔说话人1 33:41〕</span></li>
+<li>防晒检测：石英板涂膜（厚度按国标）测紫外吸收 <span class="loc">〔说话人1 34:54〕</span></li>
+<li>能否用 UV-VIS：先找双键/共轭；无则考虑衍生化（如甲醛） <span class="loc">〔说话人1 35:37〕</span></li>
+</ul>
+</div>
+<div class="page"><h2 class="h2">7. 朗伯比尔定律：透光率与吸光度</h2>
+<p class="lead">I₀=Iₐ+Iₜ（平行入射消反射）；T 与 c 非线性，A=-logT 与 c 成正比，A=Kbc。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>I₀ 入射光，Iₐ 吸收，Iₜ 透射；溶液中吸收主体为分子（非常规金属原子溶液除外） <span class="loc">〔说话人1 35:37〕</span></li>
+<li>垂直平行入射可避免反射；比色皿尽量同一套（配套）以表面一致 <span class="loc">〔说话人1 38:14〕</span></li>
+<li>Iₐ 与浓度无简单线性关系 <span class="loc">〔说话人1 39:57〕</span></li>
+<li>透射比（透光率）T = Iₜ/I₀，须掌握定义 <span class="loc">〔说话人1 39:57〕</span></li>
+<li>吸光度 A = -log T（absorbance），与浓度成正比 <span class="loc">〔说话人1 41:30〕</span></li>
+<li>朗伯比尔定律 A = Kbc（K 可写作 ε 等） <span class="loc">〔说话人1 41:30〕</span></li>
+<li>条件：一定强度单色光通过含吸光物质的透明均一溶液 <span class="loc">〔说话人1 41:30〕</span></li>
+<li>透明均一排除散射（否则 I₀≠Iₐ+Iₜ） <span class="loc">〔说话人1 42:59〕</span></li>
+<li>朗伯：A∝b（光程）；比尔：A∝c；容器宽度固定即比尔定律 <span class="loc">〔说话人1 42:14〕</span></li>
+<li>灵敏度即校准曲线斜率；K、b 为斜率因子，b 可选比色皿厚度加大 <span class="loc">〔说话人1 44:21〕</span></li>
+<li>K 与物质本身、入射波长、溶剂（极性）等有关 <span class="loc">〔说话人1 55:44〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>量</th><th>定义</th><th>与浓度关系</th></tr>
+<tr><td>T</td><td>Iₜ/I₀</td><td>不成正比</td></tr>
+<tr><td>A</td><td>-log T</td><td>成正比（朗伯比尔）</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>单色光、透明均一溶液为 A=Kbc 限制条件 <span class="loc">〔说话人1 42:59〕</span></div>
+</div>
+<div class="page"><h2 class="h2">8. 吸光系数、灵敏度与定量方法</h2>
+<p class="lead">K&gt;10⁴ 为高灵敏；K 有单位；吸光度加和性致选择性差；标准曲线法与直接比较法常用。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>K 反映灵敏度；K&gt;10⁴ 视为较高，硫酸铜 K&lt;10² 较低 <span class="loc">〔说话人1 56:16〕</span></li>
+<li>A 无单位；b（cm）、c 有单位→K 必有单位且随浓度单位变 <span class="loc">〔说话人1 57:11〕</span></li>
+<li>c 用 mol/L 时 K 常写作 ε（摩尔吸光系数） <span class="loc">〔说话人1 57:11〕</span></li>
+<li>填空算 K 须带单位，否则扣分 <span class="loc">〔说话人1 01:03:30〕</span></li>
+<li>Mn²⁺ 粉红色极浅，525 nm 处 K≈0.02；MnO₄⁻ K≈10³ <span class="loc">〔说话人1 01:00:22〕</span></li>
+<li>测 Mn²⁺ 可氧化为高锰酸根（如高碘酸根）以提高灵敏度 <span class="loc">〔说话人1 01:01:04〕</span></li>
+<li>桑德尔灵敏度：A=0.01 时单位光程检出最低含量；越小越好（与常规定义相反） <span class="loc">〔说话人1 01:02:18〕</span></li>
+<li>1982 年后 IUPAC 规定灵敏度=标准曲线斜率 <span class="loc">〔说话人1 01:02:40〕</span></li>
+<li>多组分无相互作用（不反应、已平衡）时 A总=A₁+A₂+…（加和性） <span class="loc">〔说话人1 01:04:15〕</span></li>
+<li>仪器不知谁吸收→紫外可见选择性不佳，干扰源于加和性 <span class="loc">〔说话人1 01:06:34〕</span></li>
+<li>干燥剂硅胶加 Co²⁺：无水蓝色、吸水变红（配位场变化） <span class="loc">〔说话人1 01:06:04〕</span></li>
+<li>标准曲线法（亦称校准曲线法）：多浓度测 A，拟合直线，未知代入求 c；至少 5 点较可靠 <span class="loc">〔说话人1 01:08:12〕</span></li>
+<li>直接比较法（calculation）：A样/A标=c样/c标（K、b 相同则消去），即 c样=c标×(A样/A标) <span class="loc">〔说话人1 01:09:34〕</span></li>
+<li>待测浓度未知时可先测再稀释（如自来水硝酸盐），使试样与标样浓度接近 <span class="loc">〔说话人1 01:10:57〕</span></li>
+<li>便携式仪器现也多内置标准曲线 <span class="loc">〔说话人1 01:09:34〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span>吸光度加和性；标准曲线≥5 点；直接比较法浓度要接近 <span class="loc">〔说话人1 01:10:16〕</span></div>
+</div>
+<div class="page"><h2 class="h2">9. 朗伯比尔定律的偏离</h2>
+<p class="lead">非单色光降低灵敏度且对高浓度误差更大；杂散光使 A 偏大、曲线向下弯；浓度过高与化学反应亦偏离。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>偏离即 A-c 关系非线性 <span class="loc">〔说话人1 01:11:40〕</span></li>
+<li>非单色光（谱带宽 Δλ 大）测得为带宽内平均→低于 λmax 真值→灵敏度降低 <span class="loc">〔说话人1 01:13:35〕</span></li>
+<li>看吸光程度而非绝对吸收量；带宽越窄灵敏度越高 <span class="loc">〔说话人1 01:13:35〕</span></li>
+<li>非单色光对高浓度相对误差更大→定律不适合高浓度（宜低浓度） <span class="loc">〔说话人1 01:15:47〕</span></li>
+<li>散射光：Iₐ不变，Iₜ减小→A 增大 <span class="loc">〔说话人1 01:19:14〕</span></li>
+<li>仪器杂散光（stray light）：镜面积灰等使测定偏离，为主要偏离因素之一 <span class="loc">〔说话人1 01:20:52〕</span></li>
+<li>杂散光越多线性范围越窄，高浓度越不可用 <span class="loc">〔说话人1 01:22:09〕</span></li>
+<li>光学因素：非单色光、杂散光；物理化学因素：介质不均、浓度过高、化学反应 <span class="loc">〔说话人1 01:23:20〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>因素</th><th>效应</th></tr>
+<tr><td>非单色光</td><td>灵敏度降低；高浓度误差更大</td></tr>
+<tr><td>散射/杂散光</td><td>A 偏大，曲线向下偏离</td></tr>
+<tr><td>化学反应</td><td>生成新物质，定律失效</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>朗伯比尔定律不适合高浓度；非单色光→灵敏度降低 <span class="loc">〔说话人1 01:16:55〕</span></div>
+</div>
+<div class="page"><h2 class="h2">10. 紫外可见分光光度计构造</h2>
+<p class="lead">五大部件须会排布：光源→单色器→样品池→检测器→数据处理；卤钨灯+氘灯覆盖可见与紫外。</p>
+<h3 class="h3">A. 核心结论</h3>
+<ul class="kv">
+<li>整书任一仪器均要求会画部件排布（可写字不用图） <span class="loc">〔说话人1 01:27:01〕</span></li>
+<li>光源常为复色光（如 LED、日光），朗伯比尔要求单色光→须接单色器 <span class="loc">〔说话人1 01:25:58〕</span></li>
+<li>光路：光源→单色器→样品池→检测器→读数/数据处理，可线性或拐弯 <span class="loc">〔说话人1 01:25:58〕</span></li>
+<li>LED 灯便宜、节能、亮度足，便携仪器中常用 <span class="loc">〔说话人1 01:24:34〕</span></li>
+<li>光源要求：强度大、连续、稳定性好，覆盖约 200-780 nm <span class="loc">〔说话人1 01:28:32〕</span></li>
+<li>卤钨灯：钨丝热致发光，约 350-2000 nm，可见充足，少量紫外 <span class="loc">〔说话人1 01:29:59〕</span></li>
+<li>卤钨循环（碘/溴）：升华钨再生，寿命长；汽车远光灯即卤钨灯 <span class="loc">〔说话人1 01:32:53〕</span></li>
+<li>光强 I∝V⁴，须稳压电源，电压波动致光强不稳 <span class="loc">〔说话人1 01:34:22〕</span></li>
+<li>灯温约 2000-3000 K，运行中勿触摸 <span class="loc">〔说话人1 01:35:27〕</span></li>
+<li>氘灯（放电灯）比氙灯强度更大；波长 150-400 nm，常用 200-350 nm <span class="loc">〔说话人1 01:35:27〕</span></li>
+<li>紫外可见仪常双灯，约 350 nm 附近自动切换（可见用钨灯段） <span class="loc">〔说话人1 01:37:17〕</span></li>
+<li>单色器：入射狭缝→准直镜→色散装置→聚焦镜→出射狭缝（黑匣封装） <span class="loc">〔说话人1 01:38:35〕</span></li>
+<li>转动色散元件可选不同出射波长 <span class="loc">〔说话人1 01:39:35〕</span></li>
+</ul>
+<h3 class="h3">B. 对比表</h3>
+<table class="tbl"><tr><th>光源</th><th>波长范围</th><th>要点</th></tr>
+<tr><td>卤钨灯</td><td>350-2000 nm</td><td>热致发光，I∝V⁴，卤素循环延寿</td></tr>
+<tr><td>氘灯</td><td>150-400 nm（常用 200-350）</td><td>紫外，强度大于氙灯</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>五大部件排布；卤钨灯与氘灯分工 <span class="loc">〔说话人1 01:28:04〕</span></div>
+</div>
+<div class="page"><h2 class="h2">附录 A 必背清单</h2><ul class="kv">
+<li>紫外 200-400 nm，可见 400-780 nm（教材） <span class="loc">〔说话人1 03:18〕</span></li>
+<li>UV-VIS = 分子光谱 + 吸收光谱 <span class="loc">〔说话人1 03:18〕</span></li>
+<li>定性：峰位置、峰个数、峰相对高低 <span class="loc">〔说话人1 04:39〕</span></li>
+<li>定量：λmax <span class="loc">〔说话人1 04:39〕</span></li>
+<li>π→π* 极性溶剂红移；n→π* 蓝移 <span class="loc">〔说话人1 18:08〕</span></li>
+<li>助色团：孤对电子 <span class="loc">〔说话人1 11:27〕</span></li>
+<li>A = -log T；A = Kbc <span class="loc">〔说话人1 41:30〕</span></li>
+<li>单色光 + 透明均一溶液 <span class="loc">〔说话人1 42:59〕</span></li>
+<li>K&gt;10⁴ 高灵敏；算 K 带单位 <span class="loc">〔说话人1 56:16〕</span></li>
+<li>A总 = ΣAᵢ（无相互作用） <span class="loc">〔说话人1 01:04:15〕</span></li>
+<li>定律不适合高浓度 <span class="loc">〔说话人1 01:16:55〕</span></li>
+<li>仪器：光源→单色器→样品池→检测器→数据处理 <span class="loc">〔说话人1 01:27:01〕</span></li>
+<li>卤钨灯 350-2000 nm；氘灯 150-400 nm <span class="loc">〔说话人1 01:36:30〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2><table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>紫外可见是原子光谱</td><td>分子光谱（三种运动状态） <span class="loc">〔说话人1 02:37〕</span></td></tr>
+<tr><td>深蓝只是蓝色变深</td><td>深蓝与蓝波长不同（配位场不同） <span class="loc">〔说话人1 20:27〕</span></td></tr>
+<tr><td>硫酸铜色深=ε 很大</td><td>主因浓度高，ε 仅约 10² <span class="loc">〔说话人1 24:51〕</span></td></tr>
+<tr><td>谱带越宽吸收越多故更灵敏</td><td>看吸光程度，宽谱带使 A 偏低、灵敏度降 <span class="loc">〔说话人1 01:13:35〕</span></td></tr>
+<tr><td>散射使 A 变小</td><td>Iₜ 减小，A 增大 <span class="loc">〔说话人1 01:19:14〕</span></td></tr>
+<tr><td>桑德尔灵敏度越大越好</td><td>桑德尔越小越好；常规定义斜率越大越好 <span class="loc">〔说话人1 01:02:40〕</span></td></tr>
+<tr><td>对甲氧基与四甲氧基完全不同</td><td>防晒活性段相同，营销名不同 <span class="loc">〔说话人1 30:57〕</span></td></tr>
+<tr><td>酯侧链改变防晒波长</td><td>侧链只调亲肤性，吸收曲线相同 <span class="loc">〔说话人1 33:11〕</span></td></tr>
+<tr><td>c样=c标×(A标/A样)</td><td>c样=c标×(A样/A标) <span class="loc">〔说话人1 01:09:34〕</span></td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2><table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>分子/吸收光谱归属</td><td>§1</td><td>〔说话人1 03:18〕</td><td>判断</td></tr>
+<tr><td>波长范围背诵</td><td>§1</td><td>〔说话人1 03:18〕</td><td>填空</td></tr>
+<tr><td>允许/禁阻与灵敏度</td><td>§2</td><td>〔说话人1 07:30〕</td><td>辨析</td></tr>
+<tr><td>溶剂极性红移/蓝移</td><td>§4</td><td>〔说话人1 18:08〕</td><td>选择</td></tr>
+<tr><td>甲醛衍生化</td><td>§3</td><td>〔说话人1 13:31〕</td><td>简答</td></tr>
+<tr><td>d-d 与电荷转移</td><td>§5</td><td>〔说话人1 27:47〕</td><td>简答</td></tr>
+<tr><td>T 与 A 定义</td><td>§7</td><td>〔说话人1 41:30〕</td><td>填空</td></tr>
+<tr><td>朗伯比尔条件</td><td>§7</td><td>〔说话人1 42:59〕</td><td>判断</td></tr>
+<tr><td>K 单位与 ε</td><td>§8</td><td>〔说话人1 57:11〕</td><td>计算</td></tr>
+<tr><td>加和性与选择性</td><td>§8</td><td>〔说话人1 01:06:34〕</td><td>简答</td></tr>
+<tr><td>非单色光与高浓度</td><td>§9</td><td>〔说话人1 01:16:55〕</td><td>简答</td></tr>
+<tr><td>五大部件排布</td><td>§10</td><td>〔说话人1 01:27:01〕</td><td>作图</td></tr>
+<tr><td>卤钨灯与氘灯</td><td>§10</td><td>〔说话人1 01:36:30〕</td><td>填空</td></tr>
+</table></div>
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2><table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr><tr><td>1</td><td>下次课前10分钟第一章测验</td><td>安排</td><td>§1</td><td>〔说话人1 00:11〕</td></tr><tr><td>2</td><td>光学分析法有能量变化</td><td>定义</td><td>§1</td><td>〔说话人1 00:11〕</td></tr><tr><td>3</td><td>折射与弹性散射属非光分析</td><td>分类</td><td>§1</td><td>〔说话人1 00:11〕</td></tr><tr><td>4</td><td>原子分子与吸收发射分类</td><td>分类</td><td>§1</td><td>〔说话人1 01:36〕</td></tr><tr><td>5</td><td>电子振动转动三运动</td><td>机制</td><td>§1</td><td>〔说话人1 02:37〕</td></tr><tr><td>6</td><td>UV-VIS为分子光谱</td><td>考点</td><td>§1</td><td>〔说话人1 02:37〕</td></tr><tr><td>7</td><td>吸收后跃迁属吸收光谱</td><td>考点</td><td>§1</td><td>〔说话人1 03:18〕</td></tr><tr><td>8</td><td>紫外200-400nm必背</td><td>数字</td><td>§1</td><td>〔说话人1 03:18〕</td></tr><tr><td>9</td><td>可见400-780nm</td><td>数字</td><td>§1</td><td>〔说话人1 03:18〕</td></tr><tr><td>10</td><td>转动远红外振动红外</td><td>对比</td><td>§1</td><td>〔说话人1 04:39〕</td></tr><tr><td>11</td><td>电子跃迁对应紫外可见</td><td>对比</td><td>§1</td><td>〔说话人1 04:39〕</td></tr><tr><td>12</td><td>定性三要素峰位峰数相对高</td><td>考点</td><td>§1</td><td>〔说话人1 04:39〕</td></tr><tr><td>13</td><td>定量选λmax</td><td>方法</td><td>§1</td><td>〔说话人1 04:39〕</td></tr><tr><td>14</td><td>分光光度计可做全谱</td><td>仪器</td><td>§1</td><td>〔说话人1 06:02〕</td></tr><tr><td>15</td><td>光度计固定波长便携</td><td>仪器</td><td>§1</td><td>〔说话人1 06:25〕</td></tr><tr><td>16</td><td>生色团定义</td><td>定义</td><td>§2</td><td>〔说话人1 06:51〕</td></tr><tr><td>17</td><td>σ键链无紫外贡献</td><td>机制</td><td>§2</td><td>〔说话人1 06:51〕</td></tr><tr><td>18</td><td>允许跃迁几率大</td><td>概念</td><td>§2</td><td>〔说话人1 07:30〕</td></tr><tr><td>19</td><td>禁阻跃迁forbidden</td><td>概念</td><td>§2</td><td>〔说话人1 07:54〕</td></tr><tr><td>20</td><td>真空紫外需抽真空</td><td>机制</td><td>§2</td><td>〔说话人1 08:15〕</td></tr><tr><td>21</td><td>σ溶剂可用</td><td>应用</td><td>§2</td><td>〔说话人1 08:15〕</td></tr><tr><td>22</td><td>n→σ*禁阻</td><td>分类</td><td>§2</td><td>〔说话人1 08:36〕</td></tr><tr><td>23</td><td>π→π*允许</td><td>分类</td><td>§2</td><td>〔说话人1 08:36〕</td></tr><tr><td>24</td><td>共轭红移增色</td><td>机制</td><td>§2</td><td>〔说话人1 09:59〕</td></tr><tr><td>25</td><td>分子轨道共轭解释</td><td>机制</td><td>§2</td><td>〔说话人1 09:13〕</td></tr><tr><td>26</td><td>助色团孤对电子</td><td>定义</td><td>§3</td><td>〔说话人1 11:27〕</td></tr><tr><td>27</td><td>甲醛无紫外吸收</td><td>实例</td><td>§3</td><td>〔说话人1 12:07〕</td></tr><tr><td>28</td><td>国标可见分光光度法测甲醛</td><td>方法</td><td>§3</td><td>〔说话人1 12:07〕</td></tr><tr><td>29</td><td>乙酰丙酮氨沸水浴黄色产物</td><td>方法</td><td>§3</td><td>〔说话人1 13:31〕</td></tr><tr><td>30</td><td>衍生化扩展应用</td><td>应用</td><td>§3</td><td>〔说话人1 13:31〕</td></tr><tr><td>31</td><td>溶剂极性改变λ</td><td>机制</td><td>§4</td><td>〔说话人1 14:31〕</td></tr><tr><td>32</td><td>氢键与偶极作用降能</td><td>机制</td><td>§4</td><td>〔说话人1 15:40〕</td></tr><tr><td>33</td><td>π→π*红移</td><td>考点</td><td>§4</td><td>〔说话人1 16:48〕</td></tr><tr><td>34</td><td>n→π*蓝移</td><td>考点</td><td>§4</td><td>〔说话人1 17:27〕</td></tr><tr><td>35</td><td>305→307nm判π→π*</td><td>实例</td><td>§4</td><td>〔说话人1 18:36〕</td></tr><tr><td>36</td><td>Cu2+水合氨合颜色</td><td>实例</td><td>§5</td><td>〔说话人1 20:27〕</td></tr><tr><td>37</td><td>d轨道五个简并</td><td>概念</td><td>§5</td><td>〔说话人1 21:45〕</td></tr><tr><td>38</td><td>配位场分裂</td><td>机制</td><td>§5</td><td>〔说话人1 22:12〕</td></tr><tr><td>39</td><td>须有d电子才有色</td><td>考点</td><td>§5</td><td>〔说话人1 23:19〕</td></tr><tr><td>40</td><td>Cu+无色</td><td>实例</td><td>§5</td><td>〔说话人1 23:49〕</td></tr><tr><td>41</td><td>d-d吸光系数约10²</td><td>数字</td><td>§5</td><td>〔说话人1 24:51〕</td></tr><tr><td>42</td><td>电荷转移灵敏度高</td><td>概念</td><td>§5</td><td>〔说话人1 25:27〕</td></tr><tr><td>43</td><td>AgCl AgBr AgI递变</td><td>实例</td><td>§5</td><td>〔说话人1 26:14〕</td></tr><tr><td>44</td><td>硫氰化铁检Fe3+</td><td>应用</td><td>§5</td><td>〔说话人1 26:14〕</td></tr><tr><td>45</td><td>防晒吸收紫外200-400</td><td>应用</td><td>§6</td><td>〔说话人1 28:51〕</td></tr><tr><td>46</td><td>肉桂酸酯共轭防晒基团</td><td>结构</td><td>§6</td><td>〔说话人1 30:57〕</td></tr><tr><td>47</td><td>酯链8碳同分异构</td><td>结构</td><td>§6</td><td>〔说话人1 30:57〕</td></tr><tr><td>48</td><td>广谱需多防晒成分</td><td>应用</td><td>§6</td><td>〔说话人1 33:41〕</td></tr><tr><td>49</td><td>石英板涂膜测防晒</td><td>方法</td><td>§6</td><td>〔说话人1 34:54〕</td></tr><tr><td>50</td><td>先找双键共轭再测</td><td>策略</td><td>§6</td><td>〔说话人1 35:37〕</td></tr><tr><td>51</td><td>T=It/I0</td><td>公式</td><td>§7</td><td>〔说话人1 39:57〕</td></tr><tr><td>52</td><td>A=-logT</td><td>公式</td><td>§7</td><td>〔说话人1 41:30〕</td></tr><tr><td>53</td><td>A=Kbc</td><td>公式</td><td>§7</td><td>〔说话人1 41:30〕</td></tr><tr><td>54</td><td>单色光条件</td><td>考点</td><td>§7</td><td>〔说话人1 42:59〕</td></tr><tr><td>55</td><td>透明均一排除散射</td><td>考点</td><td>§7</td><td>〔说话人1 42:59〕</td></tr><tr><td>56</td><td>朗伯A正比b比尔A正比c</td><td>概念</td><td>§7</td><td>〔说话人1 42:14〕</td></tr><tr><td>57</td><td>灵敏度=斜率</td><td>概念</td><td>§7</td><td>〔说话人1 44:21〕</td></tr><tr><td>58</td><td>K与波长溶剂有关</td><td>因素</td><td>§8</td><td>〔说话人1 55:44〕</td></tr><tr><td>59</td><td>K>10⁴高灵敏</td><td>数字</td><td>§8</td><td>〔说话人1 56:16〕</td></tr><tr><td>60</td><td>ε为mol/L时摩尔吸光系数</td><td>记号</td><td>§8</td><td>〔说话人1 58:11〕</td></tr><tr><td>61</td><td>Mn2+氧化为MnO4-</td><td>方法</td><td>§8</td><td>〔说话人1 01:01:04〕</td></tr><tr><td>62</td><td>桑德尔灵敏度越小越好</td><td>概念</td><td>§8</td><td>〔说话人1 01:02:40〕</td></tr><tr><td>63</td><td>吸光度加和性</td><td>考点</td><td>§8</td><td>〔说话人1 01:04:15〕</td></tr><tr><td>64</td><td>标准曲线至少5点</td><td>方法</td><td>§8</td><td>〔说话人1 01:08:37〕</td></tr><tr><td>65</td><td>直接比较法浓度接近</td><td>方法</td><td>§8</td><td>〔说话人1 01:10:57〕</td></tr><tr><td>66</td><td>非单色光降灵敏度</td><td>偏离</td><td>§9</td><td>〔说话人1 01:13:35〕</td></tr><tr><td>67</td><td>高浓度误差更大</td><td>偏离</td><td>§9</td><td>〔说话人1 01:16:55〕</td></tr><tr><td>68</td><td>散射使A增大</td><td>偏离</td><td>§9</td><td>〔说话人1 01:19:14〕</td></tr><tr><td>69</td><td>杂散光主要偏离因素</td><td>偏离</td><td>§9</td><td>〔说话人1 01:22:09〕</td></tr><tr><td>70</td><td>光学与物化偏离因素列表</td><td>考点</td><td>§9</td><td>〔说话人1 01:23:58〕</td></tr><tr><td>71</td><td>五大部件排布</td><td>考点</td><td>§10</td><td>〔说话人1 01:27:01〕</td></tr><tr><td>72</td><td>卤钨灯热致发光</td><td>光源</td><td>§10</td><td>〔说话人1 01:29:59〕</td></tr><tr><td>73</td><td>卤素循环延寿</td><td>光源</td><td>§10</td><td>〔说话人1 01:32:53〕</td></tr><tr><td>74</td><td>I正比V四次方</td><td>光源</td><td>§10</td><td>〔说话人1 01:34:22〕</td></tr><tr><td>75</td><td>氘灯150-400nm</td><td>光源</td><td>§10</td><td>〔说话人1 01:35:27〕</td></tr><tr><td>76</td><td>350nm换灯</td><td>光源</td><td>§10</td><td>〔说话人1 01:37:17〕</td></tr><tr><td>77</td><td>单色器狭缝色散聚焦</td><td>部件</td><td>§10</td><td>〔说话人1 01:38:35〕</td></tr><tr><td>78</td><td>比色皿配套使用</td><td>操作</td><td>§7</td><td>〔说话人1 38:59〕</td></tr><tr><td>79</td><td>下次测验单选判断</td><td>安排</td><td>§1</td><td>〔说话人1 01:40:00〕</td></tr><tr><td>80</td><td>复色光光源后接单色器</td><td>仪器</td><td>§10</td><td>〔说话人1 01:25:58〕</td></tr>
+<tr><td>81</td><td>单色光复色光互补色</td><td>概念</td><td>§1</td><td>〔说话人1 03:18〕</td></tr>
+<tr><td>82</td><td>溶剂效应多针对有机物</td><td>范围</td><td>§4</td><td>〔说话人1 19:05〕</td></tr>
+<tr><td>83</td><td>s1p3d5f7轨道数</td><td>数字</td><td>§5</td><td>〔说话人1 21:45〕</td></tr>
+<tr><td>84</td><td>Na+无d电子无色</td><td>实例</td><td>§5</td><td>〔说话人1 23:19〕</td></tr>
+<tr><td>85</td><td>校准曲线法别名</td><td>术语</td><td>§8</td><td>〔说话人1 01:07:14〕</td></tr>
+<tr><td>86</td><td>直接比较c样=c标A样/A标</td><td>公式</td><td>§8</td><td>〔说话人1 01:09:34〕</td></tr>
+<tr><td>87</td><td>自来水硝酸盐先测再稀释</td><td>实例</td><td>§8</td><td>〔说话人1 01:10:57〕</td></tr>
+<tr><td>88</td><td>LED光源便宜常用</td><td>仪器</td><td>§10</td><td>〔说话人1 01:24:34〕</td></tr></table><p class="foot">附录 D 共 88 条，对照 recording.md 全课 123 轮讲授点登记。</p></div>
+</body></html>

@@ -1,104 +1,241 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<title>医学英语 Unit 2 Discussion · 可视化笔记</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;background:#FAF7F2;color:#24201A;line-height:1.7;font-size:11pt;padding:20px}
-.hero{background:linear-gradient(135deg,#85395A,#3D1729);color:#FBF7EC;padding:40px 30px;border-radius:12px;margin-bottom:24px}
-.hero h1{font-size:24px;margin-bottom:8px}
-.hero .meta{font-size:10pt;opacity:.85}
-.section{background:#fff;border:1px solid #DCBDC9;border-radius:10px;padding:20px 24px;margin-bottom:16px}
-.section h2{color:#5C2540;font-size:15pt;border-bottom:2px solid #DCBDC9;padding-bottom:6px;margin-bottom:12px}
-.section h3{color:#7A3350;font-size:12pt;margin:12px 0 6px}
-.key{background:#F6EFD4;border-left:4px solid #9C7A1C;padding:10px 14px;border-radius:4px;margin:8px 0}
-.warn{background:#F7E4DF;border-left:4px solid #B23A2E;padding:10px 14px;border-radius:4px;margin:8px 0;color:#7E2A20}
-table{width:100%;border-collapse:collapse;margin:10px 0}
-th,td{border:1px solid #DCBDC9;padding:6px 10px;text-align:left;font-size:10pt}
-th{background:#F4E7EC;color:#5C2540}
-ul{padding-left:20px;margin:6px 0}
-li{margin:3px 0}
-.word{display:inline-block;background:#F4E7EC;border-radius:4px;padding:2px 8px;margin:2px;font-weight:600;color:#5C2540}
-</style>
-</head>
-<body>
-<div class="hero">
-<h1>医学英语 Unit 2 Discussion · 可视化笔记</h1>
-<div class="meta">医学英语基础 · 第7-8节 · 2026-09-23 · 叶琳副教授</div>
-</div>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>医学英语 第7-8节 · 词汇展示与 Unit1/5 导入 · 核心内容笔记</title><style>:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#7A2E4A; --accent-d:#542033; --accent-t:#F4E4EA;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:10mm 0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;margin:0 auto 6mm;background:#fff;box-sizing:border-box}
+.h1{font-family:var(--serif);font-size:15pt;margin:0 0 4mm;color:var(--accent-d)}
+.h2{font-family:var(--serif);font-size:13pt;margin:0 0 3mm;padding-left:2.5mm;border-left:4px solid var(--accent);color:var(--accent-d)}
+.h3{font-family:var(--serif);font-size:11.5pt;margin:5mm 0 2mm;color:var(--ink2)}
+.lead{background:var(--accent-t);border-left:4px solid var(--accent);padding:2mm 3mm;margin:0 0 3mm;color:var(--ink2)}
+.kv{margin:0 0 2mm;padding-left:5mm}
+.kv li{margin:.6mm 0}
+.tbl{width:100%;border-collapse:collapse;margin:2mm 0 4mm;font-size:9.5pt}
+.tbl th{background:var(--accent);color:#fff;padding:1.5mm 2mm;text-align:left;font-weight:600;border:1px solid var(--accent-d)}
+.tbl td{padding:1.5mm 2mm;border:1px solid var(--line);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--paper)}
+.exam{background:var(--exam-t);border:1px solid var(--exam);border-left:4px solid var(--exam);padding:2mm 3mm;margin:2mm 0 4mm}
+.wrong{background:var(--wrong-t);border:1px solid var(--wrong);border-left:4px solid var(--wrong);padding:2mm 3mm;margin:2mm 0 4mm}
+.mnem{background:var(--mnem-t);border:1px solid var(--mnem);border-left:4px solid var(--mnem);padding:2mm 3mm;margin:2mm 0 4mm}
+.def{background:var(--def-t);border:1px solid var(--def);border-left:4px solid var(--def);padding:2mm 3mm;margin:2mm 0 4mm}
+.grid{display:flex;gap:3mm;margin:2mm 0 4mm}
+.card{flex:1;background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--accent);padding:2mm 2.5mm;break-inside:avoid}
+.tag{display:inline-block;background:var(--exam);color:#fff;font-size:8pt;padding:0 1.6mm;border-radius:2px;margin-right:1.5mm}
+.loc{color:var(--muted);font-size:8pt;white-space:nowrap}
+.foot{color:var(--muted);font-size:8.5pt;border-top:1px solid var(--line);margin-top:6mm;padding-top:2mm}
+.idx{width:100%;border-collapse:collapse;margin:2mm 0 4mm;font-size:8.5pt}
+.idx th{background:var(--accent);color:#fff;padding:1.2mm 1.8mm;text-align:left;font-weight:600;border:1px solid var(--accent-d)}
+.idx td{padding:1.2mm 1.8mm;border:1px solid var(--line);vertical-align:top}
+.idx tr:nth-child(even) td{background:var(--paper)}
+.exam,.card,.tbl,.idx{break-inside:avoid}
+.fw{width:100%;margin:2mm 0 3mm}
+@media print{.page{margin:0}}</style></head><body>
+<div class="page"><div class="cover">
+<p class="h1">医学英语 · 第7-8节 课堂笔记（核心内容版）</p>
+<table class="tbl">
+<tr><th style="width:22%">主题</th><td>词汇展示点评、Unit 1 收尾（构词法与 AI 课文）、Unit 5 导入（膀胱外翻与再生工程）</td></tr>
+<tr><th>上课日期</th><td>2026-09-23（周三）· 2 学时</td></tr>
+<tr><th>素材规模</th><td>逐字稿 33,449 字 / 225 轮</td></tr>
+</table></div>
 
-<div class="section">
-<h2>一、六种医学英语构词法</h2>
-<table>
-<tr><th>构词法</th><th>定义</th><th>示例</th></tr>
-<tr><td>词义转换</td><td>普通词进入医学领域含义改变</td><td>contract=合同/患病(contract a disease)</td></tr>
-<tr><td>拼缀法</td><td>两个词根拼合</td><td>genome=gene+chromosome</td></tr>
-<tr><td>逆构法</td><td>名词反向推导动词</td><td>diagnose(v.)←diagnosis(n.)</td></tr>
-<tr><td>截短法</td><td>长词简写</td><td>flu←influenza</td></tr>
-<tr><td>首字母缩略</td><td>多词取首字母</td><td>ICU, ECG</td></tr>
-<tr><td>派生法</td><td>前缀+词根+后缀</td><td>electrocardiogram=electro+cardio+gram</td></tr>
-</table>
-</div>
-
-<div class="section">
-<h2>二、核心词族</h2>
-<h3>cyst（膀胱）</h3>
-<p>
-<span class="word">cystitis</span>膀胱炎
-<span class="word">cystoscopy</span>膀胱镜
-<span class="word">cystectomy</span>膀胱切除术
-<span class="word">cystotomy</span>膀胱造口术
-</p>
-<h3>其他高频</h3>
-<table>
-<tr><th>词汇</th><th>拆解</th><th>释义</th></tr>
-<tr><td>urinary tract infection</td><td>urin(尿)+ary+tract(道)+infection</td><td>尿路感染</td></tr>
-<tr><td>palpation</td><td>palp(触)+ation</td><td>触诊</td></tr>
-<tr><td>percussion</td><td>per(彻底)+cuss(敲击)+ion</td><td>叩诊</td></tr>
-<tr><td>ischemic stroke</td><td>is(停止)+em(血)+ic</td><td>缺血性卒中</td></tr>
-<tr><td>pneumonia</td><td>pneumon(肺)+ia(疾病)</td><td>肺炎</td></tr>
-<tr><td>cardiologist</td><td>cardio(心)+logist(研究者)</td><td>心脏病专家</td></tr>
-<tr><td>radiologist</td><td>radio(射线)+logist</td><td>放射科医生</td></tr>
-<tr><td>internist</td><td>intern(内部)+ist(人)</td><td>内科医生</td></tr>
-</table>
-</div>
-
-<div class="section">
-<h2>三、Unit 1 核心主旨</h2>
-<div class="key">
-<b>AI is complement instead of substitute for human doctors.</b><br>
-AI是人类医生的补充而非替代。
-</div>
-<h3>医生AI协作三技能</h3>
-<ol style="padding-left:20px">
-<li><b>概率化思维</b> probabilistic thinking</li>
-<li><b>了解AI训练数据</b> understand the data AI uses</li>
-<li><b>将AI整合到临床</b> integrate AI into clinical practice</li>
-</ol>
-<div class="warn"><b>⚠ 写作要点：</b>段落填空须用本单元词汇；汉译英先识别核心谓语；强调句式用主语从句(it is...that...)。</div>
-</div>
-
-<div class="section">
-<h2>四、Unit 5 导入：膀胱外翻</h2>
-<table>
-<tr><th>项目</th><th>内容</th></tr>
-<tr><td>主题</td><td>再生工程治疗膀胱外翻（regenerative engineering）</td></tr>
-<tr><td>exstrophy</td><td>ex-(向外)+strophy(翻转)=外翻</td></tr>
-<tr><td>病例</td><td>罕见先天疾病：膀胱生于腹腔外，需多次手术</td></tr>
-<tr><td>跨学科</td><td>细胞生物学+工程学+医学</td></tr>
-<tr><td>词根</td><td>troph=生长（hypertrophy肥大）</td></tr>
-</table>
-</div>
-
-<div class="section">
-<h2>复习清单</h2>
-<ul>
-<li>六种构词法及示例</li>
-<li>cyst词族、urine/clinical/regenerate词族</li>
-<li>Unit 1核心主旨与三技能英文表述</li>
-<li>Unit 5预习：exstrophy、troph词根</li>
+<h2 class="h2">0. 知识框架</h2>
+<p class="lead">全课脉络（四段）：小组罗列 Unit 1 医学词汇并讲练 P18–19 → 老师规范 Task 形式与翻译谓语 → 构词法六类 + Unit 1 第 12–14 段逻辑 → Unit 5 膀胱外翻词根与分组任务。</p>
+<svg class="fw" viewBox="0 0 640 200" role="img" aria-label="全课框架">
+<rect x="220" y="4" width="200" height="26" rx="3" fill="#F4E4EA" stroke="#7A2E4A"/>
+<text x="320" y="22" text-anchor="middle" font-size="11" fill="#542033">第7-8节 知识骨架</text>
+<rect x="20" y="48" width="140" height="40" fill="#fff" stroke="#542033"/><text x="90" y="72" text-anchor="middle" font-size="9">词汇展示与点评</text>
+<rect x="180" y="48" width="140" height="40" fill="#fff" stroke="#542033"/><text x="250" y="72" text-anchor="middle" font-size="9">P18-19 习题与汉译英</text>
+<rect x="340" y="48" width="140" height="40" fill="#fff" stroke="#542033"/><text x="410" y="72" text-anchor="middle" font-size="9">构词法 + Unit1 收尾</text>
+<rect x="500" y="48" width="120" height="40" fill="#fff" stroke="#542033"/><text x="560" y="72" text-anchor="middle" font-size="9">Unit5 导入</text>
+<text x="320" y="130" text-anchor="middle" font-size="9" fill="#6B7480">记词顺序：先词根词缀 → 再同族词扩展；课文逻辑：P12 问题 → P13 方案 → P14 辩证结论（AI 辅助不替代）。</text>
+</svg></div><div class="page"><h2 class="h2">第1章 小组同族词与课文词汇（cyst 等）</h2>
+<p class="lead">章主旨：按词族串讲 Unit 1 课文医学词，并与第五单元膀胱主题衔接。</p>
+<h3 class="h3">1.1 cyst 词族（膀胱）</h3>
+<ul class="kv">
+<li>cyst 词根表膀胱；cystitis 为膀胱炎（课文第 15 段）。 <span class="loc">〔说话人2 02:50〕</span></li>
+<li>interstitial cystitis 为间质性膀胱炎。 <span class="loc">〔说话人2 02:50〕</span></li>
+<li>cystoplasty 为用肠段扩大膀胱（膀胱成形术，课文第 4 段）。 <span class="loc">〔说话人2 02:50〕</span></li>
+<li>cystoscopy 为膀胱镜检查；cystoscopic examination 为膀胱镜下检查。 <span class="loc">〔说话人2 04:39〕</span></li>
+<li>cystectomy 为膀胱切除术；cystotomy 为膀胱造口术。 <span class="loc">〔说话人2 04:39〕</span></li>
+<li>第五单元学膀胱外翻，第一单元词汇表已列出相关词，利于疏通词汇。 <span class="loc">〔说话人1 04:17〕</span></li>
 </ul>
-</div>
-</body>
-</html>
+<h3 class="h3">1.2 泌尿、临床、再生与血管词族</h3>
+<ul class="kv">
+<li>urine 尿液；urinary 泌尿的；urination 排尿。 <span class="loc">〔说话人2 05:17〕</span></li>
+<li>clinic 诊所；clinical 临床的；clinician 临床医生；preclinical 临床前的。 <span class="loc">〔说话人2 05:17〕</span></li>
+<li>clinical trials 临床试验（课文第 13 段）；clinically effective 临床有效。 <span class="loc">〔说话人2 06:36〕</span></li>
+<li>complication 并发症（课文第 3、5、10 段）；complication-related problems 与并发症有关的问题。 <span class="loc">〔说话人2 06:36〕</span></li>
+<li>angiogenesis 血管生成/血管化（课文第 11 段）。 <span class="loc">〔说话人2 07:04〕</span></li>
+<li>regenerate（v.）再生；regeneration（n.）再生；regenerative 与再生相关的；regenerated 已再生的（如 regenerated tissue）。 <span class="loc">〔说话人2 05:50〕</span></li>
+<li>vascularize 使血管化；vascularized 已血管化；vascularization 血管化；cardiovascular 心血管的。 <span class="loc">〔说话人2 08:32〕</span></li>
+<li>reconstruct/reconstruction 重建；graft/grafting、graft rejection 移植与移植物排斥；augment/augmentation 扩大；colonize 细胞定植。 <span class="loc">〔说话人2 08:32〕</span></li>
+</ul>
+<table class="tbl"><tr><th>词族</th><th>代表词</th><th>核心义</th></tr>
+<tr><td>cyst-</td><td>cystitis, cystoscopy, cystectomy</td><td>膀胱相关</td></tr>
+<tr><td>urin-</td><td>urine, urinary, urination</td><td>尿/泌尿</td></tr>
+<tr><td>clinic-</td><td>clinical, clinician, preclinical</td><td>临床</td></tr>
+<tr><td>regener-</td><td>regenerate, regenerative, regenerated</td><td>再生（分词义不同）</td></tr>
+</table></div><div class="page"><h2 class="h2">第2章 词根词缀拆解（教材 P6–P13 等）</h2>
+<p class="lead">章主旨：按词根+词缀给出英文构成与中文义，并辨析易混词。</p>
+<ul class="kv">
+<li>diagnosis 诊断；diagnostic 诊断的；diagnostician 诊断医师（-ician 表人）。 <span class="loc">〔说话人3 10:33〕</span></li>
+<li>electrocardiogram：electro- 电 + cardio 心 + -gram 记录/图 → 心电图。 <span class="loc">〔说话人3 10:33〕</span></li>
+<li>cardiologist：cardio 心 + -logist 研究者 → 心脏病专家。 <span class="loc">〔说话人3 11:44〕</span></li>
+<li>internist：intern 内部 + -ist → 内科医生。 <span class="loc">〔说话人3 11:44〕</span></li>
+<li>urinary tract infection：urin 尿 + -ary + tract 道/途径 + infection → 尿路感染。 <span class="loc">〔说话人3 11:44〕</span></li>
+<li>palpation：palp 触 + -ation 动作过程 → 触诊。 <span class="loc">〔说话人3 13:00〕</span></li>
+<li>percussion：per- 彻底 + cuss 叩打 + -ion → 叩诊。 <span class="loc">〔说话人3 13:16〕</span></li>
+<li>genomic：gen 基因 + -omic → 基因组的；genetic 基因的/遗传学的（需辨析）。 <span class="loc">〔说话人3 13:57〕</span></li>
+<li>ischemic stroke：is- 停止 + em 血 + -ic → 缺血性卒中。 <span class="loc">〔说话人3 14:43〕</span></li>
+<li>arteri- 动脉词根；-y 为常见名词后缀（artery 动脉）。 <span class="loc">〔说话人3 14:43〕</span></li>
+<li>radiologist：radio 射线 + -logist → 放射科医生。 <span class="loc">〔说话人3 14:43〕</span></li>
+<li>pneumonia：pneumon 肺 + -ia 疾病状态 → 肺炎。 <span class="loc">〔说话人3 15:54〕</span></li>
+<li>blood clot：blood 血 + clot 块 → 血凝块。 <span class="loc">〔说话人3 15:54〕</span></li>
+<li>pulmonary embolism：肺词根 + embolize 栓塞 → 肺栓塞。 <span class="loc">〔说话人3 16:30〕</span></li>
+<li>hypertrophic cardiomyopathy：hyper 过度 + troph 生长 + cardio 心 + myo 肌 → 肥厚型心肌病。 <span class="loc">〔说话人3 16:30〕</span></li>
+<li>heart failure 心力衰竭；ultrasound：ultra 超过 → 超声波检查。 <span class="loc">〔说话人3 16:30〕</span></li>
+<li>biometric：bio 生物 + metr 测量 + -ic → 生物测定的。 <span class="loc">〔说话人3 17:57〕</span></li>
+<li>pathologist：path 病 + -logist → 病理学医生。 <span class="loc">〔说话人3 18:37〕</span></li>
+<li>fibrosis：fibr 纤维 + -osis 疾病状态 → 纤维化。 <span class="loc">〔说话人3 18:37〕</span></li>
+<li>ophthalmologist：ophthalmo- 眼 + -logist → 眼科医生。 <span class="loc">〔说话人3 19:40〕</span></li>
+<li>retinal：retin 视网膜 + -al → 视网膜的。 <span class="loc">〔说话人3 19:40〕</span></li>
+</ul></div><div class="page"><h2 class="h2">第3章 教师点评：展示规范与 Task 逻辑</h2>
+<p class="lead">章主旨：表扬全单元词汇罗列，纠正同族词与词根分析的顺序与版式。</p>
+<ul class="kv">
+<li><span class="tag">★考点</span>期末复习可只重看小组列出的 medical words，越简单越好。 <span class="loc">〔说话人1 35:52〕</span></li>
+<li>优点：几乎把单元全部医学词汇 list out，便于划重点。 <span class="loc">〔说话人1 35:52〕</span></li>
+<li>形式问题：cognate words 与 word analysis 未按课堂示范格式完成。 <span class="loc">〔说话人1 37:21〕</span></li>
+<li>word analysis 只讲课文第 17 页 word roots 与 affix 表格中出现的词，逐词给构成与中英文义。 <span class="loc">〔说话人1 38:01〕</span></li>
+<li>至少 7 个词须按示范做完整 word analysis，其余词汇可只列出。 <span class="loc">〔说话人1 39:42〕</span></li>
+<li><span class="tag">★考点</span>记词逻辑：先记词根词缀，再扩展同族词；不可先讲扩展再倒讲词根。 <span class="loc">〔说话人1 40:13〕</span></li>
+<li>cognate words 表：先词根，再找 5 个相关词，列 prefix、word root、combining vowel、suffix 与整词中英义。 <span class="loc">〔说话人1 40:13〕</span></li>
+<li>后续小组：列全第五单元词汇，重点只讲表格内词根。 <span class="loc">〔说话人1 38:01〕</span></li>
+</ul>
+<div class="exam"><span class="tag">★考点</span> Page 19 第 5 题：题干含 in this unit 时不能选本单元未讲的产科医生，应选本单元已学的词汇。 <span class="loc">〔说话人1 41:56〕</span></div></div><div class="page"><h2 class="h2">第4章 Page 18–19 习题要点</h2>
+<p class="lead">章主旨：按解释拼术语为送分题；语境填空看关键词与专科。</p>
+<h3 class="h3">4.1 Page 18 写术语</h3>
+<ul class="kv">
+<li>眼病：ophthalm/o-（眼）词根术语；纤维组织病：fibrosis；心电图记录：electrocardiogram。 <span class="loc">〔说话人4 21:00〕</span></li>
+<li>心肌病：cardiomyopathy（cardio + myo）。 <span class="loc">〔说话人4 21:30〕</span></li>
+</ul>
+<h3 class="h3">4.2 填空与专科对应</h3>
+<ul class="kv">
+<li>心脏病况转诊 cardiologist；常规体检查心脏开 electrocardiogram。 <span class="loc">〔说话人4 23:24〕</span></li>
+<li>视力问题 consult ophthalmologist；评估肾功能选 urinary 相关检查。 <span class="loc">〔说话人4 24:30〕</span></li>
+<li>右心到肺氧合再回左心为肺循环 pulmonary；体循环 systemic。 <span class="loc">〔说话人4 25:03〕</span></li>
+<li>肺纤维化可致呼吸困难；心肌病需 echo cardiogram 等检查。 <span class="loc">〔说话人4 21:54〕</span></li>
+<li>指纹与面部识别门禁属 biometric 系统。 <span class="loc">〔说话人4 26:37〕</span></li>
+<li>持续监护生命体征与治疗 → intensive care unit（ICU）。 <span class="loc">〔说话人5 27:45〕</span></li>
+<li>理解人体解剖学 anatomy 是有效诊疗的基础。 <span class="loc">〔说话人5 27:45〕</span></li>
+<li>hypertension 高血压（hyper- 高 + tens- 压 + -ion）；评估者 physician；hyper- 变为 hypo- 即 hypotension 低血压。 <span class="loc">〔说话人5 28:37〕</span></li>
+<li>脑损伤相关 → stroke 卒中；timely intervention 与 better outcomes（治疗结果）。 <span class="loc">〔说话人5 29:18〕</span></li>
+<li>clump of blood 血凝块；可填 thrombosis 或 blood clot；vessel 词根 vas-；artery 动脉、vein 静脉、capillary 毛细血管。 <span class="loc">〔说话人5 29:18〕</span></li>
+<li>脑部无创/微创成像 → brain imaging；肺动脉血栓 → pulmonary embolism，危及生命。 <span class="loc">〔说话人5 32:16〕</span></li>
+</ul></div><div class="page"><h2 class="h2">第5章 汉译英：谓语与强调</h2>
+<p class="lead">章主旨：先判汉语强调点，再定英文主句谓语；突出内容可用主语从句。</p>
+<ul class="kv">
+<li>人工智能医院；医疗智能化 intelligentization of medical care。 <span class="loc">〔说话人5 33:15〕</span></li>
+<li>机构/技术「问世」宜用 be launched；workflow 工作流程。 <span class="loc">〔说话人5 33:15〕</span></li>
+<li>分诊 triage；诊断治疗 diagnosis and treatment；随访 follow-up visits；症状病史 symptoms and medical histories。 <span class="loc">〔说话人5 33:56〕</span></li>
+<li>权威治疗方案 authoritative diagnosis and treatment plans；前沿 cutting-edge treatments。 <span class="loc">〔说话人5 33:56〕</span></li>
+<li>人工智能与医疗融合 integration of Artificial Intelligence and medical care。 <span class="loc">〔说话人5 35:06〕</span></li>
+<li><span class="tag">★考点</span>「标志着新阶段」为主句核心时谓语用 marks，不宜只强调 launched 把 marking 降为状语。 <span class="loc">〔说话人1 43:56〕</span></li>
+<li>「尤为突出的是」用主语从句 What is more remarkable is that… 比仅用 notably 更突出。 <span class="loc">〔说话人1 46:07〕</span></li>
+<li>参考译法：marks 作谓语体现「标志」；主句比从句/状语更重要。 <span class="loc">〔说话人1 43:56〕</span></li>
+</ul></div><div class="page"><h2 class="h2">第6章 医学英语构词法（六类）</h2>
+<p class="lead">章主旨：除派生法外，老师归纳 conversion、blending、back formation、clipping、acronyms。</p>
+<ul class="kv">
+<li>conversion（词义转换）：contract 普通义「合同」，医学义「患病」contract a disease。 <span class="loc">〔说话人1 58:11〕</span></li>
+<li>blending（拼缀）：genome = gene + chromosome 组合；需识两个词根。 <span class="loc">〔说话人1 58:49〕</span></li>
+<li>拼缀词 breathalyzer = breath + analyzer（呼吸测定器）；pulse oximeter 脉搏血氧测定仪（pulse + ox + -meter）。 <span class="loc">〔说话人1 01:00:02〕</span></li>
+<li>back formation（逆构）：diagnose ← diagnosis；palpitation → palpate；ovulation → ovulate。 <span class="loc">〔说话人1 01:02:00〕</span></li>
+<li>clipping：influenza → flu；短形式非正式，全称更正式。 <span class="loc">〔说话人1 01:02:00〕</span></li>
+<li>acronyms：取首字母且常全大写，如 ICU、ECG。 <span class="loc">〔说话人1 01:03:17〕</span></li>
+<li>派生法（整理）：前缀 + 词根 + 连接元音 + 后缀为最常见构词。</li>
+</ul>
+<div class="mnem">助记（整理）：转换拼缀逆构，截短缩略派生。</div></div><div class="page"><h2 class="h2">第7章 Unit 1 收尾：第 12–14 段</h2>
+<p class="lead">章主旨：段落间问题-方案关系；三项技能是诊断流程而非「思考到行动」线性说法。</p>
+<ul class="kv">
+<li>上次停在第 13 段；第 13 段主旨：医生需新技能解读 AI 并融入临床。</li>
+<li>第 13 段写作：权威期刊引用、举例、因果分析 cause and effect。 <span class="loc">〔说话人1 01:06:50〕</span></li>
+<li>第 12 与第 13 段逻辑：第 13 段给出 solution，承接如何 interpret AI。 <span class="loc">〔说话人1 01:09:02〕</span></li>
+<li>第 13 段末句为平行结构（parallel structure）：to do something，to do something，to do something。 <span class="loc">〔说话人1 01:10:35〕</span></li>
+<li>三技能含义：概率化对比 AI 与医生用词与信息；整合后用于 medical care（诊断过程 process）。 <span class="loc">〔说话人1 01:13:05〕</span></li>
+<li>标准译意：概率化思维、明晰 AI 所用信息、将 AI 融入临床治疗（《新英格兰医学杂志》NEJM 引用句）。 <span class="loc">〔说话人1 01:16:18〕</span></li>
+<li>第 14 段主旨：AI complement rather than replace human experts；balanced argument。 <span class="loc">〔说话人8 01:15:17〕</span></li>
+<li>末段功能为 conclusion；comparison 强调人诊优于 AI 诊；metaphor：key = 诊断核心权限（the core）。 <span class="loc">〔说话人1 01:18:35〕</span></li>
+<li>标题 not just hype：AI 为 assistant tool，善用可改善诊疗。 <span class="loc">〔说话人1 01:19:13〕</span></li>
+</ul>
+<table class="tbl"><tr><th>段落</th><th>逻辑/风格</th><th>要点</th></tr>
+<tr><td>P12–P13</td><td>问题 → 方案</td><td>如何解读 AI 信息</td></tr>
+<tr><td>P13</td><td>因果 + 平行结构</td><td>三项诊断流程技能</td></tr>
+<tr><td>P14</td><td>辩证结论 + 隐喻</td><td>补充不替代</td></tr>
+</table></div><div class="page"><h2 class="h2">第8章 Unit 5 导入：膀胱外翻与再生工程</h2>
+<p class="lead">章主旨：词根读懂 exstrophy；区分教材标题与 Nature 原文标题侧重点。</p>
+<ul class="kv">
+<li>课文 P121：Battling bladder disorder with regenerative engineering；bladder 膀胱。 <span class="loc">〔说话人1 01:21:31〕</span></li>
+<li>exstrophy：extra- 向外 + troph 生长 → 膀胱外翻（先天性膀胱在腹外）。 <span class="loc">〔说话人1 01:23:00〕</span></li>
+<li>congenital：con- + gen 基因 → 与生俱来、先天性畸形。 <span class="loc">〔说话人1 01:23:51〕</span></li>
+<li>原文标题强调 regenerative engineering、safe way；教材 battling 强调正在进行的治疗行动。 <span class="loc">〔说话人1 01:27:04〕</span></li>
+<li>正刊发表不宜用 battling 动名词标题；子刊 Nature portfolio 非 Nature 正刊，本文为 case study。 <span class="loc">〔说话人1 01:29:20〕</span></li>
+<li>Summers 实验室（Northwestern Medicine）专注儿童膀胱外翻，研究可在线查阅。 <span class="loc">〔说话人1 01:30:00〕</span></li>
+<li>tissue engineering 组织工程：细胞生物学 + 工程 + 医学的跨学科领域。 <span class="loc">〔说话人1 01:31:38〕</span></li>
+<li>病例 Baker：出生约 19 小时首次手术，26 岁在实验室研究八年，研究历程漫长。 <span class="loc">〔说话人1 01:32:25〕</span></li>
+<li>创新前须了解 background，避免重复他人二十年前的想法。 <span class="loc">〔说话人1 01:32:25〕</span></li>
+<li>学习方法：quantitative practice 量变 → qualitative change 质变；每组精析 3 段，其余段须自觉思考。 <span class="loc">〔说话人1 01:34:41〕</span></li>
+<li>第 1 段主旨：引言 + Baker 疼痛经历；写作 quotation 开篇、contrast、narrative medicine。 <span class="loc">〔说话人1 01:39:23〕</span></li>
+<li>quotation 开篇目的：吸引读者 + 呈现真实 personal experience（症状描述）。 <span class="loc">〔说话人1 01:41:18〕</span></li>
+<li>今天的作业要交：Unit 1（一单元）全部作业。 <span class="loc">〔说话人1 01:42:21〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>记词顺序：词根词缀 → 同族词五词表（prefix/root/vowel/suffix/中英义）。</li>
+<li>cyst 词族：cystitis, cystoscopy, cystectomy, cystotomy。</li>
+<li>AI 课文主旨：AI is complement instead of substitute for human doctors.</li>
+<li>医生三技能：概率化思维；知 AI 数据；整合入临床。</li>
+<li>构词六类：conversion, blending, back formation, clipping, acronyms, 派生。</li>
+<li>contract 医学义患病；genome；flu；ICU/ECG 大写。</li>
+<li>exstrophy = extra- 向外 + troph 生长；congenital 先天性。</li>
+<li>汉译英：先定主句谓语（标志新阶段用 marks）；强调用主语从句。</li>
+<li>hypertension / hypotension；pulmonary / systemic；pulmonary embolism。</li>
+<li>Page 19 填空注意 in this unit 范围限制。</li>
+</ul>
+<h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th style="width:46%">错</th><th>对</th></tr>
+<tr><td>先讲同族词再讲词根</td><td>先词根词缀，再扩展同族词</td></tr>
+<tr><td>word analysis 列全课文生词</td><td>重点讲 P17 表格内词根词，至少 7 个精讲</td></tr>
+<tr><td>汉译英把「问世」作唯一谓语重点</td><td>强调「标志新阶段」时谓语用 marks</td></tr>
+<tr><td>仅用 notably 表「尤为突出」</td><td>可用 What is more remarkable is that 主语从句</td></tr>
+<tr><td>三技能 = thinking to action</td><td>诊断流程：概率对比、整合信息、用于临床</td></tr>
+<tr><td>regenerative 与 regenerated 不分</td><td>前者「与再生相关」，后者「已再生」</td></tr>
+<tr><td>genomic 与 genetic 混用</td><td>基因组 vs 基因/遗传学</td></tr>
+<tr><td>选产科医生填 P19 第 5 题（in this unit）</td><td>选本单元已学词汇</td></tr>
+<tr><td>认为 AI 可取代医生</td><td>AI 为 assistant tool，complement not replace</td></tr>
+<tr><td>Nature portfolio 等同 Nature 正刊</td><td>子刊，影响因子较低；本文为 case study</td></tr>
+</table>
+<h2 class="h2">附录 C 考点索引表</h2>
+<table class="idx"><tr><th style="width:32%">考点</th><th style="width:14%">小节</th><th style="width:18%">定位</th><th>题型</th></tr>
+<tr><td>cyst 词族</td><td>§1</td><td>〔说话人2 04:39〕</td><td>词汇</td></tr>
+<tr><td>regenerative vs regenerated</td><td>§1</td><td>〔说话人2 05:50〕</td><td>辨析</td></tr>
+<tr><td>词根拆解 ECG 等</td><td>§2</td><td>〔说话人3 10:33〕</td><td>术语分析</td></tr>
+<tr><td>Task 形式与顺序</td><td>§3</td><td>〔说话人1 40:13〕</td><td>作业</td></tr>
+<tr><td>P19 第 5 题 unit 范围</td><td>§3</td><td>〔说话人1 41:56〕</td><td>填空</td></tr>
+<tr><td>汉译英谓语</td><td>§5</td><td>〔说话人1 43:56〕</td><td>翻译</td></tr>
+<tr><td>构词法六类</td><td>§6</td><td>〔说话人1 58:11〕</td><td>名词解释</td></tr>
+<tr><td>P12–P13 逻辑</td><td>§7</td><td>〔说话人1 01:09:02〕</td><td>篇章</td></tr>
+<tr><td>三项 AI 技能</td><td>§7</td><td>〔说话人1 01:13:05〕</td><td>主旨</td></tr>
+<tr><td>complement not replace</td><td>§7</td><td>〔说话人8 01:15:17〕</td><td>主旨</td></tr>
+<tr><td>exstrophy 词根</td><td>§8</td><td>〔说话人1 01:23:00〕</td><td>词汇</td></tr>
+<tr><td>标题 battling vs regenerative</td><td>§8</td><td>〔说话人1 01:27:04〕</td><td>阅读</td></tr>
+</table>
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="idx"><tr><th style="width:5%">#</th><th style="width:47%">知识点</th><th style="width:12%">类型</th><th style="width:10%">小节</th><th>定位</th></tr><tr><td>1</td><td>cyst 膀胱词根及 cystitis/cystoplasty/cystoscopy 等</td><td>术语</td><td>§1</td><td>〔说话人2 02:50〕</td></tr><tr><td>2</td><td>interstitial cystitis 间质性膀胱炎</td><td>术语</td><td>§1</td><td>〔说话人2 02:50〕</td></tr><tr><td>3</td><td>cystectomy/cystotomy 膀胱切除/造口</td><td>术语</td><td>§1</td><td>〔说话人2 04:39〕</td></tr><tr><td>4</td><td>第五单元膀胱词与第一单元词汇衔接</td><td>联系</td><td>§1</td><td>〔说话人1 04:17〕</td></tr><tr><td>5</td><td>urine/urinary/urination 泌尿词族</td><td>术语</td><td>§1</td><td>〔说话人2 05:17〕</td></tr><tr><td>6</td><td>clinical/clinician/preclinical/clinical trials</td><td>术语</td><td>§1</td><td>〔说话人2 05:17〕</td></tr><tr><td>7</td><td>complication 并发症及课文段落</td><td>术语</td><td>§1</td><td>〔说话人2 06:36〕</td></tr><tr><td>8</td><td>angiogenesis 血管生成</td><td>术语</td><td>§1</td><td>〔说话人2 07:04〕</td></tr><tr><td>9</td><td>regenerate 词族及 regenerative/regenerated 辨析</td><td>辨析</td><td>§1</td><td>〔说话人2 05:50〕</td></tr><tr><td>10</td><td>vascularize/cardiovascular 血管词族</td><td>术语</td><td>§1</td><td>〔说话人2 08:32〕</td></tr><tr><td>11</td><td>reconstruction/graft rejection/augmentation/colonize</td><td>术语</td><td>§1</td><td>〔说话人2 08:32〕</td></tr><tr><td>12</td><td>diagnosis 派生 diagnostician</td><td>术语</td><td>§2</td><td>〔说话人3 10:33〕</td></tr><tr><td>13</td><td>electrocardiogram 词根拆解</td><td>术语</td><td>§2</td><td>〔说话人3 10:33〕</td></tr><tr><td>14</td><td>cardiologist/internist</td><td>术语</td><td>§2</td><td>〔说话人3 11:44〕</td></tr><tr><td>15</td><td>urinary tract infection</td><td>术语</td><td>§2</td><td>〔说话人3 11:44〕</td></tr><tr><td>16</td><td>palpation/percussion</td><td>术语</td><td>§2</td><td>〔说话人3 13:16〕</td></tr><tr><td>17</td><td>genomic vs genetic</td><td>辨析</td><td>§2</td><td>〔说话人3 13:57〕</td></tr><tr><td>18</td><td>ischemic stroke</td><td>术语</td><td>§2</td><td>〔说话人3 14:43〕</td></tr><tr><td>19</td><td>radiologist/pneumonia/blood clot</td><td>术语</td><td>§2</td><td>〔说话人3 15:54〕</td></tr><tr><td>20</td><td>pulmonary embolism/hypertrophic cardiomyopathy</td><td>术语</td><td>§2</td><td>〔说话人3 16:30〕</td></tr><tr><td>21</td><td>heart failure/ultrasound/biometric</td><td>术语</td><td>§2</td><td>〔说话人3 17:57〕</td></tr><tr><td>22</td><td>pathologist/fibrosis/ophthalmologist/retinal</td><td>术语</td><td>§2</td><td>〔说话人3 19:40〕</td></tr><tr><td>23</td><td>罗列全单元词汇利于期末复习</td><td>方法</td><td>§3</td><td>〔说话人1 35:52〕</td></tr><tr><td>24</td><td>cognate 与 word analysis 格式要求</td><td>作业</td><td>§3</td><td>〔说话人1 37:21〕</td></tr><tr><td>25</td><td>P17 词根表精讲至少 7 词</td><td>作业</td><td>§3</td><td>〔说话人1 39:42〕</td></tr><tr><td>26</td><td>先词根后同族词逻辑</td><td>考点</td><td>§3</td><td>〔说话人1 40:13〕</td></tr><tr><td>27</td><td>cognate 五词表格式</td><td>作业</td><td>§3</td><td>〔说话人1 40:13〕</td></tr><tr><td>28</td><td>P19 第 5 题 in this unit 限制</td><td>考点</td><td>§3</td><td>〔说话人1 41:56〕</td></tr><tr><td>29</td><td>P18 electrocardiogram/cardiomyopathy</td><td>习题</td><td>§4</td><td>〔说话人4 21:30〕</td></tr><tr><td>30</td><td>cardiologist/ECG/ophthalmologist/urinary 填空</td><td>习题</td><td>§4</td><td>〔说话人4 24:30〕</td></tr><tr><td>31</td><td>pulmonary vs systemic circulation</td><td>术语</td><td>§4</td><td>〔说话人4 25:03〕</td></tr><tr><td>32</td><td>fibrosis 呼吸影响/cardiomyopathy 检查</td><td>习题</td><td>§4</td><td>〔说话人4 21:54〕</td></tr><tr><td>33</td><td>biometric 门禁/ICU/anatomy</td><td>习题</td><td>§4</td><td>〔说话人5 27:45〕</td></tr><tr><td>34</td><td>hypertension/hypotension/physician</td><td>术语</td><td>§4</td><td>〔说话人5 28:37〕</td></tr><tr><td>35</td><td>stroke/thrombosis/blood clot/vessel 词根</td><td>术语</td><td>§4</td><td>〔说话人5 29:18〕</td></tr><tr><td>36</td><td>brain imaging/pulmonary embolism</td><td>术语</td><td>§4</td><td>〔说话人5 32:16〕</td></tr><tr><td>37</td><td>triage/follow-up/intelligentization</td><td>翻译</td><td>§5</td><td>〔说话人5 33:56〕</td></tr><tr><td>38</td><td>marks 谓语与 launched 侧重</td><td>翻译</td><td>§5</td><td>〔说话人1 43:56〕</td></tr><tr><td>39</td><td>主语从句强调 remarkable</td><td>翻译</td><td>§5</td><td>〔说话人1 46:07〕</td></tr><tr><td>40</td><td>conversion contract 患病</td><td>构词</td><td>§6</td><td>〔说话人1 58:11〕</td></tr><tr><td>41</td><td>blending genome</td><td>构词</td><td>§6</td><td>〔说话人1 58:49〕</td></tr><tr><td>42</td><td>pulse oximeter 拼缀</td><td>构词</td><td>§6</td><td>〔说话人1 01:00:02〕</td></tr><tr><td>43</td><td>back formation diagnose</td><td>构词</td><td>§6</td><td>〔说话人1 01:02:00〕</td></tr><tr><td>44</td><td>clipping flu</td><td>构词</td><td>§6</td><td>〔说话人1 01:02:00〕</td></tr><tr><td>45</td><td>acronyms ICU ECG 大写</td><td>构词</td><td>§6</td><td>〔说话人1 01:03:17〕</td></tr><tr><td>46</td><td>P13 主旨与 NEJM 引用</td><td>课文</td><td>§7</td><td>〔说话人8 01:04:17〕</td></tr><tr><td>47</td><td>P12-P13 problem-solution</td><td>逻辑</td><td>§7</td><td>〔说话人1 01:09:02〕</td></tr><tr><td>48</td><td>parallel structure 三技能非字面 to think</td><td>课文</td><td>§7</td><td>〔说话人1 01:13:05〕</td></tr><tr><td>49</td><td>NEJM 三技能中文译法</td><td>翻译</td><td>§7</td><td>〔说话人1 01:16:18〕</td></tr><tr><td>50</td><td>P14 complement/balanced argument</td><td>课文</td><td>§7</td><td>〔说话人8 01:15:17〕</td></tr><tr><td>51</td><td>metaphor key=core</td><td>修辞</td><td>§7</td><td>〔说话人1 01:19:13〕</td></tr><tr><td>52</td><td>bladder exstrophy 词根</td><td>术语</td><td>§8</td><td>〔说话人1 01:23:00〕</td></tr><tr><td>53</td><td>congenital 词根记忆</td><td>术语</td><td>§8</td><td>〔说话人1 01:23:51〕</td></tr><tr><td>54</td><td>教材标题 vs 原文标题侧重</td><td>阅读</td><td>§8</td><td>〔说话人1 01:27:04〕</td></tr><tr><td>55</td><td>Nature portfolio 子刊 case study</td><td>背景</td><td>§8</td><td>〔说话人1 01:29:20〕</td></tr><tr><td>56</td><td>tissue engineering 跨学科</td><td>术语</td><td>§8</td><td>〔说话人1 01:31:38〕</td></tr><tr><td>57</td><td>Baker 病例与 research background</td><td>背景</td><td>§8</td><td>〔说话人1 01:32:25〕</td></tr><tr><td>58</td><td>quantitative→qualitative 学习法</td><td>方法</td><td>§8</td><td>〔说话人1 01:34:41〕</td></tr><tr><td>59</td><td>P1 quotation/narrative medicine</td><td>课文</td><td>§8</td><td>〔说话人1 01:41:18〕</td></tr><tr><td>60</td><td>今天的作业要交 Unit 1 全部作业</td><td>作业</td><td>§8</td><td>〔说话人1 01:42:21〕</td></tr></table>
+<p class="foot">依据 2026-09-23 医学英语第 7-8 节逐字稿整理；附录 D 共 60 条，与正文及 recording.md 逐条对照。</p></div>
+</body></html>

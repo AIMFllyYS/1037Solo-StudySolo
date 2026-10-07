@@ -9,9 +9,9 @@
   },
   "contentRef": {
     "lessonId": "rec-2026-fall-007-008",
-    "revision": 1,
+    "revision": 3,
     "recordingHash": "82f47a931cd0102586ffc879b957880a19bbf13323c31a48285331f09d651371",
-    "notesTextHash": "db9e37e595405c9ad69f9ff9b98b6820ef8a6e827862c29320eaea54aa1a05e9"
+    "notesTextHash": "d7198715e7d3839d73e1e216caf0f5e8f97506934c10e23219d36319f5060ce7"
   },
   "questions": [
     {
@@ -55,7 +55,7 @@
       "sourceRef": {
         "source": "recording",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/recording.md",
-        "label": "分配系数 KD 与分配比 D · 碘的多种形态"
+        "label": "2. 分配系数 K_D、分配比 D 与萃取百分率 · 分配系数 KD 与分配比 D · 碘的多种形态"
       }
     },
     {
@@ -99,7 +99,7 @@
       "sourceRef": {
         "source": "recording",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/recording.md",
-        "label": "多次萃取规律 · 少量多次"
+        "label": "3. 多次萃取（少量多次） · 多次萃取规律 · 少量多次"
       }
     },
     {
@@ -121,7 +121,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "主流萃取方法 · 超临界 CO₂ 萃取"
+        "label": "4. 主流萃取方法体系 · 主流萃取方法 · 超临界 CO₂ 萃取"
       }
     },
     {
@@ -143,7 +143,7 @@
       "sourceRef": {
         "source": "recording",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/recording.md",
-        "label": "多级逆流萃取 · 稀土分离与徐光宪"
+        "label": "5. 萃取操作类型与稀土分离 · 多级逆流萃取 · 稀土分离与徐光宪"
       }
     },
     {
@@ -165,7 +165,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "固相萃取 SPE · C18 填料"
+        "label": "6. 固相萃取 SPE 与固相微萃取 SPME · 固相萃取 SPE · C18 填料"
       }
     },
     {
@@ -187,7 +187,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "固相微萃取 SPME · 结构与优势"
+        "label": "6. 固相萃取 SPE 与固相微萃取 SPME · 固相微萃取 SPME · 结构与优势"
       }
     },
     {
@@ -209,7 +209,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "分子三类能级 · 连续带状谱"
+        "label": "8. 分子能级与紫外可见吸收光谱 · 分子三类能级 · 连续带状谱"
       }
     },
     {
@@ -231,7 +231,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "电子跃迁类型 · π→π* 主力跃迁"
+        "label": "9. 电子跃迁类型 · 电子跃迁类型 · π→π* 主力跃迁"
       }
     },
     {
@@ -253,7 +253,7 @@
       "sourceRef": {
         "source": "notes",
         "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
-        "label": "生色团与助色团 · 红移"
+        "label": "10. 生色团与助色团 · 生色团与助色团 · 红移"
       }
     }
   ]

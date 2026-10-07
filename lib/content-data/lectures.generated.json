@@ -12,7 +12,7 @@
       },
       "taughtOn": "2026-08-31",
       "topic": "绪论与骨学躯干骨",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-001-003",
       "materials": {
         "recording": {
@@ -42,7 +42,7 @@
       },
       "hashes": {
         "recording": "95555a49f4dd7e4c47a048b65dde155cc530c9945204eafba69ae8cfc295374b",
-        "notesText": "fb2a65db17c8c9a805caa4951ae6d497fd76532382bc0748a9f0f1ad987dca9f"
+        "notesText": "c04dc7caad5a68b5b03b66cd65310b3e65c3c6ac4275b01c21e487fa62b4f589"
       }
     },
     {
@@ -56,7 +56,7 @@
       },
       "taughtOn": "2026-09-02",
       "topic": "脊柱连接与胸廓",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-004-006",
       "materials": {
         "recording": {
@@ -86,7 +86,7 @@
       },
       "hashes": {
         "recording": "8c08245281c525d8eb2c8a51d1641eb9cc794d9cefc808cb56fe8f47d1b94b5e",
-        "notesText": "acfab6396c672cb85d857bcafcbf716071c35b0988ec45f70607b0ee563ac7b7"
+        "notesText": "ebc91762d05de9068154416d21278df416a73709927c68be6d6772eb91c7fa3d"
       }
     },
     {
@@ -100,7 +100,7 @@
       },
       "taughtOn": "2026-09-07",
       "topic": "下肢骨及其连接",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-007-009",
       "materials": {
         "recording": {
@@ -130,7 +130,7 @@
       },
       "hashes": {
         "recording": "d78fc5d4a76068edf041299168d9582bf3269714b6e2ec1007b05b471161b59f",
-        "notesText": "c14d5c87146e9e82f4e1d5d49b683322a710fd4176109079a9578a6f08ce08b9"
+        "notesText": "d25ef403eb7daca864916aa8478f474d556c1c35d355863b31c185a056f2fe34"
       }
     },
     {
@@ -144,7 +144,7 @@
       },
       "taughtOn": "2026-09-09",
       "topic": "颅骨及其连接",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-010-012",
       "materials": {
         "recording": {
@@ -174,7 +174,7 @@
       },
       "hashes": {
         "recording": "f536f60d07524dab7719c0dbf477ee27ba21f33884f8d274b34f0daa096aa820",
-        "notesText": "69ac4c4e0a7c563b591346ecbb9d5e6da5e7ca7cd603a7c1d3366320bb7aef0f"
+        "notesText": "7b310fd8ce4fb7a0937e1b34486a3927f78b8295b570acbe4989f4af481ec08b"
       }
     },
     {
@@ -188,7 +188,7 @@
       },
       "taughtOn": "2026-09-14",
       "topic": "肌总论头颈肌与躯干肌",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-013-015",
       "materials": {
         "recording": {
@@ -218,7 +218,7 @@
       },
       "hashes": {
         "recording": "4f479cf8db248438771f138db5fd227ca4b8d97dd7464fd9bdbc7ce89dd0e447",
-        "notesText": "94f1539e3b4822767a6e13100ce59cf10e48bac25e3826ea16090245fd5f441e"
+        "notesText": "e0cb2618c4bcd945a01cc5a9d5f42839417321b517e6b88153e321870b6870f5"
       }
     },
     {
@@ -232,7 +232,7 @@
       },
       "taughtOn": "2026-09-16",
       "topic": "上下肢肌学",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-016-018",
       "materials": {
         "recording": {
@@ -262,7 +262,7 @@
       },
       "hashes": {
         "recording": "d55e56f7bc745fd743ff8d84399e58260d282f5aca1596fbc0a69ce6b6186faf",
-        "notesText": "2da6ca3b33f84164ef2ad1f9294297a1fc67b266fa157c97202302bcd21fbf37"
+        "notesText": "26aafdf26728d1b8725933e4bcb3272092562433f2ff3800e999f91e46cc21f3"
       }
     },
     {
@@ -276,7 +276,7 @@
       },
       "taughtOn": "2026-09-18",
       "topic": "内脏学总论与消化系统开篇",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-019-020",
       "materials": {
         "recording": {
@@ -306,7 +306,7 @@
       },
       "hashes": {
         "recording": "422f73923fd3bb00beed1f87cc76cfee563f5f1a3a2475ca00d4c3ca5e4fa86c",
-        "notesText": "6c024dec6b03c4af04a69ee06b35caea3500bd7c9b9661e9069afcca7b99675f"
+        "notesText": "358d928eaea134c993712b4b6346f8ac7a76e379e2ab54f9a56f5e5cad32155a"
       }
     },
     {
@@ -320,7 +320,7 @@
       },
       "taughtOn": "2026-09-21",
       "topic": "消化系统——消化管（二）：胃、小肠、大肠；消化腺：肝、胰、唾液腺",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-021-022",
       "materials": {
         "recording": {
@@ -350,7 +350,7 @@
       },
       "hashes": {
         "recording": "5fbd463147ddd8d5418d064a800184409e753e7f835e93b91bda60ad1c67332d",
-        "notesText": "2120c683d0dae120a8aee20859d361f3fbf3637e0359f6ba6ca0e85855afe566"
+        "notesText": "6dca270eb1b710d1a9d8c287eec16c85781741ca8009ae69be2db807202faf43"
       }
     },
     {
@@ -408,7 +408,7 @@
       },
       "taughtOn": "2026-09-28",
       "topic": "泌尿系统——肾的大体结构与被膜、肾单位、输尿管、膀胱、尿道",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-025-026",
       "materials": {
         "recording": {
@@ -438,7 +438,7 @@
       },
       "hashes": {
         "recording": "8ef072bae078e0783bb4c81d6606bf657844dfc9918ae9d49a2be46598ba19d6",
-        "notesText": "84f4df8fc785fa36cebb08898195d660fe343aa05920cc62eea0d3cbff50aca2"
+        "notesText": "e8f06756e59c0a9a6d77beed918eaf200c6d85e1dbbb43ec73531bfb395c990b"
       }
     },
     {
@@ -452,7 +452,7 @@
       },
       "taughtOn": "2026-09-29",
       "topic": "女性生殖系统与腹膜",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-027-028",
       "materials": {
         "recording": {
@@ -482,7 +482,7 @@
       },
       "hashes": {
         "recording": "3c7cf8ed3d9003e6d90aa8e1117027e97b8efca4f9969b75876e9b61f9e4200c",
-        "notesText": "226792602265db9707cdf79930a9fb32cfa1b40c88269804b48587dcff710da9"
+        "notesText": "9f72ea7cc3bbfa3238a8fc614194796d5e02687d4c22ea464471bc22cea5b76f"
       }
     },
     {
@@ -496,7 +496,7 @@
       },
       "taughtOn": "2026-09-01",
       "topic": "绪论与蛋白质概述",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-001-002",
       "materials": {
         "recording": {
@@ -526,7 +526,7 @@
       },
       "hashes": {
         "recording": "8922d95dd6c22708583dda9034c2337d54e8d81a0c18260f852abc8075620ece",
-        "notesText": "1051d1d9ddcded2c81dd782ec63ba6d40c0b68c01bcfca6821e465f7b0299bfe"
+        "notesText": "4ec0e70bf24a8650072ace561a279b5ef5ede410d402b8d7468c05591fcf4825"
       }
     },
     {
@@ -540,7 +540,7 @@
       },
       "taughtOn": "2026-09-03",
       "topic": "生物活性肽与蛋白质结构",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-003-004",
       "materials": {
         "recording": {
@@ -570,7 +570,7 @@
       },
       "hashes": {
         "recording": "d788c8ab5d1b4189cd950d1942b71650c4b888777d08ed6165d2f55cf7eb0410",
-        "notesText": "0edea5012c0e0959f5057a9cb4933a3469a58099a1c868a33da3acc565cfd4a3"
+        "notesText": "f39ac924f60492dc652a00751f05db38aeb1c485404d4eaf08469d9a5b9c35a2"
       }
     },
     {
@@ -584,7 +584,7 @@
       },
       "taughtOn": "2026-09-08",
       "topic": "蛋白质结构功能与核酸开篇",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-005-006",
       "materials": {
         "recording": {
@@ -614,7 +614,7 @@
       },
       "hashes": {
         "recording": "06d67bef353db7f5eb1a52811af9011341ac5209811473a2840a43c88b1c630d",
-        "notesText": "d2f7eaf4f0897c492f9ce4dcecbff22727a645a8b989e3dc3e1c4b45577c1f79"
+        "notesText": "43c1843fb52af2e232ec3aeff068efbfb4a5f4d68a62a888de9402ef305bd014"
       }
     },
     {
@@ -628,7 +628,7 @@
       },
       "taughtOn": "2026-09-10",
       "topic": "核酸结构与功能",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-007-008",
       "materials": {
         "recording": {
@@ -658,7 +658,7 @@
       },
       "hashes": {
         "recording": "549c5425058a83135ff7787b22749053db23346d515175cf9f2a37e5b07fd040",
-        "notesText": "f6129b893a16aff8a54651c5a3523968243b97a763c34b09aace460fbb4018f9"
+        "notesText": "7cc8ec3648b2ddcebb0db4e0e3023da2c9b9dcd00ec5b79add51cad71d6b20e9"
       }
     },
     {
@@ -672,7 +672,7 @@
       },
       "taughtOn": "2026-09-15",
       "topic": "RNA结构功能续讲与维生素",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-009-010",
       "materials": {
         "recording": {
@@ -702,7 +702,7 @@
       },
       "hashes": {
         "recording": "35e420c9b7023d9955c3fb2e9fd240fb6eec19e9b83b80399531f6aad9005a91",
-        "notesText": "ffa76454787f1b18e4900419d3fbd82b9b325281f5e9fc56269e55a5deb5482a"
+        "notesText": "810d78b71b28bada50e9a1e8ec03ea109db87913741252bf3b57c2d8f92bdf2c"
       }
     },
     {
@@ -716,7 +716,7 @@
       },
       "taughtOn": "2026-09-16",
       "topic": "B族维生素续讲与酶学",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-011-012",
       "materials": {
         "recording": {
@@ -746,7 +746,7 @@
       },
       "hashes": {
         "recording": "438e7d049087fe5acd6f1ee5747f93a25156dd74debf3faa21afa605c52c20bd",
-        "notesText": "c9a611063d20e686b492f196a38cf915ad7998e83cda158b928f65b57362d172"
+        "notesText": "94782b817bcc4b86410cbf8d8776b31be2b219af94bf7ee95c50000028f5a233"
       }
     },
     {
@@ -760,7 +760,7 @@
       },
       "taughtOn": "2026-09-17",
       "topic": "酶与酶促反应（二）——酶促反应动力学：底物浓度与酶浓度、温度与pH、抑制剂与激活剂",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-013-014",
       "materials": {
         "recording": {
@@ -790,7 +790,7 @@
       },
       "hashes": {
         "recording": "b67bc261b559b5dcfe15f3c8edb79236253c0b9dac2b2fc8a5817efe75eff6fc",
-        "notesText": "e80c6fe2d1ff365ca2c452cc268eeb7a3e370cee3632570ca1323c3c83af8208"
+        "notesText": "6b4efa91fa15dcb5afa939e7ddc4aeb53ebea628d614e83a78f38d09d754cdb6"
       }
     },
     {
@@ -804,7 +804,7 @@
       },
       "taughtOn": "2026-09-22",
       "topic": "糖代谢（一）——代谢篇开篇、糖的分类、消化吸收与无氧氧化（糖酵解）",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-015-016",
       "materials": {
         "recording": {
@@ -834,7 +834,7 @@
       },
       "hashes": {
         "recording": "6940bd4d28a2489681fe7c02ae1f24d3dddd30034c06b56cd188937ec3067958",
-        "notesText": "b039523a07928791143b4a1c08bc88104618cc48218b70c2556d527ce302d2d4"
+        "notesText": "64dbc72236c99becf640888435315f455e908de2a60fc10f592ea54513acc152"
       }
     },
     {
@@ -848,7 +848,7 @@
       },
       "taughtOn": "2026-09-23",
       "topic": "糖代谢（二）——糖无氧氧化、糖有氧氧化与三羧酸循环、磷酸戊糖途径",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-017-018",
       "materials": {
         "recording": {
@@ -878,7 +878,7 @@
       },
       "hashes": {
         "recording": "dcb3e8ade5882ac0b628bcf6985cf26cf7002b57533ea7344cbe9f9c07bb223f",
-        "notesText": "eeec4303d883db339a6ae85589c427531be6f39c38b5207fc22f3d04343e1f1c"
+        "notesText": "b1104865b3500a4884b6127fa6e944bf63d1f1b7d9f12cfd1923c6519ec1a021"
       }
     },
     {
@@ -936,7 +936,7 @@
       },
       "taughtOn": "2026-09-29",
       "topic": "糖原调节与糖异生",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-021-022",
       "materials": {
         "recording": {
@@ -966,7 +966,7 @@
       },
       "hashes": {
         "recording": "affa426fc39ac5bd4f5116b0279581021ea9c0020de360db0ef61b84835df343",
-        "notesText": "915fa0a15424dd5d15f895d91be4975888911186ac6030b1333b5c43380ae850"
+        "notesText": "e5db112411c092c7369fbac3322a7ca3353451df978eb3a29f4a20bda587e7bd"
       }
     },
     {
@@ -980,7 +980,7 @@
       },
       "taughtOn": "2026-09-30",
       "topic": "糖代谢总复习：血糖标准与糖尿病分型、糖异生与糖代谢途径串讲、血糖来源去路",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-023-024",
       "materials": {
         "recording": {
@@ -1010,7 +1010,7 @@
       },
       "hashes": {
         "recording": "d99eb9cf8689f56f7a8d2e412a91d8fee3d2cd6bd2298f191a38dc233f804b61",
-        "notesText": "11331e1d53dd527a5866f95339e2e79afac58650a7a51b1ead6355864cd2074a"
+        "notesText": "f1fb1afd8e8479a3a05d3008e44ca922e885fff8efe2a05bf371798217380df9"
       }
     },
     {
@@ -1024,7 +1024,7 @@
       },
       "taughtOn": "2026-08-31",
       "topic": "绪论与细胞膜框架",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-001-002",
       "materials": {
         "recording": {
@@ -1054,7 +1054,7 @@
       },
       "hashes": {
         "recording": "d485098d49515e3d9e0214895861a6dd5a361c79218f6e54324068ee9b83ae80",
-        "notesText": "5ded9263ad790600936a8783fc418b65a6f2bd30d669574c84d6981f085c1fc8"
+        "notesText": "5d729a4f9f4e236135f9f2016769cd9ec79688f3d992f75a2fb2ec84b800fb72"
       }
     },
     {
@@ -1068,7 +1068,7 @@
       },
       "taughtOn": "2026-09-03",
       "topic": "单细胞生物学与组学",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-003-004",
       "materials": {
         "recording": {
@@ -1098,7 +1098,7 @@
       },
       "hashes": {
         "recording": "04fa4a458caf4bbb509fd2ff4bafd07e6ae62ebdb07f6cae14a9ea7179938149",
-        "notesText": "b8c1d0e072f488ed83eca610281196da9f41d4b2a1f6cc9888b49e21b02d6a73"
+        "notesText": "ba929e7ff27f4e6bec130f314a7df044563eb741d5370ce445a3b2dadd1ac842"
       }
     },
     {
@@ -1112,7 +1112,7 @@
       },
       "taughtOn": "2026-09-07",
       "topic": "细胞膜与物质穿膜运输",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-005-006",
       "materials": {
         "recording": {
@@ -1142,7 +1142,7 @@
       },
       "hashes": {
         "recording": "0fdfc337eba9013821b2e5eeba2a0963d3da68a7011623b40fb1ef4dea240734",
-        "notesText": "798d3d7aa9d68fe9a696759ea0e3615d4639252121c5f67e58d674e7e61a79c6"
+        "notesText": "9b67592df7376245e24bd333fc20d03acc633bc58d8c2650df80220ae00d64a6"
       }
     },
     {
@@ -1156,7 +1156,7 @@
       },
       "taughtOn": "2026-09-10",
       "topic": "生物膜与跨膜运输复习及内膜系统开篇",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-007-008",
       "materials": {
         "recording": {
@@ -1186,7 +1186,7 @@
       },
       "hashes": {
         "recording": "a15431941a3a2f1a8f740d2ad3530ac09a77d1ddc3700eb33d27c70275110466",
-        "notesText": "1ef8df14ed0d11bc3d3f8a5eaa077574a7ff3f962ee810c2f63a7294c49f71b3"
+        "notesText": "ca5d9b0a1469d0daa728efaf75e7afb43ecb958da635a4b46902655ba5607b31"
       }
     },
     {
@@ -1200,7 +1200,7 @@
       },
       "taughtOn": "2026-09-14",
       "topic": "细胞内膜系统与囊泡转运",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-009-010",
       "materials": {
         "recording": {
@@ -1230,7 +1230,7 @@
       },
       "hashes": {
         "recording": "9b9527261690c8297989d6809e4339e701f0343c0a2901c093cbcb9400527e84",
-        "notesText": "2e71838e7b5ac75ba48118ecfb799bf2a649032625c47a283d3b960ea729061a"
+        "notesText": "c2848f71e8e98b77cdb8705ace51846e0028a45667a635dde136f3935233b62b"
       }
     },
     {
@@ -1376,7 +1376,7 @@
       },
       "taughtOn": "2026-09-28",
       "topic": "微丝及其调控、Arp2/3复合物、Formin、小GTP酶(Rho家族)与伪足/细胞运动",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-021-022",
       "materials": {
         "recording": {
@@ -1406,7 +1406,7 @@
       },
       "hashes": {
         "recording": "842ac129884d4c6ded6f4c0c79d835a3faaab90289642dd8272cb2722c63701b",
-        "notesText": "3ebf031c9d09c6fce2abbcef416a7b17363e058f8bd53cfadc058849940d8005"
+        "notesText": "e6632c626c6495d2dd766797dd2c1bbddaf637b4978c77863691c58ad4de28ba"
       }
     },
     {
@@ -1420,7 +1420,7 @@
       },
       "taughtOn": "2026-09-08",
       "topic": "小鼠原代肝细胞培养——原代培养原理、取材分离与无菌操作",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-001-004",
       "materials": {
         "recording": {
@@ -1450,7 +1450,7 @@
       },
       "hashes": {
         "recording": "f57b1f44b1fbed14271e3ef509d42f9b95f715a1070b370308a5970742a266d4",
-        "notesText": "775a7a33b9c4864e29df9df24e152d0692ba048863190eba4b8e3a404946c47d"
+        "notesText": "88c82798d4fee4627f5fcadcfb4c178e775ba36e33ad0b7a7be49e93f303c5c6"
       }
     },
     {
@@ -1464,7 +1464,7 @@
       },
       "taughtOn": "2026-09-15",
       "topic": "细胞传代培养冻存与复苏",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-005-008",
       "materials": {
         "recording": {
@@ -1494,7 +1494,7 @@
       },
       "hashes": {
         "recording": "8e809a69cbb534a4c0bf901c1260e30d7a8c709b24fb343dd8c03baf468dd53e",
-        "notesText": "ea279121a6aad0d9564d4833afe8a762ef1bf2ff228ecea22b715adf4503863d"
+        "notesText": "84b99b52e534a9bf3bbc0e7bce6d068faf41bd1482004593c1d40fd2f23a86de"
       }
     },
     {
@@ -1508,7 +1508,7 @@
       },
       "taughtOn": "2026-09-22",
       "topic": "细胞膜的特性——细胞膜的结构、流动镶嵌与特性观察实验",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-009-012",
       "materials": {
         "recording": {
@@ -1538,7 +1538,7 @@
       },
       "hashes": {
         "recording": "f3b1bf52eac9cbc0504229b01def0253db1009220aabb92cd6cac1482e9c865f",
-        "notesText": "ca8e66c6a81d0ffae27569a0e3c0391ab6d3348179befd43894b5f8b1d186160"
+        "notesText": "64abf2754a158b7d471e7fa45173e930b799276cc7044c03c500839c342538d0"
       }
     },
     {
@@ -1552,7 +1552,7 @@
       },
       "taughtOn": "2026-08-31",
       "topic": "绪论与上皮组织",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-001-002",
       "materials": {
         "recording": {
@@ -1582,7 +1582,7 @@
       },
       "hashes": {
         "recording": "ae33922961f79935933c3d083898fdd45028f4c891f6449e07bf259e6aafeec0",
-        "notesText": "72a13b436bbe1b1da6b4accace1fa33f5ea4386009ced80a55bc17832b092cbd"
+        "notesText": "540167cb4695f555ec9989c05a3ca6ecbe0150f15e25cc187b9afca0a54b38d3"
       }
     },
     {
@@ -1596,7 +1596,7 @@
       },
       "taughtOn": "2026-09-01",
       "topic": "腺上皮与结缔组织",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-003-004",
       "materials": {
         "recording": {
@@ -1626,7 +1626,7 @@
       },
       "hashes": {
         "recording": "5d2daaaf25431ec7e19be6b88e80f314f4ec321bc1060f84d68dde18b4c622e8",
-        "notesText": "005e37544480bda24f5f214022a41c0e81361ed709ff13af83154c790532dda9"
+        "notesText": "8f19fae6670d203764ffb2ee9826fec721220b507daf6122099be7844a250f04"
       }
     },
     {
@@ -1640,7 +1640,7 @@
       },
       "taughtOn": "2026-09-07",
       "topic": "软骨骨骨发生",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-005-006",
       "materials": {
         "recording": {
@@ -1670,7 +1670,7 @@
       },
       "hashes": {
         "recording": "aed49cb5b7cdf12369ebd3502e5dbc74deebd8bbe8ba27c87226608d3c55c342",
-        "notesText": "d1f1e2909c83770374e9999e255cfb32caa6bae24541cc06bd1040b237a30b03"
+        "notesText": "f9dea057c89f487a5fcaf7288a252067f7ec88b26fc266c1add942ca69437870"
       }
     },
     {
@@ -1684,7 +1684,7 @@
       },
       "taughtOn": "2026-09-14",
       "topic": "血液与肌组织",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-007-008",
       "materials": {
         "recording": {
@@ -1714,7 +1714,7 @@
       },
       "hashes": {
         "recording": "ecb4171b042a42638f4f9078bfd310d312e0ea4b0d92e308587777632bcecaff",
-        "notesText": "e0ebdea743f43d7c8f34d395dfce8bd52875001e87d64ab84950237fd5c2767e"
+        "notesText": "41863034b2dcee1403928aaf348f6445ed3cfbf0f04bd66c3933fdd49563470a"
       }
     },
     {
@@ -1728,7 +1728,7 @@
       },
       "taughtOn": "2026-09-18",
       "topic": "上皮组织与固有结缔组织实验",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-009-011",
       "materials": {
         "recording": {
@@ -1758,7 +1758,7 @@
       },
       "hashes": {
         "recording": "699b856044882d02ff9eedf93070c9b922fb4d814ed7f6fb47032fcf20c7a419",
-        "notesText": "de8046900e8071e42f4aa3c022e7c972119837514344bc2e4efb7cb558a6641c"
+        "notesText": "695cd4a18935e30958be3d6f359491f4fc9285d6b832e1955b4e52e8c8a97caa"
       }
     },
     {
@@ -1772,7 +1772,7 @@
       },
       "taughtOn": "2026-09-21",
       "topic": "神经组织——神经元与神经胶质细胞的结构、分类、突触、神经纤维与神经末梢",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-015-016",
       "materials": {
         "recording": {
@@ -1802,7 +1802,7 @@
       },
       "hashes": {
         "recording": "a48649f522cadf5d4e81bb3c6886a0ae9c2a7e066971d2bafd4c8860960944b5",
-        "notesText": "1236caa9dd44849ed3f79b9107b58dfd0ec00793da053c3dab0bd5d77dfed8a8"
+        "notesText": "b238e05dad5b56a26c0fceb7416ece4289e60a2577f27cc4e01df607eb38781c"
       }
     },
     {
@@ -1816,7 +1816,7 @@
       },
       "taughtOn": "2026-09-28",
       "topic": "神经系统组织学——大脑皮质六层、小脑皮质三层(普肯耶细胞层)、脊髓灰/白质",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-017-018",
       "materials": {
         "recording": {
@@ -1846,7 +1846,7 @@
       },
       "hashes": {
         "recording": "cd24b7c7447d7afcc2ccdead20847481bf2e31621107914100a9eab53e9017c6",
-        "notesText": "fa712f84c5928d886e5f621668312f4c9910febab5344f4a1b20f190d3311181"
+        "notesText": "2dba3f5f9030d5527cc5a47479dfa500d01cb9e63dd91381f7b41770a183b7be"
       }
     },
     {
@@ -1860,7 +1860,7 @@
       },
       "taughtOn": "2026-09-01",
       "topic": "绪论",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-001-002",
       "materials": {
         "recording": {
@@ -1890,7 +1890,7 @@
       },
       "hashes": {
         "recording": "387f103eb82a9b559a1612f6f6feccca8d5de74d5019bed0eaf4070dd68fd2a4",
-        "notesText": "efb617b558775becf8aa4e8f21e60a146d198874a1994be954533abae0ee2556"
+        "notesText": "8f72c77e0481cf8fa68fc5a3e0126ae0de3c4d9b4ae2d7488a03e31e9341c449"
       }
     },
     {
@@ -1904,7 +1904,7 @@
       },
       "taughtOn": "2026-09-04",
       "topic": "有效数字与误差分析",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-003-004",
       "materials": {
         "recording": {
@@ -1934,7 +1934,7 @@
       },
       "hashes": {
         "recording": "55874d2596148459ba4dd9a00f02458326a065e6b9f5cc75acfc8768d5c3497f",
-        "notesText": "3f23eb8b237b9c3684dda9823a2c8992d3949b2da23d9fd51cda5df2f3f226f5"
+        "notesText": "3cf5e49d71c79f342b92751021f1f11f258f71d68aa3d008ad0abfa9ea8165b7"
       }
     },
     {
@@ -1948,7 +1948,7 @@
       },
       "taughtOn": "2026-09-08",
       "topic": "检出限与试样采集预处理",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-005-006",
       "materials": {
         "recording": {
@@ -1978,7 +1978,7 @@
       },
       "hashes": {
         "recording": "4abee6d82186e19313f60ca12ee7a33a26a6d9d2763f1514aaa381bd79f91f48",
-        "notesText": "b45713fd3a135bdf9e0f6183b6ff1dec79a60d37959a0174439e79b6c05f4210"
+        "notesText": "6d83abf20069f9e95119d9d8f27cc4f721cb961a840841ae801377dee991d108"
       }
     },
     {
@@ -1992,7 +1992,7 @@
       },
       "taughtOn": "2026-09-11",
       "topic": "萃取技术体系与紫外可见分光光度法基础",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-007-008",
       "materials": {
         "recording": {
@@ -2022,7 +2022,7 @@
       },
       "hashes": {
         "recording": "82f47a931cd0102586ffc879b957880a19bbf13323c31a48285331f09d651371",
-        "notesText": "db9e37e595405c9ad69f9ff9b98b6820ef8a6e827862c29320eaea54aa1a05e9"
+        "notesText": "d7198715e7d3839d73e1e216caf0f5e8f97506934c10e23219d36319f5060ce7"
       }
     },
     {
@@ -2036,7 +2036,7 @@
       },
       "taughtOn": "2026-09-15",
       "topic": "紫外可见分光光度法续与朗伯比尔定律",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-009-010",
       "materials": {
         "recording": {
@@ -2066,7 +2066,7 @@
       },
       "hashes": {
         "recording": "e4d4345849fcd9764794f9f0b54fba73bf7fbc57efa83f55de335add89a52694",
-        "notesText": "b9344b5190c7289d61752ece2230071662c1657a0a38794ac6514a30d929b5d2"
+        "notesText": "389079b881654e12a10fbae60091a729501b6e8f80297f32a045d809c0b21596"
       }
     },
     {
@@ -2124,7 +2124,7 @@
       },
       "taughtOn": "2026-09-21",
       "topic": "分子荧光分析法（MFS）——荧光产生原理、激发与发射光谱、荧光强度与定量、影响因素与应用",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-013-014",
       "materials": {
         "recording": {
@@ -2154,7 +2154,7 @@
       },
       "hashes": {
         "recording": "72b4c24914802fb0aff34c21af6ff907af60c6cf6ef0599a935bc6d6a2488a27",
-        "notesText": "572bc6e36e2baed15714dee6442026c3346167a730c2522d9e9e3639b4b63770"
+        "notesText": "336b914da0194217cc962f50b01ea22b3c1d8148aff4099a93e4f03e11e13e67"
       }
     },
     {
@@ -2168,7 +2168,7 @@
       },
       "taughtOn": "2026-09-24",
       "topic": "分子发光分析法——荧光分析法：荧光与磷光的产生、荧光定量分析、影响因素、荧光仪器及化学发光",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-015-016",
       "materials": {
         "recording": {
@@ -2198,7 +2198,7 @@
       },
       "hashes": {
         "recording": "b2c0d99fadb26d2b9117d8d369ea4eeb6129d19f855daa07baab12957e24aef9",
-        "notesText": "25dab3eb2d15e7f035e191a886b335eb5d33977048a9a3678dd5855ba6b75dbb"
+        "notesText": "6945291fcd899824de38e83a08f2fc907702f89ff84181307d54ae95a2b57171"
       }
     },
     {
@@ -2212,7 +2212,7 @@
       },
       "taughtOn": "2026-09-28",
       "topic": "化学发光收尾与磷光补充、原子吸收光谱法(AAS)开篇：原子吸收基本原理、锐线光源与原子化器",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-017-018",
       "materials": {
         "recording": {
@@ -2242,7 +2242,7 @@
       },
       "hashes": {
         "recording": "95157d270999e14c165c55662b4e2589e515aae360c22ae6c785029a1cbdc67b",
-        "notesText": "e0ecad9e667c5c68ab713b8685f24112a58aca74657eed48d89635b236c30142"
+        "notesText": "3a4d14acbea16165eb450f57ce6d91a79ad21f8594965c077cd45b3f8dbd8e74"
       }
     },
     {
@@ -2256,7 +2256,7 @@
       },
       "taughtOn": "2026-09-02",
       "topic": "课程介绍",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-001-002",
       "materials": {
         "recording": {
@@ -2286,7 +2286,7 @@
       },
       "hashes": {
         "recording": "0151bd85e3ef3a66a141e92a839b7e2d6c8907a8a5b51dd290d8b794a7cff754",
-        "notesText": "04fd9020a99dd0ca26048c85aaca1cdee8340ff2282f8aea0f993b33404ff209"
+        "notesText": "289d40dd2737373af56bea3d346404dd8fa3d5b0939d3c102535eb00dedc9962"
       }
     },
     {
@@ -2300,7 +2300,7 @@
       },
       "taughtOn": "2026-09-09",
       "topic": "Paraphrasing与AI医学诊断文本分析",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-003-004",
       "materials": {
         "recording": {
@@ -2330,7 +2330,7 @@
       },
       "hashes": {
         "recording": "d43dcb9aef4ceb1c63eab967f873c9044bf6e8de4a62de7c23a0093f39b71e68",
-        "notesText": "0432db5282c0d95732d9e733556691c6659b2f07159c9a0bd8ec9b72c7435911"
+        "notesText": "6e2016fd204bf6d2b1d66e5f471ea48ba16918ba3ffc94d1f612c421dea270cc"
       }
     },
     {
@@ -2344,7 +2344,7 @@
       },
       "taughtOn": "2026-09-16",
       "topic": "Unit 1 Language learning (2) & exercise",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-005-006",
       "materials": {
         "recording": {
@@ -2374,7 +2374,7 @@
       },
       "hashes": {
         "recording": "8b9f217858e300c77fe4dbc3cf5fdac7ae03c93a039114e99908397937740f36",
-        "notesText": "5570ecc858ddb77454f29122f73a66ea9e18ea4b58750bc2eb1dfa0101c656c2"
+        "notesText": "e6dbfd85f76ba06b11d3ba76171370729e19f5e7649433da439b7e72cb7bfe67"
       }
     },
     {
@@ -2388,7 +2388,7 @@
       },
       "taughtOn": "2026-09-23",
       "topic": "Unit 2 Guardians of Public Health Discussion：学生词汇展示点评、Unit 1 收尾（构词法与 AI 辅助诊断主旨）与 Unit 5 导入（膀胱外翻与再生工程）",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-007-008",
       "materials": {
         "recording": {
@@ -2418,7 +2418,7 @@
       },
       "hashes": {
         "recording": "b13231b87de2b18c28dc6d2ed849dd79ae9c5b2f7586120c6fe8269841d75f06",
-        "notesText": "707b638490b1c84743bfda4cc2eb3dad3640627c0e62911c0dc902210f963ef5"
+        "notesText": "46979c9c07108ff6d01b24502cd49f9f920249637ca6330edbe52592694a6df5"
       }
     },
     {
@@ -2432,7 +2432,7 @@
       },
       "taughtOn": "2026-09-30",
       "topic": "Unit 5 膀胱外翻（bladder exstrophy）课文结构与医学写作手法分析；假期脑机接口（BCI）项目安排",
-      "revision": 1,
+      "revision": 3,
       "quizId": "rec-2026-fall-009-010",
       "materials": {
         "recording": {
@@ -2462,7 +2462,7 @@
       },
       "hashes": {
         "recording": "4cfe3c90f700647a279658645d7e5ce7d8d1b74c5225229fcf5bf2ea5c1aa3de",
-        "notesText": "54cca945d9854757020c2fe47b68f2f1108ae8481010bda631b3a8031aeac944"
+        "notesText": "73f33da073cb25c72f55fefb65a55d77ba48774235413a879ffac05bdaa9d966"
       }
     }
   ]

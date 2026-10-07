@@ -1,127 +1,375 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<title>糖代谢2 · 可视化笔记</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;background:#FAF8F1;color:#24201A;line-height:1.7;font-size:11pt;padding:20px}
-.hero{background:linear-gradient(135deg,#2F8557,#143D27);color:#FBF7EC;padding:40px 30px;border-radius:12px;margin-bottom:24px}
-.hero h1{font-size:24px;margin-bottom:8px}
-.hero .meta{font-size:10pt;opacity:.85}
-.section{background:#fff;border:1px solid #E8F1EA;border-radius:10px;padding:20px 24px;margin-bottom:16px}
-.section h2{color:#1F5C39;font-size:15pt;border-bottom:2px solid #C3D9C9;padding-bottom:6px;margin-bottom:12px}
-.section h3{color:#2E7D4F;font-size:12pt;margin:12px 0 6px}
-.key{background:#F8ECD3;border-left:4px solid #A2630C;padding:10px 14px;border-radius:4px;margin:8px 0}
-.warn{background:#F7E4DF;border-left:4px solid #B23A2E;padding:10px 14px;border-radius:4px;margin:8px 0;color:#7E2A20}
-table{width:100%;border-collapse:collapse;margin:10px 0}
-th,td{border:1px solid #C3D9C9;padding:6px 10px;text-align:left;font-size:10pt}
-th{background:#E8F1EA;color:#1F5C39}
-ul{padding-left:20px;margin:6px 0}
-li{margin:3px 0}
-.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
-.flow .step{background:#E8F1EA;border:1px solid #C3D9C9;border-radius:6px;padding:6px 12px;font-size:10pt}
-.flow .arrow{color:#2E7D4F;font-weight:bold}
-</style>
-</head>
-<body>
-<div class="hero">
-<h1>糖代谢2 · 可视化笔记</h1>
-<div class="meta">生物化学与分子生物学 · 第17-18节 · 2026-09-23 · 陈娟教授</div>
-</div>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>生物化学与分子生物学 · 第17-18节 · 糖无氧氧化、有氧氧化与磷酸戊糖途径</title><style>
+:root{
+  --paper:#F7F6F2; --paper2:#EDEBE4; --ink:#1B1F24; --ink2:#3C444D; --muted:#6B7480; --line:#D8D6CE;
+  --accent:#4A6B1F; --accent-d:#33490F; --accent-t:#EDF2E1;
+  --exam:#A9660A; --exam-t:#FBF0DC;
+  --wrong:#A32C2C; --wrong-t:#F8E7E5;
+  --mnem:#2E6B4F; --mnem-t:#E6F1EA;
+  --def:#1F5F8B; --def-t:#E6EFF6;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper2);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;}
+.page{width:210mm;max-width:100%;min-height:297mm;padding:15mm 14mm;box-sizing:border-box;margin:0 auto 6mm;background:#fff;}
+.h1{font-family:var(--serif);font-size:22pt;color:var(--accent-d);margin:0 0 4mm;}
+.h2{font-family:var(--serif);font-size:15pt;color:var(--accent-d);margin:6mm 0 2mm;border-left:4pt solid var(--accent);padding-left:3mm;}
+.h3{font-family:var(--serif);font-size:12pt;color:var(--ink);margin:4mm 0 2mm;}
+.lead{background:var(--accent-t);border-left:4pt solid var(--accent);padding:3mm 4mm;margin:0 0 4mm;font-size:10pt;color:var(--ink2);}
+.kv{margin:2mm 0 4mm;padding:0;list-style:none;}
+.kv li{margin:1.4mm 0;padding-left:4mm;position:relative;font-size:10.5pt;}
+.kv li::before{content:"";position:absolute;left:0;top:.55em;width:2mm;height:2mm;background:var(--accent);border-radius:50%;}
+.kv .loc{font-size:8.5pt;color:var(--muted);margin-left:1mm;}
+.tbl{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9.5pt;break-inside:avoid;}
+.tbl th{background:var(--accent);color:#fff;text-align:left;padding:2mm 2.5mm;font-weight:600;}
+.tbl td{padding:2mm 2.5mm;border-bottom:1pt solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--paper);}
+.exam,.wrong,.mnem,.def{margin:3mm 0;padding:3mm 4mm;border-left:4pt solid;break-inside:avoid;font-size:10pt;}
+.exam{border-color:var(--exam);background:var(--exam-t);}
+.wrong{border-color:var(--wrong);background:var(--wrong-t);}
+.mnem{border-color:var(--mnem);background:var(--mnem-t);}
+.def{border-color:var(--def);background:var(--def-t);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0;}
+.card{border:1pt solid var(--line);border-top:3pt solid var(--accent);padding:3mm;break-inside:avoid;font-size:9.5pt;}
+.tag{display:inline-block;font-size:8pt;font-weight:700;color:var(--exam);border:1pt solid var(--exam);background:var(--exam-t);padding:.3mm 1.5mm;margin-right:1.5mm;}
+.foot{font-size:8pt;color:var(--muted);margin-top:6mm;padding-top:2mm;border-top:1pt solid var(--line);}
+.idx{font-size:8.5pt;}
+.idx th,.idx td{padding:1.5mm 2mm;border-bottom:1pt solid var(--line);}
+.idx th{background:var(--accent);color:#fff;}
+.cover{text-align:center;padding-top:8mm;}
+.cover .meta{font-size:9.5pt;color:var(--muted);margin:4mm 0;}
+.cover table{margin:6mm auto;text-align:left;font-size:9.5pt;}
+.cover th{background:var(--accent);color:#fff;padding:2mm 3mm;}
+.cover td{padding:2mm 3mm;border-bottom:1pt solid var(--line);}
+@media print{.page{margin:0;}}
+</style></head><body>
+<div class="page cover">
+<p class="h1">生物化学与分子生物学 · 第17-18节</p>
+<p class="meta">糖代谢（二）——糖无氧氧化、糖有氧氧化与三羧酸循环、磷酸戊糖途径 · 2026-09-23</p>
+<p class="lead" style="text-align:left">素材规模：逐字稿 27686 字 / 129 轮发言</p>
+<table><tr><th>项目</th><th>内容</th></tr>
+<tr><td>课程</td><td>生物化学与分子生物学（biochemistry / rec-2026-fall-017-018）</td></tr>
+<tr><td>授课</td><td>陈娟 教授</td></tr>
+<tr><td>学时</td><td>2 学时（第17-18节）</td></tr>
+<tr><td>主题</td><td>糖无氧氧化、糖有氧氧化（TCA）、磷酸戊糖途径、其他单糖入酵解</td></tr>
+</table></div>
 
-<div class="section">
-<h2>一、糖无氧氧化</h2>
-<div class="flow">
-<span class="step">葡萄糖</span><span class="arrow">→</span>
-<span class="step">糖酵解（胞液）</span><span class="arrow">→</span>
-<span class="step">丙酮酸</span><span class="arrow">→</span>
-<span class="step">乳酸（缺氧）</span>
-</div>
-<h3>三个关键酶</h3>
-<table>
-<tr><th>酶</th><th>调节</th><th>要点</th></tr>
-<tr><td>己糖激酶</td><td>6-磷酸葡萄糖反馈抑制</td><td>肝外组织</td></tr>
-<tr><td>磷酸果糖激酶-1</td><td>AMP/ADP/2,6-二磷酸果糖激活；ATP抑制</td><td>最核心限速酶</td></tr>
-<tr><td>丙酮酸激酶</td><td>ATP/胰高血糖素抑制</td><td>第二次底物水平磷酸化</td></tr>
+<div class="page"><h2 class="h2">0. 知识框架</h2>
+<p class="lead">沿葡萄糖分解三条通路：无氧氧化快速供能、有氧氧化彻底氧化、磷酸戊糖旁路产 NADPH 与核糖。</p>
+<svg viewBox="0 0 700 220" width="100%" aria-label="知识框架">
+<rect x="250" y="6" width="200" height="26" fill="#EDF2E1" stroke="#4A6B1F"/>
+<text x="350" y="24" text-anchor="middle" font-size="11" font-family="sans-serif">6-磷酸葡萄糖</text>
+<line x1="350" y1="32" x2="120" y2="58" stroke="#4A6B1F"/><line x1="350" y1="32" x2="350" y2="58" stroke="#4A6B1F"/><line x1="350" y1="32" x2="580" y2="58" stroke="#4A6B1F"/>
+<rect x="40" y="58" width="160" height="40" fill="#fff" stroke="#33490F"/><text x="120" y="78" text-anchor="middle" font-size="9">糖酵解/无氧氧化</text><text x="120" y="92" text-anchor="middle" font-size="8">胞液·乳酸·2ATP</text>
+<rect x="270" y="58" width="160" height="40" fill="#fff" stroke="#33490F"/><text x="350" y="78" text-anchor="middle" font-size="9">有氧氧化</text><text x="350" y="92" text-anchor="middle" font-size="8">线粒体·TCA·30/32ATP</text>
+<rect x="500" y="58" width="160" height="40" fill="#fff" stroke="#33490F"/><text x="580" y="78" text-anchor="middle" font-size="9">磷酸戊糖途径</text><text x="580" y="92" text-anchor="middle" font-size="8">NADPH·5-磷酸核糖</text>
+<line x1="350" y1="98" x2="350" y2="130" stroke="#4A6B1F"/>
+<rect x="200" y="130" width="300" height="36" fill="#EDF2E1" stroke="#4A6B1F"/><text x="350" y="152" text-anchor="middle" font-size="10">关键酶调控 · 底物水平磷酸化 · 碳与ATP核算</text>
+</svg>
+<ul class="kv">
+<li>体内糖代谢分合成代谢与分解代谢 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>血糖恒定依赖糖原储备调节代谢流量 <span class="loc">〔说话人1 00:00〕</span></li>
+<li>分解、合成与储存三者动态平衡 <span class="loc">〔说话人1 00:43〕</span></li>
+<li>饱食增强氧化或合成糖原脂类等 <span class="loc">〔说话人1 00:43〕</span></li>
+<li>饥饿时糖原分解与非糖物质糖异生 <span class="loc">〔说话人1 01:18〕</span></li>
+<li>高血糖时多余葡萄糖在肝肌以糖原储存 <span class="loc">〔说话人1 01:18〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">1. 糖无氧氧化与糖酵解概念</h2><p class="lead">主观题按关键词给分；须区分无氧氧化与糖酵解。</p><table class="tbl"><tr><th>概念</th><th>条件</th><th>产物</th></tr>
+<tr><td>糖无氧氧化</td><td>缺氧</td><td>乳酸+少量ATP</td></tr>
+<tr><td>糖酵解</td><td>与氧无关</td><td>丙酮酸</td></tr>
+<tr><td>糖有氧氧化</td><td>有氧</td><td>CO₂+H₂O+大量ATP</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★糖无氧氧化与糖酵解名词解释勿混。 <span class="loc">〔说话人1 03:53〕</span></div><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>糖无氧氧化条件缺氧底物葡萄糖产物乳酸和少量ATP <span class="loc">〔说话人1 01:52〕</span></li>
+<li>糖有氧氧化有氧葡萄糖彻底氧化生成二氧化碳水和大量ATP <span class="loc">〔说话人1 01:52〕</span></li>
+<li>主观题按字给分关键词齐全可满分 <span class="loc">〔说话人1 02:56〕</span></li>
+<li>糖酵解是糖无氧氧化第一阶段 <span class="loc">〔说话人1 03:21〕</span></li>
+<li>糖酵解的概念实际上不需要有氧无氧的限制 <span class="loc">〔说话人1 03:21〕</span></li>
+<li>糖酵解产物是三碳化合物丙酮酸不是乳酸 <span class="loc">〔说话人1 03:53〕</span></li>
+<li>第二阶段丙酮酸还原为乳酸是不彻底氧化 <span class="loc">〔说话人1 04:18〕</span></li>
+<li>无氧氧化中六碳葡萄糖仅变为三碳化合物 <span class="loc">〔说话人1 04:18〕</span></li>
+<li>糖无氧氧化全部酶系存在于胞液当中 <span class="loc">〔说话人1 04:46〕</span></li>
+<li>有氧氧化酶有的在胞液有的在线粒体 <span class="loc">〔说话人1 04:46〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">2. 糖酵解耗能阶段（1–4步）</h2><p class="lead">活化、异构、对称后醛缩酶一分为二。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>葡萄糖是一个六元吡喃环 <span class="loc">〔说话人1 05:09〕</span></li>
+<li>一分为二需先活化加变构 <span class="loc">〔说话人1 05:33〕</span></li>
+<li>己糖激酶是一个金属酶需要镁离子来激活 <span class="loc">〔说话人1 05:33〕</span></li>
+<li>消耗ATP将磷酸转移到葡萄糖第6号碳 <span class="loc">〔说话人1 06:17〕</span></li>
+<li>生成6-磷酸葡萄糖，即葡萄糖经磷酸化而活化 <span class="loc">〔说话人1 06:17〕</span></li>
+<li>己糖激酶催化反应不可逆是限速酶 <span class="loc">〔说话人1 06:46〕</span></li>
+<li>肝脏此步由葡萄糖激酶催化C6位磷酸化 <span class="loc">〔说话人1 07:18〕</span></li>
+<li>肝葡萄糖激酶Km值为肝外己糖激酶一百倍 <span class="loc">〔说话人1 07:18〕</span></li>
+<li>Km越大与底物亲和力越小 <span class="loc">〔说话人1 07:18〕</span></li>
+<li>肝脏含葡萄糖激酶等限速酶，是调节血糖恒定的最重要器官 <span class="loc">〔说话人1 07:18〕</span></li>
+<li>己糖激酶受6-磷酸葡萄糖产物别构反馈抑制 <span class="loc">〔说话人1 08:37〕</span></li>
+<li>葡萄糖激酶不受产物抑制受胰岛素化学修饰调节 <span class="loc">〔说话人1 10:09〕</span></li>
+<li>激素调节酶活性终极方式是化学修饰如磷酸化 <span class="loc">〔说话人1 11:57〕</span></li>
+<li>己糖异构酶将6-磷酸葡萄糖变果糖6-磷酸五元环 <span class="loc">〔说话人1 12:39〕</span></li>
+<li>磷酸果糖激酶1消耗ATP在1号碳磷酸化 <span class="loc">〔说话人1 13:17〕</span></li>
+<li>生成1,6-二磷酸果糖形成对称结构 <span class="loc">〔说话人1 13:17〕</span></li>
+<li>磷酸果糖激酶1是第二个关键酶不可逆 <span class="loc">〔说话人1 13:17〕</span></li>
+<li>醛缩酶裂解生成磷酸二羟丙酮和三磷酸甘油醛 <span class="loc">〔说话人1 14:26〕</span></li>
+<li>同分异构酶使磷酸二羟丙酮流向三磷酸甘油醛 <span class="loc">〔说话人1 14:26〕</span></li>
+<li>一分子葡萄糖到三磷酸甘油醛变成两分子 <span class="loc">〔说话人1 14:26〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">3. 糖酵解产能阶段（5–10步）</h2><p class="lead">脱氢产NADH；两次底物水平磷酸化。</p><div class="def"><b>名词</b>底物水平磷酸化：磷酸甘油酸激酶与丙酮酸激酶步骤。 <span class="loc">〔说话人1 18:40〕</span></div><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>三磷酸甘油醛脱氢酶催化生成NADH还原当量 <span class="loc">〔说话人1 16:23〕</span></li>
+<li>1号碳形成高能磷酸键生成1,3-二磷酸甘油酸 <span class="loc">〔说话人1 16:23〕</span></li>
+<li>磷酸甘油酸激酶催化第一次底物水平磷酸化产ATP <span class="loc">〔说话人1 18:40〕</span></li>
+<li>底物水平磷酸化底物分子内部重排生成高能磷酸键促使ADP生成ATP <span class="loc">〔说话人1 16:23〕</span></li>
+<li>与之对应的是氧化磷酸化 <span class="loc">〔说话人1 18:40〕</span></li>
+<li>磷酸甘油酸变位酶将磷酸基团由3号碳原子变到2号碳原子 <span class="loc">〔说话人1 18:40〕</span></li>
+<li>烯醇化酶脱水重排生成磷酸烯醇式丙酮酸PEP <span class="loc">〔说话人1 19:48〕</span></li>
+<li>PEP含高能磷酸键 <span class="loc">〔说话人1 20:28〕</span></li>
+<li>丙酮酸激酶催化PEP生成丙酮酸第二次产ATP <span class="loc">〔说话人1 20:28〕</span></li>
+<li>糖酵解十步中不可逆反应（单箭头）共3处 <span class="loc">〔说话人1 20:28〕</span></li>
+<li>三个关键酶己糖激酶磷酸果糖激酶1和丙酮酸激酶 <span class="loc">〔说话人1 37:26〕</span></li>
+<li>第1、3步不可逆反应耗能，第10步产能 <span class="loc">〔说话人1 20:28〕</span></li>
+<li>糖酵解在胞液产生NADH还原当量 <span class="loc">〔说话人1 21:50〕</span></li>
+<li>无氧第二阶段乳酸脱氢酶用胞液NADH还原丙酮酸为乳酸 <span class="loc">〔说话人1 23:20〕</span></li>
+<li>有氧时NADH不入乳酸还原而经穿梭入线粒体 <span class="loc">〔说话人1 24:08〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">4. 能量核算、小结与乳酸循环</h2><p class="lead">葡萄糖净2ATP；糖原净3ATP；乳酸回肝两条去路。</p><div class="mnem">缺氧葡萄糖变乳酸，胞液里面少产能。（整理）</div><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>1分子葡萄糖经糖酵解总产4分子ATP净得2分子ATP <span class="loc">〔说话人1 29:25〕</span></li>
+<li>糖无氧氧化反应部位只在胞液 <span class="loc">〔说话人1 30:03〕</span></li>
+<li>糖酵解是不需氧的产能过程与氧无关 <span class="loc">〔说话人1 30:03〕</span></li>
+<li>糖酵解三步反应不可逆己糖激酶磷酸果糖激酶1和丙酮酸激酶 <span class="loc">〔说话人1 30:03〕</span></li>
+<li>产能方式为底物水平磷酸化 <span class="loc">〔说话人1 30:37〕</span></li>
+<li>从葡萄糖净生成两分子ATP <span class="loc">〔说话人1 30:37〕</span></li>
+<li>糖原水解不经己糖激酶少消耗一分子ATP净生成三分子ATP <span class="loc">〔说话人1 30:37〕</span></li>
+<li>终产物乳酸是不彻底氧化产物入血回肝脏 <span class="loc">〔说话人1 31:44〕</span></li>
+<li>乳酸可分解为丙酮酸再乙酰CoA进三羧酸循环供能 <span class="loc">〔说话人1 32:40〕</span></li>
+<li>乳酸也可糖异生为葡萄糖补充血糖 <span class="loc">〔说话人1 33:22〕</span></li>
+<li>糖异生与酵解步骤相同，三处不可逆反应由不同酶催化（须倒背） <span class="loc">〔说话人1 27:05〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">5. 三关键酶调节与组织差异</h2><p class="lead">PFK-1最核心；2,6-二磷酸果糖最强激活剂。</p><table class="tbl"><tr><th>酶</th><th>激活</th><th>抑制</th></tr>
+<tr><td>己糖激酶</td><td>—</td><td>6-磷酸葡萄糖</td></tr>
+<tr><td>PFK-1</td><td>AMP、ADP、2,6-二磷酸果糖</td><td>ATP、胰高血糖素</td></tr>
+<tr><td>丙酮酸激酶</td><td>AMP/ADP</td><td>ATP、胰高血糖素</td></tr></table>
+<div class="exam"><span class="tag">★考点</span>★2,6-二磷酸果糖对PFK-1最强激活。 <span class="loc">〔说话人1 37:26〕</span></div><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>分解代谢时ATP少AMP和ADP多 <span class="loc">〔说话人1 35:03〕</span></li>
+<li>AMP和ADP是磷酸果糖激酶1等的变构激活剂 <span class="loc">〔说话人1 35:03〕</span></li>
+<li>ATP是变构抑制剂阻止继续分解 <span class="loc">〔说话人1 35:03〕</span></li>
+<li>果糖1,6-二磷酸是变构激活剂 <span class="loc">〔说话人1 35:03〕</span></li>
+<li>2,6-二磷酸果糖是磷酸果糖激酶1最强激活剂常考单选 <span class="loc">〔说话人1 37:26〕</span></li>
+<li>磷酸果糖激酶1是最关键调控酶Km最大亲和力最小 <span class="loc">〔说话人1 37:26〕</span></li>
+<li>磷酸果糖激酶1受胰高血糖素抑制性激素调节 <span class="loc">〔说话人1 37:26〕</span></li>
+<li>己糖激酶仅受6-磷酸葡萄糖别构抑制 <span class="loc">〔说话人1 37:26〕</span></li>
+<li>肌肉糖酵解主要受ATP与AMP比值别构调节 <span class="loc">〔说话人1 40:44〕</span></li>
+<li>肝脏糖酵解主要受胰岛素和胰高血糖素激素调节 <span class="loc">〔说话人1 40:44〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">6. 无氧氧化生理意义与题型</h2><p class="lead">简答常考生理意义；选择题占卷面约40分。</p><div class="exam"><span class="tag">★考点</span>★无氧氧化生理意义三条简答题。 <span class="loc">〔说话人1 41:54〕</span></div><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>生理意义之一：缺氧时不耗氧即可快速供能（如肌肉收缩） <span class="loc">〔说话人1 41:54〕</span></li>
+<li>红细胞没有线粒体只能依靠糖酵解无氧氧化供能 <span class="loc">〔说话人1 42:29〕</span></li>
+<li>肿瘤晚期恶病质或感染性休克患者，有氧仍糖酵解增强 <span class="loc">〔说话人1 42:29〕</span></li>
+<li>卷面100分中选择题约占40～45分 <span class="loc">〔说话人1 01:22:46〕</span></li>
+<li>考点：糖无氧氧化概念、生理意义简答 <span class="loc">〔说话人1 43:23〕</span></li>
+<li>论述多给胰岛素糖尿病等案例糖脂综合 <span class="loc">〔说话人1 43:23〕</span></li>
+<li>半乳糖果糖甘露糖等单糖需代谢入糖酵解 <span class="loc">〔说话人1 43:23〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">7. 其他单糖进入糖酵解</h2><p class="lead">果糖肝内外途径不同；均插入中间代谢物。</p><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>肾脏、肌肉中果糖经己糖激酶磷酸化得6-磷酸果糖 <span class="loc">〔说话人1 49:58〕</span></li>
+<li>果糖在肝由果糖激酶得1-磷酸果糖再醛缩酶得1,6-二磷酸果糖 <span class="loc">〔说话人1 50:29〕</span></li>
+<li>半乳糖经半乳糖激酶得半乳糖1磷酸再变1-磷酸葡萄糖 <span class="loc">〔说话人1 50:54〕</span></li>
+<li>甘露糖经己糖激酶得6-磷酸甘露糖异构为6-磷酸果糖 <span class="loc">〔说话人1 50:54〕</span></li>
+<li>其他单糖分子转变为糖酵解中间代谢物插入主途径生成丙酮酸 <span class="loc">〔说话人1 50:54〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">8. 糖有氧氧化与丙酮酸氧化脱羧</h2><p class="lead">三阶段：糖酵解、丙酮酸→乙酰CoA、TCA。</p><div class="exam"><span class="tag">★考点</span>★丙酮酸脱氢酶复合体属难点非重点，须掌握来源与产物。 <span class="loc">〔说话人1 54:30〕</span></div><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>糖有氧氧化有氧葡萄糖彻底分解为二氧化碳水和大量ATP <span class="loc">〔说话人1 52:01〕</span></li>
+<li>第一阶段糖酵解葡萄糖生成两分子丙酮酸 <span class="loc">〔说话人1 52:51〕</span></li>
+<li>第二阶段有氧丙酮酸入线粒体氧化脱羧生成乙酰辅酶A <span class="loc">〔说话人1 52:51〕</span></li>
+<li>乙酰辅酶A经柠檬酸循环氧化呼吸链生成水和ATP <span class="loc">〔说话人1 52:51〕</span></li>
+<li>第二三阶段在线粒体完成 <span class="loc">〔说话人1 53:55〕</span></li>
+<li>有氧时糖酵解NADH可入线粒体经电子传递链 <span class="loc">〔说话人1 54:30〕</span></li>
+<li>丙酮酸经线粒体膜载体进入线粒体 <span class="loc">〔说话人1 54:30〕</span></li>
+<li>丙酮酸在线粒体氧化脱羧生成乙酰辅酶A二氧化碳和NADH <span class="loc">〔说话人1 54:30〕</span></li>
+<li>多酶复合体为多条多肽链四级结构；多功能酶为单链多结构域 <span class="loc">〔说话人1 55:37〕</span></li>
+<li>复合体含丙酮酸脱氢酶、二氢硫辛酰胺转乙酰酶、二氢硫辛酰胺脱氢酶 <span class="loc">〔说话人1 56:28〕</span></li>
+<li>丙酮酸脱氢酶辅酶TPP；二氢硫辛酰胺脱氢酶辅酶FAD与NAD⁺ <span class="loc">〔说话人1 56:28〕</span></li>
+<li>最终产物乙酰CoA二氧化碳和NADH <span class="loc">〔说话人1 59:33〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">9. 三羧酸循环（TCA）</h2><p class="lead">八步反应；四脱氢、二脱羧、一次底物水平磷酸化。</p><table class="tbl"><tr><th>步骤</th><th>关键酶/产物</th></tr>
+<tr><td>1</td><td>柠檬酸合酶→柠檬酸</td></tr>
+<tr><td>3</td><td>异柠檬酸脱氢酶→CO₂+NADH</td></tr>
+<tr><td>4</td><td>α-酮戊二酸脱氢酶复合体→CO₂+NADH</td></tr>
+<tr><td>5</td><td>琥珀酰CoA合成酶→GTP</td></tr>
+<tr><td>6</td><td>琥珀酸脱氢酶→FADH₂</td></tr></table>
+<div class="mnem">四脱氢二脱羧一磷酸化，TCA八步记心间。</div><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>乙酰辅酶A与草酰乙酸缩合柠檬酸起始循环 <span class="loc">〔说话人1 01:00:30〕</span></li>
+<li>循环别名柠檬酸循环Krebs循环三羧酸循环 <span class="loc">〔说话人1 01:00:30〕</span></li>
+<li>柠檬酸合酶催化草酰乙酸与乙酰辅酶A缩合生成柠檬酸 <span class="loc">〔说话人1 01:01:33〕</span></li>
+<li>顺乌头酸酶将柠檬酸异构为异柠檬酸 <span class="loc">〔说话人1 01:01:33〕</span></li>
+<li>异柠檬酸脱氢酶氧化脱羧生成α-酮戊二酸、CO₂和NADH <span class="loc">〔说话人1 01:01:33〕</span></li>
+<li>碳13标记脱羧CO₂来自草酰乙酸碳骨架非乙酰CoA碳 <span class="loc">〔说话人1 01:03:20〕</span></li>
+<li>α-酮戊二酸脱氢酶复合体氧化脱羧生成琥珀酰辅酶A <span class="loc">〔说话人1 01:03:20〕</span></li>
+<li>琥珀酰辅酶A高能硫酯键释放生成GTP底物水平磷酸化 <span class="loc">〔说话人1 01:04:26〕</span></li>
+<li>琥珀酸脱氢酶辅酶FAD生成FADH2延胡索酸 <span class="loc">〔说话人1 01:05:51〕</span></li>
+<li>延胡索酸酶加水变苹果酸苹果酸脱氢酶生成草酰乙酸NADH <span class="loc">〔说话人1 01:05:51〕</span></li>
+<li>糖酵解是几步反应十步TAC循环几步反应八步 <span class="loc">〔说话人1 01:05:51〕</span></li>
+<li>一次循环四次脱氢两次脱羧一次底物水平磷酸化 <span class="loc">〔说话人1 01:08:19〕</span></li>
+<li>一分子乙酰CoA经循环产3 NADH、1 FADH₂、2 CO₂、1 GTP <span class="loc">〔说话人1 01:08:55〕</span></li>
+<li>三关键酶柠檬酸合酶异柠檬酸脱氢酶α-酮戊二酸脱氢酶复合体 <span class="loc">〔说话人1 01:08:55〕</span></li>
+<li>α-酮戊二酸脱氢酶须写复合体漏写算错 <span class="loc">〔说话人1 01:08:55〕</span></li>
+<li>中间产物起催化作用无净量变化 <span class="loc">〔说话人1 01:10:54〕</span></li>
+<li>乙酰辅酶A只能氧化为二氧化碳不能合成草酰乙酸 <span class="loc">〔说话人1 01:11:36〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">10. TCA意义、ATP核算与有氧调节</h2><p class="lead">1葡萄糖净30或32 ATP；穿梭差2 ATP。</p><div class="exam"><span class="tag">★考点</span>★自己核算30/32 ATP勿忘乘2（两分子丙酮酸）。 <span class="loc">〔说话人1 01:17:45〕</span></div><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>TCA是三大营养物质分解代谢共同通路须变乙酰辅酶A <span class="loc">〔说话人1 01:13:02〕</span></li>
+<li>TCA是糖脂氨基酸代谢互变联系枢纽 <span class="loc">〔说话人1 01:13:48〕</span></li>
+<li>α-酮戊二酸→谷氨酸；草酰乙酸→天冬氨酸；丙酮酸→丙氨酸 <span class="loc">〔说话人1 01:13:48〕</span></li>
+<li>TCA为其他代谢提供小分子前体并提供还原当量 <span class="loc">〔说话人1 01:14:54〕</span></li>
+<li>糖有氧氧化产生大量ATP是机体供能的主要途径 <span class="loc">〔说话人1 01:19:34〕</span></li>
+<li>NADH还原当量按2.5ATP FADH₂按1.5ATP换算 <span class="loc">〔说话人1 01:15:59〕</span></li>
+<li>1分子葡萄糖有氧氧化净生成30或32分子ATP <span class="loc">〔说话人1 01:17:45〕</span></li>
+<li>差值因胞液NADH穿梭可变为FADH₂或NADH差2ATP <span class="loc">〔说话人1 01:17:45〕</span></li>
+<li>有氧氧化产能效率高且能量逐级释放 <span class="loc">〔说话人1 01:19:34〕</span></li>
+<li>有氧关键酶受AMP激活ATP抑制及激素调节 <span class="loc">〔说话人1 01:20:58〕</span></li>
+<li>丙酮酸脱氢酶复合体受胰岛素激活发生磷酸化修饰而激活 <span class="loc">〔说话人1 01:20:58〕</span></li>
+<li>有些酶金属酶激活受钙离子激活糖酵解很多酶镁离子激活 <span class="loc">〔说话人1 01:21:36〕</span></li>
+</ul></div>
+<div class="page"><h2 class="h2">11. 巴斯德效应、瓦伯格效应与磷酸戊糖途径</h2><p class="lead">PPP产NADPH与5-磷酸核糖；G6PD关键酶。</p><table class="tbl"><tr><th>效应</th><th>含义</th></tr>
+<tr><td>巴斯德效应</td><td>有氧抑制无氧酵解（肌肉）</td></tr>
+<tr><td>瓦伯格效应</td><td>有氧仍高糖酵解（增殖细胞）</td></tr></table>
+<div class="wrong"><b>易混</b>NADPH≠NADH：前者合成还原当量后者氧化磷酸化。 <span class="loc">〔说话人1 01:32:44〕</span></div>
+<div class="exam"><span class="tag">★考点</span>★磷酸戊糖途径名词解释与6-磷酸葡萄糖脱氢酶调节单选。 <span class="loc">〔说话人1 01:25:16〕</span></div><h3 class="h3">A. 核心结论</h3><ul class="kv">
+<li>巴斯德效应肌肉有氧氧化抑制糖无氧氧化 <span class="loc">〔说话人1 01:23:17〕</span></li>
+<li>机制有氧时NADH入线粒体无氧时还原乳酸 <span class="loc">〔说话人1 01:24:02〕</span></li>
+<li>瓦伯格效应肿瘤骨髓等有氧仍高糖酵解积累碳源合成 <span class="loc">〔说话人1 01:24:29〕</span></li>
+<li>磷酸戊糖途径是6-磷酸葡萄糖旁路氧化和基团转移 <span class="loc">〔说话人1 01:25:16〕</span></li>
+<li>磷酸戊糖途径终回到果糖-6-磷酸与3-磷酸甘油醛，再入糖酵解（胞液） <span class="loc">〔说话人1 01:25:16〕</span></li>
+<li>主要意义提供NADPH和磷酸戊糖供核苷酸合成 <span class="loc">〔说话人1 01:26:41〕</span></li>
+<li>氧化阶段六碳变五碳产磷酸戊糖和NADPH及CO₂ <span class="loc">〔说话人1 01:27:33〕</span></li>
+<li>6-磷酸葡萄糖脱氢酶是磷酸戊糖途径关键酶 <span class="loc">〔说话人1 01:28:16〕</span></li>
+<li>氧化阶段产物两分子NADPH和五磷酸核糖 <span class="loc">〔说话人1 01:28:16〕</span></li>
+<li>基团转移阶段3分子五碳最终得2分子三磷酸甘油醛和1分子6-磷酸果糖 <span class="loc">〔说话人1 01:31:46〕</span></li>
+<li>NADPH用于合成代谢NADH FADH₂用于呼吸链产ATP <span class="loc">〔说话人1 01:32:44〕</span></li>
+<li>调节受NADPH与NADP比值别构调节G6PD <span class="loc">〔说话人1 01:34:03〕</span></li>
+<li>NADPH多抑制6-磷酸葡萄糖脱氢酶NADP多激活 <span class="loc">〔说话人1 01:34:03〕</span></li>
+<li>磷酸戊糖途径生理意义提供五磷酸核糖和NADPH原材料 <span class="loc">〔说话人1 01:34:31〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 A 必背清单</h2>
+<ul class="kv">
+<li>糖无氧氧化：缺氧+葡萄糖+乳酸+少量ATP <span class="loc">〔说话人1 01:52〕</span></li>
+<li>糖酵解与无氧氧化区别见§1 <span class="loc">〔说话人1 03:53〕</span></li>
+<li>三关键酶：己糖激酶、PFK-1、丙酮酸激酶 <span class="loc">〔说话人1 21:50〕</span></li>
+<li>葡萄糖净2ATP糖原净3ATP <span class="loc">〔说话人1 29:25〕</span></li>
+<li>底物水平磷酸化定义 <span class="loc">〔说话人1 18:40〕</span></li>
+<li>2,6-二磷酸果糖最强激活PFK-1 <span class="loc">〔说话人1 37:26〕</span></li>
+<li>无氧氧化生理意义三条 <span class="loc">〔说话人1 41:54〕</span></li>
+<li>TCA：4脱氢2脱羧1底物磷酸化8步 <span class="loc">〔说话人1 01:08:19〕</span></li>
+<li>α-酮戊二酸脱氢酶复合体不可漏复合体 <span class="loc">〔说话人1 01:08:55〕</span></li>
+<li>1葡萄糖有氧氧化30或32ATP <span class="loc">〔说话人1 01:17:45〕</span></li>
+<li>巴斯德效应与瓦伯格效应 <span class="loc">〔说话人1 01:25:16〕</span></li>
+<li>磷酸戊糖途径产物NADPH与5-磷酸核糖 <span class="loc">〔说话人1 01:26:41〕</span></li>
+</ul></div>
+
+<div class="page"><h2 class="h2">附录 B 易错点 · 易混对照</h2>
+<table class="tbl"><tr><th>错</th><th>对</th></tr>
+<tr><td>糖酵解需要缺氧</td><td>糖酵解与氧无关；无氧氧化才强调缺氧 <span class="loc">〔说话人1 30:03〕</span></td></tr>
+<tr><td>糖酵解产物是乳酸</td><td>糖酵解产物是丙酮酸；乳酸在第二阶段 <span class="loc">〔说话人1 03:53〕</span></td></tr>
+<tr><td>TCA中乙酰CoA碳变成草酰乙酸</td><td>乙酰CoA两碳以CO₂脱掉；草酰乙酸碳骨架保留 <span class="loc">〔说话人1 01:11:36〕</span></td></tr>
+<tr><td>脱羧CO₂来自乙酰CoA</td><td>¹³C标记CO₂来自草酰乙酸骨架 <span class="loc">〔说话人1 01:03:20〕</span></td></tr>
+<tr><td>磷酸戊糖途径产NADH</td><td>产NADPH用于合成代谢 <span class="loc">〔说话人1 01:32:44〕</span></td></tr>
+<tr><td>α-酮戊二酸脱氢酶</td><td>须写α-酮戊二酸脱氢酶复合体 <span class="loc">〔说话人1 01:08:55〕</span></td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 C 考点索引表</h2>
+<table class="tbl idx"><tr><th>考点</th><th>小节</th><th>定位</th><th>题型</th></tr>
+<tr><td>无氧氧化/糖酵解定义</td><td>§1</td><td>〔说话人1 01:52〕</td><td>名词解释</td></tr>
+<tr><td>己糖激酶vs葡萄糖激酶</td><td>§2</td><td>〔说话人1 07:18〕</td><td>单选/简答</td></tr>
+<tr><td>底物水平磷酸化</td><td>§3</td><td>〔说话人1 18:40〕</td><td>名词解释</td></tr>
+<tr><td>ATP净生成与糖原</td><td>§4</td><td>〔说话人1 31:44〕</td><td>计算</td></tr>
+<tr><td>2,6-二磷酸果糖</td><td>§5</td><td>〔说话人1 37:26〕</td><td>单选</td></tr>
+<tr><td>无氧氧化生理意义</td><td>§6</td><td>〔说话人1 41:54〕</td><td>简答</td></tr>
+<tr><td>TCA八步与三关键酶</td><td>§9</td><td>〔说话人1 01:08:55〕</td><td>简答</td></tr>
+<tr><td>30/32 ATP</td><td>§10</td><td>〔说话人1 01:17:45〕</td><td>计算</td></tr>
+<tr><td>磷酸戊糖途径</td><td>§11</td><td>〔说话人1 01:25:16〕</td><td>名词解释</td></tr>
+<tr><td>G6PD调节</td><td>§11</td><td>〔说话人1 01:34:03〕</td><td>单选</td></tr>
+</table></div>
+
+<div class="page"><h2 class="h2">附录 D 知识点清单</h2>
+<table class="tbl idx"><tr><th>#</th><th>知识点</th><th>类型</th><th>小节</th><th>定位</th></tr>
+<tr><td>1</td><td>体内糖代谢分合成与分解代谢</td><td>框架</td><td>§0</td><td>〔说话人1 00:00〕</td></tr>
+<tr><td>2</td><td>血糖恒定依赖糖原储备</td><td>框架</td><td>§0</td><td>〔说话人1 00:00〕</td></tr>
+<tr><td>3</td><td>分解合成储存动态平衡</td><td>框架</td><td>§0</td><td>〔说话人1 00:43〕</td></tr>
+<tr><td>4</td><td>饱食增强氧化或储存</td><td>框架</td><td>§0</td><td>〔说话人1 00:43〕</td></tr>
+<tr><td>5</td><td>饥饿糖原分解与糖异生</td><td>框架</td><td>§0</td><td>〔说话人1 01:18〕</td></tr>
+<tr><td>6</td><td>高血糖时肝肌糖原储存</td><td>框架</td><td>§0</td><td>〔说话人1 01:18〕</td></tr>
+<tr><td>7</td><td>糖无氧氧化三要素缺氧葡萄糖乳酸ATP</td><td>定义</td><td>§1</td><td>〔说话人1 01:52〕</td></tr>
+<tr><td>8</td><td>糖有氧氧化彻底氧化CO₂水大量ATP</td><td>定义</td><td>§1</td><td>〔说话人1 01:52〕</td></tr>
+<tr><td>9</td><td>主观题关键词给分</td><td>考点</td><td>§1</td><td>〔说话人1 02:56〕</td></tr>
+<tr><td>10</td><td>糖酵解是无氧氧化第一阶段</td><td>定义</td><td>§1</td><td>〔说话人1 03:21〕</td></tr>
+<tr><td>11</td><td>糖酵解与氧无关产物丙酮酸</td><td>定义</td><td>§1</td><td>〔说话人1 03:53〕</td></tr>
+<tr><td>12</td><td>丙酮酸还原乳酸为第二阶段</td><td>机制</td><td>§1</td><td>〔说话人1 04:18〕</td></tr>
+<tr><td>13</td><td>无氧氧化是不彻底氧化</td><td>结论</td><td>§1</td><td>〔说话人1 04:46〕</td></tr>
+<tr><td>14</td><td>无氧氧化酶全在胞液</td><td>部位</td><td>§1</td><td>〔说话人1 04:46〕</td></tr>
+<tr><td>15</td><td>葡萄糖六元吡喃环</td><td>结构</td><td>§2</td><td>〔说话人1 05:33〕</td></tr>
+<tr><td>16</td><td>己糖激酶Mg²⁺ATP磷酸化第6碳</td><td>酶</td><td>§2</td><td>〔说话人1 06:17〕</td></tr>
+<tr><td>17</td><td>6-磷酸葡萄糖活化不可逆限速</td><td>酶</td><td>§2</td><td>〔说话人1 06:46〕</td></tr>
+<tr><td>18</td><td>肝葡萄糖激酶Km大100倍</td><td>酶</td><td>§2</td><td>〔说话人1 07:18〕</td></tr>
+<tr><td>19</td><td>肝是调节血糖最重要器官</td><td>结论</td><td>§2</td><td>〔说话人1 07:18〕</td></tr>
+<tr><td>20</td><td>己糖激酶6-PG反馈抑制</td><td>调节</td><td>§2</td><td>〔说话人1 08:37〕</td></tr>
+<tr><td>21</td><td>葡萄糖激酶胰岛素磷酸化修饰</td><td>调节</td><td>§2</td><td>〔说话人1 10:09〕</td></tr>
+<tr><td>22</td><td>磷酸果糖激酶1第二关键酶</td><td>酶</td><td>§2</td><td>〔说话人1 13:17〕</td></tr>
+<tr><td>23</td><td>1,6-二磷酸果糖对称结构</td><td>结构</td><td>§2</td><td>〔说话人1 13:17〕</td></tr>
+<tr><td>24</td><td>醛缩酶产两分子三碳</td><td>机制</td><td>§2</td><td>〔说话人1 14:26〕</td></tr>
+<tr><td>25</td><td>磷酸二羟丙酮流向三磷酸甘油醛</td><td>机制</td><td>§2</td><td>〔说话人1 14:26〕</td></tr>
+<tr><td>26</td><td>三磷酸甘油醛脱氢产NADH</td><td>机制</td><td>§3</td><td>〔说话人1 16:23〕</td></tr>
+<tr><td>27</td><td>1,3-二磷酸甘油酸高能键</td><td>机制</td><td>§3</td><td>〔说话人1 16:23〕</td></tr>
+<tr><td>28</td><td>底物水平磷酸化定义</td><td>名词</td><td>§3</td><td>〔说话人1 18:40〕</td></tr>
+<tr><td>29</td><td>氧化磷酸化相对概念</td><td>名词</td><td>§3</td><td>〔说话人1 18:40〕</td></tr>
+<tr><td>30</td><td>烯醇化酶生成PEP</td><td>酶</td><td>§3</td><td>〔说话人1 19:48〕</td></tr>
+<tr><td>31</td><td>丙酮酸激酶第三关键酶</td><td>酶</td><td>§3</td><td>〔说话人1 20:28〕</td></tr>
+<tr><td>32</td><td>三步不可逆单箭头</td><td>结论</td><td>§3</td><td>〔说话人1 21:50〕</td></tr>
+<tr><td>33</td><td>胞液NADH乳酸阶段利用</td><td>机制</td><td>§3</td><td>〔说话人1 23:20〕</td></tr>
+<tr><td>34</td><td>有氧NADH穿梭线粒体</td><td>机制</td><td>§3</td><td>〔说话人1 24:08〕</td></tr>
+<tr><td>35</td><td>葡萄糖净2ATP</td><td>数字</td><td>§4</td><td>〔说话人1 29:25〕</td></tr>
+<tr><td>36</td><td>糖原净3ATP</td><td>数字</td><td>§4</td><td>〔说话人1 31:44〕</td></tr>
+<tr><td>37</td><td>乳酸循环回肝</td><td>临床</td><td>§4</td><td>〔说话人1 31:44〕</td></tr>
+<tr><td>38</td><td>乳酸氧化或糖异生两条去路</td><td>机制</td><td>§4</td><td>〔说话人1 33:22〕</td></tr>
+<tr><td>39</td><td>糖异生倒背三酶替换</td><td>考点</td><td>§4</td><td>〔说话人1 27:58〕</td></tr>
+<tr><td>40</td><td>AMP ADP激活PFK-1</td><td>调节</td><td>§5</td><td>〔说话人1 35:03〕</td></tr>
+<tr><td>41</td><td>ATP抑制分解代谢</td><td>调节</td><td>§5</td><td>〔说话人1 35:03〕</td></tr>
+<tr><td>42</td><td>2,6-二磷酸果糖最强激活剂</td><td>考点</td><td>§5</td><td>〔说话人1 37:26〕</td></tr>
+<tr><td>43</td><td>胰高血糖素抑制PFK-1与丙酮酸激酶</td><td>调节</td><td>§5</td><td>〔说话人1 37:26〕</td></tr>
+<tr><td>44</td><td>肌肉ATP/AMP别构调节</td><td>调节</td><td>§5</td><td>〔说话人1 40:44〕</td></tr>
+<tr><td>45</td><td>肝脏胰岛素胰高血糖素调节</td><td>调节</td><td>§5</td><td>〔说话人1 40:44〕</td></tr>
+<tr><td>46</td><td>缺氧快速供能生理意义</td><td>简答</td><td>§6</td><td>〔说话人1 41:54〕</td></tr>
+<tr><td>47</td><td>红细胞无线粒体只靠糖酵解</td><td>生理</td><td>§6</td><td>〔说话人1 42:29〕</td></tr>
+<tr><td>48</td><td>肿瘤休克糖酵解增强</td><td>临床</td><td>§6</td><td>〔说话人1 42:29〕</td></tr>
+<tr><td>49</td><td>卷面选择题至少有40分</td><td>考点</td><td>§6</td><td>〔说话人1 01:22:46〕</td></tr>
+<tr><td>50</td><td>果糖肝内外代谢差异</td><td>分类</td><td>§7</td><td>〔说话人1 50:29〕</td></tr>
+<tr><td>51</td><td>半乳糖甘露糖入酵解途径</td><td>分类</td><td>§7</td><td>〔说话人1 50:54〕</td></tr>
+<tr><td>52</td><td>有氧氧化三阶段</td><td>框架</td><td>§8</td><td>〔说话人1 52:51〕</td></tr>
+<tr><td>53</td><td>丙酮酸脱氢酶复合体产物</td><td>酶</td><td>§8</td><td>〔说话人1 55:37〕</td></tr>
+<tr><td>54</td><td>多酶复合体vs多功能酶</td><td>对比</td><td>§8</td><td>〔说话人1 56:28〕</td></tr>
+<tr><td>55</td><td>柠檬酸循环三名称</td><td>术语</td><td>§9</td><td>〔说话人1 01:00:30〕</td></tr>
+<tr><td>56</td><td>柠檬酸合酶起始</td><td>酶</td><td>§9</td><td>〔说话人1 01:01:33〕</td></tr>
+<tr><td>57</td><td>异柠檬酸脱氢酶第一次脱羧</td><td>酶</td><td>§9</td><td>〔说话人1 01:02:55〕</td></tr>
+<tr><td>58</td><td>CO₂碳来自草酰乙酸</td><td>机制</td><td>§9</td><td>〔说话人1 01:03:20〕</td></tr>
+<tr><td>59</td><td>α-酮戊二酸脱氢酶复合体第二次脱羧</td><td>酶</td><td>§9</td><td>〔说话人1 01:04:26〕</td></tr>
+<tr><td>60</td><td>琥珀酰CoA合成酶GTP</td><td>机制</td><td>§9</td><td>〔说话人1 01:05:51〕</td></tr>
+<tr><td>61</td><td>琥珀酸脱氢酶FADH₂</td><td>酶</td><td>§9</td><td>〔说话人1 01:05:51〕</td></tr>
+<tr><td>62</td><td>TCA四次脱氢两次脱羧</td><td>数字</td><td>§9</td><td>〔说话人1 01:08:19〕</td></tr>
+<tr><td>63</td><td>TCA三关键酶</td><td>考点</td><td>§9</td><td>〔说话人1 01:08:55〕</td></tr>
+<tr><td>64</td><td>乙酰CoA不能生成草酰乙酸</td><td>易错</td><td>§9</td><td>〔说话人1 01:11:36〕</td></tr>
+<tr><td>65</td><td>TCA三大营养共同通路</td><td>简答</td><td>§10</td><td>〔说话人1 01:13:02〕</td></tr>
+<tr><td>66</td><td>TCA代谢互变枢纽</td><td>简答</td><td>§10</td><td>〔说话人1 01:13:48〕</td></tr>
+<tr><td>67</td><td>非必需氨基酸来自TCA中间物</td><td>机制</td><td>§10</td><td>〔说话人1 01:14:54〕</td></tr>
+<tr><td>68</td><td>NADH2.5 FADH₂1.5 ATP</td><td>数字</td><td>§10</td><td>〔说话人1 01:15:59〕</td></tr>
+<tr><td>69</td><td>葡萄糖有氧30或32ATP</td><td>数字</td><td>§10</td><td>〔说话人1 01:17:45〕</td></tr>
+<tr><td>70</td><td>穿梭机制差2ATP</td><td>机制</td><td>§10</td><td>〔说话人1 01:17:45〕</td></tr>
+<tr><td>71</td><td>胰岛素激活丙酮酸脱氢酶复合体</td><td>调节</td><td>§10</td><td>〔说话人1 01:21:36〕</td></tr>
+<tr><td>72</td><td>巴斯德效应定义</td><td>名词</td><td>§11</td><td>〔说话人1 01:23:17〕</td></tr>
+<tr><td>73</td><td>瓦伯格效应定义</td><td>名词</td><td>§11</td><td>〔说话人1 01:24:29〕</td></tr>
+<tr><td>74</td><td>磷酸戊糖途径定义</td><td>名词</td><td>§11</td><td>〔说话人1 01:25:16〕</td></tr>
+<tr><td>75</td><td>PPP产NADPH与磷酸戊糖</td><td>产物</td><td>§11</td><td>〔说话人1 01:26:41〕</td></tr>
+<tr><td>76</td><td>6-磷酸葡萄糖脱氢酶G6PD</td><td>酶</td><td>§11</td><td>〔说话人1 01:28:16〕</td></tr>
+<tr><td>77</td><td>氧化阶段2NADPH与5-磷酸核糖</td><td>产物</td><td>§11</td><td>〔说话人1 01:29:10〕</td></tr>
+<tr><td>78</td><td>非氧化阶段回酵解中间物</td><td>机制</td><td>§11</td><td>〔说话人1 01:31:46〕</td></tr>
+<tr><td>79</td><td>NADPH与NADH功能区别</td><td>对比</td><td>§11</td><td>〔说话人1 01:32:44〕</td></tr>
+<tr><td>80</td><td>NADPH/NADP⁺调节G6PD</td><td>调节</td><td>§11</td><td>〔说话人1 01:34:03〕</td></tr>
 </table>
-<div class="key"><b>净ATP：</b>葡萄糖→2 ATP；糖原残基→3 ATP（跳过第一步耗能）</div>
-<div class="warn"><b>⚠ 辨析：</b>糖酵解≠糖无氧氧化。糖酵解是第一阶段，产物丙酮酸；无氧氧化产物乳酸，仅在缺氧时。</div>
-</div>
-
-<div class="section">
-<h2>二、糖有氧氧化三阶段</h2>
-<table>
-<tr><th>阶段</th><th>部位</th><th>反应</th><th>关键酶</th></tr>
-<tr><td>第一阶段</td><td>胞液</td><td>葡萄糖→2丙酮酸</td><td>同糖酵解三酶</td></tr>
-<tr><td>第二阶段</td><td>线粒体</td><td>丙酮酸→乙酰CoA+CO₂+NADH</td><td>丙酮酸脱氢酶复合体</td></tr>
-<tr><td>第三阶段</td><td>线粒体</td><td>TCA循环彻底氧化</td><td>柠檬酸合酶/异柠檬酸脱氢酶/α-酮戊二酸脱氢酶复合体</td></tr>
-</table>
-</div>
-
-<div class="section">
-<h2>三、三羧酸循环（TCA）</h2>
-<div class="key">
-<b>1次循环：</b>4次脱氢（3 NADH + 1 FADH₂）· 2次脱羧（2 CO₂）· 1次底物水平磷酸化（GTP）<br>
-<b>产物：</b>3 NADH + 1 FADH₂ + 2 CO₂ + 1 GTP
-</div>
-<h3>八步反应</h3>
-<ol style="padding-left:20px">
-<li>草酰乙酸+乙酰CoA→柠檬酸（柠檬酸合酶）</li>
-<li>柠檬酸→异柠檬酸（顺乌头酸酶）</li>
-<li>异柠檬酸→α-酮戊二酸（异柠檬酸脱氢酶，脱羧+NADH）</li>
-<li>α-酮戊二酸→琥珀酰CoA（α-酮戊二酸脱氢酶复合体，脱羧+NADH）</li>
-<li>琥珀酰CoA→琥珀酸（底物水平磷酸化，GTP）</li>
-<li>琥珀酸→延胡索酸（琥珀酸脱氢酶，FADH₂）</li>
-<li>延胡索酸→苹果酸（加水）</li>
-<li>苹果酸→草酰乙酸（苹果酸脱氢酶，NADH）</li>
-</ol>
-<div class="warn"><b>⚠ 必背：</b>必须写「α-酮戊二酸脱氢酶<b>复合体</b>」，漏"复合体"算错！</div>
-</div>
-
-<div class="section">
-<h2>四、ATP计算（30/32）</h2>
-<table>
-<tr><th>来源</th><th>数量</th><th>ATP</th></tr>
-<tr><td>糖酵解净ATP</td><td>2</td><td>2</td></tr>
-<tr><td>胞液NADH穿梭</td><td>2×1.5或2.5</td><td>3或5</td></tr>
-<tr><td>丙酮酸→乙酰CoA</td><td>2 NADH</td><td>5</td></tr>
-<tr><td>TCA循环</td><td>6 NADH+2 FADH₂+2 GTP</td><td>15+3+2=20</td></tr>
-<tr><td><b>合计</b></td><td></td><td><b>30或32</b></td></tr>
-</table>
-</div>
-
-<div class="section">
-<h2>五、两种效应</h2>
-<table>
-<tr><th>效应</th><th>定义</th><th>机制</th></tr>
-<tr><td>巴斯德效应</td><td>有氧氧化抑制无氧氧化（肌肉）</td><td>NADH进入线粒体，不还原乳酸</td></tr>
-<tr><td>瓦伯格效应</td><td>有氧下仍高糖酵解（肿瘤/骨髓）</td><td>增殖需碳源合成生物大分子</td></tr>
-</table>
-</div>
-
-<div class="section">
-<h2>六、磷酸戊糖途径</h2>
-<div class="flow">
-<span class="step">6-磷酸葡萄糖</span><span class="arrow">→</span>
-<span class="step">G6PD（关键酶）</span><span class="arrow">→</span>
-<span class="step">2 NADPH + 5-磷酸核糖 + CO₂</span>
-</div>
-<div class="key">
-<b>意义：</b>①5-磷酸核糖=核苷酸合成原料；②NADPH=合成代谢还原当量（≠NADH！）<br>
-<b>调节：</b>NADPH/NADP⁺比值别构调节G6PD
-</div>
-</div>
-
-<div class="section">
-<h2>复习清单</h2>
-<ul>
-<li>糖酵解十步、三关键酶、己糖激酶vs葡萄糖激酶</li>
-<li>TCA八步、四脱氢二脱羧一磷酸化、三关键酶</li>
-<li>1葡萄糖有氧氧化30/32 ATP推导</li>
-<li>巴斯德效应、瓦伯格效应名词解释</li>
-<li>磷酸戊糖途径G6PD、NADPH、5-磷酸核糖</li>
-</ul>
-</div>
-</body>
-</html>
+<p class="foot">附录 D 共 80 条，与 recording.md 讲授知识点逐条登记。</p></div>
+</body></html>
