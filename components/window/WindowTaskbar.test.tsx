@@ -118,7 +118,7 @@ describe("WindowTaskbar add content", () => {
     fireEvent.change(input!, { target: { files: [file] } });
 
     await waitFor(() => {
-      expect(screen.getByRole("alertdialog", { name: "文件添加失败" })).toHaveTextContent("超过 100 MB");
+      expect(screen.getByRole("alertdialog", { name: "文件添加失败" })).toHaveTextContent("超过 25 MB");
     });
   });
 

@@ -39,13 +39,13 @@ const usageFixture: CloudSyncUsage = {
 };
 
 describe("CloudSyncSection", () => {
-  it("says personal notes and flashcards sync, while images stay local", async () => {
+  it("distinguishes structured sync limits from private cloud attachment storage", async () => {
     vi.mocked(loadCloudSyncUsage).mockResolvedValue(usageFixture);
     render(<CloudSyncSection />);
-    expect(screen.getByText(/个人笔记和复习闪卡/)).toBeInTheDocument();
-    expect(screen.queryByText(/笔记额度池 20 MB/)).toBeNull();
-    expect(screen.getByText(/工具读过的笔记以摘要同步/)).toBeInTheDocument();
-    expect(screen.getByText(/用户上传的图片与 PDF 不上云/)).toBeInTheDocument();
+    expect(screen.getByText(/笔记和闪卡/)).toBeInTheDocument();
+    expect(screen.getByText(/原文件及处理结果保存到私有云端/)).toBeInTheDocument();
+    expect(screen.getByText(/这些不是附件文件体积上限/)).toBeInTheDocument();
+    expect(screen.getByText(/旧的仅本机附件保留/)).toBeInTheDocument();
     expect(await screen.findByRole("progressbar", { name: "云端已用" })).toBeInTheDocument();
   });
 

@@ -13,7 +13,7 @@ export interface ContextTrackerSnapshot {
 }
 
 export const CONTEXT_WARNING =
-  "上下文已达到 80% 软上限，较早对话已压缩为摘要、参考材料按分级裁剪；本地聊天历史仍完整保留。";
+  "上下文已达到 80% 软上限，需要时将由 AI 整理较早对话；原始聊天历史与附件引用仍保留。";
 
 export interface ContextBudget {
   limit: number;

@@ -167,7 +167,10 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
         // 落盘形态已是 persist 压缩态，与请求侧 ui-request 压缩语义一致。
         const windowFallback = useChatHistory.getState().messagesById[sessionId] ?? [];
         const reincluded = useReincludedAttachments.getState().takeForRequest(sessionId);
-        const storedTail = (await loadSessionMessages(sessionId)) ?? windowFallback;
+        const loadedHistory = await loadSessionMessages(sessionId);
+        const minimumKnownCount = Math.max(0, (useChatHistory.getState().sessionsMeta.find(meta => meta.id === sessionId)?.messageCount ?? 0) - 2);
+        const storedTail = loadedHistory?.length ? loadedHistory : windowFallback;
+        if (storedTail.length < minimumKnownCount) throw new Error('完整对话历史暂时无法读取，原数据已保留，请重试。');
         const tailIds = new Set(storedTail.map((entry) => entry.id));
         const extras = reincluded.length
           ? windowFallback.filter((entry) => reincluded.includes(entry.id) && !tailIds.has(entry.id))
@@ -193,10 +196,12 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
           ? useFloatingTokenTracker.getState().getSession(ovSessionId) : useTokenTracker.getState();
         let budget = estimateContextBudget(tracker, resolved.model, estimateMessages, userContent);
         if (budget.softLimitReached || estimateMessages.length > MAX_REQUEST_MESSAGES) {
-          await compactActiveSession(sessionId, { duringSend: true, signal: abortController.signal });
-          const freshCheckpoint = useChatHistory.getState().sessionsMeta.find(meta => meta.id === sessionId)?.contextCheckpoint;
-          const condensed = buildRequestMessages(checkpointMessages(latestMessages, freshCheckpoint)).messages;
-          budget = estimateContextBudget({ ...tracker, serverContextTokens: 0 }, resolved.model, condensed, userContent);
+          const compacted = await compactActiveSession(sessionId, { duringSend: true, signal: abortController.signal });
+          if (compacted.compacted) {
+            const freshCheckpoint = useChatHistory.getState().sessionsMeta.find(meta => meta.id === sessionId)?.contextCheckpoint;
+            const condensed = buildRequestMessages(checkpointMessages(latestMessages, freshCheckpoint)).messages;
+            budget = estimateContextBudget({ ...tracker, serverContextTokens: 0 }, resolved.model, condensed, userContent);
+          }
         }
         const ringTokens = displayContextTokens(tracker, budget);
         if (ovSessionId) {
