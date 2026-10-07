@@ -58,7 +58,7 @@ test("classifySendError：413 / nginx HTML 映射可读文案", () => {
       stalled: false,
       aborted: false,
     }) ?? "",
-    /已保留本机/,
+    /原对话与附件已保留/,
   );
   assert.doesNotMatch(
     classifySendError(new Error("<html>413 Request Entity Too Large</html>"), { stalled: false, aborted: false }) ?? "",
