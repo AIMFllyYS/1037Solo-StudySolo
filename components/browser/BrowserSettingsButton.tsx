@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
-import { createPortal } from "react-dom";
+import { useRef, useState } from "react";
 import { Bookmark, Trash2, Star, Home, Globe } from "lucide-react";
+import AnchoredMenu from "@/components/ui/AnchoredMenu";
 import { useBrowser } from "@/lib/hooks/useBrowser";
-import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useT } from "@/lib/i18n";
 
 /** 右侧 Tab 栏最右的「＋」功能按钮：新增收藏网址（生成固定 Tab）、管理收藏、设置主页。 */
@@ -16,7 +15,6 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
   const setHomeUrl = useBrowser((s) => s.setHomeUrl);
   const openBookmark = useBrowser((s) => s.openBookmark);
 
-  const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const [home, setHome] = useState(homeUrl);
@@ -27,71 +25,43 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
   }
 
   const btnRef = useRef<HTMLButtonElement>(null);
-  const popRef = useRef<HTMLDivElement>(null);
-  const [pos, setPos] = useState({ top: 0, left: 0 });
   const t = useT();
-
-  // 定位（按钮下方右对齐）
-  useLayoutEffect(() => {
-    if (!open || !btnRef.current) return;
-    const r = btnRef.current.getBoundingClientRect();
-    const width = 280;
-    let left = r.right - width;
-    if (left < 8) left = 8;
-    setPos({ top: r.bottom + 6, left });
-  }, [open]);
-
-  const closePop = useCallback(() => setOpen(false), []);
-  useOverlayRegistration({ id: "browser-settings", open, onClose: closePop, priority: 42 });
-
-  // 点击外部关闭
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (e: MouseEvent) => {
-      if (
-        btnRef.current?.contains(e.target as Node) ||
-        popRef.current?.contains(e.target as Node)
-      )
-        return;
-      setOpen(false);
-    };
-    document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
-  }, [open]);
-
-  const submit = () => {
+  const closeAndFocus = (close: () => void) => {
+    close();
+    btnRef.current?.focus({ preventScroll: true });
+  };
+  const submit = (close: () => void) => {
     if (!url.trim()) return;
     const id = addBookmark(name, url);
     if (id) {
       openBookmark(id);
       setName("");
       setUrl("");
-      setOpen(false);
+      closeAndFocus(close);
       onAdded?.();
     }
   };
 
   const inputCls =
-    "w-full rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] px-2.5 py-1.5 text-[12.5px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)] focus:border-[var(--accent)]";
+    "w-full min-w-0 rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] px-2.5 py-1.5 text-[12.5px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)] focus:border-[var(--accent)]";
 
   return (
-    <>
-      <button
-        ref={btnRef}
-        onClick={() => setOpen((v) => !v)}
-        title={t("window.browser.settingsTitle")}
-        aria-label={t("window.browser.settingsTitle")}
+      <AnchoredMenu
+        triggerRef={btnRef}
+        label={t("window.browser.settingsTitle")}
+        width={280}
+        testId="browser-settings"
+        trigger={<Bookmark size={15} />}
         className="press flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
       >
-        <Bookmark size={15} />
-      </button>
-
-      {open &&
-        createPortal(
+        {(close) => (
           <div
-            ref={popRef}
-            style={{ top: pos.top, left: pos.left, width: 280 }}
-            className="fixed z-[9999] rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-3 shadow-lg animate-[dropdown-in_0.15s_ease-out]"
+            className="p-3"
+            onKeyDown={(event) => {
+              // Settings contain editable fields: keep typing/caret and natural Tab
+              // behavior instead of the shared action menu's arrow/typeahead handling.
+              if (event.key !== "Escape" && (event.target instanceof HTMLInputElement || event.key === "Tab")) event.stopPropagation();
+            }}
           >
             {/* 新增收藏 */}
             <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
@@ -102,17 +72,24 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder={t("window.browser.namePlaceholder")}
+                aria-label={t("window.browser.namePlaceholder")}
                 className={inputCls}
               />
               <input
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && submit()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    submit(close);
+                  }
+                }}
                 placeholder="https://…"
+                aria-label={t("window.browser.newBookmark")}
                 className={inputCls}
               />
               <button
-                onClick={submit}
+                onClick={() => submit(close)}
                 disabled={!url.trim()}
                 className="press rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
               >
@@ -136,7 +113,7 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
                       <button
                         onClick={() => {
                           openBookmark(bm.id);
-                          setOpen(false);
+                          closeAndFocus(close);
                           onAdded?.();
                         }}
                         className="min-w-0 flex-1 truncate text-left text-[12.5px] text-[var(--ink)]"
@@ -147,7 +124,8 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
                       <button
                         onClick={() => removeBookmark(bm.id)}
                         title={t("window.browser.deleteBookmark")}
-                        className="shrink-0 rounded p-1 text-[var(--ink-faint)] opacity-0 transition-opacity hover:text-[var(--md-sys-color-error)] group-hover:opacity-100"
+                        aria-label={`${t("window.browser.deleteBookmark")}: ${bm.name}`}
+                        className="shrink-0 rounded p-1 text-[var(--ink-faint)] hover:text-[var(--md-sys-color-error)]"
                       >
                         <Trash2 size={13} />
                       </button>
@@ -167,6 +145,7 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
                   value={home}
                   onChange={(e) => setHome(e.target.value)}
                   placeholder={t("window.browser.homePlaceholder")}
+                  aria-label={t("window.browser.homeLabel")}
                   className={inputCls}
                 />
                 <button
@@ -177,9 +156,8 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
                 </button>
               </div>
             </div>
-          </div>,
-          document.body,
+          </div>
         )}
-    </>
+      </AnchoredMenu>
   );
 }
