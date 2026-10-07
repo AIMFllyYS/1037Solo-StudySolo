@@ -31,6 +31,7 @@ export interface UsageSummary {
 
 /** 服务端经 UI Message Stream 下发的自定义 data parts。 */
 export type StudyDataParts = {
+  'context-compaction': { phase: 'running' | 'done'; summary?: string; coveredIds?: string[]; cloudFileIds?: string[]; createdAt?: number };
   /** 瞬时提示（如端点切换），不落库。 */
   info: { message: string };
   'context-breakdown': ContextBreakdown;
@@ -88,6 +89,7 @@ export interface ContextBreakdown {
 }
 
 export interface ChatImageAttachment {
+  cloudFileId?: string;
   type: 'image';
   mimeType: string;
   /** data:image/png;base64,... 完整 data-url */
@@ -119,6 +121,7 @@ export type ChatDocumentMimeType =
   | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
 export interface ChatDocumentAttachment {
+  cloudFileId?: string;
   type: 'document';
   mimeType: ChatDocumentMimeType;
   name: string;
@@ -130,6 +133,7 @@ export interface ChatDocumentAttachment {
 
 /** 仅保存在本机、不会进入 AI 请求正文的原始文件。目前用于 PDF 本地预览。 */
 export interface ChatLocalFileAttachment {
+  cloudFileId?: string;
   type: 'local-file';
   mimeType: 'application/pdf' | 'application/vnd.ms-powerpoint' | 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
   /** 浏览器本地读取的 data URL；持久化后正文移入 IndexedDB blob 槽。 */
@@ -142,6 +146,7 @@ export type ChatAttachment = ChatImageAttachment | ChatDocumentAttachment | Chat
 
 /** Storage v2：附件正文存 chat-blob:{id}，消息内仅保留引用。 */
 export interface ChatAttachmentRef {
+  cloudFileId?: string;
   type: ChatAttachment['type'];
   mimeType: string;
   id: string;

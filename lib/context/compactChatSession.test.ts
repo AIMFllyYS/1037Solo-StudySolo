@@ -30,7 +30,7 @@ test("splitChatKeptTurns：未超过保留轮数不切开", () => {
 
 test("compactChatMessages：较早轮次换成摘要并保留最近原文", () => {
   const messages = turns(CHAT_COMPACT_KEEP_TURNS + 2);
-  const result = compactChatMessages(messages);
+  const result = compactChatMessages(messages, CHAT_COMPACT_KEEP_TURNS, 'AI 整理：问0及答0的关键事实');
   assert.equal(result.compacted, true);
   assert.match(result.summary ?? "", /问0/);
   assert.equal(result.messages[0]?.role, "user");

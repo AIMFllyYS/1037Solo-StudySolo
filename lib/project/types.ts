@@ -1,8 +1,8 @@
 /**
  * 项目文件（本地索引 + 切片）的数据形状。
  *
- * 口径（用户确认）：**文件内容不上云**。本机把文件解析成两样东西——
- * 一份「隐藏索引 md」（indexMarkdown）和若干「切片」（slices）；Agent 靠工具按需读切片。
+ * 原文件与处理结果在私有云端，索引与切片是本机缓存。cloudFileId 是跨设备稳定引用；
+ * Agent 可以按需读取云端全文，不依赖所有正文随每轮请求重发。
  */
 
 export interface ProjectSlice {
@@ -31,6 +31,7 @@ export interface ProjectStudioRef {
 }
 
 export interface ProjectFileEntry {
+  cloudFileId?: string;
   id: string;
   projectId: string;
   kind: ProjectFileKind;

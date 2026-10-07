@@ -16,6 +16,7 @@ export interface ProjectSliceIndexItem {
 }
 
 export interface ProjectFileCatalogItem {
+  cloudFileId?: string;
   fileId: string;
   name: string;
   kind: ProjectFileEntry["kind"];
@@ -37,6 +38,7 @@ export interface ProjectCatalog {
 function toCatalogItem(file: ProjectFileEntry): ProjectFileCatalogItem {
   return {
     fileId: file.id,
+    cloudFileId: file.cloudFileId,
     name: file.name,
     kind: file.kind,
     status: file.status,

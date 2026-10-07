@@ -15,6 +15,7 @@ export interface ProjectStudioRefPayload {
 }
 
 export interface ProjectFileCatalogItem {
+  cloudFileId?: string;
   fileId: string;
   name: string;
   kind: "imported" | "studio-ref";
@@ -46,6 +47,7 @@ export interface GetProjectFilesOutput extends TextToolOutput {
 }
 
 export interface ReadProjectSlicesInput {
+  offset?: number;
   fileId: string;
   /** 要读的切片 id（来自 getProjectFiles 的索引）。 */
   sliceIds?: string[];
@@ -54,6 +56,7 @@ export interface ReadProjectSlicesInput {
 }
 
 export interface ReadProjectSlicesOutput extends TextToolOutput {
+  image?: { dataUrl: string; mimeType: string };
   found: boolean;
   sliceIds: string[];
 }

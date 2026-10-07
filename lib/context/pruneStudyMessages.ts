@@ -7,7 +7,7 @@ export function pruneStudyMessages(messages: ModelMessage[]): ModelMessage[] {
   return pruneMessages({
     messages,
     reasoning: "all",
-    toolCalls: "before-last-2-messages",
+    toolCalls: "none",
     emptyMessages: "remove",
   });
 }

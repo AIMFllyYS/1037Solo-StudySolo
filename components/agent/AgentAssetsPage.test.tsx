@@ -17,7 +17,7 @@ vi.mock("@/lib/hooks/useIsClient", () => ({ useIsClient: () => true }));
 const skeletonOn = { value: false };
 vi.mock("@/lib/hooks/useMinimumSkeleton", () => ({ useMinimumSkeleton: () => skeletonOn.value }));
 const scheduleCloudPull = vi.fn();
-vi.mock("@/lib/sync/schedule", () => ({ scheduleCloudPull: () => scheduleCloudPull() }));
+vi.mock("@/lib/sync/schedule", () => ({ scheduleCloudPull: () => scheduleCloudPull(), refreshCloudSyncNow: () => scheduleCloudPull() }));
 
 import AgentAssetsPage from "./AgentAssetsPage";
 

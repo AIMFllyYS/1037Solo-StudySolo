@@ -4,12 +4,13 @@ import type { ReviewCard } from "@/lib/review/types";
 import type { StoredDocument } from "@/lib/documents/types";
 import type { Artifact } from "@/lib/stores/artifacts";
 import type { ImportRecord } from "@/lib/stores/imports";
+import type { CloudFile } from '@/lib/files/contract';
 
 /**
  * 「我的资产」的聚合层：把四个产物 store + 本地导入记录摊平成一张可筛选的清单。
  * 纯函数，不碰 store（hook 在 lib/hooks/useAgentAssets.ts）。
  *
- * 口径（用户确认）：**以本机为准 + 同步角标** —— 本机有、云端没上传的也列出来并标「仅本机」。
+ * 本机产物与云端文件合并展示；旧的本机导入记录保留，新记录只按稳定cloudFileId关联去重。
  * 对话本身不在这里：它们在左栏，资产页只列「产物」与「导入」。
  */
 
@@ -53,6 +54,7 @@ export interface AssetItem {
   subtitle: string;
   /** 排序用；产物没有时间戳时给 null（排在最后）。 */
   updatedAt: number | null;
+  sortOrder?: number;
   sizeBytes?: number;
   subjectId?: string | null;
   origin: AssetOrigin;
@@ -61,6 +63,7 @@ export interface AssetItem {
 }
 
 export interface AssetSources {
+  cloudFiles?: CloudFile[];
   notes: UserNote[];
   cards: ReviewCard[];
   documents: StoredDocument[];
@@ -151,12 +154,14 @@ export function buildAssetItems(sources: AssetSources): AssetItem[] {
       title: artifact.title.trim() || "未命名演示",
       subtitle: "可交互 HTML",
       // 产物不带时间戳：用写入顺序当排序键（越靠后越新）。
-      updatedAt: index,
+      updatedAt: null,
+      sortOrder: index,
       origin: originOf("artifact", artifact.id, sources.cloudRow),
     });
   });
 
   for (const record of sources.imports) {
+    if (record.cloudFileId && sources.cloudFiles?.some(file => file.id === record.cloudFileId)) continue;
     items.push({
       id: record.id,
       kind: record.kind,
@@ -178,8 +183,17 @@ export function buildAssetItems(sources: AssetSources): AssetItem[] {
     });
   }
 
+  for (const file of sources.cloudFiles ?? []) {
+    if (file.state === 'deleted' || file.state === 'failed') continue;
+    items.push(cloudFileAsset(file));
+  }
+
   for(const session of sources.classrooms??[]){items.push({id:session.id,kind:"classroom",title:session.title,subtitle:"Classolo 文稿、提纲与课堂问答",updatedAt:new Date(session.updatedAt).getTime(),origin:session.origin});}
   return items;
+}
+export function cloudFileAsset(file: CloudFile): AssetItem {
+  const labels = { ready: '云端已保存', pending: '上传待完成', deleted: '已软删除', failed: '上传失败' };
+  return { id: `cloud-${file.id}`, kind: 'file', title: file.name, subtitle: `${file.mime_type} · ${labels[file.state]}`, updatedAt: Date.parse(file.created_at), sizeBytes: Number(file.size_bytes), origin: 'cloud', meta: { cloudFileId: file.id, mimeType: file.mime_type, state: file.state, ...(file.project_id ? { projectId: file.project_id } : {}) } };
 }
 
 export type AssetSort = "recent" | "title";
@@ -200,6 +214,7 @@ export function sortAssetItems(items: AssetItem[], sort: AssetSort = "recent"): 
     const at = a.updatedAt ?? Number.NEGATIVE_INFINITY;
     const bt = b.updatedAt ?? Number.NEGATIVE_INFINITY;
     if (bt !== at) return bt - at;
+    if (a.sortOrder != null && b.sortOrder != null && a.sortOrder !== b.sortOrder) return b.sortOrder - a.sortOrder;
     return a.title.localeCompare(b.title, "zh-Hans-CN");
   });
   return sorted;

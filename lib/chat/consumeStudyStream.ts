@@ -2,6 +2,9 @@ import { DefaultChatTransport, isToolUIPart, readUIMessageStream, type FinishRea
 import type { RequestMessage } from '@/lib/chat/buildRequestMessages';
 import { REQUEST_TOO_LARGE_MESSAGE } from '@/lib/chat/requestBudget';
 import type { ChatMessage, ChatMessagePart, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
+import { useChatHistory } from '@/lib/stores/chatHistory';
+import { useCompactionState } from '@/lib/context/compactionState';
+import { getOwnerEpoch } from '@/lib/storage/ownerScope';
 
 /** SDK 负责 SSE/UTF-8 解码；只在原始字节层观察活动，注释心跳也能续期。 */
 export function createStudyChatTransport(onActivity: () => void, agentMain = false) {
@@ -102,6 +105,7 @@ function traceTimingComplete(part: ChatMessagePart): boolean {
 }
 
 export interface ConsumeStudyStreamOptions {
+  sessionId?: string;
   stream: ReadableStream<UIMessageChunk>;
   message: ChatMessage;
   abortSignal?: AbortSignal;
@@ -116,9 +120,10 @@ export interface ConsumeStudyStreamOptions {
  * readUIMessageStream 会在后台消费输入，取消它的输出不会关闭网络，因此显式管理输入 reader。
  */
 export async function consumeStudyStream({
-  stream, message, abortSignal, onMessage, onUsage, onContextBreakdown, onInfo,
+  stream, message, abortSignal, onMessage, onUsage, onContextBreakdown, onInfo, sessionId,
 }: ConsumeStudyStreamOptions): Promise<ChatMessage> {
   const source = stream.getReader();
+  const ownerEpoch = getOwnerEpoch();
   let inputController: ReadableStreamDefaultController<UIMessageChunk>;
   let stopped = false;
   let completed = false;
@@ -161,6 +166,18 @@ export async function consumeStudyStream({
           return;
         }
         const chunk = result.value;
+        if (sessionId && chunk.type === 'data-context-compaction' && getOwnerEpoch() === ownerEpoch) {
+          const data = objectValue(chunk.data);
+          if (data?.phase === 'running') useCompactionState.getState().set(sessionId, 'running', '正在调用 AI 整理上下文，原消息与附件保留…');
+          if (data?.phase === 'done') {
+            useCompactionState.getState().set(sessionId, 'done', typeof data.summary === 'string' ? 'AI 上下文整理已完成，继续回答。' : '上下文已检查，没有需要整理的较早对话。');
+            if (typeof data.summary === 'string' && Array.isArray(data.coveredIds)) {
+              const previous = useChatHistory.getState().sessionsMeta.find(meta => meta.id === sessionId)?.contextCheckpoint;
+              const ids = [...new Set([...(previous?.coveredIds ?? []), ...data.coveredIds.filter((id): id is string => typeof id === 'string' && !id.startsWith('compact-'))])];
+              useChatHistory.getState().setContextCheckpoint(sessionId, { summary: data.summary, coveredIds: ids, cloudFileIds: Array.isArray(data.cloudFileIds) ? data.cloudFileIds.filter((id): id is string => typeof id === 'string') : previous?.cloudFileIds ?? [], createdAt: typeof data.createdAt === 'number' ? data.createdAt : Date.now() });
+            }
+          }
+        }
         if (chunk.type === 'abort') {
           stop(new DOMException('生成被中断', 'AbortError'));
           return;

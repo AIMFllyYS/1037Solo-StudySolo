@@ -22,6 +22,9 @@ import {
 import { detectComposerTrigger, flattenFileMentions, listFileMentions, replaceComposerTrigger } from '@/lib/chat/fileMentions';
 import { readPlanModeGate, resolvePlanMode } from '@/lib/chat/planModeGate';
 import { compactActiveSession } from '@/lib/context/compactChatSession';
+import Link from 'next/link';
+import { useToast } from '@/lib/stores/toast';
+import { countComposerAttachments, referencedFileIdsInText } from '@/lib/files/contract';
 import ComposerChips from '@/components/chat/composer/ComposerChips';
 import ComposerCommandPanel, { listComposerCommands } from '@/components/chat/composer/ComposerCommandPanel';
 import ComposerPalette from '@/components/chat/composer/ComposerPalette';
@@ -177,10 +180,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
   const effectiveEnableThinking = (enableThinking || !!selectedModelInfo?.thinkingRequired) && thinkingSupported;
   const effectiveThinkingEffort = effectiveEnableThinking ? displayEffort : undefined;
   const effectiveQuote = quoteText !== undefined ? quoteText : (disableQuote ? null : quotedText);
+  const quotedCloudFileIds = useMemo(() => referencedFileIdsInText(`${input}\n${effectiveQuote ?? ''}`), [input, effectiveQuote]);
   const clearQuote = onClearQuote ?? clearQuotedText;
   const sendShortcutEnabled = useKeyboardSettings((s) => s.isEnabled('chat.send'));
   const {
     attachments,
+    processing: attachmentProcessing,
     addFiles,
     remove: removeAttachment,
     clear: clearAttachments,
@@ -194,7 +199,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
     endDrag,
     error: attachError,
     info: attachInfo,
-  } = useImageAttachments();
+  } = useImageAttachments({ reservedCount: attachedFiles.length, citedFileIds: quotedCloudFileIds });
   const [fileDragOver, setFileDragOver] = useState(false);
   const showDropOverlay = isDragging || fileDragOver;
 
@@ -292,8 +297,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
   const applyCompact = useCallback(() => {
     consumeTrigger();
     closePalette();
-    void compactActiveSession();
-  }, [consumeTrigger, closePalette]);
+    void compactActiveSession(sessionId).catch(() => {});
+  }, [consumeTrigger, closePalette, sessionId]);
 
   const applyTool = useCallback((tool: ForcedComposerTool) => {
     setForcedTool((current) => current === tool ? undefined : tool);
@@ -311,10 +316,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
   }, [planGate.forced, consumeTrigger, closePalette]);
 
   const applyFile = useCallback((file: AttachedFileRef) => {
+    if (countComposerAttachments(attachments, mergeAttachedFiles(attachedFiles, [file]).length, `${input}\n${effectiveQuote ?? ''}`) > 9) { useToast.getState().show('单次消息最多 9 个附件，发送后可继续添加。'); return; }
     setAttachedFiles((current) => mergeAttachedFiles(current, [file]));
     consumeTrigger();
     closePalette();
-  }, [consumeTrigger, closePalette]);
+  }, [consumeTrigger, closePalette, attachments, attachedFiles, input, effectiveQuote]);
 
   const dispatchMessage = useCallback((message: QueuedMessage) => {
     onSend(message.content, {
@@ -340,7 +346,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
   const handleSend = useCallback(() => {
     if (overLimit) { setShowLimitDialog(true); return; }
     const trimmed = input.trim();
-    if ((!trimmed && attachments.length === 0 && attachedFiles.length === 0) || externalDisabled) return;
+    if ((!trimmed && attachments.length === 0 && attachedFiles.length === 0) || externalDisabled || attachmentProcessing) return;
+    if (countComposerAttachments(attachments, attachedFiles.length, `${input}\n${effectiveQuote ?? ''}`) > 9) { useToast.getState().show('单次消息最多 9 个附件，原附件已保留，请先移除多余项。'); return; }
 
     const message: QueuedMessage = {
       id: crypto.randomUUID(),
@@ -363,7 +370,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
       dispatchMessage(message);
     }
     clearDraft();
-  }, [input, overLimit, attachments, attachedFiles, isLoading, externalDisabled, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft, effectivePlanMode, forcedTool, sessionId, t]);
+  }, [input, overLimit, attachments, attachedFiles, isLoading, externalDisabled, attachmentProcessing, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft, effectivePlanMode, forcedTool, sessionId, t]);
 
   useEffect(() => {
     if (isLoading) {
@@ -456,7 +463,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
   // action for a run that was already in progress.
   const sendDisabled = showStopButton
     ? false
-    : !!externalDisabled || overLimit || (!input.trim() && attachments.length === 0 && attachedFiles.length === 0);
+    : !!externalDisabled || attachmentProcessing || overLimit || (!input.trim() && attachments.length === 0 && attachedFiles.length === 0);
   const thinkingProps = {
     enabled: effectiveEnableThinking, effort: displayEffort, supported: thinkingSupported,
     disabled: inputDisabled, levels: thinkingLevels, allowOff: thinkingAllowOff,
@@ -477,7 +484,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
         if (files.length > 0) {
           event.preventDefault();
           event.stopPropagation();
-          setAttachedFiles((current) => mergeAttachedFiles(current, files));
+          const merged = mergeAttachedFiles(attachedFiles, files);
+          if (countComposerAttachments(attachments, merged.length, `${input}\n${effectiveQuote ?? ''}`) > 9) { useToast.getState().show('单次消息最多 9 个附件，发送后可继续添加。'); return; }
+          setAttachedFiles(merged);
           return;
         }
         handleDrop(event);
@@ -517,9 +526,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
           background: 'var(--md-sys-color-error-container)', borderRadius: '8px', margin: '0 0 4px',
         }}>
           {attachError}
+          {attachError.includes('云端存储空间不足') ? <Link href="/agent/assets?tab=cloud" className="ml-2 underline">打开我的资产，清理云端文件</Link> : null}
         </div>
       )}
       {attachInfo ? <div className="chat-attachment-notice" role="status">{attachInfo}</div> : null}
+      {attachmentProcessing ? <div className="chat-attachment-notice" role="status">正在处理并上传附件到云端，请稍候…</div> : null}
 
       {visibleQueuedMessages.length > 0 && (
         <div className="chat-input-queue" role="region" aria-label={t('menu.chatInput.queue.title')}>

@@ -43,6 +43,9 @@ import { requestToken } from "@/lib/auth/sign-in/account-verify";
 import { connectorOwner } from "@/lib/connectors/actor.server";
 import { sandboxScopeForChat } from "@/lib/sandbox/actor.server";
 import { skillsForAgent } from "@/lib/sandbox/skills.server";
+import { resolveCloudFileParts } from '@/lib/files/model.server';
+import { referencedFileId, referencedFileIdsInText } from '@/lib/files/contract';
+import { fileOwner, FileError } from '@/lib/files/owner.server';
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -122,6 +125,20 @@ async function handlePOST(req: NextRequest) {
   const generationSignal = AbortSignal.any([req.signal, generationAbort.signal]);
   const requestId = crypto.randomUUID();
   const userId = await resolveQuotaUserId(req.headers);
+  const hasCloudFiles = body.messages.some(message => message.parts.some(part => part.type === 'file' && referencedFileId(part.url) || part.type === 'text' && referencedFileIdsInText(String(part.text)).length > 0)) || body.cloudFileIds.length > 0 || body.projectFiles.some(file => file.cloudFileId);
+  if (hasCloudFiles) {
+    try {
+      const owner = await fileOwner(req);
+      const latest = [...body.messages].reverse().find(message => message.role === 'user');
+      const uploaded = latest?.parts.filter(part => part.type === 'file') ?? [];
+      const uploadedCloudIds = new Set(uploaded.map(part => referencedFileId(part.url)));
+      const linked = [...new Set(latest?.parts.flatMap(part => part.type === 'text' ? referencedFileIdsInText(String(part.text)) : []) ?? [])];
+      if (uploaded.length + linked.filter(id => !uploadedCloudIds.has(id)).length + body.attachedFiles.length > 9) throw new FileError('单次引用和上传的附件总计最多 9 个。');
+      const resolvedFiles = await resolveCloudFileParts(body.messages as ChatMessage[], owner, body.cloudFileIds);
+      body.messages = resolvedFiles.messages as ChatRequest['messages'];
+      body.projectFiles = [...body.projectFiles, ...resolvedFiles.catalog.map(file => ({ ...file, cloudFileId: file.cloudFileId }))];
+    } catch (error) { return Response.json({ error: error instanceof FileError ? error.message : '云端附件暂不可用，原对话已保留；请到我的资产查看文件状态。' }, { status: error instanceof FileError ? error.status : 503 }); }
+  }
   // 设置页「单轮预算上限」：积分 → 元，只收紧运营上限（见 paidContext.effectiveRequestCapCny）。
   const paid = optionalPaidContext();
   if (paid && body.turnBudgetCredits && body.turnBudgetCredits > 0) {
@@ -286,6 +303,8 @@ async function handlePOST(req: NextRequest) {
         forcedTool: isComposerForcedTool(body.forcedTool) ? body.forcedTool : undefined,
         attachedFiles: body.attachedFiles,
         userId: userId ?? undefined,
+        projectFiles: body.projectFiles,
+        projectSlices: body.projectSlices,
         classContext: body.noteWindowAgent ? undefined : body.classContext,
       });
       const makeBundle = (truncated: boolean, referenceContext: string) =>
@@ -314,10 +333,11 @@ async function handlePOST(req: NextRequest) {
       const bundle = contextTruncated === body.contextTruncated
         ? incoming.bundle
         : makeBundle(contextTruncated, ctxResult.context);
+      if (contextTruncated) writer.write({ type: 'data-context-compaction', data: { phase: 'running' }, transient: true });
       const compacted = await compactHistory({
         messages: prunedHistory,
         shouldCompact: contextTruncated,
-        sessionId: body.id,
+        sessionId: `${userId}:${body.id ?? requestId}`,
         abortSignal: generationSignal,
         modelId: provider.registryId,
         useSelectedModel: !!automaticModels,
@@ -325,6 +345,11 @@ async function handlePOST(req: NextRequest) {
         custom: effectiveCustom,
       });
       const historyMessages = compacted.messages;
+      if (contextTruncated) {
+        const userIndices = body.messages.flatMap((message, index) => message.role === 'user' ? [index] : []);
+        const cut = userIndices.length > 6 ? userIndices[userIndices.length - 6]! : 0;
+        writer.write({ type: 'data-context-compaction', data: { phase: 'done', ...(compacted.summary ? { summary: compacted.summary, coveredIds: body.messages.slice(0, cut).flatMap(message => message.id ? [message.id] : []), cloudFileIds: body.cloudFileIds, createdAt: Date.now() } : {}) }, transient: true });
+      }
       const startedAt = Date.now();
       const result = await bundle.agent.stream({
         messages: historyMessages,

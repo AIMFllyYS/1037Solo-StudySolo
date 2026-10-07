@@ -35,6 +35,7 @@ import {getStorageOwner,onStorageOwnerChange} from '@/lib/storage/ownerScope';
 import { mergeChatSnapshots } from '@/lib/storage/threeWayChatMerge';
 
 export interface SessionMeta {
+  contextCheckpoint?: { summary: string; coveredIds: string[]; cloudFileIds: string[]; createdAt: number };
   id: string;
   title: string;
   createdAt: number;
@@ -904,6 +905,7 @@ async function migrateAttachmentsInMessages(messages: ChatMessage[]): Promise<Ch
         await saveBlobFromDataUrl(id, payload);
         attachments.push({
           id, type: a.type, mimeType: a.mimeType,
+          cloudFileId: a.cloudFileId,
           name: a.name, size: a.size,
           ...('characterCount' in a ? { characterCount: a.characterCount } : {}),
         });
@@ -998,6 +1000,7 @@ export async function hydrateAttachmentsForApi(
     }
     const attachments: ChatAttachment[] = [];
     for (const a of m.attachments) {
+      if (a.cloudFileId) { attachments.push(a as ChatAttachment); continue; }
       if (!('id' in a)) {
         attachments.push(a as ChatAttachment);
       } else if ('id' in a) {
@@ -1039,6 +1042,7 @@ export function persistInlineAttachments(message: ChatMessage): ChatMessage {
       void saveBlobFromDataUrl(id, payload);
       attachments.push({
         id, type: a.type, mimeType: a.mimeType,
+        cloudFileId: a.cloudFileId,
         name: a.name, size: a.size,
         ...('characterCount' in a ? { characterCount: a.characterCount } : {}),
       });

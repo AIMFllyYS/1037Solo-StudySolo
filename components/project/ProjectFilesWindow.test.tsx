@@ -92,9 +92,11 @@ describe("ProjectFilesWindow", () => {
     });
   });
 
-  it("移除文件走 store", () => {
+  it("移除文件必须二次确认后才走 store", () => {
     render(<ProjectFilesWindow projectId="p1" />);
     fireEvent.click(screen.getByRole("button", { name: /移除/ }));
+    expect(removeFile).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: '确认移除' }));
     expect(removeFile).toHaveBeenCalledWith("f1");
   });
 });

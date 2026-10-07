@@ -192,6 +192,8 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     try {
       await compactActiveSession(floatingSessionId ?? useChatHistory.getState().activeSessionId);
       recompute();
+    } catch {
+      // The shared in-conversation status reports the error and preserves original history.
     } finally {
       setCompacting(false);
     }

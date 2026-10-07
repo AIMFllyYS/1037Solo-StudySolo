@@ -2,6 +2,7 @@
 
 export const PAID_AI_API_PATHS = [
   "/api/chat",
+  "/api/context/compact",
   "/api/agent/chat",
   "/api/chat-title",
   "/api/artifact",

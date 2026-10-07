@@ -157,7 +157,7 @@ test("buildRequestMessages：点过「重新带入本轮」的历史图片重新
   assert.equal(textOf(out.find((m) => m.id === "2")!), "再讲讲");
 });
 
-test("buildRequestMessages：整包最多一张图，本轮提问优先于带入的历史图", () => {
+test("buildRequestMessages：历史图片重新带入时可与本轮图片一起发送", () => {
   const messages: ChatMessage[] = [
     msg("0", "user", "旧图", {
       attachments: [{ type: "image", mimeType: "image/png", name: "old.png", base64: "data:image/png;base64,OLD" }],
@@ -169,10 +169,10 @@ test("buildRequestMessages：整包最多一张图，本轮提问优先于带入
   ];
   const { messages: out } = buildRequestMessages(messages, { reincludedMessageIds: new Set(["0"]) });
   const fileCount = out.reduce((sum, m) => sum + m.parts.filter((p) => p.type === "file").length, 0);
-  assert.equal(fileCount, 1, "两张图只发一张，避免顶穿单请求体积上限");
+  assert.equal(fileCount, 2, "历史图与本轮图均保留");
   const latest = out.find((m) => m.id === "2");
   assert.ok(latest && hasFile(latest), "本轮提问的图优先");
-  assert.equal(out.some((m) => m.id === "0" && hasFile(m)), false);
+  assert.equal(out.some((m) => m.id === "0" && hasFile(m)), true);
 });
 
 test("buildRequestMessages：截断时点过带入的历史消息不会被窗口丢掉", () => {
@@ -194,7 +194,7 @@ test("buildRequestMessages：截断时点过带入的历史消息不会被窗口
 });
 
 test("buildRequestMessages：图片超限时告诉模型「带不上」，而不是静默丢掉", () => {
-  const huge = `data:image/png;base64,${"z".repeat(500_000)}`;
+  const huge = `data:image/png;base64,${"z".repeat(13 * 1024 * 1024)}`;
   const input = msg("1", "user", "看这张图", {
     attachments: [
       { type: "image", mimeType: "image/png", name: "太大.png", base64: huge },

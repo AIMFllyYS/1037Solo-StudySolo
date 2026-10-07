@@ -94,3 +94,8 @@ test("compactHistory：未达软上限不压缩", async () => {
   assert.equal(result.compacted, false);
   assert.equal(result.messages.length, 16);
 });
+test('AI failure never falls back to a prefix excerpt or claims successful compaction', async () => {
+  const messages = longHistory(8), before = JSON.stringify(messages);
+  await assert.rejects(() => compactHistory({ messages, shouldCompact: true, generateSummary: async () => { throw new Error('provider failed'); } }), /原对话与附件未修改/);
+  assert.equal(JSON.stringify(messages), before);
+});

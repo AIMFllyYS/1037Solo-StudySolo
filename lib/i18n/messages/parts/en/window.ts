@@ -318,7 +318,7 @@ export const windowEn = {
     reimport: "Re-import",
     remove: "Remove",
     emptyFiles: "No files yet. Click “Add file” to import a local file, or “Reference textbook” to link a Studio item.",
-    emptyFilesNote: "(Files are parsed locally and never uploaded.)",
+    emptyFilesNote: "(Up to 9 files per upload, 25MB each. Originals and processed context are saved to your private cloud storage.)",
     emptyProject: "This project has no files yet.",
     pinAllTitle: "Small project — everything is already carried",
     pinTitle: "Whether this slice travels with the chat for the Agent",

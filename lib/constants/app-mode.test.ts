@@ -11,6 +11,7 @@ import {
   isAppMode,
   isAppModePath,
   isAgentPluginsPath,
+  isAgentAssetsPath,
   isAuthPath,
   isRememberableStudioPath,
   parseAppMode,
@@ -115,10 +116,18 @@ test("mobile plugin account management is a precise exception to the Studio shel
     assert.equal(usesMobileStudioChrome(path), false);
     assert.equal(resolveMobileAppMode(path, "studio"), "agent");
   }
-  for (const path of ["/agent/pluginsevil", "/agent/plugins-other", "/agent", "/agent/assets", "/agent/scheduled"]) {
+  for (const path of ["/agent/pluginsevil", "/agent/plugins-other", "/agent", "/agent/scheduled"]) {
     assert.equal(isAgentPluginsPath(path), false);
     assert.equal(usesMobileStudioChrome(path), true);
   }
+});
+test('mobile asset management remains accessible without admitting arbitrary Agent pages', () => {
+  assert.equal(isAgentAssetsPath('/agent/assets'), true);
+  assert.equal(isAgentAssetsPath('/agent/assets/file/cloud-id'), true);
+  assert.equal(usesMobileStudioChrome('/agent/assets'), false);
+  assert.equal(isAgentAssetsPath('/agent/assetsevil'), false);
+  assert.equal(usesMobileStudioChrome('/agent/projects'), true);
+  assert.equal(usesMobileStudioChrome('/agent'), true);
 });
 
 test("resolveMobileAppMode：Studio 路由可保留 persist 的 Agent", () => {

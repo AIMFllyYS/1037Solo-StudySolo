@@ -16,7 +16,7 @@ export function createGetProjectFilesTool(ctx: StudyToolContext) {
   const carried = new Set((ctx.projectSlices ?? []).map((slice) => slice.sliceId));
   return tool({
     description:
-      "查看项目文件的索引：文件树 + 每个文件的切片表（切片 id、标题、字数、摘要，以及标着「已带入」还是「未带入」）。项目内容是本地解析的，正文不在上下文里——先看索引，再对「已带入」的切片用 readProjectSlices 读；对「未带入」的切片不要反复重试，直接告诉用户在项目文件窗勾选后点「带入对话」。",
+      '查看项目文件与云端附件目录，返回 fileId。云端文件全文可直接用 readProjectSlices(fileId, query 或 offset) 按需读取，不要求用户重新上传；旧的仅本机文件仍按已携带切片读取。',
     inputSchema: z.object({
       fileId: z.string().optional().describe("只看某一个文件；不传就列整个项目"),
       query: z.string().optional().describe("按文件名 / 切片标题 / 摘要粗筛"),
@@ -58,14 +58,14 @@ export function createGetProjectFilesTool(ctx: StudyToolContext) {
           : file.kind === "studio-ref"
             ? "    （软链接：正文请用 getSection(path) 读）"
             : "    （还没有切片）";
-        return `${head}\n${slices}`;
+        return `${head}｜fileId: ${file.fileId}${file.cloudFileId ? '｜云端全文可按需读取' : ''}\n${slices}`;
       });
       const carriedTotal = pool.reduce(
         (sum, file) => sum + file.slices.filter((slice) => carried.has(slice.sliceId)).length,
         0,
       );
       return {
-        text: `【项目文件索引】共 ${pool.length} 个文件（${carriedTotal} 片可读，${pool.reduce((sum, file) => sum + file.slices.length, 0)} 片在册）\n${blocks.join("\n")}\n\n要读正文：对「已带入」的切片用 readProjectSlices(fileId, sliceIds 或 query)；「未带入」的读不到，别重试，请用户到项目文件窗勾选后点「带入对话」。`,
+        text: `【项目文件索引】共 ${pool.length} 个文件（${carriedTotal} 片已携带，${pool.reduce((sum, file) => sum + file.slices.length, 0)} 片在册）\n${blocks.join("\n")}\n\n云端文件：用 readProjectSlices(fileId, query 或 offset) 按需读取全文，offset 可继续翻页。仅本机旧文件：读取已携带切片，未携带时请用户选择带入。`,
         found: true,
         fileCount: pool.length,
         sliceCount: pool.reduce((sum, file) => sum + file.slices.length, 0),

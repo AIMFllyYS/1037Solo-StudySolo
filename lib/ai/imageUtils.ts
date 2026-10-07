@@ -7,8 +7,9 @@
 
 import type { ChatAttachment, ChatDocumentMimeType } from "@/lib/types/chat";
 import {createObjectUrlLease} from '@/lib/resources/objectUrl'
+import { MAX_FILE_BYTES } from '@/lib/files/contract';
 
-/** 单图最大体积（2 MB），超过则触发 Canvas 压缩。 */
+/** 图片预处理阈值（2MB），不是上传上限；原文件上限为 MAX_FILE_BYTES（25MB）。 */
 export const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
 
 /** 支持的图片 MIME 类型集合。 */
@@ -19,10 +20,10 @@ export const ACCEPTED_IMAGE_TYPES = new Set([
   "image/webp",
 ]);
 
-export const MAX_DOCUMENT_SIZE = 10 * 1024 * 1024;
+export const MAX_DOCUMENT_SIZE = MAX_FILE_BYTES;
 /** 工作站顶部“添加文件”是完全本地的入口，允许更大的文件。 */
-export const MAX_LOCAL_FILE_SIZE = 100 * 1024 * 1024;
-export const MAX_DOCUMENT_CHARACTERS = 200_000;
+export const MAX_LOCAL_FILE_SIZE = MAX_FILE_BYTES;
+export const MAX_DOCUMENT_CHARACTERS = MAX_FILE_BYTES;
 export const LONG_PASTE_DOCUMENT_THRESHOLD = 1_000;
 
 export interface FileAttachmentOptions {
@@ -103,6 +104,7 @@ const COMPRESS_QUALITY = 0.85;
 
 /** 前端预览用的中间结构，包含 blob URL 供 <img> 渲染。 */
 export interface ImageAttachmentPreview {
+  cloudFileId?: string;
   /** 兼容旧测试/调用方；缺省时同样按图片处理。 */
   type?: "image";
   file: File;
@@ -112,6 +114,7 @@ export interface ImageAttachmentPreview {
 }
 
 export interface DocumentAttachmentPreview {
+  cloudFileId?: string;
   type: "document";
   file: File;
   mimeType: ChatDocumentMimeType;
@@ -124,6 +127,7 @@ export interface DocumentAttachmentPreview {
 }
 
 export interface LocalFileAttachmentPreview {
+  cloudFileId?: string;
   type: "local-file";
   file: File;
   mimeType: "application/pdf" | "application/vnd.ms-powerpoint" | "application/vnd.openxmlformats-officedocument.presentationml.presentation";
@@ -194,7 +198,7 @@ export async function fileToDocumentAttachment(file: File, options: FileAttachme
     mimeType = mappedMimeType;
     const characterCount = countCodePoints(text);
     if (characterCount > MAX_DOCUMENT_CHARACTERS) {
-      throw new Error(`${file.name} 提取后超过 20 万字，请拆分后再上传`);
+      throw new Error(`${file.name} 提取后的文字超过处理安全上限，请按章节拆分；原文件仍在本机。`);
     }
     let previewUrl: string | undefined;
     if(options.includePreviewUrl!==false)try{previewUrl = URL.createObjectURL(file)}catch{previewUrl=undefined}
@@ -207,7 +211,7 @@ export async function fileToDocumentAttachment(file: File, options: FileAttachme
 
   const characterCount = countCodePoints(text);
   if (characterCount > MAX_DOCUMENT_CHARACTERS) {
-    throw new Error(`${file.name} 提取后超过 20 万字，请拆分后再上传`);
+    throw new Error(`${file.name} 提取后的文字超过处理安全上限，请按章节拆分；原文件仍在本机。`);
   }
   return { type: "document", file, mimeType, name: file.name, size: file.size, text, characterCount };
 }
@@ -283,15 +287,16 @@ export async function fileToAttachment(file: File, options: FileAttachmentOption
   if (!file.type.startsWith("image/")) {
     throw new Error("仅支持图片文件（JPG/PNG/GIF/WebP）");
   }
-  const maxFileSize = options.maxFileSize;
-  if (maxFileSize !== undefined && file.size > maxFileSize) {
+  if (!ACCEPTED_IMAGE_TYPES.has(file.type)) throw new Error('图片处理目前支持 JPG/PNG/GIF/WebP，请先转换其它图片格式。');
+  const maxFileSize = options.maxFileSize ?? MAX_FILE_BYTES;
+  if (file.size > maxFileSize) {
     throw new Error(`${file.name} 超过 ${Math.round(maxFileSize / (1024 * 1024))} MB，暂时无法读取`);
   }
   const needsCompress = file.size > MAX_IMAGE_SIZE;
   const base64 = needsCompress
     ? await compressImage(file)
     : await readFileAsDataUrl(file);
-  const previewUrl = URL.createObjectURL(file);
+  const previewUrl = options.includePreviewUrl === false ? '' : URL.createObjectURL(file);
   const mimeType = needsCompress ? "image/jpeg" : file.type;
   return { type: "image", file, previewUrl, base64, mimeType };
 }
@@ -348,6 +353,7 @@ export function toChatAttachments(previews: AttachmentPreview[]): ChatAttachment
     if (attachment.type === "document") {
       return {
         type: "document" as const,
+        cloudFileId: attachment.cloudFileId,
         mimeType: attachment.mimeType,
         name: attachment.name,
         text: attachment.text,
@@ -358,6 +364,7 @@ export function toChatAttachments(previews: AttachmentPreview[]): ChatAttachment
     if (attachment.type === "local-file") {
       return {
         type: "local-file" as const,
+        cloudFileId: attachment.cloudFileId,
         mimeType: attachment.mimeType,
         dataUrl: attachment.dataUrl,
         name: attachment.name,
@@ -366,6 +373,7 @@ export function toChatAttachments(previews: AttachmentPreview[]): ChatAttachment
     }
     return {
         type: "image" as const,
+        cloudFileId: attachment.cloudFileId,
         mimeType: attachment.mimeType,
         base64: attachment.base64,
         name: attachment.file.name,

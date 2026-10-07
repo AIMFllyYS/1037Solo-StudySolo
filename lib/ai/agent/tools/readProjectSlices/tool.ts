@@ -8,6 +8,7 @@ import {
 } from "@/lib/ai/agent/tools/_shared";
 import { PROJECT_LIMITS } from "@/lib/project/limits";
 import type { ReadProjectSlicesOutput } from "@/lib/ai/agent/tools/projectFiles/types";
+import { loadProcessedFile } from '@/lib/files/service.server';
 
 /**
  * 读项目文件的切片正文。
@@ -25,9 +26,18 @@ export function createReadProjectSlicesTool(ctx: StudyToolContext, runtime: Stud
       fileId: z.string().describe("来自 getProjectFiles 的文件 id"),
       sliceIds: z.array(z.string()).max(24).optional().describe("要读的切片 id 列表"),
       query: z.string().optional().describe("或者给关键词，按切片标题 / 摘要挑选"),
+      offset: z.number().int().min(0).optional().describe('云端全文的起始字符位置，用于继续读取长文件'),
     }),
-    execute: async ({ fileId, sliceIds, query }): Promise<ReadProjectSlicesOutput> => {
+    execute: async ({ fileId, sliceIds, query, offset }): Promise<ReadProjectSlicesOutput> => {
       const file = files.find((item) => item.fileId === fileId);
+      if (file?.cloudFileId && ctx.userId) {
+        const content = await loadProcessedFile(ctx.userId, file.cloudFileId);
+        const text = content.text ?? '';
+        const match = query?.trim() ? text.toLowerCase().indexOf(query.toLowerCase()) : -1;
+        const start = offset ?? (match >= 0 ? Math.max(0, match - 500) : 0);
+        const end = Math.min(text.length, start + 12000);
+        return { found: true, sliceIds: [`offset:${start}`], text: `【${file.name}｜fileId=${fileId}｜${start}–${end}/${text.length} 字】\n${text.slice(start, end)}${end < text.length ? `\n后续仍在云端，offset=${end} 可继续读取。` : ''}`, ...(content.image ? { image: content.image } : {}) };
+      }
       if (!file) {
         const available = files.map((item) => `${item.fileId}（${item.name}）`).join("、");
         return {
@@ -97,6 +107,6 @@ export function createReadProjectSlicesTool(ctx: StudyToolContext, runtime: Stud
         sliceIds: readIds,
       });
     },
-    toModelOutput: ({ output }) => toText(output),
+    toModelOutput: ({ output }) => output.image?.dataUrl ? { type: 'content' as const, value: [{ type: 'text' as const, text: output.text }, { type: 'file' as const, data: { type: 'data' as const, data: output.image.dataUrl.split(',')[1]! }, mediaType: output.image.mimeType }] } : toText(output),
   });
 }

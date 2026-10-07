@@ -1,10 +1,13 @@
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { createPersistedStore } from "@/lib/stores/_persist";
+import { onStorageOwnerChange } from '@/lib/storage/ownerScope';
+import { getStorageOwner } from '@/lib/storage/ownerScope';
+import { subscribeCloudFileChanges } from '@/lib/files/events';
 import type { SliceTextResult } from "@/lib/project/slice";
 import type { ProjectFileEntry, ProjectFileStatus, ProjectStudioRef } from "@/lib/project/types";
 
 /**
- * 项目文件仓库（IndexedDB）。**不上云**：索引与切片都在本机，Agent 靠请求体携带的目录读取。
+ * 项目文件的本机索引缓存（IndexedDB）。原文件与处理结果由云端保存，cloudFileId 用于重建缓存。
  *
  * 写入路径固定三步：beginImport（占位 + parsing）→ finishImport / failImport。
  * 解析在 lib/project/parse.ts 里做，store 只负责状态与去重，不碰 File/Blob。
@@ -203,6 +206,18 @@ export const useProjectFiles = createPersistedStore<ProjectFilesState>(
   },
 );
 
+onStorageOwnerChange(() => {
+  // Clear resident data without writing an empty snapshot over the next owner's cache.
+  const storage = useProjectFiles.persist.getOptions().storage;
+  if (storage) useProjectFiles.persist.setOptions({ storage: { ...storage, setItem: () => {} } });
+  useProjectFiles.setState({ order: [], byId: {}, _hasHydrated: false });
+  if (storage) useProjectFiles.persist.setOptions({ storage });
+});
+subscribeCloudFileChanges(change => {
+  if (change.owner !== getStorageOwner() || change.action !== 'delete') return;
+  for (const entry of Object.values(useProjectFiles.getState().byId)) if (entry.cloudFileId === change.id) useProjectFiles.getState().removeFile(entry.id);
+});
+
 /** 项目内的文件（按导入顺序）。 */
 export function listProjectFiles(
   state: Pick<ProjectFilesState, "order" | "byId">,
@@ -210,4 +225,3 @@ export function listProjectFiles(
 ): ProjectFileEntry[] {
   return state.order.map((id) => state.byId[id]).filter((entry): entry is ProjectFileEntry => Boolean(entry) && entry!.projectId === projectId);
 }
-

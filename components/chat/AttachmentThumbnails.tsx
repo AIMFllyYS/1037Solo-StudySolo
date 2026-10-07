@@ -9,6 +9,8 @@ import { loadBlobDataUrl } from "@/lib/storage/chatStorage";
 import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 import { useT } from "@/lib/i18n";
+import { readCloudFileContext } from '@/lib/files/client';
+import { getOwnerEpoch } from '@/lib/storage/ownerScope';
 
 interface AttachmentThumbnailsProps {
   previews?: AttachmentPreview[];
@@ -64,6 +66,16 @@ function openPreviewItem(attachment: AttachmentPreview, key: string) {
 
 async function openStoredPreview(attachment: StoredChatAttachment, key: string, fallbackName: string) {
   const name = attachment.name ?? fallbackName;
+  if (attachment.cloudFileId) {
+    const epoch = getOwnerEpoch();
+    const response = await fetch(`/api/files/${attachment.cloudFileId}`, { credentials: 'include' });
+    if (!response.ok) return;
+    const file = new File([await response.blob()], name, { type: attachment.mimeType });
+    const processed = await readCloudFileContext(attachment.cloudFileId);
+    if (getOwnerEpoch() !== epoch) return;
+    openAttachmentPreview(key, { name, mimeType: attachment.mimeType, kind: previewKind(name, attachment.mimeType), content: processed.image?.dataUrl ?? processed.text ?? '', file });
+    return;
+  }
   const content = isAttachmentRef(attachment)
     ? await loadBlobDataUrl(attachment.id)
     : attachment.type === "image"
@@ -90,9 +102,9 @@ function ReadonlyImage({ attachment }: { attachment: StoredChatAttachment }) {
   useEffect(() => {
     if (attachment.type !== "image" || !isAttachmentRef(attachment)) return;
     let cancelled = false;
-    void loadBlobDataUrl(attachment.id).then((url) => {
+    void (attachment.cloudFileId ? readCloudFileContext(attachment.cloudFileId).then(file => file.image?.dataUrl ?? null) : loadBlobDataUrl(attachment.id)).then((url) => {
       if (!cancelled && url) setSrc(url);
-    });
+    }).catch(() => {});
     return () => { cancelled = true; };
   }, [attachment]);
 

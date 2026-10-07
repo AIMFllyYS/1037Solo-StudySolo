@@ -60,6 +60,11 @@ let cloudRowKeys: ReadonlySet<string> | null = null;
 
 export function setCloudRowKeys(keys: Iterable<string> | null): void {
   cloudRowKeys = keys ? new Set(keys) : null;
+  // Existing status subscribers must recompute origin badges when the index changes.
+  emit();
+}
+export function useCloudRowKeys(): ReadonlySet<string> | null {
+  return useSyncExternalStore(subscribeCloudSync, () => cloudRowKeys, () => null);
 }
 
 export function hasCloudRow(kind: string, clientId: string): boolean | null {

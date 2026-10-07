@@ -44,3 +44,8 @@ export function scheduleCloudPull(): void {
   }
   setTimeout(start, 0);
 }
+/** Explicit refresh waits for the actual sync operation; background scheduling remains unchanged. */
+export async function refreshCloudSyncNow(): Promise<void> {
+  if (!canSchedule()) return;
+  await (await import('./engine')).pullAndPushAll();
+}

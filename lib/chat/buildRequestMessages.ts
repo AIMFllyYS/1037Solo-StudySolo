@@ -3,6 +3,7 @@ import type { ChatAttachment, ChatMessage, ChatMessagePart, StoredChatAttachment
 import { compactStudyParts } from '@/lib/chat/compactStudyParts';
 import { MAX_REQUEST_IMAGE_CHARS, MAX_REQUEST_IMAGES } from '@/lib/chat/requestBudget';
 import { hasVisibleContent } from '@/lib/chat/messageParts';
+import { fileReference } from '@/lib/files/contract';
 
 export const DEFAULT_MAX_TURNS = Number.MAX_SAFE_INTEGER;
 /** 与 chatRequestSchema messages 上限对齐，防止 400。 */
@@ -20,7 +21,7 @@ export interface BuildRequestMessagesResult {
 export interface BuildRequestMessagesOptions {
   maxTurns?: number;
   reason?: BuildRequestMessagesResult['truncationReason'];
-  /** 默认 false：历史图不进 POST，只给本轮最多 1 张。 */
+  /** 仅控制旧的本机附件；新云端附件始终保留稳定引用，每条用户消息最多 9 个。 */
   preserveAttachmentHistory?: boolean;
   /**
    * 用户点过「重新带入本轮」的历史消息 id：这些消息的附件（含图片）重新随本次请求上行。
@@ -49,7 +50,7 @@ function attachmentId(attachment: StoredChatAttachment): string | null {
 /**
  * 历史附件在请求里的占位说明。
  *
- * 为什么写这么细：字节一直留在本机（不丢），只是**默认不进后来的 POST**（每轮最多带 1 张图）。
+ * 仅用于旧的本机附件：原字节仍保留，可显式重新带入。云端附件走稳定引用与按需读取。
  * 以前这里只写「字节在本机」，模型只能回一句"我看不到图片"——用户无从下手。带上稳定 id 和
  * 明确的恢复动作后，模型可以直接告诉用户去点哪里的「重新带入本轮」。
  */
@@ -133,6 +134,9 @@ export function toRequestMessage(
 ): RequestMessage {
   const parts: ChatMessagePart[] = compactStudyParts(m.parts.filter(keepRequestPart), 'ui-request');
   if (m.role === 'user') {
+    const cloud = (m.attachments ?? []).filter(a => a.cloudFileId);
+    for (const attachment of cloud) parts.push({ type: 'file', mediaType: attachment.mimeType, url: fileReference(attachment.cloudFileId!), filename: attachment.name });
+    if (cloud.length) m = { ...m, attachments: m.attachments?.filter(a => !a.cloudFileId) };
     if (options?.includeAttachments) {
       // includeImages 由调用方按"整包最多几张图"决定；缺省仍按老行为带图。
       if (options.includeImages !== false) {
@@ -153,7 +157,7 @@ export function toRequestMessage(
 
 /**
  * 从会话尾部取最近 N 条 user/assistant 消息用于 API 请求。
- * 默认不回放窗口外历史附件；本轮最多带 1 张图。
+ * 缺省保留完整历史与所有云附件引用；执行路径先 AI 压缩，不用 maxTurns 静默删掉历史。
  */
 export function buildRequestMessages(
   sessionMessages: ChatMessage[],
@@ -172,11 +176,9 @@ export function buildRequestMessages(
   const lastUserId = [...eligible].reverse().find((m) => m.role === 'user')?.id;
   const wantsAttachments = (m: ChatMessage) =>
     preserveAttachmentHistory || m.id === lastUserId || reincluded.has(m.id);
-  // 图片按"整包最多 MAX_REQUEST_IMAGES 张"发：最近的 user 消息优先（它就是本轮提问），
-  // 其次才是用户显式点过「重新带入本轮」的历史消息。文档正文不吃这个配额。
+  // 图片限制按每条用户消息计算；不同轮次可再次上传，云引用不受会话累计数量限制。
   const imageMessages = new Set<string>();
   for (const m of [...eligible].reverse()) {
-    if (imageMessages.size >= MAX_REQUEST_IMAGES) break;
     if (m.role !== 'user' || !wantsAttachments(m)) continue;
     if ((m.attachments ?? []).some((attachment) => attachment.type === 'image')) imageMessages.add(m.id);
   }

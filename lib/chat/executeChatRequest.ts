@@ -1,5 +1,10 @@
 import { consumeStudyStream, createStudyChatTransport } from "@/lib/chat/consumeStudyStream";
-import { buildRequestMessages, MAX_REQUEST_MESSAGES } from "@/lib/chat/buildRequestMessages";
+import { buildRequestMessages } from "@/lib/chat/buildRequestMessages";
+import { checkpointMessages } from '@/lib/context/compactChatSession';
+import { useChatHistory } from '@/lib/stores/chatHistory';
+import { useCompactionState } from '@/lib/context/compactionState';
+import { getOwnerEpoch } from '@/lib/storage/ownerScope';
+import { collectCloudFileIds } from '@/lib/files/contract';
 import { createStreamUiThrottle } from "@/lib/chat/streamUiThrottle";
 import { flushPendingWrites } from "@/lib/storage/idbStorage";
 import { notifyAccountUsageChanged } from "@/lib/billing/quotaView";
@@ -35,29 +40,32 @@ export async function executeChatRequest(input: {
   reincludedMessageIds?: readonly string[];
 }): Promise<void> {
   let latest = input.assistant;
+  const ownerEpoch = getOwnerEpoch();
   const throttle = createStreamUiThrottle();
   const writeUi = () => input.onWrite(latest);
   let watchdog: ReturnType<typeof createStallWatchdog> | undefined;
   markSessionStreaming(input.sessionId, true);
   try {
+    const checkpoint = useChatHistory.getState().sessionsMeta.find(meta => meta.id === input.sessionId)?.contextCheckpoint;
+    const sourceMessages = checkpointMessages(input.latestMessages, checkpoint);
     const hydrateIds = lastUserMessageId(input.latestMessages);
-    // 历史附件的字节只在本机 IDB 里：要发就必须先水合回来。默认只水合本轮那条，
-    // 用户点过「重新带入本轮」的历史消息一并水合。
+    // 新附件用云端稳定引用；仅旧的本机附件需要从 IDB 水合字节。
     const hydrateMessageIds = new Set<string>(input.reincludedMessageIds ?? []);
     if (hydrateIds) hydrateMessageIds.add(hydrateIds);
     const hydrated = await hydrateForRequest(
-      input.latestMessages,
+      sourceMessages,
       input.abortSignal,
       hydrateMessageIds.size > 0 ? { messageIds: hydrateMessageIds } : undefined,
     );
     input.abortSignal.throwIfAborted();
     const { messages: built } = buildRequestMessages(hydrated, {
-      maxTurns: MAX_REQUEST_MESSAGES,
+      maxTurns: Number.MAX_SAFE_INTEGER,
       preserveAttachmentHistory: false,
       reincludedMessageIds: new Set(input.reincludedMessageIds ?? []),
     });
     const body = {
       ...input.body,
+      cloudFileIds: [...new Set([...(checkpoint?.cloudFileIds ?? []), ...collectCloudFileIds(input.latestMessages)])],
       skills: slimSkillsForRequest(input.body.skills, hydrated),
     };
     const fitted = fitChatRequest(built, body as unknown as Record<string, unknown>);
@@ -68,6 +76,7 @@ export async function executeChatRequest(input: {
       messages: fitted.messages, abortSignal: input.abortSignal, body: fitted.body,
     });
     await consumeStudyStream({
+      sessionId: input.sessionId,
       stream, message: input.assistant, abortSignal: input.abortSignal,
       onMessage(message) { latest = message; throttle.schedule(writeUi); },
       onInfo: input.onInfo,
@@ -80,6 +89,7 @@ export async function executeChatRequest(input: {
       throttle.schedule(writeUi);
     }
   } finally {
+    if (getOwnerEpoch() === ownerEpoch && useCompactionState.getState().byId[input.sessionId]?.phase === 'running') useCompactionState.getState().set(input.sessionId, 'error', '上下文整理被中断，原对话与附件仍保留。');
     throttle.flush();
     flushPendingWrites();
     markSessionStreaming(input.sessionId, false);

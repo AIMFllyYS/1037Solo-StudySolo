@@ -26,7 +26,7 @@ test("pruneStudyMessages：reasoning 全部去掉，kimi-k3 / mimo-v2.5 不例�
   }
 });
 
-test("pruneStudyMessages：toolCalls 从 before-last-2-messages 起衰减", () => {
+test("pruneStudyMessages：较早工具结果保留至 AI 整理，不能在压缩前丢失", () => {
   const messages: ModelMessage[] = [
     { role: "user", content: "第一问" },
     {
@@ -62,7 +62,7 @@ test("pruneStudyMessages：toolCalls 从 before-last-2-messages 起衰减", () =
   ];
   const out = pruneStudyMessages(messages);
   const dumped = JSON.stringify(out);
-  assert.doesNotMatch(dumped, /旧页面全文/);
+  assert.match(dumped, /旧页面全文/);
   assert.match(dumped, /最近工具结果/);
   assert.match(dumped, /最近回答/);
 });

@@ -93,6 +93,8 @@ export function usesStudioChrome(pathname: string): boolean {
 export function isAgentPluginsPath(pathname: string): boolean {
   return pathname === "/agent/plugins" || pathname.startsWith("/agent/plugins/");
 }
+export function isAgentAssetsPath(pathname: string): boolean { return pathname === '/agent/assets' || pathname.startsWith('/agent/assets/'); }
+export function isAgentManagementPath(pathname: string): boolean { return isAgentPluginsPath(pathname) || isAgentAssetsPath(pathname); }
 
 /**
  * 手机壳：Agent 仍用最初 Studio 五段底栏，不套桌面左对话+右侧窗。
@@ -100,7 +102,7 @@ export function isAgentPluginsPath(pathname: string): boolean {
  */
 export function usesMobileStudioChrome(pathname: string): boolean {
   const first = firstSegment(pathname);
-  return first !== "class" && first !== "review" && !isAgentPluginsPath(pathname);
+  return first !== "class" && first !== "review" && !isAgentManagementPath(pathname);
 }
 
 export function resolveAppMode(pathname: string, persisted: AppMode): AppMode {

@@ -24,6 +24,8 @@ import { ARTIFACT_IFRAME_SANDBOX, injectOpaqueOriginStorageShim } from "@/lib/sa
 import { assembleDocumentMarkdown } from "@/lib/documents/types";
 import { ASSET_LIST_HREF } from "@/lib/agent/assetHref";
 import { ASSET_KIND_LABELS, formatAssetSize, formatAssetTime, type AssetKind } from "@/lib/agent/assetCatalog";
+import CloudFileDetail from './CloudFileDetail';
+import { useFileLibrary } from '@/lib/files/library';
 
 const ACTION_CLASS =
   "press flex items-center gap-1.5 rounded-lg border border-[var(--line-soft)] px-2.5 py-1.5 text-[12.5px] text-[var(--ink)] hover:border-[var(--accent)] hover:bg-[var(--bg-muted)]";
@@ -33,6 +35,12 @@ const ACTION_CLASS =
  * 每种类型复用既有渲染件（笔记渲染器 / 复习闪卡 / 长文 / 沙箱 iframe），不做第二套预览。
  */
 export default function AgentAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
+  const owner = useFileLibrary(state => state.owner);
+  const key = `${owner ?? 'signed-out'}:${kind}:${id}`;
+  if (kind === 'file' && id.startsWith('cloud-')) return <CloudFileDetail key={key} fileId={id.slice(6)} />;
+  return <LocalAssetDetail key={key} kind={kind} id={id} />;
+}
+function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
   const router = useRouter();
   const assets = useAgentAssets();
   const note = useUserNotes((s) => s.byId[id]);

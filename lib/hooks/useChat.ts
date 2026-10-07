@@ -13,7 +13,10 @@ import { getClassAgentContext } from '@/lib/class/agentContext';
 import type { ChatMessage, ChatContext, ChatOptions } from '@/lib/types/chat';
 import { createAssistantPlaceholder, createUserMessage } from '@/lib/chat/messageParts';
 import { buildRequestMessages, MAX_REQUEST_MESSAGES } from '@/lib/chat/buildRequestMessages';
-import { loadSessionTail } from '@/lib/storage/chatStorage';
+import { loadSessionMessages } from '@/lib/storage/chatStorage';
+import { compactActiveSession, checkpointMessages } from '@/lib/context/compactChatSession';
+import { useCompactionState } from '@/lib/context/compactionState';
+import { restoreProjectCloudFiles } from '@/lib/project/cloudFiles';
 import {
   canSendNow, resolveRequestSettings, estimateContextBudget, displayContextTokens, CONTEXT_WARNING,
   buildChatRequestBody, kickoffSessionTitle, classifySendError, executeChatRequest,
@@ -99,6 +102,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
     const academicYear = chatContext.academicYear ?? useAcademicYear.getState().year;
     const skills = useSkills.getState().skills;
     const sessionId = explicitSessionId ?? history.activeSessionId ?? history.createSession(chatContext);
+    if (useCompactionState.getState().byId[sessionId]?.phase === 'running') return false;
     // 并发单位是「会话」而不是「这个 hook」：同一条会话已在跑才拒发，别的会话在跑不拦。
     if (useSessionRuns.getState().byId[sessionId]?.phase === 'running') return false;
     const quoteIntro = sendOptions?.quoteIntro ?? "针对当前页面这段原文";
@@ -147,10 +151,10 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
       planCarry(projectFileList, sessionProjectId ?? undefined),
       sessionMeta?.readSliceIds ?? [],
     );
-    const projectFiles = sessionProjectId
+    let projectFiles = sessionProjectId
       ? buildProjectCatalog(projectFileList, sessionProjectId).files
       : [];
-    const projectSlices = sessionProjectId
+    let projectSlices = sessionProjectId
       ? buildProjectSliceBodies(projectFileList, carryPlan, sessionProjectId).payloads
       : [];
     void (async () => {
@@ -163,7 +167,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
         // 落盘形态已是 persist 压缩态，与请求侧 ui-request 压缩语义一致。
         const windowFallback = useChatHistory.getState().messagesById[sessionId] ?? [];
         const reincluded = useReincludedAttachments.getState().takeForRequest(sessionId);
-        const storedTail = (await loadSessionTail(sessionId, MAX_REQUEST_MESSAGES + 64)) ?? windowFallback;
+        const storedTail = (await loadSessionMessages(sessionId)) ?? windowFallback;
         const tailIds = new Set(storedTail.map((entry) => entry.id));
         const extras = reincluded.length
           ? windowFallback.filter((entry) => reincluded.includes(entry.id) && !tailIds.has(entry.id))
@@ -176,10 +180,24 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
         const latestMessages = storedAll.some((entry) => entry.id === userMessage.id)
           ? storedAll.map((entry) => entry.id === userMessage.id ? userMessage : entry)
           : [...storedAll, userMessage];
-        const { messages: estimateMessages } = buildRequestMessages(latestMessages);
+        if (sessionProjectId) {
+          await restoreProjectCloudFiles(sessionProjectId).catch(() => { useSessionRuns.getState().setInfo(sessionId, '项目云文件暂时无法刷新，已有本机索引保留；云文件读取会继续检查实际状态。'); });
+          const liveFiles = listProjectFiles(useProjectFiles.getState(), sessionProjectId);
+          projectFiles = buildProjectCatalog(liveFiles, sessionProjectId).files;
+          projectSlices = buildProjectSliceBodies(liveFiles, withRememberedSlices(planCarry(liveFiles, sessionProjectId), sessionMeta?.readSliceIds ?? []), sessionProjectId).payloads;
+        }
+        const checkpoint = useChatHistory.getState().sessionsMeta.find(meta => meta.id === sessionId)?.contextCheckpoint;
+        const requestHistory = checkpointMessages(latestMessages, checkpoint);
+        const { messages: estimateMessages } = buildRequestMessages(requestHistory);
         const tracker = ovSessionId
           ? useFloatingTokenTracker.getState().getSession(ovSessionId) : useTokenTracker.getState();
-        const budget = estimateContextBudget(tracker, resolved.model, estimateMessages, userContent);
+        let budget = estimateContextBudget(tracker, resolved.model, estimateMessages, userContent);
+        if (budget.softLimitReached || estimateMessages.length > MAX_REQUEST_MESSAGES) {
+          await compactActiveSession(sessionId, { duringSend: true, signal: abortController.signal });
+          const freshCheckpoint = useChatHistory.getState().sessionsMeta.find(meta => meta.id === sessionId)?.contextCheckpoint;
+          const condensed = buildRequestMessages(checkpointMessages(latestMessages, freshCheckpoint)).messages;
+          budget = estimateContextBudget({ ...tracker, serverContextTokens: 0 }, resolved.model, condensed, userContent);
+        }
         const ringTokens = displayContextTokens(tracker, budget);
         if (ovSessionId) {
           const floating = useFloatingTokenTracker.getState();

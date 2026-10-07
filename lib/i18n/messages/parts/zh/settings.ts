@@ -342,7 +342,7 @@ export const settingsZh = {
     },
     cloudSync: {
       title: "云端同步",
-      desc: "登录后同步对话文本、演示 HTML、长文档、个人笔记和复习闪卡。用户上传的图片与 PDF 不上云。工具读过的笔记以摘要同步，全文在教材包。生图会话和 API 密钥不会上传。 单用户上限约 {limitMb} MB；笔记额度池 {notesPoolMb} MB，闪卡额度池 {flashcardsPoolMb} MB。超限时本机仍保留，并在对话区提示。",
+      desc: "登录后同步对话文本、AI 整理后的上下文、演示、长文档、笔记和闪卡。新上传附件含照片与 PDF 的原文件及处理结果保存到私有云端，使用账号统一存储额度，可在「我的资产 → 云端文件」管理与确认软删除。旧的仅本机附件保留。API 密钥不会上传。结构化同步数据上限约 {limitMb} MB；笔记额度池 {notesPoolMb} MB，闪卡额度池 {flashcardsPoolMb} MB，这些不是附件文件体积上限。",
       signedIn: "已登录，换设备后可拉回历史对话与产物。",
       signedOut: "未登录时数据只留在本机。",
     },

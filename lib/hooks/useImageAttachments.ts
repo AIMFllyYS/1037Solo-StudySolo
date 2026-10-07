@@ -27,8 +27,12 @@ import { localPathOf, recordImport, type ImportSource } from "@/lib/stores/impor
 import type { ChatAttachment } from "@/lib/types/chat";
 import {adoptObjectUrl} from '@/lib/resources/objectUrl'
 import {getOwnerEpoch,getStorageOwner,onStorageOwnerChange} from '@/lib/storage/ownerScope'
+import { MAX_ATTACHMENTS_PER_MESSAGE, type ProcessedFile } from '@/lib/files/contract';
+import { uploadCloudFile } from '@/lib/files/client';
+import { extractFileText } from '@/lib/project/parse';
 
 export interface UseImageAttachmentsResult {
+  processing: boolean;
   /** 当前附件预览列表（含 blob URL）。 */
   attachments: AttachmentPreview[];
   /** 添加 File 列表（自动过滤非图片、压缩、生成预览）。 */
@@ -67,17 +71,21 @@ function attachmentObjectUrl(attachment:AttachmentPreview){return attachment.typ
  * @param options.importSource 记「本地导入记录」时标注来源（我的资产 → 文件/网址）。
  *   只记非图片：图片是对话附件，记进来会把资产页刷满。
  */
-export function useImageAttachments(options?: { importSource?: ImportSource }): UseImageAttachmentsResult {
+export function useImageAttachments(options?: { importSource?: ImportSource; reservedCount?: number; citedFileIds?: readonly string[] }): UseImageAttachmentsResult {
   const importSource = options?.importSource ?? "composer";
   const [attachments, setAttachments] = useState<AttachmentPreview[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
+  const [processing, setProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const dragCounter = useRef(0);
   const live=useRef<AttachmentPreview[]>([])
   const leases=useRef(new Map<AttachmentPreview,()=>void>())
   const mounted=useRef(false),generation=useRef(0)
   const dropControllers=useRef(new Set<AbortController>())
+  const pendingCount = useRef(0);
+  const reservedCount = options?.reservedCount ?? 0;
+  const citedFileIds = options?.citedFileIds;
   const disposeLive=useCallback(()=>{
     for(const release of leases.current.values())release()
     leases.current.clear();live.current=[]
@@ -117,12 +125,33 @@ export function useImageAttachments(options?: { importSource?: ImportSource }): 
   const addFiles = useCallback(
     async (files: File[]) => {
       if (files.length === 0||!mounted.current) return;
+      const linked = citedFileIds?.filter(id => !live.current.some(attachment => attachment.cloudFileId === id)).length ?? 0;
+      const remaining = MAX_ATTACHMENTS_PER_MESSAGE - live.current.length - pendingCount.current - reservedCount - linked;
+      if (files.length > remaining) { setError('单次消息最多添加 9 个附件；发送后可继续上传下一批。'); return; }
+      pendingCount.current += files.length;
+      setProcessing(true);
       const started=generation.current,owner=getStorageOwner(),epoch=getOwnerEpoch()
       const imageFiles = files.filter((file) => file.type.startsWith("image/"));
       const otherFiles = files.filter((file) => !file.type.startsWith("image/"));
       const acceptedFiles = imageFiles.length > 0 && !checkVisionSupport() ? otherFiles : files;
-      if (acceptedFiles.length === 0) return;
-      const { attachments: newOnes, errors } = await filesToAttachments(acceptedFiles);
+      if (acceptedFiles.length === 0) { pendingCount.current -= files.length; setProcessing(pendingCount.current > 0); return; }
+      const { attachments: parsedOnes, errors } = await filesToAttachments(acceptedFiles);
+      const newOnes: AttachmentPreview[] = [];
+      try {
+        for (const attachment of parsedOnes) {
+          if (!mounted.current || generation.current !== started || getOwnerEpoch() !== epoch) { revokeAttachments([attachment]); continue; }
+          try {
+            const processed: ProcessedFile = attachment.type === 'document'
+              ? { v: 1, text: attachment.text }
+              : attachment.type === 'local-file'
+                ? { v: 1, text: await extractFileText(attachment.file) }
+                : { v: 1, image: { dataUrl: attachment.base64, mimeType: attachment.mimeType } };
+            if (!mounted.current || generation.current !== started || getStorageOwner() !== owner || getOwnerEpoch() !== epoch) { revokeAttachments([attachment]); continue; }
+            const cloud = await uploadCloudFile(attachment.file, processed);
+            newOnes.push({ ...attachment, cloudFileId: cloud.id });
+          } catch (failure) { revokeAttachments([attachment]); errors.push(failure instanceof Error ? failure.message : '附件处理或上传失败。'); }
+        }
+      } finally { pendingCount.current -= files.length; if (mounted.current) setProcessing(pendingCount.current > 0); }
       if(!mounted.current||generation.current!==started||getStorageOwner()!==owner||getOwnerEpoch()!==epoch){revokeAttachments(newOnes);return}
       if (errors.length > 0) setError(errors[0]);
       if (newOnes.length > 0) {
@@ -130,10 +159,12 @@ export function useImageAttachments(options?: { importSource?: ImportSource }): 
         live.current=[...live.current,...newOnes];setAttachments(live.current)
       }
       // 本地导入记录：只存路径与元数据，资产页「文件 / 网址」两栏据此显示（不上云）。
-      for (const file of acceptedFiles) {
+      for (const attachment of newOnes) {
+        const file = attachment.file;
         if (file.type.startsWith("image/")) continue;
         recordImport({
           kind: "file",
+          cloudFileId: attachment.cloudFileId,
           name: file.name,
           sizeBytes: file.size,
           mimeType: file.type || undefined,
@@ -142,7 +173,7 @@ export function useImageAttachments(options?: { importSource?: ImportSource }): 
         });
       }
     },
-    [checkVisionSupport, importSource],
+    [checkVisionSupport, importSource, reservedCount, citedFileIds],
   );
 
   const remove = useCallback((idx: number) => {
@@ -176,7 +207,7 @@ export function useImageAttachments(options?: { importSource?: ImportSource }): 
       if (characterCount <= LONG_PASTE_DOCUMENT_THRESHOLD) return;
       e.preventDefault();
       if (characterCount > MAX_DOCUMENT_CHARACTERS) {
-        setError(`粘贴内容超过 20 万字，请拆分后再添加`);
+        setError('粘贴内容超过单文件处理安全上限，请分段添加。');
         return;
       }
       const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
@@ -257,6 +288,7 @@ export function useImageAttachments(options?: { importSource?: ImportSource }): 
   const clearError = useCallback(() => setError(null), []);
 
   return {
+    processing,
     attachments,
     addFiles,
     remove,

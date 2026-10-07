@@ -155,7 +155,7 @@ export function buildIndexMarkdown(input: {
   const lines = [
     `# ${input.name} · 索引`,
     "",
-    "> 本地解析产物：只在本机，不上云。正文按标题切成若干片，Agent 按需读取。",
+    "> 文件解析索引缓存。正文按标题切片，云端文件全文可由 Agent 按需读取。",
     "",
     `- 原始字数：${input.charCount}`,
     `- 切片数：${input.slices.length}${input.truncated ? "（已达上限，后续内容未索引）" : ""}`,

@@ -105,7 +105,7 @@ function stripAttachment(a: StoredChatAttachment): StoredChatAttachment {
   const name = "name" in a && typeof a.name === "string" ? a.name : undefined;
   const size = "size" in a && typeof a.size === "number" ? a.size : undefined;
   const characterCount = "characterCount" in a && typeof a.characterCount === "number" ? a.characterCount : undefined;
-  return { id, type: a.type, mimeType: a.mimeType, name, size, characterCount };
+  return { id, type: a.type, mimeType: a.mimeType, name, size, characterCount, cloudFileId: a.cloudFileId };
 }
 
 export function sanitizeChatMessages(messages: ChatMessage[]): ChatMessage[] {

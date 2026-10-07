@@ -16,7 +16,7 @@ import { normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
 
 /** 服务端入参上限。与客户端约定对齐并留余量，避免卡死正常使用。 */
 export const REQUEST_LIMITS = {
-  /** 客户端软上限截断后只发 16 条；200 留足历史回放。 */
+  /** 超过消息数量时先调用 AI 生成持久摘要，不能直接截掉较早消息。 */
   messages: 200,
   /** 正常一条消息不会超过个位数 part。 */
   parts: 64,
@@ -28,11 +28,11 @@ export const REQUEST_LIMITS = {
   /** #71 之后这里只会剩本次用到的那一个。 */
   customApiGroups: 32,
   /**
-   * 本轮最多 1 张图，data URL 合计 ≤ 400KB；须低于 nginx 默认 1m 与客户端 800KB 硬顶。
+   * 旧附件内联预处理结果的传输保护。新原文件直传私有 Storage，每文件最多 25MB。
    */
-  filePartChars: 400 * 1024,
+  filePartChars: 12 * 1024 * 1024,
   /** 整包 JSON 字节上限，与客户端序列化硬顶对齐。 */
-  requestBytes: 800 * 1024,
+  requestBytes: 16 * 1024 * 1024,
   /** 单条 text part（含附件文档正文）上限。 */
   textPartChars: 128 * 1024,
   /** artifact / image-gen / record / canvas 的 prompt、instruction、text。 */
@@ -82,6 +82,7 @@ const uiMessageSchema = z
     metadata: z.unknown().optional(),
   })
   .superRefine((message, ctx) => {
+    if (message.parts.filter(part => part.type === 'file').length > 9) ctx.addIssue({ code: 'custom', message: '单次消息最多 9 个附件，发送后可以继续添加。' });
     for (const part of message.parts) {
       if (part.type === "file") {
         if (filePartPayloadLength(part) <= REQUEST_LIMITS.filePartChars) continue;
@@ -137,6 +138,7 @@ const finiteNumber = z.number().refine((n) => Number.isFinite(n));
 
 /** 客户端 body 字段见 `lib/chat/buildChatRequestBody.ts` 的 `ChatRequestBody`（messages 由 transport 另传）。 */
 export const chatRequestSchema = z.object({
+  cloudFileIds: z.array(z.string().uuid()).max(10000).optional().default([]),
   messages: z
     .array(uiMessageSchema)
     .max(REQUEST_LIMITS.messages, `消息数量超过上限（最多 ${REQUEST_LIMITS.messages} 条）。`)
@@ -257,7 +259,7 @@ export const chatRequestSchema = z.object({
           childPaths: file.childPaths,
         })),
     )
-    .max(16)
+    .max(9)
     .default([]),
   /** 主对话随身携带的本机笔记目录；窗内对话应为空。 */
   userNotes: z
@@ -318,6 +320,7 @@ export const chatRequestSchema = z.object({
       z
         .object({
           fileId: z.string().max(128),
+          cloudFileId: z.string().uuid().optional(),
           name: z.string().max(256).optional().default(""),
           kind: z.enum(["imported", "studio-ref"]).optional().default("imported"),
           status: z.enum(["indexed", "parsing", "error"]).optional().default("indexed"),
@@ -343,6 +346,7 @@ export const chatRequestSchema = z.object({
         })
         .transform((file) => ({
           fileId: file.fileId,
+          cloudFileId: file.cloudFileId,
           name: String(file.name ?? ""),
           kind: file.kind,
           status: file.status,
@@ -356,7 +360,7 @@ export const chatRequestSchema = z.object({
           })),
         })),
     )
-    .max(64)
+    .max(1000)
     .default([]),
   /** 本轮「带入对话」的项目切片正文（单片封顶 12k 字，总预算由客户端裁好）。 */
   projectSlices: z
@@ -370,6 +374,10 @@ export const chatRequestSchema = z.object({
     )
     .max(120)
     .default([]),
+}).superRefine((body, ctx) => {
+  const latest = [...body.messages].reverse().find(message => message.role === 'user');
+  const files = latest?.parts.filter(part => part.type === 'file').length ?? 0;
+  if (files + body.attachedFiles.length > 9) ctx.addIssue({ code: 'custom', message: '单次消息的附件总计最多 9 个。' });
 });
 
 export type ChatRequest = z.infer<typeof chatRequestSchema>;

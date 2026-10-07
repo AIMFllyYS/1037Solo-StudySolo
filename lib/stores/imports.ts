@@ -13,6 +13,7 @@ export type ImportKind = "file" | "url";
 export type ImportSource = "composer" | "window-taskbar" | "browser" | "project-files" | "assets";
 
 export interface ImportRecord {
+  cloudFileId?: string;
   id: string;
   kind: ImportKind;
   name: string;
@@ -31,6 +32,7 @@ export interface ImportRecord {
 }
 
 export interface RecordImportInput {
+  cloudFileId?: string;
   kind: ImportKind;
   name: string;
   absPath?: string;
@@ -93,6 +95,7 @@ export const useImports = createPersistedStore<ImportsState>(
               sizeBytes: input.sizeBytes ?? existing.sizeBytes,
               mimeType: input.mimeType ?? existing.mimeType,
               projectId: input.projectId ?? existing.projectId,
+              cloudFileId: input.cloudFileId ?? existing.cloudFileId,
               source: input.source,
               updatedAt: now,
             },
@@ -112,6 +115,7 @@ export const useImports = createPersistedStore<ImportsState>(
         sizeBytes: input.sizeBytes,
         mimeType: input.mimeType,
         projectId: input.projectId,
+        cloudFileId: input.cloudFileId,
         source: input.source,
         createdAt: now,
         updatedAt: now,

@@ -2,6 +2,8 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useImageAttachments } from './useImageAttachments';
 import { useSettings } from './useSettings';
+vi.mock('@/lib/files/client', () => ({ uploadCloudFile: vi.fn(async () => ({ id: '11111111-1111-4111-8111-111111111111' })) }));
+vi.mock('@/lib/project/parse', () => ({ extractFileText: vi.fn(async () => '公开测试 PDF 正文') }));
 
 beforeEach(() => {
   useSettings.setState({ selectedModelId: 'mimo-v2.5', customApiGroups: [] });
@@ -12,6 +14,18 @@ afterEach(() => {
 });
 
 describe('useImageAttachments documents', () => {
+  it('limits one draft to nine attachments and permits another nine after sending/clearing', async () => {
+    const { result } = renderHook(() => useImageAttachments());
+    const files = Array.from({ length: 9 }, (_, i) => new File([`public ${i}`], `public-${i}.txt`, { type: 'text/plain' }));
+    await act(async () => { await result.current.addFiles(files); });
+    expect(result.current.attachments).toHaveLength(9);
+    await act(async () => { await result.current.addFiles([new File(['overflow'], 'overflow.txt', { type: 'text/plain' })]); });
+    expect(result.current.attachments).toHaveLength(9);
+    expect(result.current.error).toMatch(/单次消息最多添加 9/);
+    act(() => result.current.clear());
+    await act(async () => { await result.current.addFiles(files); });
+    expect(result.current.attachments).toHaveLength(9);
+  });
   it('turns a paste longer than 1,000 characters into an in-composer TXT attachment', async () => {
     const pasted = '字'.repeat(1_001);
     const preventDefault = vi.fn();
@@ -64,7 +78,7 @@ describe('useImageAttachments documents', () => {
     expect(result.current.isDragging).toBe(false);
   });
 
-  it('reads PDF attachments locally without making a network request', async () => {
+  it('processes PDF attachments before producing a stable cloud reference', async () => {
     const network = vi.spyOn(globalThis, 'fetch');
     const { result } = renderHook(() => useImageAttachments());
 

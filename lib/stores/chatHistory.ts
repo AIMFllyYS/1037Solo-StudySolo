@@ -153,6 +153,7 @@ interface ChatHistoryState {
   replaceMessages: (sessionId: string, messages: ChatMessage[], baseMessages?: ChatMessage[]) => void;
   updateMessage: (sessionId: string, messageId: string, updates: Partial<ChatMessage>) => void;
   updateSessionTitle: (sessionId: string, title: string) => void;
+  setContextCheckpoint: (sessionId: string, checkpoint: NonNullable<SessionMeta['contextCheckpoint']>) => void;
   /** 归档 / 取消归档；归档不删除消息，只是从默认列表移出。 */
   archiveSession: (sessionId: string, archived: boolean) => void;
   /** 新建项目；两个系统项目由 ensureDefaultProjects 种下，不走这里。 */
@@ -684,9 +685,10 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       if (metaIndex >= 0) {
         const meta = state.sessionsMeta[metaIndex];
         const artifactIds = mergeArtifactIds(meta.artifactIds, [updated]);
-        if (!sameStringArray(meta.artifactIds, artifactIds)) {
+        const invalidateCheckpoint = meta.contextCheckpoint?.coveredIds.includes(messageId) && JSON.stringify(target.parts) !== JSON.stringify(updated.parts);
+        if (!sameStringArray(meta.artifactIds, artifactIds) || invalidateCheckpoint) {
           sessionsMeta = state.sessionsMeta.slice();
-          sessionsMeta[metaIndex] = { ...meta, updatedAt: Date.now(), artifactIds };
+          sessionsMeta[metaIndex] = { ...meta, updatedAt: Date.now(), artifactIds, ...(invalidateCheckpoint ? { contextCheckpoint: undefined } : {}) };
           shouldSaveManifest = true;
         }
       }
@@ -724,6 +726,16 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       const sessionsMeta = state.sessionsMeta.map((s) =>
         s.id === sessionId ? { ...s, title, updatedAt: Date.now() } : s,
       );
+      persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
+      scheduleCloudUpsert('chat-session', sessionId);
+      return { sessionsMeta };
+    });
+  },
+
+  setContextCheckpoint: (sessionId, checkpoint) => {
+    set(state => {
+      if (!state.sessionsMeta.some(meta => meta.id === sessionId)) return state;
+      const sessionsMeta = state.sessionsMeta.map(meta => meta.id === sessionId ? { ...meta, contextCheckpoint: checkpoint, updatedAt: Date.now() } : meta);
       persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
       scheduleCloudUpsert('chat-session', sessionId);
       return { sessionsMeta };

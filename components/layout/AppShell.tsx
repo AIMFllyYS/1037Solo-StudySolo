@@ -31,7 +31,7 @@ import { isSubjectReviewPath, resolveRouteLayout } from "@/lib/content/routeLayo
 import type { ChatContext } from "@/lib/types/chat";
 import {
   appModeFromPathname,
-  isAgentPluginsPath,
+  isAgentManagementPath,
   hrefForMobileAppMode,
   resolveAppMode,
   resolveMobileAppMode,
@@ -424,7 +424,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // /c/<对话ID> 是深链：手机壳本来就能显示中央对话，弹回 Studio 首页等于把分享/深链弄丢。
-    if (!isMobile || appModeFromPathname(pathname) !== "agent" || pathname.startsWith("/c/") || isAgentPluginsPath(pathname)) return;
+    if (!isMobile || appModeFromPathname(pathname) !== "agent" || pathname.startsWith("/c/") || isAgentManagementPath(pathname)) return;
     const target = hrefForMobileAppMode("agent", lastStudioPath);
     if (target !== pathname) router.replace(target);
   }, [isMobile, pathname, lastStudioPath, router]);

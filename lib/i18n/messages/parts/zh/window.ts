@@ -320,7 +320,7 @@ export const windowZh = {
     reimport: "重新导入",
     remove: "移除",
     emptyFiles: "还没有文件。点「添加文件」导入本机文件，或「引用教材」软链接一条 Studio 内容。",
-    emptyFilesNote: "（文件只在本机解析，不会上传。）",
+    emptyFilesNote: "（单次最多 9 个文件，每个最多 25MB。原文件与处理结果保存至个人私有云端。）",
     emptyProject: "这个项目还没有文件。",
     pinAllTitle: "项目不大，已经全部带入",
     pinTitle: "这一片是否随对话一起带给 Agent",

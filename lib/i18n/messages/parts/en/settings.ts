@@ -339,7 +339,7 @@ export const settingsEn = {
     },
     cloudSync: {
       title: "Cloud sync",
-      desc: "Once signed in, chat text, demo HTML, long documents, personal notes, and review flashcards are synced. Images and PDFs you upload never go to the cloud. Notes read by tools sync as summaries, while the full text stays in the textbook bundle. Image-generation sessions and API keys are never uploaded. The limit is about {limitMb} MB per user; the notes pool is {notesPoolMb} MB and the flashcard pool is {flashcardsPoolMb} MB. Over the limit, data stays on this device and a notice appears in the chat area.",
+      desc: "Signed-in chat text, AI context checkpoints, demos, documents, notes, and flashcards are synced. New attachments, including photos and PDFs, save originals and processed context in private cloud storage using the account storage allowance. Manage them in My assets → Cloud files with confirmed soft deletion. Legacy local-only attachments remain available locally. API keys are never uploaded. Structured sync data is limited to about {limitMb} MB, with {notesPoolMb} MB for notes and {flashcardsPoolMb} MB for flashcards; these are not file upload size limits.",
       signedIn: "Signed in — you can pull your chats and artifacts back on another device.",
       signedOut: "Signed out — data stays on this device only.",
     },

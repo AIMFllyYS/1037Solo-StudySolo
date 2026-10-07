@@ -1,0 +1,24 @@
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { afterEach, expect, it, vi } from 'vitest';
+const api = vi.hoisted(() => ({ list: vi.fn(), remove: vi.fn() }));
+vi.mock('@/lib/files/client', () => ({ loadCloudFileLibrary: api.list, deleteCloudFile: api.remove, completePendingCloudFile: vi.fn() }));
+import CloudFilesPanel from './CloudFilesPanel';
+import { activateStorageOwner } from '@/lib/storage/ownerScope';
+afterEach(() => { cleanup(); activateStorageOwner(null); vi.clearAllMocks(); });
+it('cloud file removal waits for explicit second confirmation and refreshes after success', async () => {
+  const file = { id: '11111111-1111-4111-8111-111111111111', name: 'public-notes.pdf', mime_type: 'application/pdf', size_bytes: 25 * 1024 * 1024, state: 'ready', created_at: '2026-10-08T00:00:00Z' };
+  api.list.mockResolvedValueOnce({ files: [file], storage: { used_bytes: '26214400', reserved_bytes: '0', capacity_bytes: '1073741824' } }).mockResolvedValue({ files: [{ ...file, state: 'deleted' }], storage: null });
+  activateStorageOwner('10000000-0000-4000-8000-000000000001');
+  api.remove.mockResolvedValue(undefined);
+  render(<CloudFilesPanel />);
+  await screen.findByText('public-notes.pdf');
+  expect(screen.getByRole('link', { name: '下载原文件' })).toHaveAttribute('href', '/api/files/11111111-1111-4111-8111-111111111111');
+  fireEvent.click(screen.getByRole('button', { name: '删除' }));
+  expect(api.remove).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button', { name: '取消' }));
+  expect(api.remove).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button', { name: '删除' }));
+  fireEvent.click(screen.getByRole('button', { name: '确认删除' }));
+  await waitFor(() => expect(api.remove).toHaveBeenCalledOnce());
+  await waitFor(() => expect(api.list).toHaveBeenCalledTimes(2));
+});

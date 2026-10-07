@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect,useMemo,useState } from "react";
-import {useAuthSession} from "@/lib/hooks/useAuthSession";
+import { useEffect, useMemo } from "react";
+import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useReviewCards } from "@/lib/stores/reviewCards";
 import { useDocuments } from "@/lib/stores/documents";
 import { useArtifacts } from "@/lib/stores/artifacts";
 import { useImports } from "@/lib/stores/imports";
-import { hasCloudRow } from "@/lib/sync/status";
+import { useCloudRowKeys } from "@/lib/sync/status";
+import { useCloudFileLibrary } from '@/lib/files/library';
 import { buildAssetItems, type AssetItem } from "@/lib/agent/assetCatalog";
+import { useClassroomAssets } from '@/lib/agent/classroomAssets';
 
 /**
  * 「我的资产」的数据：把五类来源摊平成一张清单。
@@ -17,22 +19,12 @@ import { buildAssetItems, type AssetItem } from "@/lib/agent/assetCatalog";
  * 同步角标读的是最近一次云端拉取的快照（lib/sync/status），没对过账就不显示。
  */
 export function useAgentAssets(): AssetItem[] | null {
-  const {userId}=useAuthSession();
-  const [classrooms,setClassrooms]=useState<{owner:string|null;rows:Array<{id:string;title:string;updatedAt:string;origin:"local"|"cloud"|"both"}>}>({owner:null,rows:[]});
-  useEffect(()=>{
-    if(!userId)return;
-    let active=true;
-    let cached:Array<{id:string;title:string;updatedAt:string;origin:"local"|"cloud"|"both"}>=[];
-    try{const value=JSON.parse(localStorage.getItem(`ss-class:v1:${userId}`)||'{}');cached=Object.values(value.sessions||{}).map(row=>({...((row as {session:{id:string;title:string;updatedAt:string}}).session),origin:"local" as const}));}catch{}
-    void fetch('/api/class/state',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},signal:AbortSignal.timeout(15000),body:JSON.stringify({op:'session.list',expectedUserId:userId,input:{}})}).then(async response=>{
-      if(!response.ok)throw new Error('Class metadata unavailable');
-      const rows=await response.json() as Array<{id:string;title:string;updatedAt:string}>;
-      const merged=new Map(cached.map(row=>[row.id,row]));
-      for(const row of rows)merged.set(row.id,{...row,origin:merged.has(row.id)?"both":"cloud"});
-      if(active)setClassrooms({owner:userId,rows:[...merged.values()]});
-    }).catch(()=>{if(active)setClassrooms({owner:userId,rows:cached});});
-    return()=>{active=false;};
-  },[userId]);
+  const files = useCloudFileLibrary();
+  const cloudRowKeys = useCloudRowKeys();
+  const { userId } = useAuthSession();
+  const classrooms = useClassroomAssets();
+  const { owner: classroomOwner, phase: classroomPhase, refresh: refreshClassrooms } = classrooms;
+  useEffect(() => { if (classroomOwner && classroomPhase === 'idle') void refreshClassrooms(); }, [classroomOwner, classroomPhase, refreshClassrooms]);
   const notesById = useUserNotes((s) => s.byId);
   const noteOrder = useUserNotes((s) => s.order);
   const notesReady = useUserNotes((s) => s._hasHydrated);
@@ -49,7 +41,7 @@ export function useAgentAssets(): AssetItem[] | null {
   const importsReady = useImports((s) => s._hasHydrated);
 
   return useMemo(() => {
-    if (userId&&classrooms.owner!==userId)return null;
+    if (userId && classrooms.owner !== userId) return null;
     if (!notesReady || !cardsReady || !docsReady || !artifactsReady || !importsReady) return null;
     return buildAssetItems({
       notes: noteOrder.map((id) => notesById[id]).filter(Boolean),
@@ -57,11 +49,12 @@ export function useAgentAssets(): AssetItem[] | null {
       documents: Object.values(docsById),
       artifacts: artifactOrder.map((id) => artifactsById[id]).filter(Boolean),
       imports: importOrder.map((id) => importsById[id]).filter(Boolean),
-      cloudRow: hasCloudRow,
-      classrooms:classrooms.owner===userId?classrooms.rows:[],
+      cloudRow: (kind, id) => cloudRowKeys === null ? null : cloudRowKeys.has(`${kind}:${id}`),
+      cloudFiles: files.files,
+      classrooms: classrooms.owner === userId ? classrooms.rows : [],
     });
   }, [
-    classrooms,userId,
+    classrooms,userId,files.files,cloudRowKeys,
     artifactOrder,
     artifactsById,
     artifactsReady,

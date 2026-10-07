@@ -12,6 +12,7 @@ import { dotEntriesFromSpine } from '@/lib/chat/turnSpine';
 import { useChatHistory } from '@/lib/stores/chatHistory';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { useT } from '@/lib/i18n';
+import { useCompactionState } from '@/lib/context/compactionState';
 
 interface ChatThreadProps {
   messages: ChatMessageType[];
@@ -70,6 +71,7 @@ export default function ChatThread({
   dotsPlacement = "right",
 }: ChatThreadProps) {
   const t = useT();
+  const compaction = useCompactionState(state => sessionId ? state.byId[sessionId] : undefined);
   const internalRef = useRef<HTMLDivElement>(null);
   const scrollRef = scrollContainerRef ?? internalRef;
   const [stickActive, setStickActive] = useState(isLoading);
@@ -401,6 +403,7 @@ export default function ChatThread({
           </>
         )}
 
+        {compaction ? <div role="status" aria-live="polite" data-testid="context-compaction-status" className="mx-3 my-2 flex items-center gap-2 rounded-xl bg-[var(--bg-muted)] px-3 py-2 text-xs text-[var(--ink-soft)]"><AgentLoopIcon size={16} className={compaction.phase === 'running' ? 'animate-spin motion-reduce:animate-none' : undefined} /><span>{compaction.message}</span></div> : null}
         {info ? (
           <div role="status" aria-live="polite" className="mx-3 my-2 flex items-start gap-2 rounded-xl bg-[var(--md-sys-color-secondary-container)] px-3 py-2 text-xs text-[var(--md-sys-color-on-secondary-container)]">
             <AgentInfoIcon size={14} className="mt-0.5 shrink-0" />

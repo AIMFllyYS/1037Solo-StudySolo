@@ -153,3 +153,13 @@ test("classroom sessions join the existing asset catalog with owner-local/cloud 
  const classroom=items.find(item=>item.kind==="classroom");
  assert.equal(classroom?.title,"课堂记录");assert.equal(classroom?.origin,"both");assert.equal(assetCounts(items).byKind.classroom,1);
 });
+test('cloud files join all/file counts, preserve stable detail IDs, and deduplicate only explicit cloud links', () => {
+  const id = '11111111-1111-4111-8111-111111111111';
+  const cloud = { id, name: 'public.pdf', mime_type: 'application/pdf', size_bytes: 1024, project_id: null, state: 'ready' as const, created_at: '2026-10-08T00:00:00Z', deleted_at: null };
+  const items = buildAssetItems({ ...sources, imports: [{ ...sources.imports[0], cloudFileId: id }], cloudFiles: [cloud] });
+  assert.equal(items.filter(item => item.kind === 'file').length, 1);
+  assert.equal(items.find(item => item.kind === 'file')?.id, `cloud-${id}`);
+  assert.equal(filterAssets(items, { query: 'public.pdf' }).length, 1);
+  const removed = buildAssetItems({ ...sources, imports: [{ ...sources.imports[0], cloudFileId: id }], cloudFiles: [{ ...cloud, state: 'deleted' }] });
+  assert.equal(removed.some(item => item.kind === 'file'), false);
+});

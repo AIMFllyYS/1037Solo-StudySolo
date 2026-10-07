@@ -53,6 +53,7 @@ export interface ChatRequestBodySettings {
 
 /** 发给 /api/chat 的 body（messages 由 transport 另传）。字段须与 chatRequestSchema 对齐。 */
 export interface ChatRequestBody {
+  cloudFileIds?: string[];
   agentMain?: boolean;
   modelId: string;
   customApiGroups: CustomApiGroup[];

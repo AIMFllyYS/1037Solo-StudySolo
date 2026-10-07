@@ -1,6 +1,10 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
+import ConfirmDialog from '@/components/shared/ConfirmDialog';
+import { deleteCloudFile } from '@/lib/files/client';
+import { restoreProjectCloudFiles } from '@/lib/project/cloudFiles';
+import { getOwnerEpoch } from '@/lib/storage/ownerScope';
 import { FilePlus2, Link2, RefreshCw, Trash2 } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import DocumentWorkspace, { type DocumentOutlineItem } from "@/components/window/DocumentWorkspace";
@@ -34,7 +38,7 @@ function statusLabel(file: ProjectFileEntry, t: Translate): string {
 /**
  * 项目文件窗（Agent 右栏）。左边是文件树（文件 → .index.md → 切片），右边是索引或切片正文。
  *
- * 关键口径：**文件内容只在本机**。这里的解析产物不会上云；Agent 通过请求体携带的目录与「带入对话」的切片来读。
+ * 原文件与处理上下文保存在私有云端；本窗管理本机索引缓存与切片选择，Agent 可按需读取云端全文。
  */
 export default function ProjectFilesWindow({ projectId }: { projectId: string }) {
   const windowId = projectFilesWindowId(projectId);
@@ -46,6 +50,9 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
   const projectName = useChatHistory((s) => s.folders.find((folder) => folder.id === projectId)?.name ?? null);
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<ProjectFileEntry | null>(null);
+  const [fileError, setFileError] = useState('');
+  useEffect(() => { void restoreProjectCloudFiles(projectId).catch(error => setFileError(error.message)); }, [projectId]);
   const [studioQuery, setStudioQuery] = useState("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const t = useT();
@@ -85,9 +92,11 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
   const handleFiles = async (list: FileList | null) => {
     const picked = Array.from(list ?? []);
     if (picked.length === 0) return;
+    if (picked.length > 9) { setFileError('单次最多导入 9 个文件，完成后可继续导入。'); return; }
     for (const file of picked) {
       setBusy(file.name);
-      await importProjectFile({ projectId, file, absPath: localPathOf(file) });
+      const result = await importProjectFile({ projectId, file, absPath: localPathOf(file) });
+      if (result.error) setFileError(result.error);
     }
     setBusy(null);
   };
@@ -169,7 +178,7 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
               <RefreshCw size={13} /> {t("window.project.reimport")}
             </button>
           ) : null}
-          <button type="button" data-no-drag className={TOOLBAR_DANGER_BUTTON} onClick={() => removeFile(activeFile.id)}>
+          <button type="button" data-no-drag className={TOOLBAR_DANGER_BUTTON} onClick={() => setPendingDelete(activeFile)}>
             <Trash2 size={13} /> {t("window.project.remove")}
           </button>
         </>
@@ -273,6 +282,8 @@ export default function ProjectFilesWindow({ projectId }: { projectId: string })
           event.target.value = "";
         }}
       />
+      {fileError ? <p role="alert" className="px-3 text-xs text-[var(--md-sys-color-error)]">{fileError}</p> : null}
+      {pendingDelete ? <ConfirmDialog title="确认移除项目文件？" body={`「${pendingDelete.name}」将从项目移除；云端文件执行基础软删除，原文件暂时保留。`} cancelLabel="取消" confirmLabel="确认移除" onCancel={() => setPendingDelete(null)} onConfirm={() => { const file = pendingDelete, epoch = getOwnerEpoch(); void (async () => { try { if (file.cloudFileId) await deleteCloudFile(file.cloudFileId); if (getOwnerEpoch() !== epoch) return; removeFile(file.id); setPendingDelete(null); } catch (error) { if (getOwnerEpoch() === epoch) setFileError(error instanceof Error ? error.message : '文件移除失败。'); } })(); }} /> : null}
       <DocumentWorkspace
         layoutKey="project-files"
         outlineLabel={activeFile ? activeFile.name : t("window.project.sliceOutlineFallback")}
