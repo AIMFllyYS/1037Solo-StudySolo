@@ -171,3 +171,8 @@ Viewport边界：IAB临时viewport已reset；先前Chrome1280 override设置后�
 主真实模型PubMed完成status/discover/search/read，公开PMID42791080；原步骤内input、原detail、结果toggle和来源可用。另一次刻意不存在Crossref DOI的只读调用失败为PROVIDER_REQUEST_FAILED，原步骤error并展开参数/错误，无正文重复卡。两张原生截图见native-public-read.png/native-public-failure.png。没有云命令或收费VM；云确认/取消/下载额外证据为已有组件验证，真实云闭环留第二条线。
 
 最终定向React60、Node34（trace14+lifecycle20）、精确ESLint及完整标准typecheck通过；34产品/测试文件冻结清单继续有效（刷新缺口更新2个hash）。主diff/hash/复用及本机关键流程验收通过，允许本包任务分支commit。未运行整线完整CI、未同步主/dev、未部署网站。一次后续Chrome导航CDP超时保留为控制限制，不据此停目标或推翻已实际取得的证据。
+## 2026-10-07 Agent入口观察复核：无源码改动
+
+本轮主正常导航/agent时先看到AuthProvider的默认SSR“正在打开账号专属学习空间…”；随后主实际AX确认URL回到公开概率1.1。主当时viewport默认702，属于mobile。源码AppShell的mobile effect明确将普通/agent经hrefForMobileAppMode('agent', lastStudioPath)映射回Studio，保留/c深链与plugins例外；app-mode.ts明确手机Agent使用Studio五段壳，不套桌面左右工作区。这与既有UI手机合同一致，不能把回跳判成auth永久阻断。
+
+主将viewport设1280后正常导航/agent，DOM与AX均恢复正常Agent访客界面。无cookie带Origin的Account session请求由主核401/251ms，服务器未hang；本轮没有store hydration rejection证据。未绕身份、复制cookie或借主IAB ID；没有修改AuthProvider/Account/timeout/安全逻辑，没有新增测试或重跑已验UI。桌面入口仍为app/agent/page.tsx→AgentChatCenter；主继续核实际Browser consumer。本轮no-change，其他在途Browser/Feedback/Landing/sandbox/Shared/env保持原样。

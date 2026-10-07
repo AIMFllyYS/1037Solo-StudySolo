@@ -2,7 +2,7 @@
   "schema_version": 3,
   "updated_date": "2026-10-07",
   "current_phase": "implementation",
-  "phase_status": "running",
+  "phase_status": "sandbox_desktop_core_loop_verified_followups_open",
   "authoritative_status_document": "docs/handoff/studysolo-workstreams.json",
   "context_document": "docs/handoff/studysolo-unattended-handoff.md",
   "global_memory": {
@@ -28,12 +28,12 @@
     }
   },
   "latest_user_directive": "2026-10-05用户明确授权自主CLI恢复RootSolo/任务项目，必要时直接起项目；32GB环境不因本机断开要求用户双击。写.codex全局记忆与项目规范并继续完整目标，旧禁CLI及本机阻塞结论撤销。",
-  "current_action": "Browser网页包按本包实际缩放/刷新/基础布局准则主验并提交f6a7fedf；从master干净底精选11文件为fb33ced4已推codex/studysolo-simple-completion-20261007，依赖与master无差异，保护所有反馈/会员/旧native源码。远端任务分支是代码备份/整合候选，尚无新整线CI或main/dev合并，不宣称上线。外部URL/title新标签观察成立、第三方正文读仍超时，原生真包后续验。SIMPLE剩余反馈认证390、Core账单/marker/真实CLI均待本人或接口恢复，Gov与正式history已过不重做。",
-  "next_workstream": "FEEDBACK-ADMIN normal authenticated local narrow acceptance; then one full SIMPLE CI and master/dev sync. Core paid runtime awaits Edge billing and reviewed import prerequisites.",
+  "current_action": "按最新人类请求整合已验收Browser及真实Cloud交接记录，集中CI后同步本地/云端master/dev；保留反馈未验代码、native和会员在途改动，不部署服务器。",
+  "next_workstream": "CORE-SANDBOX remaining shared Agent oral-tail/mobile admission checks, preserve actual accepted desktop proof",
   "stopped_action": "已被用户明确实现新计划取代；此前停止快照仅历史。",
   "implementation_recommendation": "执行three-lines-execution-plan：简单四包→沙箱/Skills→MCP→清理→客户端；网站用户部署，本轮仅本机验收。",
   "max_concurrent_subagents": 1,
-  "active_execution_group": "FEEDBACK-ADMIN",
+  "active_execution_group": "CORE-SANDBOX",
   "execution_stop": {
     "explicit_user_request": false,
     "superseded_by": "2026-10-05 IMPLEMENT THIS PLAN",
@@ -292,9 +292,9 @@
       "title": "阿里云通用命令、Skills与回收",
       "owner": "subagent_gpt-6.1-sol_high",
       "execution_unit": "whole_workstream",
-      "status": "code_merged_awaiting_external_configuration_and_runtime_acceptance",
-      "user_acceptance": "reported_not_usable_or_not_completed",
-      "assigned_agent": "/root/cloud_sandbox_sol_high",
+      "status": "normal_owner_desktop_core_loop_verified_package_followups_open",
+      "user_acceptance": "primary_real_desktop_loop_passed_awaiting_user_review",
+      "assigned_agent": "/root/sandbox_continuation_sol_high",
       "scope": "第二条线复用既有模板/隔离/预算，完成本机独立Agent普通命令、两个完整技能、下载与停止回收；不扩云平台或生产部署。",
       "execution_group": "CORE-SANDBOX",
       "start_condition": "简单四包整线验收后启动",
@@ -310,13 +310,13 @@
         "正常账号命令与完整Skills实际安装/执行/产物下载闭环",
         "隔离、用户/对话归属、取消/超时/回收及不确定状态正确",
         "实际Linux CLI/网络/依赖兼容边界说明，不宣称任意工具皆可",
-        "阿里云本轮/月各100元上限与实际账单核对，永不过期密钥保留"
+        "阿里云本轮/月各100元上限与原保守预算保持，永不过期密钥保留；实际账单核对已被2026-10-07用户明确免除，不作为验收前置"
       ],
       "acceptance_criteria": [
         "本机登录账号独立Agent实际命令与两个技能返回可下载产物",
         "Studio及其他模式执行被拒绝",
         "用户互不访问控制面/凭证/文件，超时取消与结束回收可核对",
-        "账单和资源归属有可核对证据，非仅结构预算"
+        "实际任务资源归属、provider精确停止、保守预算可核对；实际账单未知且用户免除核对，不把reserve当invoice"
       ],
       "excluded_scope": [
         "不连接VPN VPS运行应用",
@@ -324,7 +324,7 @@
         "不超过预算"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "Governance已主独立验通过，不再查缺RPC或重放DDL。下一步准确Edge核本轮/月费用及余量，正常本人项目登录；再fresh预算快照及独立operator import审查，最后同worker真实CLI/两个完整技能/下载/回收。marker缺与账单未知仍不是完成。",
+      "next_step": "不要重跑Gov/import/已过两技能下载回收；在共享Agent包处理口头收尾漏调用与移动Agent入口，长命令取消/timeout单独保留覆盖边界；MCP按当前用户聚焦仍待接续。",
       "implementation_report": "docs/handoff/workstreams/core-sandbox-2026-10-05.md",
       "candidate_source_commit": "abd46ac89d37d59009a6ee3ecfb147a545f9a940",
       "candidate_pull_request": "https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/187",
@@ -363,22 +363,29 @@
         "parent_independent_parse_passed": true,
         "windows_global_changed": false,
         "runtime_effective_verified": false,
-        "report": "docs/handoff/workstreams/core-integration-env-preparation-2026-10-05.md"
+        "report": "docs/handoff/workstreams/core-integration-env-preparation-2026-10-05.md",
+        "local_runtime_effective_verified": true,
+        "production_runtime_verified": false
       },
       "technical_parent_acceptance": {
         "code": "passed_exact_CI_and_review",
         "local_MCP_model": "passed",
-        "resource_runtime": "deferred_external_login_and_configuration;not_closed"
+        "resource_runtime": "passed_normal_owner_desktop_real_cli_two_original_skill_pipelines_four_authenticated_downloads_closed_provider_gone_reservation_released"
       },
       "accepted_source_commit": null,
-      "accepted_runtime_version": null,
-      "acceptance_evidence": [],
+      "accepted_runtime_version": "local f6a7fedf251f16558a8f0beac85d25f737d136c5 desktop standalone Agent 2026-10-07",
+      "acceptance_evidence": [
+        "artifacts/performance/cloud-sandbox-2026-10-07/normal-agent-cli.json",
+        "artifacts/performance/cloud-sandbox-2026-10-07/second-real-loop-acceptance.json",
+        ".local-archive/connectors-private/sandbox-mcp-final-2026-10-07/second-session-close-readonly-receipt.json",
+        ".local-archive/connectors-private/sandbox-mcp-final-2026-10-07/qa-second-session/download-qa.json"
+      ],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "high",
       "reviewer": "primary",
       "scheduled_after": "SIMPLE",
       "preparation": {
-        "status": "current_rpc_governance_and_formal_history_verified_runtime_pending",
+        "status": "governance_import_and_normal_owner_desktop_runtime_verified_followups_recorded",
         "scope": "Current configuration/role/template/budget/invoice facts only; no resource/env/SQL/code mutation or paid command",
         "implementation_gate": "After SIMPLE real acceptance; same module worker resumes later",
         "report": "docs/handoff/workstreams/sandbox-readiness-2026-10-05.md",
@@ -392,7 +399,71 @@
           "canonical_history": "exact_name_found_formal_version20261005040543_maps_source202610050001_no_replay",
           "old_template": "v1 UI building, real job/cost unknown; no stop/delete or reserve release"
         }
-      }
+      },
+      "reviewed_operator_import": {
+        "executed": true,
+        "dml_attempts": 1,
+        "candidate_sha256": "992308ed23273d6bf88157d494bf6c25b0d53538e795d7a50c20b95ba176f6bf",
+        "marker_micro_cny": 1800000,
+        "each_period_micro_cny": 2100000,
+        "each_cap_micro_cny": 70000000,
+        "reservation_count": 1,
+        "unreleased": 0,
+        "new_session_created": false,
+        "parent_independent_after_verified": true,
+        "receipt": ".local-archive/connectors-private/sandbox-mcp-final-2026-10-07/operator-import-receipt.json",
+        "invoice_waived_by_user": true,
+        "actual_bill_known": false
+      },
+      "actual_runtime_partial": {
+        "normal_user_login": true,
+        "skills_both_real_installed": true,
+        "one_session_id": "df33144f-26dd-435e-8981-6c4e359ea7b8",
+        "basic_command_id": "488ab603-932c-4e90-8441-4f60e7070a45",
+        "basic_exit": 0,
+        "public_file_sha_verified": true,
+        "notes_render_exit": 0,
+        "notes_check_exit": 0,
+        "notes_pages": 1,
+        "notes_publish": "REAUTH_REQUIRED_before_upload",
+        "artifact_download_verified": false,
+        "gb_script_verified": false,
+        "close_verified": true,
+        "evidence": "artifacts/performance/cloud-sandbox-2026-10-07/normal-agent-cli.json",
+        "close_boundary": "first_session_deadline_operational_precise_id_confirmation; browser close interaction still pending later session",
+        "notes_qa_copy_hash_verified": true
+      },
+      "continuation_reason": "旧worker本轮初始化后多次请求未回任何进度，已interrupt；新GPT-6.1SolHigh以精简当前证据接同一整包，只一子执行，非重做任务。",
+      "actual_runtime_acceptance_second_session": {
+        "session_id": "e66191a8-c26c-490c-8ff8-5e905a8d3d1f",
+        "normal_owner": true,
+        "original_four_skill_scripts_verified": true,
+        "gb_final_a4_preflight": "PASS",
+        "ready_artifacts": 4,
+        "normal_browser_downloads": 4,
+        "hashes_match": true,
+        "all_public_terms_preserved": true,
+        "all_pdf_pages_visual_pass": true,
+        "docx_editable_text": true,
+        "normal_tool_close": "closed",
+        "provider": "gone",
+        "reservation_released": true,
+        "provider_binding_matches": true,
+        "refresh_download_hash_match": true,
+        "original_run_month_reserved_micro_cny": 2700000,
+        "invoice_verified": false,
+        "isolation_fixture_checks": "2 passed",
+        "native_tool_desktop": true,
+        "mobile_tool_verified": false,
+        "temporary_rounds_restored": 6,
+        "no_new_product_source_changes": true
+      },
+      "remaining_acceptance_gaps": [
+        "模型口头说现在open/立即close而不发tool call，现有completionGuard短语覆盖缺口需共享Agent复核；这次真实close经追加明确指令完成",
+        "390窄屏现有AppShell把/agent映射回Studio；截图是移动首页，不是cloud工具验证，移动独立Agent入口未通过",
+        "本次未单独真实演练长命令cancel/timeout；既有模拟拒绝/清理检查与首session过期回收独立保留",
+        "辅助SolHigh首次输出无效未采纳；后续已正常只读确认文件hash/资源关闭，guard仅候选未实施，父独立真实证据保持"
+      ]
     },
     {
       "id": "UI-DIALOGUE",
@@ -435,7 +506,7 @@
         "不同时改Review业务或反馈生命周期"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "本包已验并commit；保留，整条简单线结束一次CI后同步主/dev，不重做已通过项。",
+      "next_step": "已主本机验收、经PR188完整CI并同步master/dev；保留，不再恢复旧待CI队列或重复验收。",
       "accepted_source_commit": "18ce822974c95250b4c7d6128c5fa539c55a3c3f",
       "accepted_runtime_version": "Local working candidate; 34 exact SHA256 report; no production claim",
       "acceptance_evidence": [
@@ -502,7 +573,7 @@
         "不编辑已应用006迁移或自动导入旧无主数据"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "主验已通过并核23文件冻结SHA无差异；仅本包与当前账本/派遣规范提交，随后原Feedback worker真实验收。不要重做已验Review流程。",
+      "next_step": "已主实际验答题/记录/诊断/章节出题/沉淀/笔记并经PR188同步master/dev；保留具体证据，不重做已过流程。",
       "accepted_source_commit": "b25388e823b3ccc1a972bdcccdf62faad7bebef7",
       "accepted_runtime_version": "Local browser source equals candidate-sha256.json manifest 6a2cfe4565a01ce28f823db591e755b7d10420f0ff9fe7fc00c2d3146f4699d0; not deployment",
       "acceptance_evidence": [
@@ -566,7 +637,7 @@
         "不改连接器授权核心"
       ],
       "technical_evidence_is_delivery_proof": false,
-      "next_step": "服务及已有admin账号可用后同feedback_admin_sol_high补真实提交/恢复/后台同条/拒绝/桌面390验收，主通过后两仓仅本包commit；当前不fakeclosed。",
+      "next_step": "仅补剩余：正常本人登录后主短390布局与原说明弹窗、已授admin账号后台入口/同公开记录截图。原真实复制、点赞保存/取消/刷新、点踩说明恢复、举报提交/恢复、既有管理员2行消费、原普通账号MFA后拒绝和2048无溢出均已通过，不重做全部桌面写入。主验过后仅六候选两仓提交，再整线CI。",
       "accepted_source_commit": null,
       "accepted_runtime_version": null,
       "acceptance_evidence": [],
@@ -574,7 +645,19 @@
       "reasoning_effort": "high",
       "reviewer": "primary",
       "implementation_report": "docs/handoff/workstreams/feedback-admin-2026-10-05.md",
-      "technical_parent_review": "Reviewed six-file candidate, POST state owner/session/message filters, revision+epoch guards, original dialog/toast/POST bridge reuse and existing Landing list updates. Real write/admin consumption pending; no commit."
+      "technical_parent_review": "Reviewed six-file candidate, POST state owner/session/message filters, revision+epoch guards, original dialog/toast/POST bridge reuse and existing Landing list updates. Real write/admin consumption pending; no commit.",
+      "partial_acceptance": {
+        "report": "docs/handoff/workstreams/feedback-admin-2026-10-05.md",
+        "real_desktop_vote_report_persistence": true,
+        "real_admin_same_public_rows": true,
+        "real_prior_nonadmin_mfa_gate": true,
+        "real_desktop_no_overflow": true,
+        "remaining": [
+          "390 geometry/dialog acceptance",
+          "newly granted admin normal session access and public-record screenshot"
+        ],
+        "cross_owner_http_attack_not_proven": true
+      }
     },
     {
       "id": "BROWSER-CLIENTS",
@@ -659,7 +742,7 @@
   ],
   "policy_override": "2026-10-04人类最新指示取代主本人实现CORE及Luna Max的旧规定；归档历史不生效。",
   "accepted_execution_plan": "docs/handoff/three-lines-execution-plan.md",
-  "current_line": "SIMPLE",
+  "current_line": "SANDBOX",
   "historical_execution_groups": [
     {
       "id": "CORE-INTEGRATION",
@@ -759,12 +842,12 @@
   },
   "persistent_goal": {
     "created_on_user_request": true,
-    "status": "active",
+    "status": "blocked",
     "covers": "full three-lines plan plus cleanup and clients",
     "completion_requires": "all authorized acceptance, not worker idle or one blocked dependency",
-    "execution_resume": "2026-10-07 get_goal confirms active; old blocked audit is historical and does not determine execution."
+    "execution_resume": "用户ok及实际reverify返回后人工授权工作已推进；get_goal仍返回blocked，工具不提供resume，不创建缩小目标。完整目标未complete；仅之前MFA阻断已解决。"
   },
-  "last_goal_turn_classification": "Progress: exact accepted browser web package committed and pushed curated remote task branch; no unaccepted native changes, no full-goal completion",
+  "last_goal_turn_classification": "progress: real normal-owner cloud skill outputs, downloads, independent closed/gone/released verification and truthful remaining gaps",
   "local_acceptance_queue": [
     "FEEDBACK-ADMIN",
     "BROWSER-BASICS"
@@ -801,18 +884,79 @@
     "norm": "../RootSolo/docs/unattended-recovery.md"
   },
   "local_runtime_handle": {
-    "root_exec_session": 81259,
-    "command": "node src/main.mjs --no-open 1a,1b,5a!",
-    "health": "2026-10-07 old Root handle missing and relevant OS listeners absent; CLI recovered1a/1b/5a, Rootready; HTTP/page health still revalidate",
+    "root_exec_session": null,
+    "command": "authorized direct RootSolo services.json task-only hidden processes",
+    "health": "3041/health,3040/login,35349/agent实际200；Root12796 missing且原所有端口消失，直接manifest fallback恢复，不猜OOM",
     "account": "Current1a/1b recovered through minimal manifest; old external web restarts were previous-turn history",
     "landing": "Old1037 process no longer listening; not started yet, start only when required for remaining feedback/admin check",
-    "liveness_rule": "re-poll actual handle/health; persisted number is not proof"
+    "liveness_rule": "re-poll actual handle/health; persisted number is not proof",
+    "owned_process_journals": ".local-archive/connectors-private/local-cloud-runtime/",
+    "observed_listener_pids": {
+      "3041": 36852,
+      "3040": 50664,
+      "35349": 56624
+    }
   },
   "local_auth_handoff": {
     "browser": "primary Codex IAB",
     "surface": "localhost Account login",
-    "status": "normal_login_form_pending_human",
+    "status": "user_confirmed_and_actual_returned_agent",
     "question_already_sent": true,
     "no_credential_copy": true
+  },
+  "current_blocked_audit": {
+    "condition": "previous_human_MFA_blocker_resolved_by_user",
+    "consecutive_no_progress_goal_turns": 0,
+    "previous_turn": "progress: browser exact source and handoff pushed",
+    "current_evidence": [
+      "Three consecutive continuations re-observed exact localhost3040/reverify OTP form; no human verification completion or redirect",
+      "Actual open returned REAUTH_REQUIRED before provider operation; no new sandbox created",
+      "Task-owned 3040/3041/35349 exact live listeners unchanged; local service recovery is no longer blocker",
+      "Latest human scope remains cloud only; real execute/publish/download path cannot proceed without本人verification; other lines deferred",
+      "Sole continuation worker running separately; no script receipt/file returned; worker status is not delivery or reason to mark goal complete"
+    ],
+    "independent_completed": [
+      "browser web source and task branch publication",
+      "actual RPC and formal history governance"
+    ],
+    "goal_not_marked_blocked": false,
+    "human_question_already_pending": true,
+    "current_goal_tool_status": "blocked_from_prior_audit; human cloud-only work request executed manually, no new blocked transition"
+  },
+  "human_priority_override": {
+    "date": "2026-10-07",
+    "focus": "CORE-SANDBOX only",
+    "deferred": [
+      "FEEDBACK-ADMIN",
+      "CORE-MCP",
+      "BROWSER-CLIENTS"
+    ],
+    "full_objective_preserved": true,
+    "invoice_check_waived_by_user": true,
+    "alibaba_console_login_not_required_for_test": true
+  },
+  "sandbox_ui_temporary_setting": {
+    "name": "maxToolRounds",
+    "previous": 6,
+    "current": 6,
+    "set_through": "normal Agent settings UI",
+    "restore_after_acceptance": true,
+    "restored": true
+  },
+  "latest_git_sync_request": {
+    "date": "2026-10-07",
+    "user_authorized": true,
+    "scope": "StudySolo accepted candidates to master/dev local+origin",
+    "include": [
+      "accepted browser web controls",
+      "current truthful sandbox/handoff reports"
+    ],
+    "exclude": [
+      "unaccepted Feedback product candidate",
+      "failed native PR183",
+      "unrelated membership changes"
+    ],
+    "current_directory_preserved_on_task_branch": true,
+    "status": "preparing_reviewed_candidate_and_full_CI"
   }
 }
