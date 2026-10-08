@@ -3,8 +3,12 @@
 import { useMemo, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
-import { LayoutGrid, List, RefreshCw, Search } from "lucide-react";
+import { LayoutGrid, Library, List, PackageOpen, RefreshCw, SearchX } from "lucide-react";
 import AgentAssetCard from "./AgentAssetCard";
+import ActionButton from "@/components/ui/ActionButton";
+import AppSelect from "@/components/ui/AppSelect";
+import SegmentedTabs from "@/components/ui/SegmentedTabs";
+import { EmptyState, InlineNotice, PageHeader, PageShell, SearchField } from "@/components/ui/PageChrome";
 import SharedLinksPanel from "@/components/share/SharedLinksPanel";
 import CloudFilesPanel from './CloudFilesPanel';
 import AssetTrashPanel from './AssetTrashPanel';
@@ -151,17 +155,14 @@ export default function AgentAssetsPage() {
   ];
 
   return (
-    <section data-testid="agent-assets-page" className="flex h-full min-h-0 flex-col bg-[var(--agent-content-bg,var(--md-sys-color-surface-container-low))]">
-      <header className="flex shrink-0 flex-wrap items-center gap-2 border-b border-[var(--line-soft)] px-4 py-2.5">
-        <h1 className="text-[15px] font-semibold text-[var(--ink)]">我的资产</h1>
-        {remoteTab ? null : (
-          <span className="text-[11.5px] text-[var(--ink-faint)]">
-            {counts.all} 项 · 本机与云端资产，来源角标显示保存状态
-          </span>
-        )}
-        {remoteTab ? null : (
-          <div className="ml-auto flex items-center gap-1.5">
-            <div className="flex items-center gap-0.5 rounded-lg border border-[var(--line-soft)] p-0.5">
+    <PageShell data-testid="agent-assets-page">
+      <PageHeader
+        icon={Library}
+        title="我的资产"
+        description={remoteTab ? undefined : `${counts.all} 项 · 本机与云端资产，来源角标显示保存状态`}
+        actions={remoteTab ? null : (
+          <>
+            <div className="flex items-center gap-0.5 rounded-lg border border-[var(--line)] bg-[var(--bg-panel)] p-0.5">
               <button
                 type="button"
                 data-testid="assets-view-grid"
@@ -169,7 +170,7 @@ export default function AgentAssetsPage() {
                 aria-label="橱窗视图"
                 title="橱窗视图"
                 onClick={() => chooseView("grid")}
-                className={`flex h-7 w-7 items-center justify-center rounded-md ${view === "grid" ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]" : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"}`}
+                className={`press flex h-7 w-7 items-center justify-center rounded-md ${view === "grid" ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]" : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"}`}
               >
                 <LayoutGrid size={15} />
               </button>
@@ -180,82 +181,54 @@ export default function AgentAssetsPage() {
                 aria-label="列表视图"
                 title="列表视图"
                 onClick={() => chooseView("list")}
-                className={`flex h-7 w-7 items-center justify-center rounded-md ${view === "list" ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]" : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"}`}
+                className={`press flex h-7 w-7 items-center justify-center rounded-md ${view === "list" ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]" : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"}`}
               >
                 <List size={15} />
               </button>
             </div>
-            <label className="flex h-8 items-center gap-1.5 rounded-lg border border-[var(--line-soft)] px-2">
-              <Search size={14} className="shrink-0 text-[var(--ink-faint)]" />
-              <input
-                data-testid="assets-search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="搜索标题、科目、路径或网址"
-                aria-label="搜索资产"
-                className="w-[min(190px,40vw)] min-w-0 bg-transparent text-[12.5px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)]"
+            <SearchField testId="assets-search" value={query} onChange={setQuery} placeholder="搜索标题、科目、路径或网址" ariaLabel="搜索资产" />
+            <div data-testid="assets-sort">
+              <AppSelect
+                label="排序方式"
+                value={sort}
+                onValueChange={setSort}
+                options={(Object.keys(SORT_LABELS) as AssetSort[]).map((key) => ({ value: key, label: SORT_LABELS[key] }))}
               />
-            </label>
-            <select
-              data-testid="assets-sort"
-              value={sort}
-              aria-label="排序方式"
-              onChange={(event) => setSort(event.target.value as AssetSort)}
-              className="h-8 rounded-lg border border-[var(--line-soft)] bg-transparent px-2 text-[12.5px] text-[var(--ink-soft)] outline-none"
-            >
-              {(Object.keys(SORT_LABELS) as AssetSort[]).map((key) => (
-                <option key={key} value={key}>{SORT_LABELS[key]}</option>
-              ))}
-            </select>
-            <button
-              type="button"
+            </div>
+            <ActionButton
+              variant="ghost"
               data-testid="assets-refresh"
               onClick={refresh}
               title="重新对齐云端状态"
               aria-label="重新对齐云端状态"
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+              className="w-8 px-0"
             >
               <RefreshCw size={15} className={refreshing ? "animate-spin" : undefined} />
-            </button>
-          </div>
+            </ActionButton>
+          </>
         )}
-      </header>
+      />
 
-      <div className="hide-scrollbar flex shrink-0 items-center gap-1 overflow-x-auto border-b border-[var(--line-soft)] px-3 py-2" role="tablist" aria-label="资产类型">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            role="tab"
-            aria-selected={activeTab === tab.id}
-            data-testid={`assets-tab-${tab.id}`}
-            onClick={() => setActiveTab(tab.id)}
-            className={`press shrink-0 rounded-full px-3 py-1 text-[12.5px] font-medium ${
-              activeTab === tab.id
-                ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
-                : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
-            }`}
-          >
-            {tab.label}
-            {/* 分享标签不挂本地计数：条数得联网才知道，不在这里假装有。 */}
-            {tab.count === undefined ? null : (
-              <span className="ml-1 text-[11px] text-[var(--ink-faint)]">{tab.count}</span>
-            )}
-          </button>
-        ))}
-      </div>
+      <SegmentedTabs
+        ariaLabel="资产类型"
+        value={activeTab}
+        onChange={setActiveTab}
+        // 分享标签不挂本地计数：条数得联网才知道，不在这里假装有。
+        tabs={tabs.map((tab) => ({ ...tab, testId: `assets-tab-${tab.id}` }))}
+        className="border-b border-[var(--line-soft)]"
+      />
 
       <div
         data-testid="assets-body"
-        className="min-h-0 flex-1 overflow-y-auto px-5 py-4"
+        className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-5 py-4"
         // 骨架只描述本机资产的水合；分享面板自带加载态，别让两者互相等。
         aria-busy={(onShareTab ? false : onCloudTab ? cloud.phase === 'loading' : showSkeleton || remoteLoading) || undefined}
       >
-        {!onShareTab && !onCloudTab && assetIndex.error ? <p role="alert" className="mb-3 text-xs">{assetIndex.error} 本机内容保留。</p> : null}
+        {!onShareTab && !onCloudTab && assetIndex.error ? <InlineNotice tone="warn">{assetIndex.error} 本机内容保留。</InlineNotice> : null}
         {!onShareTab && <AssetSyncIssues />}
-        {!onShareTab && !onCloudTab && cloud.error ? <p role="alert" className="mb-3 text-xs text-[var(--md-sys-color-error)]">{cloud.error} 已有本机资产仍可查看。</p> : null}
-        {!onShareTab && !onCloudTab && remoteLoading ? <p role="status" className="mb-3 text-xs text-[var(--ink-soft)]">正在读取云端资产，已有本机内容可继续查看；当前计数尚未完整。</p> : null}
-        {!onShareTab && !onCloudTab && classrooms.error ? <p role="alert" className="mb-3 text-xs text-[var(--md-sys-color-error)]">{classrooms.error}</p> : null}
+        {!onShareTab && !onCloudTab && cloud.error ? <InlineNotice tone="danger">{cloud.error} 已有本机资产仍可查看。</InlineNotice> : null}
+        {!onShareTab && !onCloudTab && remoteLoading ? <InlineNotice tone="info">正在读取云端资产，已有本机内容可继续查看；当前计数尚未完整。</InlineNotice> : null}
+        {!onShareTab && !onCloudTab && classrooms.error ? <InlineNotice tone="danger">{classrooms.error}</InlineNotice> : null}
         {activeTab === 'trash' ? <AssetTrashPanel /> : onCloudTab ? <CloudFilesPanel query={query} sort={sort} view={view} /> : onShareTab ? (
           <SharedLinksPanel />
         ) : showSkeleton ? (
@@ -274,12 +247,12 @@ export default function AgentAssetsPage() {
                     key={index}
                     className="flex h-[188px] flex-col gap-2.5 rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4"
                   >
-                    <div className="h-11 w-11 animate-shimmer rounded-xl bg-[var(--bg-muted)]" />
-                    <div className="h-3.5 w-[70%] animate-shimmer rounded bg-[var(--bg-muted)]" />
-                    <div className="h-3.5 w-[45%] animate-shimmer rounded bg-[var(--bg-muted)]" />
+                    <div className="h-11 w-11 ss-skel rounded-xl" />
+                    <div className="h-3.5 w-[70%] ss-skel rounded" />
+                    <div className="h-3.5 w-[45%] ss-skel rounded" />
                     <div className="mt-auto flex items-center justify-between">
-                      <div className="h-3 w-[38%] animate-shimmer rounded bg-[var(--bg-muted)]" />
-                      <div className="h-4 w-12 animate-shimmer rounded-full bg-[var(--bg-muted)]" />
+                      <div className="h-3 w-[38%] ss-skel rounded" />
+                      <div className="h-4 w-12 ss-skel rounded-full" />
                     </div>
                   </div>
                 ))}
@@ -288,32 +261,27 @@ export default function AgentAssetsPage() {
               <div className="flex flex-col gap-0.5">
                 {Array.from({ length: 10 }, (_, index) => (
                   <div key={index} className="flex items-center gap-3 rounded-lg px-3 py-2">
-                    <div className="h-8 w-8 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
+                    <div className="h-8 w-8 ss-skel rounded-lg" />
                     <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                      <div className="h-3 w-[42%] animate-shimmer rounded bg-[var(--bg-muted)]" />
-                      <div className="h-3 w-[26%] animate-shimmer rounded bg-[var(--bg-muted)]" />
+                      <div className="h-3 w-[42%] ss-skel rounded" />
+                      <div className="h-3 w-[26%] ss-skel rounded" />
                     </div>
-                    <div className="h-3 w-16 animate-shimmer rounded bg-[var(--bg-muted)]" />
+                    <div className="h-3 w-16 ss-skel rounded" />
                   </div>
                 ))}
               </div>
             )}
           </div>
         ) : visible.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center gap-2 text-center">
-            <p className="text-[13px] text-[var(--ink-soft)]">
-              {query.trim()
-                ? `没有匹配「${query.trim()}」的资产`
-                : remoteLoading ? '云端资产仍在加载，请稍候。' : cloud.error || classrooms.error || assetIndex.error ? '当前来源未完整读取，请重试刷新。' : kind === "all"
-                  ? "还没有资产。让 Agent 整理笔记、出闪卡、写长文或生成演示，就会出现在这里。"
-                  : `还没有${ASSET_KIND_LABELS[kind as AssetKind]}。`}
-            </p>
-            {query.trim() ? (
-              <button type="button" onClick={() => setQuery("")} className="text-[12px] text-[var(--md-sys-color-primary)]">
-                清空搜索
-              </button>
-            ) : null}
-          </div>
+          <EmptyState
+            icon={query.trim() ? SearchX : PackageOpen}
+            title={query.trim()
+              ? `没有匹配「${query.trim()}」的资产`
+              : remoteLoading ? '云端资产仍在加载，请稍候。' : cloud.error || classrooms.error || assetIndex.error ? '当前来源未完整读取，请重试刷新。' : kind === "all"
+                ? "还没有资产。让 Agent 整理笔记、出闪卡、写长文或生成演示，就会出现在这里。"
+                : `还没有${ASSET_KIND_LABELS[kind as AssetKind]}。`}
+            action={query.trim() ? <ActionButton variant="secondary" onClick={() => setQuery("")}>清空搜索</ActionButton> : undefined}
+          />
         ) : view === "grid" ? (
           <motion.div
             layout={!reducedMotion}
@@ -334,6 +302,6 @@ export default function AgentAssetsPage() {
           </motion.div>
         )}
       </div>
-    </section>
+    </PageShell>
   );
 }

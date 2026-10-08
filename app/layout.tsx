@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { AuthProvider } from "@/lib/hooks/useAuthSession";
 import AppShell from "@/components/layout/AppShell";
 import MotionPreferenceProvider from "@/components/layout/MotionPreferenceProvider";
+import { BootSplash } from "@/components/shared/LoadingStates";
 import "./globals.css";
 import "katex/dist/katex.min.css";
 import "@vidstack/react/player/styles/base.css";
@@ -56,7 +57,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Suspense fallback={<div className="flex h-screen items-center justify-center text-[var(--ink-faint)]">加载中…</div>}>
+        <Suspense fallback={<BootSplash />}>
           <AuthProvider>
             <MotionPreferenceProvider>
               <AppShell>{children}</AppShell>

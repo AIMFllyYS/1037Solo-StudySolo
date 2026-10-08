@@ -8,6 +8,8 @@ import { buildMcpConfigSnippet, missingRequiredEnv, pickL10n, type McpEntry } fr
 import { useLocale, useT } from "@/lib/i18n";
 import { inputCls, labelCls } from "@/components/chat/settings/_shared";
 import { KitSoloConnectButton } from "@/components/plugins/KitSoloConnectButton";
+import ActionButton, { actionClass } from "@/components/ui/ActionButton";
+import { InlineNotice } from "@/components/ui/PageChrome";
 
 /**
  * MCP 详情页的「凭证 + 配置」面板：
@@ -40,9 +42,11 @@ export default function McpConfigPanel({ entry }: { entry: McpEntry }) {
   };
 
   if (entry.id === "kitsolo") return <div className="flex flex-col gap-3" data-testid="mcp-config-panel">
-    <KitSoloConnectButton english={locale === "en"}/>
-    <a href={entry.homepage} target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--accent)] underline">{locale === "en" ? "Manage or revoke connection" : "管理或撤销关联"} ↗</a>
-    <details className="rounded-xl border border-[var(--line-soft)] p-3 text-xs"><summary>{locale === "en" ? "Configuration for other MCP hosts" : "其他 MCP 宿主配置"}</summary><p className="my-2">{locale === "en" ? "The host must support OAuth with PKCE and have its callback registered by the administrator." : "宿主需要支持 OAuth 与 PKCE，并先由管理员登记回调地址。"}</p><pre className="max-h-60 overflow-auto whitespace-pre-wrap">{snippet}</pre><button type="button" className="mt-2 rounded-lg border border-[var(--line-soft)] px-3 py-2" onClick={() => void copy()}>{t(copied ? "agent.market.action.copied" : "agent.market.action.copyConfig")}</button></details>
+    <div className="rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4">
+      <KitSoloConnectButton english={locale === "en"}/>
+    </div>
+    <a href={entry.homepage} target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-1 text-xs text-[var(--accent)] underline-offset-2 hover:underline">{locale === "en" ? "Manage or revoke connection" : "管理或撤销关联"} <ExternalLink size={11} aria-hidden /></a>
+    <details className="group rounded-xl border border-[var(--line-soft)] bg-[var(--bg-muted)] text-xs"><summary className="cursor-pointer list-none px-3 py-2 font-medium text-[var(--ink-soft)] outline-none hover:text-[var(--ink)] focus-visible:ring-2 focus-visible:ring-[var(--accent)] [&::-webkit-details-marker]:hidden">{locale === "en" ? "Configuration for other MCP hosts" : "其他 MCP 宿主配置"}</summary><div className="flex flex-col gap-2 px-3 pb-3"><p className="leading-relaxed text-[var(--ink-soft)]">{locale === "en" ? "The host must support OAuth with PKCE and have its callback registered by the administrator." : "宿主需要支持 OAuth 与 PKCE，并先由管理员登记回调地址。"}</p><pre className="max-h-60 overflow-auto whitespace-pre-wrap rounded-lg border border-[var(--line-soft)] bg-[var(--bg-panel)] p-3 text-[11.5px] leading-relaxed">{snippet}</pre><ActionButton className="w-fit" icon={copied ? <Check size={12} /> : <Copy size={12} />} onClick={() => void copy()}>{t(copied ? "agent.market.action.copied" : "agent.market.action.copyConfig")}</ActionButton></div></details>
   </div>;
 
   return (
@@ -78,7 +82,7 @@ export default function McpConfigPanel({ entry }: { entry: McpEntry }) {
                       href={env.keyUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="press flex shrink-0 items-center gap-1 rounded-lg border border-[var(--line-soft)] px-2 py-1.5 text-[11.5px] text-[var(--ink)] hover:border-[var(--accent)]"
+                      className={actionClass("secondary", "md", "text-[11.5px]")}
                     >
                       <ExternalLink size={11} />
                       {t("agent.market.action.getKey")}
@@ -94,21 +98,13 @@ export default function McpConfigPanel({ entry }: { entry: McpEntry }) {
       {envVars.length > 0 ? (
         <p className="text-[11px] leading-relaxed text-[var(--ink-faint)]">{t("agent.market.mcp.envSaved")}</p>
       ) : null}
-      {missing.length > 0 ? (
-        <p className="text-[11px] leading-relaxed text-[var(--md-sys-color-tertiary,#8a5a00)]">{t("agent.market.mcp.missingEnv")}</p>
-      ) : null}
+      {missing.length > 0 ? <InlineNotice tone="warn" role="status">{t("agent.market.mcp.missingEnv")}</InlineNotice> : null}
 
       <div className="mt-1 flex items-center justify-between gap-2">
         <h3 className="text-[12.5px] font-semibold text-[var(--ink)]">{t("agent.market.field.config")}</h3>
-        <button
-          type="button"
-          data-testid="mcp-copy-config"
-          onClick={() => void copy()}
-          className="press flex items-center gap-1.5 rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-primary)]"
-        >
-          {copied ? <Check size={12} /> : <Copy size={12} />}
+        <ActionButton variant="primary" data-testid="mcp-copy-config" icon={copied ? <Check size={12} /> : <Copy size={12} />} onClick={() => void copy()}>
           {copied ? t("agent.market.action.copied") : t("agent.market.action.copyConfig")}
-        </button>
+        </ActionButton>
       </div>
       <pre
         data-testid="mcp-config-json"

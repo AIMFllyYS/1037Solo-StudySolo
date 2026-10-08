@@ -14,6 +14,7 @@ export default function FolderTreeRow({
   endAdornment,
   ariaDescribedBy,
   fadeTitle = false,
+  inset = false,
   onClick,
   onMouseEnter,
   onMouseLeave,
@@ -44,6 +45,11 @@ export default function FolderTreeRow({
   ariaDescribedBy?: string;
   /** Fade the title at its right edge without adding an ellipsis. */
   fadeTitle?: boolean;
+  /**
+   * 嵌入式行（Agent 左栏）：圆角 + 右侧留白 + 状态位与标题拉开间距。
+   * 文件树（Studio）不传，保持贴边的通栏行。
+   */
+  inset?: boolean;
   /** Optional row-end status/action, kept in the same line as the title. */
   endAdornment?: ReactNode;
   fontWeight?: number;
@@ -70,11 +76,13 @@ export default function FolderTreeRow({
       onDragEnd={onDragEnd}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
-      className="flex w-full items-center gap-1 border-0 bg-transparent text-left outline-none"
+      className={inset ? "flex w-full items-center gap-1.5 border-0 bg-transparent text-left outline-none" : "flex w-full items-center gap-1 border-0 bg-transparent text-left outline-none"}
       style={{
-        paddingLeft: depth * 16 + 4,
-        height: 28,
-        lineHeight: "28px",
+        paddingLeft: inset ? depth * 12 + 6 : depth * 16 + 4,
+        paddingRight: inset ? 8 : undefined,
+        borderRadius: inset ? 8 : undefined,
+        height: inset ? 30 : 28,
+        lineHeight: inset ? "30px" : "28px",
         fontSize: 13,
         fontWeight,
         background: isSelected

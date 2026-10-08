@@ -1,6 +1,6 @@
 /**
  * 文章形状骨架屏，用于笔记页导航加载期间。
- * 复用 globals.css 中的 `animate-shimmer` 类，不引入新依赖。
+ * 与 PanelSkeleton 共用 styles/loading.css 的 `ss-skel`（transform 高光，拖拽期也不触发重绘）。
  * 同时导出细粒度原语 SkeletonLine / SkeletonBlock 供其他组件复用。
  */
 
@@ -19,7 +19,7 @@ interface BlockProps {
 export function SkeletonLine({ width = "100%", height = 14, className = "" }: LineProps) {
   return (
     <div
-      className={`animate-shimmer rounded-[6px] ${className}`}
+      className={`ss-skel rounded-[6px] ${className}`}
       style={{ width, height }}
     />
   );
@@ -29,14 +29,14 @@ export function SkeletonLine({ width = "100%", height = 14, className = "" }: Li
 export function SkeletonBlock({ height = 80, className = "" }: BlockProps) {
   return (
     <div
-      className={`animate-shimmer rounded-[10px] ${className}`}
+      className={`ss-skel rounded-[10px] ${className}`}
       style={{ height }}
     />
   );
 }
 
 /** 完整文章形状骨架，模拟：面包屑 → 标题 → 摘要 → 两节正文 + callout + 公式块 */
-/** @public 笔记页加载骨架，供路由 loading 与占位复用。 */
+/** @public 笔记页加载骨架，供路由 loading 与占位复用（PanelSkeleton 的 document 形态即它）。 */
 export function NoteSkeleton() {
   return (
     <div className="mx-auto w-full max-w-3xl px-8 py-10">

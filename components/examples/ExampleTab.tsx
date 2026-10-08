@@ -6,11 +6,11 @@ import dynamic from "next/dynamic";
 import type { ExampleDetail } from "@/lib/content/loader";
 import { fadeInUpVariants } from "@/lib/motion";
 import LazyVisible from "@/components/ui/LazyVisible";
-import { SkeletonLine } from "@/components/notes/NoteSkeleton";
+import { NoteSkeleton, SkeletonLine } from "@/components/notes/NoteSkeleton";
 
 const NoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), {
   ssr: false,
-  loading: () => <div className="py-8 text-center text-[13px] text-[var(--ink-faint)]">加载中…</div>,
+  loading: () => <NoteSkeleton />,
 });
 
 function EmptyExamples({ sectionId }: { sectionId: string }) {

@@ -1,11 +1,11 @@
 "use client";
 
-import { Loader2, MessageSquare } from "lucide-react";
+import { CalendarClock, Loader2, MessageSquare } from "lucide-react";
 import { useId } from "react";
+import clsx from "clsx";
 import FolderTreeRow from "@/components/layout/FolderTreeRow";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
-import { AgentScheduleIcon } from "@/components/icons/AgentIcons";
 import { translate, useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/stores/settings";
 import { useSessionRuns, type SessionRunRecord } from "@/lib/stores/sessionRuns";
@@ -15,8 +15,8 @@ import type { SessionMeta } from "@/lib/storage/chatStorage";
 export function sessionIcon(session: SessionMeta) {
   if (session.kind === "floating") return <PencilSparklesIcon size={14} />;
   if (session.kind === "note") return <NotebookFormulaIcon size={14} />;
-  if (session.kind === "scheduled") return <AgentScheduleIcon size={14} />;
-  return <MessageSquare size={14} />;
+  if (session.kind === "scheduled") return <CalendarClock size={14} strokeWidth={1.75} />;
+  return <MessageSquare size={14} strokeWidth={1.75} />;
 }
 
 /** 悬停提示：优先给最近一条用户消息的预览，没有就报消息条数。 */
@@ -58,7 +58,14 @@ export function SessionRunBadge({ run, id }: { run: SessionRunRecord | undefined
   return (
     <span
       id={id}
-      className={`inline-flex min-w-0 max-w-[5rem] shrink-0 items-center gap-1 rounded px-0.5 text-[10px] leading-4 ${emphasized ? "opacity-100" : "opacity-50"} ${isError ? "text-[var(--md-sys-color-error)]" : emphasized ? "text-[var(--md-sys-color-primary)]" : "text-[var(--ink-faint)]"}`}
+      className={clsx(
+        "inline-flex h-[18px] min-w-0 max-w-[5.5rem] shrink-0 items-center gap-1 rounded-full text-[10px] font-medium leading-none",
+        // 有底色的胶囊才有「状态位」的分量；读过的终态只留淡淡的点 + 字，不再抢标题的注意力。
+        emphasized ? "px-1.5 opacity-100" : "px-0.5 opacity-50",
+        isError
+          ? emphasized ? "bg-[var(--md-sys-color-error-container)] text-[var(--md-sys-color-on-error-container)]" : "text-[var(--md-sys-color-error)]"
+          : emphasized ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]" : "text-[var(--ink-faint)]",
+      )}
       title={t(`agent.session.run.${accessibleKey}`)}
       aria-label={t(`agent.session.run.${accessibleKey}`)}
       data-run-phase={run.phase}
@@ -68,11 +75,7 @@ export function SessionRunBadge({ run, id }: { run: SessionRunRecord | undefined
       {isActive ? (
         <Loader2 size={11} className="shrink-0 animate-spin" aria-hidden />
       ) : (
-        <span
-          className="h-1.5 w-1.5 shrink-0 rounded-full"
-          style={{ background: isError ? "var(--md-sys-color-error)" : "var(--md-sys-color-primary)" }}
-          aria-hidden
-        />
+        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-current" aria-hidden />
       )}
       <span className="agent-session-run-label truncate">{t(`agent.session.run.${labelKey}`)}</span>
     </span>
@@ -111,7 +114,7 @@ export default function AgentSessionRow({
         defaultValue={title}
         aria-label={t("agent.session.rename")}
         data-testid="session-rename-input"
-        className="mx-2 my-0.5 w-[calc(100%-1rem)] rounded-md border border-[var(--accent)] bg-[var(--bg-muted)] px-2 py-0.5 text-[12px] text-[var(--ink)] outline-none"
+        className="my-0.5 h-[28px] w-full rounded-lg border border-[var(--accent)] bg-[var(--bg-muted)] px-2.5 text-[12.5px] text-[var(--ink)] outline-none"
         onPointerDown={(event) => event.stopPropagation()}
         onFocus={(event) => event.currentTarget.select()}
         onContextMenu={(event) => event.stopPropagation()}
@@ -135,6 +138,7 @@ export default function AgentSessionRow({
           ariaLabel={title}
           ariaDescribedBy={run ? runStatusId : undefined}
           fadeTitle
+          inset
           endAdornment={run ? <SessionRunBadge run={run} id={runStatusId} /> : undefined}
           onClick={onSelect}
         />

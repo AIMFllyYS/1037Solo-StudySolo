@@ -45,8 +45,10 @@ test("Agent 深色配色 B-A-A：左栏 B、中间与右栏 A，浅色不变", (
   assert.match(globals, /\[data-agent-shell\] \[data-agent-slot="main"\],\s*\n\[data-agent-shell\] \.chat-panel \{/);
   // 左栏背景走变量（浅色仍是原来那档），不再是写死的 lowest
   assert.match(sidebar, /background: "var\(--agent-sidebar-bg, var\(--md-sys-color-surface-container-lowest\)\)"/);
-  assert.match(readFile("components/agent/AgentAssetsPage.tsx"), /bg-\[var\(--agent-content-bg,var\(--md-sys-color-surface-container-low\)\)\]/);
-  assert.match(readFile("components/agent/AgentAssetDetail.tsx"), /bg-\[var\(--agent-content-bg,var\(--md-sys-color-surface-container-low\)\)\]/);
+  // 资产 / 详情 / 插件市场共用 PageShell：中间列的底色只在这一处写。
+  assert.match(readFile("components/ui/PageChrome.tsx"), /bg-\[var\(--agent-content-bg,var\(--md-sys-color-surface-container-low\)\)\]/);
+  assert.match(readFile("components/agent/AgentAssetsPage.tsx"), /<PageShell data-testid="agent-assets-page">/);
+  assert.match(readFile("components/agent/AgentAssetDetail.tsx"), /<PageShell data-testid="agent-asset-detail"/);
 });
 
 test("非对话页点新对话 / 点会话要跳回 /agent", () => {

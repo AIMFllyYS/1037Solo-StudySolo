@@ -7,6 +7,7 @@ import { FileText, ClipboardCheck, Lightbulb, PanelTopClose, PanelTopOpen, Maxim
 import { AnimatePresence, motion } from "framer-motion";
 import SelectionPopover from "@/components/notes/SelectionPopover";
 import PlainTextReader from "@/components/notes/PlainTextReader";
+import { NoteSkeleton } from "@/components/notes/NoteSkeleton";
 import type { LayoutProfile, SubjectId, RenderType } from "@/lib/types/content";
 import type { LectureMaterialRole } from "@/lib/content/lectures/roles";
 import type { LayoutFlags } from "@/lib/content/layoutProfile";
@@ -24,7 +25,7 @@ import { useContentTabs } from "@/lib/stores/contentTabs";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
 const ExampleTab = dynamic(() => import("@/components/examples/ExampleTab"), { ssr: false });
-const DeferredNoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), { ssr: false, loading: () => <p className="py-6 text-sm text-[var(--ink-faint)]">正在排版全文…</p> });
+const DeferredNoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), { ssr: false, loading: () => <NoteSkeleton /> });
 
 type ContentTab = "content" | "examples" | "quiz";
 

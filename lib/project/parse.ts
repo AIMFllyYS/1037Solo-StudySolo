@@ -3,23 +3,15 @@
 import { fileToDocumentAttachment } from "@/lib/ai/imageUtils";
 import { parsePptxSlideBytes } from "@/lib/chat/parsePptx";
 import { extractPdfText } from "./pdfText";
-import { sliceText, type SliceTextResult } from "./slice";
 
 /**
- * 项目文件的本地解析入口：文件 → 纯文本 → 「索引 md + 切片」。
+ * 项目文件的本地解析入口：文件 → 纯文本（切片由 slice.ts 接手，导入流程见 import.ts）。
  *
  * v1 支持（用户确认的范围）：txt / md / html / markdown / 代码类 + docx + pptx + pdf。
  * - 文本类与 docx 复用仓库既有的 fileToDocumentAttachment（不做第二套提取）；
  * - pptx 复用 parsePptxSlideBytes；pdf 走 extractPdfText（pdfjs 文本层）；
  * - 不做 OCR、不解析表格；扫描件拿不到文字时照实标「几乎没文字」。
  */
-
-export interface ParsedProjectFile extends SliceTextResult {
-  /** 解析时用的纯文本长度（切片前的字数）。 */
-  plainCharCount: number;
-  /** 提示：字数异常少时给用户一句解释（如扫描件）。 */
-  note?: string;
-}
 
 const HTML_EXTENSIONS = new Set(["html", "htm"]);
 
@@ -55,15 +47,4 @@ export async function extractFileText(file: File): Promise<string> {
   }
   const attachment = await fileToDocumentAttachment(file,{includePreviewUrl:false});
   return HTML_EXTENSIONS.has(extension) ? htmlToPlainText(attachment.text) : attachment.text;
-}
-
-export async function parseFileToSlices(file: File): Promise<ParsedProjectFile> {
-  const text = await extractFileText(file);
-  const result = sliceText(text, { name: file.name });
-  const plainCharCount = text.trim().length;
-  const note =
-    plainCharCount < 200 && /pdf$/i.test(file.name)
-      ? "这份 PDF 几乎没有可提取的文字（可能是扫描件），只索引到很少内容。"
-      : undefined;
-  return { ...result, plainCharCount, ...(note ? { note } : {}) };
 }

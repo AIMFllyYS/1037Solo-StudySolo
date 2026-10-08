@@ -125,27 +125,3 @@ export function AgentDocumentIcon(props: AgentIconProps) {
 export function AgentGalleryIcon(props: AgentIconProps) {
   return <IconFrame {...props} data-agent-icon="gallery"><rect x="2.5" y="5.5" width="12" height="11" rx="2" /><path d="M6 2.5h9.5A2 2 0 0 1 17.5 4.5v9" /><circle cx="6.3" cy="9" r="1.1" /><path d="m3 14 3.4-3.2 3 2.9 1.8-1.7 3.3 3.2" /></IconFrame>;
 }
-
-/* ── Agent 左栏导航四行（Codex 式「图标 + 名称」）───────────────────────────
-   四个都必须一眼可分：新对话是「气泡 + 加号」，资产是「层叠卡片」，定时是「时钟 + 刻度」，
-   插件是「插头」。不要复用 PenLine / PencilSparklesIcon——那两个已经是划词助手的语义。 */
-
-/** Speech bubble with a plus: start a new chat. */
-export function AgentComposeIcon(props: AgentIconProps) {
-  return <IconFrame {...props} data-agent-icon="compose"><path d="M16.8 5.6a2.1 2.1 0 0 0-2.1-2.1H5.3a2.1 2.1 0 0 0-2.1 2.1v5.6a2.1 2.1 0 0 0 2.1 2.1h1.4v3.2l4-3.2h4a2.1 2.1 0 0 0 2.1-2.1z" /><path d="M10 5.4v4.2M7.9 7.5h4.2" /></IconFrame>;
-}
-
-/** Stacked cards: the asset shelf (notes / cards / long docs / imports). */
-export function AgentAssetsIcon(props: AgentIconProps) {
-  return <IconFrame {...props} data-agent-icon="assets"><rect x="3.4" y="6.8" width="13.2" height="9.4" rx="2.2" /><path d="M5.6 4.3h8.8M7.4 2.2h5.2" /></IconFrame>;
-}
-
-/** Clock with a scheduled tick row: timed jobs. */
-export function AgentScheduleIcon(props: AgentIconProps) {
-  return <IconFrame {...props} data-agent-icon="schedule"><circle cx="10" cy="11.2" r="6" /><path d="M10 8.2v3.2l2.2 1.4" /><path d="M7.2 1.8v1.6M12.8 1.8v1.6M4.4 3.6h11.2" /></IconFrame>;
-}
-
-/** Two-prong plug: the plugin / extension market. */
-export function AgentPluginsIcon(props: AgentIconProps) {
-  return <IconFrame {...props} data-agent-icon="plugins"><path d="M7.6 2.2v3.4M12.4 2.2v3.4" /><path d="M5.2 5.6h9.6v3.1a4.8 4.8 0 0 1-9.6 0z" /><path d="M10 13.5v4.3" /></IconFrame>;
-}

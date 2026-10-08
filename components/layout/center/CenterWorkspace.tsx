@@ -18,6 +18,7 @@ import GlobalSearchButton from "@/components/search/GlobalSearchButton";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
 import { CenterTabsHostContext } from "./centerTabsHost";
 import { useT } from "@/lib/i18n";
+import { PanelSkeleton } from "@/components/shared/LoadingStates";
 
 const CONTENT_TAB_ICONS: Record<ContentTabId, React.ReactNode> = {
   content: <FileText size={15} />,
@@ -40,13 +41,7 @@ const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), {
 });
 
 function CenterTabLoading() {
-  return (
-    <div className="flex h-full flex-col gap-3 px-4 py-5" role="status">
-      <div className="h-4 w-24 animate-shimmer rounded bg-[var(--bg-muted)]" />
-      <div className="h-28 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
-      <div className="h-16 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
-    </div>
-  );
+  return <PanelSkeleton variant="document" />;
 }
 
 /**

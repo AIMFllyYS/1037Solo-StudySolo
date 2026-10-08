@@ -10,15 +10,16 @@ import { useQuizProgressRevision } from "@/lib/hooks/useQuizProgressRevision";
 import { summarizeWrongQuestions } from "@/lib/review-mode/wrongQuestions";
 import { subjectLabel } from "@/lib/notes/userNote";
 import { useT } from "@/lib/i18n";
+import ActionButton from "@/components/ui/ActionButton";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import { getLegacyImportState, getOwnerLegacyImportedProgress, hasLegacyLocalProgress } from "@/lib/quiz-progress";
 import { importLegacyLocalHistory } from "@/lib/review-mode/progressSync";
 
 function StatCard({ icon: Icon, label, value }: { icon: typeof Layers; label: string; value: string | number }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-4">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--accent-weak)] text-[var(--accent-ink)]">
-        <Icon size={18} />
+    <div className="flex items-center gap-3 rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-weak)] text-[var(--accent-ink)]">
+        <Icon size={18} strokeWidth={1.75} />
       </span>
       <span className="min-w-0">
         <span className="block text-[20px] font-semibold leading-tight text-[var(--ink)]">{value}</span>
@@ -116,9 +117,10 @@ export default function ReviewMasteryOverview() {
           {legacyAvailable ? (
             <>
               <p className="text-[12.5px] leading-relaxed text-[var(--ink-soft)]">{t("review.overview.legacyLocal")}</p>
-              <button
-                type="button"
+              <ActionButton
+                variant="primary"
                 disabled={importBusy}
+                className="mt-3"
                 onClick={() => {
                   if (!userId || importBusy) return;
                   setImportBusy(true);
@@ -127,10 +129,9 @@ export default function ReviewMasteryOverview() {
                     .catch(() => setImportError(true))
                     .finally(() => { setImportBusy(false); });
                 }}
-                className="mt-3 rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-60"
               >
                 {importBusy ? t("review.overview.legacyImporting") : t("review.overview.legacyImport")}
-              </button>
+              </ActionButton>
             </>
           ) : null}
           {legacyHistory.length > 0 ? (

@@ -9,10 +9,9 @@ function readFile(path: string) {
   return readFileSync(join(root, path), "utf8");
 }
 
-test("左栏四行导航：顺序固定，图标各不相同，且与划词图标不重样", () => {
+test("左栏四行导航：顺序固定，图标取自 lucide 且各不相同，且与划词图标不重样", () => {
   const nav = readFile("components/agent/AgentNavRows.tsx");
   const sidebar = readFile("components/layout/AgentConversationSidebar.tsx");
-  const icons = readFile("components/icons/AgentIcons.tsx");
 
   // 1) 四行都存在且顺序是 新对话 → 我的资产 → 定时任务 → 插件市场
   const newChat = nav.indexOf("data-testid=\"agent-nav-new-chat\"");
@@ -28,9 +27,15 @@ test("左栏四行导航：顺序固定，图标各不相同，且与划词图�
   assert.match(nav, /router\.push\(row\.href\)/);
   assert.doesNotMatch(nav, /openNoteLibrary/, "我的资产不再走笔记库浮窗");
 
-  // 2) 四个图标是四个不同的自绘图形
+  // 2) 四个图标是四个不同的 lucide 图形（与顶栏 / 菜单同一套线性图标），旧的自绘四件套已清理
+  assert.match(nav, /import \{ Blocks, CalendarClock, Library, MessageSquarePlus, type LucideIcon \} from "lucide-react";/);
+  assert.match(nav, /icon: Library/);
+  assert.match(nav, /icon: CalendarClock/);
+  assert.match(nav, /icon: Blocks/);
+  assert.match(nav, /<MessageSquarePlus /);
+  const icons = readFile("components/icons/AgentIcons.tsx");
   for (const name of ["compose", "assets", "schedule", "plugins"]) {
-    assert.match(icons, new RegExp(`data-agent-icon=\"${name}\"`), `缺少 ${name} 图标`);
+    assert.doesNotMatch(icons, new RegExp(`data-agent-icon=\"${name}\"`), `${name} 自绘图标应已清理`);
   }
   assert.doesNotMatch(nav, /PenLine|PencilSparklesIcon/, "新对话不要复用划词那支笔");
 

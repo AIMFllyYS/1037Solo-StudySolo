@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Panel, PanelGroup, PanelResizeHandle, type ImperativePanelHandle } from "react-resizable-panels";
 import AgentConversationSidebar from "./AgentConversationSidebar";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
@@ -9,7 +10,7 @@ import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { useAgentChatContext } from "@/lib/hooks/useAgentChatContext";
 import { PANEL_PRESETS, nestedShares } from "@/lib/constants/panelPresets";
-import { ChatSkeleton } from "@/components/shared/ResizeLoader";
+import { ResizeSkeleton, resizeVariantForAgentPath } from "@/components/shared/ResizeLoader";
 import { useAgentDockPerSession } from "@/lib/hooks/useAgentDockPerSession";
 
 /**
@@ -24,6 +25,7 @@ import { useAgentDockPerSession } from "@/lib/hooks/useAgentDockPerSession";
  */
 export default function AgentShell({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
+  const pathname = usePathname();
   const chatContext = useAgentChatContext();
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
   const setSidebarCollapsed = useStore((s) => s.setSidebarCollapsed);
@@ -152,7 +154,7 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
       className="relative h-full min-h-0 min-w-0 overflow-visible"
     >
       {children}
-      {centerResizing && <ChatSkeleton />}
+      {centerResizing && <ResizeSkeleton variant={resizeVariantForAgentPath(pathname)} />}
       {/* 展开入口只有顶栏那一个（LOGO 左侧，与 Studio 同款）。这里**不再**浮任何按钮：
           悬浮块会压住正文，而且和顶栏那个开关是同一个功能、两套图标。 */}
     </div>

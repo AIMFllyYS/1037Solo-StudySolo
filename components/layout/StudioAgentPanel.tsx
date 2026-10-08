@@ -8,6 +8,7 @@ import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import type { ChatContext } from "@/lib/types/chat";
 import { useT } from "@/lib/i18n";
 import RightAgentHeader from "@/components/workspace/RightAgentHeader";
+import { PanelSkeleton } from "@/components/shared/LoadingStates";
 
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
   ssr: false,
@@ -16,13 +17,7 @@ const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
 
 function AgentPanelLoading() {
   const t = useT();
-  return (
-    <div className="flex h-full flex-col gap-3 px-4 py-5" role="status" aria-label={t("panel.rightTab.loading", { label: t("panel.rightTab.ai") })}>
-      <div className="h-4 w-24 animate-shimmer rounded bg-[var(--bg-muted)]" />
-      <div className="h-28 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
-      <div className="h-16 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
-    </div>
-  );
+  return <PanelSkeleton variant="chat" label={t("panel.rightTab.loading", { label: t("panel.rightTab.ai") })} />;
 }
 
 /**

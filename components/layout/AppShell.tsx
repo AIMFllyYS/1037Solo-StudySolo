@@ -59,6 +59,7 @@ const MobileSettingsPanel = dynamic(() => import("./MobileSettingsPanel"), { ssr
 const MobileSidebarDrawer = dynamic(() => import("./MobileSidebarDrawer"), { ssr: false });
 const MobileMiniChat = dynamic(() => import("./MobileMiniChat"), { ssr: false });
 import { ChatSkeleton, PageLoader } from "@/components/shared/ResizeLoader";
+import { PanelSkeleton } from "@/components/shared/LoadingStates";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
 import GlobalSearchButton from "@/components/search/GlobalSearchButton";
 import KeyboardShortcutProvider from "@/components/keyboard/KeyboardShortcutProvider";
@@ -71,11 +72,11 @@ import SourcesPanelToggle from "@/components/agent/SourcesPanelToggle";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const DeferredWindowLayers = dynamic(() => import("@/components/window/DeferredWindowLayers"), { ssr: false });
-const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
+const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false, loading: () => <PanelSkeleton variant="chat" /> });
 const AgentSettingsOverlay = dynamic(() => import("@/components/chat/AgentSettingsOverlay"), { ssr: false });
 const SchedulerRuntime = dynamic(() => import("@/components/agent/scheduler/SchedulerRuntime"), { ssr: false });
 const SelectionAssistantGuard = dynamic(() => import("@/components/notes/SelectionAssistantGuard"), { ssr: false });
-const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false });
+const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false, loading: () => <PanelSkeleton variant="document" /> });
 
 /** 分栏缓动时长（唯一真相源是 globals.css 的 `--duration-pane`，这里只是读出来给定时器用）。 */
 function paneDurationMs(): number {

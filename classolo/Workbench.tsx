@@ -1,7 +1,7 @@
 "use client";
 import {useCallback,useEffect,useId,useMemo,useRef,useState,useSyncExternalStore} from 'react';
 import {get} from 'idb-keyval';
-import {Download,FileText,Import,MoreHorizontal,PanelRightOpen,Settings2,Sparkles,X} from 'lucide-react';
+import {Download,FileText,Import,MoreHorizontal,Mic,PanelRightOpen,Settings2,Sparkles,X} from 'lucide-react';
 import {useAuthSession} from '@/lib/hooks/useAuthSession';
 import {getOwnerEpoch,getStorageOwner} from '@/lib/storage/ownerScope';
 import {redirectAccount} from '@/lib/auth/account';
@@ -13,6 +13,9 @@ import {TranscriptPane} from './features/transcript/pane';
 import {NotesPane} from './features/notes/pane';
 import {ClassNotePane} from './features/notes/class-note-pane';
 import StudioAgentPanel from '@/components/layout/StudioAgentPanel';
+import {PanelSkeleton} from '@/components/shared/LoadingStates';
+import ResizableRail from '@/components/ui/ResizableRail';
+import ActionButton from '@/components/ui/ActionButton';
 import {useStore as useUiStore} from '@/lib/stores/ui';
 import {useOverlayRegistration} from '@/lib/keyboard/useOverlayRegistration';
 import {useChatHistory} from '@/lib/stores/chatHistory';
@@ -371,12 +374,15 @@ export default function Workbench(){
     },8000);
   },[recordingStatus,owner,sessionId]);
   useEffect(()=>{if(!toast)return;const t=setTimeout(()=>setToast(''),3200);return()=>clearTimeout(t);},[toast]);
-  if(auth.status==='loading')return <div className="p-8 text-sm text-[color:var(--ink-soft)]">正在验证课堂账号…</div>;
-  if(!auth.userId)return <section className="m-6 rounded-2xl border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] p-8"><h1 className="text-2xl font-semibold text-[color:var(--ink)]">课堂工作台</h1><p className="my-4 text-[color:var(--ink-soft)]">登录后录音、整理笔记与课堂提问，课堂产物随账号同步。</p><button className="rounded-xl border border-[color:var(--line)] px-5 py-3 text-[color:var(--ink)] hover:bg-[color:var(--bg-muted)]" onClick={()=>redirectAccount()}>登录统一账号</button></section>;
-  if(owner!==auth.userId)return <div className="p-8 text-sm text-[color:var(--ink-soft)]">正在安全切换课堂空间…</div>;
+  if(auth.status==='loading')return <PanelSkeleton variant="workspace" label="正在验证课堂账号"/>;
+  if(!auth.userId)return <div className="flex h-full items-center justify-center p-6"><section className="flex w-full max-w-[420px] flex-col items-center gap-3 rounded-3xl border border-[color:var(--line-soft)] bg-[color:var(--bg-panel)] px-8 py-10 text-center"><span aria-hidden className="flex size-12 items-center justify-center rounded-2xl bg-[color:var(--accent-weak)] text-[color:var(--accent-ink)]"><Mic className="size-5"/></span><h1 className="text-xl font-semibold text-[color:var(--ink)]">课堂工作台</h1><p className="text-[13px] leading-relaxed text-[color:var(--ink-soft)]">登录后录音、整理笔记与课堂提问，课堂产物随账号同步。</p><ActionButton variant="primary" className="mt-2" onClick={()=>redirectAccount()}>登录统一账号</ActionButton></section></div>;
+  if(owner!==auth.userId)return <PanelSkeleton variant="workspace" label="正在安全切换课堂空间"/>;
+  const railNode=railMode==='sessions'?<SessionSidebar sessions={sessions} currentId={sessionId} liveStatus={recordingStatus==='recording'||recordingStatus==='paused'?recordingStatus:undefined} collapsed={isMobile?false:sidebarCollapsed} pendingCount={getPendingCount()} busy={busy} onToggle={()=>isMobile?closeMobileSidebar():setSidebarCollapsed(!sidebarCollapsed)} onFlipToNotes={()=>{setRailMode('notes');setSidebarCollapsed(false)}} onOpen={id=>{if(isMobile)closeMobileSidebar();void open(id)}} onNew={()=>{if(isMobile)closeMobileSidebar();void newClass()}} onImport={()=>{if(isMobile)closeMobileSidebar();setShowDraft(true)}} onOpenSettings={()=>{if(isMobile)closeMobileSidebar();setShowSettings(true)}} onRename={(id,t)=>void rename(id,t)} onArchive={(id)=>void archive(id)}/>:<ClassNoteRail note={<ClassNotePane sessionId={sessionId} noteId={currentSession?.noteId} ownerId={owner} onOrganize={()=>void exportNote()}/>} collapsed={isMobile?false:sidebarCollapsed} onToggle={()=>isMobile?closeMobileSidebar():setSidebarCollapsed(!sidebarCollapsed)} onFlip={()=>{setRailMode('sessions');setSidebarCollapsed(false)}} onAsk={()=>{if(isMobile)closeMobileSidebar();openClassAsk()}}/>;
   return <div className="ss-class-workbench relative flex h-full min-h-0 w-full overflow-hidden" key={owner}>
     {isMobile&&mobileSidebarOpen&&<button type="button" aria-label="关闭课堂侧栏" className="absolute inset-0 z-30 bg-black/30" onClick={closeMobileSidebar}/>}
-    <div ref={sidebarRef} className={`${isMobile?(mobileSidebarOpen?'absolute inset-y-0 left-0 z-40':'hidden'):'hidden md:relative md:z-auto md:block'}`} onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closeMobileSidebar()}}}>{railMode==='sessions'?<SessionSidebar sessions={sessions} currentId={sessionId} liveStatus={recordingStatus==='recording'||recordingStatus==='paused'?recordingStatus:undefined} collapsed={isMobile?false:sidebarCollapsed} pendingCount={getPendingCount()} busy={busy} onToggle={()=>isMobile?closeMobileSidebar():setSidebarCollapsed(!sidebarCollapsed)} onFlipToNotes={()=>{setRailMode('notes');setSidebarCollapsed(false)}} onOpen={id=>{if(isMobile)closeMobileSidebar();void open(id)}} onNew={()=>{if(isMobile)closeMobileSidebar();void newClass()}} onImport={()=>{if(isMobile)closeMobileSidebar();setShowDraft(true)}} onOpenSettings={()=>{if(isMobile)closeMobileSidebar();setShowSettings(true)}} onRename={(id,t)=>void rename(id,t)} onArchive={(id)=>void archive(id)}/>:<ClassNoteRail note={<ClassNotePane sessionId={sessionId} noteId={currentSession?.noteId} ownerId={owner} onOrganize={()=>void exportNote()}/>} collapsed={isMobile?false:sidebarCollapsed} onToggle={()=>isMobile?closeMobileSidebar():setSidebarCollapsed(!sidebarCollapsed)} onFlip={()=>{setRailMode('sessions');setSidebarCollapsed(false)}} onAsk={()=>{if(isMobile)closeMobileSidebar();openClassAsk()}}/>}</div>
+    <div ref={sidebarRef} className={isMobile?(mobileSidebarOpen?'absolute inset-y-0 left-0 z-40 w-[min(86vw,340px)]':'hidden'):'hidden md:flex md:shrink-0'} onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closeMobileSidebar()}}}>
+      {isMobile?railNode:<ResizableRail storageKey="ss-class-rail-width-v1" defaultWidth={320} minWidth={240} maxWidth={560} collapsed={sidebarCollapsed} ariaLabel="调整课堂侧栏宽度" className="h-full">{railNode}</ResizableRail>}
+    </div>
     <div className="flex min-h-0 min-w-0 flex-1 flex-col">
       <header className="ss-class-topbar">
         <div className="ss-class-title-block">

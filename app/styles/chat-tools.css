@@ -349,6 +349,34 @@
   background: var(--md-sys-color-surface-variant);
 }
 
+/* ActionButton 在阅读器工具条里保留自己的语气（主 / 次 / 危险）。
+   上面「全部透明」的规则是未分层样式，Tailwind 工具类压不过它，所以语气在这里补一遍。 */
+.document-workspace-toolbar button[data-action-variant] {
+  padding-inline: 8px;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.document-workspace-toolbar button[data-action-variant="primary"] {
+  background: var(--accent);
+  color: var(--md-sys-color-on-primary);
+}
+.document-workspace-toolbar button[data-action-variant="primary"]:hover {
+  background: var(--accent);
+  filter: brightness(1.1);
+}
+.document-workspace-toolbar button[data-action-variant="secondary"] {
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+.document-workspace-toolbar button[data-action-variant="danger"] {
+  color: var(--md-sys-color-error);
+}
+.document-workspace-toolbar button[data-action-variant="danger"]:hover {
+  background: color-mix(in srgb, var(--md-sys-color-error) 12%, transparent);
+}
+
 .document-workspace-body {
   min-width: 0;
   min-height: 0;

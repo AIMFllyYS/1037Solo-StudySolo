@@ -1,7 +1,13 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
-export function KitSoloConnectButton({ english = false, compact = false }: { english?: boolean; compact?: boolean }) {
-  const [status, setStatus] = useState<"loading" | "connected" | "none" | "unavailable">("loading"), [notice, setNotice] = useState("");
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import Badge from "@/components/ui/Badge";
+import ActionButton from "@/components/ui/ActionButton";
+
+type KitSoloStatus = "loading" | "connected" | "none" | "unavailable";
+
+/** KitSolo 的账号关联：弹窗授权，成功后回写状态。`trailing` 与学习服务卡片一样把「详情」放进同一行。 */
+export function KitSoloConnectButton({ english = false, compact = false, trailing }: { english?: boolean; compact?: boolean; trailing?: ReactNode }) {
+  const [status, setStatus] = useState<KitSoloStatus>("loading"), [notice, setNotice] = useState("");
   const popup = useRef<Window | null>(null), timer = useRef<ReturnType<typeof setInterval> | null>(null);
   const request = useRef<AbortController | null>(null);
   const check = useCallback(async () => {
@@ -22,10 +28,17 @@ export function KitSoloConnectButton({ english = false, compact = false }: { eng
     if (timer.current) clearInterval(timer.current);
     timer.current = setInterval(() => { if (popup.current?.closed) { if (timer.current) clearInterval(timer.current); timer.current = null; void check(); } }, 500);
   }
-  return <div className="flex flex-wrap items-center gap-2 text-xs" data-testid="kitsolo-connect">
-    <button type="button" className="rounded-lg border border-current px-3 py-2" onClick={connect} disabled={status === "loading"}>{status === "connected" ? (english ? "Connected · Reconnect" : "已连接 · 重新连接") : english ? "Connect" : "连接"}</button>
-    {!compact && <button type="button" className="rounded-lg px-2 py-2 opacity-70" onClick={() => void check()}>{english ? "Refresh status" : "刷新状态"}</button>}
-    {status === "unavailable" && <span role="status">{english ? "Service unavailable" : "暂时无法查询关联状态"}</span>}
-    {notice && <span className="w-full" role="status">{notice} <a href="/api/kitsolo/connect/" target="_blank" rel="noopener noreferrer" className="underline">{english ? "Open connection page" : "打开关联页面"}</a></span>}
+  const connected = status === "connected";
+  const label = status === "loading" ? (english ? "Checking…" : "检查中…") : connected ? (english ? "Connected" : "已关联") : status === "unavailable" ? (english ? "Status unavailable" : "暂时无法查询关联状态") : (english ? "Not connected" : "未关联");
+  return <div className="flex min-w-0 w-full flex-col gap-2 text-xs" data-testid="kitsolo-connect">
+    <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1.5">
+      <Badge role="status" tone={connected ? "accent" : status === "unavailable" ? "warn" : "neutral"} dot>{label}</Badge>
+      <div className="ml-auto flex shrink-0 items-center gap-1.5">
+        {!compact && <ActionButton variant="ghost" size="sm" onClick={() => void check()}>{english ? "Refresh status" : "刷新状态"}</ActionButton>}
+        <ActionButton variant={connected ? "secondary" : "primary"} size="sm" onClick={connect} disabled={status === "loading"}>{connected ? (english ? "Reconnect" : "重新连接") : english ? "Connect" : "连接"}</ActionButton>
+        {trailing}
+      </div>
+    </div>
+    {notice && <span className="w-full leading-relaxed text-[var(--ink-soft)]" role="status">{notice} <a href="/api/kitsolo/connect/" target="_blank" rel="noopener noreferrer" className="text-[var(--accent)] underline underline-offset-2">{english ? "Open connection page" : "打开关联页面"}</a></span>}
   </div>;
 }

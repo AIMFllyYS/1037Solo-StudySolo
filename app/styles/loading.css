@@ -1,0 +1,86 @@
+/*
+ * 统一的加载态：整页启动屏 + 面板骨架。
+ * 以前懒加载点各写各的占位（纯文字「加载中…」、三份一模一样的闪烁方块、拖拽时的 3D 翻书），
+ * 观感互相不搭。现在全部走这里：只用 transform / opacity 做动画（合成层，不触发重排）。
+ */
+
+/* 整页启动屏：前 140ms 完全透明——缓存命中时一闪而过，不该让用户看见一个「加载页」。 */
+.ss-boot {
+  display: flex;
+  min-height: 100dvh;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: var(--bg-app);
+  color: var(--ink-soft);
+  animation: ss-boot-in 280ms var(--ease-out) 140ms both;
+}
+.ss-boot-name {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+/* 不定长进度条：整页启动屏、文件解析等「不知道还要多久」的场合共用。宽度由使用处决定。 */
+.ss-progress {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--bg-muted);
+}
+.ss-progress::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  border-radius: inherit;
+  background: var(--accent);
+  transform: translateX(-100%);
+  animation: ss-boot-run 1.25s var(--md-sys-motion-easing-standard, ease-in-out) infinite;
+}
+@keyframes ss-boot-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ss-boot-run {
+  to { transform: translateX(320%); }
+}
+
+/* 面板骨架：静止底色 + 一道横扫的高光（transform，零重排）。圆角交给 Tailwind 工具类——这里不写，免得未分层样式压过它。 */
+.ss-skel {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--bg-muted);
+}
+.ss-skel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--bg-elevated), transparent);
+  opacity: 0.7;
+  will-change: transform;
+  animation: ss-skel-sweep 1.4s ease-in-out infinite;
+}
+.ss-skel-accent {
+  background: var(--accent-weak);
+}
+@keyframes ss-skel-sweep {
+  to { transform: translateX(100%); }
+}
+.ss-skel-wrap {
+  animation: ss-boot-in 200ms var(--ease-out) 80ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-boot,
+  .ss-skel-wrap { animation: none; }
+  .ss-progress::after { animation: none; transform: none; width: 100%; opacity: 0.5; }
+  .ss-skel::after { animation: none; display: none; }
+}

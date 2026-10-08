@@ -15,9 +15,11 @@ import { captureReviewEditorOwner } from "@/lib/notes/reviewEditorOwner";
 import { parseNoteToc, scrollCrepeHeading, type NoteTocItem } from "@/lib/notes/noteToc";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useT } from "@/lib/i18n";
+import { PanelSkeleton } from "@/components/shared/LoadingStates";
 
 const MilkdownNoteEditor = dynamic(() => import("@/components/notes/MilkdownNoteEditor"), {
   ssr: false,
+  loading: () => <PanelSkeleton variant="document" />,
 });
 
 /** Shared Review document surface for the /review library and Review selection notes. */

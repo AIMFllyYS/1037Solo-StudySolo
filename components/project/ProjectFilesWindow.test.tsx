@@ -71,6 +71,31 @@ afterEach(() => {
 });
 
 describe("ProjectFilesWindow", () => {
+  it("索引视图先给概览数据块（切片 / 字数 / 保存位置），再给索引原文", () => {
+    render(<ProjectFilesWindow projectId="p1" />);
+    const body = screen.getByTestId("workspace-body");
+    expect(body).toHaveTextContent("切片");
+    expect(body).toHaveTextContent("字数");
+    expect(body).toHaveTextContent("120");
+    expect(body).toHaveTextContent("索引正文");
+  });
+
+  it("解析失败的文件：树上标红，正文给原因与重试入口，而不是一片空白", () => {
+    const file = state.byId.f1 as Record<string, unknown>;
+    const previous = { ...file };
+    Object.assign(file, { status: "error", error: "这份 PDF 无法读取文字", slices: [], charCount: 0 });
+    try {
+      render(<ProjectFilesWindow projectId="p1" />);
+      expect(screen.getByTestId("project-file-tree")).toHaveTextContent("失败");
+      const body = screen.getByTestId("workspace-body");
+      expect(body).toHaveTextContent("这个文件没能解析");
+      expect(body).toHaveTextContent("这份 PDF 无法读取文字");
+      expect(screen.getAllByRole("button", { name: /重新导入/ }).length).toBeGreaterThan(0);
+    } finally {
+      Object.assign(file, previous);
+    }
+  });
+
   it("左树列出文件，默认显示索引正文与携带状态", () => {
     render(<ProjectFilesWindow projectId="p1" />);
     expect(screen.getByTestId("project-file-tree")).toHaveTextContent("组胚讲义.md");

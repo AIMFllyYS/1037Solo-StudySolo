@@ -19,7 +19,8 @@ import { openHtmlInNewTab } from "@/lib/utils/openHtmlInNewTab";
 import { useT } from "@/lib/i18n";
 import {useObjectUrl} from '@/lib/resources/useObjectUrl';
 import dynamic from 'next/dynamic';
-const LocalSourcePane = dynamic(() => import('@/components/window/LocalSourcePane'));
+import { PanelSkeleton } from "@/components/shared/LoadingStates";
+const LocalSourcePane = dynamic(() => import('@/components/window/LocalSourcePane'), { loading: () => <PanelSkeleton variant="document" /> });
 
 
 /**
@@ -175,7 +176,7 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
       bodyClassName="flex min-h-0 flex-1 overflow-hidden bg-[var(--bg-panel)]"
       unmountWhenMinimized
     >
-      {data.localFileId && kind !== 'pdf' && kind !== 'image' ? <LocalSourcePane sourceId={data.localFileId} /> : needsOwnedUrl&&!ownedUrl?<div role="status" className="p-4 text-sm">正在准备本地预览…</div>:kind === "image" ? (
+      {data.localFileId && kind !== 'pdf' && kind !== 'image' ? <LocalSourcePane sourceId={data.localFileId} /> : needsOwnedUrl&&!ownedUrl?<PanelSkeleton variant="document" label="正在准备本地预览…" />:kind === "image" ? (
         // eslint-disable-next-line @next/next/no-img-element -- local data URLs are intentionally kept out of remote loaders.
         <img src={content} alt={data.name} className="h-full w-full object-contain p-4" />
       ) : kind === "pdf" ? (

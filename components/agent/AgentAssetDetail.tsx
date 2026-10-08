@@ -26,6 +26,8 @@ import { assembleDocumentMarkdown } from "@/lib/documents/types";
 import { ASSET_LIST_HREF } from "@/lib/agent/assetHref";
 import { ASSET_KIND_LABELS, formatAssetSize, formatAssetTime, type AssetKind } from "@/lib/agent/assetCatalog";
 import CloudFileDetail from './CloudFileDetail';
+import ActionButton, { actionClass } from '@/components/ui/ActionButton';
+import { PageShell } from '@/components/ui/PageChrome';
 import { useFileLibrary } from '@/lib/files/library';
 import {openAttachmentPreview} from '@/lib/chat/openAttachmentPreview';
 import {removeLocalSource} from '@/lib/local-files/client';
@@ -33,8 +35,7 @@ import {useChatHistory} from '@/lib/stores/chatHistory';
 import {useChatUI} from '@/lib/stores/chatUI';
 import {useImageGen} from '@/lib/stores/imageGen';
 
-const ACTION_CLASS =
-  "press flex items-center gap-1.5 rounded-lg border border-[var(--line-soft)] px-2.5 py-1.5 text-[12.5px] text-[var(--ink)] hover:border-[var(--accent)] hover:bg-[var(--bg-muted)]";
+const ACTION_CLASS = actionClass("secondary", "md");
 
 /**
  * 资产详情页（/agent/assets/{kind}/{id}）：左栏保留，中央区整块换成这里。
@@ -226,8 +227,8 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
   }
 
   return (
-    <section data-testid="agent-asset-detail" data-asset-kind={kind} className="flex h-full min-h-0 flex-col bg-[var(--agent-content-bg,var(--md-sys-color-surface-container-low))]">
-      <header className="flex shrink-0 flex-wrap items-center gap-2 border-b border-[var(--line-soft)] px-4 py-2.5">
+    <PageShell data-testid="agent-asset-detail" data-asset-kind={kind}>
+      <header className="flex shrink-0 flex-wrap items-center gap-3 border-b border-[var(--line-soft)] px-5 py-3">
         {back}
         <span className="flex items-center gap-2 text-[11.5px] text-[var(--ink-faint)]">
           我的资产 / {ASSET_KIND_LABELS[kind]}
@@ -239,27 +240,27 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
         {showSkeleton ? (
           <div className="mx-auto flex w-full max-w-[880px] flex-col gap-3" role="status" aria-label="资产加载中" data-testid="asset-detail-skeleton">
             <div className="flex items-start gap-3">
-              <div className="h-10 w-10 animate-shimmer rounded-xl bg-[var(--bg-muted)]" />
+              <div className="h-10 w-10 ss-skel rounded-xl" />
               <div className="flex min-w-0 flex-1 flex-col gap-2">
-                <div className="h-4 w-[46%] animate-shimmer rounded bg-[var(--bg-muted)]" />
-                <div className="h-3 w-[30%] animate-shimmer rounded bg-[var(--bg-muted)]" />
+                <div className="h-4 w-[46%] ss-skel rounded" />
+                <div className="h-3 w-[30%] ss-skel rounded" />
               </div>
             </div>
             <div className="flex gap-2">
-              <div className="h-8 w-24 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
-              <div className="h-8 w-24 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
-              <div className="h-8 w-20 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
+              <div className="h-8 w-24 ss-skel rounded-lg" />
+              <div className="h-8 w-24 ss-skel rounded-lg" />
+              <div className="h-8 w-20 ss-skel rounded-lg" />
             </div>
             <div className="flex flex-col gap-2 rounded-xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4">
               {[0, 1, 2, 3, 4, 5].map((index) => (
-                <div key={index} className="h-3.5 animate-shimmer rounded bg-[var(--bg-muted)]" style={{ width: `${92 - index * 8}%` }} />
+                <div key={index} className="h-3.5 ss-skel rounded" style={{ width: `${92 - index * 8}%` }} />
               ))}
             </div>
           </div>
         ) : item ? (
           <div className="mx-auto flex w-full max-w-[880px] flex-col gap-3">
             <div className="flex items-start gap-3">
-              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--bg-muted)] text-[var(--md-sys-color-primary)]">
+              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-weak)] text-[var(--accent-ink)]">
                 <AssetKindIcon item={item} size={20} />
               </span>
               <div className="min-w-0 flex-1">
@@ -278,21 +279,21 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
                   <span className="text-[12px] text-[var(--md-sys-color-error)]">
                     {kind === "file" || kind === "url" ? "只删这条记录？" : "删除后云端记录一并删除？"}
                   </span>
-                  <button type="button" className="rounded-md bg-[var(--md-sys-color-error)] px-2 py-1 text-[11.5px] font-semibold text-[var(--md-sys-color-on-error)]" onClick={removeAsset}>
+                  <button type="button" className="rounded-md bg-[var(--md-sys-color-error)] px-2.5 py-1 text-[11.5px] font-semibold text-[var(--md-sys-color-on-error)]" onClick={removeAsset}>
                     删除
                   </button>
-                  <button type="button" className="rounded-md px-2 py-1 text-[11.5px] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]" onClick={() => setConfirming(false)}>
+                  <ActionButton size="sm" variant="ghost" onClick={() => setConfirming(false)}>
                     取消
-                  </button>
+                  </ActionButton>
                 </span>
               ) : (
-                <button type="button" className={`${ACTION_CLASS} text-[var(--md-sys-color-error)]`} onClick={() => { confirmationEpoch.current=getOwnerEpoch();setConfirming(true); }}>
-                  <Trash2 size={14} /> {kind === "file" || kind === "url" ? "移除记录" : "删除"}
-                </button>
+                <ActionButton variant="danger" icon={<Trash2 size={14} />} onClick={() => { confirmationEpoch.current=getOwnerEpoch();setConfirming(true); }}>
+                  {kind === "file" || kind === "url" ? "移除记录" : "删除"}
+                </ActionButton>
               )}
             </div>
 
-            <div className="rounded-xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4">
+            <div className="rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4">
               {kind === "note" && note ? (
                 note.markdown.trim() ? (
                   <div className="prose-notes"><NoteRenderer content={note.markdown} /></div>
@@ -343,6 +344,6 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
             数据没好 / 还没到最小骨架时长 → 骨架；找到了 → 正文。
             「数据好了但找不到这件资产」在更早的地方直接返回空态，不会走到这里。 */}
       </div>
-    </section>
+    </PageShell>
   );
 }

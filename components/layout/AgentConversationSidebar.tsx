@@ -226,17 +226,9 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
     >
       <div
         className="flex shrink-0 items-center gap-1"
-        style={{ height: 40, padding: "0 8px 0 12px", borderBottom: "1px solid var(--line-soft)" }}
+        style={{ height: 44, padding: "0 10px 0 16px", borderBottom: "1px solid var(--line-soft)" }}
       >
-        <span
-          style={{
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.05em",
-            textTransform: "uppercase",
-            color: "var(--md-sys-color-outline)",
-          }}
-        >
+        <span className="min-w-0 truncate text-[13px] font-semibold tracking-[0.02em] text-[var(--ink)]">
           {t("agent.sidebar.title")}
         </span>
         <div className="ml-auto flex items-center gap-0.5">
@@ -263,7 +255,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
 
       <AgentNavRows onNewChat={() => handleNewChat(activeProjectId)} newChatActive={onBlankChat} />
 
-      <div className="scroll-y min-h-0 flex-1 py-1" data-agent-scroll data-testid="agent-conversation-groups">
+      <div className="scroll-y min-h-0 flex-1 px-2 pb-2 pt-1" data-agent-scroll data-testid="agent-conversation-groups">
         {showArchived ? (
           <>
             <AgentSectionHeader
@@ -339,7 +331,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                             defaultValue={project.name}
                             aria-label={t("agent.sidebar.project.name")}
                             data-testid="project-rename-input"
-                            className="mx-2 my-0.5 w-[calc(100%-1rem)] rounded-md border border-[var(--accent)] bg-[var(--bg-muted)] px-2 py-0.5 text-[12px] text-[var(--ink)] outline-none"
+                            className="my-0.5 h-[28px] w-full rounded-lg border border-[var(--accent)] bg-[var(--bg-muted)] px-2.5 text-[12.5px] text-[var(--ink)] outline-none"
                             onPointerDown={(event) => event.stopPropagation()}
                             // 新建项目时输入框里是「新建项目 N」这个临时名：全选一下，直接打字就是干净的名字。
                             onFocus={(event) => event.currentTarget.select()}
@@ -358,6 +350,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                         ) : (
                           <FolderTreeRow
                             depth={0}
+                            inset
                             title={project.name}
                             isFolder
                             isExpanded={expanded}
@@ -392,7 +385,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                           }}
                           title={t("agent.sidebar.project.newChat", { name: project.name })}
                           aria-label={t("agent.sidebar.project.newChat", { name: project.name })}
-                          className="mr-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[var(--ink-faint)] transition-colors hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--ink)]"
+                          className="ml-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[var(--ink-faint)] transition-colors hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--ink)]"
                         >
                           <Plus size={13} />
                         </button>
@@ -427,7 +420,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
 
       <div
         className="flex shrink-0 items-center gap-1"
-        style={{ height: 40, padding: "0 8px", borderTop: "1px solid var(--line-soft)" }}
+        style={{ height: 44, padding: "0 10px", borderTop: "1px solid var(--line-soft)" }}
       >
         <LeftDock
           buttonRef={settingsBtnRef}

@@ -1,6 +1,5 @@
 import { Inflate, strFromU8 } from 'fflate';
 export const MAX_LOCAL_SOURCE_BYTES = 512 * 1024 * 1024;
-export const LOCAL_READ_CHARS = 12000;
 export interface RangeSource {
     size: number;
     name: string;

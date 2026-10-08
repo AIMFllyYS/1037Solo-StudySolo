@@ -3,8 +3,7 @@ import { createStore, get, set, del } from 'idb-keyval';
 import { getStorageOwner, getOwnerEpoch, onStorageOwnerChange } from '@/lib/storage/ownerScope';
 import { useImports, recordImport } from '@/lib/stores/imports';
 import { useChatHistory } from '@/lib/stores/chatHistory';
-import { assertLocalSize, MAX_LOCAL_SOURCE_BYTES } from './reader';
-export { MAX_LOCAL_SOURCE_BYTES };
+import { assertLocalSize } from './reader';
 interface DesktopFiles {
     register(file: File, owner: string, id: string): Promise<{
         id: string;

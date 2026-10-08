@@ -12,6 +12,7 @@ import LearningAccountVerificationLink from "@/components/plugins/LearningAccoun
 import { connectorErrorKey } from "@/lib/connectors/presentation";
 import { captureStorageOperation } from "@/lib/storage/ownerScope";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import ActionButton from "@/components/ui/ActionButton";
 
 type InstallState = "idle" | "busy" | "added" | "updated" | "full" | "failed";
 
@@ -84,52 +85,46 @@ export default function SkillInstallButton({ entry, compact = false }: { entry: 
   };
 
   const busy = state === "busy" || !hydrated || entry.runtime === "cloud" && !packages.ready;
-  const btnBase = compact
-    ? "press flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[12px] font-medium"
-    : "press flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-medium";
+  const size = compact ? "sm" : "md";
 
   return (
     <span className="flex flex-wrap items-center gap-1.5">
       {installed ? (
         <>
-          <button
-            type="button"
+          <ActionButton
             data-testid={`skill-update-${entry.id}`}
+            variant={hasUpdate ? "primary" : "secondary"}
+            size={size}
+            icon={<RefreshCw size={13} className={busy ? "animate-spin" : undefined} />}
             onClick={install}
             disabled={busy || !hasUpdate}
             title={hasUpdate ? t("agent.market.action.update") : t("agent.market.action.installed")}
-            className={`${btnBase} ${
-              hasUpdate
-                ? "bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)]"
-                : "border border-[var(--line-soft)] text-[var(--ink-soft)]"
-            } disabled:opacity-60`}
           >
-            <RefreshCw size={13} className={busy ? "animate-spin" : undefined} />
             {hasUpdate ? t("agent.market.action.update") : t("agent.market.action.installed")}
-          </button>
-          <button
-            type="button"
+          </ActionButton>
+          <ActionButton
             data-testid={`skill-uninstall-${entry.id}`}
+            variant="danger"
+            size={size}
+            icon={<Trash2 size={13} />}
             onClick={() => setConfirmUninstall(true)}
             disabled={busy}
             title={t("agent.market.action.uninstall")}
-            className="press flex items-center gap-1 rounded-lg border border-[var(--line-soft)] px-2.5 py-1.5 text-[12px] text-[var(--ink-soft)] hover:border-[var(--md-sys-color-error)] hover:text-[var(--md-sys-color-error)]"
           >
-            <Trash2 size={13} />
             {t("agent.market.action.uninstall")}
-          </button>
+          </ActionButton>
         </>
       ) : (
-        <button
-          type="button"
+        <ActionButton
           data-testid={`skill-install-${entry.id}`}
+          variant="primary"
+          size={size}
+          icon={<Download size={13} className={busy ? "animate-pulse" : undefined} />}
           onClick={install}
           disabled={busy}
-          className={`${btnBase} bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] disabled:opacity-60`}
         >
-          <Download size={13} className={busy ? "animate-pulse" : undefined} />
           {busy ? t("agent.market.loading") : t("agent.market.action.install")}
-        </button>
+        </ActionButton>
       )}
       <span aria-live="polite" className="text-[11px]">
         {state === "added" ? <span className="text-[var(--md-sys-color-primary)]">{t("agent.market.skill.imported")}</span> : null}

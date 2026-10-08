@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { NotebookPen, Layers, ListChecks, Gauge, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
 import { useT } from "@/lib/i18n";
+import Badge from "@/components/ui/Badge";
 
 export type ReviewSection = "notes" | "flashcards" | "quiz" | "overview";
 
@@ -29,6 +30,7 @@ export default function ReviewSidebar({
   mobile = false,
   mobileOpen = false,
   onMobileClose,
+  fill = false,
 }: {
   active: ReviewSection;
   onSelect: (section: ReviewSection) => void;
@@ -40,6 +42,8 @@ export default function ReviewSidebar({
   mobile?: boolean;
   mobileOpen?: boolean;
   onMobileClose?: () => void;
+  /** 宽度由外层 ResizableRail 决定（桌面端）：侧栏自己铺满，不再固定 w-64 / w-14。 */
+  fill?: boolean;
 }) {
   const t = useT();
 
@@ -48,8 +52,8 @@ export default function ReviewSidebar({
       data-review-sidebar
       data-mobile-open={mobileOpen || undefined}
       className={clsx(
-        "ss-rail flex h-full flex-col border-r border-[var(--line-soft)] bg-[var(--bg-panel)]",
-        collapsed ? "w-14 min-w-14" : "w-64 min-w-64",
+        "flex h-full flex-col border-r border-[var(--line-soft)] bg-[var(--bg-panel)]",
+        fill ? "w-full min-w-0" : clsx("ss-rail", collapsed ? "w-14 min-w-14" : "w-64 min-w-64"),
       )}
       onKeyDown={(event) => {
         if (mobile && mobileOpen && event.key === "Escape") {
@@ -59,9 +63,9 @@ export default function ReviewSidebar({
         }
       }}
     >
-      <div className="flex shrink-0 items-center justify-between px-2 py-2">
+      <div className={clsx("flex h-11 shrink-0 items-center border-b border-[var(--line-soft)]", collapsed ? "justify-center px-2" : "justify-between pl-4 pr-2.5")}>
         {!collapsed && (
-          <span className="px-2 text-[13px] font-semibold text-[var(--ink)]">{t("review.title")}</span>
+          <span className="min-w-0 truncate text-[13px] font-semibold text-[var(--ink)]">{t("review.title")}</span>
         )}
         {mobile ? (
         <button
@@ -80,13 +84,13 @@ export default function ReviewSidebar({
           title={collapsed ? t("review.sidebar.expand") : t("review.sidebar.collapse")}
           aria-label={collapsed ? t("review.sidebar.expand") : t("review.sidebar.collapse")}
           data-testid="review-sidebar-toggle"
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] transition-colors hover:bg-[var(--bg-muted)] hover:text-[var(--ink)]"
         >
           {collapsed ? <PanelLeftOpen size={17} /> : <PanelLeftClose size={17} />}
         </button>}
       </div>
 
-      <nav className="flex shrink-0 flex-col gap-0.5 px-2" aria-label={t("review.title")}>
+      <nav className="flex shrink-0 flex-col gap-0.5 px-2.5 pb-2 pt-2.5" aria-label={t("review.title")}>
         {SECTION_ORDER.map(({ id, icon: Icon, labelKey }) => {
           const selected = id === active;
           const showBadge = id === "flashcards" && dueCount > 0;
@@ -99,25 +103,18 @@ export default function ReviewSidebar({
               data-testid={`review-nav-${id}`}
               title={t(labelKey)}
               className={clsx(
-                "flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-colors",
+                "press relative flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-[13px] font-medium outline-none transition-colors duration-[var(--duration-fast)] focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
                 collapsed && "justify-center px-0",
                 selected
                   ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
                   : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink)]",
               )}
             >
-              <Icon size={17} className="shrink-0" />
+              <Icon size={16} strokeWidth={1.75} className="shrink-0" />
               {!collapsed && <span className="min-w-0 flex-1 truncate text-left">{t(labelKey)}</span>}
-              {showBadge && (
-                <span
-                  className={clsx(
-                    "rounded-full bg-[var(--accent)] px-1.5 py-0.5 text-[10px] font-semibold leading-none text-[var(--md-sys-color-on-primary)]",
-                    collapsed && "absolute translate-x-4 -translate-y-3",
-                  )}
-                >
-                  {dueCount}
-                </span>
-              )}
+              {showBadge && (collapsed
+                ? <span aria-label={String(dueCount)} className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[var(--accent)]" />
+                : <Badge tone={selected ? "neutral" : "accent"} className="tabular-nums">{dueCount}</Badge>)}
             </button>
           );
         })}

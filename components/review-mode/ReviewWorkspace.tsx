@@ -12,6 +12,7 @@ import { useReviewSchedule } from "@/lib/review-mode/scheduleStore";
 import { useStore } from "@/lib/stores/ui";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import ResizableRail from "@/components/ui/ResizableRail";
 
 /**
  * Review 复习模式工作区（/review 的中心区）。
@@ -117,20 +118,30 @@ export default function ReviewWorkspace() {
     </div>
   );
 
+  const sidebar = (
+    <ReviewSidebar
+      active={section}
+      onSelect={selectSection}
+      collapsed={isMobile ? false : collapsed}
+      onToggleCollapse={toggleSidebar}
+      dueCount={dueCount}
+      mobile={isMobile}
+      mobileOpen={mobileSidebarOpen}
+      onMobileClose={closeMobileSidebar}
+      fill={!isMobile}
+    >
+      {sidebarChildren}
+    </ReviewSidebar>
+  );
+
   return (
     <div className="relative flex h-full min-h-0 w-full bg-[var(--bg-app)]" data-review-workspace data-mobile-sidebar-open={isMobile && mobileSidebarOpen || undefined}>
-      <ReviewSidebar
-        active={section}
-        onSelect={selectSection}
-        collapsed={isMobile ? false : collapsed}
-        onToggleCollapse={toggleSidebar}
-        dueCount={dueCount}
-        mobile={isMobile}
-        mobileOpen={mobileSidebarOpen}
-        onMobileClose={closeMobileSidebar}
-      >
-        {sidebarChildren}
-      </ReviewSidebar>
+      {isMobile ? sidebar : (
+        // 桌面端侧栏可自由拖宽（记住宽度）；收起时回到 56px 图标列。
+        <ResizableRail storageKey="ss-review-rail-width-v1" defaultWidth={256} minWidth={208} maxWidth={480} collapsed={collapsed} collapsedWidth={56} ariaLabel="调整 Review 侧栏宽度" className="h-full">
+          {sidebar}
+        </ResizableRail>
+      )}
       {isMobile && mobileSidebarOpen ? (
         <button
           type="button"

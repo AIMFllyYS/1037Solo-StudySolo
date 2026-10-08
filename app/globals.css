@@ -17,6 +17,7 @@
 @import "./styles/pptx-reader.css";
 @import "./styles/appearance.css";
 @import "./styles/semantic-tokens.css";
+@import "./styles/loading.css";
 
 /* Keep wheel/touch/keyboard scrolling everywhere in the app; hide only native scrollbar chrome. */
 * { scrollbar-width: none !important; -ms-overflow-style: none; }
@@ -652,8 +653,8 @@ html[data-reduce-motion="true"] *::after {
   inset: 0;
   z-index: 50;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   pointer-events: none;
   background: var(--bg-app);
   /* 软加载：入场很快的一层淡入（只跑 opacity，不触发重排）。 */
@@ -675,208 +676,7 @@ html[data-reduce-motion="true"] *::after {
   }
 }
 
-/* —— AI 对话骨架屏（右栏拖拽；GPU 合成 shimmer：气泡静止、仅高光层做 transform 位移） —— */
-.resize-loader-chat {
-  align-items: stretch;
-  justify-content: flex-start;
-}
-.resize-loader-chat .chat-skel {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-  padding: 20px 16px;
-}
-.resize-loader-chat .chat-skel-bubble {
-  display: block;
-  position: relative;
-  overflow: hidden;
-  border-radius: 16px;
-  background: var(--bg-muted);
-}
-.resize-loader-chat .chat-skel-bubble.left {
-  align-self: flex-start;
-  border-bottom-left-radius: 4px;
-}
-.resize-loader-chat .chat-skel-bubble.right {
-  align-self: flex-end;
-  border-bottom-right-radius: 4px;
-  background: var(--accent-weak);
-}
-.resize-loader-chat .chat-skel-bubble::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, var(--bg-elevated), transparent);
-  opacity: 0.65;
-  will-change: transform;
-  animation: chatSkelShimmer 1.4s ease-in-out infinite;
-}
-@keyframes chatSkelShimmer {
-  to {
-    transform: translateX(100%);
-  }
-}
-
-/* —— 翻页动画 —— */
-.resize-loader-page .page-loader {
-  --background: linear-gradient(135deg, #23c4f8, #275efe);
-  --shadow: rgba(39, 94, 254, 0.28);
-  --text: var(--ink-soft);
-  --page: rgba(255, 255, 255, 0.36);
-  --page-fold: rgba(255, 255, 255, 0.52);
-  --duration: 3s;
-  width: 200px;
-  height: 140px;
-  position: relative;
-}
-.resize-loader-page .page-loader::before,
-.resize-loader-page .page-loader::after {
-  --r: -6deg;
-  content: "";
-  position: absolute;
-  bottom: 8px;
-  width: 120px;
-  top: 80%;
-  box-shadow: 0 16px 12px var(--shadow);
-  transform: rotate(var(--r));
-}
-.resize-loader-page .page-loader::before {
-  left: 4px;
-}
-.resize-loader-page .page-loader::after {
-  --r: 6deg;
-  right: 4px;
-}
-.resize-loader-page .page-loader > div {
-  width: 100%;
-  height: 100%;
-  border-radius: 13px;
-  position: relative;
-  z-index: 1;
-  perspective: 600px;
-  box-shadow: 0 4px 6px var(--shadow);
-  background-image: var(--background);
-}
-.resize-loader-page .page-loader ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  position: relative;
-}
-.resize-loader-page .page-loader li {
-  --r: 180deg;
-  --o: 0;
-  --c: var(--page);
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  transform-origin: 100% 50%;
-  color: var(--c);
-  opacity: var(--o);
-  transform: rotateY(var(--r));
-  animation: var(--duration) ease infinite;
-}
-.resize-loader-page .page-loader li:nth-child(2) {
-  --c: var(--page-fold);
-  animation-name: page-2;
-}
-.resize-loader-page .page-loader li:nth-child(3) {
-  --c: var(--page-fold);
-  animation-name: page-3;
-}
-.resize-loader-page .page-loader li:nth-child(4) {
-  --c: var(--page-fold);
-  animation-name: page-4;
-}
-.resize-loader-page .page-loader li:nth-child(5) {
-  --c: var(--page-fold);
-  animation-name: page-5;
-}
-.resize-loader-page .page-loader svg {
-  width: 90px;
-  height: 120px;
-  display: block;
-}
-.resize-loader-page .page-loader li:first-child {
-  --r: 0deg;
-  --o: 1;
-}
-.resize-loader-page .page-loader li:last-child {
-  --o: 1;
-}
-.resize-loader-page .page-loader span {
-  display: block;
-  left: 0;
-  right: 0;
-  top: 100%;
-  margin-top: 20px;
-  text-align: center;
-  color: var(--text);
-  font-size: 13px;
-}
-
-@keyframes page-2 {
-  0% {
-    transform: rotateY(180deg);
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  35%, 100% {
-    opacity: 0;
-  }
-  50%, 100% {
-    transform: rotateY(0deg);
-  }
-}
-@keyframes page-3 {
-  15% {
-    transform: rotateY(180deg);
-    opacity: 0;
-  }
-  35% {
-    opacity: 1;
-  }
-  50%, 100% {
-    opacity: 0;
-  }
-  65%, 100% {
-    transform: rotateY(0deg);
-  }
-}
-@keyframes page-4 {
-  30% {
-    transform: rotateY(180deg);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  65%, 100% {
-    opacity: 0;
-  }
-  80%, 100% {
-    transform: rotateY(0deg);
-  }
-}
-@keyframes page-5 {
-  45% {
-    transform: rotateY(180deg);
-    opacity: 0;
-  }
-  65% {
-    opacity: 1;
-  }
-  80%, 100% {
-    opacity: 0;
-  }
-  95%, 100% {
-    transform: rotateY(0deg);
-  }
-}
+/* 覆盖层里的骨架由 components/shared/LoadingStates（PanelSkeleton）渲染，样式见 styles/loading.css。 */
 
 /* —— 布局持久化：在 React hydrate 前通过 data 属性隐藏已折叠的 TopBar，避免闪烁 ——
    Agent 顶栏（[data-agent-bar]）不吃这条：它是**控件条**——网页全屏与右侧工作区开关都挂在上面，

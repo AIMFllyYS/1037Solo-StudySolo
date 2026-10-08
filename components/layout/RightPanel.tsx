@@ -23,6 +23,7 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
 import { translate, useT } from "@/lib/i18n";
 import StudioAgentPanel from "@/components/layout/StudioAgentPanel";
+import { PanelSkeleton } from "@/components/shared/LoadingStates";
 
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
   ssr: false,
@@ -51,13 +52,7 @@ const ALL_RIGHT_TABS: { id: RightTab; labelKey: string; icon: React.ReactNode }[
 function RightPanelTabLoading({ labelKey }: { labelKey: string }) {
   const t = useT();
   const label = t(labelKey);
-  return (
-    <div className="flex h-full flex-col gap-3 px-4 py-5" role="status" aria-label={t("panel.rightTab.loading", { label })}>
-      <div className="h-4 w-24 animate-shimmer rounded bg-[var(--bg-muted)]" />
-      <div className="h-28 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
-      <div className="h-16 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
-    </div>
-  );
+  return <PanelSkeleton variant={labelKey === "panel.rightTab.ai" ? "chat" : "document"} label={t("panel.rightTab.loading", { label })} />;
 }
 
 class RightPanelTabBoundary extends Component<

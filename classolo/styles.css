@@ -27,7 +27,8 @@
 .ss-class-workbench :is(.ss-tool,.ss-nav-cta,.class-action):not(:disabled):active{transform:scale(var(--scale-press));}
 
 /* Refined classroom desk: quiet outlined controls, steady text baselines, visible working surfaces. */
-.ss-class-workbench .ss-class-side-rail{width:clamp(294px,25vw,370px);min-width:clamp(294px,25vw,370px);border-right:1px solid var(--line-soft);background:var(--bg-panel);transition:width 180ms ease,min-width 180ms ease;}
+/* 侧栏宽度由外层 ResizableRail 决定（用户可拖），这里只管填满与边线。 */
+.ss-class-workbench .ss-class-side-rail{width:100%;min-width:0;height:100%;border-right:1px solid var(--line-soft);background:var(--bg-panel);}
 .ss-class-workbench .ss-class-side-rail.is-collapsed{width:44px;min-width:44px;}
 .ss-class-workbench .ss-class-side-rail.is-collapsed button{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid transparent;border-radius:8px;color:var(--ink-soft);}
 .ss-class-workbench .ss-class-side-rail.is-collapsed button:hover{border-color:var(--line-soft);background:var(--bg-muted);}
