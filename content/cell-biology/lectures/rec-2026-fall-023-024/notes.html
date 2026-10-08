@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>细胞生物学 第7-8节 可视化笔记</title>
+<style>
+:root{
+  --paper:#F0EDE4; --paper-card:#FAF8F2;
+  --ink:#1C1B17; --ink-soft:#5A564C; --ink-faint:#8B8676; --rule:#CFC9B5;
+  --accent-a:#2E7D4F; --accent-a-soft:#E2EFE6;
+  --accent-b:#A2630C; --accent-b-soft:#F5E8D0;
+  --accent-c:#B23A2E; --accent-c-soft:#F5E0DC;
+  --accent-d:#3F6E8C; --accent-d-soft:#E0EAF0;
+  --display:'Noto Serif CJK SC',serif; --body:'Noto Sans CJK SC',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--paper);}
+body{font-family:var(--body);color:var(--ink);font-size:9.8pt;line-height:1.62;}
+.page{width:210mm;min-height:297mm;background:var(--paper);position:relative;overflow:hidden;padding:17mm 18mm 15mm;page-break-after:always;}
+.page:last-child{page-break-after:auto;}
+.running{display:flex;justify-content:space-between;font-size:7.6pt;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--rule);padding-bottom:3mm;margin-bottom:9mm;}
+.running .tag{color:var(--accent-c);font-weight:700;}
+.cover{background:var(--accent-a);color:#F0EDE4;padding:0;}
+.cover .inner{position:relative;height:100%;padding:26mm 18mm;display:flex;flex-direction:column;justify-content:space-between;min-height:257mm;}
+.cover .eyebrow{font-size:8.5pt;letter-spacing:0.32em;text-transform:uppercase;color:#C9E0D0;}
+.cover .eyebrow::before{content:"";width:22px;height:2px;background:var(--accent-b);display:block;margin-bottom:8px;}
+.cover h1{font-family:var(--display);font-weight:900;font-size:42pt;line-height:1.1;margin-top:14mm;color:#FAF8F2;}
+.cover .subtitle{font-family:var(--display);font-size:12pt;color:#C9DCC9;margin-top:10mm;max-width:140mm;line-height:1.7;}
+.cover .meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6mm;border-top:1px solid rgba(255,255,255,.25);padding-top:6mm;margin-top:14mm;}
+.cover .meta .k{font-size:7.6pt;letter-spacing:0.18em;color:rgba(255,255,255,.6);text-transform:uppercase;}
+.cover .meta .v{font-family:var(--display);font-size:11pt;color:#FAF8F2;margin-top:2mm;}
+.toc-title{font-family:var(--display);font-size:26pt;font-weight:800;margin-bottom:3mm;}
+.toc-sub{color:var(--ink-soft);font-size:9.7pt;max-width:150mm;margin-bottom:10mm;line-height:1.8;}
+table.toc{width:100%;border-collapse:collapse;font-size:9.3pt;}
+table.toc th{text-align:left;font-size:7.6pt;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--ink);padding:0 3mm 2.5mm 0;font-weight:600;}
+table.toc td{padding:4.2mm 3mm 4.2mm 0;border-bottom:1px solid var(--rule);vertical-align:top;}
+table.toc .num{font-family:var(--display);font-weight:800;color:var(--accent-c);font-size:11pt;}
+table.toc .ch{font-family:var(--display);font-weight:700;font-size:10.3pt;}
+table.toc .desc{color:var(--ink-soft);}
+.tc-big{font-family:var(--display);font-weight:900;font-size:15pt;color:var(--ink-faint);letter-spacing:0.06em;}
+.tc-big .num{color:var(--accent-c);}
+h2.ch-title{font-family:var(--display);font-weight:900;font-size:24pt;line-height:1.15;margin-top:3mm;max-width:160mm;}
+.thesis{font-family:var(--display);font-weight:600;font-size:11pt;color:var(--accent-a);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:4mm 0;margin:6mm 0;line-height:1.6;}
+h3.sec{font-family:var(--display);font-weight:800;font-size:12pt;margin:5mm 0 2.2mm;display:flex;align-items:center;gap:3mm;}
+h3.sec .dot{width:2.6mm;height:2.6mm;background:var(--accent-c);border-radius:50%;}
+p{margin-bottom:2.2mm;text-align:justify;}
+ul.plain{margin:2mm 0 4mm;padding-left:0;list-style:none;}
+ul.plain li{padding-left:5mm;position:relative;margin-bottom:1.5mm;text-align:justify;}
+ul.plain li::before{content:"—";position:absolute;left:0;color:var(--accent-b);font-weight:700;}
+b{font-weight:700;}
+.cardgrid{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin:3.5mm 0 5mm;}
+.card{background:var(--paper-card);border:1px solid var(--rule);position:relative;padding:5mm;break-inside:avoid;}
+.card .tab{position:absolute;top:0;left:0;right:0;height:2.2mm;}
+.card.a .tab{background:var(--accent-a);} .card.a .label{color:var(--accent-a);}
+.card.b .tab{background:var(--accent-b);} .card.b .label{color:var(--accent-b);}
+.card.c .tab{background:var(--accent-c);} .card.c .label{color:var(--accent-c);}
+.card.d .tab{background:var(--accent-d);} .card.d .label{color:var(--accent-d);}
+.card .label{font-size:7.3pt;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;margin-top:2mm;}
+.card h4{font-family:var(--display);font-size:11pt;font-weight:800;margin:2mm 0;line-height:1.35;}
+.card p{font-size:8.9pt;color:var(--ink-soft);margin-bottom:0;line-height:1.7;}
+table.data{width:100%;border-collapse:collapse;font-size:8.8pt;margin:3mm 0;}
+table.data th{background:var(--accent-a-soft);color:var(--accent-a);padding:2.5mm;border:1px solid var(--rule);text-align:left;font-weight:700;}
+table.data td{padding:2.5mm;border:1px solid var(--rule);vertical-align:top;}
+.warn{background:var(--accent-c-soft);border-left:3px solid var(--accent-c);padding:3mm 4mm;margin:3mm 0;font-size:9.2pt;}
+.footdate{position:absolute;bottom:12mm;left:18mm;right:18mm;display:flex;justify-content:space-between;font-size:7.4pt;color:var(--ink-faint);letter-spacing:0.1em;text-transform:uppercase;border-top:1px solid var(--rule);padding-top:2.5mm;}
+</style>
+</head>
+<body>
+
+<div class="page cover">
+  <div class="inner">
+    <div>
+      <div class="eyebrow">CELL BIOLOGY · 细胞生物学</div>
+      <h1>细胞连接与<br>细胞外基质<span style="font-size:28pt;color:#E7CE9C;">六种连接·基底层</span></h1>
+      <div class="subtitle">从紧密连接到半桥粒，从E-cadherin发育分选到P-selectin白细胞滚动——组织如何把细胞粘成有功能的整体。</div>
+    </div>
+    <div class="meta">
+      <div><div class="k">节次</div><div class="v">第7-8节</div></div>
+      <div><div class="k">日期</div><div class="v">2026-10-08</div></div>
+      <div><div class="k">时长</div><div class="v">2学时</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+  <div class="running"><span>细胞生物学 <span class="tag">·</span> 细胞连接</span><span>目录</span></div>
+  <div class="toc-title">本章脉络</div>
+  <div class="toc-sub">先总览六种连接，再按「细胞↔细胞」和「细胞↔基质」两类展开，最后讲ECM与基底层。</div>
+  <table class="toc">
+    <tr><th>No.</th><th>章节</th><th>核心问题</th></tr>
+    <tr><td class="num">01</td><td class="ch">六种连接总览</td><td class="desc">哪些连微丝、哪些连中间丝？cadherin和integrin怎么分？</td></tr>
+    <tr><td class="num">02</td><td class="ch">细胞-细胞连接</td><td class="desc">紧密连接堵缝隙+维持极性；桥粒为什么像拉链？</td></tr>
+    <tr><td class="num">03</td><td class="ch">细胞-基质连接</td><td class="desc">半桥粒锚定基底层；P-selectin如何让白细胞滚动？</td></tr>
+    <tr><td class="num">04</td><td class="ch">ECM与基底层</td><td class="desc">ECM三组分是什么？基底层为什么是抗癌转移屏障？</td></tr>
+  </table>
+</div>
+
+<div class="page">
+  <div class="running"><span>01 六种连接总览</span><span>01</span></div>
+  <div class="tc-big"><span class="num">01</span> / 04</div>
+  <h2 class="ch-title">六种细胞连接总览</h2>
+  <div class="thesis">细胞↔细胞连接用cadherin，细胞↔基质连接用integrin；连接的骨架要么是微丝要么是中间丝，微管不参与。</div>
+
+  <table class="data">
+    <tr><th>连接</th><th>跨膜蛋白</th><th>胞内骨架</th><th>功能</th></tr>
+    <tr><td>紧密连接</td><td>Claudin/Occludin/JAM</td><td>微丝(ZO-1)</td><td>堵缝隙+膜蛋白极性</td></tr>
+    <tr><td>黏着小带</td><td>E-cadherin</td><td>微丝(catenin)</td><td>黏着+调控增殖凋亡</td></tr>
+    <tr><td>桥粒</td><td>非经典cadherin</td><td><b>中间丝</b></td><td>牢固铆定</td></tr>
+    <tr><td>间隙连接</td><td>connexin六聚体</td><td>无</td><td>1.4nm通讯孔道</td></tr>
+    <tr><td>半桥粒</td><td>整合素integrin</td><td><b>中间丝</b></td><td>锚定基底层</td></tr>
+    <tr><td>黏着斑</td><td>整合素integrin</td><td>微丝</td><td>细胞迁移锚点</td></tr>
+  </table>
+
+  <div class="warn"><b>高频考点：</b>桥粒连中间丝、黏着小带连微丝——别搞混！</div>
+
+  <div class="footdate"><span>细胞生物学 · 总览</span><span>01 / 04</span></div>
+</div>
+
+<div class="page">
+  <div class="running"><span>02 细胞-细胞连接</span><span>02</span></div>
+  <div class="tc-big"><span class="num">02</span> / 04</div>
+  <h2 class="ch-title">细胞-细胞连接</h2>
+  <div class="thesis">紧密连接像围栏维持膜极性；E-cadherin同型亲同性在发育中自动分选组织；桥粒靠中间丝提供机械强度。</div>
+
+  <div class="cardgrid">
+    <div class="card a"><div class="tab"></div><div class="label">紧密连接</div><h4>堵缝隙+极性</h4><p>肠上皮顶端SGLT(主动)、基底GLUT(被动)，紧密连接不让两种转运体混。</p></div>
+    <div class="card b"><div class="tab"></div><div class="label">黏着小带</div><h4>动态cadherin</h4><p>Ca²⁺依赖，E-cadherin→β/α-catenin→微丝。Ca²⁺降就解离。</p></div>
+    <div class="card c"><div class="tab"></div><div class="label">桥粒</div><h4>稳定拉链</h4><p>desmoglein/desmocollin→中间丝。极稳定，电子密度高。</p></div>
+    <div class="card d"><div class="tab"></div><div class="label">间隙连接</div><h4>通讯孔道</h4><p>connexin六聚体=connexon，两个对接，1.4nm过小分子。</p></div>
+  </div>
+
+  <h3 class="sec"><span class="dot"></span>E-cadherin发育分选</h3>
+  <p>E-表皮/N-神经/P-胎盘，同型亲同性。发育早期自动分选：N聚在一起形成神经，E留在表皮。同一组织内表达量高的跑到内部。</p>
+
+  <div class="footdate"><span>细胞生物学 · 细胞-细胞连接</span><span>02 / 04</span></div>
+</div>
+
+<div class="page">
+  <div class="running"><span>03 细胞-基质连接</span><span>03</span></div>
+  <div class="tc-big"><span class="num">03</span> / 04</div>
+  <h2 class="ch-title">细胞-基质连接</h2>
+  <div class="thesis">半桥粒用整合素把上皮锚在laminin-胶原上；白细胞从P-selectin弱结合滚动到integrin强结合停住再钻出血管。</div>
+
+  <h3 class="sec"><span class="dot"></span>半桥粒</h3>
+  <p>只留桥粒一半（因为是细胞↔基质）。细胞侧：中间丝+整合素+胶原17；基质侧：层粘连蛋白(laminin，十字架结构)→胶原。</p>
+
+  <h3 class="sec"><span class="dot"></span>白细胞滚动与穿出</h3>
+  <table class="data">
+    <tr><th>阶段</th><th>分子</th><th>结合强度</th></tr>
+    <tr><td>滚动</td><td>P-selectin → PSGL-1</td><td>弱，缓慢移动</td></tr>
+    <tr><td>停住</td><td>趋化因子→整合素→ICAM</td><td>强，细胞贴壁</td></tr>
+    <tr><td>穿出</td><td>片状伪足钻出血管</td><td>追杀细菌</td></tr>
+  </table>
+
+  <div class="footdate"><span>细胞生物学 · 细胞-基质连接</span><span>03 / 04</span></div>
+</div>
+
+<div class="page">
+  <div class="running"><span>04 ECM与基底层</span><span>04</span></div>
+  <div class="tc-big"><span class="num">04</span> / 04</div>
+  <h2 class="ch-title">细胞外基质与基底层</h2>
+  <div class="thesis">ECM=蛋白聚糖+糖蛋白(laminin/fibronectin)+胶原；基底层是滤过屏障、抗癌转移屏障和极性指示。</div>
+
+  <div class="cardgrid">
+    <div class="card a"><div class="tab"></div><div class="label">蛋白聚糖</div><h4>糖为主</h4><p>GAG长链>蛋白，透明质酸等。</p></div>
+    <div class="card b"><div class="tab"></div><div class="label">糖蛋白</div><h4>蛋白为主</h4><p>laminin(十字架)、fibronectin。</p></div>
+    <div class="card c"><div class="tab"></div><div class="label">纤维状蛋白</div><h4>胶原</h4><p>人体内含量最高蛋白，成纤维细胞分泌。</p></div>
+    <div class="card d"><div class="tab"></div><div class="label">基底层</div><h4>四大功能</h4><p>黏合/滤过屏障/抗癌转移/指示极性。</p></div>
+  </div>
+
+  <div class="warn"><b>基底层：</b>由上皮/肌肉/内皮自己分泌，不是成纤维细胞分泌。癌细胞必须分泌酶降解基底层才能侵入血管转移。</div>
+
+  <div class="footdate"><span>细胞生物学 · 全文完</span><span>04 / 04</span></div>
+</div>
+
+</body>
+</html>

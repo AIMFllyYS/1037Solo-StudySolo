@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>分析化学 第19-20节 可视化笔记</title>
+<style>
+:root{
+  --paper:#F0EDE4; --paper-card:#FAF8F2;
+  --ink:#1C1B17; --ink-soft:#5A564C; --ink-faint:#8B8676; --rule:#CFC9B5;
+  --accent-a:#0E5C52; --accent-a-soft:#E0EDEA;
+  --accent-b:#A2630C; --accent-b-soft:#F5E8D0;
+  --accent-c:#B23A2E; --accent-c-soft:#F5E0DC;
+  --accent-d:#3F6E8C; --accent-d-soft:#E0EAF0;
+  --display:'Noto Serif CJK SC',serif; --body:'Noto Sans CJK SC',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--paper);}
+body{font-family:var(--body);color:var(--ink);font-size:9.8pt;line-height:1.62;}
+.page{width:210mm;min-height:297mm;background:var(--paper);position:relative;overflow:hidden;padding:17mm 18mm 15mm;page-break-after:always;}
+.page:last-child{page-break-after:auto;}
+.running{display:flex;justify-content:space-between;font-size:7.6pt;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--rule);padding-bottom:3mm;margin-bottom:9mm;}
+.running .tag{color:var(--accent-c);font-weight:700;}
+.cover{background:var(--accent-a);color:#F0EDE4;padding:0;}
+.cover .inner{position:relative;height:100%;padding:26mm 18mm;display:flex;flex-direction:column;justify-content:space-between;min-height:257mm;}
+.cover .eyebrow{font-size:8.5pt;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent-b-soft);}
+.cover .eyebrow::before{content:"";width:22px;height:2px;background:var(--accent-b);display:block;margin-bottom:8px;}
+.cover h1{font-family:var(--display);font-weight:900;font-size:42pt;line-height:1.1;margin-top:14mm;color:#FAF8F2;}
+.cover .subtitle{font-family:var(--display);font-size:12pt;color:#C9D8D3;margin-top:10mm;max-width:140mm;line-height:1.7;}
+.cover .meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6mm;border-top:1px solid rgba(255,255,255,.25);padding-top:6mm;margin-top:14mm;}
+.cover .meta .k{font-size:7.6pt;letter-spacing:0.18em;color:rgba(255,255,255,.6);text-transform:uppercase;}
+.cover .meta .v{font-family:var(--display);font-size:11pt;color:#FAF8F2;margin-top:2mm;}
+.toc-title{font-family:var(--display);font-size:26pt;font-weight:800;margin-bottom:3mm;}
+.toc-sub{color:var(--ink-soft);font-size:9.7pt;max-width:150mm;margin-bottom:10mm;line-height:1.8;}
+table.toc{width:100%;border-collapse:collapse;font-size:9.3pt;}
+table.toc th{text-align:left;font-size:7.6pt;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--ink);padding:0 3mm 2.5mm 0;font-weight:600;}
+table.toc td{padding:4.2mm 3mm 4.2mm 0;border-bottom:1px solid var(--rule);vertical-align:top;}
+table.toc .num{font-family:var(--display);font-weight:800;color:var(--accent-c);font-size:11pt;}
+table.toc .ch{font-family:var(--display);font-weight:700;font-size:10.3pt;}
+table.toc .desc{color:var(--ink-soft);}
+.tc-big{font-family:var(--display);font-weight:900;font-size:15pt;color:var(--ink-faint);letter-spacing:0.06em;}
+.tc-big .num{color:var(--accent-c);}
+h2.ch-title{font-family:var(--display);font-weight:900;font-size:24pt;line-height:1.15;margin-top:3mm;max-width:160mm;}
+.thesis{font-family:var(--display);font-weight:600;font-size:11pt;color:var(--accent-a);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:4mm 0;margin:6mm 0;line-height:1.6;}
+h3.sec{font-family:var(--display);font-weight:800;font-size:12pt;margin:5mm 0 2.2mm;display:flex;align-items:center;gap:3mm;}
+h3.sec .dot{width:2.6mm;height:2.6mm;background:var(--accent-c);border-radius:50%;}
+p{margin-bottom:2.2mm;text-align:justify;}
+ul.plain{margin:2mm 0 4mm;padding-left:0;list-style:none;}
+ul.plain li{padding-left:5mm;position:relative;margin-bottom:1.5mm;text-align:justify;}
+ul.plain li::before{content:"—";position:absolute;left:0;color:var(--accent-b);font-weight:700;}
+b{font-weight:700;}
+.cardgrid{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin:3.5mm 0 5mm;}
+.card{background:var(--paper-card);border:1px solid var(--rule);position:relative;padding:5mm;break-inside:avoid;}
+.card .tab{position:absolute;top:0;left:0;right:0;height:2.2mm;}
+.card.a .tab{background:var(--accent-a);} .card.a .label{color:var(--accent-a);}
+.card.b .tab{background:var(--accent-b);} .card.b .label{color:var(--accent-b);}
+.card.c .tab{background:var(--accent-c);} .card.c .label{color:var(--accent-c);}
+.card.d .tab{background:var(--accent-d);} .card.d .label{color:var(--accent-d);}
+.card .label{font-size:7.3pt;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;margin-top:2mm;}
+.card h4{font-family:var(--display);font-size:11pt;font-weight:800;margin:2mm 0;line-height:1.35;}
+.card p{font-size:8.9pt;color:var(--ink-soft);margin-bottom:0;line-height:1.7;}
+.pullquote{margin:4mm 0;padding:3mm 0 3mm 7mm;border-left:3px solid var(--accent-c);font-family:var(--display);font-size:11pt;font-weight:600;line-height:1.55;}
+.diagram{margin:3.5mm 0 5mm;background:var(--paper-card);border:1px solid var(--rule);padding:4mm;}
+.diagram svg{width:100%;height:auto;}
+.diagram .cap{font-size:7.8pt;letter-spacing:0.1em;color:var(--ink-faint);text-transform:uppercase;margin-top:3mm;text-align:center;}
+table.data{width:100%;border-collapse:collapse;font-size:8.8pt;margin:3mm 0;}
+table.data th{background:var(--accent-a-soft);color:var(--accent-a);padding:2.5mm;border:1px solid var(--rule);text-align:left;font-weight:700;}
+table.data td{padding:2.5mm;border:1px solid var(--rule);vertical-align:top;}
+.warn{background:var(--accent-c-soft);border-left:3px solid var(--accent-c);padding:3mm 4mm;margin:3mm 0;font-size:9.2pt;}
+.footdate{position:absolute;bottom:12mm;left:18mm;right:18mm;display:flex;justify-content:space-between;font-size:7.4pt;color:var(--ink-faint);letter-spacing:0.1em;text-transform:uppercase;border-top:1px solid var(--rule);padding-top:2.5mm;}
+</style>
+</head>
+<body>
+
+<div class="page cover">
+  <div class="inner">
+    <div>
+      <div class="eyebrow">INSTRUMENTAL ANALYSIS · 分析化学</div>
+      <h1>原子吸收光谱法<br><span style="font-size:28pt;color:#E7CE9C;">深入 · 仪器与干扰</span></h1>
+      <div class="subtitle">从HCL锐线光源到石墨炉四阶段，从五类干扰到四种扣背景方法——AAS定量分析的完整工程图景。</div>
+    </div>
+    <div class="meta">
+      <div><div class="k">节次</div><div class="v">第19-20节</div></div>
+      <div><div class="k">日期</div><div class="v">2026-10-08</div></div>
+      <div><div class="k">时长</div><div class="v">2学时</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+  <div class="running"><span>分析化学 <span class="tag">·</span> AAS深入</span><span>目录</span></div>
+  <div class="toc-title">本章脉络</div>
+  <div class="toc-sub">按「怎么测→怎么原子化→怎么消除干扰→怎么扣背景」的工程逻辑组织，而非录音时间线。</div>
+  <table class="toc">
+    <tr><th>No.</th><th>章节</th><th>核心问题</th></tr>
+    <tr><td class="num">01</td><td class="ch">仪器与光源</td><td class="desc">为什么AAS必须用锐线光源？HCL和连续光源各有什么优劣？</td></tr>
+    <tr><td class="num">02</td><td class="ch">三种原子化器</td><td class="desc">火焰、石墨炉、氢化物发生——为什么石墨炉灵敏度高100倍？</td></tr>
+    <tr><td class="num">03</td><td class="ch">五类干扰及消除</td><td class="desc">光谱干扰、背景吸收、电离、化学、物理——每类怎么来、怎么消？</td></tr>
+    <tr><td class="num">04</td><td class="ch">背景校正与定量</td><td class="desc">四种扣背景方法本质都是制造邻近线；标准加入法消除物理干扰。</td></tr>
+  </table>
+</div>
+
+<div class="page">
+  <div class="running"><span>01 仪器与光源</span><span>01</span></div>
+  <div class="tc-big"><span class="num">01</span> / 04</div>
+  <h2 class="ch-title">仪器与光源</h2>
+  <div class="thesis">AAS测的是原子核外电子能级跃迁产生的线光谱（~10⁻⁴nm宽），因此必须用锐线光源HCL，普通连续光源分光不够锐。</div>
+
+  <h3 class="sec"><span class="dot"></span>空心阴极灯HCL</h3>
+  <p>HCL阴极用待测元素制作，电子轰击溅射原子→激发→发射该元素特征共振线。单元素灯，测什么元素换什么灯。灯电流过大→自吸→谱线变宽→灵敏度下降。</p>
+
+  <h3 class="sec"><span class="dot"></span>检测器与分光系统</h3>
+  <div class="cardgrid">
+    <div class="card a"><div class="tab"></div><div class="label">检测器</div><h4>光电倍增管PMT</h4><p>与UV-Vis相同。南极冰立方中微子探测器核心也是PMT。</p></div>
+    <div class="card b"><div class="tab"></div><div class="label">连续光源AAS</div><h4>氙灯+两级分光</h4><p>棱镜→光栅→CCD，谱线~10⁻³nm。一个灯替代一箱子HCL，但灵敏度低于HCL的10⁻⁴nm。</p></div>
+  </div>
+
+  <div class="footdate"><span>分析化学 · 仪器与光源</span><span>01 / 04</span></div>
+</div>
+
+<div class="page">
+  <div class="running"><span>02 三种原子化器</span><span>02</span></div>
+  <div class="tc-big"><span class="num">02</span> / 04</div>
+  <h2 class="ch-title">三种原子化器</h2>
+  <div class="thesis">石墨炉比火焰法灵敏度高100倍，原因有二：试样利用率90% vs 10%，且无火焰气体稀释效应。</div>
+
+  <h3 class="sec"><span class="dot"></span>石墨炉升温四阶段</h3>
+  <table class="data">
+    <tr><th>阶段</th><th>温度</th><th>目的</th></tr>
+    <tr><td>① 干燥</td><td>~120℃</td><td>除溶剂（水），~50秒</td></tr>
+    <tr><td>② 灰化</td><td>~1000K</td><td>除有机物/基体</td></tr>
+    <tr><td>③ 原子化</td><td>2000-2500K</td><td>待测元素原子化，仅数秒，Ar停气</td></tr>
+    <tr><td>④ 净化</td><td>比原子化高100-200K</td><td>除残渣防残留</td></tr>
+  </table>
+
+  <div class="cardgrid">
+    <div class="card a"><div class="tab"></div><div class="label">火焰法</div><h4>稳定但效率低</h4><p>试样利用率~10%，检出限~0.5 ng/mL，重现性好，易原子化元素(Cu/Zn/Fe)用。</p></div>
+    <div class="card b"><div class="tab"></div><div class="label">石墨炉法</div><h4>高灵敏但重现差</h4><p>试样利用率>90%，检出限~0.002 ng/mL（低100倍），μL进样，可固体进样。</p></div>
+  </div>
+
+  <h3 class="sec"><span class="dot"></span>氢化物发生与冷原子测汞</h3>
+  <p>As/Sb/Bi/Se/Te/Pb/Sn与硼氢化钾+盐酸反应→挥发性氢化物（如AsH₃）→石英管800-1000℃分解为原子。冷原子测汞同装置：Hg²⁺还原为Hg⁰常温即挥发。</p>
+
+  <div class="footdate"><span>分析化学 · 原子化器</span><span>02 / 04</span></div>
+</div>
+
+<div class="page">
+  <div class="running"><span>03 五类干扰</span><span>03</span></div>
+  <div class="tc-big"><span class="num">03</span> / 04</div>
+  <h2 class="ch-title">五类干扰及消除</h2>
+  <div class="thesis">所有干扰分窄带（谱线）和宽带（背景）两类；化学干扰最常见，经典例是磷酸钙。</div>
+
+  <div class="cardgrid">
+    <div class="card c"><div class="tab"></div><div class="label">光谱干扰（窄带）</div><h4>邻近谱线重叠</h4><p>HCL阴极不纯或样品杂质在共振线附近有吸收。消除：换次灵敏线。</p></div>
+    <div class="card a"><div class="tab"></div><div class="label">背景吸收（宽带）</div><h4>分子吸收+光散射</h4><p>硫酸/磷酸&lt;250nm强吸收→用硝酸不用硫酸；磷酸缓冲液换醋酸铵。</p></div>
+    <div class="card b"><div class="tab"></div><div class="label">电离干扰</div><h4>碱金属高温电离</h4><p>加消电离剂(KCl)——"flood the flame with electrons"，提供自由电子压制电离。</p></div>
+    <div class="card d"><div class="tab"></div><div class="label">化学干扰</div><h4>磷酸钙难解离</h4><p>释放剂La/Sr抢磷酸根；保护剂EDTA螯合Ca；提高温度；富燃焰还原。</p></div>
+  </div>
+
+  <div class="warn"><b>血泪教训：</b>做AAS样品消解不要用浓硫酸（&lt;250nm强背景），用硝酸。缓冲体系不要用磷酸钾，用醋酸铵（pH~7，易挥发无残留）。</div>
+
+  <div class="footdate"><span>分析化学 · 干扰</span><span>03 / 04</span></div>
+</div>
+
+<div class="page">
+  <div class="running"><span>04 扣背景与定量</span><span>04</span></div>
+  <div class="tc-big"><span class="num">04</span> / 04</div>
+  <h2 class="ch-title">背景校正与定量</h2>
+  <div class="thesis">四种扣背景方法本质都是制造一条"邻近线"——原子不吸收它、背景吸收它——然后差值法得到纯原子吸收。</div>
+
+  <h3 class="sec"><span class="dot"></span>四种背景校正</h3>
+  <table class="data">
+    <tr><th>方法</th><th>原理</th><th>特点</th></tr>
+    <tr><td>邻近线法</td><td>测邻近非吸收线=背景</td><td>原理基础</td></tr>
+    <tr><td>氘灯法</td><td>宽带光只被背景吸收，原子吸收可忽略</td><td>常规便宜，切换灯测两次</td></tr>
+    <tr><td>自吸收法</td><td>HCL大电流自吸→只剩两侧邻近线</td><td>伤灯，应急用</td></tr>
+    <tr><td>塞曼法</td><td>磁场分裂谱线π/σ±，偏振选σ测背景</td><td>高端机标配，自动快速</td></tr>
+  </table>
+
+  <h3 class="sec"><span class="dot"></span>标准加入法</h3>
+  <p>样品分5-6等份，分别加0/M₀/2M₀/3M₀标准→测吸光度→外推至A=0→横轴截距=Cx。消除物理干扰（粘度）。要求：标准高浓度小体积、至少5点、<b>不能扣背景</b>。</p>
+
+  <div class="pullquote">"不管哪种扣背景方法，本质都是制造邻近线。"<span class="attr">— 老师总结</span></div>
+
+  <div class="footdate"><span>分析化学 · 全文完</span><span>04 / 04</span></div>
+</div>
+
+</body>
+</html>

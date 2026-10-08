@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "instrumental-analysis",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-019-020",
+  "courseName": "分析化学",
+  "sessionRange": {
+    "start": 19,
+    "end": 20
+  },
+  "taughtOn": "2026-10-08",
+  "topic": "原子吸收光谱法深入：原子化器类型与原理、干扰及消除、背景校正（氘灯/塞曼/自吸收）、定量分析方法与特征浓度",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-019-020"
+}

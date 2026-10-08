@@ -1,0 +1,260 @@
+{
+  "subjectId": "cell-biology",
+  "chapterId": "rec-2026-fall-023-024",
+  "generatedAt": "2026-10-08",
+  "examConfig": {
+    "source": "content/cell-biology/lectures/rec-2026-fall-023-024/recording.md；content/cell-biology/lectures/rec-2026-fall-023-024/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-023-024",
+    "revision": 1,
+    "recordingHash": "e9b7bcb0248ee547418145e2b540d6938c8c3545dac957960667c31cde0eda08",
+    "notesTextHash": "6cfce74daaedd63160e7a72b459202f3f4b4fe6634eaa0f2f06ec6c62220588b"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "紧密连接功能与分子组成"
+      },
+      "stem": "关于紧密连接（tight junction）的功能与分子组成，下列叙述正确的是：",
+      "options": [
+        "主要通过中间丝提供机械强度，像铆钉一样把细胞铆在一起",
+        "跨膜蛋白为 Claudin/Occludin/JAM，经 ZO-1 连到微丝；功能是堵缝隙并维持膜蛋白极性",
+        "由 connexin 六聚体构成 1.4nm 孔道，负责小分子通讯",
+        "由整合素构成，把细胞锚定在基底层"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**紧密连接跨膜蛋白 Claudin/Occludin/JAM，胞内经衔接蛋白 ZO-1 连到微丝；两大功能＝堵缝隙（水溶性小分子不能绕细胞漏过、必须穿细胞受调控）＋维持膜蛋白极性。A错：连中间丝、铆钉状是桥粒。C错：connexin 六聚体、1.4nm 孔道是间隙连接。D错：整合素锚定基底层是半桥粒。",
+      "hint": "堵缝+围栏，Claudin/Occludin/JAM那套。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "紧密连接膜极性与SGLT/GLUT"
+      },
+      "stem": "肠上皮细胞中，紧密连接维持膜蛋白极性。顶端（肠腔侧）与基底侧的葡萄糖转运体分别是：",
+      "options": [
+        "顶端 GLUT 被动转运，基底侧 SGLT 主动转运",
+        "顶端 SGLT 主动转运葡萄糖（耗 Na⁺ 梯度），基底侧 GLUT 被动转运、顺浓度出到血液",
+        "两侧都用 SGLT，靠紧密连接防止葡萄糖内流",
+        "葡萄糖经紧密连接的缝隙直接漏到基底侧"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**顶端（apical，肠腔侧）SGLT 主动转运葡萄糖（耗 Na⁺ 梯度），基底侧（basal/lateral）GLUT 被动转运、顺浓度梯度出到血液；紧密连接像围栏不让两种转运体自由扩散混合。A错：把两侧说反。D错：紧密连接正是堵缝隙，禁止物质绕细胞间隙漏过。",
+      "hint": "顶 SGLT 主动，底 GLUT 被动。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "黏着小带E-cadherin-catenin-微丝"
+      },
+      "stem": "关于黏着小带（adherens junction），下列叙述正确的是：",
+      "options": [
+        "跨膜为整合素，胞内连中间丝",
+        "跨膜为 E-cadherin，经 p120/β-catenin/α-catenin 转接复合物连到微丝，Ca²⁺ 依赖、动态",
+        "跨膜为 connexin 六聚体，负责物质通讯",
+        "胞内直接用 desmoglein 连中间丝，极稳定"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**黏着小带跨膜 E-cadherin（胞外 Ca²⁺>1mM 才伸展结合），cadherin 本身不直接连微丝，经 p120-catenin＋β-catenin＋α-catenin(+vinculin) 转接微丝；动态、Ca²⁺ 降即解离，功能=黏着+调控增殖/凋亡/形状。A错：整合素/中间丝是半桥粒。C错：connexin 是间隙连接。D错：desmoglein/中间丝是桥粒。",
+      "hint": "E-cadherin 经 catenin 接微丝，Ca²⁺ 依赖动态。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "Cadherin同型亲同性与发育分选"
+      },
+      "stem": "E-cadherin、N-cadherin、P-cadherin 的“同型亲同性”及其发育意义是：",
+      "options": [
+        "E/N/P 之间随机互相结合，不影响组织形成",
+        "E-表皮、N-神经、P-胎盘，同型亲同性（E 只跟 E、N 只跟 N 结合）→ 发育早期自动分选组织",
+        "cadherin 一律结合整合素，组织分选由 integrin 决定",
+        "同一组织内 cadherin 表达量越高的细胞越留在外层"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**E-表皮/N-神经/P-胎盘，同型亲同性使表达 N-cadherin 的细胞聚在一起形成神经组织、表达 E-cadherin 的留在表皮；同一组织内 E-cadherin 表达量高的细胞跑到组织内部、表达量低的留在外层。D错：把内外位置说反。",
+      "hint": "E 表皮、N 神经、P 胎盘，同性相吸自动分选。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "桥粒与黏着小带对比"
+      },
+      "stem": "关于桥粒（desmosome）与黏着小带的区别，下列叙述正确的是：",
+      "options": [
+        "桥粒连微丝、动态；黏着小带连中间丝、极稳定",
+        "桥粒由非经典 cadherin（desmoglein/desmocollin）连中间丝、电镜下铆钉/纽扣状致密斑、极稳定；黏着小带连微丝、动态、电子密度低",
+        "桥粒在电镜下像拉链，负责封闭细胞缝隙",
+        "两者都连中间丝，只是位置不同"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**桥粒跨膜为非经典 cadherin、连中间丝、电镜下电子密度极高呈铆钉/纽扣状致密斑、极稳定；黏着小带连微丝、Ca²⁺ 依赖动态、松散电子密度低。A错：把两者骨架说反。C错：像拉链/嵴线是紧密连接的封闭索，桥粒是铆钉/斑点状铆定。",
+      "hint": "桥粒铆钉连中间丝，别当成拉链。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "半桥粒integrin-laminin-中间丝"
+      },
+      "stem": "关于半桥粒（hemidesmosome），下列叙述正确的是：",
+      "options": [
+        "由 E-cadherin 连微丝，位于细胞与细胞之间",
+        "由特殊整合素（integrin）+ 胶原17 构成，胞内连中间丝，基质侧结合层粘连蛋白 laminin→胶原，把上皮锚在基底层",
+        "由 connexin 对接形成 1.4nm 通讯孔道",
+        "由 P-selectin 结合 PSGL-1，介导白细胞滚动"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**半桥粒是细胞↔基质连接，只留桥粒的“一半”：特殊整合素+胶原17，胞内连中间丝，基质侧 laminin（十字架结构）→胶原，把上皮锚定在基底层。A错：E-cadherin/微丝是黏着小带。C错：connexin 对接是间隙连接。D错：P-selectin/PSGL-1 是白细胞滚动。",
+      "hint": "半桥粒 integrin 接 laminin，连中间丝锚基底层。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "黏着斑与半桥粒骨架配体区分"
+      },
+      "stem": "黏着斑（focal adhesion）与半桥粒在跨膜蛋白、胞内骨架和配体上的配对，正确的是：",
+      "options": [
+        "两者都是整合素，都连中间丝",
+        "黏着斑：αβ 整合素异二聚体连微丝、配体胶原/fibronectin；半桥粒：特殊整合素连中间丝、配体 laminin→胶原",
+        "黏着斑连中间丝、配体 laminin；半桥粒连微丝、配体胶原",
+        "两者都是 cadherin，连微丝"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**同是整合素介导的细胞↔基质连接，但黏着斑 αβ 异二聚体连微丝、配体胶原/fibronectin（迁移锚点）；半桥粒特殊整合素连中间丝、配体 laminin→胶原（锚定基底层）。A错：胞内骨架不同。C错：把骨架和配体说反。D错：cadherin 是细胞↔细胞连接。",
+      "hint": "黏着斑微丝+胶原/fibronectin，半桥粒中间丝+laminin。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/cell-biology/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "间隙连接connexin/connexon/1.4nm通讯"
+      },
+      "stem": "关于间隙连接（gap junction）的结构与功能，正确的是：",
+      "options": [
+        "由两个黏着小带对接而成，负责细胞间黏附",
+        "三个层级超分子组装：connexin 单体→connexon 六聚体（半个通道）→两个 connexon 对接=12 个 connexin；孔径 1.4nm，只过 cAMP/离子等小分子，负责通讯",
+        "孔径允许蛋白质和 mRNA 自由通过，实现物质共享",
+        "其组装属于蛋白质的“三级结构”"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**间隙连接是 connexin 六聚体=connexon，两个 connexon 对接（共 12 个 connexin），1.4nm 孔道只过 cAMP、离子等水溶性小分子，功能是通讯而非黏着。D错：这是超分子组装的“三个层级”，不是蛋白质三级结构。C错：蛋白/核酸过不去。",
+      "hint": "六聚对接十二，1.4nm 通小分子，三个层级非三级结构。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/cell-biology/lectures/rec-2026-fall-023-024/recording.md",
+        "label": "P-selectin白细胞滚动到整合素停住穿出"
+      },
+      "stem": "白细胞沿血管内皮从“滚动”到“粘附穿出”的分子切换是：",
+      "options": [
+        "始终靠整合素强结合，不发生强弱切换",
+        "先靠内皮 P-selectin 结合白细胞 PSGL-1（弱结合）缓慢滚动；趋化因子→整合素激活→integrin-ICAM 强结合停住，再伸片状伪足钻出血管",
+        "先靠 cadherin 强黏附，再换 selectin 弱结合",
+        "白细胞靠桥粒铆在内皮上保持不动"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**巡逻时内皮 P-selectin→白细胞 PSGL-1（糖基化配体）弱结合，允许沿内皮缓慢滚动又不被冲走；感染时细菌趋化因子经 GPCR 激活整合素，由弱（selectin）变强（integrin-ICAM）使细胞停住贴壁，再伸片状伪足钻出血管追杀细菌。",
+      "hint": "selectin 弱着滚动，integrin 强着停步钻出。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "ECM三大组分与透明质酸HA归类"
+      },
+      "stem": "关于细胞外基质（ECM）的组分与透明质酸（HA），下列叙述正确的是：",
+      "options": [
+        "透明质酸是典型的蛋白聚糖，因为它连有核心蛋白",
+        "ECM 三大组分为蛋白聚糖（糖为主、GAG 长链>蛋白）、糖蛋白（laminin 十字架/fibronectin）、纤维状蛋白（胶原）；透明质酸（HA）是糖胺聚糖（GAG），不与核心蛋白共价连接，严格说不算蛋白聚糖",
+        "胶原蛋白是膜蛋白，由上皮细胞顶端分泌",
+        "ECM 中糖蛋白以 GAG 长链为主、蛋白为辅"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**ECM＝蛋白聚糖（糖为主）＋糖蛋白（laminin 十字架/fibronectin，蛋白为主）＋纤维状蛋白（胶原，人体内含量最高、成纤维细胞分泌）；透明质酸 HA 是 GAG、不与核心蛋白共价连接，严格说不算蛋白聚糖。A错：HA 不是蛋白聚糖。D错：说反了，糖蛋白以蛋白为主。",
+      "hint": "HA 是 GAG 不挂核心蛋白；胶原含量最高。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-023-024/notes.html",
+        "label": "基底层四大功能与来源"
+      },
+      "stem": "关于基底层（basal lamina），下列叙述正确的是：",
+      "options": [
+        "由成纤维细胞分泌，只有滤过屏障和极性指示两大功能",
+        "由表皮/肌肉/内皮自己分泌，四大功能＝黏合结构、滤过屏障（肾血管球）、抗癌转移屏障（癌细胞须降解它才能入血管）、指示细胞极性",
+        "癌细胞可自由穿过基底层转移，无需分泌酶",
+        "基底层就是胶原蛋白束，与细胞极性无关"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**基底层由表皮/肌肉/内皮细胞自己分泌（不是成纤维细胞），四大功能＝①黏合结构 ②滤过屏障（肾血管球：小分子废物入尿、大蛋白/细胞挡住）③抗癌转移屏障（癌细胞必须分泌酶降解基底层才能侵入血管转移）④指示细胞极性。A错：来源和数量都错（上皮自分泌、是四大非两大）。C错：必须先降解基底层才能转移。",
+      "hint": "基底层四件事：黏合、滤过、挡癌、定极性。"
+    }
+  ]
+}

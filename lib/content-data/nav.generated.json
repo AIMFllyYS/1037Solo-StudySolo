@@ -5380,6 +5380,45 @@
                   "quizRef": "rec-2026-fall-017-018"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-019-020",
+              "title": "第19-20节 · 原子吸收光谱法深入：原子化器类型与原理、干扰及消除、背景校正（氘灯/塞曼/自吸收）、定量分析方法与特征浓度",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-019-020",
+                  "title": "课堂原文 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                },
+                {
+                  "id": "note-rec-2026-fall-019-020",
+                  "title": "课堂笔记 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                },
+                {
+                  "id": "card-rec-2026-fall-019-020",
+                  "title": "复习手卡 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                }
+              ]
             }
           ]
         },
@@ -5490,6 +5529,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-017-018",
               "quizRef": "rec-2026-fall-017-018",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-019-020",
+              "title": "课堂纪要 · 第19-20节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-019-020",
+              "quizRef": "rec-2026-fall-019-020",
               "layoutProfile": "full"
             }
           ]
@@ -7880,6 +7930,45 @@
                   "quizRef": "rec-2026-fall-021-022"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-023-024",
+              "title": "第23-24节 · 细胞连接（紧密连接/锚定连接/桥粒/缝隙连接）与细胞外基质（胶原/糖胺聚糖/蛋白聚糖/纤连蛋白/层粘连蛋白）",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-023-024",
+                  "title": "课堂原文 · 第23-24节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-023-024",
+                  "quizRef": "rec-2026-fall-023-024"
+                },
+                {
+                  "id": "note-rec-2026-fall-023-024",
+                  "title": "课堂笔记 · 第23-24节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-023-024",
+                  "quizRef": "rec-2026-fall-023-024"
+                },
+                {
+                  "id": "card-rec-2026-fall-023-024",
+                  "title": "复习手卡 · 第23-24节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-023-024",
+                  "quizRef": "rec-2026-fall-023-024"
+                }
+              ]
             }
           ]
         },
@@ -7990,6 +8079,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-021-022",
               "quizRef": "rec-2026-fall-021-022",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-023-024",
+              "title": "课堂纪要 · 第23-24节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-023-024",
+              "quizRef": "rec-2026-fall-023-024",
               "layoutProfile": "full"
             }
           ]
@@ -10927,6 +11027,45 @@
                   "quizRef": "rec-2026-fall-023-024"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-025-026",
+              "title": "第25-26节 · 脂质代谢开篇：脂肪酸分类与命名、消化吸收与微团形成、脂肪动员（HSL）、脂肪酸β氧化过程与能量计算",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-025-026",
+                  "title": "课堂原文 · 第25-26节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-025-026",
+                  "quizRef": "rec-2026-fall-025-026"
+                },
+                {
+                  "id": "note-rec-2026-fall-025-026",
+                  "title": "课堂笔记 · 第25-26节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-025-026",
+                  "quizRef": "rec-2026-fall-025-026"
+                },
+                {
+                  "id": "card-rec-2026-fall-025-026",
+                  "title": "复习手卡 · 第25-26节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-025-026",
+                  "quizRef": "rec-2026-fall-025-026"
+                }
+              ]
             }
           ]
         },
@@ -11076,6 +11215,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-023-024",
               "quizRef": "rec-2026-fall-023-024",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-025-026",
+              "title": "课堂纪要 · 第25-26节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-025-026",
+              "quizRef": "rec-2026-fall-025-026",
               "layoutProfile": "full"
             }
           ]

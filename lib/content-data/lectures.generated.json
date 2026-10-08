@@ -1014,6 +1014,50 @@
       }
     },
     {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-025-026",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 25,
+        "end": 26
+      },
+      "taughtOn": "2026-10-08",
+      "topic": "脂质代谢开篇：脂肪酸分类与命名、消化吸收与微团形成、脂肪动员（HSL）、脂肪酸β氧化过程与能量计算",
+      "revision": 1,
+      "quizId": "rec-2026-fall-025-026",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-025-026"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-025-026"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-025-026"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-025-026"
+        }
+      },
+      "hashes": {
+        "recording": "0156c1a2d3b37856cf9ff89342c01d8f94d6d69e285d37031d2b6bbd5f281081",
+        "notesText": "4b6a2dd479f2f998f400e2abd3a93961e26661566187e349f2ce21ac47c5e4ae"
+      }
+    },
+    {
       "subjectId": "cell-biology",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -1407,6 +1451,50 @@
       "hashes": {
         "recording": "842ac129884d4c6ded6f4c0c79d835a3faaab90289642dd8272cb2722c63701b",
         "notesText": "e6632c626c6495d2dd766797dd2c1bbddaf637b4978c77863691c58ad4de28ba"
+      }
+    },
+    {
+      "subjectId": "cell-biology",
+      "lessonId": "rec-2026-fall-023-024",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "细胞生物学",
+      "sessionRange": {
+        "start": 23,
+        "end": 24
+      },
+      "taughtOn": "2026-10-08",
+      "topic": "细胞连接（紧密连接/锚定连接/桥粒/缝隙连接）与细胞外基质（胶原/糖胺聚糖/蛋白聚糖/纤连蛋白/层粘连蛋白）",
+      "revision": 1,
+      "quizId": "rec-2026-fall-023-024",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-023-024"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-023-024"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-023-024"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-023-024"
+        }
+      },
+      "hashes": {
+        "recording": "e9b7bcb0248ee547418145e2b540d6938c8c3545dac957960667c31cde0eda08",
+        "notesText": "6cfce74daaedd63160e7a72b459202f3f4b4fe6634eaa0f2f06ec6c62220588b"
       }
     },
     {
@@ -2243,6 +2331,50 @@
       "hashes": {
         "recording": "95157d270999e14c165c55662b4e2589e515aae360c22ae6c785029a1cbdc67b",
         "notesText": "3a4d14acbea16165eb450f57ce6d91a79ad21f8594965c077cd45b3f8dbd8e74"
+      }
+    },
+    {
+      "subjectId": "instrumental-analysis",
+      "lessonId": "rec-2026-fall-019-020",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "分析化学",
+      "sessionRange": {
+        "start": 19,
+        "end": 20
+      },
+      "taughtOn": "2026-10-08",
+      "topic": "原子吸收光谱法深入：原子化器类型与原理、干扰及消除、背景校正（氘灯/塞曼/自吸收）、定量分析方法与特征浓度",
+      "revision": 1,
+      "quizId": "rec-2026-fall-019-020",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-019-020"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-019-020"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-019-020"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-019-020"
+        }
+      },
+      "hashes": {
+        "recording": "ee376a6fc90464e3b03e9798306a644152a76bdac0cacf9f1dfbbe36267f8ff5",
+        "notesText": "c008f695dc6a7f96a3ba579d0f5279040321df9ff8e0281db258f1a818fac22e"
       }
     },
     {
