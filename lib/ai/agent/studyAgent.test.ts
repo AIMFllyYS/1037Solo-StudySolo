@@ -254,8 +254,9 @@ test("createStudyAgent：模型不支持工具时 tools 为空；软上限时仍
 
   const truncated = createStudyAgent(baseInput(model, { referenceContext: "参考材料正文", contextTruncated: true }));
   assert.match(truncated.promptParts.instructions, /参考材料正文/);
-  assert.match(truncated.promptParts.instructions, /80% 软上限/);
-  assert.match(truncated.promptParts.instructions, /分级裁剪/);
+  assert.match(truncated.promptParts.instructions, /【上下文策略】/);
+  assert.match(truncated.promptParts.instructions, /文件引用可继续按需读取/);
+  assert.match(truncated.promptParts.instructions, /分级携带/);
   assert.ok("getArtifact" in createStudyAgent(baseInput(model)).tools);
   assert.ok("proposeMemory" in createStudyAgent(baseInput(model)).tools);
   assert.ok(!("commitNotes" in createStudyAgent(baseInput(model)).tools));

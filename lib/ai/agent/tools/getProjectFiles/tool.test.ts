@@ -48,7 +48,7 @@ describe("getProjectFiles execute", { concurrency: false }, () => {
     assert.equal(result.found, true);
     assert.match(result.text, /- s1｜第 1 题｜120 字｜已带入｜求极限/);
     assert.match(result.text, /- s2｜第 2 题｜140 字｜未带入｜证明/);
-    assert.match(result.text, /1 片可读/);
+    assert.match(result.text, /1 片已携带/);
     assert.match(result.text, /2 片在册/);
     assert.match(result.text, /2 片（本轮带入 1 片）/);
   });
@@ -57,15 +57,15 @@ describe("getProjectFiles execute", { concurrency: false }, () => {
     const result = await exec(ctxWith(["s1", "s2"]));
     // 每一行都该是「已带入」：没有需要用户补读的切片。
     assert.doesNotMatch(result.text, /｜未带入｜/);
-    assert.match(result.text, /2 片可读/);
+    assert.match(result.text, /2 片已携带/);
   });
 
   test("一片都没带时明确说读不到，并给出可执行下一步", async () => {
     const result = await exec(ctxWith([]));
-    assert.match(result.text, /0 片可读/);
+    assert.match(result.text, /0 片已携带/);
     assert.match(result.text, /未带入/);
-    assert.match(result.text, /别重试/);
-    assert.match(result.text, /带入对话/);
+    assert.match(result.text, /仅本机旧文件/);
+    assert.match(result.text, /选择带入/);
   });
 
   test("没有项目文件时维持原提示", async () => {
