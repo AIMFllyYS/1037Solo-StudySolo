@@ -1,5 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
-import { resolvePublicAuthEnv } from "./env.ts";
+import {verifyAccount} from './sign-in/account-verify';
+import {accountBackendUrl,authModeForHost} from './authMode';
 import { isPaidAiApiPath } from "./paidAiRoutes.ts";
 import { consumeRateLimit, type RateLimitConsumeOptions } from "./rateLimit.ts";
 import { extractAccessToken } from "./sessionCookie.ts";
@@ -42,8 +42,8 @@ export type AiGateDecision =
   | { action: "next"; userId?: string }
   | {
       action: "reject";
-      status: 401 | 403 | 429;
-      body: { error: string };
+      status: 401 | 403 | 429 | 503;
+      body: { error: string; code?:string };
       headers?: Record<string, string>;
     };
 
@@ -53,28 +53,12 @@ export function readTrustedProxyUserId(headers: { get(name: string): string | nu
   return id;
 }
 
+/** Compatibility name; canonical identity comes only from Account introspection. */
 export async function verifySupabaseAccessToken(token: string): Promise<GateUser | null> {
-  if (!token) return null;
-  try {
-    const env = resolvePublicAuthEnv();
-    const client = createClient(env.supabaseUrl, env.anonKey, {
-      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-    });
-    const { data, error } = await client.auth.getUser(token);
-    const id = data.user?.id;
-    if (error || !id || !data.user?.email_confirmed_at) return null;
-    const verified=await client.auth.getClaims(token);
-    const claims=verified.data?.claims;
-    if(verified.error || !claims || claims.sub!==id || claims.iss!==`${env.supabaseUrl}/auth/v1` || claims.aud!=="authenticated")return null;
-    const {createServiceAuthClient}=await import("./serviceClient");
-    const profile=await createServiceAuthClient().from("user_profiles").select("account_role,is_active").eq("id",id).maybeSingle();
-    if(profile.error)throw profile.error;
-    if(!profile.data||profile.data.is_active!==true)return null;
-    const requiresMfa=["admin","super_admin"].includes(profile.data?.account_role) || (data.user.factors??[]).some(f=>f.status==="verified");
-    return {id,mfaRequired:requiresMfa && claims.aal!=="aal2",clientId:typeof claims.client_id==="string"?claims.client_id:undefined,aal:typeof claims.aal==="string"?claims.aal:undefined,sessionId:typeof claims.session_id==="string"?claims.session_id:undefined};
-  } catch {
-    return null;
-  }
+  const result=await verifyAccount(token,{accountBackendUrl:accountBackendUrl('account-shared')});
+  if(result.kind!=='ok')return null;
+  const identity=result.identity as typeof result.identity & {client_id?:string};
+  return {id:identity.user_id,mfaRequired:identity.mfa_required,aal:identity.aal,sessionId:identity.session_id,clientId:identity.client_id};
 }
 
 /**
@@ -93,13 +77,16 @@ export async function decideAiGate(
     return { action: "reject", status: 401, body: { ...AI_GATE_UNAUTHORIZED } };
   }
 
-  const verify = deps.verifyAccessToken ?? verifySupabaseAccessToken;
   let user: GateUser | null = null;
   try {
-    user = await verify(token);
-  } catch {
-    user = null;
-  }
+    if(deps.verifyAccessToken)user=await deps.verifyAccessToken(token);
+    else{
+      const result=await verifyAccount(token,{accountBackendUrl:accountBackendUrl(authModeForHost(request.headers.get('host')??''))});
+      if(result.kind==='unavailable')return {action:'reject',status:503,body:{error:'统一账号服务暂不可用，登录状态已保留。',code:'ACCOUNT_UNAVAILABLE'},headers:{'Retry-After':'5'}};
+      if(result.kind==='forbidden')return {action:'reject',status:403,body:{error:'当前账号尚未通过统一账号验证。',code:result.code}};
+      if(result.kind==='ok')user={id:result.identity.user_id,mfaRequired:result.identity.mfa_required};
+    }
+  } catch { return {action:'reject',status:503,body:{error:'统一账号服务暂不可用。',code:'ACCOUNT_UNAVAILABLE'}}; }
   if (!user) {
     return { action: "reject", status: 401, body: { ...AI_GATE_UNAUTHORIZED } };
   }

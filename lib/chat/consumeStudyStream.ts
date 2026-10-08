@@ -113,6 +113,8 @@ export interface ConsumeStudyStreamOptions {
   onUsage?: (usage: UsageSummary) => void;
   onContextBreakdown?: (breakdown: ContextBreakdown) => void;
   onInfo?: (message: string) => void;
+  onLocalContinuation?: (token: string) => void;
+  sourceMessages?:readonly ChatMessage[];
 }
 
 /**
@@ -120,7 +122,7 @@ export interface ConsumeStudyStreamOptions {
  * readUIMessageStream 会在后台消费输入，取消它的输出不会关闭网络，因此显式管理输入 reader。
  */
 export async function consumeStudyStream({
-  stream, message, abortSignal, onMessage, onUsage, onContextBreakdown, onInfo, sessionId,
+  stream, message, abortSignal, onMessage, onUsage, onContextBreakdown, onInfo, sessionId, onLocalContinuation,sourceMessages,
 }: ConsumeStudyStreamOptions): Promise<ChatMessage> {
   const source = stream.getReader();
   const ownerEpoch = getOwnerEpoch();
@@ -166,6 +168,7 @@ export async function consumeStudyStream({
           return;
         }
         const chunk = result.value;
+        if (chunk.type === 'data-local-continuation') { const token=objectValue(chunk.data)?.token; if(typeof token==='string')onLocalContinuation?.(token); }
         if (sessionId && chunk.type === 'data-context-compaction' && getOwnerEpoch() === ownerEpoch) {
           const data = objectValue(chunk.data);
           if (data?.phase === 'running') useCompactionState.getState().set(sessionId, 'running', '正在调用 AI 整理上下文，原消息与附件保留…');
@@ -174,7 +177,8 @@ export async function consumeStudyStream({
             if (typeof data.summary === 'string' && Array.isArray(data.coveredIds)) {
               const previous = useChatHistory.getState().sessionsMeta.find(meta => meta.id === sessionId)?.contextCheckpoint;
               const ids = [...new Set([...(previous?.coveredIds ?? []), ...data.coveredIds.filter((id): id is string => typeof id === 'string' && !id.startsWith('compact-'))])];
-              useChatHistory.getState().setContextCheckpoint(sessionId, { summary: data.summary, coveredIds: ids, cloudFileIds: Array.isArray(data.cloudFileIds) ? data.cloudFileIds.filter((id): id is string => typeof id === 'string') : previous?.cloudFileIds ?? [], createdAt: typeof data.createdAt === 'number' ? data.createdAt : Date.now() });
+              const revisions={...previous?.coveredRevisions,...Object.fromEntries((sourceMessages??[]).filter(m=>ids.includes(m.id)).map(m=>[m.id,m.contentRevision??0]))};
+              useChatHistory.getState().setContextCheckpoint(sessionId, { summary: data.summary, coveredIds: ids,coveredRevisions:Object.keys(revisions).length===ids.length?revisions:undefined, cloudFileIds: Array.isArray(data.cloudFileIds) ? data.cloudFileIds.filter((id): id is string => typeof id === 'string') : previous?.cloudFileIds ?? [], createdAt: typeof data.createdAt === 'number' ? data.createdAt : Date.now() });
             }
           }
         }

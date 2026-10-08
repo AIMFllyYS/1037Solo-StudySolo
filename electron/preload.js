@@ -2,7 +2,7 @@
 // needs no privileged bridge for its core features. We expose a tiny, read-only
 // `window.desktop` flag so the renderer can feature-detect the Electron build and
 // switch the in-app browser from <iframe> to a real <webview> (真实浏览器).
-const { contextBridge, ipcRenderer } = require("electron");
+const { contextBridge, ipcRenderer, webUtils } = require("electron");
 
 // 首次保存自由中转后，把对话默认模型切到「自由中转」，避免仍打到内置模型 ID。
 // preload 在页面任何脚本之前同步执行：趁设置 store 尚未水合直接写 localStorage，
@@ -25,6 +25,12 @@ try {
 contextBridge.exposeInMainWorld("desktop", {
   isElectron: true,
   platform: process.platform,
+  localFiles: {
+    register: (file, owner, id) => ipcRenderer.invoke('local-files:register', { path: webUtils.getPathForFile(file), owner, id }),
+    info: (id, owner) => ipcRenderer.invoke('local-files:info', { id, owner }),
+    read: (id, owner, start, end, version) => ipcRenderer.invoke('local-files:read', { id, owner, start, end,version }),
+    remove: (id, owner) => ipcRenderer.invoke('local-files:remove', { id, owner }),
+  },
   secrets: {
     load: () => ipcRenderer.invoke("secrets:load"),
     save: (payload) => ipcRenderer.invoke("secrets:save", payload),

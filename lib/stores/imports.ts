@@ -13,6 +13,10 @@ export type ImportKind = "file" | "url";
 export type ImportSource = "composer" | "window-taskbar" | "browser" | "project-files" | "assets";
 
 export interface ImportRecord {
+  localFileId?: string;
+  desktopFileId?: string;
+  sourceVersion?: string;
+  sessionId?: string | null;
   cloudFileId?: string;
   id: string;
   kind: ImportKind;
@@ -32,6 +36,11 @@ export interface ImportRecord {
 }
 
 export interface RecordImportInput {
+  id?: string;
+  localFileId?: string;
+  desktopFileId?: string;
+  sourceVersion?: string;
+  sessionId?: string | null;
   cloudFileId?: string;
   kind: ImportKind;
   name: string;
@@ -78,7 +87,7 @@ export const useImports = createPersistedStore<ImportsState>(
       if (!name) return null;
       const now = Date.now();
       const key = dedupeKey({ ...input, name });
-      const existing = Object.values(get().byId).find(
+      const existing = input.id ? get().byId[input.id] : Object.values(get().byId).find(
         (item) => dedupeKey(item) === key,
       );
       if (existing) {
@@ -87,6 +96,10 @@ export const useImports = createPersistedStore<ImportsState>(
             ...state.byId,
             [existing.id]: {
               ...existing,
+              localFileId: input.localFileId ?? existing.localFileId,
+              desktopFileId: input.desktopFileId ?? existing.desktopFileId,
+              sourceVersion: input.sourceVersion ?? existing.sourceVersion,
+              sessionId: input.sessionId ?? existing.sessionId,
               name,
               absPath: input.absPath ?? existing.absPath,
               url: input.url ?? existing.url,
@@ -103,8 +116,12 @@ export const useImports = createPersistedStore<ImportsState>(
         }));
         return existing.id;
       }
-      const id = genId();
+      const id = input.id ?? genId();
       const record: ImportRecord = {
+        localFileId: input.localFileId,
+        desktopFileId: input.desktopFileId,
+        sourceVersion: input.sourceVersion,
+        sessionId: input.sessionId,
         id,
         kind: input.kind,
         name,

@@ -33,3 +33,19 @@ test('matching third-party URLs and protocol-relative URLs never receive the app
   }, 'https://study.example');
   try { await fetch('https://elsewhere.example/api/chat'); assert.equal(tokenReads, 0); } finally { restore(); }
 });
+
+
+test('owner switch while renewing a token cannot send the previous request as the new owner', async () => {
+  const { activateStorageOwner } = await import('../storage/ownerScope');
+  activateStorageOwner('owner-a');
+  let resolveToken!: (token: string) => void;
+  let calls = 0;
+  const restore = installAiAuthFetch(() => new Promise(resolve => { resolveToken = resolve; }), async () => { calls++; return new Response(); }, 'https://study.example');
+  try {
+    const pending = fetch('/api/chat', { method: 'POST', body: 'private-a' });
+    activateStorageOwner('owner-b');
+    resolveToken('token-b');
+    await assert.rejects(pending, /账号已切换/);
+    assert.equal(calls, 0);
+  } finally { restore(); activateStorageOwner(null); }
+});

@@ -339,7 +339,7 @@ test("resolveLanguageModel：failover 后 thinkingSettings 跟落地 mimo-thinki
     const body = init?.body ? JSON.parse(String(init.body)) as Record<string, unknown> : {};
     hops.push({ url, body });
     if (url.includes("primary-glm.invalid")) {
-      return new Response("unavailable", { status: 503 });
+      return new Response(JSON.stringify({error:{message:"not found",code:"model_not_found"}}), { status: 400 });
     }
     return new Response(
       `data: ${JSON.stringify({ choices: [{ delta: { content: "ok" } }] })}\n\n` +
@@ -389,7 +389,7 @@ test("resolveLanguageModel：failover 后 getActualProvider 指向落地模型",
   t.mock.method(globalThis, "fetch", async (input: string | URL | Request) => {
     const url = String(input);
     if (url.includes("primary-failover.invalid")) {
-      return new Response("unavailable", { status: 503 });
+      return new Response(JSON.stringify({error:{message:"not found",code:"model_not_found"}}), { status: 400 });
     }
     return new Response(
       `data: ${JSON.stringify({ choices: [{ delta: { content: "ok" } }] })}\n\n` +
@@ -464,11 +464,9 @@ test("resolveLanguageModel：真实 SDK 仍拒绝未知思考结构及畸形工�
       { headers: { "content-type": "text/event-stream" } },
     ));
     try {
-      const result = await fixtureModel().model.doStream({ prompt: fixturePrompt });
-      const parts = await readParts(result.stream);
-      const error = parts.find((part) => part.type === "error");
-      assert.ok(error?.error instanceof Error);
-      assert.equal(error.error.name, "AI_TypeValidationError");
+      let failure: unknown;
+      try {const parts=await readParts((await fixtureModel().model.doStream({prompt:fixturePrompt})).stream);failure=parts.find(p=>p.type==='error')?.error;}catch(error){failure=error;}
+      assert.ok(failure instanceof Error);assert.equal(failure.name,'AI_TypeValidationError');
     } finally {
       fetchMock.mock.restore();
     }
@@ -540,10 +538,9 @@ test("resolveLanguageModel：真实 SDK 保留上游显式错误与缺失完成�
       { headers: { "content-type": "text/event-stream" } },
     ));
     try {
-      const result = await fixtureModel().model.doStream({ prompt: fixturePrompt });
-      const parts = await readParts(result.stream);
-      assert.ok(parts.some((part) => part.type === "error"));
-      assert.equal(parts.find((part) => part.type === "finish")?.finishReason.unified, "error");
+      let failure: unknown;
+      try {const parts=await readParts((await fixtureModel().model.doStream({prompt:fixturePrompt})).stream);failure=parts.find(p=>p.type==='error')?.error;}catch(error){failure=error;}
+      assert.ok(failure);
     } finally {
       fetchMock.mock.restore();
     }

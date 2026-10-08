@@ -7,6 +7,9 @@ import { LayoutGrid, List, RefreshCw, Search } from "lucide-react";
 import AgentAssetCard from "./AgentAssetCard";
 import SharedLinksPanel from "@/components/share/SharedLinksPanel";
 import CloudFilesPanel from './CloudFilesPanel';
+import AssetTrashPanel from './AssetTrashPanel';
+import AssetSyncIssues from './AssetSyncIssues';
+import {useAssetIndex} from '@/lib/assets/library';
 import { useAgentAssets } from "@/lib/hooks/useAgentAssets";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 import { useMinimumSkeleton } from "@/lib/hooks/useMinimumSkeleton";
@@ -31,7 +34,7 @@ type KindFilter = AssetKind | "all";
  * 分享只借这一行标签的位置，不参与 filterAssets / assetCounts —— 硬塞进 ASSET_KINDS
  * 会让「六类本机产物」的计数与筛选一起变形（详见 SharedLinksPanel 顶部注释）。
  */
-type AssetsTab = KindFilter | "share" | 'cloud';
+type AssetsTab = KindFilter | "share" | 'cloud' | 'trash';
 
 const VIEW_STORAGE_KEY = "agent-assets-view";
 
@@ -70,16 +73,18 @@ export default function AgentAssetsPage() {
   const mounted = useIsClient();
   const assets = useAgentAssets();
   const cloud = useCloudFileLibrary();
+  const assetIndex=useAssetIndex();
   const classrooms = useClassroomAssets();
   const refreshClassrooms = classrooms.refresh;
   useEffect(() => { void refreshClassrooms(); }, [refreshClassrooms]);
   const [activeTabChoice, setActiveTab] = useState<AssetsTab | null>(null);
-  const activeTab: AssetsTab = activeTabChoice ?? (mounted && new URLSearchParams(window.location.search).get('tab') === 'cloud' ? 'cloud' : 'all');
+  const requestedTab = mounted ? new URLSearchParams(window.location.search).get('tab') : null;
+  const activeTab: AssetsTab = activeTabChoice ?? (requestedTab === 'cloud' || requestedTab === 'trash' ? requestedTab : 'all');
   const onShareTab = activeTab === "share";
   const onCloudTab = activeTab === 'cloud';
   const remoteTab = onShareTab;
   /** 分享标签下不筛资产；这里固定成 all 只是让下面 useMemo 的依赖保持稳定。 */
-  const kind: KindFilter = onShareTab || onCloudTab ? "all" : activeTab;
+  const kind: KindFilter = onShareTab || onCloudTab || activeTab==='trash' ? "all" : activeTab;
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<AssetSort>("recent");
   /**
@@ -100,7 +105,7 @@ export default function AgentAssetsPage() {
 
   /** 数据就绪后再压一小段（约 1 秒）骨架：本机水合太快，直接换内容会显得跳。 */
   const showSkeleton = useMinimumSkeleton({ ready: assets !== null });
-  const remoteLoading = !!cloud.owner && (cloud.phase === 'idle' || cloud.phase === 'loading' || classrooms.phase === 'idle' || classrooms.phase === 'loading');
+  const remoteLoading = !!cloud.owner && (cloud.phase === 'idle' || cloud.phase === 'loading' || classrooms.phase === 'idle' || classrooms.phase === 'loading' || assetIndex.loading);
   const counts = useMemo(() => assetCounts(assets ?? []), [assets]);
   const visible = useMemo(
     () => filterAssets(assets ?? [], { kind, query, sort }),
@@ -111,7 +116,7 @@ export default function AgentAssetsPage() {
   const refresh = () => {
     if (refreshing) return;
     setRefreshing(true);
-    void Promise.all([cloud.refresh(), classrooms.refresh(), import('@/lib/sync/schedule').then(mod => mod.refreshCloudSyncNow())])
+    void Promise.all([cloud.refresh(), useAssetIndex.getState().refresh(), classrooms.refresh(), import('@/lib/sync/schedule').then(mod => mod.refreshCloudSyncNow())])
       .catch(() => { useToast.getState().show('部分资产来源刷新失败，已有数据保留，请查看错误提示。'); })
       .finally(() => setRefreshing(false));
   };
@@ -141,6 +146,7 @@ export default function AgentAssetsPage() {
     ...ASSET_KINDS.map((item) => ({ id: item as AssetsTab, label: ASSET_KIND_LABELS[item], count: counts.byKind[item] })),
     // 分享不是本机资产：独立顶级标签，也没有本地计数（条数得联网才知道，不在这里假装有）。
     { id: "share", label: t("share.assets.tab") },
+    { id: 'trash', label: '回收站' },
     { id: 'cloud', label: '云端文件', count: cloud.files.filter(file => file.state === 'ready' || file.state === 'pending').length },
   ];
 
@@ -245,10 +251,12 @@ export default function AgentAssetsPage() {
         // 骨架只描述本机资产的水合；分享面板自带加载态，别让两者互相等。
         aria-busy={(onShareTab ? false : onCloudTab ? cloud.phase === 'loading' : showSkeleton || remoteLoading) || undefined}
       >
+        {!onShareTab && !onCloudTab && assetIndex.error ? <p role="alert" className="mb-3 text-xs">{assetIndex.error} 本机内容保留。</p> : null}
+        {!onShareTab && <AssetSyncIssues />}
         {!onShareTab && !onCloudTab && cloud.error ? <p role="alert" className="mb-3 text-xs text-[var(--md-sys-color-error)]">{cloud.error} 已有本机资产仍可查看。</p> : null}
         {!onShareTab && !onCloudTab && remoteLoading ? <p role="status" className="mb-3 text-xs text-[var(--ink-soft)]">正在读取云端资产，已有本机内容可继续查看；当前计数尚未完整。</p> : null}
         {!onShareTab && !onCloudTab && classrooms.error ? <p role="alert" className="mb-3 text-xs text-[var(--md-sys-color-error)]">{classrooms.error}</p> : null}
-        {onCloudTab ? <CloudFilesPanel query={query} sort={sort} view={view} /> : onShareTab ? (
+        {activeTab === 'trash' ? <AssetTrashPanel /> : onCloudTab ? <CloudFilesPanel query={query} sort={sort} view={view} /> : onShareTab ? (
           <SharedLinksPanel />
         ) : showSkeleton ? (
           // 五个 store（笔记/闪卡/长文/演示/导入记录）要等 IndexedDB 水合完才给数据；
@@ -296,7 +304,7 @@ export default function AgentAssetsPage() {
             <p className="text-[13px] text-[var(--ink-soft)]">
               {query.trim()
                 ? `没有匹配「${query.trim()}」的资产`
-                : remoteLoading ? '云端资产仍在加载，请稍候。' : cloud.error || classrooms.error ? '当前来源未完整读取，请重试刷新。' : kind === "all"
+                : remoteLoading ? '云端资产仍在加载，请稍候。' : cloud.error || classrooms.error || assetIndex.error ? '当前来源未完整读取，请重试刷新。' : kind === "all"
                   ? "还没有资产。让 Agent 整理笔记、出闪卡、写长文或生成演示，就会出现在这里。"
                   : `还没有${ASSET_KIND_LABELS[kind as AssetKind]}。`}
             </p>

@@ -47,7 +47,7 @@ export function tryGetBrowserDataClient(
   if (browserDataSingleton) return browserDataSingleton;
   try {
     const resolved = resolveBrowserEnv(env);
-    browserDataSingleton = createClient(resolved.supabaseUrl, resolved.anonKey, { accessToken: token });
+    browserDataSingleton = createClient(resolved.supabaseUrl, resolved.anonKey, { accessToken: token,global:{headers:{'x-study-client-version':'2'}} });
     return browserDataSingleton;
   } catch {
     return null;

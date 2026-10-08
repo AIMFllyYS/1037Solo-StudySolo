@@ -1,3 +1,4 @@
+import { pendingSyncJobs, persistSyncJournal, setJournalActive, type SyncJob } from './journal';
 ﻿import { tryGetBrowserDataClient } from "@/lib/auth/browserClient";
 import { getBrowserSession } from "@/lib/auth/browserSession";
 import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
@@ -50,7 +51,13 @@ import {
 } from "./payload";
 import { beginCloudSyncApply, endCloudSyncApply } from "./schedule";
 import { isSessionStreaming, __resetStreamingSessionsForTests } from "./streamingSessions";
-import { getCloudSyncStatus, setCloudRowKeys, setCloudSyncStatus } from "./status";
+import { getCloudSyncStatus, setCloudRowKeys, setCloudSyncStatus, setSyncItemStatus, getSyncItemStatus,resetSyncItemStatuses } from "./status";
+import { retryableFailure, type SyncFailure } from './failure';
+import { hasExternalBody } from '@/lib/assets/body';
+import { hydrateRemotePayload } from '@/lib/assets/client';
+import { mergeIndependent } from './conflicts';
+import {useImageGen,loadImageGenSessionFull,applyCloudImageSession,type ImageGenSession} from '@/lib/stores/imageGen';
+import {assetApi} from '@/lib/assets/client';
 import {
   CLOUD_SYNC_KINDS,
   isCloudSyncKind,
@@ -72,10 +79,14 @@ import {
 const DEFAULT_DEBOUNCE_MS = 2000;
 const MAX_LOCAL_SESSIONS = 50;
 
-type JobOp = "upsert" | "tombstone";
-type Job = { op: JobOp; kind: CloudSyncKind; clientId: string; ownerId: string | null; epoch: number };
+type Job = SyncJob;
 
 export interface CloudSyncStores {
+  applyCloudHead?:(row:SyncDocumentRow)=>boolean;
+  listImageIds?:()=>string[];
+  getImage?:(id:string)=>Promise<ImageGenSession|null>;
+  applyImage?:(row:ImageGenSession)=>Promise<void>;
+  forgetImage?:(id:string)=>void;
   listSessionMetas: () => SessionMeta[];
   loadSession: (id: string) => Promise<{ meta: SessionMeta; messages: ChatMessage[] } | null>;
   applySession: (payload: ChatSessionSyncPayload) => void | Promise<void>;
@@ -104,6 +115,15 @@ export interface CloudSyncStores {
 
 function createDefaultStores(): CloudSyncStores {
   return {
+    applyCloudHead:row=>{
+      const payload=row.payload as Record<string,unknown>;
+      if(row.kind==='artifact'){useArtifacts.setState(state=>({order:state.order.includes(row.client_id)?state.order:[...state.order,row.client_id],byId:{...state.byId,[row.client_id]:{...payload,id:row.client_id,html:'',status:'done',bodyRef:true,cloudRevision:row.revision} as Artifact}}));return true;}
+      if(row.kind==='document'){useDocuments.setState(state=>({byId:{...state.byId,[row.client_id]:{...payload,id:row.client_id,bodyRef:true,cloudRevision:row.revision} as unknown as StoredDocument}}));return true;}
+      if(row.kind==='image-gen'){useImageGen.setState(state=>({sessions:{...state.sessions,[row.client_id]:{...payload,id:row.client_id,images:[],bodyRef:true,cloudRevision:row.revision} as unknown as ImageGenSession}}));return true;}
+      return false;
+    },
+    listImageIds:()=>Object.keys(useImageGen.getState().sessions),getImage:loadImageGenSessionFull,applyImage:applyCloudImageSession,
+    forgetImage:id=>withLocalApply(()=>useImageGen.setState(state=>{const sessions={...state.sessions};delete sessions[id];return {sessions};})),
     listSessionMetas: () => useChatHistory.getState().sessionsMeta,
     async loadSession(id) {
       const meta = useChatHistory.getState().sessionsMeta.find((item) => item.id === id);
@@ -151,9 +171,10 @@ function createDefaultStores(): CloudSyncStores {
 let stores: CloudSyncStores = createDefaultStores();
 let injectedClient: SyncDocumentsApi | null | undefined;
 let debounceMs = DEFAULT_DEBOUNCE_MS;
-const pending = new Map<string, Job>();
+const pending = pendingSyncJobs;
 const timers = new Map<string, ReturnType<typeof setTimeout>>();
 const baseline = new Map<string, string>();
+const baselineRevisions=new Map<string,number>();
 const lastOkBytes = new Map<string, number>();
 const lastPushedHash = new Map<string, string>();
 let remoteBytesByKey = new Map<string, number>();
@@ -175,13 +196,8 @@ function ownerStillCurrent(ownerId: string | null, epoch: number): boolean {
 }
 
 function retryStorageKey(ownerId: string): string { return `ss-sync-jobs:${ownerId}`; }
-function persistLightJobs(ownerId: string | null): void {
-  if (!ownerId || typeof localStorage === "undefined") return;
-  const jobs = [...(inFlightJob?.ownerId === ownerId ? [inFlightJob] : []), ...pending.values()]
-    .filter((job) => job.ownerId === ownerId)
-    .map(({ kind, clientId, op }) => ({ kind, clientId, op }));
-  try { localStorage.setItem(retryStorageKey(ownerId), JSON.stringify(jobs)); } catch { /* memory queue remains */ }
-}
+function persistLightJobs(ownerId: string | null): void { persistSyncJournal(ownerId); }
+
 function restoreLightJobs(ownerId: string | null): void {
   if (!ownerId || typeof localStorage === "undefined") return;
   try {
@@ -191,26 +207,31 @@ function restoreLightJobs(ownerId: string | null): void {
       if (!candidate || typeof candidate !== "object") continue;
       const row = candidate as Record<string, unknown>;
       if (typeof row.kind !== "string" || !isCloudSyncKind(row.kind) || typeof row.clientId !== "string" || !row.clientId || row.clientId.length > 200 || (row.op !== "upsert" && row.op !== "tombstone")) continue;
-      const job: Job = { kind: row.kind, clientId: row.clientId, op: row.op, ownerId, epoch: getOwnerEpoch() };
+      const job: Job = { kind: row.kind, clientId: row.clientId, op: row.op, ownerId, epoch: getOwnerEpoch(),mutationId:typeof row.mutationId==='string'?row.mutationId:undefined,expectedRevision:typeof row.expectedRevision==='number'?row.expectedRevision:undefined,fingerprint:typeof row.fingerprint==='string'?row.fingerprint:undefined };
       pending.set(jobKey(job.kind, job.clientId), job);
     }
   } catch { /* malformed derived queue is ignored; authoritative local objects remain */ }
 }
-function queueRetry(): void {
+let pullRetryNeeded = false;
+function queueRetry(minimumDelay = 0): void {
   if (retryTimer || typeof window === "undefined") return;
   if (typeof navigator !== "undefined" && navigator.onLine === false) return;
-  const delay = Math.min(60_000, 1_000 * 2 ** Math.min(retryAttempt++, 6));
-  retryTimer = setTimeout(() => { retryTimer = null; void flushPendingJobs(); }, Math.round(delay * (0.8 + Math.random() * 0.4)));
+  const delay = Math.max(minimumDelay, Math.round(Math.min(60_000, 1_000 * 2 ** Math.min(retryAttempt++, 6)) * (0.8 + Math.random() * 0.4)));
+  retryTimer = setTimeout(() => { retryTimer = null; if (pullRetryNeeded) void pullAndPushAll(); else void flushPendingJobs(); }, delay);
 }
 
 onStorageOwnerChange((previous, next) => {
   persistLightJobs(previous);
+  resetSyncItemStatuses();
   if (retryTimer) clearTimeout(retryTimer);
   retryTimer = null; retryAttempt = 0;
   for (const timer of timers.values()) clearTimeout(timer);
   timers.clear();
   pending.clear();
+  pullRetryNeeded = false;
   baseline.clear();
+  baselineRevisions.clear();
+  if(next&&typeof localStorage!=='undefined')try{for(const [key,revision] of Object.entries(JSON.parse(localStorage.getItem(`ss-sync-heads:${next}`)??'{}')))if(Number.isSafeInteger(revision))baselineRevisions.set(key,Number(revision));}catch{}
   lastOkBytes.clear();
   lastPushedHash.clear();
   remoteBytesByKey.clear();
@@ -242,10 +263,12 @@ export function __resetCloudSyncForTests(): void {
   for (const timer of timers.values()) clearTimeout(timer);
   timers.clear();
   pending.clear();
-  inFlightJob = null;
+  pullRetryNeeded = false;
+  inFlightJob = null;setJournalActive(null);
   if (retryTimer) clearTimeout(retryTimer);
   retryTimer = null; retryAttempt = 0;
   baseline.clear();
+  baselineRevisions.clear();
   lastOkBytes.clear();
   lastPushedHash.clear();
   remoteBytesByKey = new Map();
@@ -320,7 +343,9 @@ export async function loadCloudSyncUsage(): Promise<CloudSyncUsage> {
     const { data, error } = await api.list(CLOUD_SYNC_KINDS);
     if (!error) {
       rememberRemoteBytesFromRows(data);
-      return summarizeSyncRows(data);
+      const usage=summarizeSyncRows(data);
+      if(injectedClient===undefined){try{const overview=await assetApi('?usage=1');return {...usage,totalBytes:Number(overview.storage.used_bytes),limitBytes:Number(overview.storage.capacity_bytes)};}catch(error){return {...usage,error:error instanceof Error?error.message:'个人额度暂不可读取。'};}}
+      return usage;
     }
     const cached = getCachedCloudSyncUsage();
     if (cached) return { ...cached, error: error.message };
@@ -338,9 +363,11 @@ function bindPagehideFlush(): void {
     void flushPendingJobs();
   };
   window.addEventListener("pagehide", flush);
-  window.addEventListener("online", () => { if (retryTimer) clearTimeout(retryTimer); retryTimer = null; retryAttempt = 0; void flushPendingJobs(); });
+  const resume = () => { if (retryTimer) clearTimeout(retryTimer); retryTimer = null; retryAttempt = 0; void pullAndPushAll(); };
+  window.addEventListener("online", resume);
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") flush();
+    else resume();
   });
 }
 
@@ -348,6 +375,7 @@ function enqueue(job: Job): void {
   bindPagehideFlush();
   const key = jobKey(job.kind, job.clientId);
   pending.set(key, job);
+  setSyncItemStatus(key, { phase: 'pending' });
   persistLightJobs(job.ownerId);
   const existing = timers.get(key);
   if (existing) clearTimeout(existing);
@@ -365,31 +393,38 @@ function enqueue(job: Job): void {
   );
 }
 
+export function activateSyncIntent(job: SyncJob): void {
+  if(pending.get(jobKey(job.kind,job.clientId))===job && ownerStillCurrent(job.ownerId,job.epoch))enqueue(job);
+}
+
 export function enqueueUpsert(kind: CloudSyncKind, clientId: string): void {
   enqueue({ op: "upsert", kind, clientId, ownerId: getStorageOwner(), epoch: getOwnerEpoch() });
 }
 
 export function enqueueTombstone(kind: CloudSyncKind, clientId: string): void {
-  enqueue({ op: "tombstone", kind, clientId, ownerId: getStorageOwner(), epoch: getOwnerEpoch() });
+  enqueue({ op: "tombstone", kind, clientId, ownerId: getStorageOwner(), epoch: getOwnerEpoch(), expectedRevision: baselineRevisions.get(jobKey(kind,clientId)) });
 }
 
 async function flushPendingJobs(): Promise<void> {
   if (drainScheduled || pending.size === 0) return chain;
   drainScheduled = true;
   chain = chain.catch(() => {}).then(async () => {
+    const attempted = new Map<string, Job>();
     // Pending stores only kind/id/owner. Each iteration loads at most one full payload;
     // updates during an in-flight upload replace the one pending job for that key.
     while (pending.size > 0) {
-      const first = pending.entries().next().value as [string, Job] | undefined;
+      const first = [...pending.entries()].find(([key, job]) => attempted.get(key) !== job);
       if (!first) break;
       const [key, job] = first;
+      attempted.set(key, job);
       if (!ownerStillCurrent(job.ownerId, job.epoch)) { pending.delete(key); continue; }
+      setSyncItemStatus(key, { phase: 'syncing' });
       if (typeof navigator !== "undefined" && navigator.onLine === false) break;
       const api = await resolveClient();
       if (!api) break;
       if (!ownerStillCurrent(job.ownerId, job.epoch)) { pending.delete(key); continue; }
       pending.delete(key);
-      inFlightJob = job;
+      inFlightJob = job;setJournalActive(job);
       persistLightJobs(job.ownerId);
       try {
         const committed = job.op === "tombstone"
@@ -397,20 +432,26 @@ async function flushPendingJobs(): Promise<void> {
           : await pushOne(api, job.kind, job.clientId, job);
         if (!committed && ownerStillCurrent(job.ownerId, job.epoch)) {
           if (!pending.has(key)) pending.set(key, job);
-          if (getCloudSyncStatus().message?.startsWith("云端同步失败")) queueRetry();
-          break;
+          const state = getSyncItemStatus(key);
+          if (state?.retryable !== false) queueRetry(state?.retryAfterMs);
+          continue;
         }
+        if(!ownerStillCurrent(job.ownerId,job.epoch))continue;
         retryAttempt = 0;
+        if(getSyncItemStatus(key)?.phase!=='conflict')setSyncItemStatus(key, { phase: 'synced' });
       } catch (error) {
         if (ownerStillCurrent(job.ownerId, job.epoch) && !pending.has(key)) pending.set(key, job);
-        reportError(`云端同步失败：${error instanceof Error ? error.message : "未知错误"}`);
+        const message = `云端同步失败：${error instanceof Error ? error.message : "未知错误"}`;
+        reportError(message);
+        setSyncItemStatus(key, { phase: 'error', message, retryable: true });
         queueRetry();
-        break;
+        continue;
       } finally {
-        if (inFlightJob === job) inFlightJob = null;
+        if (inFlightJob === job) {inFlightJob = null;setJournalActive(null);}
         if (ownerStillCurrent(job.ownerId, job.epoch)) persistLightJobs(job.ownerId);
       }
     }
+    if (!pending.size && !pullRetryNeeded) setCloudSyncStatus({ phase: 'idle', message: null });
   }).finally(() => { drainScheduled = false; });
   await chain;
 }
@@ -420,6 +461,24 @@ export async function flushCloudSyncForTests(): Promise<void> {
   timers.clear();
   await flushPendingJobs();
   await chain;
+}
+export async function loadOneCloudAsset(kind:CloudSyncKind,id:string):Promise<boolean>{
+ const owner=getStorageOwner(),epoch=getOwnerEpoch(),api=await resolveClient();if(!api)return false;
+ const row=await api.get(kind,id);if(row.error||!row.data||!ownerStillCurrent(owner,epoch))return false;
+ const applied=await applyRemoteRow(row.data);if(applied==='skipped'||!ownerStillCurrent(owner,epoch))return false;
+ rememberBaseline(kind,id,row.data.updated_at,row.data.revision);return true;
+}
+export async function cancelConflictingDelete(kind: CloudSyncKind, id: string): Promise<void> {
+  const key = jobKey(kind,id), owner = getStorageOwner(), epoch = getOwnerEpoch(), job = pending.get(key);
+  if (!job || job.op !== 'tombstone' || getSyncItemStatus(key)?.phase !== 'conflict') throw new Error('删除状态已变化，请刷新后重试。');
+  if (inFlightJob && jobKey(inFlightJob.kind,inFlightJob.clientId) === key) throw new Error('此项正在处理，请稍后重试。');
+  pending.delete(key);
+  if (timers.has(key)) clearTimeout(timers.get(key));
+  timers.delete(key); persistLightJobs(owner);
+  setSyncItemStatus(key,{phase:'conflict',message:'本机删除已取消，正在读取保留的云端版本。',retryable:true});
+  baseline.delete(key);
+  if (!await loadOneCloudAsset(kind,id)) throw new Error('删除已取消；云端正文暂不可读取，请刷新重试。');
+  if (ownerStillCurrent(owner,epoch)) setSyncItemStatus(key,{phase:'synced'});
 }
 
 function withLocalApply(fn: () => void): void {
@@ -515,6 +574,11 @@ function asChatProject(value: unknown): ChatProjectSyncPayload | null {
 }
 
 async function loadLocalPayload(kind: CloudSyncKind, clientId: string): Promise<unknown | null> {
+  if(kind==='image-gen'){
+    const row=await stores.getImage?.(clientId);if(!row)return null;if(row.status!=='done')return row;const images=[];
+    for(const image of row.images){if(image.b64_json)images.push({b64_json:image.b64_json,revised_prompt:image.revised_prompt});else if(image.url?.startsWith('data:image/'))images.push({b64_json:image.url.split(',')[1],revised_prompt:image.revised_prompt});else if(image.url){const captured=await assetApi('/capture-image',{method:'POST',body:JSON.stringify({url:image.url})});images.push({b64_json:captured.b64_json,revised_prompt:image.revised_prompt});}}
+    return {...row,images,bodyRef:undefined};
+  }
   if (kind === "chat-session") {
     const session = await stores.loadSession(clientId);
     return session ? buildChatSessionPayload(session.meta, session.messages) : null;
@@ -606,13 +670,19 @@ async function remoteUserBytes(
   return { bytes: cachedUserBytes(skipKind, skipId) ?? 0, error: null };
 }
 
-function rememberBaseline(kind: CloudSyncKind, clientId: string, updatedAt: string | undefined): void {
+function rememberBaseline(kind: CloudSyncKind, clientId: string, updatedAt: string | undefined, revision?:number): void {
   if (!updatedAt) return;
   baseline.set(jobKey(kind, clientId), updatedAt);
+  if(revision!==undefined){baselineRevisions.set(jobKey(kind,clientId),revision);const owner=getStorageOwner();if(owner&&typeof localStorage!=='undefined')try{localStorage.setItem(`ss-sync-heads:${owner}`,JSON.stringify(Object.fromEntries(baselineRevisions)));}catch{}}
 }
 
 function reportError(message: string): void {
   setCloudSyncStatus({ phase: "error", message });
+}
+
+function recordFailure(kind: CloudSyncKind, id: string, error: SyncFailure): void {
+  const retryable = retryableFailure(error);
+  setSyncItemStatus(jobKey(kind, id), { phase: error.code === 'REVISION_CONFLICT' ? 'conflict' : retryable ? 'error' : 'blocked', message: error.message, retryable, retryAfterMs: error.retryAfterMs, operation: inFlightJob?.op==='tombstone'?'delete':'save' });
 }
 
 function reportMerged(): void {
@@ -633,18 +703,33 @@ function reportUnknownKindOnce(kind: CloudSyncKind): void {
 
 async function pushTombstone(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: string, job?: Job): Promise<boolean> {
   if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
+  const previous = await api.get(kind, clientId,{metadataOnly:true});
+  if (previous.error) { recordFailure(kind, clientId, previous.error); return false; }
+  if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
+  const known = job?.expectedRevision ?? baselineRevisions.get(jobKey(kind,clientId));
+  if (known === undefined && previous.data && !previous.data.deleted && (previous.data.revision??0)>0) {
+    setSyncItemStatus(jobKey(kind,clientId),{phase:'conflict',operation:'delete',message:'尚未核对云端版本，删除未执行；请保留云端版本后重新确认。',retryable:false});return false;
+  }
+  const expected = known ?? previous.data?.revision ?? 0;
+  if (previous.data && !previous.data.deleted && previous.data.revision !== undefined && previous.data.revision !== expected) {
+    setSyncItemStatus(jobKey(kind,clientId), {phase:'conflict',operation:'delete',message:'云端已有未见的新修改，删除尚未执行。可保留云端版本并取消本机删除。',retryable:false});
+    return false;
+  }
   const { data, error } = await api.upsert({
     kind,
     client_id: clientId,
     payload: {},
     deleted: true,
+    expectedRevision: expected,
+    mutationId: crypto.randomUUID(),
   });
   if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (error) {
+    recordFailure(kind, clientId, error);
     reportError(`云端同步失败：${error.message}`);
     return false;
   }
-  rememberBaseline(kind, clientId, data?.updated_at);
+  rememberBaseline(kind, clientId, data?.updated_at, data?.revision);
   noteRemoteBytes(kind, clientId, 0, true);
   lastPushedHash.delete(jobKey(kind, clientId));
   lastOkBytes.delete(jobKey(kind, clientId));
@@ -654,20 +739,33 @@ async function pushTombstone(api: SyncDocumentsApi, kind: CloudSyncKind, clientI
 async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: string, job?: Job): Promise<boolean> {
   if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   const local = await loadLocalPayload(kind, clientId);
+  if ((kind === 'document' || kind === 'artifact' || kind==='image-gen') && local && (local as { status?: string }).status !== 'done') {setSyncItemStatus(jobKey(kind,clientId),{phase:'blocked',message:'未完成稿仅保留本机。',retryable:false});return false;}
   if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (!local) {
     return pushTombstone(api, kind, clientId, job);
   }
 
-  const { data: remote, error: getError } = await api.get(kind, clientId);
+  const { data: remote, error: getError } = await api.get(kind, clientId,{metadataOnly:true});
   if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (getError) {
+    recordFailure(kind, clientId, getError);
     reportError(`云端同步失败：${getError.message}`);
     return false;
   }
 
   let toUpload: unknown = local;
-  if (kind === "user-note" && remote && !remote.deleted) {
+  const knownRevision=baselineRevisions.get(jobKey(kind,clientId));
+  if(remote&&!remote.deleted&&hasExternalBody(remote.payload)&&knownRevision!==remote.revision){remote.payload=await hydrateRemotePayload(kind,clientId,remote.revision);if(job&&!ownerStillCurrent(job.ownerId,job.epoch))return false;}
+  if(remote&&remote.revision!==undefined&&remote.deleted)return preserveConflict(api,kind,clientId,local,job);
+  if(remote&&!remote.deleted&&remote.revision!==undefined&&knownRevision===undefined&&remote.revision>0&&JSON.stringify(local)!==JSON.stringify(remote.payload))return preserveConflict(api,kind,clientId,local,job);
+  if(remote&&!remote.deleted&&remote.revision!==undefined&&knownRevision!==undefined&&remote.revision!==knownRevision){
+    let base:unknown=null;try{base=await hydrateRemotePayload(kind,clientId,knownRevision);}catch{}
+    if(job&&!ownerStillCurrent(job.ownerId,job.epoch))return false;
+    const merged=mergeIndependent(base,local,remote.payload,kind);
+    if(!merged)return preserveConflict(api,kind,clientId,local,job);
+    toUpload=merged;
+  }
+  if (kind === "user-note" && remote && !remote.deleted && remote.revision===undefined) {
     const localNote = asUserNote(local);
     const remoteNote = asUserNote(remote.payload);
     if (localNote && remoteNote && remoteNote.updatedAt > localNote.updatedAt) {
@@ -680,7 +778,7 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
       return true;
     }
   }
-  if (kind === "review-card" && remote && !remote.deleted) {
+  if (kind === "review-card" && remote && !remote.deleted && remote.revision===undefined) {
     const localCard = asReviewCard(local);
     const remoteCard = asReviewCard(remote.payload);
     // 与 user-note 分支同构：云端更新就采用云端并放弃本次上传。
@@ -697,7 +795,7 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
       return true;
     }
   }
-  if (kind === "chat-project" && remote && !remote.deleted) {
+  if (kind === "chat-project" && remote && !remote.deleted && remote.revision===undefined) {
     const localProject = asChatProject(local);
     const remoteProject = asChatProject(remote.payload);
     // 项目没有正文可合并：谁的 updatedAt 新听谁的。
@@ -711,7 +809,7 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
       return true;
     }
   }
-  if (kind === "chat-session" && remote && !remote.deleted) {
+  if (kind === "chat-session" && remote && !remote.deleted && remote.revision===undefined) {
     const known = baseline.get(jobKey(kind, clientId));
     if (isRemoteNewer(remote.updated_at, known)) {
       const localPayload = asChatPayload(local);
@@ -728,6 +826,7 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
 
   const prepared = preparePayload(kind, toUpload);
   if (!prepared.ok) {
+    setSyncItemStatus(jobKey(kind, clientId), { phase: 'blocked', message: '内容超过限制或无法安全同步', retryable: false });
     if (prepared.reason === "kind-limit") {
       reportError(formatKindLimitMessage(kind, prepared.bytes, prepared.limit, lastOkBytes.get(jobKey(kind, clientId))));
     } else {
@@ -737,10 +836,11 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
   }
 
   const hash = await payloadFingerprint(prepared.payload);
+  if(job&&job.fingerprint!==hash){job.mutationId=crypto.randomUUID();job.fingerprint=hash;job.expectedRevision=remote?.revision??0;persistLightJobs(job.ownerId);}
   const remoteHash = remote && !remote.deleted ? await payloadFingerprint(remote.payload) : "";
   if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (hash && (lastPushedHash.get(jobKey(kind, clientId)) === hash || remoteHash === hash)) {
-    rememberBaseline(kind, clientId, remote?.updated_at);
+    rememberBaseline(kind, clientId, remote?.updated_at, remote?.revision);
     lastPushedHash.set(jobKey(kind, clientId), hash);
     lastOkBytes.set(jobKey(kind, clientId), prepared.bytes);
     noteRemoteBytes(kind, clientId, prepared.bytes, false);
@@ -771,9 +871,13 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     client_id: clientId,
     payload: prepared.payload,
     deleted: false,
+    expectedRevision: job?.expectedRevision ?? remote?.revision ?? 0,
+    mutationId: job?.mutationId ?? crypto.randomUUID(),
   });
   if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (error) {
+    recordFailure(kind, clientId, error);
+    if(error.code==='REVISION_CONFLICT')return preserveConflict(api,kind,clientId,toUpload,job);
     if (isSyncKindLimitError(error.message)) {
       reportError(formatKindLimitMessage(kind, prepared.bytes, prepared.bytes, lastOkBytes.get(jobKey(kind, clientId))));
     } else if (isSyncUserLimitError(error.message)) {
@@ -788,10 +892,52 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     }
     return false;
   }
-  rememberBaseline(kind, clientId, data?.updated_at);
+  rememberBaseline(kind, clientId, data?.updated_at, data?.revision);
   lastPushedHash.set(jobKey(kind, clientId), hash);
   lastOkBytes.set(jobKey(kind, clientId), prepared.bytes);
   noteRemoteBytes(kind, clientId, prepared.bytes, false);
+  return true;
+}
+
+async function preserveConflict(api:SyncDocumentsApi,kind:CloudSyncKind,id:string,source:unknown,job?:Job):Promise<boolean>{
+  const copy=structuredClone(source) as Record<string,unknown>,copyId=`conflict-${crypto.randomUUID()}`;
+  if(kind==='chat-session'){const meta=copy.meta as SessionMeta;copy.meta={...meta,id:copyId,title:`${meta.title}（冲突副本）`,contextCheckpoint:undefined,conflictOf:{kind,id}};}
+  else{copy.id=copyId;if(kind==='document'){copy.spec={...(copy.spec as object),title:`${(copy.spec as {title:string}).title}（冲突副本）`};}else copy.title=`${String(copy.title??copy.front??id)}（冲突副本）`;}
+  copy.conflictOf={kind,id};
+  const owner=job?.ownerId??getStorageOwner();
+  if(owner){const {writeOwnedStorageItem}=await import('@/lib/storage/idbStorage');if(!await writeOwnedStorageItem(owner,`sync-conflict:${copyId}`,JSON.stringify(copy)))throw new Error('冲突副本落盘失败，原修改未覆盖。');}
+  if(job&&!ownerStillCurrent(job.ownerId,job.epoch))return false;
+  if(kind==='artifact')await stores.applyArtifact(copy as unknown as Artifact);
+  else if(kind==='document')await stores.applyDocument(copy as unknown as StoredDocument);
+  else if(kind==='user-note')stores.applyNote(copy as unknown as UserNote);
+  else if(kind==='review-card')stores.applyCard(copy as unknown as ReviewCard);
+  else if(kind==='chat-session')await stores.applySession(copy as unknown as ChatSessionSyncPayload);
+  else if(kind==='image-gen')await stores.applyImage?.(copy as unknown as ImageGenSession);
+  else stores.applyProject(copy as unknown as ChatProjectSyncPayload);
+  const next:Job={op:'upsert',kind,clientId:copyId,ownerId:owner,epoch:getOwnerEpoch()};pending.set(jobKey(kind,copyId),next);persistLightJobs(owner);
+  setSyncItemStatus(jobKey(kind,id),{phase:'conflict',message:'双方内容已保留，修改另存为冲突副本。',retryable:false});
+  const remote=await api.get(kind,id);
+  if(job&&!ownerStillCurrent(job.ownerId,job.epoch))return false;
+  if(remote.error)return true;
+  if(remote.data){rememberBaseline(kind,id,remote.data.updated_at,remote.data.revision);if(!pending.has(jobKey(kind,id))){
+    if(remote.data.deleted){
+      if(kind==='chat-session')await stores.forgetSession(id);
+      else if(kind==='artifact')stores.forgetArtifact(id);
+      else if(kind==='document')stores.forgetDocument(id);
+      else if(kind==='user-note')stores.forgetNote(id);
+      else if(kind==='review-card')stores.forgetCard(id);
+      else if(kind==='image-gen')stores.forgetImage?.(id);
+      else stores.forgetProject(id);
+      return true;
+    }
+    if(kind==='artifact')await stores.applyArtifact(remote.data.payload as Artifact);
+    else if(kind==='document')await stores.applyDocument(remote.data.payload as StoredDocument);
+    else if(kind==='user-note')stores.applyNote(remote.data.payload as UserNote);
+    else if(kind==='chat-session')await stores.applySession(remote.data.payload as ChatSessionSyncPayload);
+    else if(kind==='review-card')stores.applyCard(remote.data.payload as ReviewCard);
+    else if(kind==='image-gen')await stores.applyImage?.(remote.data.payload as ImageGenSession);
+    else if(kind==='chat-project')stores.applyProject(remote.data.payload as ChatProjectSyncPayload);
+  }}
   return true;
 }
 
@@ -991,13 +1137,25 @@ function forgetCardInZustand(id: string): void {
   });
 }
 
-async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
+async function applyRemoteRow(row: SyncDocumentRow): Promise<'skipped'|void> {
+  const owner=getStorageOwner(),epoch=getOwnerEpoch();
+  // An uncommitted local replacement is authoritative until resolved. In-flight
+  // and blocked jobs count as dirty too; refreshing cannot undo either edit/delete.
+  const key = jobKey(row.kind, row.client_id);
+  const dirty=()=>pending.has(key)||['pending','syncing','blocked','error'].includes(getSyncItemStatus(key)?.phase??'')||(inFlightJob&&jobKey(inFlightJob.kind,inFlightJob.clientId)===key);
+  if (dirty()) return 'skipped';
+  if (row.kind === 'chat-session' && isSessionStreaming(row.client_id)) return 'skipped';
+  const appliedBaseline=baseline.get(key);if(!row.deleted&&appliedBaseline&&!isRemoteNewer(row.updated_at,appliedBaseline))return;
+  if(!row.deleted&&hasExternalBody(row.payload)&&stores.applyCloudHead?.(row))return;
+  if (!row.deleted && hasExternalBody(row.payload)) row = { ...row, payload: await hydrateRemotePayload(row.kind, row.client_id,row.revision) };
+  if(!ownerStillCurrent(owner,epoch)||dirty()||(row.kind==='chat-session'&&isSessionStreaming(row.client_id)))return 'skipped';
   if (row.deleted) {
     if (row.kind === "chat-session") await stores.forgetSession(row.client_id);
     else if (row.kind === "artifact") stores.forgetArtifact(row.client_id);
     else if (row.kind === "document") stores.forgetDocument(row.client_id);
     else if (row.kind === "user-note") stores.forgetNote(row.client_id);
     else if (row.kind === "review-card") stores.forgetCard(row.client_id);
+    else if(row.kind==='image-gen')stores.forgetImage?.(row.client_id);
     else stores.forgetProject(row.client_id);
     return;
   }
@@ -1005,10 +1163,13 @@ async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
   // 尤其对 chat-session 免去全量装配 + 合并 + v3 全量重写。
   const known = baseline.get(jobKey(row.kind, row.client_id));
   if (known && !isRemoteNewer(row.updated_at, known)) return;
+  if(row.kind==='image-gen'){await stores.applyImage?.(row.payload as ImageGenSession);return;}
   if (row.kind === "chat-session") {
     const remote = asChatPayload(row.payload);
     if (!remote) return;
     const local = await stores.loadSession(remote.meta.id);
+    if(dirty() || !ownerStillCurrent(owner,epoch))return 'skipped';
+    if(row.revision!==undefined){await stores.applySession(remote);return;}
     if (local) {
       const merged = mergeChatSessionPayloads(
         { v: 1, meta: local.meta, messages: local.messages },
@@ -1038,7 +1199,7 @@ async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
     const note = asUserNote(row.payload);
     if (!note) return;
     const local = stores.getNote(row.client_id);
-    if (local && local.updatedAt > note.updatedAt) return;
+    if (row.revision===undefined && local && local.updatedAt > note.updatedAt) return;
     stores.applyNote(note);
     return;
   }
@@ -1050,7 +1211,7 @@ async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
   const project = asChatProject(row.payload);
   if (!project) return;
   const localProject = stores.getProject(row.client_id);
-  if (localProject && localProject.updatedAt > project.updatedAt) return;
+  if (row.revision===undefined && localProject && localProject.updatedAt > project.updatedAt) return;
   stores.applyProject(project);
 }
 
@@ -1065,7 +1226,7 @@ async function pullFromCloud(api: SyncDocumentsApi, ownerId: string | null, epoc
       ? await api.listPage(CLOUD_SYNC_KINDS, cursor)
       : { ...(await api.list(CLOUD_SYNC_KINDS)), nextCursor: null };
     if (!ownerStillCurrent(ownerId, epoch)) return false;
-    if (page.error) { reportError(`云端同步失败：${page.error.message}`); return false; }
+    if (page.error) { reportError(`云端同步失败：${page.error.message}`); pullRetryNeeded = retryableFailure(page.error); if (pullRetryNeeded) queueRetry(page.error.retryAfterMs); return false; }
     for (const row of page.data) {
       if (!row.deleted) remoteBytesByKey.set(jobKey(row.kind, row.client_id), payloadByteSize(row.payload));
     }
@@ -1074,9 +1235,9 @@ async function pullFromCloud(api: SyncDocumentsApi, ownerId: string | null, epoc
         if (row.deleted !== deleted) continue;
         if (!ownerStillCurrent(ownerId, epoch)) return false;
         try {
-          await applyRemoteRow(row);
+          const applied=await applyRemoteRow(row);
           if (!ownerStillCurrent(ownerId, epoch)) return false;
-          rememberBaseline(row.kind, row.client_id, row.updated_at);
+          if(applied!=='skipped')rememberBaseline(row.kind, row.client_id, row.updated_at, row.revision);
         } catch (error) {
           reportError(`云端第 ${pageNumber + 1} 页应用失败：${error instanceof Error ? error.message : "未知错误"}`);
           return false;
@@ -1085,6 +1246,7 @@ async function pullFromCloud(api: SyncDocumentsApi, ownerId: string | null, epoc
     }
     if (!page.nextCursor) {
       remoteBytesReady = true;
+      pullRetryNeeded = false;
       setCloudRowKeys(remoteBytesByKey.keys());
       return true;
     }
@@ -1098,7 +1260,19 @@ const PUSH_CONCURRENCY = 6;
 const PUSH_PAYLOAD_BUDGET = 6 * 1024 * 1024;
 
 async function pushAllLocal(api: SyncDocumentsApi, ownerId: string | null, epoch: number): Promise<void> {
-  const push = (kind: CloudSyncKind, id: string) => pushOne(api, kind, id, { op: "upsert", kind, clientId: id, ownerId, epoch });
+  const push = async (kind: CloudSyncKind, id: string) => {
+    const key = jobKey(kind, id);
+    if (pending.has(key)) return false;
+    if(kind==='artifact'&&useArtifacts.getState().byId[id]?.cloudRevision!==undefined)return true;
+    if(kind==='document'&&useDocuments.getState().byId[id]?.cloudRevision!==undefined)return true;
+    if(kind==='image-gen'&&useImageGen.getState().sessions[id]?.cloudRevision!==undefined)return true;
+    const job: Job = { op: 'upsert', kind, clientId: id, ownerId, epoch };
+    const committed = await pushOne(api, kind, id, job);
+    if (!ownerStillCurrent(ownerId, epoch)) return false;
+    if (!committed) { pending.set(key, job); persistLightJobs(ownerId); const state = getSyncItemStatus(key); if (state?.retryable !== false) queueRetry(state?.retryAfterMs); }
+    else setSyncItemStatus(key, { phase: 'synced' });
+    return committed;
+  };
   // Reserve each kind's maximum payload before loading it. Six large sessions
   // must never be materialized at the same time merely because HTTP permits six requests.
   const jobs: Array<{ kind: CloudSyncKind; run: () => Promise<boolean> }> = [
@@ -1110,6 +1284,7 @@ async function pushAllLocal(api: SyncDocumentsApi, ownerId: string | null, epoch
     ...stores.listNoteIds().map((id) => ({ kind: "user-note" as const, run: () => push("user-note", id) })),
     ...stores.listCardIds().map((id) => ({ kind: "review-card" as const, run: () => push("review-card", id) })),
     ...stores.listProjectIds().map((id) => ({ kind: "chat-project" as const, run: () => push("chat-project", id) })),
+    ...(stores.listImageIds?.()??[]).map(id=>({kind:'image-gen' as const,run:()=>push('image-gen',id)})),
   ];
   let next = 0;
   while (next < jobs.length && ownerStillCurrent(ownerId, epoch)) {
@@ -1117,7 +1292,7 @@ async function pushAllLocal(api: SyncDocumentsApi, ownerId: string | null, epoch
     let reservedBytes = 0;
     while (next < jobs.length && batch.length < PUSH_CONCURRENCY) {
       const job = jobs[next];
-      const weight = KIND_SIZE_LIMIT[job.kind];
+      const weight = Math.min(PUSH_PAYLOAD_BUDGET, KIND_SIZE_LIMIT[job.kind]);
       if (batch.length && reservedBytes + weight > PUSH_PAYLOAD_BUDGET) break;
       batch.push(job); reservedBytes += weight; next++;
     }
@@ -1132,7 +1307,7 @@ export async function pullAndPushAll(): Promise<void> {
   await flushPendingJobs();
   if (!ownerStillCurrent(ownerId, epoch)) return;
   // A failed local tombstone must not be undone by pulling the still-live remote row.
-  if ([...pending.values()].some((job) => job.ownerId === ownerId && job.op === "tombstone")) return;
+  // Dirty rows are skipped individually by applyRemoteRow; healthy rows still pull.
   setCloudSyncStatus({ phase: "syncing", message: null });
   chain = chain.catch(() => {}).then(async () => {
     const complete = await pullFromCloud(api, ownerId, epoch);

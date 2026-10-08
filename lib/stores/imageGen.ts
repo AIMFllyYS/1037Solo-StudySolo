@@ -1,3 +1,4 @@
+import { setSyncItemStatus } from '@/lib/sync/status';
 import { translateNow } from "@/lib/i18n";
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
@@ -6,6 +7,7 @@ import { stripOpenIds } from "@/lib/stores/windowPersist";
 import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
 import { readOwnedStorageItem, writeOwnedStorageItem } from "@/lib/storage/idbStorage";
 import { registerResourceMetrics } from "@/lib/performance/resourceMetrics";
+import {scheduleCloudUpsert,scheduleCloudTombstone} from '@/lib/sync/schedule';
 
 export type ImageGenStatus = "idle" | "loading" | "done" | "error";
 
@@ -16,6 +18,7 @@ export interface ImageGenImage {
 }
 
 export interface ImageGenSession {
+  cloudRevision?:number;
   id: string;
   prompt: string;
   title: string;
@@ -53,6 +56,7 @@ export async function loadImageGenSessionFull(id: string): Promise<ImageGenSessi
   if (!owner || residentOwner !== owner) return null;
   const session = useImageGen.getState().sessions[id];
   if (!session) return null;
+  if(session.cloudRevision!==undefined){const {hydrateRemotePayload}=await import('@/lib/assets/client');const full=await hydrateRemotePayload('image-gen',id,session.cloudRevision) as ImageGenSession;if(owner!==getStorageOwner()||epoch!==getOwnerEpoch()||useImageGen.getState().sessions[id]!==session)throw new Error('正文加载期间状态已变化，请重试。');if(!await writeOwnedStorageItem(owner,bodyKey(id),JSON.stringify(full.images)))throw new Error('图像缓存保存失败。');if(owner!==getStorageOwner()||epoch!==getOwnerEpoch()||useImageGen.getState().sessions[id]!==session)throw new Error('正文加载期间状态已变化，请重试。');useImageGen.setState(state=>state.sessions[id]===session?{sessions:{...state.sessions,[id]:{...session,cloudRevision:undefined}}}:state);return {...full,bodyRef:true};}
   if (!session.bodyRef || session.images.length) return session;
   const raw = await readOwnedStorageItem(owner, bodyKey(id));
   if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch || !raw) return null;
@@ -103,8 +107,15 @@ async function persistAndCool(id: string): Promise<void> {
     const current = state.sessions[id];
     if (!current || current.images !== snapshot.images) return state;
     const row = { ...current, bodyRef: true as const };
+    if(current.status==='done')scheduleCloudUpsert('image-gen',id);
     return { sessions: { ...state.sessions, [id]: imageLeases.has(id) || state.openIds.includes(id) ? row : coldSession(row) } };
   });
+}
+export async function applyCloudImageSession(row:ImageGenSession){
+ const owner=getStorageOwner(),epoch=getOwnerEpoch();if(!owner)return;
+ if(!await writeOwnedStorageItem(owner,bodyKey(row.id),JSON.stringify(row.images)))throw new Error('图像正文落盘失败。');
+ if(owner!==getStorageOwner()||epoch!==getOwnerEpoch())throw new Error('账号已切换。');residentOwner=owner;
+ useImageGen.setState(state=>({sessions:{...state.sessions,[row.id]:{...row,bodyRef:true,images:[]}}}));
 }
 
 async function migrateLegacyImages(): Promise<void> {
@@ -265,6 +276,7 @@ export const useImageGen = createPersistedStore<ImageGenState>(
 
       startLoading: (id, expectedMs) =>
         set((state) => {
+          setSyncItemStatus(`image-gen:${id}`,{phase:'pending'});
           const cur = state.sessions[id];
           if (!cur) return state;
           return {
@@ -287,14 +299,15 @@ export const useImageGen = createPersistedStore<ImageGenState>(
           const cur = state.sessions[id];
           if (!cur) return state;
           return {
-            sessions: { ...state.sessions, [id]: { ...cur, ...patch, ...(patch.images ? { bodyRef: undefined } : {}) } },
+            sessions: { ...state.sessions, [id]: { ...cur, ...patch, ...(patch.images ? { bodyRef: undefined, cloudRevision: undefined } : {}) } },
           };
         });
-        if (patch.images?.length) void persistAndCool(id);
+        if (patch.images?.length||patch.status==='done') void persistAndCool(id);
       },
 
       removeSession: (id) =>
         set((state) => {
+          scheduleCloudTombstone('image-gen',id);
           const next = { ...state.sessions };
           delete next[id];
           useWindowManager.getState().closeWindow(imageGenWindowId(id));

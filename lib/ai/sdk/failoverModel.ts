@@ -1,3 +1,4 @@
+import { recordModelFailure } from './diagnostics.server';
 // endpoints 链容灾：把多个 LanguageModelV4 串成一个模型，主端点在「尚未产出任何 chunk」
 // 时失败（可恢复的 5xx / 特定 400 code / 首字节超时）则切到下一个；一旦开始流式输出就不再切换，
 // 避免把两个端点的半截回答拼在一起。
@@ -13,6 +14,7 @@ import type {
 } from "@ai-sdk/provider";
 import { APICallError } from "@ai-sdk/provider";
 import { CreditAdmissionError } from "@/lib/billing/centralCredits";
+import {isUncertainProviderOutcome} from '@/lib/billing/providerOutcome';
 import { isRecoverableUpstreamFailure, parseUpstreamErrorBody, isFetchAbortError } from "@/lib/ai/upstream";
 
 export interface FailoverCandidate {
@@ -86,6 +88,7 @@ export function createFailoverLanguageModel(
 
   // 用户主动取消不触发切换；本模型内部的首字节超时或可恢复的上游错误才切换。
   const shouldFailover = (error: unknown, attempt: Attempt, userSignal: AbortSignal | undefined, index: number) => {
+    if(isUncertainProviderOutcome(error))return false;
     if (error instanceof CreditAdmissionError) return false;
     if (index >= candidates.length - 1) return false;
     if (userSignal?.aborted) return false;
@@ -114,6 +117,7 @@ export function createFailoverLanguageModel(
           options.onLanded?.(candidates[i], i);
           return result;
         } catch (err) {
+          recordModelFailure(candidates[i].label,'generate',err);
           lastError = err;
           if (!shouldFailover(err, attempt, callOptions.abortSignal, i)) throw err;
           options.onFailover?.(candidates[i + 1], i + 1, err);
@@ -130,15 +134,41 @@ export function createFailoverLanguageModel(
         const attempt = startAttempt(callOptions.abortSignal, options.firstChunkTimeoutMs);
         let result: LanguageModelV4StreamResult;
         let first: ReadableStreamReadResult<LanguageModelV4StreamPart>;
-        let reader: ReadableStreamDefaultReader<LanguageModelV4StreamPart>;
+        let reader: ReadableStreamDefaultReader<LanguageModelV4StreamPart> | undefined;
+        const prelude: LanguageModelV4StreamPart[] = [];
         try {
           result = await candidates[i].model.doStream(hopOptions(i, callOptions, attempt.signal));
           // doStream 成功返回并不代表上游已开始输出：部分 provider 把 HTTP 错误延后成流内 error part，
           // 因此窥探首个 chunk（首字节超时也覆盖到这里）。
           reader = result.stream.getReader();
-          first = await reader.read();
+          // SDK stream-start is synthetic: it does not prove upstream activity.
+          // Keep the deadline through framing/metadata, and race even streams
+          // which ignore abort. Cancellation must never block the next attempt.
+          for (;;) {
+            const activeReader = reader;
+            const signal = attempt.signal;
+            let unbind = () => {};
+            try {
+              first = await Promise.race([
+                activeReader.read(),
+                new Promise<never>((_, reject) => {
+                  if (!signal) return;
+                  const abort = () => reject(signal.reason ?? new DOMException('Cancelled', 'AbortError'));
+                  if (signal.aborted) abort();
+                  else { signal.addEventListener('abort', abort, { once: true }); unbind = () => signal.removeEventListener('abort', abort); }
+                }),
+              ]);
+            } finally { unbind(); }
+            if (first.done) throw new Error('模型流已结束，但尚未产生有效响应，原对话保留。');
+            if (first.value.type === 'error') throw first.value.error;
+            if (['tool-call', 'tool-input-start', 'finish'].includes(first.value.type) || (['text-delta','reasoning-delta','tool-input-delta'].includes(first.value.type)&&'delta' in first.value&&typeof first.value.delta==='string'&&first.value.delta.length>0)) break;
+            if (prelude.length >= 32) throw new Error('模型响应包含过多控制事件，未开始有效输出。');
+            prelude.push(first.value);
+          }
         } catch (err) {
+          recordModelFailure(candidates[i].label,'stream',err);
           attempt.clear();
+          void reader?.cancel(err).catch(() => {});
           lastError = err;
           if (!shouldFailover(err, attempt, callOptions.abortSignal, i)) throw err;
           options.onFailover?.(candidates[i + 1], i + 1, err);
@@ -146,29 +176,22 @@ export function createFailoverLanguageModel(
         }
         attempt.clear();
 
-        if (!first.done && first.value.type === "error" && shouldFailover(first.value.error, attempt, callOptions.abortSignal, i)) {
-          reader.releaseLock();
-          await result.stream.cancel().catch(() => {});
-          lastError = first.value.error;
-          options.onFailover?.(candidates[i + 1], i + 1, first.value.error);
-          continue;
-        }
-
         options.onLanded?.(candidates[i], i);
 
         // 把窥探过的首个 chunk 放回流头。
         const replayed = new ReadableStream<LanguageModelV4StreamPart>({
           start(controller) {
+            for (const part of prelude) controller.enqueue(part);
             if (!first.done) controller.enqueue(first.value);
             else controller.close();
           },
           async pull(controller) {
-            const { done, value } = await reader.read();
+            const { done, value } = await reader!.read();
             if (done) controller.close();
-            else controller.enqueue(value);
+            else { if(value.type==='error')recordModelFailure(candidates[i].label,'stream',value.error);controller.enqueue(value); }
           },
           cancel(reason) {
-            return reader.cancel(reason);
+            return reader!.cancel(reason);
           },
         });
         return { ...result, stream: replayed };

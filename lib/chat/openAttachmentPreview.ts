@@ -6,7 +6,7 @@ export function attachmentPreviewWindowId(key: string) {
 }
 
 export function openAttachmentPreview(key: string, data: AttachmentPreviewData) {
-  if (!data.content) return;
+  if (!data.content && !data.localFileId) return;
   const id = attachmentPreviewWindowId(key);
   const windows = useWindowManager.getState();
   const existing = windows.windows.find((win) => win.id === id);

@@ -26,6 +26,8 @@ function moduleOf<N extends StudyToolName>(
 }
 
 export const TOOL_REGISTRY = {
+  readSavedAsset:moduleOf('readSavedAsset'),
+  readLocalFile: moduleOf('readLocalFile'),
   cloudSandbox: moduleOf("cloudSandbox", { StepDetail: CloudSandboxCard }),
   learningConnectors: moduleOf("learningConnectors", { StepDetail: LearningConnectorsCard }),
   kitSolo: moduleOf("kitSolo", { StepDetail: KitSoloCard }),

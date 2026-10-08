@@ -62,7 +62,9 @@ test("本地导入记录：只存路径与元数据，不落内容、不上云",
   assert.doesNotMatch(imports, /content:|dataUrl|base64/, "导入记录不存正文");
   // 三个入口都要记：输入框附件、加号菜单文件、网址
   assert.match(readFile("lib/hooks/useImageAttachments.ts"), /recordImport\(/);
-  assert.match(readFile("components/window/WindowTaskbar.tsx"), /recordImport\(/);
+  assert.match(readFile("components/window/WindowTaskbar.tsx"), /registerLocalFile\(/);
+  assert.match(readFile('lib/local-files/client.ts'), /recordImport\(/);
+  assert.doesNotMatch(readFile('lib/local-files/client.ts'), /uploadCloudFile|writeAssetVersion/);
   assert.match(readFile("components/window/OpenUrlDialog.tsx"), /recordImport\(/);
 });
 

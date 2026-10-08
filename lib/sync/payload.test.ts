@@ -152,3 +152,11 @@ test("redactMediaString leaves ordinary text and https images", () => {
   assert.equal(out.includes("https://example.com/a.png"), true);
   assert.equal(out.includes("data:image"), false);
 });
+
+
+test('private completed HTML retains embedded image bytes while removing credential fields', () => {
+  const html = '<img src="data:image/png;base64,QUJDRA==">';
+  const prepared = preparePayload('artifact', buildArtifactPayload({ id:'embedded',title:'embedded',html,status:'done',apiKey:'secret' } as never));
+  assert.equal(prepared.ok,true);
+  if(prepared.ok) { assert.equal((prepared.payload as {html:string}).html,html);assert.equal(JSON.stringify(prepared.payload).includes('secret'),false); }
+});

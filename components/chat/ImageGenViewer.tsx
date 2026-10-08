@@ -1,5 +1,8 @@
 "use client";
 
+import { captureStorageOperation } from '@/lib/storage/ownerScope';
+import { freezeGeneratedImages } from '@/lib/assets/freezeImages';
+
 import { useEffect, useRef, useCallback } from "react";
 import { Download, ImagePlus, RefreshCw, Loader, AlertTriangle, Check as AgentCheckIcon } from "lucide-react";
 import { useImageGen, imageGenWindowId, acquireImageGenLease, hydrateImageGenImages, type ImageGenImage } from "@/lib/hooks/useImageGen";
@@ -43,6 +46,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
     async (sid: string) => {
       const cur = useImageGen.getState().sessions[sid];
       if (!cur) return;
+      const operation = captureStorageOperation(sid);
       requestStartedRef.current = true;
       // 先读设置：进度条要用"这次到底会落到哪个模型"的典型耗时来估算。
       const settings = useSettings.getState();
@@ -54,6 +58,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
         const imageModelId = cur.modelId || settings.selectedModelId;
         const res = await fetch("/api/image-gen", {
           method: "POST",
+          signal: operation.signal,
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             modelId: imageModelId,
@@ -73,8 +78,10 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
           }),
         });
 
+        if (!operation.isCurrent()) return;
         if (!res.ok) {
           const errBody = await res.json().catch(() => null);
+          if (!operation.isCurrent()) return;
           updateSession(sid, {
             status: "error",
             error: formatImageGenError(res.status, errBody),
@@ -83,7 +90,8 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
         }
 
         const data = await res.json();
-        if (!Array.isArray(data?.images)) {
+        if (!operation.isCurrent()) return;
+        if (!Array.isArray(data?.images) || data.images.length===0) {
           updateSession(sid, { status: "error", error: t("window.imageGen.badResponse") });
           return;
         }
@@ -97,8 +105,12 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
           imageCount: data.images.length
         }));
 
-        updateSession(sid, { status: "done", images: data.images, error: undefined });
+        updateSession(sid, { status: 'error', images: data.images, error: '图片已生成，正在保存原图；此保留稿尚未同步。' });
+        const frozen = await freezeGeneratedImages(data.images, operation.signal);
+        if (!operation.isCurrent()) return;
+        updateSession(sid, { status: "done", images: frozen, error: undefined });
       } catch (err) {
+        if (!operation.isCurrent()) return;
         updateSession(sid, {
           status: "error",
           error: err instanceof Error ? err.message : String(err),
@@ -253,6 +265,10 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
             </div>
           )}
 
+          {isError && session.images.length>0 && <button className="m-3 underline text-sm" onClick={()=>{
+            const operation=captureStorageOperation(sessionId);
+            void freezeGeneratedImages(session.images,operation.signal).then(images=>{if(operation.isCurrent())updateSession(sessionId,{status:'done',images,error:undefined});}).catch(error=>{if(operation.isCurrent())updateSession(sessionId,{error:error.message});});
+          }}>重试保存原图（不会重新生成）</button>}
           {isError && (
             <div className="flex h-full flex-col items-center justify-center gap-3 px-6 py-8 text-center">
               <AlertTriangle size={36} style={{ color: "var(--md-sys-color-error)" }} />
@@ -282,7 +298,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
             </div>
           )}
 
-          {isDone && session.images.length > 0 && (
+          {(isDone || isError) && session.images.length > 0 && (
             <div
               className="grid gap-3 p-4"
               style={{ gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))` }}

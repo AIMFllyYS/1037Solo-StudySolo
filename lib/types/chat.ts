@@ -31,6 +31,7 @@ export interface UsageSummary {
 
 /** 服务端经 UI Message Stream 下发的自定义 data parts。 */
 export type StudyDataParts = {
+  'local-continuation': { token:string };
   'context-compaction': { phase: 'running' | 'done'; summary?: string; coveredIds?: string[]; cloudFileIds?: string[]; createdAt?: number };
   /** 瞬时提示（如端点切换），不落库。 */
   info: { message: string };
@@ -166,6 +167,7 @@ export function isAttachmentRef(a: StoredChatAttachment): a is ChatAttachmentRef
  * 思考、工具调用、正文都按时间顺序存在 parts 里，渲染层据此生成思考链。
  */
 export interface ChatMessage extends UIMessage<StudyMessageMetadata, StudyDataParts, StudyTools> {
+  contentRevision?:number;
   timestamp: number;
   followUpQuestions?: string[];
   attachments?: StoredChatAttachment[];

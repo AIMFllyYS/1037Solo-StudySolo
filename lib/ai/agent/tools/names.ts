@@ -26,6 +26,8 @@ import type { KitSoloInput, KitSoloOutput } from "@/lib/ai/agent/tools/kitSolo/t
 
 /** 供 UIMessage<…, StudyTools> 使用的 UITools 形状（type alias 才能满足 Record 约束）。 */
 export type StudyTools = {
+  readSavedAsset:{input:{operation:'list'|'read';kind?:'artifact'|'document'|'user-note'|'review-card';id?:string;field?:number;offset?:number;query?:string};output:{text:string;found:boolean;sourceId?:string;revision?:number;nextOffset?:number|null}};
+  readLocalFile: { input: import('@/lib/local-files/contract').LocalReadInput; output: import('@/lib/local-files/contract').LocalReadOutput };
   cloudSandbox: { input: CloudSandboxInput; output: CloudSandboxOutput };
   learningConnectors: { input: LearningConnectorInput; output: LearningConnectorOutput };
   kitSolo: { input: KitSoloInput; output: KitSoloOutput };
@@ -56,6 +58,8 @@ export type StudyTools = {
 export type StudyToolName = keyof StudyTools;
 
 export const STUDY_TOOL_NAMES: readonly StudyToolName[] = [
+  'readSavedAsset',
+  'readLocalFile',
   "cloudSandbox",
   "learningConnectors",
   "kitSolo",

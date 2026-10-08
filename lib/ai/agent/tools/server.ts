@@ -2,6 +2,8 @@
 // 不要从客户端（components、lib/hooks、tools/index）导入本文件或各工具的 tool.ts。
 
 import type { ToolSet } from "ai";
+import {createReadLocalFileTool} from './readLocalFile/tool';
+import {createReadSavedAssetTool} from './readSavedAsset/tool';
 import { createLearningConnectorsTool } from "@/lib/ai/agent/tools/learningConnectors/tool";
 import { createCloudSandboxTool } from "@/lib/ai/agent/tools/cloudSandbox/tool";
 import type { SandboxScope } from "@/lib/sandbox/actor.server";
@@ -103,6 +105,8 @@ export function buildStudyTools(
   const menuSkillNames = menuSkillNamesOf(ctx.skills);
 
   const all = {
+    readSavedAsset:createReadSavedAssetTool(ctx.userId),
+    readLocalFile: createReadLocalFileTool(),
     cloudSandbox: createCloudSandboxTool(opts.cloudSandboxScope),
     learningConnectors: createLearningConnectorsTool(opts.connectorOwner, ctx.flashcards, !opts.planMode && !opts.noteWindowAgent),
     kitSolo: createKitSoloTool(opts.kitSoloAccessToken ?? ""),
@@ -119,7 +123,7 @@ export function buildStudyTools(
     renderInteractive: createRenderInteractiveTool(ctx),
     drawDiagram: createDrawDiagramTool(),
     generateImage: createGenerateImageTool(ctx),
-    getArtifact: createGetArtifactTool(opts.artifacts ?? []),
+    getArtifact: createGetArtifactTool(opts.artifacts ?? [],ctx.userId),
     useSkill: createUseSkillTool(ctx, runtime),
     proposeMemory: createProposeMemoryTool(),
     commitNotes: createCommitNotesTool(),
@@ -150,6 +154,8 @@ export function buildStudyTools(
     "getProjectFiles",
     "readProjectSlices",
   ];
+  if(ctx.localFiles?.length)names.push('readLocalFile');
+  if(ctx.userId)names.push('readSavedAsset');
   if (opts.memoryCommit === "note") names.push("commitNotes");
   if (opts.connectorOwner) names.push("learningConnectors");
   if (opts.cloudSandboxScope && !opts.noteWindowAgent && !opts.planMode) names.push("cloudSandbox");

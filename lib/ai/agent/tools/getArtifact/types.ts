@@ -10,6 +10,7 @@ export interface ArtifactCatalogItem {
 
 export interface GetArtifactInput {
   id: string;
+  offset?:number;
 }
 
 export interface GetArtifactOutput extends TextToolOutput {

@@ -3,6 +3,7 @@
 // 加上限只约束体积与枚举，不把可选字段改成必填。
 
 import { z } from "zod";
+import {localCatalogSchema} from '@/lib/local-files/contract';
 import { classAgentContextSchema } from "@/lib/class/agentContext";
 import { DEFAULT_ACADEMIC_YEAR, isAcademicYearId, type AcademicYearId } from "@/lib/constants/academic-year";
 import {
@@ -139,6 +140,8 @@ const finiteNumber = z.number().refine((n) => Number.isFinite(n));
 /** 客户端 body 字段见 `lib/chat/buildChatRequestBody.ts` 的 `ChatRequestBody`（messages 由 transport 另传）。 */
 export const chatRequestSchema = z.object({
   cloudFileIds: z.array(z.string().uuid()).max(10000).optional().default([]),
+  localFiles: localCatalogSchema.optional().default([]),
+  localContinuation: z.string().max(100000).optional(),
   messages: z
     .array(uiMessageSchema)
     .max(REQUEST_LIMITS.messages, `消息数量超过上限（最多 ${REQUEST_LIMITS.messages} 条）。`)

@@ -1,3 +1,4 @@
+import { activateStorageOwner } from '@/lib/storage/ownerScope';
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import ImageGenViewerLayer from "./ImageGenViewer";
@@ -7,11 +8,13 @@ import { useWindowManager } from "@/lib/hooks/useWindowManager";
 const INIT = { id: "img_gate", prompt: "线粒体内膜示意图", title: "示意图", size: "1024x1024", count: 1 };
 
 beforeEach(() => {
+    activateStorageOwner('generation-test-owner');
   useImageGen.setState({ openIds: [], sessions: {} });
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
 });
 
 afterEach(() => {
+    activateStorageOwner(null);
   cleanup();
   vi.restoreAllMocks();
   useImageGen.setState({ openIds: [], sessions: {} });
@@ -62,4 +65,19 @@ describe("ImageGenViewer 付费闸门", () => {
     useImageGen.getState().openViewer(INIT);
     expect(useImageGen.getState().sessions.img_gate?.autoStart).toBe(true);
   });
+});
+
+
+it('a late image response cannot write another owner session or billing record', async () => {
+  activateStorageOwner('image-owner-a');
+  let resolveResponse!: (response: Response)=>void;
+  const fetchSpy=vi.spyOn(globalThis,'fetch').mockImplementation(()=>new Promise(resolve=>{resolveResponse=resolve;}));
+  useImageGen.getState().openViewer(INIT,{approve:true});
+  render(<ImageGenViewerLayer />);
+  await waitFor(()=>expect(fetchSpy).toHaveBeenCalledTimes(1));
+  activateStorageOwner('image-owner-b');
+  useImageGen.setState({sessions:{},openIds:[]});
+  resolveResponse(new Response(JSON.stringify({images:[{b64_json:'private-a'}]})));
+  await waitFor(()=>expect((fetchSpy.mock.calls[0][1] as RequestInit).signal?.aborted).toBe(true));
+  expect(useImageGen.getState().sessions.img_gate).toBeUndefined();
 });

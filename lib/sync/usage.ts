@@ -42,6 +42,7 @@ export interface CloudSyncUsage {
 }
 
 export const SYNC_KIND_META: Record<CloudSyncKind, { labelKey: I18nKey; unitKey: I18nKey }> = {
+  'image-gen':{labelKey:'panel.storage.kind.imageGen.label',unitKey:'panel.storage.kind.imageGen.unit'},
   "chat-session": { labelKey: "panel.storage.kind.chatSession.label", unitKey: "panel.storage.kind.chatSession.unit" },
   artifact: { labelKey: "panel.storage.kind.artifact.label", unitKey: "panel.storage.kind.artifact.unit" },
   document: { labelKey: "panel.storage.kind.document.label", unitKey: "panel.storage.kind.document.unit" },

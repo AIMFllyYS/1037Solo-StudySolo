@@ -7,6 +7,7 @@ import { useCloudFileLibrary } from '@/lib/files/library';
 import { cloudFileAsset, filterAssets, type AssetSort } from '@/lib/agent/assetCatalog';
 import type { CloudFile } from '@/lib/files/contract';
 import { getOwnerEpoch } from '@/lib/storage/ownerScope';
+import PendingAssetUploads from './PendingAssetUploads';
 
 export default function CloudFilesPanel({ query = '', sort = 'recent', view = 'list' }: { query?: string; sort?: AssetSort; view?: 'grid'|'list' }) {
   const library = useCloudFileLibrary();
@@ -37,5 +38,6 @@ export default function CloudFilesPanel({ query = '', sort = 'recent', view = 'l
       </div>;
     })}</div>
     {selection ? <ConfirmDialog title="确认删除云端文件？" body={`「${selection.file.name}」将从可用资产与 AI 文件上下文移除。此操作为软删除，云端暂时保留原文件。`} cancelLabel="取消" confirmLabel={deleting ? '正在删除…' : '确认删除'} onCancel={() => { if (!deleting) setSelected(null); }} onConfirm={() => { void remove(); }} /> : null}
+    <PendingAssetUploads />
   </section>;
 }

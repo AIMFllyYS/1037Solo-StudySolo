@@ -1,3 +1,4 @@
+import { retryAfterDelay } from './failure';
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   SYNC_TABLE,
@@ -5,6 +6,8 @@ import {
   type SyncDocumentRow,
   type SyncDocumentsApi,
 } from "./types";
+import { writeAssetVersion, hydrateRemotePayload, AssetRequestError } from '@/lib/assets/client';
+import { hasExternalBody } from '@/lib/assets/body';
 
 function asRow(value: unknown): SyncDocumentRow | null {
   if (!value || typeof value !== "object") return null;
@@ -17,13 +20,14 @@ function asRow(value: unknown): SyncDocumentRow | null {
     payload: row.payload ?? {},
     deleted: row.deleted === true,
     updated_at: typeof row.updated_at === "string" ? row.updated_at : new Date(0).toISOString(),
+    revision: typeof row.revision === 'number' ? row.revision : 0,
   };
 }
 
 export function createSupabaseSyncClient(client: SupabaseClient, userId: string): SyncDocumentsApi {
   const listPage: NonNullable<SyncDocumentsApi["listPage"]> = async (kinds, cursor) => {
     if (cursor && !/^[0-9a-f-]{36}$/i.test(cursor)) return { data: [], nextCursor: null, error: { message: "同步分页游标无效" } };
-    const query = client.from(SYNC_TABLE).select("id, kind, client_id, payload, deleted, updated_at").eq("user_id", userId).in("kind", [...kinds]).order("id").range(0, 99);
+    const query = client.from(SYNC_TABLE).select("id, kind, client_id, payload, deleted, updated_at, revision").eq("user_id", userId).in("kind", [...kinds]).order("id").range(0, 99);
     const { data, error } = await (cursor ? query.gt("id", cursor) : query);
     if (error) return { data: [], nextCursor: null, error: { message: error.message } };
     const last = data?.at(-1) as { id?: unknown } | undefined;
@@ -45,24 +49,30 @@ export function createSupabaseSyncClient(client: SupabaseClient, userId: string)
       return {data:[],error:{message:"同步文档数量超过当前批量读取上限，请分项目导出；未应用不完整数据"}};
     },
 
-    async get(kind, clientId) {
+    async get(kind, clientId,options) {
       const { data, error } = await client
         .from(SYNC_TABLE)
-        .select("kind, client_id, payload, deleted, updated_at")
+        .select("kind, client_id, payload, deleted, updated_at, revision")
         .eq("user_id", userId)
         .eq("kind", kind)
         .eq("client_id", clientId)
         .maybeSingle();
       if (error) return { data: null, error: { message: error.message } };
-      return { data: asRow(data), error: null };
+      const row = asRow(data);
+      if (row && !row.deleted && hasExternalBody(row.payload)&&!options?.metadataOnly) {
+        try { row.payload = await hydrateRemotePayload(kind, clientId,row.revision); }
+        catch (error) { return { data: null, error: { message: error instanceof Error ? error.message : '正文读取失败', status: error instanceof AssetRequestError ? error.status : 503 } }; }
+      }
+      return { data: row, error: null };
     },
     async upsert(row) {
       try {
-        const response=await fetch('/api/sync',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({expectedUserId:userId,row})});
+        if (!row.deleted) return { data: await writeAssetVersion(row.kind, row.client_id, row.payload, row.expectedRevision ?? 0, row.mutationId), error: null };
+        const response=await fetch('/api/sync',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({expectedUserId:userId,row,version:2})});
         const result=await response.json();
-        if(!response.ok)return {data:null,error:{message:result.error||'Cloud sync failed'}};
+        if(!response.ok)return {data:null,error:{message:result.error||'Cloud sync failed',status:response.status,code:result.code,retryAfterMs:retryAfterDelay(response.headers.get('retry-after'))}};
         return {data:asRow(result),error:null};
-      }catch(error){return {data:null,error:{message:error instanceof Error?error.message:'Cloud sync unavailable'}};}
+      }catch(error){return {data:null,error:{message:error instanceof Error?error.message:'Cloud sync unavailable',status:error instanceof AssetRequestError ? error.status : 503,code:error instanceof AssetRequestError ? error.code : 'NETWORK_UNAVAILABLE',retryAfterMs:error instanceof AssetRequestError ? error.retryAfterMs : 0}};}
 
     },
   };

@@ -3,6 +3,8 @@ import {canonicalUrlFor,isLegacyHost,authModeForRequest,accountBackendUrl} from 
 import { renewIfNeeded, downstreamHeaders, forwardCookies, isOutage, type RenewalResult } from "@/lib/auth/sign-in/session-refresh";
 import { NextResponse, type NextRequest } from "next/server";
 import { decideAiGate, TRUSTED_PROXY_USER_HEADER } from "@/lib/auth/aiGate";
+import {verifyAccount,failureStatus} from '@/lib/auth/sign-in/account-verify';
+import {extractAccessToken} from '@/lib/auth/sessionCookie';
 
 /**
  * Next.js 16 request gate (formerly middleware.ts).
@@ -44,11 +46,16 @@ export async function proxy(request: NextRequest) {
   }
   let renewal: RenewalResult | null = null;
   const mode = authModeForRequest(request);
-  if ((request.nextUrl.pathname.startsWith("/api/connectors") || request.nextUrl.pathname.startsWith("/api/agent/") || request.nextUrl.pathname === "/api/chat") && ["account-local", "account-shared"].includes(mode) && !request.headers.get("authorization")) {
+  if ((request.nextUrl.pathname.startsWith("/api/connectors") || request.nextUrl.pathname.startsWith("/api/agent/") || request.nextUrl.pathname.startsWith('/api/class') || request.nextUrl.pathname.startsWith('/api/files') || request.nextUrl.pathname.startsWith('/api/assets') || request.nextUrl.pathname === '/api/sync' || request.nextUrl.pathname === "/api/chat") && ["account-local", "account-shared"].includes(mode) && !request.headers.get("authorization")) {
     renewal = await renewIfNeeded({ accountBackendUrl: accountBackendUrl(mode), cookieHeader: request.headers.get("cookie") ?? "", origin: request.nextUrl.origin, forwardedFor: request.headers.get("x-forwarded-for"), pathname: request.nextUrl.pathname });
     if (isOutage(renewal)) return NextResponse.json({ code: "ACCOUNT_UNAVAILABLE" }, { status: 503, headers: { "Retry-After": "5" } });
   }
   const incoming = downstreamHeaders(request.headers, renewal) ?? request.headers;
+  if(/^\/api\/(?:class|files|assets|sync|profile|quota|usage|redeem|review\/progress)(?:\/|$)/.test(request.nextUrl.pathname)){
+    const identity=await verifyAccount(extractAccessToken(incoming),{accountBackendUrl:accountBackendUrl(mode)});
+    if(identity.kind!=='ok')return forwardCookies(NextResponse.json({error:identity.kind==='unavailable'?'统一账号服务暂不可用，登录状态已保留。':'请先完成统一账号验证。',code:identity.kind==='unavailable'?'ACCOUNT_UNAVAILABLE':'AUTH_REQUIRED'},{status:failureStatus(identity)}),renewal);
+    if(identity.identity.mfa_required)return forwardCookies(NextResponse.json({error:'请先完成两步验证。',code:'MFA_REQUIRED'},{status:403}),renewal);
+  }
   const decision = await decideAiGate({
     pathname: request.nextUrl.pathname,
     method: request.method,

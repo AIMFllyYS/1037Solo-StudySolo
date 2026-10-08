@@ -11,10 +11,10 @@ import { createAndOpenNote, openArtifactImportPicker, openDocumentImportPicker, 
 import OverflowMenu from "@/components/window/OverflowMenu";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
 import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
-import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments,revokeAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
+import { ACCEPTED_DOCUMENT_FILE_TYPES } from '@/lib/ai/imageUtils';
+import { registerLocalFile } from '@/lib/local-files/client';
 import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
-import { localPathOf, recordImport } from "@/lib/stores/imports";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useAppMode } from "@/lib/stores/appMode";
 import ProjectRequiredDialog from "@/components/project/ProjectRequiredDialog";
@@ -40,21 +40,6 @@ type TaskbarTooltip = {
 function taskbarAccent(win: ManagedWindow): string | undefined {
   if (win.type !== "attachment-preview") return undefined;
   return fileTypeAccent(win.data as { kind?: string; mimeType?: string; name?: string });
-}
-
-function previewKind(attachment: AttachmentPreview) {
-  const name = isImagePreview(attachment) ? attachment.file.name : attachment.name;
-  return attachmentPreviewKind({ name, mimeType: attachment.mimeType });
-}
-
-function previewContent(attachment: AttachmentPreview): string {
-  if (isImagePreview(attachment)) return attachment.base64;
-  if (attachment.type === "local-file") return attachment.dataUrl;
-  return attachment.previewUrl || attachment.text;
-}
-
-function isImagePreview(attachment: AttachmentPreview): attachment is ImageAttachmentPreview {
-  return attachment.type !== "document" && attachment.type !== "local-file";
 }
 
 function FileErrorDialog({ message, onClose }: { message: string; onClose: () => void }) {
@@ -135,36 +120,21 @@ export function AddContentButton({
     };
   }, [open]);
 
-  const handleFiles = async (files: File[]) => {
-    const { attachments, errors } = await filesToAttachments(files, { maxFileSize: MAX_LOCAL_FILE_SIZE });
-    // 从加号菜单进来的文件也算「本地导入」：我的资产 → 文件 能按路径找回它。
-    for (const file of files) {
-      if (file.type.startsWith("image/")) continue;
-      recordImport({
-        kind: "file",
-        name: file.name,
-        sizeBytes: file.size,
-        mimeType: file.type || undefined,
-        absPath: localPathOf(file),
-        source: "window-taskbar",
-      });
+  const handleFiles = async (files: File[], handles?:FileSystemFileHandle[]) => {
+    for (const [index,file] of files.entries()) {
+      try {
+        const id = await registerLocalFile(file, useChatHistory.getState().activeSessionId,undefined,handles?.[index]);
+        const kind = attachmentPreviewKind({ name: file.name, mimeType: file.type });
+        openAttachmentPreview('local:' + id, { localFileId: id, name: file.name, mimeType: file.type, kind, content: kind === 'pdf' || kind === 'image' ? 'blob:local-source' : '', file });
+      } catch (error) { setFileError(error instanceof Error ? error.message : '本地文件打开失败。'); }
     }
-    attachments.forEach((attachment, index) => {
-      const originalName = isImagePreview(attachment) ? attachment.file.name : attachment.name;
-      const kind = previewKind(attachment);
-      const name = kind === "html" ? `HTML · ${originalName}` : originalName;
-      openAttachmentPreview(`topbar:${originalName}:${attachment.file.lastModified}:${index}`, {
-        name,
-        mimeType: attachment.mimeType,
-        kind,
-        content: previewContent(attachment),
-        file: attachment.file,
-      });
-    });
-    // The window receives File and creates its own short-lived URL; taskbar's conversion URLs have no viewer owner.
-    revokeAttachments(attachments);
-    if (errors.length > 0) setFileError(errors[0]);
     setOpen(false);
+  };
+  const pickLocalFiles=async()=>{
+    const picker=(window as unknown as {showOpenFilePicker?: (options:{multiple:boolean})=>Promise<FileSystemFileHandle[]>}).showOpenFilePicker;
+    if(!picker){fileRef.current?.click();return;}
+    try{const handles=await picker({multiple:true});const files=await Promise.all(handles.map(handle=>handle.getFile()));await handleFiles(files,handles);}
+    catch(error){if(!(error instanceof DOMException&&error.name==='AbortError'))setFileError(error instanceof Error?error.message:'文件选择失败。');}
   };
 
   /**
@@ -318,7 +288,7 @@ export function AddContentButton({
               <NotebookFormulaIcon size={14} className="text-[var(--md-sys-color-primary)]" />
               <span><strong className="font-semibold">{t("panel.addMenu.newNote")}</strong><small className="ml-1 text-[var(--ink-soft)]">{t("panel.addMenu.newNoteHint")}</small></span>
             </button>
-            <button type="button" role="menuitem" onClick={() => fileRef.current?.click()} className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]">
+            <button type="button" role="menuitem" onClick={() => void pickLocalFiles()} className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]">
               <Upload size={14} className="text-[var(--md-sys-color-primary)]" />
               <span><strong className="font-semibold">{t("panel.addMenu.addFile")}</strong><small className="ml-1 text-[var(--ink-soft)]">{t("panel.addMenu.addFileHint")}</small></span>
             </button>

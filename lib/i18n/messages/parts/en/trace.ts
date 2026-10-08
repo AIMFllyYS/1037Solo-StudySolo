@@ -200,6 +200,8 @@ export const traceEn = {
       settingsLabel: "Project files",
       description: "Views the project file tree and slice index (read bodies on demand with readProjectSlices)",
     },
+    readSavedAsset: { label: 'Read saved asset', settingsLabel: 'Saved assets', description: 'Find and read saved assets by chapter or range' },
+    readLocalFile: { label: 'Read local source', settingsLabel: 'Local files', description: 'Read selected local sources by page or range' },
     readProjectSlices: {
       label: "Read project slices",
       settingsLabel: "Project slices",

@@ -202,6 +202,8 @@ export const traceZh = {
       settingsLabel: "项目文件",
       description: "查看项目文件的文件树与切片索引（正文用 readProjectSlices 按需读）",
     },
+    readSavedAsset: { label: '读取云端产物', settingsLabel: '云端产物', description: '检索并按章节或区间读取已保存产物' },
+    readLocalFile: { label: '读取本地文件', settingsLabel: '本地文件', description: '按页或片段读取已关联的仅本机文件' },
     readProjectSlices: {
       label: "读取项目切片",
       settingsLabel: "项目切片",

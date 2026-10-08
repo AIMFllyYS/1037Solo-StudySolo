@@ -7,6 +7,7 @@ import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/stor
 import { readOwnedStorageItem, writeOwnedStorageItem } from "@/lib/storage/idbStorage";
 import { htmlToSummary } from "@/lib/context/compactArtifacts";
 import { registerResourceMetrics } from "@/lib/performance/resourceMetrics";
+import {setSyncItemStatus} from '@/lib/sync/status';
 
 /**
  * HTML 演示（Artifact）store。链路：tools.ts renderInteractive → ArtifactCard → 本 store → ArtifactViewer。
@@ -15,10 +16,11 @@ import { registerResourceMetrics } from "@/lib/performance/resourceMetrics";
 
 /** AI 生成的交互式 HTML 产物（IndexedDB 持久化）。 */
 export interface Artifact {
+  cloudRevision?:number;
   id: string;
   title: string;
   html: string;
-  status: "done";
+  status: "done" | 'generating' | 'draft' | 'error';
   /** 生成时的思考过程，刷新后仍要能展开查看。 */
   reasoning?: string;
   /** Body is durably stored under an owner-scoped per-artifact key. */
@@ -28,6 +30,8 @@ export interface Artifact {
 
 const bodyLeases = new Map<string, number>();
 let residentOwner: string | null = null;
+const bodyWrites=new Map<string,Promise<boolean>>();
+function commitBody(owner:string,id:string,html:string,draft=false){const key=`${owner}:${id}`,previous=bodyWrites.get(key);const next=(previous??Promise.resolve(true)).catch(()=>false).then(()=>{if(draft&&(owner!==getStorageOwner()||useArtifacts.getState().byId[id]?.status==='done'))return true;return writeOwnedStorageItem(owner,bodyKey(id),html);});bodyWrites.set(key,next);void next.finally(()=>{if(bodyWrites.get(key)===next)bodyWrites.delete(key);});return next;}
 onStorageOwnerChange(() => { bodyLeases.clear(); residentOwner = null; });
 function bodyKey(id: string) { return `artifact-body:${id}`; }
 function coldArtifact(artifact: Artifact): Artifact { return artifact.bodyRef ? { ...artifact, html: "" } : artifact; }
@@ -37,6 +41,7 @@ export async function loadArtifactFull(id: string): Promise<Artifact | null> {
   const artifact = useArtifacts.getState().byId[id];
   if (!artifact) return null;
   if (!owner || residentOwner !== owner) throw new Error("artifact_owner_not_ready");
+  if(artifact.cloudRevision!==undefined){const {hydrateRemotePayload}=await import('@/lib/assets/client');const full=await hydrateRemotePayload('artifact',id,artifact.cloudRevision) as Artifact;if(owner!==getStorageOwner()||epoch!==getOwnerEpoch()||useArtifacts.getState().byId[id]!==artifact)throw new Error('正文加载期间状态已变化，请重试。');if(!await commitBody(owner,id,full.html))throw new Error('正文缓存保存失败。');if(owner!==getStorageOwner()||epoch!==getOwnerEpoch()||useArtifacts.getState().byId[id]!==artifact)throw new Error('正文加载期间状态已变化，请重试。');useArtifacts.setState(state=>state.byId[id]===artifact?{byId:{...state.byId,[id]:{...artifact,cloudRevision:undefined}}}:state);return {...full,bodyRef:true};}
   if (artifact.html || !artifact.bodyRef) return artifact;
   const html = await readOwnedStorageItem(owner, bodyKey(id));
   if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch) throw new Error("artifact_owner_changed");
@@ -46,7 +51,7 @@ export async function loadArtifactFull(id: string): Promise<Artifact | null> {
 
 export async function persistArtifactBody(artifact: Artifact): Promise<boolean> {
   const owner = getStorageOwner();
-  const saved = owner ? await writeOwnedStorageItem(owner, bodyKey(artifact.id), artifact.html) : false;
+  const saved = owner ? await commitBody(owner,artifact.id,artifact.html) : false;
   if (saved && owner === getStorageOwner()) residentOwner = owner;
   return saved;
 }
@@ -113,6 +118,7 @@ interface ArtifactsState {
   _setHasHydrated: (v: boolean) => void;
 
   saveDone: (id: string, title: string, html: string, reasoning?: string) => void;
+  saveDraft:(id:string,title:string,html:string,status:'generating'|'draft'|'error')=>Promise<void>;
   openViewer: (id: string, title?: string) => void;
   closeViewer: () => void;
   /** 删除不在 keepIds 中的 artifact，用于跨 store 孤儿清理。 */
@@ -142,14 +148,21 @@ export const useArtifacts = createPersistedStore<ArtifactsState>(
       viewerId: null,
       _hasHydrated: false,
       _setHasHydrated: (v) => set({ _hasHydrated: v }),
+      saveDraft:async(id,title,html,status)=>{
+        const owner=getStorageOwner(),epoch=getOwnerEpoch();if(!owner)return;
+        if(useArtifacts.getState().byId[id]?.status==='done')return;
+        if(!await commitBody(owner,id,html,true))throw new Error('未完成稿本机保存失败，原内容仍在生成窗口。');
+        if(owner!==getStorageOwner()||epoch!==getOwnerEpoch())return;
+        set(state=>state.byId[id]?.status==='done'?state:({order:state.order.includes(id)?state.order:[...state.order,id],byId:{...state.byId,[id]:{id,title,html:bodyLeases.has(id)?html:'',status,bodyRef:true,summary:htmlToSummary(html)}}}));
+      },
 
       saveDone: (id, title, html, reasoning) => {
+        setSyncItemStatus(`artifact:${id}`,{phase:'pending'});
         residentOwner = getStorageOwner();
         set((s) => {
           const exists = s.byId[id];
           const order = exists ? s.order : [...s.order, id];
           const prev = s.byId[id];
-          scheduleCloudUpsert("artifact", id);
           return {
             order,
             byId: {
@@ -167,11 +180,12 @@ export const useArtifacts = createPersistedStore<ArtifactsState>(
           };
         });
         const owner = getStorageOwner(), epoch = getOwnerEpoch();
-        if (owner) void writeOwnedStorageItem(owner, bodyKey(id), html).then((saved) => {
+        if (owner) void commitBody(owner,id,html).then((saved) => {
           if (!saved || getStorageOwner() !== owner || getOwnerEpoch() !== epoch) return;
           useArtifacts.setState((state) => {
             const row = state.byId[id];
             if (!row || row.html !== html) return state;
+            scheduleCloudUpsert('artifact',id);
             return { byId: { ...state.byId, [id]: { ...row, bodyRef: true, html: bodyLeases.has(id) || state.viewerId === id ? html : "" } } };
           });
         });
@@ -239,7 +253,7 @@ export const useArtifacts = createPersistedStore<ArtifactsState>(
       storage: "idb",
       partialize: (s) => ({ order: s.order, byId: Object.fromEntries(Object.entries(s.byId).map(([id, row]) => [id, coldArtifact(row)])) }),
       onRehydrateStorage: () => (state) => {
-        if (state) stripViewerId(state);
+        if (state) {stripViewerId(state);for(const row of Object.values(state.byId))if(row.status==='generating')row.status='draft';}
         const owner = getStorageOwner(), epoch = getOwnerEpoch();
         void migrateLegacyBodies().finally(() => {
           if (owner === getStorageOwner() && epoch === getOwnerEpoch()) {

@@ -1,0 +1,3 @@
+import { tool } from 'ai';
+import { localReadInputSchema, localReadOutputSchema } from '@/lib/local-files/contract';
+export function createReadLocalFileTool() { return tool({ description: '读取用户已关联的仅本机文件。sourceId来自本地资料目录。catalog查看页数，read按页和offset读取文字/备注，search按页搜索；继续使用nextPage或nextOffset。照片返回缩略图，PPTX仅文字与备注。不支持原文件未连接时的读取。该只读工具在客户端执行。', inputSchema: localReadInputSchema, outputSchema: localReadOutputSchema, toModelOutput: ({ output }) => output.image ? { type: 'content' as const, value: [{ type: 'text' as const, text: output.text }, { type: 'file' as const, data: { type: 'data' as const, data: output.image.dataUrl.split(',')[1] }, mediaType: 'image/jpeg' }] } : { type: 'text' as const, value: output.text } }); }

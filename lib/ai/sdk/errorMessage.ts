@@ -28,13 +28,12 @@ export function toChatErrorMessage(error: unknown, secrets: string[] = []): stri
     return '连接模型服务超时，请检查网络或稍后重试。';
   }
   if (chain.some((item) => item.name === 'AbortError')) return '生成已取消。';
-  if (chain.some((item) => /TypeValidationError|JSONParseError/.test(String(item.name)))) {
-    return '模型返回的数据格式与配置的接口协议不匹配，请核对 OpenAI-compatible / Anthropic 协议设置。';
-  }
-
   const status = chain.map((item) => item.statusCode).find((value): value is number => typeof value === 'number');
   if (status === 401 || status === 403) return `模型服务拒绝认证（HTTP ${status}），请检查 API 密钥和模型访问权限。`;
   if (status === 429) return '模型请求受限（HTTP 429），请检查服务额度或稍后重试。';
+  if (status && status >= 500) return `模型服务暂不可用（HTTP ${status}），原对话已保留，请稍后重试。`;
+  if (chain.some((item) => /TypeValidationError/.test(String(item.name)))) return '本次模型响应无法完整解析：响应字段校验失败，可能是服务临时异常或字段变化。原对话已保留，请重试；持续失败时请反馈请求编号。';
+  if (chain.some((item) => /JSONParseError/.test(String(item.name)))) return '本次模型响应无法完整解析：响应内容解析失败。原对话已保留，请重试；持续失败时请反馈请求编号。';
 
   const leaf = [...chain].reverse().find((item) => typeof item.message === 'string' && item.message.trim());
   let detail = typeof leaf?.message === 'string' ? leaf.message : typeof error === 'string' ? error : '';

@@ -5,8 +5,39 @@ import type { LanguageModelV4, LanguageModelV4StreamPart } from "@ai-sdk/provide
 import { MockLanguageModelV4, convertArrayToReadableStream, convertReadableStreamToArray } from "ai/test";
 import { createFailoverLanguageModel, defaultIsRecoverable } from "./failoverModel.ts";
 import { CreditAdmissionError } from "@/lib/billing/centralCredits";
+import {withProviderAdmission} from '@/lib/billing/providerAdmission';
+import {runPaidContext} from '@/lib/billing/paidContext';
 
 const callOptions = { prompt: [{ role: "user" as const, content: [{ type: "text" as const, text: "hi" }] }] } as Parameters<LanguageModelV4["doStream"]>[0];
+
+test('SDK framing before a recoverable error does not disable failover', async () => {
+  const primary = new MockLanguageModelV4({ doStream: async () => ({ stream: convertArrayToReadableStream<LanguageModelV4StreamPart>([
+    { type: 'stream-start', warnings: [] }, { type: 'error', error: apiError(503) },
+  ]) }) });
+  const model = createFailoverLanguageModel([{ model: primary, label: 'primary' }, { model: okModel('recovered'), label: 'backup' }]);
+  const parts = await convertReadableStreamToArray((await model.doStream(callOptions)).stream);
+  assert.ok(parts.some(p => p.type === 'text-delta' && p.delta === 'recovered'));
+  assert.equal(parts.filter(p => p.type === 'stream-start').length, 1);
+});
+
+test('synthetic stream-start cannot cancel the first effective response deadline', async () => {
+  let cancelled = false;
+  const primary = new MockLanguageModelV4({ doStream: async () => ({ stream: new ReadableStream<LanguageModelV4StreamPart>({
+    start(c) { c.enqueue({ type: 'stream-start', warnings: [] }); }, cancel() { cancelled = true; },
+  }) }) });
+  const model = createFailoverLanguageModel([{ model: primary, label: 'slow' }, { model: okModel('backup'), label: 'backup' }], { firstChunkTimeoutMs: 10 });
+  const parts = await convertReadableStreamToArray((await model.doStream(callOptions)).stream);
+  assert.equal(cancelled, true);
+  assert.ok(parts.some(p => p.type === 'text-delta' && p.delta === 'backup'));
+});
+test('a paid attempt with an uncertain 503 outcome does not replay on another channel',async()=>{
+ let reserved=0,cancelled=0,backups=0;
+ const primary=withProviderAdmission(throwingModel(apiError(503)),'mimo-v2.6-flash',false,{reserve:async(userId,requestKey,_amount,metadata)=>{reserved++;return {userId,requestKey,reserved:1,metadata};},cancel:async()=>{cancelled++;},settleMicro:async()=>{}},{provider:'relay',model:'mimo-v2.6-flash',contextTokens:128000,maxOutputTokens:10});
+ const backup=new MockLanguageModelV4({doStream:async()=>{backups++;return {stream:textStream('must not replay')};}});
+ const model=createFailoverLanguageModel([{model:primary,label:'paid'},{model:backup,label:'backup'}]);
+ await runPaidContext({userId:'fixture',requestId:'fixture-uncertain',route:'test',sequence:0,reservedCny:0},async()=>{await assert.rejects(()=>Promise.resolve(model.doStream({...callOptions,maxOutputTokens:10})),e=>APICallError.isInstance(e)&&e.statusCode===503);});
+ assert.equal(reserved,1);assert.equal(cancelled,0);assert.equal(backups,0);
+});
 
 test("failover never bypasses credit admission even after its attempt timer expires", async () => {
   const denied = new MockLanguageModelV4({ doStream: ({ abortSignal }) => new Promise((_, reject) => {

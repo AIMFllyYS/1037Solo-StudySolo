@@ -204,7 +204,8 @@ test("installAiAuthFetch adds a Bearer token only on paid AI URLs", async () => 
   ]);
 });
 
-test("verifySupabaseAccessToken fails closed without a user", async () => {
+test("verifySupabaseAccessToken fails closed without a user", async (context) => {
+  context.mock.method(globalThis,'fetch',async()=>Response.json({code:'SESSION_INVALID'},{status:401}));
   const originalAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const originalUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

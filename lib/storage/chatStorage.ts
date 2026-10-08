@@ -35,7 +35,7 @@ import {getStorageOwner,onStorageOwnerChange} from '@/lib/storage/ownerScope';
 import { mergeChatSnapshots } from '@/lib/storage/threeWayChatMerge';
 
 export interface SessionMeta {
-  contextCheckpoint?: { summary: string; coveredIds: string[]; cloudFileIds: string[]; createdAt: number };
+  contextCheckpoint?: { summary: string; coveredIds: string[]; coveredRevisions?:Record<string,number>; cloudFileIds: string[]; createdAt: number };
   id: string;
   title: string;
   createdAt: number;

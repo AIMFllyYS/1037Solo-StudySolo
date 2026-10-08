@@ -1,5 +1,7 @@
 'use client';
 
+import { captureStorageOperation } from '@/lib/storage/ownerScope';
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useDocuments, getDocumentMarkdown, acquireDocumentBodyLease, hydrateDocumentBody } from '@/lib/hooks/useDocuments';
 import { useSettings } from '@/lib/hooks/useSettings';
@@ -84,12 +86,15 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
 
     // 不在 cleanup 里 abort：create() 会写入 store，若 effect 依赖 doc 会 setup→cleanup→setup，
     // 把首个请求掐掉且 startedRef 已置位，进度永远停在 0/N（与 ArtifactCard 同一类坑）。
+    const operation = captureStorageOperation(documentId);
+    const assertCurrent = () => { operation.signal.throwIfAborted(); if (!operation.isCurrent() || !useDocuments.getState().byId[documentId]) throw new DOMException('账号已切换或文档已移除', 'AbortError'); };
     const run = async () => {
       try {
         setStatus(documentId, 'outlining');
 
         const outlineRes = await fetch('/api/document', {
           method: 'POST',
+          signal: operation.signal,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             id: documentId,
@@ -99,19 +104,23 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
             customApiGroups,
           }),
         });
+        assertCurrent();
         if (!outlineRes.ok) throw new Error(t('window.document.outlineRequestFailed', { status: outlineRes.status }));
         const outline = await consumeOutline(outlineRes, documentId, t, (delta) => {
-          setReasoning((prev) => prev + delta);
-        });
+          assertCurrent(); setReasoning((prev) => prev + delta);
+        }, assertCurrent);
+        assertCurrent();
         if (!outline.length) throw new Error(t('window.document.outlineEmpty'));
 
         setSections(documentId, outline.map((o) => ({ ...o, status: 'pending' })));
         setStatus(documentId, 'writing');
 
         for (let i = 0; i < outline.length; i++) {
+          assertCurrent();
           const previousMarkdown = getDocumentMarkdown(documentId) || '';
           const sectionRes = await fetch('/api/document', {
             method: 'POST',
+          signal: operation.signal,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               id: documentId,
@@ -124,6 +133,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
               customApiGroups,
             }),
           });
+          assertCurrent();
           if (!sectionRes.ok) throw new Error(t('window.document.sectionRequestFailed', { index: i + 1, status: sectionRes.status }));
           await consumeSection(
             sectionRes,
@@ -132,18 +142,20 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
             setSectionStatus,
             setSectionMarkdown,
             t,
-            (delta) => setReasoning((prev) => prev + delta),
+            (delta) => { assertCurrent(); setReasoning((prev) => prev + delta); },
+            assertCurrent,
           );
         }
 
+        assertCurrent();
         setStatus(documentId, 'done');
       } catch (err) {
-        if ((err as Error)?.name === 'AbortError') return;
+        if (!operation.isCurrent() || (err as Error)?.name === 'AbortError') return;
         const message = err instanceof Error ? err.message : t('window.document.generateFailed');
         setStatus(documentId, 'error', message);
         setError(message);
       } finally {
-        setGenerating(false);
+        if (operation.isCurrent()) setGenerating(false);
       }
     };
 
@@ -402,6 +414,7 @@ async function consumeOutline(
   documentId: string,
   t: Translate,
   onReasoningDelta: (delta: string) => void,
+  assertCurrent: () => void,
 ): Promise<Pick<DocumentSection, 'title' | 'brief'>[]> {
   const reader = response.body?.getReader();
   if (!reader) throw new Error(t('window.document.streamReadFailed'));
@@ -411,6 +424,7 @@ async function consumeOutline(
 
   while (true) {
     const { done, value } = await reader.read();
+    assertCurrent();
     if (done) break;
     buffer += decoder.decode(value, { stream: true });
     const parsed = parseSseJsonEvents<DocumentApiEvent>(buffer);
@@ -434,6 +448,7 @@ async function consumeSection(
   setSectionMarkdown: (id: string, index: number, markdown: string) => void,
   t: Translate,
   onReasoningDelta: (delta: string) => void,
+  assertCurrent: () => void,
 ): Promise<void> {
   const reader = response.body?.getReader();
   if (!reader) throw new Error(t('window.document.streamReadFailed'));
@@ -445,6 +460,7 @@ async function consumeSection(
 
   while (true) {
     const { done, value } = await reader.read();
+    assertCurrent();
     if (done) break;
     buffer += decoder.decode(value, { stream: true });
     const parsed = parseSseJsonEvents<DocumentApiEvent>(buffer);
@@ -470,5 +486,5 @@ async function consumeSection(
       }
     }
   }
-  setSectionStatus(documentId, index, 'done');
+  throw new Error('章节生成中断，未完成稿已保留在本机。');
 }

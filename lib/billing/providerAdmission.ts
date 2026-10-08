@@ -1,6 +1,7 @@
 import type { LanguageModelV4, LanguageModelV4CallOptions, LanguageModelV4StreamPart } from "@ai-sdk/provider";
 import { declaredMaxOutputTokens, FALLBACK_MAX_OUTPUT_TOKENS, getModelInfo, type ModelInfo } from "@/lib/ai/models";
 import { allocateCall, releaseCall } from "./paidContext";
+import {markUncertainProviderOutcome} from './providerOutcome';
 import { CreditAdmissionError, reserveCredit, settleMicrocredits, cancelCredit, type Admission } from "./centralCredits";
 
 import { tokenTariff, tierPrice, reservationPrice, type Price } from "./tariffs";
@@ -161,6 +162,7 @@ export function withProviderAdmission(model: LanguageModelV4, modelId: string, b
         result = await model.doGenerate(begun.bounded.params);
       } catch (error) {
         if (definitiveRejection(error)) await cancel(begun);
+        else markUncertainProviderOutcome(error);
         throw error; // Unknown provider outcome keeps funds held.
       }
       const measured = await settle(begun, result.usage);
@@ -194,12 +196,13 @@ export function withProviderAdmission(model: LanguageModelV4, modelId: string, b
                 await cancel(begun);
                 controller.enqueue(item.value); await reader.cancel(); controller.close(); return;
               }
+              if(item.value.type==='error'&&!definitiveRejection(item.value.error))markUncertainProviderOutcome(item.value.error);
               controller.enqueue(item.value);
-            } catch (error) { void reader.cancel(error).catch(() => {}); controller.error(error); }
+            } catch (error) { markUncertainProviderOutcome(error);void reader.cancel(error).catch(() => {}); controller.error(error); }
           },
           cancel: reason => reader.cancel(reason), // Unknown in-flight usage remains reserved.
         }) };
-      } catch (error) { if (definitiveRejection(error)) await cancel(begun); throw error; }
+      } catch (error) { if (definitiveRejection(error)) await cancel(begun);else markUncertainProviderOutcome(error); throw error; }
     },
   };
 }
