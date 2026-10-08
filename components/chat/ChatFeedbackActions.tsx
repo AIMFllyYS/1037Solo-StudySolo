@@ -7,6 +7,8 @@ import { copyTextToClipboard } from "@/lib/clipboard/copyText";
 import { prepareFeedbackExcerpt, prepareFeedbackText } from "@/lib/chat/feedbackExcerpt";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useT } from "@/lib/i18n";
+import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
+import { useToast } from "@/lib/stores/toast";
 
 type Vote = "like" | "dislike";
 const REPORT_REASONS = ["inaccurate", "unsafe", "privacy", "other"] as const;
@@ -38,19 +40,25 @@ function errorMessage(code: string, t: ReturnType<typeof useT>): string {
   }
 }
 
-async function postFeedback(body: Record<string, unknown>): Promise<FeedbackRecord> {
+async function feedbackRequest(body: Record<string, unknown>, signal?: AbortSignal): Promise<Record<string, unknown>> {
   const response = await fetch("/api/feedback/chat", {
     method: "POST",
     credentials: "same-origin",
     cache: "no-store",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify(body),
+    signal,
   });
   const payload = await response.json().catch(() => ({})) as Record<string, unknown>;
   if (!response.ok) {
     const error = new Error(typeof payload.code === "string" ? payload.code : "FEEDBACK_UNAVAILABLE");
     throw error;
   }
+  return payload;
+}
+
+async function postFeedback(body: Record<string, unknown>, signal?: AbortSignal): Promise<FeedbackRecord> {
+  const payload = await feedbackRequest(body, signal);
   if (typeof payload.id !== "string" || typeof payload.feedbackType !== "string"
     || !Number.isSafeInteger(payload.revision) || typeof payload.status !== "string") {
     throw new Error("FEEDBACK_UNAVAILABLE");
@@ -79,6 +87,9 @@ export default function ChatFeedbackActions({
   const [includeExcerpt, setIncludeExcerpt] = useState(false);
   const [busy, setBusy] = useState(false);
   const busyRef = useRef(false);
+  const mountedRef = useRef(true);
+  const requestControllerRef = useRef(new AbortController());
+  const mutationRevisionRef = useRef(0);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
@@ -90,6 +101,65 @@ export default function ChatFeedbackActions({
   const reportReasonRef = useRef<HTMLSelectElement>(null);
   const staleCloseRef = useRef<HTMLButtonElement>(null);
   const excerptPreview = useMemo(() => prepareFeedbackExcerpt(answerText), [answerText]);
+
+  const operation = useCallback(() => {
+    const owner = getStorageOwner(), epoch = getOwnerEpoch();
+    const signal = requestControllerRef.current.signal;
+    return { signal, isCurrent: () => mountedRef.current && !signal.aborted
+      && owner === getStorageOwner() && epoch === getOwnerEpoch() };
+  }, []);
+
+  const showFailure = useCallback((cause: unknown) => {
+    const message = errorMessage(cause instanceof Error ? cause.message : "FEEDBACK_UNAVAILABLE", t);
+    setError(message);
+    useToast.getState().show(message);
+  }, [t]);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    const restore = () => {
+      requestControllerRef.current.abort();
+      requestControllerRef.current = new AbortController();
+      mutationRevisionRef.current++;
+      busyRef.current = false;
+      setBusy(false);
+      setCurrentVote(null);
+      setSavedVote(null);
+      setSavedReport(null);
+      setReported(false);
+      setDialog(null);
+      setFeedbackText("");
+      setIncludeExcerpt(false);
+      setReportReason("");
+      setError("");
+      setAnnouncement("");
+      if (!getStorageOwner()) return;
+      const pending = operation();
+      const revision = mutationRevisionRef.current;
+      void feedbackRequest({ action: "state", sessionId, messageId }, pending.signal).then(payload => {
+        if (!pending.isCurrent() || revision !== mutationRevisionRef.current) return;
+        if (!Array.isArray(payload.items)) throw new Error("FEEDBACK_UNAVAILABLE");
+        const records = payload.items as FeedbackRecord[];
+        const vote = records.find(item => item.feedbackType === "like" || item.feedbackType === "dislike");
+        const report = records.find(item => item.feedbackType === "report");
+        if (vote) {
+          const kind = vote.feedbackType as Vote;
+          setCurrentVote(kind);
+          setSavedVote({ ...vote, vote: kind });
+        }
+        if (report) { setSavedReport(report); setReported(true); }
+      }).catch(cause => {
+        if (pending.isCurrent() && revision === mutationRevisionRef.current) showFailure(cause);
+      });
+    };
+    restore();
+    const unsubscribe = onStorageOwnerChange(restore);
+    return () => {
+      mountedRef.current = false;
+      requestControllerRef.current.abort();
+      unsubscribe();
+    };
+  }, [messageId, operation, sessionId, showFailure]);
 
   const closeDialog = useCallback(() => {
     setDialog(null);
@@ -125,6 +195,7 @@ export default function ChatFeedbackActions({
     const copiedOk = await copyTextToClipboard(answerText);
     setCopied(copiedOk);
     setCopyFailed(!copiedOk);
+    if (!copiedOk) useToast.getState().show(t("panel.chatFeedback.copyFailed"));
     setAnnouncement(copiedOk ? t("panel.chatFeedback.copied") : "");
     if (copiedTimerRef.current !== null) window.clearTimeout(copiedTimerRef.current);
     copiedTimerRef.current = copiedOk ? window.setTimeout(() => {
@@ -136,6 +207,7 @@ export default function ChatFeedbackActions({
 
   const recordVote = useCallback(async (vote: Vote, trigger: HTMLButtonElement) => {
     if (busyRef.current) return;
+    mutationRevisionRef.current++;
     triggerRef.current = trigger;
     setError("");
     setAnnouncement("");
@@ -148,22 +220,25 @@ export default function ChatFeedbackActions({
 
     busyRef.current = true;
     setBusy(true);
+    const pending = operation();
     try {
-      const record = await postFeedback({ action: "vote", sessionId, messageId, vote });
+      const record = await postFeedback({ action: "vote", sessionId, messageId, vote }, pending.signal);
+      if (!pending.isCurrent()) return;
       setSavedVote({ ...record, vote });
       setCurrentVote(vote);
       setFeedbackText(record.feedbackText ?? "");
       setIncludeExcerpt(Boolean(record.answerExcerpt));
       setDialog({ kind: "vote", vote, record });
     } catch (cause) {
-      setError(errorMessage(cause instanceof Error ? cause.message : "FEEDBACK_UNAVAILABLE", t));
+      if (pending.isCurrent()) showFailure(cause);
     } finally {
-      busyRef.current = false;
-      setBusy(false);
+      if (pending.isCurrent()) { busyRef.current = false; setBusy(false); }
     }
-  }, [messageId, savedVote, sessionId, t]);
+  }, [messageId, operation, savedVote, sessionId, showFailure]);
 
   const openReport = (trigger: HTMLButtonElement) => {
+    if (busyRef.current) return;
+    mutationRevisionRef.current++;
     triggerRef.current = trigger;
     setReportReason(reportReasonValue(savedReport?.reportReason ?? ""));
     setFeedbackText(savedReport?.feedbackText ?? "");
@@ -178,8 +253,10 @@ export default function ChatFeedbackActions({
     const details = prepareFeedbackText(feedbackText);
     if (busyRef.current || !reportReason || Array.from(details).length < 3 || !dialog || dialog.kind !== "report") return;
     busyRef.current = true;
+    mutationRevisionRef.current++;
     setBusy(true);
     setError("");
+    const pending = operation();
     try {
       const record = await postFeedback({
         action: "report",
@@ -188,16 +265,16 @@ export default function ChatFeedbackActions({
         reason: reportReason,
         feedbackText: details,
         ...(includeExcerpt && excerptPreview ? { answerExcerpt: excerptPreview } : {}),
-      });
+      }, pending.signal);
+      if (!pending.isCurrent()) return;
       setSavedReport(record);
       setReported(true);
       setAnnouncement(t("panel.chatFeedback.reportSaved"));
       closeDialog();
     } catch (cause) {
-      setError(errorMessage(cause instanceof Error ? cause.message : "FEEDBACK_UNAVAILABLE", t));
+      if (pending.isCurrent()) showFailure(cause);
     } finally {
-      busyRef.current = false;
-      setBusy(false);
+      if (pending.isCurrent()) { busyRef.current = false; setBusy(false); }
     }
   };
 
@@ -205,8 +282,10 @@ export default function ChatFeedbackActions({
     const details = prepareFeedbackText(feedbackText);
     if (busyRef.current || !dialog || dialog.kind !== "vote" || (!details && !includeExcerpt)) return;
     busyRef.current = true;
+    mutationRevisionRef.current++;
     setBusy(true);
     setError("");
+    const pending = operation();
     try {
       const record = await postFeedback({
         action: "update-details",
@@ -215,23 +294,24 @@ export default function ChatFeedbackActions({
         vote: dialog.vote,
         feedbackText: details,
         answerExcerpt: includeExcerpt && excerptPreview ? excerptPreview : null,
-      });
+      }, pending.signal);
+      if (!pending.isCurrent()) return;
       setSavedVote({ ...record, vote: dialog.vote });
       setCurrentVote(dialog.vote);
       setFeedbackText(record.feedbackText ?? "");
       setIncludeExcerpt(Boolean(record.answerExcerpt));
       closeDialog();
     } catch (cause) {
+      if (!pending.isCurrent()) return;
       const code = cause instanceof Error ? cause.message : "FEEDBACK_UNAVAILABLE";
-      setError(errorMessage(code, t));
+      showFailure(cause);
       if (code === "FEEDBACK_STALE") {
         setSavedVote(null);
         setCurrentVote(null);
         setDialog({ ...dialog, stale: true });
       }
     } finally {
-      busyRef.current = false;
-      setBusy(false);
+      if (pending.isCurrent()) { busyRef.current = false; setBusy(false); }
     }
   };
 
@@ -314,6 +394,7 @@ export default function ChatFeedbackActions({
           data-testid="chat-feedback-report"
           aria-label={t("panel.chatFeedback.report")}
           aria-pressed={reported}
+          disabled={busy}
           onClick={(event) => openReport(event.currentTarget)}
           className={`press inline-flex min-h-8 min-w-8 items-center justify-center gap-1 rounded-lg px-2 text-[11.5px] ${reported ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]" : "text-[var(--ink-faint)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink)]"}`}
         >

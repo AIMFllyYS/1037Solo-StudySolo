@@ -13,6 +13,7 @@ const mocks = vi.hoisted(() => ({
     select: vi.fn(),
     eq: vi.fn(),
     maybeSingle: vi.fn(),
+    limit: vi.fn(),
   },
 }));
 
@@ -77,6 +78,7 @@ describe("POST /api/feedback/chat", () => {
     mocks.query.update.mockReturnValue(mocks.query);
     mocks.query.select.mockReturnValue(mocks.query);
     mocks.query.eq.mockReturnValue(mocks.query);
+    mocks.query.limit.mockResolvedValue({ data: [], error: null });
     mocks.query.maybeSingle.mockResolvedValue({ data: { id: FEEDBACK_UUID, feedback_type: "like", revision: 2, status: "open" }, error: null });
     mocks.rpc.mockResolvedValue({ data: { id: FEEDBACK_UUID, feedback_type: "like", revision: 1, status: "open" }, error: null });
     mocks.desktopBridgeEnabled.mockReturnValue(false);
@@ -89,6 +91,21 @@ describe("POST /api/feedback/chat", () => {
     expect(response.status).toBe(401);
     expect(await response.json()).toEqual({ code: "SESSION_INVALID" });
     expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it("restores only the verified owner's two message slots without reading chat content", async () => {
+    authenticated();
+    mocks.query.limit.mockResolvedValue({ data: [{ id: FEEDBACK_UUID, feedback_type: "dislike", revision: 4, status: "open", feedback_text: "公开测试说明" }], error: null });
+    const response = await POST(request({ action: "state", sessionId: "session-a", messageId: "message-a" }));
+    expect(response.status).toBe(200);
+    expect(mocks.query.eq.mock.calls).toEqual([["user_uuid", OWNER_UUID], ["session_id", "session-a"], ["message_id", "message-a"]]);
+    expect(mocks.query.limit).toHaveBeenCalledWith(2);
+    expect(mocks.query.select).toHaveBeenCalledWith("id,feedback_type,revision,status,report_reason,feedback_text,answer_excerpt");
+    expect(await response.json()).toEqual({ items: [{ id: FEEDBACK_UUID, feedbackType: "dislike", revision: 4, status: "open", reportReason: null, feedbackText: "公开测试说明", answerExcerpt: null }] });
+    expect(mocks.rpc).not.toHaveBeenCalled();
+
+    const forged = await POST(request({ action: "state", sessionId: "session-a", messageId: "message-a", userId: "another-owner" }));
+    expect(forged.status).toBe(400);
   });
 
   it("rejects caller identity fields and binds a vote to the Account UUID", async () => {
