@@ -105,7 +105,7 @@ function supabaseError(error: { code?: string; message?: string } | null | undef
   throw new FeedbackError(503, "FEEDBACK_STORAGE_UNAVAILABLE");
 }
 
-async function ownerFor(request: NextRequest): Promise<string> {
+async function ownerFor(request: NextRequest, readOnly = false): Promise<string> {
   const token = extractAccessToken(request.headers);
   const verified = await verifyAccount(token, {
     accountBackendUrl: accountBackendUrl(authModeForRequest(request)),
@@ -117,7 +117,7 @@ async function ownerFor(request: NextRequest): Promise<string> {
   }
   if (verified.identity.mfa_required) throw new FeedbackError(403, "MFA_REQUIRED");
   if (!UUID.test(verified.identity.user_id)) throw new FeedbackError(503, "ACCOUNT_ID_INVALID");
-  const limit = consumeRateLimit(`chat-feedback:${verified.identity.user_id}`, { max: 30, windowMs: 60_000 });
+  const limit = consumeRateLimit(`chat-feedback:${readOnly ? "read:" : ""}${verified.identity.user_id}`, { max: readOnly ? 120 : 30, windowMs: 60_000 });
   if (!limit.ok) throw new FeedbackError(429, "RATE_LIMITED", limit.retryAfterSec);
   return verified.identity.user_id;
 }
@@ -202,10 +202,26 @@ export async function POST(request: NextRequest) {
   }
   try {
     assertSameOrigin(request);
-    const userUuid = await ownerFor(request);
     const body = await readJson(request);
     const action = body.action;
+    const userUuid = await ownerFor(request, action === "state");
     const db = createServiceAuthClient();
+
+    // Keep restoration on the existing POST transport, including the desktop bridge.
+    // The browser supplies only a message location; Account supplies the owner.
+    if (action === "state") {
+      onlyKeys(body, ["action", "sessionId", "messageId"]);
+      const sessionId = opaqueId(body.sessionId, "INVALID_SESSION_ID");
+      const messageId = opaqueId(body.messageId, "INVALID_MESSAGE_ID");
+      const { data, error } = await db.from("ss_chat_feedback")
+        .select("id,feedback_type,revision,status,report_reason,feedback_text,answer_excerpt")
+        .eq("user_uuid", userUuid)
+        .eq("session_id", sessionId)
+        .eq("message_id", messageId)
+        .limit(2);
+      if (error) supabaseError(error);
+      return reply({ items: (data ?? []).map(feedbackResult) });
+    }
 
     if (action === "vote") {
       onlyKeys(body, ["action", "sessionId", "messageId", "vote"]);

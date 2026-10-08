@@ -1,7 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ChatFeedbackActions from "./ChatFeedbackActions";
+import { activateStorageOwner } from "@/lib/storage/ownerScope";
+import { useToast } from "@/lib/stores/toast";
 
 const success = (feedbackType: string, revision = 1) => ({
   ok: true,
@@ -9,9 +11,67 @@ const success = (feedbackType: string, revision = 1) => ({
 });
 const failed = (code: string) => ({ ok: false, json: async () => ({ code }) });
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => { cleanup(); activateStorageOwner(null); useToast.getState().clear(); vi.unstubAllGlobals(); });
 
 describe("ChatFeedbackActions", () => {
+  it("restores saved vote and report details on remount; cancel and repeated vote preserve the record", async () => {
+    const user = userEvent.setup();
+    activateStorageOwner("owner-a");
+    const items = [
+      { id: "vote-id", feedbackType: "dislike", revision: 3, status: "open", feedbackText: "公开测试说明" },
+      { id: "report-id", feedbackType: "report", revision: 1, status: "open", reportReason: "other", feedbackText: "公开测试举报" },
+    ];
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ items }) });
+    vi.stubGlobal("fetch", fetchMock);
+    const view = render(<ChatFeedbackActions sessionId="session-restore" messageId="message-restore" answerText="Public answer" />);
+    await waitFor(() => expect(screen.getByTestId("chat-feedback-dislike")).toHaveAttribute("aria-pressed", "true"));
+    expect(screen.getByTestId("chat-feedback-report")).toHaveAttribute("aria-pressed", "true");
+    await user.click(screen.getByTestId("chat-feedback-dislike"));
+    expect(screen.getByTestId("chat-feedback-textarea")).toHaveValue("公开测试说明");
+    await user.click(screen.getByRole("button", { name: "暂不补充" }));
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId("chat-feedback-dislike")).toHaveAttribute("aria-pressed", "true");
+    view.unmount();
+    render(<ChatFeedbackActions sessionId="session-restore" messageId="message-restore" answerText="Public answer" />);
+    await waitFor(() => expect(screen.getByTestId("chat-feedback-dislike")).toHaveAttribute("aria-pressed", "true"));
+    await user.click(screen.getByTestId("chat-feedback-report"));
+    expect(screen.getByRole("combobox", { name: "举报原因" })).toHaveValue("other");
+    expect(screen.getByTestId("chat-feedback-textarea")).toHaveValue("公开测试举报");
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ action: "state", sessionId: "session-restore", messageId: "message-restore" });
+  });
+
+  it("discards an old owner's delayed write and clears its open dialog", async () => {
+    const user = userEvent.setup();
+    activateStorageOwner("owner-a");
+    let resolveVote: ((result: ReturnType<typeof success>) => void) | undefined;
+    const fetchMock = vi.fn().mockImplementation((_url, init) => {
+      if (JSON.parse(init.body).action === "state") return Promise.resolve({ ok: true, json: async () => ({ items: [] }) });
+      return new Promise(resolve => { resolveVote = resolve; });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<ChatFeedbackActions sessionId="session-owner" messageId="message-owner" answerText="Public answer" />);
+    await user.click(screen.getByTestId("chat-feedback-like"));
+    act(() => activateStorageOwner("owner-b"));
+    await act(async () => { resolveVote?.(success("like")); });
+    expect(fetchMock.mock.calls[1][1].signal.aborted).toBe(true);
+    expect(screen.getByTestId("chat-feedback-like")).toHaveAttribute("aria-pressed", "false");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByTestId("chat-feedback-like")).not.toBeDisabled();
+  });
+
+  it("does not let a delayed restoration overwrite a newly saved vote", async () => {
+    const user = userEvent.setup();
+    activateStorageOwner("owner-a");
+    let resolveState: ((result: unknown) => void) | undefined;
+    const fetchMock = vi.fn().mockReturnValueOnce(new Promise(resolve => { resolveState = resolve; })).mockResolvedValueOnce(success("like"));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<ChatFeedbackActions sessionId="session-race" messageId="message-race" answerText="Public answer" />);
+    await user.click(screen.getByTestId("chat-feedback-like"));
+    await screen.findByRole("dialog");
+    await act(async () => { resolveState?.({ ok: true, json: async () => ({ items: [{ id: "old-id", feedbackType: "dislike", revision: 1, status: "open" }] }) }); });
+    expect(screen.getByTestId("chat-feedback-like")).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByTestId("chat-feedback-dislike")).toHaveAttribute("aria-pressed", "false");
+  });
   it("deferred autofocus cannot steal a field after the user starts typing", async () => {
     const user = userEvent.setup();
     const frames: FrameRequestCallback[] = [];
@@ -80,6 +140,7 @@ describe("ChatFeedbackActions", () => {
     await user.type(screen.getByTestId("chat-feedback-textarea"), "这条回答泄露了隐私信息。");
     await user.click(screen.getByRole("button", { name: "提交举报" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("反馈服务尚未完成部署");
+    expect(useToast.getState().toasts.at(-1)?.message).toContain("反馈服务尚未完成部署");
     expect(screen.getByRole("dialog", { name: "举报这个回答" })).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "提交举报" }));
