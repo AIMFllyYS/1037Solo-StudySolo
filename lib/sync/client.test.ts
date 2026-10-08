@@ -43,7 +43,8 @@ test("Supabase reads canonical owner rows and sends writes through quota-enforci
   const requests: Array<{url: string; init?: RequestInit}> = [];
   context.mock.method(globalThis, "fetch", async (url: string, init?: RequestInit) => {
     requests.push({url,init});
-    return Response.json({kind:"document",client_id:"d1",payload:{},deleted:false});
+    const body=JSON.parse(String(init?.body??'{}'));
+    return Response.json(body.operation==='prepare'?{chunks:[]}:{kind:"document",client_id:"d1",payload:{},deleted:false,revision:1});
   });
   await api.list(["chat-session", "artifact"]);
   await api.get("artifact", "a1");
@@ -51,7 +52,7 @@ test("Supabase reads canonical owner rows and sends writes through quota-enforci
   assert.equal(tables.length, 2);
   assert.ok(tables.every((table) => table === SYNC_TABLE));
   assert.equal(SYNC_TABLE,"ss_sync_documents");
-  assert.equal(requests[0].url,"/api/sync");
+  assert.equal(requests[0].url,"/api/assets/versions");
   assert.equal(requests[0].init?.credentials,"include");
-  assert.deepEqual(JSON.parse(String(requests[0].init?.body)),{expectedUserId:"user-1",row:{kind:"document",client_id:"d1",payload:{},deleted:false}});
+  const body=JSON.parse(String(requests[0].init?.body));assert.equal(body.operation,'prepare');assert.equal(body.kind,'document');assert.equal(body.expectedRevision,0);assert.ok(body.mutationId);assert.equal(JSON.parse(String(requests[1].init?.body)).operation,'commit');
 });

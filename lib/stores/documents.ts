@@ -1,3 +1,4 @@
+import { setSyncItemStatus } from '@/lib/sync/status';
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { createPersistedStore } from "@/lib/stores/_persist";
@@ -22,6 +23,7 @@ export async function loadDocumentFull(id: string): Promise<StoredDocument | nul
   const doc = useDocuments.getState().byId[id];
   if (!doc) return null;
   if (!owner || residentOwner !== owner) throw new Error("document_owner_not_ready");
+  if(doc.cloudRevision!==undefined){const {hydrateRemotePayload}=await import('@/lib/assets/client');const full=await hydrateRemotePayload('document',id,doc.cloudRevision) as StoredDocument;if(owner!==getStorageOwner()||epoch!==getOwnerEpoch()||useDocuments.getState().byId[id]!==doc)throw new Error('正文加载期间状态已变化，请重试。');if(!await persistDocumentBody(full))throw new Error('正文缓存保存失败。');if(owner!==getStorageOwner()||epoch!==getOwnerEpoch()||useDocuments.getState().byId[id]!==doc)throw new Error('正文加载期间状态已变化，请重试。');useDocuments.setState(state=>state.byId[id]===doc?{byId:{...state.byId,[id]:{...doc,cloudRevision:undefined}}}:state);return {...full,bodyRef:true};}
   if (!doc.bodyRef || doc.sections.some((section) => section.markdown)) return doc;
   const raw = await readOwnedStorageItem(owner, bodyKey(id));
   if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch) throw new Error("document_owner_changed");
@@ -74,12 +76,14 @@ export function acquireDocumentBodyLease(id: string) {
 async function persistAndCool(id: string): Promise<void> {
   const owner = getStorageOwner(), epoch = getOwnerEpoch();
   const snapshot = useDocuments.getState().byId[id];
-  if (!snapshot || !await persistDocumentBody(snapshot)) return;
+  if (!snapshot || snapshot.cloudRevision !== undefined || (snapshot.bodyRef && !snapshot.sections.some(section => section.markdown !== undefined))) return;
+  if (!await persistDocumentBody(snapshot)) return;
   if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch) return;
   useDocuments.setState((state) => {
     const current = state.byId[id];
     if (!current || current.sections !== snapshot.sections) return state;
     const saved = { ...current, bodyRef: true as const };
+    if(current.status==='done')scheduleCloudUpsert('document',id);
     return { byId: { ...state.byId, [id]: bodyLeases.has(id) || state.viewerId === id ? saved : coldDocument(saved) } };
   });
 }
@@ -172,13 +176,14 @@ export const useDocuments = createPersistedStore<DocumentsState>(
           const doc = s.byId[id];
           if (!doc) return s;
           scheduleCloudUpsert("document", id);
-          return { byId: { ...s.byId, [id]: { ...doc, sections, bodyRef: undefined, updatedAt: Date.now() } } };
+          return { byId: { ...s.byId, [id]: { ...doc, sections, bodyRef: undefined, cloudRevision: undefined, updatedAt: Date.now() } } };
         }),
 
       setSectionMarkdown: (id, index, markdown) =>
         set((s) => {
           const doc = s.byId[id];
           if (!doc) return s;
+          if (doc.cloudRevision !== undefined || (doc.bodyRef && !doc.sections.some(section => section.markdown !== undefined))) throw new Error('请先加载文档正文再编辑章节，原云端内容仍保留。');
           const sections = doc.sections.map((sec, i) => (i === index ? { ...sec, markdown } : sec));
           return { byId: { ...s.byId, [id]: { ...doc, sections, bodyRef: undefined, updatedAt: Date.now() } } };
         }),
@@ -188,22 +193,23 @@ export const useDocuments = createPersistedStore<DocumentsState>(
           const doc = s.byId[id];
           if (!doc) return s;
           const sections = doc.sections.map((sec, i) => (i === index ? { ...sec, status, error } : sec));
-          return { byId: { ...s.byId, [id]: { ...doc, sections, bodyRef: undefined, updatedAt: Date.now() } } };
+          return { byId: { ...s.byId, [id]: { ...doc, sections, updatedAt: Date.now() } } };
         }),
 
       appendSection: (id, section) =>
         set((s) => {
           const doc = s.byId[id];
           if (!doc) return s;
+          if (doc.cloudRevision !== undefined || (doc.bodyRef && !doc.sections.some(section => section.markdown !== undefined))) throw new Error('请先加载文档正文再添加章节，原云端内容仍保留。');
           return { byId: { ...s.byId, [id]: { ...doc, sections: [...doc.sections, section], bodyRef: undefined, updatedAt: Date.now() } } };
         }),
 
       setStatus: (id, status, error) => {
+        if(status==='outlining'||status==='writing')setSyncItemStatus(`document:${id}`,{phase:'pending'});
         set((s) => {
           const doc = s.byId[id];
           if (!doc) return s;
-          scheduleCloudUpsert("document", id);
-          return { byId: { ...s.byId, [id]: { ...doc, status, error, bodyRef: undefined, updatedAt: Date.now() } } };
+          return { byId: { ...s.byId, [id]: { ...doc, status, error, updatedAt: Date.now() } } };
         });
         if (status === "done" || status === "error") void persistAndCool(id);
       },

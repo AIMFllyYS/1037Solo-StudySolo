@@ -106,6 +106,7 @@ export interface ProjectFilesData {
 }
 
 export interface AttachmentPreviewData {
+  localFileId?: string;
   name: string;
   mimeType: string;
   kind: "image" | "pdf" | "ppt" | "html" | "markdown" | "text" | "docx";

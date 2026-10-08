@@ -55,6 +55,7 @@ export type DocumentStatus = "idle" | "outlining" | "writing" | "done" | "error"
 
 /** IndexedDB 持久化的文档（useDocuments）。 */
 export interface StoredDocument {
+  cloudRevision?:number;
   id: string;
   spec: DocumentSpec;
   sections: DocumentSection[];

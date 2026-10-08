@@ -1,6 +1,7 @@
 import { isPaidAiApiPath, normalizeApiPathname } from "./paidAiRoutes.ts";
+import { getOwnerEpoch } from '@/lib/storage/ownerScope';
 
-const ACCOUNT_PATHS = new Set(['/api/quota', '/api/usage', '/api/redeem', '/api/profile']);
+const ACCOUNT_PATHS = new Set(['/api/quota', '/api/usage', '/api/redeem', '/api/profile', '/api/sync']);
 const REVIEW_PROGRESS_PATH = '/api/review/progress';
 
 /** Never attach our session token to third-party APIs, even when their path matches ours. */
@@ -9,7 +10,7 @@ export function isAuthenticatedAppUrl(input: RequestInfo | URL, origin: string):
   try {
     const url = new URL(raw, origin);
     return url.origin === new URL(origin).origin
-      && (isPaidAiApiPath(url.pathname) || url.pathname.startsWith('/api/agent/sandbox/') || normalizeApiPathname(url.pathname) === '/api/agent/skills' || normalizeApiPathname(url.pathname) === '/api/feedback/chat' || normalizeApiPathname(url.pathname) === REVIEW_PROGRESS_PATH || ACCOUNT_PATHS.has(normalizeApiPathname(url.pathname)));
+      && (isPaidAiApiPath(url.pathname) || /^\/api\/(files|assets|class)(?:\/|$)/.test(url.pathname) || url.pathname.startsWith('/api/agent/sandbox/') || normalizeApiPathname(url.pathname) === '/api/agent/skills' || normalizeApiPathname(url.pathname) === '/api/feedback/chat' || normalizeApiPathname(url.pathname) === REVIEW_PROGRESS_PATH || ACCOUNT_PATHS.has(normalizeApiPathname(url.pathname)));
   } catch { return false; }
 }
 
@@ -25,6 +26,7 @@ export function installAiAuthFetch(
   const keys=new WeakMap<object,{url:string;body:unknown;key:string}>();
   const wrapped: typeof fetch = async (input, init) => {
     if (!isAuthenticatedAppUrl(input, origin)) return fetchImpl(input, init);
+    const ownerEpoch = getOwnerEpoch();
     const headers = new Headers(input instanceof Request ? input.headers : undefined);
     new Headers(init?.headers).forEach((value, name) => headers.set(name, value));
     const method=(init?.method||(input instanceof Request?input.method:'GET')).toUpperCase();
@@ -41,6 +43,8 @@ export function installAiAuthFetch(
       const token = await getAccessToken();
       if (token) headers.set("Authorization", `Bearer ${token}`);
     }
+    (init?.signal ?? (input instanceof Request ? input.signal : undefined))?.throwIfAborted();
+    if (ownerEpoch !== getOwnerEpoch()) throw new Error('账号已切换，请在当前账号重试。');
     return fetchImpl(input, { ...init, headers });
   };
   globalThis.fetch = wrapped;

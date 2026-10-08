@@ -16,6 +16,7 @@ export const TOOL_STEP_LIMIT_INFO =
   "本次达到了工具调用上限，讲解可能不完整，可以再问一次让我继续。";
 
 export interface StudyToolContext {
+  localFiles?: import('@/lib/local-files/contract').LocalSourceCatalog;
   subjectId: string;
   categoryId: string;
   itemId: string;

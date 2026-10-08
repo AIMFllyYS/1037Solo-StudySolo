@@ -415,6 +415,7 @@ function buildMenu() {
 // secrets:* is only for the app page on the loopback origin; setup:* only for the
 // setup window itself. Anything else gets nothing — not even an error string.
 const senderIsApp = (e) => isAppUrl(e.senderFrame && e.senderFrame.url);
+require('./local-files.cjs').installLocalFiles({ ipcMain, senderIsApp: e => senderIsApp(e) && e.sender === mainWindow?.webContents && e.senderFrame === e.sender.mainFrame, userData: app.getPath('userData') });
 const senderIsSetupWindow = (e) => !!setupWindow && e.sender === setupWindow.webContents;
 
 // preload 在页面脚本前同步询问：是否需要把默认模型绑到「自由中转」。

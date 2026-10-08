@@ -74,6 +74,7 @@ export function checkpointMessages(messages: ChatMessage[], checkpoint?: Session
   const covered = new Set(checkpoint.coveredIds);
   // A checkpoint is valid only when all covered source messages still exist.
   if (!checkpoint.coveredIds.every(id => messages.some(message => message.id === id))) return messages;
+  if(checkpoint.coveredRevisions&&!checkpoint.coveredIds.every(id=>checkpoint.coveredRevisions![id]===(messages.find(message=>message.id===id)?.contentRevision??0)))return messages;
   return [...makeCompactSummaryMessages(checkpoint.summary, checkpoint.createdAt), ...messages.filter(message => !covered.has(message.id))];
 }
 
@@ -84,11 +85,13 @@ export async function compactActiveSession(sessionId?: string | null, options?: 
   if (useCompactionState.getState().byId[sid]?.phase === 'running') throw new Error('本会话正在压缩，请稍候。');
   if (!options?.duringSend && useSessionRuns.getState().byId[sid]?.phase === 'running') throw new Error('请先等待本轮回答结束，再压缩上下文。');
   const owner = getStorageOwner(), epoch = getOwnerEpoch();
+  const assertCurrent = () => { if (getStorageOwner() !== owner || getOwnerEpoch() !== epoch) throw new Error('账号已切换，原对话未修改。'); };
   useCompactionState.getState().set(sid, 'running', '正在调用 AI 整理较早对话，原消息与附件会保留…');
   try {
   // compact 需要整段历史：窗口化后 messagesById 只是尾部窗口，直接全量装配读。
   await flushPendingSessionCheckpoints();
   const messages = (await loadSessionMessages(sid)) ?? [];
+  assertCurrent();
   const meta = useChatHistory.getState().sessionsMeta.find(meta => meta.id === sid);
   const prepared = checkpointMessages(messages, meta?.contextCheckpoint);
   const { old } = splitChatKeptTurns(prepared);
@@ -105,9 +108,10 @@ export async function compactActiveSession(sessionId?: string | null, options?: 
   const cloudFileIds = [...new Set([...(meta?.contextCheckpoint?.cloudFileIds ?? []), ...collectCloudFileIds(messages)])];
   // No transcript replacement: only the next model request consumes this durable checkpoint.
   const latest = (await loadSessionMessages(sid)) ?? [];
+  assertCurrent();
   const selected = messages.filter(message => coveredIds.includes(message.id));
   if (!selected.every(message => JSON.stringify(latest.find(item => item.id === message.id)) === JSON.stringify(message))) throw new Error('整理期间历史消息发生变化，原对话保留，请重新压缩。');
-  useChatHistory.getState().setContextCheckpoint(sid, { summary: result.summary, coveredIds, cloudFileIds, createdAt: Date.now() });
+  useChatHistory.getState().setContextCheckpoint(sid, { summary: result.summary, coveredIds, coveredRevisions:Object.fromEntries(messages.filter(m=>coveredIds.includes(m.id)).map(m=>[m.id,m.contentRevision??0])), cloudFileIds, createdAt: Date.now() });
   flushPendingWrites();
   useCompactionState.getState().set(sid, 'done', '上下文已由 AI 整理，原消息与云端附件保留。');
   if (meta?.kind === 'floating' || meta?.kind === 'note') useFloatingTokenTracker.setState(state => ({ sessions: { ...state.sessions, [sid]: { ...useFloatingTokenTracker.getState().getSession(sid), contextWarning: translateNow('trace.panel.manualCompacted'), serverContextTokens: 0, contextBreakdown: null } } }));

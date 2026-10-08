@@ -1,3 +1,4 @@
+import {resetVerifier} from '@/lib/auth/sign-in/account-verify';
 /** Offline canonical-auth and central-ledger fixture. Never forwards Supabase traffic. */
 import assert from "node:assert/strict";
 import { before, beforeEach, after, test as nodeTest, type TestContext, type TestOptions } from "node:test";
@@ -8,7 +9,7 @@ import { invalidateQuotaCache } from "@/lib/billing/quotaGate";
 export const fixtureUser = "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee";
 const origin = "https://paid-fixture.supabase.co";
 let token = "", jwk: unknown;
-const env = { SUPABASE_URL: origin, NEXT_PUBLIC_SUPABASE_URL: origin, SUPABASE_SERVICE_ROLE_KEY: "dummy", NEXT_PUBLIC_SUPABASE_ANON_KEY: "fixture-public-only",
+const env = { ACCOUNT_BACKEND_URL:'https://account-fixture.invalid',SUPABASE_URL: origin, NEXT_PUBLIC_SUPABASE_URL: origin, SUPABASE_SERVICE_ROLE_KEY: "dummy", NEXT_PUBLIC_SUPABASE_ANON_KEY: "fixture-public-only",
   ECOSYSTEM_MODEL_PRICES_JSON: JSON.stringify(Object.fromEntries(["doubao-seed-2.0-mini","mini","mini-router","title-unknown-model","title-model","title-bill-model","embedding-3","BAAI/bge-m3"].map(id=>[id,{input:0.5,cachedInput:0.5,output:0.5}]))),
   ECOSYSTEM_SERVICE_PRICES_JSON: JSON.stringify({"search:search_pro":0.001,"byok:search:*":0.001,"search:api.perplexity.ai":0.001,"search:sonar":0.001,"search:kimi-k2.6":0.001,"image-search:unsplash":0,"rerank:BAAI/bge-reranker-v2-m3":0.001}) };
 const saved = Object.fromEntries(Object.keys(env).map(k=>[k,process.env[k]]));
@@ -23,6 +24,7 @@ before(async()=>{
 });
 after(()=>{for(const [k,v] of Object.entries(saved)){if(v===undefined)delete process.env[k];else process.env[k]=v;}});
 beforeEach(t=>{
+  resetVerifier();
   // Provider HTTP is intercepted below. Resolve synthetic public names without
   // touching the machine's DNS; literal/private addresses still fail preflight.
   (t as TestContext).mock.method(dns.promises, "lookup", async () => [{ address: "8.8.8.8", family: 4 }]);
@@ -45,6 +47,12 @@ export function mockPaidFetch<A extends unknown[]>(t: Pick<TestContext,"mock">,p
   const providerMock=t.mock.fn(provider);
   t.mock.method(globalThis,"fetch",async(input:RequestInfo|URL,init?:RequestInit)=>{
     const url=new URL(typeof input==="string"?input:input instanceof URL?input.toString():input.url);
+    if(url.pathname==='/api/v1/introspect'){
+      const auth=new Headers(init?.headers).get('authorization');
+      if(auth!==`Bearer ${token}`)return Response.json({code:'SESSION_INVALID'},{status:401});
+      if(!fixtureLedger.active)return Response.json({code:'ACCOUNT_DISABLED'},{status:403});
+      return Response.json({active:true,user_id:fixtureUser,email:'fixture@example.invalid',email_verified:true,role:'user',plan_id:'free',aal:'aal2',mfa_required:false,mfa_enrolled:fixtureLedger.factors.some(f=>(f as {status?:string}).status==='verified'),is_admin:false,session_id:'fixture-session',exp:Math.floor(Date.now()/1000)+3600,providers:['email']});
+    }
     if(url.origin!==origin){fixtureLedger.events.push("provider");return providerMock(...([input,init] as unknown as A));}
     const body=typeof init?.body==="string"?JSON.parse(init.body):{};
     if(url.pathname.endsWith("/.well-known/jwks.json"))return Response.json({keys:[jwk]});

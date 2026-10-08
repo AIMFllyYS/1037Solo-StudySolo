@@ -364,11 +364,11 @@ test('chat SDK: successful fallback follow-ups reuse the custom model and arrive
   assert.equal(types.includes('error'), false);
 });
 
-test('chat SDK: 503 switches registry endpoint and sends transient info before successful answer', async (t) => {
+test('chat SDK: confirmed model rejection switches endpoint and sends transient info before successful answer', async (t) => {
   const urls: string[] = [];
   mockPaidFetch(t, async (url: unknown) => {
     urls.push(String(url));
-    return urls.length === 1 ? new Response('{"error":{"message":"unavailable"}}', { status: 503 }) : openAiStep();
+    return urls.length === 1 ? new Response('{"error":{"message":"not found","code":"model_not_found"}}', { status: 400 }) : openAiStep();
   });
   const { chunks, message } = await chat({ modelId: 'z-ai/glm-5.3-flash', customApiGroups: [] });
   assert.deepEqual(urls, ['https://primary.invalid/v1/chat/completions', 'https://primary.invalid/v1/chat/completions']);
@@ -467,7 +467,7 @@ test('chat SDK: GLM failover bills the landed mimo model, not GLM', async (t) =>
   mockPaidFetch(t, async (url: unknown, init?: RequestInit) => {
     hosts.push(String(url));
     if (init?.body) bodies.push({ host: String(url), body: JSON.parse(String(init.body)) as Record<string, unknown> });
-    if (JSON.parse(String(init?.body)).model === 'z-ai/glm-5.3-flash') return new Response('unavailable', { status: 503 });
+    if (JSON.parse(String(init?.body)).model === 'z-ai/glm-5.3-flash') return new Response('{"error":{"message":"not found","code":"model_not_found"}}', { status: 400 });
     return openAiStep(undefined, '短回答。<FollowUp>如何应用|如何验证</FollowUp>');
   });
   const { chunks } = await chat({

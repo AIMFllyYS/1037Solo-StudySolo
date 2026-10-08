@@ -29,6 +29,8 @@ import { presentation as readProjectSlices } from "@/lib/ai/agent/tools/readProj
 import { presentation as searchClassTranscript } from "@/lib/ai/agent/tools/searchClassTranscript/presentation";
 
 export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
+  readSavedAsset:{labelKey:'trace.tool.readSavedAsset.label',settingsLabelKey:'trace.tool.readSavedAsset.settingsLabel',descriptionKey:'trace.tool.readSavedAsset.description',icon:'file',toggleable:false},
+  readLocalFile: {labelKey:'trace.tool.readLocalFile.label',settingsLabelKey:'trace.tool.readLocalFile.settingsLabel',descriptionKey:'trace.tool.readLocalFile.description',icon:'file',toggleable:false},
   cloudSandbox,
   learningConnectors,
   kitSolo,

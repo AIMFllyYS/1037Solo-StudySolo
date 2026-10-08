@@ -31,6 +31,8 @@ export async function streamRouteText({
 }> {
   settings.abortSignal?.throwIfAborted();
   const upstreamAbort = new AbortController();
+  let deadline=setTimeout(()=>upstreamAbort.abort(new DOMException('Model idle timeout','TimeoutError')),idleTimeoutMs);
+  const touch=()=>{clearTimeout(deadline);deadline=setTimeout(()=>upstreamAbort.abort(new DOMException('Model idle timeout','TimeoutError')),idleTimeoutMs);};
   const result = streamText({
     ...settings,
     abortSignal: settings.abortSignal
@@ -51,9 +53,11 @@ export async function streamRouteText({
         throw settings.abortSignal?.reason ?? new DOMException(part.reason || "生成已取消", "AbortError");
       }
       if (part.type === "text-delta") {
+        touch();
         text += part.text;
         onText(part.text);
       } else if (part.type === "reasoning-delta") {
+        touch();
         onReasoning?.(part.text);
       } else if (part.type === "finish") {
         finished = { finishReason: part.finishReason, usage: part.totalUsage };
@@ -67,5 +71,5 @@ export async function streamRouteText({
     // other branch reading; abort the provider on errors or a throwing consumer.
     upstreamAbort.abort(error);
     throw error;
-  }
+  }finally{clearTimeout(deadline);}
 }

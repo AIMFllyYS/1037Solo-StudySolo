@@ -52,3 +52,13 @@ it("migrates a legacy image session only after its separate image payload is dur
   expect(useImageGen.getState().sessions.legacy.images).toEqual([]);
   expect((await loadImageGenSessionFull("legacy"))?.images[0].b64_json).toBe("base64-original");
 });
+
+
+it('replacing a cold cloud image body keeps the newly generated images', async () => {
+  useImageGen.getState().openViewer({ id: 'cold', prompt: 'test', title: 'test', size: '1024x1024', count: 1 });
+  useImageGen.setState(s => ({ sessions: { ...s.sessions, cold: { ...s.sessions.cold, cloudRevision: 8, bodyRef: true, images: [] } } }));
+  useImageGen.getState().updateSession('cold', { status: 'done', images: [{ b64_json: 'new-image' }] });
+  await waitFor(() => expect(useImageGen.getState().sessions.cold.bodyRef).toBe(true));
+  expect(useImageGen.getState().sessions.cold.cloudRevision).toBeUndefined();
+  expect((await loadImageGenSessionFull('cold'))?.images[0].b64_json).toBe('new-image');
+});

@@ -46,6 +46,8 @@ import { skillsForAgent } from "@/lib/sandbox/skills.server";
 import { resolveCloudFileParts } from '@/lib/files/model.server';
 import { referencedFileId, referencedFileIdsInText } from '@/lib/files/contract';
 import { fileOwner, FileError } from '@/lib/files/owner.server';
+import {claimLocalContinuation,issueLocalContinuation} from '@/lib/local-files/continuation.server';
+import {createReadLocalFileTool} from '@/lib/ai/agent/tools/readLocalFile/tool';
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -95,10 +97,11 @@ async function toModelMessages(
         ctx,
       ),
     })) as ChatMessage[];
-  return convertToModelMessages(uiMessages, { ignoreIncompleteToolCalls: true });
+  return convertToModelMessages(uiMessages, { ignoreIncompleteToolCalls: true,tools:{readLocalFile:createReadLocalFileTool()} });
 }
 
 async function handlePOST(req: NextRequest) {
+  let localUsedSteps=0;
   let body: ChatRequest;
   try {
     body = parseChatRequest(await req.json().catch(() => ({})));
@@ -108,6 +111,17 @@ async function handlePOST(req: NextRequest) {
       status,
       headers: { "Content-Type": "application/json" },
     });
+  }
+
+  if(body.localContinuation){
+    try{
+      const owner=await fileOwner(req,true),snapshot=await claimLocalContinuation(owner,body.id??'',body.localContinuation,body.messages);
+      body.localFiles=snapshot.catalog;
+      localUsedSteps=snapshot.usedSteps;
+      const remaining=clampMaxToolRounds(body.maxToolRounds)-snapshot.usedSteps;
+      if(remaining<1)return Response.json({error:'本轮工具调用已达上限，原结果已保留。'},{status:409});
+      body.maxToolRounds=remaining;
+    }catch(error){return Response.json({error:error instanceof FileError?error.message:'本地工具续接暂不可用。'},{status:error instanceof FileError?error.status:503});}
   }
 
   // 模型选择：优先 modelId（新菜单）；兼容旧式 model:'flash'/'pro'。
@@ -304,6 +318,7 @@ async function handlePOST(req: NextRequest) {
         attachedFiles: body.attachedFiles,
         userId: userId ?? undefined,
         projectFiles: body.projectFiles,
+        localFiles: body.localFiles,
         projectSlices: body.projectSlices,
         classContext: body.noteWindowAgent ? undefined : body.classContext,
       });
@@ -358,11 +373,13 @@ async function handlePOST(req: NextRequest) {
 
       // 手动转发而非 writer.merge：保证 usage / breakdown / followup 等 data part 与 finish 严格排在正文之后。
       let streamFailed = false;
+      const localCalls:Array<{toolCallId:string;input:unknown}>=[];
       try {
         for await (const chunk of result.toUIMessageStream<ChatMessage>({
           sendReasoning: true, sendStart: true, sendFinish: false, onError: formatError,
         })) {
           writer.write(chunk);
+          if(chunk.type==='tool-input-available'&&chunk.toolName==='readLocalFile')localCalls.push({toolCallId:chunk.toolCallId,input:chunk.input});
           if (chunk.type === "error" || chunk.type === "abort") {
             // SDK failures are stream data, not necessarily rejected result promises.
             // Stop the provider and never run a second, billable follow-up request.
@@ -392,7 +409,7 @@ async function handlePOST(req: NextRequest) {
           })),
           toolNames: Object.keys(bundle.tools),
           stepLimit: clampMaxToolRounds(body.maxToolRounds),
-          disabled: isImageMode || body.planMode === true,
+          disabled: isImageMode || body.planMode === true || localCalls.length>0,
         });
         if (decision) {
           const textOnly = isTextOnlyContinuation(decision.kind);
@@ -428,7 +445,11 @@ async function handlePOST(req: NextRequest) {
           aborted = streamFailed || generationSignal.aborted;
         }
       }
-      if (!aborted) writer.write({ type: 'data-answer-complete', data: { durationMs: Date.now() - startedAt } });
+      if(!aborted&&localCalls.length&&userId){
+        const token=await issueLocalContinuation(userId,body.id??'',body.localFiles,localCalls,localUsedSteps+(await result.steps).length);
+        writer.write({type:'data-local-continuation',data:{token},transient:true});
+      }
+      if (!aborted&&!localCalls.length) writer.write({ type: 'data-answer-complete', data: { durationMs: Date.now() - startedAt } });
       const selectedModelId = modelId ?? effectiveModelId;
       const actualProvider = resolved.getActualProvider();
       const actualModelId = resolveActualBillingModelId(actualProvider);

@@ -1,4 +1,6 @@
 import type { CloudSyncKind } from "./types";
+import {setSyncItemStatus} from './status';
+import {registerSyncIntent} from './journal';
 
 let enabled = false;
 let suppress = 0;
@@ -25,12 +27,16 @@ function canSchedule(): boolean {
 
 export function scheduleCloudUpsert(kind: CloudSyncKind, clientId: string): void {
   if (!canSchedule() || !clientId) return;
-  void import("./engine").then((mod) => mod.enqueueUpsert(kind, clientId));
+  setSyncItemStatus(`${kind}:${clientId}`,{phase:'pending'});
+  const intent = registerSyncIntent(kind,clientId,'upsert');
+  void import("./engine").then((mod) => mod.activateSyncIntent(intent));
 }
 
 export function scheduleCloudTombstone(kind: CloudSyncKind, clientId: string): void {
   if (!canSchedule() || !clientId) return;
-  void import("./engine").then((mod) => mod.enqueueTombstone(kind, clientId));
+  setSyncItemStatus(`${kind}:${clientId}`,{phase:'pending',operation:'delete'});
+  const intent = registerSyncIntent(kind,clientId,'tombstone');
+  void import("./engine").then((mod) => mod.activateSyncIntent(intent));
 }
 
 export function scheduleCloudPull(): void {

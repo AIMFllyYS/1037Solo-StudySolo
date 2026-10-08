@@ -16,7 +16,8 @@ test('public errors explain auth/DNS/protocol failures, not provider payloads', 
   assert.match(toChatErrorMessage({ statusCode: 401, message: 'secret API key sk-not-public', responseBody: 'private' }), /HTTP 401.*密钥/);
   assert.doesNotMatch(toChatErrorMessage({ statusCode: 403, message: 'private' }), /private/);
   assert.match(toChatErrorMessage({ cause: { code: 'ENOTFOUND' } }), /DNS/);
-  assert.match(toChatErrorMessage({ name: 'AI_TypeValidationError', message: 'private payload' }), /协议/);
+  assert.match(toChatErrorMessage({ name: 'AI_TypeValidationError', message: 'private payload' }), /响应.*解析/);
+  assert.doesNotMatch(toChatErrorMessage({ name: 'AI_JSONParseError', message: 'private payload' }), /协议|Anthropic|private payload/);
   assert.match(toChatErrorMessage(new DOMException('aborted', 'AbortError')), /取消/);
 });
 

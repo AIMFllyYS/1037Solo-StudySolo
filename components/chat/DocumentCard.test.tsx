@@ -1,3 +1,4 @@
+import { activateStorageOwner } from '@/lib/storage/ownerScope';
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import DocumentCard from "./DocumentCard";
@@ -22,11 +23,13 @@ const spec = {
 
 describe("DocumentCard", () => {
   beforeEach(() => {
+    activateStorageOwner('generation-test-owner');
     useDocuments.setState({ byId: {}, viewerId: null, _hasHydrated: true });
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
     vi.stubGlobal("fetch", vi.fn());
   });
   afterEach(() => {
+    activateStorageOwner(null);
     cleanup();
     vi.unstubAllGlobals();
   });
@@ -73,7 +76,7 @@ describe("DocumentCard", () => {
     expect(fetch).toHaveBeenCalledTimes(4);
     expect(vi.mocked(fetch).mock.calls.every((call) => {
       const init = call[1] as RequestInit | undefined;
-      return !init?.signal;
+      return init?.signal instanceof AbortSignal && !init.signal.aborted;
     })).toBe(true);
     expect(screen.getByText("3 / 3 节")).toBeTruthy();
     expect(screen.getByText("文档已就绪：细胞综述")).toBeTruthy();
@@ -233,4 +236,20 @@ describe("DocumentCard", () => {
       expect(useDocuments.getState().byId.doc_1?.sections[0]?.status).toBe("done");
     });
   });
+});
+
+
+it('account change during outline generation prevents new chapters and writes', async () => {
+  activateStorageOwner('outline-owner-a');
+  let resolveResponse!: (response: Response) => void;
+  vi.stubGlobal('fetch', vi.fn(() => new Promise<Response>(resolve => { resolveResponse = resolve; })));
+  useDocuments.setState({ byId:{},viewerId:null,_hasHydrated:true });
+  render(<DocumentCard documentId="owner-doc" spec={spec} autoStart />);
+  await waitFor(()=>expect(fetch).toHaveBeenCalledTimes(1));
+  activateStorageOwner('outline-owner-b');
+  useDocuments.setState({ byId:{},viewerId:null,_hasHydrated:true });
+  await act(async()=>resolveResponse(new Response(sse([{type:'document',id:'owner-doc',status:'outline',outline:[{title:'private-a'}]}]))));
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(useDocuments.getState().byId['owner-doc']).toBeUndefined();
+  cleanup();activateStorageOwner(null);vi.unstubAllGlobals();
 });

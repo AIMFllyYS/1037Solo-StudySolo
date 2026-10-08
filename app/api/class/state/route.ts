@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
-import { extractAccessToken,verifySupabaseAccessToken } from "@/lib/auth/aiGate";
+import {fileOwner,fileFailure} from '@/lib/files/owner.server';
 import { outlineSchema } from '@/classolo/lib/session/outline-schema';
 import {classCourseProfileSchema} from '@/classolo/lib/course/profile';
 import {DEFAULT_CLASS_COURSE_PROFILE} from '@/classolo/lib/course/profile';
@@ -24,10 +24,7 @@ async function json(request:Request){
 }
 function sessionView(row:Record<string,unknown>){return {...(row.payload as object),id:row.id,userId:row.user_id,title:row.title,status:row.status,updatedAt:row.updated_at,cloudRevision:String(row.cloud_revision??row.updated_at??'0'),archived:!!row.archived_at};}
 export async function POST(request:Request){
-  const token=extractAccessToken(request.headers);
-  const user=token?await verifySupabaseAccessToken(token):null;
-  if(!user)return Response.json({error:"请先登录统一账号"},{status:401});
-  if(user.mfaRequired)return Response.json({error:"请先完成两步验证",code:"MFA_REQUIRED"},{status:403});
+  let user:{id:string};try{user={id:await fileOwner(request,true)};}catch(error){return fileFailure(error);}
   try{
     const {op,input,expectedUserId,operationKey}=await json(request);
     if(expectedUserId!==user.id)return Response.json({error:"账号已切换，已停止旧账号同步"},{status:409});
@@ -52,10 +49,12 @@ export async function POST(request:Request){
     if(!found.data)return Response.json({error:"课堂不存在或无访问权限"},{status:404});
     if(op==='session.version')return Response.json({revision:String(found.data.cloud_revision??found.data.updated_at??'0')},{headers:{'Cache-Control':'no-store'}});
     if(op==="session.update"){
-      const patch=z.object({id:uuid,title:z.string().min(1).max(200).optional(),status:z.enum(["recording","paused","ended","interrupted"]).optional(),archived:z.boolean().optional(),profile:classCourseProfileSchema.optional(),noteId:z.string().min(1).max(150).optional()}).parse(input);
+      const patch=z.object({id:uuid,title:z.string().min(1).max(200).optional(),status:z.enum(["recording","paused","ended","interrupted"]).optional(),archived:z.boolean().optional(),expectedRevision:z.number().int().nonnegative().optional(),profile:classCourseProfileSchema.optional(),noteId:z.string().min(1).max(150).optional()}).parse(input);
       const payloadChanged=patch.profile!==undefined||patch.noteId!==undefined;
+      if(patch.archived!==undefined&&(patch.title||patch.status||payloadChanged))return Response.json({error:'请单独确认课堂回收站操作，原数据保留。'},{status:400});
       if(payloadChanged){const result=await db.rpc('ss_class_patch_session_payload',{p_user_id:user.id,p_session_id:sessionId,p_patch:{...(patch.profile?{profile:patch.profile}:{}),...(patch.noteId?{noteId:patch.noteId}:{})}});if(result.error)throw result.error;}
-      if(patch.title||patch.status||patch.archived!==undefined){const result=await db.from("ss_class_sessions").update({...(patch.title?{title:patch.title}:{}),...(patch.status?{status:patch.status}:{}),...(patch.archived!==undefined?{archived_at:patch.archived?new Date().toISOString():null}:{}),updated_at:new Date().toISOString()}).eq("id",sessionId).eq("user_id",user.id);if(result.error)throw result.error;}
+      if(patch.archived!==undefined){if(patch.expectedRevision===undefined)return Response.json({error:'请刷新课堂版本后重新确认操作，原记录保留。',code:'CLASS_REVISION_CONFLICT'},{status:409});const result=await db.rpc('ss_class_archive',{p_owner:user.id,p_session:sessionId,p_expected:patch.expectedRevision,p_restore:!patch.archived});if(result.error)throw result.error;}
+      if(patch.title||patch.status){const result=await db.from("ss_class_sessions").update({...(patch.title?{title:patch.title}:{}),...(patch.status?{status:patch.status}:{}),updated_at:new Date().toISOString()}).eq("id",sessionId).eq("user_id",user.id);if(result.error)throw result.error;}
       if(patch.title||patch.archived!==undefined){const updated=await db.from("asset_index").update({...(patch.title?{title:patch.title}:{}),...(patch.archived!==undefined?{archived_at:patch.archived?new Date().toISOString():null}:{}),updated_at:new Date().toISOString()}).eq("project_id","studysolo").eq("source_type","class-session").eq("source_id",sessionId).eq("user_id",user.id);if(updated.error)throw updated.error;}
       return Response.json({ok:true});
     }
@@ -164,6 +163,7 @@ export async function POST(request:Request){
     if(result.error)throw result.error;
     return Response.json({ok:true});
   }catch(error){
+    if(/revision_conflict/.test(String((error as {message?:unknown})?.message??'')))return Response.json({error:'课堂已在别处更新，操作尚未执行，请刷新后重新确认。',code:'CLASS_REVISION_CONFLICT'},{status:409});
     const invalid=error instanceof z.ZodError || error instanceof SyntaxError || (error as {code?:string})?.code==='22023';
     const quota=/storage_quota_exceeded/.test(String((error as {message?:string})?.message||""));
     return Response.json({error:quota?"生态云存储空间不足，本地记录已保留":invalid?"课堂数据格式不正确":"课堂云同步暂不可用，本地记录已保留"},{status:quota?413:invalid?400:503});

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Copy, ExternalLink, FolderOpen, PenLine, Quote, Trash2 } from "lucide-react";
@@ -13,7 +13,8 @@ import { useUserNotes } from "@/lib/stores/userNotes";
 import { useReviewCards } from "@/lib/stores/reviewCards";
 import { acquireDocumentBodyLease, hydrateDocumentBody, loadDocumentFull, useDocuments } from "@/lib/stores/documents";
 import { useArtifacts } from "@/lib/stores/artifacts";
-import { acquireArtifactBodyLease, hydrateArtifactBody } from "@/lib/stores/artifacts";
+import { acquireArtifactBodyLease, hydrateArtifactBody, loadArtifactFull } from "@/lib/stores/artifacts";
+import { captureStorageOperation, getOwnerEpoch } from '@/lib/storage/ownerScope';
 import { useImports } from "@/lib/stores/imports";
 import { isElectronDesktop } from "@/lib/stores/apiSecrets";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";
@@ -26,6 +27,11 @@ import { ASSET_LIST_HREF } from "@/lib/agent/assetHref";
 import { ASSET_KIND_LABELS, formatAssetSize, formatAssetTime, type AssetKind } from "@/lib/agent/assetCatalog";
 import CloudFileDetail from './CloudFileDetail';
 import { useFileLibrary } from '@/lib/files/library';
+import {openAttachmentPreview} from '@/lib/chat/openAttachmentPreview';
+import {removeLocalSource} from '@/lib/local-files/client';
+import {useChatHistory} from '@/lib/stores/chatHistory';
+import {useChatUI} from '@/lib/stores/chatUI';
+import {useImageGen} from '@/lib/stores/imageGen';
 
 const ACTION_CLASS =
   "press flex items-center gap-1.5 rounded-lg border border-[var(--line-soft)] px-2.5 py-1.5 text-[12.5px] text-[var(--ink)] hover:border-[var(--accent)] hover:bg-[var(--bg-muted)]";
@@ -46,28 +52,31 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
   const note = useUserNotes((s) => s.byId[id]);
   const card = useReviewCards((s) => s.byId[id]);
   const doc = useDocuments((s) => s.byId[id]);
+  const [bodyError,setBodyError]=useState('');
   useEffect(() => {
     if (kind !== "document") return;
     const release = acquireDocumentBodyLease(id);
-    void hydrateDocumentBody(id);
+    void hydrateDocumentBody(id).then(ok=>{if(!ok)void loadDocumentFull(id).catch(e=>setBodyError(e.message));});
     return release;
-  }, [kind, id]);
+  }, [kind, id,doc?.cloudRevision]);
   const artifact = useArtifacts((s) => s.byId[id]);
   useEffect(() => {
     if (kind !== "artifact") return;
     const release = acquireArtifactBodyLease(id);
-    void hydrateArtifactBody(id);
+    void hydrateArtifactBody(id).then(ok=>{if(!ok)void import('@/lib/stores/artifacts').then(mod=>mod.loadArtifactFull(id)).catch(e=>setBodyError(e.message));});
     return release;
-  }, [kind, id]);
+  }, [kind, id,artifact?.cloudRevision]);
   const importRecord = useImports((s) => s.byId[id]);
   const [flipped, setFlipped] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  const confirmationEpoch = useRef<number | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
 
   const item = useMemo(
     () => assets?.find((entry) => entry.kind === kind && entry.id === id) ?? null,
     [assets, id, kind],
   );
+  useEffect(()=>{const kinds={artifact:'artifact',document:'document',note:'user-note',flashcard:'review-card',image:'image-gen'} as const;const cloudKind=kinds[kind as keyof typeof kinds];if(item?.origin==='cloud'&&cloudKind)void import('@/lib/sync/engine').then(mod=>mod.loadOneCloudAsset(cloudKind,id));},[item?.origin,kind,id]);
   /** 与资产页同一条口径：数据就绪后再压一小段（约 1 秒）骨架，换页不跳。 */
   const showSkeleton = useMinimumSkeleton({ ready: assets !== null });
 
@@ -95,6 +104,9 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
   };
 
   const removeAsset = () => {
+    if (confirmationEpoch.current !== getOwnerEpoch()) { setConfirming(false); return; }
+    if(kind==='image'){useImageGen.getState().removeSession(id);void import('@/lib/sync/schedule').then(mod=>mod.scheduleCloudTombstone('image-gen',id));router.push(ASSET_LIST_HREF);return;}
+    if(importRecord?.localFileId){void removeLocalSource(importRecord.id).then(()=>router.push(ASSET_LIST_HREF));return;}
     if (kind === "note") useUserNotes.getState().removeNote(id);
     else if (kind === "flashcard") useReviewCards.getState().remove(id);
     else if (kind === "document") {
@@ -141,6 +153,17 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
     );
   }
   if (kind === "artifact" && artifact) {
+    if (artifact.status === 'draft' || artifact.status === 'error') actions.push(
+      <button key="save-draft" type="button" className={ACTION_CLASS} onClick={() => {
+        const operation = captureStorageOperation(id);
+        void loadArtifactFull(id).then(full => {
+          if (!operation.isCurrent() || !full?.html) return;
+          const copyId = crypto.randomUUID();
+          useArtifacts.getState().saveDone(copyId, `${full.title}（保留稿）`, full.html);
+          router.push(`/agent/assets/artifact/${copyId}`);
+        }).catch(error => { if (operation.isCurrent()) setBodyError(error.message); });
+      }}>将保留稿另存为独立文档</button>,
+    );
     actions.push(
       <button key="open" type="button" className={ACTION_CLASS} onClick={() => useArtifacts.getState().openViewer(artifact.id)}>
         <FolderOpen size={14} /> 在右栏打开
@@ -150,7 +173,30 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
       </button>,
     );
   }
+  if (kind === 'document' && doc?.status === 'error') actions.push(
+    <button key="save-document-draft" className={ACTION_CLASS} onClick={() => {
+      const operation = captureStorageOperation(id);
+      void loadDocumentFull(id).then(full => {
+        if (!operation.isCurrent() || !full) return;
+        const copyId = crypto.randomUUID();
+        useDocuments.getState().create(copyId, { ...full.spec, title: `${full.spec.title}（保留稿）` }, full.modelId);
+        useDocuments.getState().setSections(copyId, full.sections);
+        useDocuments.getState().setStatus(copyId, 'done');
+        router.push(`/agent/assets/document/${copyId}`);
+      }).catch(error => { if (operation.isCurrent()) setBodyError(error.message); });
+    }}>将保留稿另存为独立文档</button>,
+  );
   if (kind === "file" && importRecord) {
+    if(importRecord.localFileId){
+      actions.push(<button key="local-open" type="button" className={ACTION_CLASS} onClick={()=>openAttachmentPreview('local:'+importRecord.id,{localFileId:importRecord.id,name:importRecord.name,mimeType:importRecord.mimeType??'',kind:'text',content:''})}>打开本地文件</button>);
+      actions.push(<button key="local-cite" type="button" className={ACTION_CLASS} onClick={()=>{const history=useChatHistory.getState(),session=history.activeSessionId??history.createSession();useImports.getState().record({...importRecord,id:importRecord.id,sessionId:session});useChatUI.getState().setQuotedText(`请读取本地文件「${importRecord.name}」，sourceId=${importRecord.id}。`);router.push('/agent');}}>引用到对话</button>);
+      actions.push(<button key="local-project" type="button" className={ACTION_CLASS} onClick={() => {
+        const projectId = useChatHistory.getState().activeProjectId;
+        if (!projectId) { setBodyError('请先选择一个项目，再关联此本地文件。'); return; }
+        useImports.getState().record({ ...importRecord, id: importRecord.id, projectId });
+        setBodyError('已关联当前项目，原文件仍仅保存在本机。');
+      }}>关联当前项目（仅本机）</button>);
+    }
     if (importRecord.absPath) {
       actions.push(
         <button key="copy-path" type="button" className={ACTION_CLASS} onClick={() => void copy("path", importRecord.absPath as string)}>
@@ -166,6 +212,7 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
       }
     }
   }
+  if(kind==='image')actions.push(<button key="image-open" className={ACTION_CLASS} onClick={()=>useImageGen.getState().bringToFront(id)}>打开生成图片</button>);
   if (kind === "url" && importRecord?.url) {
     const href = importRecord.url;
     actions.push(
@@ -188,6 +235,7 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
       </header>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+        {bodyError?<p role="alert">{bodyError} <a className="underline" href={`/api/assets/body?${new URLSearchParams({kind:kind==='artifact'?'artifact':'document',clientId:id,download:'1'})}`} download>下载完整原稿</a></p>:null}
         {showSkeleton ? (
           <div className="mx-auto flex w-full max-w-[880px] flex-col gap-3" role="status" aria-label="资产加载中" data-testid="asset-detail-skeleton">
             <div className="flex items-start gap-3">
@@ -238,7 +286,7 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
                   </button>
                 </span>
               ) : (
-                <button type="button" className={`${ACTION_CLASS} text-[var(--md-sys-color-error)]`} onClick={() => setConfirming(true)}>
+                <button type="button" className={`${ACTION_CLASS} text-[var(--md-sys-color-error)]`} onClick={() => { confirmationEpoch.current=getOwnerEpoch();setConfirming(true); }}>
                   <Trash2 size={14} /> {kind === "file" || kind === "url" ? "移除记录" : "删除"}
                 </button>
               )}

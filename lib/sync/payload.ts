@@ -124,14 +124,27 @@ export function sanitizeChatMessages(messages: ChatMessage[]): ChatMessage[] {
 export function buildChatSessionPayload(meta: SessionMeta, messages: ChatMessage[]): ChatSessionSyncPayload {
   return {
     v: 1,
+    ...conflictLink(meta),
     meta,
     messages: sanitizeChatMessages(messages),
   };
 }
 
+function conflictLink(value: unknown): Record<string, unknown> {
+  const link = (value as { conflictOf?: unknown }).conflictOf;
+  return link && typeof link === 'object' ? { conflictOf: link } : {};
+}
+
+function privateBody(value: unknown): unknown {
+  if (!value || typeof value !== 'object') return value;
+  if (Array.isArray(value)) return value.map(privateBody);
+  return Object.fromEntries(Object.entries(value as Record<string,unknown>).filter(([key])=>!['apikey','api_key','authorization','password','access_token','refresh_token'].includes(key.toLowerCase())).map(([key,child])=>[key,privateBody(child)]));
+}
+
 export function buildArtifactPayload(artifact: ArtifactSyncPayload): ArtifactSyncPayload {
-  return stripForbiddenFields({
+  return privateBody({
     id: artifact.id,
+    ...conflictLink(artifact),
     title: artifact.title,
     html: artifact.html,
     status: artifact.status,
@@ -140,8 +153,9 @@ export function buildArtifactPayload(artifact: ArtifactSyncPayload): ArtifactSyn
 }
 
 export function buildDocumentPayload(doc: DocumentSyncPayload): DocumentSyncPayload {
-  return stripForbiddenFields({
+  return privateBody({
     id: doc.id,
+    ...conflictLink(doc),
     spec: doc.spec,
     sections: doc.sections,
     status: doc.status,
@@ -153,8 +167,9 @@ export function buildDocumentPayload(doc: DocumentSyncPayload): DocumentSyncPayl
 }
 
 export function buildUserNotePayload(note: UserNoteSyncPayload): UserNoteSyncPayload {
-  return stripForbiddenFields({
+  return privateBody({
     id: note.id,
+    ...conflictLink(note),
     title: note.title,
     markdown: note.markdown,
     subjectId: note.subjectId,
@@ -167,12 +182,13 @@ export function buildUserNotePayload(note: UserNoteSyncPayload): UserNoteSyncPay
 }
 
 export function buildReviewCardPayload(card: ReviewCardSyncPayload): ReviewCardSyncPayload {
-  return stripForbiddenFields(card) as ReviewCardSyncPayload;
+  return privateBody(card) as ReviewCardSyncPayload;
 }
 
 export function buildChatProjectPayload(project: ChatProjectSyncPayload): ChatProjectSyncPayload {
   return stripForbiddenFields({
     id: project.id,
+    ...conflictLink(project),
     name: project.name,
     createdAt: project.createdAt,
     updatedAt: project.updatedAt,
@@ -188,10 +204,11 @@ export function preparePayload(
   kind: CloudSyncKind,
   raw: unknown,
 ): PayloadCheck {
-  const payload = stripForbiddenFields(raw);
+  const standalone = ['artifact','document','user-note','review-card','image-gen'].includes(kind);
+  const payload = standalone ? privateBody(raw) : stripForbiddenFields(raw);
   const bytes = payloadByteSize(payload);
   const limit = effectiveKindLimit(kind);
-  if (payloadLooksUnsafe(payload)) return { ok: false, reason: "unsafe", bytes, limit };
+  if (!standalone && payloadLooksUnsafe(payload)) return { ok: false, reason: "unsafe", bytes, limit };
   if (bytes > limit) return { ok: false, reason: "kind-limit", bytes, limit };
   return { ok: true, payload, bytes };
 }
@@ -235,7 +252,7 @@ export function formatPoolLimitMessage(pool: SyncQuotaPool, limit: number): stri
 
 export function formatUserLimitMessage(limit: number): string {
   const mb = Math.round((limit / (1024 * 1024)) * 10) / 10;
-  return `云端同步已达 ${mb} MB 账号合计上限，本条未上传。本机仍保留。图片不会占用云端额度。`;
+  return `云端同步已达 ${mb} MB 账号合计上限，本条未上传。本机仍保留。全部云端资产共用个人额度，可在我的资产中查看与清理。`;
 }
 
 export function isSyncKindLimitError(message: string): boolean {

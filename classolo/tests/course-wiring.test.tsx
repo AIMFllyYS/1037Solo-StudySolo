@@ -1,7 +1,7 @@
 // @vitest-environment node
 import {beforeEach,describe,expect,it,vi} from 'vitest'
 const fixture=vi.hoisted(()=>({verify:vi.fn(),from:vi.fn(),rpc:vi.fn(),insert:vi.fn(),update:vi.fn(),found:null as Record<string,unknown>|null}))
-vi.mock('@/lib/auth/aiGate',()=>({extractAccessToken:()=> 'synthetic',verifySupabaseAccessToken:fixture.verify}))
+vi.mock('@/lib/files/owner.server',()=>({fileOwner:async()=>{const user=await fixture.verify();if(!user||user.mfaRequired)throw Object.assign(new Error('请先完成账号验证'),{status:user?403:401});return user.id;},fileFailure:(error:{message:string;status?:number})=>Response.json({error:error.message},{status:error.status??503})}))
 vi.mock('@/lib/auth/serviceClient',()=>({createServiceAuthClient:()=>({from:fixture.from,rpc:fixture.rpc})}))
 import {POST} from '@/app/api/class/state/route'
 import {classCourseProfileSchema} from '@/classolo/lib/course/profile'

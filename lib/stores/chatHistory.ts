@@ -218,13 +218,11 @@ function isBlankMainSession(meta: SessionMeta): boolean {
   return meta.kind !== 'floating' && meta.kind !== 'note' && meta.kind !== 'scheduled' && !meta.archived && meta.messageCount === 0;
 }
 
-function pruneArtifactsFromMetas(metas: SessionMeta[]): void {
-  const keepIds = metas.flatMap((m) => m.artifactIds);
-  try {
-    useArtifacts.getState().prune(keepIds);
-  } catch {
-    // ignore
-  }
+function pruneArtifactsFromMetas(_metas: SessionMeta[]): void {
+  // Independent assets outlive their source conversation. Only an explicit
+  // asset deletion may tombstone them; removing a chat must not delete imports,
+  // retained drafts, diagrams, or other reusable completed products.
+  void _metas;
 }
 
 function applySessionWindow(
@@ -675,7 +673,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       if (!prev) return state;
       const target = prev.find((m) => m.id === messageId);
       if (!target) return state;
-      const updated = { ...target, ...updates };
+      const updated = { ...target, ...updates, contentRevision: (target.contentRevision??0)+1 };
       const messages = prev.map((m) => (m.id === messageId ? updated : m));
       // 流式期每 tick 都会走这里：只在 artifactIds 真变化时才新建 meta/数组——
       // 否则 sessionsMeta 每 tick 都是新引用，侧栏/历史层/项目 chip 全量重渲。

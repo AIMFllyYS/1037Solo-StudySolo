@@ -54,3 +54,21 @@ it("migrates a legacy monolithic artifact only after its separate body commit", 
   expect(useArtifacts.getState().byId.old.html).toBe("");
   expect((await loadArtifactFull("old"))?.html).toBe(html);
 });
+it('late draft writes cannot replace the durable completed HTML',async()=>{
+ const final='<html><body>complete final</body></html>';
+ useArtifacts.getState().saveDone('finished','final',final);
+ await waitFor(()=>expect(useArtifacts.getState().byId.finished.bodyRef).toBe(true));
+ await useArtifacts.getState().saveDraft('finished','draft','half','generating');
+ expect((await loadArtifactFull('finished'))?.html).toBe(final);
+ expect(useArtifacts.getState().byId.finished.status).toBe('done');
+});
+
+
+it('deleting a conversation leaves independently saved HTML assets intact',async()=>{
+ const {useChatHistory}=await import('./chatHistory');
+ useArtifacts.getState().saveDone('independent','imported HTML','<html><body>independent</body></html>');
+ await waitFor(()=>expect(useArtifacts.getState().byId.independent.bodyRef).toBe(true));
+ useChatHistory.setState({sessionsMeta:[{id:'remove-chat',title:'chat',createdAt:1,updatedAt:1,messageCount:0,artifactIds:[]}],activeSessionId:'remove-chat',messagesById:{'remove-chat':[]},_hasHydrated:true});
+ useChatHistory.getState().deleteSession('remove-chat');
+ expect((await loadArtifactFull('independent'))?.html).toContain('independent');
+});

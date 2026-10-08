@@ -234,6 +234,27 @@ describe("cloud sync engine", { concurrency: false }, () => {
     assert.match(getCloudSyncStatus().message ?? "", /未上传云端/);
   });
 
+  test('an oversized asset does not block a healthy queued asset', async () => {
+    const memory = createMemoryStores(), api = createMemorySyncClient();
+    memory.artifacts.set('large', { id: 'large', title: 'large', html: 'x'.repeat(500), status: 'done' });
+    memory.artifacts.set('small', { id: 'small', title: 'small', html: 'ok', status: 'done' });
+    __setSyncLimitsForTests({ kind: { artifact: 256 } });
+    __setCloudSyncStoresForTests(memory.stores); __setSyncClientForTests(api);
+    enqueueUpsert('artifact', 'large'); enqueueUpsert('artifact', 'small'); await flushCloudSyncForTests();
+    assert.equal(api.rows.has('artifact:large'), false); assert.equal(api.rows.has('artifact:small'), true);
+  });
+
+  test('refresh preserves a dirty artifact after an upload failure', async () => {
+    const memory = createMemoryStores(), base = createMemorySyncClient();
+    await base.upsert({ kind: 'artifact', client_id: 'edit', deleted: false, payload: { id: 'edit', title: 'old', html: 'old', status: 'done' } });
+    memory.artifacts.set('edit', { id: 'edit', title: 'new', html: 'unsent edit', status: 'done' });
+    __setCloudSyncStoresForTests(memory.stores); __setSyncClientForTests({ ...base, upsert: async () => ({ data: null, error: { message: 'unavailable', status: 503 } }) });
+    enqueueUpsert('artifact', 'edit'); await flushCloudSyncForTests(); await pullAndPushAll();
+    assert.equal(memory.artifacts.get('edit')?.html, 'unsent edit');
+    __setSyncClientForTests(base); await flushCloudSyncForTests();
+    assert.equal(getCloudSyncStatus().phase, 'idle');
+  });
+
   test("user total over-limit refuses the new row", async () => {
     __setSyncLimitsForTests({ user: 512, kind: { artifact: 400 } });
     const memory = createMemoryStores();

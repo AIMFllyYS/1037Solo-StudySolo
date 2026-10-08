@@ -4,6 +4,7 @@ import type { ReviewCard } from "@/lib/review/types";
 import type { StoredDocument } from "@/lib/documents/types";
 import type { Artifact } from "@/lib/stores/artifacts";
 import type { ImportRecord } from "@/lib/stores/imports";
+import type { ImageGenSession } from '@/lib/stores/imageGen';
 import type { CloudFile } from '@/lib/files/contract';
 
 /**
@@ -14,9 +15,10 @@ import type { CloudFile } from '@/lib/files/contract';
  * 对话本身不在这里：它们在左栏，资产页只列「产物」与「导入」。
  */
 
-export type AssetKind = "note" | "flashcard" | "document" | "artifact" | "file" | "url" | "classroom";
+export type AssetKind = "note" | "flashcard" | "document" | "artifact" | "file" | "url" | "classroom" | 'image';
 
 export const ASSET_KINDS: readonly AssetKind[] = [
+  'image',
   "note",
   "flashcard",
   "document",
@@ -27,6 +29,7 @@ export const ASSET_KINDS: readonly AssetKind[] = [
 ];
 
 export const ASSET_KIND_LABELS: Record<AssetKind, string> = {
+  image:'生成图片',
   note: "笔记",
   flashcard: "闪卡",
   document: "长文本",
@@ -38,6 +41,7 @@ export const ASSET_KIND_LABELS: Record<AssetKind, string> = {
 
 /** 与云同步 kind 的对应关系；file / url 只在本机。 */
 const CLOUD_KIND_OF: Partial<Record<AssetKind, string>> = {
+  image:'image-gen',
   note: "user-note",
   flashcard: "review-card",
   document: "document",
@@ -63,6 +67,7 @@ export interface AssetItem {
 }
 
 export interface AssetSources {
+  images?: ImageGenSession[];
   cloudFiles?: CloudFile[];
   notes: UserNote[];
   cards: ReviewCard[];
@@ -106,6 +111,7 @@ const DOC_STATUS_LABELS: Record<StoredDocument["status"], string> = {
 
 export function buildAssetItems(sources: AssetSources): AssetItem[] {
   const items: AssetItem[] = [];
+  for (const image of sources.images ?? []) items.push({id:image.id,kind:'image',title:image.title,subtitle:image.status==='done'?'生成完成':'尚未完成 · 仅本机',origin:originOf('image',image.id,sources.cloudRow),updatedAt:image.createdAt});
 
   for (const note of sources.notes) {
     items.push({

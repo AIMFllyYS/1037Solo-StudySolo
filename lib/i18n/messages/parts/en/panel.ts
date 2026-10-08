@@ -99,7 +99,7 @@ export const panelEn = {
     addContentHint: "Add a note, flashcards, a file, or a URL",
     projectAria: "Project",
     projectFiles: "Project files",
-    projectFilesHint: "Local index + slices",
+    projectFilesHint: "Cloud files + local references",
     openPanelsAria: "Open panels",
     pickNote: "Pick a note",
     pickNoteHint: "My notes / class notes",
@@ -335,6 +335,7 @@ export const panelEn = {
       document: { label: "Documents", unit: "docs" },
       userNote: { label: "Personal notes", unit: "notes" },
       reviewCard: { label: "Review flashcards", unit: "cards" },
+      imageGen: { label: 'Generated images', unit: 'sets' },
       chatProject: { label: "Chat projects", unit: "items" },
     },
     pool: {

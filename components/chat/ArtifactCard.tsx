@@ -12,6 +12,8 @@ import { MessageContent } from '@/components/chat/MessageContent';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
 import { openHtmlInNewTab } from '@/lib/utils/openHtmlInNewTab';
 import { useT } from '@/lib/i18n';
+import {getStorageOwner,getOwnerEpoch} from '@/lib/storage/ownerScope';
+import {acquireArtifactBodyLease,hydrateArtifactBody} from '@/lib/stores/artifacts';
 
 type ArtifactApiEvent =
   | { type: 'ping'; t?: number }
@@ -57,6 +59,7 @@ export default function ArtifactCard({
   );
   const hydrated = useArtifacts((s) => s._hasHydrated);
   const saveDone = useArtifacts((s) => s.saveDone);
+  useEffect(()=>{if(!storedArtifact?.bodyRef)return;const release=acquireArtifactBodyLease(artifactId);void hydrateArtifactBody(artifactId);return release;},[artifactId,storedArtifact?.bodyRef]);
   const [status, setStatus] = useState<'idle' | 'streaming' | 'done' | 'error'>('idle');
   const [streamHtml, setStreamHtml] = useState('');
   const [reasoning, setReasoning] = useState('');
@@ -95,7 +98,7 @@ export default function ArtifactCard({
   useEffect(() => {
     if (startedRef.current) return;
     if (!shouldAutoGen) return; // 历史消息里的旧卡片：不自动重生成
-    if (art || !prompt) return;      // 已有产物 / prompt 尚未就绪
+    if (art?.status==='done' || !prompt) return;      // 完成产物 / prompt 尚未就绪
     startedRef.current = true;
     // 一次性进入流式态：本 effect 的职责就是把生成请求这一外部异步系统挂起来，
     // 同步置初始 UI 态是必要的且只发生一次（startedRef 守卫），非级联渲染反模式。
@@ -115,6 +118,7 @@ export default function ArtifactCard({
       setError(unsupportedReason || t('window.artifact.imageModelUnsupported'));
       return;
     }
+    const owner=getStorageOwner(),epoch=getOwnerEpoch();
     (async () => {
       try {
         const response = await fetch('/api/artifact', {
@@ -140,6 +144,7 @@ export default function ArtifactCard({
         let htmlBuf = '';
         let reasoningBuf = '';
         let terminal = false;
+        let lastDraftAt=0;
         // delta/reasoning 事件按 chunk 来：与主聊天同一套 60ms 尾随节流，
         // 大演示流式期的 <pre> 重渲被压到 ~16/s（d2-P1-4）。终态事件先 flush 保序。
         const throttle = createStreamUiThrottle();
@@ -154,6 +159,7 @@ export default function ArtifactCard({
           for (const event of parsed.events) {
             if (event.type === 'ping') continue;
             if (event.type !== 'artifact' || event.id !== artifactId) continue;
+            if(owner!==getStorageOwner()||epoch!==getOwnerEpoch()){void reader.cancel().catch(()=>{});return;}
             if (event.status === 'start') {
               setStatus('streaming');
             } else if (event.status === 'reasoning') {
@@ -161,6 +167,7 @@ export default function ArtifactCard({
               throttle.schedule(() => setReasoning(reasoningBuf));
             } else if (event.status === 'delta') {
               htmlBuf += event.delta || '';
+              if(Date.now()-lastDraftAt>1000&&owner===getStorageOwner()&&epoch===getOwnerEpoch()){lastDraftAt=Date.now();void useArtifacts.getState().saveDraft(artifactId,title,htmlBuf,'generating').catch(()=>{});}
               throttle.schedule(() => { setStreamHtml(htmlBuf); setShowCode(true); });
             } else if (event.status === 'done') {
               terminal = true;
@@ -172,6 +179,7 @@ export default function ArtifactCard({
               setShowCode(true);
               saveDone(artifactId, title, finalHtml, reasoningBuf);
             } else if (event.status === 'error') {
+              if(owner===getStorageOwner()&&epoch===getOwnerEpoch())await useArtifacts.getState().saveDraft(artifactId,title,htmlBuf,'error');
               terminal = true;
               throttle.flush();
               setStatus('error');
@@ -180,10 +188,12 @@ export default function ArtifactCard({
           }
         }
         if (!terminal) {
+          if(owner===getStorageOwner()&&epoch===getOwnerEpoch())await useArtifacts.getState().saveDraft(artifactId,title,htmlBuf,'draft');
           setStatus('error');
           setError(t('window.artifact.interrupted'));
         }
       } catch (err) {
+        if(owner!==getStorageOwner()||epoch!==getOwnerEpoch())return;
         if (err instanceof DOMException && err.name === 'AbortError') return;
         setStatus('error');
         setError(err instanceof Error ? err.message : t('window.artifact.generateFailed'));
@@ -247,7 +257,7 @@ export default function ArtifactCard({
                 openHtmlInNewTab(html);
                 return;
               }
-              if (html) saveDone(artifactId, title, html, reasoningText);
+              if (html && done) saveDone(artifactId, title, html, reasoningText);
               useArtifacts.getState().openViewer(artifactId);
             }}
             className="artifact-open-demo press inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-semibold"

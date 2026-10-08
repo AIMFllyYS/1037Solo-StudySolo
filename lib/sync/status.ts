@@ -12,6 +12,13 @@ export interface CloudSyncStatus {
 const IDLE: CloudSyncStatus = { phase: "idle", message: null };
 
 let current: CloudSyncStatus = IDLE;
+export type SyncItemPhase = 'pending' | 'syncing' | 'synced' | 'blocked' | 'error' | 'conflict';
+export interface SyncItemStatus { phase: SyncItemPhase; message?: string; retryable?: boolean; retryAfterMs?: number; operation?: 'delete' | 'save' }
+let items: Readonly<Record<string, SyncItemStatus>> = {};
+export function setSyncItemStatus(key: string, status: SyncItemStatus): void { items = { ...items, [key]: status }; emit(); }
+export function getSyncItemStatus(key: string): SyncItemStatus | undefined { return items[key]; }
+export function resetSyncItemStatuses():void{items={};emit();}
+export function useSyncItems(): Readonly<Record<string, SyncItemStatus>> { return useSyncExternalStore(subscribeCloudSync, () => items, () => items); }
 const listeners = new Set<() => void>();
 
 function emit(): void {
@@ -49,6 +56,7 @@ export function useCloudSyncStatus(): CloudSyncStatus {
 
 export function __resetCloudSyncStatusForTests(): void {
   current = IDLE;
+  items = {};
   cloudRowKeys = null;
 }
 

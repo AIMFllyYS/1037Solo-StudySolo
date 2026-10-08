@@ -100,7 +100,9 @@ export async function insertSession(db:ClassoloDb,input:{id?:string;title:string
   await write(db,'session.save',{...row},cache=>{cache.sessions[row.id]={session:row,transcript:[],outline:null,renders:[],chat:[]};});return row;
 }
 export async function updateSession(db:ClassoloDb,id:string,patch:Record<string,unknown>){
-  await write(db,'session.update',{id,...patch},cache=>{const value=cache.sessions[id];if(value)value.session={...value.session,...patch,updatedAt:new Date().toISOString()};});
+  const snapshot=read(db.userId).sessions[id]?.session;
+  const expectedRevision=patch.archived!==undefined?Number(snapshot?.cloudRevision??read(db.userId).cloudVersions?.[id]??0):undefined;
+  await write(db,'session.update',{id,...patch,...(expectedRevision!==undefined?{expectedRevision}:{})},cache=>{const value=cache.sessions[id];if(value)value.session={...value.session,...patch,updatedAt:new Date().toISOString()};});
 }
 export async function listSessions(db:ClassoloDb):Promise<ClassSession[]>{
   await flushClassPending(db);

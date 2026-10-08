@@ -98,7 +98,7 @@ export const panelZh = {
     addContentHint: "添加笔记、闪卡、文件或网址",
     projectAria: "项目",
     projectFiles: "项目文件",
-    projectFilesHint: "本地索引 + 切片",
+    projectFilesHint: "云端文件 + 本机引用",
     openPanelsAria: "打开面板",
     pickNote: "选择笔记",
     pickNoteHint: "引用我的 / 课程笔记",
@@ -113,7 +113,7 @@ export const panelZh = {
     newNote: "新建笔记",
     newNoteHint: "Markdown · 公式",
     addFile: "添加文件",
-    addFileHint: "PDF、文本、代码",
+    addFileHint: "仅本机 · 最大 512 MiB",
     footer: "笔记、闪卡、长文本和演示都从本机仓库打开，不会重新生成。",
   },
 
@@ -334,6 +334,7 @@ export const panelZh = {
       document: { label: "文档", unit: "篇" },
       userNote: { label: "个人笔记", unit: "篇" },
       reviewCard: { label: "复习闪卡", unit: "张" },
+      imageGen: { label: '生成图片', unit: '组' },
       chatProject: { label: "对话项目", unit: "个" },
     },
     pool: {

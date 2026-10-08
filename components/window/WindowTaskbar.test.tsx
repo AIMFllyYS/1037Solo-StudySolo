@@ -8,9 +8,11 @@ import { useUserNotes } from "@/lib/stores/userNotes";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
 import { SPOTLIGHT_INPUT_CLASS, SPOTLIGHT_SEARCH_FIELD_CLASS } from "@/components/search/spotlightChrome";
+import {activateStorageOwner} from '@/lib/storage/ownerScope';
 
 describe("WindowTaskbar add content", () => {
   beforeEach(() => {
+    activateStorageOwner('10000000-0000-4000-8000-000000000001');
     vi.stubGlobal("ResizeObserver", class {
       observe() {}
       disconnect() {}
@@ -29,6 +31,7 @@ describe("WindowTaskbar add content", () => {
   });
 
   afterEach(() => {
+    activateStorageOwner(null);
     cleanup();
     vi.unstubAllGlobals();
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
@@ -118,7 +121,7 @@ describe("WindowTaskbar add content", () => {
     fireEvent.change(input!, { target: { files: [file] } });
 
     await waitFor(() => {
-      expect(screen.getByRole("alertdialog", { name: "文件添加失败" })).toHaveTextContent("超过 25 MB");
+      expect(screen.getByRole("alertdialog", { name: "文件添加失败" })).toHaveTextContent("512MiB");
     });
   });
 

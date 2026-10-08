@@ -22,7 +22,7 @@ export const ACCEPTED_IMAGE_TYPES = new Set([
 
 export const MAX_DOCUMENT_SIZE = MAX_FILE_BYTES;
 /** 工作站顶部“添加文件”是完全本地的入口，允许更大的文件。 */
-export const MAX_LOCAL_FILE_SIZE = MAX_FILE_BYTES;
+export const MAX_LOCAL_FILE_SIZE = 512 * 1024 * 1024;
 export const MAX_DOCUMENT_CHARACTERS = MAX_FILE_BYTES;
 export const LONG_PASTE_DOCUMENT_THRESHOLD = 1_000;
 

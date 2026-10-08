@@ -55,3 +55,28 @@ it("migrates a legacy monolithic document after durable per-document write", asy
   expect(useDocuments.getState().byId.legacy.sections[0].markdown).toBeUndefined();
   expect((await loadDocumentFull("legacy"))?.sections[0].markdown).toBe("原始全文");
 });
+
+
+it('a cold document requires hydration before partial edits and accepts a complete replacement', async () => {
+  useDocuments.getState().create('cold', spec);
+  useDocuments.setState(s => ({ byId: { ...s.byId, cold: { ...s.byId.cold, cloudRevision: 8, bodyRef: true } } }));
+  expect(() => useDocuments.getState().setSectionMarkdown('cold', 0, 'partial')).toThrow(/先加载/);
+  expect(useDocuments.getState().byId.cold.cloudRevision).toBe(8);
+  useDocuments.getState().setSections('cold', [{ title: 'replacement', markdown: 'new-body', status: 'done' }]);
+  useDocuments.getState().setStatus('cold', 'done');
+  await waitFor(() => expect(useDocuments.getState().byId.cold.bodyRef).toBe(true));
+  expect(useDocuments.getState().byId.cold.cloudRevision).toBeUndefined();
+  expect((await loadDocumentFull('cold'))?.sections[0].markdown).toBe('new-body');
+});
+
+
+it('status changes do not overwrite a cold local document body', async () => {
+  useDocuments.getState().create('local-cold',spec);
+  useDocuments.getState().setSections('local-cold',[{title:'one',markdown:'original one',status:'done'},{title:'two',markdown:'original two',status:'done'}]);
+  useDocuments.getState().setStatus('local-cold','done');
+  await waitFor(()=>expect(useDocuments.getState().byId['local-cold'].bodyRef).toBe(true));
+  expect(()=>useDocuments.getState().setSectionMarkdown('local-cold',0,'partial')).toThrow(/先加载/);
+  expect(()=>useDocuments.getState().appendSection('local-cold',{title:'new',markdown:'new',status:'done'})).toThrow(/先加载/);
+  useDocuments.getState().setStatus('local-cold','error','status only');
+  expect((await loadDocumentFull('local-cold'))?.sections.map(section=>section.markdown)).toEqual(['original one','original two']);
+});

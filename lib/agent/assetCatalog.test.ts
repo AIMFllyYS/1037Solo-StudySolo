@@ -78,7 +78,7 @@ test("六类来源都能摊平成资产，标题与副标题有内容", () => {
   const items = buildAssetItems(sources);
   assert.equal(items.length, 6);
   const kinds = new Set(items.map((item) => item.kind));
-  for (const kind of ASSET_KINDS.filter(kind=>kind!=="classroom")) assert.ok(kinds.has(kind), `缺少 ${kind}`);
+  for (const kind of ASSET_KINDS.filter(kind=>kind!=="classroom"&&kind!=='image')) assert.ok(kinds.has(kind), `缺少 ${kind}`);
   const note = items.find((item) => item.kind === "note");
   assert.equal(note?.title, "组胚笔记");
   assert.match(note?.subtitle ?? "", /组胚|个人笔记/);

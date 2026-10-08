@@ -1,7 +1,7 @@
 // @vitest-environment node
 import {beforeEach,describe,expect,it,vi} from 'vitest'
 const f=vi.hoisted(()=>({verify:vi.fn(),rpc:vi.fn(),calls:[] as [string,string,unknown][],correction:null as null|Record<string,unknown>}))
-vi.mock('@/lib/auth/aiGate',()=>({extractAccessToken:()=> 'synthetic',verifySupabaseAccessToken:f.verify}))
+vi.mock('@/lib/files/owner.server',()=>({fileOwner:async()=>{const user=await f.verify();if(!user||user.mfaRequired)throw Object.assign(new Error('请先完成账号验证'),{status:user?403:401});return user.id;},fileFailure:(error:{message:string;status?:number})=>Response.json({error:error.message},{status:error.status??503})}))
 vi.mock('@/lib/auth/serviceClient',()=>({createServiceAuthClient:()=>({from:(table:string)=>{
   const chain:Record<string,unknown>={};chain.select=()=>chain;chain.eq=(name:string,value:unknown)=>{f.calls.push([table,name,value]);return chain}
   chain.maybeSingle=async()=>({error:null,data:table==='ss_class_sessions'?{id:'22222222-2222-4222-8222-222222222222',user_id:'11111111-1111-4111-8111-111111111111',payload:{profile:{version:1,disciplineId:'medicine',subdisciplineId:'microbiology-immunology',language:'zh',courseName:'',materialSubjectId:null,customTerms:[]}}}:table==='ss_class_transcripts'?{payload:{text:'老师说淋吧细胞'}}:f.correction});return chain

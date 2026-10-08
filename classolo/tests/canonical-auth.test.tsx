@@ -1,22 +1,13 @@
 // @vitest-environment node
-import {afterEach,beforeEach,describe,expect,it,vi} from 'vitest';
-const state=vi.hoisted(()=>({user:vi.fn(),claims:vi.fn(),profile:vi.fn()}));
-vi.mock('@supabase/supabase-js',()=>({createClient:()=>({auth:{getUser:state.user,getClaims:state.claims}})}));
-vi.mock('@/lib/auth/serviceClient',()=>({createServiceAuthClient:()=>({from:()=>({select:()=>({eq:()=>({maybeSingle:state.profile})})})})}));
-import {verifySupabaseAccessToken} from '../../lib/auth/aiGate';
-const user={id:'fixture-user',email_confirmed_at:'2026-09-27T00:00:00Z',factors:[],user_metadata:{role:'admin'}};
-const claims={sub:'fixture-user',iss:'https://fixture.supabase.co/auth/v1',aud:'authenticated',aal:'aal1',session_id:'fixture-session',client_id:'fixture-client'};
-beforeEach(()=>{
- vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL','https://fixture.supabase.co');vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY','fixture-public');
- state.user.mockResolvedValue({data:{user},error:null});state.claims.mockResolvedValue({data:{claims},error:null});state.profile.mockResolvedValue({data:{account_role:'user',is_active:true},error:null});
-});
-afterEach(()=>vi.unstubAllEnvs());
-describe('canonical server authentication',()=>{
- it('uses confirmed active canonical user and ignores metadata admin claims',async()=>{expect(await verifySupabaseAccessToken('token')).toMatchObject({id:user.id,mfaRequired:false,clientId:'fixture-client',sessionId:'fixture-session'});});
- it.each([null,{account_role:'user',is_active:false}])('rejects missing or disabled server profile',async profile=>{state.profile.mockResolvedValue({data:profile,error:null});expect(await verifySupabaseAccessToken('token')).toBeNull();});
- it('rejects unconfirmed email',async()=>{state.user.mockResolvedValue({data:{user:{...user,email_confirmed_at:null}},error:null});expect(await verifySupabaseAccessToken('token')).toBeNull();});
- it('rejects another issuer despite a successful user lookup',async()=>{state.claims.mockResolvedValue({data:{claims:{...claims,iss:'https://legacy.supabase.co/auth/v1'}},error:null});expect(await verifySupabaseAccessToken('token')).toBeNull();});
- it.each(['admin','super_admin'])('requires aal2 for server-owned %s role',async role=>{state.profile.mockResolvedValue({data:{account_role:role,is_active:true},error:null});expect(await verifySupabaseAccessToken('token')).toMatchObject({mfaRequired:true});});
- it('requires aal2 for an enrolled verified factor',async()=>{state.user.mockResolvedValue({data:{user:{...user,factors:[{status:'verified',factor_type:'totp'}]}},error:null});expect(await verifySupabaseAccessToken('token')).toMatchObject({mfaRequired:true});state.claims.mockResolvedValue({data:{claims:{...claims,aal:'aal2'}},error:null});expect(await verifySupabaseAccessToken('token')).toMatchObject({mfaRequired:false});});
- it('fails closed when profile authority is unavailable',async()=>{state.profile.mockResolvedValue({data:null,error:new Error('fixture unavailable')});expect(await verifySupabaseAccessToken('token')).toBeNull();});
+import {beforeEach,describe,expect,it,vi} from 'vitest';
+const state=vi.hoisted(()=>({verify:vi.fn()}));
+vi.mock('@/lib/auth/sign-in/account-verify',()=>({verifyAccount:state.verify}));
+import {verifySupabaseAccessToken,decideAiGate} from '@/lib/auth/aiGate';
+const identity={active:true,user_id:'fixture-user',mfa_required:false,aal:'aal2',session_id:'fixture-session',client_id:'fixture-client',user_metadata:{role:'admin'}};
+beforeEach(()=>{state.verify.mockReset();state.verify.mockResolvedValue({kind:'ok',identity});});
+describe('canonical Account server authentication',()=>{
+ it('uses Account UUID and session, ignoring user-provided role metadata',async()=>{expect(await verifySupabaseAccessToken('token')).toMatchObject({id:'fixture-user',mfaRequired:false,clientId:'fixture-client',sessionId:'fixture-session'});expect(state.verify).toHaveBeenCalledWith('token',expect.objectContaining({accountBackendUrl:expect.any(String)}));});
+ it.each(['signed-out','forbidden','unavailable'])('does not authenticate an Account %s result',async kind=>{state.verify.mockResolvedValue({kind});expect(await verifySupabaseAccessToken('token')).toBeNull();});
+ it('uses Account MFA decision instead of deriving roles or factors independently',async()=>{state.verify.mockResolvedValue({kind:'ok',identity:{...identity,mfa_required:true,aal:'aal1'}});expect(await verifySupabaseAccessToken('token')).toMatchObject({mfaRequired:true});});
+ it('reports Account outage as 503 without signing the user out or invoking a model',async()=>{state.verify.mockResolvedValue({kind:'unavailable'});const result=await decideAiGate({pathname:'/api/chat',method:'POST',headers:new Headers({authorization:'Bearer token'})});expect(result).toMatchObject({action:'reject',status:503,body:{code:'ACCOUNT_UNAVAILABLE'}});});
 });

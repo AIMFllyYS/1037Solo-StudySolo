@@ -56,6 +56,11 @@ function baseInput(model: MockLanguageModelV4, over: Partial<StudyAgentInput> = 
     ...over,
   };
 }
+test('actual Agent instructions include stable local source IDs and readonly client tools',()=>{
+ const sourceId='10000000-0000-4000-8000-000000000001';
+ const bundle=createStudyAgent(baseInput(new MockLanguageModelV4({doStream:textStep('ok')}),{localFiles:[{sourceId,name:'large.pptx',version:'512:1',location:'local',readable:true,needsReconnect:false}]}));
+ assert.match(bundle.promptParts.instructions,new RegExp(sourceId));assert.ok('readLocalFile' in bundle.tools);assert.equal(bundle.tools.readLocalFile.execute,undefined);
+});
 
 test("createStudyAgent：工具循环 → UI 流包含 reasoning / tool-input / tool-output / text，且 usage 跨步累加", async () => {
   const model = new MockLanguageModelV4({
