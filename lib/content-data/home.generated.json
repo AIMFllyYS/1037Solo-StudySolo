@@ -52,7 +52,7 @@
     "name": "仪器分析",
     "icon": "ScanLine",
     "categoryCount": 6,
-    "chapterCount": 37,
+    "chapterCount": 39,
     "learnHref": "/instrumental-analysis/textbook/ch01-1"
   },
   {
@@ -84,7 +84,7 @@
     "name": "医学细胞生物学",
     "icon": "Microscope",
     "categoryCount": 6,
-    "chapterCount": 40,
+    "chapterCount": 42,
     "learnHref": "/cell-biology/textbook/ch01-1"
   },
   {
@@ -100,7 +100,7 @@
     "name": "生物化学与分子生物学",
     "icon": "Dna",
     "categoryCount": 6,
-    "chapterCount": 71,
+    "chapterCount": 73,
     "learnHref": "/biochemistry/textbook/ch00-1"
   },
   {

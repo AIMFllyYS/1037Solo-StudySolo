@@ -1,0 +1,260 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "rec-2026-fall-019-020",
+  "generatedAt": "2026-10-08",
+  "examConfig": {
+    "source": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/recording.md；content/instrumental-analysis/lectures/rec-2026-fall-019-020/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-019-020",
+    "revision": 1,
+    "recordingHash": "ee376a6fc90464e3b03e9798306a644152a76bdac0cacf9f1dfbbe36267f8ff5",
+    "notesTextHash": "c008f695dc6a7f96a3ba579d0f5279040321df9ff8e0281db258f1a818fac22e"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "石墨炉升温四阶段"
+      },
+      "stem": "石墨炉原子化器升温程序的正确顺序是？",
+      "options": [
+        "干燥(~120℃除水)→灰化(~1000K除有机物)→原子化(2000-2500K测吸收)→净化(再高100-200K除残渣)",
+        "原子化→灰化→干燥→净化",
+        "灰化→干燥→原子化→净化",
+        "干燥→原子化→净化→灰化"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**干燥除溶剂水(~50s)、灰化除有机物/基体、原子化使待测元素原子化并测吸收(仅数秒，Ar停气保持原子浓度)、净化比原子化高100-200K把Be等难解离元素赶出去防残留。B/C/D顺序错误会把背景与待测信号混在一起。",
+      "hint": "先除水、再除有机物、原子化、最后除残渣。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "AAS检测器为光电倍增管"
+      },
+      "stem": "原子吸收光谱仪统一采用的检测器是？",
+      "options": [
+        "光电倍增管(PMT)",
+        "光电池",
+        "感光胶片",
+        "热电偶"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**AAS 与 UV-Vis 一样用光电倍增管 PMT 检测微弱光信号；老师举例南极冰立方中微子探测器核心也是同类 PMT。B/C/D 均不是 AAS 检测器。",
+      "hint": "弱光检测靠 PMT。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "特征浓度定义"
+      },
+      "stem": "AAS 中“特征浓度”指的是？",
+      "options": [
+        "产生1%光吸收(A=0.0044)所需的待测元素浓度；数值越高越不好",
+        "标准曲线的斜率，越高越好",
+        "3倍空白标准偏差对应的浓度",
+        "检出限的另一叫法"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**特征浓度=产生1%吸收(A=0.0044)所需浓度，越高说明要更浓才出信号、越不好。B是斜率灵敏度(越高越好)；C是检出限；D错。",
+      "hint": "百分吸收0.0044，越大越差。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "氢化物发生原子化器适用元素与温度"
+      },
+      "stem": "氢化物发生原子化器最适合测定哪类元素、石英管加热温度约为？",
+      "options": [
+        "As/Sb/Bi/Se/Te等能生成易挥发氢化物的元素；石英管800-1000℃分解",
+        "所有金属元素，需要3000℃石墨炉",
+        "仅碱金属，常温直接测",
+        "仅汞，必须高温火焰"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**As等与硼氢化钾+盐酸反应生成AsH₃等挥发性氢化物，石英管800-1000℃即分解为气态基态原子，装置便宜；冷原子测汞是同一套结构、只换还原剂。B/C/D均不符。",
+      "hint": "氢化物八千度，砷锑铋硒铅锡。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/recording.md",
+        "label": "石墨炉灵敏度高于火焰法的两点原因"
+      },
+      "stem": "石墨炉法灵敏度比火焰法高约100倍，其根本原因是？",
+      "options": [
+        "试样利用率>90%(vs火焰~10%)，且样品关在小管里无火焰气体稀释效应",
+        "石墨炉用了更亮的空心阴极灯",
+        "石墨炉不需要原子化阶段",
+        "石墨炉进样量比火焰法大100倍"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**两个原因：①试样利用率高(>90% vs ~10%)；②无火焰气体稀释效应(火焰法雾滴进火焰后被溶剂膨胀+燃气稀释)。故检出限~0.002 vs ~0.5 ng/mL。B/C/D均非根本原因(石墨炉进样仅μL级)。",
+      "hint": "利用率高+不稀释。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "氘灯扣背景原理"
+      },
+      "stem": "氘灯扣背景时，为什么氘灯测得的吸收近似纯背景、原子吸收可忽略？",
+      "options": [
+        "氘灯发连续宽带光，宽带光穿过原子化器时宽带背景大量吸收而原子窄线(~10⁻³nm)吸收占比可忽略",
+        "氘灯的光被原子完全吸收",
+        "氘灯只照射样品溶液、不照原子化器",
+        "氘灯光太强把原子都电离了"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**原子吸收线极窄(~10⁻³nm)，宽带氘灯光在原子线范围内的份额极小、吸收可忽略；而宽带背景(分子吸收/散射~1nm)大量吸收，故氘灯测得≈纯背景，再与HCL测得的(原子+背景)相减得纯原子吸收。B/C/D均错误。",
+      "hint": "宽带光只被宽带背景吃，窄线原子吃不到。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "化学干扰磷酸钙的消除"
+      },
+      "stem": "测钙时磷酸根生成难解离的Ca₃(PO₄)₂造成化学干扰，下列消除手段错误的是？",
+      "options": [
+        "加KI作还原剂把磷酸根还原掉",
+        "加La³⁺/Sr²⁺释放剂优先结合磷酸根、把Ca抢出来",
+        "加EDTA作保护剂螯合Ca、与磷酸根物理隔离",
+        "提高火焰温度或改用富燃焰还原"
+      ],
+      "answer": 0,
+      "explanation": "**A 错误（当选）。**KI不是化学干扰的消除剂；且KI在测汞体系反而会络合Hg²⁺。B/C/D均正确：释放剂La/Sr抢磷酸根、保护剂EDTA螯合Ca、升温或富燃焰还原氧化物。",
+      "hint": "镧锶释放EDTA包，升温富燃；KI不对。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "电离干扰与消电离剂"
+      },
+      "stem": "关于碱土金属在笑气-乙炔高温焰中的电离干扰，下列说法正确的是？",
+      "options": [
+        "电离度按Mg~6%<Ca~43%<Sr~84%<Ba~93%递增(电离能越低越易电离)；加过量KCl作消电离剂“flood the flame with electrons”",
+        "Mg的电离比Ba还严重",
+        "消除办法是往火焰里加大量待测元素",
+        "电离干扰会使吸光度偏高"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**教材电离度Mg~6%、Ca~43%、Sr~84%、Ba~93%，按电离能Ba<Sr<Ca<Mg，越易电离的元素电离越严重；加消电离剂(K/Na)先电离放出大量自由电子压制待测元素电离。B错：Ba最严重；C错；D错：电离使基态原子减少→吸光度偏低。",
+      "hint": "钡最易电离，加钾钠淹火焰。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "背景吸收来源与前处理避坑"
+      },
+      "stem": "关于AAS背景吸收(宽带)，下列说法正确的是？",
+      "options": [
+        "主要来源是分子吸收(硫酸/磷酸<250nm)与瑞利散射(未蒸发颗粒，∝1/λ⁴)；故消解用硝酸不用硫酸、缓冲换醋酸铵",
+        "背景吸收主要来自拉曼散射",
+        "硫酸在<250nm无干扰，可放心用浓硫酸消解",
+        "背景吸收是窄带10⁻³nm"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**背景=宽带(~1nm)：分子吸收(NaCl/KCl、Ca(OH)₂、硫酸磷酸<250nm)+瑞利散射(∝1/λ⁴)。B错：拉曼是荧光/拉曼光谱概念、不是AAS背景来源。C错：硫酸<250nm强背景须用硝酸。D错：背景是宽带。血泪教训：消解用硝酸、磷酸缓冲液换醋酸铵。",
+      "hint": "宽带分子吸收+瑞利散射；硝不硫、醋酸铵代磷。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/notes.html",
+        "label": "冷原子测汞还原剂"
+      },
+      "stem": "冷原子测汞仪把Hg²⁺还原为Hg⁰所使用的经典还原剂是？",
+      "options": [
+        "SnCl₂(氯化亚锡)或NaBH₄/KBH₄；不能用KI(I⁻会与Hg²⁺形成极稳定的[HgI₄]²⁻反而稳定二价汞)",
+        "KI碘化钾",
+        "浓硫酸",
+        "氯化钠"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**教材/国标冷原子测汞经典还原剂为SnCl₂或NaBH₄/KBH₄；KI会与Hg²⁺形成[HgI₄]²⁻(β₄≈10³⁰)，把二价汞锁住、不释放Hg⁰，故不作此反应用。C/D均不还原Hg²⁺为Hg⁰。",
+      "hint": "亚锡还原出汞，碘络合反锁汞。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-019-020/recording.md",
+        "label": "标准加入法操作要点与物理干扰"
+      },
+      "stem": "关于标准加入法消除物理干扰，下列说法错误的是？",
+      "options": [
+        "标准溶液应大体积低浓度加入，以便改变样品基体粘度",
+        "样品分5-6等份加0/M₀/2M₀/3M₀标准，外推到A=0，横轴截距绝对值=Cx",
+        "至少5个点，且不能扣背景(否则把背景误当成待测信号)",
+        "粘度过大时雾化效率下降、雾滴变粗、提升量减小"
+      ],
+      "answer": 0,
+      "explanation": "**A 错误（当选）。**标准溶液必须高浓度小体积加入，以免改变样品基体粘度。B/C/D正确：分等份加标外推求Cx、至少5点、不能扣背景；粘度过大→雾化效率下降、雾滴变粗(不是更细)、提升量减小→灵敏度降低。",
+      "hint": "高浓小体积、五点、不扣背景；粘大滴粗。"
+    }
+  ]
+}

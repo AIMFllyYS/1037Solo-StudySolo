@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "biochemistry",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-025-026",
+  "courseName": "生物化学与分子生物学",
+  "sessionRange": {
+    "start": 25,
+    "end": 26
+  },
+  "taughtOn": "2026-10-08",
+  "topic": "脂质代谢开篇：脂肪酸分类与命名、消化吸收与微团形成、脂肪动员（HSL）、脂肪酸β氧化过程与能量计算",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-025-026"
+}

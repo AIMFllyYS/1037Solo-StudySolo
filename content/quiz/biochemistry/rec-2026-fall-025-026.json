@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-025-026",
+  "generatedAt": "2026-10-08",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-025-026/recording.md；content/biochemistry/lectures/rec-2026-fall-025-026/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-025-026",
+    "revision": 1,
+    "recordingHash": "0156c1a2d3b37856cf9ff89342c01d8f94d6d69e285d37031d2b6bbd5f281081",
+    "notesTextHash": "4b6a2dd479f2f998f400e2abd3a93961e26661566187e349f2ce21ac47c5e4ae"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "脂质总分类与类脂五种"
+      },
+      "stem": "脂质（Lipids）= 脂肪 + 类脂。下列哪一项不属于类脂？",
+      "options": [
+        "磷脂",
+        "糖脂",
+        "甘油三酯",
+        "胆固醇酯"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**甘油三酯就是脂肪（Fat），不属于类脂。类脂五种为：胆固醇、胆固醇酯、磷脂、糖脂、鞘脂。A、B、D 均属类脂。",
+      "hint": "脂肪=甘油三酯；类脂五种别把甘油三酯选进去。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "营养必需脂肪酸"
+      },
+      "stem": "下列哪种脂肪酸属于人体不能自身合成、必须由食物供给的营养必需脂肪酸？",
+      "options": [
+        "油酸（18:1）",
+        "亚油酸（18:2，ω-6）",
+        "软脂酸（16:0）",
+        "硬脂酸（18:0）"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**营养必需脂肪酸为亚油酸（ω-6）、α-亚麻酸（ω-3）、花生四烯酸三种。油酸、软脂酸、硬脂酸人体均可合成，非必需。",
+      "hint": "亚油、亚麻、花生四烯酸。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-025-026/recording.md",
+        "label": "软脂酸与硬脂酸碳数"
+      },
+      "stem": "一分子软脂酸（棕榈酸）彻底氧化供能，需要先记住它是多少碳的脂肪酸？",
+      "options": [
+        "14 碳",
+        "16 碳",
+        "18 碳",
+        "20 碳"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**软脂酸（棕榈酸）= 16 碳饱和脂肪酸；硬脂酸 = 18 碳。记不住碳数就无法计算 ATP。",
+      "hint": "软 16、硬 18。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "β氧化四步顺序"
+      },
+      "stem": "脂肪酸 β 氧化在线粒体基质中反复循环，其四步反应的正确顺序是？",
+      "options": [
+        "脱氢 → 加水 → 再脱氢 → 硫解",
+        "加水 → 脱氢 → 硫解 → 再脱氢",
+        "硫解 → 脱氢 → 加水 → 再脱氢",
+        "脱氢 → 硫解 → 加水 → 再脱氢"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**β氧化四步：①脱氢（FAD→FADH₂）②加水 ③再脱氢（NAD⁺→NADH）④硫解（+CoA 生成乙酰CoA 和少 2 碳的脂酰CoA）。目的是暴露 β 碳原子。",
+      "hint": "脱氢加水再脱氢，最后硫解。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-025-026/recording.md",
+        "label": "辅脂酶锚定微团表面"
+      },
+      "stem": "在小肠肠腔中，把胰脂肪酶锚定在微团表面、协助其水解甘油三酯的辅助因子是？",
+      "options": [
+        "胆酸盐（胆汁酸）",
+        "辅脂酶",
+        "胆固醇",
+        "载脂蛋白 B48"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**锚定并协助胰脂肪酶的是辅脂酶（辅助蛋白，本身无催化活性，切去 N 端 5 肽后成熟，亲水端结合脂肪酶、疏水端结合甘油三酯并稳定其构象）。胆酸盐只负责把脂肪乳化成微团，不承担锚定脂肪酶的功能。",
+      "hint": "乳化靠胆酸盐，锚定脂肪酶靠辅脂酶。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "长链脂类经乳糜微粒淋巴管入血"
+      },
+      "stem": "绝大部分长链脂类（长链脂肪酸+2-甘油一酯等）被小肠黏膜吸收后，主要的入血途径是？",
+      "options": [
+        "游离状态直接经门静脉入肝",
+        "在肠黏膜细胞内重新合成甘油三酯，组装乳糜微粒（CM）经淋巴管入血",
+        "与白蛋白结合后直接扩散入门静脉",
+        "在肠黏膜细胞内继续水解为甘油和脂肪酸后入门静脉"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**长链产物在肠黏膜细胞内重新合成 TG/胆固醇酯/磷脂，与 Apo B48 等载脂蛋白组装成乳糜微粒（CM），经淋巴管→胸导管入血（绕过肝门静脉）。D/门静脉是中、短链甘油三酯的路径。",
+      "hint": "长链乳糜走淋巴，短中才入门脉。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-025-026/recording.md",
+        "label": "脂肪动员关键酶HSL"
+      },
+      "stem": "脂肪动员（甘油三酯逐步水解释放游离脂肪酸与甘油）过程中，直接受激素磷酸化调控、被视为关键酶的是？",
+      "options": [
+        "ATGL（脂肪甘油三酯脂肪酶）",
+        "激素敏感性脂肪酶 HSL（甘油二酯脂肪酶）",
+        "甘油一酯脂肪酶",
+        "胰脂肪酶"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**脂肪动员三步：ATGL→HSL→甘油一酯脂肪酶；其中 HSL（第二步）直接被 PKA 磷酸化活化，是激素调控的关键酶/限速酶。胰脂肪酶是肠道消化酶，不在脂肪动员中。",
+      "hint": "关键酶是受激素调控的 HSL。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "肉碱穿梭限速酶CAT I"
+      },
+      "stem": "长链脂酰 CoA 需经肉碱穿梭进入线粒体基质才能 β 氧化，其中整个 β 氧化的限速酶是？",
+      "options": [
+        "肉碱脂酰转移酶 II（CAT II）",
+        "脂酰 CoA 合成酶",
+        "肉碱脂酰转移酶 I（CAT I/CPT I，位于线粒体外膜）",
+        "β-酮脂酰 CoA 硫解酶"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**CAT I 位于线粒体外膜，决定脂酰 CoA 进入线粒体的流量，是 β 氧化限速酶；丙二酸单酰 CoA 抑制它以防合成分解同时进行。CAT II 在内膜侧把脂酰肉碱重新变回脂酰 CoA。",
+      "hint": "CAT I 在外膜限速。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-025-026/recording.md",
+        "label": "抗脂解激素"
+      },
+      "stem": "下列哪种激素属于抗脂解激素，即抑制脂肪动员、抑制 HSL？",
+      "options": [
+        "胰高血糖素",
+        "去甲肾上腺素",
+        "胰岛素",
+        "ACTH"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**胰岛素是抗脂解激素，抑制脂肪动员；胰高血糖素、去甲肾上腺素、ACTH、TSH 均为脂解激素（促进）。与糖代谢对照：升糖/降糖激素的核心仍是胰高血糖素与胰岛素。",
+      "hint": "胰岛素降糖也抑脂解。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-025-026/recording.md",
+        "label": "软脂酸彻底氧化ATP净生成"
+      },
+      "stem": "按新教材（每乙酰CoA=10 ATP，每 FADH₂=1.5 ATP，每 NADH=2.5 ATP），1 分子软脂酸（16 碳）彻底氧化分解，净生成多少 ATP？",
+      "options": [
+        "108 ATP",
+        "106 ATP",
+        "129 ATP",
+        "38 ATP"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**16 碳软脂酸经 7 次 β 氧化生成 8 乙酰CoA、7 FADH₂、7 NADH：8×10 + 7×1.5 + 7×2.5 = 80+10.5+17.5 = 108（生成量）；活化耗 2 ATP，故净生成 = 106。A 是未扣活化的生成量；C 是旧教材（12/2/3）算法。",
+      "hint": "8×10=80，7×1.5+7×2.5=28.5，合计 108，减 2 = 106。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-025-026/notes.html",
+        "label": "奇数碳脂肪酸丙酰CoA转化"
+      },
+      "stem": "奇数碳脂肪酸经 β 氧化每次脱 2 碳后，最后剩余的 3 碳产物及其彻底氧化去向是？",
+      "options": [
+        "乙酰 CoA，直接进入三羧酸循环",
+        "丙酰 CoA，经羧化、消旋、变位酶（维生素 B₁₂）转化为琥珀酰 CoA 后进入三羧酸循环",
+        "丙酮，经尿排出",
+        "乳酸，经肝脏糖异生变成葡萄糖"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**奇数碳脂肪酸最后剩 3 碳 = 丙酰 CoA →（生物素羧化）D-甲基丙二酰CoA →（消旋）L-型 →（变位酶，维生素 B₁₂）琥珀酰 CoA → 进入 TCA。A 是偶数碳的终产物；C、D 不符。",
+      "hint": "奇数碳剩丙酰 CoA，转琥珀酰 CoA 入 TCA。"
+    }
+  ]
+}

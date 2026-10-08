@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>生物化学 第25-26节 可视化笔记</title>
+<style>
+:root{
+  --paper:#F0EDE4; --paper-card:#FAF8F2;
+  --ink:#1C1B17; --ink-soft:#5A564C; --ink-faint:#8B8676; --rule:#CFC9B5;
+  --accent-a:#2E7D4F; --accent-a-soft:#E2EFE6;
+  --accent-b:#A2630C; --accent-b-soft:#F5E8D0;
+  --accent-c:#B23A2E; --accent-c-soft:#F5E0DC;
+  --accent-d:#3F6E8C; --accent-d-soft:#E0EAF0;
+  --display:'Noto Serif CJK SC',serif; --body:'Noto Sans CJK SC',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--paper);}
+body{font-family:var(--body);color:var(--ink);font-size:9.8pt;line-height:1.62;}
+.page{width:210mm;min-height:297mm;background:var(--paper);position:relative;overflow:hidden;padding:17mm 18mm 15mm;page-break-after:always;}
+.page:last-child{page-break-after:auto;}
+.running{display:flex;justify-content:space-between;font-size:7.6pt;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--rule);padding-bottom:3mm;margin-bottom:9mm;}
+.running .tag{color:var(--accent-c);font-weight:700;}
+.cover{background:var(--accent-a);color:#F0EDE4;padding:0;}
+.cover .inner{position:relative;height:100%;padding:26mm 18mm;display:flex;flex-direction:column;justify-content:space-between;min-height:257mm;}
+.cover .eyebrow{font-size:8.5pt;letter-spacing:0.32em;text-transform:uppercase;color:#C9E0D0;}
+.cover .eyebrow::before{content:"";width:22px;height:2px;background:var(--accent-b);display:block;margin-bottom:8px;}
+.cover h1{font-family:var(--display);font-weight:900;font-size:42pt;line-height:1.1;margin-top:14mm;color:#FAF8F2;}
+.cover .subtitle{font-family:var(--display);font-size:12pt;color:#C9DCC9;margin-top:10mm;max-width:140mm;line-height:1.7;}
+.cover .meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6mm;border-top:1px solid rgba(255,255,255,.25);padding-top:6mm;margin-top:14mm;}
+.cover .meta .k{font-size:7.6pt;letter-spacing:0.18em;color:rgba(255,255,255,.6);text-transform:uppercase;}
+.cover .meta .v{font-family:var(--display);font-size:11pt;color:#FAF8F2;margin-top:2mm;}
+.toc-title{font-family:var(--display);font-size:26pt;font-weight:800;margin-bottom:3mm;}
+.toc-sub{color:var(--ink-soft);font-size:9.7pt;max-width:150mm;margin-bottom:10mm;line-height:1.8;}
+table.toc{width:100%;border-collapse:collapse;font-size:9.3pt;}
+table.toc th{text-align:left;font-size:7.6pt;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--ink);padding:0 3mm 2.5mm 0;font-weight:600;}
+table.toc td{padding:4.2mm 3mm 4.2mm 0;border-bottom:1px solid var(--rule);vertical-align:top;}
+table.toc .num{font-family:var(--display);font-weight:800;color:var(--accent-c);font-size:11pt;}
+table.toc .ch{font-family:var(--display);font-weight:700;font-size:10.3pt;}
+table.toc .desc{color:var(--ink-soft);}
+.tc-big{font-family:var(--display);font-weight:900;font-size:15pt;color:var(--ink-faint);letter-spacing:0.06em;}
+.tc-big .num{color:var(--accent-c);}
+h2.ch-title{font-family:var(--display);font-weight:900;font-size:24pt;line-height:1.15;margin-top:3mm;max-width:160mm;}
+.thesis{font-family:var(--display);font-weight:600;font-size:11pt;color:var(--accent-a);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:4mm 0;margin:6mm 0;line-height:1.6;}
+h3.sec{font-family:var(--display);font-weight:800;font-size:12pt;margin:5mm 0 2.2mm;display:flex;align-items:center;gap:3mm;}
+h3.sec .dot{width:2.6mm;height:2.6mm;background:var(--accent-c);border-radius:50%;}
+p{margin-bottom:2.2mm;text-align:justify;}
+ul.plain{margin:2mm 0 4mm;padding-left:0;list-style:none;}
+ul.plain li{padding-left:5mm;position:relative;margin-bottom:1.5mm;text-align:justify;}
+ul.plain li::before{content:"—";position:absolute;left:0;color:var(--accent-b);font-weight:700;}
+b{font-weight:700;}
+.cardgrid{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin:3.5mm 0 5mm;}
+.card{background:var(--paper-card);border:1px solid var(--rule);position:relative;padding:5mm;break-inside:avoid;}
+.card .tab{position:absolute;top:0;left:0;right:0;height:2.2mm;}
+.card.a .tab{background:var(--accent-a);} .card.a .label{color:var(--accent-a);}
+.card.b .tab{background:var(--accent-b);} .card.b .label{color:var(--accent-b);}
+.card.c .tab{background:var(--accent-c);} .card.c .label{color:var(--accent-c);}
+.card.d .tab{background:var(--accent-d);} .card.d .label{color:var(--accent-d);}
+.card .label{font-size:7.3pt;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;margin-top:2mm;}
+.card h4{font-family:var(--display);font-size:11pt;font-weight:800;margin:2mm 0;line-height:1.35;}
+.card p{font-size:8.9pt;color:var(--ink-soft);margin-bottom:0;line-height:1.7;}
+table.data{width:100%;border-collapse:collapse;font-size:8.8pt;margin:3mm 0;}
+table.data th{background:var(--accent-a-soft);color:var(--accent-a);padding:2.5mm;border:1px solid var(--rule);text-align:left;font-weight:700;}
+table.data td{padding:2.5mm;border:1px solid var(--rule);vertical-align:top;}
+.warn{background:var(--accent-c-soft);border-left:3px solid var(--accent-c);padding:3mm 4mm;margin:3mm 0;font-size:9.2pt;}
+.footdate{position:absolute;bottom:12mm;left:18mm;right:18mm;display:flex;justify-content:space-between;font-size:7.4pt;color:var(--ink-faint);letter-spacing:0.1em;text-transform:uppercase;border-top:1px solid var(--rule);padding-top:2.5mm;}
+</style>
+</head>
+<body>
+
+<div class="page cover">
+  <div class="inner">
+    <div>
+      <div class="eyebrow">BIOCHEMISTRY · 生物化学</div>
+      <h1>脂质代谢开篇<br><span style="font-size:28pt;color:#E7CE9C;">分类·消化·β氧化</span></h1>
+      <div class="subtitle">从脂质分类到胆汁酸乳化，从脂肪动员到肉碱穿梭——脂肪酸如何被分解供能的完整路径。</div>
+    </div>
+    <div class="meta">
+      <div><div class="k">节次</div><div class="v">第25-26节</div></div>
+      <div><div class="k">日期</div><div class="v">2026-10-08</div></div>
+      <div><div class="k">时长</div><div class="v">2学时</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+  <div class="running"><span>生物化学 <span class="tag">·</span> 脂质代谢</span><span>目录</span></div>
+  <div class="toc-title">本章脉络</div>
+  <div class="toc-sub">按「认识脂质→吃进去怎么吸收→储脂怎么动员→脂肪酸怎么氧化供能」的代谢路径组织。</div>
+  <table class="toc">
+    <tr><th>No.</th><th>章节</th><th>核心问题</th></tr>
+    <tr><td class="num">01</td><td class="ch">脂质分类与功能</td><td class="desc">脂肪和类脂各是什么？哪些脂肪酸必须从食物获取？</td></tr>
+    <tr><td class="num">02</td><td class="ch">重要脂质结构</td><td class="desc">甘油磷脂、鞘脂、胆固醇各自的结构和功能标志是什么？</td></tr>
+    <tr><td class="num">03</td><td class="ch">消化与吸收</td><td class="desc">胆汁酸如何乳化？长短链脂肪酸为什么走不同途径？</td></tr>
+    <tr><td class="num">04</td><td class="ch">脂肪动员与β氧化</td><td class="desc">HSL如何被激素调控？肉碱穿梭为什么是限速步？</td></tr>
+  </table>
+</div>
+
+<div class="page">
+  <div class="running"><span>01 脂质分类</span><span>01</span></div>
+  <div class="tc-big"><span class="num">01</span> / 04</div>
+  <h2 class="ch-title">脂质分类与必需脂肪酸</h2>
+  <div class="thesis">脂质=脂肪（储能甘油三酯）+类脂（磷脂/糖脂/胆固醇等5种）；ω-3/6族不能互变，必须从食物获取。</div>
+
+  <div class="cardgrid">
+    <div class="card a"><div class="tab"></div><div class="label">脂肪</div><h4>甘油三酯</h4><p>甘油+3脂肪酸，主要储能形式，储存在脂肪组织。</p></div>
+    <div class="card b"><div class="tab"></div><div class="label">类脂</div><h4>5种</h4><p>磷脂、糖脂、胆固醇、类固醇、脂溶性维生素——膜结构和信号分子。</p></div>
+  </div>
+
+  <h3 class="sec"><span class="dot"></span>必需脂肪酸</h3>
+  <table class="data">
+    <tr><th>名称</th><th>族</th><th>碳数</th><th>说明</th></tr>
+    <tr><td>亚油酸</td><td>ω-6</td><td>18:2</td><td>不能自己合成，植物来源</td></tr>
+    <tr><td>α-亚麻酸</td><td>ω-3</td><td>18:3</td><td>不能自己合成，植物来源</td></tr>
+    <tr><td>花生四烯酸</td><td>ω-6</td><td>20:4</td><td>亚油酸衍生，前列腺素前体</td></tr>
+    <tr><td>EPA/DHA</td><td>ω-3</td><td>20:5/22:6</td><td>深海鱼油，抗炎益脑</td></tr>
+  </table>
+
+  <div class="warn"><b>注意：</b>ω-3、ω-6、ω-9三族之间不能互相转化。</div>
+
+  <div class="footdate"><span>生物化学 · 脂质分类</span><span>01 / 04</span></div>
+</div>
+
+<div class="page">
+  <div class="running"><span>02 重要脂质结构</span><span>02</span></div>
+  <div class="tc-big"><span class="num">02</span> / 04</div>
+  <h2 class="ch-title">重要脂质结构</h2>
+  <div class="thesis">甘油磷脂是膜双分子层骨架；磷脂酰丝氨酸外翻是凋亡信号；胆固醇以环戊烷多氢菲为核心。</div>
+
+  <div class="cardgrid">
+    <div class="card a"><div class="tab"></div><div class="label">甘油磷脂</div><h4>PC/PE/PS/心磷脂</h4><p>卵磷脂(PC)含量最多；脑磷脂(PE)；心磷脂在线粒体内膜；PS外翻=凋亡标志。</p></div>
+    <div class="card b"><div class="tab"></div><div class="label">信号磷脂</div><h4>PIP₂→DAG+IP₃</h4><p>PIP₂被磷脂酶C水解，产生两个第二信使，分别激活PKC和释放内质网钙。</p></div>
+    <div class="card c"><div class="tab"></div><div class="label">鞘脂</div><h4>神经酰胺</h4><p>鞘氨醇+脂肪酸=神经酰胺，是鞘脂基本骨架。</p></div>
+    <div class="card d"><div class="tab"></div><div class="label">胆固醇</div><h4>环戊烷多氢菲</h4><p>两亲性，膜成分；胆汁酸、类固醇激素、VitD的前体。</p></div>
+  </div>
+
+  <div class="footdate"><span>生物化学 · 脂质结构</span><span>02 / 04</span></div>
+</div>
+
+<div class="page">
+  <div class="running"><span>03 消化与吸收</span><span>03</span></div>
+  <div class="tc-big"><span class="num">03</span> / 04</div>
+  <h2 class="ch-title">消化与吸收</h2>
+  <div class="thesis">胆酸盐乳化脂肪→胰脂肪酶水解→长链脂肪酸经乳糜微粒走淋巴管，短中链直接入门静脉。</div>
+
+  <h3 class="sec"><span class="dot"></span>消化过程</h3>
+  <ul class="plain">
+    <li><b>乳化：</b>肝脏合成胆酸盐（胆汁酸），将大脂肪滴乳化成微团，增大酶接触面积。</li>
+    <li><b>水解：</b>胰脂肪酶将TG水解为甘油+脂肪酸+甘油一酯；辅脂酶帮助酶锚定在微团表面。</li>
+  </ul>
+
+  <h3 class="sec"><span class="dot"></span>吸收途径（高频考点）</h3>
+  <table class="data">
+    <tr><th>链长</th><th>途径</th><th>过程</th></tr>
+    <tr><td>长链(&gt;12C)</td><td>淋巴管→乳糜微粒</td><td>小肠黏膜内重新合成TG→组装CM→淋巴管→胸导管→入血</td></tr>
+    <tr><td>中短链(&lt;12C)</td><td>门静脉→肝脏</td><td>直接扩散入门静脉血，与白蛋白结合运到肝脏</td></tr>
+  </table>
+
+  <div class="footdate"><span>生物化学 · 消化吸收</span><span>03 / 04</span></div>
+</div>
+
+<div class="page">
+  <div class="running"><span>04 动员与β氧化</span><span>04</span></div>
+  <div class="tc-big"><span class="num">04</span> / 04</div>
+  <h2 class="ch-title">脂肪动员与β氧化</h2>
+  <div class="thesis">HSL是脂肪动员限速酶；CAT I（肉碱穿梭）是β氧化限速酶；每轮β氧化切下1个乙酰CoA+FADH₂+NADH。</div>
+
+  <h3 class="sec"><span class="dot"></span>脂肪动员</h3>
+  <ul class="plain">
+    <li><b>限速酶：</b>激素敏感性脂肪酶(HSL)。</li>
+    <li><b>脂解激素：</b>胰高血糖素、肾上腺素、皮质醇→激活HSL。</li>
+    <li><b>抗脂解激素：</b>胰岛素→抑制HSL。</li>
+  </ul>
+
+  <h3 class="sec"><span class="dot"></span>肉碱穿梭（β氧化限速步）</h3>
+  <p>长链脂酰CoA不能穿过线粒体内膜，需肉碱(carnitine)搬运。<b>CAT I（线粒体外膜）</b>是限速酶。丙二酸单酰CoA（脂肪酸合成中间物）抑制CAT I，防止合成与分解同时进行。</p>
+
+  <h3 class="sec"><span class="dot"></span>β氧化四步</h3>
+  <table class="data">
+    <tr><th>步骤</th><th>辅酶</th><th>产物</th></tr>
+    <tr><td>脱氢</td><td>FAD</td><td>FADH₂</td></tr>
+    <tr><td>加水</td><td>H₂O</td><td>-</td></tr>
+    <tr><td>再脱氢</td><td>NAD⁺</td><td>NADH</td></tr>
+    <tr><td>硫解</td><td>CoA-SH</td><td>乙酰CoA + 缩短2C的脂酰CoA</td></tr>
+  </table>
+
+  <div class="warn"><b>软脂酸(16C)：</b>7轮β氧化→8乙酰CoA+7FADH₂+7NADH。奇数碳脂肪酸最后生成丙酰CoA→(VitB12/生物素)→琥珀酰CoA。</div>
+
+  <div class="footdate"><span>生物化学 · 全文完</span><span>04 / 04</span></div>
+</div>
+
+</body>
+</html>

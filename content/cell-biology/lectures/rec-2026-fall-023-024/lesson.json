@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "cell-biology",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-023-024",
+  "courseName": "细胞生物学",
+  "sessionRange": {
+    "start": 23,
+    "end": 24
+  },
+  "taughtOn": "2026-10-08",
+  "topic": "细胞连接（紧密连接/锚定连接/桥粒/缝隙连接）与细胞外基质（胶原/糖胺聚糖/蛋白聚糖/纤连蛋白/层粘连蛋白）",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-023-024"
+}
