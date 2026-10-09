@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { LookupAddress } from "node:dns";
-import { createPinnedProbeLookup } from "@/lib/browser/probeNetwork.server";
+import { createPinnedProbeLookup, withFakeDnsFallback } from "@/lib/browser/probeNetwork.server";
 import { createPublicModelFetch } from "./publicModelFetch.server";
 import { toChatErrorMessage } from "./errorMessage";
 
@@ -14,6 +14,21 @@ test("custom model DNS rejects private, mixed, fake DNS and metadata addresses b
     await assert.rejects(fetcher("https://model.example/v1/chat/completions"), /公网连接校验/);
     assert.equal(requested, false);
   }
+});
+
+test("fake-DNS-only custom providers are pinned to a public DoH answer before HTTP", async () => {
+  let requested = false;
+  const fetcher = createPublicModelFetch(
+    "https://model.example/v1",
+    10000,
+    withFakeDnsFallback(
+      async () => [{ address: "198.18.0.1", family: 4 }],
+      async () => [{ address: "8.8.8.8", family: 4 }],
+    ),
+    async () => { requested = true; return Response.json({}); },
+  );
+  assert.equal((await fetcher("https://model.example/v1/chat/completions")).ok, true);
+  assert.equal(requested, true);
 });
 
 test("fixed model origin and credential-free URL reject cross-origin SDK requests", async () => {

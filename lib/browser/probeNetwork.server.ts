@@ -5,7 +5,6 @@ import { Agent } from "undici";
 import { checkCustomBaseUrl, embeddedIpv4FromV6 } from "@/lib/ai/customBaseUrl";
 
 export type ProbeResolver = (hostname: string) => Promise<LookupAddress[]>;
-export const resolveProbeAddresses: ProbeResolver = hostname => lookup(hostname, { all: true, verbatim: true });
 
 export class BlockedProbeNetworkError extends Error {
   constructor() { super("Probe destination is not public"); this.name = "BlockedProbeNetworkError"; }
@@ -33,6 +32,89 @@ export function isPublicProbeAddress(address: string): boolean {
   const embedded = version === 6 ? embeddedIpv4FromV6(address) : null;
   return embedded === null || isPublicProbeAddress(embedded);
 }
+
+// A local egress tunnel may answer every name from its fake-DNS pool (198.18.0.0/15).
+// Only that exact case is re-resolved over DNS-over-HTTPS; every returned address is
+// still validated by createPinnedProbeLookup, so private/reserved answers stay refused.
+const FAKE_DNS = new BlockList();
+FAKE_DNS.addSubnet("198.18.0.0", 15, "ipv4");
+const DOH_ENDPOINTS = ["https://dns.google/resolve", "https://cloudflare-dns.com/dns-query"] as const;
+
+export function isFakeDnsAnswerSet(answers: LookupAddress[]): boolean {
+  return answers.length > 0 && answers.every(answer => isIP(answer.address) === 4 && FAKE_DNS.check(answer.address, "ipv4"));
+}
+
+export function dohFakeDnsFallbackEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  const raw = env.STUDYSOLO_DOH_FAKE_DNS_FALLBACK?.trim().toLowerCase();
+  return raw !== "0" && raw !== "false" && raw !== "off";
+}
+
+function logFakeDnsFallback(event: "fake-dns-doh-fallback" | "fake-dns-doh-failed", hostname: string): void {
+  console.warn("[probe-network]", JSON.stringify({ event, hostname: hostname.slice(0, 253) }));
+}
+
+/** Public A records from DNS-over-HTTPS. Callers must still validate each address. */
+export async function resolveViaDoh(
+  hostname: string,
+  fetchImpl: typeof fetch = (input, init) => globalThis.fetch(input, init),
+  endpoints: readonly string[] = DOH_ENDPOINTS,
+): Promise<LookupAddress[]> {
+  let lastError: unknown;
+  for (const endpoint of endpoints) {
+    try {
+      return await resolveViaDohEndpoint(hostname, endpoint, fetchImpl);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error("doh_unavailable");
+}
+
+async function resolveViaDohEndpoint(
+  hostname: string,
+  endpoint: string,
+  fetchImpl: typeof fetch,
+): Promise<LookupAddress[]> {
+  const url = new URL(endpoint);
+  url.searchParams.set("name", hostname);
+  url.searchParams.set("type", "A");
+  const response = await fetchImpl(url, {
+    headers: { accept: "application/dns-json" },
+    redirect: "error",
+    cache: "no-store",
+    signal: AbortSignal.timeout(5000),
+  });
+  if (!response.ok) throw new Error("doh_unavailable");
+  const body = await response.json() as { Status?: unknown; Answer?: Array<{ type?: unknown; data?: unknown }> };
+  if (body.Status !== 0 || !Array.isArray(body.Answer)) throw new Error("doh_no_answer");
+  const answers = body.Answer
+    .filter(answer => answer.type === 1 && typeof answer.data === "string" && isIP(answer.data) === 4)
+    .map(answer => ({ address: answer.data as string, family: 4 }));
+  if (!answers.length) throw new Error("doh_no_answer");
+  return answers;
+}
+
+/** Use the system answer unless it is entirely fake-DNS; then try DoH, else keep the original (rejected) answer. */
+export function withFakeDnsFallback(
+  system: ProbeResolver,
+  doh: ProbeResolver = hostname => resolveViaDoh(hostname),
+  enabled: () => boolean = dohFakeDnsFallbackEnabled,
+): ProbeResolver {
+  return async hostname => {
+    const answers = await system(hostname);
+    if (!enabled() || !isFakeDnsAnswerSet(answers)) return answers;
+    try {
+      const resolved = await doh(hostname);
+      logFakeDnsFallback("fake-dns-doh-fallback", hostname);
+      return resolved;
+    } catch {
+      logFakeDnsFallback("fake-dns-doh-failed", hostname);
+      return answers;
+    }
+  };
+}
+
+export const resolveProbeAddresses: ProbeResolver = withFakeDnsFallback(hostname => lookup(hostname, { all: true, verbatim: true }));
 
 /** The socket only receives immutable validated addresses, never another DNS result. */
 export function createPinnedProbeLookup(hostname: string, answers: LookupAddress[]): LookupFunction {
