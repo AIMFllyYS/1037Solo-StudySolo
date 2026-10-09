@@ -1058,6 +1058,50 @@
       }
     },
     {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-027-028",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 27,
+        "end": 28
+      },
+      "taughtOn": "2026-10-09",
+      "topic": "酮体代谢与脂肪酸合成",
+      "revision": 1,
+      "quizId": "rec-2026-fall-027-028",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-027-028"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-027-028"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-027-028"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-027-028"
+        }
+      },
+      "hashes": {
+        "recording": "4a594130398d8a1d758b81efcd2636dae7220186e4ab4ac37289f70738afa862",
+        "notesText": "6d0bb20c137eda490436d5b78ae1cb65ad650b04d619912b87c7d8ad80759fc3"
+      }
+    },
+    {
       "subjectId": "cell-biology",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",

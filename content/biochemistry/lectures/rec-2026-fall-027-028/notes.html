@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>生物化学 第27-28节 可视化笔记</title>
+<style>
+:root{
+  --paper:#F0EDE4; --paper-card:#FAF8F2;
+  --ink:#1C1B17; --ink-soft:#5A564C; --ink-faint:#8B8676; --rule:#CFC9B5;
+  --accent-a:#2E7D4F; --accent-a-soft:#E2EFE6;
+  --accent-b:#A2630C; --accent-b-soft:#F5E8D0;
+  --accent-c:#B23A2E; --accent-c-soft:#F5E0DC;
+  --accent-d:#3F6E8C; --accent-d-soft:#E0EAF0;
+  --display:'Noto Serif CJK SC',serif; --body:'Noto Sans CJK SC',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--paper);}
+body{font-family:var(--body);color:var(--ink);font-size:9.8pt;line-height:1.62;}
+.page{width:210mm;min-height:297mm;background:var(--paper);position:relative;overflow:hidden;padding:17mm 18mm 15mm;page-break-after:always;}
+.page:last-child{page-break-after:auto;}
+.running{display:flex;justify-content:space-between;font-size:7.6pt;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--rule);padding-bottom:3mm;margin-bottom:9mm;}
+.running .tag{color:var(--accent-c);font-weight:700;}
+.cover{background:var(--accent-a);color:#F0EDE4;padding:0;}
+.cover .inner{position:relative;height:100%;padding:26mm 18mm;display:flex;flex-direction:column;justify-content:space-between;min-height:257mm;}
+.cover .eyebrow{font-size:8.5pt;letter-spacing:0.32em;text-transform:uppercase;color:#C9E0D0;}
+.cover .eyebrow::before{content:"";width:22px;height:2px;background:var(--accent-b);display:block;margin-bottom:8px;}
+.cover h1{font-family:var(--display);font-weight:900;font-size:40pt;line-height:1.1;margin-top:14mm;color:#FAF8F2;}
+.cover .subtitle{font-family:var(--display);font-size:12pt;color:#C9DCC9;margin-top:10mm;max-width:150mm;line-height:1.7;}
+.cover .meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6mm;border-top:1px solid rgba(255,255,255,.25);padding-top:6mm;margin-top:14mm;}
+.cover .meta .k{font-size:7.6pt;letter-spacing:0.18em;color:rgba(255,255,255,.6);text-transform:uppercase;}
+.cover .meta .v{font-family:var(--display);font-size:11pt;color:#FAF8F2;margin-top:2mm;}
+.toc-title{font-family:var(--display);font-size:26pt;font-weight:800;margin-bottom:3mm;}
+.toc-sub{color:var(--ink-soft);font-size:9.7pt;max-width:150mm;margin-bottom:10mm;line-height:1.8;}
+table.toc{width:100%;border-collapse:collapse;font-size:9.3pt;}
+table.toc th{text-align:left;font-size:7.6pt;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--ink);padding:0 3mm 2.5mm 0;font-weight:600;}
+table.toc td{padding:4.2mm 3mm 4.2mm 0;border-bottom:1px solid var(--rule);vertical-align:top;}
+table.toc .num{font-family:var(--display);font-weight:800;color:var(--accent-c);font-size:11pt;}
+table.toc .ch{font-family:var(--display);font-weight:700;font-size:10.3pt;}
+table.toc .desc{color:var(--ink-soft);}
+h2.ch-title{font-family:var(--display);font-weight:900;font-size:22pt;line-height:1.15;margin-top:3mm;max-width:170mm;}
+.thesis{font-family:var(--display);font-weight:600;font-size:11pt;color:var(--accent-a);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:4mm 0;margin:6mm 0;line-height:1.6;}
+h3.sec{font-family:var(--display);font-weight:800;font-size:12pt;margin:5mm 0 2.2mm;display:flex;align-items:center;gap:3mm;}
+h3.sec .dot{width:2.6mm;height:2.6mm;background:var(--accent-c);border-radius:50%;}
+p{margin-bottom:2.2mm;text-align:justify;}
+ul.plain{margin:2mm 0 4mm;padding-left:0;list-style:none;}
+ul.plain li{padding-left:5mm;position:relative;margin-bottom:1.5mm;text-align:justify;}
+ul.plain li::before{content:"—";position:absolute;left:0;color:var(--accent-b);font-weight:700;}
+b{font-weight:700;}
+.cardgrid{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin:3.5mm 0 5mm;}
+.card{background:var(--paper-card);border:1px solid var(--rule);position:relative;padding:5mm;break-inside:avoid;}
+.card .tab{position:absolute;top:0;left:0;right:0;height:2.2mm;}
+.card.a .tab{background:var(--accent-a);} .card.a .label{color:var(--accent-a);}
+.card.b .tab{background:var(--accent-b);} .card.b .label{color:var(--accent-b);}
+.card.c .tab{background:var(--accent-c);} .card.c .label{color:var(--accent-c);}
+.card.d .tab{background:var(--accent-d);} .card.d .label{color:var(--accent-d);}
+.card .label{font-size:7.3pt;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;margin-top:2mm;}
+.card h4{font-family:var(--display);font-size:11pt;font-weight:800;margin:2mm 0;line-height:1.35;}
+.card p{font-size:8.9pt;color:var(--ink-soft);margin-bottom:0;line-height:1.7;}
+table.data{width:100%;border-collapse:collapse;font-size:8.8pt;margin:3mm 0;}
+table.data th{background:var(--accent-a-soft);color:var(--accent-a);padding:2.5mm;border:1px solid var(--rule);text-align:left;font-weight:700;}
+table.data td{padding:2.5mm;border:1px solid var(--rule);vertical-align:top;}
+.warn{background:var(--accent-c-soft);border-left:3px solid var(--accent-c);padding:3mm 4mm;margin:3mm 0;font-size:9.2pt;}
+.flow{background:var(--paper-card);border:1px solid var(--rule);padding:4mm 5mm;margin:3mm 0;font-family:'Consolas',monospace;font-size:8.6pt;line-height:1.8;white-space:pre;overflow-x:auto;}
+.footdate{position:absolute;bottom:12mm;left:18mm;right:18mm;display:flex;justify-content:space-between;font-size:7.4pt;color:var(--ink-faint);letter-spacing:0.1em;text-transform:uppercase;border-top:1px solid var(--rule);padding-top:2.5mm;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="page cover">
+  <div class="inner">
+    <div>
+      <div class="eyebrow">BIOCHEMISTRY · 生物化学</div>
+      <h1>酮体代谢<br><span style="font-size:26pt;color:#E7CE9C;">与脂肪酸合成</span></h1>
+      <div class="subtitle">肝生成、肝外用的酮体；从乙酰CoA到软脂酸的胞液合成；ACC的别构与激素双重调控。</div>
+    </div>
+    <div class="meta">
+      <div><div class="k">节次</div><div class="v">第27-28节</div></div>
+      <div><div class="k">日期</div><div class="v">2026-10-09</div></div>
+      <div><div class="k">时长</div><div class="v">2学时</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="page">
+  <div class="running"><span>生物化学 · 第27-28节</span><span class="tag">VISUAL NOTES</span></div>
+  <div class="toc-title">本卷目录</div>
+  <div class="toc-sub">从酮体生成与利用，到甘油三酯合成与脂肪酸从头合成，再到磷脂代谢开篇——按课堂讲解顺序组织的四大模块。</div>
+  <table class="toc">
+    <tr><th style="width:18mm;">章</th><th>主题</th><th>核心问题</th></tr>
+    <tr><td class="num">01</td><td class="ch">酮体代谢</td><td class="desc">为什么脑不能直接烧脂肪酸？肝脏如何把乙酰CoA打包成酮体输出？</td></tr>
+    <tr><td class="num">02</td><td class="ch">甘油三酯合成</td><td class="desc">小肠、肝、脂肪组织三条合成路径有何不同？</td></tr>
+    <tr><td class="num">03</td><td class="ch">脂肪酸从头合成</td><td class="desc">胞液中如何从乙酰CoA合成16碳软脂酸？ACC如何被调控？</td></tr>
+    <tr><td class="num">04</td><td class="ch">碳链延长与去饱和</td><td class="desc">内质网和线粒体如何延长碳链？为什么亚油酸是必需脂肪酸？</td></tr>
+    <tr><td class="num">05</td><td class="ch">磷脂代谢开篇</td><td class="desc">甘油磷脂合成为何需要CTP？CDP-乙醇胺/胆碱从哪来？</td></tr>
+  </table>
+  <div class="footdate"><span>生物化学与分子生物学</span><span>p.02</span></div>
+</div>
+
+<!-- CH1 酮体 -->
+<div class="page">
+  <div class="running"><span>第一章 · 酮体代谢</span><span class="tag">KETONE BODIES</span></div>
+  <h2 class="ch-title">酮体：肝脏输出能源的特殊形式</h2>
+  <div class="thesis">酮体是肝细胞线粒体中由乙酰CoA缩合生成的水溶性能源分子，可透过血脑屏障，供肝外心、肾、脑、骨骼肌在饥饿时利用。</div>
+
+  <h3 class="sec"><span class="dot"></span>酮体三组分</h3>
+  <div class="cardgrid">
+    <div class="card a"><div class="tab"></div><div class="label">组成</div><h4>乙酰乙酸 + β-羟丁酸 + 丙酮</h4><p>三者总称酮体（Ketone bodies）。正常血浆0.03~0.5 mmol/L。多选题高频考点。</p></div>
+    <div class="card b"><div class="tab"></div><div class="label">场所</div><h4>肝内线粒体生成 · 肝外利用</h4><p>肝脏缺乏利用酶，只产不烧。利用器官：心、肾、脑、骨骼肌。</p></div>
+  </div>
+
+  <h3 class="sec"><span class="dot"></span>生成路径（肝线粒体）</h3>
+  <div class="flow">2 乙酰CoA ──乙酰乙酰CoA硫解酶──▶ 乙酰乙酰CoA
+                                │
+                    +乙酰CoA   ▼
+              ┌── HMG-CoA合酶（★关键酶）──┐
+              │                          ▼
+              │                    HMG-CoA（6碳）
+              │                          │
+              │              HMG-CoA裂解酶
+              │                          ▼
+              │              乙酰乙酸 + 乙酰CoA
+              │                 │        │
+              │    β-羟丁酸脱氢酶   自发脱羧
+              │                 ▼        ▼
+              └── NADH ──▶ β-羟丁酸    丙酮 + CO₂</div>
+
+  <h3 class="sec"><span class="dot"></span>利用路径（肝外）</h3>
+  <table class="data">
+    <tr><th style="width:38%;">激活方式</th><th>酶</th><th>组织分布</th></tr>
+    <tr><td>转硫途径</td><td>琥珀酰CoA转硫酶</td><td>心、肾、脑、骨骼肌（四者都有）</td></tr>
+    <tr><td>硫激酶途径</td><td>乙酰乙酸硫激酶（耗ATP）</td><td>心、肾、脑（<b>骨骼肌无此途径</b>）</td></tr>
+  </table>
+  <p>两种途径都把乙酰乙酸活化为乙酰乙酰CoA，再硫解为2分子乙酰CoA进入三羧酸循环供能。</p>
+
+  <div class="warn">⚠ 关键区分：HMG-CoA<b>合酶</b>是酮体生成关键酶；HMG-CoA<b>还原酶</b>是胆固醇合成关键酶——不要混。</div>
+
+  <div class="footdate"><span>第一章 · 酮体代谢</span><span>p.03</span></div>
+</div>
+
+<!-- CH1-2 酮体调节 -->
+<div class="page">
+  <div class="running"><span>第一章 · 酮体代谢</span><span class="tag">REGULATION</span></div>
+  <h3 class="sec"><span class="dot"></span>饱食 vs 饥饿</h3>
+  <div class="cardgrid">
+    <div class="card a"><div class="tab"></div><div class="label">饱食状态</div><h4>胰岛素↑ → 酮体↓</h4><p>胰岛素=抗脂解激素→抑制脂肪动员→血FFA↓→入肝↓→β氧化↓→乙酰CoA↓→酮体↓。</p></div>
+    <div class="card c"><div class="tab"></div><div class="label">饥饿状态</div><h4>胰高血糖素↑ → 酮体↑</h4><p>胰高血糖素=脂解激素→脂肪动员↑→FFA↑→入肝↑→β氧化↑→酮体↑。机体切换脂类供能，节省糖和蛋白质。</p></div>
+  </div>
+
+  <h3 class="sec"><span class="dot"></span>丙二酰CoA的"开关"作用</h3>
+  <div class="flow">糖代谢旺盛
+   │
+   ▼
+乙酰CoA ──ACC──▶ 丙二酰CoA
+                     │
+                     ▼ 别构抑制
+                  CPT1（肉碱脂酰转移酶I）
+                     │
+                     ▼
+              脂肪酸不能进入线粒体
+                     │
+                     ▼
+              β氧化↓ → 酮体↓（糖多不烧脂）</div>
+  <p>丙二酰CoA是"糖多"信号：它按住CPT1，阻止脂肪酸进入线粒体氧化，让多余的糖走合成途径。饥饿时丙二酰CoA下降，CPT1解禁，β氧化和酮体生成同时上升。</p>
+
+  <h3 class="sec"><span class="dot"></span>生理意义</h3>
+  <ul class="plain">
+    <li><b>肝输出能源</b>：饥饿时肝脏糖异生补血糖，同时把脂肪酸变成酮体输出供外周。</li>
+    <li><b>透过血脑屏障</b>：脑不能直接用脂肪酸，酮体是脑和肌肉的重要替代能源。</li>
+    <li><b>节省糖和蛋白质</b>：酮体利用↑→糖利用↓→蛋白质分解↓。短期饥饿减肥早期掉的是肌肉不是脂肪。</li>
+  </ul>
+  <div class="footdate"><span>第一章 · 酮体代谢</span><span>p.04</span></div>
+</div>
+
+<!-- CH2 TG合成 -->
+<div class="page">
+  <div class="running"><span>第二章 · 甘油三酯合成</span><span class="tag">TG SYNTHESIS</span></div>
+  <h2 class="ch-title">三条路径合成甘油三酯</h2>
+  <div class="thesis">小肠用甘油一酯途径再吸收，肝和脂肪组织用甘油二酯（磷脂酸）途径，3-磷酸甘油可来自糖酵解或游离甘油。</div>
+
+  <h3 class="sec"><span class="dot"></span>组织分布</h3>
+  <table class="data">
+    <tr><th>组织</th><th>途径</th><th>原料/产物去向</th></tr>
+    <tr><td><b>小肠黏膜细胞</b></td><td><b>甘油一酯途径</b></td><td>用消化产物甘油一酯+FFA再合成TG，打包乳糜微粒入淋巴</td></tr>
+    <tr><td><b>肝脏</b></td><td>甘油二酯途径</td><td>内质网合成，与载脂蛋白组装VLDL入血</td></tr>
+    <tr><td><b>脂肪组织</b></td><td>甘油二酯途径（从头合成）</td><td>可完全由糖合成；也可用乳糜微粒/VLDL中的FFA</td></tr>
+  </table>
+
+  <h3 class="sec"><span class="dot"></span>甘油二酯途径流程</h3>
+  <div class="flow">3-磷酸甘油 ──脂酰转移酶（1号位）──▶ 1-脂酰-3-磷酸甘油
+                                    │
+                        脂酰转移酶（2号位）
+                                    ▼
+                              磷脂酸（phosphatidic acid）
+                                    │
+                        磷脂酸磷酸酶（脱磷酸）
+                                    ▼
+                                甘油二酯（DAG）
+                                    │
+                        脂酰转移酶（3号位）
+                                    ▼
+                                甘油三酯（TG）</div>
+
+  <h3 class="sec"><span class="dot"></span>3-磷酸甘油来源</h3>
+  <div class="cardgrid">
+    <div class="card d"><div class="tab"></div><div class="label">来源一</div><h4>糖酵解 → DHAP</h4><p>葡萄糖→糖酵解→磷酸二羟丙酮（DHAP）→磷酸甘油脱氢酶→3-磷酸甘油。所有组织都能走这条路。</p></div>
+    <div class="card b"><div class="tab"></div><div class="label">来源二</div><h4>游离甘油（甘油激酶）</h4><p>仅肝、肾有甘油激酶，可直接磷酸化游离甘油。脂肪组织无此酶。</p></div>
+  </div>
+  <div class="footdate"><span>第二章 · 甘油三酯合成</span><span>p.05</span></div>
+</div>
+
+<!-- CH3 脂肪酸合成 -->
+<div class="page">
+  <div class="running"><span>第三章 · 脂肪酸从头合成</span><span class="tag">DE NOVO FAS</span></div>
+  <h2 class="ch-title">胞液中7轮循环生成软脂酸</h2>
+  <div class="thesis">乙酰CoA经柠檬酸-丙酮酸循环出线粒体，在ACC作用下活化为丙二酰CoA，再由脂肪酸合酶以"缩合→加氢→脱水→再加氢"四步循环7轮，生成16碳软脂酸。</div>
+
+  <h3 class="sec"><span class="dot"></span>五种原料（多选考点）</h3>
+  <div class="cardgrid">
+    <div class="card a"><div class="tab"></div><div class="label">碳源</div><h4>乙酰CoA</h4><p>二碳单位供体，来自糖有氧氧化（少量来自氨基酸分解）。</p></div>
+    <div class="card b"><div class="tab"></div><div class="label">能量</div><h4>ATP</h4><p>合成代谢耗能，氧化磷酸化提供。</p></div>
+    <div class="card d"><div class="tab"></div><div class="label">还原力</div><h4>NADPH</h4><p>磷酸戊糖途径 + 柠檬酸-丙酮酸循环中苹果酸酶提供。</p></div>
+    <div class="card c"><div class="tab"></div><div class="label">辅助</div><h4>HCO₃⁻ + Mn²⁺</h4><p>碳酸氢根提供CO₂给生物素羧化；锰离子激活ACC（金属酶）。</p></div>
+  </div>
+
+  <h3 class="sec"><span class="dot"></span>乙酰CoA出线粒体：柠檬酸-丙酮酸循环</h3>
+  <div class="flow">线粒体：乙酰CoA + 草酰乙酸 ──柠檬酸合酶──▶ 柠檬酸
+                                                │
+                                    柠檬酸载体出线粒体
+                                                ▼
+胞液：ATP-柠檬酸裂解酶 ──▶ 乙酰CoA + 草酰乙酸
+                              │              │
+                         （合成用）      草酰乙酸→苹果酸
+                                              │
+                                    苹果酸酶（脱羧+脱氢）
+                                              │  NADP⁺→NADPH
+                                              ▼
+                                            丙酮酸 ──丙酮酸载体──▶ 回线粒体</div>
+
+  <h3 class="sec"><span class="dot"></span>关键酶 ACC</h3>
+  <p><b>乙酰CoA羧化酶（ACC）</b>：乙酰CoA + HCO₃⁻ + ATP → 丙二酰CoA。辅酶=生物素（携带CO₂），需Mn²⁺。无活性时是单体，10~20个单体聚合成多聚体才有活性。</p>
+  <div class="footdate"><span>第三章 · 脂肪酸从头合成</span><span>p.06</span></div>
+</div>
+
+<!-- CH3-2 ACC调节 + FAS -->
+<div class="page">
+  <div class="running"><span>第三章 · 脂肪酸从头合成</span><span class="tag">ACC REGULATION</span></div>
+  <h3 class="sec"><span class="dot"></span>ACC的双重调节</h3>
+  <table class="data">
+    <tr><th>调节类型</th><th>激活</th><th>抑制</th></tr>
+    <tr><td><b>别构调节</b></td><td>柠檬酸、异柠檬酸（→单体聚合成多聚体）</td><td>软脂酰CoA及长链脂酰CoA（产物反馈）</td></tr>
+    <tr><td><b>化学修饰（磷酸化）</b></td><td>胰岛素→蛋白磷酸酶→<b>去磷酸化→激活</b></td><td>胰高血糖素→AMPK→<b>磷酸化→失活</b></td></tr>
+  </table>
+  <div class="warn">⚠ 记住：磷酸化=失活态。胰高血糖素通过AMPK让ACC磷酸化失活；胰岛素通过磷酸酶让ACC去磷酸化激活。高碳水饮食还能促进ACC基因表达。</div>
+
+  <h3 class="sec"><span class="dot"></span>脂肪酸合酶（FAS）结构</h3>
+  <div class="cardgrid">
+    <div class="card d"><div class="tab"></div><div class="label">原核（大肠杆菌）</div><h4>多酶复合体</h4><p>7种酶蛋白独立肽链 + ACP，组装在一个complex里。</p></div>
+    <div class="card a"><div class="tab"></div><div class="label">真核（哺乳类）</div><h4>多功能酶</h4><p>一条多肽链上有7种酶活性中心，首尾二聚体才有活性。ACP是其中一个功能域。</p></div>
+  </div>
+  <p><b>ACP（酰基载体蛋白）</b>：辅基=磷酸泛酰氨基乙硫醇（含泛酸），末端巯基（-SH）承载丙二酰CoA。缩合酶（CE）的巯基承载起始乙酰CoA。</p>
+
+  <h3 class="sec"><span class="dot"></span>7轮循环</h3>
+  <div class="flow">起始：CE上挂乙酰CoA(2C)，ACP上挂丙二酰CoA(3C)
+   │
+   每轮四步：
+   ① 缩合脱羧（丙二酰基+乙酰基→β-酮脂酰，脱1CO₂，净+2C）
+   ② 加氢（β-酮脂酰还原酶，NADPH）
+   ③ 脱水（脱水酶→α,β-烯脂酰）
+   ④ 再加氢（烯脂酰还原酶，NADPH）
+   │
+   丁酰基从ACP转位到CE，ACP接新丙二酰CoA
+   │
+   重复7轮 → 16碳软脂酸释放
+   总耗：1乙酰CoA + 7丙二酰CoA + 14 NADPH</div>
+  <div class="footdate"><span>第三章 · 脂肪酸从头合成</span><span>p.07</span></div>
+</div>
+
+<!-- CH4 延长+去饱和 -->
+<div class="page">
+  <div class="running"><span>第四章 · 碳链延长与去饱和</span><span class="tag">ELONGATION</span></div>
+  <h2 class="ch-title">从16碳到更长、更不饱和</h2>
+  <div class="thesis">胞液只合成16碳软脂酸；内质网用丙二酰CoA延长，线粒体直接用乙酰CoA延长；去饱和酶在内质网加双键，但动物缺Δ12/Δ15酶。</div>
+
+  <h3 class="sec"><span class="dot"></span>两个延长场所对比</h3>
+  <table class="data">
+    <tr><th>特性</th><th>内质网延长</th><th>线粒体延长</th></tr>
+    <tr><td>二碳供体</td><td><b>丙二酰CoA</b></td><td><b>乙酰CoA</b>（直接，不需羧化）</td></tr>
+    <tr><td>还原当量</td><td>NADPH</td><td>NADPH</td></tr>
+    <tr><td>反应过程</td><td>类似胞液软脂酸合成</td><td>类似β-氧化逆反应</td></tr>
+    <tr><td>可延长至</td><td>C24</td><td>C24~C26</td></tr>
+  </table>
+  <div class="warn">⚠ 选择题陷阱：线粒体延长直接用乙酰CoA，不用丙二酰CoA。体内最多产物是C18硬脂酸。</div>
+
+  <h3 class="sec"><span class="dot"></span>去饱和</h3>
+  <ul class="plain">
+    <li>去饱和酶镶嵌在内质网，脱氢过程类似电子传递链。</li>
+    <li>动物：Δ4、Δ5、Δ8、Δ9去饱和酶（只能在这些位置加双键）。</li>
+    <li>植物：Δ9、Δ12、Δ15去饱和酶。</li>
+    <li><b>亚油酸（18:2 Δ9,12）和α-亚麻酸（18:3 Δ9,12,15）是必需脂肪酸</b>——动物缺Δ12/Δ15去饱和酶，必须从植物性食物获取。</li>
+  </ul>
+
+  <h3 class="sec"><span class="dot"></span>FAS作为药物靶点</h3>
+  <p>肿瘤患者脂肪酸合酶高表达。FAS抑制剂除了减重抑制脂肪合成，还具有抗肿瘤和抗肥胖的药物潜力。</p>
+  <div class="footdate"><span>第四章 · 碳链延长与去饱和</span><span>p.08</span></div>
+</div>
+
+<!-- CH5 磷脂 + 考点 -->
+<div class="page">
+  <div class="running"><span>第五章 · 磷脂代谢开篇</span><span class="tag">PHOSPHOLIPIDS</span></div>
+  <h2 class="ch-title">甘油磷脂合成需要CTP</h2>
+  <div class="thesis">甘油磷脂在内质网合成，头基（乙醇胺/胆碱）来自丝氨酸，CTP激活生成CDP中间物。</div>
+
+  <h3 class="sec"><span class="dot"></span>头基合成路径</h3>
+  <div class="flow">丝氨酸 ──脱羧──▶ 乙醇胺
+                        │
+            S-腺苷甲硫氨酸提供3个甲基
+                        ▼
+                      胆碱
+                        │
+        ┌───────────────┴───────────────┐
+        │ ATP(激酶)        ATP(激酶)      │
+        ▼                               ▼
+    磷酸乙醇胺                    磷酸胆碱
+        │                               │
+      CTP（胞苷转移酶）              CTP
+        ▼                               ▼
+   CDP-乙醇胺                      CDP-胆碱
+        └───────────────┬───────────────┘
+                        ▼
+                  甘油磷脂合成</div>
+  <ul class="plain">
+    <li>合成部位：全身组织内质网（肝/肾/肠最活跃）。</li>
+    <li>能量需求：ATP + <b>CTP</b>（常考！CTP激活磷酸头基生成CDP中间物）。</li>
+  </ul>
+
+  <h3 class="sec"><span class="dot"></span>本节高频考点速记</h3>
+  <div class="cardgrid">
+    <div class="card c"><div class="tab"></div><div class="label">必背</div><h4>酮体关键酶=HMG-CoA合酶</h4><p>生成在肝线粒体，利用在肝外。</p></div>
+    <div class="card c"><div class="tab"></div><div class="label">必背</div><h4>ACC磷酸化=失活</h4><p>胰高血糖素→AMPK→磷酸化失活；胰岛素→去磷酸化激活。</p></div>
+    <div class="card c"><div class="tab"></div><div class="label">必背</div><h4>7轮循环14个NADPH</h4><p>1乙酰CoA起始+7丙二酰CoA延长，产物C16软脂酸。</p></div>
+    <div class="card c"><div class="tab"></div><div class="label">必背</div><h4>线粒体延长用乙酰CoA</h4><p>内质网延长用丙二酰CoA。</p></div>
+  </div>
+  <div class="footdate"><span>第五章 · 磷脂代谢开篇</span><span>p.09</span></div>
+</div>
+
+</body>
+</html>
