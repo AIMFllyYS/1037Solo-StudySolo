@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-027-028",
+  "generatedAt": "2026-10-09",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-027-028/recording.md；content/biochemistry/lectures/rec-2026-fall-027-028/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-027-028",
+    "revision": 1,
+    "recordingHash": "4a594130398d8a1d758b81efcd2636dae7220186e4ab4ac37289f70738afa862",
+    "notesTextHash": "6d0bb20c137eda490436d5b78ae1cb65ad650b04d619912b87c7d8ad80759fc3"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "酮体三组分"
+      },
+      "stem": "酮体（Ketone bodies）是三种物质的总称，下列哪一项不属于酮体？",
+      "options": [
+        "乙酰乙酸",
+        "β-羟丁酸",
+        "丙酮",
+        "乳酸"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**酮体 = 乙酰乙酸 + β-羟丁酸 + 丙酮。乳酸是糖酵解/ Cori 循环产物，不属于酮体。",
+      "hint": "酮体三兄弟：乙酰乙酸、β-羟丁酸、丙酮。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "酮体生成关键酶HMG-CoA合酶"
+      },
+      "stem": "在肝细胞线粒体中合成酮体，整个酮体生成途径的关键酶是？",
+      "options": [
+        "HMG-CoA 还原酶",
+        "HMG-CoA 合酶",
+        "乙酰乙酸硫激酶",
+        "琥珀酰 CoA 转硫酶"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**HMG-CoA合酶催化乙酰乙酰CoA + 乙酰CoA → HMG-CoA，是酮体生成关键酶。A 的 HMG-CoA还原酶是胆固醇合成的限速酶，别混；C、D 是酮体利用酶。",
+      "hint": "酮体关键酶是合酶，不是还原酶。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "ACC辅酶生物素"
+      },
+      "stem": "乙酰 CoA 羧化酶（ACC）催化乙酰 CoA 生成丙二酰 CoA，其携带 CO₂ 的辅酶是？",
+      "options": [
+        "焦磷酸硫胺素（TPP）",
+        "生物素",
+        "磷酸吡哆醛",
+        "辅酶 A"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**ACC 以生物素为辅酶携带 CO₂，是脂肪酸从头合成的限速酶；反应为乙酰CoA + HCO₃⁻ + ATP → 丙二酰CoA。",
+      "hint": "羧化酶的辅酶都是生物素。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-027-028/recording.md",
+        "label": "软脂酸合成7轮14个NADPH"
+      },
+      "stem": "在胞液中由脂肪酸合酶（FAS）从头合成 1 分子 16 碳软脂酸，需要经过几轮循环、总共消耗多少 NADPH？",
+      "options": [
+        "7 轮，7 个 NADPH",
+        "7 轮，14 个 NADPH",
+        "8 轮，16 个 NADPH",
+        "8 轮，8 个 NADPH"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**每轮延长 2 碳、耗 2 个 NADPH；合成 16 碳软脂酸需 7 轮，共 14 个 NADPH。",
+      "hint": "一轮加两碳耗俩氢，七轮十六碳十四个氢。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-027-028/recording.md",
+        "label": "肝内生成肝外利用"
+      },
+      "stem": "酮体在肝内生成却不能被肝自身利用，其根本原因是肝脏缺乏？",
+      "options": [
+        "脂肪酸 β 氧化所需的全部酶",
+        "琥珀酰 CoA 转硫酶和乙酰乙酸硫激酶",
+        "线粒体中的乙酰 CoA",
+        "HMG-CoA 裂解酶"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**乙酰乙酸要先活化为乙酰乙酰CoA 才能进 TCA，而肝缺乏琥珀酰CoA转硫酶与乙酰乙酸硫激酶，故肝只生成酮体不利用，酮体运往心/肾/脑/骨骼肌利用。",
+      "hint": "肝内生成、肝外利用，缺两个活化酶。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "骨骼肌只有转硫途径"
+      },
+      "stem": "骨骼肌利用酮体（乙酰乙酸）时，主要依靠下列哪条活化途径？",
+      "options": [
+        "乙酰乙酸硫激酶途径（耗 ATP）",
+        "琥珀酰 CoA 转硫酶途径",
+        "两条途径都活跃",
+        "骨骼肌完全不能利用酮体"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**骨骼肌只有转硫酶（琥珀酰CoA转硫酶）途径；心、肾、脑两条途径都有，骨骼肌缺乙酰乙酸硫激酶。",
+      "hint": "转硫酶四脏器都有，硫激酶骨骼肌没有。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "两条TG合成途径组织分布"
+      },
+      "stem": "肝脏与脂肪组织合成甘油三酯，主要走的途径是？",
+      "options": [
+        "甘油一酯途径",
+        "甘油二酯途径（磷脂酸为关键中间物）",
+        "直接利用游离甘油酯化",
+        "这两种组织不能合成甘油三酯"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**甘油二酯途径 = 肝 + 脂肪组织（3-磷酸甘油→磷脂酸→甘油二酯→TG）；甘油一酯途径 = 小肠黏膜细胞。脂肪组织无甘油激酶，不能直接用游离甘油。",
+      "hint": "小肠走一酯，肝脂走二酯。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "ACC别构调节"
+      },
+      "stem": "乙酰 CoA 羧化酶（ACC）的别构激活物是？",
+      "options": [
+        "软脂酰 CoA（C16）及长链脂酰 CoA",
+        "柠檬酸、异柠檬酸",
+        "丙二酰 CoA",
+        "ADP"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**柠檬酸/异柠檬酸别构激活 ACC（单体→多聚体），把「糖充足」的信号转成脂肪酸合成信号；软脂酰CoA等长链脂酰CoA 别构抑制 ACC（产物反馈）。",
+      "hint": "柠檬酸激活，软脂酰CoA抑制。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "intermediate",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-027-028/recording.md",
+        "label": "柠檬酸-丙酮酸循环出线粒体"
+      },
+      "stem": "线粒体中产生的乙酰 CoA 不能直接穿过线粒体内膜，它是以什么形式被运到胞液用于脂肪酸合成的？",
+      "options": [
+        "乙酰肉碱",
+        "柠檬酸（与草酰乙酸缩合后出线粒体，再由 ATP-柠檬酸裂解酶拆分）",
+        "乙酰乙酸",
+        "苹果酸"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**乙酰CoA + 草酰乙酸 → 柠檬酸出线粒体 → 胞液 ATP-柠檬酸裂解酶拆出乙酰CoA；草酰乙酸经苹果酸/苹果酸酶（产NADPH）变回丙酮酸再回线粒体，即柠檬酸-丙酮酸循环。",
+      "hint": "乙酰CoA裹在柠檬酸里出线粒体。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/biochemistry/lectures/rec-2026-fall-027-028/recording.md",
+        "label": "ACC化学修饰调节"
+      },
+      "stem": "关于乙酰 CoA 羧化酶（ACC）的化学修饰调节，下列说法正确的是？",
+      "options": [
+        "胰高血糖素使 ACC 去磷酸化而激活，脂肪合成↑",
+        "胰高血糖素激活 AMPK 使 ACC 磷酸化而失活，脂肪合成↓；胰岛素则促 ACC 去磷酸化而激活",
+        "磷酸化使 ACC 激活，去磷酸化使之失活",
+        "胰岛素经 AMPK 使 ACC 磷酸化而失活"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**ACC 磷酸化=失活、去磷酸化=激活。胰高血糖素激活 AMPK→ACC磷酸化失活→脂合成↓；胰岛素激活蛋白磷酸酶→ACC去磷酸化激活→脂合成↑。",
+      "hint": "胰岛素去磷酸化开酶，胰高糖素磷酸化关酶。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "advanced",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-027-028/notes.html",
+        "label": "线粒体碳链延长二碳供体乙酰CoA"
+      },
+      "stem": "软脂酸合成后若需在线粒体中继续延长碳链（至 C24~26），其直接的二碳单位供体是？",
+      "options": [
+        "丙二酰 CoA",
+        "乙酰 CoA",
+        "乙酰乙酰 CoA",
+        "琥珀酰 CoA"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**内质网延长用丙二酰CoA（同从头合成），但线粒体延长直接用乙酰CoA，二者二碳供体不同——这是选择题陷阱。",
+      "hint": "线粒体延长用乙酰CoA，不用丙二酰CoA。"
+    }
+  ]
+}
