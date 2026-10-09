@@ -65,6 +65,8 @@ export default defineConfig([
     "scripts/archive/**",
     // 设计快照：只读留档，其中 design-library/.tmp/ 是快照自带的构建产物，同样不是运行时依赖。
     "docs/design-snapshots/**",
+    // 宣传片生成器：独立的 Playwright / three.js 工具链（CommonJS 采集脚本 + 浏览器 ESM），不进应用 bundle。
+    "promo/**",
     ".claude/**",
     ".trae/**",
     ".mimocode/**",

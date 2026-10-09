@@ -1,0 +1,9 @@
+{
+  "name": "studysolo-promo",
+  "private": true,
+  "description": "StudySolo 宣传片生成器：采集真实页面 → 逐帧确定性渲染 → 程序化配乐",
+  "dependencies": {
+    "playwright": "1.56.1",
+    "three": "0.170.0"
+  }
+}

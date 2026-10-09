@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>StudySolo Film</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #f6f4ef; }
+  .layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+  .abs { position: absolute; }
+  .serif { font-family: "Noto Serif SC", serif; }
+  .sans { font-family: "Noto Sans SC", "Inter", sans-serif; }
+  .inter { font-family: "Inter", "Noto Sans SC", sans-serif; }
+  .mono { font-family: "JetBrains Mono", monospace; }
+  .hand { font-family: "Long Cang", "Caveat", cursive; }
+  .caveat { font-family: "Caveat", "Long Cang", cursive; }
+  svg { overflow: visible; }
+  #preload { position: absolute; left: -9999px; top: 0; white-space: pre; }
+  .char { display: inline-block; will-change: transform, opacity, filter; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="preload"></div>
+<script type="importmap">{ "imports": { "three": "./three/build/three.module.js", "three/addons/": "./three/examples/jsm/" } }</script>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
