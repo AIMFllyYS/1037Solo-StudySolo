@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { extractAccessToken } from "@/lib/auth/sessionCookie";
 import { SandboxError } from "./config.server";
 import { desktopModelRequest } from "./desktop-model.server";
+import { readSandboxJson } from "./request.server";
 
 const cloudOrigin = "https://studysolo.1037solo.com";
 const maximumBytes = 20 * 1024 * 1024;
@@ -44,8 +45,7 @@ export async function forwardDesktopAgentRequest(request: NextRequest): Promise<
   if (key && /^[A-Za-z0-9_-]{1,128}$/.test(key)) headers.set("Idempotency-Key", key);
   let body: string | undefined;
   if (request.method !== "GET") {
-    body = await request.text();
-    if (Buffer.byteLength(body) > (feedbackRoute ? 8192 : reviewProgressRoute ? 512 * 1024 : 800 * 1024)) throw new SandboxError("SANDBOX_REQUEST_TOO_LARGE", 413);
+    body = JSON.stringify(await readSandboxJson(request, feedbackRoute ? 8192 : reviewProgressRoute ? 512 * 1024 : 800 * 1024));
     if (targetPath === "/api/agent/chat") {
       let parsed: Record<string, unknown>;
       try { parsed = JSON.parse(body); } catch { throw new SandboxError("SANDBOX_REQUEST_INVALID"); }

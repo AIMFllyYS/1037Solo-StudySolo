@@ -35,17 +35,17 @@
   </head>
   <body>
     <h1>填写 API 设置</h1>
-    <p class="sub">仅保存在本机（加密存储），不会上传、不在安装包内。自由中转可填任意 OpenAI 兼容网关，不必使用项目默认中转站。</p>
+    <p class="sub">应用可以直接使用，无需先填写密钥。此处是可选的自有 API 设置，保存在本机加密文件中，不进入安装包；调用你选择的服务时会发送给该服务。</p>
 
-    <label>自由中转 · 接口 URL <span class="req">必填</span></label>
+    <label>自由中转 · 接口 URL <span class="opt">可选，启用时需完整填写三项</span></label>
     <input id="RELAY_BASE_URL" type="url" placeholder="https://your-gateway.example/v1" autocomplete="off" />
     <div class="hint">OpenAI 兼容 /chat/completions 的上一级，通常以 /v1 结尾。</div>
 
-    <label>自由中转 · API 密钥 <span class="req">必填</span></label>
+    <label>自由中转 · API 密钥 <span class="opt">可选</span></label>
     <input id="RELAY_API_KEY" type="password" placeholder="sk-..." autocomplete="off" />
     <div class="hint">该网关的 Bearer Token。</div>
 
-    <label>自由中转 · 模型 ID <span class="req">必填</span></label>
+    <label>自由中转 · 模型 ID <span class="opt">可选</span></label>
     <input id="RELAY_MODEL_ID" type="text" placeholder="your-model-id" autocomplete="off" />
     <div class="hint">发给上游的 model 字段，例如 gpt-4o、deepseek-chat。保存后请在对话里选择「自由中转」。</div>
 
@@ -67,7 +67,7 @@
 
     <div class="row">
       <button id="test">测试连通</button>
-      <button id="save" class="primary">保存并启动</button>
+      <button id="save" class="primary">保存并应用</button>
     </div>
     <div id="status" class="muted"></div>
 
@@ -78,6 +78,8 @@
       const status = (msg, cls) => { const s = $("status"); s.textContent = msg; s.className = cls || "muted"; };
       const customReady = () =>
         $("RELAY_BASE_URL").value.trim() && $("RELAY_API_KEY").value.trim() && $("RELAY_MODEL_ID").value.trim();
+      const customIncomplete = () =>
+        ["RELAY_BASE_URL", "RELAY_API_KEY", "RELAY_MODEL_ID"].some((f) => $(f).value.trim()) && !customReady();
 
       (async () => {
         const cur = await window.setupAPI.getKeys();
@@ -85,13 +87,13 @@
       })();
 
       $("test").onclick = async () => {
-        if (!customReady()) return status("请完整填写自由中转的 URL、API 密钥和模型 ID", "bad");
+        if (customIncomplete()) return status("启用自由中转时，请完整填写 URL、API 密钥和模型 ID；也可以清空三项", "bad");
         status("测试中…", "muted");
         $("test").disabled = true;
         try {
           const r = await window.setupAPI.test(collect());
           const line = (x) => `${x.label}: ${x.status}`;
-          const ok = r.RELAY_API_KEY.status === "ok";
+          const ok = Object.values(r).every((x) => ["ok", "empty", "filled"].includes(x.status));
           status([line(r.RELAY_API_KEY), line(r.AI_API_KEY), line(r.MIMO_API_KEY), line(r.ZHIPU_API_KEY), line(r.UNSPLASH_ACCESS_KEY)].join("\n"), ok ? "ok" : "bad");
         } catch (e) {
           status("测试失败：" + e, "bad");
@@ -101,8 +103,8 @@
       };
 
       $("save").onclick = async () => {
-        if (!customReady()) return status("请完整填写自由中转的 URL、API 密钥和模型 ID", "bad");
-        status("保存并启动服务中…（首次稍慢）", "muted");
+        if (customIncomplete()) return status("启用自由中转时，请完整填写 URL、API 密钥和模型 ID；也可以清空三项", "bad");
+        status("保存并应用设置中…", "muted");
         $("save").disabled = true;
         try {
           const res = await window.setupAPI.save(collect());

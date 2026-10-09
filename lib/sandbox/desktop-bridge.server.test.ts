@@ -19,7 +19,7 @@ test("desktop main Agent forwards only Account authority to the fixed online ser
       assert.equal(init?.redirect, "error");
       return new Response("fixture stream", { headers: { "Content-Type": "text/event-stream", "X-Vercel-AI-UI-Message-Stream": "v1", "Set-Cookie": "must-not-forward=fixture" } });
     });
-    const make = (path = "/api/agent/chat/", ref = "/agent") => new NextRequest(`http://127.0.0.1:35349${path}`, { method: "POST", headers: { Host: "127.0.0.1:35349", Origin: "http://127.0.0.1:35349", Referer: `http://127.0.0.1:35349${ref}`, Cookie: "ss_access_token=fixture-account-access; operator-secret=fixture" }, body: JSON.stringify({ agentMain: true }) });
+    const make = (path = "/api/agent/chat/", ref = "/agent") => new NextRequest(`http://127.0.0.1:35349${path}`, { method: "POST", headers: { "Content-Type": "application/json", Host: "127.0.0.1:35349", Origin: "http://127.0.0.1:35349", Referer: `http://127.0.0.1:35349${ref}`, Cookie: "ss_access_token=fixture-account-access; operator-secret=fixture" }, body: JSON.stringify({ agentMain: true }) });
     const response = await forwardDesktopAgentRequest(make());
     assert.equal(await response.text(), "fixture stream"); assert.equal(response.headers.get("set-cookie"), null);
     assert.equal(response.headers.get("x-vercel-ai-ui-message-stream"), "v1");
@@ -33,8 +33,9 @@ test("desktop main Agent forwards only Account authority to the fixed online ser
 test("Electron environment never inherits operator cloud or connector secrets", () => {
   const require = createRequire(import.meta.url);
   const { withoutOperatorCredentials } = require("../../electron/serverEnvironment.js") as { withoutOperatorCredentials: (env: Record<string, string>) => Record<string, string> };
-  const stripped = withoutOperatorCredentials({ PATH: "fixture-path", AI_API_KEY: "fixture-user-key", CLOUD_SANDBOX_API_KEY: "private-operator-key", E2B_API_KEY: "private-operator-key", GOOGLE_CONNECTOR_CLIENT_SECRET: "private-operator-secret", SUPABASE_SERVICE_ROLE_KEY: "test", CONNECTOR_TOKEN_ENCRYPTION_KEY: "private-encryption-key" });
-  assert.deepEqual(stripped, { PATH: "fixture-path", AI_API_KEY: "fixture-user-key" });
+  const stripped = withoutOperatorCredentials({ PATH: "fixture-path", AI_API_KEY: "inherited-operator-key", QINIU_API_KEY: "inherited-operator-key", AWS_ACCESS_KEY_ID: "inherited-operator-key", GITHUB_TOKEN: "inherited-token", CLOUD_SANDBOX_API_KEY: "private-operator-key", E2B_API_KEY: "private-operator-key", GOOGLE_CONNECTOR_CLIENT_SECRET: "private-operator-secret", SUPABASE_SERVICE_ROLE_KEY: "test", CONNECTOR_TOKEN_ENCRYPTION_KEY: "private-encryption-key" });
+  assert.deepEqual(stripped, { PATH: "fixture-path" });
+  assert.deepEqual(withoutOperatorCredentials({ Path: "fixture-path", cloud_sandbox_api_key: "mixed-case-operator", Qiniu_Api_Key: "mixed-case-operator", Github_Token: "mixed-case-operator" }), { Path: "fixture-path" });
 });
 
 test("desktop feedback forwards from other modes without granting them command access", async t => {
@@ -50,7 +51,7 @@ test("desktop feedback forwards from other modes without granting them command a
       assert.equal(headers.get("referer"), "https://studysolo.1037solo.com/review");
       return Response.json({ code: "RATE_LIMITED" }, { status: 429, headers: { "Retry-After": "30" } });
     });
-    const make = (path = "/api/feedback/chat/", origin = "http://127.0.0.1:35349") => new NextRequest(`http://127.0.0.1:35349${path}`, { method: "POST", headers: { Host: "127.0.0.1:35349", Origin: origin, Referer: "http://127.0.0.1:35349/review", Cookie: "ss_access_token=fixture-account-access" }, body: JSON.stringify({ action: "vote", vote: "like", sessionId: "s", messageId: "m" }) });
+    const make = (path = "/api/feedback/chat/", origin = "http://127.0.0.1:35349") => new NextRequest(`http://127.0.0.1:35349${path}`, { method: "POST", headers: { "Content-Type": "application/json", Host: "127.0.0.1:35349", Origin: origin, Referer: "http://127.0.0.1:35349/review", Cookie: "ss_access_token=fixture-account-access" }, body: JSON.stringify({ action: "vote", vote: "like", sessionId: "s", messageId: "m" }) });
     const response = await forwardDesktopAgentRequest(make());
     assert.equal(response.status, 429); assert.equal(response.headers.get("retry-after"), "30");
     await assert.rejects(() => forwardDesktopAgentRequest(make("/api/agent/sandbox/")), /AGENT_SURFACE_REQUIRED/);
@@ -78,7 +79,7 @@ test("desktop Review progress preserves bounded query selectors without forwardi
       assert.equal(new Headers(init?.headers).get("cookie"), null);
       return Response.json({ attempts: [] });
     });
-    const make = (query: string) => new NextRequest(`http://127.0.0.1:35349/api/review/progress/?${query}`, { headers: { Host: "127.0.0.1:35349", Referer: "http://127.0.0.1:35349/review", Cookie: "ss_access_token=fixture-account-access" } });
+    const make = (query: string) => new NextRequest(`http://127.0.0.1:35349/api/review/progress/?${query}`, { headers: { "Content-Type": "application/json", Host: "127.0.0.1:35349", Referer: "http://127.0.0.1:35349/review", Cookie: "ss_access_token=fixture-account-access" } });
     assert.equal((await forwardDesktopAgentRequest(make("view=summary&limit=25"))).status, 200);
     await assert.rejects(() => forwardDesktopAgentRequest(make("view=summary&user_id=other")), /SANDBOX_REQUEST_INVALID/);
     await assert.rejects(() => forwardDesktopAgentRequest(make("view=summary&view=attempts")), /SANDBOX_REQUEST_INVALID/);
@@ -101,9 +102,23 @@ test("desktop Review writes forward only the captured owner consistency binding"
       assert.equal(headers.get("cookie"), null);
       return Response.json({ status: "saved" });
     });
-    const make = (value?: string) => new NextRequest("http://127.0.0.1:35349/api/review/progress/", { method: "POST", headers: { Host: "127.0.0.1:35349", Origin: "http://127.0.0.1:35349", Referer: "http://127.0.0.1:35349/review", Cookie: "ss_access_token=fixture-account-access", "x-user-id": "must-not-forward", ...(value ? { "x-studysolo-owner-binding": value } : {}) }, body: "{}" });
+    const make = (value?: string) => new NextRequest("http://127.0.0.1:35349/api/review/progress/", { method: "POST", headers: { "Content-Type": "application/json", Host: "127.0.0.1:35349", Origin: "http://127.0.0.1:35349", Referer: "http://127.0.0.1:35349/review", Cookie: "ss_access_token=fixture-account-access", "x-user-id": "must-not-forward", ...(value ? { "x-studysolo-owner-binding": value } : {}) }, body: "{}" });
     assert.equal((await forwardDesktopAgentRequest(make(binding))).status, 200);
     await assert.rejects(() => forwardDesktopAgentRequest(make()), /REVIEW_OWNER_CHANGED/);
     assert.equal(requests, 1);
+  } finally { for (const [key, value] of Object.entries(before)) if (value === undefined) delete env[key]; else env[key] = value; }
+});
+
+test("desktop bridge cancels oversized chunked input before forwarding", async t => {
+  const env = process.env as Record<string, string | undefined>, before = { NODE_ENV: env.NODE_ENV, STUDYSOLO_DESKTOP_RUNTIME: env.STUDYSOLO_DESKTOP_RUNTIME };
+  env.NODE_ENV = "production"; env.STUDYSOLO_DESKTOP_RUNTIME = "true";
+  let cancelled = false, pulls = 0;
+  try {
+    t.mock.method(globalThis, "fetch", async () => { assert.fail("oversized input must not leave the local server"); });
+    const body = new ReadableStream<Uint8Array>({ pull(controller) { pulls++; controller.enqueue(new Uint8Array(8193)); }, cancel() { cancelled = true; } }, { highWaterMark: 0 });
+    const init = { method: "POST", headers: { "Content-Type": "application/json", Host: "127.0.0.1:35349", Origin: "http://127.0.0.1:35349", Referer: "http://127.0.0.1:35349/review", Authorization: "Bearer synthetic-account-token" }, body, duplex: "half" as const };
+    await assert.rejects(forwardDesktopAgentRequest(new NextRequest("http://127.0.0.1:35349/api/feedback/chat/", init)), /SANDBOX_REQUEST_TOO_LARGE/);
+    assert.equal(cancelled, true);
+    assert.equal(pulls, 1);
   } finally { for (const [key, value] of Object.entries(before)) if (value === undefined) delete env[key]; else env[key] = value; }
 });

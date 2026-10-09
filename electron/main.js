@@ -1,8 +1,7 @@
-// Electron main process — Gailvlun desktop shell (Route A: env injection).
+// Electron main process — StudySolo desktop shell (Route A: env injection).
 //
 // Lifecycle:
 //   ready -> load encrypted keys from userData
-//          -> if 自由中转 (URL+Key+Model) missing, show native setup window (blocks)
 //          -> spawn the Next standalone server as a child (Electron-as-Node),
 //             injecting baked config + the user's 3 keys as env
 //          -> wait for the local port, then open the app window on 127.0.0.1:PORT
@@ -21,8 +20,8 @@ const BAKED = require("./config");
 const { normalizeOpenAIBaseUrl } = require("./openaiBaseUrl");
 const { withoutOperatorCredentials } = require("./serverEnvironment");
 
-// 自由中转 = 用户自填的 OpenAI 兼容端点（URL + API Key + 模型 ID），不必使用项目中转站。
-// SiliconFlow / MiMo / Zhipu / Unsplash 仍为可选。
+// 自由中转 = 可选的 OpenAI 兼容端点（URL + API Key + 模型 ID）。
+// Provider keys are user-owned; an empty setup never inherits operator keys.
 // Adding a key here is the whole upgrade story for returning users: the "设置" window
 // reopens any time, prefills the keys they already saved, and a new field just rides
 // along into the same DPAPI-encrypted keys.enc — no plaintext env file to hand-edit.
@@ -36,15 +35,13 @@ const KEY_NAMES = [
   "UNSPLASH_ACCESS_KEY",
 ];
 
-function hasRequiredKeys(keys) {
-  return !!(
-    keys &&
-    String(keys.RELAY_BASE_URL || "").trim() &&
-    String(keys.RELAY_API_KEY || "").trim() &&
-    String(keys.RELAY_MODEL_ID || "").trim()
-  );
-}
-
+// Keep the shipped storage directory when the product display name changes.
+// Set it before resolving secret paths or creating any Chromium session; the
+// same directory retains DPAPI files, IndexedDB and browser partitions.
+const legacyUserData = path.join(app.getPath("appData"), "Gailvlun");
+fs.mkdirSync(legacyUserData, { recursive: true, mode: 0o700 });
+app.setPath("userData", legacyUserData);
+app.setPath("sessionData", legacyUserData);
 const KEYS_FILE = path.join(app.getPath("userData"), "keys.enc");
 const CUSTOM_SECRETS_FILE = path.join(app.getPath("userData"), "custom-api-secrets.enc");
 
@@ -61,7 +58,6 @@ let serverProc = null;
 let serverPort = null;
 let mainWindow = null;
 let setupWindow = null;
-let firstRunResolver = null; // set while the blocking first-run gate is open
 
 // ---------- key storage (encrypted at rest via OS DPAPI on Windows) ----------
 function loadKeys() {
@@ -186,8 +182,8 @@ async function startServer(keys) {
   serverPort = APP_PORT;
   if (!(await waitPortFree(APP_PORT))) {
     throw new Error(
-      `本地端口 ${APP_PORT} 被其它程序占用。该端口用于 Gailvlun 的本地数据持久化，不能更换` +
-        `（否则将读不到你之前保存的对话 / 技能 / 复习卡）。请关闭占用该端口的程序后重新启动 Gailvlun。`,
+      `本地端口 ${APP_PORT} 被其它程序占用。该端口用于 StudySolo 的本地数据持久化，不能更换` +
+        `（否则将读不到你之前保存的对话 / 技能 / 复习卡）。请关闭占用该端口的程序后重新启动 StudySolo。`,
     );
   }
   const dir = standaloneDir();
@@ -292,7 +288,7 @@ function createMainWindow() {
     minWidth: 1024,
     minHeight: 680,
     backgroundColor: "#0b0b0f",
-    title: "Gailvlun · 期末复习工作站",
+    title: "StudySolo",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -340,7 +336,7 @@ function openSetupWindow() {
     width: 560,
     height: 820,
     resizable: false,
-    title: "Gailvlun · API 密钥设置",
+    title: "StudySolo · API 密钥设置",
     parent: mainWindow || undefined,
     modal: !!mainWindow,
     backgroundColor: "#0b0b0f",
@@ -356,27 +352,6 @@ function openSetupWindow() {
   setupWindow.loadFile(path.join(__dirname, "setup.html"));
   setupWindow.on("closed", () => {
     setupWindow = null;
-  });
-}
-
-// First-run blocking gate: resolves with saved keys once the user saves a valid
-// required key (via setup:save -> firstRunResolver), or with null if they close
-// the window without one.
-function runFirstRunSetup() {
-  return new Promise((resolve) => {
-    let done = false;
-    const finish = (val) => {
-      if (done) return;
-      done = true;
-      firstRunResolver = null;
-      clearInterval(check);
-      resolve(val);
-    };
-    firstRunResolver = (saved) => finish(saved);
-    openSetupWindow();
-    const check = setInterval(() => {
-      if (!setupWindow) finish(hasRequiredKeys(loadKeys()) ? loadKeys() : null);
-    }, 400);
   });
 }
 
@@ -432,18 +407,15 @@ ipcMain.handle("setup:get-keys", (e) => (senderIsSetupWindow(e) ? loadKeys() : {
 
 ipcMain.handle("setup:save", async (e, keys) => {
   if (!senderIsSetupWindow(e)) return { ok: false };
+  if (!keys || typeof keys !== "object" || Array.isArray(keys)) return { ok: false };
+  const relayFields = ["RELAY_BASE_URL", "RELAY_API_KEY", "RELAY_MODEL_ID"].map((name) => typeof keys[name] === "string" ? keys[name].trim() : "");
+  if (relayFields.some(Boolean) && !relayFields.every(Boolean)) return { ok: false, error: "请完整填写自由中转的三项设置，或清空三项" };
   const saved = saveKeys(keys);
   try {
     if (serverProc) {
       // already running -> apply new keys immediately (restart + reload)
       await startServer(saved);
       if (mainWindow) mainWindow.loadURL(`http://127.0.0.1:${serverPort}/`);
-    }
-    // first-run gate (server not started yet) -> let app.whenReady continue
-    if (firstRunResolver) {
-      const resolve = firstRunResolver;
-      firstRunResolver = null;
-      resolve(saved);
     }
     return { ok: true };
   } catch (err) {
@@ -533,14 +505,9 @@ if (!gotLock) {
 
   app.whenReady().then(async () => {
     buildMenu();
-    let keys = loadKeys();
-    if (!hasRequiredKeys(keys)) {
-      keys = await runFirstRunSetup();
-      if (!keys || !hasRequiredKeys(keys)) {
-        app.quit();
-        return;
-      }
-    }
+    // Reading, notes and Account sign-in work before users add an optional
+    // provider key. AI requests retain their existing missing-provider errors.
+    const keys = loadKeys();
     try {
       await startServer(keys);
       createMainWindow();

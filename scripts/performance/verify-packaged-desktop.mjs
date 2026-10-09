@@ -25,7 +25,7 @@ if (requested.length && routes.some((route) => {
   return knownSubjects.has(subject) && !requested.includes(subject);
 })) throw new Error('unselected_static_route_in_package');
 const version = JSON.parse(readFileSync(resolve('package.json'), 'utf8')).version;
-const executables = [`Gailvlun-portable-${version}.exe`, `Gailvlun-setup-${version}.exe`];
+const executables = [`StudySolo-portable-${version}.exe`, `StudySolo-setup-${version}.exe`];
 async function sha256(file) {
   const hash = createHash('sha256');
   for await (const chunk of createReadStream(file)) hash.update(chunk);
