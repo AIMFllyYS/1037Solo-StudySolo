@@ -174,4 +174,33 @@
 
 ---
 
+## 8. 模型菜单：思考深度与 Fast 模式注册表
+
+模型菜单（`components/chat/ModelMenu.tsx`）的一级（分类）、二级（模型）结构不变；第三列详情里新增「思考」板块（`ThinkingDepthPanel.tsx`），触发器胶囊上同步显示当前深度。
+
+**思考深度档位**不单独登记，完全由 `ModelInfo` 推出（`lib/ai/thinkingStops.ts`）：
+
+| 模型能力 | 滑杆档位 |
+| --- | --- |
+| `thinking: false` | 不出滑杆 |
+| 可关闭 + `thinkingLevels` | `关闭` + 该模型自己的档位（有的 `low~max`，有的只有 `high / max`） |
+| 可关闭、无档位 | `关闭 / 开启` |
+| `thinkingRequired` | 没有 `关闭`；无档位时只有一个 `开启`（滑杆不可动） |
+
+新增或修改模型的 `thinkingLevels / thinkingRequired` 后，菜单自动跟随，**不需要改 UI**。
+
+**Fast 模式**（板块左上角闪电）：不是计费或路由开关，而是在「标准模型 ↔ Fast 变体」两个模型 id 之间切换。只有登记在 `lib/ai/fastModeRegistry.ts` 的 `FAST_MODE_PAIRS` 里的模型闪电才可点击，其余置灰。
+
+| 标准模型 | Fast 变体 | 备注 |
+| --- | --- | --- |
+| `mimo-v2.6-pro` | `xiaomi/mimo-v2.6-pro-ultraspeed` | 目前唯一一对；UltraSpeed 价格约为标准版 10 倍 |
+
+维护规则：
+
+1. 新增一对：在 `FAST_MODE_PAIRS` 加一行，两个 id 都必须已在 `lib/ai/models.ts` 的 `MODELS` 中，并同步更新上表；
+2. 删除 / 改名其中任一模型时同步改这里和 `LEGACY_REGISTRY_ALIASES`；
+3. `lib/ai/fastModeRegistry.test.tsx` 会校验每个登记 id 真实存在、且一个 id 不会出现在两个配对里。
+
+---
+
 <sub>本文件是模型清单的唯一真相源。加删模型必须同步更新此表与 `lib/ai/models.ts`，并在 `LEGACY_REGISTRY_ALIASES` 补别名（见 `L0-model-catalog.md` 第 6.1 节）。</sub>

@@ -212,6 +212,13 @@ export const zh = {
       openInteractive: "在右侧查看演示",
       openImage: "在右侧查看图片",
       openDocument: "在右侧查看文档",
+      webSearch: "联网搜索 · {count}",
+      materials: "资料来源 · {count}",
+      showMore: "显示更多（还有 {count} 条）",
+      showLess: "收起",
+      chip: "来源与产物 · {count}",
+      collapse: "折叠此板块",
+      expand: "展开此板块",
     },
     citation: {
       markerAria: "来源 {index}：{title}",

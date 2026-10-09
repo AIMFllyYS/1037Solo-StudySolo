@@ -1,8 +1,10 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useStore } from "@/lib/stores/ui";
+import { useSettings } from "@/lib/hooks/useSettings";
+import { fireEvent } from "@testing-library/react";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/",
@@ -46,6 +48,7 @@ describe("CenterWorkspace", () => {
       rightTabs: ["ai", "video", "interactive", "browser"],
       centerTab: "notes",
     });
+    useSettings.setState({ centerTabsAutoHide: false });
   });
 
   it("有媒体 tab 时渲染 笔记 / 视频 / 可交互 / 浏览器 的 tab 栏，默认停在笔记", () => {
@@ -120,5 +123,18 @@ describe("CenterWorkspace", () => {
     expect(screen.getByTestId("center-tab-quiz")).toHaveAttribute("aria-selected", "true");
     expect(screen.getByTestId("center-tab-video")).toHaveAttribute("aria-selected", "false");
     useContentTabs.setState({ tabs: [], active: "content" });
+  });
+
+  it("auto-hide: bar is tucked away until the top hot zone is hovered, and a pinned setting keeps it", () => {
+    useSettings.setState({ centerTabsAutoHide: true });
+    const { rerender } = render(<CenterWorkspace><div>body</div></CenterWorkspace>);
+    const bar = screen.getByTestId("center-tabs");
+    expect(bar).toHaveAttribute("data-auto-hide", "hidden");
+    fireEvent.mouseEnter(screen.getByTestId("center-tabs-hotzone"));
+    expect(bar).toHaveAttribute("data-auto-hide", "shown");
+    act(() => { useSettings.setState({ centerTabsAutoHide: false }); });
+    rerender(<CenterWorkspace><div>body</div></CenterWorkspace>);
+    expect(screen.getByTestId("center-tabs")).not.toHaveAttribute("data-auto-hide");
+    expect(screen.queryByTestId("center-tabs-hotzone")).toBeNull();
   });
 });

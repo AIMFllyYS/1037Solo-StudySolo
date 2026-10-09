@@ -1,8 +1,9 @@
 "use client";
 
-import { Fragment, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import clsx from "clsx";
-import { Link2 } from "lucide-react";
+import { ChevronDown, Link2 } from "lucide-react";
+import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import {
   AgentDocumentIcon,
   AgentImageIcon,
@@ -125,11 +126,52 @@ function ProductRows({
   );
 }
 
-function SectionLabel({ children }: { children: string }) {
+/** 网页来源每次多放出多少条（超过 3 条默认折叠，展开后也先只放一页）。 */
+const WEB_PAGE = 8;
+
+/**
+ * 可折叠板块：标题行（箭头 + 标题）+ 内容。折叠时标题下面只留一行淡色摘要，
+ * 这样一次联网搜索几十条结论不会把出题 / 演示 / 文档这些板块压到最底下。
+ */
+function RailSection({
+  id,
+  title,
+  open,
+  onToggle,
+  summary,
+  children,
+}: {
+  id: string;
+  title: string;
+  open: boolean;
+  onToggle: () => void;
+  summary?: string;
+  children: React.ReactNode;
+}) {
+  const t = useT();
   return (
-    <div className="px-1 pt-1 text-[10.5px] font-semibold tracking-wide text-[var(--ink-faint)]">
-      {children}
-    </div>
+    <section data-testid={`agent-rail-section-${id}`} data-open={open || undefined} className="shrink-0 rounded-lg">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={open}
+        title={open ? t("agent.rail.collapse") : t("agent.rail.expand")}
+        className="press flex w-full min-w-0 items-center gap-1 rounded-md px-1 py-1 text-left hover:bg-[var(--bg-muted)]"
+      >
+        <ChevronDown
+          size={13}
+          className="shrink-0 text-[var(--ink-faint)] transition-transform duration-200"
+          style={{ transform: open ? "rotate(0deg)" : "rotate(-90deg)" }}
+        />
+        <span className="min-w-0 flex-1 truncate text-[11.5px] font-semibold tracking-wide text-[var(--ink-soft)]">{title}</span>
+      </button>
+      {!open && summary ? (
+        <div className="truncate pb-1 pl-[22px] pr-2 text-[11px] text-[var(--ink-faint)]">{summary}</div>
+      ) : null}
+      <AnimatedCollapse isOpen={open}>
+        <div className="flex flex-col gap-1.5 pt-0.5">{children}</div>
+      </AnimatedCollapse>
+    </section>
   );
 }
 
@@ -147,11 +189,14 @@ export default function AgentSourcePanel({
   sources,
   products = [],
   open,
+  floating = false,
 }: {
   sessionId?: string | null;
   rounds: SourceRound[];
   sources: TraceSource[];
   products?: DisplayProduct[];
+  /** 右侧工作区展开时没有横向空间放一整列：改成浮在对话区右上角的卡片（点「来源与产物」小标签打开）。 */
+  floating?: boolean;
   /**
    * 是否展开。**不卸载**：列常驻、宽度在 0 ↔ 满宽之间过渡，
    * 这样「拉开 / 收起」才能复用全局面板那条横向缓动（见 globals.css 的 .agent-source-column）。
@@ -167,6 +212,12 @@ export default function AgentSourcePanel({
   const openImageGen = useImageGen((state) => state.openViewer);
   /** 拖拽改尺寸期间关掉过渡，否则跟手迟滞（与 [data-resizing] 对全局面板的处理同一个道理）。 */
   const [resizing, setResizing] = useState(false);
+  /** 各板块的展开状态：未手动切换过的用默认值（超过 3 条默认折叠）。 */
+  const [openMap, setOpenMap] = useState<Record<string, boolean>>({});
+  const [webLimit, setWebLimit] = useState(WEB_PAGE);
+  const sectionOpen = (key: string, fallback: boolean) => openMap[key] ?? fallback;
+  const toggleSection = (key: string, fallback: boolean) =>
+    setOpenMap((prev) => ({ ...prev, [key]: !(prev[key] ?? fallback) }));
 
   const expandDock = useCallback(() => {
     setAgentDockCollapsed(false);
@@ -242,10 +293,18 @@ export default function AgentSourcePanel({
   );
 
   if (sources.length === 0 && products.length === 0) return null;
+  if (floating && !open) return null;
 
-  const kinds = productKinds(sources, products);
-  /** 同类并列时才出小节标题：单类时标题已经报了它，再挂一行是冗余。 */
-  const showSections = kinds.length > 1;
+  const rowOf = (source: TraceSource, index: number) => ({
+    key: sourceItemKey(source, index),
+    index: index + 1,
+    kind: source.kind,
+    title: source.title,
+    snippet: source.snippet,
+    meta: sourcePreviewMeta(source),
+  });
+  const webRows = sources.flatMap((source, index) => (source.kind === "web" ? [rowOf(source, index)] : []));
+  const materialRows = sources.flatMap((source, index) => (source.kind !== "web" ? [rowOf(source, index)] : []));
   // Perplexity 式来源条：网页来源横排在清单顶，编号与正文 [n] 对齐（扁平数组序号）。
   const webItems = sources.flatMap((source, index) =>
     source.kind === "web"
@@ -265,18 +324,24 @@ export default function AgentSourcePanel({
     <aside
       data-testid="agent-source-column"
       data-open={open || undefined}
+      data-floating={floating || undefined}
       data-resizing={resizing || undefined}
       aria-hidden={!open || undefined}
       className={clsx(
-        "agent-source-column relative flex h-full shrink-0 flex-col overflow-hidden",
+        floating
+          ? "absolute right-2 top-2 z-30 flex max-w-[calc(100%-1rem)] flex-col"
+          : "agent-source-column relative flex h-full shrink-0 flex-col overflow-hidden",
         !open && "pointer-events-none",
       )}
-      style={{ width: open ? size.width + INSET * 2 : 0 }}
+      style={floating ? undefined : { width: open ? size.width + INSET * 2 : 0 }}
     >
     <div
       data-testid="agent-source-panel"
-      className="relative ml-3 mt-3 flex min-h-0 shrink-0 flex-col overflow-hidden rounded-xl border border-[var(--line-soft)] bg-[var(--bg-panel)] shadow-[0_2px_10px_rgba(0,0,0,0.06)]"
-      style={{ width: size.width, height: size.height }}
+      className={clsx(
+        "relative flex min-h-0 shrink-0 flex-col overflow-hidden rounded-xl border border-[var(--line-soft)] bg-[var(--bg-panel)]",
+        floating ? "shadow-[0_8px_28px_rgba(0,0,0,0.16)]" : "ml-3 mt-3 shadow-[0_2px_10px_rgba(0,0,0,0.06)]",
+      )}
+      style={floating ? { width: size.width, maxWidth: "100%", height: size.height, maxHeight: "70vh" } : { width: size.width, height: size.height }}
     >
       <header className="flex h-9 shrink-0 items-center gap-1.5 border-b border-[var(--line-soft)] px-3">
         <Link2 size={13} className="shrink-0 text-[var(--accent)]" />
@@ -286,47 +351,77 @@ export default function AgentSourcePanel({
       </header>
 
       <div className="scroll-y flex min-h-0 flex-1 flex-col gap-1.5 p-2">
-        {sources.length > 0 ? (
-          <>
-            {showSections ? <SectionLabel>{t("agent.rail.sources")}</SectionLabel> : null}
-            {webItems.length > 0 ? (
-              <WebSourceCarousel
-                compact
-                items={webItems}
-                onOpen={(item) => {
-                  const source = sources[item.index - 1];
-                  if (source) openAt(source, item.index - 1);
-                }}
-                ariaLabel={t("agent.rail.sources")}
-              />
-            ) : null}
+        {webItems.length > 0 ? (
+          <RailSection
+            id="web"
+            title={t("agent.rail.webSearch", { count: webItems.length })}
+            open={sectionOpen("web", webItems.length <= 3)}
+            onToggle={() => toggleSection("web", webItems.length <= 3)}
+            summary={webItems.slice(0, 3).map((item) => item.host).filter(Boolean).join(" · ")}
+          >
+            <WebSourceCarousel
+              compact
+              items={webItems}
+              onOpen={(item) => {
+                const source = sources[item.index - 1];
+                if (source) openAt(source, item.index - 1);
+              }}
+              ariaLabel={t("agent.rail.sources")}
+            />
             <SourcePreviewRows
-              items={sources.map((source, index) => ({
-                key: sourceItemKey(source, index),
-                index: index + 1,
-                kind: source.kind,
-                title: source.title,
-                snippet: source.snippet,
-                meta: sourcePreviewMeta(source),
-              }))}
+              items={webRows.slice(0, webLimit)}
               onOpen={(item) => {
                 const source = sources[item.index - 1];
                 if (source) openAt(source, item.index - 1);
               }}
             />
-          </>
+            {webRows.length > WEB_PAGE ? (
+              <button
+                type="button"
+                data-testid="agent-rail-web-more"
+                onClick={() => setWebLimit((n) => (n >= webRows.length ? WEB_PAGE : n + WEB_PAGE))}
+                className="press w-full rounded-md py-1 text-center text-[11.5px] text-[var(--accent)] hover:bg-[var(--bg-muted)]"
+              >
+                {webLimit >= webRows.length
+                  ? t("agent.rail.showLess")
+                  : t("agent.rail.showMore", { count: webRows.length - webLimit })}
+              </button>
+            ) : null}
+          </RailSection>
+        ) : null}
+
+        {materialRows.length > 0 ? (
+          <RailSection
+            id="materials"
+            title={t("agent.rail.materials", { count: materialRows.length })}
+            open={sectionOpen("materials", materialRows.length <= 3)}
+            onToggle={() => toggleSection("materials", materialRows.length <= 3)}
+            summary={materialRows.slice(0, 3).map((item) => item.title).join(" · ")}
+          >
+            <SourcePreviewRows
+              items={materialRows}
+              onOpen={(item) => {
+                const source = sources[item.index - 1];
+                if (source) openAt(source, item.index - 1);
+              }}
+            />
+          </RailSection>
         ) : null}
 
         {PRODUCT_SECTIONS.map((kind) => {
           const items = products.filter((item) => item.kind === kind);
           if (!items.length) return null;
           return (
-            <Fragment key={kind}>
-              {showSections ? (
-                <SectionLabel>{productSectionLabel(t, kind, items.length)}</SectionLabel>
-              ) : null}
+            <RailSection
+              key={kind}
+              id={kind}
+              title={productSectionLabel(t, kind, items.length)}
+              open={sectionOpen(kind, items.length <= 3)}
+              onToggle={() => toggleSection(kind, items.length <= 3)}
+              summary={items.slice(0, 3).map((item) => item.title).join(" · ")}
+            >
               <ProductRows items={items} onOpen={openProduct} />
-            </Fragment>
+            </RailSection>
           );
         })}
       </div>

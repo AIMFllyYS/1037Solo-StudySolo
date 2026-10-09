@@ -55,7 +55,7 @@ describe("AgentSourcePanel", () => {
         open
       />,
     );
-    expect(screen.getByText(zh("agent.rail.quiz", { count: 1 }))).toBeVisible();
+    expect(screen.getAllByText(zh("agent.rail.quiz", { count: 1 })).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("即时检验")).toBeVisible();
     fireEvent.click(screen.getByTestId("agent-rail-quiz"));
     expect(useStore.getState().agentDockCollapsed).toBe(false);
@@ -144,7 +144,8 @@ describe("AgentSourcePanel", () => {
     // 中性容器标题：不再拿「参考 · N」当主标题把其余几类压成子项。
     expect(screen.getByText(zh("agent.rail.title", { count: 6 }))).toBeVisible();
     for (const label of [
-      "来源",
+      zh("agent.rail.webSearch", { count: 1 }),
+      zh("agent.rail.materials", { count: 1 }),
       zh("agent.rail.quiz", { count: 1 }),
       zh("agent.rail.interactive", { count: 1 }),
       zh("agent.rail.image", { count: 1 }),
@@ -169,8 +170,34 @@ describe("AgentSourcePanel", () => {
         open
       />,
     );
-    expect(screen.getByText(zh("agent.rail.image", { count: 1 }))).toBeVisible();
+    // 单类时标题已报了这一类，板块自己的折叠标题同名（出现两次是预期）。
+    expect(screen.getAllByText(zh("agent.rail.image", { count: 1 })).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByTestId("agent-rail-image")).toBeVisible();
+  });
+
+  /** 联网搜索结论多（>3 条）时默认折叠，不把出题等板块挤到最底下；点标题展开，条数多时分页放出。 */
+  it("collapses a large web-search section by default and expands on demand", () => {
+    const many: TraceSource[] = Array.from({ length: 12 }, (_, i) => ({
+      kind: "web" as const,
+      title: `结论 ${i}`,
+      url: `https://site${i}.example.com/p`,
+      snippet: `摘要 ${i}`,
+    }));
+    render(
+      <AgentSourcePanel
+        rounds={[{ id: "webSearch:0:q", tool: "webSearch", query: "q", sources: many }]}
+        sources={many}
+        products={[{ kind: "interactive", id: "art_1", title: "解偶联机理", detail: "" }]}
+        open
+      />,
+    );
+    const web = screen.getByTestId("agent-rail-section-web");
+    expect(web).not.toHaveAttribute("data-open");
+    // 产物板块（条数少）默认展开，且不被联网来源压到下面。
+    expect(screen.getByTestId("agent-rail-section-interactive")).toHaveAttribute("data-open", "true");
+    fireEvent.click(web.querySelector("button")!);
+    expect(web).toHaveAttribute("data-open", "true");
+    expect(screen.getByTestId("agent-rail-web-more")).toBeInTheDocument();
   });
 
   /** 生图入列后必须点得动：开图窗 + 建会话（以前这一列根本没有生图）。 */

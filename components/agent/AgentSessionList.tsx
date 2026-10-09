@@ -19,6 +19,7 @@ export default function AgentSessionList({
   emptyLabel,
   slot,
   depth = 1,
+  inFolder = false,
   renamingId,
   onSelect,
   onContextMenu,
@@ -31,6 +32,7 @@ export default function AgentSessionList({
   /** 列表标识（main / project-xxx），用于 testid 与分页作用域。 */
   slot: string;
   depth?: number;
+  inFolder?: boolean;
   renamingId: string | null;
   onSelect: (session: SessionMeta) => void;
   onContextMenu: (event: React.MouseEvent, session: SessionMeta) => void;
@@ -75,6 +77,7 @@ export default function AgentSessionList({
           key={session.id}
           session={session}
           depth={depth}
+          inFolder={inFolder}
           selected={session.id === activeSessionId}
           renaming={renamingId === session.id}
           onSelect={() => onSelect(session)}

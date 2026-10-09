@@ -1,6 +1,6 @@
 "use client";
 
-import { Languages, Moon, RotateCcw, Sun, Type, Zap } from "lucide-react";
+import { Languages, Moon, PanelTopClose, RotateCcw, Sun, Type, Zap } from "lucide-react";
 import AppSelect from "@/components/ui/AppSelect";
 import { Toggle } from "@/components/chat/settings/_shared";
 import { LOCALES, useT } from "@/lib/i18n";
@@ -162,6 +162,8 @@ export default function AppearanceSettingsControls({
   const setLocale = useSettings((s) => s.setLocale);
   const reduceMotion = useSettings((s) => s.reduceMotion);
   const setReduceMotion = useSettings((s) => s.setReduceMotion);
+  const centerTabsAutoHide = useSettings((s) => s.centerTabsAutoHide);
+  const setCenterTabsAutoHide = useSettings((s) => s.setCenterTabsAutoHide);
   const updateCustomAppearance = (patch: Partial<CustomAppearanceSettings>) => {
     if (appearance.mode !== "custom") setAppearanceMode("custom");
     setCustomAppearance(patch);
@@ -325,6 +327,25 @@ export default function AppearanceSettingsControls({
           on={reduceMotion}
           onClick={() => setReduceMotion(!reduceMotion)}
           aria-label={t("settings.appearance.reduceMotionAria")}
+        />
+      </div>
+
+      <div className="flex items-center justify-between gap-3 rounded-lg bg-[var(--md-sys-color-surface-container-lowest)] px-3 py-2">
+        <span className="flex items-center gap-1.5">
+          <PanelTopClose size={14} className="text-[var(--md-sys-color-on-surface-variant)]" />
+          <span>
+            <span className="block text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
+              {t("settings.appearance.centerTabsAutoHide")}
+            </span>
+            <span className="block text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+              {t("settings.appearance.centerTabsAutoHideDesc")}
+            </span>
+          </span>
+        </span>
+        <Toggle
+          on={centerTabsAutoHide}
+          onClick={() => setCenterTabsAutoHide(!centerTabsAutoHide)}
+          aria-label={t("settings.appearance.centerTabsAutoHideAria")}
         />
       </div>
 

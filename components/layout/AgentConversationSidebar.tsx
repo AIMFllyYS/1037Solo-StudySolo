@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Archive, Folder, FolderOpen, MessagesSquare, PanelLeftClose, Plus, Search } from "lucide-react";
+import { Archive, Folder, FolderOpen, MessagesSquare, PanelLeftClose, Plus, Search, X } from "lucide-react";
+import { buildSearchRegexes, matchesSearch } from "@/lib/agent/sidebarSearch";
 import FolderTreeRow from "./FolderTreeRow";
 import GlobalSettings from "./GlobalSettings";
 import LeftDock from "./LeftDock";
@@ -15,7 +16,6 @@ import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useT } from "@/lib/i18n";
 import { ensureChatHistoryBootstrap, useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
-import { useGlobalSearch } from "@/lib/keyboard/useGlobalSearch";
 import { useStore } from "@/lib/stores/ui";
 import { useSessionRuns, type SessionRunRecord } from "@/lib/stores/sessionRuns";
 import { useTokenTracker } from "@/lib/hooks/useTokenTracker";
@@ -125,6 +125,25 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
   const projects = useMemo(() => buildProjectViews(folders, sessionsMeta), [folders, sessionsMeta]);
   const userProjects = useMemo(() => projects.filter((project) => !project.system).map((project) => ({ id: project.id, name: project.name, createdAt: project.updatedAt })), [projects]);
   const recentSessions = useMemo(() => selectRecentSessions(sessionsMeta), [sessionsMeta]);
+
+  // 最简搜索：转义 + 不区分大小写 + 多词都命中；项目名命中则整夹保留，否则只留命中的对话。
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const searchRegexes = useMemo(() => buildSearchRegexes(query), [query]);
+  const searching = searchRegexes.length > 0;
+  const viewProjects = useMemo(() => {
+    if (!searching) return projects;
+    return projects
+      .map((project) => {
+        if (matchesSearch(project.name, searchRegexes)) return project;
+        return { ...project, sessions: project.sessions.filter((s) => matchesSearch(s.title, searchRegexes)) };
+      })
+      .filter((project) => project.sessions.length > 0 || matchesSearch(project.name, searchRegexes));
+  }, [projects, searching, searchRegexes]);
+  const viewRecentSessions = useMemo(
+    () => (searching ? recentSessions.filter((s) => matchesSearch(s.title, searchRegexes)) : recentSessions),
+    [recentSessions, searching, searchRegexes],
+  );
   const archivedSessions = useMemo(() => selectArchivedSessions(sessionsMeta), [sessionsMeta]);
   const activeMeta = sessionsMeta.find((session) => session.id === activeSessionId) ?? null;
   const onBlankChat = pathname === "/agent" && (activeMeta?.messageCount ?? 0) === 0;
@@ -234,7 +253,12 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
         <div className="ml-auto flex items-center gap-0.5">
           <button
             type="button"
-            onClick={() => useGlobalSearch.getState().setOpen(true)}
+            onClick={() => {
+              setSearchOpen((open) => !open);
+              if (searchOpen) setQuery("");
+            }}
+            aria-pressed={searchOpen}
+            data-testid="agent-sidebar-search-toggle"
             title={t("agent.sidebar.search")}
             aria-label={t("agent.sidebar.search")}
             className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
@@ -252,6 +276,39 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
           </button>
         </div>
       </div>
+
+      {searchOpen && (
+        <div className="flex shrink-0 items-center gap-1 px-2 pt-1.5">
+          <div className="relative min-w-0 flex-1">
+            <Search size={13} className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-[var(--ink-faint)]" />
+            <input
+              autoFocus
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Escape") {
+                  setQuery("");
+                  setSearchOpen(false);
+                }
+              }}
+              placeholder={t("agent.sidebar.search")}
+              aria-label={t("agent.sidebar.search")}
+              data-testid="agent-sidebar-search-input"
+              className="h-7 w-full rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] pl-7 pr-7 text-[12px] text-[var(--ink)] outline-none focus:border-[var(--accent)]"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                aria-label="clear"
+                className="absolute right-1.5 top-1/2 flex h-4 w-4 -translate-y-1/2 items-center justify-center rounded text-[var(--ink-faint)] hover:text-[var(--ink)]"
+              >
+                <X size={12} />
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       <AgentNavRows onNewChat={() => handleNewChat(activeProjectId)} newChatActive={onBlankChat} />
 
@@ -304,8 +361,8 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
               }
             />
             <AnimatedCollapse isOpen={projectsExpanded}>
-              {projects.map((project) => {
-                const expanded = collapsedProjects[project.id] !== true;
+              {viewProjects.map((project) => {
+                const expanded = searching || collapsedProjects[project.id] !== true;
                 const emptyLabel = !project.system
                   ? t("agent.sidebar.empty.project")
                   : project.system === "note"
@@ -397,6 +454,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
                         sessions={project.sessions}
                         emptyLabel={emptyLabel}
                         depth={1}
+                        inFolder
                         {...sessionMenuProps}
                       />
                     </AnimatedCollapse>
@@ -412,7 +470,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
               testId="agent-recents"
             />
             <AnimatedCollapse isOpen={recentsExpanded}>
-              <AgentSessionList slot="main" sessions={recentSessions} emptyLabel={t("agent.sidebar.empty.recents")} depth={1} {...sessionMenuProps} />
+              <AgentSessionList slot="main" sessions={viewRecentSessions} emptyLabel={t("agent.sidebar.empty.recents")} depth={1} {...sessionMenuProps} />
             </AnimatedCollapse>
           </>
         )}

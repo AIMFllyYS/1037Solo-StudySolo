@@ -57,6 +57,17 @@ function subjectBlockOf(ctx: ChatContext): string {
  * global 教学法段与 correctness 段可继续命中 prefix cache。
  */
 export function buildSystemPrompt(ctx: ChatContext): string {
+  // Agent 独立对话（没有绑定任何页面）：不注入任何一门科目（以前会默认带上「概率论与数理统计」），
+  // 也不注入大纲——它需要了解课程 / 教材结构时，自己调用 getOutline / getSection / searchNotes 等工具去查。
+  if (!isPageBoundContext(ctx)) {
+    const globalUnbound = readMd("global.md")
+      .replace(/\{subjectTable\}/g, describeSubjectsByYear({ includeOther: true, name: "full", joiner: "、" }))
+      .replace(/「\{subjectName\}」/g, "")
+      .replace(/\{subjectName\}/g, "各");
+    const correctnessUnbound = readMd("correctness.md");
+    const headUnbound = correctnessUnbound ? `${globalUnbound}\n\n---\n\n${correctnessUnbound}` : globalUnbound;
+    return `${headUnbound}\n\n---\n\n当前没有绑定任何页面或科目。需要了解课程目录、教材内容或学生的笔记时，请主动调用工具（getOutline 看目录，getSection 读正文，searchNotes / searchFlashcards 查笔记和闪卡），不要假设学生正在学某一门课。`;
+  }
   const subject = subjectName(ctx.subjectId);
   const global = readMd("global.md")
     .replace(/\{subjectTable\}/g, describeSubjectsByYear({ includeOther: true, name: "full", joiner: "、" }))

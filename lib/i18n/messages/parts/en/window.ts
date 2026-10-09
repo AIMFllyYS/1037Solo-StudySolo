@@ -294,6 +294,15 @@ export const windowEn = {
     },
   },
   // Project files window and the "pick a project first" dialog.
+  textbook: {
+    windowTitle: "Course textbooks",
+    intro: "For reading the full textbooks only: nothing is added to the chat context. Drag any section into the composer to cite it.",
+    yearAria: "Choose academic year",
+    emptyYear: "No textbook content for this year yet.",
+    openPage: "Open in a new tab",
+    dragHint: "Drag into the composer to cite",
+    noContext: "Read-only · not in context",
+  },
   project: {
     statusParsing: "Parsing…",
     statusError: "Parse failed: {reason}",

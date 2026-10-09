@@ -3,7 +3,7 @@ import { isAgentWorkspace } from "@/lib/stores/workspace";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import type { QuizQuestion } from "@/lib/quiz/types";
 
-export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor" | "user-note-editor" | "user-note-library" | "flashcard-cite-picker" | "agent-product-picker" | "memory-proposal" | "quiz-explain" | "quiz-dock" | "project-files";
+export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor" | "user-note-editor" | "user-note-library" | "flashcard-cite-picker" | "agent-product-picker" | "memory-proposal" | "quiz-explain" | "quiz-dock" | "project-files" | "textbook";
 
 export interface WindowPoint {
   x: number;

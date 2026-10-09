@@ -165,7 +165,7 @@ export default function ReviewWorkspace() {
           )}
           {section === "flashcards" && <ReviewFlashcardSession subjectId={deckSubject} />}
           {section === "quiz" && <ReviewQuizPane />}
-          {section === "overview" && <ReviewMasteryOverview />}
+          {section === "overview" && <ReviewMasteryOverview onNavigate={selectSection} />}
         </div>
       </main>
     </div>

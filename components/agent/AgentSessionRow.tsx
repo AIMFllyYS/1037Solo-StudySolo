@@ -19,6 +19,13 @@ export function sessionIcon(session: SessionMeta) {
   return <MessageSquare size={14} strokeWidth={1.75} />;
 }
 
+/**
+ * 父文件夹名称文字的左缘 = FolderTreeRow 的 paddingLeft 4 + 箭头位 16 + gap 4 + 图标位 18 + gap 4。
+ * 文件夹下的对话文字对齐到这里；没有父文件夹的对话贴左（ROOT_TEXT_X）。
+ */
+const FOLDER_TEXT_X = 46;
+const ROOT_TEXT_X = 18;
+
 /** 悬停提示：优先给最近一条用户消息的预览，没有就报消息条数。 */
 export function sessionPreview(session: SessionMeta): string {
   if (session.preview?.trim()) return session.preview;
@@ -37,6 +44,8 @@ export function sessionPreview(session: SessionMeta): string {
 export function SessionRunBadge({ run, id }: { run: SessionRunRecord | undefined; id?: string }) {
   const t = useT();
   if (!run) return null;
+  // 「已完成」看过之后直接消失，不留淡色版本（通行规范：已读即清除）。
+  if (run.phase === "done" && !run.unseen) return null;
   const labelKey = run.phase === "running"
     ? "runningShort"
     : run.phase === "done"
@@ -86,6 +95,7 @@ export function SessionRunBadge({ run, id }: { run: SessionRunRecord | undefined
 export default function AgentSessionRow({
   session,
   depth = 1,
+  inFolder = false,
   selected = false,
   renaming,
   onSelect,
@@ -95,6 +105,8 @@ export default function AgentSessionRow({
 }: {
   session: SessionMeta;
   depth?: number;
+  /** 这一行在某个项目文件夹下：文字左缘对齐父文件夹「名称文字」的起点。 */
+  inFolder?: boolean;
   selected?: boolean;
   renaming: boolean;
   onSelect: () => void;
@@ -107,6 +119,7 @@ export default function AgentSessionRow({
   const runStatusId = useId();
   const title = session.title || t("agent.session.untitled");
   const run = useSessionRuns((state) => state.byId[session.id]);
+  const keepIcon = session.kind === "note" || session.kind === "floating";
   if (renaming) {
     return (
       <input
@@ -131,6 +144,8 @@ export default function AgentSessionRow({
       <div className="min-w-0 flex-1">
         <FolderTreeRow
           depth={depth}
+          // 笔记记录 / 划词摘录的会话保留各自的特殊图标；其余对话只显示文字。
+          textOnlyIndent={keepIcon ? undefined : inFolder ? FOLDER_TEXT_X : ROOT_TEXT_X}
           title={title}
           isSelected={selected}
           icon={sessionIcon(session)}

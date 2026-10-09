@@ -10,7 +10,7 @@ import { useStore as useUiStore } from '@/lib/stores/ui'
 
 import type { RenderMessage } from '../types'
 import { answerClassQuestion, citedEvidenceIds, questionEvidence } from './answer'
-import { aiAskPropsSchema } from './schema'
+import { aiAskPropsSchema, REVEAL_RESPONSE } from './schema'
 
 type Props = typeof aiAskPropsSchema._output
 
@@ -33,7 +33,7 @@ export function AiAskModule({ props, message, onAnchorClick }: { props: Props; m
     if (busy.current || (!reveal && ((choices.length > 0 && picked === null) || (choices.length === 0 && !response.trim())))) return
     const owner = getClassUserId(), sessionId = transcript.sessionId
     if (!owner || !sessionId) return
-    const studentResponse = reveal?'（未作答，直接查看参考答案）':choices.length > 0 ? `${String.fromCharCode(65 + picked!)}. ${choices[picked!]}` : response.trim()
+    const studentResponse = reveal?REVEAL_RESPONSE:choices.length > 0 ? `${String.fromCharCode(65 + picked!)}. ${choices[picked!]}` : response.trim()
     const sources = questionEvidence(transcript.committed, message.meta.transcriptAnchor)
     busy.current = true; setWorking(true); setPartial(''); setError('')
     try {
@@ -61,6 +61,6 @@ export function AiAskModule({ props, message, onAnchorClick }: { props: Props; m
     <div className="mt-2 flex flex-wrap gap-1.5"><button type="button" disabled={working || (choices.length>0?picked===null:!response.trim())} onClick={()=>void submit()} className="ss-tool">{working?'正在结合文稿回答…':last?'再次作答':'提交并查看答案'}</button>{!last&&<button type="button" disabled={working} onClick={()=>void submit(true)} className="ss-tool">直接看参考答案</button>}</div>
     {error&&<p role="alert" className="mt-2 text-[color:var(--error)]">{error}</p>}
     {working&&partial&&<div role="status" className="mt-3 rounded-md bg-[color:var(--bg-muted)] p-2"><MarkdownStream markdown={partial}/></div>}
-    {last&&<section className="mt-3 rounded-md border border-[color:var(--line-soft)] p-2" aria-label="本题答案"><p className="text-[11px] text-[color:var(--ink-faint)]">最近作答：{last.response}</p><MarkdownStream markdown={last.answer} className="mt-1"/>{sourceChanged&&<p role="status" className="text-[11px]">文稿已更正，请重新核对本题解释。</p>}{last.evidenceIds.length?<div className="mt-2 flex flex-wrap items-center gap-2 text-[11px]">依据文稿：{last.evidenceIds.map(id=><button type="button" key={id} className="ss-tool" onClick={()=>onAnchorClick?.(id)}>{id.slice(0,8)}</button>)}</div>:<p className="mt-2 text-[11px] text-[color:var(--ink-faint)]">本题没有可核对的文稿引用；解释属于助教补充。</p>}<button type="button" className="ss-tool mt-2" onClick={followUp}>向课堂助教追问</button></section>}
+    {last&&<section className="mt-3 rounded-md border border-[color:var(--line-soft)] p-2" aria-label="本题答案"><p className="text-[11px] text-[color:var(--ink-faint)]">{last.response===REVEAL_RESPONSE?'参考答案':`最近作答：${last.response}`}</p><MarkdownStream markdown={last.answer} className="mt-1"/>{sourceChanged&&<p role="status" className="text-[11px]">文稿已更正，请重新核对本题解释。</p>}{last.evidenceIds.length?<div className="mt-2 flex flex-wrap items-center gap-2 text-[11px]">依据文稿：{last.evidenceIds.map(id=><button type="button" key={id} className="ss-tool" onClick={()=>onAnchorClick?.(id)}>{id.slice(0,8)}</button>)}</div>:<p className="mt-2 text-[11px] text-[color:var(--ink-faint)]">本题没有可核对的文稿引用；解释属于助教补充。</p>}<button type="button" className="ss-tool mt-2" onClick={followUp}>向课堂助教追问</button></section>}
   </div>
 }

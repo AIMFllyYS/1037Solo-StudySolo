@@ -296,6 +296,15 @@ export const windowZh = {
     },
   },
   // 项目文件窗与「先选一个项目」对话框
+  textbook: {
+    windowTitle: "内部教材",
+    intro: "仅用于查看完整教材，不会注入对话上下文。把任一章节拖进输入框即可引用。",
+    yearAria: "选择学年",
+    emptyYear: "这个学年下还没有教材内容。",
+    openPage: "在新标签页打开",
+    dragHint: "拖到输入框可引用",
+    noContext: "只读浏览 · 不进上下文",
+  },
   project: {
     statusParsing: "解析中…",
     statusError: "解析失败：{reason}",

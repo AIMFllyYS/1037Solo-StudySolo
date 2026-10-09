@@ -13,12 +13,12 @@ export function requireConnectorOrigin(request: NextRequest, mutation = false): 
   if (request.headers.get("host")?.trim().toLowerCase() !== new URL(origin).host || mutation && request.headers.get("origin") !== origin) throw new ConnectorError("ORIGIN_REJECTED", 403);
   return origin;
 }
-export async function connectorOwner(request: NextRequest, sensitive = false): Promise<string> {
+export async function connectorOwner(request: NextRequest, sensitive = false, recentAuthMaxAgeSec = 600): Promise<string> {
   const result = await verifyAccount(extractAccessToken(request.headers), { accountBackendUrl: accountBackendUrl(authModeForRequest(request)), live: true });
   if (result.kind !== "ok") throw new ConnectorError(result.kind === "unavailable" ? "ACCOUNT_UNAVAILABLE" : result.code, failureStatus(result));
   const identity = result.identity;
   if (identity.mfa_required) throw new ConnectorError("MFA_REQUIRED", 403);
-  if (sensitive && identity.mfa_enrolled && !verifiedRecently(identity, 600)) throw new ConnectorError("REAUTH_REQUIRED", 403);
+  if (sensitive && identity.mfa_enrolled && !verifiedRecently(identity, recentAuthMaxAgeSec)) throw new ConnectorError("REAUTH_REQUIRED", 403);
   if (!/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(identity.user_id)) throw new ConnectorError("ACCOUNT_ID_INVALID", 503);
   return identity.user_id;
 }

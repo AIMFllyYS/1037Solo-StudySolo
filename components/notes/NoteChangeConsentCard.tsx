@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useAgentApproval } from "@/lib/stores/agentApprovalMode";
 import { AlertTriangle, Check, ChevronDown, Pencil, Trash2, X } from "lucide-react";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 import type { UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/types";
@@ -57,6 +58,16 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
 
   const isDelete = output.action === "delete";
   const blocked = !output.sourceComplete;
+
+  // 完全同意模式：非删除类的修改候选稿自动应用（删除仍需手动确认）。每份候选稿只尝试一次。
+  const autoApprove = useAgentApproval((s) => s.mode === "auto");
+  const autoTriedRef = useRef(false);
+  useEffect(() => {
+    if (!autoApprove || isDelete || blocked || status !== "pending" || autoTriedRef.current) return;
+    autoTriedRef.current = true;
+    const result = approve(id);
+    if (!result.ok) setFailure(result.reason ?? t("window.note.consent.writeFailed"));
+  }, [autoApprove, isDelete, blocked, status, approve, id, t]);
 
   const onApprove = () => {
     const result = approve(id);

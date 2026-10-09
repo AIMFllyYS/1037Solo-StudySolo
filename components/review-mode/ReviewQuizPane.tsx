@@ -519,12 +519,36 @@ export default function ReviewQuizPane() {
   return (
     <div className="flex h-full flex-col overflow-y-auto">
       <div className="border-b border-[var(--line-soft)] p-4">
-        <div className="grid gap-3 md:grid-cols-2">
+        <div className="mb-3 flex flex-wrap items-center gap-3">
+          <h2 className="text-[15px] font-semibold text-[var(--ink)]">{t("review.quiz.studioTitle")}</h2>
+          <div role="radiogroup" aria-label={t("review.quiz.modeAria")} className="ml-auto inline-flex rounded-xl bg-[var(--bg-muted)] p-1" data-testid="review-quiz-mode">
+            {([
+              { value: "wrong" as const, label: t("review.quiz.wrong.title"), Icon: Sparkles },
+              { value: "chapter" as const, label: t("review.quiz.chapter.title"), Icon: BookOpen },
+            ]).map(({ value, label, Icon }) => (
+              <button
+                key={value}
+                type="button"
+                role="radio"
+                aria-checked={mode === value}
+                onClick={() => setMode(value)}
+                className={clsx(
+                  "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-medium transition-colors",
+                  mode === value ? "bg-[var(--bg-panel)] text-[var(--ink)] shadow-sm" : "text-[var(--ink-soft)] hover:text-[var(--ink)]",
+                )}
+              >
+                <Icon size={14} className={mode === value ? "text-[var(--accent)]" : undefined} />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div>
           {/* 错题智能出题 */}
           <section
             className={clsx(
-              "rounded-xl border p-4",
-              mode === "wrong" ? "border-[var(--accent)] bg-[var(--accent-weak)]/30" : "border-[var(--line)] bg-[var(--bg-panel)]",
+              "rounded-2xl border border-[var(--line)] bg-[var(--bg-panel)] p-4",
+              mode !== "wrong" && "hidden",
             )}
             onClick={() => setMode("wrong")}
           >
@@ -604,8 +628,8 @@ export default function ReviewQuizPane() {
           {/* 按章节出题 */}
           <section
             className={clsx(
-              "rounded-xl border p-4",
-              mode === "chapter" ? "border-[var(--accent)] bg-[var(--accent-weak)]/30" : "border-[var(--line)] bg-[var(--bg-panel)]",
+              "rounded-2xl border border-[var(--line)] bg-[var(--bg-panel)] p-4",
+              mode !== "chapter" && "hidden",
             )}
             onClick={() => setMode("chapter")}
           >

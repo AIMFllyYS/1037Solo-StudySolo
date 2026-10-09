@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import { Check, Copy } from 'lucide-react';
+import { copyTextToClipboard } from '@/lib/clipboard/copyText';
 import { useUiReducedMotion } from '@/lib/hooks/useUiReducedMotion';
 import { AgentUserIcon } from '@/components/icons/AgentIcons';
 import BrandLogo from '@/components/layout/BrandLogo';
@@ -36,6 +38,35 @@ interface ChatMessageProps {
    * （本轮消息的图本来就随请求发送，不需要再挂一次）。
    */
   reincludable?: boolean;
+}
+
+/**
+ * 用户消息气泡右下角的复制按钮：鼠标悬停（或键盘聚焦）气泡时才浮现，点击复制整段输入，
+ * 成功后图标短暂变成对勾。右键菜单（复制 / 引用 / 追问 / 记录）仍保留。
+ */
+function UserCopyButton({ text, label }: { text: string; label: string }) {
+  const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    if (!copied) return;
+    const timer = window.setTimeout(() => setCopied(false), 1500);
+    return () => window.clearTimeout(timer);
+  }, [copied]);
+  return (
+    <button
+      type="button"
+      data-testid="user-message-copy"
+      className="chat-bubble-copy"
+      data-copied={copied || undefined}
+      title={label}
+      aria-label={label}
+      onClick={(event) => {
+        event.stopPropagation();
+        void copyTextToClipboard(text).then(() => setCopied(true));
+      }}
+    >
+      {copied ? <Check size={13} /> : <Copy size={13} />}
+    </button>
+  );
 }
 
 function traceFromSteps(steps: TraceStep[]): AgentTraceModel {
@@ -151,11 +182,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
               </div>
             )}
             <div
-              className="chat-bubble-user chat-prose"
+              className="chat-bubble-user chat-prose has-copy"
               style={{ background: 'var(--md-sys-color-surface-container-high)', boxShadow: 'none' }}
               onContextMenu={(e) => openMessageMenu(e, userText)}
             >
               <MessageContent content={userText} enableVisualizations={false} preserveLineBreaks />
+              {userText.trim() ? <UserCopyButton text={userText} label={t('common.copy')} /> : null}
             </div>
           </>
         ) : (

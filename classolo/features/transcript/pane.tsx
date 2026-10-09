@@ -72,7 +72,84 @@ function formatElapsed(seconds: number): string {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
-export function TranscriptPane({ enabled = true,profile,onAddTerm }: { enabled?: boolean;profile?:ClassCourseProfile;onAddTerm?:(term:string)=>void }) {
+/**
+ * 录音控制（开始 / 暂停 / 结束 + 状态 / 时长 / 连接）。
+ * 既可以放在文稿面板自己的工具条里，也可以放进「课堂工作台」顶部标签栏（Workbench 传 hideToolbar 后走后者），
+ * 避免页面堆出多层标签栏。
+ */
+export function TranscriptControls({ enabled = true }: { enabled?: boolean }) {
+  const status = useTranscriptPublic((state) => state.recordingStatus)
+  const connection = useStore(transcriptPrivateStore, (state) => state.connection)
+  const lifecycle = useStore(transcriptPrivateStore, (state) => state.lifecycle)
+  const transitioning = lifecycle !== 'idle'
+  const recording = status === 'recording'
+  const elapsed = useElapsed(recording)
+  const idle = status === 'idle' || status === 'stopped'
+  return (
+    <>
+      {idle ? (
+        <>
+          <button
+            type="button"
+            onClick={() => void startSession()}
+            disabled={!enabled || transitioning}
+            className="ss-class-record-button press inline-flex items-center gap-1.5 disabled:opacity-40"
+          >
+            <Mic className="size-4" />
+            {lifecycle === 'starting' ? '正在启动…' : '开始录音'}
+          </button>
+          {lifecycle === 'starting' && <button type="button" onClick={() => void cancelSessionStart()} className="ss-tool press">取消启动</button>}
+        </>
+      ) : (
+        <>
+          <button
+            type="button"
+            disabled={transitioning}
+            onClick={() => void (status === 'paused' ? resumeSession() : pauseSession())}
+            className="ss-tool press"
+          >
+            {status === 'paused' ? (
+              <>
+                <Play className="size-4" />
+                继续
+              </>
+            ) : (
+              <>
+                <Pause className="size-4" />
+                暂停
+              </>
+            )}
+          </button>
+          <button
+            type="button"
+            disabled={transitioning}
+            onClick={() => void stopSession().catch(() => {})}
+            className="ss-tool press"
+          >
+            <Square className="size-4" />
+            {lifecycle === 'stopping' ? '正在保存尾段…' : '结束'}
+          </button>
+        </>
+      )}
+
+      <div className="ml-auto flex items-center gap-2 text-[11px] text-[color:var(--ink-soft)]">
+        <span
+          className={[
+            'inline-flex items-center gap-1 rounded-full border border-[color:var(--line-soft)] px-2 py-0.5',
+            recording ? 'text-[color:var(--accent-ink)]' : 'text-[color:var(--ink-soft)]',
+          ].join(' ')}
+        >
+          {recording ? <span className="size-1.5 animate-pulse rounded-full bg-[color:var(--md-sys-color-error)]" /> : null}
+          {statusLabel(status)}
+        </span>
+        {!idle ? <span className="tabular-nums">{formatElapsed(elapsed)}</span> : null}
+        {!idle ? <span>· {connectionLabel(connection)}</span> : null}
+      </div>
+    </>
+  )
+}
+
+export function TranscriptPane({ enabled = true,profile,onAddTerm,hideToolbar=false }: { enabled?: boolean;profile?:ClassCourseProfile;onAddTerm?:(term:string)=>void;hideToolbar?:boolean }) {
   const status = useTranscriptPublic((state) => state.recordingStatus)
   const committed = useTranscriptPublic((state) => state.committed)
   const sessionId=useTranscriptPublic(state=>state.sessionId)
@@ -102,75 +179,12 @@ export function TranscriptPane({ enabled = true,profile,onAddTerm }: { enabled?:
 
   return (
     <div className="ss-class-transcript flex h-full min-h-0 flex-col text-[13px]">
-      <div className="ss-class-transcript-toolbar">
-        <span className="ss-class-transcript-heading"><ScrollText className="size-3.5"/> 课堂文稿</span>
-        {idle ? (
-          <>
-          <button
-            type="button"
-            onClick={() => void startSession()}
-            disabled={!enabled||transitioning}
-            className="ss-class-record-button press inline-flex items-center gap-1.5 disabled:opacity-40"
-          >
-            <Mic className="size-4" />
-            {lifecycle==='starting'?'正在启动…':'开始录音'}
-          </button>
-          {lifecycle==='starting'&&<button type="button" onClick={()=>void cancelSessionStart()} className="ss-tool press">取消启动</button>}
-          </>
-        ) : (
-          <>
-            <button
-              type="button"
-              disabled={transitioning}
-              onClick={() =>
-                void (status === 'paused' ? resumeSession() : pauseSession())
-              }
-              className="ss-tool press"
-            >
-              {status === 'paused' ? (
-                <>
-                  <Play className="size-4" />
-                  继续
-                </>
-              ) : (
-                <>
-                  <Pause className="size-4" />
-                  暂停
-                </>
-              )}
-            </button>
-            <button
-              type="button"
-              disabled={transitioning}
-              onClick={() => void stopSession().catch(()=>{})}
-              className="ss-tool press"
-            >
-              <Square className="size-4" />
-              {lifecycle==='stopping'?'正在保存尾段…':'结束'}
-            </button>
-          </>
-        )}
-
-        <div className="ml-auto flex items-center gap-2 text-[11px] text-[color:var(--ink-soft)]">
-          <span
-            className={[
-              'inline-flex items-center gap-1 rounded-full border border-[color:var(--line-soft)] px-2 py-0.5',
-              recording
-                ? 'text-[color:var(--accent-ink)]'
-                : 'text-[color:var(--ink-soft)]',
-            ].join(' ')}
-          >
-            {recording ? (
-              <span className="size-1.5 animate-pulse rounded-full bg-[color:var(--md-sys-color-error)]" />
-            ) : null}
-            {statusLabel(status)}
-          </span>
-          {!idle ? (
-            <span className="tabular-nums">{formatElapsed(elapsed)}</span>
-          ) : null}
-          {!idle ? <span>· {connectionLabel(connection)}</span> : null}
+      {!hideToolbar ? (
+        <div className="ss-class-transcript-toolbar">
+          <span className="ss-class-transcript-heading"><ScrollText className="size-3.5"/> 课堂文稿</span>
+          <TranscriptControls enabled={enabled} />
         </div>
-      </div>
+      ) : null}
 
       {!idle ? <div className="px-3 pt-2"><MicLevel/></div> : null}
 

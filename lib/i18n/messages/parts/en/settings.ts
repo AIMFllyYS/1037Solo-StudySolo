@@ -101,6 +101,9 @@ export const settingsEn = {
     reduceMotion: "Reduce motion",
     reduceMotionDesc: "Animations and transitions finish instantly",
     reduceMotionAria: "Reduce motion",
+    centerTabsAutoHide: "Auto-hide center tab strip",
+    centerTabsAutoHideDesc: "When on, the Body / Examples / Browser tab strip stays hidden until the pointer reaches the top edge; off keeps it pinned",
+    centerTabsAutoHideAria: "Auto-hide center tab strip",
     reset: "Reset appearance",
     summary: "{theme} · {mode} · {font}",
     // Options of the global font dropdown (FONT_CHOICES[].labelKey).

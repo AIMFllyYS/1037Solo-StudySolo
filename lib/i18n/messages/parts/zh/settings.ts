@@ -104,6 +104,9 @@ export const settingsZh = {
     reduceMotion: "减少动画",
     reduceMotionDesc: "界面动画与过渡效果即时完成",
     reduceMotionAria: "减少动画",
+    centerTabsAutoHide: "中间标签栏自动隐藏",
+    centerTabsAutoHideDesc: "开启后，正文 / 例题 / 浏览器等标签栏平时收起，鼠标移到顶部才显示；关闭则常驻",
+    centerTabsAutoHideAria: "中间标签栏自动隐藏",
     reset: "恢复默认外观",
     summary: "{theme} · {mode} · {font}",
     // 全局字体下拉项（lib/theme/appearance.ts 的 FONT_CHOICES[].labelKey）

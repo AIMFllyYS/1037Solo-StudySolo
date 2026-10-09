@@ -199,15 +199,14 @@ describe("AgentConversationSidebar（项目 + 最近）", () => {
     const running = screen.getByTestId("session-run-running");
     const doneBadges = screen.getAllByTestId("session-run-done");
     expect(running).toBeInTheDocument();
-    expect(doneBadges).toHaveLength(2);
+    expect(doneBadges).toHaveLength(1);
     expect(screen.getAllByTestId("session-run-error")).toHaveLength(1);
     expect(running.closest("button")).toHaveAttribute("aria-describedby", running.id);
-    expect(doneBadges.find((element) => element.getAttribute("data-run-unseen") === "true")).toBeInTheDocument();
-    expect(doneBadges.find((element) => element.getAttribute("data-run-unseen") === "true")?.querySelector(".agent-session-run-label")).toHaveTextContent("已完成");
-    expect(doneBadges.find((element) => element.getAttribute("data-run-unseen") === "true")).toHaveAttribute("aria-label", "已完成（未读）");
-    const readDone = doneBadges.find((element) => element.getAttribute("data-run-unseen") === "false");
-    expect(readDone).toHaveClass("opacity-50");
-    expect(readDone).toHaveTextContent("已完成");
+    expect(doneBadges[0]).toHaveAttribute("data-run-unseen", "true");
+    expect(doneBadges[0].querySelector(".agent-session-run-label")).toHaveTextContent("已完成");
+    expect(doneBadges[0]).toHaveAttribute("aria-label", "已完成（未读）");
+    // 已读的「已完成」直接消失，不留淡色版本。
+    expect(doneBadges.some((element) => element.getAttribute("data-run-unseen") === "false")).toBe(false);
   });
 
   it("项目折叠时把成员会话运行态聚成一颗徽标", () => {
@@ -222,7 +221,7 @@ describe("AgentConversationSidebar（项目 + 最近）", () => {
     expect(within(projectRow).getByTestId("session-run-running")).toBeInTheDocument();
   });
 
-  it("项目折叠后保留最新已读完成态的淡提示", () => {
+  it("项目折叠后，已读的完成态不再显示任何提示", () => {
     seedSessions();
     useSessionRuns.setState({
       byId: { "proj-1": { phase: "done", unseen: false, startedAt: 10, updatedAt: 20 } },
@@ -230,7 +229,23 @@ describe("AgentConversationSidebar（项目 + 最近）", () => {
     render(<AgentConversationSidebar chatContext={ctx} />);
     fireEvent.click(screen.getByLabelText("组胚"));
     const projectRow = screen.getByLabelText("组胚").closest("div")!.parentElement!;
-    expect(within(projectRow).getByTestId("session-run-done")).toHaveClass("opacity-50");
+    expect(within(projectRow).queryByTestId("session-run-done")).toBeNull();
+  });
+
+  it("搜索按钮可点：展开输入框，按标题过滤（转义、不区分大小写），Esc 关闭", () => {
+    historyState.sessionsMeta = [
+      { id: "s-a", title: "Alpha (draft)", kind: "main", updatedAt: 3, messageCount: 1 },
+      { id: "s-b", title: "beta", kind: "main", updatedAt: 2, messageCount: 1 },
+    ] as TestSession[];
+    render(<AgentConversationSidebar chatContext={ctx} />);
+    fireEvent.click(screen.getByTestId("agent-sidebar-search-toggle"));
+    const input = screen.getByTestId("agent-sidebar-search-input");
+    fireEvent.change(input, { target: { value: "ALPHA (" } });
+    expect(screen.getByText("Alpha (draft)")).toBeInTheDocument();
+    expect(screen.queryByText("beta")).toBeNull();
+    fireEvent.keyDown(input, { key: "Escape" });
+    expect(screen.queryByTestId("agent-sidebar-search-input")).toBeNull();
+    expect(screen.getByText("beta")).toBeInTheDocument();
   });
 
   it("默认一次 10 条，续载后放出其余", () => {

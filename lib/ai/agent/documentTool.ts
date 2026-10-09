@@ -14,9 +14,9 @@ const documentSpecSchema = z.object({
   // 但对模型只描述 markdown，并在下面归一化——不要再让模型以为能产出 Word/PDF。
   format: z.enum(DOCUMENT_FORMATS as [string, ...string[]]).describe("目标交付格式：markdown（当前只支持 Markdown 交付）"),
   genre: z.enum(DOCUMENT_GENRES as [string, ...string[]]).describe("文体：article / paper / report / review-notes / essay"),
-  brief: z.string().min(1).describe("写作要求：主题、受众、论点、风格、需要覆盖的知识点等"),
-  outline: z.array(z.string().min(1)).optional().describe("可选的章节标题列表；省略时由 outline 阶段生成"),
-  references: z.string().optional().describe("参考材料（模型从笔记/检索整理的要点与引用）"),
+  brief: z.string().min(1).describe("写作要求（务必详细，写作 AI 看不到对话上下文）：主题、受众、论点、风格、必须覆盖的知识点与易错点、学生当前水平"),
+  outline: z.array(z.string().min(1)).optional().describe("可选的章节标题列表（建议自己给全，并在每节标题里写清这节要写什么）；省略时由 outline 阶段生成"),
+  references: z.string().optional().describe("参考材料：把你已读取/检索到的要点、定义、公式和引用原文直接贴在这里（带来源编号）；写作 AI 只能看到这里和 brief，不要写“见上文”"),
   targetWords: z.number().int().min(100).optional().describe("目标总字数（中文按字、英文按词）"),
   language: z.enum(["zh", "en"]).optional().describe("语言，默认 zh"),
 });

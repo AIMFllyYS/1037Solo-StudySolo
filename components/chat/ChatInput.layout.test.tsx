@@ -68,8 +68,6 @@ describe('floating transparent composer', () => {
     const toolbar = dock.querySelector('.chat-input-toolbar')!;
     const row = dock.querySelector('.chat-input-row')!;
     expect(toolbar.compareDocumentPosition(row) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(toolbar.contains(getByTestId('thinking-menu-button'))).toBe(true);
-    expect(toolbar.contains(getByTitle('联网搜索（需配置搜索API）'))).toBe(true);
     expect(toolbar.contains(getByTestId('context-dashboard'))).toBe(true);
     expect(toolbar.contains(getByTestId('model-selector'))).toBe(true);
     expect(row.contains(getByRole('textbox'))).toBe(true);

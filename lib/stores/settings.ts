@@ -153,6 +153,8 @@ export interface SettingsState {
    * 任一为真即按减少动态处理（CSS 经 html[data-reduce-motion]，framer-motion 经 MotionConfig）。
    */
   reduceMotion: boolean;
+  /** Studio center tab strip hides until the pointer reaches the top edge (default on). */
+  centerTabsAutoHide: boolean;
 
   /** 本机持久化设置是否已应用。首帧（含 SSR 与 hydration）恒为 false，值等于 DEFAULTS。 */
   hydrated: boolean;
@@ -183,6 +185,7 @@ export interface SettingsState {
   setFontScale: (v: number) => void;
   setLocale: (locale: Locale) => void;
   setReduceMotion: (v: boolean) => void;
+  setCenterTabsAutoHide: (v: boolean) => void;
   toggleTool: (name: string, enabled: boolean) => void;
   setDefaultThinking: (v: boolean) => void;
   setDefaultThinkingEffort: (v: ThinkingEffort) => void;
@@ -236,6 +239,7 @@ type Persisted = Pick<
   | "usdExchangeRate"
   | "locale"
   | "reduceMotion"
+  | "centerTabsAutoHide"
 >;
 
 const DEFAULTS: Persisted = {
@@ -274,6 +278,7 @@ const DEFAULTS: Persisted = {
   usdExchangeRate: 7.00,
   locale: DEFAULT_LOCALE,
   reduceMotion: false,
+  centerTabsAutoHide: true,
 };
 
 let settingsCanPersist = true;
@@ -366,6 +371,7 @@ function load(): Persisted & { settingsLoadWarning?: string | null } {
       // 盘上可能是旧版本 / 手改过的语言值，不认识的一律回中文（词典真相源）。
       parsed.locale = normalizeLocale(parsed.locale);
       parsed.reduceMotion = parsed.reduceMotion === true;
+      parsed.centerTabsAutoHide = parsed.centerTabsAutoHide !== false;
 
       let secretsRaw = recoveredSecrets;
       if (secretsRaw === undefined) {
@@ -475,6 +481,7 @@ function persist(get: () => SettingsState) {
     usdExchangeRate: s.usdExchangeRate,
     locale: normalizeLocale(s.locale),
     reduceMotion: s.reduceMotion === true,
+    centerTabsAutoHide: s.centerTabsAutoHide !== false,
   };
   try {
     localStorage.setItem(LS_KEY, JSON.stringify(data));
@@ -709,6 +716,10 @@ export const useSettings = create<SettingsState>((rawSet, get) => {
   },
   setReduceMotion: (v) => {
     set({ reduceMotion: v === true });
+    persist(get);
+  },
+  setCenterTabsAutoHide: (v) => {
+    set({ centerTabsAutoHide: v !== false });
     persist(get);
   },
   toggleTool: (name, enabled) => {

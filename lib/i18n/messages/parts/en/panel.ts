@@ -100,6 +100,8 @@ export const panelEn = {
     projectAria: "Project",
     projectFiles: "Project files",
     projectFilesHint: "Cloud files + local references",
+    textbook: "Course textbooks",
+    textbookHint: "Browse by year",
     openPanelsAria: "Open panels",
     pickNote: "Pick a note",
     pickNoteHint: "My notes / class notes",
