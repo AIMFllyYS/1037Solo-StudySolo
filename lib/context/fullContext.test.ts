@@ -16,15 +16,15 @@ test('FullContextManager：参考材料不含用户提问，同页不同问题�
   assert.equal(first.tokenCount, second.tokenCount);
 });
 
-test('FullContextManager：未绑定页面的 Agent 对话只给课程目录，不注入默认章节正文', async () => {
+test('FullContextManager：未绑定页面的 Agent 对话不预注入目录或章节正文（让它自己调工具查）', async () => {
   const manager = new FullContextManager();
   const agent = { subjectId: 'probability', categoryId: '', itemId: '', currentTopic: '' };
   const result = await manager.buildContext(agent, '帮我把这周的笔记整理成提纲');
-  assert.match(result.context, /## 课程目录/);
+  assert.equal(result.context, '');
+  assert.doesNotMatch(result.context, /## 课程目录/);
   assert.doesNotMatch(result.context, /## 当前内容：/);
-  assert.doesNotMatch(result.context, /当前页摘要/);
   assert.deepEqual(result.sources, []);
-  // 目录与页面无关：不同科目、不同问法拿到的参考材料逐字节相同
+  // 与科目、问法无关：永远为空
   const other = await manager.buildContext({ ...agent, subjectId: 'histology' }, '其它问题');
   assert.equal(result.context, other.context);
 });

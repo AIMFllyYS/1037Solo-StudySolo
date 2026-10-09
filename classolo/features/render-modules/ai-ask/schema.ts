@@ -1,5 +1,8 @@
 import { z } from 'zod'
 
+/** 「未作答，直接看参考答案」的占位作答文本（出题时顺带生成答案也用它）。 */
+export const REVEAL_RESPONSE = '（未作答，直接查看参考答案）'
+
 export const aiAskPropsSchema = z.object({
   question: z.string().min(1),
   choices: z.array(z.string()).optional(),

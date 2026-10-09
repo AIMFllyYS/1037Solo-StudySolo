@@ -17,6 +17,7 @@ import {
 } from "@/lib/auth/password";
 import { installAiAuthFetch } from "@/lib/auth/installAiAuthFetch";
 import { sessionAccessToken } from "@/lib/auth/sessionCookie";
+import { BootLoader } from "@/components/shared/BootLoader";
 import {
   readPersistedSession,
   snapshotAuthSession,
@@ -135,7 +136,7 @@ export function AuthProvider({
   },[value.status,value.userId]);
   const ready=value.status!=="loading"&&readyOwner===value.userId;
   useCloudSyncOnAuth(ready?value.status:"loading",ready?value.userId:null);
-  return <AuthSessionContext.Provider value={value}>{ready?children:<div className="p-8 text-sm">正在打开账号专属学习空间…</div>}</AuthSessionContext.Provider>;
+  return <AuthSessionContext.Provider value={value}>{ready?children:<BootLoader />}</AuthSessionContext.Provider>;
 
 }
 

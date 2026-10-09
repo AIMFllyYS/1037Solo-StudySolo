@@ -3,6 +3,8 @@ import {createModel,generateText,tool} from '@/classolo/lib/ai'
 import {getRenderMessages,getTranscriptPublic} from '@/classolo/lib/session'
 import {upsertRenderMessage} from '@/classolo/lib/session/writes/render'
 import {getClassUserId} from '@/classolo/lib/db'
+import {REVEAL_RESPONSE} from '@/classolo/features/render-modules/ai-ask/schema'
+import {answerClassQuestion,citedEvidenceIds,questionEvidence} from '@/classolo/features/render-modules/ai-ask/answer'
 
 const questionSchema=z.object({question:z.string().min(6).max(500),choices:z.array(z.string().min(1).max(200)).min(2).max(4).optional()})
 const pending=new Map<string,Promise<void>>()
@@ -29,7 +31,17 @@ export function generateClassQuestion():Promise<void>{
     if(!parsed.success)throw new Error('助教未生成可核对的题目，请重试')
     if(getClassUserId()!==owner||getTranscriptPublic().sessionId!==sessionId)return
     const id=crypto.randomUUID()
-    upsertRenderMessage({id,module:'ai-ask',version:'1.0',target:'transcript',props:{...parsed.data,assessmentId:id,questionType:parsed.data.choices?'choice':'open'},meta:{createdAt:Date.now(),source:'silent-agent',transcriptAnchor:sources.at(-1)?.id}})
+    // 出题时顺带生成参考答案：题目一出现就是「已显示答案」的状态。答案失败不影响出题（学生仍可点「直接看参考答案」补取）。
+    const anchor=sources.at(-1)?.id
+    let attempts:Array<{id:string;response:string;answer:string;evidenceIds:string[];sourceRevisions:Record<string,number>;atMs:number}>|undefined
+    try{
+      const evidence=questionEvidence(getTranscriptPublic().committed,anchor)
+      const answer=await answerClassQuestion({question:parsed.data.question,choices:parsed.data.choices??[],response:REVEAL_RESPONSE,sources:evidence,onChunk:()=>{}})
+      const evidenceIds=citedEvidenceIds(answer,evidence)
+      attempts=[{id:crypto.randomUUID(),response:REVEAL_RESPONSE,answer,evidenceIds,sourceRevisions:Object.fromEntries(evidenceIds.map(eid=>[eid,evidence.find(row=>row.id===eid)?.correctionRevision??0])),atMs:Date.now()}]
+    }catch{/* keep the question; the answer can be revealed manually */}
+    if(getClassUserId()!==owner||getTranscriptPublic().sessionId!==sessionId)return
+    upsertRenderMessage({id,module:'ai-ask',version:'1.0',target:'transcript',props:{...parsed.data,assessmentId:id,questionType:parsed.data.choices?'choice':'open',...(attempts?{attempts}:{})},meta:{createdAt:Date.now(),source:'silent-agent',transcriptAnchor:anchor}})
   })().finally(()=>pending.delete(key))
   pending.set(key,task)
   return task

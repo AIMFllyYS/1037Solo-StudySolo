@@ -18,6 +18,7 @@
 @import "./styles/appearance.css";
 @import "./styles/semantic-tokens.css";
 @import "./styles/loading.css";
+@import "./styles/boot-loader.css";
 
 /* Keep wheel/touch/keyboard scrolling everywhere in the app; hide only native scrollbar chrome. */
 * { scrollbar-width: none !important; -ms-overflow-style: none; }
@@ -1279,4 +1280,35 @@ html[data-block-foreign-selection] [data-selection-host] {
   -webkit-touch-callout: none;
   -webkit-user-select: text;
   user-select: text;
+}
+
+
+/* —— 全屏进入加载页（BootLoader）：翻书动效 + 主题色 —— */
+.boot-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-app);
+  color: var(--ink);
+  animation: resize-loader-in 160ms var(--ease-out) both;
+}
+.boot-loader .page-loader span {
+  letter-spacing: 0.08em;
+}
+/* 减少动效：保持「仍在加载」的反馈（不可整体关掉加载动画），改为原地呼吸，不翻页。 */
+html[data-reduce-motion="true"] .boot-loader .page-loader li {
+  animation: none !important;
+}
+html[data-reduce-motion="true"] .boot-loader .page-loader > div {
+  animation: boot-loader-breathe 1.6s ease-in-out infinite !important;
+}
+@keyframes boot-loader-breathe {
+  50% { filter: brightness(1.12); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .boot-loader .page-loader li { animation: none !important; }
+  .boot-loader .page-loader > div { animation: boot-loader-breathe 1.6s ease-in-out infinite !important; }
 }

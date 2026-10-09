@@ -99,6 +99,8 @@ export const panelZh = {
     projectAria: "项目",
     projectFiles: "项目文件",
     projectFilesHint: "云端文件 + 本机引用",
+    textbook: "内部教材",
+    textbookHint: "按学年浏览",
     openPanelsAria: "打开面板",
     pickNote: "选择笔记",
     pickNoteHint: "引用我的 / 课程笔记",

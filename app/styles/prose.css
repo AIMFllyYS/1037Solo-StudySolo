@@ -707,7 +707,7 @@
 }
 .chat-empty-desc {
   font-size: 12px;
-  max-width: 240px;
+  max-width: min(100%, 420px);
 }
 .chat-empty-topic {
   margin-top: 1rem;
@@ -718,7 +718,8 @@
 }
 .chat-empty-prompts {
   width: 100%;
-  max-width: 300px;
+  /* 随面板宽度伸缩：面板宽时一行放得下就不换行（以前写死 300px，面板再宽也被挤成两三行）。 */
+  max-width: min(100%, 640px);
   margin-top: 0.5rem;
 }
 
@@ -748,7 +749,7 @@
 .chat-welcome-examples {
   flex-shrink: 0;
   width: 100%;
-  max-width: 780px;
+  max-width: 880px;
   margin: 10px auto auto;
   padding: 0 24px 28px;
   display: flex;
@@ -786,6 +787,8 @@
 .chat-welcome-example-text {
   flex: 1;
   min-width: 0;
+  /* 一行放得下就不换行；放不下时才折行，并避免孤字尾行。 */
+  text-wrap: pretty;
 }
 .chat-welcome-examples--compact { margin: 0; padding: 0; }
 /* Keyboard hints sit just under the Agent composer and use the same low contrast as its chrome. */
@@ -2714,3 +2717,172 @@
 .model-menu-label-short {
   display: none;
 }
+
+
+/* 用户消息气泡右下角的复制按钮：悬停 / 键盘聚焦才浮现，叠在气泡内（底色同气泡，不压字也不撑高）。 */
+.chat-bubble-user.has-copy { position: relative; }
+.chat-bubble-copy {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--md-sys-color-surface-container-highest, var(--bg-muted));
+  color: var(--ink-soft);
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 120ms ease, transform 120ms ease, color 120ms ease;
+  cursor: pointer;
+}
+.chat-bubble-user.has-copy:hover .chat-bubble-copy,
+.chat-bubble-user.has-copy:focus-within .chat-bubble-copy,
+.chat-bubble-copy[data-copied] {
+  opacity: 1;
+  transform: none;
+}
+.chat-bubble-copy:hover { color: var(--ink); }
+.chat-bubble-copy[data-copied] { color: var(--accent); }
+@media (hover: none) {
+  .chat-bubble-copy { opacity: 0.7; transform: none; }
+}
+
+
+.chat-input-mode { gap: 5px; }
+.chat-input-mode-auto { color: var(--accent-ink); background: var(--accent-weak); }
+
+
+/* —— 模型菜单：触发器上的当前思考深度 —— */
+.model-effort-chip-level { flex: none; color: var(--ink-faint); font-weight: 600; }
+
+/* —— Codex 式细滚动条：平时隐形，悬停 / 滚动时才显出圆角细条 —— */
+.model-menu-scroll {
+  scrollbar-width: thin !important;
+  scrollbar-color: transparent transparent;
+  scrollbar-gutter: auto;
+}
+.model-menu-scroll:hover,
+.model-menu-scroll:focus-within {
+  scrollbar-color: color-mix(in srgb, var(--ink-faint) 55%, transparent) transparent;
+}
+.model-menu-scroll::-webkit-scrollbar { display: block !important; width: 8px !important; height: 8px !important; }
+.model-menu-scroll::-webkit-scrollbar-track { background: transparent; }
+.model-menu-scroll::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  background-clip: padding-box;
+}
+.model-menu-scroll:hover::-webkit-scrollbar-thumb,
+.model-menu-scroll:focus-within::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink-faint) 55%, transparent);
+  background-clip: padding-box;
+}
+.model-menu-scroll::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--ink-soft) 70%, transparent); background-clip: padding-box; }
+
+/* —— 模型详情里的「思考」板块 —— */
+.thinking-depth { box-sizing: border-box; width: 100%; min-width: 0; padding: 2px 2px 4px; }
+.thinking-depth-head { display: grid; grid-template-columns: 28px minmax(0, 1fr) 28px; align-items: center; gap: 4px; }
+.thinking-depth-title { overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; font-weight: 650; color: var(--ink); }
+.thinking-depth-fast,
+.thinking-depth-reset {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-faint);
+  cursor: pointer;
+}
+.thinking-depth-fast { color: var(--accent); }
+.thinking-depth-fast:disabled { color: var(--ink-faint); opacity: 0.45; cursor: not-allowed; }
+.thinking-depth-fast[data-active] { background: var(--accent-weak); color: var(--accent-ink); }
+.thinking-depth-fast:hover:not(:disabled),
+.thinking-depth-reset:hover { background: var(--bg-muted); color: var(--ink); }
+.thinking-depth-hint,
+.thinking-depth-note { margin: 6px 0 0; text-align: center; font-size: 11px; line-height: 1.5; color: var(--ink-faint); }
+.thinking-depth-slider { position: relative; height: 30px; margin: 8px 16px 0; }
+.thinking-depth-rail { position: absolute; inset: 7px 0; border-radius: 999px; background: var(--bg-muted); }
+.thinking-depth-fill { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: var(--accent); transition: width 160ms var(--ease-out); }
+.thinking-depth-dot {
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink-faint) 55%, transparent);
+  transform: translate(-50%, -50%);
+}
+.thinking-depth-dot[data-passed] { background: color-mix(in srgb, var(--md-sys-color-on-primary) 70%, transparent); }
+.thinking-depth-thumb {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--md-sys-color-on-primary);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--ink) 30%, transparent);
+  transform: translate(-50%, -50%);
+  transition: left 160ms var(--ease-out);
+}
+.thinking-depth-range { position: absolute; inset: -4px -12px; width: calc(100% + 24px); height: calc(100% + 8px); margin: 0; opacity: 0; cursor: pointer; }
+.thinking-depth-slider:focus-within .thinking-depth-thumb { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.thinking-depth-labels { position: relative; height: 22px; margin: 0 16px; }
+.thinking-depth-labels button {
+  position: absolute;
+  top: 0;
+  padding: 2px 4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-faint);
+  font-size: 11px;
+  white-space: nowrap;
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+.thinking-depth-labels button:hover { color: var(--ink); background: var(--bg-muted); }
+.thinking-depth-labels button[data-active] { color: var(--ink); font-weight: 700; }
+html[data-reduce-motion="true"] .thinking-depth-fill,
+html[data-reduce-motion="true"] .thinking-depth-thumb { transition: none; }
+
+
+/* —— “+” 菜单顶部的开关行（联网搜索） —— */
+.composer-toggle-row { gap: 10px; }
+.composer-toggle-text { min-width: 0; flex: 1; }
+.composer-toggle-row small { display: block; margin-top: 1px; font-size: 10.5px; color: var(--ink-faint); }
+.composer-toggle-row:disabled { opacity: 0.5; cursor: not-allowed; }
+.composer-switch {
+  position: relative;
+  flex: none;
+  width: 28px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--line);
+  transition: background 140ms ease;
+}
+.composer-switch i {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--md-sys-color-on-primary);
+  transition: transform 140ms ease;
+}
+.composer-switch[data-on] { background: var(--accent); }
+.composer-switch[data-on] i { transform: translateX(12px); }
+html[data-reduce-motion="true"] .composer-switch,
+html[data-reduce-motion="true"] .composer-switch i { transition: none; }
+
+
+/* —— Studio 中间标签栏：自动隐藏时从顶部滑出 —— */
+.center-tabs-floating { transition: transform 180ms var(--ease-out); }
+html[data-reduce-motion="true"] .center-tabs-floating { transition: none; }

@@ -7,12 +7,13 @@ import { submenuTop } from '@/lib/chat/modelMenuPosition';
 import { useSettings, type ThinkingEffort } from "@/lib/hooks/useSettings";
 import {
   AUTO_MODEL_ID, AUTO_MODEL_INFO, MODELS, modelsForPicker, getAllModels, getModelInfoWithCustom, CUSTOM_PREFIX,
-  modelSupportsThinkingEffort, modelAllowsDisableThinking, modelThinkingLevels,
-  clampThinkingEffort, defaultEffortFor, modelMenuCategories, type ModelInfo,
+  modelSupportsThinkingEffort,
+  clampThinkingEffort, modelMenuCategories, type ModelInfo,
 } from "@/lib/ai/models";
 import { ModelIcon } from "@/components/icons/ModelBrandIcons";
-import { AgentCheckIcon, AgentPauseIcon } from "@/components/icons/AgentIcons";
-import { THINKING_EFFORT_OPTIONS } from "@/components/chat/ThinkingMenu";
+import { thinkingStopIds } from "@/lib/ai/thinkingStops";
+import ThinkingDepthPanel, { thinkingChipLabel } from "@/components/chat/ThinkingDepthPanel";
+import { fastModeCounterpart, isFastVariant, supportsFastMode } from "@/lib/ai/fastModeRegistry";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useT } from "@/lib/i18n";
 
@@ -101,6 +102,7 @@ export default function ModelMenu({
   const customApiGroups = useSettings((s) => s.customApiGroups);
   const selectedId = value ?? globalSelected;
   const current = getModelInfoWithCustom(selectedId, customApiGroups);
+  const chipEffort = thinkingChipLabel(current, { enabled: thinkingEnabled || !!current?.thinkingRequired, effort: thinkingEffort }, t);
   const [open, setOpen] = useState(false);
   const [series, setSeries] = useState<string | null>(null);
   const [detailId, setDetailId] = useState<string | null>(null);
@@ -231,17 +233,17 @@ export default function ModelMenu({
       : (index + (event.key === "ArrowDown" ? 1 : -1) + buttons.length) % buttons.length;
     event.preventDefault(); buttons[next]?.focus();
   };
-  const pick = (model: ModelInfo, thinking?: { enabled: boolean; effort: ThinkingEffort }) => {
+  const pick = (model: ModelInfo, thinking?: { enabled: boolean; effort: ThinkingEffort }, keepOpen = false) => {
     (onChange ?? globalSet)(model.id);
     if (thinking) onThinkingChange?.(thinking);
     else if (modelSupportsThinkingEffort(model)) onThinkingChange?.({
       enabled: model.thinkingRequired || thinkingEnabled, effort: clampThinkingEffort(model, thinkingEffort),
     });
-    close();
+    if (!keepOpen) close();
   };
   const rowClass = "flex w-full items-center gap-2 rounded-md text-left text-[var(--ink)] hover:bg-[var(--bg-muted)] focus-visible:outline-2 focus-visible:outline-[var(--accent-ink)] " +
     (position.mobile ? "min-h-11 px-3 py-2 text-[13px]" : "min-h-8 px-2 py-1.5 text-[12px]");
-  const columnClass = "hide-scrollbar min-w-0 overflow-y-auto overscroll-contain rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-panel)_96%,transparent)] p-1.5 shadow-lg backdrop-blur-md animate-[dropdown-in_160ms_var(--ease-out)_both]";
+  const columnClass = "model-menu-scroll min-w-0 overflow-y-auto overscroll-contain rounded-xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--bg-panel)_96%,transparent)] p-1.5 shadow-lg backdrop-blur-md animate-[dropdown-in_160ms_var(--ease-out)_both]";
   const columnStyle = (index: number) => ({
     width: position.mobile ? "min(300px, calc(100vw - 16px))" : COLUMN_WIDTHS[index],
     maxHeight: position.maxHeight,
@@ -271,7 +273,8 @@ export default function ModelMenu({
   };
   const details = detail ? <>
     <ModelDetails model={detail} onUse={() => pick(detail)} />
-    {detail.thinking && (modelSupportsThinkingEffort(detail) || modelAllowsDisableThinking(detail)) ? <div role="menu" aria-label={t("menu.thinking.strength")} data-testid="model-thinking-submenu"><ThinkingSubmenu model={detail} selected={selectedId === detail.id} thinkingEnabled={thinkingEnabled} thinkingEffort={thinkingEffort} onPick={(thinking) => pick(detail, thinking)} /></div> : null}
+    {detail.thinking && (thinkingStopIds(detail).length > 1 || supportsFastMode(detail.id)) ? <ThinkingDepthPanel model={detail} selected={selectedId === detail.id} thinkingEnabled={thinkingEnabled} thinkingEffort={thinkingEffort} onPick={(thinking) => pick(detail, thinking, true)}
+      fast={{ supported: supportsFastMode(detail.id), active: isFastVariant(detail.id), onToggle: () => { const target = getModelInfoWithCustom(fastModeCounterpart(detail.id) ?? "", customApiGroups); if (target) pick(target, selectedId === detail.id ? { enabled: thinkingEnabled || !!detail.thinkingRequired, effort: thinkingEffort } : undefined); } }} /> : null}
   </> : null;
 
   return <>
@@ -280,7 +283,7 @@ export default function ModelMenu({
       className="press flex max-w-[180px] min-w-0 items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]">
       {selectedId === AUTO_MODEL_ID ? <Compass size={12} /> : <ModelIcon brand={current?.icon} size={12} decorative />}
       <span className="model-menu-label model-menu-label-full truncate">{current?.label ?? selectedId}</span>
-      <span className="model-menu-label model-menu-label-short">{t("menu.model.short")}</span><ChevronDown size={12} />
+      <span className="model-menu-label model-menu-label-short">{t("menu.model.short")}</span>{chipEffort ? <span className="model-effort-chip-level" data-testid="model-effort-level">{chipEffort}</span> : null}<ChevronDown size={12} />
     </button>
     {open ? createPortal(<div ref={panelRef} role="dialog" aria-label={t("menu.model.dialog")} onKeyDown={keyboard}
       style={{ left: position.left + (!position.mobile && position.growLeft ? COLUMN_WIDTHS.slice(1, count).reduce((a, b) => a + b, 0) + GAP * (count - 1) : 0), bottom: position.bottom, gap: GAP }}
@@ -472,89 +475,6 @@ function ModelDetails({
       >
         {t("menu.model.use")}
       </button>
-    </>
-  );
-}
-
-function ThinkingSubmenu({
-  model,
-  selected,
-  thinkingEnabled,
-  thinkingEffort,
-  onPick,
-}: {
-  model: ModelInfo;
-  selected: boolean;
-  thinkingEnabled: boolean;
-  thinkingEffort: ThinkingEffort;
-  onPick: (next: { enabled: boolean; effort: ThinkingEffort }) => void;
-}) {
-  const t = useT();
-  const levels = modelThinkingLevels(model);
-  const options = THINKING_EFFORT_OPTIONS.filter((o) => levels.includes(o.value));
-  const allowOff = modelAllowsDisableThinking(model);
-  const activeEffort = selected && thinkingEnabled ? clampThinkingEffort(model, thinkingEffort) : defaultEffortFor(model);
-
-  return (
-    <>
-      <div className="my-1 h-px bg-[var(--line)]/60" />
-      <div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
-        {t("menu.thinking.strength")}
-      </div>
-      {allowOff && (
-        <>
-          <button
-            type="button"
-            role="menuitemradio"
-            aria-checked={selected && !thinkingEnabled}
-            data-testid="model-thinking-option-off"
-            onClick={() => onPick({ enabled: false, effort: activeEffort })}
-            className={
-              "flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left transition-colors " +
-              (selected && !thinkingEnabled ? "bg-[var(--bg-muted)]" : "hover:bg-[var(--bg-muted)]")
-            }
-          >
-            <span className="mt-0.5 w-3.5 shrink-0">
-              {selected && !thinkingEnabled && <AgentCheckIcon size={12} className="text-[var(--ink)]" />}
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-[var(--ink)]">
-                <AgentPauseIcon size={11} />
-                {t("menu.thinking.off.label")}
-              </span>
-              <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">
-                {t("menu.thinking.off.hint")}
-              </span>
-            </span>
-          </button>
-          <div className="my-1 h-px bg-[var(--line)]/60" />
-        </>
-      )}
-      {options.map((opt) => {
-        const active = selected && thinkingEnabled && clampThinkingEffort(model, thinkingEffort) === opt.value;
-        return (
-          <button
-            key={opt.value}
-            type="button"
-            role="menuitemradio"
-            aria-checked={active}
-            data-testid={`model-thinking-option-${opt.value}`}
-            onClick={() => onPick({ enabled: true, effort: opt.value })}
-            className={
-              "flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left transition-colors " +
-              (active ? "bg-[var(--bg-muted)]" : "hover:bg-[var(--bg-muted)]")
-            }
-          >
-            <span className="mt-0.5 w-3.5 shrink-0">
-              {active && <AgentCheckIcon size={12} className="text-[var(--ink)]" />}
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-[12.5px] font-medium text-[var(--ink)]">{opt.label}</span>
-              <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">{t(opt.hintKey)}</span>
-            </span>
-          </button>
-        );
-      })}
     </>
   );
 }

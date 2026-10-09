@@ -23,6 +23,7 @@ export default function FolderTreeRow({
   titleAttr,
   ariaLabel,
   fontWeight,
+  textOnlyIndent,
   draggable,
   onDragStart,
   onDragEnd,
@@ -53,6 +54,8 @@ export default function FolderTreeRow({
   /** Optional row-end status/action, kept in the same line as the title. */
   endAdornment?: ReactNode;
   fontWeight?: number;
+  /** 仅文字模式：不渲染箭头位和图标，标题左缘直接落在这个像素位置（用于文件夹下的对话行）。 */
+  textOnlyIndent?: number;
   draggable?: boolean;
   onDragStart?: (event: DragEvent<HTMLButtonElement>) => void;
   onDragEnd?: (event: DragEvent<HTMLButtonElement>) => void;
@@ -78,7 +81,7 @@ export default function FolderTreeRow({
       onPointerUp={onPointerUp}
       className={inset ? "flex w-full items-center gap-1.5 border-0 bg-transparent text-left outline-none" : "flex w-full items-center gap-1 border-0 bg-transparent text-left outline-none"}
       style={{
-        paddingLeft: inset ? depth * 12 + 6 : depth * 16 + 4,
+        paddingLeft: textOnlyIndent ?? (inset ? depth * 12 + 6 : depth * 16 + 4),
         paddingRight: inset ? 8 : undefined,
         borderRadius: inset ? 8 : undefined,
         height: inset ? 30 : 28,
@@ -106,21 +109,25 @@ export default function FolderTreeRow({
         onMouseLeave?.(event);
       }}
     >
-      <span
-        className="inline-flex shrink-0 items-center justify-center"
-        style={{
-          width: 16,
-          height: 16,
-          transition: "transform 0.35s cubic-bezier(0.05,0.7,0.1,1.0)",
-          transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)",
-          opacity: isFolder ? 1 : 0,
-        }}
-      >
-        <ChevronRight size={14} />
-      </span>
-      <span className="inline-flex shrink-0 items-center justify-center" style={{ width: 18, height: 18 }}>
-        {icon}
-      </span>
+      {textOnlyIndent === undefined && (
+        <span
+          className="inline-flex shrink-0 items-center justify-center"
+          style={{
+            width: 16,
+            height: 16,
+            transition: "transform 0.35s cubic-bezier(0.05,0.7,0.1,1.0)",
+            transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)",
+            opacity: isFolder ? 1 : 0,
+          }}
+        >
+          <ChevronRight size={14} />
+        </span>
+      )}
+      {textOnlyIndent === undefined && (
+        <span className="inline-flex shrink-0 items-center justify-center" style={{ width: 18, height: 18 }}>
+          {icon}
+        </span>
+      )}
       <span className={fadeTitle || endAdornment ? "agent-session-title-fade" : "truncate"} style={{ fontSize: 13 }}>
         {title}
       </span>

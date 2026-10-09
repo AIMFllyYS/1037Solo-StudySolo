@@ -19,6 +19,7 @@ import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useAppMode } from "@/lib/stores/appMode";
 import ProjectRequiredDialog from "@/components/project/ProjectRequiredDialog";
 import { openProjectFiles } from "@/lib/project/openProjectFiles";
+import { openTextbookWindow } from "@/lib/textbook/openTextbook";
 import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
 import OpenUrlField from "@/components/window/OpenUrlDialog";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
@@ -216,6 +217,19 @@ export function AddContentButton({
                 >
                   <FolderTree size={14} className="text-[var(--md-sys-color-primary)]" />
                   <span><strong className="font-semibold">{t("panel.addMenu.projectFiles")}</strong><small className="ml-1 text-[var(--ink-soft)]">{t("panel.addMenu.projectFilesHint")}</small></span>
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  data-testid="add-menu-textbook"
+                  onClick={() => {
+                    setOpen(false);
+                    openTextbookWindow();
+                  }}
+                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+                >
+                  <BookOpen size={14} className="text-[var(--md-sys-color-primary)]" />
+                  <span><strong className="font-semibold">{t("panel.addMenu.textbook")}</strong><small className="ml-1 text-[var(--ink-soft)]">{t("panel.addMenu.textbookHint")}</small></span>
                 </button>
               </div>
               <AddMenuDivider />

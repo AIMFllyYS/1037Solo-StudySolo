@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo, useId } from 'react';
 import {
   AgentGlobeIcon, AgentArrowUpIcon, AgentStopIcon, AgentQuoteIcon,
-  AgentCloseIcon, AgentCheckIcon, AgentPlusIcon,
+  AgentCloseIcon, AgentPlusIcon,
 } from '@/components/icons/AgentIcons';
 import type { ChatContext } from '@/lib/types/chat';
 import type { SendMessageOptions } from '@/lib/chat/sendMessage';
@@ -26,7 +26,7 @@ import Link from 'next/link';
 import { useToast } from '@/lib/stores/toast';
 import { countComposerAttachments, referencedFileIdsInText } from '@/lib/files/contract';
 import ComposerChips from '@/components/chat/composer/ComposerChips';
-import ComposerCommandPanel, { listComposerCommands } from '@/components/chat/composer/ComposerCommandPanel';
+import ComposerCommandPanel, { listComposerCommands, type ComposerToggle } from '@/components/chat/composer/ComposerCommandPanel';
 import ComposerPalette from '@/components/chat/composer/ComposerPalette';
 import FileMentionMenu from '@/components/chat/composer/FileMentionMenu';
 import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
@@ -35,13 +35,10 @@ import { useKeyboardSettings } from '@/lib/keyboard/useKeyboardSettings';
 import {
   getModelInfoWithCustom,
   modelSupportsThinkingEffort,
-  modelAllowsDisableThinking,
-  modelThinkingLevels,
   clampThinkingEffort,
 } from '@/lib/ai/models';
 import ModelMenu from '@/components/chat/ModelMenu';
-import ThinkingMenuButton, { ThinkingMenuItems } from '@/components/chat/ThinkingMenu';
-import AnchoredMenu from '@/components/ui/AnchoredMenu';
+import AgentModeMenu from '@/components/chat/composer/AgentModeMenu';
 import InputLimitDialog from '@/components/chat/InputLimitDialog';
 import TokenDashboard from '@/components/chat/TokenDashboard';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
@@ -171,9 +168,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
     [selectedModelId, customApiGroups],
   );
   const thinkingSupported = selectedModelInfo?.thinking === true;
-  const thinkingLevels = modelThinkingLevels(selectedModelInfo);
   const thinkingEffortSupported = modelSupportsThinkingEffort(selectedModelInfo);
-  const thinkingAllowOff = modelAllowsDisableThinking(selectedModelInfo);
   const displayEffort = thinkingEffortSupported
     ? clampThinkingEffort(selectedModelInfo, thinkingEffort)
     : thinkingEffort;
@@ -464,14 +459,17 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
   const sendDisabled = showStopButton
     ? false
     : !!externalDisabled || attachmentProcessing || overLimit || (!input.trim() && attachments.length === 0 && attachedFiles.length === 0);
-  const thinkingProps = {
-    enabled: effectiveEnableThinking, effort: displayEffort, supported: thinkingSupported,
-    disabled: inputDisabled, levels: thinkingLevels, allowOff: thinkingAllowOff,
-    onChange: ({ enabled, effort }: { enabled: boolean; effort: ThinkingEffort }) => {
-      setEnableThinking(selectedModelInfo?.thinkingRequired ? true : enabled);
-      setThinkingEffort(thinkingEffortSupported ? clampThinkingEffort(selectedModelInfo, effort) : effort);
-    },
-  };
+
+  // "+"菜单顶部的开关：联网搜索（思考深度已移到模型菜单里）。
+  const plusToggles: ComposerToggle[] = [{
+    id: 'search',
+    label: t('menu.chatInput.search.label'),
+    hint: t('menu.chatInput.search.hint'),
+    icon: <AgentGlobeIcon size={14} />,
+    on: enableSearch,
+    disabled: inputDisabled,
+    onToggle: () => setEnableSearch(!enableSearch),
+  }];
 
   return (
     <div
@@ -573,40 +571,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
 
       <div className="chat-input-toolbar" aria-label={t('menu.chatInput.toolbarAria')}>
         <div className="chat-input-toolbar-group chat-input-toolbar-options">
-          {thinkingSupported && (
-            <ThinkingMenuButton {...thinkingProps} />
-          )}
-
-          <button
-            onClick={() => setEnableSearch(!enableSearch)}
-            disabled={inputDisabled}
-            className={`chat-input-toggle chat-input-toggle-search ${enableSearch ? 'chat-input-toggle-search-active' : ''} ${inputDisabled ? 'chat-input-toggle-disabled' : ''}`}
-            title={t('menu.chatInput.search.title')}
-            aria-pressed={enableSearch}
-          >
-            <AgentGlobeIcon size={12} />
-            <span className="chat-input-toggle-text">{t('menu.chatInput.search.label')}</span>
-            {enableSearch && <AgentCheckIcon size={10} />}
-          </button>
+          {showProjectPicker ? <AgentModeMenu disabled={inputDisabled} /> : null}
         </div>
-
-        <AnchoredMenu label={t('menu.chatInput.more')} placement="top" width={250} disabled={inputDisabled}
-          className="chat-input-toggle chat-input-more" trigger={<>
-            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="3" cy="8" r="1.2" fill="currentColor" /><circle cx="8" cy="8" r="1.2" fill="currentColor" /><circle cx="13" cy="8" r="1.2" fill="currentColor" /></svg>
-            {(effectiveEnableThinking || enableSearch) && <span className="chat-input-more-dot" />}
-          </>}>
-          {(close) => <>
-            {thinkingSupported ? <ThinkingMenuItems {...thinkingProps} onChange={(next) => { thinkingProps.onChange(next); close(); }} />
-              : <div className="app-menu-heading">{t('menu.thinking.unsupported')}</div>}
-            <div className="app-menu-separator" />
-            <button type="button" role="menuitemcheckbox" aria-checked={enableSearch} disabled={inputDisabled} className="app-menu-item"
-              onClick={() => { setEnableSearch((value) => !value); close(); }}>
-              <span className="app-menu-check"><AgentGlobeIcon size={13} /></span>
-              <span>{t('menu.chatInput.search.label')}<small>{t('menu.chatInput.search.hint')}</small></span>
-              {enableSearch && <AgentCheckIcon size={12} />}
-            </button>
-          </>}
-        </AnchoredMenu>
 
         <div className="chat-input-toolbar-group chat-input-toolbar-models">
           {showTokenDashboard && <TokenDashboard isLoading={isLoading} floatingSessionId={floatingSessionId} modelId={modelId} />}
@@ -759,6 +725,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
             skills={skills}
             query={mentionQuery}
             activeIndex={paletteIndex}
+            toggles={paletteAnchor === "plus" ? plusToggles : undefined}
             onSelectPlan={applyPlan}
             onSelectCompact={applyCompact}
             onSelectTool={applyTool}

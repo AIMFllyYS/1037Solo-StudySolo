@@ -15,6 +15,16 @@ import { CompactContextIcon, ForcedToolIcon, PlanModeIcon, SkillIcon } from "./C
 
 export type ComposerCommandId = "plan" | "compact" | ComposerForcedTool;
 
+export interface ComposerToggle {
+  id: string;
+  label: string;
+  hint?: string;
+  icon: React.ReactNode;
+  on: boolean;
+  disabled?: boolean;
+  onToggle: () => void;
+}
+
 export interface ComposerCommandPanelProps {
   planMode: boolean;
   planAllowed: boolean;
@@ -22,6 +32,8 @@ export interface ComposerCommandPanelProps {
   skills: Skill[];
   query?: string;
   activeIndex?: number;
+  /** 顶部开关区（深度思考 / 联网搜索）：只在从「+」打开且没有输入过滤词时显示。 */
+  toggles?: ComposerToggle[];
   onSelectPlan: () => void;
   onSelectCompact: () => void;
   onSelectTool: (tool: ForcedComposerTool) => void;
@@ -56,6 +68,7 @@ export default function ComposerCommandPanel({
   skills,
   query,
   activeIndex = 0,
+  toggles,
   onSelectPlan,
   onSelectCompact,
   onSelectTool,
@@ -68,9 +81,34 @@ export default function ComposerCommandPanel({
   const tools = items.filter((item) => item.kind === "tool");
   const skillItems = items.filter((item) => item.kind === "skill");
   const selectedId = items[activeIndex]?.id;
+  const showToggles = Boolean(toggles?.length) && !query?.trim();
 
   return (
     <div className="composer-command-panel" data-testid="composer-command-panel" role="listbox" aria-label={t("menu.composer.aria")}>
+      {showToggles ? (
+        <div className="composer-toggle-group" data-testid="composer-toggles">
+          {toggles!.map((toggle) => (
+            <button
+              key={toggle.id}
+              type="button"
+              role="menuitemcheckbox"
+              aria-checked={toggle.on}
+              disabled={toggle.disabled}
+              data-testid={`composer-toggle-${toggle.id}`}
+              className="app-menu-item composer-toggle-row"
+              onClick={toggle.onToggle}
+            >
+              <span className="app-menu-check">{toggle.icon}</span>
+              <span className="composer-toggle-text">
+                {toggle.label}
+                {toggle.hint ? <small>{toggle.hint}</small> : null}
+              </span>
+              <span className="composer-switch" data-on={toggle.on || undefined} aria-hidden="true"><i /></span>
+            </button>
+          ))}
+          <div className="app-menu-separator" />
+        </div>
+      ) : null}
       {showPlan && (
         <button
           type="button"

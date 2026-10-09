@@ -77,7 +77,7 @@ test("only the actual dedicated main Agent entry mints an execution scope", asyn
 test("stale recent MFA permits ordinary chat and owned stop/read but checks every actual risky operation", async t => {
   const restore = configure();
   let identityOwner = owner, recent = false, incomplete = false;
-  t.mock.method(globalThis, "fetch", async () => Response.json({ active: true, user_id: identityOwner, mfa_required: incomplete, mfa_enrolled: true, recent_mfa_at: recent ? Date.now() / 1000 : Date.now() / 1000 - 700, exp: Date.now() / 1000 + 3600 }));
+  t.mock.method(globalThis, "fetch", async () => Response.json({ active: true, user_id: identityOwner, mfa_required: incomplete, mfa_enrolled: true, recent_mfa_at: recent ? Date.now() / 1000 : Date.now() / 1000 - 13 * 3600, exp: Date.now() / 1000 + 3600 }));
   try {
     const scope = (await sandboxScopeForChat(request(), { id: "conversation", agentMain: true }))!;
     assert.equal(scope.canExecute, false);

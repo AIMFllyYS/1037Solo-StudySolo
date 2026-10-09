@@ -59,5 +59,6 @@ export function WindowTypeIcon({
   if (type === "note-citation-viewer" || type === "source-trace-viewer") return <BookOpen size={size} />;
   if (type === "source-preview") return <Globe size={size} />;
   if (type === "project-files") return <FolderTree size={size} />;
+  if (type === "textbook") return <BookOpen size={size} />;
   return <MonitorPlay size={size} />;
 }

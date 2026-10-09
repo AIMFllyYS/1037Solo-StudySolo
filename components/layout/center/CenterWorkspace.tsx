@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { FileText, MonitorPlay, Hand, Globe, X, Lightbulb, ClipboardCheck, PanelTopClose, PanelTopOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import { useStore, type CenterTab } from "@/lib/stores/ui";
+import { useSettings } from "@/lib/hooks/useSettings";
 import { resolveRouteLayout } from "@/lib/content/routeLayout";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
@@ -118,6 +119,32 @@ export default function CenterWorkspace({ children }: { children: React.ReactNod
   const reducedMotion = useReducedMotion();
   const barVisible = showTabBar || onContentPage;
 
+  // 自动隐藏：栏默认收在顶部之外，鼠标碰到顶部热区 / 键盘聚焦进栏才滑出；触屏没有 hover，始终常驻。
+  const autoHideSetting = useSettings((s) => s.centerTabsAutoHide);
+  const [coarse, setCoarse] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia?.("(hover: none)");
+    if (!query) return;
+    const sync = () => setCoarse(query.matches);
+    sync();
+    query.addEventListener?.("change", sync);
+    return () => query.removeEventListener?.("change", sync);
+  }, []);
+  const autoHide = autoHideSetting && !coarse;
+  const [revealed, setRevealed] = useState(false);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const reveal = useCallback(() => {
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+    hideTimer.current = null;
+    setRevealed(true);
+  }, []);
+  const hideSoon = useCallback(() => {
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+    hideTimer.current = setTimeout(() => setRevealed(false), 260);
+  }, []);
+  useEffect(() => () => { if (hideTimer.current) clearTimeout(hideTimer.current); }, []);
+  const barShown = !autoHide || revealed;
+
   /** 同一条栏里所有标签共用一个选中底：切换时底色滑到新标签（与右栏 Agent 标签同一手感）。 */
   const tabButton = (key: string, active: boolean, onClick: () => void, icon: React.ReactNode, label: string, testId: string) => (
     <button
@@ -149,13 +176,32 @@ export default function CenterWorkspace({ children }: { children: React.ReactNod
 
   return (
     <CenterTabsHostContext.Provider value={true}>
-    <div className="flex h-full min-h-0 w-full flex-col">
+    <div className="relative flex h-full min-h-0 w-full flex-col overflow-hidden">
+      {barVisible && autoHide && (
+        <div
+          aria-hidden
+          data-testid="center-tabs-hotzone"
+          className="absolute inset-x-0 top-0 z-20 h-2"
+          onMouseEnter={reveal}
+        />
+      )}
       {barVisible && (
         <div
           role="tablist"
           aria-label={t("panel.centerTab.aria")}
           data-testid="center-tabs"
-          className="flex h-11 shrink-0 items-center gap-1 border-b border-[var(--line-soft)] bg-[var(--bg-panel)] px-1.5"
+          data-auto-hide={autoHide ? (barShown ? "shown" : "hidden") : undefined}
+          onMouseEnter={autoHide ? reveal : undefined}
+          onMouseLeave={autoHide ? hideSoon : undefined}
+          onFocusCapture={autoHide ? reveal : undefined}
+          onBlurCapture={autoHide ? (event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) hideSoon(); } : undefined}
+          className={clsx(
+            "flex h-11 items-center gap-1 border-b border-[var(--line-soft)] bg-[var(--bg-panel)] px-1.5",
+            autoHide
+              ? "center-tabs-floating absolute inset-x-0 top-0 z-30 shadow-[0_6px_18px_color-mix(in_srgb,var(--ink)_10%,transparent)]"
+              : "shrink-0",
+          )}
+          style={autoHide ? { transform: barShown ? "translateY(0)" : "translateY(-100%)", pointerEvents: barShown ? "auto" : "none" } : undefined}
         >
           <div className="hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
             {onContentPage

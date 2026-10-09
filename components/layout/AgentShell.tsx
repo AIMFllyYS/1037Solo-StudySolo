@@ -12,6 +12,7 @@ import { useAgentChatContext } from "@/lib/hooks/useAgentChatContext";
 import { PANEL_PRESETS, nestedShares } from "@/lib/constants/panelPresets";
 import { ResizeSkeleton, resizeVariantForAgentPath } from "@/components/shared/ResizeLoader";
 import { useAgentDockPerSession } from "@/lib/hooks/useAgentDockPerSession";
+import { agentLeftPercentForPx, loadAgentLeftPx, saveAgentLeftPx } from "@/lib/layout/agentLeftWidth";
 
 /**
  * Agent 段外壳（挂在 `app/agent/layout.tsx`）：「左侧对话栏 + 中央内容插槽」。
@@ -86,6 +87,47 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
   const [snapping, setSnapping] = useState(false);
   const snapTimerRef = useRef<number | null>(null);
   const leftPanelRef = useRef<ImperativePanelHandle>(null);
+
+  /**
+   * 左栏「像素锚定」（修复：调好左栏后再拖右侧面板，左栏跟着动）。
+   * 根因见 lib/layout/agentLeftWidth.ts：左栏存的是嵌套组内的百分比，嵌套组宽度 = 窗口 − 右栏，
+   * 右栏一动，同一个百分比对应的像素就变。现在以像素为准：嵌套组宽度变化时把像素重新换算成百分比写回。
+   */
+  const groupRef = useRef<HTMLDivElement>(null);
+  const leftPxRef = useRef<number | null>(null);
+  const leftDraggingRef = useRef(false);
+  const applyLeftPx = useCallback(() => {
+    const group = groupRef.current;
+    const panel = leftPanelRef.current;
+    if (!group || !panel || leftDraggingRef.current) return;
+    const width = group.getBoundingClientRect().width;
+    if (width <= 0) return;
+    if (leftPxRef.current === null) leftPxRef.current = loadAgentLeftPx(window.innerWidth);
+    try {
+      if (panel.isCollapsed() || useStore.getState().sidebarCollapsed) return;
+      const pct = agentLeftPercentForPx(leftPxRef.current, width);
+      if (pct === null || Math.abs(panel.getSize() - pct) < 0.05) return;
+      panel.resize(pct);
+    } catch {
+      // 首帧（或 jsdom）还没有布局信息，忽略
+    }
+  }, []);
+  useEffect(() => {
+    const group = groupRef.current;
+    if (!group || typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(() => applyLeftPx());
+    observer.observe(group);
+    applyLeftPx();
+    return () => observer.disconnect();
+  }, [applyLeftPx, isMobile]);
+  const commitLeftPx = useCallback(() => {
+    const left = conversationsRef.current;
+    if (!left) return;
+    const px = left.getBoundingClientRect().width;
+    if (px < 80) return;
+    leftPxRef.current = px;
+    saveAgentLeftPx(px);
+  }, []);
   const pendingLeftSyncRef = useRef<boolean | null>(null);
   // 收起**不再卸载面板**：分栏库要留着这个面板，才能在展开时还原用户上次拖到的宽度。
   useEffect(() => {
@@ -93,12 +135,12 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
     if (!panel) return;
     try {
       if (sidebarCollapsed && !panel.isCollapsed()) { pendingLeftSyncRef.current = true; panel.collapse(); }
-      if (!sidebarCollapsed && panel.isCollapsed()) { pendingLeftSyncRef.current = false; panel.expand(); }
+      if (!sidebarCollapsed && panel.isCollapsed()) { pendingLeftSyncRef.current = false; panel.expand(); window.requestAnimationFrame(applyLeftPx); }
     } catch {
       pendingLeftSyncRef.current = null;
       // 首帧（或 jsdom）还没有布局信息，分栏库会抛「Panel size not found」，忽略即可
     }
-  }, [sidebarCollapsed]);
+  }, [sidebarCollapsed, applyLeftPx]);
 
   // The panel library owns saved sizes and expandToSizes. Do not resize again
   // from a pixel snapshot: that overwrote the user's saved ratio after resize.
@@ -169,7 +211,7 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <div className="h-full min-h-0" data-agent-workspace>
+    <div ref={groupRef} className="h-full min-h-0" data-agent-workspace>
       {/* v3 applies the new 35/65 default without removing the existing v2 user layout. */}
       <PanelGroup direction="horizontal" autoSaveId="studysolo-agent-layout-v3" data-pane-snap={snapping || undefined}>
         <Panel
@@ -221,7 +263,11 @@ export default function AgentShell({ children }: { children: React.ReactNode }) 
           </aside>
         </Panel>
         <PanelResizeHandle
-          onDragging={setLeftDragging}
+          onDragging={(dragging) => {
+            leftDraggingRef.current = dragging;
+            setLeftDragging(dragging);
+            if (!dragging) commitLeftPx();
+          }}
           className="group relative w-px bg-[var(--line-soft)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]"
         >
           <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />

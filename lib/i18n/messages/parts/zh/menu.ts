@@ -85,6 +85,18 @@ export const menuZh = {
     },
   },
   // 输入区外壳（工具条 / 排队 / 引用 / 占位符 / 发送）
+  modelEffort: {
+    selectModel: "选择模型",
+    switchModel: "切换模型",
+    reset: "恢复默认思考深度",
+    sliderAria: "思考深度",
+    back: "返回",
+    unsupported: "当前模型不支持调节思考深度",
+    fixedOn: "该模型始终开启思考",
+    stepsAria: "{count} 档",
+    fast: "Fast 模式",
+    fastUnsupported: "该模型没有 Fast 变体",
+  },
   chatInput: {
     toolbarAria: "对话选项",
     more: "更多对话选项",
@@ -97,6 +109,15 @@ export const menuZh = {
       label: "联网搜索",
       title: "联网搜索（需配置搜索API）",
       hint: "使用搜索 API 获取最新信息",
+    },
+    mode: {
+      aria: "执行模式",
+      heading: "执行模式",
+      ask: "询问模式",
+      askHint: "生成笔记、闪卡或调用工具前先征得你的同意",
+      auto: "完全同意模式",
+      autoHint: "自动执行生成闪卡、笔记修改及任何工具（含云沙箱），不再逐次确认",
+      autoNote: "删除类操作仍会单独确认",
     },
     queue: {
       title: "等待发送",

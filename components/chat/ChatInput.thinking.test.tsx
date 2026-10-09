@@ -56,10 +56,8 @@ describe('ChatInput thinking menu', () => {
     const onStop = vi.fn();
     const props = { onSend, onStop, isLoading: false, chatContext, modelId: 'mimo-v2.5', onModelChange: vi.fn() };
     const { container, getByTitle, getByRole, getByTestId, rerender } = render(<ChatInput {...props} />);
-    expect(getByTestId('thinking-menu-button')).not.toBeDisabled();
     expect(getByTitle('发送').querySelector('[data-agent-icon="arrow-up"]')).not.toBeNull();
     expect(getByTitle('添加计划、工具或技能').querySelector('[data-agent-icon="plus"]')).not.toBeNull();
-    expect(getByTitle('联网搜索（需配置搜索API）').querySelector('[data-agent-icon="globe"]')).not.toBeNull();
     fireEvent.change(getByRole('textbox'), { target: { value: '解释这一页' } });
     fireEvent.keyDown(getByRole('textbox'), { key: 'Enter' });
     expect(onSend).toHaveBeenCalledOnce();
@@ -70,84 +68,6 @@ describe('ChatInput thinking menu', () => {
     fireEvent.click(getByTitle('停止生成'));
     expect(onStop).toHaveBeenCalledOnce();
     expect(container.querySelector('.lucide')).toBeNull();
-  });
-
-  it('hides thinking menu button when the model does not support thinking', () => {
-    const { queryByTestId } = render(
-      <ChatInput
-        onSend={vi.fn()}
-        onStop={vi.fn()}
-        isLoading={false}
-        chatContext={chatContext}
-      />,
-    );
-    expect(queryByTestId('thinking-menu-button')).toBeNull();
-  });
-
-  it('shows enabled state with default effort when model supports thinking and defaultThinking is on', () => {
-    useSettings.setState({
-      selectedModelId: 'z-ai/glm-5.3-flash',
-      customApiGroups: [],
-      defaultThinking: true,
-      defaultThinkingEffort: 'high',
-    });
-    const { getByTestId } = render(
-      <ChatInput
-        onSend={vi.fn()}
-        onStop={vi.fn()}
-        isLoading={false}
-        chatContext={chatContext}
-      />,
-    );
-    const btn = getByTestId('thinking-menu-button');
-    expect(btn.getAttribute('data-enabled')).toBe('1');
-    expect(btn.getAttribute('data-effort')).toBe('high');
-    expect(btn.textContent).toContain('深度思考·High');
-  });
-
-  it.each([
-    ['DeepSeek V4.1 Flash', 'deepseek/deepseek-v4.1-flash'],
-    ['Qwen3.7 Flash', 'Qwen/Qwen3.7-Flash'],
-  ])('%s 可以真正关掉思考（七牛云支持 thinking.disabled）', (_label, modelId) => {
-    useSettings.setState({ defaultThinking: false, defaultThinkingEffort: 'medium' });
-    const onSend = vi.fn();
-    const { getByTestId, getByRole } = render(
-      <ChatInput
-        onSend={onSend}
-        onStop={vi.fn()}
-        isLoading={false}
-        chatContext={chatContext}
-        modelId={modelId}
-      />,
-    );
-    const button = getByTestId('thinking-menu-button');
-    // 旧行为是"必须开启、不给关"；现在默认关、且菜单里能开回来。
-    expect(button).toHaveAttribute('data-enabled', '0');
-    fireEvent.click(button);
-    expect(screen.getByTestId('thinking-menu-option-off')).toBeInTheDocument();
-    // 用「中」档打开思考（选项 id 就是档位名）。
-    fireEvent.click(screen.getByTestId('thinking-menu-option-medium'));
-    fireEvent.change(getByRole('textbox'), { target: { value: '解释这一页' } });
-    fireEvent.keyDown(getByRole('textbox'), { key: 'Enter' });
-    expect(onSend).toHaveBeenCalledWith('解释这一页', expect.objectContaining({ enableThinking: true }));
-  });
-
-  it('强制思考的模型（GLM）仍然不给关闭选项', () => {
-    useSettings.setState({ defaultThinking: false, defaultThinkingEffort: 'low' });
-    const { getByTestId } = render(
-      <ChatInput
-        onSend={vi.fn()}
-        onStop={vi.fn()}
-        isLoading={false}
-        chatContext={chatContext}
-        modelId="z-ai/glm-5.3-flash"
-      />,
-    );
-    const button = getByTestId('thinking-menu-button');
-    expect(button).toHaveAttribute('data-enabled', '1');
-    fireEvent.click(button);
-    expect(screen.queryByTestId('thinking-menu-option-off')).not.toBeInTheDocument();
-    expect(screen.getByText(/当前模型必须开启/)).toBeVisible();
   });
 
   it('sends effective thinkingEffort through onSend when thinking is enabled', async () => {

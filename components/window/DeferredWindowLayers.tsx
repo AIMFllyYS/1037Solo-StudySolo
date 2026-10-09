@@ -36,13 +36,14 @@ const MessageContextMenu = dynamic(() => import("@/components/shared/MessageCont
 const BillingDashboardLayer = dynamic(() => import("@/components/chat/BillingDashboard"), { ssr: false });
 const MembershipSponsorLayer = dynamic(() => import("@/components/chat/MembershipSponsorWindow"), { ssr: false });
 const ProjectFilesLayer = dynamic(() => import("@/components/project/ProjectFilesLayer"), { ssr: false });
+const TextbookLayer = dynamic(() => import("@/components/textbook/TextbookLayer"), { ssr: false });
 
-const WINDOW_BITS={quizDock:1,sourceTrace:2,sourcePreview:4,attachment:8,billing:16,membership:32,projectFiles:64} as const
+const WINDOW_BITS={quizDock:1,sourceTrace:2,sourcePreview:4,attachment:8,billing:16,membership:32,projectFiles:64,textbook:128} as const
 
 /** Static dynamic-import boundaries load only the viewer whose actual owner has an open window. */
 export default function DeferredWindowLayers() {
   const mask=useWindowManager(state=>state.windows.reduce((bits,window)=>bits|(
-    window.type==='quiz-dock'?WINDOW_BITS.quizDock:window.type==='source-trace-viewer'?WINDOW_BITS.sourceTrace:window.type==='source-preview'?WINDOW_BITS.sourcePreview:window.type==='attachment-preview'?WINDOW_BITS.attachment:window.type==='billing-dashboard'?WINDOW_BITS.billing:window.type==='membership-sponsor'?WINDOW_BITS.membership:window.type==='project-files'?WINDOW_BITS.projectFiles:0
+    window.type==='quiz-dock'?WINDOW_BITS.quizDock:window.type==='source-trace-viewer'?WINDOW_BITS.sourceTrace:window.type==='source-preview'?WINDOW_BITS.sourcePreview:window.type==='attachment-preview'?WINDOW_BITS.attachment:window.type==='billing-dashboard'?WINDOW_BITS.billing:window.type==='membership-sponsor'?WINDOW_BITS.membership:window.type==='project-files'?WINDOW_BITS.projectFiles:window.type==='textbook'?WINDOW_BITS.textbook:0
   ),0))
   const floating=useFloatingChats(state=>state.windows.length>0)
   const quizExplain=useQuizExplain(state=>state.windows.length>0)
@@ -80,6 +81,7 @@ export default function DeferredWindowLayers() {
       {mask&WINDOW_BITS.billing?<BillingDashboardLayer/>:null}
       {mask&WINDOW_BITS.membership?<MembershipSponsorLayer/>:null}
       {mask&WINDOW_BITS.projectFiles?<ProjectFilesLayer/>:null}
+      {mask&WINDOW_BITS.textbook?<TextbookLayer/>:null}
     </>
   );
 }

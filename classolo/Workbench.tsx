@@ -9,7 +9,7 @@ import {WorkbenchShell} from './components/layout/workbench-shell';
 import {ClassNoteRail} from './components/layout/class-note-rail';
 import {ClassMaterialDock} from './components/layout/class-material-dock';
 import {ensureClassChatSession} from './lib/agent/class-chat';
-import {TranscriptPane} from './features/transcript/pane';
+import {TranscriptControls,TranscriptPane} from './features/transcript/pane';
 import {NotesPane} from './features/notes/pane';
 import {ClassNotePane} from './features/notes/class-note-pane';
 import StudioAgentPanel from '@/components/layout/StudioAgentPanel';
@@ -387,8 +387,9 @@ export default function Workbench(){
       <header className="ss-class-topbar">
         <div className="ss-class-title-block">
           <p className="truncate text-[13px] font-semibold text-[color:var(--ink)]">{sessionId?(sessions.find(s=>s.id===sessionId)?.title||'课堂'):'课堂工作台'}</p>
-          <div className="ss-class-title-meta"><button onClick={()=>setShowSettings(true)} aria-label="选择课堂学科">{profile?classSubjectLabel(profile):'旧课堂 · 未分类'}</button><span aria-hidden>·</span><span>{recordingStatus==='recording'?'正在录音':recordingStatus==='paused'?'录音已暂停':getPendingCount()?'待同步':sessionId?'已保存':'等待开始'}</span></div>
+          <div className="ss-class-title-meta"><button onClick={()=>setShowSettings(true)} aria-label="选择课堂学科">{profile?classSubjectLabel(profile):'旧课堂 · 未分类'}</button>{getPendingCount()||(sessionId&&recordingStatus!=='recording'&&recordingStatus!=='paused')?<><span aria-hidden>·</span><span>{getPendingCount()?'待同步':'已保存'}</span></>:null}</div>
         </div>
+        <div className="ss-class-top-controls" data-slot="class-record-controls"><TranscriptControls enabled={capabilities?.asr!==false}/></div>
         <div className="ss-class-top-actions">
           {!isMobile&&agentCollapsed?<button className="ss-class-icon-button" aria-label="展开 Agent" title="随时提问" onClick={openClassAsk}><PanelRightOpen className="size-4"/></button>:null}
           <button type="button" className="ss-class-icon-button" aria-label="课堂操作" aria-expanded={moreOpen} title="课堂操作" onClick={()=>setMoreOpen(value=>!value)}><MoreHorizontal className="size-4"/></button>
@@ -401,7 +402,7 @@ export default function Workbench(){
       {capabilities&&!capabilities.asr&&<p className="px-3 py-1 text-[11px] text-[color:var(--ink-faint)]">语音转写服务暂未启用；可以导入已有文稿继续整理与提问。</p>}
       {showDraft&&<div className="border-b border-[color:var(--line-soft)] p-3"><textarea aria-label="已有课堂文稿" className="h-24 w-full rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--bg-app)] p-3 text-[13px] text-[color:var(--ink)] outline-none placeholder:text-[color:var(--ink-faint)]" maxLength={100000} value={draft} onChange={e=>setDraft(e.target.value)} placeholder="粘贴已有文稿，或补充课堂记录。导入后会生成提纲与补充解析。"/><div className="mt-2 flex gap-2"><button className="ss-tool" disabled={busy||!draft.trim()} onClick={()=>void importText()}>创建课堂并整理</button><button className="ss-tool" onClick={()=>{setShowDraft(false);setDraft('');}}>取消</button></div></div>}
       <div className="relative min-h-0 flex-1"><SilentAgentBoot/><WorkbenchShell chrome={false}
-        transcript={<TranscriptPane enabled={capabilities?.asr!==false} profile={profile??DEFAULT_CLASS_COURSE_PROFILE} onAddTerm={addCourseTerm}/>}
+        transcript={<TranscriptPane hideToolbar enabled={capabilities?.asr!==false} profile={profile??DEFAULT_CLASS_COURSE_PROFILE} onAddTerm={addCourseTerm}/>}
         mindmap={<NotesPane/>}
         materials={<ClassMaterialDock onAnchorClick={id=>{document.getElementById('class-transcript-panel')?.scrollIntoView({block:'nearest'});if(id)requestAnimationFrame(()=>publishCommand({type:'transcript.scrollTo',segmentId:id,source:'render'}))}}/>}
         ask={isMobile?<StudioAgentPanel chatContext={agentContext} onCollapse={()=>setMobileAskOpen(false)}/>:undefined}

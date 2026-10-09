@@ -4,8 +4,15 @@ import { sandboxAppOrigin, SandboxError } from "./config.server";
 import type { SandboxAction } from "./types";
 
 const AUTHORIZED_SCOPE = Symbol("server-owned-agent-execution");
+/**
+ * 云沙箱的「近期验证」窗口。原先沿用连接器的 10 分钟：用户每次跑沙箱都被要求重新验证身份，属于过度防御——
+ * 沙箱本身已经有登录态 + 会话归属 + 同源/来源面 + 账号变更(ACCOUNT_CHANGED)等多层校验，
+ * 且只在 Agent 主对话里可用。这里放宽为「一次登录验证 12 小时内有效」，仍保留 MFA 已登录要求；
+ * 连接器等其它高敏操作仍用默认 10 分钟。
+ */
+export const SANDBOX_RECENT_AUTH_MAX_AGE_SEC = 12 * 60 * 60;
 async function sandboxOwner(request: NextRequest, sensitive: boolean) {
-  try { return (await connectorOwner(request, sensitive)).toLowerCase(); }
+  try { return (await connectorOwner(request, sensitive, SANDBOX_RECENT_AUTH_MAX_AGE_SEC)).toLowerCase(); }
   catch (error) { if (error instanceof ConnectorError) throw new SandboxError(error.code, error.status); throw new SandboxError("ACCOUNT_UNAVAILABLE", 503); }
 }
 export interface SandboxScope { readonly owner: string; readonly conversationId: string; readonly canExecute: boolean; readonly authorizeOperation?: (action: SandboxAction) => Promise<SandboxScope>; readonly [AUTHORIZED_SCOPE]: true }

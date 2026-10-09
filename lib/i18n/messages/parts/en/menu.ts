@@ -85,6 +85,18 @@ export const menuEn = {
     },
   },
   // Composer shell: toolbar, queue, quote, placeholders, send.
+  modelEffort: {
+    selectModel: "Select model",
+    switchModel: "Switch model",
+    reset: "Reset thinking depth",
+    sliderAria: "Thinking depth",
+    back: "Back",
+    unsupported: "This model has no adjustable thinking depth",
+    fixedOn: "This model always thinks",
+    stepsAria: "{count} levels",
+    fast: "Fast mode",
+    fastUnsupported: "This model has no Fast variant",
+  },
   chatInput: {
     toolbarAria: "Chat options",
     more: "More chat options",
@@ -97,6 +109,15 @@ export const menuEn = {
       label: "Web search",
       title: "Web search (search API required)",
       hint: "Use the search API for the latest information",
+    },
+    mode: {
+      aria: "Execution mode",
+      heading: "Execution mode",
+      ask: "Ask mode",
+      askHint: "Ask for your approval before writing notes, flashcards or calling tools",
+      auto: "Full-approval mode",
+      autoHint: "Automatically run flashcards, note edits and any tool (including the cloud sandbox) without per-step confirmation",
+      autoNote: "Delete actions are still confirmed separately",
     },
     queue: {
       title: "Waiting to send",

@@ -210,6 +210,13 @@ export const en = {
       openInteractive: "View demo in the side panel",
       openImage: "View images in the side panel",
       openDocument: "View document in the side panel",
+      webSearch: "Web search · {count}",
+      materials: "Materials · {count}",
+      showMore: "Show more ({count} more)",
+      showLess: "Show less",
+      chip: "Sources & outputs · {count}",
+      collapse: "Collapse section",
+      expand: "Expand section",
     },
     citation: {
       markerAria: "Source {index}: {title}",

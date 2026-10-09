@@ -47,10 +47,11 @@ export class FullContextManager implements ContextManager {
     options?: BuildContextOptions,
   ): Promise<BuildContextResult> {
     const maxTokens = getMaxTokens(this.model, this.customGroups);
-    const outline = buildTreeSummary();
-    // Agent 的通用对话不绑定当前章节：只给课程目录（教材大纲），不注入任何页正文/摘要。
+    // Agent 的通用对话不绑定当前章节：什么都不预注入（既不带默认章节正文，也不带整本课程目录）。
+    // 它需要了解课程 / 教材结构时，自己调用 getOutline / getSection 等工具去查；
     // 引用内容由用户在输入框里显式注入（引用笔记 / 附件），不靠「默认打开的那一页」。
     const pageBound = isPageBoundContext(chatContext);
+    const outline = pageBound ? buildTreeSummary() : "";
     const pageContent = pageBound
       ? readContentMarkdown(chatContext.subjectId, chatContext.categoryId, chatContext.itemId)
       : null;

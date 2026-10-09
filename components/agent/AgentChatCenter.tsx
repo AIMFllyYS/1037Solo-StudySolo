@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
+import { Link2 } from "lucide-react";
+import { useT } from "@/lib/i18n";
 import ChatPanel from "@/components/chat/ChatPanel";
 import AgentLinksPane from "@/components/agent/AgentLinksPane";
 import AgentImagesPane from "@/components/agent/AgentImagesPane";
@@ -50,6 +52,7 @@ function mergeRounds(older: SourceRound[], current: SourceRound[], offset: numbe
  * 卸载再挂载会让 SelectionPopover 错过新节点，Agent 里就再也选不中文字（见 ChatPanel 注释）。
  */
 export default function AgentChatCenter() {
+  const t = useT();
   const chatContext = useAgentChatContext();
   const centerTab = useAgentCenter((state) => state.centerTab);
   const sourcesPanelOpen = useAgentCenter((state) => state.sourcesPanelOpen);
@@ -73,15 +76,24 @@ export default function AgentChatCenter() {
    */
   const sourcesWidth = useAgentCenter((state) => state.sourcesPanelSize.width);
 
+  const hasRailContent = totals.sources > 0 || totals.products > 0;
   const showSourcesPanel =
-    !isMobile && dockCollapsed && sourcesPanelOpen && centerTab === "answer" && (totals.sources > 0 || totals.products > 0);
-  const wantsSummary = centerTab === "links" || centerTab === "images" || showSourcesPanel;
+    !isMobile && dockCollapsed && sourcesPanelOpen && centerTab === "answer" && hasRailContent;
+  /**
+   * 右侧工作区默认展开后，中央只剩窄窄一列，放不下整列来源——这正是「来源面板看不到了」的原因
+   * （旧逻辑要求右栏收起才显示）。现在右栏展开时改为：对话区右上角一枚「来源与产物 · N」小标签，
+   * 点开浮出同一块折叠面板（不占宽度，不压正文）。
+   */
+  const canFloat = !isMobile && !dockCollapsed && centerTab === "answer" && hasRailContent;
+  const [floatOpen, setFloatOpen] = useState(false);
+  const showFloating = canFloat && floatOpen;
+  const wantsSummary = centerTab === "links" || centerTab === "images" || showSourcesPanel || showFloating;
   const visibleSummary = wantsSummary && summary?.sessionId === activeSessionId ? summary : null;
 
   // 明细清单只在对应视图开着时才扫消息：流式期 messages 每 tick 换新引用，
   // 三个 hook 无条件扫 = 每 tick 全量税（d2-P1-3）。开关用 spine 合计驱动，不吃这套扫描。
-  const currentSources = useSessionSourceRounds(undefined, centerTab === "links" || showSourcesPanel);
-  const currentProducts = useSessionProducts(undefined, showSourcesPanel);
+  const currentSources = useSessionSourceRounds(undefined, centerTab === "links" || showSourcesPanel || showFloating);
+  const currentProducts = useSessionProducts(undefined, showSourcesPanel || showFloating);
   const currentImages = useSessionImages(centerTab === "images");
 
   useEffect(() => {
@@ -139,6 +151,21 @@ export default function AgentChatCenter() {
         </div>
         {centerTab === "links" ? <AgentLinksPane rounds={rounds} sources={sources} sessionId={activeSessionId} unknownTools={visibleSummary?.unknownToolRefs} /> : null}
         {centerTab === "images" ? <AgentImagesPane images={images} /> : null}
+        {canFloat ? (
+          <button
+            type="button"
+            data-testid="agent-sources-chip"
+            aria-pressed={floatOpen}
+            onClick={() => setFloatOpen((open) => !open)}
+            className="press absolute right-3 top-2 z-20 flex h-7 items-center gap-1.5 rounded-full border border-[var(--line-soft)] bg-[var(--bg-panel)] px-2.5 text-[11.5px] text-[var(--ink-soft)] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:border-[var(--accent)] hover:text-[var(--ink)]"
+          >
+            <Link2 size={12} className="text-[var(--accent)]" />
+            {t("agent.rail.chip", { count: totals.sources + totals.products })}
+          </button>
+        ) : null}
+        {canFloat ? (
+          <AgentSourcePanel floating sessionId={activeSessionId} rounds={rounds} sources={sources} products={products} open={showFloating} />
+        ) : null}
       </div>
       {/* 常驻（不是条件渲染）：宽度过渡才能跑起来，见 AgentSourcePanel 的 open。 */}
       <AgentSourcePanel sessionId={activeSessionId} rounds={rounds} sources={sources} products={products} open={showSourcesPanel} />

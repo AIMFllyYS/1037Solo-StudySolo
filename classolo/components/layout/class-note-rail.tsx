@@ -1,11 +1,43 @@
 'use client'
 
 import {useEffect,useMemo,useRef,useState,type ReactNode} from 'react'
-import {ArrowLeftRight,ChevronLeft,ChevronRight,Lightbulb,MessageCircleQuestion,NotebookPen,RefreshCw,Sparkles} from 'lucide-react'
+import {ArrowLeftRight,ChevronLeft,ChevronRight,Lightbulb,MessageCircleQuestion,NotebookPen,RefreshCw,Shapes} from 'lucide-react'
 import {useNotesPublic,useRenderProjection,useTranscriptPublic} from '@/classolo/lib/session'
 import {RenderHost} from '@/classolo/features/render-modules/host'
 import {generateClassQuestion} from '@/classolo/features/agent/class-question'
 import {generateClassVisual} from '@/classolo/features/agent/class-visual'
+
+const THINKING_MIN=84,QUESTION_MIN=140,NOTE_MIN=120
+
+/** 可上下拖拽改高度的区段：高度存 localStorage，上拖变高、下拖变矮；键盘 ↑/↓ 微调。 */
+function useRailHeight(key:string,initial:number,min:number){
+  const [height,setHeight]=useState(initial),latest=useRef(initial)
+  useEffect(()=>{
+    try{const saved=Number(window.localStorage.getItem(key));if(Number.isFinite(saved)&&saved>=min&&saved<=900){latest.current=saved;setHeight(saved)}}catch{/* ignore */}
+  },[key,min])
+  const set=(next:number)=>{latest.current=next;setHeight(next)}
+  const commit=()=>{try{window.localStorage.setItem(key,String(latest.current))}catch{/* ignore */}}
+  return {height,setHeight:set,commit}
+}
+
+function RailGrip({label,height,min,max,onResize,onCommit}:{label:string;height:number;min:number;max:()=>number;onResize:(next:number)=>void;onCommit:()=>void}){
+  const clamp=(value:number)=>Math.round(Math.min(Math.max(min,max()),Math.max(min,value)))
+  return <div
+    role="separator" aria-orientation="horizontal" aria-label={label} aria-valuenow={height} aria-valuemin={min} tabIndex={0}
+    className="ss-class-rail-grip"
+    onPointerDown={event=>{
+      event.preventDefault()
+      const startY=event.clientY,startHeight=height
+      const move=(e:PointerEvent)=>onResize(clamp(startHeight-(e.clientY-startY)))
+      const end=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',end);window.removeEventListener('pointercancel',end);onCommit()}
+      window.addEventListener('pointermove',move);window.addEventListener('pointerup',end);window.addEventListener('pointercancel',end)
+    }}
+    onKeyDown={event=>{
+      if(event.key!=='ArrowUp'&&event.key!=='ArrowDown')return
+      event.preventDefault();onResize(clamp(height+(event.key==='ArrowUp'?16:-16)));onCommit()
+    }}
+  ><span/></div>
+}
 
 export function ClassNoteRail({note,collapsed,onToggle,onFlip,onAsk}:{note:ReactNode;collapsed:boolean;onToggle:()=>void;onFlip:()=>void;onAsk:()=>void}){
   const projection=useRenderProjection(state=>state.byId)
@@ -23,6 +55,10 @@ export function ClassNoteRail({note,collapsed,onToggle,onFlip,onAsk}:{note:React
     return out
   },{questions:0,thinking:0}),[projection])
   const [working,setWorking]=useState(false),[error,setError]=useState('')
+  const asideRef=useRef<HTMLElement>(null)
+  const thinking=useRailHeight('studysolo-class-thinking-h',130,THINKING_MIN),question=useRailHeight('studysolo-class-question-h',220,QUESTION_MIN)
+  /** 另一区段占掉的高度 + 笔记区最小高度 + 页眉后，剩下的就是当前区段能长到的上限。 */
+  const maxFor=(otherHeight:number)=>(asideRef.current?.clientHeight??720)-otherHeight-NOTE_MIN-48
   const [visualWorking,setVisualWorking]=useState(false),[visualError,setVisualError]=useState('')
   const attempted=useRef<string|null>(null)
   const askForQuestion=()=>{
@@ -43,14 +79,16 @@ export function ClassNoteRail({note,collapsed,onToggle,onFlip,onAsk}:{note:React
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[collapsed,sessionId,segments,counts.questions])
   if(collapsed)return <aside data-slot="class-note-rail" className="ss-class-side-rail is-collapsed"><div className="flex h-full flex-col items-center gap-2 py-3"><button type="button" aria-label="展开笔记侧栏" onClick={onToggle}><ChevronRight className="size-4"/></button><button type="button" aria-label="切换到课堂列表" onClick={onFlip}><ArrowLeftRight className="size-4"/></button><button type="button" aria-label="向课堂助教提问" className="mt-auto" onClick={onAsk}><MessageCircleQuestion className="size-4"/></button></div></aside>
-  return <aside data-slot="class-note-rail" className="ss-class-side-rail flex h-full min-h-0 flex-col">
+  return <aside ref={asideRef} data-slot="class-note-rail" className="ss-class-side-rail flex h-full min-h-0 flex-col">
     <header className="ss-class-side-head"><span className="ss-class-side-kicker"><NotebookPen className="size-3.5"/> AI 课堂笔记</span><button type="button" aria-label="切换到课堂列表" title="切换到课堂列表" onClick={onFlip}><ArrowLeftRight className="size-3.5"/></button><button type="button" aria-label="收起笔记侧栏" onClick={onToggle}><ChevronLeft className="size-3.5"/></button></header>
-    <div className="min-h-0 flex-1 overflow-hidden">{note}</div>
-    <section className="ss-class-thinking-rail" aria-label="课堂思考引导">
-      <div className="ss-class-side-subhead"><Lightbulb className="size-3.5"/> 思考引导 <button type="button" className="ss-class-icon-button ml-auto" aria-label="生成可视化说明" title="生成可视化说明" disabled={visualWorking||!segments} onClick={drawVisual}><Sparkles className={`size-3 ${visualWorking?'animate-pulse':''}`}/></button><button type="button" className="ss-tool" onClick={onAsk}>追问助教</button></div>
+    <div className="min-h-[120px] flex-1 overflow-hidden">{note}</div>
+    <section className="ss-class-thinking-rail" aria-label="课堂思考引导" style={{height:thinking.height,maxHeight:'none',minHeight:THINKING_MIN}}>
+      <RailGrip label="调整思考引导高度" height={thinking.height} min={THINKING_MIN} max={()=>maxFor(question.height)} onResize={thinking.setHeight} onCommit={thinking.commit}/>
+      <div className="ss-class-side-subhead"><Lightbulb className="size-3.5"/> 思考引导 <span className="ss-class-subhead-actions"><button type="button" className="ss-class-icon-button" aria-label="生成可视化说明" title="生成可视化说明" disabled={visualWorking||!segments} onClick={drawVisual}><Shapes className={`size-3 ${visualWorking?'animate-pulse':''}`}/></button><button type="button" className="ss-tool" onClick={onAsk}>追问助教</button></span></div>
       <div className="ss-class-thinking-body">{counts.thinking?<RenderHost target="notes" modules={['rich-text','gen-ui','agent-status']} compact limit={1}/>:<p>{thinkingCue??'课堂开始后，这里会出现关联概念的思考提示。'}</p>}{visualWorking&&<p role="status" className="mt-1">正在绘制课堂示意图…</p>}{visualError&&<p role="alert" className="mt-1 text-[color:var(--md-sys-color-error)]">{visualError}</p>}</div>
     </section>
-    <section className="ss-class-question-rail" aria-label="随堂提问与答案">
+    <section className="ss-class-question-rail" aria-label="随堂提问与答案" style={{height:question.height,maxHeight:'none',minHeight:QUESTION_MIN}}>
+      <RailGrip label="调整随堂提问高度" height={question.height} min={QUESTION_MIN} max={()=>maxFor(thinking.height)} onResize={question.setHeight} onCommit={question.commit}/>
       <div className="ss-class-side-subhead"><MessageCircleQuestion className="size-3.5"/> 随堂提问 <span>{counts.questions} 题</span><button type="button" className="ss-class-icon-button" aria-label="生成下一题" title="生成下一题" disabled={working||!segments} onClick={askForQuestion}><RefreshCw className={`size-3 ${working?'animate-spin':''}`}/></button></div>
       <div className="ss-class-question-body">{counts.questions?<RenderHost target="transcript" modules={['ai-ask']} compact limit={1}/>:<p>{working?'正在根据本课文稿出题…':'有了课堂文稿后，AI 会提出第一道可核对的理解题。'}</p>}{error&&<p role="alert" className="mt-2 text-[color:var(--md-sys-color-error)]">{error}</p>}</div>
     </section>
