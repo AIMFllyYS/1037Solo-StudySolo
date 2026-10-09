@@ -1,6 +1,6 @@
 # 网站自定义模型连接边界
 
-网站服务的自定义模型调用现在先解析所有 DNS 地址，再将已验证的公网地址固定给请求 socket；Host 和 TLS 身份仍对应原模型主机。混合公网／私网结果、元数据地址、VPN fake-DNS 网段和非全球用途的特殊地址全部拒绝。IPv6 特殊网段依据 [IANA 特殊用途注册表](https://www.iana.org/assignments/iana-ipv6-special-registry) 与[地址空间注册表](https://www.iana.org/assignments/ipv6-address-space)核对，保留合法公网 IPv4、IPv6 和指向公网 IPv4 的通用 NAT64 地址。
+网站服务的自定义模型调用现在先解析所有 DNS 地址，再将已验证的公网地址固定给请求 socket；Host 和 TLS 身份仍对应原模型主机。混合公网／私网结果、元数据地址、VPN fake-DNS 网段和非全球用途的特殊地址全部拒绝。仅当系统解析的**全部**答案都落在 `198.18.0.0/15` 时，才改走 DNS-over-HTTPS（先 `dns.google`，失败再 `cloudflare-dns.com`）取 A 记录，结果仍须通过同一套公网校验并钉死到 socket；DoH 失败则维持原拒绝。可用 `STUDYSOLO_DOH_FAKE_DNS_FALLBACK=false` 关闭该回退。IPv6 特殊网段依据 [IANA 特殊用途注册表](https://www.iana.org/assignments/iana-ipv6-special-registry) 与[地址空间注册表](https://www.iana.org/assignments/ipv6-address-space)核对，保留合法公网 IPv4、IPv6 和指向公网 IPv4 的通用 NAT64 地址。
 
 调用固定在该配置的 origin，不跟随重定向，也不接受带用户名／密码的 URL；用户 API 密钥仍发给原来的模型服务。自定义 Host 与 Proxy-Authorization 被移除，TLS 验证显式启用。响应按字节流转发，不改写文本或完成信号；20MiB 上限、原超时和取消信号限制传输，结束／取消时释放 reader 和 dispatcher。预检未发出请求的拒绝会给出明确网络错误，并可按既有计费规则取消预留。
 

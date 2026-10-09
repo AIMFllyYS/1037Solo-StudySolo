@@ -1,8 +1,8 @@
-import dns from "node:dns";
+import type { LookupAddress } from "node:dns";
 import { isIP } from "node:net";
 import { Agent } from "undici";
 import { checkCustomBaseUrl } from "@/lib/ai/customBaseUrl";
-import { createPinnedProbeLookup, type ProbeResolver } from "@/lib/browser/probeNetwork.server";
+import { createPinnedProbeLookup, resolveProbeAddresses, type ProbeResolver } from "@/lib/browser/probeNetwork.server";
 
 export class PublicModelEndpointError extends Error {
   readonly code = "CUSTOM_PROVIDER_NETWORK_UNSAFE";
@@ -12,13 +12,11 @@ export class PublicModelEndpointError extends Error {
   constructor() { super("自定义模型地址未通过公网连接校验"); this.name = "PublicModelEndpointError"; }
 }
 
-const resolveAddresses: ProbeResolver = hostname => dns.promises.lookup(hostname, { all: true, verbatim: true });
-
 /** Only user-configured website endpoints use this transport; operator URLs stay separate. */
 export function createPublicModelFetch(
   baseUrl: string,
   timeoutMs: number,
-  resolver: ProbeResolver = resolveAddresses,
+  resolver: ProbeResolver = resolveProbeAddresses,
   fetchImplementation: typeof fetch = (input, init) => globalThis.fetch(input, init),
 ): typeof fetch {
   const expected = new URL(baseUrl).origin;
@@ -32,7 +30,7 @@ export function createPublicModelFetch(
       signal.throwIfAborted();
       if (url.origin !== expected || url.username || url.password || !checkCustomBaseUrl(url.href).ok) throw new PublicModelEndpointError();
       const version = isIP(hostname);
-      const answers = version ? [{ address: hostname, family: version }] : await new Promise<dns.LookupAddress[]>((resolve, reject) => {
+      const answers = version ? [{ address: hostname, family: version }] : await new Promise<LookupAddress[]>((resolve, reject) => {
         const abort = () => reject(new PublicModelEndpointError());
         signal.addEventListener("abort", abort, { once: true });
         resolver(hostname).then(resolve, reject).finally(() => signal.removeEventListener("abort", abort));

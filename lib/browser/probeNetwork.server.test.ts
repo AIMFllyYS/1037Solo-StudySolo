@@ -1,7 +1,16 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import type { LookupAddress, LookupOptions } from "node:dns";
-import { BlockedProbeNetworkError, createPinnedProbeLookup, fetchProbeHeaders, isPublicProbeAddress } from "./probeNetwork.server";
+import {
+  BlockedProbeNetworkError,
+  createPinnedProbeLookup,
+  dohFakeDnsFallbackEnabled,
+  fetchProbeHeaders,
+  isFakeDnsAnswerSet,
+  isPublicProbeAddress,
+  resolveViaDoh,
+  withFakeDnsFallback,
+} from "./probeNetwork.server";
 
 test("probe addresses reject private, metadata, reserved and embedded private IPv4", () => {
   for (const address of ["127.0.0.1", "10.0.0.1", "169.254.169.254", "100.64.0.1",
@@ -66,4 +75,81 @@ test("aborted DNS resolution cannot dispatch a later answer", async t => {
   resolveDns([{ address: "8.8.8.8", family: 4 }]);
   await Promise.resolve();
   assert.equal(fetchMock.mock.calls.length, 0);
+});
+
+test("fake-DNS answers alone are re-resolved over DoH; mixed or public answers are untouched", async t => {
+  const logs: string[] = [];
+  t.mock.method(console, "warn", (...args: unknown[]) => { logs.push(args.join(" ")); });
+  const fake = async () => [{ address: "198.18.0.1", family: 4 }];
+  let dohCalls = 0;
+  const doh = async () => { dohCalls += 1; return [{ address: "3.173.21.63", family: 4 }]; };
+  assert.equal(isFakeDnsAnswerSet([{ address: "198.19.255.1", family: 4 }]), true);
+  assert.equal(isFakeDnsAnswerSet([{ address: "198.18.0.1", family: 4 }, { address: "10.0.0.1", family: 4 }]), false);
+  assert.deepEqual(await withFakeDnsFallback(fake, doh)("api.example"), [{ address: "3.173.21.63", family: 4 }]);
+  for (const answers of [
+    [{ address: "10.0.0.1", family: 4 }],
+    [{ address: "198.18.0.1", family: 4 }, { address: "127.0.0.1", family: 4 }],
+    [{ address: "198.18.0.1", family: 4 }, { address: "8.8.8.8", family: 4 }],
+    [{ address: "8.8.8.8", family: 4 }],
+  ]) {
+    assert.deepEqual(await withFakeDnsFallback(async () => answers, doh)("api.example"), answers);
+  }
+  assert.equal(dohCalls, 1);
+  assert.doesNotThrow(() => createPinnedProbeLookup("api.example", [{ address: "3.173.21.63", family: 4 }]));
+  assert.match(logs.join("\n"), /fake-dns-doh-fallback/);
+});
+
+test("DoH fallback never bypasses validation and keeps the rejected answer on failure", async t => {
+  const logs: string[] = [];
+  t.mock.method(console, "warn", (...args: unknown[]) => { logs.push(args.join(" ")); });
+  const fake = [{ address: "198.18.0.1", family: 4 }];
+  for (const blocked of ["127.0.0.1", "10.0.0.1", "169.254.169.254", "192.168.1.1", "198.18.0.2"]) {
+    const answers = await withFakeDnsFallback(async () => fake, async () => [{ address: blocked, family: 4 }])("api.example");
+    assert.throws(() => createPinnedProbeLookup("api.example", answers), BlockedProbeNetworkError, blocked);
+  }
+  const failed = await withFakeDnsFallback(async () => fake, async () => { throw new Error("offline"); })("api.example");
+  assert.deepEqual(failed, fake);
+  assert.throws(() => createPinnedProbeLookup("api.example", failed), BlockedProbeNetworkError);
+  assert.match(logs.join("\n"), /fake-dns-doh-failed/);
+});
+
+test("DoH parser keeps only A records, tries Cloudflare after Google, and rejects empty or failed answers", async () => {
+  const reply = (body: unknown, status = 200) => async () => Response.json(body, { status });
+  assert.deepEqual(await resolveViaDoh("api.example", reply({
+    Status: 0,
+    Answer: [{ type: 5, data: "alias.example." }, { type: 1, data: "3.173.21.63" }, { type: 1, data: "not-ip" }],
+  })), [{ address: "3.173.21.63", family: 4 }]);
+  await assert.rejects(resolveViaDoh("api.example", reply({ Status: 3 })));
+  await assert.rejects(resolveViaDoh("api.example", reply({ Status: 0, Answer: [{ type: 5, data: "alias.example." }] })));
+  await assert.rejects(resolveViaDoh("api.example", reply({}, 502)));
+
+  const calls: string[] = [];
+  const failover = async (input: RequestInfo | URL, init?: RequestInit) => {
+    calls.push(String(input));
+    assert.equal(init?.redirect, "error");
+    assert.equal(new Headers(init?.headers).get("accept"), "application/dns-json");
+    if (String(input).includes("dns.google")) return new Response("no", { status: 502 });
+    return Response.json({ Status: 0, Answer: [{ type: 1, data: "1.1.1.1" }] });
+  };
+  assert.deepEqual(await resolveViaDoh("api.example", failover), [{ address: "1.1.1.1", family: 4 }]);
+  assert.equal(calls.length, 2);
+  assert.match(calls[0], /dns\.google/);
+  assert.match(calls[1], /cloudflare-dns\.com/);
+});
+
+test("STUDYSOLO_DOH_FAKE_DNS_FALLBACK can disable the fallback without weakening pinned checks", async () => {
+  assert.equal(dohFakeDnsFallbackEnabled(undefined), true);
+  assert.equal(dohFakeDnsFallbackEnabled("true"), true);
+  assert.equal(dohFakeDnsFallbackEnabled("false"), false);
+  assert.equal(dohFakeDnsFallbackEnabled("0"), false);
+  assert.equal(dohFakeDnsFallbackEnabled("off"), false);
+  let dohCalls = 0;
+  const fake = [{ address: "198.18.0.1", family: 4 }];
+  const result = await withFakeDnsFallback(async () => fake, async () => {
+    dohCalls += 1;
+    return [{ address: "8.8.8.8", family: 4 }];
+  }, () => false)("api.example");
+  assert.deepEqual(result, fake);
+  assert.equal(dohCalls, 0);
+  assert.throws(() => createPinnedProbeLookup("api.example", result), BlockedProbeNetworkError);
 });
