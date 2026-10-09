@@ -138,11 +138,11 @@ test("DoH parser keeps only A records, tries Cloudflare after Google, and reject
 });
 
 test("STUDYSOLO_DOH_FAKE_DNS_FALLBACK can disable the fallback without weakening pinned checks", async () => {
-  assert.equal(dohFakeDnsFallbackEnabled({}), true);
-  assert.equal(dohFakeDnsFallbackEnabled({ STUDYSOLO_DOH_FAKE_DNS_FALLBACK: "true" }), true);
-  assert.equal(dohFakeDnsFallbackEnabled({ STUDYSOLO_DOH_FAKE_DNS_FALLBACK: "false" }), false);
-  assert.equal(dohFakeDnsFallbackEnabled({ STUDYSOLO_DOH_FAKE_DNS_FALLBACK: "0" }), false);
-  assert.equal(dohFakeDnsFallbackEnabled({ STUDYSOLO_DOH_FAKE_DNS_FALLBACK: "off" }), false);
+  assert.equal(dohFakeDnsFallbackEnabled(undefined), true);
+  assert.equal(dohFakeDnsFallbackEnabled("true"), true);
+  assert.equal(dohFakeDnsFallbackEnabled("false"), false);
+  assert.equal(dohFakeDnsFallbackEnabled("0"), false);
+  assert.equal(dohFakeDnsFallbackEnabled("off"), false);
   let dohCalls = 0;
   const fake = [{ address: "198.18.0.1", family: 4 }];
   const result = await withFakeDnsFallback(async () => fake, async () => {

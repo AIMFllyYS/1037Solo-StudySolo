@@ -44,8 +44,8 @@ export function isFakeDnsAnswerSet(answers: LookupAddress[]): boolean {
   return answers.length > 0 && answers.every(answer => isIP(answer.address) === 4 && FAKE_DNS.check(answer.address, "ipv4"));
 }
 
-export function dohFakeDnsFallbackEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
-  const raw = env.STUDYSOLO_DOH_FAKE_DNS_FALLBACK?.trim().toLowerCase();
+export function dohFakeDnsFallbackEnabled(flag: string | undefined = process.env.STUDYSOLO_DOH_FAKE_DNS_FALLBACK): boolean {
+  const raw = flag?.trim().toLowerCase();
   return raw !== "0" && raw !== "false" && raw !== "off";
 }
 

@@ -16,7 +16,8 @@ test("custom model DNS rejects private, mixed, fake DNS and metadata addresses b
   }
 });
 
-test("fake-DNS-only custom providers are pinned to a public DoH answer before HTTP", async () => {
+test("fake-DNS-only custom providers are pinned to a public DoH answer before HTTP", async t => {
+  t.mock.method(console, "warn", () => {});
   let requested = false;
   const fetcher = createPublicModelFetch(
     "https://model.example/v1",
