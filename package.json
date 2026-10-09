@@ -4,6 +4,7 @@
   "private": true,
   "description": "StudySolo · 多学科辅助学习应用",
   "author": "Gailvlun",
+  "license": "PolyForm-Noncommercial-1.0.0",
   "main": "electron/main.js",
   "scripts": {
     "sandbox:reap": "node --import tsx scripts/sandbox/reap.ts",
