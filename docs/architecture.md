@@ -25,6 +25,8 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 复习进度 API 的 Next 路由只声明运行/缓存契约并导出 GET/POST。`lib/review-mode/progress/server/` 将 request 适配、origin/账户绑定、schema/字节限制、快照/评分转换、仓库读写与错误映射分离；原字段、private/no-store 响应、限流、幂等与 CAS 规则保留。
 
+对应客户端 `progressSync.ts` 负责调度、恢复与账户生命周期；`progress/client/` 分离 HTTP/owner binding、attempt 模型转换、checkpoint 本机队列、同步事件、成绩投影和用户主动的旧记录导入。旧历史导入仍需直接用户动作，水合不会自动接管无归属记录。
+
 ## AI 调用路径
 
 输入器和 `lib/hooks/useChat*` 使用既有 UIMessage 流协议，经 `/api/chat`（`/api/agent/chat` 有对应入口）进入请求校验、上下文/文件恢复、模型解析、身份及额度检查、`ToolLoopAgent` 和流输出。

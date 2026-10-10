@@ -72,6 +72,7 @@
 - R3d 历史 store：966 行原 store（DTO 提取后约 930 行）拆为 135 行组合/账户生命周期入口、完整类型、manifest 门控、window residency，以及窗口/会话/消息/项目四组 action，最大子模块 178 行。维持同一 set/get、所有者重置、lease 和资源预算。58 项相关 node 检查、35 项 owner/传输/来源/导出 React 检查、全量类型和定向 lint 通过。传输测试本来模拟 IndexedDB 可用，补齐其直接 Blob checkpoint 的 setItemNow 模拟，避免未登录测试环境抛出未处理写失败；真实存储失败规则未改写。
 - R3e 设置：856 行设置 store 拆为约 60 行组合/水合入口、纯类型/default、305 行独立持久化/密钥生命周期，以及 API 分组与偏好动作。IO 通过注入 raw setter 和 hydrate 回调报告失败，不反向依赖 store；原 key、恢复保护、秘密编解码、desktop bridge 和加性水合规则不变。15 项配置/密钥 node 检查、30 项水合/持久化/模型/Fast React 检查、全量类型及定向 lint 通过。
 - R3f 复习 API：678 行 progress 路由拆为 4 行 Next 适配器与 server 域的认证、限制、schema、快照/评分、repository、错误映射和 GET/POST handler；最大模块约 210 行。结合官方 Route Handler 与 server/client 边界文档，保留 runtime/dynamic、origin、Account owner、请求/响应限额、静态题库一致性、幂等/CAS 和 desktop bridge。11 项 API 行为回归、全量类型、定向 lint 和 diff 检查通过。
+- R3g 复习客户端同步：766 行文件拆为 425 行队列/调度/恢复/账户入口，以及 HTTP、attempt 转换、checkpoint、事件、成绩投影和主动 legacy 导入，最大子模块 141 行。保持 CAS ACK 不回退新答案、分页不完整状态、幂等、冲突恢复及旧无归属历史必须人工触发导入。7 项相关行为检查、全量类型、定向 lint 和 diff 检查通过。
 
 ## 局部阻塞
 
