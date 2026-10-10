@@ -70,6 +70,7 @@
 - R3b 同步：将 1324 行 engine 拆为 740 行左右的协议/队列所有者、283 行 Zustand/持久化 adapter、载荷转换、额度快照、远端应用和共享 ownership。远端应用只通过 live stores getter、dirty 判断、基线读取与 merge 通知取得执行策略，不反向依赖 engine；保留原账户 epoch、CAS、待提交删除、冲突副本、额度与重试规则。44 项 node 同步检查、4 项版本/journal React 检查、全量类型和定向 lint 通过。
 - R3c 聊天存储：1188 行混合文件拆为纯协议/键、manifest、Blob、legacy migration、保守 GC 和 619 行 session checkpoint engine；原公开函数、key、checkpoint 注入对象、写队列与恢复规则保留。ChatSession/窗口 DTO 移到 `lib/chat/sessionTypes.ts`，store 继续转出旧类型入口。64 项存储/历史/同步 node 检查、20 项来源/owner/导出 React 检查、全量类型、定向 lint、Node ESM 命名导入及 checkpoint seam 检查通过。
 - R3d 历史 store：966 行原 store（DTO 提取后约 930 行）拆为 135 行组合/账户生命周期入口、完整类型、manifest 门控、window residency，以及窗口/会话/消息/项目四组 action，最大子模块 178 行。维持同一 set/get、所有者重置、lease 和资源预算。58 项相关 node 检查、35 项 owner/传输/来源/导出 React 检查、全量类型和定向 lint 通过。传输测试本来模拟 IndexedDB 可用，补齐其直接 Blob checkpoint 的 setItemNow 模拟，避免未登录测试环境抛出未处理写失败；真实存储失败规则未改写。
+- R3e 设置：856 行设置 store 拆为约 60 行组合/水合入口、纯类型/default、305 行独立持久化/密钥生命周期，以及 API 分组与偏好动作。IO 通过注入 raw setter 和 hydrate 回调报告失败，不反向依赖 store；原 key、恢复保护、秘密编解码、desktop bridge 和加性水合规则不变。15 项配置/密钥 node 检查、30 项水合/持久化/模型/Fast React 检查、全量类型及定向 lint 通过。
 
 ## 局部阻塞
 

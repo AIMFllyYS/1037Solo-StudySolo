@@ -36,6 +36,7 @@ Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 
 - `lib/stores/` 持有界面和用户领域的 Zustand 状态；`lib/hooks/` 提供 React 适配与生命周期。
 - 聊天历史仍只有一个 `useChatHistory` store。其入口组合窗口、会话、消息和项目四组 action；`chatHistory/stateTypes.ts` 定义完整接口，`manifest.ts` 统一元数据写入门控，`windowRuntime.ts` 维护驻留估算、lease、spine 与预算。账户变更、bootstrap 和 cloud-window 接入仍在组合入口，所有动作共享同一 set/get，不另建平行权威状态。
 - 小型偏好存储于 localStorage；账户用户数据按所有者作用域进入 IndexedDB。实际 key、DB 与迁移由 `lib/storage/` 管理。
+- `lib/stores/settings.ts` 只组合一个设置 store 与水合门控；`settings/types.ts` / `defaults.ts` 定义契约和默认配置，`persistence.ts` 独占本机记录、备份保护与密钥恢复，`apiActions.ts` / `preferenceActions.ts` 使用相同 set/get 和保存回调。磁盘 key、Web 密钥编解码和 Electron bridge 格式沿用旧契约。
 - 聊天 manifest、v3 head/chunks、turn spine、窗口物化、lease、CAS checkpoint、附件和故障恢复分别有契约；载入尾部窗口不意味着导出或同步可以只发送尾部。
 - `lib/storage/chatStorage.ts` 保留原调用入口；内部 `types.ts` / `keys.ts` 定义协议和键，`manifest.ts` 维护项目/会话元数据，`blobs.ts` 管理附件字节，`legacyMigration.ts` 迁移旧格式，`gc.ts` 保守清理，`sessionStore.ts` 独占分块、写队列、checkpoint 与恢复状态。`lib/chat/sessionTypes.ts` 提供 store 与 storage 共用的纯会话 DTO；导入类型不会触发 React hook 或 store 初始化。
 - `lib/sync/engine.ts` 持有 sync intent/journal 的执行生命周期、队列、重试和版本基线。`stores.ts` 适配 Zustand 与持久化，`storeAdapterTypes.ts` 定义注入契约，`payloadReaders.ts` 转换完整本机载荷，`quotaSnapshot.ts` 持有额度字节快照，`remoteApply.ts` 通过窄策略接口应用远端版本，`ownership.ts` 共享所有者/epoch 判据。网络状态不是 UI 数据的第二份权威来源，额度快照重置仍由引擎账户生命周期控制。
