@@ -38,7 +38,9 @@ import {
   clampThinkingEffort,
 } from '@/lib/ai/models';
 import ModelMenu from '@/components/chat/ModelMenu';
+import AnchoredMenu from '@/components/ui/AnchoredMenu';
 import AgentModeMenu from '@/components/chat/composer/AgentModeMenu';
+import { MoreHorizontal } from 'lucide-react';
 import InputLimitDialog from '@/components/chat/InputLimitDialog';
 import TokenDashboard from '@/components/chat/TokenDashboard';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
@@ -572,6 +574,23 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
       )}
 
       <div className="chat-input-toolbar" aria-label={t('menu.chatInput.toolbarAria')}>
+        {showProjectPicker || showAgentModeMenu ? (
+          <AnchoredMenu
+            label={t('menu.chatInput.more')}
+            placement="top"
+            width={240}
+            disabled={inputDisabled}
+            className="chat-input-more"
+            testId="chat-input-more"
+            trigger={<MoreHorizontal size={15} aria-hidden />}
+          >
+            {() => (
+              <div className="chat-input-more-panel">
+                <AgentModeMenu disabled={inputDisabled} />
+              </div>
+            )}
+          </AnchoredMenu>
+        ) : null}
         <div className="chat-input-toolbar-group chat-input-toolbar-options">
           {showProjectPicker || showAgentModeMenu ? <AgentModeMenu disabled={inputDisabled} /> : null}
         </div>

@@ -1787,6 +1787,10 @@
     opacity 90ms var(--ease-out),
     visibility 0s linear 140ms;
 }
+.chat-input-more-panel {
+  display: flex;
+  padding: 4px;
+}
 .chat-input-more-dot {
   position: absolute;
   inset-block-start: 3px;
