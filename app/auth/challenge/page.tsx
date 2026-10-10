@@ -1,6 +1,6 @@
 "use client";
 import {useEffect,useState} from 'react';
-import {redirectAccount} from '@/lib/auth/account';
+import {redirectAccount} from '@/lib/auth/browser/account';
 export default function ChallengePage(){
  const [factors,setFactors]=useState<Array<{id:string;name:string}>>([]);const [factor,setFactor]=useState('');const [code,setCode]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
  useEffect(()=>{let active=true;void fetch('/api/account/mfa',{credentials:'include'}).then(async response=>{const body=await response.json();if(!response.ok)throw new Error(body.error);if(active){setFactors(body.factors);setFactor(body.factors[0]?.id||'');}}).catch(e=>{if(active)setError(e instanceof Error?e.message:'无法读取验证器');});return()=>{active=false;};},[]);

@@ -1,4 +1,4 @@
-import { withPaidRequest } from "@/lib/billing/paidRequest";
+import { withPaidRequest } from "@/lib/billing/settlement/paidRequest";
 import type { NextRequest } from "next/server";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
@@ -6,8 +6,8 @@ import { ARTIFACT_IDLE_TIMEOUT_MS, streamInteractiveArtifact } from "@/lib/ai/ar
 import { collectRequestSecrets, formatRequestError, parseArtifactRequest } from "@/lib/ai/agent/requestSchema";
 import { logSatelliteError } from "@/lib/ai/observability/agentLog";
 import { defaultEffortFor, getModelInfoWithCustom } from "@/lib/ai/models";
-import { resolveActualBillingModelId, withRequestLedger } from "@/lib/billing/usageLedger";
-import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveActualBillingModelId, withRequestLedger } from "@/lib/billing/ledger/usageLedger";
+import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quota/quotaGate";
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 export const runtime = "nodejs";

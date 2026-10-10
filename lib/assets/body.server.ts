@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { createServiceAuthClient } from '@/lib/auth/serviceClient';
+import { createServiceAuthClient } from '@/lib/auth/server/serviceClient';
 import { FileError } from '@/lib/files/owner.server';
 import { ASSET_BODY_BUCKET, BODY_CHUNK_BYTES, hasExternalBody, putBodyField } from './body';
 export async function verifyBodyChunk(owner: string, sha: string): Promise<Uint8Array> {

@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
 import { z } from 'zod';
 import { fileOwner, fileFailure, FileError } from '@/lib/files/owner.server';
-import { createServiceAuthClient } from '@/lib/auth/serviceClient';
+import { createServiceAuthClient } from '@/lib/auth/server/serviceClient';
 import { boundedText } from '@/lib/http/boundedBody';
 import { ASSET_BODY_BUCKET, bodyManifestSchema, hasExternalBody } from '@/lib/assets/body';
 import { verifyBodyChunk } from '@/lib/assets/body.server';

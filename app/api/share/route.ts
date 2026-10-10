@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { resolveSessionUserId } from "@/lib/billing/quotaGate";
+import { resolveSessionUserId } from "@/lib/billing/quota/quotaGate";
 import { listSharedConversations, saveSharedConversation, setSharedConversationEnabled } from "@/lib/share/server";
 import { createShareId } from "@/lib/share/slug";
 import { checkSharePayload, formatSharePayloadError } from "@/lib/share/snapshot";

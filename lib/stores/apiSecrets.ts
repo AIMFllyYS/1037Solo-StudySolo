@@ -7,7 +7,7 @@
 import {
   normalizeCapabilityEndpoints,
   type CapabilityEndpoints,
-} from "@/lib/ai/capabilityEndpoints";
+} from "@/lib/ai/endpoints/capabilityEndpoints";
 import type { CustomApiGroup } from "@/lib/ai/models";
 
 export const SETTINGS_LS_KEY = "gailvlun-settings-v1";

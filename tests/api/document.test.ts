@@ -8,7 +8,7 @@ import {
   setQuotaGateTestDeps,
   type QuotaStore,
   type QuotaUserRow,
-} from "@/lib/billing/quotaGate";
+} from "@/lib/billing/quota/quotaGate";
 
 const USER = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
 const envNames = ["AI_BASE_URL", "AI_API_KEY", "RELAY_BASE_URL", "RELAY_API_KEY"] as const;

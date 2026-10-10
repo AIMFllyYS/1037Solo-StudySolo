@@ -107,6 +107,8 @@
 
 - R3q 聊天领域目录：80 个实现/测试文件迁入 request/streaming/messages/sources/attachments/composer/feedback/session，147 个真实消费者与结构路径更新；根目录只留 sendMessage 组合和 sessionTypes 契约，既有显式公共 API 保留，没有成批转发。完整 React 304 文件/1280 项通过；完整 node 2064 项初轮 2062 通过、1 原跳过、1 结构失败：旧断言要求 RecordPreviewWindow 直接导入 AnchoredMenu，而 R3m 已由其 PreviewMoreMenu 负责；保留原断言并检查 root import/render 接线后相关 13 项全部通过。类型首轮命中忽略 tmp 中的本轮旧反馈源码备份，将该原件改为 txt 保留后完整类型通过；没有忽略或删除运行文件来逃避类型问题。完整 ESLint 0 error/21 原 warning、文档 74 份/316 链接/0 缺失、即时循环 0。最终冻结后仍统一重跑，当前结果不是生产构建或真实账号验收。
 
+- R3r 认证/计费/AI 目录：84 个实现/相邻测试/价格 JSON 按 browser/sessions/server/provisioning/presentation、settlement/ledger/quota/pricing 和 images/model selection/endpoints 归类；188 个真实消费者更新，没有新增转发。保持原认证来源、cookie、短期 token/服务端 refresh、共享 session DTO、预留/结算/幂等、账户额度与受信价格。完整 node 2064 项/2063 通过/1 原跳过/0 失败、React 304 文件/1280 项通过、完整类型、ESLint 0 error/21 原 warning；旧 provider 对照原件转为 txt 保留，避免忽略目录的历史源码被当作当前编译入口。文档链接与即时循环继续通过。Knip 文件/依赖/unlisted/binary 仍为 0，值/类型候选与一个语义颜色别名待继续审查；没有用泛化 ignore 制造通过。该阶段未操作真实账户、钱包或生产数据库。
+
 ## 局部阻塞
 
 
@@ -114,7 +116,7 @@
 
 ## 续接检查点
 
-已完成 R0/R1/R2、R3a–R3q 与 R4a–R4c 分层；教材/注册目录和生成链已提交 `a2722f3a`，聊天目录统一验证已通过并按阶段提交至同名云端重构分支，具体 SHA 以分支 Git 历史为准。R5a–R5c 已更新入口/SOP、归档历史与确认未使用源码；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
+已完成 R0/R1/R2、R3a–R3r 与 R4a–R4c 分层；聊天目录已提交 `9117900f`，认证/计费/AI 目录统一验证已通过并按阶段提交至同名云端重构分支，具体 SHA 以分支 Git 历史为准。R5a–R5c 已更新入口/SOP、归档历史与确认未使用源码；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
 
 下一阶段仍需：
 

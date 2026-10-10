@@ -7,7 +7,7 @@ import { resolveLanguageModel, type ThinkingCallSettings } from "@/lib/ai/sdk/la
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
 import { logSatelliteError } from "@/lib/ai/observability/agentLog";
-import { settleUsage } from "@/lib/billing/usageLedger";
+import { settleUsage } from "@/lib/billing/ledger/usageLedger";
 
 export const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一任务是输出一个完整、自包含的 HTML 文档。
 

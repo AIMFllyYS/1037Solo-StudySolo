@@ -18,7 +18,7 @@ import {
   stripCapabilitySecrets,
   stripGroupApiKeys,
 } from "./apiSecrets.ts";
-import { EMPTY_CAPABILITY_ENDPOINTS, normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
+import { EMPTY_CAPABILITY_ENDPOINTS, normalizeCapabilityEndpoints } from "@/lib/ai/endpoints/capabilityEndpoints";
 import type { CustomApiGroup } from "@/lib/ai/models";
 
 const groups = (): CustomApiGroup[] => [

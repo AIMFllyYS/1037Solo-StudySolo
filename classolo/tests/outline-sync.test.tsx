@@ -4,7 +4,7 @@ import { getNotesPublic } from '@/classolo/lib/session'
 import { patchNotesPublic, resetNotesPublic } from '@/classolo/lib/session/writes/notes'
 const f=vi.hoisted(()=>({verify:vi.fn(),rpc:vi.fn(),upsert:vi.fn(),from:vi.fn()}))
 vi.mock('@/lib/files/owner.server',()=>({fileOwner:async()=>{const user=await f.verify();if(!user||user.mfaRequired)throw Object.assign(new Error('请先完成账号验证'),{status:user?403:401});return user.id;},fileFailure:(error:{message:string;status?:number})=>Response.json({error:error.message},{status:error.status??503})}))
-vi.mock('@/lib/auth/serviceClient',()=>({createServiceAuthClient:()=>({from:f.from,rpc:f.rpc})}))
+vi.mock('@/lib/auth/server/serviceClient',()=>({createServiceAuthClient:()=>({from:f.from,rpc:f.rpc})}))
 import { POST } from '@/app/api/class/state/route'
 const owner='11111111-1111-4111-8111-111111111111',sid='22222222-2222-4222-8222-222222222222'
 const nodes=[{id:'root',title:'力学',parentId:null,sourceSegmentIds:['seg-1']},{id:'child',title:'定律',parentId:'root',sourceSegmentIds:['seg-2']}]

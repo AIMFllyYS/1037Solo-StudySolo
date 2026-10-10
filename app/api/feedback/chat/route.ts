@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
 import { accountBackendUrl, authModeForRequest, CANONICAL_SITE_ORIGIN } from "@/lib/auth/authMode";
-import { consumeRateLimit } from "@/lib/auth/rateLimit";
-import { extractAccessToken } from "@/lib/auth/sessionCookie";
-import { createServiceAuthClient } from "@/lib/auth/serviceClient";
+import { consumeRateLimit } from "@/lib/auth/server/rateLimit";
+import { extractAccessToken } from "@/lib/auth/sessions/sessionCookie";
+import { createServiceAuthClient } from "@/lib/auth/server/serviceClient";
 import { failureStatus, verifyAccount } from "@/lib/auth/sign-in/account-verify";
 import { prepareFeedbackExcerpt, prepareFeedbackText } from "@/lib/chat/feedback/feedbackExcerpt";
 import { desktopCloudBridgeEnabled, forwardDesktopAgentRequest } from "@/lib/sandbox/desktop-bridge.server";

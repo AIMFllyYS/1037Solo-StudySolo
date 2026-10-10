@@ -6,7 +6,7 @@ function mockClient(initial?: { id: string; email: string } | null): AuthRuntime
   getSessionCalls: number;
 } {
   let session = initial ? { user: initial } : null;
-  const listeners = new Set<(event: string, session: import("@/lib/auth/session").AuthSessionPayload | null) => void>();
+  const listeners = new Set<(event: string, session: import("@/lib/auth/sessions/session").AuthSessionPayload | null) => void>();
   const client: AuthRuntimeClient & { getSessionCalls: number } = {
     getSessionCalls: 0,
     auth: {
@@ -33,11 +33,11 @@ function mockClient(initial?: { id: string; email: string } | null): AuthRuntime
   return client;
 }
 
-vi.mock("@/lib/auth/account",()=>({logoutAccount:vi.fn(async()=>{}),redirectAccount:vi.fn(),restoreAccountSession:vi.fn(),SIGNED_IN_EVENT:"1037solo:signed-in"}));
+vi.mock("@/lib/auth/browser/account",()=>({logoutAccount:vi.fn(async()=>{}),redirectAccount:vi.fn(),restoreAccountSession:vi.fn(),SIGNED_IN_EVENT:"1037solo:signed-in"}));
 
 describe("useAuthSessionController", () => {
   it("without an injected client it follows the in-memory browser session (no SDK session)", async () => {
-    const { setBrowserSession } = await import("@/lib/auth/browserSession");
+    const { setBrowserSession } = await import("@/lib/auth/sessions/browserSession");
     const { result, unmount } = renderHook(() => useAuthSessionController());
     await waitFor(() => expect(result.current.status).toBe("signedOut"));
     act(() => setBrowserSession({ accessToken: "a1", expiresAt: Math.floor(Date.now() / 1000) + 3600, user: { id: "u9", email: "u9@example.com", user_metadata: { display_name: "九" } } }));

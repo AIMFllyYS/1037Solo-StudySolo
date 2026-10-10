@@ -11,7 +11,7 @@ import { createAndOpenNote, openArtifactImportPicker, openDocumentImportPicker, 
 import OverflowMenu from "@/components/window/OverflowMenu";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
 import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
-import { ACCEPTED_DOCUMENT_FILE_TYPES } from '@/lib/ai/imageUtils';
+import { ACCEPTED_DOCUMENT_FILE_TYPES } from '@/lib/ai/images/imageUtils';
 import { registerLocalFile } from '@/lib/local-files/client';
 import { attachmentPreviewKind } from "@/lib/chat/attachments/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/attachments/openAttachmentPreview";

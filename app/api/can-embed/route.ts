@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { GET as probeGET } from "@/lib/browser/probeEmbed";
-import { consumeRateLimit, requestClientIp } from "@/lib/auth/rateLimit";
+import { consumeRateLimit, requestClientIp } from "@/lib/auth/server/rateLimit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

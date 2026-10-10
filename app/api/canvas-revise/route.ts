@@ -1,4 +1,4 @@
-import { withPaidRequest } from "@/lib/billing/paidRequest";
+import { withPaidRequest } from "@/lib/billing/settlement/paidRequest";
 import type { NextRequest } from 'next/server';
 import { generateText } from 'ai';
 import { getModelInfoWithCustom } from '@/lib/ai/models';
@@ -9,8 +9,8 @@ import { logSatelliteError } from '@/lib/ai/observability/agentLog';
 import { buildCanvasRevisionMessages } from '@/lib/canvas/revisionPrompt';
 import { diagnoseCanvasBlock, extractCanvasRevisionBlock } from '@/lib/canvas/revisionOutput';
 import type { CanvasBlock } from '@/lib/canvas/types';
-import { resolveActualBillingModelId, settleUsage } from '@/lib/billing/usageLedger';
-import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from '@/lib/billing/quotaGate';
+import { resolveActualBillingModelId, settleUsage } from '@/lib/billing/ledger/usageLedger';
+import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from '@/lib/billing/quota/quotaGate';
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from '@/lib/billing/usagePool';
 
 export const runtime = 'nodejs';

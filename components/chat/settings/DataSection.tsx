@@ -1,5 +1,5 @@
 "use client";
-import { notifyAccountUsageChanged } from '@/lib/billing/quotaView';
+import { notifyAccountUsageChanged } from '@/lib/billing/quota/quotaView';
 
 import { useState } from "react";
 import { Cloud, DollarSign, Download, Ticket } from "lucide-react";

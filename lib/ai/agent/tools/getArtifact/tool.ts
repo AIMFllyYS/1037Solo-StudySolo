@@ -2,7 +2,7 @@ import { tool } from "ai";
 import { z } from "zod";
 import type { ArtifactCatalogItem, GetArtifactOutput } from "@/lib/ai/agent/tools/getArtifact/types";
 import { toText } from "@/lib/ai/agent/tools/_shared";
-import {createServiceAuthClient} from '@/lib/auth/serviceClient';
+import {createServiceAuthClient} from '@/lib/auth/server/serviceClient';
 import {readBodyField} from '@/lib/assets/body.server';
 
 export function createGetArtifactTool(artifacts: ArtifactCatalogItem[] = [],owner?:string) {

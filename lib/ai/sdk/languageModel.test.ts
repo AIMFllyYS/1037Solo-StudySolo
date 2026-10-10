@@ -16,8 +16,8 @@ import type { LanguageModelV4StreamPart } from "@ai-sdk/provider";
 // model hosts through the developer's VPN or a real public DNS server.
 beforeEach(t => { (t as TestContext).mock.method(dns.promises, "lookup", async () => [{ address: "8.8.8.8", family: 4 }]); });
 
-import { runPaidContext } from "@/lib/billing/paidContext";
-import type { CreditDriver } from "@/lib/billing/providerAdmission";
+import { runPaidContext } from "@/lib/billing/settlement/paidContext";
+import type { CreditDriver } from "@/lib/billing/settlement/providerAdmission";
 const fixtureCredits: CreditDriver = {
   async reserve(userId,requestKey,amount,metadata){return {userId,requestKey,reserved:Math.ceil(amount*1e6),metadata};},
   async settleMicro(){}, async cancel(){},

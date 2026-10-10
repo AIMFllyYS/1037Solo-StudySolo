@@ -7,8 +7,8 @@ import {
   createBrowserAuthClient,
   resetBrowserDataClient,
   tryGetBrowserDataClient,
-} from "./browserClient.ts";
-import { createServiceAuthClient } from "./serviceClient.ts";
+} from "./browser/browserClient.ts";
+import { createServiceAuthClient } from "./server/serviceClient.ts";
 
 test("createBrowserAuthClient exposes signInWithOtp / verifyOtp", () => {
   const client = createBrowserAuthClient({

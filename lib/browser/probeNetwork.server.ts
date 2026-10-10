@@ -2,7 +2,7 @@ import { lookup } from "node:dns/promises";
 import type { LookupAddress } from "node:dns";
 import { BlockList, isIP, type LookupFunction } from "node:net";
 import { Agent } from "undici";
-import { checkCustomBaseUrl, embeddedIpv4FromV6 } from "@/lib/ai/customBaseUrl";
+import { checkCustomBaseUrl, embeddedIpv4FromV6 } from "@/lib/ai/endpoints/customBaseUrl";
 
 export type ProbeResolver = (hostname: string) => Promise<LookupAddress[]>;
 export const resolveProbeAddresses: ProbeResolver = hostname => lookup(hostname, { all: true, verbatim: true });

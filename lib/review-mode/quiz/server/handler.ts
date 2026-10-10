@@ -1,4 +1,4 @@
-import { withPaidRequest } from "@/lib/billing/paidRequest";
+import { withPaidRequest } from "@/lib/billing/settlement/paidRequest";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { generateText, stepCountIs } from "ai";
@@ -9,8 +9,8 @@ import { createCreateQuizTool } from "@/lib/ai/agent/tools/createQuiz/tool";
 
 import type { CreateQuizOutput } from "@/lib/ai/agent/tools/createQuiz/types";
 import { logSatelliteError } from "@/lib/ai/observability/agentLog";
-import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
-import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/ledger/usageLedger";
+import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quota/quotaGate";
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 import { ReviewQuizError } from "./errors";

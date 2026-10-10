@@ -1,8 +1,8 @@
 import {boundedBody,RequestBodyTooLarge} from '@/lib/http/boundedBody';
 import {z} from "zod";
-import {extractAccessToken,verifySupabaseAccessToken} from "@/lib/auth/aiGate";
-import {reserveCredit,settleCredit,cancelCredit,CreditAdmissionError} from "@/lib/billing/centralCredits";
-import {configuredUnitRate} from '@/lib/billing/unitRate';
+import {extractAccessToken,verifySupabaseAccessToken} from "@/lib/auth/server/aiGate";
+import {reserveCredit,settleCredit,cancelCredit,CreditAdmissionError} from "@/lib/billing/settlement/centralCredits";
+import {configuredUnitRate} from '@/lib/billing/pricing/unitRate';
 export const runtime="nodejs";export const dynamic="force-dynamic";
 export async function POST(request:Request){
   let stage='authenticate';

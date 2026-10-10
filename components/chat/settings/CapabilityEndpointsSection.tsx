@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { KeyRound } from "lucide-react";
 import { useSettings } from "@/lib/stores/settings";
-import { formatImageGenError } from "@/lib/ai/imageGenError";
+import { formatImageGenError } from "@/lib/ai/images/imageGenError";
 import {
   EMPTY_CAPABILITY_ENDPOINTS,
   IMAGE_API_STYLES,
   capabilityNeedsForImageGen,
   selectCapabilityEndpointsForRequest,
   type ImageApiStyle,
-} from "@/lib/ai/capabilityEndpoints";
+} from "@/lib/ai/endpoints/capabilityEndpoints";
 import { inputCls, labelCls } from "./_shared";
 import AppSelect from "@/components/ui/AppSelect";
 import { useT } from "@/lib/i18n";

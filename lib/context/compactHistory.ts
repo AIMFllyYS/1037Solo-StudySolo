@@ -6,7 +6,7 @@ import { ENV_MODEL_FLASH } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import type { CustomApiGroup } from "@/lib/ai/models";
 import type { CustomProvider } from "@/lib/ai/provider";
-import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
+import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/ledger/usageLedger";
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 import { appendAgentLog } from "@/lib/ai/observability/agentLog";
 

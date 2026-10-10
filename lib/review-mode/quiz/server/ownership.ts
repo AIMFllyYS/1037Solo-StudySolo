@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 
 import { accountBackendUrl, authModeForRequest } from "@/lib/auth/authMode";
-import { extractAccessToken } from "@/lib/auth/sessionCookie";
+import { extractAccessToken } from "@/lib/auth/sessions/sessionCookie";
 import { failureStatus, verifyAccount } from "@/lib/auth/sign-in/account-verify";
 
 import { ReviewQuizError } from "./errors";

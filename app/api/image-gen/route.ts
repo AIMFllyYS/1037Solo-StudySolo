@@ -1,5 +1,5 @@
-import { billableJsonFetch } from "@/lib/billing/billableFetch";
-import { withPaidRequest } from "@/lib/billing/paidRequest";
+import { billableJsonFetch } from "@/lib/billing/settlement/billableFetch";
+import { withPaidRequest } from "@/lib/billing/settlement/paidRequest";
 import { after, type NextRequest } from "next/server";
 import { Agent } from "undici";
 import {
@@ -9,14 +9,14 @@ import {
   getImageTimeoutMs,
   type ResolvedImageProvider,
 } from "@/lib/ai/provider";
-import { UnsafeCustomBaseUrlError } from "@/lib/ai/customBaseUrl";
-import { capabilitySecretValues, normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
+import { UnsafeCustomBaseUrlError } from "@/lib/ai/endpoints/customBaseUrl";
+import { capabilitySecretValues, normalizeCapabilityEndpoints } from "@/lib/ai/endpoints/capabilityEndpoints";
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { collectRequestSecrets, formatRequestError, parseImageGenRequest } from "@/lib/ai/agent/requestSchema";
 import { logSatelliteError } from "@/lib/ai/observability/agentLog";
-import { normalizeImageGenImages } from "@/lib/ai/imageGenResponse";
-import { settleUsage } from "@/lib/billing/usageLedger";
-import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { normalizeImageGenImages } from "@/lib/ai/images/imageGenResponse";
+import { settleUsage } from "@/lib/billing/ledger/usageLedger";
+import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/lib/billing/quota/quotaGate";
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 export const runtime = "nodejs";

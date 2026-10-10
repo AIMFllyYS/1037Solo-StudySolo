@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { autoRouteCandidates, decideAutomaticModels, prefersStrongModel, selectAutomaticModels } from './autoRoute';
 import { getModelInfo } from './models';
-import { relayModelConfig } from './relayConfig';
+import { relayModelConfig } from './endpoints/relayConfig';
 
 const input = { hasImages: false, estimatedTokens: 100, text: '解释概念', thinking: false };
 

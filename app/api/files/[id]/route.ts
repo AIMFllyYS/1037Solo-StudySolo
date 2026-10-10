@@ -1,5 +1,5 @@
 import type { NextRequest } from 'next/server';
-import { createServiceAuthClient } from '@/lib/auth/serviceClient';
+import { createServiceAuthClient } from '@/lib/auth/server/serviceClient';
 import { boundedText } from '@/lib/http/boundedBody';
 import { FILE_BUCKET } from '@/lib/files/contract';
 import { FileError, fileOwner, fileFailure } from '@/lib/files/owner.server';

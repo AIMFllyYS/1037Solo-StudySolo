@@ -7,9 +7,9 @@ import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
 import { streamDocument } from "@/lib/ai/document";
 import { runWebSearchDetailed, searchCached } from "@/lib/ai/webSearch";
-import { searchImages } from "@/lib/ai/imageSearch";
+import { searchImages } from "@/lib/ai/images/imageSearch";
 import { SiliconFlowEmbedding } from "@/lib/ai/embedding";
-import { runWithLedgerContext, type UsageLedgerRow } from "./usageLedger.ts";
+import { runWithLedgerContext, type UsageLedgerRow } from "./ledger/usageLedger.ts";
 
 const USER = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
 const groups: CustomApiGroup[] = [{

@@ -1,8 +1,8 @@
 import { createHmac, timingSafeEqual, randomUUID } from 'node:crypto';
-import { createServiceAuthClient } from '@/lib/auth/serviceClient';
+import { createServiceAuthClient } from '@/lib/auth/server/serviceClient';
 import { resolveServiceAuthEnv } from '@/lib/auth/env';
 import { FileError } from '@/lib/files/owner.server';
-import { optionalPaidContext } from '@/lib/billing/paidContext';
+import { optionalPaidContext } from '@/lib/billing/settlement/paidContext';
 import { localCatalogSchema, localReadInputSchema, localReadOutputSchema, type LocalSourceCatalog } from './contract';
 const signature = (value: string) => createHmac('sha256', resolveServiceAuthEnv().serviceRoleKey).update('studysolo-local-tool:' + value).digest('base64url');
 interface PendingCall {

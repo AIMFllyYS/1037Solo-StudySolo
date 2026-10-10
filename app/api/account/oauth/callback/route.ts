@@ -1,6 +1,6 @@
 import {NextResponse,type NextRequest} from 'next/server';
-import {oauthConfig,stateMatches,exchangeOAuth,oauthCookies,transientCookies,safeNext,pendingMfaCookies} from '@/lib/auth/oauthServer';
-import {verifySupabaseAccessToken} from '@/lib/auth/aiGate';
+import {oauthConfig,stateMatches,exchangeOAuth,oauthCookies,transientCookies,safeNext,pendingMfaCookies} from '@/lib/auth/server/oauthServer';
+import {verifySupabaseAccessToken} from '@/lib/auth/server/aiGate';
 export const runtime='nodejs';export const dynamic='force-dynamic';
 export async function GET(request:NextRequest){
  const config=oauthConfig(request.nextUrl.origin);const secure=config.origin.startsWith('https:');

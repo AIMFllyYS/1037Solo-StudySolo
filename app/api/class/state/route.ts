@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createServiceAuthClient } from "@/lib/auth/serviceClient";
+import { createServiceAuthClient } from "@/lib/auth/server/serviceClient";
 import {fileOwner,fileFailure} from '@/lib/files/owner.server';
 import { outlineSchema } from '@/classolo/lib/session/outline-schema';
 import {classCourseProfileSchema} from '@/classolo/lib/course/profile';

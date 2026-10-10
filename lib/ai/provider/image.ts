@@ -1,8 +1,8 @@
 import { getModelInfo, DEFAULT_IMAGE_MODEL_ID, CUSTOM_PREFIX, findCustomModelGroup, type CustomApiGroup } from "@/lib/ai/models";
 
-import { assertSafeCustomBaseUrl } from "@/lib/ai/customBaseUrl";
-import { normalizeOpenAIBaseUrl } from "@/lib/ai/openaiBaseUrl";
-import { overlayOptional, resolveCapabilityEndpoint, type CapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
+import { assertSafeCustomBaseUrl } from "@/lib/ai/endpoints/customBaseUrl";
+import { normalizeOpenAIBaseUrl } from "@/lib/ai/endpoints/openaiBaseUrl";
+import { overlayOptional, resolveCapabilityEndpoint, type CapabilityEndpoints } from "@/lib/ai/endpoints/capabilityEndpoints";
 import type { ResolvedImageProvider } from "./types";
 import { safeNormalizedCustomBaseUrl, normalizeImageApiStyle } from "./protocol";
 import { credentialsFor } from "./credentials";

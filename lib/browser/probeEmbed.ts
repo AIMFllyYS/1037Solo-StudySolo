@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { checkCustomBaseUrl } from "@/lib/ai/customBaseUrl";
+import { checkCustomBaseUrl } from "@/lib/ai/endpoints/customBaseUrl";
 import { BlockedProbeNetworkError, fetchProbeHeaders, resolveProbeAddresses, type ProbeHeadersResponse, type ProbeResolver } from "./probeNetwork.server";
 
 

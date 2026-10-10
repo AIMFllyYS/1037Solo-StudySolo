@@ -1,8 +1,8 @@
-import {verifySupabaseAccessToken} from "@/lib/auth/aiGate";
+import {verifySupabaseAccessToken} from "@/lib/auth/server/aiGate";
 import { NextResponse,type NextRequest } from "next/server";
-import {oauthSession,publicOrigin} from "@/lib/auth/oauthServer";
+import {oauthSession,publicOrigin} from "@/lib/auth/server/oauthServer";
 import {accountBackendUrl,authModeForRequest,canonicalUrlFor} from "@/lib/auth/authMode";
-import {browserSessionBody} from "@/lib/auth/browserSessionBody";
+import {browserSessionBody} from "@/lib/auth/server/browserSessionBody";
 export const runtime = "nodejs";
 const OPERATIONS = {session:"browser-session",refresh:"refresh",logout:"logout"} as const;
 export async function POST(request: NextRequest, context: {params:Promise<{operation:string}>}) {

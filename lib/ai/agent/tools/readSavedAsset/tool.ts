@@ -1,6 +1,6 @@
 import { tool } from 'ai';
 import { z } from 'zod';
-import { createServiceAuthClient } from '@/lib/auth/serviceClient';
+import { createServiceAuthClient } from '@/lib/auth/server/serviceClient';
 import { readBodyField, hydrateAssetPayload } from '@/lib/assets/body.server';
 export function createReadSavedAssetTool(owner?: string) {
     return tool({ description: '查找或按区间读取当前账号已保存的笔记、长文、HTML、图片与题集。list返回资产目录及稳定来源；read使用kind和id，field选择章节或图片，offset继续读取。图片返回缩略图；仅返回相关片段，原稿仍保存在私有云端。', inputSchema: z.object({ operation: z.enum(['list', 'read']), kind: z.enum(['artifact', 'document', 'user-note', 'review-card', 'image-gen']).optional(), id: z.string().max(200).optional(), field: z.number().int().nonnegative().optional(), offset: z.number().int().nonnegative().optional(), query: z.string().max(200).optional() }), execute: async (input) => {

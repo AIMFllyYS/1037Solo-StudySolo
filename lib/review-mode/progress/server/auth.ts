@@ -3,8 +3,8 @@ import type { NextRequest } from "next/server";
 import { z } from "zod";
 
 import { accountBackendUrl, authModeForRequest, CANONICAL_SITE_ORIGIN } from "@/lib/auth/authMode";
-import { consumeRateLimit } from "@/lib/auth/rateLimit";
-import { extractAccessToken } from "@/lib/auth/sessionCookie";
+import { consumeRateLimit } from "@/lib/auth/server/rateLimit";
+import { extractAccessToken } from "@/lib/auth/sessions/sessionCookie";
 
 import { failureStatus, verifyAccount } from "@/lib/auth/sign-in/account-verify";
 

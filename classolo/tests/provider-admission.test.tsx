@@ -1,12 +1,12 @@
 // @vitest-environment node
 import {beforeEach,describe,expect,it,vi} from 'vitest';
 const mocks=vi.hoisted(()=>({verify:vi.fn(),reserve:vi.fn(),settle:vi.fn(),settleMicro:vi.fn(),cancel:vi.fn(),pricing:vi.fn(),resolveProvider:vi.fn(),fetch:vi.fn()}));
-vi.mock('@/lib/auth/aiGate',()=>({extractAccessToken:()=> 'canonical-token',verifySupabaseAccessToken:mocks.verify}));
+vi.mock('@/lib/auth/server/aiGate',()=>({extractAccessToken:()=> 'canonical-token',verifySupabaseAccessToken:mocks.verify}));
 vi.mock('@/lib/ai/provider',()=>({ENV_MODEL_FLASH:'safe-model',resolveProvider:mocks.resolveProvider,chatCompletionsUrl:(base:string)=>`${base}/chat/completions`}));
 vi.mock('@/lib/ai/models',()=>({getModelInfo:mocks.pricing}));
-vi.mock('@/lib/billing/centralCredits',()=>({reserveCredit:mocks.reserve,settleCredit:mocks.settle,settleMicrocredits:mocks.settleMicro,cancelCredit:mocks.cancel,CreditAdmissionError:class extends Error{constructor(message:string,public status:number){super(message);}}}));
+vi.mock('@/lib/billing/settlement/centralCredits',()=>({reserveCredit:mocks.reserve,settleCredit:mocks.settle,settleMicrocredits:mocks.settleMicro,cancelCredit:mocks.cancel,CreditAdmissionError:class extends Error{constructor(message:string,public status:number){super(message);}}}));
 import {POST} from '../../app/api/class/ai/chat/completions/route';
-import {CreditAdmissionError} from '@/lib/billing/centralCredits';
+import {CreditAdmissionError} from '@/lib/billing/settlement/centralCredits';
 const user='f1111111-1111-4111-8111-111111111111';
 function request(extra:Record<string,unknown>={},headers:Record<string,string>={}){
  return new Request('https://study.1037solo.com/api/class/ai/chat/completions',{method:'POST',headers:{'content-type':'application/json','x-request-id':'f2222222-2222-4222-8222-222222222222',...headers},body:JSON.stringify({messages:[{role:'user',content:'解释课堂概念'}],...extra})});

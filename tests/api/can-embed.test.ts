@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test, type TestContext } from "node:test";
 import type { NextRequest } from "next/server";
 import { createProbeHandler, guardProbeUrl, judge } from "@/lib/browser/probeEmbed";
-import { checkCustomBaseUrl } from "@/lib/ai/customBaseUrl";
+import { checkCustomBaseUrl } from "@/lib/ai/endpoints/customBaseUrl";
 
 function probeReq(url: string | null): NextRequest {
   const href =

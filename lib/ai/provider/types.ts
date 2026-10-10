@@ -1,6 +1,6 @@
 import { type ProviderKind, type CustomApiProtocol, type ThinkingRequestStyle } from "@/lib/ai/models";
 
-import { type ImageApiStyle as CapabilityImageApiStyle } from "@/lib/ai/capabilityEndpoints";
+import { type ImageApiStyle as CapabilityImageApiStyle } from "@/lib/ai/endpoints/capabilityEndpoints";
 
 export type ImageApiStyle = CapabilityImageApiStyle;
 

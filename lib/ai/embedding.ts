@@ -1,11 +1,11 @@
-import { billableJsonFetch } from "@/lib/billing/billableFetch";
+import { billableJsonFetch } from "@/lib/billing/settlement/billableFetch";
 // SiliconFlow Embedding 客户端：封装 /v1/embeddings 调用，实现 EmbeddingProvider 接口。
 import type { EmbeddingProvider } from '@/lib/context/semanticSearch';
-import { mainUsedPlatformCredentials, settleUsage } from '@/lib/billing/usageLedger';
+import { mainUsedPlatformCredentials, settleUsage } from '@/lib/billing/ledger/usageLedger';
 import { resolveSidecarBilling } from '@/lib/billing/usagePool';
-import { assertSafeCustomBaseUrl } from '@/lib/ai/customBaseUrl';
-import { getCapabilityEndpoints } from '@/lib/ai/capabilityContext';
-import { overlayOptional, resolveCapabilityEndpoint } from '@/lib/ai/capabilityEndpoints';
+import { assertSafeCustomBaseUrl } from '@/lib/ai/endpoints/customBaseUrl';
+import { getCapabilityEndpoints } from '@/lib/ai/endpoints/capabilityContext';
+import { overlayOptional, resolveCapabilityEndpoint } from '@/lib/ai/endpoints/capabilityEndpoints';
 import { normalizeOpenAIBaseUrl } from '@/lib/ai/provider';
 
 const BATCH_SIZE = 32; // SiliconFlow 单次请求最多 32 个 input

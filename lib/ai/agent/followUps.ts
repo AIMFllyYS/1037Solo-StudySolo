@@ -5,7 +5,7 @@ import { generateText } from "ai";
 import { ENV_MODEL_FLASH, type CustomProvider } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import type { CustomApiGroup } from "@/lib/ai/models";
-import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
+import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/ledger/usageLedger";
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 const FOLLOWUP_TIMEOUT_MS = 10_000;

@@ -1,4 +1,4 @@
-import { withPaidRequest } from "@/lib/billing/paidRequest";
+import { withPaidRequest } from "@/lib/billing/settlement/paidRequest";
 import type { NextRequest } from "next/server";
 import { generateText } from "ai";
 import {
@@ -10,8 +10,8 @@ import {
 import { callFastModel, fastModelConfig } from "@/lib/ai/fastModel";
 import { resolveLanguageModel, UPSTREAM_PROVIDER_NAME } from "@/lib/ai/sdk/languageModel";
 import { logSatelliteError } from "@/lib/ai/observability/agentLog";
-import { settleUsage } from "@/lib/billing/usageLedger";
-import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { settleUsage } from "@/lib/billing/ledger/usageLedger";
+import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quota/quotaGate";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

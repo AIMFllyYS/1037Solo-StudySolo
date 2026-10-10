@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { accountBackendUrl, authModeForRequest, CANONICAL_SITE_ORIGIN, isLocalDevHost } from '@/lib/auth/authMode';
 import { verifyAccount, failureStatus } from '@/lib/auth/sign-in/account-verify';
-import { extractAccessToken } from '@/lib/auth/sessionCookie';
+import { extractAccessToken } from '@/lib/auth/sessions/sessionCookie';
 
 export class FileError extends Error { constructor(message: string, readonly status = 400) { super(message); } }
 export async function fileOwner(request: Pick<NextRequest,'headers'|'url'> & {nextUrl?:{host:string}}, mutation = false): Promise<string> {

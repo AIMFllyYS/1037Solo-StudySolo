@@ -1,4 +1,4 @@
-import { billableJsonFetch } from "@/lib/billing/billableFetch";
+import { billableJsonFetch } from "@/lib/billing/settlement/billableFetch";
 // 联网搜索门面（对外保持历史入口不变）。
 //
 // 两种用法：
@@ -6,10 +6,10 @@ import { billableJsonFetch } from "@/lib/billing/billableFetch";
 //  - \`searchCached\`：只走智谱的结构化搜索，保留历史上的 apiKey 覆盖与计费口径
 //    （计费测试与旧调用点依赖它：用户自带 key 时不计入平台池）。
 
-import { settleUsage, mainUsedPlatformCredentials } from "@/lib/billing/usageLedger";
+import { settleUsage, mainUsedPlatformCredentials } from "@/lib/billing/ledger/usageLedger";
 import { resolveSidecarBilling } from "@/lib/billing/usagePool";
-import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
-import { resolveCapabilitySecret } from "@/lib/ai/capabilityEndpoints";
+import { getCapabilityEndpoints } from "@/lib/ai/endpoints/capabilityContext";
+import { resolveCapabilitySecret } from "@/lib/ai/endpoints/capabilityEndpoints";
 import { runSearchSubagent } from "@/lib/ai/search/subagent";
 import { createTtlCache } from "@/lib/ai/ttlCache";
 import type { SearchMode, SearchProgressEvent, SearchProviderId } from "@/lib/ai/search/types";

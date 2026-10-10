@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { strToU8, zipSync } from "fflate";
 import WindowTaskbar from "./WindowTaskbar";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
-import { MAX_LOCAL_FILE_SIZE } from "@/lib/ai/imageUtils";
+import { MAX_LOCAL_FILE_SIZE } from "@/lib/ai/images/imageUtils";
 import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import { useFlashcardCitations } from "@/lib/stores/learning/flashcardCitations";
 import { useAgentProductPicker } from "@/lib/stores/workspace/agentProductPicker";

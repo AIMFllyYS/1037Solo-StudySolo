@@ -1,8 +1,8 @@
 // @vitest-environment node
 import {afterEach,beforeEach,describe,expect,it,vi} from 'vitest'
 const f=vi.hoisted(()=>({verify:vi.fn(),reserve:vi.fn(),cancel:vi.fn(),settle:vi.fn(),fetch:vi.fn()}))
-vi.mock('@/lib/auth/aiGate',()=>({extractAccessToken:()=> 'synthetic',verifySupabaseAccessToken:f.verify}))
-vi.mock('@/lib/billing/centralCredits',()=>({reserveCredit:f.reserve,cancelCredit:f.cancel,settleCredit:f.settle,CreditAdmissionError:class extends Error{constructor(message:string,public status:number){super(message)}}}))
+vi.mock('@/lib/auth/server/aiGate',()=>({extractAccessToken:()=> 'synthetic',verifySupabaseAccessToken:f.verify}))
+vi.mock('@/lib/billing/settlement/centralCredits',()=>({reserveCredit:f.reserve,cancelCredit:f.cancel,settleCredit:f.settle,CreditAdmissionError:class extends Error{constructor(message:string,public status:number){super(message)}}}))
 import {POST} from '@/app/api/class/asr/audio/transcriptions/route'
 import {pcm16ToWav} from '@/classolo/lib/providers/asr/transcriptions-rest/openai-compatible'
 const owner='11111111-1111-4111-8111-111111111111'

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import type { ModelMessage } from "ai";
-import { runWithLedgerContext, type UsageLedgerRow } from "@/lib/billing/usageLedger.ts";
+import { runWithLedgerContext, type UsageLedgerRow } from "@/lib/billing/ledger/usageLedger.ts";
 import {
   COMPACT_KEEP_TURNS,
   compactHistory,

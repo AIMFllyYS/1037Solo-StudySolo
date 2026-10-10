@@ -1,11 +1,11 @@
 import type { NextRequest } from 'next/server';
 import { z } from 'zod';
-import { withPaidRequest } from '@/lib/billing/paidRequest';
+import { withPaidRequest } from '@/lib/billing/settlement/paidRequest';
 import { compactHistory } from '@/lib/context/compactHistory';
 import { boundedText } from '@/lib/http/boundedBody';
 import { customApiGroupSchema } from '@/lib/ai/agent/requestSchema';
 import { fileOwner, fileFailure } from '@/lib/files/owner.server';
-import { runWithLedgerContext } from '@/lib/billing/usageLedger';
+import { runWithLedgerContext } from '@/lib/billing/ledger/usageLedger';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 const schema = z.object({ sessionId: z.string().max(200), modelId: z.string().max(200).optional(), customApiGroups: z.array(customApiGroupSchema).max(32).optional(), messages: z.array(z.object({ role: z.enum(['user','assistant']), content: z.string().max(1024 * 1024) })).max(10000) });

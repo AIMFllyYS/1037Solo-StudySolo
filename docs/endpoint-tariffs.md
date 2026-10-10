@@ -1,6 +1,6 @@
 # Endpoint tariffs and settlement
 
-The central wallet remains the only debit authority. Each SDK candidate now binds its actual server-side provider and upstream model to `lib/billing/trusted-tariffs.json`. A Qiniu model and its Protocom fallback do not share a price simply because their model IDs match. `ECOSYSTEM_ENDPOINT_PRICES_JSON` overrides exact `provider:model` entries, with complete unit/source/version metadata. Model-only overrides cannot change a recognized channel's rate.
+The central wallet remains the only debit authority. Each SDK candidate now binds its actual server-side provider and upstream model to `lib/billing/pricing/trusted-tariffs.json`. A Qiniu model and its Protocom fallback do not share a price simply because their model IDs match. `ECOSYSTEM_ENDPOINT_PRICES_JSON` overrides exact `provider:model` entries, with complete unit/source/version metadata. Model-only overrides cannot change a recognized channel's rate.
 
 All runtime rates are CNY platform credit tariffs. USD quotes were converted with the approved fixed factor 7; this is not live FX or an assertion about supplier invoices. Qiniu DeepSeek is fixed at its approved peak tariff 2 / .04 / 8 (input / read-cache / output per million). MiMo is explicitly an operator tariff with unverified relay supplier cost. Unknown BCAI groups, Qwen tiers and image units remain disabled with explanatory errors.
 

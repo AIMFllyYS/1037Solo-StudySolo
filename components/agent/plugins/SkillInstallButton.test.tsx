@@ -4,7 +4,7 @@ import { createHash, webcrypto } from "node:crypto";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { activateStorageOwner } from "@/lib/storage/ownerScope";
-import { setBrowserSession } from "@/lib/auth/browserSession";
+import { setBrowserSession } from "@/lib/auth/sessions/browserSession";
 import { useSkills } from "@/lib/stores/skills";
 import { SkillPackagesProvider, useSkillPackages } from "./SkillPackagesContext";
 import SkillInstallButton from "./SkillInstallButton";

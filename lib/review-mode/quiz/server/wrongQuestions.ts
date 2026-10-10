@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { createServiceAuthClient } from "@/lib/auth/serviceClient";
+import { createServiceAuthClient } from "@/lib/auth/server/serviceClient";
 import type { QuizQuestion } from "@/lib/quiz/types";
 import { estimateReviewTokens, formatQuestionContext, type ReviewQuestionContext } from "@/lib/review-mode/quizContext";
 import { ReviewQuizError } from "./errors";

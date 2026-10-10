@@ -1,5 +1,5 @@
 import { REQUEST_TOO_LARGE_MESSAGE, isPayloadTooLargeError } from "@/lib/chat/request/requestBudget";
-import { formatLoginRequiredError } from "@/lib/auth/loginHint";
+import { formatLoginRequiredError } from "@/lib/auth/presentation/loginHint";
 import { DEFAULT_MAX_WAIT_MS, type StallReason } from "@/lib/chat/streaming/createStallWatchdog";
 
 /** 两种看门狗超时给不同文案：是"真没数据"还是"等太久了"，用户的下一步动作不一样。 */

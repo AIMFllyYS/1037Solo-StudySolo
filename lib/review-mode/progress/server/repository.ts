@@ -1,4 +1,4 @@
-import { createServiceAuthClient } from "@/lib/auth/serviceClient";
+import { createServiceAuthClient } from "@/lib/auth/server/serviceClient";
 
 import { ReviewProgressError, mapStorageError } from "./errors";
 import { safeRow, normalizeRpcResult } from "./snapshots";

@@ -6,4 +6,4 @@ export { resolveProvider, resolveEntryProvider, isProviderAvailable, resolveNext
 export { resolveImageProvider, getImageTimeoutMs } from "./provider/image";
 export { ENV_MODEL_PRO, ENV_MODEL_FLASH } from "./provider/credentials";
 export type { ThinkingRequestStyle } from "./models";
-export { normalizeOpenAIBaseUrl } from "./openaiBaseUrl";
+export { normalizeOpenAIBaseUrl } from "./endpoints/openaiBaseUrl";

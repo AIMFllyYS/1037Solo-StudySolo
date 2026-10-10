@@ -1,4 +1,4 @@
-import { billableJsonFetch } from "@/lib/billing/billableFetch";
+import { billableJsonFetch } from "@/lib/billing/settlement/billableFetch";
 // 三家搜索供应商的调用实现。
 //
 // 凭证：用户在设置里填的（capability endpoints）优先；没填才用站点 env。
@@ -8,10 +8,10 @@ import { billableJsonFetch } from "@/lib/billing/billableFetch";
 // 超时：每家有自己的单请求超时，外加调用方传入的「总预算」signal——
 //   到点未完成的供应商被中止，已完成的照常回传（部分结果而不是全灭）。
 
-import { settleUsage, mainUsedPlatformCredentials } from "@/lib/billing/usageLedger";
+import { settleUsage, mainUsedPlatformCredentials } from "@/lib/billing/ledger/usageLedger";
 import { resolveSidecarBilling } from "@/lib/billing/usagePool";
-import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
-import { resolveCapabilitySecret } from "@/lib/ai/capabilityEndpoints";
+import { getCapabilityEndpoints } from "@/lib/ai/endpoints/capabilityContext";
+import { resolveCapabilitySecret } from "@/lib/ai/endpoints/capabilityEndpoints";
 import { createTtlCache } from "@/lib/ai/ttlCache";
 import type { ProviderOutcome, SearchItem, SearchProviderId } from "./types";
 

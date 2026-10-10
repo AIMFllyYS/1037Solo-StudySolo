@@ -7,7 +7,7 @@ import { createUserMessage } from "@/lib/chat/messages/messageParts";
 import {
   PLATFORM_QUOTA_EXHAUSTED_MESSAGE,
   setQuotaGateTestDeps,
-} from "@/lib/billing/quotaGate";
+} from "@/lib/billing/quota/quotaGate";
 
 const envNames = [
   "AI_BASE_URL",

@@ -1,5 +1,5 @@
 import {NextResponse,type NextRequest} from 'next/server';
-import {oauthConfig,pkce,safeNext,transientCookies} from '@/lib/auth/oauthServer';
+import {oauthConfig,pkce,safeNext,transientCookies} from '@/lib/auth/server/oauthServer';
 export const runtime='nodejs';export const dynamic='force-dynamic';
 export async function GET(request:NextRequest){
   try{

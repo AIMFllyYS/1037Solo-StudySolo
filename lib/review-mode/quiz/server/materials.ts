@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { readContentSearchText } from "@/lib/content/loader";
 
-import { createServiceAuthClient } from "@/lib/auth/serviceClient";
+import { createServiceAuthClient } from "@/lib/auth/server/serviceClient";
 
 import { type ReviewMaterialContext } from "@/lib/review-mode/quizContext";
 import { ReviewQuizError } from "./errors";

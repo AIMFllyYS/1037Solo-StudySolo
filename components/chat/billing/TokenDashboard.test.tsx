@@ -4,7 +4,7 @@ import TokenDashboard from "./TokenDashboard";
 import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { useBillingStore } from "@/lib/stores/billing";
 
-vi.mock("@/lib/billing/syncUsageLedger", () => ({
+vi.mock("@/lib/billing/ledger/syncUsageLedger", () => ({
   refreshBillingFromLedger: vi.fn(),
 }));
 vi.mock("@/lib/window/openBillingDashboard", () => ({

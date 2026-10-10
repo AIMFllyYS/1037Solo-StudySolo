@@ -17,7 +17,7 @@ import { TOOL_STEP_LIMIT_INFO, clampMaxToolRounds } from "@/lib/ai/agent/tools/s
 import { computeContextBreakdown, estimateRequestContextTokens } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
 
-import { awaitUsage, resolveActualBillingModelId, settleChatUsage } from "@/lib/billing/usageLedger";
+import { awaitUsage, resolveActualBillingModelId, settleChatUsage } from "@/lib/billing/ledger/usageLedger";
 
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 

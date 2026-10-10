@@ -2,10 +2,10 @@ import {beforeEach,describe,expect,it,vi} from "vitest";
 import {render,screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import LoginForm from "./LoginForm";
-import {redirectAccount} from "@/lib/auth/account";
+import {redirectAccount} from "@/lib/auth/browser/account";
 const fixture=vi.hoisted(()=>({params:new URLSearchParams()}));
 vi.mock("next/navigation",()=>({useSearchParams:()=>fixture.params}));
-vi.mock("@/lib/auth/account",()=>({redirectAccount:vi.fn()}));
+vi.mock("@/lib/auth/browser/account",()=>({redirectAccount:vi.fn()}));
 beforeEach(()=>{fixture.params=new URLSearchParams();vi.clearAllMocks();});
 describe("unified Account login",()=>{
  it("never collects credentials or sends a standalone login",()=>{render(<LoginForm/>);expect(screen.getByRole("heading",{name:"使用 1037Solo 统一账号"})).toBeInTheDocument();expect(screen.queryByLabelText("邮箱")).toBeNull();expect(screen.queryByLabelText("密码")).toBeNull();expect(redirectAccount).not.toHaveBeenCalled();});

@@ -1,10 +1,10 @@
-import {hasAccessTokenCookie} from "@/lib/auth/sessionCookie";
+import {hasAccessTokenCookie} from "@/lib/auth/sessions/sessionCookie";
 import {canonicalUrlFor,isLegacyHost,authModeForRequest,accountBackendUrl} from "@/lib/auth/authMode";
 import { renewIfNeeded, downstreamHeaders, forwardCookies, isOutage, type RenewalResult } from "@/lib/auth/sign-in/session-refresh";
 import { NextResponse, type NextRequest } from "next/server";
-import { decideAiGate, TRUSTED_PROXY_USER_HEADER } from "@/lib/auth/aiGate";
+import { decideAiGate, TRUSTED_PROXY_USER_HEADER } from "@/lib/auth/server/aiGate";
 import {verifyAccount,failureStatus} from '@/lib/auth/sign-in/account-verify';
-import {extractAccessToken} from '@/lib/auth/sessionCookie';
+import {extractAccessToken} from '@/lib/auth/sessions/sessionCookie';
 
 /**
  * Next.js 16 request gate (formerly middleware.ts).

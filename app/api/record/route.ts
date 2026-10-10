@@ -1,4 +1,4 @@
-import { withPaidRequest } from "@/lib/billing/paidRequest";
+import { withPaidRequest } from "@/lib/billing/settlement/paidRequest";
 import type { NextRequest } from "next/server";
 import type { RecordCardAI, RecordMode } from "@/lib/review/types";
 import { ENV_MODEL_FLASH } from "@/lib/ai/provider";
@@ -7,8 +7,8 @@ import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
 import { collectRequestSecrets, formatRequestError, parseRecordRequest } from "@/lib/ai/agent/requestSchema";
 import { logSatelliteError } from "@/lib/ai/observability/agentLog";
-import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
-import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/ledger/usageLedger";
+import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quota/quotaGate";
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 // 「记录」成卡路由（SSE 流式）：把用户划词/右键选中的原文，按用户选择的模式流式转成复习卡片。

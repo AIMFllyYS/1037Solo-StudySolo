@@ -1,4 +1,4 @@
-import { currentAccessToken } from "@/lib/auth/browserSession";
+import { currentAccessToken } from "@/lib/auth/sessions/browserSession";
 import { resolvePublicAuthEnv } from "@/lib/auth/env";
 import { membershipLabel, normalizeNickname, type MembershipTier } from "./displayName";
 

@@ -2,7 +2,7 @@
 import {beforeEach,describe,expect,it,vi} from 'vitest';
 const state=vi.hoisted(()=>({verify:vi.fn()}));
 vi.mock('@/lib/auth/sign-in/account-verify',()=>({verifyAccount:state.verify}));
-import {verifySupabaseAccessToken,decideAiGate} from '@/lib/auth/aiGate';
+import {verifySupabaseAccessToken,decideAiGate} from '@/lib/auth/server/aiGate';
 const identity={active:true,user_id:'fixture-user',mfa_required:false,aal:'aal2',session_id:'fixture-session',client_id:'fixture-client',user_metadata:{role:'admin'}};
 beforeEach(()=>{state.verify.mockReset();state.verify.mockResolvedValue({kind:'ok',identity});});
 describe('canonical Account server authentication',()=>{

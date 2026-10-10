@@ -1,8 +1,8 @@
 import { type CustomApiProtocol, type ThinkingRequestStyle } from "@/lib/ai/models";
 import { DEFAULT_CHAT_TIMEOUT_MS } from "@/lib/ai/upstream";
 
-import { assertSafeCustomBaseUrl } from "@/lib/ai/customBaseUrl";
-import { normalizeOpenAIBaseUrl } from "@/lib/ai/openaiBaseUrl";
+import { assertSafeCustomBaseUrl } from "@/lib/ai/endpoints/customBaseUrl";
+import { normalizeOpenAIBaseUrl } from "@/lib/ai/endpoints/openaiBaseUrl";
 
 import type { ImageApiStyle } from "./types";
 /**

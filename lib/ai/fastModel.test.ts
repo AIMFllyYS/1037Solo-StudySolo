@@ -1,5 +1,5 @@
 import { test, mockPaidFetch, fixtureLedger } from "@/tests/helpers/paidAiFixture";
-import { runPaidContext } from "@/lib/billing/paidContext";
+import { runPaidContext } from "@/lib/billing/settlement/paidContext";
 import { fixtureUser } from "@/tests/helpers/paidAiFixture";
 import assert from "node:assert/strict";
 import { afterEach, } from "node:test";

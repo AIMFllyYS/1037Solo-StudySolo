@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
 import { GET } from '@/app/api/quota/route';
-import { setQuotaGateTestDeps } from '@/lib/billing/quotaGate';
-import { quotaViewSchema } from '@/lib/billing/quotaView';
+import { setQuotaGateTestDeps } from '@/lib/billing/quota/quotaGate';
+import { quotaViewSchema } from '@/lib/billing/quota/quotaView';
 
 afterEach(() => setQuotaGateTestDeps(null));
 test('quota view requires authentication, ignores supplied user IDs and never caches publicly', async () => {

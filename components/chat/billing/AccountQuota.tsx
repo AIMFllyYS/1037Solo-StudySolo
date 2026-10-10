@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { Sparkles } from 'lucide-react';
 import { useAuthSession } from '@/lib/hooks/auth/useAuthSession';
-import { fetchQuota } from '@/lib/billing/fetchQuota';
-import { ACCOUNT_USAGE_CHANGED, type QuotaView } from '@/lib/billing/quotaView';
+import { fetchQuota } from '@/lib/billing/quota/fetchQuota';
+import { ACCOUNT_USAGE_CHANGED, type QuotaView } from '@/lib/billing/quota/quotaView';
 import { UsageProgressBar } from '@/components/chat/billing/UsageProgressBar';
 import { openMembershipSponsor } from '@/lib/window/openMembershipSponsor';
 import { translateNow, useT } from "@/lib/i18n/index";

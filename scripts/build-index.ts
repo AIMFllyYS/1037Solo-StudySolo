@@ -283,8 +283,8 @@ async function main() {
   );
   const accountId=process.argv.find(arg=>arg.startsWith('--account-id='))?.slice('--account-id='.length);
   if(missing.length&&!/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(accountId??''))throw new Error('embedding requires --account-id=<dedicated test account UUID>');
-  const {runPaidContext}=await import('../lib/billing/paidContext');
-  const {runWithLedgerContext}=await import('../lib/billing/usageLedger');
+  const {runPaidContext}=await import('../lib/billing/settlement/paidContext');
+  const {runWithLedgerContext}=await import('../lib/billing/ledger/usageLedger');
 
   const batchSize = 32;
   let embedded = 0;

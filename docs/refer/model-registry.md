@@ -13,7 +13,7 @@
 | `models/thinking.ts` | 模型支持的思考档位和映射 |
 | `models/selection.ts` | 菜单分组与选择策略 |
 | `models/custom.ts` | 用户自定义分组与模型解析 |
-| `lib/ai/fastModeRegistry.ts` | 普通/快速变体配对与菜单系列代表 |
+| `lib/ai/models/selection/fastModeRegistry.ts` | 普通/快速变体配对与菜单系列代表 |
 | `lib/ai/provider.ts`、`sdk/languageModel.ts` | 实际供应商、凭据来源、协议、超时、参数和备用端点 |
 | `lib/ai/autoRoute.ts` | 自动选择的候选及规则 |
 | `lib/billing/` | 准入、真实落地模型、计费池与结算 |
@@ -36,7 +36,7 @@ provider 公共入口显式转出 `provider/` 的类型、credentials、protocol
 
 列表使用普通模型代表系列；闪电切换的是实际选择的模型 ID。思考强度另行保存，并按目标模型支持的档位收敛。没有配对的模型不能启用闪电；增加新系列时先确保两个真实注册 ID、能力、端点及计费可用，再登记配对。
 
-验证入口：`lib/ai/fastModeRegistry.test.tsx`、`components/chat/composer/ModelMenu.test.tsx`、思考设置与 provider/SDK 的相应测试。不得为加入一个 Fast 变体重复增加普通模型，也不得让显示标签与请求 ID 不一致。
+验证入口：`lib/ai/models/selection/fastModeRegistry.test.tsx`、`components/chat/composer/ModelMenu.test.tsx`、思考设置与 provider/SDK 的相应测试。不得为加入一个 Fast 变体重复增加普通模型，也不得让显示标签与请求 ID 不一致。
 
 ## 维护证据
 

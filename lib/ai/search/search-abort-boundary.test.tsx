@@ -9,7 +9,7 @@ vi.mock("@/lib/ai/search/searchService", () => ({
   localIndexBuiltAt: () => "fixture-built-at",
 }));
 vi.mock("@/lib/ai/embedding", () => ({ getQueryEmbeddingClient: () => ({ embed: async () => [0.1, 0.2] }) }));
-vi.mock("@/lib/billing/billableFetch", () => ({ billableJsonFetch: f.billable }));
+vi.mock("@/lib/billing/settlement/billableFetch", () => ({ billableJsonFetch: f.billable }));
 
 import { hybridSearchWithDiagnostics } from "./hybridSearch";
 

@@ -4,7 +4,7 @@ import type { LanguageModel } from "ai";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { logSatelliteError } from "@/lib/ai/observability/agentLog";
-import { settleUsage } from "@/lib/billing/usageLedger";
+import { settleUsage } from "@/lib/billing/ledger/usageLedger";
 import {
   buildOutlineInstructions,
   buildOutlinePrompt,

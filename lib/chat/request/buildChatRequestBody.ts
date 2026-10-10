@@ -4,7 +4,7 @@ import {
   capabilityNeedsForChat,
   selectCapabilityEndpointsForRequest,
   type CapabilityEndpoints,
-} from "@/lib/ai/capabilityEndpoints";
+} from "@/lib/ai/endpoints/capabilityEndpoints";
 import type { ChatContext } from "@/lib/types/chat";
 import type { Skill } from "@/lib/types/skill";
 import type { ContextBudget } from "./estimateContextBudget";

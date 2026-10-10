@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { createServiceAuthClient } from '@/lib/auth/serviceClient';
+import { createServiceAuthClient } from '@/lib/auth/server/serviceClient';
 import { FILE_BUCKET, FILE_QUOTA_MESSAGE, type ProcessedFile } from './contract';
 import { FileError } from './owner.server';
 import { z } from 'zod';

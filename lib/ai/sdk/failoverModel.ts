@@ -13,8 +13,8 @@ import type {
   LanguageModelV4StreamResult,
 } from "@ai-sdk/provider";
 import { APICallError } from "@ai-sdk/provider";
-import { CreditAdmissionError } from "@/lib/billing/centralCredits";
-import {isUncertainProviderOutcome} from '@/lib/billing/providerOutcome';
+import { CreditAdmissionError } from "@/lib/billing/settlement/centralCredits";
+import {isUncertainProviderOutcome} from '@/lib/billing/settlement/providerOutcome';
 import { isRecoverableUpstreamFailure, parseUpstreamErrorBody, isFetchAbortError } from "@/lib/ai/upstream";
 
 export interface FailoverCandidate {

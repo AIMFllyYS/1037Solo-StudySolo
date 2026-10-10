@@ -10,7 +10,7 @@ import {
   valueForStop,
   type ThinkingStopId,
   type ThinkingValue,
-} from "@/lib/ai/thinkingStops";
+} from "@/lib/ai/models/selection/thinkingStops";
 import { useT } from "@/lib/i18n/index";
 
 type T = (key: string, params?: Record<string, string | number>) => string;

@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
-import { redirectAccount } from "@/lib/auth/account";
+import { redirectAccount } from "@/lib/auth/browser/account";
 import { saveAccountNickname } from "@/lib/profile/client";
 import { fileToLocalAvatar } from "@/lib/profile/localAvatar";
 import { useAccountProfile } from "@/lib/hooks/auth/useAccountProfile";

@@ -1,7 +1,7 @@
-import {classImageSearchConfig} from "@/lib/billing/classImageSearch";
+import {classImageSearchConfig} from "@/lib/billing/settlement/classImageSearch";
 import {z} from 'zod';
-import {extractAccessToken,verifySupabaseAccessToken} from '@/lib/auth/aiGate';
-import {reserveCredit,settleCredit,cancelCredit,CreditAdmissionError} from '@/lib/billing/centralCredits';
+import {extractAccessToken,verifySupabaseAccessToken} from '@/lib/auth/server/aiGate';
+import {reserveCredit,settleCredit,cancelCredit,CreditAdmissionError} from '@/lib/billing/settlement/centralCredits';
 import {searchNoteImages} from '@/lib/content/noteImages';
 import {isSubjectId} from '@/lib/content-data/subjects.registry';
 export const runtime='nodejs';

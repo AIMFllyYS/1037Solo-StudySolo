@@ -14,8 +14,8 @@ import {
   ENV_MODEL_FLASH,
 } from "./provider.ts";
 import { buildCustomModelRegistryId } from "./models.ts";
-import { UnsafeCustomBaseUrlError } from "./customBaseUrl.ts";
-import { EMPTY_CAPABILITY_ENDPOINTS } from "./capabilityEndpoints.ts";
+import { UnsafeCustomBaseUrlError } from "./endpoints/customBaseUrl.ts";
+import { EMPTY_CAPABILITY_ENDPOINTS } from "./endpoints/capabilityEndpoints.ts";
 
 test("resolveProvider：custom 端点三要素齐全时用自定义", () => {
   const r = resolveProvider("custom", {

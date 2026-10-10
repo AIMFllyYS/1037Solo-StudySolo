@@ -3,7 +3,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-libra
 import { afterEach, expect, it, vi } from 'vitest';
 import { AuthProvider, useAuthSession } from '@/lib/hooks/auth/useAuthSession';
 import { AccountQuota } from '@/components/chat/billing/AccountQuota';
-import { decideAiGate } from '@/lib/auth/aiGate';
+import { decideAiGate } from '@/lib/auth/server/aiGate';
 import {activateStorageOwner} from '@/lib/storage/ownerScope';
 
 vi.mock('@/lib/sync/schedule', () => ({ scheduleCloudPull: vi.fn(), setCloudSyncEnabled: vi.fn() }));

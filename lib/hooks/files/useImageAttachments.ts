@@ -20,7 +20,7 @@ import {
   LONG_PASTE_DOCUMENT_THRESHOLD,
   MAX_DOCUMENT_CHARACTERS,
   type AttachmentPreview,
-} from "@/lib/ai/imageUtils";
+} from "@/lib/ai/images/imageUtils";
 import { useSettings } from "@/lib/stores/settings";
 import { getModelInfoWithCustom, modelAcceptsImageInput } from "@/lib/ai/models";
 import { localPathOf, recordImport, type ImportSource } from "@/lib/stores/assets/imports";

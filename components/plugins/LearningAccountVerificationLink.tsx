@@ -1,6 +1,6 @@
 "use client";
 
-import { accountOrigin } from "@/lib/auth/account";
+import { accountOrigin } from "@/lib/auth/browser/account";
 import { useT } from "@/lib/i18n";
 
 /** Account owns verification. Return only to a fixed market or Agent surface. */

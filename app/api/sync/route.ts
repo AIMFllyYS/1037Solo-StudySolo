@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { fileOwner, fileFailure } from '@/lib/files/owner.server';
-import { createServiceAuthClient } from '@/lib/auth/serviceClient';
+import { createServiceAuthClient } from '@/lib/auth/server/serviceClient';
 import { boundedText } from '@/lib/http/boundedBody';
 import { CLOUD_SYNC_KINDS } from '@/lib/sync/types';
 export const runtime = 'nodejs'; export const dynamic = 'force-dynamic';

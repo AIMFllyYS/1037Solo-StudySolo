@@ -1,6 +1,6 @@
 import { type ProviderKind } from "@/lib/ai/models";
 
-import { normalizeOpenAIBaseUrl } from "@/lib/ai/openaiBaseUrl";
+import { normalizeOpenAIBaseUrl } from "@/lib/ai/endpoints/openaiBaseUrl";
 
 import type { ProviderCredentials } from "./types";
 // 本模块在加载时读一次 env（BASE / KEY / MIMO_* / RELAY_* / ENV_MODEL_*）。改 env 必须重启进程。

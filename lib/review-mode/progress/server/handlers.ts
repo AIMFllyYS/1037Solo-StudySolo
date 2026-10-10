@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 
-import { createServiceAuthClient } from "@/lib/auth/serviceClient";
+import { createServiceAuthClient } from "@/lib/auth/server/serviceClient";
 
 import type { QuizData } from "@/lib/quiz/types";
 

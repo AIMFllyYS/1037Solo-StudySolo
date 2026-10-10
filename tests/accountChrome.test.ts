@@ -41,7 +41,7 @@ test("昵称走档案 API，头像只本地 persist", () => {
   const store = readWorkspaceFile("lib/stores/userProfile.ts");
   const client = readWorkspaceFile("lib/profile/client.ts");
   const migration = readWorkspaceFile("supabase/migrations/0006_app_users_nickname.sql");
-  const authFetch = readWorkspaceFile("lib/auth/installAiAuthFetch.ts");
+  const authFetch = readWorkspaceFile("lib/auth/browser/installAiAuthFetch.ts");
 
   assert.match(store, /studysolo-user-profile/);
   assert.match(store, /setLocalAvatar/);

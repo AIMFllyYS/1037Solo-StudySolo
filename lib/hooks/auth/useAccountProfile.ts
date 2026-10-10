@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchQuota } from "@/lib/billing/fetchQuota";
+import { fetchQuota } from "@/lib/billing/quota/fetchQuota";
 import { useAuthSession } from "@/lib/hooks/auth/useAuthSession";
 import { fetchAccountProfile } from "@/lib/profile/client";
 import { membershipLabel, resolveNickname } from "@/lib/profile/displayName";

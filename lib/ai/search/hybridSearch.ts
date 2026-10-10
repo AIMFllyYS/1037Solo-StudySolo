@@ -1,13 +1,13 @@
-import { billableJsonFetch } from "@/lib/billing/billableFetch";
+import { billableJsonFetch } from "@/lib/billing/settlement/billableFetch";
 // 混合检索 + Rerank：并行 BM25 + 向量 → RRF 合并 → rerank API 精排 → MultiSearchHit[]
 import {searchLocalIndex,localSearchAvailability,localVectorModel,localIndexBuiltAt} from './searchService';
 import type { ScoredChunk } from "./vectorStoreTypes";
 import { getQueryEmbeddingClient } from "@/lib/ai/embedding";
-import { mainUsedPlatformCredentials, settleUsage } from "@/lib/billing/usageLedger";
+import { mainUsedPlatformCredentials, settleUsage } from "@/lib/billing/ledger/usageLedger";
 import { resolveSidecarBilling } from "@/lib/billing/usagePool";
-import { assertSafeCustomBaseUrl } from "@/lib/ai/customBaseUrl";
-import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
-import { overlayOptional, resolveCapabilityEndpoint } from "@/lib/ai/capabilityEndpoints";
+import { assertSafeCustomBaseUrl } from "@/lib/ai/endpoints/customBaseUrl";
+import { getCapabilityEndpoints } from "@/lib/ai/endpoints/capabilityContext";
+import { overlayOptional, resolveCapabilityEndpoint } from "@/lib/ai/endpoints/capabilityEndpoints";
 import { normalizeOpenAIBaseUrl } from "@/lib/ai/provider";
 import type { MultiSearchHit } from "@/lib/content/loader";
 import { normalizeSearchQuery } from "./queryNormalize";

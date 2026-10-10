@@ -1,8 +1,8 @@
-import {extractAccessToken,verifySupabaseAccessToken} from '@/lib/auth/aiGate';
+import {extractAccessToken,verifySupabaseAccessToken} from '@/lib/auth/server/aiGate';
 import {resolveProvider,ENV_MODEL_FLASH} from '@/lib/ai/provider';
-import {tokenTariff,endpointProvider} from '@/lib/billing/tariffs';
-import {configuredUnitRate} from '@/lib/billing/unitRate';
-import {classImageSearchConfig} from '@/lib/billing/classImageSearch';
+import {tokenTariff,endpointProvider} from '@/lib/billing/pricing/tariffs';
+import {configuredUnitRate} from '@/lib/billing/pricing/unitRate';
+import {classImageSearchConfig} from '@/lib/billing/settlement/classImageSearch';
 export const runtime='nodejs';export const dynamic='force-dynamic';
 export async function GET(request:Request){
  const token=extractAccessToken(request.headers);const user=token?await verifySupabaseAccessToken(token):null;

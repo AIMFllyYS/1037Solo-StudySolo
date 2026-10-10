@@ -1,5 +1,5 @@
 import { buildCustomModelRegistryId, getModelInfo, CUSTOM_OPENAI_MODEL_ID, type CustomApiGroup } from "@/lib/ai/models";
-import { assertSafeCustomBaseUrl } from "@/lib/ai/customBaseUrl";
+import { assertSafeCustomBaseUrl } from "@/lib/ai/endpoints/customBaseUrl";
 
 /** Preserve keys the desktop user explicitly entered; never copy operator env. */
 export function desktopModelRequest(body: Record<string, unknown>, env: Partial<NodeJS.ProcessEnv> = process.env) {

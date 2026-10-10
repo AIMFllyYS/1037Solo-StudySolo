@@ -1,7 +1,7 @@
 import dns from "node:dns";
 import { isIP } from "node:net";
 import { Agent } from "undici";
-import { checkCustomBaseUrl } from "@/lib/ai/customBaseUrl";
+import { checkCustomBaseUrl } from "@/lib/ai/endpoints/customBaseUrl";
 import { createPinnedProbeLookup, type ProbeResolver } from "@/lib/browser/probeNetwork.server";
 
 export class PublicModelEndpointError extends Error {

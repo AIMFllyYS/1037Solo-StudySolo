@@ -13,7 +13,7 @@ import {
   type ChallengeAnswer,
   type ChallengeGrade,
   type ChallengeTrack,
-} from "@/lib/auth/humanChallenge";
+} from "@/lib/auth/presentation/humanChallenge";
 import { MEDICINE_SVGS } from "./CentralDogmaSvgs";
 
 /** 各学科强调色：来自 studysolo-glass 快照的 --subj-* 令牌（globals.css 已移植）。 */

@@ -6,7 +6,7 @@ import { PROJECT_LIMITS } from "./limits";
 import { extractFileText } from './parse';
 import { uploadCloudFile, deleteCloudFile } from '@/lib/files/client';
 import { getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
-import { fileToAttachment } from '@/lib/ai/imageUtils';
+import { fileToAttachment } from '@/lib/ai/images/imageUtils';
 import { sliceText } from './slice';
 
 export interface ImportProjectFileInput {

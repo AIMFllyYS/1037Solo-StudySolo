@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import AccountDialog from "./AccountDialog";
 import { useUserProfile } from "@/lib/stores/userProfile";
 
-vi.mock("@/lib/auth/browserClient", () => ({
+vi.mock("@/lib/auth/browser/browserClient", () => ({
   tryGetBrowserAuthClient: () => null,
 }));
 

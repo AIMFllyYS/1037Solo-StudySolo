@@ -1,6 +1,6 @@
 import { backupSettings, normalizeStoredSettings, readSettingsBackup } from '../settingsRecovery';
 import { normalizeCustomModelRegistryId, normalizeRegistryId } from "@/lib/ai/models";
-import { normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
+import { normalizeCapabilityEndpoints } from "@/lib/ai/endpoints/capabilityEndpoints";
 import { normalizeSelectionAssistantActions } from "@/lib/notes/selectionAssistant";
 import { clampMaxToolRounds } from "@/lib/ai/agent/toolRounds";
 import { clampTurnBudgetCredits, clampUserMaxOutputTokens } from "@/lib/ai/outputLimits";

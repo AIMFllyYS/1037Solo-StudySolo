@@ -1,5 +1,5 @@
-import { billableJsonFetch } from "@/lib/billing/billableFetch";
-import { CreditAdmissionError } from "@/lib/billing/centralCredits";
+import { billableJsonFetch } from "@/lib/billing/settlement/billableFetch";
+import { CreditAdmissionError } from "@/lib/billing/settlement/centralCredits";
 // 极轻量「快速模型」调用（服务端）：只服务内部调度——自动路由选模型、标签页命名。
 //
 // 为什么不用 AI SDK 走一遍：这类调用要的是**确定性**——必须真正关掉思考、temperature 0、
@@ -11,7 +11,7 @@ import { CreditAdmissionError } from "@/lib/billing/centralCredits";
 //
 // env 在**每次请求**读取（对比 provider.ts 的模块级读取）：这两个变量属于"运维调优"，
 // 改完应当立刻生效，而不是重启进程。
-import { normalizeOpenAIBaseUrl } from "@/lib/ai/openaiBaseUrl";
+import { normalizeOpenAIBaseUrl } from "@/lib/ai/endpoints/openaiBaseUrl";
 
 /** 快速模型超时：够慢启动的冷实例，又不至于让用户等出感受。 */
 export const FAST_MODEL_TIMEOUT_MS = 6_000;

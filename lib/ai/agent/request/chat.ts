@@ -4,7 +4,7 @@ import { classAgentContextSchema } from "@/lib/class/agentContext";
 import { DEFAULT_ACADEMIC_YEAR, isAcademicYearId, type AcademicYearId } from "@/lib/constants/academic-year";
 import { MAX_MEMORY_CARDS, MAX_MEMORY_CARD_FIELD_CHARS, MAX_MEMORY_NOTES, MAX_MEMORY_NOTE_CHARS } from "@/lib/ai/agent/tools/memoryCatalog";
 
-import { normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
+import { normalizeCapabilityEndpoints } from "@/lib/ai/endpoints/capabilityEndpoints";
 import { REQUEST_LIMITS } from "./limits";
 import { uiMessageSchema, skillSchema, customApiGroupSchema, finiteNumber } from "./shared";
 /** 客户端 body 字段见 `lib/chat/buildChatRequestBody.ts` 的 `ChatRequestBody`（messages 由 transport 另传）。 */

@@ -1,5 +1,5 @@
-import { createServiceAuthClient } from "@/lib/auth/serviceClient";
-import { resolveSessionUserId } from "@/lib/billing/quotaGate";
+import { createServiceAuthClient } from "@/lib/auth/server/serviceClient";
+import { resolveSessionUserId } from "@/lib/billing/quota/quotaGate";
 import { membershipLabel, normalizeNickname, type MembershipTier } from "./displayName";
 
 export interface AccountProfileRow {

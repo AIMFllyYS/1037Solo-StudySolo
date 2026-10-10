@@ -4,7 +4,7 @@ import {
   IMAGE_SEARCH_UNCONFIGURED_TEXT,
   searchImages,
   trackPhotoDownload,
-} from "@/lib/ai/imageSearch";
+} from "@/lib/ai/images/imageSearch";
 import type { ImageSearchOutput } from "@/lib/ai/agent/tools/imageSearch/types";
 import {
   IMAGE_SEARCH_MAX_TOTAL,

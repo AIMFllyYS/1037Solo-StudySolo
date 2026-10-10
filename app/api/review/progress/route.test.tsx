@@ -21,13 +21,13 @@ vi.mock("@/lib/auth/authMode", () => ({
   authModeForRequest: vi.fn(() => "account-local"),
   CANONICAL_SITE_ORIGIN: "https://studysolo.1037solo.com",
 }));
-vi.mock("@/lib/auth/sessionCookie", () => ({ extractAccessToken: vi.fn(() => "synthetic-access-token") }));
+vi.mock("@/lib/auth/sessions/sessionCookie", () => ({ extractAccessToken: vi.fn(() => "synthetic-access-token") }));
 vi.mock("@/lib/auth/sign-in/account-verify", () => ({
   failureStatus: (result: { kind: string }) => result.kind === "signed-out" ? 401 : result.kind === "forbidden" ? 403 : 503,
   verifyAccount: mocks.verifyAccount,
 }));
-vi.mock("@/lib/auth/rateLimit", () => ({ consumeRateLimit: vi.fn(() => ({ ok: true, remaining: 119 })) }));
-vi.mock("@/lib/auth/serviceClient", () => ({
+vi.mock("@/lib/auth/server/rateLimit", () => ({ consumeRateLimit: vi.fn(() => ({ ok: true, remaining: 119 })) }));
+vi.mock("@/lib/auth/server/serviceClient", () => ({
   createServiceAuthClient: () => ({ rpc: mocks.rpc, from: mocks.from }),
 }));
 vi.mock("@/lib/content/loader", () => ({ readQuiz: mocks.readQuiz }));

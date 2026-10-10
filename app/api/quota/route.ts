@@ -1,5 +1,5 @@
-import { loadQuotaSnapshot, resolveSessionUserId } from '@/lib/billing/quotaGate';
-import type { QuotaView } from '@/lib/billing/quotaView';
+import { loadQuotaSnapshot, resolveSessionUserId } from '@/lib/billing/quota/quotaGate';
+import type { QuotaView } from '@/lib/billing/quota/quotaView';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';

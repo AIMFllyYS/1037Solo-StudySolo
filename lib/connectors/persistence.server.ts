@@ -3,7 +3,7 @@ import { mkdir, readFile, rename, writeFile, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import { seal, unseal } from "./vault-crypto.server";
 import { connectorEncryptionKey } from "./config.server";
-import { createServiceAuthClient } from "@/lib/auth/serviceClient";
+import { createServiceAuthClient } from "@/lib/auth/server/serviceClient";
 
 const production = () => process.env.NODE_ENV === "production";
 const hash = (context: string) => createHash("sha256").update(context).digest("hex");

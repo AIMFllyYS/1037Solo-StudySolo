@@ -1,6 +1,6 @@
 "use client";
 
-import { fileToDocumentAttachment } from "@/lib/ai/imageUtils";
+import { fileToDocumentAttachment } from "@/lib/ai/images/imageUtils";
 import { parsePptxSlideBytes } from "@/lib/chat/attachments/parsePptx";
 import { extractPdfText } from "./pdfText";
 

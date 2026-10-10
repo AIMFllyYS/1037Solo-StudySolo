@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { consumeRateLimit, requestClientIp } from "@/lib/auth/rateLimit";
-import { resolveSessionUserId } from "@/lib/billing/quotaGate";
+import { consumeRateLimit, requestClientIp } from "@/lib/auth/server/rateLimit";
+import { resolveSessionUserId } from "@/lib/billing/quota/quotaGate";
 import {
   publicRedeemMessage,
   redeemCodeForUser,
@@ -8,7 +8,7 @@ import {
   REDEEM_PUBLIC_ERROR,
   REDEEM_RATE_LIMIT_MAX,
   REDEEM_RATE_LIMIT_WINDOW_MS,
-} from "@/lib/billing/redeemCode";
+} from "@/lib/billing/quota/redeemCode";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

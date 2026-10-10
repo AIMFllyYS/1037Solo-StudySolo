@@ -1,4 +1,4 @@
-import { costCnyToUsd } from '@/lib/billing/ledgerView';
+import { costCnyToUsd } from '@/lib/billing/ledger/ledgerView';
 
 import { translateNow } from "@/lib/i18n/index";
 

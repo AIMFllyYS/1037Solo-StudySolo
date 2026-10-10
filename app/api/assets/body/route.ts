@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { fileOwner, fileFailure, FileError } from '@/lib/files/owner.server';
-import { createServiceAuthClient } from '@/lib/auth/serviceClient';
+import { createServiceAuthClient } from '@/lib/auth/server/serviceClient';
 import { hydrateAssetPayload, verifyBodyChunk } from '@/lib/assets/body.server';
 import { hasExternalBody } from '@/lib/assets/body';
 export const runtime = 'nodejs';

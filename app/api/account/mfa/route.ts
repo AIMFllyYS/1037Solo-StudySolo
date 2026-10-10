@@ -1,7 +1,7 @@
 import {NextResponse,type NextRequest} from 'next/server';
 import {z} from 'zod';
-import {oauthConfig,exchangeOAuth,oauthCookies,pendingMfaCookies,safeNext,type OAuthTokens} from '@/lib/auth/oauthServer';
-import {verifySupabaseAccessToken} from '@/lib/auth/aiGate';
+import {oauthConfig,exchangeOAuth,oauthCookies,pendingMfaCookies,safeNext,type OAuthTokens} from '@/lib/auth/server/oauthServer';
+import {verifySupabaseAccessToken} from '@/lib/auth/server/aiGate';
 import {boundedText} from '@/lib/http/boundedBody';
 export const runtime='nodejs';export const dynamic='force-dynamic';
 async function pending(request:NextRequest){

@@ -4,7 +4,7 @@ import {get} from 'idb-keyval';
 import {Download,FileText,Import,MoreHorizontal,Mic,PanelRightOpen,Settings2,Sparkles,X} from 'lucide-react';
 import {useAuthSession} from '@/lib/hooks/auth/useAuthSession';
 import {getOwnerEpoch,getStorageOwner} from '@/lib/storage/ownerScope';
-import {redirectAccount} from '@/lib/auth/account';
+import {redirectAccount} from '@/lib/auth/browser/account';
 import {WorkbenchShell} from './components/layout/workbench-shell';
 import {ClassNoteRail} from './components/layout/class-note-rail';
 import {ClassMaterialDock} from './components/layout/class-material-dock';

@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { boundedText } from '@/lib/http/boundedBody';
-import { createServiceAuthClient } from '@/lib/auth/serviceClient';
+import { createServiceAuthClient } from '@/lib/auth/server/serviceClient';
 import { FILE_BUCKET, FILE_QUOTA_MESSAGE, MAX_FILE_BYTES } from '@/lib/files/contract';
 import { FileError, fileFailure, fileOwner } from '@/lib/files/owner.server';
 export const runtime = 'nodejs';

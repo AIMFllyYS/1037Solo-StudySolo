@@ -1,6 +1,6 @@
 import { getModelInfo, getLandedModelInfo, getFetchTimeoutMs, CUSTOM_OPENAI_MODEL_ID } from "@/lib/ai/models";
 
-import { relayModelConfig } from "@/lib/ai/relayConfig";
+import { relayModelConfig } from "@/lib/ai/endpoints/relayConfig";
 import { AUTO_MODEL_ID } from "@/lib/ai/models";
 
 import type { ResolvedProvider } from "./types";

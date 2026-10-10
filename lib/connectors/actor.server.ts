@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { accountBackendUrl, authModeForRequest } from "@/lib/auth/authMode";
 import { verifyAccount, verifiedRecently, failureStatus } from "@/lib/auth/sign-in/account-verify";
-import { extractAccessToken } from "@/lib/auth/sessionCookie";
+import { extractAccessToken } from "@/lib/auth/sessions/sessionCookie";
 import { connectorOrigin } from "./config.server";
 export class ConnectorError extends Error { constructor(readonly code: string, readonly status = 400) { super(code); } }
 export function requireConnectorOrigin(request: NextRequest, mutation = false): string {

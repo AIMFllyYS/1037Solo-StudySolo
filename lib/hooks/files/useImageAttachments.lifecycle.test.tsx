@@ -3,7 +3,7 @@ import {afterEach,beforeEach,expect,it,vi} from 'vitest'
 const f=vi.hoisted(()=>({convert:vi.fn()}))
 vi.mock('@/lib/files/client',()=>({uploadCloudFile:vi.fn(async()=>({id:'11111111-1111-4111-8111-111111111111'}))}))
 vi.mock('@/lib/project/parse',()=>({extractFileText:vi.fn(async()=>'公开测试正文')}))
-vi.mock('@/lib/ai/imageUtils',async importOriginal=>({...await importOriginal<typeof import('@/lib/ai/imageUtils')>(),filesToAttachments:f.convert}))
+vi.mock('@/lib/ai/images/imageUtils',async importOriginal=>({...await importOriginal<typeof import('@/lib/ai/images/imageUtils')>(),filesToAttachments:f.convert}))
 import {useImageAttachments} from './useImageAttachments'
 import {useSettings} from '../../stores/settings'
 import {activateStorageOwner} from '@/lib/storage/ownerScope'

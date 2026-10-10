@@ -2,7 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile, rename, writeFile, link } from "node:fs/promises";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { resolve } from "node:path";
-import { createServiceAuthClient } from "@/lib/auth/serviceClient";
+import { createServiceAuthClient } from "@/lib/auth/server/serviceClient";
 import { resolveServiceAuthEnv } from "@/lib/auth/env";
 import { seal, unseal } from "@/lib/connectors/vault-crypto.server";
 import { sandboxConfiguration, SandboxError } from "./config.server";

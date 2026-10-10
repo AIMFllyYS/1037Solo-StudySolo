@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { onBrowserSessionChange } from "@/lib/auth/browserSession";
+import { onBrowserSessionChange } from "@/lib/auth/sessions/browserSession";
 import { getStorageOwner, getOwnerEpoch, onStorageOwnerChange } from "@/lib/storage/ownerScope";
 
 type Installed = { packageId: string; version: string; digest: string };

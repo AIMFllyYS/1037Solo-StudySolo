@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import HumanChallengeDialog from "./HumanChallengeDialog";
-import { MEDICINE_CANONICAL_ORDER } from "@/lib/auth/humanChallenge";
+import { MEDICINE_CANONICAL_ORDER } from "@/lib/auth/presentation/humanChallenge";
 
 describe("HumanChallengeDialog", () => {
   beforeEach(() => {

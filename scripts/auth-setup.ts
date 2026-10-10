@@ -11,24 +11,24 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createBrowserAuthClient } from "../lib/auth/browserClient.ts";
+import { createBrowserAuthClient } from "../lib/auth/browser/browserClient.ts";
 import { resolveManagementAuthEnv, resolveSmtpEnv } from "../lib/auth/env.ts";
-import { requestEmailOtp, type OtpRequestResult } from "../lib/auth/otp.ts";
-import { createServiceAuthClient } from "../lib/auth/serviceClient.ts";
+import { requestEmailOtp, type OtpRequestResult } from "../lib/auth/sessions/otp.ts";
+import { createServiceAuthClient } from "../lib/auth/server/serviceClient.ts";
 import {
   applyAuthSmtpConfig,
   collectDirectMailDeliveryTraces,
   fetchAuthConfig,
   isAliyunDirectMailSmtp,
   type AuthConfigSnapshot,
-} from "../lib/auth/smtpConfig.ts";
+} from "../lib/auth/provisioning/smtpConfig.ts";
 import {
   SIGNUP_GRANT_AMOUNT_CNY,
   SIGNUP_GRANT_SOURCE,
   isAuthUserId,
   probeSignupEmail,
   verifySignupTriggerOnce,
-} from "../lib/auth/signupTrigger.ts";
+} from "../lib/auth/provisioning/signupTrigger.ts";
 import { createManagementApiExecutor } from "../lib/db/migrate.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");

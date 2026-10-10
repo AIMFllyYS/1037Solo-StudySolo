@@ -1,5 +1,5 @@
-import { withPaidRequest } from "@/lib/billing/paidRequest";
-import { optionalPaidContext } from "@/lib/billing/paidContext";
+import { withPaidRequest } from "@/lib/billing/settlement/paidRequest";
+import { optionalPaidContext } from "@/lib/billing/settlement/paidContext";
 import type { NextRequest } from "next/server";
 import { createUIMessageStream, createUIMessageStreamResponse } from "ai";
 
@@ -15,11 +15,11 @@ import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { clampMaxToolRounds } from "@/lib/ai/agent/tools/server";
 
 import { formatRequestError, parseChatRequest, RequestTooLargeError, type ChatRequest } from "@/lib/ai/agent/requestSchema";
-import { runWithLedgerContext } from "@/lib/billing/usageLedger";
-import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { runWithLedgerContext } from "@/lib/billing/ledger/usageLedger";
+import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/lib/billing/quota/quotaGate";
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
-import { runWithCapabilityEndpoints } from "@/lib/ai/capabilityContext";
-import { capabilitySecretValues } from "@/lib/ai/capabilityEndpoints";
+import { runWithCapabilityEndpoints } from "@/lib/ai/endpoints/capabilityContext";
+import { capabilitySecretValues } from "@/lib/ai/endpoints/capabilityEndpoints";
 
 import { shouldAutoEnableSearch } from "@/lib/ai/search/autoEnable";
 

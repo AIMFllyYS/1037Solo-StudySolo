@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { extractAccessToken } from "@/lib/auth/sessionCookie";
+import { extractAccessToken } from "@/lib/auth/sessions/sessionCookie";
 import { SandboxError } from "./config.server";
 import { desktopModelRequest } from "./desktop-model.server";
 

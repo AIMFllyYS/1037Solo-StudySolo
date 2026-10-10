@@ -7,8 +7,8 @@ import { asChatPayload, asUserNote, asReviewCard, cardVersion, asChatProject, lo
 import type { CloudSyncStores } from "./storeAdapterTypes";
 export type { CloudSyncStores } from "./storeAdapterTypes";
 import { pendingSyncJobs, persistSyncJournal, setJournalActive, type SyncJob } from './journal';
-﻿import { tryGetBrowserDataClient } from "@/lib/auth/browserClient";
-import { getBrowserSession } from "@/lib/auth/browserSession";
+﻿import { tryGetBrowserDataClient } from "@/lib/auth/browser/browserClient";
+import { getBrowserSession } from "@/lib/auth/sessions/browserSession";
 import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
 import { registerResourceMetrics } from "@/lib/performance/resourceMetrics";
 import { type SessionMeta } from "@/lib/storage/chatStorage";

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import type { NextRequest } from "next/server";
 import { GET, PATCH, POST } from "@/app/api/share/route";
-import { setQuotaGateTestDeps } from "@/lib/billing/quotaGate";
+import { setQuotaGateTestDeps } from "@/lib/billing/quota/quotaGate";
 import { setShareApiTestDeps, type SharedConversationInsert } from "@/lib/share/server";
 import { SHARE_ID_LENGTH, isShareId } from "@/lib/share/slug";
 import { MAX_SHARE_PAYLOAD_BYTES, buildSharedSnapshot } from "@/lib/share/snapshot";

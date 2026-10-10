@@ -3,27 +3,27 @@
 import {getStorageOwner,activateStorageOwner,hydrateOwnerStores} from "@/lib/storage/ownerScope";
 import {flushPendingWrites} from "@/lib/storage/idbStorage";
 import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { restoreAccountSession, logoutAccount, redirectAccount, SIGNED_IN_EVENT } from "@/lib/auth/account";
-import { freshAccessToken, onBrowserSessionChange } from "@/lib/auth/browserSession";
+import { restoreAccountSession, logoutAccount, redirectAccount, SIGNED_IN_EVENT } from "@/lib/auth/browser/account";
+import { freshAccessToken, onBrowserSessionChange } from "@/lib/auth/sessions/browserSession";
 import {
   type AuthOtpClient,
   type OtpRequestResult,
   type OtpVerifyResult,
-} from "@/lib/auth/otp";
+} from "@/lib/auth/sessions/otp";
 import {
   type AuthPasswordClient,
   type PasswordAuthResult,
   type PasswordMailResult,
-} from "@/lib/auth/password";
-import { installAiAuthFetch } from "@/lib/auth/installAiAuthFetch";
-import { sessionAccessToken } from "@/lib/auth/sessionCookie";
+} from "@/lib/auth/sessions/password";
+import { installAiAuthFetch } from "@/lib/auth/browser/installAiAuthFetch";
+import { sessionAccessToken } from "@/lib/auth/sessions/sessionCookie";
 import {
   readPersistedSession,
   snapshotAuthSession,
   subscribeAuthSession,
   type AuthSession,
   type AuthSessionClient,
-} from "@/lib/auth/session";
+} from "@/lib/auth/sessions/session";
 import { scheduleCloudPull, setCloudSyncEnabled } from "@/lib/sync/schedule";
 
 export type AuthRuntimeClient = {

@@ -1,11 +1,11 @@
 import {boundedText,RequestBodyTooLarge} from '@/lib/http/boundedBody';
 import {z} from "zod";
-import {extractAccessToken,verifySupabaseAccessToken} from "@/lib/auth/aiGate";
+import {extractAccessToken,verifySupabaseAccessToken} from "@/lib/auth/server/aiGate";
 import {resolveProvider,ENV_MODEL_FLASH,chatCompletionsUrl} from "@/lib/ai/provider";
 import {getModelInfo} from "@/lib/ai/models";
-import {reserveCredit,settleMicrocredits,cancelCredit,CreditAdmissionError,type Admission} from "@/lib/billing/centralCredits";
-import {tokenTariff,reservationPrice,tierPrice,endpointProvider,type TokenTariff} from "@/lib/billing/tariffs";
-import {measuredTokens,usageCny,usageMicrocredits} from "@/lib/billing/providerAdmission";
+import {reserveCredit,settleMicrocredits,cancelCredit,CreditAdmissionError,type Admission} from "@/lib/billing/settlement/centralCredits";
+import {tokenTariff,reservationPrice,tierPrice,endpointProvider,type TokenTariff} from "@/lib/billing/pricing/tariffs";
+import {measuredTokens,usageCny,usageMicrocredits} from "@/lib/billing/settlement/providerAdmission";
 export const runtime="nodejs";export const dynamic="force-dynamic";
 const schema=z.object({messages:z.array(z.record(z.string(),z.unknown())).min(1).max(100),tools:z.array(z.record(z.string(),z.unknown())).max(8).optional(),tool_choice:z.unknown().optional(),stream:z.boolean().optional(),temperature:z.number().min(0).max(2).optional(),max_tokens:z.number().int().positive().optional(),max_completion_tokens:z.number().int().positive().optional()});
 function actualAmount(usage:unknown,tariff:TokenTariff,ratio:number,inputBound:number,outputLimit:number):number {

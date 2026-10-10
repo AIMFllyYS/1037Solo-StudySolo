@@ -6,7 +6,7 @@ import AgentPluginsPage from "./AgentPluginsPage";
 import { useToast } from "@/lib/stores/toast";
 import { StrictMode } from "react";
 import { activateStorageOwner, ownedStorageKeyFor } from "@/lib/storage/ownerScope";
-import { setBrowserSession } from "@/lib/auth/browserSession";
+import { setBrowserSession } from "@/lib/auth/sessions/browserSession";
 import { useGoogleConnectorScopes } from "@/lib/stores/googleConnectorScopes";
 import { GOOGLE_SCOPE_OPTIONS } from "@/lib/connectors/google-scopes";
 import { createHash, webcrypto } from "node:crypto";

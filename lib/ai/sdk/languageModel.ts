@@ -1,5 +1,5 @@
-import { endpointProvider, tokenTariff } from "@/lib/billing/tariffs";
-import { withProviderAdmission, type CreditDriver } from "@/lib/billing/providerAdmission";
+import { endpointProvider, tokenTariff } from "@/lib/billing/pricing/tariffs";
+import { withProviderAdmission, type CreditDriver } from "@/lib/billing/settlement/providerAdmission";
 // AI SDK 模型工厂：把 provider.ts 的凭证/端点解析结果装配成一个可直接交给
 // ToolLoopAgent / generateText / streamText 的 LanguageModel。
 //

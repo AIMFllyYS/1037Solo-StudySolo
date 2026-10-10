@@ -1,15 +1,15 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import type { NextRequest } from "next/server";
-import { resetRateLimitStore } from "@/lib/auth/rateLimit";
-import { setQuotaGateTestDeps } from "@/lib/billing/quotaGate";
+import { resetRateLimitStore } from "@/lib/auth/server/rateLimit";
+import { setQuotaGateTestDeps } from "@/lib/billing/quota/quotaGate";
 import {
   REDEEM_PUBLIC_ERROR,
   REDEEM_RATE_LIMIT_MAX,
   setRedeemTestDeps,
   type RedeemStore,
   type RedeemUserRow,
-} from "@/lib/billing/redeemCode";
+} from "@/lib/billing/quota/redeemCode";
 import { POST } from "@/app/api/redeem/route";
 
 const USER = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";

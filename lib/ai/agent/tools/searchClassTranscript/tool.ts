@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-import { createServiceAuthClient } from "@/lib/auth/serviceClient";
+import { createServiceAuthClient } from "@/lib/auth/server/serviceClient";
 import { rankTranscriptSegments, type TranscriptSegmentLike } from "@/lib/class/transcriptSearch";
 import { allocateCiteIndex, CITE_HIT_HINT } from "@/lib/ai/agent/tools/citeIndex";
 import {

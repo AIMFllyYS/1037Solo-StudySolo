@@ -7,7 +7,7 @@ import { getOwnerEpoch, getStorageOwner, captureStorageOperation } from '@/lib/s
 import { collectCloudFileIds } from '@/lib/files/contract';
 import { createStreamUiThrottle } from "@/lib/chat/streaming/streamUiThrottle";
 import { flushPendingWrites } from "@/lib/storage/idbStorage";
-import { notifyAccountUsageChanged } from "@/lib/billing/quotaView";
+import { notifyAccountUsageChanged } from "@/lib/billing/quota/quotaView";
 import { createStallWatchdog, type StallReason } from "@/lib/chat/streaming/createStallWatchdog";
 import { hydrateForRequest, lastUserMessageId } from "@/lib/chat/request/hydrateForRequest";
 import { resolveFollowUps } from "@/lib/chat/request/resolveFollowUps";

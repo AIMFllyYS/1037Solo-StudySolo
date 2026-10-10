@@ -2,7 +2,7 @@
 import {beforeEach,afterEach,describe,expect,it,vi} from 'vitest';
 import {NextRequest} from 'next/server';
 const mocks=vi.hoisted(()=>({verify:vi.fn(),fetch:vi.fn()}));
-vi.mock('@/lib/auth/aiGate',()=>({verifySupabaseAccessToken:mocks.verify}));
+vi.mock('@/lib/auth/server/aiGate',()=>({verifySupabaseAccessToken:mocks.verify}));
 import {POST} from '../../app/api/account/mfa/route';
 const origin='https://notebook1b.husteread.icu';
 const uid='f1111111-1111-4111-8111-111111111111';

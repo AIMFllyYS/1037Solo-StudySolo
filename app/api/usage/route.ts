@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { readOwnUsageLedger } from "@/lib/billing/readUsageLedger";
+import { readOwnUsageLedger } from "@/lib/billing/ledger/readUsageLedger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

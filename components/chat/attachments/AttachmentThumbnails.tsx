@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { FileText, X } from "lucide-react";
-import type { AttachmentPreview, ImageAttachmentPreview } from "@/lib/ai/imageUtils";
+import type { AttachmentPreview, ImageAttachmentPreview } from "@/lib/ai/images/imageUtils";
 import type { StoredChatAttachment } from "@/lib/types/chat";
 import { isAttachmentRef } from "@/lib/types/chat";
 import { loadBlobDataUrl } from "@/lib/storage/chatStorage";

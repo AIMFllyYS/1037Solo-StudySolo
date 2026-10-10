@@ -2,7 +2,7 @@
 import {beforeEach,describe,expect,it,vi} from 'vitest'
 const f=vi.hoisted(()=>({verify:vi.fn(),from:vi.fn(),upsert:vi.fn(),ids:vi.fn()}))
 vi.mock('@/lib/files/owner.server',()=>({fileOwner:async()=>{const user=await f.verify();if(!user||user.mfaRequired)throw Object.assign(new Error('请先完成账号验证'),{status:user?403:401});return user.id;},fileFailure:(error:{message:string;status?:number})=>Response.json({error:error.message},{status:error.status??503})}))
-vi.mock('@/lib/auth/serviceClient',()=>({createServiceAuthClient:()=>({from:f.from})}))
+vi.mock('@/lib/auth/server/serviceClient',()=>({createServiceAuthClient:()=>({from:f.from})}))
 import {POST} from '@/app/api/class/state/route'
 const owner='11111111-1111-4111-8111-111111111111',sessionId='22222222-2222-4222-8222-222222222222',sourceId='33333333-3333-4333-8333-333333333333'
 beforeEach(()=>{

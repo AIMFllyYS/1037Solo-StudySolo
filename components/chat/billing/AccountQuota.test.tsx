@@ -1,12 +1,12 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, it, vi } from 'vitest';
 import { AccountQuota } from './AccountQuota';
-import { fetchQuota } from '@/lib/billing/fetchQuota';
+import { fetchQuota } from '@/lib/billing/quota/fetchQuota';
 import { useWindowManager } from '@/lib/stores/workspace/windowManager';
 
 let userId: string | null = 'one';
 vi.mock('@/lib/hooks/auth/useAuthSession', () => ({ useAuthSession: () => ({ userId, status: userId ? 'signedIn' : 'signedOut' }) }));
-vi.mock('@/lib/billing/fetchQuota', () => ({ fetchQuota: vi.fn() }));
+vi.mock('@/lib/billing/quota/fetchQuota', () => ({ fetchQuota: vi.fn() }));
 const value = (id: string) => ({ userId: id, tier: 'plus' as const, periodStart: '2026-09-01T00:00:00Z', periodEnd: '2026-10-01T00:00:00Z', updatedAt: '2026-09-13T00:00:00Z', platform: { cap: 70, used: 2, remaining: 68 }, byok: { cap: 70, used: 1, remaining: 69 } });
 afterEach(() => {
   cleanup();

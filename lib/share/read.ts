@@ -1,4 +1,4 @@
-import { tryGetBrowserDataClient } from "@/lib/auth/browserClient";
+import { tryGetBrowserDataClient } from "@/lib/auth/browser/browserClient";
 import { isShareId } from "./slug.ts";
 import { isSharedConversationSnapshot, type SharedConversationSnapshot } from "./types.ts";
 

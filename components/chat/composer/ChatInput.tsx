@@ -22,7 +22,7 @@ import ComposerCommandPanel, { listComposerCommands, type ComposerToggle } from 
 import ComposerPalette from '@/components/chat/composer/ComposerPalette';
 import FileMentionMenu from '@/components/chat/composer/FileMentionMenu';
 import { useImageAttachments } from '@/lib/hooks/files/useImageAttachments';
-import { ACCEPTED_DOCUMENT_FILE_TYPES } from '@/lib/ai/imageUtils';
+import { ACCEPTED_DOCUMENT_FILE_TYPES } from '@/lib/ai/images/imageUtils';
 import { useKeyboardSettings } from '@/lib/keyboard/useKeyboardSettings';
 
 import InputLimitDialog from '@/components/chat/attachments/InputLimitDialog';

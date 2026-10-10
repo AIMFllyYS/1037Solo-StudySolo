@@ -16,9 +16,9 @@ const mocks = vi.hoisted(() => ({
   resolveModel: vi.fn(),
 }));
 
-vi.mock("@/lib/billing/paidRequest", () => ({ withPaidRequest: (handler: (request: NextRequest) => unknown) => handler }));
-vi.mock("@/lib/billing/quotaGate", () => ({ assertQuotaAvailable: mocks.quota, resolveQuotaUserId: mocks.resolveQuota }));
-vi.mock("@/lib/billing/usageLedger", () => ({ settleUsage: mocks.settle, resolveActualBillingModelId: () => "fixture-model" }));
+vi.mock("@/lib/billing/settlement/paidRequest", () => ({ withPaidRequest: (handler: (request: NextRequest) => unknown) => handler }));
+vi.mock("@/lib/billing/quota/quotaGate", () => ({ assertQuotaAvailable: mocks.quota, resolveQuotaUserId: mocks.resolveQuota }));
+vi.mock("@/lib/billing/ledger/usageLedger", () => ({ settleUsage: mocks.settle, resolveActualBillingModelId: () => "fixture-model" }));
 vi.mock("@/lib/billing/usagePool", () => ({ resolveMainModelPool: () => null, usedPlatformCredentialsForProvider: () => false }));
 vi.mock("@/lib/ai/provider", () => ({ ENV_MODEL_PRO: "fixture-model" }));
 vi.mock("@/lib/ai/models", () => ({ getModelInfo: () => ({ contextK: 64 }) }));
@@ -28,12 +28,12 @@ vi.mock("@/lib/ai/observability/agentLog", () => ({ logSatelliteError: vi.fn() }
 vi.mock("ai", () => ({ generateText: mocks.generateText, stepCountIs: () => () => true }));
 vi.mock("@/lib/content/loader", () => ({ readContentSearchText: mocks.readMaterial }));
 vi.mock("@/lib/auth/authMode", () => ({ accountBackendUrl: () => "http://127.0.0.1:3041", authModeForRequest: () => "account-local" }));
-vi.mock("@/lib/auth/sessionCookie", () => ({ extractAccessToken: () => "synthetic-access-token" }));
+vi.mock("@/lib/auth/sessions/sessionCookie", () => ({ extractAccessToken: () => "synthetic-access-token" }));
 vi.mock("@/lib/auth/sign-in/account-verify", () => ({
   failureStatus: () => 401,
   verifyAccount: mocks.verifyAccount,
 }));
-vi.mock("@/lib/auth/serviceClient", () => ({ createServiceAuthClient: () => ({ from: mocks.from }) }));
+vi.mock("@/lib/auth/server/serviceClient", () => ({ createServiceAuthClient: () => ({ from: mocks.from }) }));
 
 import { POST } from "./route";
 

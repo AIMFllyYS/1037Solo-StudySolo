@@ -4,9 +4,9 @@ import { APICallError } from "@ai-sdk/provider";
 import type { LanguageModelV4, LanguageModelV4StreamPart } from "@ai-sdk/provider";
 import { MockLanguageModelV4, convertArrayToReadableStream, convertReadableStreamToArray } from "ai/test";
 import { createFailoverLanguageModel, defaultIsRecoverable } from "./failoverModel.ts";
-import { CreditAdmissionError } from "@/lib/billing/centralCredits";
-import {withProviderAdmission} from '@/lib/billing/providerAdmission';
-import {runPaidContext} from '@/lib/billing/paidContext';
+import { CreditAdmissionError } from "@/lib/billing/settlement/centralCredits";
+import {withProviderAdmission} from '@/lib/billing/settlement/providerAdmission';
+import {runPaidContext} from '@/lib/billing/settlement/paidContext';
 
 const callOptions = { prompt: [{ role: "user" as const, content: [{ type: "text" as const, text: "hi" }] }] } as Parameters<LanguageModelV4["doStream"]>[0];
 
