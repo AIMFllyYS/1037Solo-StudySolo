@@ -19,7 +19,8 @@ import { buildTrace } from '@/lib/chat/buildTrace';
 
 vi.mock('@/lib/storage/idbStorage', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/storage/idbStorage')>();
-  return { ...actual, idbStorage: {
+  // This transport fixture represents available storage; durable Blob writes use setItemNow directly.
+  return { ...actual, setItemNow: vi.fn(async () => true), idbStorage: {
     getItem: vi.fn(async () => null), setItem: vi.fn(), setItemLazy: vi.fn(), removeItem: vi.fn(async () => {}),
   } };
 });
