@@ -9,13 +9,13 @@ import { useT } from '@/lib/i18n/index';
 
 import type { ThinkingEffort } from '@/lib/stores/settings';
 interface ComposerToolbarProps {
-  showProjectPicker: boolean; showAgentModeMenu: boolean; inputDisabled: boolean;
+  showProjectPicker: boolean; showAgentModeMenu: boolean;
   showTokenDashboard: boolean; isLoading: boolean; floatingSessionId?: string; modelId?: string;
   onOpenSettings?: () => void; onModelChange?: (id: string) => void;
   effectiveEnableThinking: boolean; displayEffort: ThinkingEffort;
   onThinkingChange: (next: { enabled: boolean; effort: ThinkingEffort }) => void;
 }
-export function ComposerToolbar({ showProjectPicker, showAgentModeMenu, inputDisabled, showTokenDashboard, isLoading, floatingSessionId, modelId, onOpenSettings, onModelChange, effectiveEnableThinking, displayEffort, onThinkingChange }: ComposerToolbarProps) {
+export function ComposerToolbar({ showProjectPicker, showAgentModeMenu, showTokenDashboard, isLoading, floatingSessionId, modelId, onOpenSettings, onModelChange, effectiveEnableThinking, displayEffort, onThinkingChange }: ComposerToolbarProps) {
   const t = useT();
   return (<div className="chat-input-toolbar" aria-label={t('menu.chatInput.toolbarAria')}>
         {showProjectPicker || showAgentModeMenu ? (
@@ -23,7 +23,6 @@ export function ComposerToolbar({ showProjectPicker, showAgentModeMenu, inputDis
             label={t('menu.chatInput.more')}
             placement="top"
             width={240}
-            disabled={inputDisabled}
             className="chat-input-more"
             testId="chat-input-more"
             trigger={<MoreHorizontal size={15} aria-hidden />}
@@ -36,7 +35,7 @@ export function ComposerToolbar({ showProjectPicker, showAgentModeMenu, inputDis
           </AnchoredMenu>
         ) : null}
         <div className="chat-input-toolbar-group chat-input-toolbar-options">
-          {showProjectPicker || showAgentModeMenu ? <AgentModeMenu disabled={inputDisabled} /> : null}
+          {showProjectPicker || showAgentModeMenu ? <AgentModeMenu /> : null}
         </div>
 
         <div className="chat-input-toolbar-group chat-input-toolbar-models">

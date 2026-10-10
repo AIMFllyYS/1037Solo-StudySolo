@@ -47,6 +47,18 @@ DeepSeek Fast 是平台的官方直连通道：上游固定为 `https://api.deep
 
 验证入口：`lib/ai/models/selection/fastModeRegistry.test.tsx`、`components/chat/composer/ModelMenu.test.tsx`、思考设置与 provider/SDK 的相应测试。不得为加入一个 Fast 变体重复增加普通模型，也不得让显示标签与请求 ID 不一致。
 
-## 维护证据
+## 选择器交互与动画
+
+输入器点击模型胶囊后，只打开紧凑的思考面板：强度标签、品牌 SVG/模型名、Fast、重置与滑杆。点击模型名时保持底部锚点，以实测高度向上展开分类，内容从下向上进入；不用 FLIP 缩放反转展开方向。桌面移动鼠标到分类上才展开模型列表，避免静止指针意外触发下一级。三级列表默认按内容收紧，没有预览占位；悬停/键盘聚焦模型时在该行下方展开小详情卡，展示介绍、能力、价格和厂商训练说明。预览不改变选择，能力 SVG 紧跟名称排列。
+
+桌面一级/二级宽 320px，三级宽 352px；窄屏、触控设备或两侧放不下三级时，使用单面板逐层进入/返回。手机先点击模型查看详情，再点击「选用此模型」。定位与可见视口处理在 `components/chat/composer/modelMenu/useMenuPosition.ts`，分类与列表展示在 `ModelPickerPanels.tsx`；主入口持有唯一选择/层级状态。
+
+滑杆保留原生 range 的键盘与读屏语义，指针捕获提供连续拖动、边界限制和释放后档位吸附。共享 `lib/motion.ts` 的 `LAYOUT_REFLOW`、`scaleInVariants`、`fadeInUpVariants`、`AnimatedCollapse` 组件与 `useUiReducedMotion` 控制面板、行内详情、滑块和 Fast 动画。独立样式在 `app/styles/model-picker.css`；轨道 30px、滑块 26px，最左端填充宽度为零。
+
+Ask/Full（询问/完全同意）的本机偏好与输入框是否可发送分开控制，访客或会话门控不禁用偏好入口，登录与发送校验保持原契约。窄栏复用同一组选项，三个点触发器为透明圆形按钮，弹出内容纵向排列。
+
+交互验收涵盖先后层级、原地锚点、悬停不选用、Fast 配对、强制思考、指针取消、Esc/焦点恢复、手机预览确认与逐级返回。手机触控硬件手感与浏览器窄屏模拟是不同证据。
+
+## 维护依据
 
 官方 Next 指导见 [快照入口](../vendor/nextjs/2026-10-10/README.md)，模块分组和客户端/服务端依赖见 [代码组织标准](../standards/code-organization.md)。测试分层见 [SOP 07](../sop/07-testing.md)。本轮模型拆分、注册数据比较与真实菜单验收记录在 [系统整理记录](../plans/2026-10-10-project-refactor-execution.md)。

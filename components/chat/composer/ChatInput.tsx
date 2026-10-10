@@ -341,7 +341,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
         <QuotePreview effectiveQuote={effectiveQuote} clearQuote={clearQuote} />
       )}
 
-      <ComposerToolbar showProjectPicker={showProjectPicker} showAgentModeMenu={showAgentModeMenu} inputDisabled={inputDisabled} showTokenDashboard={showTokenDashboard} isLoading={isLoading} floatingSessionId={floatingSessionId} modelId={modelId} onOpenSettings={onOpenSettings} onModelChange={onModelChange} effectiveEnableThinking={effectiveEnableThinking} displayEffort={displayEffort} onThinkingChange={({ enabled, effort }) => { setEnableThinking(enabled); setThinkingEffort(effort); }} />
+      <ComposerToolbar showProjectPicker={showProjectPicker} showAgentModeMenu={showAgentModeMenu} showTokenDashboard={showTokenDashboard} isLoading={isLoading} floatingSessionId={floatingSessionId} modelId={modelId} onOpenSettings={onOpenSettings} onModelChange={onModelChange} effectiveEnableThinking={effectiveEnableThinking} displayEffort={displayEffort} onThinkingChange={({ enabled, effort }) => { setEnableThinking(enabled); setThinkingEffort(effort); }} />
 
       <div className={`chat-input-row ${isFocused ? 'chat-input-row-focused' : ''} ${showCharacterCount ? 'chat-input-row-with-count' : ''}`}>
         {attachments.length > 0 ? (

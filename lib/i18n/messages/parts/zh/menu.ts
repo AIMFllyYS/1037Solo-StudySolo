@@ -62,6 +62,8 @@ export const menuZh = {
     series: "模型系列",
     models: "具体模型",
     backToSeries: "返回模型系列",
+    backToEffort: "返回思考强度",
+    pricing: "每百万 Token · 输入 / 缓存 / 输出",
     details: "模型详情",
     info: "模型信息",
     selected: "已选模型",

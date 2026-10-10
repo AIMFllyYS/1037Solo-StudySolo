@@ -13,12 +13,12 @@ import type { ModelTrait } from "./metadata";
  * 最多铺 3 个，超出收敛为一个「⋯」；悬停任一看全部标签。
  * 颜色全部走主题 token（CATEGORY_COLORS / TRAIT_META），随外观切换自动适配。
  */
-export function ModelTraitDots({ model }: { model: ModelInfo }) {
+export function ModelTraitDots({ model, maxShown = MAX_TRAIT_DOTS }: { model: ModelInfo; maxShown?: number }) {
   const t = useT();
   const traits = modelTraits(model);
   if (traits.length === 0) return null;
-  const shown = traits.slice(0, MAX_TRAIT_DOTS);
-  const hidden = traits.slice(MAX_TRAIT_DOTS);
+  const shown = traits.slice(0, maxShown);
+  const hidden = traits.slice(maxShown);
   const label = (key: ModelTrait) => t(TRAIT_META[key].labelKey);
   return (
     <span aria-hidden="true" className="flex shrink-0 items-center gap-[3px]">
@@ -102,15 +102,12 @@ export function ModelDetails({
 
   return (
     <>
-      <div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
-        {t("menu.model.info")}
-      </div>
       <div className="px-2 pb-2">
         <div className="flex items-center gap-1.5">
-          <div className="text-[12.5px] font-medium text-[var(--ink)]">{model.label}</div>
+          <div className="min-w-0 flex-1 break-words text-[13px] font-semibold text-[var(--ink)]">{model.label}</div>
           <ModelTraitDots model={model} />
         </div>
-        <div className="mt-0.5 text-[10.5px] leading-relaxed text-[var(--ink-faint)]">{model.hint}</div>
+        <div className="mt-2 text-[12px] leading-relaxed text-[var(--ink-soft)]">{model.hint}</div>
         {model.vendorTrainingNotice && (
           <div
             className="mt-1.5 rounded-md px-2 py-1.5 text-[11.5px] font-semibold leading-snug"
@@ -132,6 +129,10 @@ export function ModelDetails({
             ))}
           </div>
         )}
+        {model.pricing && model.type !== "image" ? <div className="model-preview-price">
+          <span>{t("menu.model.pricing")}</span>
+          <strong>¥{model.pricing.input} / ¥{model.pricing.cachedInput} / ¥{model.pricing.output}</strong>
+        </div> : null}
       </div>
       <button
         type="button"

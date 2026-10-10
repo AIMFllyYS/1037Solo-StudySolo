@@ -4,6 +4,7 @@ import { act, cleanup, fireEvent, render } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ChatInput from './ChatInput';
 import { useSettings } from '@/lib/stores/settings';
+import { useAgentApproval } from '@/lib/stores/agentApprovalMode';
 
 const callbacks = vi.hoisted(() => ({
   clearQuote: vi.fn(), clearAttachments: vi.fn(), paste: vi.fn(), drop: vi.fn(), addFiles: vi.fn(), remove: vi.fn(),
@@ -37,6 +38,23 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
 describe('floating transparent composer', () => {
+  it('keeps Ask/Full preferences selectable while sending is gated, in both toolbar presentations', () => {
+    useAgentApproval.getState().setMode('ask');
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({ left: 20, right: 160, top: 500, bottom: 528, width: 140, height: 28, x: 20, y: 500, toJSON() {} });
+    vi.spyOn(HTMLElement.prototype, 'scrollHeight', 'get').mockReturnValue(220);
+    const { getByRole, getByTestId } = render(<ChatInput {...props} disabled showAgentModeMenu />);
+    const mode = getByRole('button', { name: '执行模式' });
+    expect(mode).toBeEnabled();
+    expect(getByTestId('chat-input-more')).toBeEnabled();
+    expect(getByRole('textbox')).toBeDisabled();
+    fireEvent.click(mode);
+    fireEvent.click(getByTestId('agent-mode-auto'));
+    expect(useAgentApproval.getState().mode).toBe('auto');
+    expect(getByRole('textbox')).toBeDisabled();
+    fireEvent.click(getByTestId('chat-input-more'));
+    fireEvent.click(getByTestId('agent-mode-ask'));
+    expect(useAgentApproval.getState().mode).toBe('ask');
+  });
   it('disables an unready idle composer without inventing a Stop action', () => {
     const { getByRole, queryByTitle } = render(
       <ChatInput {...props} disabled disabledReason="登录后即可使用 AI 对话" />,
@@ -62,7 +80,7 @@ describe('floating transparent composer', () => {
     callbacks.quotedText = '教材原文';
     callbacks.attachment = true;
     const onModelChange = vi.fn();
-    const { container, getByRole, getByTestId, getByTitle } = render(<ChatInput {...props} modelId="mimo-v2.5"
+    const { container, getByRole, getByTestId } = render(<ChatInput {...props} modelId="mimo-v2.5"
       floatingSessionId="floating-session" onModelChange={onModelChange} notice={<div data-testid="notice">80% 上下文警告</div>} />);
     const dock = container.querySelector('.chat-input-container')!;
     const toolbar = dock.querySelector('.chat-input-toolbar')!;

@@ -62,6 +62,8 @@ export const menuEn = {
     series: "Model families",
     models: "Models",
     backToSeries: "Back to model families",
+    backToEffort: "Back to thinking depth",
+    pricing: "Per million tokens · Input / Cache / Output",
     details: "Model details",
     info: "Model info",
     selected: "Selected model",
