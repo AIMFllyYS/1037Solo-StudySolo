@@ -74,9 +74,10 @@
 - R3f 复习 API：678 行 progress 路由拆为 4 行 Next 适配器与 server 域的认证、限制、schema、快照/评分、repository、错误映射和 GET/POST handler；最大模块约 210 行。结合官方 Route Handler 与 server/client 边界文档，保留 runtime/dynamic、origin、Account owner、请求/响应限额、静态题库一致性、幂等/CAS 和 desktop bridge。11 项 API 行为回归、全量类型、定向 lint 和 diff 检查通过。
 - R3g 复习客户端同步：766 行文件拆为 425 行队列/调度/恢复/账户入口，以及 HTTP、attempt 转换、checkpoint、事件、成绩投影和主动 legacy 导入，最大子模块 141 行。保持 CAS ACK 不回退新答案、分页不完整状态、幂等、冲突恢复及旧无归属历史必须人工触发导入。7 项相关行为检查、全量类型、定向 lint 和 diff 检查通过。
 
-## 局部阻塞
-
 - R3h 内容与轨迹：645 行 content loader 拆为导航、受保护 IO、正文、例题、题库、搜索与纯类型，保持正文回退、Unicode 例题路径、安全路径和静态资源 tracing 注释。29 项内容/API 检查、37 项轨迹/消息 React 检查、全量类型与定向 lint 通过。通用轨迹展示接受可选 StepDetail，内联工具面板不再加载专业卡片注册表；专业工具消息保留原细节。Git 已跟踪源码重新清点确认即时运行时循环从 3 降为 0，超过 800 行文件从 15 降为 10（统计不代表完整功能验收）。采用安装版 Next Route Handler、project structure 与 server/client 文档的窄入口和领域分组原则。
+- R3i 聊天 API 与请求校验：Next 入口保留 nodejs/force-dynamic 和付费包装的 POST；消息压缩/回灌与请求门控、顺序生成流程、纯输入契约分开。生成流程保持原取消、工具续写、Local continuation、usage settlement 与 finish 排序。555 行 Zod 文件拆出共享限额/小 schema、聊天、卫星请求、安全错误和 parser，原公共 API、默认值、字节/附件限制不变。60 项聊天 SDK/额度/请求/上下文/供应商检查、全量类型、定向 lint 通过；测试上游全部为拦截 fixture，没有真实付费调用。结构断言转到新的实际实现位置，未删掉原断言。
+
+## 局部阻塞
 
 尚无已确认的整体阻塞。后续按任务、症状、证据、尝试、影响、替代及恢复条件记录。
 

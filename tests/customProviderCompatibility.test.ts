@@ -46,13 +46,13 @@ test("6 条花钱路由的客户端只发本次用到的自定义分组", () => 
     assert.match(source, /selectCustomApiGroupsForRequest/, file);
     assert.doesNotMatch(source, /customApiGroups:\s*settings\.customApiGroups/, file);
   }
-  const chatRoute = readWorkspaceFile("app/api/chat/route.ts");
+  const chatRoute = readWorkspaceFile("lib/ai/chat/server/generation.ts");
   assert.doesNotMatch(chatRoute, /!provider\.isCustom/);
   assert.match(chatRoute, /modelInfo && !modelInfo\.vision/);
 });
 
 test("study agent omits tools for models that do not support tool calling", () => {
-  const route = readWorkspaceFile("app/api/chat/route.ts");
+  const route = readWorkspaceFile("lib/ai/chat/server/generation.ts");
   const adapter = readWorkspaceFile("lib/ai/sdk/languageModel.ts");
   const agent = readWorkspaceFile("lib/ai/agent/studyAgent.ts");
 
@@ -70,7 +70,7 @@ test("image mode chat forces generateImage and does not expose artifact tools", 
 });
 
 test("artifact and image generation use the model selected when the tool call was created", () => {
-  const chatRoute = readWorkspaceFile("app/api/chat/route.ts");
+  const chatRoute = readWorkspaceFile("lib/ai/chat/server/generation.ts");
   const tools = [
     "lib/ai/agent/tools/renderInteractive/tool.ts",
     "lib/ai/agent/tools/generateImage/tool.ts",

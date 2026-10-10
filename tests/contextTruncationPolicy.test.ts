@@ -77,7 +77,10 @@ test("token tracker uses unpadded total for the next soft-limit decision", () =>
 });
 
 test("chat route uses last user message, selected model context manager, and soft truncation metadata", () => {
-  const source = readWorkspaceFile("app/api/chat/route.ts");
+  const source = [
+    readWorkspaceFile("lib/ai/chat/server/generation.ts"),
+    readWorkspaceFile("lib/ai/chat/server/messages.ts"),
+  ].join("\n");
 
   assert.match(source, /reverse\(\)\.find\(\(m\) => m\.role === "user"\)/);
   assert.match(source, /getContextManager\(options\.contextMode \?\? "full", effectiveModelId, customGroups\)/);
