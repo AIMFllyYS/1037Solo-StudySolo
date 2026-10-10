@@ -39,7 +39,7 @@ import {
 } from '@/lib/ai/models';
 import ModelMenu from '@/components/chat/ModelMenu';
 import AnchoredMenu from '@/components/ui/AnchoredMenu';
-import AgentModeMenu from '@/components/chat/composer/AgentModeMenu';
+import AgentModeMenu, { AgentModeMenuItems } from '@/components/chat/composer/AgentModeMenu';
 import { MoreHorizontal } from 'lucide-react';
 import InputLimitDialog from '@/components/chat/InputLimitDialog';
 import TokenDashboard from '@/components/chat/TokenDashboard';
@@ -584,9 +584,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
             testId="chat-input-more"
             trigger={<MoreHorizontal size={15} aria-hidden />}
           >
-            {() => (
+            {(close) => (
               <div className="chat-input-more-panel">
-                <AgentModeMenu disabled={inputDisabled} />
+                <AgentModeMenuItems onPicked={close} />
               </div>
             )}
           </AnchoredMenu>
