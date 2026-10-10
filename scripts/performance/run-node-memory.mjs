@@ -25,7 +25,7 @@ globalThis.localStorage={
   clear:()=>storage.clear(),
 }
 const [{activateStorageOwner,ownedStorageKey},{chatSessionKey},{useChatHistory},{getResourceSnapshot}]=await Promise.all([
-  import('../../lib/storage/ownerScope.ts'),import('../../lib/storage/idbStorage.ts'),import('../../lib/stores/chatHistory.ts'),import('../../lib/performance/resourceMetrics.ts'),
+  import('../../lib/storage/ownerScope.ts'),import('../../lib/storage/idbStorage.ts'),import('../../lib/stores/chat/chatHistory.ts'),import('../../lib/performance/resourceMetrics.ts'),
 ])
 activateStorageOwner('00000000-0000-4000-8000-000000000001')
 const message=(id,role,text)=>({id,role,parts:[{type:'text',text}],timestamp:1})

@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 import { getMessageText } from "@/lib/chat/messageParts";
 import { parseChatContent } from "@/lib/chat/rendering/parseChatContent";
-import { useAgentChatContext } from "@/lib/hooks/useAgentChatContext";
-import { useChat } from "@/lib/hooks/useChat";
-import { ensureChatHistoryBootstrap, useChatHistory } from "@/lib/stores/chatHistory";
+import { useAgentChatContext } from "@/lib/hooks/chat/useAgentChatContext";
+import { useChat } from "@/lib/hooks/chat/useChat";
+import { ensureChatHistoryBootstrap, useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { useAcademicYear } from "@/lib/stores/academicYear";
 import {
   MAX_CONCURRENT_RUNS,

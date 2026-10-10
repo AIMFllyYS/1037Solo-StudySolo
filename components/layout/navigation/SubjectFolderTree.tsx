@@ -9,7 +9,7 @@ import { useStore } from "@/lib/store";
 import { navTree } from "@/lib/content-data/nav";
 import { filterSubjectsByYear } from "@/lib/constants/academic-year";
 import { filterRuntimeSubjects } from "@/lib/content/offlineSubjects";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import SubjectIcon from "@/components/shared/SubjectIcon";
 import type { ContentItem } from "@/lib/types/content";
 

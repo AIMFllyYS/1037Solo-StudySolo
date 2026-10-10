@@ -11,12 +11,12 @@ import {
 } from "@/lib/chat/sendMessage";
 import { collectRequestArtifacts } from "@/lib/context/compactArtifacts";
 import { useAcademicYear } from "@/lib/stores/academicYear";
-import { useArtifacts } from "@/lib/hooks/useArtifacts";
+import { useArtifacts } from "@/lib/stores/assets/artifacts";
 import { useBillingStore, createBillingRecord } from "@/lib/stores/billing";
 import { useSettings } from "@/lib/stores/settings";
-import { useSkills } from "@/lib/hooks/useSkills";
+import { useSkills } from "@/lib/stores/skills";
 import { useStore } from "@/lib/stores/ui";
-import { useTokenTracker } from "@/lib/hooks/useTokenTracker";
+import { useTokenTracker } from "@/lib/stores/chat/tokenTracker";
 import type { ChatContext, ChatMessage, ChatOptions } from "@/lib/types/chat";
 import type { RecordMode } from "@/lib/review/types";
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";

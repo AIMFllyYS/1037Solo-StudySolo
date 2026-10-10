@@ -1,7 +1,7 @@
 import { afterEach, expect, it } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import displayImages from "@/lib/content-data/display-images.generated.json";
-import { useLightbox } from "@/lib/stores/lightbox";
+import { useLightbox } from "@/lib/stores/workspace/lightbox";
 import { ContentImage } from "./ContentImage";
 
 afterEach(() => useLightbox.getState().close());

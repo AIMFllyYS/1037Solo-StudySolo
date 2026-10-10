@@ -28,8 +28,8 @@ vi.mock('@tanstack/react-virtual', async () => {
   };
 });
 
-vi.mock('@/lib/hooks/useStickToBottom', async () => {
-  const actual = await vi.importActual<typeof import('@/lib/hooks/useStickToBottom')>('@/lib/hooks/useStickToBottom');
+vi.mock('@/lib/hooks/chat/useStickToBottom', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/hooks/chat/useStickToBottom')>('@/lib/hooks/chat/useStickToBottom');
   return {
     ...actual,
     useStickToBottom: (...args: Parameters<typeof actual.useStickToBottom>) => {

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
+import { useUiReducedMotion } from "@/lib/hooks/runtime/useUiReducedMotion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import clsx from "clsx";
 import { safeHttpUrl } from "@/components/browser/safeUrl";

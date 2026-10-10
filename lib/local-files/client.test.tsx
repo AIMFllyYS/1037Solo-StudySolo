@@ -1,6 +1,6 @@
 import { beforeEach, afterEach, expect, it, vi } from 'vitest';
 import { activateStorageOwner } from '@/lib/storage/ownerScope';
-import { useImports } from '@/lib/stores/imports';
+import { useImports } from '@/lib/stores/assets/imports';
 import { readLocalSource } from './client';
 const { handle } = vi.hoisted(() => ({ handle: { queryPermission: vi.fn(), getFile: vi.fn() } }));
 vi.mock('idb-keyval', () => ({ createStore: vi.fn(), get: vi.fn(async () => handle), set: vi.fn(async () => { }), del: vi.fn(async () => { }) }));

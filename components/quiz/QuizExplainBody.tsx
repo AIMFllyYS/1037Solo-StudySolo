@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useChat } from "@/lib/hooks/useChat";
-import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/hooks/useChatHistory";
-import { useChatReady } from "@/lib/hooks/useChatReady";
+import { useChat } from "@/lib/hooks/chat/useChat";
+import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/stores/chat/chatHistory";
+import { useChatReady } from "@/lib/hooks/chat/useChatReady";
 import ChatThread from "@/components/chat/ChatThread";
 import ChatInput from "@/components/chat/composer/ChatInput";
 import type { ChatContext, ChatAttachment, ChatOptions } from "@/lib/types/chat";
 import { QUIZ_EXPLAIN_SEED_PROMPT } from "@/lib/quiz/formatQuestionContext";
-import { useQuizExplain, type QuizExplainWin } from "@/lib/stores/quizExplain";
+import { useQuizExplain, type QuizExplainWin } from "@/lib/stores/learning/quizExplain";
 import { useT } from "@/lib/i18n";
 
 type SendOpts = {

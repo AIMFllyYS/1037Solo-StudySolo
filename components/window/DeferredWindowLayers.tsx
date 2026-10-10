@@ -1,19 +1,19 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useWindowManager } from "@/lib/stores/windowManager";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import {useFloatingChats} from '@/lib/stores/floatingChats'
-import {useQuizExplain} from '@/lib/stores/quizExplain'
-import {useRecordPreviews} from '@/lib/stores/recordPreviews'
-import {useArtifacts} from '@/lib/stores/artifacts'
-import {useImageGen} from '@/lib/stores/imageGen'
-import {useDocuments} from '@/lib/stores/documents'
-import {useNoteCitations} from '@/lib/stores/noteCitations'
-import {useFlashcardCitations} from '@/lib/stores/flashcardCitations'
-import {useAgentProductPicker} from '@/lib/stores/agentProductPicker'
-import {useMemoryInbox} from '@/lib/stores/memoryInbox'
-import {useContextMenu} from '@/lib/stores/contextMenu'
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import {useFloatingChats} from '@/lib/stores/chat/floatingChats'
+import {useQuizExplain} from '@/lib/stores/learning/quizExplain'
+import {useRecordPreviews} from '@/lib/stores/learning/recordPreviews'
+import {useArtifacts} from '@/lib/stores/assets/artifacts'
+import {useImageGen} from '@/lib/stores/assets/imageGen'
+import {useDocuments} from '@/lib/stores/assets/documents'
+import {useNoteCitations} from '@/lib/stores/learning/noteCitations'
+import {useFlashcardCitations} from '@/lib/stores/learning/flashcardCitations'
+import {useAgentProductPicker} from '@/lib/stores/workspace/agentProductPicker'
+import {useMemoryInbox} from '@/lib/stores/learning/memoryInbox'
+import {useContextMenu} from '@/lib/stores/workspace/contextMenu'
 import UserNoteProposalRuntime from '@/components/notes/UserNoteProposalRuntime'
 import MemoryInboxRuntime from '@/components/memory/MemoryInboxRuntime'
 
@@ -27,7 +27,7 @@ const DocumentViewerLayer = dynamic(() => import("@/components/chat/products/Doc
 const NoteCitationViewer = dynamic(() => import("@/components/chat/sources/NoteCitationViewer"), { ssr: false });
 const UserNoteLayer = dynamic(() => import("@/components/notes/UserNoteLayer"), { ssr: false });
 const FlashcardCiteWindow = dynamic(() => import("@/components/notes/FlashcardCiteWindow"), { ssr: false });
-const AgentProductPickerWindow = dynamic(() => import("@/components/notes/AgentProductPickerWindow"), { ssr: false });
+const AgentProductPickerWindow = dynamic(() => import("@/components/agent/AgentProductPickerWindow"), { ssr: false });
 const MemoryInboxLayer = dynamic(() => import("@/components/memory/MemoryInboxLayer"), { ssr: false });
 const SourceTraceViewer = dynamic(() => import("@/components/chat/sources/SourceTraceViewer"), { ssr: false });
 const SourcePreviewViewer = dynamic(() => import("@/components/chat/sources/SourcePreviewViewer"), { ssr: false });

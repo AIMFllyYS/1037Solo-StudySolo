@@ -1,5 +1,5 @@
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
-import type { AttachmentPreviewData } from "@/lib/stores/windowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import type { AttachmentPreviewData } from "@/lib/stores/workspace/windowManager";
 
 export function attachmentPreviewWindowId(key: string) {
   return `attachment-preview:${key}`;

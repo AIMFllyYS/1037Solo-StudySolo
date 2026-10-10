@@ -3,9 +3,9 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Copy, Quote, MessageSquare, BookmarkPlus } from "lucide-react";
-import { useContextMenu } from "@/lib/hooks/useContextMenu";
-import { useChatUI } from "@/lib/hooks/useChatUI";
-import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
+import { useContextMenu } from "@/lib/stores/workspace/contextMenu";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
+import { useFloatingChats } from "@/lib/stores/chat/floatingChats";
 import { useStore } from "@/lib/store";
 import { startRecord } from "@/lib/review/startRecord";
 import { currentRecordContext } from "@/lib/review/recordContext";

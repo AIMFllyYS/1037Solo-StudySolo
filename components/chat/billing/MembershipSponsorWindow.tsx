@@ -11,7 +11,7 @@ function GithubMark({ size = 22 }: { size?: number }) {
   );
 }
 import ManagedWindow from "@/components/window/ManagedWindow";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useT } from "@/lib/i18n/index";
 import {
   GITHUB_REPO_URL,

@@ -1,7 +1,7 @@
 import { getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
 import { hasExternalBody } from "@/lib/assets/body";
 import { hydrateRemotePayload } from "@/lib/assets/client";
-import type { ImageGenSession } from "@/lib/stores/imageGen";
+import type { ImageGenSession } from "@/lib/stores/assets/imageGen";
 import { ownerStillCurrent } from "./ownership";
 import { isSessionStreaming } from "./streamingSessions";
 import { isRemoteNewer, mergeChatSessionPayloads } from "./merge";

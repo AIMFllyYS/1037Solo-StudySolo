@@ -1,10 +1,10 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import RecordPreviewLayer from "./RecordPreviewLayer";
-import { useRecordPreviews } from "@/lib/stores/recordPreviews";
-import { useReviewCards } from "@/lib/stores/reviewCards";
-import { useWindowManager } from "@/lib/stores/windowManager";
-import { useChatUI } from "@/lib/stores/chatUI";
+import { useRecordPreviews } from "@/lib/stores/learning/recordPreviews";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
 import { retryRecord } from "@/lib/review/startRecord";
 
 vi.mock("@/lib/review/startRecord", async (importOriginal) => {

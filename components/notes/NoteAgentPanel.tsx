@@ -2,13 +2,13 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { X } from "lucide-react";
-import { useChat } from "@/lib/hooks/useChat";
-import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/hooks/useChatHistory";
-import { useChatReady } from "@/lib/hooks/useChatReady";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useChat } from "@/lib/hooks/chat/useChat";
+import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/stores/chat/chatHistory";
+import { useChatReady } from "@/lib/hooks/chat/useChatReady";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import { useStore } from "@/lib/stores/ui";
-import { useChatUI } from "@/lib/stores/chatUI";
-import { useUserNotes } from "@/lib/stores/userNotes";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import ChatThread from "@/components/chat/ChatThread";
 import ChatInput from "@/components/chat/composer/ChatInput";
 import type { ChatOptions } from "@/lib/types/chat";

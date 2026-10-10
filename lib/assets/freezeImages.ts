@@ -1,4 +1,4 @@
-import type { ImageGenImage } from '@/lib/stores/imageGen';
+import type { ImageGenImage } from '@/lib/stores/assets/imageGen';
 import { assetApi } from './client';
 /** Final image bodies must survive an expiring provider URL and an offline sync queue. */
 export async function freezeGeneratedImages(images: ImageGenImage[], signal?: AbortSignal): Promise<ImageGenImage[]> {

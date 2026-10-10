@@ -6,7 +6,7 @@ import {
   quizDockWindowId,
   resetAutoOpenedQuizzes,
 } from "./open";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import type { QuizQuestion } from "@/lib/quiz/types";
 
 const questions: QuizQuestion[] = [

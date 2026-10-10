@@ -2,8 +2,8 @@ import { activateStorageOwner } from '@/lib/storage/ownerScope';
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import ImageGenViewerLayer from "./ImageGenViewer";
-import { useImageGen } from "@/lib/stores/imageGen";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useImageGen } from "@/lib/stores/assets/imageGen";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 const INIT = { id: "img_gate", prompt: "线粒体内膜示意图", title: "示意图", size: "1024x1024", count: 1 };
 

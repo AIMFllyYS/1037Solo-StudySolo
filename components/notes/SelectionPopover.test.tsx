@@ -1,10 +1,10 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import SelectionPopover from "./SelectionPopover";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useStore } from "@/lib/stores/ui";
-import { useChatUI } from "@/lib/stores/chatUI";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
 import { SELECTION_POPOVER_SCROLL_GRACE_MS } from "@/lib/notes/selectionPopover";
 import { DEFAULT_SELECTION_ASSISTANT_ACTIONS } from "@/lib/notes/selectionAssistant";
 import { useSettings } from "@/lib/stores/settings";

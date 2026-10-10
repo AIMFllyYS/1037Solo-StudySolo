@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
+import type { ManagedWindow } from "@/lib/stores/workspace/windowManager";
 import { orderAgentDockWindows, splitAgentDockWindows } from "./agentDockTabs";
 
 function dockWindow(id: string, z: number): ManagedWindow {

@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach, afterEach } from 'vitest';
 import { act, cleanup, fireEvent, render } from '@testing-library/react';
 import ChatSettings from '../ChatSettings';
-import { useSettings } from '@/lib/hooks/useSettings';
+import { useSettings } from '@/lib/stores/settings';
 
 describe('ChatSettings custom model thinking levels', () => {
   beforeEach(() => {

@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
+import { useUiReducedMotion } from "@/lib/hooks/runtime/useUiReducedMotion";
 import { LayoutGrid, Library, List, PackageOpen, RefreshCw, SearchX } from "lucide-react";
 import AgentAssetCard from "./AgentAssetCard";
 import ActionButton from "@/components/ui/ActionButton";
@@ -14,9 +14,9 @@ import CloudFilesPanel from './CloudFilesPanel';
 import AssetTrashPanel from './AssetTrashPanel';
 import AssetSyncIssues from './AssetSyncIssues';
 import {useAssetIndex} from '@/lib/assets/library';
-import { useAgentAssets } from "@/lib/hooks/useAgentAssets";
-import { useIsClient } from "@/lib/hooks/useIsClient";
-import { useMinimumSkeleton } from "@/lib/hooks/useMinimumSkeleton";
+import { useAgentAssets } from "@/lib/hooks/files/useAgentAssets";
+import { useIsClient } from "@/lib/hooks/runtime/useIsClient";
+import { useMinimumSkeleton } from "@/lib/hooks/layout/useMinimumSkeleton";
 import { LAYOUT_REFLOW, reflowItemProps } from "@/lib/motion";
 import {
   ASSET_KINDS,

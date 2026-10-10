@@ -1,6 +1,6 @@
 "use client";
 
-import { useUserNotes } from "@/lib/stores/userNotes";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import UserNoteEditorWindow from "@/components/notes/UserNoteEditorWindow";
 import ClassroomNoteWindow from "@/components/notes/ClassroomNoteWindow";
 import NoteLibraryWindow from "@/components/notes/NoteLibraryWindow";

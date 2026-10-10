@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useSettings } from "@/lib/stores/settings";
 import {
   applyForeignSelectionBlockAttr,
   shouldPreventForeignSelectionMenu,

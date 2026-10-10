@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import ArtifactCard from './ArtifactCard';
-import { useArtifacts } from '@/lib/hooks/useArtifacts';
-import { useWindowManager } from '@/lib/hooks/useWindowManager';
+import { useArtifacts } from '@/lib/stores/assets/artifacts';
+import { useWindowManager } from '@/lib/stores/workspace/windowManager';
 
 vi.mock('@/components/chat/messages/MessageContent', () => ({
   MessageContent: ({ content }: { content: string }) => <div data-testid="message-content">{content}</div>,

@@ -1,7 +1,7 @@
 import { resolveFullscreenRect, type FullscreenTarget } from "@/lib/constants/layout";
-import { useWindowManager, type WindowPoint, type WindowSize } from "@/lib/hooks/useWindowManager";
-import { useSettings } from "@/lib/hooks/useSettings";
-import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
+import { useWindowManager, type WindowPoint, type WindowSize } from "@/lib/stores/workspace/windowManager";
+import { useSettings } from "@/lib/stores/settings";
+import type { ManagedWindow } from "@/lib/stores/workspace/windowManager";
 
 function defaultTargetFor(win: ManagedWindow): FullscreenTarget {
   if (win.type === "billing-dashboard") return "viewport";

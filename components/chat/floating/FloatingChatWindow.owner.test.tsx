@@ -2,14 +2,14 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ReactNode } from "react";
 import { activateStorageOwner, getStorageOwner } from "@/lib/storage/ownerScope";
-import { useChatHistory } from "@/lib/stores/chatHistory";
-import { useFloatingChats, type FloatingWin } from "@/lib/stores/floatingChats";
-import { useFloatingTokenTracker } from "@/lib/hooks/useFloatingTokenTracker";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { useFloatingChats, type FloatingWin } from "@/lib/stores/chat/floatingChats";
+import { useFloatingTokenTracker } from "@/lib/stores/chat/floatingTokenTracker";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 const authState = vi.hoisted(() => ({ status: "signedIn" as "loading" | "signedOut" | "signedIn", userId: "new-owner" as string | null }));
 
-vi.mock("@/lib/hooks/useAuthSession", () => ({ useAuthSession: () => authState }));
+vi.mock("@/lib/hooks/auth/useAuthSession", () => ({ useAuthSession: () => authState }));
 vi.mock("@/lib/window/useManagedWindowSurface", () => ({ useIsAgentSurface: () => false }));
 vi.mock("@/components/window/ManagedWindow", () => ({
   default: ({ title, children, onClose }: { title: string; children: ReactNode; onClose: () => void }) => (

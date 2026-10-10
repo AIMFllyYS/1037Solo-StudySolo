@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useChatUI } from "@/lib/stores/chatUI";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
 
 /** 「引用到对话」：写进聊天输入框的引用区，并给按钮一个短暂的「已引用」反馈。 */
 export function useCiteToChat(): { cited: boolean; cite: (text: string) => void } {

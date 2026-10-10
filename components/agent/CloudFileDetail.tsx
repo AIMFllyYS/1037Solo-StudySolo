@@ -9,7 +9,7 @@ import ActionButton, { actionClass } from '@/components/ui/ActionButton';
 import Badge, { type BadgeTone } from '@/components/ui/Badge';
 import { EmptyState, InlineNotice, PageShell } from '@/components/ui/PageChrome';
 import FileTypeIcon, { resolveFileGlyphKind } from '@/components/icons/file-types/FileTypeIcon';
-import { useChatUI } from '@/lib/stores/chatUI';
+import { useChatUI } from '@/lib/stores/chat/chatUI';
 import { fileReference } from '@/lib/files/contract';
 import { formatAssetSize, formatAssetTime } from '@/lib/agent/assetCatalog';
 import { getOwnerEpoch } from '@/lib/storage/ownerScope';

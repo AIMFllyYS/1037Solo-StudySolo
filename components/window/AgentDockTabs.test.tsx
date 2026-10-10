@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
-import { useChatHistory } from "@/lib/stores/chatHistory";
+import type { ManagedWindow } from "@/lib/stores/workspace/windowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import AgentDockTabs from "./AgentDockTabs";
 
-vi.mock("@/lib/hooks/useUiReducedMotion", () => ({ useUiReducedMotion: () => false }));
+vi.mock("@/lib/hooks/runtime/useUiReducedMotion", () => ({ useUiReducedMotion: () => false }));
 
 function makeWindow(id: string, z: number): ManagedWindow {
   return {

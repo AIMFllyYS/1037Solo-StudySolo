@@ -11,11 +11,11 @@ const fixtures: AssetItem[] = [
 
 const assetsRef: { value: AssetItem[] | null } = { value: fixtures };
 
-vi.mock("@/lib/hooks/useAgentAssets", () => ({ useAgentAssets: () => assetsRef.value }));
-vi.mock("@/lib/hooks/useIsClient", () => ({ useIsClient: () => true }));
+vi.mock("@/lib/hooks/files/useAgentAssets", () => ({ useAgentAssets: () => assetsRef.value }));
+vi.mock("@/lib/hooks/runtime/useIsClient", () => ({ useIsClient: () => true }));
 /** 最小骨架时长：默认在本文件里关掉（否则每个用例都要等 900ms），单独一条用例再打开。 */
 const skeletonOn = { value: false };
-vi.mock("@/lib/hooks/useMinimumSkeleton", () => ({ useMinimumSkeleton: () => skeletonOn.value }));
+vi.mock("@/lib/hooks/layout/useMinimumSkeleton", () => ({ useMinimumSkeleton: () => skeletonOn.value }));
 const scheduleCloudPull = vi.fn();
 vi.mock("@/lib/sync/schedule", () => ({ scheduleCloudPull: () => scheduleCloudPull(), refreshCloudSyncNow: () => scheduleCloudPull() }));
 

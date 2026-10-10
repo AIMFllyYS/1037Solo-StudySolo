@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { toggleManagedWindowFullscreen } from "@/lib/window/toggleManagedFullscreen";
 
 afterEach(() => {

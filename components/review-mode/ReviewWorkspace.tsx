@@ -7,10 +7,10 @@ import { ReviewNotesList, ReviewNoteEditor } from "./ReviewNotesPane";
 import { ReviewFlashcardDecks, ReviewFlashcardSession } from "./ReviewFlashcardsPane";
 import ReviewQuizPane from "./ReviewQuizPane";
 import ReviewMasteryOverview from "./ReviewMasteryOverview";
-import { useReviewCards } from "@/lib/stores/reviewCards";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
 import { useReviewSchedule } from "@/lib/review-mode/scheduleStore";
 import { useStore } from "@/lib/stores/ui";
-import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { useIsMobile } from "@/lib/hooks/layout/useIsMobile";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import ResizableRail from "@/components/ui/ResizableRail";
 

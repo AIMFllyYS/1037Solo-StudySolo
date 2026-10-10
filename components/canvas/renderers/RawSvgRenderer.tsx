@@ -4,7 +4,7 @@ import { useCallback, useMemo, useRef, useState, type PointerEvent as RPointerEv
 import type { CanvasBlock, RawSvgCanvasBlock } from '@/lib/canvas/types';
 import { sanitizeSvg } from '@/lib/utils/sanitizeSvg';
 import { analyzeSvgHealth } from '@/lib/svg/svgHealth';
-import { useCanvasFullscreen } from '@/lib/hooks/useCanvasFullscreen';
+import { useCanvasFullscreen } from '@/lib/hooks/runtime/useCanvasFullscreen';
 import { CanvasControls } from '../CanvasControls';
 import { CanvasFrame } from '../CanvasFrame';
 import { CanvasFullscreenPortal } from '../CanvasFullscreenPortal';

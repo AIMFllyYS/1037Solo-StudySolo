@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test, beforeEach } from "node:test";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { getActiveManagedWindow, closeManagedWindow } from "@/lib/keyboard/windowActions";
 
 beforeEach(() => {

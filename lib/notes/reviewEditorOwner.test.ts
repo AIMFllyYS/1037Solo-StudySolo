@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { activateStorageOwner, getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
-import { useUserNotes } from "@/lib/stores/userNotes";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import {
   captureReviewEditorOwner,
   isReviewNoteOwnerReady,

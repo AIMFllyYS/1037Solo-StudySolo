@@ -13,8 +13,8 @@ import NoteAgentPanel from "@/components/notes/NoteAgentPanel";
 import NoteTocSidebar from "@/components/notes/NoteTocSidebar";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useChatUI } from "@/lib/stores/chatUI";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
 import { downloadAsMarkdown } from "@/lib/documents/export";
 import { citeUserNoteToMainAgent, openAgentForUserNote } from "@/lib/notes/openUserNote";
 import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
@@ -27,7 +27,7 @@ import {
   type NoteTocItem,
 } from "@/lib/notes/noteToc";
 import { DURATION, EASE } from "@/lib/motion";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useT } from "@/lib/i18n";
 import { shouldMountHeavyEditor } from "@/lib/window/heavyEditor";
 import { useManagedWindowSurface } from "@/lib/window/useManagedWindowSurface";

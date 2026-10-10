@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { Bookmark, Trash2, Star, Home, Globe } from "lucide-react";
 import AnchoredMenu from "@/components/ui/AnchoredMenu";
-import { useBrowser } from "@/lib/hooks/useBrowser";
+import { useBrowser } from "@/lib/stores/workspace/browser";
 import { useT } from "@/lib/i18n";
 
 /** 右侧 Tab 栏最右的「＋」功能按钮：新增收藏网址（生成固定 Tab）、管理收藏、设置主页。 */

@@ -1,6 +1,6 @@
 import type {RenderMessage} from '@/classolo/features/render-modules/types'
 import type {OutlineDigestNode,TranscriptCommittedSegment} from '@/classolo/lib/session/types'
-import {useUserNotes} from '@/lib/stores/userNotes'
+import {useUserNotes} from '@/lib/stores/learning/userNotes'
 import type {UserNote} from '@/lib/notes/userNote'
 
 const START='<!-- class-generated:start -->',END='<!-- class-generated:end -->'

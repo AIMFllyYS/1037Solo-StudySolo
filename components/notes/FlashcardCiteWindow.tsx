@@ -9,10 +9,10 @@ import YearSubjectFolderTree from "@/components/layout/navigation/YearSubjectFol
 import FlipCard from "@/components/review/FlipCard";
 import QuizMarkdown from "@/components/quiz/QuizMarkdown";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
-import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
-import { useRecordPreviews } from "@/lib/stores/recordPreviews";
-import { useReviewCards } from "@/lib/stores/reviewCards";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useFlashcardCitations } from "@/lib/stores/learning/flashcardCitations";
+import { useRecordPreviews } from "@/lib/stores/learning/recordPreviews";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
 import { FLASHCARD_CITE_WINDOW_ID, formatFlashcardQuote, plainSnippet } from "@/lib/notes/userNote";
 import { downloadFlashcardMarkdown, downloadFlashcardsCsv } from "@/lib/review/exportCards";

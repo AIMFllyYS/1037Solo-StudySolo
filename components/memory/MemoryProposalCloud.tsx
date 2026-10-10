@@ -3,9 +3,9 @@
 import { Sparkles } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { AgentTrace } from "@/components/chat/trace/AgentTrace";
-import { useMemoryInbox, type MemoryProposal } from "@/lib/stores/memoryInbox";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
+import { useMemoryInbox, type MemoryProposal } from "@/lib/stores/learning/memoryInbox";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useFlashcardCitations } from "@/lib/stores/learning/flashcardCitations";
 import { memoryProposalWindowId } from "@/lib/notes/userNote";
 import { buildTrace } from "@/lib/chat/buildTrace";
 import type { RecordMode } from "@/lib/review/types";

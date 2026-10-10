@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { Copy, Layers, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { LAYOUT_REFLOW, reflowItemProps } from "@/lib/motion";
-import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
+import { useUiReducedMotion } from "@/lib/hooks/runtime/useUiReducedMotion";
 import {
   AgentPlusIcon,
   AgentHistoryIcon,
@@ -13,10 +13,10 @@ import {
   AgentPanelCloseIcon,
 } from "@/components/icons/AgentIcons";
 import ChatHistoryOverlay from "@/components/chat/ChatHistoryOverlay";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
-import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
-import { useTokenTracker } from "@/lib/hooks/useTokenTracker";
-import { hydrateAgentTabs, useAgentTabs } from "@/lib/stores/agentTabs";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { useFloatingChats } from "@/lib/stores/chat/floatingChats";
+import { useTokenTracker } from "@/lib/stores/chat/tokenTracker";
+import { hydrateAgentTabs, useAgentTabs } from "@/lib/stores/workspace/agentTabs";
 import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
 import { AGENT_MENU_ITEM_CLASS, AgentMenuSurface } from "@/components/agent/AgentMenuSurface";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";

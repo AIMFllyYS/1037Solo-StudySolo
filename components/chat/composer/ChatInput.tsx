@@ -7,9 +7,9 @@ import {
 } from '@/components/icons/AgentIcons';
 import type { ChatContext } from '@/lib/types/chat';
 import type { SendMessageOptions } from '@/lib/chat/sendMessage';
-import { useChatUI } from '@/lib/hooks/useChatUI';
-import { useSettings, type ThinkingEffort } from '@/lib/hooks/useSettings';
-import { useSkills } from '@/lib/hooks/useSkills';
+import { useChatUI } from '@/lib/stores/chat/chatUI';
+import { useSettings, type ThinkingEffort } from '@/lib/stores/settings';
+import { useSkills } from '@/lib/stores/skills';
 import {
   hasNotebookFileDrag,
   mergeAttachedFiles,
@@ -29,7 +29,7 @@ import ComposerChips from '@/components/chat/composer/ComposerChips';
 import ComposerCommandPanel, { listComposerCommands, type ComposerToggle } from '@/components/chat/composer/ComposerCommandPanel';
 import ComposerPalette from '@/components/chat/composer/ComposerPalette';
 import FileMentionMenu from '@/components/chat/composer/FileMentionMenu';
-import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
+import { useImageAttachments } from '@/lib/hooks/files/useImageAttachments';
 import { ACCEPTED_DOCUMENT_FILE_TYPES } from '@/lib/ai/imageUtils';
 import { useKeyboardSettings } from '@/lib/keyboard/useKeyboardSettings';
 import {

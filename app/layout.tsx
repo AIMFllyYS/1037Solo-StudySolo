@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
-import { AuthProvider } from "@/lib/hooks/useAuthSession";
+import { AuthProvider } from "@/lib/hooks/auth/useAuthSession";
 import AppShell from "@/components/layout/AppShell";
 import MotionPreferenceProvider from "@/components/layout/MotionPreferenceProvider";
 import { BootSplash } from "@/components/shared/LoadingStates";

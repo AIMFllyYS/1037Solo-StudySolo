@@ -4,7 +4,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import AgentLinksPane from "./AgentLinksPane";
 import { translate } from "@/lib/i18n";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useStore } from "@/lib/stores/ui";
 
 const zh = (key: string, vars?: Record<string, string | number>) => translate("zh", key, vars);

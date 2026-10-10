@@ -1,8 +1,8 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import TokenDashboard from "./TokenDashboard";
-import { useChatHistory } from "@/lib/stores/chatHistory";
-import { useBillingStore } from "@/lib/hooks/useBillingStore";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { useBillingStore } from "@/lib/stores/billing";
 
 vi.mock("@/lib/billing/syncUsageLedger", () => ({
   refreshBillingFromLedger: vi.fn(),

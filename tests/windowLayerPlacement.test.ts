@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { join } from "node:path";
 import { partitionTaskbarWindows } from "@/components/window/WindowTaskbar";
-import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
+import type { ManagedWindow } from "@/lib/stores/workspace/windowManager";
 
 const root = process.cwd();
 
@@ -34,7 +34,7 @@ test("citation and document viewers are mounted in the global app shell window l
   assert.match(layers, /<UserNoteLayer\s*\/>/);
   assert.match(layers, /components\/notes\/FlashcardCiteWindow/);
   assert.match(layers, /<FlashcardCiteWindow\s*\/>/);
-  assert.match(layers, /components\/notes\/AgentProductPickerWindow/);
+  assert.match(layers, /components\/agent\/AgentProductPickerWindow/);
   assert.match(layers, /<AgentProductPickerWindow\s*\/>/);
   assert.match(layers, /components\/memory\/MemoryInboxLayer/);
   assert.match(layers, /<MemoryInboxLayer\s*\/>/);

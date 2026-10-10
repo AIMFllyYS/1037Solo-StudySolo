@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, test } from "node:test";
 import { applyCommitFlashcards, applyCommitNotes } from "./applyMemoryTools.ts";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useStore } from "@/lib/stores/ui";
-import { useReviewCards } from "@/lib/stores/reviewCards";
-import { useRecordPreviews } from "@/lib/stores/recordPreviews";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
+import { useRecordPreviews } from "@/lib/stores/learning/recordPreviews";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 
 beforeEach(() => {

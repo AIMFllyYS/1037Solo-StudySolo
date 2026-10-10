@@ -2,7 +2,7 @@
 
 import { useState, useSyncExternalStore } from "react";
 import { Plug, Plus } from "lucide-react";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useSettings } from "@/lib/stores/settings";
 import { isElectronDesktop } from "@/lib/stores/apiSecrets";
 import { useT } from "@/lib/i18n";
 import { inputCls, labelCls } from "./_shared";

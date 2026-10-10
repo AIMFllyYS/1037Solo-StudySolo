@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import { ACADEMIC_YEAR_STORAGE_KEY, DEFAULT_ACADEMIC_YEAR } from "@/lib/constants/academic-year";
 
 const push = vi.fn();

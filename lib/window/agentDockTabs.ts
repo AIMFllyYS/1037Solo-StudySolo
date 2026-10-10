@@ -1,4 +1,4 @@
-import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
+import type { ManagedWindow } from "@/lib/stores/workspace/windowManager";
 
 export const AGENT_DOCK_VISIBLE_TAB_LIMIT = 3;
 

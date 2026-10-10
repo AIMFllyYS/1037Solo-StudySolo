@@ -1,18 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useChat } from "@/lib/hooks/useChat";
-import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/hooks/useChatHistory";
-import { useChatReady } from "@/lib/hooks/useChatReady";
+import { useChat } from "@/lib/hooks/chat/useChat";
+import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/stores/chat/chatHistory";
+import { useChatReady } from "@/lib/hooks/chat/useChatReady";
 import ChatThread from "@/components/chat/ChatThread";
 import ChatInput from "@/components/chat/composer/ChatInput";
 import ChatAccessNotice from "@/components/chat/ChatAccessNotice";
 import type { ChatContext, ChatOptions } from "@/lib/types/chat";
 import type { SendMessageOptions } from "@/lib/chat/sendMessage";
-import { useFloatingChats, type FloatingWin } from "@/lib/hooks/useFloatingChats";
-import { useSessionRuns } from "@/lib/stores/sessionRuns";
+import { useFloatingChats, type FloatingWin } from "@/lib/stores/chat/floatingChats";
+import { useSessionRuns } from "@/lib/stores/chat/sessionRuns";
 import { useStore } from "@/lib/stores/ui";
-import { useAuthSession } from "@/lib/hooks/useAuthSession";
+import { useAuthSession } from "@/lib/hooks/auth/useAuthSession";
 import { getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
 import { useT } from "@/lib/i18n/index";
 

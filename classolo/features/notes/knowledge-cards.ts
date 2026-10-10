@@ -3,7 +3,7 @@ import { CLASS_OUTPUT_TOKENS } from '@/classolo/lib/ai/budget'
  * 生成知识卡片（issue #65）：让课堂 AI 从文稿/大纲抽取闪卡，
  * 复用 StudySolo 复习卡片仓库（useReviewCards）落库。
  */
-import { useReviewCards } from '@/lib/stores/reviewCards'
+import { useReviewCards } from '@/lib/stores/learning/reviewCards'
 import type { RecordCardAI } from '@/lib/review/types'
 import { createModel, generateText } from '@/classolo/lib/ai'
 import { getNotesPublic, getTranscriptPublic } from '@/classolo/lib/session'

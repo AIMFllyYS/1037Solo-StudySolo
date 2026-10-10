@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { contentTree } from "@/lib/content-data";
 import { filterRuntimeSubjects } from "@/lib/content/offlineSubjects";
 import { academicYearOfSubject, type AcademicYearId } from "@/lib/constants/academic-year";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useReviewCards } from "@/lib/stores/reviewCards";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
 import {
   buildGlobalSearchIndex,
   chapterHitsFromIndex,

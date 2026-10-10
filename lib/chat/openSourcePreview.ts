@@ -1,4 +1,4 @@
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 export function sourcePreviewWindowId(url: string) {
   return `source-preview:${url}`;

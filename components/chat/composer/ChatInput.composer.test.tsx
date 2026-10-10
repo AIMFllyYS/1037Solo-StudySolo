@@ -1,8 +1,8 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ChatInput from './ChatInput';
-import { useSettings } from '@/lib/hooks/useSettings';
-import { useSkills } from '@/lib/hooks/useSkills';
+import { useSettings } from '@/lib/stores/settings';
+import { useSkills } from '@/lib/stores/skills';
 import { NOTEBOOK_FILE_MIME } from '@/lib/chat/composerIntent';
 
 function mockComposerAnchor() {
@@ -31,8 +31,8 @@ function mockComposerAnchor() {
 
 vi.mock('@/components/chat/billing/TokenDashboard', () => ({ default: () => <div data-testid="token-dashboard" /> }));
 vi.mock('@/components/chat/composer/ModelMenu', () => ({ default: () => <div data-testid="model-menu" /> }));
-vi.mock('@/lib/hooks/useChatUI', () => ({ useChatUI: () => ({ quotedText: null, clearQuotedText: vi.fn() }) }));
-vi.mock('@/lib/hooks/useImageAttachments', () => ({ useImageAttachments: () => ({
+vi.mock('@/lib/stores/chat/chatUI', () => ({ useChatUI: () => ({ quotedText: null, clearQuotedText: vi.fn() }) }));
+vi.mock('@/lib/hooks/files/useImageAttachments', () => ({ useImageAttachments: () => ({
   attachments: [], addFiles: vi.fn(), remove: vi.fn(), clear: vi.fn(), toChatFormat: () => [],
   handlePaste: vi.fn(), handleDrop: vi.fn(), handleDragOver: vi.fn(), handleDragEnter: vi.fn(), handleDragLeave: vi.fn(),
   isDragging: false, endDrag: vi.fn(), error: null,

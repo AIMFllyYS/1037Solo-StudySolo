@@ -7,13 +7,13 @@ import {
   FLOATING_MIN_W,
   FLOATING_MIN_H,
   type FloatingWin,
-} from "@/lib/hooks/useFloatingChats";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
+} from "@/lib/stores/chat/floatingChats";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { useStore } from "@/lib/store";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
-import { useFloatingTokenTracker } from "@/lib/hooks/useFloatingTokenTracker";
-import { useAuthSession } from "@/lib/hooks/useAuthSession";
+import { useAcademicYear } from "@/lib/stores/academicYear";
+import { useFloatingTokenTracker } from "@/lib/stores/chat/floatingTokenTracker";
+import { useAuthSession } from "@/lib/hooks/auth/useAuthSession";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import FloatingChatBody from "@/components/chat/floating/FloatingChatBody";
 import ManagedWindow from "@/components/window/ManagedWindow";

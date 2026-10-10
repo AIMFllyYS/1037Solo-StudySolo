@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { BookmarkPlus, Brain, Boxes, Globe, Star } from "lucide-react";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useSettings } from "@/lib/stores/settings";
 import { useT } from "@/lib/i18n";
 import { MODELS, isPickerHiddenModel, getAllModels } from "@/lib/ai/models";
 import { Toggle, h3Cls, labelCls } from "./_shared";

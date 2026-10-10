@@ -12,7 +12,7 @@ import { getBrowserSession } from "@/lib/auth/browserSession";
 import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
 import { registerResourceMetrics } from "@/lib/performance/resourceMetrics";
 import { type SessionMeta } from "@/lib/storage/chatStorage";
-import type { Artifact } from "@/lib/stores/artifacts";
+import type { Artifact } from "@/lib/stores/assets/artifacts";
 
 
 import type { StoredDocument } from "@/lib/documents/types";
@@ -30,7 +30,7 @@ import { retryableFailure, type SyncFailure } from './failure';
 import { hasExternalBody } from '@/lib/assets/body';
 import { hydrateRemotePayload } from '@/lib/assets/client';
 import { mergeIndependent } from './conflicts';
-import type { ImageGenSession } from '@/lib/stores/imageGen';
+import type { ImageGenSession } from '@/lib/stores/assets/imageGen';
 import {assetApi} from '@/lib/assets/client';
 import {
   CLOUD_SYNC_KINDS,

@@ -1,5 +1,5 @@
 import { translateNow } from "@/lib/i18n";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 /** 项目文件窗的窗口 id：一个项目一个窗。 */
 export function projectFilesWindowId(projectId: string): string {

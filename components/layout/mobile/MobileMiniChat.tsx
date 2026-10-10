@@ -3,10 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useStore } from "@/lib/stores/ui";
-import { useChat } from "@/lib/hooks/useChat";
-import { ensureChatHistoryBootstrap } from "@/lib/hooks/useChatHistory";
-import { useChatReady } from "@/lib/hooks/useChatReady";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useChat } from "@/lib/hooks/chat/useChat";
+import { ensureChatHistoryBootstrap } from "@/lib/stores/chat/chatHistory";
+import { useChatReady } from "@/lib/hooks/chat/useChatReady";
+import { useSettings } from "@/lib/stores/settings";
 import ChatThread from "@/components/chat/ChatThread";
 import ChatInput from "@/components/chat/composer/ChatInput";
 import type { ChatContext } from "@/lib/types/chat";

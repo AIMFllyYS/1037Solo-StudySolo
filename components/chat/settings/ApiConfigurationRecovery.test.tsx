@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { afterEach, expect, it } from 'vitest';
 import { ApiConfigurationRecovery } from './ApiConfigurationRecovery';
 import ModelMenu from '../composer/ModelMenu';
-import { useSettings } from '@/lib/hooks/useSettings';
+import { useSettings } from '@/lib/stores/settings';
 import { encodeApiBackup } from '@/lib/stores/settingsRecovery';
 import { SETTINGS_LS_KEY } from '@/lib/stores/apiSecrets';
 

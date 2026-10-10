@@ -1,5 +1,5 @@
 import { translateNow } from "@/lib/i18n";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 /** 内部教材窗的窗口 id：全局只有一个。 */
 export const TEXTBOOK_WINDOW_ID = "internal-textbook";

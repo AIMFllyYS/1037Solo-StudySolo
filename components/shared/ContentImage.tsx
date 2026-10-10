@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ImageOff } from "lucide-react";
 import displayImages from "@/lib/content-data/display-images.generated.json";
-import { useLightbox } from "@/lib/stores/lightbox";
+import { useLightbox } from "@/lib/stores/workspace/lightbox";
 
 interface ContentImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   node?: unknown;

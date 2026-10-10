@@ -5,10 +5,10 @@ import { freezeGeneratedImages } from '@/lib/assets/freezeImages';
 
 import { useEffect, useRef, useCallback } from "react";
 import { Download, ImagePlus, RefreshCw, Loader, AlertTriangle, Check as AgentCheckIcon } from "lucide-react";
-import { useImageGen, imageGenWindowId, acquireImageGenLease, hydrateImageGenImages, type ImageGenImage } from "@/lib/hooks/useImageGen";
-import { useSettings } from "@/lib/hooks/useSettings";
-import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStore";
-import { useLightbox } from "@/lib/stores/lightbox";
+import { useImageGen, imageGenWindowId, acquireImageGenLease, hydrateImageGenImages, type ImageGenImage } from "@/lib/stores/assets/imageGen";
+import { useSettings } from "@/lib/stores/settings";
+import { useBillingStore, createBillingRecord } from "@/lib/stores/billing";
+import { useLightbox } from "@/lib/stores/workspace/lightbox";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { safeImageSrc } from "@/components/browser/safeUrl";
 import { createObjectUrlLease } from "@/lib/resources/objectUrl";
@@ -16,7 +16,7 @@ import { formatImageGenError, imageGenErrorHeading } from "@/lib/ai/imageGenErro
 import { capabilityNeedsForImageGen, selectCapabilityEndpointsForRequest } from "@/lib/ai/capabilityEndpoints";
 import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from "@/lib/ai/models";
 import ImageGenProgressBar from "@/components/chat/products/ImageGenProgressBar";
-import { useImageGenProgress } from "@/lib/hooks/useImageGenProgress";
+import { useImageGenProgress } from "@/lib/hooks/files/useImageGenProgress";
 import { useT } from "@/lib/i18n/index";
 
 /** 将归一化图片项转为可渲染的 src：优先 url，回退 b64_json data URL。 */

@@ -6,7 +6,7 @@ import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
 import { navTree } from "@/lib/content-data/nav";
 import { NOTEBOOK_FILE_MIME } from "@/lib/chat/composerIntent";
 import { openTextbookWindow, TEXTBOOK_WINDOW_ID } from "@/lib/textbook/openTextbook";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import type { TextbookReadingState } from "@/lib/textbook/state";
 import TextbookWindow from "./TextbookWindow";
 

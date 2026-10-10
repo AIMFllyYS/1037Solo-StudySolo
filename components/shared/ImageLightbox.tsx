@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { X, ZoomIn, ZoomOut, RotateCcw, Download } from "lucide-react";
-import { useLightbox } from "@/lib/stores/lightbox";
+import { useLightbox } from "@/lib/stores/workspace/lightbox";
 import { safeImageSrc } from "@/components/browser/safeUrl";
 import { createObjectUrlLease } from "@/lib/resources/objectUrl";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";

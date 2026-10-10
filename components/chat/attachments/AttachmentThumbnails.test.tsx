@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import AttachmentThumbnails from './AttachmentThumbnails';
-import { useWindowManager } from '@/lib/hooks/useWindowManager';
+import { useWindowManager } from '@/lib/stores/workspace/windowManager';
 
 describe('AttachmentThumbnails', () => {
   beforeEach(() => {

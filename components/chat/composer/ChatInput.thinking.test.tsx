@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { render, act, fireEvent, screen, waitFor } from '@testing-library/react';
 import ChatInput from './ChatInput';
-import { useSettings } from '@/lib/hooks/useSettings';
+import { useSettings } from '@/lib/stores/settings';
 
 vi.mock('@/components/chat/billing/TokenDashboard', () => ({
   default: () => <div data-testid="token-dashboard" />,
@@ -11,11 +11,11 @@ vi.mock('@/components/chat/composer/ModelMenu', () => ({
   default: () => <div data-testid="model-menu" />,
 }));
 
-vi.mock('@/lib/hooks/useChatUI', () => ({
+vi.mock('@/lib/stores/chat/chatUI', () => ({
   useChatUI: () => ({ quotedText: null, clearQuotedText: vi.fn() }),
 }));
 
-vi.mock('@/lib/hooks/useImageAttachments', () => ({
+vi.mock('@/lib/hooks/files/useImageAttachments', () => ({
   useImageAttachments: () => ({
     attachments: [],
     addFiles: vi.fn(),

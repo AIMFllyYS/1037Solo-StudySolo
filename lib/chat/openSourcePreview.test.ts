@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import { openSourcePreview, sourcePreviewWindowId } from "./openSourcePreview.ts";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 afterEach(() => {
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });

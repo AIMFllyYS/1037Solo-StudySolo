@@ -8,9 +8,9 @@ import { useStore } from "@/lib/stores/ui";
 vi.mock("next/dynamic", () => ({
   default: () => () => null,
 }));
-vi.mock("@/lib/hooks/useIsMobile", () => ({ useIsMobile: () => false }));
-vi.mock("@/lib/hooks/useToc", () => ({ useToc: () => {} }));
-vi.mock("@/lib/hooks/useCitationLocator", () => ({ useCitationLocator: () => {} }));
+vi.mock("@/lib/hooks/layout/useIsMobile", () => ({ useIsMobile: () => false }));
+vi.mock("@/lib/hooks/learning/useToc", () => ({ useToc: () => {} }));
+vi.mock("@/lib/hooks/learning/useCitationLocator", () => ({ useCitationLocator: () => {} }));
 vi.mock("@/components/notes/SelectionPopover", () => ({
   default: () => <div data-testid="selection-popover" />,
 }));

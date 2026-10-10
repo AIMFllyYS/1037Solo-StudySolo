@@ -5,9 +5,9 @@ import userEvent from "@testing-library/user-event";
 import LoginOverlay from "./LoginOverlay";
 import { useStore } from "@/lib/stores/ui";
 import GlobalSettings from "@/components/layout/settings/GlobalSettings";
-import { useTheme } from "@/lib/hooks/useTheme";
+import { useTheme } from "@/lib/stores/theme";
 import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import { DEFAULT_ACADEMIC_YEAR } from "@/lib/constants/academic-year";
 
 vi.mock("next/navigation", () => ({

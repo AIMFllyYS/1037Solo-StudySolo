@@ -8,7 +8,7 @@ import {
   VideoPlayer,
 } from '@/components/visualizations/index';
 import { DiagramCanvas, isDiagramMode } from '@/components/canvas/index';
-import { useChatHistory } from '@/lib/hooks/useChatHistory';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { replaceCanvasBlock } from '@/lib/chat/rendering/canvasBlockPatch';
 import { getAnswerText, withAnswerText } from '@/lib/chat/messageParts';
 import type { CanvasBlock } from '@/lib/canvas/types';

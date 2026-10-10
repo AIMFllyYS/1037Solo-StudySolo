@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { useSettings } from '@/lib/hooks/useSettings';
+import { useSettings } from '@/lib/stores/settings';
 import { backupSettings, decodeApiBackup, encodeApiBackup, readSettingsBackup } from '@/lib/stores/settingsRecovery';
 import { splitSettingsSecrets } from '@/lib/stores/apiSecrets';
 import { useT } from '@/lib/i18n';

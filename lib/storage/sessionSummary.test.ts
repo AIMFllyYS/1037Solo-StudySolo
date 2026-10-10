@@ -10,7 +10,7 @@ import { activateStorageOwner } from "./ownerScope.ts";
 import { __resetSessionV3ForTests, saveSessionMessagesCommitted } from "./chatStorage.ts";
 import { __resetIdbStoragePendingForTests } from "./idbStorage.ts";
 import { loadSessionSummary } from "./sessionSummary.ts";
-import { useChatHistory } from "@/lib/stores/chatHistory";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 
 function message(id: string, role: "user" | "assistant", text: string, source?: string): ChatMessage {
   const parts: unknown[] = [{ type: "text", text }];

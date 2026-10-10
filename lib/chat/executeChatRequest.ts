@@ -1,7 +1,7 @@
 import { consumeStudyStream, createStudyChatTransport } from "@/lib/chat/consumeStudyStream";
 import { buildRequestMessages } from "@/lib/chat/buildRequestMessages";
 import { checkpointMessages } from '@/lib/context/compactChatSession';
-import { useChatHistory } from '@/lib/stores/chatHistory';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { useCompactionState } from '@/lib/context/compactionState';
 import { getOwnerEpoch, getStorageOwner, captureStorageOperation } from '@/lib/storage/ownerScope';
 import { collectCloudFileIds } from '@/lib/files/contract';
@@ -20,7 +20,7 @@ import type { ContextBudget } from "@/lib/chat/estimateContextBudget";
 import type { ChatMessage, ContextBreakdown, UsageSummary } from "@/lib/types/chat";
 import { localSourceCatalog, readLocalSource, localSourceIsLinked } from '@/lib/local-files/client';
 import { localReadInputSchema, type LocalReadOutput } from '@/lib/local-files/contract';
-import { useImports } from '@/lib/stores/imports';
+import { useImports } from '@/lib/stores/assets/imports';
 import {materializeAnswerAssets} from '@/lib/assets/materialize';
 
 export async function executeChatRequest(input: {

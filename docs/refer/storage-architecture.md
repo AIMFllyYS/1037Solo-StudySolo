@@ -88,7 +88,7 @@
 
 ---
 
-## 3. 水合门控 (`lib/hooks/useHydrated.ts`)
+## 3. 水合门控 (`lib/hooks/runtime/useHydrated.ts`)
 
 ### 3.1 问题
 
@@ -186,7 +186,7 @@ artifact 随会话产生但分属不同 store。删除会话时需联动清理�
 ### 7.2 模块
 
 - `lib/storage/chatStorage.ts`：纯 IO（manifest / session / blob / 迁移 / 导出 hydrate）
-- `lib/hooks/useChatHistory.ts`：内存 `sessionsMeta` + `messagesById`（LRU ≤3）；**不再**使用 zustand `persist`
+- `lib/hooks/chat/useChatHistory.ts`：内存 `sessionsMeta` + `messagesById`（LRU ≤3）；**不再**使用 zustand `persist`
 - `ensureChatHistoryBootstrap()`：启动时迁移 → 加载 manifest → 加载 active 会话
 - `useChatReady()`：manifest 已加载且 active 会话消息就绪
 

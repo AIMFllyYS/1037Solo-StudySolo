@@ -2,7 +2,7 @@ import React, { act } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { ImageLightbox } from "./ImageLightbox";
-import { useLightbox } from "@/lib/stores/lightbox";
+import { useLightbox } from "@/lib/stores/workspace/lightbox";
 
 /** store 是外部真相源：直接改它必须包 act，否则 React 19 不会同步重渲染。 */
 function open(src: string, alt = "", options?: { toolbar?: "bottom" | "top-right" }) {

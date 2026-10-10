@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { CitationCatalogContext, CiteRef, InlineCiteMarker } from "./InlineCiteMarker";
-import { useNoteCitations } from "@/lib/stores/noteCitations";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useNoteCitations } from "@/lib/stores/learning/noteCitations";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 afterEach(() => {
   cleanup();

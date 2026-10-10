@@ -4,7 +4,7 @@ import AgentDockHost from "./AgentDockHost";
 import { useAppMode } from "@/lib/stores/appMode";
 import { useStore } from "@/lib/stores/ui";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 function reset() {
   cleanup();

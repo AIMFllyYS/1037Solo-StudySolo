@@ -2,7 +2,7 @@
 
 import UserAvatar from "./UserAvatar";
 import { resolveNickname } from "@/lib/profile/displayName";
-import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
+import { useAccountProfile } from "@/lib/hooks/auth/useAccountProfile";
 import { useT } from "@/lib/i18n";
 
 export function LeftDockFace({

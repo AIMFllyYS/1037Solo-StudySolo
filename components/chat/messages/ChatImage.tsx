@@ -2,7 +2,7 @@
 
 import { useState, type ImgHTMLAttributes } from "react";
 import { ImageOff } from "lucide-react";
-import { useLightbox } from "@/lib/stores/lightbox";
+import { useLightbox } from "@/lib/stores/workspace/lightbox";
 import { useShareImagePlaceholder } from "@/components/share/ShareViewContext";
 import { useT } from "@/lib/i18n/index";
 

@@ -6,8 +6,8 @@ import { AlertTriangle, Check, ChevronDown, Pencil, Trash2, X } from "lucide-rea
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 import type { UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/types";
 import { isUsableOutput, proposalFromToolOutput, type NoteChangeStatus } from "@/lib/notes/noteChangeProposal";
-import { sessionIdOfMessage, useNoteChangeProposals } from "@/lib/stores/noteChangeProposals";
-import { useUserNotes } from "@/lib/stores/userNotes";
+import { sessionIdOfMessage, useNoteChangeProposals } from "@/lib/stores/assets/noteChangeProposals";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import { useT, type Translate } from "@/lib/i18n";
 
 /**

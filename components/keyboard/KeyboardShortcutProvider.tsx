@@ -8,7 +8,7 @@ import { dispatchShortcutAction } from "@/lib/keyboard/actions";
 import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 import { useOverlayStack } from "@/lib/keyboard/useOverlayStack";
 import { isTypingTarget, isDesktopViewport } from "@/lib/keyboard/guards";
-import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { useIsMobile } from "@/lib/hooks/layout/useIsMobile";
 import { getActiveManagedWindow } from "@/lib/keyboard/windowActions";
 import ShortcutHelpOverlay from "@/components/keyboard/ShortcutHelpOverlay";
 

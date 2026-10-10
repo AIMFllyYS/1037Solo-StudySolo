@@ -1,10 +1,10 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import NoteChangeConsentCard from "./NoteChangeConsentCard";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useNoteChangeProposals } from "@/lib/stores/noteChangeProposals";
-import { useChatHistory } from "@/lib/stores/chatHistory";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useNoteChangeProposals } from "@/lib/stores/assets/noteChangeProposals";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useToast } from "@/lib/stores/toast";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 

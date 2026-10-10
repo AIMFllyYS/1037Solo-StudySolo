@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import ChatSettings from "@/components/chat/ChatSettings";
 import { useStore } from "@/lib/stores/ui";
-import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { useIsMobile } from "@/lib/hooks/layout/useIsMobile";
 import { scaleInVariants } from "@/lib/motion";
 import { useT } from "@/lib/i18n/index";
 

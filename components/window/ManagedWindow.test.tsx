@@ -3,7 +3,7 @@ import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useAppMode } from "@/lib/stores/appMode";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { useOverlayStack } from "@/lib/keyboard/useOverlayStack";

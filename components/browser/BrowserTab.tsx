@@ -7,9 +7,9 @@ import WebviewSite, { type WebviewEl } from "@/components/browser/WebviewSite";
 import PageControls from "@/components/browser/PageControls";
 import ZoomableSite from "@/components/browser/ZoomableSite";
 import { safeHttpUrl } from "@/components/browser/safeUrl";
-import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
-import { useEmbeddable } from "@/lib/hooks/useEmbeddable";
-import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/stores/workspace/browser";
+import { useEmbeddable } from "@/lib/hooks/files/useEmbeddable";
+import { useIsMobile } from "@/lib/hooks/layout/useIsMobile";
 import { useT } from "@/lib/i18n";
 
 /** 右侧面板内置浏览器：地址栏 + 自适应（手机视口模拟）iframe。本地使用，仅做基础 sandbox 安全。 */

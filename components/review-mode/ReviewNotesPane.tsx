@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { FileText, Plus, Search } from "lucide-react";
 import YearSubjectFolderTree from "@/components/layout/navigation/YearSubjectFolderTree";
 import ReviewNoteWorkspace from "./ReviewNoteWorkspace";
-import { selectLibraryNotes, useUserNotes } from "@/lib/stores/userNotes";
+import { selectLibraryNotes, useUserNotes } from "@/lib/stores/learning/userNotes";
 import { userNoteMatchesQuery } from "@/lib/notes/userNoteSearch";
 import { isReviewNoteOwnerReady } from "@/lib/notes/reviewEditorOwner";
 import { subjectLabel } from "@/lib/notes/userNote";

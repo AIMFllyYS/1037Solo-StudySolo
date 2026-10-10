@@ -7,10 +7,10 @@ import WebviewSite from "@/components/browser/WebviewSite";
 import PageControls from "@/components/browser/PageControls";
 import ZoomableSite from "@/components/browser/ZoomableSite";
 import { safeHttpUrl } from "@/components/browser/safeUrl";
-import { clampBrowserZoomPercent, DEFAULT_BROWSER_ZOOM_PERCENT } from "@/lib/stores/browser";
+import { clampBrowserZoomPercent, DEFAULT_BROWSER_ZOOM_PERCENT } from "@/lib/stores/workspace/browser";
 import ManagedWindow from "@/components/window/ManagedWindow";
-import { useEmbeddable } from "@/lib/hooks/useEmbeddable";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useEmbeddable } from "@/lib/hooks/files/useEmbeddable";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useT } from "@/lib/i18n/index";
 
 function SourcePreviewIcon({ iconUrl }: { iconUrl?: string }) {

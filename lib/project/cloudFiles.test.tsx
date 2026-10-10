@@ -2,7 +2,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import type { ProjectFileEntry } from './types';
 const fixture = vi.hoisted(() => ({ files: vi.fn(), context: vi.fn(), state: { order: [] as string[], byId: {} as Record<string, ProjectFileEntry> } }));
 vi.mock('@/lib/files/client', () => ({ listCloudFiles: fixture.files, readCloudFileContext: fixture.context }));
-vi.mock('@/lib/stores/projectFiles', () => {
+vi.mock('@/lib/stores/assets/projectFiles', () => {
   const store = {
     getState: () => ({ ...fixture.state,
       beginImport: (input: { projectId: string; name: string }) => { const id = Object.values(fixture.state.byId).find(row => row.name === input.name)?.id ?? 'local-file'; fixture.state.byId[id] = { ...input, id, kind: 'imported', status: 'parsing', slices: [], indexMarkdown: '', charCount: 0, createdAt: 1, updatedAt: 1 }; return id; },

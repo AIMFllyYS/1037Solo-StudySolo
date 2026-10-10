@@ -2,17 +2,17 @@
 
 import { useMemo, useState } from "react";
 import { ArrowRight, CheckCircle2, Layers, NotebookPen, Target } from "lucide-react";
-import { useReviewCards } from "@/lib/stores/reviewCards";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
 import { useReviewSchedule } from "@/lib/review-mode/scheduleStore";
-import { useUserNotes, selectLibraryNotes } from "@/lib/stores/userNotes";
+import { useUserNotes, selectLibraryNotes } from "@/lib/stores/learning/userNotes";
 import { getAllProgress } from "@/lib/quiz-progress";
-import { useQuizProgressRevision } from "@/lib/hooks/useQuizProgressRevision";
+import { useQuizProgressRevision } from "@/lib/hooks/learning/useQuizProgressRevision";
 import { summarizeWrongQuestions } from "@/lib/review-mode/wrongQuestions";
 import { MASTERY_TIERS, pickNextAction, summarizeMastery, type MasteryTier } from "@/lib/review-mode/masteryModel";
 import { subjectLabel } from "@/lib/notes/userNote";
 import { useT } from "@/lib/i18n";
 import ActionButton from "@/components/ui/ActionButton";
-import { useAuthSession } from "@/lib/hooks/useAuthSession";
+import { useAuthSession } from "@/lib/hooks/auth/useAuthSession";
 import { getLegacyImportState, getOwnerLegacyImportedProgress, hasLegacyLocalProgress } from "@/lib/quiz-progress";
 import { importLegacyLocalHistory } from "@/lib/review-mode/progressSync";
 

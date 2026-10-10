@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import BrowserSettingsButton from "./BrowserSettingsButton";
-import { BROWSE_TAB, useBrowser } from "@/lib/stores/browser";
+import { BROWSE_TAB, useBrowser } from "@/lib/stores/workspace/browser";
 
 describe("shared browser settings menu", () => {
   beforeEach(() => {

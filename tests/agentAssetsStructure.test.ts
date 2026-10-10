@@ -55,13 +55,13 @@ test("详情路由：kind 非法直接 404，未知 id 交给页面空态", () =
 });
 
 test("本地导入记录：只存路径与元数据，不落内容、不上云", () => {
-  const imports = readFile("lib/stores/imports.ts");
+  const imports = readFile("lib/stores/assets/imports.ts");
   assert.match(imports, /absPath\?: string;/);
   assert.match(imports, /PERSIST_KEYS\.imports/);
   assert.doesNotMatch(imports, /scheduleCloudUpsert|scheduleCloudTombstone/, "导入记录不进云同步");
   assert.doesNotMatch(imports, /content:|dataUrl|base64/, "导入记录不存正文");
   // 三个入口都要记：输入框附件、加号菜单文件、网址
-  assert.match(readFile("lib/hooks/useImageAttachments.ts"), /recordImport\(/);
+  assert.match(readFile("lib/hooks/files/useImageAttachments.ts"), /recordImport\(/);
   assert.match(readFile("components/window/WindowTaskbar.tsx"), /registerLocalFile\(/);
   assert.match(readFile('lib/local-files/client.ts'), /recordImport\(/);
   assert.doesNotMatch(readFile('lib/local-files/client.ts'), /uploadCloudFile|writeAssetVersion/);

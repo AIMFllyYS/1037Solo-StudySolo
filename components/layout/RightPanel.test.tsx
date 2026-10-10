@@ -3,8 +3,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useStore } from "@/lib/stores/ui";
-import { useSettings } from "@/lib/hooks/useSettings";
-import { useChatHistory } from "@/lib/stores/chatHistory";
+import { useSettings } from "@/lib/stores/settings";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { translate } from "@/lib/i18n";
 
 vi.mock("next/navigation", () => ({
@@ -15,11 +15,11 @@ vi.mock("next/dynamic", () => ({
   default: () => () => <div data-testid="dynamic-tab" />,
 }));
 
-vi.mock("@/lib/hooks/useIsClient", () => ({
+vi.mock("@/lib/hooks/runtime/useIsClient", () => ({
   useIsClient: () => true,
 }));
 
-vi.mock("@/lib/hooks/useBrowser", () => ({
+vi.mock("@/lib/stores/workspace/browser", () => ({
   BROWSE_TAB: "browse",
   useBrowser: (sel: (s: Record<string, unknown>) => unknown) =>
     sel({
@@ -39,7 +39,7 @@ vi.mock("@/components/window/WindowTaskbar", () => ({
   default: ({ host }: { host: string }) => <div data-testid="window-taskbar-host">{host}</div>,
 }));
 
-vi.mock("@/lib/hooks/useAcademicYear", () => ({
+vi.mock("@/lib/stores/academicYear", () => ({
   useAcademicYear: (sel: (s: { year: string }) => unknown) => sel({ year: "sophomore-1" }),
 }));
 

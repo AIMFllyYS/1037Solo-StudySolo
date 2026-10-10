@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import QuizRunner from "@/components/quiz/QuizRunner";
 import { AgentQuizIcon } from "@/components/icons/AgentIcons";
-import { useWindowManager, type AgentQuizData } from "@/lib/stores/windowManager";
+import { useWindowManager, type AgentQuizData } from "@/lib/stores/workspace/windowManager";
 import { QUIZ_DOCK_WINDOW_TYPE } from "@/lib/quiz-dock/open";
 
 /**

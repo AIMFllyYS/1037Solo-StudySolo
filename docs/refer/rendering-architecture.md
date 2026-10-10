@@ -490,7 +490,7 @@ CanvasBlock 提供统一的聊天画布协议，覆盖自由 SVG、函数图像�
 
 1. **Artifact 浮窗（「撰写可视化 HTML」所指的那条）**  
    工具 id 仍叫 `renderInteractive`（已写入用户 IndexedDB 聊天历史，**不要改 id**）。  
-   入口：`lib/ai/agent/tools/renderInteractive/tool.ts` → `lib/ai/artifact.ts` → `app/api/artifact/route.ts` → `components/chat/toolCards/renderInteractiveCard.tsx`（适配器）→ `components/chat/products/ArtifactCard.tsx`（消息内「打开演示」）→ `lib/hooks/useArtifacts.ts` → `components/chat/products/ArtifactViewer.tsx`。
+   入口：`lib/ai/agent/tools/renderInteractive/tool.ts` → `lib/ai/artifact.ts` → `app/api/artifact/route.ts` → `components/chat/toolCards/renderInteractiveCard.tsx`（适配器）→ `components/chat/products/ArtifactCard.tsx`（消息内「打开演示」）→ `lib/stores/assets/artifacts.ts` → `components/chat/products/ArtifactViewer.tsx`。
    浮窗由 `AppShell` 挂载，`createPortal` 到 `document.body`，**既不属于右侧 Agent 面板，也不属于中间笔记区**。全屏默认对齐 `#notes-panel`，可在设置里改成铺满视口。
 
 2. **消息内联 HTML 画布**  

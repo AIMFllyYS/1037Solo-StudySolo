@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen, act } from "@testing-library/react";
 import ArtifactViewer from "./ArtifactViewer";
-import { useArtifacts } from "@/lib/hooks/useArtifacts";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useArtifacts } from "@/lib/stores/assets/artifacts";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { translate } from "@/lib/i18n/index";
 import {
   ARTIFACT_IFRAME_SANDBOX,

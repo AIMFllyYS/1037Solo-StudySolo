@@ -111,7 +111,7 @@ P3（低紧迫 / 本地使用可缓）
 
 | 与性能相邻的测试 | 文件 | 测什么 | 没测什么 |
 |------------------|------|--------|----------|
-| 水合门控 | `lib/hooks/useHydrated.test.tsx` | IDB 恢复前禁止操作 | 大水合 payload 耗时 |
+| 水合门控 | `lib/hooks/runtime/useHydrated.test.tsx` | IDB 恢复前禁止操作 | 大水合 payload 耗时 |
 | Token 估算 | `lib/context/estimateTokens.test.ts` | 估算算法 | 实际上下文裁剪策略 |
 | 混合检索 | `lib/ai/search/hybridSearch.test.ts` | RRF 合并逻辑 | vectorSearch O(n) 延迟 |
 | IDB 适配器 | **无** | — | 800ms 防抖、pagehide flush |
@@ -126,7 +126,7 @@ P3（低紧迫 / 本地使用可缓）
 
 ### 3.1 流式对话双节流（核心防线）
 
-**UI 层 60ms**（`lib/hooks/useChat.ts`）+ **IDB 写入 800ms 尾随防抖**（`lib/storage/idbStorage.ts`）是针对「每 token 更新 → 整段 JSON.stringify → 写盘 → OOM」的**实证修复**。
+**UI 层 60ms**（`lib/hooks/chat/useChat.ts`）+ **IDB 写入 800ms 尾随防抖**（`lib/storage/idbStorage.ts`）是针对「每 token 更新 → 整段 JSON.stringify → 写盘 → OOM」的**实证修复**。
 
 ```32:37:lib/storage/idbStorage.ts
 // zustand persist 每次 set() 都会同步 JSON.stringify(整段状态) 并调 setItem 写盘。
@@ -136,7 +136,7 @@ P3（低紧迫 / 本地使用可缓）
 // 方案：按 key 尾随防抖，最新值胜出，高频写合并为一次；页面卸载/隐藏时立即落盘，零丢失。
 ```
 
-```223:244:lib/hooks/useChat.ts
+```223:244:lib/hooks/chat/useChat.ts
         const UI_THROTTLE_MS = 60;
         let uiTimer: ReturnType<typeof setTimeout> | null = null;
         const writeUi = () => {
@@ -267,7 +267,7 @@ export async function generateStaticParams() {
 
 审查当时（Storage v2 落地前）的模型是「整包单 key」：`useChatHistory` 用 zustand `persist` 把 `sessions: ChatSession[]`（含全部 `messages`、base64 附件）整包塞进 IDB 的 `chat-history` key，每次 `set()` 都 `JSON.stringify` 整包；`useChat.ts` 直接订阅 `sessions` 数组。这正是上表 P1「Storage v2 + Blob 分离 + v1 迁移」修复的对象，**现已不是当前实现**。
 
-**现状（Storage v2，`lib/storage/chatStorage.ts` + `lib/stores/chatHistory.ts`，详见 [storage-architecture.md §7](./storage-architecture.md)）**：
+**现状（Storage v2，`lib/storage/chatStorage.ts` + `lib/stores/chat/chatHistory.ts`，详见 [storage-architecture.md §7](./storage-architecture.md)）**：
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -324,7 +324,7 @@ export async function generateStaticParams() {
 审查当时提出的分层方案，与现在 §5.1.1 描述的 Storage v2 基本一致（`sessionsMeta` 对应「热层元数据」，`messagesById` 的 LRU ≤3 对应「热层 activeMessages」，`chat-session:{id}` / `chat-blob:{id}` 对应「温层」）；「冷层压缩归档」这一层暂未做，本地复习场景优先级不高：
 
 ```
-热层（内存，lib/stores/chatHistory.ts）
+热层（内存，lib/stores/chat/chatHistory.ts）
   ├─ activeSessionId
   ├─ sessionsMeta: SessionMeta[]（id/title/updatedAt/messageCount/kind…）
   └─ messagesById: Record<sessionId, ChatMessage[]>（LRU 最近 3 个会话）

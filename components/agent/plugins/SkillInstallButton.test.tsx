@@ -9,7 +9,7 @@ import { useSkills } from "@/lib/stores/skills";
 import { SkillPackagesProvider, useSkillPackages } from "./SkillPackagesContext";
 import SkillInstallButton from "./SkillInstallButton";
 import type { SkillMarketEntry } from "@/lib/plugins/market";
-vi.mock("@/lib/hooks/useHydrated", () => ({ useHydrated: () => true }));
+vi.mock("@/lib/hooks/runtime/useHydrated", () => ({ useHydrated: () => true }));
 const owner = "10000000-0000-4000-8000-000000000001", other = "10000000-0000-4000-8000-000000000002";
 const binding = (id: string) => createHash("sha256").update(id).digest("hex");
 const entry = { id: "notes-to-handbook", name: "Notes to Handbook", runtime: "cloud", version: "1", path: "/fixture" } as SkillMarketEntry;

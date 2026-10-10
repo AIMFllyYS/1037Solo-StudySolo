@@ -3,8 +3,8 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { useStore } from "@/lib/stores/ui";
 import { AGENT_PANEL_SIZES_KEY } from "@/lib/layout/agentPanelSizes";
 
-vi.mock("@/lib/hooks/useIsMobile", () => ({ useIsMobile: () => false }));
-vi.mock("@/lib/hooks/useAgentDockPerSession", () => ({ useAgentDockPerSession: () => {} }));
+vi.mock("@/lib/hooks/layout/useIsMobile", () => ({ useIsMobile: () => false }));
+vi.mock("@/lib/hooks/layout/useAgentDockPerSession", () => ({ useAgentDockPerSession: () => {} }));
 vi.mock("./AgentConversationSidebar", () => ({ default: () => <div>Conversations</div> }));
 import AgentShell from "./AgentShell";
 

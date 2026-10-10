@@ -3,12 +3,12 @@ import { act, cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { UIMessageChunk } from "ai";
 import QuizExplainBody from "./QuizExplainBody";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
-import { useQuizExplain, type QuizExplainWin } from "@/lib/hooks/useQuizExplain";
-import { useSettings } from "@/lib/hooks/useSettings";
-import { useBillingStore } from "@/lib/hooks/useBillingStore";
-import { useTokenTracker } from "@/lib/hooks/useTokenTracker";
-import { useFloatingTokenTracker } from "@/lib/hooks/useFloatingTokenTracker";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { useQuizExplain, type QuizExplainWin } from "@/lib/stores/learning/quizExplain";
+import { useSettings } from "@/lib/stores/settings";
+import { useBillingStore } from "@/lib/stores/billing";
+import { useTokenTracker } from "@/lib/stores/chat/tokenTracker";
+import { useFloatingTokenTracker } from "@/lib/stores/chat/floatingTokenTracker";
 import { getMessageText } from "@/lib/chat/messageParts";
 import { QUIZ_EXPLAIN_SEED_PROMPT } from "@/lib/quiz/formatQuestionContext";
 import { DEFAULT_MODEL_ID } from "@/lib/ai/models";
@@ -17,8 +17,8 @@ vi.mock("@/lib/storage/idbStorage", async (importOriginal) => ({
   ...await importOriginal<typeof import("@/lib/storage/idbStorage")>(),
   idbStorage: { getItem: vi.fn(async () => null), setItem: vi.fn(), setItemLazy: vi.fn(), removeItem: vi.fn(async () => {}) },
 }));
-vi.mock("@/lib/hooks/useChatHistory", async (importOriginal) => ({
-  ...await importOriginal<typeof import("@/lib/hooks/useChatHistory")>(),
+vi.mock("@/lib/stores/chat/chatHistory", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@/lib/stores/chat/chatHistory")>(),
   ensureChatHistoryBootstrap: vi.fn(async () => {}),
 }));
 vi.mock("@/components/chat/ChatThread", () => ({ default: ({ isLoading, info, onClearInfo }: {

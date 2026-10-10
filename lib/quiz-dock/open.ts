@@ -1,4 +1,4 @@
-import { useWindowManager, type AgentQuizData } from "@/lib/stores/windowManager";
+import { useWindowManager, type AgentQuizData } from "@/lib/stores/workspace/windowManager";
 import { translateNow } from "@/lib/i18n";
 import type { QuizQuestion } from "@/lib/quiz/types";
 

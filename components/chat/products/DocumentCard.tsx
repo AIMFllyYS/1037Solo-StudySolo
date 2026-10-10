@@ -3,8 +3,8 @@
 import { captureStorageOperation } from '@/lib/storage/ownerScope';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useDocuments, getDocumentMarkdown, acquireDocumentBodyLease, hydrateDocumentBody } from '@/lib/hooks/useDocuments';
-import { useSettings } from '@/lib/hooks/useSettings';
+import { useDocuments, getDocumentMarkdown, acquireDocumentBodyLease, hydrateDocumentBody } from '@/lib/stores/assets/documents';
+import { useSettings } from '@/lib/stores/settings';
 import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { useT, type Translate } from '@/lib/i18n/index';
@@ -19,7 +19,7 @@ import {
 } from '@/lib/documents/progress';
 import { MessageContent } from '@/components/chat/messages/MessageContent';
 import { UsageProgressBar } from '@/components/chat/billing/UsageProgressBar';
-import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
+import { useProcessingDisclosure } from '@/lib/hooks/chat/useProcessingDisclosure';
 import {
   AgentAlertIcon,
   AgentArrowUpRightIcon,

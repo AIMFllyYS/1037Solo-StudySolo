@@ -1,7 +1,7 @@
 "use client";
 
 import MemoryProposalCloud from "@/components/memory/MemoryProposalCloud";
-import { useMemoryInbox } from "@/lib/stores/memoryInbox";
+import { useMemoryInbox } from "@/lib/stores/learning/memoryInbox";
 
 export default function MemoryInboxLayer() {
   const byId = useMemoryInbox((s) => s.byId);

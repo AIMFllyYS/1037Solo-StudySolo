@@ -1,8 +1,8 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import AgentDockEmptyState from "./AgentDockEmptyState";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 vi.mock("@/components/project/ProjectRequiredDialog", () => ({ default: () => <div role="dialog" aria-label="选择项目">选择项目</div> }));
 beforeEach(() => {

@@ -6,10 +6,10 @@ import { AgentArrowUpIcon, AgentLoopIcon, AgentAlertIcon, AgentInfoIcon, AgentCl
 import ChatMessage from '@/components/chat/messages/ChatMessage';
 import ChatMessageDots, { type UserDotEntry } from '@/components/chat/messages/ChatMessageDots';
 import { TRACE_COLLAPSE_MS } from '@/components/chat/trace/AgentTrace';
-import { pinScrollToBottom, STICK_THRESHOLD_PX, useStickToBottom } from '@/lib/hooks/useStickToBottom';
+import { pinScrollToBottom, STICK_THRESHOLD_PX, useStickToBottom } from '@/lib/hooks/chat/useStickToBottom';
 import { getMessageText } from '@/lib/chat/messageParts';
 import { dotEntriesFromSpine } from '@/lib/chat/turnSpine';
-import { useChatHistory } from '@/lib/stores/chatHistory';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { useT } from '@/lib/i18n';
 import { useCompactionState } from '@/lib/context/compactionState';

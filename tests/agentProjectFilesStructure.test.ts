@@ -31,7 +31,7 @@ test("Agent 加号菜单与空态共用项目入口，且会话项目归属优�
 });
 
 test("项目文件窗：注册类型、窗层、图标与打开入口", () => {
-  const manager = readFile("lib/stores/windowManager.ts");
+  const manager = readFile("lib/stores/workspace/windowManager.ts");
   assert.match(manager, /\| "project-files"/);
   assert.match(manager, /export interface ProjectFilesData \{\s*projectId: string;\s*\}/);
   assert.match(readFile("components/window/DeferredWindowLayers.tsx"), /ProjectFilesLayer/);
@@ -42,7 +42,7 @@ test("项目文件窗：注册类型、窗层、图标与打开入口", () => {
 });
 
 test("项目文件不上云：store 与导入路径都不排云同步", () => {
-  const store = readFile("lib/stores/projectFiles.ts");
+  const store = readFile("lib/stores/assets/projectFiles.ts");
   const importMod = readFile("lib/project/import.ts");
   assert.doesNotMatch(store, /scheduleCloudUpsert|scheduleCloudTombstone/);
   assert.doesNotMatch(importMod, /scheduleCloudUpsert|scheduleCloudTombstone/);
@@ -82,7 +82,7 @@ test("目录与切片随请求上行：schema / body / 发送侧三处对齐", (
   assert.match(body, /projectFiles: settings\.projectFiles \?\? \[\],/);
   assert.match(body, /projectSlices: settings\.projectSlices \?\? \[\],/);
 
-  const useChat = readFile("lib/hooks/useChat.ts");
+  const useChat = readFile("lib/hooks/chat/useChat.ts");
   // 项目归属取**会话自己的 folderId**（回落当前选中项目）：从历史里打开旧对话继续聊时，
   // 不能突然带上另一个项目的文件（"换户口"）。
   assert.match(useChat, /sessionMeta\?\.folderId \?\? historySnapshot\.activeProjectId/);

@@ -30,18 +30,18 @@ const state = {
   addStudioRef,
 };
 
-vi.mock("@/lib/stores/projectFiles", () => ({
+vi.mock("@/lib/stores/assets/projectFiles", () => ({
   useProjectFiles: Object.assign((selector: (s: typeof state) => unknown) => selector(state), {
     getState: () => state,
   }),
   listProjectFiles: (s: typeof state, projectId: string) =>
     s.order.map((id) => (s.byId as Record<string, { projectId: string }>)[id]).filter((entry) => entry && entry.projectId === projectId),
 }));
-vi.mock("@/lib/hooks/useChatHistory", () => ({
+vi.mock("@/lib/stores/chat/chatHistory", () => ({
   useChatHistory: (selector: (s: unknown) => unknown) =>
     selector({ folders: [{ id: "p1", name: "组胚", createdAt: 1 }] }),
 }));
-vi.mock("@/lib/hooks/useWindowManager", () => ({
+vi.mock("@/lib/stores/workspace/windowManager", () => ({
   useWindowManager: { getState: () => ({ closeWindow: vi.fn() }) },
 }));
 vi.mock("@/lib/project/studioRefs", () => ({

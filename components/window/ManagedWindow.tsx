@@ -6,8 +6,8 @@ import WindowChrome from "@/components/window/WindowChrome";
 import {
   useManagedWindowChrome,
   type FullscreenTarget,
-} from "@/lib/hooks/useManagedWindowChrome";
-import { useWindowManager, type WindowSize } from "@/lib/hooks/useWindowManager";
+} from "@/lib/hooks/runtime/useManagedWindowChrome";
+import { useWindowManager, type WindowSize } from "@/lib/stores/workspace/windowManager";
 import { useManagedWindowSurface } from "@/lib/window/useManagedWindowSurface";
 import { useT } from "@/lib/i18n";
 

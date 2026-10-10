@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { RotateCcw, ArrowLeft, Trophy, Check } from "lucide-react";
 import { useQuizStore, computeBreakdown } from "@/lib/quiz-store";
 import { getChapterProgress, objectiveBestOf } from "@/lib/quiz-progress";
-import { useIsClient } from "@/lib/hooks/useIsClient";
+import { useIsClient } from "@/lib/hooks/runtime/useIsClient";
 import { useT, type Translate } from "@/lib/i18n";
 
 const TYPE_LABELS: Record<string, string> = {

@@ -2,9 +2,9 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import ChatMessage from "./ChatMessage";
 import type { ChatMessage as ChatMessageType } from "@/lib/types/chat";
-import { useReincludedAttachments } from "@/lib/stores/reincludedAttachments";
+import { useReincludedAttachments } from "@/lib/stores/assets/reincludedAttachments";
 
-vi.mock("@/lib/hooks/useContextMenu", () => ({ openMessageMenu: vi.fn() }));
+vi.mock("@/lib/stores/workspace/contextMenu", () => ({ openMessageMenu: vi.fn() }));
 
 function userMessage(): ChatMessageType {
   return {

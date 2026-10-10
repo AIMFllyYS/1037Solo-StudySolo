@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useStore } from "@/lib/stores/ui";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useSettings } from "@/lib/stores/settings";
 import { fireEvent } from "@testing-library/react";
 
 vi.mock("next/navigation", () => ({
@@ -14,11 +14,11 @@ vi.mock("next/dynamic", () => ({
   default: () => () => <div data-testid="lazy-media" />,
 }));
 
-vi.mock("@/lib/hooks/useIsClient", () => ({
+vi.mock("@/lib/hooks/runtime/useIsClient", () => ({
   useIsClient: () => true,
 }));
 
-vi.mock("@/lib/hooks/useBrowser", () => ({
+vi.mock("@/lib/stores/workspace/browser", () => ({
   BROWSE_TAB: "browse",
   useBrowser: (sel: (s: Record<string, unknown>) => unknown) =>
     sel({
@@ -36,7 +36,7 @@ vi.mock("@/components/browser/BrowserSettingsButton", () => ({
 
 import CenterWorkspace from "./CenterWorkspace";
 import { useCenterTabsHosted } from "./centerTabsHost";
-import { useContentTabs } from "@/lib/stores/contentTabs";
+import { useContentTabs } from "@/lib/stores/workspace/contentTabs";
 
 vi.mock("@/components/search/GlobalSearchButton", () => ({ default: () => null }));
 vi.mock("@/components/window/WindowTaskbar", () => ({ default: () => null }));

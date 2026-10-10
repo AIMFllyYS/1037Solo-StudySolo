@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { recordingItems, summaryItems, recordingIds, type LectureMeta } from "@/lib/content-data/recordings";
-import { chemistryLectures } from "@/lib/content-data/chemistry-lectures";
-import { maogaiLectures } from "@/lib/content-data/maogai-lectures";
-import { modernHistoryLectures } from "@/lib/content-data/modern-history-lectures";
-import { physicsLectures } from "@/lib/content-data/physics-lectures";
-import { probabilityLectures } from "@/lib/content-data/probability-lectures";
+import { chemistryLectures } from "@/lib/content-data/subjects/chemistry/chemistry-lectures";
+import { maogaiLectures } from "@/lib/content-data/subjects/maogai/maogai-lectures";
+import { modernHistoryLectures } from "@/lib/content-data/subjects/modern-history/modern-history-lectures";
+import { physicsLectures } from "@/lib/content-data/subjects/physics/physics-lectures";
+import { probabilityLectures } from "@/lib/content-data/subjects/probability/probability-lectures";
 import { getCategory } from "@/lib/content-data";
 
 const lectures: LectureMeta[] = [

@@ -2,7 +2,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen } from "@testing-library/react";
 import SubjectSidebar from "./SubjectSidebar";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import { DEFAULT_ACADEMIC_YEAR } from "@/lib/constants/academic-year";
 
 vi.mock("next/navigation", () => ({

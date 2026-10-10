@@ -587,7 +587,7 @@ $$
 
 ### 步骤 6：在 manifest.ts 添加 ContentItem
 
-`content/manifest.ts` 已迁到 `lib/content-data/manifest.ts`，且该文件本身已不是一个「每学科手写一个大对象」的字面量——各学科的 `detail`/`summary`/`recording`/`kaoqian-moni` 等分类内容项现在拆到各自的数据模块（如 `lib/content-data/physics-detail.ts` 导出 `physicsDetailItems: ContentItem[]`），再由 `manifest.ts` 用 `category(id, items)` / `stubCategory(id)`（`lib/content-data/category-templates.ts`）组装成 `Category`，最后拼进 `subjectHeader(subjectId)` 返回的学科对象。
+`content/manifest.ts` 已迁到 `lib/content-data/manifest.ts`，且该文件本身已不是一个「每学科手写一个大对象」的字面量——各学科的 `detail`/`summary`/`recording`/`kaoqian-moni` 等分类内容项现在拆到各自的数据模块（如 `lib/content-data/subjects/physics/physics-detail.ts` 导出 `physicsDetailItems: ContentItem[]`），再由 `manifest.ts` 用 `category(id, items)` / `stubCategory(id)`（`lib/content-data/category-templates.ts`）组装成 `Category`，最后拼进 `subjectHeader(subjectId)` 返回的学科对象。
 
 physics 学科已是真实接入的完整学科（`content/physics/detail/*.md` 已有 42 节正文），新增一节内容项时应参照它的接线方式，而不是从零手写：
 

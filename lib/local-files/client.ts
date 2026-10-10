@@ -1,8 +1,8 @@
 'use client';
 import { createStore, get, set, del } from 'idb-keyval';
 import { getStorageOwner, getOwnerEpoch, onStorageOwnerChange } from '@/lib/storage/ownerScope';
-import { useImports, recordImport } from '@/lib/stores/imports';
-import { useChatHistory } from '@/lib/stores/chatHistory';
+import { useImports, recordImport } from '@/lib/stores/assets/imports';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { assertLocalSize } from './reader';
 interface DesktopFiles {
     register(file: File, owner: string, id: string): Promise<{

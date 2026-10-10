@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, Children, isValidElement } from 'react';
-import { useStreamingText } from '@/lib/hooks/useStreamingText';
+import { useStreamingText } from '@/lib/hooks/chat/useStreamingText';
 import ReactMarkdown from 'react-markdown';
 import { sharedRemarkPlugins, sharedRehypePlugins } from '@/lib/markdown/plugins';
 import remarkSoftBreaks from '@/lib/markdown/remarkSoftBreaks';

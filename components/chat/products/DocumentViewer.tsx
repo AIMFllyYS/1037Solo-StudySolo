@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect } from "react";
 import { FileText, FileDigit, LoaderCircle } from "lucide-react";
-import { useDocuments, getDocumentMarkdown, acquireDocumentBodyLease, hydrateDocumentBody, loadDocumentFull } from "@/lib/hooks/useDocuments";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useDocuments, getDocumentMarkdown, acquireDocumentBodyLease, hydrateDocumentBody, loadDocumentFull } from "@/lib/stores/assets/documents";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { assembleDocumentMarkdown } from "@/lib/documents/types";
 import { MessageContent } from "@/components/chat/messages/MessageContent";
 import { downloadAsMarkdown } from "@/lib/documents/export";

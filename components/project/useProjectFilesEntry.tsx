@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ProjectRequiredDialog from "@/components/project/ProjectRequiredDialog";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { openProjectFiles } from "@/lib/project/openProjectFiles";
 
 /** 所有项目文件入口共用当前会话归属与无项目时的选择流程。 */

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Sparkles } from 'lucide-react';
-import { useAuthSession } from '@/lib/hooks/useAuthSession';
+import { useAuthSession } from '@/lib/hooks/auth/useAuthSession';
 import { fetchQuota } from '@/lib/billing/fetchQuota';
 import { ACCOUNT_USAGE_CHANGED, type QuotaView } from '@/lib/billing/quotaView';
 import { UsageProgressBar } from '@/components/chat/billing/UsageProgressBar';

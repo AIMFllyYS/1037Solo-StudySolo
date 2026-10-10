@@ -2,18 +2,18 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { AgentLoopIcon, AgentTerminalIcon, AgentFileIcon, AgentChevronIcon, AgentAlertIcon, AgentArrowUpRightIcon, AgentQuoteIcon } from '@/components/icons/AgentIcons';
-import { useArtifacts, type Artifact } from '@/lib/hooks/useArtifacts';
+import { useArtifacts, type Artifact } from '@/lib/stores/assets/artifacts';
 import { useSharedArtifact } from '@/components/share/ShareViewContext';
-import { useSettings } from '@/lib/hooks/useSettings';
+import { useSettings } from '@/lib/stores/settings';
 import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { createStreamUiThrottle } from '@/lib/chat/streamUiThrottle';
 import { MessageContent } from '@/components/chat/messages/MessageContent';
-import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
+import { useProcessingDisclosure } from '@/lib/hooks/chat/useProcessingDisclosure';
 import { openHtmlInNewTab } from '@/lib/utils/openHtmlInNewTab';
 import { useT } from '@/lib/i18n/index';
 import {getStorageOwner,getOwnerEpoch} from '@/lib/storage/ownerScope';
-import {acquireArtifactBodyLease,hydrateArtifactBody} from '@/lib/stores/artifacts';
+import {acquireArtifactBodyLease,hydrateArtifactBody} from '@/lib/stores/assets/artifacts';
 
 type ArtifactApiEvent =
   | { type: 'ping'; t?: number }

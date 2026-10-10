@@ -2,7 +2,7 @@ import {afterEach,beforeEach,expect,it,vi} from 'vitest'
 import {cleanup,fireEvent,render,screen} from '@testing-library/react'
 vi.mock('@/classolo/components/markdown',()=>({MarkdownStream:({markdown}:{markdown:string})=><article>{markdown}</article>}))
 import {ClassNotePane} from '@/classolo/features/notes/class-note-pane'
-import {useUserNotes} from '@/lib/stores/userNotes'
+import {useUserNotes} from '@/lib/stores/learning/userNotes'
 
 const owner='11111111-1111-4111-8111-111111111111',sessionId='22222222-2222-4222-8222-222222222222'
 beforeEach(()=>{useUserNotes.setState({byId:{},order:[],_hasHydrated:true})})

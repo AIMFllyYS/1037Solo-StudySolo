@@ -12,7 +12,7 @@ import type { SubjectId, ContentItem } from "@/lib/types/content";
 import { subjectName } from "@/lib/content-data/subjects.registry";
 import SubjectIcon from "@/components/shared/SubjectIcon";
 import { filterSubjectsByYear } from "@/lib/constants/academic-year";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 
 export default function MobileChapterPicker() {
   const router = useRouter();

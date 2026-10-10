@@ -7,8 +7,8 @@ import {
   ChevronLeft, ChevronRight, ChevronUp, Trash2, Download, Loader, RefreshCw,
   AlertTriangle, BookOpenCheck, Home, GraduationCap, Wand2,
 } from "lucide-react";
-import { useReviewCards } from "@/lib/hooks/useReviewCards";
-import { useRecordPreviews } from "@/lib/hooks/useRecordPreviews";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
+import { useRecordPreviews } from "@/lib/stores/learning/recordPreviews";
 import { useStore } from "@/lib/store";
 import { getSubject, firstLearnHref } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";

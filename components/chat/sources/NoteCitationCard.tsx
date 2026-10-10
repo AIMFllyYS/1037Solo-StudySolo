@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AgentFileIcon } from '@/components/icons/AgentIcons';
 import type { SearchHit } from '@/lib/ai/agent/toolTypes';
 import { dedupeByKey, noteItemKey } from '@/lib/chat/traceSources';
-import { useNoteCitations } from '@/lib/hooks/useNoteCitations';
+import { useNoteCitations } from '@/lib/stores/learning/noteCitations';
 import { requestCitedNote } from '@/lib/notes/openCitedNote';
 import AgentFoldHeader from '@/components/chat/trace/AgentFoldHeader';
 import { useT } from '@/lib/i18n/index';

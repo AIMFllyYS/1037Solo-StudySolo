@@ -1,8 +1,8 @@
 import { createAndOpenNote } from "@/lib/notes/openUserNote";
 import { subjectLabel } from "@/lib/notes/userNote";
 import { useStore } from "@/lib/stores/ui";
-import { useReviewCards } from "@/lib/stores/reviewCards";
-import { useRecordPreviews } from "@/lib/stores/recordPreviews";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
+import { useRecordPreviews } from "@/lib/stores/learning/recordPreviews";
 import { processRecord } from "@/lib/review/startRecord";
 import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";

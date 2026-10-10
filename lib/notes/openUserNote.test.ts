@@ -3,12 +3,12 @@ import { beforeEach, test } from "node:test";
 import { readFileSync } from "node:fs";
 import { citeUserNoteToMainAgent, createAndOpenClassroomNote, createAndOpenNote, openAgentForUserNote, openArtifactImportPicker, openDocumentImportPicker, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
 import { BLANK_NOTE_MARKDOWN, DEFAULT_NOTE_MARKDOWN, EXAMPLE_USER_NOTE_ID } from "@/lib/notes/userNote";
-import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
-import { useChatHistory } from "@/lib/stores/chatHistory";
-import { useChatUI } from "@/lib/stores/chatUI";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useAgentProductPicker } from "@/lib/stores/workspace/agentProductPicker";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useFlashcardCitations } from "@/lib/stores/learning/flashcardCitations";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useStore } from "@/lib/stores/ui";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 

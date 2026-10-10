@@ -2,9 +2,9 @@ import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import NoteCitationCard from './NoteCitationCard';
-import { useNoteCitations } from '@/lib/hooks/useNoteCitations';
-import { useNoteLocator } from '@/lib/hooks/useNoteLocator';
-import { useWindowManager } from '@/lib/hooks/useWindowManager';
+import { useNoteCitations } from '@/lib/stores/learning/noteCitations';
+import { useNoteLocator } from '@/lib/stores/learning/noteLocator';
+import { useWindowManager } from '@/lib/stores/workspace/windowManager';
 
 const nav = vi.hoisted(() => ({ push: vi.fn() }));
 vi.mock('next/navigation', () => ({ useRouter: () => nav }));

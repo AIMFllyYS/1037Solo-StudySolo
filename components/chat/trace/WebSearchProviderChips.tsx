@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
+import { useUiReducedMotion } from "@/lib/hooks/runtime/useUiReducedMotion";
 import { WEB_SEARCH_PROVIDER_LABELS, type ProviderChip } from "@/lib/chat/webSearchDisplay";
 
 /**

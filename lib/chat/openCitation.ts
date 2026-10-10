@@ -3,7 +3,7 @@ import { isHttpUrl, noteHitsFromCatalog } from "@/lib/chat/citationCatalog";
 import { openSourcePreview } from "@/lib/chat/openSourcePreview";
 import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
 import { parseNotePath } from "@/lib/content/notePath";
-import { useNoteCitations } from "@/lib/stores/noteCitations";
+import { useNoteCitations } from "@/lib/stores/learning/noteCitations";
 import { openClassSegment } from "@/lib/class/jump";
 
 function citationToTraceSource(source: CitationSource) {

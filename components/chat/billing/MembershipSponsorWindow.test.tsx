@@ -2,7 +2,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import MembershipSponsorLayer from "./MembershipSponsorWindow";
 import { openMembershipSponsor, GITHUB_REPO_URL, SPONSOR_EMAIL } from "@/lib/window/openMembershipSponsor";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 describe("MembershipSponsorWindow", () => {
   afterEach(() => {

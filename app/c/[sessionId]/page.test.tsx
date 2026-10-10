@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 /** 钩子替身：只关心「三种状态各自渲染成什么」，打开对话的逻辑由 useOpenSessionById.test.tsx 覆盖。 */
 let status: "loading" | "ready" | "notFound" = "loading";
 
-vi.mock("@/lib/hooks/useOpenSessionById", () => ({
+vi.mock("@/lib/hooks/chat/useOpenSessionById", () => ({
   useOpenSessionById: () => ({ status }),
 }));
 

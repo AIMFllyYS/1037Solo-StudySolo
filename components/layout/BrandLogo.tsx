@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, type Transition, type TargetAndTransition } from "framer-motion";
-import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
-import { useIsClient } from "@/lib/hooks/useIsClient";
+import { useUiReducedMotion } from "@/lib/hooks/runtime/useUiReducedMotion";
+import { useIsClient } from "@/lib/hooks/runtime/useIsClient";
 
 /**
  * 左上角品牌徽标：在一组「透明底 · 多彩」图形之间，每隔 intervalMs 渐变切换；

@@ -1,7 +1,7 @@
 "use client";
 
-import { recordImport } from "@/lib/stores/imports";
-import { useProjectFiles } from "@/lib/stores/projectFiles";
+import { recordImport } from "@/lib/stores/assets/imports";
+import { useProjectFiles } from "@/lib/stores/assets/projectFiles";
 import { PROJECT_LIMITS } from "./limits";
 import { extractFileText } from './parse';
 import { uploadCloudFile, deleteCloudFile } from '@/lib/files/client';

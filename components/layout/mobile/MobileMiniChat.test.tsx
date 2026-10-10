@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import MobileMiniChat from "./MobileMiniChat";
 import { useStore } from "@/lib/stores/ui";
 
-vi.mock("@/lib/hooks/useChat", () => ({
+vi.mock("@/lib/hooks/chat/useChat", () => ({
   useChat: () => ({
     messages: [],
     isLoading: false,
@@ -17,12 +17,12 @@ vi.mock("@/lib/hooks/useChat", () => ({
   }),
 }));
 
-vi.mock("@/lib/hooks/useChatHistory", () => ({
+vi.mock("@/lib/stores/chat/chatHistory", () => ({
   useChatHistory: (sel: (s: { activeSessionId: string }) => unknown) => sel({ activeSessionId: "s1" }),
   ensureChatHistoryBootstrap: () => Promise.resolve(),
 }));
 
-vi.mock("@/lib/hooks/useChatReady", () => ({
+vi.mock("@/lib/hooks/chat/useChatReady", () => ({
   useChatReady: () => true,
 }));
 

@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import SourceTraceViewer from "./SourceTraceViewer";
 import { openSourceTrace, openWebSearchSources } from "@/lib/chat/openSourceTrace";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 function windowData(): Record<string, unknown> {
   return (useWindowManager.getState().windows[0]?.data ?? {}) as Record<string, unknown>;

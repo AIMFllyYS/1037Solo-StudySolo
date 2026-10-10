@@ -11,7 +11,7 @@ import {
   topmostSlotIndex,
   type PptxSlideMetrics,
 } from "@/lib/chat/pptxSlideList";
-import { useElementWidth } from "@/lib/hooks/useElementWidth";
+import { useElementWidth } from "@/lib/hooks/layout/useElementWidth";
 import { scrollToElementTop } from "@/lib/window/scrollToElementTop";
 import { translate, translateNow, useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/stores/settings";

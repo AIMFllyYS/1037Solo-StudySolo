@@ -7,15 +7,15 @@ import { ArrowLeft, Copy, ExternalLink, FolderOpen, PenLine, Quote, Trash2 } fro
 import NoteRenderer from "@/components/notes/NoteRenderer";
 import FlipCard from "@/components/review/FlipCard";
 import { AssetKindIcon } from "./AgentAssetCard";
-import { useAgentAssets } from "@/lib/hooks/useAgentAssets";
-import { useMinimumSkeleton } from "@/lib/hooks/useMinimumSkeleton";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useReviewCards } from "@/lib/stores/reviewCards";
-import { acquireDocumentBodyLease, hydrateDocumentBody, loadDocumentFull, useDocuments } from "@/lib/stores/documents";
-import { useArtifacts } from "@/lib/stores/artifacts";
-import { acquireArtifactBodyLease, hydrateArtifactBody, loadArtifactFull } from "@/lib/stores/artifacts";
+import { useAgentAssets } from "@/lib/hooks/files/useAgentAssets";
+import { useMinimumSkeleton } from "@/lib/hooks/layout/useMinimumSkeleton";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
+import { acquireDocumentBodyLease, hydrateDocumentBody, loadDocumentFull, useDocuments } from "@/lib/stores/assets/documents";
+import { useArtifacts } from "@/lib/stores/assets/artifacts";
+import { acquireArtifactBodyLease, hydrateArtifactBody, loadArtifactFull } from "@/lib/stores/assets/artifacts";
 import { captureStorageOperation, getOwnerEpoch } from '@/lib/storage/ownerScope';
-import { useImports } from "@/lib/stores/imports";
+import { useImports } from "@/lib/stores/assets/imports";
 import { isElectronDesktop } from "@/lib/stores/apiSecrets";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";
 import { openNoteEditor, citeUserNoteToMainAgent } from "@/lib/notes/openUserNote";
@@ -32,9 +32,9 @@ import { PageShell } from '@/components/ui/PageChrome';
 import { useFileLibrary } from '@/lib/files/library';
 import {openAttachmentPreview} from '@/lib/chat/openAttachmentPreview';
 import {removeLocalSource} from '@/lib/local-files/client';
-import {useChatHistory} from '@/lib/stores/chatHistory';
-import {useChatUI} from '@/lib/stores/chatUI';
-import {useImageGen} from '@/lib/stores/imageGen';
+import {useChatHistory} from '@/lib/stores/chat/chatHistory';
+import {useChatUI} from '@/lib/stores/chat/chatUI';
+import {useImageGen} from '@/lib/stores/assets/imageGen';
 
 const ACTION_CLASS = actionClass("secondary", "md");
 
@@ -65,7 +65,7 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
   useEffect(() => {
     if (kind !== "artifact") return;
     const release = acquireArtifactBodyLease(id);
-    void hydrateArtifactBody(id).then(ok=>{if(!ok)void import('@/lib/stores/artifacts').then(mod=>mod.loadArtifactFull(id)).catch(e=>setBodyError(e.message));});
+    void hydrateArtifactBody(id).then(ok=>{if(!ok)void import('@/lib/stores/assets/artifacts').then(mod=>mod.loadArtifactFull(id)).catch(e=>setBodyError(e.message));});
     return release;
   }, [kind, id,artifact?.cloudRevision]);
   const importRecord = useImports((s) => s.byId[id]);

@@ -3,11 +3,11 @@ import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { UIMessageChunk } from "ai";
 import NoteAgentPanel from "./NoteAgentPanel";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
-import { useSettings } from "@/lib/hooks/useSettings";
-import { useUserNotes } from "@/lib/stores/userNotes";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { useSettings } from "@/lib/stores/settings";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import { useStore } from "@/lib/stores/ui";
-import { useChatUI } from "@/lib/stores/chatUI";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
 import { getMessageText } from "@/lib/chat/messageParts";
 
 vi.mock("@/lib/storage/idbStorage", async (importOriginal) => ({
@@ -19,8 +19,8 @@ vi.mock("@/lib/storage/idbStorage", async (importOriginal) => ({
     removeItem: vi.fn(async () => {}),
   },
 }));
-vi.mock("@/lib/hooks/useChatHistory", async (importOriginal) => ({
-  ...await importOriginal<typeof import("@/lib/hooks/useChatHistory")>(),
+vi.mock("@/lib/stores/chat/chatHistory", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@/lib/stores/chat/chatHistory")>(),
   ensureChatHistoryBootstrap: vi.fn(async () => {}),
 }));
 vi.mock("@/components/chat/ChatThread", () => ({

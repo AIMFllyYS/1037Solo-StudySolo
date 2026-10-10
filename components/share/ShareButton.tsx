@@ -3,9 +3,9 @@
 import { useCallback, useState } from "react";
 import { Share2 } from "lucide-react";
 import ShareDialog from "@/components/share/ShareDialog";
-import { useAuthSession } from "@/lib/hooks/useAuthSession";
-import { loadArtifactFull } from "@/lib/stores/artifacts";
-import { useChatHistory } from "@/lib/stores/chatHistory";
+import { useAuthSession } from "@/lib/hooks/auth/useAuthSession";
+import { loadArtifactFull } from "@/lib/stores/assets/artifacts";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { loadSessionMessages } from "@/lib/storage/chatStorage";
 import { useToast } from "@/lib/stores/toast";
 import { buildSharedSnapshot } from "@/lib/share/snapshot";

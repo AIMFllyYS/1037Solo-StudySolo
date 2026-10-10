@@ -3,7 +3,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import type { ChatMessage as ChatMessageType } from "@/lib/types/chat";
 import ChatMessage from "./ChatMessage";
 
-vi.mock("@/lib/hooks/useContextMenu", () => ({ openMessageMenu: vi.fn() }));
+vi.mock("@/lib/stores/workspace/contextMenu", () => ({ openMessageMenu: vi.fn() }));
 
 function assistantMessage(): ChatMessageType {
   return {

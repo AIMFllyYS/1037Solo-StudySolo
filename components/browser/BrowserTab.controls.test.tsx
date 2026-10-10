@@ -1,10 +1,10 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import BrowserTab from "./BrowserTab";
-import { BROWSE_TAB, useBrowser } from "@/lib/stores/browser";
+import { BROWSE_TAB, useBrowser } from "@/lib/stores/workspace/browser";
 
 const embed = vi.hoisted(() => ({ blocked: true }));
-vi.mock("@/lib/hooks/useEmbeddable", () => ({
+vi.mock("@/lib/hooks/files/useEmbeddable", () => ({
   useEmbeddable: () => ({ blocked: embed.blocked, reason: "X-Frame-Options: DENY", forceEmbed: vi.fn() }),
 }));
 

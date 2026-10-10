@@ -5,9 +5,9 @@ import React from "react";
 import { BookOpen } from "lucide-react";
 import type { QuizQuestion as Q } from "@/lib/quiz/types";
 
-import { openMessageMenu } from "@/lib/hooks/useContextMenu";
+import { openMessageMenu } from "@/lib/stores/workspace/contextMenu";
 import QuizMarkdown from "../QuizMarkdown";
-import { useQuizExplain } from "@/lib/stores/quizExplain";
+import { useQuizExplain } from "@/lib/stores/learning/quizExplain";
 import { useT } from "@/lib/i18n";
 import { SUCCESS, ERROR } from "./palette";
 import { ManimVideo } from "./ManimVideo";

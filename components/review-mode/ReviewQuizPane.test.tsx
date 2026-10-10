@@ -22,7 +22,7 @@ const f = vi.hoisted(() => ({
 vi.mock("@/lib/i18n", () => ({
   useT: () => (key: string, values?: Record<string, unknown>) => values ? `${key} ${JSON.stringify(values)}` : key,
 }));
-vi.mock("@/lib/hooks/useAuthSession", () => ({ useAuthSession: () => f.auth }));
+vi.mock("@/lib/hooks/auth/useAuthSession", () => ({ useAuthSession: () => f.auth }));
 vi.mock("@/lib/quiz-progress", () => ({ getAllProgress: f.getAllProgress, saveAttempt: f.saveAttempt }));
 vi.mock("@/lib/review-mode/wrongQuestions", () => ({ selectWeakPoints: () => [] }));
 vi.mock("@/lib/review-mode/wrongBook", () => ({

@@ -5,8 +5,8 @@ import { AgentLoopIcon } from '@/components/icons/AgentIcons';
 import { AgentTraceStep } from '@/components/chat/trace/AgentTraceStep';
 import { MessageContent } from '@/components/chat/messages/MessageContent';
 import type { TraceTextStep } from '@/lib/chat/buildTrace';
-import { openMessageMenu } from '@/lib/hooks/useContextMenu';
-import { useStickToBottom } from '@/lib/hooks/useStickToBottom';
+import { openMessageMenu } from '@/lib/stores/workspace/contextMenu';
+import { useStickToBottom } from '@/lib/hooks/chat/useStickToBottom';
 import { useT } from '@/lib/i18n/index';
 
 export const ReasoningTraceStep = React.memo(function ReasoningTraceStep({ step }: { step: TraceTextStep }) {

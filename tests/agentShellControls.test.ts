@@ -112,7 +112,7 @@ test("删除项目同样二次确认（与删除对话一致）", () => {
 });
 
 test("右栏按对话隔离：窗口带 sessionId，四处一致筛选，新默认展开与显式偏好分开", () => {
-  const manager = readFile("lib/stores/windowManager.ts");
+  const manager = readFile("lib/stores/workspace/windowManager.ts");
   assert.match(manager, /sessionId\?: string \| null;/);
   assert.match(manager, /export function setWindowSessionProvider\(provider: \(\(\) => string \| null\) \| null\): void \{/);
   assert.match(manager, /sessionId: input\.sessionId \?\? sessionProvider\?\.\(\) \?\? null,/);
@@ -132,10 +132,10 @@ test("右栏按对话隔离：窗口带 sessionId，四处一致筛选，新默�
   assert.match(ui, /agentDockCollapsed: false,/);
   assert.match(ui, /updates\.agentDockCollapsed = agentDock;/);
   assert.match(ui, /gailvlun-agent-dock-collapsed-v2/);
-  assert.match(readFile("lib/hooks/useAgentDockPerSession.ts"), /setAgentDockCollapsedTransient/);
+  assert.match(readFile("lib/hooks/layout/useAgentDockPerSession.ts"), /setAgentDockCollapsedTransient/);
   // 每个对话一份记忆的钩子挂在 AgentShell 上
   assert.match(readFile("components/layout/AgentShell.tsx"), /useAgentDockPerSession\(\);/);
-  assert.match(readFile("lib/hooks/useAgentDockPerSession.ts"), /rememberAgentDockState\(previous, snapshotRef\.current\)/);
+  assert.match(readFile("lib/hooks/layout/useAgentDockPerSession.ts"), /rememberAgentDockState\(previous, snapshotRef\.current\)/);
 });
 
 test("Agent 中央对话：不贴满左右面板（空隙 + 可读宽度居中）", () => {
@@ -179,7 +179,7 @@ test("阅读宽度单一真相源：--agent-chat-max 只声明一次，分享页
 });
 
 test("骨架懒加载：资产页与详情页都压约 1 秒最小时长", () => {
-  const hook = readFile("lib/hooks/useMinimumSkeleton.ts");
+  const hook = readFile("lib/hooks/layout/useMinimumSkeleton.ts");
   const page = readFile("components/agent/AgentAssetsPage.tsx");
   const detail = readFile("components/agent/AgentAssetDetail.tsx");
   assert.match(hook, /durationMs = 900/);

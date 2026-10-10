@@ -2,7 +2,7 @@ import { DefaultChatTransport, isToolUIPart, readUIMessageStream, type FinishRea
 import type { RequestMessage } from '@/lib/chat/buildRequestMessages';
 import { REQUEST_TOO_LARGE_MESSAGE } from '@/lib/chat/requestBudget';
 import type { ChatMessage, ChatMessagePart, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
-import { useChatHistory } from '@/lib/stores/chatHistory';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { useCompactionState } from '@/lib/context/compactionState';
 import { getOwnerEpoch } from '@/lib/storage/ownerScope';
 

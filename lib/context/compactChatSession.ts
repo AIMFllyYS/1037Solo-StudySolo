@@ -1,16 +1,16 @@
 import type { ChatMessage } from "@/lib/types/chat";
 import { getMessageText } from "@/lib/chat/messageParts";
-import { useChatHistory } from "@/lib/stores/chatHistory";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { loadSessionMessages, flushPendingSessionCheckpoints } from "@/lib/storage/chatStorage";
-import { useTokenTracker } from "@/lib/stores/tokenTracker";
+import { useTokenTracker } from "@/lib/stores/chat/tokenTracker";
 import { translateNow } from "@/lib/i18n";
 import { getStorageOwner, getOwnerEpoch } from '@/lib/storage/ownerScope';
 import { useCompactionState } from './compactionState';
-import { useSettings } from '@/lib/hooks/useSettings';
-import { useSessionRuns } from '@/lib/stores/sessionRuns';
+import { useSettings } from '@/lib/stores/settings';
+import { useSessionRuns } from '@/lib/stores/chat/sessionRuns';
 import { flushPendingWrites } from '@/lib/storage/idbStorage';
 import type { SessionMeta } from '@/lib/storage/chatStorage';
-import { useFloatingTokenTracker } from '@/lib/stores/floatingTokenTracker';
+import { useFloatingTokenTracker } from '@/lib/stores/chat/floatingTokenTracker';
 import { stripForbiddenFields } from '@/lib/sync/payload';
 import { collectCloudFileIds } from '@/lib/files/contract';
 

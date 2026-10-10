@@ -20,19 +20,19 @@ import {
   GraduationCap,
   Gauge,
 } from "lucide-react";
-import { useAuthSession } from "@/lib/hooks/useAuthSession";
+import { useAuthSession } from "@/lib/hooks/auth/useAuthSession";
 import { useStore } from "@/lib/stores/ui";
 import AcademicYearSwitcher from "../navigation/AcademicYearSwitcher";
 import UserAvatar from "../UserAvatar";
 import AccountDialog from "../AccountDialog";
 import { AccountQuota } from "@/components/chat/billing/AccountQuota";
 import { StorageQuotaBlock } from "@/components/chat/billing/StorageQuota";
-import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
+import { useAccountProfile } from "@/lib/hooks/auth/useAccountProfile";
 import { ACADEMIC_YEAR_LABELS } from "@/lib/constants/academic-year";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import { navTree } from "@/lib/content-data/nav";
 import SubjectIcon from "@/components/shared/SubjectIcon";
-import { useTheme } from "@/lib/hooks/useTheme";
+import { useTheme } from "@/lib/stores/theme";
 import { FONT_CHOICES } from "@/lib/theme/appearance";
 import {
   getAllProgress,

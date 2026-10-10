@@ -1,11 +1,11 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import FlashcardCiteWindow from "./FlashcardCiteWindow";
-import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
-import { useRecordPreviews } from "@/lib/stores/recordPreviews";
-import { useReviewCards } from "@/lib/stores/reviewCards";
-import { useWindowManager } from "@/lib/stores/windowManager";
-import { useChatUI } from "@/lib/stores/chatUI";
+import { useFlashcardCitations } from "@/lib/stores/learning/flashcardCitations";
+import { useRecordPreviews } from "@/lib/stores/learning/recordPreviews";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
 import { FLASHCARD_CITE_WINDOW_ID } from "@/lib/notes/userNote";
 import { openFlashcardCitePicker } from "@/lib/notes/openUserNote";
 

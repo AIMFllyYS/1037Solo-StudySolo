@@ -6,12 +6,12 @@ import AgentConversationSidebar from "./AgentConversationSidebar";
 import AgentPanelResizeHandle from "./AgentPanelResizeHandle";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
 import { useStore } from "@/lib/stores/ui";
-import { useIsMobile } from "@/lib/hooks/useIsMobile";
-import { useAgentChatContext } from "@/lib/hooks/useAgentChatContext";
-import { useAgentPanelSizes } from "@/lib/hooks/useAgentPanelSizes";
+import { useIsMobile } from "@/lib/hooks/layout/useIsMobile";
+import { useAgentChatContext } from "@/lib/hooks/chat/useAgentChatContext";
+import { useAgentPanelSizes } from "@/lib/hooks/layout/useAgentPanelSizes";
 import { AGENT_CENTER_MIN_PX } from "@/lib/layout/agentPanelSizes";
 import { ResizeSkeleton, resizeVariantForAgentPath } from "@/components/shared/ResizeLoader";
-import { useAgentDockPerSession } from "@/lib/hooks/useAgentDockPerSession";
+import { useAgentDockPerSession } from "@/lib/hooks/layout/useAgentDockPerSession";
 
 /** 左对话栏与中央路由插槽：像素宽度直接来自全局布局状态，右栏开合无需补偿回写。 */
 export default function AgentShell({ children }: { children: React.ReactNode }) {

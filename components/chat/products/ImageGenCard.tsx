@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { AgentImageIcon, AgentFileIcon, AgentCheckIcon, AgentCloseIcon } from "@/components/icons/AgentIcons";
-import { useImageGen } from "@/lib/hooks/useImageGen";
+import { useImageGen } from "@/lib/stores/assets/imageGen";
 import { MessageContent } from "@/components/chat/messages/MessageContent";
 import ImageGenProgressBar from "@/components/chat/products/ImageGenProgressBar";
-import { useImageGenProgress } from "@/lib/hooks/useImageGenProgress";
+import { useImageGenProgress } from "@/lib/hooks/files/useImageGenProgress";
 import { useT } from "@/lib/i18n/index";
 
 /**

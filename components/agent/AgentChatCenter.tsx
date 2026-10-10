@@ -8,19 +8,19 @@ import ChatPanel from "@/components/chat/ChatPanel";
 import AgentLinksPane from "@/components/agent/AgentLinksPane";
 import AgentImagesPane from "@/components/agent/AgentImagesPane";
 import AgentSourcePanel from "@/components/agent/AgentSourcePanel";
-import { useAgentChatContext } from "@/lib/hooks/useAgentChatContext";
-import { SOURCES_PANEL_INSET, hydrateSourcesPanelSize, useAgentCenter } from "@/lib/stores/agentCenter";
-import { useSessionSourceRounds } from "@/lib/hooks/useSessionSources";
-import { useSessionProducts } from "@/lib/hooks/useSessionProducts";
-import { useSessionImages } from "@/lib/hooks/useSessionImages";
-import { useSessionDerivedTotals } from "@/lib/hooks/useSessionDerivedTotals";
-import { useChatHistory } from "@/lib/stores/chatHistory";
-import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { useAgentChatContext } from "@/lib/hooks/chat/useAgentChatContext";
+import { SOURCES_PANEL_INSET, hydrateSourcesPanelSize, useAgentCenter } from "@/lib/stores/workspace/agentCenter";
+import { useSessionSourceRounds } from "@/lib/hooks/chat/useSessionSources";
+import { useSessionProducts } from "@/lib/hooks/chat/useSessionProducts";
+import { useSessionImages } from "@/lib/hooks/chat/useSessionImages";
+import { useSessionDerivedTotals } from "@/lib/hooks/chat/useSessionDerivedTotals";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { useIsMobile } from "@/lib/hooks/layout/useIsMobile";
 import { useStore } from "@/lib/stores/ui";
 import { loadSessionSummary, type SessionSummary } from "@/lib/storage/sessionSummary";
 import { traceSourceKey, type SourceRound, type TraceSource } from "@/lib/chat/traceSources";
 import { mergeGeneratedImages, type AgentImageItem, type GeneratedImage } from "@/lib/agent/sessionImages";
-import { useImageGen } from "@/lib/stores/imageGen";
+import { useImageGen } from "@/lib/stores/assets/imageGen";
 
 function mergeRounds(older: SourceRound[], current: SourceRound[], offset: number): { rounds: SourceRound[]; sources: TraceSource[] } {
   const seen = new Set<string>();

@@ -2,9 +2,9 @@
 
 import { PanelRight, Pin, Type } from "lucide-react";
 import { useT } from "@/lib/i18n";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useSettings } from "@/lib/stores/settings";
 import { useStore } from "@/lib/stores/ui";
-import { useTheme } from "@/lib/hooks/useTheme";
+import { useTheme } from "@/lib/stores/theme";
 import AppearanceSettingsControls from "@/components/layout/settings/AppearanceSettingsControls";
 import { h3Cls, Toggle } from "./_shared";
 

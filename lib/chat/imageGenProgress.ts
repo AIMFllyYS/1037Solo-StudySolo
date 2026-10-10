@@ -7,7 +7,7 @@
 //  - 曲线渐近 99%，**自己永远不会走到 100%**：卡在 99% 就是"还在跑"的诚实表达；
 //  - 真完成时由 status 直接置 100%，提前完成不会被进度条拖着。
 
-import type { ImageGenStatus } from "@/lib/stores/imageGen";
+import type { ImageGenStatus } from "@/lib/stores/assets/imageGen";
 
 /** 自走进度只到 99%：最后 1% 留给"上游真的返回了"。 */
 export const IMAGE_GEN_PROGRESS_CEILING = 99;

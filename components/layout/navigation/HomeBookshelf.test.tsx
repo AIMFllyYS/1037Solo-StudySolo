@@ -3,10 +3,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import HomeBookshelf from "./HomeBookshelf";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import { DEFAULT_ACADEMIC_YEAR } from "@/lib/constants/academic-year";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),

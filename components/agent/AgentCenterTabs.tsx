@@ -3,8 +3,8 @@
 import { useEffect, useRef } from "react";
 import clsx from "clsx";
 import { Image as ImageIcon, Link2, MessagesSquare } from "lucide-react";
-import { useAgentCenter, type AgentCenterTab } from "@/lib/stores/agentCenter";
-import { useSessionDerivedTotals } from "@/lib/hooks/useSessionDerivedTotals";
+import { useAgentCenter, type AgentCenterTab } from "@/lib/stores/workspace/agentCenter";
+import { useSessionDerivedTotals } from "@/lib/hooks/chat/useSessionDerivedTotals";
 import { useActiveChatSessionId } from "@/lib/window/sessionScope";
 import { useT } from "@/lib/i18n";
 

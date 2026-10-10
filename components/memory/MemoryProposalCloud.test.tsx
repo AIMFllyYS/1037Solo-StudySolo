@@ -1,8 +1,8 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import MemoryProposalCloud from "./MemoryProposalCloud";
-import { useMemoryInbox } from "@/lib/stores/memoryInbox";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useMemoryInbox } from "@/lib/stores/learning/memoryInbox";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 describe("MemoryProposalCloud", () => {
   beforeEach(() => {

@@ -4,7 +4,7 @@ import { useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { useStore } from "@/lib/stores/ui";
-import { useAuthSession } from "@/lib/hooks/useAuthSession";
+import { useAuthSession } from "@/lib/hooks/auth/useAuthSession";
 import LoginForm from "./LoginForm";
 
 export default function LoginOverlay() {

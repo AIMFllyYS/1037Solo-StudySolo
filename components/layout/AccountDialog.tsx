@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import { redirectAccount } from "@/lib/auth/account";
 import { saveAccountNickname } from "@/lib/profile/client";
 import { fileToLocalAvatar } from "@/lib/profile/localAvatar";
-import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
+import { useAccountProfile } from "@/lib/hooks/auth/useAccountProfile";
 import { useUserProfile } from "@/lib/stores/userProfile";
 import { useToast } from "@/lib/stores/toast";
 import UserAvatar from "./UserAvatar";

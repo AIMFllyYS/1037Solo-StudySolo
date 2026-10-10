@@ -1,5 +1,5 @@
 import { listCloudFiles, readCloudFileContext } from '@/lib/files/client';
-import { useProjectFiles } from '@/lib/stores/projectFiles';
+import { useProjectFiles } from '@/lib/stores/assets/projectFiles';
 import { sliceText } from './slice';
 import { getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
 

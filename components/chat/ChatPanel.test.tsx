@@ -3,10 +3,10 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { UIMessageChunk } from 'ai';
 import ChatPanel from './ChatPanel';
-import { useChatHistory } from '@/lib/hooks/useChatHistory';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { useStore } from '@/lib/store';
-import { useSettings } from '@/lib/hooks/useSettings';
-import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/sessionRuns';
+import { useSettings } from '@/lib/stores/settings';
+import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/chat/sessionRuns';
 import { getMessageText } from '@/lib/chat/messageParts';
 import { activateStorageOwner, getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
 
@@ -16,12 +16,12 @@ vi.mock('@/lib/storage/idbStorage', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/lib/storage/idbStorage')>(),
   idbStorage: { getItem: vi.fn(async () => null), setItem: vi.fn(), setItemLazy: vi.fn(), removeItem: vi.fn(async () => {}) },
 }));
-vi.mock('@/lib/hooks/useChatHistory', async (importOriginal) => ({
-  ...await importOriginal<typeof import('@/lib/hooks/useChatHistory')>(),
+vi.mock('@/lib/stores/chat/chatHistory', async (importOriginal) => ({
+  ...await importOriginal<typeof import('@/lib/stores/chat/chatHistory')>(),
   ensureChatHistoryBootstrap: vi.fn(async () => {}),
 }));
-vi.mock('@/lib/hooks/useAuthSession', () => ({ useAuthSession: () => authState }));
-vi.mock('@/lib/hooks/useAutoHideChatHeader', () => ({ useAutoHideChatHeader: () => ({ autoHideEnabled: false, headerCollapsed: false }) }));
+vi.mock('@/lib/hooks/auth/useAuthSession', () => ({ useAuthSession: () => authState }));
+vi.mock('@/lib/hooks/chat/useAutoHideChatHeader', () => ({ useAutoHideChatHeader: () => ({ autoHideEnabled: false, headerCollapsed: false }) }));
 vi.mock('@/components/chat/ChatThread', () => ({ default: ({ isLoading, info, onClearInfo, accessGateContent }: {
   isLoading: boolean; info: string | null; onClearInfo: () => void; accessGateContent?: React.ReactNode;
 }) => <div><span data-testid="loading">{String(isLoading)}</span><span data-testid="info">{info}</span>{accessGateContent}<button onClick={onClearInfo}>清除提示</button></div> }));

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link2 } from "lucide-react";
 import { SPOTLIGHT_INPUT_CLASS, SPOTLIGHT_SEARCH_FIELD_CLASS } from "@/components/search/spotlightChrome";
 import { openSourcePreview } from "@/lib/chat/openSourcePreview";
-import { recordImport } from "@/lib/stores/imports";
+import { recordImport } from "@/lib/stores/assets/imports";
 import { useT } from "@/lib/i18n";
 
 export function parseOpenableUrl(raw: string): { href: string; hostname: string; isHtml: boolean } | null {

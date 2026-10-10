@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, Sun, Moon } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
-import { useTheme } from "@/lib/hooks/useTheme";
+import { useTheme } from "@/lib/stores/theme";
 import { appModeFromPathname, usesMobileStudioChrome, isAgentManagementPath } from "@/lib/constants/app-mode";
 import ModeSwitcher from "../navigation/ModeSwitcher";
 import { getContentItem } from "@/lib/content-data/index";

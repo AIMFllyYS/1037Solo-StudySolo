@@ -3,10 +3,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import GlobalSearchButton from "./GlobalSearchButton";
 import { SPOTLIGHT_BODY_CLASS, SPOTLIGHT_PANEL_CLASS } from "./spotlightChrome";
 import { useGlobalSearch } from "@/lib/keyboard/useGlobalSearch";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useReviewCards } from "@/lib/stores/reviewCards";
-import { useWindowManager } from "@/lib/stores/windowManager";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),
 }));

@@ -3,7 +3,7 @@
 import { use } from "react";
 import Link from "next/link";
 import AgentChatCenter from "@/components/agent/AgentChatCenter";
-import { useOpenSessionById } from "@/lib/hooks/useOpenSessionById";
+import { useOpenSessionById } from "@/lib/hooks/chat/useOpenSessionById";
 import { useT } from "@/lib/i18n";
 
 interface ChatDeepLinkPageProps {

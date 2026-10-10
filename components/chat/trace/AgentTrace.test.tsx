@@ -34,7 +34,7 @@ vi.mock('framer-motion', async () => {
 });
 
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));
-vi.mock('@/lib/hooks/useContextMenu', () => ({ openMessageMenu }));
+vi.mock('@/lib/stores/workspace/contextMenu', () => ({ openMessageMenu }));
 vi.mock('@/components/layout/BrandLogo', () => ({
   default: () => <span role="img" aria-label="StudySolo" data-testid="brand-logo" />,
 }));

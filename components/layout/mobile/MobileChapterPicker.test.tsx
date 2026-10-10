@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import MobileChapterPicker from "./MobileChapterPicker";
 import { useStore } from "@/lib/stores/ui";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import { DEFAULT_ACADEMIC_YEAR } from "@/lib/constants/academic-year";
 
 const push = vi.fn();

@@ -63,7 +63,7 @@ test("chat-title：优先走廉价快速模型，失败才回落到原来的中�
 });
 
 test("useChat generates first-turn titles through the lightweight title endpoint", () => {
-  const hook = readFileSync(join(root, "lib/hooks/useChat.ts"), "utf8");
+  const hook = readFileSync(join(root, "lib/hooks/chat/useChat.ts"), "utf8");
   const helper = readFileSync(join(root, "lib/chat/kickoffSessionTitle.ts"), "utf8");
 
   assert.match(hook, /kickoffSessionTitle/);

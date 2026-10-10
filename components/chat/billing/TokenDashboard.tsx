@@ -3,9 +3,9 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Clock, AlertTriangle, X, Pin, RefreshCw, Loader2, BarChart2 } from 'lucide-react';
 import { createPortal } from 'react-dom';
-import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
-import { useFloatingTokenTracker } from '@/lib/hooks/useFloatingTokenTracker';
-import { useSettings } from '@/lib/hooks/useSettings';
+import { useTokenTracker } from '@/lib/stores/chat/tokenTracker';
+import { useFloatingTokenTracker } from '@/lib/stores/chat/floatingTokenTracker';
+import { useSettings } from '@/lib/stores/settings';
 import { getModelInfoWithCustom, resolveCacheTtlSec } from '@/lib/ai/models';
 import {
   FIRST_TURN_OVERHEAD_TOKENS,
@@ -15,14 +15,14 @@ import {
   formatContextCacheValue,
   resolveSessionContextBudget,
 } from '@/lib/context/estimateFullContext';
-import { useChatHistory } from '@/lib/hooks/useChatHistory';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { estimateTokens } from '@/lib/context/estimateTokens';
 import { getMessageText } from '@/lib/chat/messageParts';
-import { useDraggable } from '@/lib/hooks/useDraggable';
+import { useDraggable } from '@/lib/hooks/layout/useDraggable';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { useOverlayRegistration } from '@/lib/keyboard/useOverlayRegistration';
 import { openBillingDashboard } from '@/lib/window/openBillingDashboard';
-import { useBillingStore } from '@/lib/hooks/useBillingStore';
+import { useBillingStore } from '@/lib/stores/billing';
 import { costCnyToUsd, summarizeSessionLedger } from '@/lib/billing/ledgerView';
 import { refreshBillingFromLedger } from '@/lib/billing/syncUsageLedger';
 import { UsageProgressBar } from '@/components/chat/billing/UsageProgressBar';

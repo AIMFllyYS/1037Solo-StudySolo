@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import AgentQuizWindowLayer from "./AgentQuizWindow";
 import { openAgentQuiz, resetAutoOpenedQuizzes } from "@/lib/quiz-dock/open";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import type { QuizQuestion } from "@/lib/quiz/types";
 
 vi.mock("@/components/quiz/QuizQuestion", () => ({

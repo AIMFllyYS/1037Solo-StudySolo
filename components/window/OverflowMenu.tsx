@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { MoreHorizontal } from "lucide-react";
-import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
+import type { ManagedWindow } from "@/lib/stores/workspace/windowManager";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
 import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";

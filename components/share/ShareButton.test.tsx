@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import ShareButton from "./ShareButton";
 import { translate } from "@/lib/i18n";
-import { useChatHistory } from "@/lib/stores/chatHistory";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { useToast } from "@/lib/stores/toast";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
 import type { ChatMessage } from "@/lib/types/chat";
@@ -14,7 +14,7 @@ import type { ChatMessage } from "@/lib/types/chat";
  */
 
 let authStatus: "loading" | "signedOut" | "signedIn" = "signedIn";
-vi.mock("@/lib/hooks/useAuthSession", () => ({
+vi.mock("@/lib/hooks/auth/useAuthSession", () => ({
   useAuthSession: () => ({ status: authStatus, userId: authStatus === "signedIn" ? "u1" : null }),
 }));
 

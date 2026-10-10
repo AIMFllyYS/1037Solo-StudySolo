@@ -3,17 +3,17 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Check } from "lucide-react";
-import { useChatUI } from "@/lib/hooks/useChatUI";
-import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
+import { useFloatingChats } from "@/lib/stores/chat/floatingChats";
 import { useStore } from "@/lib/stores/ui";
-import { isAgentWorkspace } from "@/lib/stores/workspace";
+import { isAgentWorkspace } from "@/lib/stores/workspace/workspace";
 import { startRecord } from "@/lib/review/startRecord";
 import { currentRecordContext } from "@/lib/review/recordContext";
 import { copyTextToClipboard, shouldInterceptSelectionCopy } from "@/lib/clipboard/copyText";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { unwrapMark, wrapRange } from "@/lib/notes/crayonHighlight";
 import { createAndOpenClassroomNote } from "@/lib/notes/openUserNote";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useSettings } from "@/lib/stores/settings";
 import { useT } from "@/lib/i18n";
 import {
   SELECTION_ASSISTANT_ACTION_LABELS,

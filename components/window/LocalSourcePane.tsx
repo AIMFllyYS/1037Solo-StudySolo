@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { AlertCircle, ChevronLeft, ChevronRight, FileUp, HardDrive } from 'lucide-react';
 import { readLocalSource, registerLocalFile } from '@/lib/local-files/client';
-import { useImports } from '@/lib/stores/imports';
+import { useImports } from '@/lib/stores/assets/imports';
 import ActionButton from '@/components/ui/ActionButton';
 import Badge from '@/components/ui/Badge';
 import { EmptyState } from '@/components/ui/PageChrome';

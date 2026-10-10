@@ -5,7 +5,7 @@ import type { CanvasBlock, HtmlCanvasBlock } from '@/lib/canvas/types';
 import { CANVAS_HTML_IFRAME_SANDBOX, injectOpaqueOriginStorageShim } from '@/lib/sandbox/opaqueOriginStorageShim';
 import { downloadHtmlFile } from '@/lib/utils/downloadHtml';
 import { openHtmlInNewTab } from '@/lib/utils/openHtmlInNewTab';
-import { useCanvasFullscreen } from '@/lib/hooks/useCanvasFullscreen';
+import { useCanvasFullscreen } from '@/lib/hooks/runtime/useCanvasFullscreen';
 import { CanvasControls } from '../CanvasControls';
 import { CanvasFrame } from '../CanvasFrame';
 import { CanvasFullscreenPortal } from '../CanvasFullscreenPortal';

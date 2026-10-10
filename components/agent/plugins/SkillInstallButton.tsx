@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Download, RefreshCw, Trash2 } from "lucide-react";
 import { parseSkillMarkdown } from "@/lib/utils/skillFrontmatter";
-import { useHydrated } from "@/lib/hooks/useHydrated";
+import { useHydrated } from "@/lib/hooks/runtime/useHydrated";
 import { MAX_SKILLS, useSkills } from "@/lib/stores/skills";
 import { useT } from "@/lib/i18n";
 import type { SkillMarketEntry } from "@/lib/plugins/market";

@@ -6,8 +6,8 @@ import {buildClassNoteMarkdown,resolveClassNoteProposal,saveClassNote} from '@/c
 import {generateClassroomFlashcards} from '@/classolo/features/notes/knowledge-cards'
 import {setClassUserId} from '@/classolo/lib/db'
 import {patchTranscriptPublic,resetTranscriptPublic,appendCommitted} from '@/classolo/lib/session/writes/transcript'
-import {useUserNotes} from '@/lib/stores/userNotes'
-import {useReviewCards} from '@/lib/stores/reviewCards'
+import {useUserNotes} from '@/lib/stores/learning/userNotes'
+import {useReviewCards} from '@/lib/stores/learning/reviewCards'
 
 const owner='11111111-1111-4111-8111-111111111111',sessionId='22222222-2222-4222-8222-222222222222'
 beforeEach(()=>{setClassUserId(owner);resetTranscriptPublic();patchTranscriptPublic({sessionId,recordingStatus:'stopped'});useUserNotes.setState({byId:{},order:[],_hasHydrated:true});useReviewCards.setState({byId:{},order:[],_hasHydrated:true});ai.generate.mockReset()})

@@ -5,8 +5,8 @@ import userEvent from "@testing-library/user-event";
 import SourcePreviewViewer from "./SourcePreviewViewer";
 import { clearEmbedCache } from "@/lib/browser/canEmbed";
 import { openSourcePreview } from "@/lib/chat/openSourcePreview";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
-import { useBrowser } from "@/lib/stores/browser";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useBrowser } from "@/lib/stores/workspace/browser";
 
 beforeEach(() => {
   vi.stubGlobal("ResizeObserver", class {

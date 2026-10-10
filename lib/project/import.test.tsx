@@ -2,8 +2,8 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 const fixture = vi.hoisted(() => ({ extract: vi.fn(), upload: vi.fn(), remove: vi.fn(), record: vi.fn(), finish: vi.fn(), state: { byId: {} as Record<string, { id: string; projectId: string; name: string }> } }));
 vi.mock('./parse', () => ({ extractFileText: fixture.extract }));
 vi.mock('@/lib/files/client', () => ({ uploadCloudFile: fixture.upload, deleteCloudFile: fixture.remove }));
-vi.mock('@/lib/stores/imports', () => ({ recordImport: fixture.record }));
-vi.mock('@/lib/stores/projectFiles', () => ({ useProjectFiles: {
+vi.mock('@/lib/stores/assets/imports', () => ({ recordImport: fixture.record }));
+vi.mock('@/lib/stores/assets/projectFiles', () => ({ useProjectFiles: {
   getState: () => ({ byId: fixture.state.byId, beginImport: (input: { projectId: string; name: string }) => { fixture.state.byId.placeholder = { ...input, id: 'placeholder' }; return 'placeholder'; }, finishImport: fixture.finish, failImport: vi.fn() }),
   setState: vi.fn(),
 } }));

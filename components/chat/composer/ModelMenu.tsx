@@ -4,7 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, type Keyboar
 import { createPortal } from "react-dom";
 import { ChevronDown, ChevronLeft, ChevronRight, Check, Compass, Gift, Zap, Layers, Crown, Image as ImageIcon, Plug, Server, Brain, Wrench, MoreHorizontal, type LucideIcon } from "lucide-react";
 import { submenuTop } from '@/lib/chat/modelMenuPosition';
-import { useSettings, type ThinkingEffort } from "@/lib/hooks/useSettings";
+import { useSettings, type ThinkingEffort } from "@/lib/stores/settings";
 import {
   AUTO_MODEL_ID, AUTO_MODEL_INFO, MODELS, modelsForPicker, getAllModels, getModelInfoWithCustom, CUSTOM_PREFIX,
   modelSupportsThinkingEffort,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import ProjectFilesWindow from "./ProjectFilesWindow";
 
 /** 项目文件窗层：一个项目一个窗，按窗口管理器里的记录渲染（与其它窗层同构）。 */

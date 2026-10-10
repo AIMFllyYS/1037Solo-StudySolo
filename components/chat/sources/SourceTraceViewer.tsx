@@ -12,8 +12,8 @@ import { SOURCE_TRACE_WINDOW_ID, sourceItemKey } from '@/lib/chat/openSourceTrac
 import type { SourceRound, TraceSource } from '@/lib/chat/traceSources';
 import { getToolPresentation } from '@/lib/ai/agent/tools/presentations';
 import { noteBreadcrumb, noteHref, parseNotePath } from '@/lib/content/notePath';
-import { useEmbeddable } from '@/lib/hooks/useEmbeddable';
-import { useWindowManager } from '@/lib/hooks/useWindowManager';
+import { useEmbeddable } from '@/lib/hooks/files/useEmbeddable';
+import { useWindowManager } from '@/lib/stores/workspace/windowManager';
 import { safeHttpUrl } from '@/components/browser/safeUrl';
 import { useT } from '@/lib/i18n/index';
 

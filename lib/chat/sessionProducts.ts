@@ -1,7 +1,7 @@
 import { getToolPartsByName } from "@/lib/chat/messageParts";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { AgentQuizPayload } from "@/lib/quiz-dock/open";
-import type { ImageGenSessionInit } from "@/lib/stores/imageGen";
+import type { ImageGenSessionInit } from "@/lib/stores/assets/imageGen";
 
 export type AgentProductKind = "quiz" | "interactive" | "document" | "image";
 

@@ -2,9 +2,9 @@ import React from "react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import QuizQuestion from "./QuizQuestion";
-import { useQuizExplain } from "@/lib/stores/quizExplain";
-import { useWindowManager } from "@/lib/stores/windowManager";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { useQuizExplain } from "@/lib/stores/learning/quizExplain";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { DEFAULT_MODEL_ID } from "@/lib/ai/models";
 import type { QuizQuestion as Q } from "@/lib/quiz/types";
 

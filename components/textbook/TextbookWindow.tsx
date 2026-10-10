@@ -8,7 +8,7 @@ import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
 import { academicYearOfSubject } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/stores/academicYear";
 import { TEXTBOOK_WINDOW_ID } from "@/lib/textbook/openTextbook";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useT } from "@/lib/i18n";
 import TextbookFolderTree from "./TextbookFolderTree";

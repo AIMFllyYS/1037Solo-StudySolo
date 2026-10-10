@@ -1,5 +1,5 @@
 import { captureStorageOperation, getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
-import { useUserNotes } from "@/lib/stores/userNotes";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
 
 export interface ReviewEditorOwnerBinding {
   ownerId: string | null;

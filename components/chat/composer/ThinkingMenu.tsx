@@ -1,7 +1,7 @@
 "use client";
 
 import { AgentCheckIcon, AgentLoopIcon } from "@/components/icons/AgentIcons";
-import type { ThinkingEffort } from "@/lib/hooks/useSettings";
+import type { ThinkingEffort } from "@/lib/stores/settings";
 import AnchoredMenu from "@/components/ui/AnchoredMenu";
 import { useT } from "@/lib/i18n/index";
 

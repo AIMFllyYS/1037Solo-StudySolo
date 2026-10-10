@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useSettings } from "@/lib/stores/settings";
 import { TOGGLEABLE_TOOLS as TOOLS } from "@/lib/chat/toolPresentation";
 import { MAX_TOOL_ROUNDS_CAP, MAX_TOOL_STEPS, MIN_TOOL_ROUNDS } from "@/lib/ai/agent/toolRounds";
 import { MAX_TURN_BUDGET_CREDITS, MAX_USER_MAX_OUTPUT_TOKENS } from "@/lib/ai/outputLimits";

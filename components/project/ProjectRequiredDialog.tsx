@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Folder, FolderPlus } from "lucide-react";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { buildProjectViews, recentProjects } from "@/lib/agent/projectViews";
 import { useT } from "@/lib/i18n";
 

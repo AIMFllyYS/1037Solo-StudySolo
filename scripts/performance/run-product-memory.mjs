@@ -11,7 +11,7 @@ globalThis.localStorage = { getItem: (key) => storage.get(key) ?? null, setItem:
 const { activateStorageOwner, hydrateOwnerStores } = await import('../../lib/storage/ownerScope.ts');
 activateStorageOwner('00000000-0000-4000-8000-000000000006');
 const [{ useArtifacts }, { useDocuments }, { useImageGen }, { getResourceSnapshot }] = await Promise.all([
-  import('../../lib/stores/artifacts.ts'), import('../../lib/stores/documents.ts'), import('../../lib/stores/imageGen.ts'), import('../../lib/performance/resourceMetrics.ts'),
+  import('../../lib/stores/assets/artifacts.ts'), import('../../lib/stores/assets/documents.ts'), import('../../lib/stores/assets/imageGen.ts'), import('../../lib/performance/resourceMetrics.ts'),
 ]);
 await hydrateOwnerStores();
 const artifactBody = '<html><body>' + 'A'.repeat(100_000) + '</body></html>';

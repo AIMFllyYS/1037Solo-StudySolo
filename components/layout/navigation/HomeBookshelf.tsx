@@ -10,7 +10,7 @@ import { filterRuntimeSubjects } from "@/lib/content/offlineSubjects";
 import { subjectColor } from "@/lib/content-data/subjects.registry";
 import SubjectIcon from "@/components/shared/SubjectIcon";
 import { BOOKSHELF_GRID_COLUMNS, BOOKSHELF_GRID_GAP, filterSubjectsByYear } from "@/lib/constants/academic-year";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
 
 type HomeSubject = (typeof homeSubjects)[number];

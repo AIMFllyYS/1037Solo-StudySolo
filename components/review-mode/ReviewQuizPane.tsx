@@ -15,7 +15,7 @@ import type { ContentItem } from "@/lib/types/content";
 import { SUBJECT_REGISTRY, type SubjectId } from "@/lib/content-data/subjects.registry";
 import { subjectLabel } from "@/lib/notes/userNote";
 import { useT } from "@/lib/i18n";
-import { useAuthSession } from "@/lib/hooks/useAuthSession";
+import { useAuthSession } from "@/lib/hooks/auth/useAuthSession";
 import { listClassSources, type ClassSourceSession } from "@/lib/review-mode/classSources";
 import { markReinforced, readWrongBook, recordQuestionOutcomes, sourceHref, type WrongEntry } from "@/lib/review-mode/wrongBook";
 import { createQuizSetIdentity } from "@/lib/review-mode/quizSnapshot";

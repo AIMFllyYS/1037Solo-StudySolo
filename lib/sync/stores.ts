@@ -1,11 +1,11 @@
 import { getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
 import { deleteSessionData, isSystemProject, listBlobIdsForSession, loadSessionMessages, manifestFrom, saveManifest, saveManifestCommitted, saveSessionMessagesCommitted, type ChatFolder, type SessionMeta } from "@/lib/storage/chatStorage";
-import { loadArtifactFull, persistArtifactBody, useArtifacts, type Artifact } from "@/lib/stores/artifacts";
-import { applyCloudSessionWindow, ensureChatHistoryBootstrap, useChatHistory } from "@/lib/stores/chatHistory";
-import { loadDocumentFull, persistDocumentBody, useDocuments } from "@/lib/stores/documents";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useReviewCards } from "@/lib/stores/reviewCards";
-import { useImageGen, loadImageGenSessionFull, applyCloudImageSession, type ImageGenSession } from "@/lib/stores/imageGen";
+import { loadArtifactFull, persistArtifactBody, useArtifacts, type Artifact } from "@/lib/stores/assets/artifacts";
+import { applyCloudSessionWindow, ensureChatHistoryBootstrap, useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { loadDocumentFull, persistDocumentBody, useDocuments } from "@/lib/stores/assets/documents";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
+import { useImageGen, loadImageGenSessionFull, applyCloudImageSession, type ImageGenSession } from "@/lib/stores/assets/imageGen";
 import type { StoredDocument } from "@/lib/documents/types";
 import type { UserNote } from "@/lib/notes/userNote";
 import type { ReviewCard } from "@/lib/review/types";

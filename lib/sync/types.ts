@@ -1,6 +1,6 @@
 import type { SessionMeta } from "@/lib/storage/chatStorage";
 import type { ChatMessage } from "@/lib/types/chat";
-import type { Artifact } from "@/lib/stores/artifacts";
+import type { Artifact } from "@/lib/stores/assets/artifacts";
 import type { StoredDocument } from "@/lib/documents/types";
 import type { UserNote } from "@/lib/notes/userNote";
 import type { ReviewCard } from "@/lib/review/types";

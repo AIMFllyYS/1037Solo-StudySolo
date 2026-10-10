@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { KeyRound } from "lucide-react";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useSettings } from "@/lib/stores/settings";
 import { formatImageGenError } from "@/lib/ai/imageGenError";
 import {
   EMPTY_CAPABILITY_ENDPOINTS,

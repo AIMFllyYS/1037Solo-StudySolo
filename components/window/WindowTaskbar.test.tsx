@@ -2,11 +2,11 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-li
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { strToU8, zipSync } from "fflate";
 import WindowTaskbar from "./WindowTaskbar";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { MAX_LOCAL_FILE_SIZE } from "@/lib/ai/imageUtils";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
-import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useFlashcardCitations } from "@/lib/stores/learning/flashcardCitations";
+import { useAgentProductPicker } from "@/lib/stores/workspace/agentProductPicker";
 import { SPOTLIGHT_INPUT_CLASS, SPOTLIGHT_SEARCH_FIELD_CLASS } from "@/components/search/spotlightChrome";
 import {activateStorageOwner} from '@/lib/storage/ownerScope';
 

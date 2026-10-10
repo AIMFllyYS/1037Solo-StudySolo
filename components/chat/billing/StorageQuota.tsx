@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { UsageProgressBar } from "@/components/chat/billing/UsageProgressBar";
-import { useAuthSession } from "@/lib/hooks/useAuthSession";
+import { useAuthSession } from "@/lib/hooks/auth/useAuthSession";
 import { getCachedCloudSyncUsage, loadCloudSyncUsage } from "@/lib/sync/engine";
 import { MAX_USER_SYNC_BYTES } from "@/lib/sync/types";
 import { formatSyncBytes, type CloudSyncUsage } from "@/lib/sync/usage";

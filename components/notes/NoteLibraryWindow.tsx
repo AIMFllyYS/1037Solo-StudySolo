@@ -8,8 +8,8 @@ import YearSubjectFolderTree from "@/components/layout/navigation/YearSubjectFol
 import NoteRenderer from "@/components/notes/NoteRenderer";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
-import { useUserNotes, selectClassroomNotes, selectLibraryNotes } from "@/lib/stores/userNotes";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useUserNotes, selectClassroomNotes, selectLibraryNotes } from "@/lib/stores/learning/userNotes";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { createAndOpenNote } from "@/lib/notes/openUserNote";
 import { useT } from "@/lib/i18n";
 import {

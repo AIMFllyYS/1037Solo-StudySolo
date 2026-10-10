@@ -15,7 +15,7 @@ import GlobalSettings from "../settings/GlobalSettings";
 import LeftDock from "../LeftDock";
 import SubjectFolderTree from "./SubjectFolderTree";
 import { useStore } from "@/lib/store";
-import { useTheme } from "@/lib/hooks/useTheme";
+import { useTheme } from "@/lib/stores/theme";
 import { EASE } from "@/lib/motion";
 
 let savedSidebarScroll = 0;

@@ -4,9 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlarmClock, ChevronDown, History, Pencil, Play, Plus, Trash2 } from "lucide-react";
-import { useIsClient } from "@/lib/hooks/useIsClient";
-import { useMinimumSkeleton } from "@/lib/hooks/useMinimumSkeleton";
-import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
+import { useIsClient } from "@/lib/hooks/runtime/useIsClient";
+import { useMinimumSkeleton } from "@/lib/hooks/layout/useMinimumSkeleton";
+import { useUiReducedMotion } from "@/lib/hooks/runtime/useUiReducedMotion";
 import { useT } from "@/lib/i18n";
 import { describeSchedule, formatRelative, formatDuration, formatAbsolute } from "@/lib/scheduler/describe";
 import {

@@ -1,10 +1,10 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { exportAllChats, exportSessionRecovery } from "./exportChats";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
 import { hydrateAttachmentsForApi, loadSessionRecovery, loadSessionSummaryHead, loadTurnsBefore } from "@/lib/storage/chatStorage";
 
-vi.mock("@/lib/hooks/useChatHistory", () => ({ useChatHistory: { getState: vi.fn() } }));
+vi.mock("@/lib/stores/chat/chatHistory", () => ({ useChatHistory: { getState: vi.fn() } }));
 vi.mock("@/lib/storage/ownerScope", () => ({ getStorageOwner: vi.fn(), getOwnerEpoch: vi.fn() }));
 vi.mock("@/lib/storage/chatStorage", () => ({
   hydrateAttachmentsForApi: vi.fn(), loadSessionRecovery: vi.fn(), loadSessionSummaryHead: vi.fn(), loadTurnsBefore: vi.fn(),

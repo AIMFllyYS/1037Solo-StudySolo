@@ -8,8 +8,8 @@ import {
   toUsageLedgerViewRow,
   type UsageLedgerViewRow,
 } from "@/lib/billing/ledgerView";
-import { useSettings } from "@/lib/hooks/useSettings";
-import { useBillingStore } from "@/lib/hooks/useBillingStore";
+import { useSettings } from "@/lib/stores/settings";
+import { useBillingStore } from "@/lib/stores/billing";
 
 export async function fetchUsageLedgerRows(
   fetchImpl: typeof fetch = fetch,

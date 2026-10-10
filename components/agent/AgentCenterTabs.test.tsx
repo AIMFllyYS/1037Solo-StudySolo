@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import AgentCenterTabs from "./AgentCenterTabs";
 import { translate } from "@/lib/i18n";
-import { useAgentCenter } from "@/lib/stores/agentCenter";
+import { useAgentCenter } from "@/lib/stores/workspace/agentCenter";
 
 /** 断言直接取词典：文案措辞调整（回答/链接/来源…）不该让这个测试变成假的失败。 */
 const zh = (key: string, vars?: Record<string, string | number>) => translate("zh", key, vars);

@@ -3,13 +3,13 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { UIMessageChunk } from 'ai';
 import FloatingChatBody from './FloatingChatBody';
-import { useChatHistory } from '@/lib/hooks/useChatHistory';
-import { useFloatingChats, type SeedMode } from '@/lib/hooks/useFloatingChats';
-import { useSettings } from '@/lib/hooks/useSettings';
-import { useBillingStore } from '@/lib/hooks/useBillingStore';
-import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
-import { useFloatingTokenTracker } from '@/lib/hooks/useFloatingTokenTracker';
-import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/sessionRuns';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
+import { useFloatingChats, type SeedMode } from '@/lib/stores/chat/floatingChats';
+import { useSettings } from '@/lib/stores/settings';
+import { useBillingStore } from '@/lib/stores/billing';
+import { useTokenTracker } from '@/lib/stores/chat/tokenTracker';
+import { useFloatingTokenTracker } from '@/lib/stores/chat/floatingTokenTracker';
+import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/chat/sessionRuns';
 import { getMessageText } from '@/lib/chat/messageParts';
 import { activateStorageOwner, getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
 
@@ -19,11 +19,11 @@ vi.mock('@/lib/storage/idbStorage', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/lib/storage/idbStorage')>(),
   idbStorage: { getItem: vi.fn(async () => null), setItem: vi.fn(), setItemLazy: vi.fn(), removeItem: vi.fn(async () => {}) },
 }));
-vi.mock('@/lib/hooks/useChatHistory', async (importOriginal) => ({
-  ...await importOriginal<typeof import('@/lib/hooks/useChatHistory')>(),
+vi.mock('@/lib/stores/chat/chatHistory', async (importOriginal) => ({
+  ...await importOriginal<typeof import('@/lib/stores/chat/chatHistory')>(),
   ensureChatHistoryBootstrap: vi.fn(async () => {}),
 }));
-vi.mock('@/lib/hooks/useAuthSession', () => ({ useAuthSession: () => authState }));
+vi.mock('@/lib/hooks/auth/useAuthSession', () => ({ useAuthSession: () => authState }));
 vi.mock('@/components/chat/ChatThread', () => ({ default: ({ isLoading, info, onClearInfo, accessGateContent }: {
   isLoading: boolean; info: string | null; onClearInfo: () => void; accessGateContent?: React.ReactNode;
 }) => <div><span data-testid="loading">{String(isLoading)}</span><span data-testid="info">{info}</span>{accessGateContent}<button onClick={onClearInfo}>清除提示</button></div> }));

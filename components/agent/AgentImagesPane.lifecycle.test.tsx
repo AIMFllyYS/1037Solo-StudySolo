@@ -2,7 +2,7 @@ import { act, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 
 const resource = vi.hoisted(() => ({ acquire: vi.fn(), hydrate: vi.fn(), release: vi.fn() }));
-vi.mock("@/lib/stores/imageGen", () => ({
+vi.mock("@/lib/stores/assets/imageGen", () => ({
   acquireImageGenLease: resource.acquire,
   hydrateImageGenImages: resource.hydrate,
 }));

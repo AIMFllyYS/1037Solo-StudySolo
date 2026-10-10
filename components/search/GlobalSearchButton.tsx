@@ -3,7 +3,7 @@
 import { useDeferredValue, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Command, Search } from "lucide-react";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import { useGlobalSearch } from "@/lib/keyboard/useGlobalSearch";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { formatShortcut } from "@/lib/keyboard/format";
@@ -11,7 +11,7 @@ import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 import { useProgressiveGlobalSearch } from "@/lib/search/useProgressiveGlobalSearch";
 import type { GlobalSearchHit } from "@/lib/search/globalSearch";
 import { openNoteEditor, openFlashcardCitePicker } from "@/lib/notes/openUserNote";
-import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
+import { useFlashcardCitations } from "@/lib/stores/learning/flashcardCitations";
 import SpotlightDialog from "@/components/search/SpotlightDialog";
 import { SPOTLIGHT_BODY_CLASS, SPOTLIGHT_INPUT_CLASS, SPOTLIGHT_SEARCH_FIELD_CLASS } from "@/components/search/spotlightChrome";
 import GlobalSearchResults from "@/components/search/GlobalSearchResults";

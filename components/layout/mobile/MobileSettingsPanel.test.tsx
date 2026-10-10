@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
-import { useTheme } from "@/lib/hooks/useTheme";
+import { useTheme } from "@/lib/stores/theme";
 import { useStore } from "@/lib/stores/ui";
 import MobileSettingsPanel from "./MobileSettingsPanel";
 

@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { copyTextToClipboard } from '@/lib/clipboard/copyText';
-import { useUiReducedMotion } from '@/lib/hooks/useUiReducedMotion';
+import { useUiReducedMotion } from '@/lib/hooks/runtime/useUiReducedMotion';
 import { AgentUserIcon } from '@/components/icons/AgentIcons';
 import BrandLogo from '@/components/layout/BrandLogo';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
@@ -11,7 +11,7 @@ import { MessageContent } from '@/components/chat/messages/MessageContent';
 import { FollowUpQuestions } from '@/components/chat/messages/FollowUpQuestions';
 import { AgentTrace, TRACE_COLLAPSE_MS, agentProcessingLabel } from '@/components/chat/trace/AgentTrace';
 import AttachmentThumbnails from '@/components/chat/attachments/AttachmentThumbnails';
-import { openMessageMenu } from '@/lib/hooks/useContextMenu';
+import { openMessageMenu } from '@/lib/stores/workspace/contextMenu';
 import { buildTrace, type AgentTraceModel, type TraceStep } from '@/lib/chat/buildTrace';
 import { getMessageText } from '@/lib/chat/messageParts';
 import { extractFollowUpQuestionsFromContent } from '@/lib/chat/rendering/parseChatContent';
@@ -20,8 +20,8 @@ import { collectMessageSources } from '@/lib/chat/traceSources';
 import { ToolResultCards } from '@/components/chat/toolCards/ToolResultCards';
 import ChatFeedbackActions from '@/components/chat/ChatFeedbackActions';
 import { useT } from '@/lib/i18n/index';
-import { useReincludedAttachments } from '@/lib/stores/reincludedAttachments';
-import { useChatHistory } from '@/lib/hooks/useChatHistory';
+import { useReincludedAttachments } from '@/lib/stores/assets/reincludedAttachments';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { getStorageOwner, getOwnerEpoch } from '@/lib/storage/ownerScope';
 
 interface ChatMessageProps {

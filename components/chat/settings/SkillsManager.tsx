@@ -2,8 +2,8 @@
 
 import { useRef, useState } from 'react';
 import { Upload, Trash2, FileText, Pin } from 'lucide-react';
-import { useSkills, MAX_SKILLS } from '@/lib/hooks/useSkills';
-import { useHydrated } from '@/lib/hooks/useHydrated';
+import { useSkills, MAX_SKILLS } from '@/lib/stores/skills';
+import { useHydrated } from '@/lib/hooks/runtime/useHydrated';
 import { importSkillFiles } from '@/lib/utils/importSkills';
 import { useT } from '@/lib/i18n/index';
 

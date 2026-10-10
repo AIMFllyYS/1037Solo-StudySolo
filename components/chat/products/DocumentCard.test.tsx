@@ -2,8 +2,8 @@ import { activateStorageOwner } from '@/lib/storage/ownerScope';
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import DocumentCard from "./DocumentCard";
-import { useDocuments } from "@/lib/hooks/useDocuments";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useDocuments } from "@/lib/stores/assets/documents";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 vi.mock("@/components/chat/messages/MessageContent", () => ({
   MessageContent: ({ content }: { content: string }) => <div data-testid="message-content">{content}</div>,

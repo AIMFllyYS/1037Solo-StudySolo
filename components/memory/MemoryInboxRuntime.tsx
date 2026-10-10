@@ -1,8 +1,8 @@
 'use client'
 
 import {useEffect} from 'react'
-import {useChatHistory} from '@/lib/stores/chatHistory'
-import {syncMemoryInboxFromSessions} from '@/lib/stores/memoryInbox'
+import {useChatHistory} from '@/lib/stores/chat/chatHistory'
+import {syncMemoryInboxFromSessions} from '@/lib/stores/learning/memoryInbox'
 
 export default function MemoryInboxRuntime(){
   const messagesById=useChatHistory(state=>state.messagesById)

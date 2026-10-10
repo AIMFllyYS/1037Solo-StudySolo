@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { ChevronDown, Folder, FolderPlus, X } from "lucide-react";
 import AnchoredMenu from "@/components/ui/AnchoredMenu";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { buildProjectViews, recentProjects } from "@/lib/agent/projectViews";
 import { useT } from "@/lib/i18n";
 

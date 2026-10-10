@@ -2,7 +2,7 @@
 
 import { RotateCcw, Zap } from "lucide-react";
 import { THINKING_EFFORT_OPTIONS } from "@/components/chat/composer/ThinkingMenu";
-import { useSettings, type ThinkingEffort } from "@/lib/hooks/useSettings";
+import { useSettings, type ThinkingEffort } from "@/lib/stores/settings";
 import { clampThinkingEffort, defaultEffortFor, type ModelInfo } from "@/lib/ai/models";
 import {
   currentStopIndex,

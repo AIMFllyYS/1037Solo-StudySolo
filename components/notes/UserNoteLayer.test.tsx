@@ -2,12 +2,12 @@ import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import UserNoteLayer from "./UserNoteLayer";
 import UserNoteProposalRuntime from './UserNoteProposalRuntime';
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useWindowManager } from "@/lib/stores/windowManager";
-import { useChatHistory } from "@/lib/stores/chatHistory";
-import { useChatUI } from "@/lib/stores/chatUI";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
 import { useStore } from "@/lib/stores/ui";
-import { useNoteChangeProposals } from "@/lib/stores/noteChangeProposals";
+import { useNoteChangeProposals } from "@/lib/stores/assets/noteChangeProposals";
 import { createAndOpenClassroomNote, createAndOpenNote, openNoteLibrary } from "@/lib/notes/openUserNote";
 import { BLANK_NOTE_MARKDOWN, EXAMPLE_USER_NOTE_ID } from "@/lib/notes/userNote";
 

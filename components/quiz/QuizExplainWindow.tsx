@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useMemo } from "react";
-import { useQuizExplain, persistQuizExplainSize, QUIZ_EXPLAIN_MIN_H, QUIZ_EXPLAIN_MIN_W, type QuizExplainWin } from "@/lib/hooks/useQuizExplain";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { useQuizExplain, persistQuizExplainSize, QUIZ_EXPLAIN_MIN_H, QUIZ_EXPLAIN_MIN_W, type QuizExplainWin } from "@/lib/stores/learning/quizExplain";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { useStore } from "@/lib/store";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
-import { useFloatingTokenTracker } from "@/lib/hooks/useFloatingTokenTracker";
+import { useAcademicYear } from "@/lib/stores/academicYear";
+import { useFloatingTokenTracker } from "@/lib/stores/chat/floatingTokenTracker";
 import { AgentQuizIcon } from "@/components/icons/AgentIcons";
 import QuizExplainBody from "@/components/quiz/QuizExplainBody";
 import ManagedWindow from "@/components/window/ManagedWindow";

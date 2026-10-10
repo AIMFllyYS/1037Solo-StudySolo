@@ -1,7 +1,7 @@
 'use client'
 
 import {useEffect,useRef,useState} from 'react'
-import {useUserNotes} from '@/lib/stores/userNotes'
+import {useUserNotes} from '@/lib/stores/learning/userNotes'
 import type {UserNote} from '@/lib/notes/userNote'
 import {MarkdownStream} from '@/classolo/components/markdown'
 import {MoreHorizontal} from 'lucide-react'

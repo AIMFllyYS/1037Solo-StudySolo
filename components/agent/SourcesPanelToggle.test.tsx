@@ -2,7 +2,7 @@ import React from "react";
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import SourcesPanelToggle from "./SourcesPanelToggle";
-import { useAgentCenter } from "@/lib/stores/agentCenter";
+import { useAgentCenter } from "@/lib/stores/workspace/agentCenter";
 
 afterEach(() => {
   cleanup();

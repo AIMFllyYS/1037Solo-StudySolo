@@ -4,7 +4,7 @@
  * 与写入无关：Agent 只会在 volatile 段看到这篇的正文，改动一律产出候选稿，
  * 由确认卡经用户同意后落地（lib/stores/noteChangeProposals.ts）。
  */
-import { useUserNotes } from "@/lib/stores/userNotes";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 
 /** 正在交给 Agent 的已打开个人笔记；关掉编辑器后返回 null。 */

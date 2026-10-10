@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import { openCitationSource } from "./openCitation.ts";
-import { useNoteCitations } from "@/lib/stores/noteCitations";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useNoteCitations } from "@/lib/stores/learning/noteCitations";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 afterEach(() => {
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });

@@ -2,7 +2,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { AppearanceSection } from "./AppearanceSection";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useSettings } from "@/lib/stores/settings";
 import { useStore } from "@/lib/stores/ui";
 
 describe("AppearanceSection agent chrome toggles", () => {

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { MoreHorizontal, RotateCw, ZoomIn, ZoomOut } from "lucide-react";
 import AnchoredMenu from "@/components/ui/AnchoredMenu";
-import { DEFAULT_BROWSER_ZOOM_PERCENT, MAX_BROWSER_ZOOM_PERCENT, MIN_BROWSER_ZOOM_PERCENT } from "@/lib/stores/browser";
+import { DEFAULT_BROWSER_ZOOM_PERCENT, MAX_BROWSER_ZOOM_PERCENT, MIN_BROWSER_ZOOM_PERCENT } from "@/lib/stores/workspace/browser";
 import { useT } from "@/lib/i18n";
 
 /** Controlled page actions shared by the browser tab and each source window. */

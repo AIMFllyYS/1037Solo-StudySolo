@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import AgentConversationSidebar from "./AgentConversationSidebar";
-import { useSessionRuns } from "@/lib/stores/sessionRuns";
+import { useSessionRuns } from "@/lib/stores/chat/sessionRuns";
 
 type TestSession = {
   id: string;
@@ -46,17 +46,17 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ push }),
 }));
 
-vi.mock("@/lib/hooks/useChatHistory", () => ({
+vi.mock("@/lib/stores/chat/chatHistory", () => ({
   useChatHistory: Object.assign(
     (selector: (state: typeof historyState) => unknown) => selector(historyState),
     { getState: () => historyState },
   ),
   ensureChatHistoryBootstrap: () => Promise.resolve(),
 }));
-vi.mock("@/lib/hooks/useFloatingChats", () => ({
+vi.mock("@/lib/stores/chat/floatingChats", () => ({
   useFloatingChats: { getState: () => ({ windows: [], closeWindow: vi.fn(), restoreWindow }) },
 }));
-vi.mock("@/lib/hooks/useTokenTracker", () => ({
+vi.mock("@/lib/stores/chat/tokenTracker", () => ({
   useTokenTracker: { getState: () => ({ resetSession: vi.fn() }) },
 }));
 vi.mock("./LeftDock", () => ({

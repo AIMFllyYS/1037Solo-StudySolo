@@ -6,15 +6,15 @@ import {
   BrainCircuit, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Loader2, Wand2,
   BookOpenText, PencilLine, FileQuestion, Settings2, Download, Quote, MoreHorizontal,
 } from "lucide-react";
-import { useReviewCards } from "@/lib/hooks/useReviewCards";
-import { useRecordPreviews, type RecordPreview } from "@/lib/hooks/useRecordPreviews";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
+import { useRecordPreviews, type RecordPreview } from "@/lib/stores/learning/recordPreviews";
 import { processRecord, retryRecord, reviseRecord, type ProcessCallbacks } from "@/lib/review/startRecord";
 import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
 import AnchoredMenu from "@/components/ui/AnchoredMenu";
 import { getSubject } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
-import { useWindowManager } from "@/lib/stores/windowManager";
-import { useProcessingDisclosure } from "@/lib/hooks/useProcessingDisclosure";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useProcessingDisclosure } from "@/lib/hooks/chat/useProcessingDisclosure";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import FlipCard from "@/components/review/FlipCard";

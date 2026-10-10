@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, test } from "node:test";
 import type { ChatMessage } from "@/lib/types/chat";
-import type { Artifact } from "@/lib/stores/artifacts";
+import type { Artifact } from "@/lib/stores/assets/artifacts";
 import type { StoredDocument } from "@/lib/documents/types";
 import type { UserNote } from "@/lib/notes/userNote";
 import type { ReviewCard } from "@/lib/review/types";

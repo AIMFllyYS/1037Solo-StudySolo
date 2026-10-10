@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Download, PieChart as PieChartIcon, ArrowRightLeft } from "lucide-react";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
-import { useBillingStore, getProviderCategoryName } from "@/lib/hooks/useBillingStore";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { useBillingStore, getProviderCategoryName } from "@/lib/stores/billing";
+import { useSettings } from "@/lib/stores/settings";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import React from "react";

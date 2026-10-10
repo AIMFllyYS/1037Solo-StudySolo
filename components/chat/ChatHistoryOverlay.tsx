@@ -2,9 +2,9 @@
 
 import React, { useCallback, useState } from 'react';
 import { ArrowLeft, Clock, Trash2, MessageSquare, ImagePlus } from 'lucide-react';
-import { useChatHistory } from '@/lib/hooks/useChatHistory';
-import { useFloatingChats } from '@/lib/hooks/useFloatingChats';
-import { useImageGen, type ImageGenSession } from '@/lib/hooks/useImageGen';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
+import { useFloatingChats } from '@/lib/stores/chat/floatingChats';
+import { useImageGen, type ImageGenSession } from '@/lib/stores/assets/imageGen';
 import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 import { useOverlayRegistration } from '@/lib/keyboard/useOverlayRegistration';
 import { useT } from '@/lib/i18n';

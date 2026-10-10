@@ -1,4 +1,4 @@
-import { useWindowManager } from '@/lib/hooks/useWindowManager';
+import { useWindowManager } from '@/lib/stores/workspace/windowManager';
 import { translateNow } from "@/lib/i18n";
 import type { SourceRound, TraceSource } from '@/lib/chat/traceSources';
 import type { WebSearchSource } from '@/lib/types/chat';

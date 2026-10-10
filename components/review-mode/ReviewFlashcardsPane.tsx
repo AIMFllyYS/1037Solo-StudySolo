@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import clsx from "clsx";
 import { Layers, RotateCcw } from "lucide-react";
 import FlipCard from "@/components/review/FlipCard";
-import { useReviewCards } from "@/lib/stores/reviewCards";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
 import { useReviewSchedule } from "@/lib/review-mode/scheduleStore";
 import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
 import type { ReviewCard } from "@/lib/review/types";

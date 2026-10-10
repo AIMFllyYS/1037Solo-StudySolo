@@ -3,7 +3,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import SharePage from "./SharePage";
 import { translate } from "@/lib/i18n";
 import type { SharedConversationSnapshot } from "@/lib/share/types";
-import { useArtifacts } from "@/lib/stores/artifacts";
+import { useArtifacts } from "@/lib/stores/assets/artifacts";
 
 /**
  * SharePage：公开只读页的四件事——

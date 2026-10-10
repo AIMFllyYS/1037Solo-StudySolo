@@ -1,10 +1,10 @@
 import type { SessionMeta } from "@/lib/storage/chatStorage";
 import type { ChatMessage } from "@/lib/types/chat";
-import type { Artifact } from "@/lib/stores/artifacts";
+import type { Artifact } from "@/lib/stores/assets/artifacts";
 import type { StoredDocument } from "@/lib/documents/types";
 import type { UserNote } from "@/lib/notes/userNote";
 import type { ReviewCard } from "@/lib/review/types";
-import type { ImageGenSession } from "@/lib/stores/imageGen";
+import type { ImageGenSession } from "@/lib/stores/assets/imageGen";
 import type { ChatProjectSyncPayload, ChatSessionSyncPayload, CloudSyncKind, SyncDocumentRow } from "./types";
 export interface CloudSyncStores {
   hasCloudRevision?: (kind: CloudSyncKind, id: string) => boolean;

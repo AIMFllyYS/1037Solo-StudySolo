@@ -21,11 +21,11 @@ import { loadTurnsBefore } from "@/lib/storage/chatStorage";
 import { getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
 import { openAgentQuiz } from "@/lib/quiz-dock/open";
-import { useArtifacts } from "@/lib/stores/artifacts";
-import { useDocuments } from "@/lib/stores/documents";
-import { useImageGen } from "@/lib/stores/imageGen";
+import { useArtifacts } from "@/lib/stores/assets/artifacts";
+import { useDocuments } from "@/lib/stores/assets/documents";
+import { useImageGen } from "@/lib/stores/assets/imageGen";
 import { useStore } from "@/lib/stores/ui";
-import { SOURCES_PANEL_INSET as INSET, clampSourcesPanelSize, useAgentCenter } from "@/lib/stores/agentCenter";
+import { SOURCES_PANEL_INSET as INSET, clampSourcesPanelSize, useAgentCenter } from "@/lib/stores/workspace/agentCenter";
 import { useT } from "@/lib/i18n";
 
 type ResizeAxes = "x" | "y" | "xy";

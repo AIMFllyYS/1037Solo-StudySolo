@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { useStore } from "@/lib/stores/ui";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import type { ChatContext } from "@/lib/types/chat";
 import { useT } from "@/lib/i18n";
 import RightAgentHeader from "@/components/workspace/RightAgentHeader";

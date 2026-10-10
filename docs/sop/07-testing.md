@@ -194,7 +194,7 @@ pnpm test:cov    # 覆盖率
 | `lib/ai/search/vectorStore.ts` | `cosineSimilarity` | 相似度计算 |
 | `lib/ai/search/hybridSearch.ts` | `rrfMerge` | RRF 合并 |
 | `app/api/can-embed/route.ts` | `judge` | iframe 嵌入判定 |
-| `lib/stores/quiz.ts`（`lib/quiz-store.ts` 已是转发壳） | `buildAttempt` | 作答记录构造 |
+| `lib/stores/learning/quiz.ts`（`lib/quiz-store.ts` 已是转发壳） | `buildAttempt` | 作答记录构造 |
 
 这些导出不影响运行时行为，仅暴露已有函数供测试调用。
 

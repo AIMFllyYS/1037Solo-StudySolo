@@ -1,7 +1,7 @@
 import { selectCustomApiGroupsForRequest } from "@/lib/ai/models";
-import { useReviewCards } from "@/lib/hooks/useReviewCards";
-import { useRecordPreviews } from "@/lib/hooks/useRecordPreviews";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
+import { useRecordPreviews } from "@/lib/stores/learning/recordPreviews";
+import { useSettings } from "@/lib/stores/settings";
 import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
 import { parseSseJsonEvents } from "@/lib/utils/sseEvents";

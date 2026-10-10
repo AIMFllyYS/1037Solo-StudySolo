@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useUserNotes } from "@/lib/stores/userNotes";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import { useOverlayStack } from "@/lib/keyboard/useOverlayStack";
 
 const editorHarness = vi.hoisted(() => ({

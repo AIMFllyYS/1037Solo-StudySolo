@@ -4,7 +4,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import AgentImagesPane from "./AgentImagesPane";
 import { translate } from "@/lib/i18n";
 import type { AgentImageItem } from "@/lib/agent/sessionImages";
-import { useLightbox } from "@/lib/stores/lightbox";
+import { useLightbox } from "@/lib/stores/workspace/lightbox";
 
 const zh = (key: string) => translate("zh", key);
 

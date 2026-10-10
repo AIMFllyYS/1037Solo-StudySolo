@@ -2,10 +2,10 @@
 
 import React, { useId } from 'react';
 import { motion } from 'framer-motion';
-import { useUiReducedMotion } from '@/lib/hooks/useUiReducedMotion';
+import { useUiReducedMotion } from '@/lib/hooks/runtime/useUiReducedMotion';
 import { AgentAlertIcon, AgentChevronIcon, AgentPauseIcon } from '@/components/icons/AgentIcons';
 import type { TraceStatus } from '@/lib/chat/buildTrace';
-import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
+import { useProcessingDisclosure } from '@/lib/hooks/chat/useProcessingDisclosure';
 import { useT, type I18nKey } from '@/lib/i18n/index';
 
 export interface AgentTraceStepProps {

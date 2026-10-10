@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSettings } from '@/lib/hooks/useSettings';
+import { useSettings } from '@/lib/stores/settings';
 import { selectCustomApiGroupsForRequest } from '@/lib/ai/models';
 import type { CanvasBlock } from '@/lib/canvas/types';
 

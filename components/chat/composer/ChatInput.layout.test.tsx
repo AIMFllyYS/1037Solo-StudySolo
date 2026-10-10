@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { act, cleanup, fireEvent, render } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ChatInput from './ChatInput';
-import { useSettings } from '@/lib/hooks/useSettings';
+import { useSettings } from '@/lib/stores/settings';
 
 const callbacks = vi.hoisted(() => ({
   clearQuote: vi.fn(), clearAttachments: vi.fn(), paste: vi.fn(), drop: vi.fn(), addFiles: vi.fn(), remove: vi.fn(),
@@ -16,8 +16,8 @@ vi.mock('@/components/chat/billing/TokenDashboard', () => ({ default: ({ floatin
 vi.mock('@/components/chat/composer/ModelMenu', () => ({ default: ({ value, onChange }: { value?: string; onChange?: (id: string) => void }) =>
   <button data-testid="model-selector" onClick={() => onChange?.('new-floating-model')}>{value ?? '全局模型'}</button> }));
 vi.mock('@/components/chat/attachments/AttachmentThumbnails', () => ({ default: () => <div data-testid="attachment-preview">图片预览</div> }));
-vi.mock('@/lib/hooks/useChatUI', () => ({ useChatUI: () => ({ quotedText: callbacks.quotedText, clearQuotedText: callbacks.clearQuote }) }));
-vi.mock('@/lib/hooks/useImageAttachments', () => ({ useImageAttachments: () => ({
+vi.mock('@/lib/stores/chat/chatUI', () => ({ useChatUI: () => ({ quotedText: callbacks.quotedText, clearQuotedText: callbacks.clearQuote }) }));
+vi.mock('@/lib/hooks/files/useImageAttachments', () => ({ useImageAttachments: () => ({
   attachments: callbacks.attachment ? [{ id: 'image', preview: 'data:image/png;base64,eA==' }] : [],
   addFiles: callbacks.addFiles, remove: callbacks.remove, clear: callbacks.clearAttachments,
   toChatFormat: () => callbacks.attachment ? [{ type: 'image', mimeType: 'image/png', base64: 'data:image/png;base64,eA==' }] : [],

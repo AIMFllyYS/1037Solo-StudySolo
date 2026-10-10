@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import WebSourceFold from './WebSourceFold';
 
-import { useWindowManager } from '@/lib/hooks/useWindowManager';
+import { useWindowManager } from '@/lib/stores/workspace/windowManager';
 
 afterEach(() => {
   cleanup();

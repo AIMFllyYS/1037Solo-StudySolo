@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 import { CONNECTOR_REGISTRY } from "@/lib/connectors/registry";
 import { useT } from "@/lib/i18n";
-import { useReviewCards } from "@/lib/stores/reviewCards";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
 import { ankiTsv } from "@/lib/connectors/anki";
 import { connectorErrorKey } from "@/lib/connectors/presentation";
 function safeUrl(raw: string) { try { const url = new URL(raw); return url.protocol === "https:" && !url.username && !url.password && ![...url.searchParams.keys()].some(key => /token|secret|authorization|code/i.test(key)) ? url.href : null; } catch { return null; } }

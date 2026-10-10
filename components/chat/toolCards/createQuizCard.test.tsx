@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import CreateQuizResultCard from "./createQuizCard";
 import { useAppMode } from "@/lib/stores/appMode";
-import { useWindowManager } from "@/lib/stores/windowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { resetAutoOpenedQuizzes } from "@/lib/quiz-dock/open";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { ToolPart } from "@/lib/ai/agent/tools/registry";

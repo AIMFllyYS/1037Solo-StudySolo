@@ -51,7 +51,7 @@
 - MiMo Pro 与 UltraSpeed 定义已存在，模型菜单和系列切换展示需要归一化，不重复注册。
 - 教材窗口现有树只打开外部页面，需复用 Studio 正文渲染链并保留安全规则。
 - 左栏百分比布局与 ResizeObserver 像素回写造成右面板变化时的可见晃动，需从状态所有权和布局计算修正。
-- 最大人工业务文件包括 `lib/sync/engine.ts`（1324 行）、`lib/storage/chatStorage.ts`（1188 行）、`lib/stores/chatHistory.ts`（966 行）；有大量 600–1000 行交互组件及混合职责 UI。
+- 最大人工业务文件包括 `lib/sync/engine.ts`（1324 行）、`lib/storage/chatStorage.ts`（1188 行）、`lib/stores/chat/chatHistory.ts`（966 行）；有大量 600–1000 行交互组件及混合职责 UI。
 - CI 当前对 Knip 非阻断，需核实入口覆盖与真实动态消费者后处理存量，不以忽略问题制造通过。
 - 初始清点记录 2049 个源码/测试文件、1429 个人工源码文件，超过 500 行的 73 个、超过 800 行的 15 个。排除类型与延迟导入后，即时运行时循环为聊天渲染/工具卡片间 3 条路径。
 - `node_modules/next/dist/docs/` 实际存在，后续阶段优先结合安装版本的章节，并用官方快照核对升级目标。
@@ -80,6 +80,8 @@
 - R3j 复习出题与题目 UI：521 行 quiz API 拆出有界请求、实时所有者、原错题、课程/课堂材料、预算 prompt 与付费 handler，6 项 API 回归通过。955 行 QuizQuestion 拆为约 100 行组合入口和明确展示/作答职责，最大子文件约 325 行，保留 ssr:false 的视频延迟加载；11 项既有题目/解释/进度/Agent UI 回归与新增 8 项九种题型答案行为检查通过，全量类型和定向 lint 通过。新增测试按真实“正确 √ / 错误 ×”标签以及单行 input 行为修正了测试预期，运行代码未因此改动。
 
 - R3k UI 目录：128 个实现/测试文件按 composer、messages、trace、sources、products、attachments、billing、floating、navigation、mobile、settings 迁移；137 个调用者/替身/路径更新，延迟入口和相邻相对导入同时改到真实模块，未建立成批转发。chat/layout 根人工组件分别降至 10/12 个。全量类型通过，React 299 文件/1234 项通过，ESLint 0 error/23 warning。代码全量 2038 项初轮 2032 通过、1 跳过、5 个结构检查仍读旧路径；两个涉及 R3 存储拆分，其余为迁移路径，保留断言并指向真实实现后相关 16 项全部通过。最终冻结后仍需全量重跑。真实 Agent 重新打开医学细胞生物学第一节正文成功，截图 `project-refactor/verify/agent-textbook-after-directory-move.jpg`；访客未进行付费对话或私有文件操作。React 注册兜底迁到 components/content，沿用原行为并修正 lib/UI 边界；lint 的 chat 限制扩大到子目录，避免迁移使规则失效。
+
+- R3l 状态/hooks/内容目录：143 个实现/测试/元数据文件迁移，374 个真实静态/动态/测试消费者更新；21 个 deprecated 单行 hook 转发原件归档为 txt，所有仓库导入改用同一 store 实例，没有另建状态或改持久化 key。hooks 根目录不再堆平铺运行文件，stores/content-data 根目录均低于 30 个运行文件。迁移前 Git 元数据重建的 contentTree 序列化与新树逐字节相同；registry 0 error/94 存量 warning。全量代码 2040 项、2039 通过、1 跳过、0 失败，React 299 文件/1234 项全部通过。迁移让原来直接访问产物 store 的全局 Agent picker 被 notes 边界规则正确识别；将 picker 归到 agent 域，沿用全局窗口层及延迟加载，7 项窗口放置检查与全量 ESLint 0 error/23 warning 通过。独立 Knip 完整入口审计已包含 classolo、Worker 和沙箱脚本，输出 44 个候选文件、134 个导出和 55 个类型待逐项核实；这些不是删除清单。
 
 ## 局部阻塞
 

@@ -1,13 +1,13 @@
 // 个人笔记的对外入口：加号菜单 / 书架卡片 / 键盘快捷键 / 笔记窗 AI 图标只调这里，
 // 不直接摸 store，也不关心窗口 id 怎么拼。
 
-import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
-import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
-import { useChatUI } from "@/lib/stores/chatUI";
+import { useAgentProductPicker } from "@/lib/stores/workspace/agentProductPicker";
+import { useFlashcardCitations } from "@/lib/stores/learning/flashcardCitations";
+import { useChatUI } from "@/lib/stores/chat/chatUI";
 import { useStore } from "@/lib/stores/ui";
-import { isAgentWorkspace } from "@/lib/stores/workspace";
+import { isAgentWorkspace } from "@/lib/stores/workspace/workspace";
 import { currentRecordContext } from "@/lib/review/recordContext";
-import { useUserNotes } from "@/lib/stores/userNotes";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import {
   deriveNoteTitle,
   formatNoteQuote,

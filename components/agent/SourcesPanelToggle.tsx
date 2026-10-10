@@ -1,7 +1,7 @@
 "use client";
 
 import { Link2 } from "lucide-react";
-import { useAgentCenter } from "@/lib/stores/agentCenter";
+import { useAgentCenter } from "@/lib/stores/workspace/agentCenter";
 import { useT } from "@/lib/i18n";
 
 /**

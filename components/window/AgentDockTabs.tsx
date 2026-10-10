@@ -4,11 +4,11 @@ import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, 
 import { MoreHorizontal, MoreVertical, X } from "lucide-react";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
-import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import type { ManagedWindow } from "@/lib/stores/workspace/windowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { closeManagedWindow } from "@/lib/keyboard/windowActions";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
-import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
+import { useUiReducedMotion } from "@/lib/hooks/runtime/useUiReducedMotion";
 import { reflowItemProps } from "@/lib/motion";
 import { useT } from "@/lib/i18n";
 import {

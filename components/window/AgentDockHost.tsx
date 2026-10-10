@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useStore } from "@/lib/stores/ui";
-import { isAgentWorkspace } from "@/lib/stores/workspace";
+import { isAgentWorkspace } from "@/lib/stores/workspace/workspace";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
 

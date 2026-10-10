@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import MobileTopBar from "./MobileTopBar";
 import { useStore } from "@/lib/stores/ui";
 import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
-import { useTheme } from "@/lib/hooks/useTheme";
+import { useTheme } from "@/lib/stores/theme";
 import { useAppMode } from "@/lib/stores/appMode";
 
 const pathnameState = vi.hoisted(() => ({ value: "/", push: vi.fn() }));

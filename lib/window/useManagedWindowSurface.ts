@@ -2,9 +2,9 @@
 
 import { useAppMode } from "@/lib/stores/appMode";
 import { useStore } from "@/lib/stores/ui";
-import { useIsMobile } from "@/lib/hooks/useIsMobile";
-import { useWindowManager } from "@/lib/stores/windowManager";
-import { isAgentWorkspace } from "@/lib/stores/workspace";
+import { useIsMobile } from "@/lib/hooks/layout/useIsMobile";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
+import { isAgentWorkspace } from "@/lib/stores/workspace/workspace";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 import { useDockTypingFocusGuard } from "@/lib/window/dockTypingFocus";
 import { useActiveChatSessionId, windowBelongsToSession } from "@/lib/window/sessionScope";

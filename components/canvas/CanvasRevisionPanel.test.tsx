@@ -7,7 +7,7 @@ const settings = {
   customApiGroups: [{ id: 'local', name: 'Local', baseUrl: 'http://example.test', apiKey: 'secret', models: [] }],
 };
 
-vi.mock('@/lib/hooks/useSettings', () => ({
+vi.mock('@/lib/stores/settings', () => ({
   useSettings: {
     getState: () => settings,
   },

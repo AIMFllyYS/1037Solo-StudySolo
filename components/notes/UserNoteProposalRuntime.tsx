@@ -1,8 +1,8 @@
 'use client'
 
 import {useEffect} from 'react'
-import {useChatHistory} from '@/lib/stores/chatHistory'
-import {useNoteChangeProposals} from '@/lib/stores/noteChangeProposals'
+import {useChatHistory} from '@/lib/stores/chat/chatHistory'
+import {useNoteChangeProposals} from '@/lib/stores/assets/noteChangeProposals'
 import {collectNoteChangeProposals} from '@/lib/notes/noteChangeProposal'
 
 /** Proposal ingestion lives outside the optional note editor window. */

@@ -7,9 +7,9 @@ vi.mock('next/dynamic',()=>({default:(loader:()=>Promise<unknown>)=>{
 vi.mock('@/components/notes/UserNoteProposalRuntime',()=>({default:()=>null}))
 vi.mock('@/components/memory/MemoryInboxRuntime',()=>({default:()=>null}))
 import DeferredWindowLayers from './DeferredWindowLayers'
-import {useWindowManager} from '@/lib/stores/windowManager'
-import {useUserNotes} from '@/lib/stores/userNotes'
-import {useMemoryInbox} from '@/lib/stores/memoryInbox'
+import {useWindowManager} from '@/lib/stores/workspace/windowManager'
+import {useUserNotes} from '@/lib/stores/learning/userNotes'
+import {useMemoryInbox} from '@/lib/stores/learning/memoryInbox'
 
 beforeEach(()=>{useWindowManager.setState({windows:[],activeWindowId:null});useUserNotes.setState({openEditorIds:[],libraryOpen:false});useMemoryInbox.setState({byId:{},order:[]})})
 afterEach(cleanup)

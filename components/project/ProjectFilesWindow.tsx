@@ -15,15 +15,15 @@ import ActionButton, { actionClass } from "@/components/ui/ActionButton";
 import Badge from "@/components/ui/Badge";
 import { EmptyState, InlineNotice } from "@/components/ui/PageChrome";
 import { formatAssetSize } from "@/lib/agent/assetCatalog";
-import { useProjectFiles, listProjectFiles } from "@/lib/stores/projectFiles";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
-import { localPathOf } from "@/lib/stores/imports";
+import { useProjectFiles, listProjectFiles } from "@/lib/stores/assets/projectFiles";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { localPathOf } from "@/lib/stores/assets/imports";
 import { importProjectFile } from "@/lib/project/import";
 import { planCarry } from "@/lib/project/catalog";
 import { searchStudioRefs } from "@/lib/project/studioRefs";
 import type { ProjectFileEntry } from "@/lib/project/types";
 import { projectFilesWindowId } from "@/lib/project/openProjectFiles";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useT, type Translate } from "@/lib/i18n";
 
 function statusLabel(file: ProjectFileEntry, t: Translate): string {

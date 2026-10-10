@@ -1,4 +1,4 @@
-import { useChatHistory } from '@/lib/hooks/useChatHistory';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { hydrateAttachmentsForApi, loadSessionRecovery, loadSessionSummaryHead, loadTurnsBefore } from '@/lib/storage/chatStorage';
 import { getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
 import type { SessionMeta } from '@/lib/storage/chatStorage';

@@ -1,7 +1,7 @@
 'use client';
 import type { ChatMessage } from '@/lib/types/chat';
-import { useArtifacts } from '@/lib/stores/artifacts';
-import { useDocuments } from '@/lib/stores/documents';
+import { useArtifacts } from '@/lib/stores/assets/artifacts';
+import { useDocuments } from '@/lib/stores/assets/documents';
 /** Only completed, reusable outputs become assets; tool instructions/logs do not. */
 export function materializeAnswerAssets(message: ChatMessage) {
     const text = message.parts.filter(p => p.type === 'text').map(p => p.type === 'text' ? p.text : '').join('\n');

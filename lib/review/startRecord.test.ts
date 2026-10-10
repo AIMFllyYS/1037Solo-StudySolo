@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import { processRecord } from "@/lib/review/startRecord";
-import { useReviewCards } from "@/lib/hooks/useReviewCards";
+import { useReviewCards } from "@/lib/stores/learning/reviewCards";
 
 function resetReviewCards() {
   useReviewCards.setState({ byId: {}, order: [], _hasHydrated: true });

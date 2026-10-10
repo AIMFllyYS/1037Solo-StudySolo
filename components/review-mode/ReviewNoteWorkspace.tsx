@@ -9,7 +9,7 @@ import NoteRenderer from "@/components/notes/NoteRenderer";
 import NoteTocSidebar from "@/components/notes/NoteTocSidebar";
 import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
 import { formatRelative } from "@/lib/scheduler/describe";
-import { useUserNotes } from "@/lib/stores/userNotes";
+import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import { subjectLabel } from "@/lib/notes/userNote";
 import { captureReviewEditorOwner } from "@/lib/notes/reviewEditorOwner";
 import { parseNoteToc, scrollCrepeHeading, type NoteTocItem } from "@/lib/notes/noteToc";

@@ -33,7 +33,7 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 ## AI 调用路径
 
-输入器和 `lib/hooks/useChat*` 使用既有 UIMessage 流协议，经 `/api/chat`（`/api/agent/chat` 有对应入口）进入请求校验、上下文/文件恢复、模型解析、身份及额度检查、`ToolLoopAgent` 和流输出。
+输入器和 `lib/hooks/chat/useChat*` 使用既有 UIMessage 流协议，经 `/api/chat`（`/api/agent/chat` 有对应入口）进入请求校验、上下文/文件恢复、模型解析、身份及额度检查、`ToolLoopAgent` 和流输出。
 
 `lib/ai/chat/server/handler.ts` 独占请求门控与响应包装，`messages.ts` 处理 UIMessage 压缩/恢复和模型消息转换，`generation.ts` 保持生成、取消、续写、本地文件续接、计费与结束事件的顺序，`contracts.ts` 提供窄输入契约。`lib/ai/agent/requestSchema.ts` 是显式公共入口，`request/` 分出共享限额、聊天/卫星 schema、安全错误文本与 parser。
 
@@ -43,7 +43,7 @@ Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 
 
 ## 数据与状态
 
-- `lib/stores/` 持有界面和用户领域的 Zustand 状态；`lib/hooks/` 提供 React 适配与生命周期。
+- `lib/stores/` 持有界面和用户领域的 Zustand 状态，按 `assets/`、`chat/`、`learning/`、`workspace/` 归类；根目录保留共享持久化、设置、偏好和集成入口。`lib/hooks/` 只提供真正的 React 适配与生命周期，按 auth/chat/layout/runtime/learning/files 分组。21 个旧纯转发 hook 的全部仓库消费者已改用真实 store，转发原件以文本归档，不再进入运行图或测试发现。
 - 聊天历史仍只有一个 `useChatHistory` store。其入口组合窗口、会话、消息和项目四组 action；`chatHistory/stateTypes.ts` 定义完整接口，`manifest.ts` 统一元数据写入门控，`windowRuntime.ts` 维护驻留估算、lease、spine 与预算。账户变更、bootstrap 和 cloud-window 接入仍在组合入口，所有动作共享同一 set/get，不另建平行权威状态。
 - 小型偏好存储于 localStorage；账户用户数据按所有者作用域进入 IndexedDB。实际 key、DB 与迁移由 `lib/storage/` 管理。
 - `lib/stores/settings.ts` 只组合一个设置 store 与水合门控；`settings/types.ts` / `defaults.ts` 定义契约和默认配置，`persistence.ts` 独占本机记录、备份保护与密钥恢复，`apiActions.ts` / `preferenceActions.ts` 使用相同 set/get 和保存回调。磁盘 key、Web 密钥编解码和 Electron bridge 格式沿用旧契约。
@@ -57,6 +57,8 @@ Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 
 ## 内容与渲染
 
 `lib/content-data/subjects.registry.ts` 是学科元数据入口，manifest 组织导航，生成清单和离线索引由脚本构建。`lib/content/` 在服务端解析安全内容路径、课堂材料与题库，API 和服务端页面复用。
+
+学科的人工教材/详解/讲次元数据位于 `lib/content-data/subjects/<学科>/`。根目录保留统一学科表、manifest/nav、课堂材料适配、媒体索引与生成产物。物理内容路径和导航数据保持一致，不因源码目录归类改变教材 URL 或材料身份。
 
 正文通过 `components/notes/` 与 `components/shared/` 的既有 Markdown、PlainText、HTML 沙箱和组件渲染；公式使用 KaTeX/mhchem。SVG、函数图、分子与交互 HTML 使用 `components/canvas/` 的安全边界。题目和聊天有各自语义适配，不能通过统一化丢掉评分或引用行为。
 

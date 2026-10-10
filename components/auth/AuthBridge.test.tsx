@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, it, vi } from 'vitest';
-import { AuthProvider, useAuthSession } from '@/lib/hooks/useAuthSession';
+import { AuthProvider, useAuthSession } from '@/lib/hooks/auth/useAuthSession';
 import { AccountQuota } from '@/components/chat/billing/AccountQuota';
 import { decideAiGate } from '@/lib/auth/aiGate';
 import {activateStorageOwner} from '@/lib/storage/ownerScope';

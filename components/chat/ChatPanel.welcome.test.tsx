@@ -2,9 +2,9 @@ import React from 'react';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ChatPanel from './ChatPanel';
-import { useChatHistory } from '@/lib/hooks/useChatHistory';
-import { useSettings } from '@/lib/hooks/useSettings';
-import { useSkills } from '@/lib/hooks/useSkills';
+import { useChatHistory } from '@/lib/stores/chat/chatHistory';
+import { useSettings } from '@/lib/stores/settings';
+import { useSkills } from '@/lib/stores/skills';
 import { useStore } from '@/lib/store';
 import { activateStorageOwner, getStorageOwner } from '@/lib/storage/ownerScope';
 
@@ -14,12 +14,12 @@ vi.mock('@/lib/storage/idbStorage', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/lib/storage/idbStorage')>(),
   idbStorage: { getItem: vi.fn(async () => null), setItem: vi.fn(), setItemLazy: vi.fn(), removeItem: vi.fn(async () => {}) },
 }));
-vi.mock('@/lib/hooks/useChatHistory', async (importOriginal) => ({
-  ...await importOriginal<typeof import('@/lib/hooks/useChatHistory')>(),
+vi.mock('@/lib/stores/chat/chatHistory', async (importOriginal) => ({
+  ...await importOriginal<typeof import('@/lib/stores/chat/chatHistory')>(),
   ensureChatHistoryBootstrap: vi.fn(async () => {}),
 }));
-vi.mock('@/lib/hooks/useAuthSession', () => ({ useAuthSession: () => authState }));
-vi.mock('@/lib/hooks/useAutoHideChatHeader', () => ({ useAutoHideChatHeader: () => ({ autoHideEnabled: false, headerCollapsed: false }) }));
+vi.mock('@/lib/hooks/auth/useAuthSession', () => ({ useAuthSession: () => authState }));
+vi.mock('@/lib/hooks/chat/useAutoHideChatHeader', () => ({ useAutoHideChatHeader: () => ({ autoHideEnabled: false, headerCollapsed: false }) }));
 vi.mock('@/components/chat/ChatThread', () => ({
   default: ({ emptyState }: { emptyState?: React.ReactNode }) => <div data-testid="chat-thread">{emptyState}</div>,
 }));
@@ -30,8 +30,8 @@ vi.mock('@/components/notes/SelectionPopover', () => ({ default: () => null }));
 vi.mock('@/components/shared/ImageLightbox', () => ({ ImageLightbox: () => null }));
 vi.mock('@/components/chat/billing/TokenDashboard', () => ({ default: () => <div data-testid="token-dashboard" /> }));
 vi.mock('@/components/chat/composer/ModelMenu', () => ({ default: () => <div data-testid="model-menu" /> }));
-vi.mock('@/lib/hooks/useChatUI', () => ({ useChatUI: () => ({ quotedText: null, clearQuotedText: vi.fn() }) }));
-vi.mock('@/lib/hooks/useImageAttachments', () => ({ useImageAttachments: () => ({
+vi.mock('@/lib/stores/chat/chatUI', () => ({ useChatUI: () => ({ quotedText: null, clearQuotedText: vi.fn() }) }));
+vi.mock('@/lib/hooks/files/useImageAttachments', () => ({ useImageAttachments: () => ({
   attachments: [], addFiles: vi.fn(), remove: vi.fn(), clear: vi.fn(), toChatFormat: () => [],
   handlePaste: vi.fn(), handleDrop: vi.fn(), handleDragOver: vi.fn(), handleDragEnter: vi.fn(), handleDragLeave: vi.fn(),
   isDragging: false, endDrag: vi.fn(), error: null,

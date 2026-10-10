@@ -5,7 +5,7 @@ import { __resetCloudSyncForTests, __setCloudSyncStoresForTests, __setSyncClient
 import { createMemorySyncClient } from './client';
 import { setCloudSyncEnabled } from './schedule';
 import { getSyncItemStatus } from './status';
-import type { Artifact } from '@/lib/stores/artifacts';
+import type { Artifact } from '@/lib/stores/assets/artifacts';
 afterEach(() => { __resetCloudSyncForTests(); activateStorageOwner(null); vi.unstubAllGlobals(); localStorage.clear(); });
 it('a dirty skipped pull keeps the common revision and preserves both conflicting HTML bodies', async () => {
     __resetCloudSyncForTests();

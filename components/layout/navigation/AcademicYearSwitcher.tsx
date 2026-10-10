@@ -13,7 +13,7 @@ import {
   type AcademicYearGrade,
   type AcademicYearId,
 } from "@/lib/constants/academic-year";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import { DURATION, EASE } from "@/lib/motion";
 
 /**

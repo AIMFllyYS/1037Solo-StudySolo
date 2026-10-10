@@ -1,7 +1,7 @@
 "use client";
 
 import { Globe } from "lucide-react";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useSettings } from "@/lib/stores/settings";
 import { h3Cls, inputCls } from "./_shared";
 import { useT } from "@/lib/i18n";
 

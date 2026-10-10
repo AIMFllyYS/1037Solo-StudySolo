@@ -2,7 +2,7 @@
 
 import { Copy, Layers, X, type LucideIcon } from "lucide-react";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";
-import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
+import type { ManagedWindow } from "@/lib/stores/workspace/windowManager";
 import { useT } from "@/lib/i18n";
 import { AGENT_MENU_ITEM_CLASS, AgentMenuSurface } from "@/components/agent/AgentMenuSurface";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";

@@ -28,29 +28,29 @@ const noteItem = {
 const assetsRef: { value: typeof noteItem[] | null } = { value: [noteItem] };
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
-vi.mock("@/lib/hooks/useAgentAssets", () => ({ useAgentAssets: () => assetsRef.value }));
-vi.mock("@/lib/hooks/useMinimumSkeleton", () => ({ useMinimumSkeleton: () => false }));
-vi.mock("@/lib/stores/userNotes", () => ({
+vi.mock("@/lib/hooks/files/useAgentAssets", () => ({ useAgentAssets: () => assetsRef.value }));
+vi.mock("@/lib/hooks/layout/useMinimumSkeleton", () => ({ useMinimumSkeleton: () => false }));
+vi.mock("@/lib/stores/learning/userNotes", () => ({
   useUserNotes: Object.assign((selector: (s: unknown) => unknown) => selector({ byId: { n1: note } }), {
     getState: () => ({ removeNote }),
   }),
 }));
-vi.mock("@/lib/stores/reviewCards", () => ({
+vi.mock("@/lib/stores/learning/reviewCards", () => ({
   useReviewCards: Object.assign((selector: (s: unknown) => unknown) => selector({ byId: {} }), {
     getState: () => ({ remove: vi.fn(), byId: {} }),
   }),
 }));
-vi.mock("@/lib/stores/documents", () => ({
+vi.mock("@/lib/stores/assets/documents", () => ({
   useDocuments: Object.assign((selector: (s: unknown) => unknown) => selector({ byId: {} }), {
     getState: () => ({ prune: vi.fn(), byId: {}, openViewer: vi.fn() }),
   }),
 }));
-vi.mock("@/lib/stores/artifacts", () => ({
+vi.mock("@/lib/stores/assets/artifacts", () => ({
   useArtifacts: Object.assign((selector: (s: unknown) => unknown) => selector({ byId: {} }), {
     getState: () => ({ prune: vi.fn(), order: [], openViewer: vi.fn() }),
   }),
 }));
-vi.mock("@/lib/stores/imports", () => ({
+vi.mock("@/lib/stores/assets/imports", () => ({
   useImports: Object.assign((selector: (s: unknown) => unknown) => selector({ byId: {} }), {
     getState: () => ({ remove: vi.fn() }),
   }),

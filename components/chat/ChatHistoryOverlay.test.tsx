@@ -12,16 +12,16 @@ const historyState = {
   deleteSession: vi.fn(),
 };
 
-vi.mock('@/lib/hooks/useChatHistory', () => ({
+vi.mock('@/lib/stores/chat/chatHistory', () => ({
   useChatHistory: Object.assign(
     (selector: (state: typeof historyState) => unknown) => selector(historyState),
     { getState: () => historyState },
   ),
 }));
-vi.mock('@/lib/hooks/useFloatingChats', () => ({
+vi.mock('@/lib/stores/chat/floatingChats', () => ({
   useFloatingChats: { getState: () => ({ windows: [], closeWindow: vi.fn() }) },
 }));
-vi.mock('@/lib/hooks/useImageGen', () => ({
+vi.mock('@/lib/stores/assets/imageGen', () => ({
   useImageGen: (selector: (state: Record<string, unknown>) => unknown) => selector({
     sessions: {}, bringToFront: vi.fn(), removeSession: vi.fn(),
   }),

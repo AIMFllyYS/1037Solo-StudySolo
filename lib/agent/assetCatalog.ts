@@ -2,9 +2,9 @@ import { subjectLabel } from "@/lib/notes/userNote";
 import type { UserNote } from "@/lib/notes/userNote";
 import type { ReviewCard } from "@/lib/review/types";
 import type { StoredDocument } from "@/lib/documents/types";
-import type { Artifact } from "@/lib/stores/artifacts";
-import type { ImportRecord } from "@/lib/stores/imports";
-import type { ImageGenSession } from '@/lib/stores/imageGen';
+import type { Artifact } from "@/lib/stores/assets/artifacts";
+import type { ImportRecord } from "@/lib/stores/assets/imports";
+import type { ImageGenSession } from '@/lib/stores/assets/imageGen';
 import type { CloudFile } from '@/lib/files/contract';
 
 /**

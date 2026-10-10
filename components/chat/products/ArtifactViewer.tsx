@@ -8,10 +8,10 @@
  */
 import { Download, LoaderCircle, MonitorPlay } from "lucide-react";
 import { useEffect } from "react";
-import { acquireArtifactBodyLease, hydrateArtifactBody } from "@/lib/stores/artifacts";
-import { useArtifacts } from "@/lib/hooks/useArtifacts";
-import { useSettings } from "@/lib/hooks/useSettings";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { acquireArtifactBodyLease, hydrateArtifactBody } from "@/lib/stores/assets/artifacts";
+import { useArtifacts } from "@/lib/stores/assets/artifacts";
+import { useSettings } from "@/lib/stores/settings";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { ARTIFACT_IFRAME_SANDBOX, injectOpaqueOriginStorageShim } from "@/lib/sandbox/opaqueOriginStorageShim";
 import { downloadHtmlFile } from "@/lib/utils/downloadHtml";
 import { openHtmlInNewTab } from "@/lib/utils/openHtmlInNewTab";

@@ -10,7 +10,7 @@ vi.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams(runtime.search),
 }));
 
-vi.mock("@/lib/hooks/useIsMobile", () => ({ useIsMobile: () => runtime.mobile }));
+vi.mock("@/lib/hooks/layout/useIsMobile", () => ({ useIsMobile: () => runtime.mobile }));
 vi.mock("./ReviewNotesPane", () => ({
   ReviewNotesList: ({ activeId, onSelect }: { activeId: string | null; onSelect: (id: string | null) => void }) => (
     <div data-testid="review-notes-list">

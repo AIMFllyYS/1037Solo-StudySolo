@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useChatHistory } from "@/lib/stores/chatHistory";
-import { useAgentTabs } from "@/lib/stores/agentTabs";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
+import { useAgentTabs } from "@/lib/stores/workspace/agentTabs";
 import { activateStorageOwner } from "@/lib/storage/ownerScope";
 
 vi.mock("@/components/chat/ChatHistoryOverlay", () => ({

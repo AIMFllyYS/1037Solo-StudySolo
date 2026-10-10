@@ -1,5 +1,5 @@
 import type { QuizData, QuizQuestion } from "@/lib/quiz/types";
-import { physicsLectures } from "@/lib/content-data/physics-lectures";
+import { physicsLectures } from "@/lib/content-data/subjects/physics/physics-lectures";
 import { recordingIds } from "@/lib/content-data/recordings";
 
 /** 物理录音题库允许的 chapterId：直接取自 manifest 的讲次声明，不再手抄白名单。 */

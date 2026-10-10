@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactElement, ReactNode } from "react";
 import type { ForcedComposerTool } from "@/lib/chat/composerIntent";
 import { ContextUsageRing } from "@/components/chat/billing/ContextUsageRing";
-import { useTokenTracker } from "@/lib/hooks/useTokenTracker";
+import { useTokenTracker } from "@/lib/stores/chat/tokenTracker";
 
 /** 与顶栏最小化窗同一套缩略图：方圆角、细边框、底栏色条。 */
 const THUMB_ACCENTS = {

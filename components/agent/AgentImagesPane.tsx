@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 import { ImageOff } from "lucide-react";
 import type { AgentImageItem } from "@/lib/agent/sessionImages";
-import { useLightbox } from "@/lib/stores/lightbox";
+import { useLightbox } from "@/lib/stores/workspace/lightbox";
 import { useT } from "@/lib/i18n";
-import { acquireImageGenLease, hydrateImageGenImages } from "@/lib/stores/imageGen";
+import { acquireImageGenLease, hydrateImageGenImages } from "@/lib/stores/assets/imageGen";
 
 const KIND_LABEL_KEY: Record<AgentImageItem["kind"], string> = {
   web: "agent.images.search",

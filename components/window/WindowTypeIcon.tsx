@@ -6,7 +6,7 @@ import { AgentQuizIcon } from "@/components/icons/AgentIcons";
 import FileTypeIcon, { resolveFileGlyphKind } from "@/components/icons/file-types/FileTypeIcon";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
-import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
+import type { ManagedWindow } from "@/lib/stores/workspace/windowManager";
 
 export function WindowTypeIcon({
   type,

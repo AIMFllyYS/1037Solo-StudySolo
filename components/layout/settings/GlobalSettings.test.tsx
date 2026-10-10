@@ -3,10 +3,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
-import { useTheme } from "@/lib/hooks/useTheme";
+import { useTheme } from "@/lib/stores/theme";
 import GlobalSettings from "./GlobalSettings";
 import { useStore } from "@/lib/stores/ui";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useAcademicYear } from "@/lib/stores/academicYear";
 import { DEFAULT_ACADEMIC_YEAR } from "@/lib/constants/academic-year";
 
 vi.mock("next/navigation", () => ({
@@ -126,7 +126,7 @@ describe("GlobalSettings", () => {
     expect(screen.getByRole("radio", { name: "大五" })).toBeInTheDocument();
     await user.click(screen.getByRole("radio", { name: "大一" }));
     await user.click(screen.getByRole("radio", { name: "大一下学期" }));
-    const { useAcademicYear } = await import("@/lib/hooks/useAcademicYear");
+    const { useAcademicYear } = await import("@/lib/stores/academicYear");
     expect(useAcademicYear.getState().year).toBe("freshman-2");
     expect(localStorage.getItem("gailvlun-academic-year")).toBe("freshman-2");
     expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toHaveTextContent("大一下学期");

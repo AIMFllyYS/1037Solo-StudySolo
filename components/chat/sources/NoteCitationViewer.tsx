@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { BookOpen } from 'lucide-react';
-import { useNoteCitations, NOTE_CITATION_WINDOW_ID } from '@/lib/hooks/useNoteCitations';
-import { useWindowManager } from '@/lib/hooks/useWindowManager';
+import { useNoteCitations, NOTE_CITATION_WINDOW_ID } from '@/lib/stores/learning/noteCitations';
+import { useWindowManager } from '@/lib/stores/workspace/windowManager';
 import ManagedWindow from '@/components/window/ManagedWindow';
 import NoteRenderer from '@/components/notes/NoteRenderer';
 import PlainTextReader from '@/components/notes/PlainTextReader';

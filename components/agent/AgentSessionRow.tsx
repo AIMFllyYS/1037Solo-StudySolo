@@ -8,7 +8,7 @@ import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { translate, useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/stores/settings";
-import { useSessionRuns, type SessionRunRecord } from "@/lib/stores/sessionRuns";
+import { useSessionRuns, type SessionRunRecord } from "@/lib/stores/chat/sessionRuns";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
 
 /** 会话行的图标：划词助手 / 笔记记录 / 定时任务 / 普通对话各一种，不要互相借。 */

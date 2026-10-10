@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
-import { useSettings } from "@/lib/hooks/useSettings";
+import { useSettings } from "@/lib/stores/settings";
 import { getAllModels } from "@/lib/ai/models";
 import { labelCls } from "./_shared";
 import AppSelect from "@/components/ui/AppSelect";

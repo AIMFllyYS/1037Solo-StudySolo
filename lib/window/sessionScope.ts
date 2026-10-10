@@ -1,6 +1,6 @@
 "use client";
 
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 
 /**
  * 「这个窗口属于哪个对话」的唯一判定。

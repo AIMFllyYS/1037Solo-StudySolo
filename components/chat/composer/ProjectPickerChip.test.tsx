@@ -18,7 +18,7 @@ const historyState = {
   moveSessionToFolder: vi.fn(),
 };
 
-vi.mock("@/lib/hooks/useChatHistory", () => ({
+vi.mock("@/lib/stores/chat/chatHistory", () => ({
   useChatHistory: (selector: (state: typeof historyState) => unknown) => selector(historyState),
 }));
 

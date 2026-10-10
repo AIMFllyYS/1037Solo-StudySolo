@@ -11,7 +11,7 @@ import {
 import { calculateTicks } from "./canvasUtils";
 import { CanvasControls } from "./CanvasControls";
 import { CanvasFullscreenPortal } from "./CanvasFullscreenPortal";
-import { useCanvasFullscreen } from "@/lib/hooks/useCanvasFullscreen";
+import { useCanvasFullscreen } from "@/lib/hooks/runtime/useCanvasFullscreen";
 
 export interface SvgCanvasProps {
   width?: number;

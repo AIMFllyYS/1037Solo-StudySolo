@@ -4,11 +4,11 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import AgentSourcePanel from "./AgentSourcePanel";
 import { translate } from "@/lib/i18n";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
-import { SOURCES_PANEL_DEFAULT_SIZE, useAgentCenter } from "@/lib/stores/agentCenter";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { SOURCES_PANEL_DEFAULT_SIZE, useAgentCenter } from "@/lib/stores/workspace/agentCenter";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useStore } from "@/lib/stores/ui";
-import { useArtifacts } from "@/lib/stores/artifacts";
-import { useImageGen } from "@/lib/stores/imageGen";
+import { useArtifacts } from "@/lib/stores/assets/artifacts";
+import { useImageGen } from "@/lib/stores/assets/imageGen";
 import { resetAutoOpenedQuizzes } from "@/lib/quiz-dock/open";
 
 const zh = (key: string, vars?: Record<string, string | number>) => translate("zh", key, vars);

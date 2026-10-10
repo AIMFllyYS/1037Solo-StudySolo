@@ -5,7 +5,7 @@ import { useStore } from "@/lib/stores/ui";
 
 let mobile = false;
 
-vi.mock("@/lib/hooks/useIsMobile", () => ({
+vi.mock("@/lib/hooks/layout/useIsMobile", () => ({
   useIsMobile: () => mobile,
 }));
 

@@ -1,6 +1,6 @@
 import { compactStudyMessages } from "@/lib/chat/compactStudyParts";
 import { assetApi } from "@/lib/assets/client";
-import type { Artifact } from "@/lib/stores/artifacts";
+import type { Artifact } from "@/lib/stores/assets/artifacts";
 import type { StoredDocument } from "@/lib/documents/types";
 import type { UserNote } from "@/lib/notes/userNote";
 import type { ReviewCard } from "@/lib/review/types";

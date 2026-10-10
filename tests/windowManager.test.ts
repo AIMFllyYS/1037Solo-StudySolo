@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 function resetWindowManager() {
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
