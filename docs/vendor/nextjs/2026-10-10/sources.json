@@ -1,0 +1,59 @@
+{
+  "type": "external-reference",
+  "sources": [
+    {
+      "file": "project-structure.md",
+      "url": "https://nextjs.org/docs/app/getting-started/project-structure",
+      "fetchedAt": "2026-10-10T05:12:15.203Z",
+      "sha256": "aacc9170bc28dd3369627df446db046fb64585edaa32306684cee41a793dfc67"
+    },
+    {
+      "file": "server-and-client-components.md",
+      "url": "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+      "fetchedAt": "2026-10-10T05:12:15.441Z",
+      "sha256": "a1d63b4df46e0b6e8d7346ab2184ee8055f02ebdba7f63136c03f8fab3903fb9"
+    },
+    {
+      "file": "fetching-data.md",
+      "url": "https://nextjs.org/docs/app/getting-started/fetching-data",
+      "fetchedAt": "2026-10-10T05:12:15.860Z",
+      "sha256": "2350cd449483afd7c3d2561ccd90c29ddcfd82a9f9ad357bd4cacdb48fe4d91b"
+    },
+    {
+      "file": "caching-and-revalidating.md",
+      "url": "https://nextjs.org/docs/app/getting-started/caching-and-revalidating",
+      "fetchedAt": "2026-10-10T05:12:16.748Z",
+      "sha256": "ba35c0a3b3e42708ff414a4472882521121ec1ee2704d5c811dcd9f9d02c385c"
+    },
+    {
+      "file": "route-handlers.md",
+      "url": "https://nextjs.org/docs/app/getting-started/route-handlers",
+      "fetchedAt": "2026-10-10T05:12:16.967Z",
+      "sha256": "349e1f963cf4e67fc55eaa8eb547a6fd4b188a5c1c8af6c00793bacf176eccf6"
+    },
+    {
+      "file": "error-handling.md",
+      "url": "https://nextjs.org/docs/app/getting-started/error-handling",
+      "fetchedAt": "2026-10-10T05:12:17.214Z",
+      "sha256": "dcca371169039efe03260ac5db508958881e8a185e20a71a84701242534b21b4"
+    },
+    {
+      "file": "upgrading.md",
+      "url": "https://nextjs.org/docs/app/guides/upgrading",
+      "fetchedAt": "2026-10-10T05:12:17.403Z",
+      "sha256": "53a724ca0fcaf57b1229d71fcaef5704d6020738a4950a1249285e92f35fb99e"
+    },
+    {
+      "file": "upgrading-version-16.md",
+      "url": "https://nextjs.org/docs/app/guides/upgrading/version-16",
+      "fetchedAt": "2026-10-10T05:12:17.631Z",
+      "sha256": "d7af7faf3d556cc303b283c29edde4c52768f86e725edd38ecf2808428703cd7"
+    },
+    {
+      "file": "output.md",
+      "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/output",
+      "fetchedAt": "2026-10-10T05:12:18.024Z",
+      "sha256": "4694e7f9675bcd62067c71231dc8522e016f33460823d694e998972206e565eb"
+    }
+  ]
+}
