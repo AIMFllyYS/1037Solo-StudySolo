@@ -4,7 +4,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import LoginOverlay from "./LoginOverlay";
 import { useStore } from "@/lib/stores/ui";
-import GlobalSettings from "@/components/layout/GlobalSettings";
+import GlobalSettings from "@/components/layout/settings/GlobalSettings";
 import { useTheme } from "@/lib/hooks/useTheme";
 import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";

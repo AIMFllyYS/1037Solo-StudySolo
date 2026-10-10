@@ -70,7 +70,7 @@ test("本地导入记录：只存路径与元数据，不落内容、不上云",
 
 test("项目 chip 只出现在 Agent 中央对话的输入框右下角", () => {
   const chatPanel = readFile("components/chat/ChatPanel.tsx");
-  const chatInput = readFile("components/chat/ChatInput.tsx");
+  const chatInput = readFile("components/chat/composer/ChatInput.tsx");
   const chip = readFile("components/chat/composer/ProjectPickerChip.tsx");
   assert.match(chatPanel, /showProjectPicker=\{emptyLayout === "agent"\}/);
   assert.match(chatInput, /showProjectPicker\?: boolean;/);

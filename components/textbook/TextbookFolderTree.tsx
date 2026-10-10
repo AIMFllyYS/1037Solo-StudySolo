@@ -1,7 +1,7 @@
 "use client";
 
 import { FileText, Folder, FolderOpen } from "lucide-react";
-import FolderTreeRow from "@/components/layout/FolderTreeRow";
+import FolderTreeRow from "@/components/layout/navigation/FolderTreeRow";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import SubjectIcon from "@/components/shared/SubjectIcon";
 import { navTree } from "@/lib/content-data/nav";

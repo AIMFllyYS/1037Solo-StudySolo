@@ -25,7 +25,7 @@ vi.mock('@/lib/hooks/useAutoHideChatHeader', () => ({ useAutoHideChatHeader: () 
 vi.mock('@/components/chat/ChatThread', () => ({ default: ({ isLoading, info, onClearInfo, accessGateContent }: {
   isLoading: boolean; info: string | null; onClearInfo: () => void; accessGateContent?: React.ReactNode;
 }) => <div><span data-testid="loading">{String(isLoading)}</span><span data-testid="info">{info}</span>{accessGateContent}<button onClick={onClearInfo}>清除提示</button></div> }));
-vi.mock('@/components/chat/ChatInput', () => ({ default: ({ onSend, onStop, isLoading, disabled, disabledReason }: {
+vi.mock('@/components/chat/composer/ChatInput', () => ({ default: ({ onSend, onStop, isLoading, disabled, disabledReason }: {
   onSend: (text: string) => void; onStop: () => void; isLoading: boolean; disabled?: boolean; disabledReason?: string;
 }) => <div><span data-testid="chat-disabled">{String(!!disabled)}</span><span data-testid="chat-disabled-reason">{disabledReason}</span><button disabled={disabled && !isLoading} onClick={() => onSend('手动问题')}>手动发送</button><button disabled={disabled && !isLoading} onClick={onStop}>停止</button></div> }));
 vi.mock('@/components/notes/SelectionPopover', () => ({ default: () => null }));

@@ -64,8 +64,8 @@ test("会话列表：一次 10 条 + 滚动续载，不再是「还有 N 个对�
 });
 
 test("项目体系：两个系统项目不可删、可重命名，重命名同步云端", () => {
-  const storage = readFile("lib/storage/chatStorage.ts");
-  const store = readFile("lib/stores/chatHistory.ts");
+  const storage = readFile("lib/storage/chatStorage/manifest.ts");
+  const store = readFile("lib/stores/chatHistory/projectActions.ts");
   const menu = readFile("components/agent/AgentPanelMenu.tsx");
 
   assert.match(storage, /id: 'project-note'/);
@@ -96,8 +96,8 @@ test("云端同步新增 chat-project：客户端与迁移文件对齐", () => {
 });
 
 test("manifest 只有一个构造入口：云端拉取也必须走 manifestFrom", () => {
-  const engine = readFile("lib/sync/engine.ts");
-  const store = readFile("lib/stores/chatHistory.ts");
+  const engine = readFile("lib/sync/stores.ts");
+  const store = readFile("lib/stores/chatHistory/manifest.ts");
   // 引擎侧：不再手写字段，全部交给 manifestFrom（它保留 folders / activeProjectId）
   assert.doesNotMatch(engine, /version: 2/);
   assert.match(engine, /saveManifest\(manifestFrom\(state/);

@@ -103,7 +103,7 @@ export default defineConfig([
       "no-restricted-imports": ["error", {
         patterns: [
           {
-            group: ["@/components/chat/*", "@/lib/hooks/useArtifacts", "@/lib/hooks/useDocuments", "@/lib/hooks/useImageGen"],
+            group: ["@/components/chat/**", "@/lib/hooks/useArtifacts", "@/lib/hooks/useDocuments", "@/lib/hooks/useImageGen"],
             message: "AI 对话产物（artifact/document/imageGen）只能由 components/chat 与 AppShell 的全局窗口层渲染，不得在笔记区/右侧 tab 直接引用。见 docs/plans/17 §5。",
           },
           {
@@ -124,7 +124,7 @@ export default defineConfig([
     rules: {
       "no-restricted-imports": ["error", {
         patterns: [
-          { group: ["@/components/chat/*"], message: "canvas 是纯渲染层，不得反向依赖 chat。" },
+          { group: ["@/components/chat/**"], message: "canvas 是纯渲染层，不得反向依赖 chat。" },
           {
             group: [
               "@/lib/ai/agent/tools/**/tool",

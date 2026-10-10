@@ -10,8 +10,8 @@ import {
   AgentQuizIcon,
   AgentTerminalIcon,
 } from "@/components/icons/AgentIcons";
-import { SourcePreviewRows, sourcePreviewMeta } from "@/components/chat/SourcePreviewRows";
-import WebSourceCarousel from "@/components/chat/WebSourceCarousel";
+import { SourcePreviewRows, sourcePreviewMeta } from "@/components/chat/sources/SourcePreviewRows";
+import WebSourceCarousel from "@/components/chat/trace/WebSourceCarousel";
 import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
 import { webSourceHost } from "@/lib/chat/webSearchDisplay";
 import type { AgentProductItem, AgentProductKind } from "@/lib/chat/sessionProducts";

@@ -19,7 +19,7 @@ const CONTENT_PAGE = join(
   "[id]",
   "ContentPageClient.tsx",
 );
-const ARTIFACT_VIEWER = join(process.cwd(), "components", "chat", "ArtifactViewer.tsx");
+const ARTIFACT_VIEWER = join(process.cwd(), "components", "chat", "products", "ArtifactViewer.tsx");
 const HTML_RENDERER = join(process.cwd(), "components", "canvas", "renderers", "HtmlRenderer.tsx");
 
 const VIZ_HTML = `<!DOCTYPE html>

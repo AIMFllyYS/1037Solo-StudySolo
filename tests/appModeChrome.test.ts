@@ -11,12 +11,12 @@ function readWorkspaceFile(path: string) {
 
 test("顶栏与壳走 StudySolo 三模式，不再写期末复习工作站", () => {
   const appShell = readWorkspaceFile("components/layout/AppShell.tsx");
-  const mobile = readWorkspaceFile("components/layout/MobileTopBar.tsx");
-  const switcher = readWorkspaceFile("components/layout/ModeSwitcher.tsx");
-  const bookshelf = readWorkspaceFile("components/layout/HomeBookshelf.tsx");
+  const mobile = readWorkspaceFile("components/layout/mobile/MobileTopBar.tsx");
+  const switcher = readWorkspaceFile("components/layout/navigation/ModeSwitcher.tsx");
+  const bookshelf = readWorkspaceFile("components/layout/navigation/HomeBookshelf.tsx");
   const logo = readWorkspaceFile("components/layout/BrandLogo.tsx");
 
-  assert.match(appShell, /from "\.\/ModeSwitcher"/);
+  assert.match(appShell, /from "\.\/navigation\/ModeSwitcher"/);
   assert.match(appShell, /<ModeSwitcher\s*\/>/);
   assert.match(appShell, /useAppMode/);
   assert.match(appShell, /usesStudioChrome/);
@@ -36,7 +36,7 @@ test("顶栏与壳走 StudySolo 三模式，不再写期末复习工作站", () 
   // 导入本身不决定可见性，路由行为由 MobileTopBar.test.tsx / app-mode.test.ts 保护。
   assert.doesNotMatch(mobile, /from "\.\/BrandLogo"/);
 
-  const drawer = readWorkspaceFile("components/layout/MobileSidebarDrawer.tsx");
+  const drawer = readWorkspaceFile("components/layout/mobile/MobileSidebarDrawer.tsx");
   assert.match(drawer, /<ModeSwitcher compact stayOnStudioForAgent \/>/);
   assert.match(drawer, /SubjectFolderTree/);
 
@@ -96,9 +96,9 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.match(appShell, /hideWindowTaskbar/);
 
 
-  const settings = readWorkspaceFile("components/layout/MobileSettingsPanel.tsx");
-  const globalSettings = readWorkspaceFile("components/layout/GlobalSettings.tsx");
-  assert.match(settings, /from "\.\/GlobalSettings"/);
+  const settings = readWorkspaceFile("components/layout/mobile/MobileSettingsPanel.tsx");
+  const globalSettings = readWorkspaceFile("components/layout/settings/GlobalSettings.tsx");
+  assert.match(settings, /from "\.\.\/settings\/GlobalSettings"/);
   assert.match(settings, /variant="page"/);
   assert.doesNotMatch(settings, /ChatSettings/);
   assert.match(globalSettings, /mobile-settings-quota/);

@@ -28,8 +28,8 @@ vi.mock('@/components/chat/ChatPanelHeader', () => ({ default: () => null }));
 vi.mock('@/components/chat/ChatHistoryOverlay', () => ({ default: () => null }));
 vi.mock('@/components/notes/SelectionPopover', () => ({ default: () => null }));
 vi.mock('@/components/shared/ImageLightbox', () => ({ ImageLightbox: () => null }));
-vi.mock('@/components/chat/TokenDashboard', () => ({ default: () => <div data-testid="token-dashboard" /> }));
-vi.mock('@/components/chat/ModelMenu', () => ({ default: () => <div data-testid="model-menu" /> }));
+vi.mock('@/components/chat/billing/TokenDashboard', () => ({ default: () => <div data-testid="token-dashboard" /> }));
+vi.mock('@/components/chat/composer/ModelMenu', () => ({ default: () => <div data-testid="model-menu" /> }));
 vi.mock('@/lib/hooks/useChatUI', () => ({ useChatUI: () => ({ quotedText: null, clearQuotedText: vi.fn() }) }));
 vi.mock('@/lib/hooks/useImageAttachments', () => ({ useImageAttachments: () => ({
   attachments: [], addFiles: vi.fn(), remove: vi.fn(), clear: vi.fn(), toChatFormat: () => [],

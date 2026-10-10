@@ -24,7 +24,7 @@ vi.mock("@/lib/hooks/useChatHistory", async (importOriginal) => ({
 vi.mock("@/components/chat/ChatThread", () => ({ default: ({ isLoading, info, onClearInfo }: {
   isLoading: boolean; info: string | null; onClearInfo: () => void;
 }) => <div><span data-testid="loading">{String(isLoading)}</span><span data-testid="info">{info}</span><button onClick={onClearInfo}>清除提示</button></div> }));
-vi.mock("@/components/chat/ChatInput", () => ({ default: ({ onSend, onStop, disableQuote }: {
+vi.mock("@/components/chat/composer/ChatInput", () => ({ default: ({ onSend, onStop, disableQuote }: {
   onSend: (text: string) => void; onStop: () => void; disableQuote?: boolean;
 }) => <div><span data-testid="quote">{String(disableQuote)}</span><button onClick={() => onSend("追问一句")}>手动发送</button><button onClick={onStop}>停止</button></div> }));
 

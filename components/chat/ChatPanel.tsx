@@ -17,7 +17,7 @@ import { SOFT_LIMIT_RATIO } from '@/lib/context/estimateFullContext';
 import { subjectShortName } from '@/lib/content-data/subjects.registry';
 import SelectionPopover from '@/components/notes/SelectionPopover';
 import ChatThread from '@/components/chat/ChatThread';
-import ChatInput from '@/components/chat/ChatInput';
+import ChatInput from '@/components/chat/composer/ChatInput';
 import ChatAccessNotice from '@/components/chat/ChatAccessNotice';
 import { ImageLightbox } from '@/components/shared/ImageLightbox';
 import ChatPanelHeader from '@/components/chat/ChatPanelHeader';

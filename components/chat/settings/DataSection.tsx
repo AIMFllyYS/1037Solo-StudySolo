@@ -3,7 +3,7 @@ import { notifyAccountUsageChanged } from '@/lib/billing/quotaView';
 
 import { useState } from "react";
 import { Cloud, DollarSign, Download, Ticket } from "lucide-react";
-import { StorageQuotaBlock } from "@/components/chat/StorageQuota";
+import { StorageQuotaBlock } from "@/components/chat/billing/StorageQuota";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import { exportAllChats } from "@/lib/chat/exportChats";

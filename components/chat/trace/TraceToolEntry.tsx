@@ -11,14 +11,14 @@ import {
   AgentSearchIcon,
   AgentTerminalIcon,
 } from '@/components/icons/AgentIcons';
-import { AgentTraceStep } from '@/components/chat/AgentTraceStep';
-import { WebSearchStepDetail } from '@/components/chat/WebSearchStepDetail';
+import { AgentTraceStep } from '@/components/chat/trace/AgentTraceStep';
+import { WebSearchStepDetail } from '@/components/chat/trace/WebSearchStepDetail';
 import { getTraceToolOutput, type TraceToolStep as ToolStep } from '@/lib/chat/buildTrace';
 import { getToolPresentation, type ToolIconKind } from '@/lib/chat/toolPresentation';
 import { useIsAgentSurface } from '@/lib/window/useManagedWindowSurface';
 import { useT } from '@/lib/i18n';
 import type { ResultCardProps } from '@/lib/ai/agent/tools/registry';
-import type { AgentTraceProps } from '@/components/chat/AgentTrace';
+import type { AgentTraceProps } from '@/components/chat/trace/AgentTrace';
 
 export const TraceToolEntry = React.memo(function TraceToolEntry({ step, toolContext, StepDetail }: { step: ToolStep; toolContext?: AgentTraceProps['toolContext']; StepDetail?: React.ComponentType<ResultCardProps> }) {
   const t = useT();

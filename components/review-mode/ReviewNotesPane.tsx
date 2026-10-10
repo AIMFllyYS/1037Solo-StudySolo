@@ -4,7 +4,7 @@ import { useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode 
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
 import { FileText, Plus, Search } from "lucide-react";
-import YearSubjectFolderTree from "@/components/layout/YearSubjectFolderTree";
+import YearSubjectFolderTree from "@/components/layout/navigation/YearSubjectFolderTree";
 import ReviewNoteWorkspace from "./ReviewNoteWorkspace";
 import { selectLibraryNotes, useUserNotes } from "@/lib/stores/userNotes";
 import { userNoteMatchesQuery } from "@/lib/notes/userNoteSearch";

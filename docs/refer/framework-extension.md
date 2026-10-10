@@ -390,7 +390,7 @@ import { VideoPlayer } from '@/components/visualizations';
 
 ## 6. AI 对话 XML 标签扩展方法
 
-AI 对话中的可视化通过项目白名单标签触发。原始模型输出先进入 `lib/chat/rendering/parseChatContent.ts`，再由 `lib/utils/xmlParser.tsx` 只识别白名单标签，最后交给 `components/chat/ChatMessageVisualizations.tsx` 的 `switch` 语句分发到原语。
+AI 对话中的可视化通过项目白名单标签触发。原始模型输出先进入 `lib/chat/rendering/parseChatContent.ts`，再由 `lib/utils/xmlParser.tsx` 只识别白名单标签，最后交给 `components/chat/messages/ChatMessageVisualizations.tsx` 的 `switch` 语句分发到原语。
 
 协议边界：
 - 普通 Markdown / 原生小写 HTML（如 `<details>`、`<summary>`、`<br>`、`<sub>`）必须留在 markdown 块里，由 `ReactMarkdown` + `rehype-raw` 处理。
@@ -456,7 +456,7 @@ case 'PhysicsFreeBodyDiagram':
 
 5. **补回归测试**：
    - `lib/utils/xmlParser.test.tsx` 覆盖标签解析、childrenText 保留、流式未闭合尾巴。
-   - `components/chat/MessageContent.test.tsx` 覆盖 DOM 中不出现裸 `<` / `details>`、未知标签不触发 React unknown tag warning。
+   - `components/chat/messages/MessageContent.test.tsx` 覆盖 DOM 中不出现裸 `<` / `details>`、未知标签不触发 React unknown tag warning。
    - 若标签会进入 prompt 或题目渲染链路，同步覆盖 `components/quiz/QuizMarkdown.test.tsx`。
 
 6. **类型转换约定**：
@@ -621,7 +621,7 @@ physics 学科已是真实接入的完整学科（`content/physics/detail/*.md` 
 
 ### ContentImage（`components/shared/ContentImage.tsx`）
 
-笔记侧 `NoteRenderer`/`NoteRendererServer` 与测验 `QuizMarkdown`/`QuizMarkdownBase` 的 `img` 组件映射到 `ContentImage`；聊天侧 `MessageContent` 的 `img` 映射到 `ChatImage`（`components/chat/ChatImage.tsx`，多一层大图预览），两者接口一致但不是同一个组件，详见 [rendering-architecture.md](./rendering-architecture.md) §3/§4。`ContentImage` 功能：
+笔记侧 `NoteRenderer`/`NoteRendererServer` 与测验 `QuizMarkdown`/`QuizMarkdownBase` 的 `img` 组件映射到 `ContentImage`；聊天侧 `MessageContent` 的 `img` 映射到 `ChatImage`（`components/chat/messages/ChatImage.tsx`，多一层大图预览），两者接口一致但不是同一个组件，详见 [rendering-architecture.md](./rendering-architecture.md) §3/§4。`ContentImage` 功能：
 
 - 图片加载失败时显示 `ImageOff` 错误图标 + 文件名（不会白屏）
 - 提供 `title` 时自动包裹 `<figure>` + `<figcaption>`
@@ -664,7 +664,7 @@ import { SvgCanvas, FunctionPlot } from '@/components/canvas';
 | `components/shared/directives/MediaEmbed.tsx` | `::video` / `::interactive` 指令渲染（`VideoEmbed` / `InteractiveEmbed`） |
 | `lib/markdown/remarkDirectives.ts` | remark 指令解析插件 |
 | `components/visualizations/primitives/` | 4 个可视化原语 |
-| `components/chat/ChatMessageVisualizations.tsx` | AI 对话 XML 标签 → 原语分发器 |
+| `components/chat/messages/ChatMessageVisualizations.tsx` | AI 对话 XML 标签 → 原语分发器 |
 | `app/[subject]/[category]/[id]/page.tsx` | 多科路由校验（`isSubjectId()`），SSR 调 `NoteRendererServer` |
 | `app/[subject]/[category]/[id]/ContentPageClient.tsx` | 客户端外壳，接收服务端渲染好的正文插槽（仅 detail 分类） |
 | `app/api/section/route.ts` | Markdown 文件读取 API（客户端回退路由，兼容旧版 `chapterId`/`sectionId` 调用） |

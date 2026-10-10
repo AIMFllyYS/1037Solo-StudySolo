@@ -14,7 +14,7 @@ import { BLANK_NOTE_MARKDOWN, EXAMPLE_USER_NOTE_ID } from "@/lib/notes/userNote"
 vi.mock("@/components/chat/ChatThread", () => ({
   default: () => <div data-testid="note-agent-thread" />,
 }));
-vi.mock("@/components/chat/ChatInput", () => ({
+vi.mock("@/components/chat/composer/ChatInput", () => ({
   default: () => <div data-testid="note-agent-input" />,
 }));
 

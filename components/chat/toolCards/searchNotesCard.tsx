@@ -1,6 +1,6 @@
 "use client";
 
-import NoteCitationCard from "@/components/chat/NoteCitationCard";
+import NoteCitationCard from "@/components/chat/sources/NoteCitationCard";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 
 export default function SearchNotesResultCard({ part }: ResultCardProps<"searchNotes">) {

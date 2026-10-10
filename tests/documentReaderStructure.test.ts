@@ -66,7 +66,7 @@ test("PDF 阅读器是连续页流：多页占位 + 按 DPR 出图 + 可取消�
 });
 
 test("HTML 附件预览：允许脚本、默认锁网、可显式放行联网", () => {
-  const viewer = readWorkspaceFile("components/chat/AttachmentPreviewViewer.tsx");
+  const viewer = readWorkspaceFile("components/chat/attachments/AttachmentPreviewViewer.tsx");
 
   // sandbox="" 是「全禁」——正是脚本驱动页面只显示静态壳的根因。
   assert.doesNotMatch(viewer, /sandbox=""/);

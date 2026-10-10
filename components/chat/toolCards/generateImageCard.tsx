@@ -1,6 +1,6 @@
 "use client";
 
-import ImageGenCard from "@/components/chat/ImageGenCard";
+import ImageGenCard from "@/components/chat/products/ImageGenCard";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 
 export default function GenerateImageResultCard({ part }: ResultCardProps<"generateImage">) {

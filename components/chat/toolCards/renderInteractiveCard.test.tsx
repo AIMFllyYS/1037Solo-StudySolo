@@ -7,7 +7,7 @@ import type { ToolPart } from "@/lib/ai/agent/tools/registry";
 
 import { useAppMode } from "@/lib/stores/appMode";
 
-vi.mock("@/components/chat/ArtifactCard", () => ({
+vi.mock("@/components/chat/products/ArtifactCard", () => ({
   default: ({ title, silent }: { title?: string; silent?: boolean }) =>
     silent ? null : <div>交互演示：{title}</div>,
 }));

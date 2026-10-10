@@ -2,7 +2,7 @@
 
 import { Sparkles } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
-import { AgentTrace } from "@/components/chat/AgentTrace";
+import { AgentTrace } from "@/components/chat/trace/AgentTrace";
 import { useMemoryInbox, type MemoryProposal } from "@/lib/stores/memoryInbox";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";

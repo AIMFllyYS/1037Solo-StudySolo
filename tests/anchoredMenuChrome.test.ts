@@ -38,16 +38,16 @@ test("AnchoredMenu waits for layout and uses the shared stacking constant", () =
 
 test("settings and shared pickers go through AnchoredMenu", () => {
   const files = [
-    "components/layout/AppearanceSettingsControls.tsx",
+    "components/layout/settings/AppearanceSettingsControls.tsx",
     "components/chat/settings/ModelSection.tsx",
     "components/chat/settings/ImageSection.tsx",
     "components/chat/settings/ModelForm.tsx",
     "components/chat/settings/CapabilityEndpointsSection.tsx",
-    "components/chat/ThinkingMenu.tsx",
+    "components/chat/composer/ThinkingMenu.tsx",
     "components/notes/SubjectPickerMenu.tsx",
     "components/search/GlobalSearchFilterMenu.tsx",
     "components/review/RecordPreviewWindow.tsx",
-    "components/layout/ModeSwitcher.tsx",
+    "components/layout/navigation/ModeSwitcher.tsx",
   ];
   for (const path of files) {
     const source = readWorkspaceFile(path);

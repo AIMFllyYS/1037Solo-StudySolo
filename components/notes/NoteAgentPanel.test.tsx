@@ -28,7 +28,7 @@ vi.mock("@/components/chat/ChatThread", () => ({
     <div data-testid="note-agent-thread">{emptyState}</div>
   ),
 }));
-vi.mock("@/components/chat/ChatInput", () => ({
+vi.mock("@/components/chat/composer/ChatInput", () => ({
   default: ({ onSend, disableQuote, quoteText, onClearQuote }: {
     onSend: (text: string) => void;
     disableQuote?: boolean;

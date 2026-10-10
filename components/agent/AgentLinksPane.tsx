@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 import { BookOpen, Link2, Search } from "lucide-react";
-import WebSourceCarousel from "@/components/chat/WebSourceCarousel";
+import WebSourceCarousel from "@/components/chat/trace/WebSourceCarousel";
 import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
 import { webSourceHost } from "@/lib/chat/webSearchDisplay";
 import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";

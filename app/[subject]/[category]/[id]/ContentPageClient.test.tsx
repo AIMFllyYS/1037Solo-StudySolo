@@ -20,7 +20,7 @@ vi.mock("@/components/window/WindowTaskbar", () => ({
 vi.mock("@/components/search/GlobalSearchButton", () => ({
   default: () => <button type="button">搜索</button>,
 }));
-vi.mock("@/lib/content/componentRegistry", () => ({
+vi.mock("@/components/content/componentRegistry", () => ({
   ComponentRenderer: () => null,
 }));
 

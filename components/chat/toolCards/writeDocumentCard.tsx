@@ -1,6 +1,6 @@
 "use client";
 
-import DocumentCard from "@/components/chat/DocumentCard";
+import DocumentCard from "@/components/chat/products/DocumentCard";
 import { useIsAgentSurface } from "@/lib/window/useManagedWindowSurface";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 

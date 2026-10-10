@@ -8,7 +8,7 @@ import { getOwnerEpoch } from '@/lib/storage/ownerScope';
 import { AlertCircle, FilePlus2, Link2, Loader2, RefreshCw, Trash2 } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import DocumentWorkspace, { type DocumentOutlineItem } from "@/components/window/DocumentWorkspace";
-import FolderTreeRow from "@/components/layout/FolderTreeRow";
+import FolderTreeRow from "@/components/layout/navigation/FolderTreeRow";
 import FileTypeIcon, { resolveFileGlyphKind } from "@/components/icons/file-types/FileTypeIcon";
 import AnchoredMenu from "@/components/ui/AnchoredMenu";
 import ActionButton, { actionClass } from "@/components/ui/ActionButton";

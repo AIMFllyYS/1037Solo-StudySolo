@@ -39,7 +39,7 @@ test("折叠动画用实测像素高度，不用 height:auto 作为动画目标"
 });
 
 test("设置弹层不做整体 transform 缩放，滚动定位写回前先浅比较", () => {
-  const settings = readWorkspaceFile("components/layout/GlobalSettings.tsx");
+  const settings = readWorkspaceFile("components/layout/settings/GlobalSettings.tsx");
 
   // transform: scale() 会把子元素的高度测量值一起缩放，是折叠抖动的直接来源
   assert.doesNotMatch(settings, /scale:\s*0?\.\d+/);
@@ -47,6 +47,6 @@ test("设置弹层不做整体 transform 缩放，滚动定位写回前先浅比
 });
 
 test("菜单分区展开内容限高，保证各分区动画位移同量级", () => {
-  const section = readWorkspaceFile("components/layout/SettingsSection.tsx");
+  const section = readWorkspaceFile("components/layout/settings/SettingsSection.tsx");
   assert.match(section, /max-h-\[min\(44vh,300px\)\]/);
 });

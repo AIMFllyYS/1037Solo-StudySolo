@@ -5,7 +5,7 @@ import GenerateImageResultCard from "./generateImageCard";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { ToolPart } from "@/lib/ai/agent/tools/registry";
 
-vi.mock("@/components/chat/ImageGenCard", () => ({
+vi.mock("@/components/chat/products/ImageGenCard", () => ({
   default: ({ title }: { title?: string }) => <div>生图：{title}</div>,
 }));
 

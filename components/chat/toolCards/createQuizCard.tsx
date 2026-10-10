@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import ChatQuizCard from "@/components/chat/ChatQuizCard";
+import ChatQuizCard from "@/components/chat/messages/ChatQuizCard";
 import { openAgentQuiz } from "@/lib/quiz-dock/open";
 import { useIsAgentSurface } from "@/lib/window/useManagedWindowSurface";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";

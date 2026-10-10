@@ -1,6 +1,6 @@
 "use client";
 
-import NoteImageGallery from "@/components/chat/NoteImageGallery";
+import NoteImageGallery from "@/components/chat/sources/NoteImageGallery";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 
 export default function SearchNoteImagesResultCard({ part }: ResultCardProps<"searchNoteImages">) {

@@ -237,7 +237,7 @@ export async function generateStaticParams() {
 
 ### 4.1 浮窗最小化细节
 
-```178:220:components/chat/FloatingChatWindow.tsx
+```178:220:components/chat/floating/FloatingChatWindow.tsx
         display: managed.minimized ? "none" : "flex",
         ...
         {!managed.minimized && (
@@ -350,7 +350,7 @@ export async function generateStaticParams() {
 
 #### 5.2.1 contentTree 全量进客户端
 
-```29:30:components/layout/SubjectSidebar.tsx
+```29:30:components/layout/navigation/SubjectSidebar.tsx
 import { contentTree } from "@/lib/content-data/manifest";
 ```
 

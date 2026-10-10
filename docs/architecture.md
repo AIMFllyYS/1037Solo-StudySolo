@@ -23,6 +23,8 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 目录树、正文、答题与工作区标签是独立展示职责。教材阅读应复用内容渲染链，不复制笔记 renderer，也不通过外跳代替工作区内阅读。
 
+聊天组件按实际职责分为 `composer/`（输入、模型/思考选择）、`messages/`（正文和消息）、`trace/`（工具与思考轨迹）、`sources/`（来源和引用）、`products/`（产物）、`attachments/`（附件）、`billing/`（用量）、`floating/`（悬浮对话）、`settings/` 和既有 `toolCards/`。根目录只保留对话面板/线程/欢迎与其组合。布局域的 `navigation/`、`mobile/`、`settings/` 管理各自展示，根目录负责应用和面板组合。目录迁移不增加桶导出或全套转发层，调用者和延迟入口直接指向真实实现。
+
 复习进度 API 的 Next 路由只声明运行/缓存契约并导出 GET/POST。`lib/review-mode/progress/server/` 将 request 适配、origin/账户绑定、schema/字节限制、快照/评分转换、仓库读写与错误映射分离；原字段、private/no-store 响应、限流、幂等与 CAS 规则保留。
 
 对应客户端 `progressSync.ts` 负责调度、恢复与账户生命周期；`progress/client/` 分离 HTTP/owner binding、attempt 模型转换、checkpoint 本机队列、同步事件、成绩投影和用户主动的旧记录导入。旧历史导入仍需直接用户动作，水合不会自动接管无归属记录。
@@ -59,6 +61,8 @@ Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 
 正文通过 `components/notes/` 与 `components/shared/` 的既有 Markdown、PlainText、HTML 沙箱和组件渲染；公式使用 KaTeX/mhchem。SVG、函数图、分子与交互 HTML 使用 `components/canvas/` 的安全边界。题目和聊天有各自语义适配，不能通过统一化丢掉评分或引用行为。
 
 内容加载的公共入口 `lib/content/loader.ts` 显式转出导航、受保护 IO、正文、例题、题库和搜索；客户端不直接导入其文件读取。`components/quiz/QuizQuestion.tsx` 只组合题干/作答/提示/评分/解析，`question/` 管理元信息、选项、普通/复合题作答、解析和客户端延迟视频。聊天内联轨迹复用 `trace/TraceToolEntry`，专业工具消息再注入 StepDetail；通用渲染不反向加载完整工具卡片 registry。
+
+保留 `renderType: component` 的兼容兜底，但其 React 注册器位于 `components/content/componentRegistry.tsx`；`lib/content/` 不承担 React 展示。
 
 搜索分为离线 BM25/向量索引、Worker 与服务端 hybrid 检索。动态加载、取消、索引身份及生产禁止全库 substring 回退的规则保留。单元测试使用小夹具，真实内容完整性和索引验收另行执行。
 

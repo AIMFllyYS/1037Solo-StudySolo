@@ -1,6 +1,6 @@
 "use client";
 
-import ArtifactCard from "@/components/chat/ArtifactCard";
+import ArtifactCard from "@/components/chat/products/ArtifactCard";
 import { useIsAgentSurface } from "@/lib/window/useManagedWindowSurface";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 

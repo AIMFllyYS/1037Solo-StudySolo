@@ -15,7 +15,7 @@ import type { ExampleDetail } from "@/lib/content/loader";
 import { useStore } from "@/lib/store";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { tabPanelVariants } from "@/lib/motion";
-import { ComponentRenderer } from "@/lib/content/componentRegistry";
+import { ComponentRenderer } from "@/components/content/componentRegistry";
 import { useToc } from "@/lib/hooks/useToc";
 import { useCitationLocator } from "@/lib/hooks/useCitationLocator";
 import WindowTaskbar from "@/components/window/WindowTaskbar";

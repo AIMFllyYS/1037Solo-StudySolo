@@ -3,9 +3,9 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { measureElement, useVirtualizer } from '@tanstack/react-virtual';
 import { AgentArrowUpIcon, AgentLoopIcon, AgentAlertIcon, AgentInfoIcon, AgentCloseIcon } from '@/components/icons/AgentIcons';
-import ChatMessage from '@/components/chat/ChatMessage';
-import ChatMessageDots, { type UserDotEntry } from '@/components/chat/ChatMessageDots';
-import { TRACE_COLLAPSE_MS } from '@/components/chat/AgentTrace';
+import ChatMessage from '@/components/chat/messages/ChatMessage';
+import ChatMessageDots, { type UserDotEntry } from '@/components/chat/messages/ChatMessageDots';
+import { TRACE_COLLAPSE_MS } from '@/components/chat/trace/AgentTrace';
 import { pinScrollToBottom, STICK_THRESHOLD_PX, useStickToBottom } from '@/lib/hooks/useStickToBottom';
 import { getMessageText } from '@/lib/chat/messageParts';
 import { dotEntriesFromSpine } from '@/lib/chat/turnSpine';

@@ -35,9 +35,9 @@ test("思考装配只剩 buildThinkingSettings；AI_ENABLE_THINKING 已删除", 
 test("6 条花钱路由的客户端只发本次用到的自定义分组", () => {
   const files = [
     "lib/chat/buildChatRequestBody.ts",
-    "components/chat/ArtifactCard.tsx",
-    "components/chat/DocumentCard.tsx",
-    "components/chat/ImageGenViewer.tsx",
+    "components/chat/products/ArtifactCard.tsx",
+    "components/chat/products/DocumentCard.tsx",
+    "components/chat/products/ImageGenViewer.tsx",
     "lib/review/startRecord.ts",
     "components/canvas/CanvasRevisionPanel.tsx",
   ];
@@ -76,9 +76,9 @@ test("artifact and image generation use the model selected when the tool call wa
     "lib/ai/agent/tools/generateImage/tool.ts",
     "lib/ai/agent/tools/writeDocument/tool.ts",
   ].map(readWorkspaceFile).join("\n");
-  const artifactCard = readWorkspaceFile("components/chat/ArtifactCard.tsx");
-  const imageViewer = readWorkspaceFile("components/chat/ImageGenViewer.tsx");
-  const imageCard = readWorkspaceFile("components/chat/ImageGenCard.tsx");
+  const artifactCard = readWorkspaceFile("components/chat/products/ArtifactCard.tsx");
+  const imageViewer = readWorkspaceFile("components/chat/products/ImageGenViewer.tsx");
+  const imageCard = readWorkspaceFile("components/chat/products/ImageGenCard.tsx");
 
   assert.match(chatRoute, /selectedModelId: automaticModels \? effectiveModelId : modelId \?\? effectiveModelId/);
   assert.match(tools, /unsupportedReason: ctx\.artifactUnsupportedReason/);

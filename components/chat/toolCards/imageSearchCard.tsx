@@ -1,8 +1,8 @@
 "use client";
 
 import { AgentImageIcon } from "@/components/icons/AgentIcons";
-import { ChatImage } from "@/components/chat/ChatImage";
-import { ImageStrip } from "@/components/chat/ImageStrip";
+import { ChatImage } from "@/components/chat/messages/ChatImage";
+import { ImageStrip } from "@/components/chat/attachments/ImageStrip";
 import { dedupeByKey, webItemKey } from "@/lib/chat/traceSources";
 import { safeHttpUrl } from "@/components/browser/safeUrl";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";

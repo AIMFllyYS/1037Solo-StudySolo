@@ -5,7 +5,7 @@ import { useChat } from "@/lib/hooks/useChat";
 import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/hooks/useChatHistory";
 import { useChatReady } from "@/lib/hooks/useChatReady";
 import ChatThread from "@/components/chat/ChatThread";
-import ChatInput from "@/components/chat/ChatInput";
+import ChatInput from "@/components/chat/composer/ChatInput";
 import type { ChatContext, ChatAttachment, ChatOptions } from "@/lib/types/chat";
 import { QUIZ_EXPLAIN_SEED_PROMPT } from "@/lib/quiz/formatQuestionContext";
 import { useQuizExplain, type QuizExplainWin } from "@/lib/stores/quizExplain";

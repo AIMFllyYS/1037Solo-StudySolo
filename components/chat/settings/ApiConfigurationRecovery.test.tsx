@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, it } from 'vitest';
 import { ApiConfigurationRecovery } from './ApiConfigurationRecovery';
-import ModelMenu from '../ModelMenu';
+import ModelMenu from '../composer/ModelMenu';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { encodeApiBackup } from '@/lib/stores/settingsRecovery';
 import { SETTINGS_LS_KEY } from '@/lib/stores/apiSecrets';

@@ -143,13 +143,13 @@ micromark 属性解析失败 → 整个指令被丢弃，渲染成裸 `:::type{.
 | `app/[subject]/[category]/[id]/page.tsx` | 主内容页正文（服务端组件，渲染结果作为插槽下传给 `ContentPageClient`） | `NoteRendererServer` |
 | `components/video/VideoTab.tsx` | 视频讲稿展开 | `NoteRenderer` |
 | `components/examples/ExampleTab.tsx` | 例题页面 | `NoteRenderer` |
-| `components/chat/NoteCitationViewer.tsx` | 「查看引用笔记」浮窗（点击 `searchNotes` 结果卡片的引用条目后按需 `fetch` 正文再渲染） | `NoteRenderer` |
+| `components/chat/sources/NoteCitationViewer.tsx` | 「查看引用笔记」浮窗（点击 `searchNotes` 结果卡片的引用条目后按需 `fetch` 正文再渲染） | `NoteRenderer` |
 
 ---
 
 ## 4. 聊天侧 — MessageContent
 
-**文件**：`components/chat/MessageContent.tsx`
+**文件**：`components/chat/messages/MessageContent.tsx`
 
 **外层 CSS 容器**：`.chat-prose`（定义于 `app/styles/prose.css`）
 
@@ -158,7 +158,7 @@ micromark 属性解析失败 → 整个指令被丢弃，渲染成裸 `:::type{.
 | 组件覆盖 | 用途 |
 |---|---|
 | `a` | `target="_blank" rel="noopener noreferrer"` 新窗口打开 |
-| `img` | `ChatImage`（`components/chat/ChatImage.tsx`）— 支持 AI 返回的网络图片和 `imageSearch` 结果，点击可打开 `useLightbox` 大图预览；**不是** `ContentImage`（那是笔记侧用的） |
+| `img` | `ChatImage`（`components/chat/messages/ChatImage.tsx`）— 支持 AI 返回的网络图片和 `imageSearch` 结果，点击可打开 `useLightbox` 大图预览；**不是** `ContentImage`（那是笔记侧用的） |
 | `p` | 段落内 ≥2 张图时包裹为 `ImageStrip` 横向滚动 |
 | `table` | 外包 `.chat-table-scroll` 实现横向滚动 |
 | `pre` | 映射到 `CodeBlock` |
@@ -209,7 +209,7 @@ CHAT_VIZ_TAGS = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'Manim
 
 | 文件 | 场景 |
 |---|---|
-| `components/chat/ChatMessage.tsx` | AI 回复气泡；主面板与划词浮窗（`FloatingChatWindow` → `FloatingChatBody`）共用这一个组件树，没有独立的 QuickExplain 专用渲染路径 |
+| `components/chat/messages/ChatMessage.tsx` | AI 回复气泡；主面板与划词浮窗（`FloatingChatWindow` → `FloatingChatBody`）共用这一个组件树，没有独立的 QuickExplain 专用渲染路径 |
 
 ---
 
@@ -459,10 +459,10 @@ CanvasBlock 提供统一的聊天画布协议，覆盖自由 SVG、函数图像�
 
 ### 7.3 新增可视化标签（聊天侧）
 
-1. 在 `components/chat/ChatMessageVisualizations.tsx` 中添加渲染分支
+1. 在 `components/chat/messages/ChatMessageVisualizations.tsx` 中添加渲染分支
 2. 在 `lib/utils/xmlParser.tsx` 的白名单中追加标签名，并确认普通 HTML 不受影响
 3. 在 `lib/ai/prompts/global.md` 中补充标签文档，示例属性使用稳定格式
-4. 增加 `lib/utils/xmlParser.test.tsx` 与 `components/chat/MessageContent.test.tsx` 回归用例
+4. 增加 `lib/utils/xmlParser.test.tsx` 与 `components/chat/messages/MessageContent.test.tsx` 回归用例
 
 ### 7.4 新增 CanvasBlock 类型
 
@@ -490,7 +490,7 @@ CanvasBlock 提供统一的聊天画布协议，覆盖自由 SVG、函数图像�
 
 1. **Artifact 浮窗（「撰写可视化 HTML」所指的那条）**  
    工具 id 仍叫 `renderInteractive`（已写入用户 IndexedDB 聊天历史，**不要改 id**）。  
-   入口：`lib/ai/agent/tools/renderInteractive/tool.ts` → `lib/ai/artifact.ts` → `app/api/artifact/route.ts` → `components/chat/toolCards/renderInteractiveCard.tsx`（适配器）→ `components/chat/ArtifactCard.tsx`（消息内「打开演示」）→ `lib/hooks/useArtifacts.ts` → `components/chat/ArtifactViewer.tsx`。  
+   入口：`lib/ai/agent/tools/renderInteractive/tool.ts` → `lib/ai/artifact.ts` → `app/api/artifact/route.ts` → `components/chat/toolCards/renderInteractiveCard.tsx`（适配器）→ `components/chat/products/ArtifactCard.tsx`（消息内「打开演示」）→ `lib/hooks/useArtifacts.ts` → `components/chat/products/ArtifactViewer.tsx`。
    浮窗由 `AppShell` 挂载，`createPortal` 到 `document.body`，**既不属于右侧 Agent 面板，也不属于中间笔记区**。全屏默认对齐 `#notes-panel`，可在设置里改成铺满视口。
 
 2. **消息内联 HTML 画布**  

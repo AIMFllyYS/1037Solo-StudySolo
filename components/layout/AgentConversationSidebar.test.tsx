@@ -66,7 +66,7 @@ vi.mock("./LeftDock", () => ({
     </button>
   ),
 }));
-vi.mock("./GlobalSettings", () => ({ default: () => null }));
+vi.mock("./settings/GlobalSettings", () => ({ default: () => null }));
 
 afterEach(() => {
   cleanup();

@@ -17,24 +17,24 @@ import {useContextMenu} from '@/lib/stores/contextMenu'
 import UserNoteProposalRuntime from '@/components/notes/UserNoteProposalRuntime'
 import MemoryInboxRuntime from '@/components/memory/MemoryInboxRuntime'
 
-const FloatingChatLayer = dynamic(() => import("@/components/chat/FloatingChatLayer"), { ssr: false });
+const FloatingChatLayer = dynamic(() => import("@/components/chat/floating/FloatingChatLayer"), { ssr: false });
 const QuizExplainLayer = dynamic(() => import("@/components/quiz/QuizExplainLayer"), { ssr: false });
 const AgentQuizWindowLayer = dynamic(() => import("@/components/quiz/AgentQuizWindow"), { ssr: false });
 const RecordPreviewLayer = dynamic(() => import("@/components/review/RecordPreviewLayer"), { ssr: false });
-const ArtifactViewer = dynamic(() => import("@/components/chat/ArtifactViewer"), { ssr: false });
-const ImageGenViewerLayer = dynamic(() => import("@/components/chat/ImageGenViewer"), { ssr: false });
-const DocumentViewerLayer = dynamic(() => import("@/components/chat/DocumentViewer"), { ssr: false });
-const NoteCitationViewer = dynamic(() => import("@/components/chat/NoteCitationViewer"), { ssr: false });
+const ArtifactViewer = dynamic(() => import("@/components/chat/products/ArtifactViewer"), { ssr: false });
+const ImageGenViewerLayer = dynamic(() => import("@/components/chat/products/ImageGenViewer"), { ssr: false });
+const DocumentViewerLayer = dynamic(() => import("@/components/chat/products/DocumentViewer"), { ssr: false });
+const NoteCitationViewer = dynamic(() => import("@/components/chat/sources/NoteCitationViewer"), { ssr: false });
 const UserNoteLayer = dynamic(() => import("@/components/notes/UserNoteLayer"), { ssr: false });
 const FlashcardCiteWindow = dynamic(() => import("@/components/notes/FlashcardCiteWindow"), { ssr: false });
 const AgentProductPickerWindow = dynamic(() => import("@/components/notes/AgentProductPickerWindow"), { ssr: false });
 const MemoryInboxLayer = dynamic(() => import("@/components/memory/MemoryInboxLayer"), { ssr: false });
-const SourceTraceViewer = dynamic(() => import("@/components/chat/SourceTraceViewer"), { ssr: false });
-const SourcePreviewViewer = dynamic(() => import("@/components/chat/SourcePreviewViewer"), { ssr: false });
-const AttachmentPreviewViewer = dynamic(() => import("@/components/chat/AttachmentPreviewViewer"), { ssr: false });
+const SourceTraceViewer = dynamic(() => import("@/components/chat/sources/SourceTraceViewer"), { ssr: false });
+const SourcePreviewViewer = dynamic(() => import("@/components/chat/sources/SourcePreviewViewer"), { ssr: false });
+const AttachmentPreviewViewer = dynamic(() => import("@/components/chat/attachments/AttachmentPreviewViewer"), { ssr: false });
 const MessageContextMenu = dynamic(() => import("@/components/shared/MessageContextMenu"), { ssr: false });
-const BillingDashboardLayer = dynamic(() => import("@/components/chat/BillingDashboard"), { ssr: false });
-const MembershipSponsorLayer = dynamic(() => import("@/components/chat/MembershipSponsorWindow"), { ssr: false });
+const BillingDashboardLayer = dynamic(() => import("@/components/chat/billing/BillingDashboard"), { ssr: false });
+const MembershipSponsorLayer = dynamic(() => import("@/components/chat/billing/MembershipSponsorWindow"), { ssr: false });
 const ProjectFilesLayer = dynamic(() => import("@/components/project/ProjectFilesLayer"), { ssr: false });
 const TextbookLayer = dynamic(() => import("@/components/textbook/TextbookLayer"), { ssr: false });
 

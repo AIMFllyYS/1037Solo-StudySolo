@@ -2,7 +2,7 @@
 
 import { BookText } from "lucide-react";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
-import SkillsManager from "../SkillsManager";
+import SkillsManager from "./SkillsManager";
 import { h3Cls } from "./_shared";
 import { useT } from "@/lib/i18n";
 

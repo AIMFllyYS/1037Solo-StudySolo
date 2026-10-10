@@ -5,7 +5,7 @@ import { useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { useStore } from "@/lib/stores/ui";
 import { useTheme } from "@/lib/hooks/useTheme";
-import AppearanceSettingsControls from "@/components/layout/AppearanceSettingsControls";
+import AppearanceSettingsControls from "@/components/layout/settings/AppearanceSettingsControls";
 import { h3Cls, Toggle } from "./_shared";
 
 export function AppearanceSection() {

@@ -79,6 +79,8 @@
 
 - R3j 复习出题与题目 UI：521 行 quiz API 拆出有界请求、实时所有者、原错题、课程/课堂材料、预算 prompt 与付费 handler，6 项 API 回归通过。955 行 QuizQuestion 拆为约 100 行组合入口和明确展示/作答职责，最大子文件约 325 行，保留 ssr:false 的视频延迟加载；11 项既有题目/解释/进度/Agent UI 回归与新增 8 项九种题型答案行为检查通过，全量类型和定向 lint 通过。新增测试按真实“正确 √ / 错误 ×”标签以及单行 input 行为修正了测试预期，运行代码未因此改动。
 
+- R3k UI 目录：128 个实现/测试文件按 composer、messages、trace、sources、products、attachments、billing、floating、navigation、mobile、settings 迁移；137 个调用者/替身/路径更新，延迟入口和相邻相对导入同时改到真实模块，未建立成批转发。chat/layout 根人工组件分别降至 10/12 个。全量类型通过，React 299 文件/1234 项通过，ESLint 0 error/23 warning。代码全量 2038 项初轮 2032 通过、1 跳过、5 个结构检查仍读旧路径；两个涉及 R3 存储拆分，其余为迁移路径，保留断言并指向真实实现后相关 16 项全部通过。最终冻结后仍需全量重跑。真实 Agent 重新打开医学细胞生物学第一节正文成功，截图 `project-refactor/verify/agent-textbook-after-directory-move.jpg`；访客未进行付费对话或私有文件操作。React 注册兜底迁到 components/content，沿用原行为并修正 lib/UI 边界；lint 的 chat 限制扩大到子目录，避免迁移使规则失效。
+
 ## 局部阻塞
 
 

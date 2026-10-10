@@ -32,7 +32,7 @@ vi.mock("./ReviewFlashcardsPane", () => ({
 vi.mock("./ReviewQuizPane", () => ({ default: () => <div /> }));
 vi.mock("./ReviewMasteryOverview", () => ({ default: () => <div /> }));
 
-import MobileTopBar from "@/components/layout/MobileTopBar";
+import MobileTopBar from "@/components/layout/mobile/MobileTopBar";
 import ReviewWorkspace from "./ReviewWorkspace";
 
 describe("Review mobile left navigation", () => {

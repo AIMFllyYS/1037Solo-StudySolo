@@ -1,6 +1,6 @@
 "use client";
 
-import WebSourceFold from "@/components/chat/WebSourceFold";
+import WebSourceFold from "@/components/chat/trace/WebSourceFold";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 import { webSearchProviderChips } from "@/lib/chat/webSearchDisplay";
 

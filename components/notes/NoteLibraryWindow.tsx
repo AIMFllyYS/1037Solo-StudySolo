@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Check, PenLine, Plus, Quote } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
-import YearSubjectFolderTree from "@/components/layout/YearSubjectFolderTree";
+import YearSubjectFolderTree from "@/components/layout/navigation/YearSubjectFolderTree";
 import NoteRenderer from "@/components/notes/NoteRenderer";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";

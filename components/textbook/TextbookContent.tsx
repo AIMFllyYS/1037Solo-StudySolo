@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import PlainTextReader from "@/components/notes/PlainTextReader";
 import { NoteSkeleton } from "@/components/notes/NoteSkeleton";
-import { ComponentRenderer } from "@/lib/content/componentRegistry";
+import { ComponentRenderer } from "@/components/content/componentRegistry";
 import { useT } from "@/lib/i18n";
 import { textbookSelectionKey, type TextbookSelection } from "@/lib/textbook/state";
 

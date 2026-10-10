@@ -3,7 +3,7 @@
 import { CalendarClock, Loader2, MessageSquare } from "lucide-react";
 import { useId } from "react";
 import clsx from "clsx";
-import FolderTreeRow from "@/components/layout/FolderTreeRow";
+import FolderTreeRow from "@/components/layout/navigation/FolderTreeRow";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { translate, useT } from "@/lib/i18n";

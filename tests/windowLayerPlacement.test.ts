@@ -22,13 +22,13 @@ test("citation and document viewers are mounted in the global app shell window l
   assert.doesNotMatch(chatPanel, /FlashcardCiteWindow/, "Flashcard cite windows must outlive the AI tab.");
   assert.match(appShell, /DeferredWindowLayers/);
   assert.match(appShell, /<DeferredWindowLayers\s*\/>/);
-  assert.match(layers, /components\/chat\/NoteCitationViewer/);
+  assert.match(layers, /components\/chat\/sources\/NoteCitationViewer/);
   assert.match(layers, /<NoteCitationViewer\s*\/>/);
-  assert.match(layers, /components\/chat\/SourceTraceViewer/);
+  assert.match(layers, /components\/chat\/sources\/SourceTraceViewer/);
   assert.match(layers, /<SourceTraceViewer\s*\/>/);
-  assert.match(layers, /components\/chat\/SourcePreviewViewer/);
+  assert.match(layers, /components\/chat\/sources\/SourcePreviewViewer/);
   assert.match(layers, /<SourcePreviewViewer\s*\/>/);
-  assert.match(layers, /components\/chat\/DocumentViewer/);
+  assert.match(layers, /components\/chat\/products\/DocumentViewer/);
   assert.match(layers, /<DocumentViewerLayer\s*\/>/);
   assert.match(layers, /components\/notes\/UserNoteLayer/);
   assert.match(layers, /<UserNoteLayer\s*\/>/);
@@ -59,7 +59,7 @@ test("artifact viewer is mounted in the global app shell window layer", () => {
   assert.match(appShell, /DeferredWindowLayers/);
   assert.match(
     layers,
-    /components\/chat\/ArtifactViewer/,
+    /components\/chat\/products\/ArtifactViewer/,
     "Deferred window layers should dynamically import the artifact viewer as a global floating window.",
   );
   assert.match(

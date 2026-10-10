@@ -10,7 +10,7 @@ import { useStore } from "@/lib/stores/ui";
 import { useChatUI } from "@/lib/stores/chatUI";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import ChatThread from "@/components/chat/ChatThread";
-import ChatInput from "@/components/chat/ChatInput";
+import ChatInput from "@/components/chat/composer/ChatInput";
 import type { ChatOptions } from "@/lib/types/chat";
 import type { SendMessageOptions } from "@/lib/chat/sendMessage";
 

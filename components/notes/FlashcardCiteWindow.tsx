@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Check, Download, ExternalLink, Layers, PenLine, Quote } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
-import YearSubjectFolderTree from "@/components/layout/YearSubjectFolderTree";
+import YearSubjectFolderTree from "@/components/layout/navigation/YearSubjectFolderTree";
 import FlipCard from "@/components/review/FlipCard";
 import QuizMarkdown from "@/components/quiz/QuizMarkdown";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";

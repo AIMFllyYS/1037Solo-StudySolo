@@ -44,23 +44,23 @@ import {
 import { useAppMode } from "@/lib/stores/appMode";
 import { hydrateSettings } from "@/lib/stores/settings";
 import { useBrowserFullscreen } from "@/lib/hooks/useBrowserFullscreen";
-import SubjectSidebar from "./SubjectSidebar";
+import SubjectSidebar from "./navigation/SubjectSidebar";
 import RightPanel from "./RightPanel";
 import CenterWorkspace from "./center/CenterWorkspace";
-import ModeSwitcher from "./ModeSwitcher";
+import ModeSwitcher from "./navigation/ModeSwitcher";
 import { AgentCenterTabsLive } from "@/components/agent/AgentCenterTabs";
 import { useT } from "@/lib/i18n";
 // 移动端组件全部 dynamic：它们只在 isMobile 分支渲染，静态导入会把整套
 // 移动壳（尤其 MobileMiniChat → ChatThread → react-markdown/KaTeX/ai SDK）
 // 拉进所有路由的 eager chunk（实测 /login 也载 3.5MB）。ssr:false 无损失——
 // isMobile 是客户端判定，SSR 从不渲染这些分支。
-const MobileTopBar = dynamic(() => import("./MobileTopBar"), { ssr: false });
-const MobileBottomNav = dynamic(() => import("./MobileBottomNav"), { ssr: false });
-const MobileChapterPicker = dynamic(() => import("./MobileChapterPicker"), { ssr: false });
-const MobileReviewHub = dynamic(() => import("./MobileReviewHub"), { ssr: false });
-const MobileSettingsPanel = dynamic(() => import("./MobileSettingsPanel"), { ssr: false });
-const MobileSidebarDrawer = dynamic(() => import("./MobileSidebarDrawer"), { ssr: false });
-const MobileMiniChat = dynamic(() => import("./MobileMiniChat"), { ssr: false });
+const MobileTopBar = dynamic(() => import("./mobile/MobileTopBar"), { ssr: false });
+const MobileBottomNav = dynamic(() => import("./mobile/MobileBottomNav"), { ssr: false });
+const MobileChapterPicker = dynamic(() => import("./mobile/MobileChapterPicker"), { ssr: false });
+const MobileReviewHub = dynamic(() => import("./mobile/MobileReviewHub"), { ssr: false });
+const MobileSettingsPanel = dynamic(() => import("./mobile/MobileSettingsPanel"), { ssr: false });
+const MobileSidebarDrawer = dynamic(() => import("./mobile/MobileSidebarDrawer"), { ssr: false });
+const MobileMiniChat = dynamic(() => import("./mobile/MobileMiniChat"), { ssr: false });
 import { ChatSkeleton, PageLoader } from "@/components/shared/ResizeLoader";
 import { PanelSkeleton } from "@/components/shared/LoadingStates";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
@@ -76,7 +76,7 @@ import SourcesPanelToggle from "@/components/agent/SourcesPanelToggle";
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const DeferredWindowLayers = dynamic(() => import("@/components/window/DeferredWindowLayers"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false, loading: () => <PanelSkeleton variant="chat" /> });
-const AgentSettingsOverlay = dynamic(() => import("@/components/chat/AgentSettingsOverlay"), { ssr: false });
+const AgentSettingsOverlay = dynamic(() => import("@/components/chat/settings/AgentSettingsOverlay"), { ssr: false });
 const SchedulerRuntime = dynamic(() => import("@/components/agent/scheduler/SchedulerRuntime"), { ssr: false });
 const SelectionAssistantGuard = dynamic(() => import("@/components/notes/SelectionAssistantGuard"), { ssr: false });
 const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false, loading: () => <PanelSkeleton variant="document" /> });

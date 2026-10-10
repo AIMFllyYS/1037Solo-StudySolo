@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { StickyNote, Trash2 } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
-import YearSubjectFolderTree from "@/components/layout/YearSubjectFolderTree";
+import YearSubjectFolderTree from "@/components/layout/navigation/YearSubjectFolderTree";
 import ReviewNoteWorkspace from "@/components/review-mode/ReviewNoteWorkspace";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { userNoteWindowId } from "@/lib/notes/userNote";

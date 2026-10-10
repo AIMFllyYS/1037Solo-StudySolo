@@ -94,7 +94,7 @@ test("chat route uses last user message, selected model context manager, and sof
 });
 
 test("token dashboard binds context cache to cachedTokens and aligns ring with 80% soft limit", () => {
-  const dash = readWorkspaceFile("components/chat/TokenDashboard.tsx");
+  const dash = readWorkspaceFile("components/chat/billing/TokenDashboard.tsx");
   assert.match(dash, /formatContextCacheValue\(cachedTokens/);
   assert.match(dash, /contextRingLevel/);
   assert.doesNotMatch(dash, /breakdown\?\.cacheHit \? '命中' : '未命中'/);

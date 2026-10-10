@@ -11,9 +11,9 @@ function readWorkspaceFile(path: string) {
 
 test("左下角坞显示头像和昵称，点击直接打开设置面板（额度折叠在内）", () => {
   const dock = readWorkspaceFile("components/layout/LeftDock.tsx");
-  const settings = readWorkspaceFile("components/layout/GlobalSettings.tsx");
+  const settings = readWorkspaceFile("components/layout/settings/GlobalSettings.tsx");
   const dialog = readWorkspaceFile("components/layout/AccountDialog.tsx");
-  const sidebar = readWorkspaceFile("components/layout/SubjectSidebar.tsx");
+  const sidebar = readWorkspaceFile("components/layout/navigation/SubjectSidebar.tsx");
   // 设置页的字面量这一轮搬进了 i18n 词典：组件里断言「引用了哪个 key」，
   // 中文再回中文分片里断言，两边都钉住，文案既不会丢也不会漂。
   const settingsDict = readWorkspaceFile("lib/i18n/messages/parts/zh/settings.ts");
