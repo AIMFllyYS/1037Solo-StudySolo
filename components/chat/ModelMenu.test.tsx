@@ -3,8 +3,11 @@ import { cleanup, fireEvent, render, screen, within } from '@testing-library/rea
 import ModelMenu from './ModelMenu';
 import { useSettings } from '@/lib/hooks/useSettings';
 
-function openCategory(name: string) {
+function openMenu() {
   fireEvent.click(screen.getByTestId('model-menu-button'));
+}
+function openCategory(name: string) {
+  openMenu();
   fireEvent.click(screen.getByRole('button', { name }));
 }
 describe('ModelMenu progressive selection', () => {
@@ -13,48 +16,60 @@ describe('ModelMenu progressive selection', () => {
   it('orders builtin categories and selects automatic without displaying routing rules', () => {
     const onChange = vi.fn();
     render(<ModelMenu onChange={onChange} />);
-    fireEvent.click(screen.getByTestId('model-menu-button'));
+    openMenu();
     const panel = screen.getByTestId('model-menu-panel');
-    const names = within(panel).getAllByRole('button').map((b) => b.textContent);
+    const cats = within(panel).getByRole('region', { name: '模型系列' });
+    const names = within(cats).getAllByRole('button').map((b) => b.textContent);
     expect(names.slice(0, 5)).toEqual(['自动模型', '免费模型', '快速模型', '多模态模型', '旗舰模型']);
-    expect(within(panel).queryByRole('button', { name: '内置模型' })).toBeNull();
+    expect(within(cats).queryByRole('button', { name: '内置模型' })).toBeNull();
     expect(panel.textContent).not.toMatch(/路由|白名单|候选/);
+    // 一级栏=思考强度（模型详情）恒显；未选分类时无三级栏。
+    expect(screen.getByRole('region', { name: '模型详情' })).toBeTruthy();
+    expect(screen.queryByRole('region', { name: '具体模型' })).toBeNull();
     fireEvent.click(screen.getByTestId('model-menu-item-auto'));
     expect(onChange).toHaveBeenCalledWith('auto');
     expect(screen.queryByTestId('model-menu-panel')).toBeNull();
   });
   it('keeps image selection and omits thinking controls for image models', () => {
-    render(<ModelMenu />);
+    const onChange = vi.fn();
+    render(<ModelMenu onChange={onChange} />);
     openCategory('生图模型');
     fireEvent.click(screen.getByTestId('model-menu-item-Tongyi-MAI/Z-Image-Turbo'));
+    expect(onChange).toHaveBeenCalledWith('Tongyi-MAI/Z-Image-Turbo');
+    expect(screen.queryByTestId('model-menu-panel')).toBeNull();
+    // 重新打开：一级栏跟随当前模型，生图模型没有思考控件。
+    openMenu();
     expect(within(screen.getByTestId('model-submenu')).getByText('生图')).toBeTruthy();
     expect(screen.queryByTestId('model-thinking-submenu')).toBeNull();
   });
-  it('keeps all three compact desktop columns visible together', () => {
+  it('keeps all three desktop columns visible together with thinking first', () => {
     render(<ModelMenu />);
     openCategory('多模态模型');
+    const panel = screen.getByTestId('model-menu-panel');
     const row = screen.getByTestId('model-menu-item-z-ai/glm-5.3-flash');
     expect(within(row).queryByText('视觉')).toBeNull();
-    fireEvent.click(row);
-    expect(within(screen.getByTestId('model-submenu')).getByText('视觉')).toBeTruthy();
-    expect(within(screen.getByTestId('model-submenu')).getByText('上下文 1M')).toBeTruthy();
-    expect(screen.getByTestId('model-menu-panel').contains(screen.getByTestId('model-submenu'))).toBe(true);
+    fireEvent.mouseEnter(row);
+    const details = screen.getByTestId('model-submenu');
+    expect(within(details).getByText('视觉')).toBeTruthy();
+    expect(within(details).getByText('上下文 1M')).toBeTruthy();
+    expect(panel.contains(details)).toBe(true);
+    expect(screen.getByRole('region', { name: '模型详情' })).toBeTruthy();
     expect(screen.getByRole('region', { name: '模型系列' })).toBeTruthy();
     expect(screen.getByRole('region', { name: '具体模型' })).toBeTruthy();
-    expect(screen.getByRole('region', { name: '模型详情' })).toBeTruthy();
-    expect(screen.getByRole('region', { name: '模型系列' }).style.width).toBe('232px');
+    expect(screen.getByRole('region', { name: '模型详情' }).style.width).toBe('232px');
+    expect(screen.getByRole('region', { name: '模型系列' }).style.width).toBe('250px');
   });
   it('preserves vendor training disclosure in both row and details', () => {
     render(<ModelMenu />);
     openCategory('多模态模型');
-    fireEvent.click(screen.getByTestId('model-menu-item-meta/muse-spark-1.3-contributor'));
+    fireEvent.mouseEnter(screen.getByTestId('model-menu-item-meta/muse-spark-1.3-contributor'));
     expect(screen.getAllByText('对话可能用于厂商训练').length).toBeGreaterThan(1);
   });
   it('selects thinking strength and respects required thinking', () => {
     const onChange = vi.fn(), onThinkingChange = vi.fn();
     render(<ModelMenu value="mimo-v2.6-pro" onChange={onChange} onThinkingChange={onThinkingChange} />);
     openCategory('多模态模型');
-    fireEvent.click(screen.getByTestId('model-menu-item-google/gemini-3.8-flash'));
+    fireEvent.mouseEnter(screen.getByTestId('model-menu-item-google/gemini-3.8-flash'));
     expect(screen.queryByTestId('model-thinking-option-off')).toBeNull();
     fireEvent.click(screen.getByTestId('model-thinking-option-low'));
     expect(onChange).toHaveBeenCalledWith('google/gemini-3.8-flash');
@@ -75,23 +90,25 @@ describe('ModelMenu progressive selection', () => {
     useSettings.setState({ customApiGroups: [{ id: 'mine', name: '我的 API', baseUrl: 'https://custom.invalid/v1', apiKey: '', models: [{ id: 'deepseek-chat', label: '我的 DeepSeek', thinking: true, thinkingRequestStyle: 'deepseek-thinking' }] }] });
     const onChange = vi.fn();
     render(<ModelMenu onChange={onChange} />);
-    fireEvent.click(screen.getByTestId('model-menu-button'));
+    openMenu();
     fireEvent.click(screen.getByRole('button', { name: '我的 API' }));
     fireEvent.click(screen.getByTestId('model-menu-item-custom:mine:deepseek-chat'));
-    fireEvent.click(screen.getByTestId('model-submenu-use'));
     expect(onChange).toHaveBeenCalledWith('custom:mine:deepseek-chat');
+    expect(screen.queryByTestId('model-menu-panel')).toBeNull();
   });
   it('desktop hover traverses categories and models without hiding their parents', () => {
     render(<ModelMenu />);
-    fireEvent.click(screen.getByTestId('model-menu-button'));
+    openMenu();
     fireEvent.mouseEnter(screen.getByRole('button', { name: '多模态模型' }));
     fireEvent.mouseEnter(screen.getByTestId('model-menu-item-mimo-v2.6-pro'));
-    expect(screen.getByRole('region', { name: '模型详情' })).toBeTruthy();
+    // 悬停模型 → 一级栏预览其详情
+    expect(within(screen.getByRole('region', { name: '模型详情' })).getByText('MiMo 2.6 Pro')).toBeTruthy();
     fireEvent.mouseEnter(screen.getByRole('button', { name: '免费模型' }));
     expect(screen.getByTestId('model-menu-item-poolside/laguna-s-2.1-free')).toBeTruthy();
-    expect(screen.queryByRole('region', { name: '模型详情' })).toBeNull();
+    // 换分类后预览清空，一级栏回到当前模型
+    expect(within(screen.getByRole('region', { name: '模型详情' })).queryByText('MiMo 2.6 Pro')).toBeNull();
   });
-  it('left-opening branch arrows precede both series and model labels', () => {
+  it('left-opening branch arrows only on series rows; model rows pick directly', () => {
     const rectangle = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({ left: 900, right: 1000, top: 600, bottom: 630, width: 100, height: 30, x: 900, y: 600, toJSON() {} });
     try {
       render(<ModelMenu />);
@@ -99,9 +116,9 @@ describe('ModelMenu progressive selection', () => {
       const series = screen.getByRole('button', { name: '旗舰模型' });
       expect(series.firstElementChild?.getAttribute('data-branch-side')).toBe('left');
       const row = screen.getByTestId('model-menu-item-kimi-k3');
-      expect(row.firstElementChild?.getAttribute('data-branch-side')).toBe('left');
+      expect(row.querySelector('[data-branch-side]')).toBeNull();
       fireEvent.click(row);
-      expect(screen.queryByTestId('model-thinking-submenu')).toBeNull();
+      expect(screen.queryByTestId('model-menu-panel')).toBeNull();
     } finally { rectangle.mockRestore(); }
   });
   it('submenu follows its owning row when moving between equal-sized series', () => {
@@ -125,23 +142,34 @@ describe('ModelMenu progressive selection', () => {
     openCategory('多模态模型');
     expect(screen.getByTestId('model-menu-item-auto').querySelector('.lucide-compass')).toBeTruthy();
     expect(screen.getByRole('button', { name: '快速模型' }).querySelector('.lucide-zap')).toBeTruthy();
-    fireEvent.click(screen.getByTestId('model-menu-item-mimo-v2.6-pro'));
+    fireEvent.mouseEnter(screen.getByTestId('model-menu-item-mimo-v2.6-pro'));
     expect(screen.getByTestId('model-thinking-option-low')).toBeTruthy();
     expect(screen.getByTestId('model-thinking-option-medium')).toBeTruthy();
     expect(screen.getByTestId('model-thinking-option-high')).toBeTruthy();
   });
-  it('mobile uses one panel, starts at series, and returns without an extra builtin entry', () => {
+  it('mobile uses one panel per level: thinking, then categories, then models', () => {
     const width = window.innerWidth;
     Object.defineProperty(window, 'innerWidth', { configurable: true, value: 390 });
     try {
       render(<ModelMenu />);
-      openCategory('快速模型');
+      openMenu();
       expect(screen.getByTestId('model-menu-panel').dataset.layout).toBe('drilldown');
+      // 一级：思考强度（详情栏）
+      expect(screen.getByRole('region', { name: '模型详情' })).toBeTruthy();
       expect(screen.queryByRole('region', { name: '模型系列' })).toBeNull();
+      // 二级：分类
+      fireEvent.click(screen.getByTestId('model-menu-mobile-next'));
+      fireEvent.click(screen.getByRole('button', { name: '快速模型' }));
+      // 三级：模型列表，点击即选用
+      expect(screen.getByRole('region', { name: '具体模型' })).toBeTruthy();
       fireEvent.click(screen.getByTestId('model-menu-item-deepseek/deepseek-v4.1-flash'));
-      expect(screen.getByRole('region', { name: '具体模型' }).contains(screen.getByTestId('model-submenu'))).toBe(true);
+      expect(screen.queryByTestId('model-menu-panel')).toBeNull();
+      // 再开：回到一级，逐级返回链正常
+      openMenu();
+      fireEvent.click(screen.getByTestId('model-menu-mobile-next'));
+      expect(screen.getByRole('region', { name: '模型系列' })).toBeTruthy();
       fireEvent.click(screen.getByRole('button', { name: '返回模型系列' }));
-      expect(screen.getByTestId('model-menu-item-auto')).toBeTruthy();
+      expect(screen.getByRole('region', { name: '模型详情' })).toBeTruthy();
     } finally { Object.defineProperty(window, 'innerWidth', { configurable: true, value: width }); }
   });
 });

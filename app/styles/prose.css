@@ -1787,6 +1787,10 @@
     opacity 90ms var(--ease-out),
     visibility 0s linear 140ms;
 }
+.chat-input-more-panel {
+  display: flex;
+  padding: 4px;
+}
 .chat-input-more-dot {
   position: absolute;
   inset-block-start: 3px;
@@ -2342,7 +2346,8 @@
   background: var(--md-sys-color-surface-container-high);
 }
 .app-menu-item:disabled { cursor: not-allowed; opacity: .45; }
-.app-menu-item > span:not(.app-menu-check) { min-width: 0; flex: 1; }
+/* 只作用于文字列：开关（.composer-switch）有自己的 28×16 轨道尺寸，吃 flex:1 会溢出卡片 */
+.app-menu-item > span:not(.app-menu-check):not(.composer-switch) { min-width: 0; flex: 1; }
 .app-menu-item small {
   display: block;
   margin-top: 1px;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { Download, Globe, GlobeLock, Presentation } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
@@ -18,6 +18,7 @@ import { downloadHtmlFile } from "@/lib/utils/downloadHtml";
 import { openHtmlInNewTab } from "@/lib/utils/openHtmlInNewTab";
 import { useT } from "@/lib/i18n";
 import {useObjectUrl} from '@/lib/resources/useObjectUrl';
+import { localSourceFile } from "@/lib/local-files/client";
 import dynamic from 'next/dynamic';
 import { PanelSkeleton } from "@/components/shared/LoadingStates";
 const LocalSourcePane = dynamic(() => import('@/components/window/LocalSourcePane'), { loading: () => <PanelSkeleton variant="document" /> });
@@ -111,10 +112,47 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
   // content 里的 blob: URL 归 composer 所有、随时会被回收；预览窗拿到原始 File 时
   // 自建 object URL，窗口卸载即释放——不再借用上游 URL（借据模型，修 object URL 泄漏）。
   const rawContent = data?.content ?? "";
-  const file = data?.file;
-  const needsOwnedUrl=!!file&&rawContent.startsWith('blob:');
-  const ownedUrl=useObjectUrl(needsOwnedUrl?file:null,needsOwnedUrl);
-  const content = needsOwnedUrl?(ownedUrl??''):rawContent;
+  const localFileId = data?.localFileId;
+  // 有真实渲染器的本地文件不能走纯文本源面板：先把 File 物化出来再渲染。
+  // 二进制类经 object URL；HTML/Markdown 读 file.text()；text/旧版 .ppt 仍走 LocalSourcePane。
+  const nativeFileKind =
+    kind === "image" || kind === "pdf" || kind === "docx" ||
+    (kind === "ppt" && !!data && isOpenXmlPptx(data));
+  const textFileKind = kind === "html" || kind === "markdown";
+  const wantsNative = Boolean(localFileId) && (nativeFileKind || textFileKind);
+  const [localFile, setLocalFile] = useState<File | null>(null);
+  const [localFileFailed, setLocalFileFailed] = useState(false);
+  const [localFileText, setLocalFileText] = useState<string | null>(null);
+  const providedFile = data?.file;
+  useEffect(() => {
+    if (!localFileId || !wantsNative || providedFile) return;
+    let cancelled = false;
+    void localSourceFile(localFileId).then((file) => {
+      if (cancelled) return;
+      if (file) setLocalFile(file);
+      else setLocalFileFailed(true);
+    }).catch(() => { if (!cancelled) setLocalFileFailed(true); });
+    return () => { cancelled = true; };
+  }, [localFileId, wantsNative, providedFile]);
+  const file = providedFile ?? localFile;
+  useEffect(() => {
+    if (!textFileKind || !file) return;
+    let cancelled = false;
+    void file.text()
+      .then((text) => { if (!cancelled) setLocalFileText(text); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [textFileKind, file]);
+  const needsOwnedUrl = !!file && (rawContent.startsWith('blob:') || Boolean(localFileId && nativeFileKind));
+  const ownedUrl = useObjectUrl(needsOwnedUrl ? file : null, needsOwnedUrl);
+  const content = needsOwnedUrl
+    ? (ownedUrl ?? '')
+    : textFileKind && file
+      ? (localFileText ?? '')
+      : rawContent;
+  const showLocalText = Boolean(localFileId) && (!wantsNative || localFileFailed);
+  const previewPending = !showLocalText && wantsNative && (!file || (textFileKind && localFileText === null));
+  const srcReady = /^(data:|blob:|https?:)/.test(content);
   // 联网开关放在窗口这一层：最小化会卸载 children，状态留在子组件里就会被重置回「仅本地」。
   const [network, setNetwork] = useState(false);
   const localHtml = useMemo(
@@ -176,13 +214,25 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
       bodyClassName="flex min-h-0 flex-1 overflow-hidden bg-[var(--bg-panel)]"
       unmountWhenMinimized
     >
-      {data.localFileId && kind !== 'pdf' && kind !== 'image' ? <LocalSourcePane sourceId={data.localFileId} /> : needsOwnedUrl&&!ownedUrl?<PanelSkeleton variant="document" label="正在准备本地预览…" />:kind === "image" ? (
-        // eslint-disable-next-line @next/next/no-img-element -- local data URLs are intentionally kept out of remote loaders.
-        <img src={content} alt={data.name} className="h-full w-full object-contain p-4" />
+      {showLocalText ? <LocalSourcePane sourceId={localFileId!} /> : previewPending || (needsOwnedUrl&&!ownedUrl)?<PanelSkeleton variant="document" label="正在准备本地预览…" />:kind === "image" ? (
+        srcReady ? (
+          // eslint-disable-next-line @next/next/no-img-element -- local data URLs are intentionally kept out of remote loaders.
+          <img src={content} alt={data.name} className="h-full w-full object-contain p-4" />
+        ) : (
+          <pre className="h-full w-full overflow-auto whitespace-pre-wrap break-words p-5 font-mono text-[12px] leading-6 text-[var(--ink)]">{content}</pre>
+        )
       ) : kind === "pdf" ? (
-        <PdfDocumentPane src={content} name={data.name} />
+        srcReady ? (
+          <PdfDocumentPane src={content} name={data.name} />
+        ) : (
+          <pre className="h-full w-full overflow-auto whitespace-pre-wrap break-words p-5 font-mono text-[12px] leading-6 text-[var(--ink)]">{content}</pre>
+        )
       ) : kind === "docx" ? (
-        <DocxDocumentPane src={content} name={data.name} />
+        srcReady ? (
+          <DocxDocumentPane src={content} name={data.name} />
+        ) : (
+          <pre className="h-full w-full overflow-auto whitespace-pre-wrap break-words p-5 font-mono text-[12px] leading-6 text-[var(--ink)]">{content}</pre>
+        )
       ) : kind === "html" ? (
         // key 跟着联网开关走：srcDoc 里的 CSP 只在文档加载时生效，切换策略必须重建 iframe。
         <iframe
@@ -196,7 +246,11 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
         <MarkdownPreviewPane content={content} />
       ) : kind === "ppt" ? (
         isOpenXmlPptx(data) ? (
-          <PptxDocumentPane src={content} name={data.name} />
+          srcReady ? (
+            <PptxDocumentPane src={content} name={data.name} />
+          ) : (
+            <pre className="h-full w-full overflow-auto whitespace-pre-wrap break-words p-5 font-mono text-[12px] leading-6 text-[var(--ink)]">{content}</pre>
+          )
         ) : (
           <div className="flex h-full min-h-52 flex-col items-center justify-center gap-3 px-6 text-center">
             <Presentation size={32} className="text-[var(--md-sys-color-primary)]" />

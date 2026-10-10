@@ -153,7 +153,8 @@ export default function ThinkingDepthPanel({
                 aria-checked={selected && i === index}
                 data-testid={`model-thinking-option-${stop}`}
                 data-active={i === index ? "" : undefined}
-                style={{ left: `${(i / last) * 100}%` }}
+                // 首尾标签改为贴边对齐：默认 translateX(-50%) 会让两端标签溢出卡片半宽。
+                style={{ left: `${(i / last) * 100}%`, transform: i === 0 ? "none" : i === last ? "translateX(-100%)" : undefined }}
                 onClick={() => onPick(valueForStop(stop, value))}
               >
                 {thinkingStopLabel(stop, t)}

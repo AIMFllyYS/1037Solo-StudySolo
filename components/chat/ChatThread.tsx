@@ -145,6 +145,8 @@ export default function ChatThread({
     return size;
   };
 
+  // TanStack Virtual intentionally exposes a mutable measurement instance.
+  // eslint-disable-next-line react-hooks/incompatible-library
   const virtualizer = useVirtualizer({
     useFlushSync: false,
     count: displayMessages.length,
