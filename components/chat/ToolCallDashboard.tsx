@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { buildToolTraceStep, type TraceToolPart } from '@/lib/chat/buildTrace';
-import { ToolTraceStep } from '@/components/chat/ToolTraceStep';
+import { TraceToolEntry as ToolTraceStep } from '@/components/chat/trace/TraceToolEntry';
 import { useT } from '@/lib/i18n';
 
 // MessageContent still accepts historical inline <ToolCall> markup. Keep that
