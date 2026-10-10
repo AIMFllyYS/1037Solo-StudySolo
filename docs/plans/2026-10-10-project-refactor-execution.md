@@ -93,6 +93,8 @@
 
 - R5c 已确认未使用源码：正式 Knip 包含 Next proxy/instrumentation、Classolo、实际 CLI、Worker、Electron CJS 和沙箱技能脚本；server-only 按安装版 Next 官方“内部处理、安装可选”说明保留，云模板中的 Playwright 和媒体 ffmpeg 按独立运行环境解释，不混进 app 依赖。37 个已退出运行的 Classolo/OTP/旧构建/旧目录生成 DSL 原件保存为 txt；清点确认集合外静态/类型/延迟导入为 0，并核对了当前课堂 settings、ASR REST factory、公开 session/渲染入口。readLocalFile 重复内联 metadata 改为引用原 presentation 模块。删除无实际消费者的 class-variance-authority / sonner 两个直接依赖，锁文件仅对应移除。全量代码 2049 项/2048 通过/1 原跳过/0 失败，React 300 文件/1245 项通过，全量类型通过、ESLint 0 error/21 warning。Knip 文件/依赖/unlisted/binary 候选均为 0，但仍报告 137 个值导出、55 个类型，包含公共 façade/协议和待继续核实项，未伪称完整 Knip 通过。
 
+- R3m 设置与闪卡长 UI：GlobalSettings 的成绩分组/路由转换、卡片、定位、成绩视图独立，账户/清空确认/分区和 popover 仍由一个入口负责；RecordPreviewWindow 的模式、原文/思考、修订、菜单与动作独立，流式/取消/保存处理仍在同一个窗口入口。18 项设置/手机/闪卡 React 回归、12 项处理/菜单/账户/动画 node 检查、全量类型与定向 lint 通过。位置和菜单结构检查指向新实际实现，原断言保留。实际 Agent 打开设置→成绩，空态及禁用清空正常，截图 `project-refactor/verify/global-settings-after-split.jpg`；未对真实成绩执行清空或触发付费闪卡生成。
+
 ## 局部阻塞
 
 

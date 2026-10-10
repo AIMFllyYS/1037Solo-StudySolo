@@ -5,21 +5,7 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeInUpVariants } from "@/lib/motion";
-import {
-  Settings,
-  Trophy,
-  BarChart3,
-  Layers,
-  Repeat,
-  Trash2,
-  Palette,
-  Keyboard,
-  SlidersHorizontal,
-  LogIn,
-  LogOut,
-  GraduationCap,
-  Gauge,
-} from "lucide-react";
+import { Settings, Palette, Keyboard, SlidersHorizontal, LogIn, LogOut, GraduationCap, Gauge } from "lucide-react";
 import { useAuthSession } from "@/lib/hooks/auth/useAuthSession";
 import { useStore } from "@/lib/stores/ui";
 import AcademicYearSwitcher from "../navigation/AcademicYearSwitcher";
@@ -30,22 +16,10 @@ import { StorageQuotaBlock } from "@/components/chat/billing/StorageQuota";
 import { useAccountProfile } from "@/lib/hooks/auth/useAccountProfile";
 import { ACADEMIC_YEAR_LABELS } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/stores/academicYear";
-import { navTree } from "@/lib/content-data/nav";
-import SubjectIcon from "@/components/shared/SubjectIcon";
+
 import { useTheme } from "@/lib/stores/theme";
 import { FONT_CHOICES } from "@/lib/theme/appearance";
-import {
-  getAllProgress,
-  getGlobalSummary,
-  clearAllProgress,
-  chapterLabel,
-  compareChapter,
-  scoreGrade,
-  objectiveAccuracyOf,
-  objectiveAttemptsOf,
-  objectiveBestOf,
-  type ProgressEntry,
-} from "@/lib/quiz-progress";
+import { getAllProgress, getGlobalSummary, clearAllProgress, type ProgressEntry } from "@/lib/quiz-progress";
 import AppearanceSettingsControls, { APPEARANCE_LABEL_KEYS } from "./AppearanceSettingsControls";
 import SettingsSection from "./SettingsSection";
 import KeyboardShortcutsSettings from "./KeyboardShortcutsSettings";
@@ -53,148 +27,11 @@ import { useT } from "@/lib/i18n/index";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 import { SHORTCUTS } from "@/lib/keyboard/shortcuts";
+import { computePos } from "./globalSettings/position";
+import type { PopoverPos } from "./globalSettings/position";
+import { groupBySubject } from "@/lib/review/gradeGroups";
 
-const SUBJECT_NAME: Record<string, string> = Object.fromEntries(
-  navTree.subjects.map((s) => [s.id, s.name]),
-);
-const SUBJECT_ORDER: string[] = navTree.subjects.map((s) => s.id);
-
-interface SubjectGroup {
-  id: string;
-  name: string;
-  items: ProgressEntry[];
-  avgBest: number;
-}
-
-/** 把扁平成绩按科目分组、排序，并算各科平均最佳分。 */
-function groupBySubject(entries: ProgressEntry[]): SubjectGroup[] {
-  const byId = new Map<string, ProgressEntry[]>();
-  for (const e of entries) {
-    const arr = byId.get(e.subjectId) ?? [];
-    arr.push(e);
-    byId.set(e.subjectId, arr);
-  }
-  const ids = [...byId.keys()].sort((a, b) => {
-    const ia = SUBJECT_ORDER.indexOf(a);
-    const ib = SUBJECT_ORDER.indexOf(b);
-    return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
-  });
-  return ids.map((id) => {
-    const items = (byId.get(id) ?? []).slice().sort((a, b) => compareChapter(a.chapterId, b.chapterId));
-    const objectiveBests = items.map((entry) => objectiveBestOf(entry.progress)).filter((value): value is number => value !== null);
-    const avgBest = objectiveBests.length
-      ? Math.round((objectiveBests.reduce((acc, value) => acc + value, 0) / objectiveBests.length) * 10) / 10
-      : 0;
-    return {
-      id,
-      name: SUBJECT_NAME[id] ?? id,
-      items,
-      avgBest,
-    };
-  });
-}
-
-/** 根据 subjectId + chapterId 在内容树中查找可导航的路由（categoryId + itemId）。 */
-function findChapterRoute(subjectId: string, chapterId: string): { categoryId: string; itemId: string } | null {
-  const subject = navTree.subjects.find((s) => s.id === subjectId);
-  if (!subject) return null;
-  for (const category of subject.categories) {
-    for (const item of category.items) {
-      if (item.id === chapterId) {
-        if (item.children?.length) {
-          return { categoryId: category.id, itemId: item.children[0].id };
-        }
-        return { categoryId: category.id, itemId: chapterId };
-      }
-    }
-  }
-  return null;
-}
-
-function StatCard({
-  icon,
-  value,
-  label,
-  accent,
-  flat = false,
-}: {
-  icon: React.ReactNode;
-  value: React.ReactNode;
-  label: string;
-  accent?: string;
-  /** 桌面弹出面板里去掉卡片外壳，只留一行数字，避免菜单里再套卡片。 */
-  flat?: boolean;
-}) {
-  if (flat) {
-    return (
-      <div className="flex flex-1 flex-col gap-0.5">
-        <span className="flex items-center gap-1.5" style={{ color: accent ?? "var(--md-sys-color-primary)" }}>
-          {icon}
-          <span className="text-[15px] font-bold leading-none">{value}</span>
-        </span>
-        <span className="text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">{label}</span>
-      </div>
-    );
-  }
-  return (
-    <div
-      className="flex flex-1 flex-col gap-1 rounded-[var(--md-sys-shape-corner-large,16px)] px-3.5 py-3"
-      style={{
-        background: "var(--md-sys-color-surface-container)",
-        border: "1px solid var(--md-sys-color-outline-variant)",
-      }}
-    >
-      <span className="flex items-center gap-1.5" style={{ color: accent ?? "var(--md-sys-color-primary)" }}>
-        {icon}
-        <span className="text-[20px] font-extrabold leading-none">{value}</span>
-      </span>
-      <span className="text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">{label}</span>
-    </div>
-  );
-}
-
-function ScoreBadge({ percent }: { percent: number }) {
-  const grade = scoreGrade(percent);
-  return (
-    <span
-      className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] font-bold tabular-nums"
-      style={{ color: grade.color, background: `color-mix(in srgb, ${grade.color} 14%, transparent)` }}
-      title={grade.label}
-    >
-      {percent}
-    </span>
-  );
-}
-
-interface PopoverPos {
-  left: number;
-  bottom: number;
-  width: number;
-  maxHeight: number;
-}
-
-/** 由锚点按钮计算「在其上方弹出」的浮层位置（向上生长，靠左对齐，视口内夹取）。 */
-function computePos(anchor: HTMLElement | null): PopoverPos {
-  const gap = 8;
-  const margin = 8;
-  const vw = typeof window !== "undefined" ? window.innerWidth : 1280;
-  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-  const width = Math.min(352, vw - margin * 2);
-  if (!anchor) {
-    return { left: margin, bottom: 48, width, maxHeight: vh - 64 };
-  }
-  const r = anchor.getBoundingClientRect();
-  let left = r.left;
-  if (left + width > vw - margin) left = vw - margin - width;
-  if (left < margin) left = margin;
-  return {
-    left,
-    bottom: Math.max(margin, vh - r.top + gap),
-    width,
-    maxHeight: Math.max(160, r.top - gap - margin),
-  };
-}
-
+import { ScoresSection } from './globalSettings/ScoresSection';
 /**
  * 全局「设置」面板：以学习成绩为核心，外加外观与数据管理。
  * 桌面锚定在侧栏底部「设置」按钮上方弹出；手机设置页以 `variant="page"` 全屏复用同一份内容。
@@ -474,146 +311,7 @@ export default function GlobalSettings({
             <AcademicYearSwitcher />
           </SettingsSection>
 
-          <SettingsSection
-            variant={page ? "card" : "menu"}
-            title={t("settings.global.scores")}
-            icon={<Trophy size={16} />}
-            open={openSection === "scores"}
-            onToggle={() => toggleSection("scores")}
-            summary={
-              summary.chapters
-                ? t("settings.scores.summary", {
-                    chapters: summary.chapters,
-                    avg: summary.avgBest,
-                    attempts: summary.totalAttempts,
-                  })
-                : t("settings.scores.empty")
-            }
-          >
-            <div className="flex flex-col gap-3">
-              <div className="flex gap-2.5">
-                <StatCard icon={<Layers size={15} />} value={summary.chapters} label={t("settings.scores.chapters")} flat={!page} />
-                <StatCard
-                  icon={<BarChart3 size={15} />}
-                  value={summary.chapters ? summary.avgBest : "—"}
-                  label={t("settings.scores.avgBest")}
-                  accent={summary.chapters ? scoreGrade(summary.avgBest).color : undefined}
-                  flat={!page}
-                />
-                <StatCard icon={<Repeat size={15} />} value={summary.totalAttempts} label={t("settings.scores.attempts")} flat={!page} />
-              </div>
-
-              {groups.length === 0 ? (
-                <div
-                  className={page
-                    ? "rounded-[var(--md-sys-shape-corner-large,16px)] px-4 py-6 text-center text-[12.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]"
-                    : "px-0.5 py-1.5 text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]"}
-                  style={page ? { background: "var(--md-sys-color-surface-container-lowest)" } : undefined}
-                >
-                  {t("settings.scores.emptyTitle")}
-                  <br />
-                  {t("settings.scores.emptyHint")}
-                </div>
-              ) : (
-                <div className="flex flex-col gap-3.5">
-                  {groups.map((g) => {
-                    return (
-                      <div key={g.id} className="flex flex-col gap-1.5">
-                        <div className="flex items-center gap-2 px-0.5">
-                          <SubjectIcon subjectId={g.id} size={15} style={{ color: "var(--md-sys-color-primary)" }} />
-                          <span className="text-[13px] font-bold text-[var(--md-sys-color-on-surface)]">
-                            {g.name}
-                          </span>
-                          <span className="text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
-                            {t("settings.scores.chapterCount", { count: g.items.length })}
-                          </span>
-                          <span className="ml-auto text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
-                            {t("settings.scores.avgBestShort")}
-                          </span>
-                          <ScoreBadge percent={g.avgBest} />
-                        </div>
-                        <div
-                          className="flex flex-col overflow-hidden rounded-[var(--md-sys-shape-corner-large,16px)]"
-                          style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
-                        >
-                          {g.items.map((e, i) => {
-                            const route = findChapterRoute(e.subjectId, e.chapterId);
-                            const objectiveAccuracy = objectiveAccuracyOf(e.progress);
-                            const objectiveAttempts = objectiveAttemptsOf(e.progress);
-                            const objectiveBest = objectiveBestOf(e.progress) ?? objectiveAccuracy;
-                            return (
-                              <div
-                                key={e.chapterId}
-                                onClick={() => {
-                                  if (!route) return;
-                                  router.push(`/${e.subjectId}/${route.categoryId}/${route.itemId}`);
-                                  onClose();
-                                }}
-                                className="flex items-center gap-3 px-3 py-2 transition-colors"
-                                style={{
-                                  background:
-                                    i % 2 === 0
-                                      ? "var(--md-sys-color-surface-container-lowest)"
-                                      : "var(--md-sys-color-surface-container)",
-                                  cursor: route ? "pointer" : "default",
-                                }}
-                              >
-                                <span className="min-w-0 flex-1 truncate text-[12.5px] text-[var(--md-sys-color-on-surface)]">
-                                  {chapterLabel(e.chapterId)}
-                                </span>
-                                <span className="shrink-0 text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                                  {objectiveAccuracy == null
-                                    ? t("settings.scores.lastUnscored")
-                                    : t("settings.scores.lastAttempt", { percent: objectiveAccuracy, attempts: objectiveAttempts })}
-                                </span>
-                                {objectiveAttempts === 0
-                                  ? <span className="shrink-0 text-[11px] text-[var(--ink-faint)]">{t("settings.scores.lastUnscored")}</span>
-                                  : <ScoreBadge percent={objectiveBest ?? 0} />}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-
-              <div className={page
-                ? "flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container-lowest)] px-3.5 py-2.5"
-                : "flex items-center justify-between gap-3 py-1"}>
-                <div className="min-w-0">
-                  <div className={page
-                    ? "text-[13px] font-medium text-[var(--md-sys-color-on-surface)]"
-                    : "text-[11.5px] font-medium text-[var(--md-sys-color-on-surface)]"}>
-                    {t("settings.scores.clear")}
-                  </div>
-                  <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                    {t("settings.scores.clearDesc")}
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleClear}
-                  disabled={summary.chapters === 0 && !confirmClear}
-                  className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors disabled:opacity-40"
-                  style={{
-                    background: confirmClear
-                      ? "var(--md-sys-color-error)"
-                      : "var(--md-sys-color-surface-container-highest)",
-                    color: confirmClear
-                      ? "var(--md-sys-color-on-error)"
-                      : "var(--md-sys-color-error)",
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Trash2 size={14} />
-                  {t(confirmClear ? "settings.scores.clearConfirm" : "settings.scores.clearAction")}
-                </button>
-              </div>
-            </div>
-          </SettingsSection>
+          <ScoresSection page={page} open={openSection === "scores"} onToggle={() => toggleSection("scores")} summary={summary} groups={groups} confirmClear={confirmClear} onClear={handleClear} onOpenChapter={(entry, route) => { router.push(`/${entry.subjectId}/${route.categoryId}/${route.itemId}`); onClose(); }} />
 
           <SettingsSection
             variant={page ? "card" : "menu"}

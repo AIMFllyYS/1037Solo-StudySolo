@@ -28,7 +28,7 @@ test("左下角坞显示头像和昵称，点击直接打开设置面板（额�
   assert.match(settings, /title=\{t\("settings\.global\.quota"\)\}/);
   assert.match(settingsDict, /quota: "额度"/);
   assert.match(settings, /data-testid="account-card"/);
-  assert.match(settings, /Math\.min\(352/);
+  assert.match(readWorkspaceFile("components/layout/settings/globalSettings/position.ts"), /Math\.min\(352/);
   assert.match(settings, /AccountDialog/);
   assert.match(dialog, /t\("settings\.account\.localOnly"\)/);
   assert.match(settingsDict, /localOnly: "只保存在这台设备"/);

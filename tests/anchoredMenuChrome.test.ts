@@ -46,7 +46,7 @@ test("settings and shared pickers go through AnchoredMenu", () => {
     "components/chat/composer/ThinkingMenu.tsx",
     "components/notes/SubjectPickerMenu.tsx",
     "components/search/GlobalSearchFilterMenu.tsx",
-    "components/review/RecordPreviewWindow.tsx",
+    "components/review/recordPreview/moreMenu.tsx",
     "components/layout/navigation/ModeSwitcher.tsx",
   ];
   for (const path of files) {

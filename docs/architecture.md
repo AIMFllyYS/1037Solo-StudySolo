@@ -25,6 +25,8 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 聊天组件按实际职责分为 `composer/`（输入、模型/思考选择）、`messages/`（正文和消息）、`trace/`（工具与思考轨迹）、`sources/`（来源和引用）、`products/`（产物）、`attachments/`（附件）、`billing/`（用量）、`floating/`（悬浮对话）、`settings/` 和既有 `toolCards/`。根目录只保留对话面板/线程/欢迎与其组合。布局域的 `navigation/`、`mobile/`、`settings/` 管理各自展示，根目录负责应用和面板组合。目录迁移不增加桶导出或全套转发层，调用者和延迟入口直接指向真实实现。
 
+全局设置由一个入口管理账户弹窗、清空确认、分区状态和 popover 生命周期；`globalSettings/` 分出定位、成绩卡片/视图，`lib/review/gradeGroups.ts` 分出成绩分组与导航转换。桌面和手机仍复用同一入口。闪卡预览的同一个窗口入口拥有流式缓冲、取消和保存/重试，`recordPreview/` 分出模式控件、原文/思考、修订、菜单与底栏动作，不另建状态或请求。
+
 复习进度 API 的 Next 路由只声明运行/缓存契约并导出 GET/POST。`lib/review-mode/progress/server/` 将 request 适配、origin/账户绑定、schema/字节限制、快照/评分转换、仓库读写与错误映射分离；原字段、private/no-store 响应、限流、幂等与 CAS 规则保留。
 
 对应客户端 `progressSync.ts` 负责调度、恢复与账户生命周期；`progress/client/` 分离 HTTP/owner binding、attempt 模型转换、checkpoint 本机队列、同步事件、成绩投影和用户主动的旧记录导入。旧历史导入仍需直接用户动作，水合不会自动接管无归属记录。
