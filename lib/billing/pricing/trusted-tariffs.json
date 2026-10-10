@@ -2,6 +2,14 @@
   "version": 1,
   "usdToCnyPolicy": 7,
   "rates": {
+    "deepseek:deepseek-flash": {
+      "unit": "tokens",
+      "currency": "CNY",
+      "source": "operator-platform-DeepSeek-Fast-2x-Qiniu-standard-20261011",
+      "verifiedAt": "2026-10-11",
+      "supplierQuoteVerified": false,
+      "price": { "input": 4, "cachedInput": 0.08, "output": 16, "cacheWrite": 4 }
+    },
     "qiniu:deepseek/deepseek-v4.1-flash": {
       "unit": "tokens",
       "currency": "CNY",

@@ -55,7 +55,7 @@ export const FONT_CHOICES: Record<GlobalFontId, { labelKey: I18nKey; cssValue: s
 };
 
 export const DEFAULT_APPEARANCE_SETTINGS: AppearanceSettings = {
-  mode: "default",
+  mode: "ios",
   custom: {
     lightBackground: "#fffbfe",
     lightAccent: "#6750a4",

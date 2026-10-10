@@ -1,6 +1,6 @@
 # 模型注册、思考与 Fast 维护
 
-核对日期：2026-10-10。此文说明代码的维护入口；模型是否可用、实际端点、价格和权限以当前服务端配置、注册数据和真实请求结果为准。旧价格调研和供应商顺序快照不作为当前计费或路由依据。
+核对日期：2026-10-11。此文说明代码的维护入口；模型是否可用、实际端点、价格和权限以当前服务端配置、注册数据和真实请求结果为准。旧价格调研和供应商顺序快照不作为当前计费或路由依据。
 
 ## 单一入口与职责
 
@@ -32,7 +32,16 @@ provider 公共入口显式转出 `provider/` 的类型、credentials、protocol
 
 ## Fast 系列
 
-当前 `FAST_MODE_PAIRS` 配对：`mimo-v2.6-pro` ↔ `xiaomi/mimo-v2.6-pro-ultraspeed`。两个 ID 都已经存在于 catalog。
+当前 `FAST_MODE_PAIRS` 配对：
+
+- `mimo-v2.6-pro` ↔ `xiaomi/mimo-v2.6-pro-ultraspeed`。
+- `deepseek/deepseek-v4.1-flash` ↔ `deepseek/deepseek-v4.1-flash-fast`。
+
+DeepSeek Fast 是平台的官方直连通道：上游固定为 `https://api.deepseek.com/v1/chat/completions`、模型名 `deepseek-flash`，凭据只读取服务端 `DEEPSEEK_API_KEY`，没有七牛/中转备用跳。普通模式仍沿用原渠道。Fast 不额外发送未经官方声明的加速参数，不表示官方提供独立 Fast SKU 或保证延迟。
+
+按 2026-10-11 用户指定的平台政策，Fast 单价为普通模式的 2 倍：输入 ¥4、缓存命中 ¥0.08、输出 ¥16 / 百万 token。展示数据在 catalog，服务端预留/结算的可信渠道价格在 `lib/billing/pricing/trusted-tariffs.json` 的 `deepseek:deepseek-flash`；这是平台费率，`supplierQuoteVerified=false`，不是官方供应商报价。两层由回归测试核对，实际结算仍以返回 usage 为准。BYOK 沿用现有独立基础费率。
+
+官方依据（2026-10-11 核对）：[首次调用](https://api-docs.deepseek.com/)、[思考模式](https://api-docs.deepseek.com/guides/thinking_mode/)。思考默认开启，因此关闭时必须发送 `thinking.type=disabled`；开启时发送 `enabled` 与合法的 `reasoning_effort`（SDK 选项用 `reasoningEffort`）。工具循环保留历史 `reasoning_content`。本地 `.env.local`、生产配置 `.env.production` 和模板已预留 `DEEPSEEK_API_KEY`；真实密钥不进 Git，填好后重启对应服务生效。
 
 列表使用普通模型代表系列；闪电切换的是实际选择的模型 ID。思考强度另行保存，并按目标模型支持的档位收敛。没有配对的模型不能启用闪电；增加新系列时先确保两个真实注册 ID、能力、端点及计费可用，再登记配对。
 

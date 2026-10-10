@@ -8,6 +8,8 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 根 `app/layout.tsx` 负责全局样式、metadata、主题/字体和应用外壳。`components/layout/AppShell.tsx` 组合模式、导航、工作区、全局悬浮层与必要运行器；各模块的状态和领域实现不应堆在外壳中。
 
+全局默认外观为 iOS，SSR 初始属性、首屏 bootstrap 与外观 store 共用 `DEFAULT_APPEARANCE_SETTINGS`。已保存的外观 ID 保持兼容；紫色 `default` 的显示名称为「初始风格」，`codex` 为「商务」，`anthropic` 为「纸面」，只调整名称。
+
 `layout/shell/TopBar.tsx` 负责顶栏展示与其控件；`useShellLifecycle.ts` 负责连续的挂载/路由副作用、水合、窗口会话提供者、TOC、移动深链和模式动画清理。AppShell 继续拥有分栏 ref、宽度和回写门控，重型/移动表面继续按原 dynamic 声明加载；拆分不增加另一套状态或全局事件监听。
 
 ## 页面与工作区

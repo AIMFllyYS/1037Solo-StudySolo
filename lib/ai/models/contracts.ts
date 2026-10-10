@@ -2,9 +2,10 @@
 // 主力对话：七牛云（api.qnaigc.com，延迟最低）→ 自有中转（relay.protocom.org）容灾；
 // MiMo 同样走自有中转；硅基流动负责廉价生图与向量/重排；xhuoai 提供高价慢速生图；
 // 智谱仅保留向量/重排/联网搜索。
+// DeepSeek Flash Fast 使用官方原生 API，普通模式继续沿用七牛/中转。
 // model id（注册 id）与上游 apiModelId 分离；endpoints 链支持容灾降级。
 
-export type ProviderKind = "siliconflow" | "mimo" | "zhipu" | "relay" | "qiniu" | "xhuoai";
+export type ProviderKind = "siliconflow" | "mimo" | "zhipu" | "relay" | "qiniu" | "xhuoai" | "deepseek";
 
 /** 对话输入可选的思考强度档位（UI 值）。各模型的实际上游取值见 thinkingEffortMap。 */
 export type ThinkingEffort = "low" | "medium" | "high" | "max";

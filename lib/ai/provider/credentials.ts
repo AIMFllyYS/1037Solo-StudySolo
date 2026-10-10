@@ -24,6 +24,9 @@ export const ZHIPU_KEY = process.env.ZHIPU_API_KEY || "";
 export const QINIU_BASE = process.env.QINIU_BASE_URL || "https://api.qnaigc.com/v1";
 export const QINIU_KEY = process.env.QINIU_API_KEY || "";
 
+// DeepSeek Fast uses the official native API only; never borrow a relay/Qiniu key.
+const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || "";
+
 // xhuoai 中转站：慢速高价生图（nano-banana / gpt-image-*），单张 ¥1、100–400s。
 export const XHUOAI_BASE = process.env.XHUOAI_BASE_URL || "https://api.xhuoai.com/v1";
 export const XHUOAI_KEY = process.env.XHUOAI_API_KEY || "";
@@ -41,6 +44,8 @@ export const ENV_MODEL_FLASH = process.env.AI_MODEL_FLASH || "z-ai/glm-5.3-flash
 
 export function credentialsFor(provider: ProviderKind): ProviderCredentials {
   switch (provider) {
+    case "deepseek":
+      return { baseUrl: "https://api.deepseek.com/v1", apiKey: DEEPSEEK_KEY, configured: !!DEEPSEEK_KEY };
     case "mimo": {
       const baseUrl = normalizeOpenAIBaseUrl(MIMO_BASE);
       return { baseUrl, apiKey: MIMO_KEY, configured: !!(baseUrl && MIMO_KEY) };

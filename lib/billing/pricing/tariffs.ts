@@ -4,7 +4,7 @@ import { CreditAdmissionError } from '../settlement/centralCredits';
 export interface Price { input:number; cachedInput:number; output:number; cacheWrite?:number }
 export interface TokenTariff { unit:'tokens'; provider:string; model:string; source:string; verifiedAt:string; supplierQuoteVerified:boolean; tiers:Array<Price & {maxInputTokens:number|null}> }
 export function endpointProvider(base:string):string|undefined {
-  try { return ({'api.qnaigc.com':'qiniu','relay.protocom.org':'relay','api.siliconflow.cn':'siliconflow','open.bigmodel.cn':'zhipu','bcai.online':'bcai'} as Record<string,string>)[new URL(base).hostname]; } catch { return undefined; }
+  try { return ({'api.qnaigc.com':'qiniu','relay.protocom.org':'relay','api.siliconflow.cn':'siliconflow','api.deepseek.com':'deepseek','open.bigmodel.cn':'zhipu','bcai.online':'bcai'} as Record<string,string>)[new URL(base).hostname]; } catch { return undefined; }
 }
 function object(value:unknown):Record<string,unknown> {
   if(!value||typeof value!=='object'||Array.isArray(value))throw new CreditAdmissionError('渠道计价配置无效',503);

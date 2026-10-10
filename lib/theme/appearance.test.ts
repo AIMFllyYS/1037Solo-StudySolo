@@ -21,6 +21,7 @@ test("safeHexColor accepts six-digit hex colors and rejects unsafe values", () =
 });
 
 test("normalizeAppearanceSettings recovers from invalid persisted data", () => {
+  assert.equal(DEFAULT_APPEARANCE_SETTINGS.mode, "ios");
   assert.deepEqual(normalizeAppearanceSettings(null), DEFAULT_APPEARANCE_SETTINGS);
   assert.deepEqual(normalizeAppearanceSettings("not-json"), DEFAULT_APPEARANCE_SETTINGS);
   assert.deepEqual(
@@ -54,7 +55,7 @@ test("normalizeAppearanceSettings preserves valid mode, colors, and font", () =>
 });
 
 test("normalizeAppearanceSettings accepts the new preset modes", () => {
-  for (const mode of ["anthropic", "ios", "codex"] as const) {
+  for (const mode of ["default", "anthropic", "ios", "codex"] as const) {
     assert.equal(normalizeAppearanceSettings({ mode }).mode, mode);
   }
 });

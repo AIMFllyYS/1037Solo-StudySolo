@@ -196,7 +196,7 @@ export function buildThinkingSettings(
     case "deepseek-thinking":
       return {
         providerOptions: {
-          [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" }, reasoning_effort: effortStr },
+          [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" }, reasoningEffort: effortStr },
         },
       };
     case "mimo-thinking":
@@ -217,7 +217,7 @@ export function buildThinkingSettings(
     }
     case "qiniu-toggle":
       // 七牛云：thinking type 二态。能被调用到这里就说明"本轮请求了思考"，发 enabled。
-      // 关掉的那一半在 prepareCall 里下发（见 QINIU_THINKING_DISABLED）——因为七牛云的
+      // 关掉的那一半在 prepareCall 里下发（见 THINKING_DISABLED）——因为七牛云的
       // 这些模型**默认就思考**，不显式下发 disabled 等于没关。
       return { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" } } } };
     case "siliconflow":
@@ -227,11 +227,11 @@ export function buildThinkingSettings(
 }
 
 /**
- * 七牛云「显式关思考」。原来只有"请求思考"时才改 callOptions，没请求就什么都不发；
- * 而七牛云的 DeepSeek / Qwen 默认就会思考（实测不传参 reasoning_content 照样有内容，
+ * 七牛云与官方 DeepSeek「显式关思考」。只有"请求思考"时改 callOptions 并不足够；
+ * 这些 DeepSeek / Qwen 端点默认就会思考（不传参 reasoning_content 照样有内容，
  * 而且会吃掉 max_tokens），所以必须把"不开启"也显式说出来，才真的低延迟。
  */
-const QINIU_THINKING_DISABLED: ThinkingCallSettings = {
+const THINKING_DISABLED: ThinkingCallSettings = {
   providerOptions: { [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "disabled" } } },
 };
 
@@ -343,11 +343,11 @@ export function resolveLanguageModel(
     prepareCall: (index, callOptions) => {
       const hop = providers[index] ?? actualProvider;
       const landed = landedThinkingContext(hop, customGroups, info);
-      // 三条分支：请求了思考 → 下发该跳方言；没请求但该跳属于"默认思考"的七牛云方言 → 显式关闭；
+      // 三条分支：请求了思考 → 下发该跳方言；七牛云/官方 DeepSeek 默认思考 → 显式关闭；
       // 其余保持不传参（历史行为）。
       const thinkingSettings = thinkingSettingsRequested && supportsThinking
         ? buildThinkingSettings(landed.provider, lastThinkingEffort, landed.info)
-        : (hop.thinkingRequestStyle === "qiniu-toggle" ? QINIU_THINKING_DISABLED : undefined);
+        : (["qiniu-toggle", "deepseek-thinking"].includes(hop.thinkingRequestStyle) ? THINKING_DISABLED : undefined);
       const prepared = thinkingSettings
         ? applyThinkingCallSettings(callOptions, thinkingSettings)
         : callOptions;

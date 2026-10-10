@@ -7,7 +7,7 @@
  *
  * 新增一对：在 FAST_MODE_PAIRS 里加一行，并保证两个 id 都在 lib/ai/models.ts 的 MODELS 中；
  * 同时更新 docs/refer/model-registry.md 的「Fast 系列」一节。
- * lib/ai/fastModeRegistry.test.tsx 会校验每个 id 都真实存在。
+ * 同目录 fastModeRegistry.test.tsx 会校验每个 id 都真实存在。
  */
 export interface FastModePair {
   /** 标准模型 id。 */
@@ -18,6 +18,7 @@ export interface FastModePair {
 
 export const FAST_MODE_PAIRS: readonly FastModePair[] = [
   { base: "mimo-v2.6-pro", fast: "xiaomi/mimo-v2.6-pro-ultraspeed" },
+  { base: "deepseek/deepseek-v4.1-flash", fast: "deepseek/deepseek-v4.1-flash-fast" },
 ];
 
 /** 配对里的另一端；没有注册返回 undefined。 */

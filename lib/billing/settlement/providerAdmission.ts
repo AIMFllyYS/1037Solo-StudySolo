@@ -12,7 +12,8 @@ export interface CreditDriver {
 const driver: CreditDriver = { reserve: reserveCredit, settleMicro: settleMicrocredits, cancel: cancelCredit };
 
 export function priceForModel(modelId: string, byok = false): Price {
-  return tierPrice(tokenTariff(getModelInfo(modelId)?.endpoints[0]?.provider,modelId,byok),0);
+  const endpoint = getModelInfo(modelId)?.endpoints[0];
+  return tierPrice(tokenTariff(endpoint?.provider,endpoint?.apiModelId ?? modelId,byok),0);
 }
 
 function count(value: unknown): number | undefined {

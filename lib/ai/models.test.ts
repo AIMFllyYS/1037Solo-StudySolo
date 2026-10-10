@@ -118,15 +118,16 @@ test("MODELS：model id 唯一", () => {
   }
 });
 
-test("MODELS：19 个菜单模型价格与 cacheWrite", () => {
+test("MODELS：20 个注册变体价格与 cacheWrite", () => {
   const picker = MODELS.filter((m) => m.id !== CUSTOM_OPENAI_MODEL_ID);
-  assert.equal(picker.length, 19);
+  assert.equal(picker.length, 20);
   const price = (id: string) => {
     const m = getModelInfo(id);
     assert.ok(m?.pricing, id);
     return m!.pricing!;
   };
   assert.deepEqual(price("deepseek/deepseek-v4.1-flash"), { input: 2, cachedInput: 0.04, output: 8 });
+  assert.deepEqual(price("deepseek/deepseek-v4.1-flash-fast"), { input: 4, cachedInput: 0.08, output: 16 });
   assert.deepEqual(price("Qwen/Qwen3.7-Flash"), { input: 1.2, cachedInput: 0.24, output: 4.8 });
   assert.deepEqual(price("gpt-5.6-luna"), { input: 1.4, cachedInput: 0.14, cacheWrite: 1.75, output: 8.4 });
   assert.deepEqual(price("mimo-v2.6-flash"), { input: 1, cachedInput: 0.02, cacheWrite: 1, output: 2 });
@@ -152,6 +153,7 @@ test("MODELS：19 个菜单模型价格与 cacheWrite", () => {
 /** MODELS.md §2 上下文 → registry contextK：1M→1000，1.05M→1050，256K→256。 */
 const MODELS_MD_SECTION2_CONTEXT_K: Record<string, number> = {
   "deepseek/deepseek-v4.1-flash": 1000,
+  "deepseek/deepseek-v4.1-flash-fast": 1000,
   "Qwen/Qwen3.7-Flash": 1000,
   "gpt-5.6-luna": 1000,
   "mimo-v2.6-flash": 1000,

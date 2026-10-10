@@ -211,7 +211,7 @@ test("buildThinkingSettings：gemini-thinking-level → thinking_level", () => {
 test("buildThinkingSettings：deepseek-thinking → thinking.enabled + reasoning_effort", () => {
   const s = buildThinkingSettings(fakeProvider({ thinkingRequestStyle: "deepseek-thinking" }), "high");
   assert.deepEqual(s.providerOptions, {
-    [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" }, reasoning_effort: "high" },
+    [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" }, reasoningEffort: "high" },
   });
 });
 

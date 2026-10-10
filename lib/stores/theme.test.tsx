@@ -104,8 +104,8 @@ describe("useTheme", () => {
     });
 
     expect(result.current.appearance).toEqual(DEFAULT_APPEARANCE_SETTINGS);
-    expect(document.documentElement).toHaveAttribute("data-appearance", "default");
+    expect(document.documentElement).toHaveAttribute("data-appearance", "ios");
     expect(document.documentElement.style.getPropertyValue("--appearance-light-accent")).toBe("");
-    expect(localStorage.getItem(APPEARANCE_KEY)).toContain('"mode":"default"');
+    expect(localStorage.getItem(APPEARANCE_KEY)).toContain('"mode":"ios"');
   });
 });

@@ -173,10 +173,22 @@ describe('ModelMenu progressive selection', () => {
     expect(screen.getByTestId('model-menu-button')).not.toHaveTextContent('UltraSpeed');
     openCategory('快速模型');
     expect(screen.getByTestId('model-fast-toggle')).toHaveAttribute('aria-pressed', 'true');
-    fireEvent.click(screen.getByTestId('model-menu-item-deepseek/deepseek-v4.1-flash'));
+    fireEvent.click(screen.getByTestId('model-menu-item-Qwen/Qwen3.7-Flash'));
     openMenu();
     expect(screen.getByTestId('model-fast-toggle')).toBeDisabled();
     expect(screen.getByTestId('model-fast-toggle')).toHaveAttribute('aria-pressed', 'false');
+  });
+  it('toggles DeepSeek official Fast and restores the ordinary row with double price', () => {
+    useSettings.setState({ selectedModelId: 'deepseek/deepseek-v4.1-flash' });
+    render(<ModelMenu />);
+    openCategory('快速模型');
+    expect(screen.queryByTestId('model-menu-item-deepseek/deepseek-v4.1-flash-fast')).toBeNull();
+    fireEvent.click(screen.getByTestId('model-fast-toggle'));
+    expect(useSettings.getState().selectedModelId).toBe('deepseek/deepseek-v4.1-flash-fast');
+    expect(screen.getByTestId('model-fast-toggle')).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByTestId('model-submenu').textContent).toContain('普通模式 2×');
+    fireEvent.click(screen.getByTestId('model-fast-toggle'));
+    expect(useSettings.getState().selectedModelId).toBe('deepseek/deepseek-v4.1-flash');
   });
   it('mobile uses one panel per level: thinking, then categories, then models', () => {
     const width = window.innerWidth;
