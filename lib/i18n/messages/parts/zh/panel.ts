@@ -9,6 +9,7 @@
  * 文档阅读器外壳、面板里的账户与用量看板。窗口**里面**的业务界面在 window 分片。
  */
 export const panelZh = {
+  layout: { resizeLeft: "调整左侧导航宽度", resizeRight: "调整右侧工作区宽度" },
   // 面板与窗口外壳的通用动作
   common: {
     // 「关闭」= 关掉窗口 / 浮层本身。**不要**跟 menu.thinking.off.label、share.assets.disable

@@ -36,3 +36,8 @@ export function supportsFastMode(modelId: string): boolean {
 export function isFastVariant(modelId: string): boolean {
   return FAST_MODE_PAIRS.some((pair) => pair.fast === modelId);
 }
+
+/** 菜单始终用普通模型代表整个系列，实际请求仍使用已选中的变体 id。 */
+export function standardModelId(modelId: string): string {
+  return FAST_MODE_PAIRS.find((pair) => pair.fast === modelId)?.base ?? modelId;
+}

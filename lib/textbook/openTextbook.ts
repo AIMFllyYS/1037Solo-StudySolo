@@ -17,17 +17,18 @@ function geometry() {
 
 /**
  * 打开「内部教材」窗（Agent 右栏的 managed window）。
- * 它只是教材文件夹树的只读浏览器：不注入对话上下文，也与 Agent 的工具无关；
- * 唯一的联动是把树里的栏目拖进输入框引用。
+ * 正文阅读器与教材文件夹树共用 Studio 内容；只读浏览不注入对话上下文。
+ * 树里的栏目仍可拖进输入框引用。
  */
 export function openTextbookWindow(): string {
   const { pos, size } = geometry();
+  const previous = useWindowManager.getState().windows.find((window) => window.id === TEXTBOOK_WINDOW_ID);
   return useWindowManager.getState().openWindow({
     id: TEXTBOOK_WINDOW_ID,
     type: "textbook",
     title: translateNow("window.textbook.windowTitle"),
     pos,
     size,
-    data: {},
+    data: previous?.data ?? {},
   });
 }

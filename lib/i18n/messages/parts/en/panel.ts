@@ -10,6 +10,7 @@
  * the panel). The business UI *inside* a window lives in the window shard.
  */
 export const panelEn = {
+  layout: { resizeLeft: "Resize left navigation", resizeRight: "Resize right workspace" },
   // Shared actions for the side panel and window chrome.
   common: {
     // "Close" dismisses a window/overlay. Do NOT merge with menu.thinking.off.label or

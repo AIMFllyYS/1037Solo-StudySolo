@@ -17,8 +17,7 @@ import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useAppMode } from "@/lib/stores/appMode";
-import ProjectRequiredDialog from "@/components/project/ProjectRequiredDialog";
-import { openProjectFiles } from "@/lib/project/openProjectFiles";
+import { useProjectFilesEntry } from "@/components/project/useProjectFilesEntry";
 import { openTextbookWindow } from "@/lib/textbook/openTextbook";
 import { filterWindowsForSession, useActiveChatSessionId } from "@/lib/window/sessionScope";
 import OpenUrlField from "@/components/window/OpenUrlDialog";
@@ -73,8 +72,7 @@ export function AddContentButton({
   const agentMode = useAppMode((s) => s.mode === "agent");
   const [open, setOpen] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
-  /** 「项目文件」在无项目时的引导弹窗。 */
-  const [projectGateOpen, setProjectGateOpen] = useState(false);
+  const { openProjectFilesEntry, projectRequiredDialog } = useProjectFilesEntry();
   const [menuPosition, setMenuPosition] = useState<{ top: number; right: number } | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -136,25 +134,6 @@ export function AddContentButton({
     if(!picker){fileRef.current?.click();return;}
     try{const handles=await picker({multiple:true});const files=await Promise.all(handles.map(handle=>handle.getFile()));await handleFiles(files,handles);}
     catch(error){if(!(error instanceof DOMException&&error.name==='AbortError'))setFileError(error instanceof Error?error.message:'文件选择失败。');}
-  };
-
-  /**
-   * 「项目文件」入口：项目是归属，先确定落在哪个项目。
-   *
-   * 优先级：当前会话自己的项目 → 用户为「下一条新对话」选的落点。
-   * 两个都没有时**不再**偷偷取最近项目/自动建「我的项目」——
-   * 那样用户会看到一份不属于当前对话的文件列表，还不知道自己被塞进了哪个项目。
-   * 改成弹窗明确问一句：新建项目，或把当前对话挪进已有项目。
-   */
-  const openProjectFilesEntry = () => {
-    const history = useChatHistory.getState();
-    const active = history.sessionsMeta.find((session) => session.id === history.activeSessionId);
-    const projectId = active?.folderId ?? history.activeProjectId ?? null;
-    if (!projectId) {
-      setProjectGateOpen(true);
-      return;
-    }
-    openProjectFiles(projectId);
   };
 
   return (
@@ -318,15 +297,7 @@ export function AddContentButton({
         document.body,
       )}
       {fileError && typeof document !== "undefined" ? <FileErrorDialog message={fileError} onClose={() => setFileError(null)} /> : null}
-      {projectGateOpen ? (
-        <ProjectRequiredDialog
-          onCancel={() => setProjectGateOpen(false)}
-          onReady={(projectId) => {
-            setProjectGateOpen(false);
-            openProjectFiles(projectId);
-          }}
-        />
-      ) : null}
+      {projectRequiredDialog}
     </div>
   );
 }

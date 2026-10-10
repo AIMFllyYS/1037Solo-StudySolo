@@ -18,8 +18,11 @@ import { DURATION } from "@/lib/motion";
 import { useUiReducedMotion } from "@/lib/hooks/useUiReducedMotion";
 import { setWindowSessionProvider } from "@/lib/stores/windowManager";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
-import { expandAgentDockIfCollapsed, PANEL_PRESETS } from "@/lib/constants/panelPresets";
+import { PANEL_PRESETS } from "@/lib/constants/panelPresets";
 import AgentDockColumn from "./AgentDockColumn";
+import AgentPanelResizeHandle from "./AgentPanelResizeHandle";
+import { useAgentPanelSizes } from "@/lib/hooks/useAgentPanelSizes";
+import { AGENT_CENTER_MIN_PX } from "@/lib/layout/agentPanelSizes";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useCloseMobileSidebarOnModeChange } from "@/lib/hooks/useCloseMobileSidebarOnModeChange";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
@@ -77,15 +80,6 @@ const AgentSettingsOverlay = dynamic(() => import("@/components/chat/AgentSettin
 const SchedulerRuntime = dynamic(() => import("@/components/agent/scheduler/SchedulerRuntime"), { ssr: false });
 const SelectionAssistantGuard = dynamic(() => import("@/components/notes/SelectionAssistantGuard"), { ssr: false });
 const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false, loading: () => <PanelSkeleton variant="document" /> });
-
-/** 分栏缓动时长（唯一真相源是 globals.css 的 `--duration-pane`，这里只是读出来给定时器用）。 */
-function paneDurationMs(): number {
-  if (typeof window === "undefined") return 1000;
-  const raw = getComputedStyle(document.documentElement).getPropertyValue("--duration-pane").trim();
-  const value = Number.parseFloat(raw);
-  if (!Number.isFinite(value)) return 1000;
-  return raw.endsWith("ms") ? value : value * 1000;
-}
 
 function TopBar({
   subjectId,
@@ -302,28 +296,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const agentDockCollapsed = useStore((s) => s.agentDockCollapsed);
   const setAgentDockCollapsed = useStore((s) => s.setAgentDockCollapsed);
   const agentDockGlobal = useAgentDockRuntime((s) => s.dockGlobal);
-  const agentDockRef = useRef<ImperativePanelHandle>(null);
-  /** Retained until the panel reports the requested state, including deferred callbacks. */
-  const pendingDockRestoreRef = useRef<boolean | null>(null);
-  /**
-   * 右栏宽度正在变化（拖拽 / 收起展开动画）。
-   * 窄宽度下右栏的标签与业务正文会被响应式压成竖排单字，很难看；这期间盖一层骨架屏，
-   * 顺带把过渡期每帧的正文重排省掉（骨架只跑 transform/opacity）。
-   */
-  const [dockBusy, setDockBusy] = useState(false);
-  const dockBusyTimerRef = useRef<number | null>(null);
+  const agentSizes = useAgentPanelSizes();
   const reducedMotion = useUiReducedMotion();
   const modeShellRef = useRef<HTMLDivElement>(null);
   const modeTransitionTimerRef = useRef<number | null>(null);
   const previousRouteModeRef = useRef<ReturnType<typeof appModeFromPathname>>(null);
-  const markDockBusy = useCallback((ms: number) => {
-    if (dockBusyTimerRef.current !== null) window.clearTimeout(dockBusyTimerRef.current);
-    setDockBusy(true);
-    dockBusyTimerRef.current = window.setTimeout(() => {
-      dockBusyTimerRef.current = null;
-      setDockBusy(false);
-    }, ms);
-  }, []);
   const setActiveRoute = useStore((s) => s.setActiveRoute);
   const setTocData = useStore((s) => s.setTocData);
   const rightCollapsedByProfile = useStore((s) => s.rightCollapsedByProfile);
@@ -351,7 +328,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     }
     shell?.removeAttribute("data-mode-entering");
 
-    if (!shell || !previousMode || !nextMode || previousMode === nextMode || reducedMotion || isResizing || dockBusy) {
+    if (!shell || !previousMode || !nextMode || previousMode === nextMode || reducedMotion || isResizing) {
       return undefined;
     }
 
@@ -369,29 +346,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       }
       shell.removeAttribute("data-mode-entering");
     };
-  }, [pathname, reducedMotion, isResizing, dockBusy]);
-
-  // 顶栏开关 / 面板自身收起按钮改的是 store，这里把它同步到分栏面板上。
-  useLayoutEffect(() => {
-    if (!isAgentRoute) return;
-    const panel = agentDockRef.current;
-    if (!panel) return;
-    try {
-      if (agentDockCollapsed && !panel.isCollapsed()) {
-        pendingDockRestoreRef.current = true;
-        panel.collapse();
-      }
-      // A panel first mounted collapsed has no remembered expanded width yet; seed its first
-      // restore with the current default. Existing user-resized widths still win inside expand().
-      if (!agentDockCollapsed && panel.isCollapsed()) {
-        pendingDockRestoreRef.current = false;
-        expandAgentDockIfCollapsed(panel);
-      }
-    } catch {
-      pendingDockRestoreRef.current = null;
-      // 首帧还没有几何信息
-    }
-  }, [agentDockCollapsed, isAgentRoute, markDockBusy]);
+  }, [pathname, reducedMotion, isResizing]);
 
   useEffect(() => {
     const id = window.setTimeout(() => {
@@ -586,10 +541,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     return (
       <KeyboardShortcutProvider>
       {/* Agent 外壳不挂 `data-layout-profile`：那是 Studio 内容页档位的语义，右栏开合有自己的 data 属性。 */}
-      <div ref={modeShellRef} className="flex h-screen overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-panels-ready={panelMotionReady || undefined} data-app-mode={resolvedMode} data-subject={activeSubjectId} data-agent-global={agentDockGlobal ? "true" : undefined} data-agent-shell>
-        {/* v2 starts from the new 60% default; v1's old 37% layout remains untouched but is no longer loaded. */}
-        <PanelGroup direction="horizontal" autoSaveId="studysolo-agent-shell-v2" className="h-full min-h-0 w-full">
-          <Panel id="agent-shell-main" order={1} defaultSize={100 - PANEL_PRESETS.agent.right} minSize={36}>
+      <div ref={modeShellRef} className="flex h-screen overflow-hidden bg-[var(--bg-app)]" style={{ "--agent-left-width": `${agentSizes.left}px` } as React.CSSProperties} data-resizing={isResizing || undefined} data-panels-ready={panelMotionReady || undefined} data-app-mode={resolvedMode} data-subject={activeSubjectId} data-agent-global={agentDockGlobal ? "true" : undefined} data-agent-shell>
+        {/* 左右列共用像素尺寸状态：右列开合只改变中间余量，不触发嵌套比例恢复。 */}
+        <div data-panel-group className="flex h-full min-h-0 w-full">
+          <div data-panel-id="agent-shell-main" className="min-h-0 min-w-0 flex-1 overflow-hidden">
             <div className="flex h-full min-h-0 flex-col">
               <TopBar
                 subjectId={route?.subjectId ?? DEFAULT_SUBJECT}
@@ -600,61 +555,32 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 showCenterTabs={isChatRoute}
                 dockOpen={!agentDockCollapsed}
                 onToggleDock={() => {
-                  markDockBusy(paneDurationMs() + 80);
                   setAgentDockCollapsed(!agentDockCollapsed);
                 }}
               />
               <div className="min-h-0 flex-1">{children}</div>
             </div>
-          </Panel>
-          <PanelResizeHandle
+          </div>
+          <AgentPanelResizeHandle
+            side="right"
+            value={agentSizes.right}
+            min={240}
+            max={Math.max(240, agentSizes.viewport - agentSizes.left - AGENT_CENTER_MIN_PX)}
+            onResize={(pixels) => { agentSizes.setSize("right", pixels); if (agentDockCollapsed) setAgentDockCollapsed(false); }}
+            onCollapse={() => setAgentDockCollapsed(true)}
             onDragging={handleDragging}
-            className="group relative w-px bg-[var(--line-soft)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]"
+          />
+          <div
+            data-panel-id="agent-shell-dock"
+            data-collapsed={agentDockCollapsed || undefined}
+            aria-hidden={agentDockCollapsed && !agentDockGlobal || undefined}
+            inert={agentDockCollapsed && !agentDockGlobal || undefined}
+            className="h-full min-h-0 min-w-0 shrink-0 overflow-hidden"
+            style={{ flexBasis: agentDockGlobal ? "auto" : agentSizes.right, width: agentDockGlobal ? undefined : agentSizes.right, flexGrow: agentDockGlobal ? 1 : 0 }}
           >
-            <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
-              <span className="block h-7 w-1 rounded-full bg-[var(--accent)]/40" />
-            </span>
-          </PanelResizeHandle>
-          <Panel
-            ref={agentDockRef}
-            id="agent-shell-dock"
-            order={2}
-            collapsible
-            collapsedSize={0}
-            defaultSize={agentDockCollapsed ? 0 : PANEL_PRESETS.agent.right}
-            minSize={20}
-            maxSize={64}
-            onResize={(size, previousSize) => {
-              const collapsed = size === 0;
-              if (previousSize === undefined) {
-                // The saved panel geometry initializes before its imperative handle is ready.
-                // Reconcile afterwards; initialization is never a user preference change.
-                queueMicrotask(() => {
-                  const panel = agentDockRef.current;
-                  if (!panel) return;
-                  try {
-                    const wanted = useStore.getState().agentDockCollapsed;
-                    if (panel.isCollapsed() === wanted) { pendingDockRestoreRef.current = null; return; }
-                    pendingDockRestoreRef.current = wanted;
-                    if (wanted) panel.collapse();
-                    else expandAgentDockIfCollapsed(panel);
-                  } catch { pendingDockRestoreRef.current = null; }
-                });
-                return;
-              }
-              if (pendingDockRestoreRef.current !== null) {
-                if (collapsed === pendingDockRestoreRef.current) pendingDockRestoreRef.current = null;
-                return;
-              }
-              if (collapsed === (previousSize === 0)) return;
-              markDockBusy(paneDurationMs() + 80);
-              setAgentDockCollapsed(collapsed);
-            }}
-          >
-            <AgentDockColumn busy={dockBusy || isResizing} />
-          </Panel>
-        </PanelGroup>
+            <AgentDockColumn busy={isResizing} />
+          </div>
+        </div>
         {/* 业务窗口/全局浮层必须与 Studio 一样挂在这个壳里，否则右栏会出现"有标签没正文"。 */}
         <DeferredWindowLayers />
         <AgentSettingsOverlay />

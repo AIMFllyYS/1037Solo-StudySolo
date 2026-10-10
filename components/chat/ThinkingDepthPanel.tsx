@@ -83,7 +83,7 @@ export default function ThinkingDepthPanel({
     });
 
   return (
-    <div role="menu" aria-label={t("menu.thinking.strength")} data-testid="model-thinking-submenu" className="thinking-depth">
+    <div role="menu" aria-label={t("menu.thinking.strength")} data-testid="model-thinking-submenu" className="thinking-depth" data-fast-active={fast.active || undefined}>
       <div className="thinking-depth-head">
         <button
           type="button"
@@ -117,7 +117,8 @@ export default function ThinkingDepthPanel({
         <>
           <div className="thinking-depth-slider" data-testid="model-effort-slider">
             <div className="thinking-depth-rail" aria-hidden>
-              <i className="thinking-depth-fill" style={{ width: `${percent}%` }} />
+              <i className="thinking-depth-fill" style={{ width: `calc(${percent}% + ${14 - percent * 0.28}px)` }} />
+              <div className="thinking-depth-stops">
               {stops.map((stop, i) => (
                 <b
                   key={stop}
@@ -127,6 +128,7 @@ export default function ThinkingDepthPanel({
                 />
               ))}
               <span className="thinking-depth-thumb" style={{ left: `${percent}%` }} />
+              </div>
             </div>
             <input
               type="range"

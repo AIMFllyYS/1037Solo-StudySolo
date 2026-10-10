@@ -304,6 +304,13 @@ export const windowZh = {
     openPage: "在新标签页打开",
     dragHint: "拖到输入框可引用",
     noContext: "只读浏览 · 不进上下文",
+    folderAria: "教材文件夹",
+    choose: "选择",
+    done: "完成",
+    selectChapter: "在右侧文件夹中选择一章，即可在这里阅读全文。",
+    retry: "重试加载全文",
+    missingContent: "该内容尚未收录完整正文。请选择其他教材章节。",
+    chooseSubsection: "这是章节目录，请在右侧展开后选择子节阅读正文。",
   },
   project: {
     statusParsing: "解析中…",

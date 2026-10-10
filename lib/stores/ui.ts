@@ -8,6 +8,7 @@ import { layoutFlags, resolveLayoutProfile } from "@/lib/content/layoutProfile";
 import type { LayoutRightTab } from "@/lib/content/layoutProfile";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 import { getOwnerEpoch, getStorageOwner } from "@/lib/storage/ownerScope";
+import { readAgentPanelSizes, writeAgentPanelSizes, type AgentPanelSizes } from "@/lib/layout/agentPanelSizes";
 
 // 派生而非重复声明：`layoutProfile.ts` 决定每个档位显示哪些右栏 tab，但它不能 import 本文件
 // （会成环 ui → layoutProfile → ui），所以类型的真相源放在那边、这里派生回来。
@@ -131,6 +132,9 @@ interface AppState {
 
   /** 从 DOM 回填本地持久化的布局状态（首屏避免闪烁）。 */
   hydrateLayout: () => void;
+  /** Agent 左右列的唯一像素尺寸记录；开合与尺寸由本 store 一起维护。 */
+  agentPanelSizes: AgentPanelSizes | null;
+  setAgentPanelSize: (side: "left" | "right", pixels: number) => void;
 
   /** 已展开的科目/分类/章节键。科目用 `${subjectId}`，分类用 `${subjectId}-${categoryId}`，
    *  叶子用 `${subjectId}/${categoryId}/${itemId}`（命名空间化，避免跨学科碰撞）。 */
@@ -283,6 +287,7 @@ export const useStore = create<AppState>((set) => ({
     const sidebar = domBoolean("data-sidebar-collapsed");
     const agentDock = domBoolean("data-agent-dock-collapsed");
     const updates: Partial<AppState> = {};
+    if (typeof window !== "undefined" && !useStore.getState().agentPanelSizes) updates.agentPanelSizes = readAgentPanelSizes(window.innerWidth);
     if (topBar !== null) updates.topBarCollapsed = topBar;
     if (sidebar !== null) updates.sidebarCollapsed = sidebar;
     if (agentDock !== null) updates.agentDockCollapsed = agentDock;
@@ -298,6 +303,13 @@ export const useStore = create<AppState>((set) => ({
     if (hasRightAttr) updates.rightCollapsedByProfile = right;
     if (Object.keys(updates).length > 0) set(updates);
   },
+  agentPanelSizes: null,
+  setAgentPanelSize: (side, pixels) => set((state) => {
+    if (!Number.isFinite(pixels) || pixels <= 0) return state;
+    const sizes = { ...(state.agentPanelSizes ?? readAgentPanelSizes(typeof window === "undefined" ? 1440 : window.innerWidth)), [side]: Math.round(pixels) };
+    writeAgentPanelSizes(sizes);
+    return { agentPanelSizes: sizes };
+  }),
 
   // 初始展开：概率论科目 + 其详解分类（catId 规则为 `${subjectId}-${categoryId}`）。
   expandedIds: new Set([DEFAULT_SUBJECT, `${DEFAULT_SUBJECT}-detail`]),

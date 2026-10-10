@@ -302,6 +302,13 @@ export const windowEn = {
     openPage: "Open in a new tab",
     dragHint: "Drag into the composer to cite",
     noContext: "Read-only · not in context",
+    folderAria: "Textbook folders",
+    choose: "Choose",
+    done: "Done",
+    selectChapter: "Choose a chapter in the folders on the right to read its full content here.",
+    retry: "Retry loading full text",
+    missingContent: "The full content is not available yet. Please choose another textbook chapter.",
+    chooseSubsection: "This is a chapter folder. Expand it on the right and choose a subsection to read.",
   },
   project: {
     statusParsing: "Parsing…",

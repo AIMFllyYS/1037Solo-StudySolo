@@ -2805,21 +2805,26 @@
   color: var(--ink-faint);
   cursor: pointer;
 }
-.thinking-depth-fast { color: var(--accent); }
+.thinking-depth-fast { color: var(--accent); transition: background 140ms var(--ease-out), color 140ms var(--ease-out); }
 .thinking-depth-fast:disabled { color: var(--ink-faint); opacity: 0.45; cursor: not-allowed; }
 .thinking-depth-fast[data-active] { background: var(--accent-weak); color: var(--accent-ink); }
+.thinking-depth-fast[data-active] svg { fill: currentColor; animation: fast-mode-spark 240ms var(--ease-out); }
+.model-fast-indicator { color: var(--accent); fill: currentColor; animation: fast-mode-spark 240ms var(--ease-out); }
+@keyframes fast-mode-spark { 0% { transform: scale(0.7) rotate(-12deg); opacity: 0.45; } 65% { transform: scale(1.16) rotate(4deg); opacity: 1; } 100% { transform: scale(1) rotate(0); } }
 .thinking-depth-fast:hover:not(:disabled),
 .thinking-depth-reset:hover { background: var(--bg-muted); color: var(--ink); }
 .thinking-depth-hint,
 .thinking-depth-note { margin: 6px 0 0; text-align: center; font-size: 11px; line-height: 1.5; color: var(--ink-faint); }
-.thinking-depth-slider { position: relative; height: 30px; margin: 8px 16px 0; }
-.thinking-depth-rail { position: absolute; inset: 7px 0; border-radius: 999px; background: var(--bg-muted); }
+.thinking-depth-slider { position: relative; height: 44px; margin: 4px 4px 0; }
+.thinking-depth-rail { position: absolute; inset: 10px 0; border-radius: 999px; background: var(--bg-muted); }
+/* 档位中心内缩半个滑块宽度；首尾圆点和滑块在横向均完整落入胶囊。 */
+.thinking-depth-stops { position: absolute; inset: 0 14px; }
 .thinking-depth-fill { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: var(--accent); transition: width 160ms var(--ease-out); }
 .thinking-depth-dot {
   position: absolute;
   top: 50%;
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: color-mix(in srgb, var(--ink-faint) 55%, transparent);
   transform: translate(-50%, -50%);
@@ -2828,17 +2833,22 @@
 .thinking-depth-thumb {
   position: absolute;
   top: 50%;
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--md-sys-color-on-primary);
   box-shadow: 0 1px 4px color-mix(in srgb, var(--ink) 30%, transparent);
   transform: translate(-50%, -50%);
   transition: left 160ms var(--ease-out);
 }
-.thinking-depth-range { position: absolute; inset: -4px -12px; width: calc(100% + 24px); height: calc(100% + 8px); margin: 0; opacity: 0; cursor: pointer; }
+.thinking-depth-range { appearance: none; -webkit-appearance: none; position: absolute; inset: 0; width: 100%; height: 44px; margin: 0; background: transparent; opacity: 0; cursor: pointer; touch-action: pan-y; }
+.thinking-depth-range::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 28px; height: 28px; }
+.thinking-depth-range::-moz-range-thumb { width: 28px; height: 28px; border: 0; }
+.thinking-depth-range::-moz-range-track { background: transparent; }
 .thinking-depth-slider:focus-within .thinking-depth-thumb { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
-.thinking-depth-labels { position: relative; height: 22px; margin: 0 16px; }
+.thinking-depth-slider:has(.thinking-depth-range:active) .thinking-depth-fill,
+.thinking-depth-slider:has(.thinking-depth-range:active) .thinking-depth-thumb { transition: none; }
+.thinking-depth-labels { position: relative; height: 22px; margin: 0 18px; }
 .thinking-depth-labels button {
   position: absolute;
   top: 0;
@@ -2855,7 +2865,14 @@
 .thinking-depth-labels button:hover { color: var(--ink); background: var(--bg-muted); }
 .thinking-depth-labels button[data-active] { color: var(--ink); font-weight: 700; }
 html[data-reduce-motion="true"] .thinking-depth-fill,
-html[data-reduce-motion="true"] .thinking-depth-thumb { transition: none; }
+html[data-reduce-motion="true"] .thinking-depth-thumb,
+html[data-reduce-motion="true"] .thinking-depth-fast { transition: none; }
+html[data-reduce-motion="true"] .thinking-depth-fast svg,
+html[data-reduce-motion="true"] .model-fast-indicator { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .thinking-depth-fill, .thinking-depth-thumb, .thinking-depth-fast { transition: none; }
+  .thinking-depth-fast svg, .model-fast-indicator { animation: none; }
+}
 
 
 /* —— “+” 菜单顶部的开关行（联网搜索） —— */

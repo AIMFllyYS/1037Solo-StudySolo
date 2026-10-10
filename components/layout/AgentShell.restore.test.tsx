@@ -1,64 +1,52 @@
-import { act, cleanup, render } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { useStore } from "@/lib/stores/ui";
+import { AGENT_PANEL_SIZES_KEY } from "@/lib/layout/agentPanelSizes";
 
-const panel = vi.hoisted(() => ({
-  collapsed: false,
-  size: 35,
-  savedSize: 35,
-  onResize: undefined as ((size: number, previous?: number) => void) | undefined,
-  resize: vi.fn(),
-}));
 vi.mock("@/lib/hooks/useIsMobile", () => ({ useIsMobile: () => false }));
 vi.mock("@/lib/hooks/useAgentDockPerSession", () => ({ useAgentDockPerSession: () => {} }));
 vi.mock("./AgentConversationSidebar", () => ({ default: () => <div>Conversations</div> }));
-vi.mock("react-resizable-panels", async () => {
-  const React = await import("react");
-  return {
-    PanelGroup: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-    PanelResizeHandle: () => <div />,
-    Panel: React.forwardRef(function TestPanel({ id, children, onResize }: { id: string; children: React.ReactNode; onResize?: typeof panel.onResize }, ref) {
-      React.useImperativeHandle(ref, () => ({
-        isCollapsed: () => panel.collapsed,
-        collapse: () => { panel.savedSize = panel.size; panel.size = 0; panel.collapsed = true; },
-        expand: () => { panel.size = panel.savedSize; panel.collapsed = false; },
-        resize: panel.resize,
-      }));
-      if (id === "agent-conversations") panel.onResize = onResize;
-      return <div>{children}</div>;
-    }),
-  };
-});
 import AgentShell from "./AgentShell";
 
 beforeEach(() => {
-  panel.collapsed = false; panel.size = 35; panel.savedSize = 35; panel.resize.mockClear();
+  Object.defineProperty(window, "innerWidth", { configurable: true, value: 1440 });
   localStorage.clear();
-  useStore.setState({ sidebarCollapsed: false });
+  useStore.setState({ sidebarCollapsed: false, agentDockCollapsed: false, agentPanelSizes: { left: 280, right: 480 } });
 });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 
-it("ignores initialization and deferred programmatic callbacks; a user resize survives collapse and expand", async () => {
+it("右栏拖动和开合不改变左栏一帧的像素宽度；用户左栏尺寸在收起展开后恢复", () => {
   const persist = vi.spyOn(useStore.getState(), "setSidebarCollapsed");
   render(<AgentShell><div>Composer</div></AgentShell>);
-  await act(async () => { panel.onResize?.(35, undefined); await Promise.resolve(); });
+  const left = document.querySelector<HTMLElement>('[data-agent-slot="conversations"]')!;
+  expect(left.style.width).toBe("280px");
   expect(persist).not.toHaveBeenCalled();
-  panel.size = 39;
-  act(() => panel.onResize?.(39, 35));
-  expect(persist).not.toHaveBeenCalled();
+  act(() => useStore.getState().setAgentPanelSize("right", 600));
+  expect(left.style.width).toBe("280px");
+  act(() => useStore.setState({ agentDockCollapsed: true }));
+  expect(left.style.width).toBe("280px");
+  act(() => useStore.setState({ agentDockCollapsed: false }));
+  expect(left.style.width).toBe("280px");
 
+  fireEvent.keyDown(screen.getByTestId("agent-left-resize"), { key: "ArrowRight" });
+  expect(left.style.width).toBe("296px");
+  expect(useStore.getState().agentPanelSizes?.right).toBe(600);
+  expect(JSON.parse(localStorage.getItem(AGENT_PANEL_SIZES_KEY)!)).toEqual({ left: 296, right: 600 });
   act(() => useStore.setState({ sidebarCollapsed: true }));
-  // The library delivers collapse after the effect returns. It is still a restore.
-  act(() => panel.onResize?.(0, 39));
-  expect(persist).not.toHaveBeenCalled();
+  expect(left.style.width).toBe("0px");
   act(() => useStore.setState({ sidebarCollapsed: false }));
-  act(() => panel.onResize?.(39, 0));
+  expect(left.style.width).toBe("296px");
   expect(persist).not.toHaveBeenCalled();
-  expect(panel.size).toBe(39);
-  expect(panel.resize).not.toHaveBeenCalled();
 
-  panel.collapsed = true; panel.savedSize = panel.size; panel.size = 0;
-  act(() => panel.onResize?.(0, 39));
+  fireEvent.keyDown(screen.getByTestId("agent-left-resize"), { key: "Enter" });
   expect(persist).toHaveBeenCalledWith(true);
   expect(localStorage.getItem("gailvlun-sidebar-collapsed")).toBe("true");
+});
+
+it("路由重挂载直接使用统一尺寸，不发生比例布局后再恢复", () => {
+  const view = render(<AgentShell><div>Composer</div></AgentShell>);
+  fireEvent.keyDown(screen.getByTestId("agent-left-resize"), { key: "ArrowRight" });
+  view.unmount();
+  render(<AgentShell><div>Another page</div></AgentShell>);
+  expect(document.querySelector<HTMLElement>('[data-agent-slot="conversations"]')?.style.width).toBe("296px");
 });

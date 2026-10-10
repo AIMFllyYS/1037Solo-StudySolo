@@ -147,6 +147,37 @@ describe('ModelMenu progressive selection', () => {
     expect(screen.getByTestId('model-thinking-option-medium')).toBeTruthy();
     expect(screen.getByTestId('model-thinking-option-high')).toBeTruthy();
   });
+  it('shows only the standard model row and toggles the real Fast variant without changing effort', () => {
+    useSettings.setState({ selectedModelId: 'mimo-v2.6-pro' });
+    const onThinkingChange = vi.fn();
+    render(<ModelMenu thinkingEnabled thinkingEffort="high" onThinkingChange={onThinkingChange} />);
+    openCategory('快速模型');
+    expect(screen.queryByTestId('model-menu-item-xiaomi/mimo-v2.6-pro-ultraspeed')).toBeNull();
+    fireEvent.click(screen.getByTestId('model-fast-toggle'));
+    expect(useSettings.getState().selectedModelId).toBe('xiaomi/mimo-v2.6-pro-ultraspeed');
+    expect(onThinkingChange).toHaveBeenLastCalledWith({ enabled: true, effort: 'high' });
+    expect(screen.getByTestId('model-fast-toggle')).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByTestId('model-menu-panel')).toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getByRole('button', { name: '多模态模型' }));
+    const row = screen.getByTestId('model-menu-item-mimo-v2.6-pro');
+    expect(within(row).getByLabelText('已选模型')).toBeInTheDocument();
+    fireEvent.mouseEnter(row);
+    expect(screen.getByTestId('model-fast-toggle')).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(screen.getByTestId('model-fast-toggle'));
+    expect(useSettings.getState().selectedModelId).toBe('mimo-v2.6-pro');
+  });
+  it('restores a saved Fast variant through its standard family and disables Fast on unpaired models', () => {
+    useSettings.setState({ selectedModelId: 'xiaomi/mimo-v2.6-pro-ultraspeed' });
+    render(<ModelMenu thinkingEnabled thinkingEffort="medium" />);
+    expect(screen.getByTestId('model-menu-button')).toHaveTextContent('MiMo 2.6 Pro');
+    expect(screen.getByTestId('model-menu-button')).not.toHaveTextContent('UltraSpeed');
+    openCategory('快速模型');
+    expect(screen.getByTestId('model-fast-toggle')).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(screen.getByTestId('model-menu-item-deepseek/deepseek-v4.1-flash'));
+    openMenu();
+    expect(screen.getByTestId('model-fast-toggle')).toBeDisabled();
+    expect(screen.getByTestId('model-fast-toggle')).toHaveAttribute('aria-pressed', 'false');
+  });
   it('mobile uses one panel per level: thinking, then categories, then models', () => {
     const width = window.innerWidth;
     Object.defineProperty(window, 'innerWidth', { configurable: true, value: 390 });

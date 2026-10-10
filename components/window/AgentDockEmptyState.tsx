@@ -1,6 +1,8 @@
 "use client";
 
-import { BookOpen, FileDigit, Layers, MonitorPlay, PenLine } from "lucide-react";
+import { BookOpen, FileDigit, FolderTree, Layers, MonitorPlay, PenLine } from "lucide-react";
+import { openTextbookWindow } from "@/lib/textbook/openTextbook";
+import { useProjectFilesEntry } from "@/components/project/useProjectFilesEntry";
 import {
   createAndOpenNote,
   openArtifactImportPicker,
@@ -34,6 +36,12 @@ const ENTRIES: Entry[] = [
  */
 export default function AgentDockEmptyState({ hasHiddenWindows = false }: { hasHiddenWindows?: boolean }) {
   const t = useT();
+  const { openProjectFilesEntry, projectRequiredDialog } = useProjectFilesEntry();
+  const entries: Entry[] = [
+    { id: "textbook", labelKey: "panel.addMenu.textbook", hintKey: "panel.addMenu.textbookHint", icon: <BookOpen size={15} />, run: () => { openTextbookWindow(); } },
+    { id: "project-files", labelKey: "panel.addMenu.projectFiles", hintKey: "panel.addMenu.projectFilesHint", icon: <FolderTree size={15} />, run: openProjectFilesEntry },
+    ...ENTRIES,
+  ];
   return (
     <div
       data-testid="agent-dock-empty"
@@ -46,7 +54,7 @@ export default function AgentDockEmptyState({ hasHiddenWindows = false }: { hasH
         {t(hasHiddenWindows ? "panel.dockEmpty.hiddenHint" : "panel.dockEmpty.emptyHint")}
       </p>
       <div className="mt-1 flex w-full max-w-[20rem] flex-col gap-1">
-        {ENTRIES.map((entry) => (
+        {entries.map((entry) => (
           <button
             key={entry.id}
             type="button"
@@ -60,6 +68,7 @@ export default function AgentDockEmptyState({ hasHiddenWindows = false }: { hasH
           </button>
         ))}
       </div>
+      {projectRequiredDialog}
     </div>
   );
 }

@@ -13,7 +13,7 @@ import {
 import { ModelIcon } from "@/components/icons/ModelBrandIcons";
 import { thinkingStopIds } from "@/lib/ai/thinkingStops";
 import ThinkingDepthPanel, { thinkingChipLabel } from "@/components/chat/ThinkingDepthPanel";
-import { fastModeCounterpart, isFastVariant, supportsFastMode } from "@/lib/ai/fastModeRegistry";
+import { fastModeCounterpart, isFastVariant, standardModelId, supportsFastMode } from "@/lib/ai/fastModeRegistry";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useT } from "@/lib/i18n";
 
@@ -102,6 +102,7 @@ export default function ModelMenu({
   const customApiGroups = useSettings((s) => s.customApiGroups);
   const selectedId = value ?? globalSelected;
   const current = getModelInfoWithCustom(selectedId, customApiGroups);
+  const standardCurrent = getModelInfoWithCustom(standardModelId(selectedId), customApiGroups);
   const chipEffort = thinkingChipLabel(current, { enabled: thinkingEnabled || !!current?.thinkingRequired, effort: thinkingEffort }, t);
   const [open, setOpen] = useState(false);
   const [series, setSeries] = useState<string | null>(null);
@@ -120,11 +121,11 @@ export default function ModelMenu({
   }, []);
   useOverlayRegistration({ id: "model-menu", open, onClose: close, priority: 45 });
   const models = series?.startsWith("category:")
-    ? modelsForPicker(MODELS).filter((model) => modelMenuCategories(model).includes(series.slice(9)))
+    ? modelsForPicker(MODELS).filter((model) => !isFastVariant(model.id) && modelMenuCategories(model).includes(series.slice(9)))
     : series?.startsWith("custom:")
       ? getAllModels(customApiGroups.filter((group) => group.id === series.slice(7))).filter((model) => model.id.startsWith(CUSTOM_PREFIX))
       : [];
-  const detail = models.find((model) => model.id === detailId);
+  const detail = getModelInfoWithCustom(detailId ?? "", customApiGroups);
   // 可见栏数：一级（思考强度）+ 二级（分类）恒显，三级（模型列表）随分类展开。
   const count = 2 + (series ? 1 : 0);
   useLayoutEffect(() => {
@@ -210,6 +211,8 @@ export default function ModelMenu({
     else { setMobileStep("thinking"); focusColumn(1); }
   };
   const keyboard = (event: KeyboardEvent<HTMLDivElement>) => {
+    // 原生滑杆独占方向键 / Home / End，菜单不能把它们截走用于切栏。
+    if (event.target instanceof HTMLInputElement && event.target.type === "range" && event.key !== "Escape" && event.key !== "Tab") return;
     const column = (event.target as HTMLElement).closest<HTMLElement>("[data-menu-level]");
     const level = Number(column?.dataset.menuLevel ?? 1);
     if (event.key === "Escape") { event.stopPropagation(); event.preventDefault(); close(); return; }
@@ -223,8 +226,8 @@ export default function ModelMenu({
     }
     if (event.key === "Tab") {
       event.preventDefault();
-      const buttons = Array.from(panelRef.current?.querySelectorAll<HTMLButtonElement>("button:not(:disabled)") ?? []);
-      const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
+      const buttons = Array.from(panelRef.current?.querySelectorAll<HTMLElement>("button:not(:disabled), input[type=range]:not(:disabled)") ?? []);
+      const index = buttons.indexOf(document.activeElement as HTMLElement);
       const next = index + (event.shiftKey ? -1 : 1);
       if (next < 0 || next >= buttons.length) close(); else buttons[next]?.focus();
       return;
@@ -260,7 +263,7 @@ export default function ModelMenu({
   const title = categoryName ? (categoryKey ? t(categoryKey) : categoryName)
     : customApiGroups.find((group) => group.id === series?.slice(7))?.name ?? t("menu.model.custom");
   const TitleIcon = categoryName ? CATEGORY_ICONS[categoryName] : Plug;
-  const builtinPickerModels = modelsForPicker(MODELS);
+  const builtinPickerModels = modelsForPicker(MODELS).filter((model) => !isFastVariant(model.id));
   const categoryCount = (name: string) =>
     builtinPickerModels.filter((model) => modelMenuCategories(model).includes(name)).length;
   /** 分类行右侧的品牌图标圆点：按注册表顺序取该分类内去重品牌，附模型名 tooltip。 */
@@ -279,7 +282,12 @@ export default function ModelMenu({
   const details = focusModel ? <>
     <ModelDetails model={focusModel} onUse={() => pick(focusModel)} />
     {focusModel.thinking && (thinkingStopIds(focusModel).length > 1 || supportsFastMode(focusModel.id)) ? <ThinkingDepthPanel model={focusModel} selected={selectedId === focusModel.id} thinkingEnabled={thinkingEnabled} thinkingEffort={thinkingEffort} onPick={(thinking) => pick(focusModel, thinking, true)}
-      fast={{ supported: supportsFastMode(focusModel.id), active: isFastVariant(focusModel.id), onToggle: () => { const target = getModelInfoWithCustom(fastModeCounterpart(focusModel.id) ?? "", customApiGroups); if (target) pick(target, selectedId === focusModel.id ? { enabled: thinkingEnabled || !!focusModel.thinkingRequired, effort: thinkingEffort } : undefined); } }} /> : null}
+      fast={{ supported: supportsFastMode(focusModel.id), active: isFastVariant(focusModel.id), onToggle: () => {
+        const target = getModelInfoWithCustom(fastModeCounterpart(focusModel.id) ?? "", customApiGroups);
+        if (!target) return;
+        setDetailId(target.id);
+        pick(target, { enabled: thinkingEnabled || !!target.thinkingRequired, effort: clampThinkingEffort(target, thinkingEffort) }, true);
+      } }} /> : null}
   </> : null;
 
   return <>
@@ -287,7 +295,8 @@ export default function ModelMenu({
       onClick={() => { if (open) close(); else { setOpen(true); focusColumn(1); } }} title={t("menu.model.choose")} data-testid="model-menu-button"
       className="press flex max-w-[180px] min-w-0 items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]">
       {selectedId === AUTO_MODEL_ID ? <Compass size={12} /> : <ModelIcon brand={current?.icon} size={12} decorative />}
-      <span className="model-menu-label model-menu-label-full truncate">{current?.label ?? selectedId}</span>
+      <span className="model-menu-label model-menu-label-full truncate">{standardCurrent?.label ?? current?.label ?? selectedId}</span>
+      {isFastVariant(selectedId) ? <Zap size={12} className="model-fast-indicator shrink-0" aria-label={t("menu.modelEffort.fast")} /> : null}
       <span className="model-menu-label model-menu-label-short">{t("menu.model.short")}</span>{chipEffort ? <span className="model-effort-chip-level" data-testid="model-effort-level">{chipEffort}</span> : null}<ChevronDown size={12} />
     </button>
     {open ? createPortal(<div ref={panelRef} role="dialog" aria-label={t("menu.model.dialog")} onKeyDown={keyboard}
@@ -339,11 +348,11 @@ export default function ModelMenu({
         {models.map((model) => <div key={model.id}>
           <button type="button" className={rowClass + (detailId === model.id ? " bg-[var(--accent-weak)]" : "")}
             data-testid={`model-menu-item-${model.id}`}
-            onMouseEnter={() => { if (!position.mobile) setDetailId(model.id); }}
+            onMouseEnter={() => { if (!position.mobile) setDetailId(standardModelId(selectedId) === model.id ? selectedId : model.id); }}
             onClick={() => pick(model)}>
             <ModelIcon brand={model.icon} size={14} decorative /><span className="min-w-0 flex-1"><span className="flex min-w-0 items-center gap-1"><span className="truncate">{model.label}</span><ModelTraitDots model={model} /></span>
             {model.vendorTrainingNotice ? <span className="block text-[10px] text-[var(--md-sys-color-error)]">{model.vendorTrainingNotice}</span> : null}</span>
-            {selectedId === model.id ? <Check aria-label={t("menu.model.selected")} size={12} className="shrink-0" /> : null}
+            {standardModelId(selectedId) === model.id ? <Check aria-label={t("menu.model.selected")} size={12} className="shrink-0" /> : null}
           </button>
         </div>)}
       </section> : null}
