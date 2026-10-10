@@ -358,8 +358,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
       </div>
 
       <div
-        className="flex shrink-0 items-center gap-1"
-        style={{ height: 44, padding: "0 10px", borderTop: "1px solid var(--line-soft)" }}
+        className="ss-sidebar-dock flex shrink-0 items-center gap-1"
       >
         <LeftDock
           buttonRef={settingsBtnRef}

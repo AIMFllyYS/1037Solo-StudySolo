@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import ThinkingDepthPanel from "./ThinkingDepthPanel";
 import { getModelInfo } from "@/lib/ai/models";
 import { useSettings } from "@/lib/stores/settings";
@@ -61,6 +61,13 @@ describe("effort slider pointer and keyboard contract", () => {
     expect(range).toHaveAttribute("aria-valuetext", "Med");
     fireEvent.click(screen.getByRole("button", { name: "恢复默认思考深度" }));
     expect(range).toHaveAttribute("aria-valuetext", "关闭");
-    expect(document.querySelector(".thinking-depth-sheen")).toBeNull();
+    expect(document.querySelector(".thinking-depth-flow")).toBeNull();
+  });
+  it("stops the continuous Fast particles as soon as reduced motion is enabled", () => {
+    useSettings.setState({ reduceMotion: false });
+    render(<Fixture />);
+    expect(document.querySelector(".thinking-depth-flow")).not.toBeNull();
+    act(() => useSettings.setState({ reduceMotion: true }));
+    expect(document.querySelector(".thinking-depth-flow")).toBeNull();
   });
 });

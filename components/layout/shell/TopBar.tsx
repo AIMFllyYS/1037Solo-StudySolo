@@ -75,7 +75,7 @@ export default function TopBar({
       data-class-bar={classMode ? "true" : undefined}
       className={clsx(
         "relative flex shrink-0 items-center gap-3 bg-[var(--bg-panel)] px-3 transition-all duration-300 ease-out overflow-hidden",
-        barCollapsed ? "h-0 border-b-0 py-0" : "h-12 border-b border-[var(--line-soft)]",
+        barCollapsed ? "h-0 border-b-0 py-0" : "ss-chrome h-12",
       )}
     >
       {/* 桌面各模式共用一个实际左导航开关与状态；Class / Review 的子工作区订阅同一 store。 */}

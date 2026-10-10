@@ -81,13 +81,9 @@ export default function SettingsSection({
 
   return (
     <section
-      className="shrink-0 overflow-hidden rounded-[var(--md-sys-shape-corner-large,16px)]"
+      className="ss-soft-card shrink-0 overflow-hidden rounded-[var(--md-sys-shape-corner-large,16px)]"
       data-settings-expand="unbounded"
       data-settings-variant="card"
-      style={{
-        background: "var(--md-sys-color-surface-container)",
-        border: "1px solid var(--md-sys-color-outline-variant)",
-      }}
     >
       <button
         type="button"
@@ -112,7 +108,7 @@ export default function SettingsSection({
         <Chevron open={open} />
       </button>
       {open ? (
-        <div className="border-t px-3.5 py-3" style={{ borderColor: "var(--md-sys-color-outline-variant)" }}>
+        <div className="ss-settings-body px-3.5 py-3">
           {children}
         </div>
       ) : null}

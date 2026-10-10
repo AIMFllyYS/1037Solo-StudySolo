@@ -45,7 +45,7 @@ export default function SegmentedTabs<T extends string>({
 
   return (
     <div className={clsx("flex shrink-0 items-center gap-2 px-4 py-2", className)}>
-      <div className="hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto" role="tablist" aria-label={ariaLabel}>
+      <div className="ss-tab-rail hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto" role="tablist" aria-label={ariaLabel}>
         {tabs.map((tab, index) => {
           const selected = tab.id === value;
           return (

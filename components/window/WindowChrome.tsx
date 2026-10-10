@@ -78,7 +78,7 @@ export default function WindowChrome({
       {showHeader && <div
         onPointerDown={compactSurface || isFullscreen ? undefined : onDragStart}
         className={clsx(
-          "window-chrome-header relative flex min-h-8 shrink-0 items-center justify-center border-b border-[var(--line-soft)] px-3",
+          "ss-chrome window-chrome-header relative flex min-h-8 shrink-0 items-center justify-center px-3",
           dockSurface ? "bg-[var(--bg-panel)]" : "bg-[var(--md-sys-color-surface-container-high)]",
           compactSurface || isFullscreen ? "cursor-default" : "cursor-grab",
         )}

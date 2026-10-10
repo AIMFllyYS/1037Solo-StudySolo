@@ -39,7 +39,7 @@ export default function AgentCenterTabs({
       role="tablist"
       aria-label={t("agent.center.tabs.aria")}
       data-testid="agent-center-tabs"
-      className="flex items-center gap-1 rounded-xl bg-[var(--bg-muted)] p-0.5"
+      className="ss-tab-rail flex items-center gap-1"
     >
       {tabs.map((tab) => {
         const active = tab.id === centerTab;

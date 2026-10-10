@@ -142,7 +142,7 @@ export default function GlobalSettings({
       className={
         page
           ? "global-settings-page flex h-full min-h-0 w-full flex-col overflow-hidden"
-          : "fixed z-[9998] flex flex-col overflow-hidden rounded-[14px]"
+          : "ss-surface ss-account-menu fixed z-[9998] flex flex-col overflow-hidden"
       }
       style={
         page
@@ -155,9 +155,6 @@ export default function GlobalSettings({
               width: pos.width,
               maxHeight: pos.maxHeight,
               transformOrigin: "left bottom",
-              background: "var(--md-sys-color-surface-container-low)",
-              border: "1px solid var(--md-sys-color-outline-variant)",
-              boxShadow: "var(--md-sys-elevation-level3, 0 8px 24px rgba(0,0,0,0.32))",
             }
       }
     >
@@ -169,8 +166,8 @@ export default function GlobalSettings({
               data-testid="account-header"
               aria-label={t("settings.global.viewAccount")}
               onClick={() => setAccountOpen(true)}
-              className="flex shrink-0 items-center gap-2.5 px-3.5 py-2.5 text-left transition-colors hover:bg-[var(--md-sys-color-surface-container-high)]"
-              style={{ background: "transparent", border: "none", cursor: "pointer" }}
+              className="ss-account-header flex shrink-0 items-center gap-2.5 px-3.5 py-2.5 text-left transition-colors"
+              style={{ border: "none", cursor: "pointer" }}
             >
               <UserAvatar
                 name={account.nickname}
@@ -196,11 +193,7 @@ export default function GlobalSettings({
         {/* 手机全屏设置页保留标题栏。 */}
         {page ? (
           <div
-            className="flex shrink-0 items-center justify-between px-3.5 py-2.5"
-            style={{
-              borderBottom: "1px solid var(--md-sys-color-outline-variant)",
-              background: "var(--md-sys-color-surface-container)",
-            }}
+            className="ss-chrome flex shrink-0 items-center justify-between px-3.5 py-2.5"
           >
             <div className="flex items-center gap-1.5">
               <Settings size={14} className="text-[var(--md-sys-color-primary)]" />
@@ -216,8 +209,7 @@ export default function GlobalSettings({
           {page ? (
           <div
             data-testid="account-card"
-            className="flex items-center justify-between gap-2.5 rounded-[14px] bg-[var(--md-sys-color-surface-container)] px-3 py-2"
-            style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
+            className="ss-soft-card flex items-center justify-between gap-2.5 rounded-[14px] px-3 py-2"
           >
             <button
               type="button"

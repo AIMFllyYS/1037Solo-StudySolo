@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type PointerEvent } from "react";
+import { useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { motion } from "framer-motion";
 import { ChevronRight, RotateCcw, Zap } from "lucide-react";
 import { ModelIcon } from "@/components/icons/ModelBrandIcons";
@@ -98,9 +98,17 @@ export default function ThinkingDepthPanel({
     </div>
     {stops.length > 1 ? <div className="thinking-depth-slider" data-testid="model-effort-slider" data-dragging={dragProgress !== null || undefined}>
       <div className="thinking-depth-rail" aria-hidden>
-        <motion.i className="thinking-depth-fill" initial={false} animate={{ width: percent + "%" }} transition={transition} />
-        {fast.active && !reducedMotion ? <motion.i key={model.id} className="thinking-depth-sheen" initial={{ left: "-60%", opacity: 0 }}
-          animate={{ left: "120%", opacity: [0, 0.6, 0] }} transition={{ duration: DURATION.slow * 2 }} /> : null}
+        <div className="thinking-depth-track">
+          <motion.i className="thinking-depth-fill" initial={false} animate={{ width: percent + "%" }} transition={transition} />
+          {fast.active && !reducedMotion ? <span className="thinking-depth-flow">
+            {Array.from({ length: 7 }, (_, i) => <i key={i} className="thinking-depth-particle" style={{
+              "--particle-y": `${20 + (i * 17) % 65}%`,
+              "--particle-delay": `${i * -0.27}s`,
+              "--particle-duration": `${1.05 + (i % 3) * 0.19}s`,
+              "--particle-width": `${i % 2 ? 4 : 2}px`,
+            } as CSSProperties} />)}
+          </span> : null}
+        </div>
         <div className="thinking-depth-stops">
           {stops.map((stop, i) => <b key={stop} className="thinking-depth-dot" data-passed={i < index || undefined}
             style={{ left: (i / last) * 100 + "%" }} />)}

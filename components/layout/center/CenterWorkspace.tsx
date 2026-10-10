@@ -163,7 +163,7 @@ export default function CenterWorkspace({ children }: { children: React.ReactNod
         <motion.span
           layoutId={reducedMotion ? undefined : "center-tab-active"}
           transition={LAYOUT_REFLOW}
-          className="absolute inset-0 z-0 rounded-lg bg-[var(--accent-weak)]"
+          className="ss-tab-selection absolute inset-0 z-0 rounded-lg"
           aria-hidden
         />
       )}
@@ -196,7 +196,7 @@ export default function CenterWorkspace({ children }: { children: React.ReactNod
           onFocusCapture={autoHide ? reveal : undefined}
           onBlurCapture={autoHide ? (event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) hideSoon(); } : undefined}
           className={clsx(
-            "flex h-11 items-center gap-1 border-b border-[var(--line-soft)] bg-[var(--bg-panel)] px-1.5",
+            "ss-chrome flex h-11 items-center gap-1 px-1.5",
             autoHide
               ? "center-tabs-floating absolute inset-x-0 top-0 z-30 shadow-[0_6px_18px_color-mix(in_srgb,var(--ink)_10%,transparent)]"
               : "shrink-0",
@@ -242,8 +242,9 @@ export default function CenterWorkspace({ children }: { children: React.ReactNod
                 return (
                   <span
                     key={bm.id}
+                    data-selected={active || undefined}
                     className={clsx(
-                      "group flex shrink-0 items-center gap-1 rounded-lg border py-1.5 pl-2 pr-1 text-[12.5px] font-medium transition-colors",
+                      "ss-dock-tab group flex shrink-0 items-center gap-1 rounded-lg border py-1.5 pl-2 pr-1 text-[12.5px] font-medium transition-colors",
                       active
                         ? "border-[var(--accent)] bg-[var(--accent-weak)] text-[var(--accent-ink)]"
                         : "border-[var(--line)] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",

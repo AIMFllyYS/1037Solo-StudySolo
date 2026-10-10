@@ -55,10 +55,9 @@ export default function LeftDock({
       aria-expanded={settingsOpen}
       data-testid="left-dock"
       onClick={onToggle}
-      className="flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-[var(--md-sys-color-surface-container-high)]"
+      className="ss-dock-account flex min-w-0 flex-1 items-center gap-2 px-2 py-1.5 text-left transition-colors"
       style={{
         color: "var(--md-sys-color-on-surface-variant)",
-        background: "transparent",
         border: "none",
         cursor: "pointer",
       }}

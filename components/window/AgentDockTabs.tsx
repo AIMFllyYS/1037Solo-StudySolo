@@ -160,6 +160,7 @@ export default function AgentDockTabs({
               <motion.div
                 key={window.id}
                 role="presentation"
+                data-selected={selected || undefined}
                 {...reflowItemProps(reducedMotion)}
                 onContextMenu={(event) => {
                   event.preventDefault();
@@ -168,7 +169,7 @@ export default function AgentDockTabs({
                   openTabMenu(window, tabButton, event.clientX, event.clientY);
                 }}
                 className={clsx(
-                  "group flex min-w-0 max-w-[min(18rem,48%)] shrink-0 items-center rounded-lg border transition-colors",
+                  "ss-dock-tab group flex min-w-0 max-w-[min(18rem,48%)] shrink-0 items-center rounded-lg border transition-colors",
                   selected
                     ? "border-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)]"
                     : "border-transparent text-[var(--ink-soft)] hover:border-[var(--line)] hover:bg-[var(--bg-muted)]",

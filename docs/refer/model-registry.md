@@ -53,7 +53,9 @@ DeepSeek Fast 是平台的官方直连通道：上游固定为 `https://api.deep
 
 桌面一级/二级宽 320px，三级宽 352px；窄屏、触控设备或两侧放不下三级时，使用单面板逐层进入/返回。手机先点击模型查看详情，再点击「选用此模型」。定位与可见视口处理在 `components/chat/composer/modelMenu/useMenuPosition.ts`，分类与列表展示在 `ModelPickerPanels.tsx`；主入口持有唯一选择/层级状态。
 
-滑杆保留原生 range 的键盘与读屏语义，指针捕获提供连续拖动、边界限制和释放后档位吸附。共享 `lib/motion.ts` 的 `LAYOUT_REFLOW`、`scaleInVariants`、`fadeInUpVariants`、`AnimatedCollapse` 组件与 `useUiReducedMotion` 控制面板、行内详情、滑块和 Fast 动画。独立样式在 `app/styles/model-picker.css`；轨道 30px、滑块 26px，最左端填充宽度为零。
+滑杆保留原生 range 的键盘与读屏语义，指针捕获提供连续拖动、边界限制和释放后档位吸附。共享 `lib/motion.ts` 的 `LAYOUT_REFLOW`、`scaleInVariants`、`fadeInUpVariants`、`AnimatedCollapse` 组件与 `useUiReducedMotion` 控制面板、行内详情、滑块和 Fast 动画。独立样式在 `app/styles/model-picker.css`；轨道 26px、滑块 28px，滑块和填充层分别绘制，最左端填充宽度为零。
+
+Fast 菜单开启期间，轨道内的细小粒子用 CSS transform 持续向前加速流动；关闭菜单/Fast 或开启减少动画即停止。所有菜单的开场扫光共用 `app/styles/surfaces.css`，普通模式也有同样的一次性柔和流光。行内详情卡与对应模型行左右对齐。
 
 Ask/Full（询问/完全同意）的本机偏好与输入框是否可发送分开控制，访客或会话门控不禁用偏好入口，登录与发送校验保持原契约。窄栏复用同一组选项，三个点触发器为透明圆形按钮，弹出内容纵向排列。
 

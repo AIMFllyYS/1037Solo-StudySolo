@@ -173,12 +173,7 @@ export default function SubjectSidebar() {
 
       {/* 底部工具条：头像 + 昵称打开设置 */}
       <div
-        className="flex shrink-0 items-center gap-1"
-        style={{
-          height: 40,
-          padding: "0 8px",
-          borderTop: "1px solid var(--md-sys-color-outline-variant)",
-        }}
+        className="ss-sidebar-dock flex shrink-0 items-center gap-1"
       >
         <LeftDock
           buttonRef={settingsBtnRef}
