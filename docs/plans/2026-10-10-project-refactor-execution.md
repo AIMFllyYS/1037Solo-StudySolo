@@ -28,7 +28,7 @@
 | R3 核心职责拆分 | 过长的同步、持久化、状态、API、模型与 UI 组合拆分；拥挤目录按职责归类 | 真实调用链和导入更新；定向回归；没有新循环依赖或客户端服务端泄漏 | 实现完成；唯一 store/queue/CAS 及两处连续引擎职责保留，待 R6 总验收 |
 | R4 内容与可视化组织 | 人工数据模块、交互组件和工具目录有明确边界；可复用重复逻辑归一 | 内容/registry/媒体/公式检查；独立交互和阅读功能保留 | 实现完成；33 个长交互、教材/注册数据和生成链已分层，待 R6 |
 | R5 文档与死代码 | 失效文档归档、引用修正、README/架构/规范/SOP 更新、可确认冗余处理 | 文档链接和事实对照；Knip 逐项核实；规范能指导下一次维护 | 实现完成；历史/原件/符号决定和当前参考/SOP 已核对，待 R6 |
-| R6 总验收与交付 | 分阶段提交、最终报告、证据和局部阻塞清单 | 适用 CI 本地等价检查、生产构建与浏览器验收，清楚披露未验边界 | 待 R5 |
+| R6 总验收与交付 | 分阶段提交、最终报告、证据和局部阻塞清单 | 适用 CI 本地等价检查、生产构建与浏览器验收，清楚披露未验边界 | 完成；完整门禁、隔离 Web、Windows 包/包内服务与实际访客 UI 通过，原生窗口/DPAPI/真实账户付费/生产按边界保留 |
 
 ## Next.js 指导的使用方式
 
@@ -125,16 +125,16 @@ R6 Windows 桌面构建的 Next 编译/1456 静态页通过，shell 暂存遇到
 
 尚无已确认的整体阻塞。后续按任务、症状、证据、尝试、影响、替代及恢复条件记录。
 
-## 续接检查点
+## 完成检查点
 
-R0–R5 实现完成，剩余目录/符号/历史探针已提交 `b2279cf1`；文档事实收尾按阶段提交至同名云端重构分支，具体 SHA 以分支 Git 历史为准。当前 R6 总验收，整体 Goal 仍 active。代码测试、生产构建、实际 UI 与最终报告完成前，不能宣称全任务验收完成。
+R0–R6 已按本轮维护边界完成。指定 UI/系统分层/归档及最终补齐的学期选择、Windows Next 嵌套包实体复制均已提交同名云端分支；运行代码候选 `1345cf6f`，最终文档 SHA 见 Git 历史。交付记录位于 docs/analysis/2026-10-11-project-refactor-final.md。
 
-下一阶段仍需：
+维护回看：
 
 1. 已拆内容加载、聊天/复习 API、QuizQuestion、GlobalSettings、RecordPreviewWindow、AppShell、ChatInput、ReviewQuizPane、TokenDashboard、provider、db migration、Electron key IO、quiz-progress、learning/quiz、userNotes 及 AgentConversationSidebar/ChatFeedbackActions/ImageGenViewer/ModelMenu，已完成 chat/layout/hooks/stores/content-data 和 lib/chat 归类。继续按新 inventory 核对其余混合职责和拥挤目录，不重复拆已完成模块。sync engine 和 sessionStore 是已分层后的单一队列/状态引擎，按实际职责与风险审查，不机械按行数重切。
 2. 六个优先概率交互及余下 27 个长交互、五份长教材目录/交互注册、长字典和 auth setup CLI 已分层，不重复拆分；χ² 与协方差轴数值修复单独记录。剩余连续引擎按状态机/队列/CAS 的实际职责审查，不按行数机械重切。lib/chat/auth/billing/ai 拥挤目录已归类，继续核对 search/notes/window 等真实领域的职责与文件计数，不机械拆测试目录。继续审计明确等价的重复算法；教材 ingest writer/清理脚本的旧路径已修正，不执行会替换正文的真实接入脚本。
 3. 正式 knip.json 已核实 Next、Classolo、Worker、CJS、CLI 与沙箱脚本入口；最新 verify/knip-r5c-final.json 的文件/依赖/unlisted/binary 为 0，仍有 136 个值导出、55 个类型候选。明显公共 façade/协议不能只凭未使用报告删除；继续检查内部冗余、重复 barrel 和真正消费者，保留诊断而不泛化 ignore。
 4. 当前 74 份活文档、316 本地链接、0 缺失。72 份旧 handoff/loop/日期快照与 3 原参考已归档，当前模型维护与 Fast 注释已更新；SOP 07/14 与 storage 参考已核实。继续核对 rendering/framework-extension 和其余 SOP 中的存量事实（特别是旧数量/旧执行角色措辞），不能把链接通过当作所有说明已准确。37 个未使用源码和 21 个旧转发已保留可恢复原件，字节承诺已验证实际 Git blob。
-5. 最终候选统一运行适用 gate、全量类型/lint/代码/内容/React 与隔离生产构建，并复核实际浏览器与既有交互；报告真实账号、付费请求及向量新增覆盖的未验边界。最近全量为代码 2049 项/2048 通过/1 原跳过、React 300 文件/1245 项通过、ESLint 0 error/21 warning；R3n/o 的新改动虽定向通过，仍需最终统一验收。Electron 新 keyStorage 已由 electron/**/* 收入包，.test.* 被排除；最终 staged/package 资源及实际 OS 验收范围不得混同。
+5. 最终代码 2068 项/2067 通过/1 real PostgreSQL 原跳过/0 失败；内容 2339 项、React 305 文件/1282 项、类型、ESLint 0 error/21 原 warning、秘密扫描、Python web archive 14/writer 3、prebuild/index 深 hash 均通过。Web .next-perf-refactor-20261011-final2、Windows 在线 stage/package 完成；两个 EXE 哈希及包内 Worker/index/Next、main/preload/keyStorage/environment 与测试排除通过，包内服务在无操作者凭据临时端口首页/教材/search HTTP 200，测试进程已停。真实访客 UI 验证 Fast、学期选择、完整正文、原项目选择器、独立宽度和资产路由往返；保留实际原生窗口/OS DPAPI、真实账户/跨设备/付费/生产未新验边界。本轮没有合并主线、部署、发 Release 或补付费向量。
 
-已完成模块的职责和算法已分离；当前 inventory 2351 源码/测试文件、1714 人工源码、2 个超过 500 行、0 个超过 800 行，即时循环为 0。两处连续引擎的状态所有权和保留理由已写入架构；拥挤目录与导出表面已有分类，仍需收尾文档事实核对和最终统一门禁，以上检查结果不替代最终验收。RootSolo 当前服务是 studysolo-web / 35349、Next 16.4.0；使用时重新核对实时健康，不盲目重复启动。
+最终 inventory 2354 源码/测试文件、1715 人工源码、2 个超过 500 行、0 个超过 800 行，即时循环为 0。两处连续引擎的状态所有权和保留理由写入架构；保留接口的 Knip 诊断单列，当前 56 活文档/305 链接/0 缺失，151 原 Git blob 哈希匹配。最终 fetch 确认 master/dev 与各自 origin 仍同为 b87061d4，重构提交已同步；RootSolo 原开发服务 /35349 保持，新增临时服务已停，隔离构建的 tsconfig 变更还原。
