@@ -45,9 +45,11 @@ interface ChatPanelProps {
    */
   emptyLayout?: 'classic' | 'agent';
   agentMain?: boolean;
+  /** Agent 执行模式（询问/完全同意）入口：ChatPanel 的聊天面一律显示，置 false 可关。 */
+  showAgentModeMenu?: boolean;
 }
 
-const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, emptyLayout = 'classic', agentMain = false }) => {
+const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, emptyLayout = 'classic', agentMain = false, showAgentModeMenu = true }) => {
   const t = useT();
   const [chatOptions] = useState<ChatOptions>({
     enableThinking: false,
@@ -283,6 +285,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
         chatContext={chatContext}
         // 只有 Agent 中央对话给「对话所属项目」这个入口（划词浮窗 / 题目解析 / 手机迷你聊天都不给）。
         showProjectPicker={emptyLayout === "agent"}
+        showAgentModeMenu={showAgentModeMenu}
         onOpenSettings={openAgentSettings}
         onComposerInsetChange={setComposerInset}
         focusSignal={focusSignal}

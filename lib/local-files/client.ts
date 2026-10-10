@@ -191,6 +191,50 @@ export async function reconnectLocalFile(id: string): Promise<void> {
     }
     throw new Error('本地源文件需要重连：请重新选择原文件，原对话和已读取片段仍保留。');
 }
+/**
+ * 供前端渲染器取回本地源文件的原始 File（按种类需要二进制，不走文字抽取）。
+ * 查找顺序与 reconnectLocalFile 一致：本会话已选的 File → 持久化 FSHandle → 桌面桥字节。
+ * 拿不到时返回 null，由调用方回落到文字阅读器（含重新选择入口）。
+ */
+export async function localSourceFile(id: string): Promise<File | null> {
+    const selected = selectedFiles.get(id);
+    if (selected)
+        return selected;
+    const owner = getStorageOwner(), epoch = getOwnerEpoch(), record = useImports.getState().byId[id];
+    const assertCurrent = () => {
+        if (owner !== getStorageOwner() || epoch !== getOwnerEpoch())
+            throw new Error('账号已切换，本地文件读取已停止。');
+    };
+    if (record?.localFileId && owner) {
+        const handle = await get<FileSystemFileHandle>(`${owner}:${id}`, handles).catch(() => null);
+        assertCurrent();
+        if (handle) {
+            const permission = await (handle as FileSystemFileHandle & {
+                queryPermission?: () => Promise<string>;
+            }).queryPermission?.();
+            assertCurrent();
+            if (permission === 'granted') {
+                const file = await handle.getFile();
+                assertCurrent();
+                if (`${file.size}:${file.lastModified}` === record.sourceVersion) {
+                    selectedFiles.set(id, file);
+                    return file;
+                }
+                return null;
+            }
+        }
+    }
+    if (record?.desktopFileId && desktop() && owner) {
+        const info = await desktop()!.info(record.desktopFileId, owner);
+        assertCurrent();
+        if (`${info.size}:${info.lastModified}` !== record.sourceVersion)
+            return null;
+        const bytes = await desktop()!.read(record.desktopFileId, owner, 0, info.size, record.sourceVersion);
+        assertCurrent();
+        return new File([bytes.slice().buffer], info.name, { type: record.mimeType, lastModified: info.lastModified });
+    }
+    return null;
+}
 export async function readLocalSource(id: string, input: {
     operation: 'catalog' | 'read' | 'search';
     page?: number;

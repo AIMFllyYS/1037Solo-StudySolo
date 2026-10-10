@@ -107,15 +107,16 @@ export default function ModelMenu({
   const [series, setSeries] = useState<string | null>(null);
   const [detailId, setDetailId] = useState<string | null>(null);
   const [position, setPosition] = useState({ left: 8, bottom: 8, maxHeight: 380, mobile: false, growLeft: true });
+  // 移动端逐级展开：一级=思考强度、二级=模型分类、三级=模型列表（桌面三栏同显）。
+  const [mobileStep, setMobileStep] = useState<"thinking" | "cats" | "models">("thinking");
   const focusRequest = useRef<number | null>(null);
   const [focusNonce, setFocusNonce] = useState(0);
   const focusColumn = (level: number) => { focusRequest.current = level; setFocusNonce((n) => n + 1); };
   const btnRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const seriesAnchor = useRef<HTMLButtonElement | null>(null);
-  const modelAnchor = useRef<HTMLButtonElement | null>(null);
   const close = useCallback(() => {
-    setOpen(false); setSeries(null); setDetailId(null); focusRequest.current = null; btnRef.current?.focus();
+    setOpen(false); setSeries(null); setDetailId(null); setMobileStep("thinking"); focusRequest.current = null; btnRef.current?.focus();
   }, []);
   useOverlayRegistration({ id: "model-menu", open, onClose: close, priority: 45 });
   const models = series?.startsWith("category:")
@@ -124,7 +125,8 @@ export default function ModelMenu({
       ? getAllModels(customApiGroups.filter((group) => group.id === series.slice(7))).filter((model) => model.id.startsWith(CUSTOM_PREFIX))
       : [];
   const detail = models.find((model) => model.id === detailId);
-  const count = 1 + (series ? 1 : 0) + (detail ? 1 : 0);
+  // 可见栏数：一级（思考强度）+ 二级（分类）恒显，三级（模型列表）随分类展开。
+  const count = 2 + (series ? 1 : 0);
   useLayoutEffect(() => {
     if (!open) return;
     const place = () => {
@@ -163,7 +165,7 @@ export default function ModelMenu({
       frame = 0;
       const rootRect = root.getBoundingClientRect();
       const viewport = window.visualViewport;
-      for (const [level, anchor] of [[2, seriesAnchor.current], [3, modelAnchor.current]] as const) {
+      for (const [level, anchor] of [[3, seriesAnchor.current]] as const) {
         const column = root.querySelector<HTMLElement>(`[data-menu-level="${level}"]`);
         if (!column) continue;
         if (position.mobile) { column.style.top = ''; continue; }
@@ -200,11 +202,12 @@ export default function ModelMenu({
   const navigate = (next: string, anchor: HTMLButtonElement, focus = false) => {
     seriesAnchor.current = anchor;
     if (series !== next) { setSeries(next); setDetailId(null); }
-    if (focus || position.mobile) focusColumn(2);
+    if (position.mobile) setMobileStep("models");
+    if (focus || position.mobile) focusColumn(3);
   };
   const back = (level: number) => {
-    if (level === 3) { setDetailId(null); focusColumn(2); }
-    else { setSeries(null); setDetailId(null); focusColumn(1); }
+    if (level === 3) { setSeries(null); setDetailId(null); setMobileStep("cats"); focusColumn(2); }
+    else { setMobileStep("thinking"); focusColumn(1); }
   };
   const keyboard = (event: KeyboardEvent<HTMLDivElement>) => {
     const column = (event.target as HTMLElement).closest<HTMLElement>("[data-menu-level]");
@@ -271,10 +274,12 @@ export default function ModelMenu({
     }
     return [...brands.entries()].map(([brand, labels]) => ({ brand, labels }));
   };
-  const details = detail ? <>
-    <ModelDetails model={detail} onUse={() => pick(detail)} />
-    {detail.thinking && (thinkingStopIds(detail).length > 1 || supportsFastMode(detail.id)) ? <ThinkingDepthPanel model={detail} selected={selectedId === detail.id} thinkingEnabled={thinkingEnabled} thinkingEffort={thinkingEffort} onPick={(thinking) => pick(detail, thinking, true)}
-      fast={{ supported: supportsFastMode(detail.id), active: isFastVariant(detail.id), onToggle: () => { const target = getModelInfoWithCustom(fastModeCounterpart(detail.id) ?? "", customApiGroups); if (target) pick(target, selectedId === detail.id ? { enabled: thinkingEnabled || !!detail.thinkingRequired, effort: thinkingEffort } : undefined); } }} /> : null}
+  // 一级栏展示的模型：三级列表里悬停选中的优先，否则当前使用中的。
+  const focusModel = detail ?? current;
+  const details = focusModel ? <>
+    <ModelDetails model={focusModel} onUse={() => pick(focusModel)} />
+    {focusModel.thinking && (thinkingStopIds(focusModel).length > 1 || supportsFastMode(focusModel.id)) ? <ThinkingDepthPanel model={focusModel} selected={selectedId === focusModel.id} thinkingEnabled={thinkingEnabled} thinkingEffort={thinkingEffort} onPick={(thinking) => pick(focusModel, thinking, true)}
+      fast={{ supported: supportsFastMode(focusModel.id), active: isFastVariant(focusModel.id), onToggle: () => { const target = getModelInfoWithCustom(fastModeCounterpart(focusModel.id) ?? "", customApiGroups); if (target) pick(target, selectedId === focusModel.id ? { enabled: thinkingEnabled || !!focusModel.thinkingRequired, effort: thinkingEffort } : undefined); } }} /> : null}
   </> : null;
 
   return <>
@@ -288,8 +293,21 @@ export default function ModelMenu({
     {open ? createPortal(<div ref={panelRef} role="dialog" aria-label={t("menu.model.dialog")} onKeyDown={keyboard}
       style={{ left: position.left + (!position.mobile && position.growLeft ? COLUMN_WIDTHS.slice(1, count).reduce((a, b) => a + b, 0) + GAP * (count - 1) : 0), bottom: position.bottom, gap: GAP }}
       className="fixed z-[9999] flex items-end" data-testid="model-menu-panel" data-layout={position.mobile ? "drilldown" : "cascade"}>
-      {(!position.mobile || !series) ? <section data-menu-level="1" aria-label={t("menu.model.series")} className={columnClass} style={columnStyle(0)}>
-        <div className="px-2 py-1.5 text-[10px] font-semibold text-[var(--ink-faint)]">{t("menu.model.builtin")}</div>
+      {/* 一级：思考强度。默认展示当前模型，三级列表悬停可预览其它模型。 */}
+      {(!position.mobile || mobileStep === "thinking") ? <section data-menu-level="1" aria-label={t("menu.model.details")} data-testid="model-submenu" className={columnClass} style={columnStyle(0)}>
+        {details}
+        {position.mobile ? <button type="button" className={rowClass} onClick={() => { setMobileStep("cats"); focusColumn(2); }}
+          data-testid="model-menu-mobile-next">
+          <ChevronRight aria-hidden size={14} className="shrink-0 text-[var(--ink-soft)]" />
+          <span className="min-w-0 flex-1">{t("menu.model.choose")}</span>
+        </button> : null}
+      </section> : null}
+      {/* 二级：模型分类（原一级栏）。 */}
+      {(!position.mobile || mobileStep === "cats") ? <section data-menu-level="2" aria-label={t("menu.model.series")} className={columnClass} style={columnStyle(1)}>
+        <div className="flex items-center gap-1.5 px-2 py-1.5 text-[10px] font-semibold text-[var(--ink-faint)]">
+          {position.mobile ? <button type="button" aria-label={t("menu.model.backToSeries")} onClick={() => back(2)} className="-ml-1 rounded p-2"><ChevronLeft size={14} /></button> : null}
+          {t("menu.model.builtin")}
+        </div>
         <button type="button" className={rowClass} onClick={() => pick(AUTO_MODEL_INFO)} data-testid="model-menu-item-auto"><Compass aria-hidden size={14} className="shrink-0 text-[var(--accent-ink)]" /><span className="flex-1">{t("menu.model.auto")}</span>{selectedId === AUTO_MODEL_ID ? <Check size={12} /> : null}</button>
         {CATEGORIES.map((name) => { const Icon = CATEGORY_ICONS[name]; const labelKey = CATEGORY_LABEL_KEYS[name]; const active = series === "category:" + name; return <button type="button" key={name} className={rowClass + (active ? " bg-[var(--accent-weak)]" : "")}
           aria-expanded={active} onMouseEnter={(event) => { if (!position.mobile) navigate("category:" + name, event.currentTarget); }} onClick={(event) => navigate("category:" + name, event.currentTarget)}>
@@ -311,27 +329,24 @@ export default function ModelMenu({
           {position.mobile || !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
         </button>)}
       </section> : null}
-      {series ? <section data-menu-level="2" aria-label={t("menu.model.models")} className={columnClass} style={columnStyle(1)}>
+      {/* 三级：模型列表（原二级栏）。悬停更新一级栏预览，点击直接选用。 */}
+      {series && (!position.mobile || mobileStep === "models") ? <section data-menu-level="3" aria-label={t("menu.model.models")} className={columnClass} style={columnStyle(2)}>
         <div className="flex items-center gap-1.5 px-1 py-1 text-[10px] font-medium text-[var(--ink-faint)]">
-          {position.mobile ? <button type="button" aria-label={t("menu.model.backToSeries")} onClick={() => back(2)} className="rounded p-2"><ChevronLeft size={14} /></button> : null}
+          {position.mobile ? <button type="button" aria-label={t("menu.model.backToSeries")} onClick={() => back(3)} className="rounded p-2"><ChevronLeft size={14} /></button> : null}
           <TitleIcon aria-hidden size={11} style={categoryName ? { color: CATEGORY_COLORS[categoryName] } : undefined} />
           {title}
         </div>
         {models.map((model) => <div key={model.id}>
-          <button type="button" className={rowClass + (detailId === model.id ? " bg-[var(--accent-weak)]" : "")} aria-expanded={detailId === model.id}
+          <button type="button" className={rowClass + (detailId === model.id ? " bg-[var(--accent-weak)]" : "")}
             data-testid={`model-menu-item-${model.id}`}
-            onMouseEnter={(event) => { modelAnchor.current = event.currentTarget; if (!position.mobile) setDetailId(model.id); }}
-            onClick={(event) => { modelAnchor.current = event.currentTarget; setDetailId(position.mobile && detailId === model.id ? null : model.id); }}>
-            {!position.mobile && position.growLeft ? <ChevronLeft data-branch-side="left" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
+            onMouseEnter={() => { if (!position.mobile) setDetailId(model.id); }}
+            onClick={() => pick(model)}>
             <ModelIcon brand={model.icon} size={14} decorative /><span className="min-w-0 flex-1"><span className="flex min-w-0 items-center gap-1"><span className="truncate">{model.label}</span><ModelTraitDots model={model} /></span>
             {model.vendorTrainingNotice ? <span className="block text-[10px] text-[var(--md-sys-color-error)]">{model.vendorTrainingNotice}</span> : null}</span>
             {selectedId === model.id ? <Check aria-label={t("menu.model.selected")} size={12} className="shrink-0" /> : null}
-            {position.mobile ? <ChevronDown aria-hidden size={12} className="shrink-0" /> : !position.growLeft ? <ChevronRight data-branch-side="right" aria-hidden size={12} className="shrink-0 opacity-60" /> : null}
           </button>
-          {position.mobile && detail?.id === model.id ? <div data-testid="model-submenu" className="mx-1 mb-2 rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] p-2">{details}</div> : null}
         </div>)}
       </section> : null}
-      {!position.mobile && detail ? <section data-menu-level="3" aria-label={t("menu.model.details")} data-testid="model-submenu" className={columnClass} style={columnStyle(2)}>{details}</section> : null}
     </div>, document.body) : null}
   </>;
 }

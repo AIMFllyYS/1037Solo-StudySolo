@@ -71,9 +71,15 @@ async function openStoredPreview(attachment: StoredChatAttachment, key: string, 
     const response = await fetch(`/api/files/${attachment.cloudFileId}`, { credentials: 'include' });
     if (!response.ok) return;
     const file = new File([await response.blob()], name, { type: attachment.mimeType });
-    const processed = await readCloudFileContext(attachment.cloudFileId);
     if (getOwnerEpoch() !== epoch) return;
-    openAttachmentPreview(key, { name, mimeType: attachment.mimeType, kind: previewKind(name, attachment.mimeType), content: processed.image?.dataUrl ?? processed.text ?? '', file });
+    // 云端附件拿到了原件二进制：文本类读原文，二进制类交给预览窗自建 object URL
+    // （content 的 'blob:' 前缀触发 useObjectUrl），不再渲染给 AI 用的抽取文本。
+    const kindNow = previewKind(name, attachment.mimeType);
+    const content = kindNow === 'html' || kindNow === 'markdown' || kindNow === 'text'
+      ? await file.text()
+      : 'blob:cloud';
+    if (getOwnerEpoch() !== epoch) return;
+    openAttachmentPreview(key, { name, mimeType: attachment.mimeType, kind: kindNow, content, file });
     return;
   }
   const content = isAttachmentRef(attachment)

@@ -20,6 +20,7 @@ import { isElectronDesktop } from "@/lib/stores/apiSecrets";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";
 import { openNoteEditor, citeUserNoteToMainAgent } from "@/lib/notes/openUserNote";
 import { openSourcePreview } from "@/lib/chat/openSourcePreview";
+import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openHtmlInNewTab } from "@/lib/utils/openHtmlInNewTab";
 import { ARTIFACT_IFRAME_SANDBOX, injectOpaqueOriginStorageShim } from "@/lib/sandbox/opaqueOriginStorageShim";
 import { assembleDocumentMarkdown } from "@/lib/documents/types";
@@ -189,7 +190,7 @@ function LocalAssetDetail({ kind, id }: { kind: AssetKind; id: string }) {
   );
   if (kind === "file" && importRecord) {
     if(importRecord.localFileId){
-      actions.push(<button key="local-open" type="button" className={ACTION_CLASS} onClick={()=>openAttachmentPreview('local:'+importRecord.id,{localFileId:importRecord.id,name:importRecord.name,mimeType:importRecord.mimeType??'',kind:'text',content:''})}>打开本地文件</button>);
+      actions.push(<button key="local-open" type="button" className={ACTION_CLASS} onClick={()=>openAttachmentPreview('local:'+importRecord.id,{localFileId:importRecord.id,name:importRecord.name,mimeType:importRecord.mimeType??'',kind:attachmentPreviewKind({name:importRecord.name,mimeType:importRecord.mimeType??''}),content:''})}>打开本地文件</button>);
       actions.push(<button key="local-cite" type="button" className={ACTION_CLASS} onClick={()=>{const history=useChatHistory.getState(),session=history.activeSessionId??history.createSession();useImports.getState().record({...importRecord,id:importRecord.id,sessionId:session});useChatUI.getState().setQuotedText(`请读取本地文件「${importRecord.name}」，sourceId=${importRecord.id}。`);router.push('/agent');}}>引用到对话</button>);
       actions.push(<button key="local-project" type="button" className={ACTION_CLASS} onClick={() => {
         const projectId = useChatHistory.getState().activeProjectId;
