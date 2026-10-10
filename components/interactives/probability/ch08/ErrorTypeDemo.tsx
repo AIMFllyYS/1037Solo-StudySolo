@@ -1,5 +1,7 @@
 "use client";
 
+import { normalDensity as normPDF } from '@/lib/learning/probability/math/normal';
+
 import { memo, useState, useCallback } from "react";
 
 // ─── 颜色常量 ────────────────────────────────────────────────────────────────
@@ -23,14 +25,6 @@ const PAD_T = 18;
 const PAD_B = 40;
 const PLOT_W = SVG_W - PAD_L - PAD_R;
 const PLOT_H = SVG_H - PAD_T - PAD_B;
-
-// ─── 数学工具 ────────────────────────────────────────────────────────────────
-
-/** 标准正态 PDF */
-function normPDF(x: number, mu: number, sigma: number): number {
-  const z = (x - mu) / sigma;
-  return Math.exp(-0.5 * z * z) / (sigma * Math.sqrt(2 * Math.PI));
-}
 
 /** 标准正态 CDF（Abramowitz & Stegun 近似，误差 < 1.5e-7） */
 function normCDF(x: number): number {

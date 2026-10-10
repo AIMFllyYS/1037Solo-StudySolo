@@ -1,5 +1,7 @@
 "use client";
 
+import { parseSamples as parseData } from '@/lib/learning/probability/samples';
+
 import { memo, useState, useRef, useCallback } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────
@@ -137,14 +139,6 @@ function buildCurvePath(
     }
   }
   return { path: segs.join(" "), points };
-}
-
-// ─── 解析样本输入文本 ─────────────────────────────────────────────
-function parseData(text: string): number[] {
-  return text
-    .split(/[\s,;，；]+/)
-    .map((s) => parseFloat(s.trim()))
-    .filter((v) => isFinite(v));
 }
 
 // ─── MLE 公式文字 ─────────────────────────────────────────────────

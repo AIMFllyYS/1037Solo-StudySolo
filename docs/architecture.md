@@ -66,6 +66,8 @@ Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 
 
 保留 `renderType: component` 的兼容兜底，但其 React 注册器位于 `components/content/componentRegistry.tsx`；`lib/content/` 不承担 React 展示。
 
+概率交互的数学模型位于 `lib/learning/probability/`，原 React 入口继续由 interactive registry 按需加载；组件同名子目录负责图形、控件、推导与展示令牌。CDF 的本机状态留在入口，`useCdfScene` 组合计算/拖动，`CDFPlot` 持有同一 SVG ref 与事件绑定。数学复用通过核对实现和依赖建立，不将绘图尺寸或 React 组件引入数学模块。验证记录见 [概率重构验收](./analysis/2026-10-10-probability-refactor-validation.md)。
+
 搜索分为离线 BM25/向量索引、Worker 与服务端 hybrid 检索。动态加载、取消、索引身份及生产禁止全库 substring 回退的规则保留。单元测试使用小夹具，真实内容完整性和索引验收另行执行。
 
 ## 运行、构建与发布

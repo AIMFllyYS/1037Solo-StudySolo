@@ -1,5 +1,8 @@
 "use client";
 
+import { rowMarginals as marginalX } from '@/lib/learning/probability/math/marginals';
+import { columnMarginals as marginalY } from '@/lib/learning/probability/math/marginals';
+
 import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
@@ -47,17 +50,6 @@ function normalize(raw: number[][]): number[][] {
     return raw.map((row) => row.map(() => 1 / 9));
   }
   return raw.map((row) => row.map((v) => Math.max(0, v) / sum));
-}
-
-function marginalX(p: number[][]): number[] {
-  return p.map((row) => row.reduce((s, v) => s + v, 0));
-}
-
-function marginalY(p: number[][]): number[] {
-  const n = p[0].length;
-  return Array.from({ length: n }, (_, j) =>
-    p.reduce((s, row) => s + row[j], 0)
-  );
 }
 
 function fmt(v: number): string {

@@ -1,5 +1,7 @@
 "use client";
 
+import { normalDensity as normalPDF } from '@/lib/learning/probability/math/normal';
+
 import { memo, useState, useCallback, useRef } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────
@@ -26,11 +28,6 @@ type DistType = "uniform" | "exponential" | "normal";
 // ─── 数学辅助 ─────────────────────────────────────────────────────
 function clamp(v: number, lo: number, hi: number): number {
   return Math.max(lo, Math.min(hi, v));
-}
-
-function normalPDF(x: number, mu: number, sigma: number): number {
-  const z = (x - mu) / sigma;
-  return Math.exp(-0.5 * z * z) / (sigma * Math.sqrt(2 * Math.PI));
 }
 
 function expPDF(x: number, lam: number): number {

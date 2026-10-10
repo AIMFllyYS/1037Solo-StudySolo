@@ -1,5 +1,7 @@
 "use client";
 
+import { standardNormalDensity as normPDF } from '@/lib/learning/probability/math/normal';
+
 import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ─────────────────────────────────────────────────
@@ -32,11 +34,6 @@ function normCDF(x: number): number {
         (-0.356563782 +
           t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
   return 0.5 + sign * (0.5 - normPDF(Math.abs(x)) * poly);
-}
-
-// 标准正态 PDF
-function normPDF(x: number): number {
-  return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
 }
 
 // 正态分布 x -> SVG y
