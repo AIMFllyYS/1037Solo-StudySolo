@@ -35,6 +35,8 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 复习出题的领域服务位于 `lib/review-mode/quiz/server/`：request 负责有界读取和 schema，ownership 核对实时账号，wrongQuestions/materials 读取带所有者条件的真实原题和课程资料，prompt 负责预算及纳入/遗漏统计，handler 调用原付费出题和结算路径。Next 路由只保留 HTTP 与 runtime/dynamic 适配。
 
+复习面板通过 `generatedQuizTypes.ts` 共享题组/attempt DTO，`quizSourcePayload.ts` 构造有界错题来源并记录省略情况，`quiz/EmbeddedQuizRunner.tsx` 拥有逐题作答/评分/checkpoint 交互；面板继续拥有生成、恢复和账户切换状态。用量看板的展示与估算格式位于 `lib/billing/displayFormats.ts`，行、分类和缓存倒计时位于 `billing/tokenDashboard/`；它们不替代 usage ledger 的实际结算。
+
 ## AI 调用路径
 
 输入器和 `lib/hooks/chat/useChat*` 使用既有 UIMessage 流协议，经 `/api/chat`（`/api/agent/chat` 有对应入口）进入请求校验、上下文/文件恢复、模型解析、身份及额度检查、`ToolLoopAgent` 和流输出。
@@ -46,6 +48,8 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 `lib/ai/models.ts` 是保持 Node/tsx 兼容的稳定公共入口。内部 `models/contracts.ts` 管理模型与自定义 API 契约，`catalog.ts` 管理固定注册数据与查找，`aliases.ts` 管理旧标识兼容，`thinking.ts` 管理上游思考参数，`selection.ts` 管理菜单分组，`custom.ts` 管理自定义分组解析。`lib/ai/provider.ts`、`lib/ai/sdk/` 和计费服务保留实际上游协议、请求和错误处理。Fast 系列选择与思考强度相互独立：前者换真实模型变体，后者沿用模型支持的上游参数。
 
 当前模型维护入口见 [模型注册说明](./refer/model-registry.md)，旧价格和 loop 调研只保留在归档中，不用它们覆盖真实服务端配置和结算。
+
+`lib/ai/provider.ts` 是显式服务端兼容入口；`provider/` 将纯类型、凭据/原读取时机、协议与 URL、思考增量、内置端点、文本和生图解析分开。可配置性、用户覆盖、SSRF 检查、endpointIndex、超时和降级准入沿用原逻辑；客户端只引用适当类型/展示契约。
 
 Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 presentation/type 入口分离；结果卡片位于聊天工具展示域。工具、沙箱、连接器均沿用真实权限、所有者和计费规则。
 
@@ -87,6 +91,8 @@ Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 
 CI 见 `.github/workflows/ci.yml`，包括 registry/课堂/编码、类型、ESLint、秘密扫描、代码/内容/React 测试、Web archive 验证与构建。Knip 初始是非阻断存量采集；清理时先完善动态入口解释再判断未使用项。
 
 Web 发布说明见 [studysolo-web-release.md](./refer/studysolo-web-release.md)，Electron 打包见 [SOP 06](./sop/06-desktop-packaging-release.md)。本次重构目标不代表生产发布授权或运行版本已更新。
+
+迁移工具的兼容入口为 `lib/db/migrate.ts`，`migrations/` 分离协议、原 SQL、文件/校验和、SQL 分析、执行、目录比较和管理 API 传输；源码重构不执行真实迁移。Electron 的 `keyStorage.cjs` 接收一个 userData/safeStorage 实例并维护原密钥格式、文件名和权限处理，主进程保留启动/窗口/IPC 来源检查。打包 glob 收入该运行模块并排除源码测试。
 
 ## 维护导航
 

@@ -9,6 +9,7 @@ directories:
 # server reads at runtime.
 files:
   - electron/**/*
+  - '!electron/**/*.test.*'
   - package.json
 extraResources:
   # electron-builder 默认忽略含 '!**/node_modules/**'，会把 standalone 自带的 node_modules

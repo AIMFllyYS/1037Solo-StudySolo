@@ -1,20 +1,13 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from 'react';
-import { Clock, AlertTriangle, X, Pin, RefreshCw, Loader2, BarChart2 } from 'lucide-react';
+import { X, Pin, RefreshCw, Loader2, BarChart2 } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useTokenTracker } from '@/lib/stores/chat/tokenTracker';
 import { useFloatingTokenTracker } from '@/lib/stores/chat/floatingTokenTracker';
 import { useSettings } from '@/lib/stores/settings';
 import { getModelInfoWithCustom, resolveCacheTtlSec } from '@/lib/ai/models';
-import {
-  FIRST_TURN_OVERHEAD_TOKENS,
-  contextRingCaption,
-  contextRingColor,
-  contextRingLevel,
-  formatContextCacheValue,
-  resolveSessionContextBudget,
-} from '@/lib/context/estimateFullContext';
+import { FIRST_TURN_OVERHEAD_TOKENS, contextRingCaption, contextRingColor, contextRingLevel, formatContextCacheValue, resolveSessionContextBudget } from '@/lib/context/estimateFullContext';
 import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { estimateTokens } from '@/lib/context/estimateTokens';
 import { getMessageText } from '@/lib/chat/messageParts';
@@ -23,66 +16,18 @@ import { Tooltip } from '@/components/ui/Tooltip';
 import { useOverlayRegistration } from '@/lib/keyboard/useOverlayRegistration';
 import { openBillingDashboard } from '@/lib/window/openBillingDashboard';
 import { useBillingStore } from '@/lib/stores/billing';
-import { costCnyToUsd, summarizeSessionLedger } from '@/lib/billing/ledgerView';
+import { summarizeSessionLedger } from '@/lib/billing/ledgerView';
 import { refreshBillingFromLedger } from '@/lib/billing/syncUsageLedger';
 import { UsageProgressBar } from '@/components/chat/billing/UsageProgressBar';
 import { ContextUsageRing } from '@/components/chat/billing/ContextUsageRing';
 import { ACCOUNT_USAGE_CHANGED, notifyAccountUsageChanged } from '@/lib/billing/quotaView';
 import { compactActiveSession } from '@/lib/context/compactChatSession';
-import { translateNow, useT } from "@/lib/i18n/index";
+import { useT } from "@/lib/i18n/index";
 import { loadSessionSummary, type SessionSummary } from "@/lib/storage/sessionSummary";
-
-function fmtTokens(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1000) return `${(n / 1000).toFixed(1)}K`;
-  return String(n);
-}
-
-function fmtCost(yuan: number): string {
-  if (yuan < 0.0001) return '¥0';
-  if (yuan < 0.01) return `¥${yuan.toFixed(4)}`;
-  return `¥${yuan.toFixed(2)}`;
-}
-
-function fmtUsd(yuan: number, rate: number): string {
-  const usd = costCnyToUsd(yuan, rate);
-  if (usd < 0.0001) return '$0';
-  if (usd < 0.01) return `$${usd.toFixed(4)}`;
-  return `$${usd.toFixed(2)}`;
-}
-
-function fmtMoneyPair(yuan: number, rate: number): string {
-  return `${fmtCost(yuan)} / ${fmtUsd(yuan, rate)}`;
-}
-
-function fmtDuration(sec: number): string {
-  if (sec <= 0) return translateNow('panel.token.expired');
-  const h = Math.floor(sec / 3600);
-  const m = Math.floor((sec % 3600) / 60);
-  const s = Math.floor(sec % 60);
-  if (h > 0) return `${h}h ${m}m`;
-  if (m > 0) return `${m}m ${s}s`;
-  return `${s}s`;
-}
-
-function calcCost(
-  prompt: number, completion: number, cached: number,
-  pricing?: { input: number; cachedInput: number; output: number },
-): number {
-  if (!pricing) return 0;
-  const uncached = Math.max(0, prompt - cached);
-  return (uncached * pricing.input + cached * pricing.cachedInput + completion * pricing.output) / 1_000_000;
-}
-
-// 上下文分项（IDE 式构成条）：键对应 ContextBreakdown，色值固定且明暗主题均可辨。
-const BREAKDOWN_CATS: { key: 'tools' | 'skills' | 'pages' | 'webSearch' | 'conversation'; labelKey: string; color: string }[] = [
-  { key: 'tools', labelKey: 'panel.token.cat.tools', color: '#8b5cf6' },
-  { key: 'skills', labelKey: 'panel.token.cat.skills', color: '#ec4899' },
-  { key: 'pages', labelKey: 'panel.token.cat.pages', color: '#f59e0b' },
-  { key: 'webSearch', labelKey: 'panel.token.cat.webSearch', color: '#3b82f6' },
-  { key: 'conversation', labelKey: 'panel.token.cat.conversation', color: '#10b981' },
-];
-
+import { fmtTokens, fmtMoneyPair } from "@/lib/billing/displayFormats";
+import { Row } from "./tokenDashboard/Row";
+import { BREAKDOWN_CATS } from "./tokenDashboard/categories";
+import { CacheCountdown } from "./tokenDashboard/CacheCountdown";
 export default function TokenDashboard({ isLoading = false, floatingSessionId, modelId }: { isLoading?: boolean; floatingSessionId?: string; modelId?: string }) {
   const t = useT();
   const [open, setOpen] = useState(false);
@@ -510,121 +455,5 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
         document.body,
       )}
     </>
-  );
-}
-
-function Row({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
-  return (
-    <div style={{
-      display: 'flex', justifyContent: 'space-between', padding: '1.5px 0',
-      color: accent ? 'var(--md-sys-color-primary)' : 'var(--ink-soft)',
-    }}>
-      <span>{label}</span>
-      <span style={{ fontVariantNumeric: 'tabular-nums', fontWeight: accent ? 600 : 400 }}>{value}</span>
-    </div>
-  );
-}
-
-// Prefix cache 倒计时：自带每秒 tick，隔离重渲染范围（不影响外层看板）。
-function CacheCountdown({
-  cacheTtlSec, lastRequestTime, pricing, lastTurn, turnCost,
-}: {
-  cacheTtlSec?: number;
-  lastRequestTime?: number | null;
-  pricing?: { input: number; cachedInput: number; output: number };
-  lastTurn: { promptTokens: number; completionTokens: number; cachedTokens: number };
-  turnCost: number;
-}) {
-  const t = useT();
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => {
-    if (!lastRequestTime || !cacheTtlSec) return;
-    const timer = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(timer);
-  }, [lastRequestTime, cacheTtlSec]);
-
-  if (!cacheTtlSec || !lastRequestTime) {
-    return (
-      <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
-          <Clock size={11} style={{ color: 'var(--ink-faint)' }} />
-          <span style={{ fontWeight: 600, color: 'var(--ink)' }}>{t('panel.token.countdown')}</span>
-          <span style={{ fontSize: 9, color: 'var(--ink-faint)', fontWeight: 400 }}>{t('panel.token.estimate')}</span>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
-          <span>{t('panel.token.remaining')}</span>
-          <span style={{ color: 'var(--ink-faint)', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>0s</span>
-        </div>
-        <div style={{ height: 5, borderRadius: 2.5, background: 'var(--bg-muted)', overflow: 'hidden' }}>
-          <div style={{ width: '0%', height: '100%', borderRadius: 2.5, background: 'var(--ink-faint)' }} />
-        </div>
-        <div style={{ fontSize: 9, color: 'var(--ink-faint)', marginTop: 3, lineHeight: 1.3 }}>
-          {t('panel.token.waiting')}
-        </div>
-      </div>
-    );
-  }
-
-  const cacheElapsed = (now - lastRequestTime) / 1000;
-  const cacheRemaining = Math.max(0, cacheTtlSec - cacheElapsed);
-  const cacheExpired = cacheRemaining <= 0;
-  const cacheRatio = cacheRemaining / cacheTtlSec;
-  const cacheBarColor =
-    cacheExpired ? 'var(--md-sys-color-error)' :
-    cacheRatio < 0.2 ? 'var(--md-sys-color-error)' :
-    cacheRatio < 0.5 ? 'var(--md-sys-color-tertiary)' :
-    'var(--md-sys-color-primary)';
-
-  return (
-    <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
-        <Clock size={11} style={{ color: 'var(--ink-faint)' }} />
-        <span style={{ fontWeight: 600, color: 'var(--ink)' }}>{t('panel.token.countdown')}</span>
-        <span style={{ fontSize: 9, color: 'var(--ink-faint)', fontWeight: 400 }}>{t('panel.token.estimate')}</span>
-      </div>
-      {cacheExpired ? (
-        <div style={{
-          display: 'flex', alignItems: 'flex-start', gap: 4,
-          padding: '4px 6px', borderRadius: 4,
-          background: 'color-mix(in srgb, var(--md-sys-color-error) 12%, transparent)',
-          color: 'var(--md-sys-color-error)', fontSize: 10, lineHeight: 1.4,
-        }}>
-          <AlertTriangle size={12} style={{ flexShrink: 0, marginTop: 1 }} />
-          <span>
-            {t('panel.token.expiredTitle')}
-            {pricing && lastTurn.cachedTokens > 0 && (
-              <strong>
-                {t('panel.token.expiredDelta', {
-                  amount: fmtCost(calcCost(lastTurn.promptTokens, lastTurn.completionTokens, 0, pricing) - turnCost),
-                })}
-              </strong>
-            )}
-          </span>
-        </div>
-      ) : (
-        <>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
-            <span>{t('panel.token.remaining')}</span>
-            <span style={{ color: cacheBarColor, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
-              {fmtDuration(cacheRemaining)}
-            </span>
-          </div>
-          <div style={{ height: 5, borderRadius: 2.5, background: 'var(--bg-muted)', overflow: 'hidden' }}>
-            <div style={{
-              width: `${Math.max(cacheRatio * 100, 0)}%`,
-              height: '100%', borderRadius: 2.5,
-              background: cacheBarColor,
-              transition: 'width 1s linear, background 0.3s ease',
-            }} />
-          </div>
-          <div style={{ fontSize: 9, color: 'var(--ink-faint)', marginTop: 3, lineHeight: 1.3 }}>
-            {t('panel.token.priceShift', {
-              before: pricing ? `¥${pricing.cachedInput}` : '—',
-              after: pricing ? `¥${pricing.input}` : '—',
-            })}
-          </div>
-        </>
-      )}
-    </div>
   );
 }

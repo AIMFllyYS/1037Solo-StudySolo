@@ -97,6 +97,8 @@
 
 - R3n 外壳与输入器：AppShell 拆出 TopBar 与连续的 useShellLifecycle，主入口约 447 行，保留分栏 ref/像素偏好/回写门控和原 dynamic 声明；一次挂载依然只有一个窗口会话 provider，卸载清理、模式动画取消和移动深链均沿用原逻辑。ChatInput 拆出模型覆盖、geometry/focus、单实例 session 队列、props/limits、toolbar/queue/quote，主入口约 494 行；草稿/附件/palette/发送停止门控仍在同一个控制器。采用安装版 Next server/client/use-client 与 Vercel React bundle-dynamic-imports/client-event-listeners 原则，没有新装 SWR 或声称未测量性能。类型、定向 lint、27 项 React、30 项 node 通过，新增 queue 跨会话/就绪门控和 shell 生命周期用例。实际左右分别调整时另一列值不变，恢复 290/619；资产管理路由沿用右栏收起（可见值 0），返回 Agent 恢复 619。截图 `project-refactor/verify/agent-shell-after-lifecycle-split.jpg`。
 
+- R3o 复习/用量面板与服务：ReviewQuizPane 约 493 行、TokenDashboard 约 459 行；DTO、逐题 runner、有界 source payload、展示/估算格式、分类/行和 cache countdown 独立。13 项 node、5 项 React 与类型/lint 通过，新增 UTF-8 整题省略/去重/计数、成本展示和计时器到期/卸载用例。provider 公共 API 显式保留，拆为 contracts/credentials/protocol/reasoning/builtin/text/image；原环境常量与实时读取、用户覆盖、安全 URL、端点/超时/计费语义不变，84 项 provider/SDK/额度检查通过。迁移工具分文件/SQL分析/执行/目录比较/传输与类型，三段 SQL initializer 与原表达式完全相同，12 项 MemoryExecutor 迁移检查通过，未执行真实 SQL。Electron 密钥 IO 独立为注入式 keyStorage，保留文件名、原加密/回退、记录清理和文件权限逻辑；3 项临时目录/模拟 safeStorage 检查通过，IPC sender 检查、固定端口和主进程生命周期保留。打包 glob 排除新测试；本阶段没有启动桌面进程，OS DPAPI 和最终包验收仍属最终边界。
+
 ## 局部阻塞
 
 
