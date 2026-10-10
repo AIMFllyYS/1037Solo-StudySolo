@@ -106,14 +106,14 @@
 
 ## 续接检查点
 
-已完成 R0/R1/R2、R3a–R3m 与 R4a 概率首批分层，最新代码提交 `37049cba` 已同步至同名云端重构分支。R5a–R5c 已更新入口/SOP、归档历史与确认未使用源码；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
+已完成 R0/R1/R2、R3a–R3o 与 R4a 概率首批分层，最新代码提交 `774a2dcb` 已同步至同名云端重构分支。R5a–R5c 已更新入口/SOP、归档历史与确认未使用源码；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
 
 下一阶段仍需：
 
-1. 已拆内容加载、聊天/复习 API、QuizQuestion、GlobalSettings 与 RecordPreviewWindow，已完成 chat/layout/hooks/stores/content-data 归类，即时循环为 0。继续审查 ChatInput、AppShell、ReviewQuizPane、TokenDashboard、provider、db migration、Electron 和剩余学习状态等混合职责，不重复已完成迁移。
-2. 六个优先概率交互已完成分层，不重复拆分；其中 χ² 数值修复已单独记录。其余超过 500 行文件按 inventory-r3m 逐项审查，保留注册和交互；教材目录数据不能仅凭行数认定死代码或损坏结构。目前超过 800 行的仅剩 histology/biochemistry 两个目录数据；旧 workflow 已确认无当前入口并归档。
+1. 已拆内容加载、聊天/复习 API、QuizQuestion、GlobalSettings、RecordPreviewWindow、AppShell、ChatInput、ReviewQuizPane、TokenDashboard、provider、db migration 与 Electron key IO，已完成 chat/layout/hooks/stores/content-data 归类，即时循环为 0。继续处理 quiz-progress、learning/quiz 与 userNotes、AgentConversationSidebar、ChatFeedbackActions、ImageGenViewer/ModelMenu 等剩余混合职责；不重复拆已完成模块。sync engine 和 sessionStore 是已分层后的单一队列/状态引擎，按实际职责与风险审查，不机械按行数重切。
+2. 六个优先概率交互已完成分层，不重复拆分；其中 χ² 数值修复已单独记录。其余超过 500 行文件按 inventory-r3o 逐项审查，优先 ConvolutionDemo、NormalSamplingDemo、MLEExplorer、IndependenceChecker 等仍混合计算/图形/控件的文件，保留注册和精度/边界。目录数据、i18n 字典和完整注册元数据需核对职责后决定保留或分组，不能仅凭行数认定损坏结构。目前超过 800 行的仅剩 histology/biochemistry 两个目录数据；旧 workflow 已归档。
 3. 正式 knip.json 已核实 Next、Classolo、Worker、CJS、CLI 与沙箱脚本入口；最新 verify/knip-r5c-final.json 的文件/依赖/unlisted/binary 为 0，仍有 136 个值导出、55 个类型候选。明显公共 façade/协议不能只凭未使用报告删除；继续检查内部冗余、重复 barrel 和真正消费者，保留诊断而不泛化 ignore。
 4. 当前 74 份活文档、316 本地链接、0 缺失。72 份旧 handoff/loop/日期快照与 3 原参考已归档，当前模型维护与 Fast 注释已更新；SOP 07/14 与 storage 参考已核实。继续核对 rendering/framework-extension 和其余 SOP 中的存量事实（特别是旧数量/旧执行角色措辞），不能把链接通过当作所有说明已准确。37 个未使用源码和 21 个旧转发已保留可恢复原件，字节承诺已验证实际 Git blob。
-5. 最终候选统一运行适用 gate、全量类型/lint/代码/内容/React 与隔离生产构建，并复核实际浏览器与既有交互；报告真实账号、付费请求及向量新增覆盖的未验边界。最近全量为代码 2049 项/2048 通过/1 原跳过、React 300 文件/1245 项通过、ESLint 0 error/21 warning；R3m 之后的新改动仍需最终统一验收。
+5. 最终候选统一运行适用 gate、全量类型/lint/代码/内容/React 与隔离生产构建，并复核实际浏览器与既有交互；报告真实账号、付费请求及向量新增覆盖的未验边界。最近全量为代码 2049 项/2048 通过/1 原跳过、React 300 文件/1245 项通过、ESLint 0 error/21 warning；R3n/o 的新改动虽定向通过，仍需最终统一验收。Electron 新 keyStorage 已由 electron/**/* 收入包，.test.* 被排除；最终 staged/package 资源及实际 OS 验收范围不得混同。
 
-已完成模块的职责和算法已分离；当前 inventory 2135 源码/测试文件、1508 人工源码、54 个超过 500 行、2 个超过 800 行，即时循环为 0。仍存在未完成模块，以上检查结果不替代最终全量验收。RootSolo 当前服务是 studysolo-web / 35349、Next 16.4.0；使用时重新核对实时健康，不盲目重复启动。
+已完成模块的职责和算法已分离；当前 inventory 2172 源码/测试文件、1539 人工源码、47 个超过 500 行、2 个超过 800 行，即时循环为 0。仍存在未完成模块，以上检查结果不替代最终全量验收。RootSolo 当前服务是 studysolo-web / 35349、Next 16.4.0；使用时重新核对实时健康，不盲目重复启动。
