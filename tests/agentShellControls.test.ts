@@ -3,6 +3,8 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { join } from "node:path";
 import { AGENT_CHAT_MAX_PX } from "@/lib/constants/layout";
+import { fitAgentPanelSizes } from "@/lib/layout/agentPanelSizes";
+import { useStore } from "@/lib/stores/ui";
 
 const root = process.cwd();
 
@@ -22,16 +24,44 @@ test("侧边栏开关在顶栏左上角；中间不再浮「展开对话栏」",
   assert.doesNotMatch(agentShell, /PanelLeftOpen/);
 });
 
-test("左栏收起过程中内容冻结：定宽包裹 + 外层裁剪 + 不记录收起中的宽度", () => {
+test("Agent 左右栏共用像素状态：收起只改可见宽度，保留偏好与另一列尺寸", () => {
   const agentShell = readFile("components/layout/AgentShell.tsx");
+  const appShell = readFile("components/layout/AppShell.tsx");
   const globals = readFile("app/globals.css");
+  // 接线检查只保证两个外壳消费同一尺寸状态；真实 DOM 拖动/开合/重挂载由
+  // AgentShell.restore.test.tsx 覆盖，不要求百分比纠偏或旧测量 ref 的具体语句。
+  assert.match(agentShell, /useAgentPanelSizes\(\)/);
+  assert.match(appShell, /useAgentPanelSizes\(\)/);
   assert.match(agentShell, /--agent-left-content-width/);
-  assert.match(agentShell, /if \(!leftDragging && !sidebarCollapsed && width >= 80\) lastWideWidthRef\.current = width;/);
-  assert.match(agentShell, /style=\{\{ width: "var\(--agent-left-content-width, 100%\)" \}\}/);
-  assert.match(agentShell, /className="relative h-full min-h-0 overflow-hidden"/);
+  assert.match(agentShell, /data-agent-slot="conversations"[\s\S]{0,500}overflow-hidden/);
   assert.match(globals, /\[data-agent-slot="conversations"\] \{\s*overflow: hidden;/);
   // 拖拽期的骨架屏已经不需要（内容不动了），别再盖一层
   assert.doesNotMatch(agentShell, /leftDragging && <ChatSkeleton/);
+
+  const previous = useStore.getState();
+  try {
+    useStore.setState({ agentPanelSizes: { left: 280, right: 600 }, sidebarCollapsed: false, agentDockCollapsed: false });
+    const visible = () => {
+      const state = useStore.getState();
+      return fitAgentPanelSizes(state.agentPanelSizes!, 1440, state.sidebarCollapsed, state.agentDockCollapsed);
+    };
+    useStore.getState().setAgentPanelSize("left", 296);
+    assert.deepEqual(visible(), { left: 296, right: 600 }, "改左栏不动右栏");
+    useStore.getState().setAgentPanelSize("right", 619);
+    assert.deepEqual(visible(), { left: 296, right: 619 }, "改右栏不动左栏");
+    const preferred = { ...useStore.getState().agentPanelSizes! };
+    useStore.getState().setSidebarCollapsed(true);
+    assert.deepEqual(visible(), { left: 0, right: 619 });
+    assert.deepEqual(useStore.getState().agentPanelSizes, preferred, "收起左栏不覆盖尺寸偏好");
+    useStore.getState().setSidebarCollapsed(false);
+    useStore.getState().setAgentDockCollapsed(true);
+    assert.deepEqual(visible(), { left: 296, right: 0 });
+    assert.deepEqual(useStore.getState().agentPanelSizes, preferred, "收起右栏不覆盖尺寸偏好");
+    useStore.getState().setAgentDockCollapsed(false);
+    assert.deepEqual(visible(), preferred, "重新展开恢复已保存的左右像素尺寸");
+  } finally {
+    useStore.setState(previous, true);
+  }
 });
 
 test("Agent 深色配色 B-A-A：左栏 B、中间与右栏 A，浅色不变", () => {

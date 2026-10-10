@@ -1,4 +1,5 @@
 import { fileURLToPath } from "node:url";
+import { availableParallelism } from "node:os";
 const isolatedDistDir = process.env.STUDYSOLO_BUILD_DIR;
 if (isolatedDistDir && !/^\.next-(?:class-verify|perf-[a-z0-9-]+|desktop-[a-z0-9-]+)$/.test(isolatedDistDir)) {
   throw new Error("STUDYSOLO_BUILD_DIR must be an isolated .next-perf-* or .next-desktop-* directory");
@@ -64,6 +65,8 @@ const nextConfig = {
   // 等惰性特性失效（\ce{N2 ^}、\ce{-C#CH} 渲染成红字错误），而 node 直跑无此改写故正常。
   transpilePackages: ["pdfjs-dist", "docx-preview", "pptx-preview", "@milkdown/crepe", "@milkdown/kit"],
   experimental: {
+    // Static generation uses process workers; cap them on local hosts shared with dev/UI checks.
+    cpus: Math.min(4, availableParallelism()),
     optimizePackageImports: ["framer-motion", "lucide-react"],
   },
 };

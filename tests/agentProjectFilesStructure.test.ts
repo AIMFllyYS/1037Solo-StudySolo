@@ -9,15 +9,25 @@ function readFile(path: string) {
   return readFileSync(join(root, path), "utf8");
 }
 
-test("项目文件入口只在 Agent 的加号菜单里，且排在最上面一组", () => {
+test("Agent 加号菜单与空态共用项目入口，且会话项目归属优先", () => {
   const taskbar = readFile("components/window/WindowTaskbar.tsx");
+  const empty = readFile("components/window/AgentDockEmptyState.tsx");
+  const entry = readFile("components/project/useProjectFilesEntry.tsx");
   assert.match(taskbar, /const agentMode = useAppMode\(\(s\) => s\.mode === "agent"\);/);
   assert.match(taskbar, /data-menu-group="project-files"/);
   const group = taskbar.indexOf("data-menu-group=\"project-files\"");
   const panels = taskbar.indexOf("data-menu-group=\"open-panels\"");
   assert.ok(group > 0 && panels > group, "项目文件组在打开面板组之前");
   assert.match(taskbar, /agentMode && \(/);
-  assert.match(taskbar, /openProjectFiles\(projectId\)/);
+  // 这里只检查入口接线和归属契约；空态真实点击、无项目弹窗与会话优先行为
+  // 由 AgentDockEmptyState.test.tsx 验证，不要求各 UI 再复制一份项目解析实现。
+  assert.match(taskbar, /useProjectFilesEntry\(\)/);
+  assert.match(taskbar, /openProjectFilesEntry\(\)/);
+  assert.match(empty, /useProjectFilesEntry\(\)/);
+  assert.match(empty, /id: "project-files"[\s\S]*?run: openProjectFilesEntry/);
+  assert.match(entry, /active\?\.folderId\s*\?\?\s*history\.activeProjectId\s*\?\?\s*null/);
+  assert.match(entry, /if \(projectId\) openProjectFiles\(projectId\);\s*else setProjectGateOpen\(true\);/);
+  assert.match(entry, /<ProjectRequiredDialog/);
 });
 
 test("项目文件窗：注册类型、窗层、图标与打开入口", () => {

@@ -11,6 +11,7 @@ import { spawnSync } from "node:child_process";
 import { readdirSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { availableParallelism } from "node:os";
 
 const SKIP_DIRS = new Set([
   "node_modules",
@@ -86,6 +87,11 @@ function isDirectRun() {
 function main() {
   const filter = parseFilter(process.argv.slice(2));
   const files = applyFilter(findTestFiles("."), filter);
+  // Keep the maintenance/dev host responsive while test files run in separate processes.
+  const concurrency = Number(process.env.STUDYSOLO_TEST_CONCURRENCY ?? Math.min(4, availableParallelism()));
+  if (!Number.isSafeInteger(concurrency) || concurrency < 1 || concurrency > 32) {
+    throw new Error("STUDYSOLO_TEST_CONCURRENCY must be an integer between 1 and 32");
+  }
   if (files.length === 0) {
     console.log("No .test.ts files found.");
     process.exit(0);
@@ -95,7 +101,7 @@ function main() {
 
   const result = spawnSync(
     process.execPath,
-    ["--import", "tsx", "--test", ...files],
+    ["--import", "tsx", "--test", `--test-concurrency=${concurrency}`, ...files],
     { stdio: "inherit", cwd: process.cwd() },
   );
 
