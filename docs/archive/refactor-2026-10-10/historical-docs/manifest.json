@@ -574,6 +574,134 @@
       "reason": "Dated pre-fix audit and historical repair execution plan; current refactor scope and regression suites supersede task authority",
       "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
       "sha256": "f09283fe1807684d1371e29c4c30c0700be386189a238359007d273ca1fc86e0"
+    },
+    {
+      "source": "docs/plans/2026-auth-login-redesign-plan.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/2026-auth-login-redesign-plan.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "5ffcdb2c1701eaea1ca7471181ef162451c5de91d09732f8af7414114fcd10d7"
+    },
+    {
+      "source": "docs/plans/agent-ux-finalization.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/agent-ux-finalization.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "94c8b96747e7ba82ff4414d8d62dd0ffd330b13c46dee58c7d187e7dae963cc5"
+    },
+    {
+      "source": "docs/plans/agent-ux-finalization.execution.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/agent-ux-finalization.execution.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "a6c01eac38311693211e102517ba0611953e13de682de1b171bb9b4b1073f760"
+    },
+    {
+      "source": "docs/plans/agent-sidebar-assets.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/agent-sidebar-assets.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "ba5d3536e5d1f3730f4266b8be9cb67ead2c780b8e9fc4f409926ff09a1de418"
+    },
+    {
+      "source": "docs/plans/agent-sidebar-assets.execution.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/agent-sidebar-assets.execution.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "91c0d554824fd1ba505743c8ae9555dcbf01240e5c8ce836c27770b10bace278"
+    },
+    {
+      "source": "docs/plans/document-readers-rebuild.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/document-readers-rebuild.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "f563d26325fa1727b93ecd8567bf246dd1790cdc0ec3f89fb2e704fe1b0b6808"
+    },
+    {
+      "source": "docs/plans/document-readers-rebuild.execution.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/document-readers-rebuild.execution.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "4c0d933e7960bebb8c7ab03f5a972aa7b428e62213df074c692c2f61e682b884"
+    },
+    {
+      "source": "docs/plans/classolo-review-goal-20260929.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/classolo-review-goal-20260929.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "cc8f5c2ada175299d706e161d981e61251704ed2ee9054ef871b181c35de501f"
+    },
+    {
+      "source": "docs/plans/notes-flashcards-cloud-sync.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/notes-flashcards-cloud-sync.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "551c8cc14ce20a62f8f5445fbdc8ffbdc91c2189d92d6d094fc368434314d58c"
+    },
+    {
+      "source": "docs/plans/agent-ux-systemic-20260930.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/agent-ux-systemic-20260930.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "0e171b6bbeab15f37aaaeb941ad458269b2936049efcf184875fff2705feaf96"
+    },
+    {
+      "source": "docs/plans/app-users-nickname.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/app-users-nickname.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "495850cad9ed8b20334cd5f6361c1fa6380ac8d6ec3b7f8fa618d5044830080b"
+    },
+    {
+      "source": "docs/plans/2026-10-02-memory-performance-optimization-spec.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/2026-10-02-memory-performance-optimization-spec.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "223947d0bd0b5cadfd1acd8cf02e3ae49f7bca199ebf2fdc90386bf63d7ecaa3"
+    },
+    {
+      "source": "docs/analysis/note-agent-editor-repair-handoff-2026-09-19.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/note-agent-editor-repair-handoff-2026-09-19.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "03227d346b3403607dd2be3e8f2b6f1af9737a2b980fcd81a5c34c9c209b94e3"
+    },
+    {
+      "source": "docs/analysis/note-studio-repair-2026-09-20.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/note-studio-repair-2026-09-20.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "f1dc049e601bfa83623f1dce3598e0451a66de3854b5858e9a759558b874b731"
+    },
+    {
+      "source": "docs/analysis/remaining-document-formats-2026-09-20.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/remaining-document-formats-2026-09-20.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "04dfef0ed5860f2d7eff915762c3f2a972e637a7e262e422ffbee8075e77df5a"
+    },
+    {
+      "source": "docs/analysis/attachment-preview-rendering-defects-2026-09-20.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/attachment-preview-rendering-defects-2026-09-20.md",
+      "action": "move",
+      "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+      "reason": "Historical design/execution/measurement record; current implementation, architecture and SOP are authoritative",
+      "sha256": "3d65ff300c3b1ab573e3e2c4f4b200cdfe4e0338166b9f5301f02bdc8e1d96af"
     }
   ]
 }

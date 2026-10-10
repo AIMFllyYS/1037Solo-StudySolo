@@ -6,8 +6,6 @@
 > 不再是默认入口。下文涉及旧 `dist-desktop/` 和旧脚本的历史事故分析可作排障参考；
 > 产物路径、命令与验收以本节及当前 `package.json` 为准。
 
-2026-10-11 按当前源码复核：主进程密钥 IO 位于 electron/keyStorage.cjs，electron/**/* 收入运行模块并排除 *.test.*。本机 loopback 端口维持 35349，已有数据的 origin 保持；应用状态、资源和秘密归属由当前代码与验证报告确定。
-
 当前在线档：`pnpm run desktop:build` 会完成独立 Next 构建、资源白名单复制、pnpm 依赖实体化、
 `electron-builder --win --publish never` 和包内静态资源/EXE SHA-256 核对。
 离线学科档先执行 `pnpm run desktop:build:staged -- --offline --subjects=probability`，
@@ -19,14 +17,14 @@ BM25/向量；未选学科路由、正文与导航入口不可用。构建不复
 
 ## 适用场景
 
-将 StudySolo 打包为 Windows 桌面 exe。打包、结构检查、实际启动与 GitHub Release 发布是独立步骤，执行范围由当次人类任务确定。现有 Gailvlun 包名、artifact 名称及存储 origin 保持代码约定。
+将「期末复习工作站」打包为 **Windows 桌面 exe**，并**发布或更新** GitHub Release。适用于：新功能/新内容上线、紧急 bug 修复热更、正式里程碑发版。
 
 > 架构定论（**历史**）：EdgeOne Pages 因 SSR 云函数 128MiB 硬限无法承载本应用，已改为自托管 Node + Electron 桌面 exe。旧的 tmpfs 清理脚本在 `scripts/legacy/`。检索索引随 `content/.index/` 打进桌面包，运行时不再从 COS 回退。本 SOP 只覆盖桌面打包链路。
 
 ## 架构速览
 
-- **运行模型**：Electron 主进程 spawn 内置 Next standalone 服务（ELECTRON_RUN_AS_NODE=1），BrowserWindow 使用固定 127.0.0.1:35349。端口占用会报告失败，不能换随机端口导致 IndexedDB/localStorage 更换 origin。
-- **密钥模型**：首启要求自由中转的 URL/API Key/模型 ID；SiliconFlow、MiMo、Zhipu、Unsplash 为可选。keyStorage.cjs 维护 userData/keys.enc 与 custom-api-secrets.enc；safeStorage 可用时使用 OS 加密，其他平台沿用现有 JSON 回退和文件权限处理。用户秘密不进入安装包；config.js 是非密配置，serverEnvironment 保留操作者凭据剥离边界。
+- **运行模型**：Electron 主进程 `spawn` 内置的 Next standalone 服务（`ELECTRON_RUN_AS_NODE=1`，用 Electron 自带 Node 跑 `server.js`），再开 BrowserWindow 指向 `127.0.0.1:PORT`。
+- **密钥模型**：3 个 API Key（硅基流动必填、小米/智谱可选）**用户首启填写**，`safeStorage`(Windows DPAPI) 加密存 `userData/keys.enc`，**绝不进包**；非密配置（BASE_URL/模型名/CDN）烘焙在 `electron/config.js`。
 - **关键文件**：`scripts/performance/build-desktop-staging.mjs`(当前构建编排)、`scripts/performance/runtime-asset-inventory.ts`(白名单)、`electron-builder.yml`(模板)、`electron/main.js`(主进程)、`electron/config.js`(烘焙非密配置)、`next.config.mjs`(`BUILD_STANDALONE` 开关)。
 
 ## 输入物料
@@ -66,7 +64,7 @@ BM25/向量；未选学科路由、正文与导航入口不可用。构建不复
 
 ### 不变量 3：密钥绝不进包，公开发布前必扫描
 
-用户秘密位于 userData，OS 加密及既有回退由 keyStorage 实现。发布到公开仓库 Release 前必须：
+3 个 API Key 用户首启填、DPAPI 加密存 userData。**发布到公开仓库 Release 前必须**：
 - 扫产物无密钥：`find dist-desktop/win-unpacked -iname "*.env*" -o -iname "keys.enc"`（应空）。
 - 扫 standalone 无明文密钥：grep `sk-` / `AI_API_KEY=` / `Bearer <token>`（应空）。
 - 确认 `electron/config.js` 只放**非密** URL/模型名。

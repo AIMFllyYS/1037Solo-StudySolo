@@ -17,3 +17,5 @@
 | [output.md](./output.md) | [Next.js](https://nextjs.org/docs/app/api-reference/config/next-config-js/output) |
 
 刷新命令：`node scripts/maintenance/snapshot-next-docs.mjs`。刷新会替换本目录快照，审查差异后提交。
+
+2026-10-11 收尾复核：npm 官方 latest 的 next / eslint-config-next 均为 16.4.0，与当前包一致。[16.4 官方说明](https://nextjs.org/blog/next-16-4)介绍 Cache Components 与现有应用的 opt-in 迁移；本轮保留已有路由缓存/身份契约。官方另[预告 2026-10-14 安全更新](https://nextjs.org/blog/upcoming-nextjs-security-update-october-2026)，影响版本和升级细节将随发布给出；本次复核时该更新尚未发布，版本依据为当时 latest。

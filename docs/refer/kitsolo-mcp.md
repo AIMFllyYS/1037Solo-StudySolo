@@ -12,4 +12,4 @@
 
 服务端设置 `KITSOLO_URL`；前端还支持 `NEXT_PUBLIC_KITSOLO_URL`。生产默认 `https://kitsolo.1037solo.com`，开发默认 `http://localhost:3038`。默认回调 `/api/kitsolo/callback/`（开发 35349，生产 studysolo.1037solo.com）。Electron 的额外域名需要先在 KitSolo 的客户端白名单中登记，不自动信任任意桌面回调。
 
-镜像客户端源文件由 KitSolo `integrations/` 和 `scripts/sync-mcp-clients.mjs` 维护。协议、配置、存储和测试边界详见 [KitSolo 接入合同](../../../1037Solo-KitSolo/docs/MCP-INTEGRATION.md)。
+镜像客户端源文件由 KitSolo 仓库的 integrations 与其同步脚本维护。协议、配置、存储和测试边界详见 [KitSolo 接入合同](../../../1037Solo-KitSolo/docs/MCP-INTEGRATION.md)；该同步脚本属于 KitSolo 仓库。

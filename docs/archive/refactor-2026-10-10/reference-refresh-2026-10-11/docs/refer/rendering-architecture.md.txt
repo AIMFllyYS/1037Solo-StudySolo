@@ -3,8 +3,6 @@
 > 本文档描述笔记与 AI 对话共用的 Markdown 渲染核心，以及两侧独立扩展的边界。
 > 任何修改渲染层、新增指令类型、调整 CSS 容器的操作，都应先阅读本文档。
 
-2026-10-11 核对：共享 remark/rehype 链、14 个指令映射与叶子 quiz renderer 保持。原文、HTML/SVG 与交互入口继续按各自安全边界和语义适配；目录以当前源码与架构为准。
-
 ---
 
 ## 1. 架构总览
@@ -15,7 +13,7 @@
 │                                                                 │
 │  plugins.ts                                                     │
 │  ├─ sharedRemarkPlugins  (GFM + Math + Directive + 自定义)      │
-│  └─ sharedRehypePlugins  (raw → sanitize → KaTeX → highlight) │
+│  └─ sharedRehypePlugins  (rehype-raw + KaTeX + highlight.js)   │
 │                                                                 │
 │  calloutTypes.ts   ── CALLOUT_META 单一数据源                    │
 │  remarkDirectives.ts ── 解析 :::callout / ::figure 等指令       │
@@ -61,7 +59,7 @@
 | 导出 | 内容 | 说明 |
 |---|---|---|
 | `sharedRemarkPlugins` | `[remarkGfm, remarkMath, remarkDirective, remarkDirectives, remarkCalloutSoftBreaks]` | Markdown → MDAST 解析插件，以 `lib/markdown/plugins.ts` 为事实源 |
-| `sharedRehypePlugins` | `[rehypeRaw, [rehypeSanitize, markdownSanitizeSchema], [rehypeKatex, { throwOnError: false, strict: false }], [rehypeHighlight, { detect: false, ignoreMissing: true, languages, aliases }]]` | raw 后先清洗，再进行可信公式/高亮变换；显式注册代码语言，未标语言的 fence 不自动识别 |
+| `sharedRehypePlugins` | `[rehypeRaw, [rehypeSanitize, markdownSanitizeSchema], [rehypeKatex, { throwOnError: false, strict: false }], [rehypeHighlight, { detect: false, ignoreMissing: true, subset: … }]]` | raw 后先清洗，再进行可信公式/高亮变换；`subset` 只约束自动识别候选，不裁剪语言 bundle |
 
 **禁止**在 `NoteRenderer` 或 `MessageContent` 中直接内联插件配置。必须从此文件导入。
 
@@ -77,7 +75,7 @@
 | `figuremedia` | `Figure` | `components/shared/directives/Figure.tsx` |
 | `functionplot` | `PlotDirective` | `components/canvas/PlotDirective.tsx` |
 | `svgcanvas` | `CanvasDirective` | `components/canvas/CanvasDirective.tsx` |
-| `memorycard` | `MemoryCard` | `components/shared/directives/MemoryCard.tsx`（`:::memory`，见 §4.5、remarkDirectives 与 normalizeDirectiveLabels 的当前解析实现） |
+| `memorycard` | `MemoryCard` | `components/shared/directives/MemoryCard.tsx`（`:::memory`，见 §4.5 与 `00-execution-contract.md` 第六节「指令属性解析」） |
 | `timeline` | `Timeline` | `components/shared/directives/Timeline.tsx` |
 | `eventcard` | `EventCard` | `components/shared/directives/EventCard.tsx` |
 | `conceptcard` | `ConceptCard` | `components/shared/directives/ConceptCard.tsx` |
@@ -455,8 +453,8 @@ CanvasBlock 提供统一的聊天画布协议，覆盖自由 SVG、函数图像�
 ### 7.2 新增指令组件
 
 1. 在 `components/shared/directives/` 下创建新组件文件
-2. 在 `components/shared/directives/registry.ts` 直接导入组件并注册键名
-3. 核对实际 renderer 的 components 映射与叶子渲染边界
+2. 在 `components/shared/directives/index.ts` 中 re-export
+3. 在 `components/shared/directives/registry.ts` 中注册键名
 4. 在 `lib/markdown/remarkDirectives.ts` 中添加解析逻辑（如果需要自定义 node 属性）
 
 ### 7.3 新增可视化标签（聊天侧）

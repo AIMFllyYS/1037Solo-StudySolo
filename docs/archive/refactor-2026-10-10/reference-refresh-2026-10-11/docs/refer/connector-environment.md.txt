@@ -1,8 +1,8 @@
 # 连接器服务端环境配置
 
-核对：2026-10-11。本页说明应用级凭证与运行时环境的配置。环境就绪、用户 OAuth 关联和 Agent 工具可用分别验证。源码维护以 config.server/actor.server/registry/service 和[运行时参考](learning-connector-runtime.md)为依据；当前人类任务确定部署与验收范围。[旧交接](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-unattended-handoff.md)及[旧账本](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-workstreams.json)保留原日期证据。
+更新：2026-10-04。本页说明应用级凭证与运行时环境的配置。环境就绪不等于用户 OAuth 已关联，也不等于 Agent 已获得工具。当前部署交接与剩余验收见[完整交接](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-unattended-handoff.md)及[唯一账本](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-workstreams.json)。
 
-支持服务和传输方式由 lib/connectors/registry.ts 与服务端适配器定义。当前 Google 配置对应本应用 API/OAuth 接入；Notion/Todoist 的用户动态注册与 token 由原生连接器流程管理。供应商资格、范围或正式配置变更时核对其最新官方规则，代码配置状态不代表已经完成个人授权或生产验收。
+当前服务范围与未交付项见[完整交接](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-unattended-handoff.md)。早期选型快照已归档。Google 官方也有 Workspace MCP，但当前是有资格与公开使用限制的 Developer Preview；本页配置的是普通 API/OAuth 应用，不能据此声称对应 MCP 组件已启用。Notion / Todoist 官方托管 MCP 的动态注册与用户 token 不要求先加全局个人 API key。
 
 ## 凭证放在哪里
 

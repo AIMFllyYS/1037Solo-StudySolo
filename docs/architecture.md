@@ -92,6 +92,8 @@ Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 
 
 搜索分为离线 BM25/向量索引、Worker 与服务端 hybrid 检索。动态加载、取消、索引身份及生产禁止全库 substring 回退的规则保留。单元测试使用小夹具，真实内容完整性和索引验收另行执行。
 
+当前资源/检索/完整历史依据见[运行资源契约](./refer/runtime-performance-contracts.md)，旧性能规格与测量按原日期归档。Framework 使用 Next 16.4.0；现有路由的 runtime/dynamic、私有 no-store、静态内容与文件 tracing 保持。官方 Cache Components 是可单独迁移的缓存模型，启用前需要按 owner、数据新鲜度、请求边界与静态页契约审查；本轮没有改变已有缓存语义。
+
 ## 运行、构建与发布
 
 本地 Web 端口为 35349。现有 RootSolo 服务优先复用，检查实际 HTTP 与页面编译；出现局部中断按 [恢复约定](../../RootSolo/docs/unattended-recovery.md)处理当前服务。

@@ -29,3 +29,4 @@ docs/archive/refactor-2026-10-10/historical-docs/** -text whitespace=cr-at-eol,-
 docs/archive/refactor-2026-10-10/retired-source/** -text whitespace=cr-at-eol,-blank-at-eol
 docs/archive/refactor-2026-10-10/symbol-cleanup/**/*.txt -text whitespace=cr-at-eol,-blank-at-eol
 docs/archive/refactor-2026-10-10/audit-probe-sources/*.txt -text whitespace=cr-at-eol,-blank-at-eol
+docs/archive/refactor-2026-10-10/reference-refresh-2026-10-11/**/*.txt -text whitespace=cr-at-eol,-blank-at-eol

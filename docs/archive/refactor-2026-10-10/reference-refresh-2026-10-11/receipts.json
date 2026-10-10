@@ -1,0 +1,26 @@
+[
+  {
+    "source": "docs/refer/cloud-sandbox-runtime.md",
+    "target": "docs/archive/refactor-2026-10-10/reference-refresh-2026-10-11/docs/refer/cloud-sandbox-runtime.md.txt",
+    "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+    "sha256": "b9d0375deac5ac1cf9936bf4bead16bf314b725898618274a18848c4d2e73204"
+  },
+  {
+    "source": "docs/refer/connector-environment.md",
+    "target": "docs/archive/refactor-2026-10-10/reference-refresh-2026-10-11/docs/refer/connector-environment.md.txt",
+    "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+    "sha256": "3cba9ddb440a3cca0d5d160b3b9b793490e19185212615f51e0b3ab0a543d11d"
+  },
+  {
+    "source": "docs/refer/rendering-architecture.md",
+    "target": "docs/archive/refactor-2026-10-10/reference-refresh-2026-10-11/docs/refer/rendering-architecture.md.txt",
+    "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+    "sha256": "fbb277db296f4730c381d5a8e82f08c5c8d0a808d4d9a343e63f0d28559ca876"
+  },
+  {
+    "source": "docs/sop/06-desktop-packaging-release.md",
+    "target": "docs/archive/refactor-2026-10-10/reference-refresh-2026-10-11/docs/sop/06-desktop-packaging-release.md.txt",
+    "sourceCommit": "b2279cf1eacbad24143eea5cddab05747a8eb451",
+    "sha256": "91e0c266554dc3f98680195a039402e51551cd04e067f7217fe621eeff3a38b8"
+  }
+]
