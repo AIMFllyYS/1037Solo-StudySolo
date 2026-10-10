@@ -109,6 +109,8 @@
 
 - R3r 认证/计费/AI 目录：84 个实现/相邻测试/价格 JSON 按 browser/sessions/server/provisioning/presentation、settlement/ledger/quota/pricing 和 images/model selection/endpoints 归类；188 个真实消费者更新，没有新增转发。保持原认证来源、cookie、短期 token/服务端 refresh、共享 session DTO、预留/结算/幂等、账户额度与受信价格。完整 node 2064 项/2063 通过/1 原跳过/0 失败、React 304 文件/1280 项通过、完整类型、ESLint 0 error/21 原 warning；旧 provider 对照原件转为 txt 保留，避免忽略目录的历史源码被当作当前编译入口。文档链接与即时循环继续通过。Knip 文件/依赖/unlisted/binary 仍为 0，值/类型候选与一个语义颜色别名待继续审查；没有用泛化 ignore 制造通过。该阶段未操作真实账户、钱包或生产数据库。
 
+- R3s 字典与认证 CLI：中英文 window 的 note/project/quiz，以及 settings 的 appearance/models/modelForm/keyboard 分为对应业务字典，四个公开命名空间形状和值不变；完整 JSON 83425 字节与前版相同，7 项翻译/键/占位符 node、6 项 DOM/外观 React、完整类型与定向 lint 通过。504 行 auth-setup CLI 保留原命令名/默认 status/main 调度，拆出路径/环境、SMTP、signup trigger、一次性邮箱和 OTP 证明流程；27 个原声明 token 保留，仅 ROOT 的父层级跟随新 helper 位置调整，路径测试确认仍为仓库根。14 项模拟 SMTP/signup/OTP/helper 检查通过，新增 helper 3 项覆盖根路径与 6–8 位码遮蔽。没有执行 status/apply-smtp/verify-trigger/verify-otp 等真实运营命令，没有发送邮件或写真实数据库。原长混合 CLI 与字典已处理，仍保留 sync/sessionStore 单一连续引擎并审查其必要性。
+
 ## 局部阻塞
 
 
@@ -116,12 +118,12 @@
 
 ## 续接检查点
 
-已完成 R0/R1/R2、R3a–R3r 与 R4a–R4c 分层；聊天目录已提交 `9117900f`，认证/计费/AI 目录统一验证已通过并按阶段提交至同名云端重构分支，具体 SHA 以分支 Git 历史为准。R5a–R5c 已更新入口/SOP、归档历史与确认未使用源码；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
+已完成 R0/R1/R2、R3a–R3s 与 R4a–R4c 分层；认证/计费/AI 目录已提交 `5fe85bdb`，字典与认证 CLI 定向验证已通过并按阶段提交至同名云端重构分支，具体 SHA 以分支 Git 历史为准。R5a–R5c 已更新入口/SOP、归档历史与确认未使用源码；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
 
 下一阶段仍需：
 
 1. 已拆内容加载、聊天/复习 API、QuizQuestion、GlobalSettings、RecordPreviewWindow、AppShell、ChatInput、ReviewQuizPane、TokenDashboard、provider、db migration、Electron key IO、quiz-progress、learning/quiz、userNotes 及 AgentConversationSidebar/ChatFeedbackActions/ImageGenViewer/ModelMenu，已完成 chat/layout/hooks/stores/content-data 和 lib/chat 归类。继续按新 inventory 核对其余混合职责和拥挤目录，不重复拆已完成模块。sync engine 和 sessionStore 是已分层后的单一队列/状态引擎，按实际职责与风险审查，不机械按行数重切。
-2. 六个优先概率交互及余下 27 个长交互、五份长教材目录和交互注册已分层，不重复拆分；χ² 与协方差轴数值修复单独记录。继续核对 i18n 字典、auth setup CLI 及已分层的连续引擎，不按行数机械重切。继续审计明确等价的重复算法和 lib/chat/ai/auth/billing 等拥挤目录；教材 ingest writer/清理脚本的旧路径已修正，不执行会替换正文的真实接入脚本。
+2. 六个优先概率交互及余下 27 个长交互、五份长教材目录/交互注册、长字典和 auth setup CLI 已分层，不重复拆分；χ² 与协方差轴数值修复单独记录。剩余连续引擎按状态机/队列/CAS 的实际职责审查，不按行数机械重切。lib/chat/auth/billing/ai 拥挤目录已归类，继续核对 search/notes/window 等真实领域的职责与文件计数，不机械拆测试目录。继续审计明确等价的重复算法；教材 ingest writer/清理脚本的旧路径已修正，不执行会替换正文的真实接入脚本。
 3. 正式 knip.json 已核实 Next、Classolo、Worker、CJS、CLI 与沙箱脚本入口；最新 verify/knip-r5c-final.json 的文件/依赖/unlisted/binary 为 0，仍有 136 个值导出、55 个类型候选。明显公共 façade/协议不能只凭未使用报告删除；继续检查内部冗余、重复 barrel 和真正消费者，保留诊断而不泛化 ignore。
 4. 当前 74 份活文档、316 本地链接、0 缺失。72 份旧 handoff/loop/日期快照与 3 原参考已归档，当前模型维护与 Fast 注释已更新；SOP 07/14 与 storage 参考已核实。继续核对 rendering/framework-extension 和其余 SOP 中的存量事实（特别是旧数量/旧执行角色措辞），不能把链接通过当作所有说明已准确。37 个未使用源码和 21 个旧转发已保留可恢复原件，字节承诺已验证实际 Git blob。
 5. 最终候选统一运行适用 gate、全量类型/lint/代码/内容/React 与隔离生产构建，并复核实际浏览器与既有交互；报告真实账号、付费请求及向量新增覆盖的未验边界。最近全量为代码 2049 项/2048 通过/1 原跳过、React 300 文件/1245 项通过、ESLint 0 error/21 warning；R3n/o 的新改动虽定向通过，仍需最终统一验收。Electron 新 keyStorage 已由 electron/**/* 收入包，.test.* 被排除；最终 staged/package 资源及实际 OS 验收范围不得混同。

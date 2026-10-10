@@ -1,9 +1,14 @@
+import { settingsAppearanceZh } from "./settings/appearance";
+import { settingsModelsZh } from "./settings/models";
+import { settingsModelFormZh } from "./settings/modelForm";
+import { settingsKeyboardZh } from "./settings/keyboard";
+
 /**
  * settings 命名空间（中文真相源）—— 由 i18n 分片维护。
  *
  * 为什么分片：这一轮要覆盖设置 / 菜单 / 右侧面板 / 思考链四块互不相干的界面，
  * 分片后每块只改自己这一份词典，不会在合并阶段互相覆盖。
- * 加 key 只加在本文件；缺英文会被 `en.ts satisfies LocaleMessages` 在 typecheck 阶段拦下。
+ * 加 key 在对应业务分片（未拆出的命名空间留在本文件）；缺英文会被 `en.ts satisfies LocaleMessages` 在 typecheck 阶段拦下。
  *
  * 值一律是「搬进来的原字面量」：JSX 里跨行拼接的空格（如 `…模型。\n独立于…` 渲染成
  * `…模型。 独立于…`）也照抄，改字典时不要顺手规范化。
@@ -69,149 +74,11 @@ export const settingsZh = {
     aria: "Agent 设置",
   },
   // 外观（AppearanceSection + AppearanceSettingsControls + GlobalSettings 摘要）
-  appearance: {
-    agentPanel: "Agent 面板",
-    rightPanelTabBar: "右侧栏顶部标签",
-    rightPanelTabBarDesc: "显示「AI 对话 / 动画讲解 / 可交互」那一行",
-    rightPanelTabBarAria: "显示右侧栏顶部标签",
-    pinChatHeader: "固定助教顶部导航",
-    pinChatHeaderDesc: "始终显示「设置 / 历史 / 新对话」，不随对话自动收起",
-    pinChatHeaderAria: "固定 AI 助教顶部导航",
-    project: "整个项目",
-    reading: "对话阅读",
-    fontSize: "对话字体大小",
-    fontPreview: "预览：这段文字的字号会随上面的滑块实时变化，对话区的回答也会同步缩放。",
-    theme: "明暗主题",
-    light: "浅色",
-    dark: "深色",
-    modeDefault: "默认",
-    modeColorful: "彩色",
-    modeAnthropic: "Anthropic",
-    modeIos: "iOS",
-    modeCodex: "Codex",
-    modeCustom: "自定义",
-    lightBackground: "白天背景",
-    lightAccent: "白天主色",
-    lightText: "白天文字",
-    darkBackground: "夜间背景",
-    darkAccent: "夜间主色",
-    darkText: "夜间文字",
-    selectionColor: "划词颜色",
-    preview: "预览",
-    previewText: "文字示例",
-    previewButton: "按钮",
-    font: "全局字体",
-    reduceMotion: "减少动画",
-    reduceMotionDesc: "界面动画与过渡效果即时完成",
-    reduceMotionAria: "减少动画",
-    centerTabsAutoHide: "中间标签栏自动隐藏",
-    centerTabsAutoHideDesc: "开启后，正文 / 例题 / 浏览器等标签栏平时收起，鼠标移到顶部才显示；关闭则常驻",
-    centerTabsAutoHideAria: "中间标签栏自动隐藏",
-    reset: "恢复默认外观",
-    summary: "{theme} · {mode} · {font}",
-    // 全局字体下拉项（lib/theme/appearance.ts 的 FONT_CHOICES[].labelKey）
-    fontChoices: {
-      system: "系统默认",
-      songti: "宋体阅读",
-      kaiti: "楷体手写",
-      hei: "黑体清晰",
-      serif: "英文衬线",
-      mono: "等宽",
-    },
-  },
+  appearance: settingsAppearanceZh,
   // 模型列表与内置模型（ModelSection + _shared 的模型行）
-  models: {
-    badge: {
-      image: "生图",
-      thinking: "思考",
-      thinkingRequired: "思考不可关",
-      vision: "视觉",
-    },
-    sizeCount: "{count} 尺寸",
-    imageDefault: {
-      is: "已是默认生图模型",
-      set: "设为默认生图模型",
-    },
-    builtin: {
-      title: "内置模型",
-      meta: "{count} 个 · 站点默认",
-      desc: "由部署方在 .env 配置，所有用户共享。下方仅展示，不可修改。",
-      textModels: "文本模型（{count}）",
-      imageModels: "生图模型（{count}）",
-    },
-    assistant: {
-      title: "摘录与划词助手",
-      desc: "摘录（划词「记录」成卡）和划词助手（划词「解释/追问」浮窗）默认使用的模型。 独立于右侧主对话模型，避免因主对话切换自定义 API 而导致摘录报错。支持自定义 API 分组中的模型。",
-      recordModel: "摘录模型（划词「记录」成卡）",
-      recordModelAria: "摘录模型",
-      recordModelHint: "默认内置 DeepSeek V4 Flash（性价比高、成卡稳定）。选择自定义模型时需确保对应 API 分组已配置密钥。",
-      floatingModel: "划词助手模型（「解释/追问」浮窗）",
-      floatingModelAria: "划词助手模型",
-      floatingModelHint: "划词后弹出的浮窗对话使用的默认模型。可在浮窗内随时切换。",
-      quizModel: "答题 / 深度解答默认模型",
-      quizModelAria: "答题模型",
-      quizModelHint: "出题与深度解答默认使用此模型，默认 DeepSeek。可在自定义 API 分组中另选。",
-      enable: "开启本站划词助手",
-      enableDesc: "关掉后划词不再弹出本站动作条（解释、记录、笔记、引用等）",
-      blockForeign: "尽量阻止其它划词助手",
-      blockForeignDesc: "前端可做：压掉选区右键菜单、关闭系统 touch callout、划词后立刻收起原生选区。 无法拦截系统级 Look Up / Copilot、浏览器扩展或厂商划词插件。",
-    },
-    defaults: {
-      title: "新对话默认",
-      thinking: "深度思考",
-      thinkingDesc: "新对话默认开启深度推理",
-      search: "联网搜索",
-      searchDesc: "新对话默认开启联网搜索",
-      effort: "默认思考力度",
-      effortDesc: "新对话默认使用的思考深度（仅在开启深度思考时生效）",
-    },
-  },
+  models: settingsModelsZh,
   // 自定义模型表单（ModelForm.tsx）
-  modelForm: {
-    edit: "编辑模型",
-    add: "添加模型",
-    typeText: "文本模型",
-    typeImage: "生图模型",
-    modelId: "模型 ID（必填）",
-    label: "显示名（可选）",
-    contextK: "上下文窗口 K（默认 128）",
-    cacheTtl: "缓存 TTL 秒（默认 300，计费按此）",
-    imagePrice: "单价 ¥/张（可选）",
-    inputPrice: "输入价格 ¥/百万（必填）",
-    imageOutputPrice: "(占位，留空)",
-    outputPrice: "输出价格 ¥/百万（必填）",
-    cachedInputPrice: "缓存命中价格（可选）",
-    cacheWritePrice: "缓存写入价格（可选）",
-    noCache: "不填=无缓存",
-    cacheHit: "不填=按缓存命中",
-    capabilities: "能力",
-    vision: "视觉（图片输入）",
-    thinking: "深度思考",
-    tools: "工具调用",
-    thinkingLevels: "思考强度（勾选该模型实际支持的档位）",
-    thinkingLevelsHint: "勾选的档位会出现在模型菜单和输入栏「深度思考」里，并按所选档位发给上游。一个都不勾则只保留思考开关，不发送强度。",
-    thinkingRequired: "思考不可关（如 GLM / Gemini 强制思考）",
-    apiProtocol: "API 兼容格式",
-    apiProtocolHint: "选中后：请求路径、鉴权头、图片编码、思考参数、推理字段全部自动匹配。",
-    protocolAnthropicHint: "Claude 原生 /v1/messages",
-    protocolSiliconflowHint: "硅基流动 / 原生 Qwen",
-    styleOpenrouter: "reasoning.effort（OpenRouter）",
-    styleDeepseek: "thinking + reasoning_effort（DeepSeek）",
-    styleMimo: "thinking.type（MiMo）",
-    styleGemini: "thinking_level（Gemini 兼容）",
-    styleAnthropic: "thinking.budget_tokens（Anthropic 原生）",
-    styleNone: "不发送思考参数",
-    advanced: "高级：手动覆盖底层字段（多数用户无需展开）",
-    reasoningField: "推理字段（override）",
-    reasoningFieldHint: "留空=按格式自动",
-    thinkingStyle: "思考参数格式（override）",
-    thinkingStyleAria: "思考参数格式",
-    sizes: "支持尺寸（多选）",
-    maxCount: "最大生成数量",
-    imageApiStyle: "生图 API 格式",
-    imageStyleAuto: "自动识别",
-    imageStyleSiliconflow: "SiliconFlow 图片接口",
-  },
+  modelForm: settingsModelFormZh,
   // 自定义 API 分组（ApiGroupsSection + _ApiGroupCard）
   apiGroups: {
     title: "自定义 API",
@@ -434,58 +301,7 @@ export const settingsZh = {
     authMissing: "登录未配置",
   },
   // 快捷键分节外壳（KeyboardShortcutsSettings；条目文案见下方 shortcut.*）
-  keyboard: {
-    enabled: "已启用 {enabled} / {total}",
-    enableAll: "全部启用",
-    disableAll: "全部关闭",
-    enableAria: "启用 {label}",
-    openReference: "查看完整快捷键参考",
-    // 分组名（SHORTCUT_CATEGORIES[].labelKey）
-    category: {
-      global: "全局",
-      rightPanel: "右栏",
-      window: "窗口",
-      review: "复习板",
-      overlay: "浮层",
-      chat: "对话",
-    },
-    // 21 条快捷键（SHORTCUTS[].labelKey / descriptionKey），键名即 lib/keyboard/shortcuts.ts 里的 id
-    shortcut: {
-      global: {
-        search: { label: "全局搜索", description: "打开全局内容搜索" },
-        aiFloating: { label: "AI 助手浮窗", description: "打开无选文的 AI 划词浮窗" },
-        toggleSidebar: { label: "收起/展开侧栏", description: "切换左侧导航栏" },
-        billing: { label: "API 计费总览", description: "打开 API 计费总览窗口" },
-        newChat: { label: "新建对话", description: "创建新的 AI 对话并切到 AI 栏" },
-        toggleTopBar: { label: "收起/展开顶栏", description: "切换顶部导航栏" },
-        openReview: { label: "打开复习板", description: "跳转到当前科目复习板" },
-        shortcutHelp: { label: "快捷键帮助", description: "打开快捷键参考面板" },
-        rightTab: {
-          ai: { label: "AI 对话栏", description: "切换到右侧 AI 对话" },
-          video: { label: "动画讲解栏", description: "切换到右侧动画讲解" },
-          interactive: { label: "可交互栏", description: "切换到右侧可交互演示" },
-          browser: { label: "浏览器栏", description: "切换到右侧内置浏览器" },
-        },
-      },
-      window: {
-        close: { label: "关闭窗口", description: "关闭当前选中的浮窗" },
-        minimize: { label: "最小化窗口", description: "最小化/还原当前选中的浮窗" },
-        fullscreen: { label: "全屏窗口", description: "全屏/退出全屏当前选中的浮窗" },
-      },
-      overlay: {
-        escape: { label: "关闭浮层", description: "关闭最上层弹窗/菜单/浮层" },
-      },
-      review: {
-        prevCard: { label: "上一张卡", description: "复习板切换到上一张记忆卡" },
-        nextCard: { label: "下一张卡", description: "复习板切换到下一张记忆卡" },
-        flipCard: { label: "翻面", description: "复习板翻转当前记忆卡" },
-      },
-      chat: {
-        send: { label: "发送消息", description: "在对话输入框按 Enter 发送" },
-        newline: { label: "换行", description: "在对话输入框按 Shift+Enter 换行" },
-      },
-    },
-  },
+  keyboard: settingsKeyboardZh,
   // 成绩分节（GlobalSettings.tsx）
   scores: {
     chapters: "已测章节",

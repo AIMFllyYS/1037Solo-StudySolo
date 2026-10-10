@@ -1,0 +1,47 @@
+/** settings.models locale entries. Keep keys/placeholders aligned with the other language. */
+export const settingsModelsZh = {
+    badge: {
+      image: "生图",
+      thinking: "思考",
+      thinkingRequired: "思考不可关",
+      vision: "视觉",
+    },
+    sizeCount: "{count} 尺寸",
+    imageDefault: {
+      is: "已是默认生图模型",
+      set: "设为默认生图模型",
+    },
+    builtin: {
+      title: "内置模型",
+      meta: "{count} 个 · 站点默认",
+      desc: "由部署方在 .env 配置，所有用户共享。下方仅展示，不可修改。",
+      textModels: "文本模型（{count}）",
+      imageModels: "生图模型（{count}）",
+    },
+    assistant: {
+      title: "摘录与划词助手",
+      desc: "摘录（划词「记录」成卡）和划词助手（划词「解释/追问」浮窗）默认使用的模型。 独立于右侧主对话模型，避免因主对话切换自定义 API 而导致摘录报错。支持自定义 API 分组中的模型。",
+      recordModel: "摘录模型（划词「记录」成卡）",
+      recordModelAria: "摘录模型",
+      recordModelHint: "默认内置 DeepSeek V4 Flash（性价比高、成卡稳定）。选择自定义模型时需确保对应 API 分组已配置密钥。",
+      floatingModel: "划词助手模型（「解释/追问」浮窗）",
+      floatingModelAria: "划词助手模型",
+      floatingModelHint: "划词后弹出的浮窗对话使用的默认模型。可在浮窗内随时切换。",
+      quizModel: "答题 / 深度解答默认模型",
+      quizModelAria: "答题模型",
+      quizModelHint: "出题与深度解答默认使用此模型，默认 DeepSeek。可在自定义 API 分组中另选。",
+      enable: "开启本站划词助手",
+      enableDesc: "关掉后划词不再弹出本站动作条（解释、记录、笔记、引用等）",
+      blockForeign: "尽量阻止其它划词助手",
+      blockForeignDesc: "前端可做：压掉选区右键菜单、关闭系统 touch callout、划词后立刻收起原生选区。 无法拦截系统级 Look Up / Copilot、浏览器扩展或厂商划词插件。",
+    },
+    defaults: {
+      title: "新对话默认",
+      thinking: "深度思考",
+      thinkingDesc: "新对话默认开启深度推理",
+      search: "联网搜索",
+      searchDesc: "新对话默认开启联网搜索",
+      effort: "默认思考力度",
+      effortDesc: "新对话默认使用的思考深度（仅在开启深度思考时生效）",
+    },
+  };

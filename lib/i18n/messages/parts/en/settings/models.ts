@@ -1,0 +1,47 @@
+/** settings.models locale entries. Keep keys/placeholders aligned with the other language. */
+export const settingsModelsEn = {
+    badge: {
+      image: "Image",
+      thinking: "Thinking",
+      thinkingRequired: "Thinking locked on",
+      vision: "Vision",
+    },
+    sizeCount: "{count} sizes",
+    imageDefault: {
+      is: "Already the default image model",
+      set: "Set as default image model",
+    },
+    builtin: {
+      title: "Built-in models",
+      meta: "{count} models · site default",
+      desc: "Configured by the deployer in .env and shared by everyone. Shown here for reference only.",
+      textModels: "Text models ({count})",
+      imageModels: "Image models ({count})",
+    },
+    assistant: {
+      title: "Excerpts & selection assistant",
+      desc: "Default models for excerpts (marking a selection as a card) and the selection assistant (the explain / follow-up popover). They are independent of the main chat model, so switching the main chat to a custom API never breaks excerpts. Models from custom API groups are supported.",
+      recordModel: "Excerpt model (selection → “Record” card)",
+      recordModelAria: "Excerpt model",
+      recordModelHint: "Defaults to the built-in DeepSeek V4 Flash (good value, reliable cards). For a custom model, make sure its API group has a key configured.",
+      floatingModel: "Selection assistant model (explain / follow-up popover)",
+      floatingModelAria: "Selection assistant model",
+      floatingModelHint: "Default model for the popover chat that opens after selecting text. You can switch it any time inside the popover.",
+      quizModel: "Default model for quizzes and deep answers",
+      quizModelAria: "Quiz model",
+      quizModelHint: "Used by default for quizzes and deep answers; defaults to DeepSeek. Pick another model in a custom API group.",
+      enable: "Enable the built-in selection assistant",
+      enableDesc: "When off, selecting text no longer opens this site's action bar (explain, record, note, quote, …)",
+      blockForeign: "Block other selection assistants",
+      blockForeignDesc: "What the front end can do: suppress the selection context menu, disable the system touch callout, and collapse the native selection right away. System-level Look Up / Copilot, browser extensions, and vendor tools cannot be blocked.",
+    },
+    defaults: {
+      title: "New chat defaults",
+      thinking: "Deep thinking",
+      thinkingDesc: "Turn on deep reasoning by default in new chats",
+      search: "Web search",
+      searchDesc: "Turn on web search by default in new chats",
+      effort: "Default thinking effort",
+      effortDesc: "Thinking depth used by default in new chats (only applies while deep thinking is on)",
+    },
+  };

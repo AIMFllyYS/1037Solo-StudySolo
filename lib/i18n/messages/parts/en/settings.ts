@@ -1,9 +1,14 @@
+import { settingsAppearanceEn } from "./settings/appearance";
+import { settingsModelsEn } from "./settings/models";
+import { settingsModelFormEn } from "./settings/modelForm";
+import { settingsKeyboardEn } from "./settings/keyboard";
+
 /**
  * settings 命名空间（英文）—— 由 i18n 分片维护。
  *
  * 为什么分片：这一轮要覆盖设置 / 菜单 / 右侧面板 / 思考链四块互不相干的界面，
  * 分片后每块只改自己这一份词典，不会在合并阶段互相覆盖。
- * 加 key 只加在本文件；缺英文会被 `en.ts satisfies LocaleMessages` 在 typecheck 阶段拦下。
+ * 加 key 在对应业务分片（未拆出的命名空间留在本文件）；缺英文会被 `en.ts satisfies LocaleMessages` 在 typecheck 阶段拦下。
  */
 export const settingsEn = {
   language: {
@@ -66,149 +71,11 @@ export const settingsEn = {
     aria: "Agent settings",
   },
   // Appearance (AppearanceSection + AppearanceSettingsControls + the GlobalSettings summary)
-  appearance: {
-    agentPanel: "Agent panel",
-    rightPanelTabBar: "Right panel tab bar",
-    rightPanelTabBarDesc: "Shows the “AI chat / Animated explainer / Interactive” row",
-    rightPanelTabBarAria: "Show right panel tab bar",
-    pinChatHeader: "Pin assistant header",
-    pinChatHeaderDesc: "Always show “Settings / History / New chat” instead of hiding it as you chat",
-    pinChatHeaderAria: "Pin the AI assistant header",
-    project: "Whole project",
-    reading: "Chat reading",
-    fontSize: "Chat font size",
-    fontPreview: "Preview: this text scales with the slider above, and answers in the chat area scale along with it.",
-    theme: "Light / dark theme",
-    light: "Light",
-    dark: "Dark",
-    modeDefault: "Default",
-    modeColorful: "Colorful",
-    modeAnthropic: "Anthropic",
-    modeIos: "iOS",
-    modeCodex: "Codex",
-    modeCustom: "Custom",
-    lightBackground: "Light background",
-    lightAccent: "Light accent",
-    lightText: "Light text",
-    darkBackground: "Dark background",
-    darkAccent: "Dark accent",
-    darkText: "Dark text",
-    selectionColor: "Selection color",
-    preview: "Preview",
-    previewText: "Sample text",
-    previewButton: "Button",
-    font: "Global font",
-    reduceMotion: "Reduce motion",
-    reduceMotionDesc: "Animations and transitions finish instantly",
-    reduceMotionAria: "Reduce motion",
-    centerTabsAutoHide: "Auto-hide center tab strip",
-    centerTabsAutoHideDesc: "When on, the Body / Examples / Browser tab strip stays hidden until the pointer reaches the top edge; off keeps it pinned",
-    centerTabsAutoHideAria: "Auto-hide center tab strip",
-    reset: "Reset appearance",
-    summary: "{theme} · {mode} · {font}",
-    // Options of the global font dropdown (FONT_CHOICES[].labelKey).
-    fontChoices: {
-      system: "System default",
-      songti: "Serif reading",
-      kaiti: "Handwriting",
-      hei: "Clean sans-serif",
-      serif: "Latin serif",
-      mono: "Monospace",
-    },
-  },
+  appearance: settingsAppearanceEn,
   // Model lists and built-in models (ModelSection + the model rows in _shared)
-  models: {
-    badge: {
-      image: "Image",
-      thinking: "Thinking",
-      thinkingRequired: "Thinking locked on",
-      vision: "Vision",
-    },
-    sizeCount: "{count} sizes",
-    imageDefault: {
-      is: "Already the default image model",
-      set: "Set as default image model",
-    },
-    builtin: {
-      title: "Built-in models",
-      meta: "{count} models · site default",
-      desc: "Configured by the deployer in .env and shared by everyone. Shown here for reference only.",
-      textModels: "Text models ({count})",
-      imageModels: "Image models ({count})",
-    },
-    assistant: {
-      title: "Excerpts & selection assistant",
-      desc: "Default models for excerpts (marking a selection as a card) and the selection assistant (the explain / follow-up popover). They are independent of the main chat model, so switching the main chat to a custom API never breaks excerpts. Models from custom API groups are supported.",
-      recordModel: "Excerpt model (selection → “Record” card)",
-      recordModelAria: "Excerpt model",
-      recordModelHint: "Defaults to the built-in DeepSeek V4 Flash (good value, reliable cards). For a custom model, make sure its API group has a key configured.",
-      floatingModel: "Selection assistant model (explain / follow-up popover)",
-      floatingModelAria: "Selection assistant model",
-      floatingModelHint: "Default model for the popover chat that opens after selecting text. You can switch it any time inside the popover.",
-      quizModel: "Default model for quizzes and deep answers",
-      quizModelAria: "Quiz model",
-      quizModelHint: "Used by default for quizzes and deep answers; defaults to DeepSeek. Pick another model in a custom API group.",
-      enable: "Enable the built-in selection assistant",
-      enableDesc: "When off, selecting text no longer opens this site's action bar (explain, record, note, quote, …)",
-      blockForeign: "Block other selection assistants",
-      blockForeignDesc: "What the front end can do: suppress the selection context menu, disable the system touch callout, and collapse the native selection right away. System-level Look Up / Copilot, browser extensions, and vendor tools cannot be blocked.",
-    },
-    defaults: {
-      title: "New chat defaults",
-      thinking: "Deep thinking",
-      thinkingDesc: "Turn on deep reasoning by default in new chats",
-      search: "Web search",
-      searchDesc: "Turn on web search by default in new chats",
-      effort: "Default thinking effort",
-      effortDesc: "Thinking depth used by default in new chats (only applies while deep thinking is on)",
-    },
-  },
+  models: settingsModelsEn,
   // Custom model form (ModelForm.tsx)
-  modelForm: {
-    edit: "Edit model",
-    add: "Add model",
-    typeText: "Text model",
-    typeImage: "Image model",
-    modelId: "Model ID (required)",
-    label: "Display name (optional)",
-    contextK: "Context window K (default 128)",
-    cacheTtl: "Cache TTL in seconds (default 300, used for billing)",
-    imagePrice: "Price ¥/image (optional)",
-    inputPrice: "Input price ¥/million (required)",
-    imageOutputPrice: "(placeholder, leave empty)",
-    outputPrice: "Output price ¥/million (required)",
-    cachedInputPrice: "Cache hit price (optional)",
-    cacheWritePrice: "Cache write price (optional)",
-    noCache: "empty = no cache",
-    cacheHit: "empty = same as cache hit",
-    capabilities: "Capabilities",
-    vision: "Vision (image input)",
-    thinking: "Deep thinking",
-    tools: "Tool calling",
-    thinkingLevels: "Thinking levels (tick the ones this model really supports)",
-    thinkingLevelsHint: "Ticked levels show up in the model menu and in the composer's “Deep thinking” picker, and are sent upstream as chosen. With none ticked, only the thinking switch is kept and no level is sent.",
-    thinkingRequired: "Thinking cannot be turned off (e.g. GLM / Gemini always think)",
-    apiProtocol: "API compatibility",
-    apiProtocolHint: "Once selected, the request path, auth header, image encoding, thinking params, and reasoning field are all matched automatically.",
-    protocolAnthropicHint: "Claude native /v1/messages",
-    protocolSiliconflowHint: "SiliconFlow / native Qwen",
-    styleOpenrouter: "reasoning.effort (OpenRouter)",
-    styleDeepseek: "thinking + reasoning_effort (DeepSeek)",
-    styleMimo: "thinking.type (MiMo)",
-    styleGemini: "thinking_level (Gemini-compatible)",
-    styleAnthropic: "thinking.budget_tokens (Anthropic native)",
-    styleNone: "Do not send thinking params",
-    advanced: "Advanced: override low-level fields manually (most users never need this)",
-    reasoningField: "Reasoning field (override)",
-    reasoningFieldHint: "empty = infer from the format",
-    thinkingStyle: "Thinking param format (override)",
-    thinkingStyleAria: "Thinking param format",
-    sizes: "Supported sizes (multi-select)",
-    maxCount: "Max images per request",
-    imageApiStyle: "Image API format",
-    imageStyleAuto: "Detect automatically",
-    imageStyleSiliconflow: "SiliconFlow image API",
-  },
+  modelForm: settingsModelFormEn,
   // Custom API groups (ApiGroupsSection + _ApiGroupCard)
   apiGroups: {
     title: "Custom API",
@@ -432,58 +299,7 @@ export const settingsEn = {
     authMissing: "Sign-in is not configured",
   },
   // Shortcut section shell (KeyboardShortcutsSettings; item copy lives under shortcut.* below)
-  keyboard: {
-    enabled: "{enabled} / {total} enabled",
-    enableAll: "Enable all",
-    disableAll: "Disable all",
-    enableAria: "Enable {label}",
-    openReference: "View the full shortcut reference",
-    // Group names (SHORTCUT_CATEGORIES[].labelKey).
-    category: {
-      global: "Global",
-      rightPanel: "Right panel",
-      window: "Windows",
-      review: "Review board",
-      overlay: "Overlays",
-      chat: "Chat",
-    },
-    // The 21 shortcuts (SHORTCUTS[].labelKey / descriptionKey); names mirror the ids in lib/keyboard/shortcuts.ts.
-    shortcut: {
-      global: {
-        search: { label: "Global search", description: "Open global content search" },
-        aiFloating: { label: "AI assistant popover", description: "Open the AI selection popover with no text selected" },
-        toggleSidebar: { label: "Collapse / expand sidebar", description: "Toggle the left navigation" },
-        billing: { label: "API billing overview", description: "Open the API billing overview window" },
-        newChat: { label: "New chat", description: "Create a new AI chat and switch to the AI panel" },
-        toggleTopBar: { label: "Collapse / expand top bar", description: "Toggle the top navigation" },
-        openReview: { label: "Open review board", description: "Jump to the review board for the current subject" },
-        shortcutHelp: { label: "Shortcut help", description: "Open the shortcut reference panel" },
-        rightTab: {
-          ai: { label: "AI chat tab", description: "Switch to the AI chat on the right" },
-          video: { label: "Animated explainer tab", description: "Switch to the animated explainer on the right" },
-          interactive: { label: "Interactive tab", description: "Switch to the interactive demo on the right" },
-          browser: { label: "Browser tab", description: "Switch to the built-in browser on the right" },
-        },
-      },
-      window: {
-        close: { label: "Close window", description: "Close the selected floating window" },
-        minimize: { label: "Minimize window", description: "Minimize or restore the selected floating window" },
-        fullscreen: { label: "Fullscreen window", description: "Fullscreen or exit fullscreen for the selected floating window" },
-      },
-      overlay: {
-        escape: { label: "Close overlay", description: "Close the topmost dialog, menu, or overlay" },
-      },
-      review: {
-        prevCard: { label: "Previous card", description: "Review board: go to the previous card" },
-        nextCard: { label: "Next card", description: "Review board: go to the next card" },
-        flipCard: { label: "Flip card", description: "Review board: flip the current card" },
-      },
-      chat: {
-        send: { label: "Send message", description: "Send from the chat input with Enter" },
-        newline: { label: "New line", description: "Insert a new line in the chat input with Shift+Enter" },
-      },
-    },
-  },
+  keyboard: settingsKeyboardEn,
   // Scores section (GlobalSettings.tsx)
   scores: {
     chapters: "Chapters tested",
