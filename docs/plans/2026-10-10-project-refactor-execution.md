@@ -83,6 +83,8 @@
 
 - R3l 状态/hooks/内容目录：143 个实现/测试/元数据文件迁移，374 个真实静态/动态/测试消费者更新；21 个 deprecated 单行 hook 转发原件归档为 txt，所有仓库导入改用同一 store 实例，没有另建状态或改持久化 key。hooks 根目录不再堆平铺运行文件，stores/content-data 根目录均低于 30 个运行文件。迁移前 Git 元数据重建的 contentTree 序列化与新树逐字节相同；registry 0 error/94 存量 warning。全量代码 2040 项、2039 通过、1 跳过、0 失败，React 299 文件/1234 项全部通过。迁移让原来直接访问产物 store 的全局 Agent picker 被 notes 边界规则正确识别；将 picker 归到 agent 域，沿用全局窗口层及延迟加载，7 项窗口放置检查与全量 ESLint 0 error/23 warning 通过。独立 Knip 完整入口审计已包含 classolo、Worker 和沙箱脚本，输出 44 个候选文件、134 个导出和 55 个类型待逐项核实；这些不是删除清单。
 
+- R3l 提交后实际复核：重新加载 Agent，按学科/教材/章节/小节选择医学细胞生物学第一节，article 正文 2470 字符、3 个原正文标题、内部 tablist 为 0，截图 `project-refactor/verify/agent-textbook-after-state-move.jpg`。最后全量 TypeScript 再次通过。当前真实账号操作和付费调用未验范围沿用前述边界。
+
 ## 局部阻塞
 
 
@@ -90,15 +92,14 @@
 
 ## 续接检查点
 
-已完成 R0/R1/R2 与 R3a–R3g，当前提交 `35df9920` 已同步至同名云端重构分支，工作区干净，整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
+已完成 R0/R1/R2 与 R3a–R3l，代码提交 `5f6a827a` 已同步至同名云端重构分支，整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
 
 下一阶段仍需：
 
-1. 拆分 content loader、其余复习/聊天 API、长 UI 组合及题型/设置展示等实际混合职责文件。
-2. 整理拥挤的 chat/layout/hooks/stores/content-data 目录，更新真实 import、动态入口和测试引用；处理聊天渲染/工具卡片的 3 条初始即时循环。
-3. 完成剩余长人工交互文件审查，区分数学/绘图/控制和纯目录数据，保持精度、交互及注册功能。
-4. 核实 Knip 的 classolo/worker/CLI/skill-pack 入口后清理可确认死代码；不得依据初轮 false positive 删除实际依赖。
-5. 归档旧执行队列/过时说明，重写 docs 总入口，更新 README、rendering/storage/extension 与测试/维护 SOP；文档断链初轮 34 项需分类修正。
-6. 最终候选统一运行适用 gate、全量类型/lint/代码/内容/React 与隔离生产构建，并复核实际浏览器与既有交互；报告真实账号、付费请求及向量新增覆盖的未验边界。
+1. 已拆内容加载、聊天/复习 API 与 QuizQuestion，已完成 chat/layout/hooks/stores/content-data 归类，即时循环为 0。继续审查 ChatInput、GlobalSettings、AppShell、ReviewQuizPane、RecordPreviewWindow、TokenDashboard、provider、db migration、Electron 和剩余学习状态等混合职责，不重复已完成迁移。
+2. R4 优先处理概率交互的数学、绘图、控制分界：CDFVisualizer、MeanTestExplorer、MarginalExplorer、SamplingDistExplorer、VarianceTestExplorer、MomentEstimator 仍超过 800 行。其余超过 500 行文件全部按 inventory-r3l 逐项审查，保留数学误差/边界与注册功能；教材目录数据不能仅凭行数认定死代码或损坏结构。
+3. 完整入口 Knip 临时审计位于本地 verify/knip-complete-entries.json，配置在 tmp/knip-complete-entries.json；包括 classolo/worker/沙箱入口，尚有 44 个候选文件、134 个导出、55 个类型待实际消费者核实。脚本 CLI、生成产物和沙箱外部 runtime 必须分别处理；不能将报告当删除清单。正式 knip.json 的入口配置仍需按核实结果更新。
+4. 归档旧执行队列/过时说明，重写 docs 总入口，更新 README、rendering/storage/extension 与测试/维护 SOP；文档断链初轮 34 项需分类修正。21 个旧 hook 转发已可恢复归档；旧计划原件不应因路径迁移自动改写，保留原历史。
+5. 最终候选统一运行适用 gate、全量类型/lint/代码/内容/React 与隔离生产构建，并复核实际浏览器与既有交互；报告真实账号、付费请求及向量新增覆盖的未验边界。当前 2040 项代码与 1234 项 React 的通过结果不替代后续新改动的最终验收。
 
-代码职责和原始算法已经分离，R3a–R3g 的定向结果不替代最终全量验收。RootSolo 当前服务是 studysolo-web / 35349、Next 16.4.0；使用时重新核对实时健康，不盲目重复启动。
+已完成模块的职责和原始算法已分离；当前 inventory 2121 源码/测试文件、1497 人工源码、63 个超过 500 行、9 个超过 800 行，即时循环为 0。仍存在未完成模块，以上检查结果不替代最终全量验收。RootSolo 当前服务是 studysolo-web / 35349、Next 16.4.0；使用时重新核对实时健康，不盲目重复启动。
