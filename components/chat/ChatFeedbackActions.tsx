@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useId, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { createPortal } from "react-dom";
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type FormEvent } from "react";
+
 import { Check, Copy, Flag, ThumbsDown, ThumbsUp } from "lucide-react";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";
 import { prepareFeedbackExcerpt, prepareFeedbackText } from "@/lib/chat/feedbackExcerpt";
@@ -9,62 +9,10 @@ import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useT } from "@/lib/i18n";
 import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
 import { useToast } from "@/lib/stores/toast";
+import { feedbackRequest, postFeedback, type FeedbackRecord } from "@/lib/chat/feedbackClient";
+import { errorMessage, reportReasonValue, type Vote, type ReportReason, type DialogState } from "./feedback/model";
+import FeedbackDialog from "./feedback/FeedbackDialog";
 
-type Vote = "like" | "dislike";
-const REPORT_REASONS = ["inaccurate", "unsafe", "privacy", "other"] as const;
-type ReportReason = typeof REPORT_REASONS[number];
-const reportReasonValue = (value: string): ReportReason | "" => REPORT_REASONS.find((reason) => reason === value) ?? "";
-type FeedbackRecord = {
-  id: string;
-  feedbackType: string;
-  revision: number;
-  status: string;
-  reportReason?: string | null;
-  feedbackText?: string | null;
-  answerExcerpt?: string | null;
-};
-type DialogState =
-  | { kind: "vote"; vote: Vote; record: FeedbackRecord; stale?: boolean }
-  | { kind: "report"; stale?: boolean };
-
-function errorMessage(code: string, t: ReturnType<typeof useT>): string {
-  switch (code) {
-    case "SESSION_MISSING":
-    case "SESSION_INVALID": return t("panel.chatFeedback.loginRequired");
-    case "MFA_REQUIRED": return t("panel.chatFeedback.mfaRequired");
-    case "ACCOUNT_UNAVAILABLE": return t("panel.chatFeedback.accountUnavailable");
-    case "FEEDBACK_MIGRATION_PENDING": return t("panel.chatFeedback.migrationPending");
-    case "RATE_LIMITED": return t("panel.chatFeedback.rateLimited");
-    case "FEEDBACK_STALE": return t("panel.chatFeedback.stale");
-    default: return t("panel.chatFeedback.submitFailed");
-  }
-}
-
-async function feedbackRequest(body: Record<string, unknown>, signal?: AbortSignal): Promise<Record<string, unknown>> {
-  const response = await fetch("/api/feedback/chat", {
-    method: "POST",
-    credentials: "same-origin",
-    cache: "no-store",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify(body),
-    signal,
-  });
-  const payload = await response.json().catch(() => ({})) as Record<string, unknown>;
-  if (!response.ok) {
-    const error = new Error(typeof payload.code === "string" ? payload.code : "FEEDBACK_UNAVAILABLE");
-    throw error;
-  }
-  return payload;
-}
-
-async function postFeedback(body: Record<string, unknown>, signal?: AbortSignal): Promise<FeedbackRecord> {
-  const payload = await feedbackRequest(body, signal);
-  if (typeof payload.id !== "string" || typeof payload.feedbackType !== "string"
-    || !Number.isSafeInteger(payload.revision) || typeof payload.status !== "string") {
-    throw new Error("FEEDBACK_UNAVAILABLE");
-  }
-  return payload as unknown as FeedbackRecord;
-}
 
 export default function ChatFeedbackActions({
   sessionId,
@@ -321,36 +269,6 @@ export default function ChatFeedbackActions({
     closeDialog();
   };
 
-  const handleDialogKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "Escape") {
-      event.preventDefault();
-      event.stopPropagation();
-      closeDialog();
-      return;
-    }
-    if (event.key !== "Tab") return;
-    const dialogRoot = event.currentTarget;
-    const controls = Array.from(dialogRoot.querySelectorAll<HTMLElement>(
-      'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    ));
-    if (!controls.length) return;
-    const first = controls[0];
-    const last = controls[controls.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  };
-
-  const reasonLabels: Record<ReportReason, string> = {
-    inaccurate: t("panel.chatFeedback.inaccurate"),
-    unsafe: t("panel.chatFeedback.unsafe"),
-    privacy: t("panel.chatFeedback.privacy"),
-    other: t("panel.chatFeedback.other"),
-  };
 
   return (
     <div className="mt-2 min-w-0" data-testid={`chat-feedback-${messageId}`}>
@@ -406,99 +324,7 @@ export default function ChatFeedbackActions({
       {copyFailed ? <p role="alert" className="mt-1.5 text-[11.5px] text-[var(--md-sys-color-error)]">{t("panel.chatFeedback.copyFailed")}</p> : null}
       {announcement ? <p role="status" aria-live="polite" className="mt-1.5 text-[11.5px] text-[var(--ink-faint)]">{announcement}</p> : null}
 
-      {dialog && typeof document !== "undefined" ? createPortal(
-        <div className="app-dialog-backdrop" data-testid="chat-feedback-backdrop" onPointerDown={(event) => {
-          if (event.target === event.currentTarget && !busyRef.current) closeDialog();
-        }}>
-          <div
-            ref={dialogRootRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={`${dialogId}-title`}
-            data-testid="chat-feedback-dialog"
-            className="app-dialog w-[min(480px,calc(100vw-2rem))]"
-            onKeyDown={handleDialogKeyDown}
-          >
-            <h2 id={`${dialogId}-title`} className="text-[16px] font-semibold text-[var(--ink)]">
-              {dialog.kind === "report" ? t("panel.chatFeedback.reportTitle") : t("panel.chatFeedback.voteDetailsTitle")}
-            </h2>
-            <div className="mt-3">
-            {dialog.kind === "vote" ? (
-              <>
-                <p className="text-[13px] leading-relaxed text-[var(--ink)]">{t("panel.chatFeedback.voteSaved")}</p>
-                {dialog.stale ? (
-                  <p role="alert" className="mt-3 rounded-lg bg-[var(--bg-muted)] px-3 py-2 text-[12px] text-[var(--md-sys-color-error)]">{error || t("panel.chatFeedback.stale")}</p>
-                ) : excerptPreview ? (
-                  <div className="mt-3 grid gap-3">
-                    <label className="flex flex-col gap-1.5 text-[12px] font-medium text-[var(--ink-soft)]">
-                      {t("panel.chatFeedback.feedbackText")}
-                      <textarea data-testid="chat-feedback-textarea" value={feedbackText} onChange={(event) => setFeedbackText(event.target.value)} maxLength={1_000} rows={3} className="min-h-20 resize-y rounded-lg border border-[var(--line)] bg-[var(--bg-panel)] px-2.5 py-2 text-[13px] text-[var(--ink)]" />
-                      <span className="font-normal leading-relaxed">{t("panel.chatFeedback.feedbackTextPrivacy")}</span>
-                    </label>
-                    <label className="flex cursor-pointer items-start gap-2.5 rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] p-3 text-[12.5px] text-[var(--ink)]">
-                      <input ref={voteExcerptRef} type="checkbox" checked={includeExcerpt} onChange={(event) => setIncludeExcerpt(event.target.checked)} className="mt-0.5 accent-[var(--accent)]" />
-                      <span className="min-w-0 flex-1">
-                        <span className="block font-medium">{t("panel.chatFeedback.excerptLabel")}</span>
-                        <span className="mt-1 block leading-relaxed text-[var(--ink-soft)]">{t("panel.chatFeedback.excerptPrivacy")}</span>
-                        <span className="mt-2 block max-h-24 overflow-y-auto rounded-md bg-[var(--bg-panel)] p-2 text-[11.5px] leading-relaxed">{excerptPreview}</span>
-                      </span>
-                    </label>
-                  </div>
-                ) : null}
-                {error ? <p role="alert" className="mt-3 text-[12px] text-[var(--md-sys-color-error)]">{error}</p> : null}
-                <div className="mt-4 flex justify-end gap-2">
-                  {dialog.stale ? (
-                    <button ref={staleCloseRef} type="button" onClick={clearStaleDialog} className="press rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)]">{t("panel.chatFeedback.staleClose")}</button>
-                  ) : (
-                    <>
-                      <button type="button" onClick={closeDialog} className="press rounded-lg px-3 py-1.5 text-[12.5px] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]">{t("panel.chatFeedback.cancel")}</button>
-                      {feedbackText.trim() || includeExcerpt ? <button type="button" disabled={busy} onClick={() => void submitVoteDetails()} className="press rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-55">{busy ? t("panel.chatFeedback.submitting") : t("panel.chatFeedback.submitExcerpt")}</button> : null}
-                    </>
-                  )}
-                </div>
-              </>
-            ) : (
-              <form onSubmit={(event) => void submitReport(event)}>
-                <p className="text-[13px] leading-relaxed text-[var(--ink-soft)]">{t("panel.chatFeedback.reportHint")}</p>
-                <label className="mt-4 flex flex-col gap-1.5 text-[12px] font-medium text-[var(--ink-soft)]">
-                  {t("panel.chatFeedback.reason")}
-                  <select
-                    ref={reportReasonRef}
-                    value={reportReason}
-                    onChange={(event) => setReportReason(reportReasonValue(event.target.value))}
-                    className="min-h-9 rounded-lg border border-[var(--line)] bg-[var(--bg-panel)] px-2.5 text-[13px] text-[var(--ink)]"
-                  >
-                    <option value="">{t("panel.chatFeedback.reason")}</option>
-                    {REPORT_REASONS.map((reason) => <option key={reason} value={reason}>{reasonLabels[reason]}</option>)}
-                  </select>
-                </label>
-                <label className="mt-3 flex flex-col gap-1.5 text-[12px] font-medium text-[var(--ink-soft)]">
-                  {t("panel.chatFeedback.feedbackText")}
-                  <textarea data-testid="chat-feedback-textarea" value={feedbackText} onChange={(event) => setFeedbackText(event.target.value)} maxLength={1_000} minLength={3} required rows={3} className="min-h-20 resize-y rounded-lg border border-[var(--line)] bg-[var(--bg-panel)] px-2.5 py-2 text-[13px] text-[var(--ink)]" />
-                  <span className="font-normal leading-relaxed">{t("panel.chatFeedback.feedbackTextPrivacy")}</span>
-                </label>
-                {excerptPreview ? (
-                  <label className="mt-3 flex cursor-pointer items-start gap-2.5 rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] p-3 text-[12.5px] text-[var(--ink)]">
-                    <input type="checkbox" checked={includeExcerpt} onChange={(event) => setIncludeExcerpt(event.target.checked)} className="mt-0.5 accent-[var(--accent)]" />
-                    <span className="min-w-0 flex-1">
-                      <span className="block font-medium">{t("panel.chatFeedback.excerptLabel")}</span>
-                      <span className="mt-1 block leading-relaxed text-[var(--ink-soft)]">{t("panel.chatFeedback.excerptPrivacy")}</span>
-                      <span className="mt-2 block max-h-24 overflow-y-auto rounded-md bg-[var(--bg-panel)] p-2 text-[11.5px] leading-relaxed">{excerptPreview}</span>
-                    </span>
-                  </label>
-                ) : null}
-                {error ? <p role="alert" className="mt-3 text-[12px] text-[var(--md-sys-color-error)]">{error}</p> : null}
-                <div className="mt-4 flex justify-end gap-2">
-                  <button type="button" onClick={closeDialog} className="press rounded-lg px-3 py-1.5 text-[12.5px] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]">{t("panel.chatFeedback.cancel")}</button>
-                  <button type="submit" disabled={busy || !reportReason || Array.from(prepareFeedbackText(feedbackText)).length < 3} className="press rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-55">{busy ? t("panel.chatFeedback.submitting") : t("panel.chatFeedback.submitReport")}</button>
-                </div>
-              </form>
-            )}
-            </div>
-          </div>
-        </div>,
-        document.body,
-      ) : null}
+      {dialog && typeof document !== "undefined" ? <FeedbackDialog dialog={dialog} dialogId={dialogId} dialogRootRef={dialogRootRef} voteExcerptRef={voteExcerptRef} reportReasonRef={reportReasonRef} staleCloseRef={staleCloseRef} busyRef={busyRef} busy={busy} reportReason={reportReason} feedbackText={feedbackText} includeExcerpt={includeExcerpt} error={error} excerptPreview={excerptPreview} setReportReason={setReportReason} setFeedbackText={setFeedbackText} setIncludeExcerpt={setIncludeExcerpt} closeDialog={closeDialog} clearStaleDialog={clearStaleDialog} submitVoteDetails={submitVoteDetails} submitReport={submitReport} /> : null}
     </div>
   );
 }

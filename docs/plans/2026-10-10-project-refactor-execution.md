@@ -99,6 +99,8 @@
 
 - R3o 复习/用量面板与服务：ReviewQuizPane 约 493 行、TokenDashboard 约 459 行；DTO、逐题 runner、有界 source payload、展示/估算格式、分类/行和 cache countdown 独立。13 项 node、5 项 React 与类型/lint 通过，新增 UTF-8 整题省略/去重/计数、成本展示和计时器到期/卸载用例。provider 公共 API 显式保留，拆为 contracts/credentials/protocol/reasoning/builtin/text/image；原环境常量与实时读取、用户覆盖、安全 URL、端点/超时/计费语义不变，84 项 provider/SDK/额度检查通过。迁移工具分文件/SQL分析/执行/目录比较/传输与类型，三段 SQL initializer 与原表达式完全相同，12 项 MemoryExecutor 迁移检查通过，未执行真实 SQL。Electron 密钥 IO 独立为注入式 keyStorage，保留文件名、原加密/回退、记录清理和文件权限逻辑；3 项临时目录/模拟 safeStorage 检查通过，IPC sender 检查、固定端口和主进程生命周期保留。打包 glob 排除新测试；本阶段没有启动桌面进程，OS DPAPI 和最终包验收仍属最终边界。
 
+- R3p 学习记录与余下组合 UI：quiz-progress 显式 API 分出纯契约/key、IO、主动 legacy 导入、唯一事件/version 注册、成绩转换与记录/指标；learning/quiz 保留单一 store，评分、身份、会话投影和注入式 checkpoint 各自负责一层，原所有者/修订检查与延迟 ACK 行为保留。userNotes 保留一个持久化 store 与账户/节流刷新生命周期，选择器、窗口几何和契约独立。ModelMenu 分出主题分类/特征 metadata 与详情/品牌展示；ImageGenViewer 分出原加载动画；反馈 HTTP 校验、弹窗展示与原因模型独立，原 controller 仍拥有所有者、取消、修订与焦点恢复；Agent 项目行展示和纯运行徽标聚合独立。采用安装版 Next use-client/project structure 的客户端入口、纯模型和真实领域目录原则。68 项 node、64 项 React（含做题 8、笔记窗口 16、菜单/图片/侧栏/反馈 40）、全量类型与定向 ESLint 通过；反馈首轮暴露一个遗漏导入，补齐后 7 项反馈全部通过。没有向真实反馈接口提交用户数据，也没有触发生图付费请求；最终实际页面与统一全量门禁仍待后续。
+
 ## 局部阻塞
 
 
@@ -106,11 +108,11 @@
 
 ## 续接检查点
 
-已完成 R0/R1/R2、R3a–R3o 与 R4a 概率首批分层，最新代码提交 `774a2dcb` 已同步至同名云端重构分支。R5a–R5c 已更新入口/SOP、归档历史与确认未使用源码；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
+已完成 R0/R1/R2、R3a–R3p 与 R4a 概率首批分层；本轮学习记录和剩余组合 UI 的定向验收已通过，代码按阶段提交至同名云端重构分支，具体 SHA 以分支 Git 历史为准。R5a–R5c 已更新入口/SOP、归档历史与确认未使用源码；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
 
 下一阶段仍需：
 
-1. 已拆内容加载、聊天/复习 API、QuizQuestion、GlobalSettings、RecordPreviewWindow、AppShell、ChatInput、ReviewQuizPane、TokenDashboard、provider、db migration 与 Electron key IO，已完成 chat/layout/hooks/stores/content-data 归类，即时循环为 0。继续处理 quiz-progress、learning/quiz 与 userNotes、AgentConversationSidebar、ChatFeedbackActions、ImageGenViewer/ModelMenu 等剩余混合职责；不重复拆已完成模块。sync engine 和 sessionStore 是已分层后的单一队列/状态引擎，按实际职责与风险审查，不机械按行数重切。
+1. 已拆内容加载、聊天/复习 API、QuizQuestion、GlobalSettings、RecordPreviewWindow、AppShell、ChatInput、ReviewQuizPane、TokenDashboard、provider、db migration、Electron key IO、quiz-progress、learning/quiz、userNotes 及 AgentConversationSidebar/ChatFeedbackActions/ImageGenViewer/ModelMenu，已完成 chat/layout/hooks/stores/content-data 归类。继续按新 inventory 核对其余混合职责和拥挤目录，不重复拆已完成模块。sync engine 和 sessionStore 是已分层后的单一队列/状态引擎，按实际职责与风险审查，不机械按行数重切。
 2. 六个优先概率交互已完成分层，不重复拆分；其中 χ² 数值修复已单独记录。其余超过 500 行文件按 inventory-r3o 逐项审查，优先 ConvolutionDemo、NormalSamplingDemo、MLEExplorer、IndependenceChecker 等仍混合计算/图形/控件的文件，保留注册和精度/边界。目录数据、i18n 字典和完整注册元数据需核对职责后决定保留或分组，不能仅凭行数认定损坏结构。目前超过 800 行的仅剩 histology/biochemistry 两个目录数据；旧 workflow 已归档。
 3. 正式 knip.json 已核实 Next、Classolo、Worker、CJS、CLI 与沙箱脚本入口；最新 verify/knip-r5c-final.json 的文件/依赖/unlisted/binary 为 0，仍有 136 个值导出、55 个类型候选。明显公共 façade/协议不能只凭未使用报告删除；继续检查内部冗余、重复 barrel 和真正消费者，保留诊断而不泛化 ignore。
 4. 当前 74 份活文档、316 本地链接、0 缺失。72 份旧 handoff/loop/日期快照与 3 原参考已归档，当前模型维护与 Fast 注释已更新；SOP 07/14 与 storage 参考已核实。继续核对 rendering/framework-extension 和其余 SOP 中的存量事实（特别是旧数量/旧执行角色措辞），不能把链接通过当作所有说明已准确。37 个未使用源码和 21 个旧转发已保留可恢复原件，字节承诺已验证实际 Git blob。

@@ -2,22 +2,23 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Archive, Folder, FolderOpen, MessagesSquare, PanelLeftClose, Plus, Search, X } from "lucide-react";
+import { Archive, MessagesSquare, PanelLeftClose, Plus, Search, X } from "lucide-react";
 import { buildSearchRegexes, matchesSearch } from "@/lib/agent/sidebarSearch";
-import FolderTreeRow from "./navigation/FolderTreeRow";
+
 import GlobalSettings from "./settings/GlobalSettings";
 import LeftDock from "./LeftDock";
+import AgentProjectGroup from "@/components/agent/AgentProjectGroup";
 import AgentNavRows from "@/components/agent/AgentNavRows";
 import AgentSectionHeader from "@/components/agent/AgentSectionHeader";
 import AgentSessionList from "@/components/agent/AgentSessionList";
-import { SessionRunBadge } from "@/components/agent/AgentSessionRow";
+
 import AgentPanelMenu, { type AgentMenuTarget } from "@/components/agent/AgentPanelMenu";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useT } from "@/lib/i18n";
 import { ensureChatHistoryBootstrap, useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { useFloatingChats } from "@/lib/stores/chat/floatingChats";
 import { useStore } from "@/lib/stores/ui";
-import { useSessionRuns, type SessionRunRecord } from "@/lib/stores/chat/sessionRuns";
+import { useSessionRuns } from "@/lib/stores/chat/sessionRuns";
 import { useTokenTracker } from "@/lib/stores/chat/tokenTracker";
 import { buildProjectViews, selectArchivedSessions, selectRecentSessions } from "@/lib/agent/projectViews";
 import type { ChatContext } from "@/lib/types/chat";
@@ -28,27 +29,6 @@ interface PanelMenuState {
   y: number;
   target: AgentMenuTarget;
   returnFocusElement: HTMLElement;
-}
-
-/**
- * 项目折叠时把成员会话的真实运行态聚成一条徽标。
- * 优先级为 running > 未读错误 > 未读完成；没有未读结果时保留最新终态的淡提示。
- */
-function aggregateProjectRun(
-  sessions: SessionMeta[],
-  byId: Record<string, SessionRunRecord>,
-): SessionRunRecord | undefined {
-  const runs = sessions.map((s) => byId[s.id]).filter(Boolean) as SessionRunRecord[];
-  const latest = (candidates: SessionRunRecord[]) =>
-    candidates.reduce<SessionRunRecord | undefined>(
-      (current, run) => !current || run.startedAt > current.startedAt ? run : current,
-      undefined,
-    );
-  return latest(runs.filter((run) => run.phase === "running"))
-    ?? latest(runs.filter((run) => run.unseen && (run.phase === "error" || run.phase === "interrupted")))
-    ?? latest(runs.filter((run) => run.unseen && run.phase === "done"))
-    // When the group is collapsed, retain the newest real terminal state in a faint tone too.
-    ?? latest(runs.filter((run) => run.phase !== "running"));
 }
 
 /**
@@ -361,106 +341,7 @@ export default function AgentConversationSidebar({ chatContext }: { chatContext:
               }
             />
             <AnimatedCollapse isOpen={projectsExpanded}>
-              {viewProjects.map((project) => {
-                const expanded = searching || collapsedProjects[project.id] !== true;
-                const emptyLabel = !project.system
-                  ? t("agent.sidebar.empty.project")
-                  : project.system === "note"
-                    ? t("agent.sidebar.empty.notes")
-                    : project.system === "floating"
-                      ? t("agent.sidebar.empty.selection")
-                      : t("agent.sidebar.empty.scheduled");
-                return (
-                  <div key={project.id}>
-                    <div
-                      className="group flex items-center"
-                      onContextMenu={(event) =>
-                        openMenu(event, {
-                          kind: "project",
-                          folder: { id: project.id, name: project.name, createdAt: project.updatedAt, system: project.system },
-                        })
-                      }
-                    >
-                      <div className="min-w-0 flex-1">
-                        {renamingProjectId === project.id ? (
-                          <input
-                            autoFocus
-                            defaultValue={project.name}
-                            aria-label={t("agent.sidebar.project.name")}
-                            data-testid="project-rename-input"
-                            className="my-0.5 h-[28px] w-full rounded-lg border border-[var(--accent)] bg-[var(--bg-muted)] px-2.5 text-[12.5px] text-[var(--ink)] outline-none"
-                            onPointerDown={(event) => event.stopPropagation()}
-                            // 新建项目时输入框里是「新建项目 N」这个临时名：全选一下，直接打字就是干净的名字。
-                            onFocus={(event) => event.currentTarget.select()}
-                            onBlur={(event) => {
-                              renameFolder(project.id, event.target.value);
-                              setRenamingProjectId(null);
-                            }}
-                            onKeyDown={(event) => {
-                              if (event.key === "Enter") {
-                                renameFolder(project.id, event.currentTarget.value);
-                                setRenamingProjectId(null);
-                              }
-                              if (event.key === "Escape") setRenamingProjectId(null);
-                            }}
-                          />
-                        ) : (
-                          <FolderTreeRow
-                            depth={0}
-                            inset
-                            title={project.name}
-                            isFolder
-                            isExpanded={expanded}
-                            icon={
-                              expanded ? (
-                                <FolderOpen size={15} style={{ color: "var(--md-sys-color-primary)" }} />
-                              ) : (
-                                <Folder size={15} style={{ color: "var(--md-sys-color-outline)" }} />
-                              )
-                            }
-                            onClick={() => setCollapsedProjects((prev) => ({ ...prev, [project.id]: expanded }))}
-                            fontWeight={600}
-                            ariaLabel={project.name}
-                            endAdornment={!expanded ? <SessionRunBadge run={aggregateProjectRun(project.sessions, runsById)} /> : undefined}
-                          />
-                        )}
-                      </div>
-                      {/**
-                       * 项目行右侧的「+」：直接在这个项目里开一条新对话（用户口径：跟 Projects 那行右侧的加号一个意思）。
-                       * **常显**而不是悬停才现：它是这个项目最主要的动作，藏起来用户根本不知道有。
-                       * 系统项目（笔记记录 / 划词摘录）的成员由会话 kind 决定，手动新建挂不进去，所以不给。
-                       * 重命名时也藏起来，免得和输入框抢焦点。
-                       */}
-                      {/* 折叠时把成员会话的运行态聚成一颗徽标；展开后每行自己有徽标。 */}
-                      {!project.system && renamingProjectId !== project.id ? (
-                        <button
-                          type="button"
-                          data-testid={`agent-project-new-chat-${project.id}`}
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            handleNewChat(project.id);
-                          }}
-                          title={t("agent.sidebar.project.newChat", { name: project.name })}
-                          aria-label={t("agent.sidebar.project.newChat", { name: project.name })}
-                          className="ml-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[var(--ink-faint)] transition-colors hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--ink)]"
-                        >
-                          <Plus size={13} />
-                        </button>
-                      ) : null}
-                    </div>
-                    <AnimatedCollapse isOpen={expanded}>
-                      <AgentSessionList
-                        slot={`project-${project.id}`}
-                        sessions={project.sessions}
-                        emptyLabel={emptyLabel}
-                        depth={1}
-                        inFolder
-                        {...sessionMenuProps}
-                      />
-                    </AnimatedCollapse>
-                  </div>
-                );
-              })}
+              {viewProjects.map((project) => <AgentProjectGroup key={project.id} project={project} searching={searching} collapsedProjects={collapsedProjects} renamingProjectId={renamingProjectId} runsById={runsById} renameFolder={renameFolder} setRenamingProjectId={setRenamingProjectId} setCollapsedProjects={setCollapsedProjects} handleNewChat={handleNewChat} openMenu={openMenu} sessionMenuProps={sessionMenuProps} />)}
             </AnimatedCollapse>
 
             <AgentSectionHeader

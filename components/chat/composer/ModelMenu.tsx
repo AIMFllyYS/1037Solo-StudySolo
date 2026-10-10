@@ -2,92 +2,20 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
-import { ChevronDown, ChevronLeft, ChevronRight, Check, Compass, Gift, Zap, Layers, Crown, Image as ImageIcon, Plug, Server, Brain, Wrench, MoreHorizontal, type LucideIcon } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Check, Compass, Zap, Plug, Server } from "lucide-react";
 import { submenuTop } from '@/lib/chat/modelMenuPosition';
 import { useSettings, type ThinkingEffort } from "@/lib/stores/settings";
-import {
-  AUTO_MODEL_ID, AUTO_MODEL_INFO, MODELS, modelsForPicker, getAllModels, getModelInfoWithCustom, CUSTOM_PREFIX,
-  modelSupportsThinkingEffort,
-  clampThinkingEffort, modelMenuCategories, type ModelInfo,
-} from "@/lib/ai/models";
+import { AUTO_MODEL_ID, AUTO_MODEL_INFO, MODELS, modelsForPicker, getAllModels, getModelInfoWithCustom, CUSTOM_PREFIX, modelSupportsThinkingEffort, clampThinkingEffort, modelMenuCategories, type ModelInfo } from "@/lib/ai/models";
 import { ModelIcon } from "@/components/icons/ModelBrandIcons";
 import { thinkingStopIds } from "@/lib/ai/thinkingStops";
 import ThinkingDepthPanel, { thinkingChipLabel } from "@/components/chat/composer/ThinkingDepthPanel";
 import { fastModeCounterpart, isFastVariant, standardModelId, supportsFastMode } from "@/lib/ai/fastModeRegistry";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useT } from "@/lib/i18n/index";
-
-const CATEGORIES = ["免费模型", "快速模型", "多模态模型", "旗舰模型", "生图模型"];
-const CATEGORY_ICONS: Record<string, LucideIcon> = { '免费模型': Gift, '快速模型': Zap, '多模态模型': Layers, '旗舰模型': Crown, '生图模型': ImageIcon };
-/** 分类中文名 → 词典 key。分类名同时是 series 状态与 CATEGORY_ICONS 的标识，保持中文不动，只在渲染时翻译。 */
-const CATEGORY_LABEL_KEYS: Record<string, string> = {
-  "免费模型": "menu.model.category.free",
-  "快速模型": "menu.model.category.fast",
-  "多模态模型": "menu.model.category.multimodal",
-  "旗舰模型": "menu.model.category.flagship",
-  "生图模型": "menu.model.category.image",
-};
-/**
- * 分类专属色：全部走主题 token（MD3 / 语义色），light / dark / colorful / custom 外观自动适配。
- * 同一颜色同时驱动分类行图标与模型行右侧的特征圆点，形成「分类↔圆点」的视觉对应。
- */
-const CATEGORY_COLORS: Record<string, string> = {
-  "免费模型": "var(--color-success)",
-  "快速模型": "var(--color-warning)",
-  "多模态模型": "var(--color-info)",
-  "旗舰模型": "var(--md-sys-color-primary)",
-  "生图模型": "var(--md-sys-color-secondary)",
-};
+import { CATEGORY_LABEL_KEYS, CATEGORY_ICONS, CATEGORIES, CATEGORY_COLORS } from "./modelMenu/metadata";
+import { ModelDetails, CategoryBrandDots, ModelTraitDots } from "./modelMenu/presentation";
 const COLUMN_WIDTHS = [232, 250, 230];
 const GAP = 12;
-
-/** 模型行右侧特征圆点的语义类型：前五个对应菜单分类，后两个是能力标签。 */
-type ModelTrait = "flagship" | "free" | "fast" | "multimodal" | "image" | "thinking" | "tools";
-
-const TRAIT_META: Record<ModelTrait, { icon: LucideIcon; color: string; labelKey: string }> = {
-  flagship: { icon: Crown, color: "var(--md-sys-color-primary)", labelKey: "menu.model.category.flagship" },
-  free: { icon: Gift, color: "var(--color-success)", labelKey: "menu.model.category.free" },
-  fast: { icon: Zap, color: "var(--color-warning)", labelKey: "menu.model.category.fast" },
-  multimodal: { icon: Layers, color: "var(--color-info)", labelKey: "menu.model.category.multimodal" },
-  image: { icon: ImageIcon, color: "var(--md-sys-color-secondary)", labelKey: "menu.model.category.image" },
-  thinking: { icon: Brain, color: "var(--md-sys-color-tertiary)", labelKey: "menu.model.badge.thinking" },
-  tools: { icon: Wrench, color: "var(--ink-soft)", labelKey: "menu.model.badge.tools" },
-};
-
-/** 菜单分类名 → 特征类型（CATEGORIES 全集，含归一化后的「多模态模型」）。 */
-const CATEGORY_TRAIT: Record<string, ModelTrait> = {
-  "旗舰模型": "flagship",
-  "免费模型": "free",
-  "快速模型": "fast",
-  "多模态模型": "multimodal",
-  "生图模型": "image",
-};
-
-const TRAIT_ORDER = Object.keys(TRAIT_META) as ModelTrait[];
-
-/**
- * 模型的全部特征（分类归属 + 能力），按 TRAIT_META 声明顺序输出。
- * 分类归属含 extraGroups 多重归属；视觉模型补 multimodal、生图模型补 image。
- */
-function modelTraits(model: ModelInfo): ModelTrait[] {
-  const set = new Set<ModelTrait>();
-  for (const cat of modelMenuCategories(model)) {
-    const trait = CATEGORY_TRAIT[cat];
-    if (trait) set.add(trait);
-  }
-  if (model.vision) set.add("multimodal");
-  if (model.type === "image") set.add("image");
-  if (model.thinking) set.add("thinking");
-  if (model.tools) set.add("tools");
-  return TRAIT_ORDER.filter((t) => set.has(t));
-}
-
-/** 一次最多渲染 3 个特征圆点；超出用「⋯」圆点收尾（tooltip 列出全部特征）。 */
-const MAX_TRAIT_DOTS = 3;
-function formatContextWindow(k?: number): string | null {
-  if (!k || k <= 0) return null;
-  return k >= 1000 ? `${Number((k / 1000).toFixed(2))}M` : `${k}K`;
-}
 
 export default function ModelMenu({
   value, onChange, thinkingEnabled = false, thinkingEffort = "medium", onThinkingChange,
@@ -358,147 +286,4 @@ export default function ModelMenu({
       </section> : null}
     </div>, document.body) : null}
   </>;
-}
-
-/**
- * 模型名右侧紧贴的特征图标簇：每个小 SVG = 一个分类归属 / 能力标签（无圆框）。
- * 最多铺 3 个，超出收敛为一个「⋯」；悬停任一看全部标签。
- * 颜色全部走主题 token（CATEGORY_COLORS / TRAIT_META），随外观切换自动适配。
- */
-function ModelTraitDots({ model }: { model: ModelInfo }) {
-  const t = useT();
-  const traits = modelTraits(model);
-  if (traits.length === 0) return null;
-  const shown = traits.slice(0, MAX_TRAIT_DOTS);
-  const hidden = traits.slice(MAX_TRAIT_DOTS);
-  const label = (key: ModelTrait) => t(TRAIT_META[key].labelKey);
-  return (
-    <span aria-hidden="true" className="flex shrink-0 items-center gap-[3px]">
-      {shown.map((key) => {
-        const meta = TRAIT_META[key];
-        const Icon = meta.icon;
-        return (
-          <span key={key} title={label(key)} className="grid shrink-0 place-items-center">
-            <Icon size={11} strokeWidth={2.25} aria-hidden className="opacity-80" style={{ color: meta.color }} />
-          </span>
-        );
-      })}
-      {hidden.length > 0 ? (
-        <span title={traits.map(label).join(" · ")} className="grid shrink-0 place-items-center text-[var(--ink-faint)]">
-          <MoreHorizontal size={11} aria-hidden />
-        </span>
-      ) : null}
-    </span>
-  );
-}
-
-/**
- * 分类行右侧的品牌图标圆点簇：每个圆框 = 该分类内一个模型品牌。
- * 最多铺 4 个，超出收敛为一个「⋯」圆点；悬停看该品牌下的模型名。
- */
-const MAX_BRAND_DOTS = 3;
-function CategoryBrandDots({ brands }: { brands: { brand: string; labels: string[] }[] }) {
-  if (brands.length === 0) return null;
-  const shown = brands.slice(0, MAX_BRAND_DOTS);
-  const hidden = brands.slice(MAX_BRAND_DOTS);
-  return (
-    <span aria-hidden="true" className="flex shrink-0 items-center -space-x-[3px]">
-      {shown.map(({ brand, labels }) => (
-        <span key={brand} title={labels.join(" · ")}
-          className="model-brand-dot grid place-items-center rounded-full border border-[var(--line)] bg-[var(--bg-elevated)]">
-          <ModelIcon brand={brand === "default" ? undefined : brand} size={10} decorative />
-        </span>
-      ))}
-      {hidden.length > 0 ? (
-        <span title={hidden.flatMap((b) => b.labels).join(" · ")}
-          className="model-brand-dot grid place-items-center rounded-full border border-[var(--line)] bg-[var(--bg-muted)] text-[var(--ink-faint)]">
-          <MoreHorizontal size={9} aria-hidden />
-        </span>
-      ) : null}
-    </span>
-  );
-}
-
-function ModelDetails({
-  model,
-  onUse,
-}: {
-  model: ModelInfo;
-  onUse: () => void;
-}) {
-  const t = useT();
-  const ctx = formatContextWindow(model.contextK);
-  const badges: { key: string; label: string; className: string }[] = [];
-  if (model.vision) {
-    badges.push({
-      key: "vision",
-      label: t("menu.model.badge.vision"),
-      className: "bg-[color-mix(in_srgb,var(--md-sys-color-tertiary)_15%,transparent)] text-[var(--md-sys-color-tertiary)]",
-    });
-  }
-  if (ctx) {
-    badges.push({
-      key: "ctx",
-      label: t("menu.model.badge.context", { window: ctx }),
-      className: "bg-[var(--bg-muted)] text-[var(--ink-soft)]",
-    });
-  }
-  if (model.thinking) {
-    badges.push({
-      key: "think",
-      label: model.thinkingRequired ? t("menu.model.badge.thinkingRequired") : t("menu.model.badge.thinking"),
-      className: "bg-[var(--bg-muted)] text-[var(--ink-soft)]",
-    });
-  }
-  if (model.type === "image") {
-    badges.push({
-      key: "image",
-      label: t("menu.model.badge.image"),
-      className: "bg-[color-mix(in_srgb,var(--md-sys-color-secondary)_18%,transparent)] text-[var(--md-sys-color-secondary)]",
-    });
-  }
-
-  return (
-    <>
-      <div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
-        {t("menu.model.info")}
-      </div>
-      <div className="px-2 pb-2">
-        <div className="flex items-center gap-1.5">
-          <div className="text-[12.5px] font-medium text-[var(--ink)]">{model.label}</div>
-          <ModelTraitDots model={model} />
-        </div>
-        <div className="mt-0.5 text-[10.5px] leading-relaxed text-[var(--ink-faint)]">{model.hint}</div>
-        {model.vendorTrainingNotice && (
-          <div
-            className="mt-1.5 rounded-md px-2 py-1.5 text-[11.5px] font-semibold leading-snug"
-            style={{
-              background: "color-mix(in srgb, var(--md-sys-color-error) 12%, transparent)",
-              color: "var(--md-sys-color-error)",
-            }}
-            data-testid="vendor-training-notice"
-          >
-            {model.vendorTrainingNotice}
-          </div>
-        )}
-        {badges.length > 0 && (
-          <div className="mt-1.5 flex flex-wrap gap-1">
-            {badges.map((b) => (
-              <span key={b.key} className={`rounded px-1 py-0.5 text-[9px] ${b.className}`}>
-                {b.label}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-      <button
-        type="button"
-        data-testid="model-submenu-use"
-        onClick={onUse}
-        className="mb-1 flex w-full items-center rounded-lg px-2 py-1.5 text-left text-[12.5px] font-medium text-[var(--ink)] hover:bg-[var(--bg-muted)]"
-      >
-        {t("menu.model.use")}
-      </button>
-    </>
-  );
 }
