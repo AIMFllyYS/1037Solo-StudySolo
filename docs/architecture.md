@@ -27,9 +27,13 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 对应客户端 `progressSync.ts` 负责调度、恢复与账户生命周期；`progress/client/` 分离 HTTP/owner binding、attempt 模型转换、checkpoint 本机队列、同步事件、成绩投影和用户主动的旧记录导入。旧历史导入仍需直接用户动作，水合不会自动接管无归属记录。
 
+复习出题的领域服务位于 `lib/review-mode/quiz/server/`：request 负责有界读取和 schema，ownership 核对实时账号，wrongQuestions/materials 读取带所有者条件的真实原题和课程资料，prompt 负责预算及纳入/遗漏统计，handler 调用原付费出题和结算路径。Next 路由只保留 HTTP 与 runtime/dynamic 适配。
+
 ## AI 调用路径
 
 输入器和 `lib/hooks/useChat*` 使用既有 UIMessage 流协议，经 `/api/chat`（`/api/agent/chat` 有对应入口）进入请求校验、上下文/文件恢复、模型解析、身份及额度检查、`ToolLoopAgent` 和流输出。
+
+`lib/ai/chat/server/handler.ts` 独占请求门控与响应包装，`messages.ts` 处理 UIMessage 压缩/恢复和模型消息转换，`generation.ts` 保持生成、取消、续写、本地文件续接、计费与结束事件的顺序，`contracts.ts` 提供窄输入契约。`lib/ai/agent/requestSchema.ts` 是显式公共入口，`request/` 分出共享限额、聊天/卫星 schema、安全错误文本与 parser。
 
 `lib/ai/models.ts` 是保持 Node/tsx 兼容的稳定公共入口。内部 `models/contracts.ts` 管理模型与自定义 API 契约，`catalog.ts` 管理固定注册数据与查找，`aliases.ts` 管理旧标识兼容，`thinking.ts` 管理上游思考参数，`selection.ts` 管理菜单分组，`custom.ts` 管理自定义分组解析。`lib/ai/provider.ts`、`lib/ai/sdk/` 和计费服务保留实际上游协议、请求和错误处理。Fast 系列选择与思考强度相互独立：前者换真实模型变体，后者沿用模型支持的上游参数。
 
@@ -53,6 +57,8 @@ Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 
 `lib/content-data/subjects.registry.ts` 是学科元数据入口，manifest 组织导航，生成清单和离线索引由脚本构建。`lib/content/` 在服务端解析安全内容路径、课堂材料与题库，API 和服务端页面复用。
 
 正文通过 `components/notes/` 与 `components/shared/` 的既有 Markdown、PlainText、HTML 沙箱和组件渲染；公式使用 KaTeX/mhchem。SVG、函数图、分子与交互 HTML 使用 `components/canvas/` 的安全边界。题目和聊天有各自语义适配，不能通过统一化丢掉评分或引用行为。
+
+内容加载的公共入口 `lib/content/loader.ts` 显式转出导航、受保护 IO、正文、例题、题库和搜索；客户端不直接导入其文件读取。`components/quiz/QuizQuestion.tsx` 只组合题干/作答/提示/评分/解析，`question/` 管理元信息、选项、普通/复合题作答、解析和客户端延迟视频。聊天内联轨迹复用 `trace/TraceToolEntry`，专业工具消息再注入 StepDetail；通用渲染不反向加载完整工具卡片 registry。
 
 搜索分为离线 BM25/向量索引、Worker 与服务端 hybrid 检索。动态加载、取消、索引身份及生产禁止全库 substring 回退的规则保留。单元测试使用小夹具，真实内容完整性和索引验收另行执行。
 
