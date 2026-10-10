@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ChatInput from './ChatInput';
 import { useSettings } from '@/lib/stores/settings';
 import { useSkills } from '@/lib/stores/skills';
-import { NOTEBOOK_FILE_MIME } from '@/lib/chat/composerIntent';
+import { NOTEBOOK_FILE_MIME } from '@/lib/chat/composer/composerIntent';
 
 function mockComposerAnchor() {
   vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {

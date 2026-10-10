@@ -1,4 +1,4 @@
-import { compactStudyMessages } from "@/lib/chat/compactStudyParts";
+import { compactStudyMessages } from "@/lib/chat/messages/compactStudyParts";
 import { assetApi } from "@/lib/assets/client";
 import type { Artifact } from "@/lib/stores/assets/artifacts";
 import type { StoredDocument } from "@/lib/documents/types";

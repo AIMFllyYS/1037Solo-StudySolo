@@ -12,10 +12,10 @@ import { useSkills } from '../../stores/skills';
 import { useAcademicYear } from '../../stores/academicYear';
 import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/chat/sessionRuns';
 import { hydrateAttachmentsForApi } from '@/lib/storage/chatStorage';
-import { createUserMessage, getMessageText } from '@/lib/chat/messageParts';
+import { createUserMessage, getMessageText } from '@/lib/chat/messages/messageParts';
 import type { ChatContext, ChatMessage, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
 
-import { buildTrace } from '@/lib/chat/buildTrace';
+import { buildTrace } from '@/lib/chat/messages/buildTrace';
 
 vi.mock('@/lib/storage/idbStorage', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/storage/idbStorage')>();

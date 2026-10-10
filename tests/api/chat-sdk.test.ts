@@ -5,7 +5,7 @@ import type { NextRequest } from 'next/server';
 import { DefaultChatTransport, readUIMessageStream, type UIMessageChunk } from 'ai';
 import { buildCustomModelRegistryId, type CustomApiGroup } from '@/lib/ai/models';
 import { MAX_TOOL_STEPS, TOOL_STEP_LIMIT_INFO } from '@/lib/ai/agent/tools/_shared';
-import { createUserMessage, getMessageText, getReasoningText, getToolParts } from '@/lib/chat/messageParts';
+import { createUserMessage, getMessageText, getReasoningText, getToolParts } from '@/lib/chat/messages/messageParts';
 import type { ChatMessage } from '@/lib/types/chat';
 
 // Test-local credentials and intercepted fetch: never use configured or paid endpoints.

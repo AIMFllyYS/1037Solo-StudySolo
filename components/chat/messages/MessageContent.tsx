@@ -20,7 +20,7 @@ import { sanitizeSvg } from '@/lib/utils/sanitizeSvg';
 import { VizErrorBoundary } from '@/components/chat/messages/VizErrorBoundary';
 import { ensureSvgRoot } from '@/lib/canvas/normalize';
 import { useT, type Translate } from '@/lib/i18n/index';
-import type { CitationSource } from '@/lib/chat/citationCatalog';
+import type { CitationSource } from '@/lib/chat/sources/citationCatalog';
 import { CitationCatalogContext, CiteRef } from '@/components/chat/sources/InlineCiteMarker';
 import remarkInlineCitations from '@/lib/markdown/remarkInlineCitations';
 

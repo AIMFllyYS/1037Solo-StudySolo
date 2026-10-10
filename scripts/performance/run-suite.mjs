@@ -46,7 +46,7 @@ if (mode === 'node') {
     'components/agent/AgentSourcePanel.test.tsx',
     'components/agent/AgentImagesPane.lifecycle.test.tsx',
     'components/agent/UnknownToolSourceCard.test.tsx',
-    'lib/chat/exportChats.streaming.test.tsx',
+    'lib/chat/session/exportChats.streaming.test.tsx',
     'lib/hooks/auth/useAuthSession.test.tsx',
     'components/shared/ContentImage.test.tsx',
     'lib/stores/assets/artifacts.partition.test.tsx',

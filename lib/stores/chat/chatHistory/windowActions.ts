@@ -1,5 +1,5 @@
 import { loadSessionWindow, loadTurnsBefore } from '@/lib/storage/chatStorage';
-import { EARLIER_TURNS_BATCH } from '@/lib/chat/turnSpine';
+import { EARLIER_TURNS_BATCH } from '@/lib/chat/messages/turnSpine';
 
 import { getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
 import type { ChatHistoryState, HistorySet, HistoryGet } from "./stateTypes";

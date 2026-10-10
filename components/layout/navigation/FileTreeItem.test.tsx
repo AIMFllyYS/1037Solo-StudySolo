@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import FileTreeItem from './FileTreeItem';
-import { NOTEBOOK_FILE_MIME } from '@/lib/chat/composerIntent';
+import { NOTEBOOK_FILE_MIME } from '@/lib/chat/composer/composerIntent';
 
 vi.mock('next/navigation', () => ({ useRouter: () => ({ prefetch: vi.fn() }) }));
 

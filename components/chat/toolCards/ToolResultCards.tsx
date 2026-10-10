@@ -2,8 +2,8 @@
 
 import { Fragment } from "react";
 import type { ChatMessage } from "@/lib/types/chat";
-import { getToolPartsByName } from "@/lib/chat/messageParts";
-import { dedupeByKey } from "@/lib/chat/traceSources";
+import { getToolPartsByName } from "@/lib/chat/messages/messageParts";
+import { dedupeByKey } from "@/lib/chat/sources/traceSources";
 import type { StudyToolName } from "@/lib/ai/agent/tools/names";
 import type { ToolPart } from "@/lib/ai/agent/tools/registry";
 import { TOOL_RESULT_CARDS, type ToolResultCardEntry } from "@/components/chat/toolCards/registry";

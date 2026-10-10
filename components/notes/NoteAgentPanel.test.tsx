@@ -8,7 +8,7 @@ import { useSettings } from "@/lib/stores/settings";
 import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import { useStore } from "@/lib/stores/ui";
 import { useChatUI } from "@/lib/stores/chat/chatUI";
-import { getMessageText } from "@/lib/chat/messageParts";
+import { getMessageText } from "@/lib/chat/messages/messageParts";
 
 vi.mock("@/lib/storage/idbStorage", async (importOriginal) => ({
   ...await importOriginal<typeof import("@/lib/storage/idbStorage")>(),

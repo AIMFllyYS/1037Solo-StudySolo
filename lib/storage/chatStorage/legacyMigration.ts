@@ -1,7 +1,7 @@
 import type { ChatSession } from "@/lib/chat/sessionTypes";
 import type { SessionMeta } from "./types";
 import { idbStorage, PERSIST_KEYS } from "@/lib/storage/idbStorage";
-import { normalizeStoredMessages } from "@/lib/chat/messageParts";
+import { normalizeStoredMessages } from "@/lib/chat/messages/messageParts";
 import { loadManifest, buildManifest, buildSessionMeta, saveManifestNow } from "./manifest";
 import { migrateAttachmentsInMessages, hydrateAttachmentsForApi } from "./blobs";
 import { writeSessionV3Now, loadSessionMessages } from "./sessionStore";

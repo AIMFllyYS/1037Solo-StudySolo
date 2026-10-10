@@ -16,7 +16,7 @@ function readWorkspaceFile(path: string) {
  */
 test("PPTX 阅读器走 list 模式 + 懒渲染，不再有单页缩放舞台", () => {
   const pane = readWorkspaceFile("components/window/PptxDocumentPane.tsx");
-  const helper = readWorkspaceFile("lib/chat/pptxSlideList.ts");
+  const helper = readWorkspaceFile("lib/chat/attachments/pptxSlideList.ts");
   const css = readWorkspaceFile("app/styles/chat-tools.css");
 
   // list 模式才会把全部页纵向平铺；slide 模式会把 4:3 稿件上下各裁 90px。

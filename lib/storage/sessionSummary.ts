@@ -1,7 +1,7 @@
-import { collectMessageSourceRounds, traceSourceKey, type SourceRound, type TraceSource } from "@/lib/chat/traceSources";
-import { collectSessionProducts, type AgentProductKind } from "@/lib/chat/sessionProducts";
+import { collectMessageSourceRounds, traceSourceKey, type SourceRound, type TraceSource } from "@/lib/chat/sources/traceSources";
+import { collectSessionProducts, type AgentProductKind } from "@/lib/chat/session/sessionProducts";
 import { collectMessageImages, type AgentImageItem } from "@/lib/agent/sessionImages";
-import { getMessageText } from "@/lib/chat/messageParts";
+import { getMessageText } from "@/lib/chat/messages/messageParts";
 import { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";
 import { estimateTokens } from "@/lib/context/estimateTokens";
 import { loadSessionSummaryHead, loadTurnsBefore } from "./chatStorage";

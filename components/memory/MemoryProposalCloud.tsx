@@ -7,7 +7,7 @@ import { useMemoryInbox, type MemoryProposal } from "@/lib/stores/learning/memor
 import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import { useFlashcardCitations } from "@/lib/stores/learning/flashcardCitations";
 import { memoryProposalWindowId } from "@/lib/notes/userNote";
-import { buildTrace } from "@/lib/chat/buildTrace";
+import { buildTrace } from "@/lib/chat/messages/buildTrace";
 import type { RecordMode } from "@/lib/review/types";
 import { useT } from "@/lib/i18n";
 

@@ -6,9 +6,9 @@ import type { WebSearchSource } from '@/lib/types/chat';
 import AgentFoldHeader from '@/components/chat/trace/AgentFoldHeader';
 import WebSourceCarousel from '@/components/chat/trace/WebSourceCarousel';
 import { WebSearchProviderChips } from '@/components/chat/trace/WebSearchProviderChips';
-import { openWebSearchSources } from '@/lib/chat/openSourceTrace';
-import { dedupeByKey, webItemKey } from '@/lib/chat/traceSources';
-import { WEB_SEARCH_PROVIDER_LABELS, webSourceHost, type ProviderChip } from '@/lib/chat/webSearchDisplay';
+import { openWebSearchSources } from '@/lib/chat/sources/openSourceTrace';
+import { dedupeByKey, webItemKey } from '@/lib/chat/sources/traceSources';
+import { WEB_SEARCH_PROVIDER_LABELS, webSourceHost, type ProviderChip } from '@/lib/chat/sources/webSearchDisplay';
 import { useT } from '@/lib/i18n/index';
 
 export default function WebSourceFold({

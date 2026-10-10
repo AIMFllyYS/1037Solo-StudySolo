@@ -5,7 +5,7 @@ import { normalizeSelectionAssistantActions } from "@/lib/notes/selectionAssista
 import { clampMaxToolRounds } from "@/lib/ai/agent/toolRounds";
 import { clampTurnBudgetCredits, clampUserMaxOutputTokens } from "@/lib/ai/outputLimits";
 
-import { clampMaxWaitMs } from "@/lib/chat/createStallWatchdog";
+import { clampMaxWaitMs } from "@/lib/chat/streaming/createStallWatchdog";
 import { normalizeLocale } from "@/lib/i18n/types";
 import {
   API_SECRETS_LS_KEY,

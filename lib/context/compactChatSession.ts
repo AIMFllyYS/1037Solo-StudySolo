@@ -1,5 +1,5 @@
 import type { ChatMessage } from "@/lib/types/chat";
-import { getMessageText } from "@/lib/chat/messageParts";
+import { getMessageText } from "@/lib/chat/messages/messageParts";
 import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { loadSessionMessages, flushPendingSessionCheckpoints } from "@/lib/storage/chatStorage";
 import { useTokenTracker } from "@/lib/stores/chat/tokenTracker";

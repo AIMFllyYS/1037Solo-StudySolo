@@ -14,7 +14,7 @@ import {
   currentMemoryCommitChatContext,
   runMemoryCommitWithRuntime,
 } from "@/lib/memory/runMemoryCommit";
-import { classifySendError } from "@/lib/chat/classifySendError";
+import { classifySendError } from "@/lib/chat/request/classifySendError";
 import { loadSessionMessages } from "@/lib/storage/chatStorage";
 import { memoryProposalWindowId } from "@/lib/notes/userNote";
 import type { MemoryKind } from "@/lib/ai/agent/tools/proposeMemory/types";

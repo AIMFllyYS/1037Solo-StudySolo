@@ -1,5 +1,5 @@
 import { visit } from "unist-util-visit";
-import { INLINE_CITE_RE, parseCiteIndexes } from "@/lib/chat/citationCatalog";
+import { INLINE_CITE_RE, parseCiteIndexes } from "@/lib/chat/sources/citationCatalog";
 
 /**
  * 把正文里的 [1] / [1][2] / [1,2] 收成 cite-ref 节点。

@@ -6,8 +6,8 @@ import type { AttachmentPreview, ImageAttachmentPreview } from "@/lib/ai/imageUt
 import type { StoredChatAttachment } from "@/lib/types/chat";
 import { isAttachmentRef } from "@/lib/types/chat";
 import { loadBlobDataUrl } from "@/lib/storage/chatStorage";
-import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
-import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
+import { attachmentPreviewKind } from "@/lib/chat/attachments/attachmentPreviewKind";
+import { openAttachmentPreview } from "@/lib/chat/attachments/openAttachmentPreview";
 import { useT } from "@/lib/i18n/index";
 import { readCloudFileContext } from '@/lib/files/client';
 import { getOwnerEpoch } from '@/lib/storage/ownerScope';

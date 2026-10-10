@@ -9,7 +9,7 @@ import PdfDocumentPane from "@/components/window/PdfDocumentPane";
 import DocxDocumentPane from "@/components/window/DocxDocumentPane";
 import PptxDocumentPane from "@/components/window/PptxDocumentPane";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
-import { attachmentPreviewKind, isOpenXmlPptx } from "@/lib/chat/attachmentPreviewKind";
+import { attachmentPreviewKind, isOpenXmlPptx } from "@/lib/chat/attachments/attachmentPreviewKind";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import type { AttachmentPreviewData } from "@/lib/stores/workspace/windowManager";
 import { MessageContent } from "@/components/chat/messages/MessageContent";

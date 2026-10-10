@@ -1,5 +1,5 @@
 import type { ChatContext, ChatMessage } from "@/lib/types/chat";
-import type { TurnSpineEntry } from "@/lib/chat/turnSpine";
+import type { TurnSpineEntry } from "@/lib/chat/messages/turnSpine";
 export interface ChatSession {
   id: string;
   title: string;

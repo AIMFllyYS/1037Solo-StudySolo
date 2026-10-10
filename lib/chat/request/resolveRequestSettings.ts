@@ -1,7 +1,7 @@
 import { getModelInfoWithCustom, type CustomApiGroup, type ModelInfo, type ThinkingEffort } from "@/lib/ai/models";
 import type { ChatAttachment, ChatOptions } from "@/lib/types/chat";
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
-import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composerIntent";
+import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composer/composerIntent";
 
 export interface SendMessageOptions {
   quotedText?: string;

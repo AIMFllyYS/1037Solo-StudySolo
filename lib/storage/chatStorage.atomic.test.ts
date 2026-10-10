@@ -5,7 +5,7 @@ import {createStore,get as idbGet} from 'idb-keyval'
 import {activateStorageOwner,ownedStorageKey} from './ownerScope.ts'
 import {commitSessionCheckpoint,flushPendingWrites,writeOwnedStorageItem} from './idbStorage.ts'
 import {__resetSessionV3ForTests,__waitSessionWritesForTests,appendSessionMessages,dropSessionTailCache,flushPendingSessionCheckpoints,getSessionWriteFailure,hasDurableSessionRecovery,hydrateSessionRecoveryStatus,loadSessionMessages,loadSessionRecovery,retrySessionWrite,saveSessionMessages,serializeSessionMessages,sessionCheckpointIo,writeSessionMessage} from './chatStorage.ts'
-import {planSessionChunks} from '@/lib/chat/turnSpine'
+import {planSessionChunks} from '@/lib/chat/messages/turnSpine'
 
 const owner='11111111-1111-4111-8111-111111111111',session='atomic-fixture'
 const message=(index:number)=>({id:`message-${index}`,role:index%2?'assistant' as const:'user' as const,parts:[{type:'text' as const,text:`synthetic-${index}`}],timestamp:index})

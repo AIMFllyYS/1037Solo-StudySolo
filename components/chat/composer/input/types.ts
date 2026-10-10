@@ -3,7 +3,7 @@ import React from 'react';
 import type { ChatContext } from '@/lib/types/chat';
 import type { SendMessageOptions } from '@/lib/chat/sendMessage';
 
-import { type AttachedFileRef, type ComposerForcedTool } from '@/lib/chat/composerIntent';
+import { type AttachedFileRef, type ComposerForcedTool } from '@/lib/chat/composer/composerIntent';
 
 export interface ChatInputProps {
   onSend: (content: string, options?: SendMessageOptions) => void;

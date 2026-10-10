@@ -4,7 +4,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testi
 import userEvent from "@testing-library/user-event";
 import SourcePreviewViewer from "./SourcePreviewViewer";
 import { clearEmbedCache } from "@/lib/browser/canEmbed";
-import { openSourcePreview } from "@/lib/chat/openSourcePreview";
+import { openSourcePreview } from "@/lib/chat/sources/openSourcePreview";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useBrowser } from "@/lib/stores/workspace/browser";
 

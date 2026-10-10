@@ -1,6 +1,6 @@
 import type { useT } from "@/lib/i18n";
 
-import type { FeedbackRecord } from "@/lib/chat/feedbackClient";
+import type { FeedbackRecord } from "@/lib/chat/feedback/feedbackClient";
 
 
 export type Vote = "like" | "dislike";

@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import AgentLinksPane from "./AgentLinksPane";
 import { translate } from "@/lib/i18n";
-import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
+import type { SourceRound, TraceSource } from "@/lib/chat/sources/traceSources";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useStore } from "@/lib/stores/ui";
 

@@ -1,6 +1,6 @@
 import { mergeArtifactIds, appendSessionMessages, writeSessionMessage, saveSessionMessages, persistInlineAttachments } from '@/lib/storage/chatStorage';
-import { tailWindowSlice, turnCountsOf } from '@/lib/chat/turnSpine';
-import { getMessageText } from '@/lib/chat/messageParts';
+import { tailWindowSlice, turnCountsOf } from '@/lib/chat/messages/turnSpine';
+import { getMessageText } from '@/lib/chat/messages/messageParts';
 
 import { scheduleCloudUpsert } from '@/lib/sync/schedule';
 

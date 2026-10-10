@@ -5,7 +5,7 @@ import {
   isForcedComposerTool,
   type AttachedFileRef,
   type ComposerForcedTool,
-} from "@/lib/chat/composerIntent";
+} from "@/lib/chat/composer/composerIntent";
 import { useT } from "@/lib/i18n";
 import { ForcedToolIcon, PlanModeIcon } from "./ComposerIcons";
 

@@ -9,7 +9,7 @@ import {
   type ComposerForcedTool,
   type ForcedComposerTool,
   skillForcedTool,
-} from "@/lib/chat/composerIntent";
+} from "@/lib/chat/composer/composerIntent";
 import { useT } from "@/lib/i18n";
 import { CompactContextIcon, ForcedToolIcon, PlanModeIcon, SkillIcon } from "./ComposerIcons";
 

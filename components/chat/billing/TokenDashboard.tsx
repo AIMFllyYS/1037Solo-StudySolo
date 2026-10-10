@@ -10,7 +10,7 @@ import { getModelInfoWithCustom, resolveCacheTtlSec } from '@/lib/ai/models';
 import { FIRST_TURN_OVERHEAD_TOKENS, contextRingCaption, contextRingColor, contextRingLevel, formatContextCacheValue, resolveSessionContextBudget } from '@/lib/context/estimateFullContext';
 import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { estimateTokens } from '@/lib/context/estimateTokens';
-import { getMessageText } from '@/lib/chat/messageParts';
+import { getMessageText } from '@/lib/chat/messages/messageParts';
 import { useDraggable } from '@/lib/hooks/layout/useDraggable';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { useOverlayRegistration } from '@/lib/keyboard/useOverlayRegistration';

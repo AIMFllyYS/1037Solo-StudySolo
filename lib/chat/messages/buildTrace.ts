@@ -1,9 +1,9 @@
 import type { ChatMessage, ChatMessagePart } from '@/lib/types/chat';
-import type { ChatToolPart } from '@/lib/chat/messageParts';
-import { hasStepStart } from '@/lib/chat/messageParts';
+import type { ChatToolPart } from '@/lib/chat/messages/messageParts';
+import { hasStepStart } from '@/lib/chat/messages/messageParts';
 import { splitThinkContent } from '@/lib/chat/rendering/parseChatContent';
 import { getToolPresentation } from '@/lib/ai/agent/tools/presentations';
-import { translateNow, type Translate } from "@/lib/i18n";
+import { translateNow, type Translate } from "@/lib/i18n/index";
 
 export type TraceStatus = 'running' | 'complete' | 'error' | 'interrupted' | 'waiting' | 'unknown' | 'cancelled';
 export type TraceToolPart = ChatToolPart | Extract<ChatMessagePart, { type: 'dynamic-tool' }>;

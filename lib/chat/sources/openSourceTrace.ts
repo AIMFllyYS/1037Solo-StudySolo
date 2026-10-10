@@ -1,6 +1,6 @@
 import { useWindowManager } from '@/lib/stores/workspace/windowManager';
-import { translateNow } from "@/lib/i18n";
-import type { SourceRound, TraceSource } from '@/lib/chat/traceSources';
+import { translateNow } from "@/lib/i18n/index";
+import type { SourceRound, TraceSource } from '@/lib/chat/sources/traceSources';
 import type { WebSearchSource } from '@/lib/types/chat';
 
 export const SOURCE_TRACE_WINDOW_ID = 'source-trace-viewer';

@@ -1,6 +1,6 @@
 import { DefaultChatTransport, isToolUIPart, readUIMessageStream, type FinishReason, type UIMessageChunk } from 'ai';
-import type { RequestMessage } from '@/lib/chat/buildRequestMessages';
-import { REQUEST_TOO_LARGE_MESSAGE } from '@/lib/chat/requestBudget';
+import type { RequestMessage } from '@/lib/chat/request/buildRequestMessages';
+import { REQUEST_TOO_LARGE_MESSAGE } from '@/lib/chat/request/requestBudget';
 import type { ChatMessage, ChatMessagePart, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
 import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { useCompactionState } from '@/lib/context/compactionState';

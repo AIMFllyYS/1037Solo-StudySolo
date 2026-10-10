@@ -1,7 +1,7 @@
-import type { CitationSource } from "@/lib/chat/citationCatalog";
-import { isHttpUrl, noteHitsFromCatalog } from "@/lib/chat/citationCatalog";
-import { openSourcePreview } from "@/lib/chat/openSourcePreview";
-import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
+import type { CitationSource } from "@/lib/chat/sources/citationCatalog";
+import { isHttpUrl, noteHitsFromCatalog } from "@/lib/chat/sources/citationCatalog";
+import { openSourcePreview } from "@/lib/chat/sources/openSourcePreview";
+import { openSourceTrace, sourceItemKey } from "@/lib/chat/sources/openSourceTrace";
 import { parseNotePath } from "@/lib/content/notePath";
 import { useNoteCitations } from "@/lib/stores/learning/noteCitations";
 import { openClassSegment } from "@/lib/class/jump";

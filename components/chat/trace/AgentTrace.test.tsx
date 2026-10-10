@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { buildTrace } from '@/lib/chat/buildTrace';
+import { buildTrace } from '@/lib/chat/messages/buildTrace';
 import type { ChatMessage as ChatMessageType, ChatMessagePart } from '@/lib/types/chat';
 import { AgentTrace, TRACE_COLLAPSE_MS } from './AgentTrace';
 import ChatMessage from '../messages/ChatMessage';

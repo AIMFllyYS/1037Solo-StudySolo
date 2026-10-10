@@ -7,7 +7,7 @@ import { useSharedArtifact } from '@/components/share/ShareViewContext';
 import { useSettings } from '@/lib/stores/settings';
 import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
-import { createStreamUiThrottle } from '@/lib/chat/streamUiThrottle';
+import { createStreamUiThrottle } from '@/lib/chat/streaming/streamUiThrottle';
 import { MessageContent } from '@/components/chat/messages/MessageContent';
 import { useProcessingDisclosure } from '@/lib/hooks/chat/useProcessingDisclosure';
 import { openHtmlInNewTab } from '@/lib/utils/openHtmlInNewTab';

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { after, before, type TestContext } from "node:test";
 import type { NextRequest } from "next/server";
 import { buildCustomModelRegistryId, type CustomApiGroup } from "../../lib/ai/models.ts";
-import { buildFallbackSessionTitle } from "../../lib/chat/sessionTitle.ts";
+import { buildFallbackSessionTitle } from "../../lib/chat/session/sessionTitle.ts";
 import type { RecordCardAI } from "../../lib/review/types.ts";
 
 // Import the routes only after setting fake environment credentials. No test can

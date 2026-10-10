@@ -2,7 +2,7 @@ import { normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
 import { normalizeSelectionAssistantActions } from "@/lib/notes/selectionAssistant";
 import { clampMaxToolRounds } from "@/lib/ai/agent/toolRounds";
 import { clampTurnBudgetCredits, clampUserMaxOutputTokens } from "@/lib/ai/outputLimits";
-import { clampMaxWaitMs } from "@/lib/chat/createStallWatchdog";
+import { clampMaxWaitMs } from "@/lib/chat/streaming/createStallWatchdog";
 import { normalizeLocale } from "@/lib/i18n/types";
 import type { SettingsState, SettingsSet, SettingsGet } from "./types";
 import { normalizeThinkingEffort } from "./defaults";

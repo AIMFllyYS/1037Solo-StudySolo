@@ -1,8 +1,8 @@
 import { isToolUIPart } from 'ai';
 import type { ChatAttachment, ChatMessage, ChatMessagePart, StoredChatAttachment } from '@/lib/types/chat';
-import { compactStudyParts } from '@/lib/chat/compactStudyParts';
-import { MAX_REQUEST_IMAGE_CHARS, MAX_REQUEST_IMAGES } from '@/lib/chat/requestBudget';
-import { hasVisibleContent } from '@/lib/chat/messageParts';
+import { compactStudyParts } from '@/lib/chat/messages/compactStudyParts';
+import { MAX_REQUEST_IMAGE_CHARS, MAX_REQUEST_IMAGES } from '@/lib/chat/request/requestBudget';
+import { hasVisibleContent } from '@/lib/chat/messages/messageParts';
 import { fileReference } from '@/lib/files/contract';
 
 export const DEFAULT_MAX_TURNS = Number.MAX_SAFE_INTEGER;

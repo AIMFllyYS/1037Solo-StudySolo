@@ -1,4 +1,4 @@
-import { getToolPartsByName } from "@/lib/chat/messageParts";
+import { getToolPartsByName } from "@/lib/chat/messages/messageParts";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { AgentQuizPayload } from "@/lib/quiz-dock/open";
 import type { ImageGenSessionInit } from "@/lib/stores/assets/imageGen";

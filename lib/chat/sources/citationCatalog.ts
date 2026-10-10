@@ -1,5 +1,5 @@
 import type { SearchHit } from "@/lib/ai/agent/toolTypes";
-import { getToolPartsByName } from "@/lib/chat/messageParts";
+import { getToolPartsByName } from "@/lib/chat/messages/messageParts";
 import type { ChatMessagePart } from "@/lib/types/chat";
 
 export type CitationKind = "web" | "note";

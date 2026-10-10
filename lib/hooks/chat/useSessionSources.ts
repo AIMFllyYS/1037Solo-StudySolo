@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { collectSessionSourceRounds } from "@/lib/chat/traceSources";
+import { collectSessionSourceRounds } from "@/lib/chat/sources/traceSources";
 import { useChatHistory } from "@/lib/stores/chat/chatHistory";
-import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
+import type { SourceRound, TraceSource } from "@/lib/chat/sources/traceSources";
 import type { ChatMessage } from "@/lib/types/chat";
 
 /** 没有对话时共用的空数组：选择器每次返回新 [] 会让 zustand 每帧都判定变化。 */

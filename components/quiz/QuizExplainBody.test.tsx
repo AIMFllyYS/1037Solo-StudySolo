@@ -9,7 +9,7 @@ import { useSettings } from "@/lib/stores/settings";
 import { useBillingStore } from "@/lib/stores/billing";
 import { useTokenTracker } from "@/lib/stores/chat/tokenTracker";
 import { useFloatingTokenTracker } from "@/lib/stores/chat/floatingTokenTracker";
-import { getMessageText } from "@/lib/chat/messageParts";
+import { getMessageText } from "@/lib/chat/messages/messageParts";
 import { QUIZ_EXPLAIN_SEED_PROMPT } from "@/lib/quiz/formatQuestionContext";
 import { DEFAULT_MODEL_ID } from "@/lib/ai/models";
 

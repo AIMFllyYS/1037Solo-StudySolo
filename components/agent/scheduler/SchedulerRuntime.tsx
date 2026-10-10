@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { getMessageText } from "@/lib/chat/messageParts";
+import { getMessageText } from "@/lib/chat/messages/messageParts";
 import { parseChatContent } from "@/lib/chat/rendering/parseChatContent";
 import { useAgentChatContext } from "@/lib/hooks/chat/useAgentChatContext";
 import { useChat } from "@/lib/hooks/chat/useChat";

@@ -1,5 +1,5 @@
 import { utf8ByteLength } from '@/lib/sync/payload';
-import type { RequestMessage } from '@/lib/chat/buildRequestMessages';
+import type { RequestMessage } from '@/lib/chat/request/buildRequestMessages';
 
 // Originals upload directly to private Storage; chat carries references and processed context.
 export const MAX_CHAT_REQUEST_BYTES = 16 * 1024 * 1024;

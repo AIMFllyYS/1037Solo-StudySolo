@@ -1,5 +1,5 @@
 import { extractFollowUpQuestionsFromContent } from "@/lib/chat/rendering/parseChatContent";
-import { getAnswerText, getMessageText } from "@/lib/chat/messageParts";
+import { getAnswerText, getMessageText } from "@/lib/chat/messages/messageParts";
 import type { ChatMessage } from "@/lib/types/chat";
 
 export function fallbackQuestions(userQuestion: string): string[] {

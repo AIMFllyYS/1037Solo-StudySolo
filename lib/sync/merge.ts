@@ -1,6 +1,6 @@
 import type { ChatMessage } from "@/lib/types/chat";
-import { compactStudyMessage, toolNameFromPart } from "@/lib/chat/compactStudyParts";
-import { getAnswerText } from "@/lib/chat/messageParts";
+import { compactStudyMessage, toolNameFromPart } from "@/lib/chat/messages/compactStudyParts";
+import { getAnswerText } from "@/lib/chat/messages/messageParts";
 import type { ChatSessionSyncPayload } from "./types";
 
 function semanticScore(message: ChatMessage): number {

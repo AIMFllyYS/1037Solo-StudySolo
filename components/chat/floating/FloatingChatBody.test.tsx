@@ -10,7 +10,7 @@ import { useBillingStore } from '@/lib/stores/billing';
 import { useTokenTracker } from '@/lib/stores/chat/tokenTracker';
 import { useFloatingTokenTracker } from '@/lib/stores/chat/floatingTokenTracker';
 import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/chat/sessionRuns';
-import { getMessageText } from '@/lib/chat/messageParts';
+import { getMessageText } from '@/lib/chat/messages/messageParts';
 import { activateStorageOwner, getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
 
 const authState = vi.hoisted(() => ({ status: "signedIn" as "loading" | "signedOut" | "signedIn", userId: "test-owner" as string | null }));

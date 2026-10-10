@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactElement, ReactNode } from "react";
-import type { ForcedComposerTool } from "@/lib/chat/composerIntent";
+import type { ForcedComposerTool } from "@/lib/chat/composer/composerIntent";
 import { ContextUsageRing } from "@/components/chat/billing/ContextUsageRing";
 import { useTokenTracker } from "@/lib/stores/chat/tokenTracker";
 

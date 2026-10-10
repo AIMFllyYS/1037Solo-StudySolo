@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import type { UIMessageChunk } from 'ai';
 import { TOOL_STEP_LIMIT_INFO } from '@/lib/ai/agent/tools/_shared';
 import { consumeStudyStream, createStudyChatTransport } from './consumeStudyStream';
-import { createAssistantPlaceholder, getMessageText, getReasoningText } from './messageParts';
+import { createAssistantPlaceholder, getMessageText, getReasoningText } from '../messages/messageParts';
 import type { ChatMessage, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
 
 const usage: UsageSummary = { promptTokens: 100, completionTokens: 20, cachedTokens: 30, totalTokens: 120 };

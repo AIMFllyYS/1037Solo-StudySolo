@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { assertFileSize, MAX_FILE_BYTES, fileReference, referencedFileId, collectCloudFileIds, countComposerAttachments } from './contract';
-import { buildRequestMessages } from '@/lib/chat/buildRequestMessages';
-import { fitChatRequest } from '@/lib/chat/requestBudget';
+import { buildRequestMessages } from '@/lib/chat/request/buildRequestMessages';
+import { fitChatRequest } from '@/lib/chat/request/requestBudget';
 import { sanitizeChatMessages } from '@/lib/sync/payload';
 import { checkpointMessages } from '@/lib/context/compactChatSession';
 import type { ChatMessage } from '@/lib/types/chat';

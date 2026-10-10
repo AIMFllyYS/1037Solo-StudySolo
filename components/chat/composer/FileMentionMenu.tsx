@@ -1,7 +1,7 @@
 "use client";
 
-import type { AttachedFileRef } from "@/lib/chat/composerIntent";
-import { flattenFileMentions, type FileMentionGroup } from "@/lib/chat/fileMentions";
+import type { AttachedFileRef } from "@/lib/chat/composer/composerIntent";
+import { flattenFileMentions, type FileMentionGroup } from "@/lib/chat/attachments/fileMentions";
 import { AgentFileIcon } from "@/components/icons/AgentIcons";
 import { useT, type Translate } from "@/lib/i18n";
 

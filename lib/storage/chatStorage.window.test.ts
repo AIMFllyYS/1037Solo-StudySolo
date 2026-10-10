@@ -9,7 +9,7 @@ import {
   flushPendingWrites,
 } from "./idbStorage.ts";
 import type { ChatMessage } from "@/lib/types/chat";
-import { INITIAL_WINDOW_TURNS, TURNS_PER_CHUNK } from "@/lib/chat/turnSpine.ts";
+import { INITIAL_WINDOW_TURNS, TURNS_PER_CHUNK } from "@/lib/chat/messages/turnSpine.ts";
 
 const storage = new Map<string, string>();
 const testStore=createStore('gailvlun-db','keyval');

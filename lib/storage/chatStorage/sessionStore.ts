@@ -3,8 +3,8 @@ import { chatHeadKey, chatChunkKey, chatS3Prefix } from "./keys";
 import type { ChatMessage } from '@/lib/types/chat';
 
 import { idbStorage, chatSessionKey, chatBlobKey, listPersistedKeysForOwner, WRITE_DEBOUNCE_MS, registerStorageFlushHandler, commitSessionCheckpoint, readOwnedStorageItem, writeOwnedStorageItem, removeOwnedStorageItem } from '@/lib/storage/idbStorage';
-import { compactStudyMessages } from '@/lib/chat/compactStudyParts';
-import { normalizeStoredMessages } from '@/lib/chat/messageParts';
+import { compactStudyMessages } from '@/lib/chat/messages/compactStudyParts';
+import { normalizeStoredMessages } from '@/lib/chat/messages/messageParts';
 import {
   buildChunkSpine,
   dotEntriesFromSpine,
@@ -14,7 +14,7 @@ import {
   windowStartTurn,
   INITIAL_WINDOW_TURNS,
   type TurnSpineEntry,
-} from '@/lib/chat/turnSpine';
+} from '@/lib/chat/messages/turnSpine';
 import {registerResourceMetrics} from '@/lib/performance/resourceMetrics';
 import {getStorageOwner,onStorageOwnerChange} from '@/lib/storage/ownerScope';
 import { mergeChatSnapshots } from '@/lib/storage/threeWayChatMerge';

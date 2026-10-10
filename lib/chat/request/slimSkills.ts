@@ -1,7 +1,7 @@
 import type { ChatMessage } from "@/lib/types/chat";
 import type { Skill } from "@/lib/types/skill";
 import { payloadByteSize } from "@/lib/sync/payload";
-import { toolNameFromPart } from "@/lib/chat/compactStudyParts";
+import { toolNameFromPart } from "@/lib/chat/messages/compactStudyParts";
 
 /** 技能全文合计低于此值时整包带上，保证本轮 useSkill 能取到正文。 */
 export const SKILL_CONTENT_KEEP_ALL_BYTES = 64 * 1024;

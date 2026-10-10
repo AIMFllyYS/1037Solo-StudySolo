@@ -4,7 +4,7 @@ import { DEFAULT_SELECTION_ASSISTANT_ACTIONS } from "@/lib/notes/selectionAssist
 import { MAX_TOOL_STEPS } from "@/lib/ai/agent/toolRounds";
 
 import { DEFAULT_IMAGE_MODEL_ID } from "@/lib/ai/models";
-import { DEFAULT_MAX_WAIT_MS } from "@/lib/chat/createStallWatchdog";
+import { DEFAULT_MAX_WAIT_MS } from "@/lib/chat/streaming/createStallWatchdog";
 import { DEFAULT_LOCALE } from "@/lib/i18n/types";
 
 import type { SettingsState, Persisted } from "./types";

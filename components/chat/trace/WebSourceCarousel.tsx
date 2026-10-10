@@ -6,7 +6,7 @@ import { useUiReducedMotion } from "@/lib/hooks/runtime/useUiReducedMotion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import clsx from "clsx";
 import { safeHttpUrl } from "@/components/browser/safeUrl";
-import { webSourceFavicon } from "@/lib/chat/webSearchDisplay";
+import { webSourceFavicon } from "@/lib/chat/sources/webSearchDisplay";
 import { DURATION, EASE } from "@/lib/motion";
 import { useT } from "@/lib/i18n/index";
 

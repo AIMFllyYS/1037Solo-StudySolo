@@ -3,8 +3,8 @@
 import React from 'react';
 import { HelpCircle, Lightbulb } from 'lucide-react';
 import QuizMarkdown from '@/components/quiz/QuizMarkdown';
-import { openSourceTrace } from '@/lib/chat/openSourceTrace';
-import type { TraceSource } from '@/lib/chat/traceSources';
+import { openSourceTrace } from '@/lib/chat/sources/openSourceTrace';
+import type { TraceSource } from '@/lib/chat/sources/traceSources';
 import { useIsAgentSurface } from '@/lib/window/useManagedWindowSurface';
 import { useT } from '@/lib/i18n/index';
 

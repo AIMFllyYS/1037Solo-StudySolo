@@ -18,7 +18,7 @@ import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { useIsMobile } from "@/lib/hooks/layout/useIsMobile";
 import { useStore } from "@/lib/stores/ui";
 import { loadSessionSummary, type SessionSummary } from "@/lib/storage/sessionSummary";
-import { traceSourceKey, type SourceRound, type TraceSource } from "@/lib/chat/traceSources";
+import { traceSourceKey, type SourceRound, type TraceSource } from "@/lib/chat/sources/traceSources";
 import { mergeGeneratedImages, type AgentImageItem, type GeneratedImage } from "@/lib/agent/sessionImages";
 import { useImageGen } from "@/lib/stores/assets/imageGen";
 

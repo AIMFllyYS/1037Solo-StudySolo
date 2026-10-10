@@ -4,7 +4,7 @@ import React, { useId, useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useUiReducedMotion } from '@/lib/hooks/runtime/useUiReducedMotion';
 import { AgentCheckIcon, AgentChevronIcon } from '@/components/icons/AgentIcons';
-import type { AgentTraceModel } from '@/lib/chat/buildTrace';
+import type { AgentTraceModel } from '@/lib/chat/messages/buildTrace';
 import { useProcessingDisclosure } from '@/lib/hooks/chat/useProcessingDisclosure';
 import { useT, type Translate } from '@/lib/i18n/index';
 import { ToolTraceStep } from '@/components/chat/trace/ToolTraceStep';

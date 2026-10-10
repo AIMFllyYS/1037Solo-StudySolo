@@ -1,5 +1,5 @@
 import { navTree } from "@/lib/content-data/nav";
-import { toAttachedFileRef } from "@/lib/chat/fileMentions";
+import { toAttachedFileRef } from "@/lib/chat/attachments/fileMentions";
 import type { ContentItem } from "@/lib/types/content";
 import type { ProjectStudioRef } from "./types";
 

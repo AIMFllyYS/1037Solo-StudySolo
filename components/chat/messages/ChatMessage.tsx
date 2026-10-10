@@ -12,11 +12,11 @@ import { FollowUpQuestions } from '@/components/chat/messages/FollowUpQuestions'
 import { AgentTrace, TRACE_COLLAPSE_MS, agentProcessingLabel } from '@/components/chat/trace/AgentTrace';
 import AttachmentThumbnails from '@/components/chat/attachments/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/stores/workspace/contextMenu';
-import { buildTrace, type AgentTraceModel, type TraceStep } from '@/lib/chat/buildTrace';
-import { getMessageText } from '@/lib/chat/messageParts';
+import { buildTrace, type AgentTraceModel, type TraceStep } from '@/lib/chat/messages/buildTrace';
+import { getMessageText } from '@/lib/chat/messages/messageParts';
 import { extractFollowUpQuestionsFromContent } from '@/lib/chat/rendering/parseChatContent';
-import { collectCitationCatalog } from '@/lib/chat/citationCatalog';
-import { collectMessageSources } from '@/lib/chat/traceSources';
+import { collectCitationCatalog } from '@/lib/chat/sources/citationCatalog';
+import { collectMessageSources } from '@/lib/chat/sources/traceSources';
 import { ToolResultCards } from '@/components/chat/toolCards/ToolResultCards';
 import ChatFeedbackActions from '@/components/chat/ChatFeedbackActions';
 import { useT } from '@/lib/i18n/index';

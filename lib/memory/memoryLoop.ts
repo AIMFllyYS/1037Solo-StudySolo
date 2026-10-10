@@ -4,7 +4,7 @@
 // 长文本（writeDocument）和可交互 HTML（renderInteractive）是另一类产物，只被导入，不在这里生成。
 
 import type { ChatMessage } from "@/lib/types/chat";
-import { getToolPartsByName } from "@/lib/chat/messageParts";
+import { getToolPartsByName } from "@/lib/chat/messages/messageParts";
 import type { MemoryKind, ProposeMemoryOutput } from "@/lib/ai/agent/tools/proposeMemory/types";
 import type { CommitNotesOutput } from "@/lib/ai/agent/tools/commitNotes/types";
 import type { CommitFlashcardsOutput } from "@/lib/ai/agent/tools/commitFlashcards/types";

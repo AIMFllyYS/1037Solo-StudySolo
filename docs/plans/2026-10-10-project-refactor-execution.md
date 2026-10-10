@@ -103,7 +103,9 @@
 
 - R4b 剩余长交互：26 个概率交互和一个化学构型练习拆为数学领域、图形/几何、控件、展示配置、说明和单一状态入口；原 registry/dynamic/ssr:false 保持。数学按 foundations/distributions/joint/moments/limits/sampling/estimation/testing 分组，避免新增平铺目录。初次源码对照 27 入口/698 声明的所有公式、类型与 JSX token 相同；其后 MLE 原 SVG 逐字迁移为 typed LikelihoodPlot，保留原 state/ref/鼠标触摸；独立数学检查发现旧协方差特征向量坐标错误，已修正并单独记录影响，未把数值变化冒充结构等价。13 项数学性质、39 项 React、全量类型、定向 ESLint 和文档链接通过；真实协方差滑杆更新轴向量/角度，真实 MLE 输入 1,1,1,1 得到估计 1.0000，点击图后原游标更新为 2.3450。截图 covariance-corrected-axis.png、likelihood-after-plot-split.png；详情见概率验收文档。最新静态清点 2307 源码/测试、1672 人工源码、13 个 >500、2 个 >800，即时循环 0；长度统计不是最终功能门禁。
 
-- R4c 教材/交互目录与生成链：五份长目录按连续章节主题拆分，原导出入口只组合同学科 textbook/detail 数据；完整 contentTree JSON 254101 字节与前版完全相同。53 个交互注册项按概率/物理/化学分组，原 registry 保留唯一检查与查询，types 独立；所有字段/顺序/规范化动态路径与前版一致，lazy 目标存在。发现教材接入及 NUL 清理脚本仍指向早期平铺路径，修正到 subjects/<subject>/；目录 writer 与分组规则独立，接入 CLI 复用同一 writer，四个生成教材学科再生成仍保持当前分组，其余学科输出到当前学科目录。3 项 Python 临时目录检查、41 项 React（含查询 2）、注册 0 error/94 原 warning、完整类型、定向 ESLint 通过；未运行会替换正文的真实 ingest。同步更新 subject-onboarding 和 framework-extension 的目录/维护入口，不把旧脚本说明当作当前规则。
+- R4c 教材/交互目录与生成链：五份长目录按连续章节主题拆分，原导出入口只组合同学科 textbook/detail 数据；完整 contentTree JSON 254101 字节与前版完全相同。53 个交互注册项按概率/化学两份现有数据分组，原 registry 保留唯一检查与查询，types 独立；所有字段/顺序/规范化动态路径与前版一致，lazy 目标存在。发现教材接入及 NUL 清理脚本仍指向早期平铺路径，修正到 subjects/<subject>/；目录 writer 与分组规则独立，接入 CLI 复用同一 writer，四个生成教材学科再生成仍保持当前分组，其余学科输出到当前学科目录。3 项 Python 临时目录检查、41 项 React（含查询 2）、注册 0 error/94 原 warning、完整类型、定向 ESLint 通过；未运行会替换正文的真实 ingest。同步更新 subject-onboarding 和 framework-extension 的目录/维护入口，不把旧脚本说明当作当前规则。
+
+- R3q 聊天领域目录：80 个实现/测试文件迁入 request/streaming/messages/sources/attachments/composer/feedback/session，147 个真实消费者与结构路径更新；根目录只留 sendMessage 组合和 sessionTypes 契约，既有显式公共 API 保留，没有成批转发。完整 React 304 文件/1280 项通过；完整 node 2064 项初轮 2062 通过、1 原跳过、1 结构失败：旧断言要求 RecordPreviewWindow 直接导入 AnchoredMenu，而 R3m 已由其 PreviewMoreMenu 负责；保留原断言并检查 root import/render 接线后相关 13 项全部通过。类型首轮命中忽略 tmp 中的本轮旧反馈源码备份，将该原件改为 txt 保留后完整类型通过；没有忽略或删除运行文件来逃避类型问题。完整 ESLint 0 error/21 原 warning、文档 74 份/316 链接/0 缺失、即时循环 0。最终冻结后仍统一重跑，当前结果不是生产构建或真实账号验收。
 
 ## 局部阻塞
 
@@ -112,11 +114,11 @@
 
 ## 续接检查点
 
-已完成 R0/R1/R2、R3a–R3p 与 R4a–R4c 分层；第二批交互已提交 `86d17917`，教材/注册目录和生成链定向验收已通过，代码按阶段提交至同名云端重构分支，具体 SHA 以分支 Git 历史为准。R5a–R5c 已更新入口/SOP、归档历史与确认未使用源码；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
+已完成 R0/R1/R2、R3a–R3q 与 R4a–R4c 分层；教材/注册目录和生成链已提交 `a2722f3a`，聊天目录统一验证已通过并按阶段提交至同名云端重构分支，具体 SHA 以分支 Git 历史为准。R5a–R5c 已更新入口/SOP、归档历史与确认未使用源码；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
 
 下一阶段仍需：
 
-1. 已拆内容加载、聊天/复习 API、QuizQuestion、GlobalSettings、RecordPreviewWindow、AppShell、ChatInput、ReviewQuizPane、TokenDashboard、provider、db migration、Electron key IO、quiz-progress、learning/quiz、userNotes 及 AgentConversationSidebar/ChatFeedbackActions/ImageGenViewer/ModelMenu，已完成 chat/layout/hooks/stores/content-data 归类。继续按新 inventory 核对其余混合职责和拥挤目录，不重复拆已完成模块。sync engine 和 sessionStore 是已分层后的单一队列/状态引擎，按实际职责与风险审查，不机械按行数重切。
+1. 已拆内容加载、聊天/复习 API、QuizQuestion、GlobalSettings、RecordPreviewWindow、AppShell、ChatInput、ReviewQuizPane、TokenDashboard、provider、db migration、Electron key IO、quiz-progress、learning/quiz、userNotes 及 AgentConversationSidebar/ChatFeedbackActions/ImageGenViewer/ModelMenu，已完成 chat/layout/hooks/stores/content-data 和 lib/chat 归类。继续按新 inventory 核对其余混合职责和拥挤目录，不重复拆已完成模块。sync engine 和 sessionStore 是已分层后的单一队列/状态引擎，按实际职责与风险审查，不机械按行数重切。
 2. 六个优先概率交互及余下 27 个长交互、五份长教材目录和交互注册已分层，不重复拆分；χ² 与协方差轴数值修复单独记录。继续核对 i18n 字典、auth setup CLI 及已分层的连续引擎，不按行数机械重切。继续审计明确等价的重复算法和 lib/chat/ai/auth/billing 等拥挤目录；教材 ingest writer/清理脚本的旧路径已修正，不执行会替换正文的真实接入脚本。
 3. 正式 knip.json 已核实 Next、Classolo、Worker、CJS、CLI 与沙箱脚本入口；最新 verify/knip-r5c-final.json 的文件/依赖/unlisted/binary 为 0，仍有 136 个值导出、55 个类型候选。明显公共 façade/协议不能只凭未使用报告删除；继续检查内部冗余、重复 barrel 和真正消费者，保留诊断而不泛化 ignore。
 4. 当前 74 份活文档、316 本地链接、0 缺失。72 份旧 handoff/loop/日期快照与 3 原参考已归档，当前模型维护与 Fast 注释已更新；SOP 07/14 与 storage 参考已核实。继续核对 rendering/framework-extension 和其余 SOP 中的存量事实（特别是旧数量/旧执行角色措辞），不能把链接通过当作所有说明已准确。37 个未使用源码和 21 个旧转发已保留可恢复原件，字节承诺已验证实际 Git blob。

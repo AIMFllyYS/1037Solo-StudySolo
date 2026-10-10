@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { buildToolTraceStep, type TraceToolPart } from '@/lib/chat/buildTrace';
+import { buildToolTraceStep, type TraceToolPart } from '@/lib/chat/messages/buildTrace';
 import { TraceToolEntry as ToolTraceStep } from '@/components/chat/trace/TraceToolEntry';
 import { useT } from '@/lib/i18n/index';
 

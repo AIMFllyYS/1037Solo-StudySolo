@@ -4,7 +4,7 @@ import { afterEach } from "vitest";
 import { useAcademicYear } from "@/lib/stores/academicYear";
 import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
 import { navTree } from "@/lib/content-data/nav";
-import { NOTEBOOK_FILE_MIME } from "@/lib/chat/composerIntent";
+import { NOTEBOOK_FILE_MIME } from "@/lib/chat/composer/composerIntent";
 import { openTextbookWindow, TEXTBOOK_WINDOW_ID } from "@/lib/textbook/openTextbook";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import type { TextbookReadingState } from "@/lib/textbook/state";

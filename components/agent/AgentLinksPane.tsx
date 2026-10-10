@@ -3,9 +3,9 @@
 import { useCallback } from "react";
 import { BookOpen, Link2, Search } from "lucide-react";
 import WebSourceCarousel from "@/components/chat/trace/WebSourceCarousel";
-import { openSourceTrace, sourceItemKey } from "@/lib/chat/openSourceTrace";
-import { webSourceHost } from "@/lib/chat/webSearchDisplay";
-import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
+import { openSourceTrace, sourceItemKey } from "@/lib/chat/sources/openSourceTrace";
+import { webSourceHost } from "@/lib/chat/sources/webSearchDisplay";
+import type { SourceRound, TraceSource } from "@/lib/chat/sources/traceSources";
 import { useStore } from "@/lib/stores/ui";
 import { useT } from "@/lib/i18n";
 import { sourceRoundLabelKey } from "./sourceRoundLabel";

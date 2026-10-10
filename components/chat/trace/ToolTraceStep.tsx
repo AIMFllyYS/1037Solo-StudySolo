@@ -3,7 +3,7 @@ import React from 'react';
 import { TraceToolEntry } from './TraceToolEntry';
 export { ToolIcon } from './TraceToolEntry';
 import { TOOL_REGISTRY } from '@/components/chat/toolCards/registry';
-import type { TraceToolStep as ToolStep } from '@/lib/chat/buildTrace';
+import type { TraceToolStep as ToolStep } from '@/lib/chat/messages/buildTrace';
 import type { ResultCardProps, ToolModule } from '@/lib/ai/agent/tools/registry';
 import type { AgentTraceProps } from '@/components/chat/trace/AgentTrace';
 

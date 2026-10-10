@@ -4,10 +4,10 @@
 // 存储层只拿 spine 就知道一条消息落在哪个 chunk —— 两边都不需要先读消息正文。
 
 import type { ChatMessage } from "@/lib/types/chat";
-import { getMessageText } from "@/lib/chat/messageParts";
-import { collectSessionSourceRounds } from "@/lib/chat/traceSources";
+import { getMessageText } from "@/lib/chat/messages/messageParts";
+import { collectSessionSourceRounds } from "@/lib/chat/sources/traceSources";
 import { collectMessageImages } from "@/lib/agent/sessionImages";
-import { collectSessionProducts } from "@/lib/chat/sessionProducts";
+import { collectSessionProducts } from "@/lib/chat/session/sessionProducts";
 
 /** 一个持久化 chunk 装多少轮。流式 flush 只重写尾部 chunk，这个值决定单次 flush 的上界。 */
 export const TURNS_PER_CHUNK = 8;

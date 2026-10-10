@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { getToolPartsByName } from "@/lib/chat/messageParts";
+import { getToolPartsByName } from "@/lib/chat/messages/messageParts";
 import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { useImageGen } from "@/lib/stores/assets/imageGen";
 import {

@@ -3,7 +3,7 @@ import type { StudyToolName } from "@/lib/ai/agent/tools/names";
 import type { NoteImageHit, SearchHit } from "@/lib/ai/agent/toolTypes";
 import type { ResultCardProps, ToolModule, ToolPart, ToolPresentation } from "@/lib/ai/agent/tools/registry";
 import { TOOL_PRESENTATION } from "@/lib/ai/agent/tools/presentations";
-import { noteImageItemKey, noteItemKey, webItemKey } from "@/lib/chat/traceSources";
+import { noteImageItemKey, noteItemKey, webItemKey } from "@/lib/chat/sources/traceSources";
 import type { WebSearchSource } from "@/lib/types/chat";
 import SearchNotesResultCard from "@/components/chat/toolCards/searchNotesCard";
 import WebSearchResultCard from "@/components/chat/toolCards/webSearchCard";

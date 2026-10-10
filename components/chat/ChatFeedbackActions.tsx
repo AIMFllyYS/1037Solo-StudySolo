@@ -4,12 +4,12 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState, type FormEven
 
 import { Check, Copy, Flag, ThumbsDown, ThumbsUp } from "lucide-react";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";
-import { prepareFeedbackExcerpt, prepareFeedbackText } from "@/lib/chat/feedbackExcerpt";
+import { prepareFeedbackExcerpt, prepareFeedbackText } from "@/lib/chat/feedback/feedbackExcerpt";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useT } from "@/lib/i18n";
 import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
 import { useToast } from "@/lib/stores/toast";
-import { feedbackRequest, postFeedback, type FeedbackRecord } from "@/lib/chat/feedbackClient";
+import { feedbackRequest, postFeedback, type FeedbackRecord } from "@/lib/chat/feedback/feedbackClient";
 import { errorMessage, reportReasonValue, type Vote, type ReportReason, type DialogState } from "./feedback/model";
 import FeedbackDialog from "./feedback/FeedbackDialog";
 

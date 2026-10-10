@@ -6,7 +6,7 @@
  * 状态机与幂等账本在 lib/stores/noteChangeProposals.ts。
  */
 import type { UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/types";
-import { getToolPartsByName } from "@/lib/chat/messageParts";
+import { getToolPartsByName } from "@/lib/chat/messages/messageParts";
 import type { ChatMessage } from "@/lib/types/chat";
 
 /**

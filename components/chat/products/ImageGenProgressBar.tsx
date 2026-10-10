@@ -1,7 +1,7 @@
 "use client";
 
 import { useT } from "@/lib/i18n/index";
-import type { ImageGenProgress } from "@/lib/chat/imageGenProgress";
+import type { ImageGenProgress } from "@/lib/chat/attachments/imageGenProgress";
 
 /**
  * 生图进度条。上游不回传进度，所以这里显示的是按模型典型耗时的估算：

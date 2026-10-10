@@ -11,8 +11,8 @@
  *    (lib/stores/chatHistory.ts:459-488)
  */
 import { serializeSessionMessages } from "../lib/storage/chatStorage";
-import { normalizeStoredMessages } from "../lib/chat/messageParts";
-import { compactStudyMessages } from "../lib/chat/compactStudyParts";
+import { normalizeStoredMessages } from "../lib/chat/messages/messageParts";
+import { compactStudyMessages } from "../lib/chat/messages/compactStudyParts";
 import type { ChatMessage } from "../lib/types/chat";
 
 const TEXT =

@@ -228,7 +228,7 @@ test("updateMessage：新增 artifactId 时写 manifest 供冷 prune 使用", as
 
 test("follow-up tool facts use updateMessage and survive IndexedDB reload", async () => {
   const { useChatHistory } = await import("./chatHistory.ts");
-  const { buildTrace } = await import("@/lib/chat/buildTrace");
+  const { buildTrace } = await import("@/lib/chat/messages/buildTrace");
   const original: ChatMessage = { id: "m1", role: "assistant", timestamp: 1, parts: [{ type: "tool-cloudSandbox", toolCallId: "fixture-tool", state: "output-available", input: { action: "exec", command: "fixture" }, output: { text: "running", state: "running", conversationId: "s1", commandId: "fixture-command" } }] };
   fixtureSet(chatSessionKey("s1"), JSON.stringify([original]));
   useChatHistory.setState({ sessionsMeta: [meta("s1")], messagesById: { s1: [original] }, activeSessionId: "s1", sessionLoadState: { s1: "loaded" }, loadedSessionIds: ["s1"], pinnedSessionIds: [], _hasHydrated: true, _activeMessagesReady: true });
@@ -395,7 +395,7 @@ describe("chatHistory.startNewChat", { concurrency: false }, () => {
   });
 
   test("人在真实对话里：复用列表里最新那条空白，且接上后可直接发送", async () => {
-    const { canSendNow } = await import("@/lib/chat/canSendNow");
+    const { canSendNow } = await import("@/lib/chat/request/canSendNow");
     const { useChatHistory } = await import("./chatHistory.ts");
     useChatHistory.setState({
       sessionsMeta: [main("blank"), main("real", 4)],

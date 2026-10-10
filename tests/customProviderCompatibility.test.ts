@@ -34,7 +34,7 @@ test("思考装配只剩 buildThinkingSettings；AI_ENABLE_THINKING 已删除", 
 
 test("6 条花钱路由的客户端只发本次用到的自定义分组", () => {
   const files = [
-    "lib/chat/buildChatRequestBody.ts",
+    "lib/chat/request/buildChatRequestBody.ts",
     "components/chat/products/ArtifactCard.tsx",
     "components/chat/products/DocumentCard.tsx",
     "components/chat/products/ImageGenViewer.tsx",

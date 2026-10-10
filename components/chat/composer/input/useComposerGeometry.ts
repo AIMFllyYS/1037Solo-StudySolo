@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 
-import { MAX_TEXTAREA_HEIGHT } from '@/lib/chat/inputLimits';
+import { MAX_TEXTAREA_HEIGHT } from '@/lib/chat/composer/inputLimits';
 export function useComposerGeometry(input: string, onComposerInsetChange?: (inset: number) => void, focusSignal?: number) {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);

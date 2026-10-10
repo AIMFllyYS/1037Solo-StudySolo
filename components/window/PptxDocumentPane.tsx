@@ -3,14 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Presentation } from "lucide-react";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
-import { parsePptxSlideBytes, type PptxSlideText } from "@/lib/chat/parsePptx";
+import { parsePptxSlideBytes, type PptxSlideText } from "@/lib/chat/attachments/parsePptx";
 import {
   createSlideSlots,
   mountRenderedSlide,
   slideDisplayHeight,
   topmostSlotIndex,
   type PptxSlideMetrics,
-} from "@/lib/chat/pptxSlideList";
+} from "@/lib/chat/attachments/pptxSlideList";
 import { useElementWidth } from "@/lib/hooks/layout/useElementWidth";
 import { scrollToElementTop } from "@/lib/window/scrollToElementTop";
 import { translate, translateNow, useT } from "@/lib/i18n";

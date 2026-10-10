@@ -2,7 +2,7 @@
 
 import WebSourceFold from "@/components/chat/trace/WebSourceFold";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
-import { webSearchProviderChips } from "@/lib/chat/webSearchDisplay";
+import { webSearchProviderChips } from "@/lib/chat/sources/webSearchDisplay";
 
 /**
  * 联网搜索卡：把工具 part 的全部状态映射到来源折板。

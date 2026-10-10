@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { collectSessionProducts, type AgentProductItem } from "@/lib/chat/sessionProducts";
+import { collectSessionProducts, type AgentProductItem } from "@/lib/chat/session/sessionProducts";
 import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import type { ChatMessage } from "@/lib/types/chat";
 

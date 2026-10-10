@@ -1,5 +1,5 @@
-import { getToolPartsByName } from "@/lib/chat/messageParts";
-import { dedupeByKey } from "@/lib/chat/traceSources";
+import { getToolPartsByName } from "@/lib/chat/messages/messageParts";
+import { dedupeByKey } from "@/lib/chat/sources/traceSources";
 import type { NoteImageHit } from "@/lib/ai/agent/toolTypes";
 import type { WebSearchSource } from "@/lib/types/chat";
 import type { ChatMessagePart } from "@/lib/types/chat";

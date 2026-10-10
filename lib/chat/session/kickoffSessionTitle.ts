@@ -1,4 +1,4 @@
-import { buildFallbackSessionTitle, sanitizeSessionTitle } from "@/lib/chat/sessionTitle";
+import { buildFallbackSessionTitle, sanitizeSessionTitle } from "@/lib/chat/session/sessionTitle";
 import type { ChatContext } from "@/lib/types/chat";
 
 export function kickoffSessionTitle(

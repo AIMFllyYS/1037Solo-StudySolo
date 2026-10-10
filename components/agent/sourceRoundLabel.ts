@@ -1,4 +1,4 @@
-import type { SourceRound } from "@/lib/chat/traceSources";
+import type { SourceRound } from "@/lib/chat/sources/traceSources";
 
 /**
  * 检索轮次的分组文案 key。

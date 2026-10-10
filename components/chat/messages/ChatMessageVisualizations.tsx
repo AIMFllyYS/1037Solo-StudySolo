@@ -10,7 +10,7 @@ import {
 import { DiagramCanvas, isDiagramMode } from '@/components/canvas/index';
 import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { replaceCanvasBlock } from '@/lib/chat/rendering/canvasBlockPatch';
-import { getAnswerText, withAnswerText } from '@/lib/chat/messageParts';
+import { getAnswerText, withAnswerText } from '@/lib/chat/messages/messageParts';
 import type { CanvasBlock } from '@/lib/canvas/types';
 import VizFold from '@/components/chat/messages/VizFold';
 import { AgentFileIcon, AgentImageIcon, AgentQuizIcon, AgentTerminalIcon } from '@/components/icons/AgentIcons';

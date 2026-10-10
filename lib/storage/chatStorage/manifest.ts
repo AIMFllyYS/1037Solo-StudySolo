@@ -1,6 +1,6 @@
 import type { ChatMessage } from "@/lib/types/chat";
 import type { ChatSession } from "@/lib/chat/sessionTypes";
-import { getMessageText, getToolPartsByName } from "@/lib/chat/messageParts";
+import { getMessageText, getToolPartsByName } from "@/lib/chat/messages/messageParts";
 import { idbStorage, setItemNow, PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import type { SessionMeta, ChatFolder, ChatManifestV2, ManifestSource } from "./types";
 function isBrowser(): boolean { return typeof window !== "undefined"; }

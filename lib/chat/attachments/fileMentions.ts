@@ -3,7 +3,7 @@ import type { ContentItem, ContentTree } from "@/lib/types/content";
 import {
   filePathOf,
   type AttachedFileRef,
-} from "@/lib/chat/composerIntent";
+} from "@/lib/chat/composer/composerIntent";
 
 export interface FileMentionContext {
   subjectId: string;

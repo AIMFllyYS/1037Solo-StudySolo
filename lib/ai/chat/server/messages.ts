@@ -1,6 +1,6 @@
 import { convertToModelMessages, type ModelMessage, type UIMessageStreamWriter } from "ai";
-import { compactStudyParts } from "@/lib/chat/compactStudyParts";
-import { rehydrateStudyParts } from "@/lib/chat/rehydrateStudyParts";
+import { compactStudyParts } from "@/lib/chat/messages/compactStudyParts";
+import { rehydrateStudyParts } from "@/lib/chat/messages/rehydrateStudyParts";
 
 import type { ChatMessage } from "@/lib/types/chat";
 

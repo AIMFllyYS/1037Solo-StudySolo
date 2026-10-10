@@ -1,6 +1,6 @@
 import { findContentItem, readContentMarkdown } from "@/lib/content/loader";
 import { PLAN_MODE_RULE } from "@/lib/ai/agent/planMode";
-import { formatForcedToolLine, normalizeAttachedFile, type AttachedFileRef } from "@/lib/chat/composerIntent";
+import { formatForcedToolLine, normalizeAttachedFile, type AttachedFileRef } from "@/lib/chat/composer/composerIntent";
 
 const PER_FILE_CHARS = 24_000;
 const TOTAL_CHARS = 48_000;

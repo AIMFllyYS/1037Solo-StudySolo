@@ -1,8 +1,8 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import SourceTraceViewer from "./SourceTraceViewer";
-import { openSourceTrace, openWebSearchSources } from "@/lib/chat/openSourceTrace";
-import type { SourceRound, TraceSource } from "@/lib/chat/traceSources";
+import { openSourceTrace, openWebSearchSources } from "@/lib/chat/sources/openSourceTrace";
+import type { SourceRound, TraceSource } from "@/lib/chat/sources/traceSources";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 
 function windowData(): Record<string, unknown> {

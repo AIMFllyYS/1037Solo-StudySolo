@@ -19,9 +19,9 @@ import {
   clampMaxToolRounds,
   type StudyToolRuntime,
 } from "@/lib/ai/agent/tools/server";
-import { formatComposerVolatile } from "@/lib/chat/attachedFilesContext";
-import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composerIntent";
-import { forcedSkillId, resolveForcedToolName } from "@/lib/chat/composerIntent";
+import { formatComposerVolatile } from "@/lib/chat/attachments/attachedFilesContext";
+import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composer/composerIntent";
+import { forcedSkillId, resolveForcedToolName } from "@/lib/chat/composer/composerIntent";
 import { createAgentLifecycleHooks } from "@/lib/ai/observability/agentLog";
 import { formatArtifactCatalog, type ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";

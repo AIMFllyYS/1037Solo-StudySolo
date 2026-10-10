@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { afterEach, expect, it, vi } from 'vitest';
 import { AgentTrace } from './AgentTrace';
 import { ToolResultCards } from '../toolCards/ToolResultCards';
-import { buildTrace } from '@/lib/chat/buildTrace';
+import { buildTrace } from '@/lib/chat/messages/buildTrace';
 import type { ChatMessage, ChatMessagePart } from '@/lib/types/chat';
 import type { ConnectorResult } from '@/lib/connectors/registry';
 import type { SandboxOutput } from '@/lib/sandbox/types';

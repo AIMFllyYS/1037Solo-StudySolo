@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { Folder, FolderOpen, FileText } from "lucide-react";
 import type { ContentItem } from "@/lib/types/content";
 import FolderTreeRow from "./FolderTreeRow";
-import { writeNotebookFileDrag } from "@/lib/chat/composerIntent";
-import { fileRefFromNav } from "@/lib/chat/fileMentions";
+import { writeNotebookFileDrag } from "@/lib/chat/composer/composerIntent";
+import { fileRefFromNav } from "@/lib/chat/attachments/fileMentions";
 
 interface FileTreeItemProps {
   item: ContentItem;

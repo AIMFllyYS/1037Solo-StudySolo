@@ -6,7 +6,7 @@ import {
   SESSION_TITLE_SYSTEM_PROMPT,
   buildFallbackSessionTitle,
   sanitizeGeneratedTitle,
-} from "@/lib/chat/sessionTitle";
+} from "@/lib/chat/session/sessionTitle";
 import { callFastModel, fastModelConfig } from "@/lib/ai/fastModel";
 import { resolveLanguageModel, UPSTREAM_PROVIDER_NAME } from "@/lib/ai/sdk/languageModel";
 import { logSatelliteError } from "@/lib/ai/observability/agentLog";

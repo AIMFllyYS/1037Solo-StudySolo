@@ -4,7 +4,7 @@ import {
   spineDerivedTotals,
   turnCountsOf,
   type TurnDerivedCounts,
-} from "@/lib/chat/turnSpine";
+} from "@/lib/chat/messages/turnSpine";
 
 const EMPTY_TOTALS: TurnDerivedCounts = { sources: 0, images: 0, products: 0 };
 

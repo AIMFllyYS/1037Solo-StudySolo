@@ -4,7 +4,7 @@ import { consumeRateLimit } from "@/lib/auth/rateLimit";
 import { extractAccessToken } from "@/lib/auth/sessionCookie";
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
 import { failureStatus, verifyAccount } from "@/lib/auth/sign-in/account-verify";
-import { prepareFeedbackExcerpt, prepareFeedbackText } from "@/lib/chat/feedbackExcerpt";
+import { prepareFeedbackExcerpt, prepareFeedbackText } from "@/lib/chat/feedback/feedbackExcerpt";
 import { desktopCloudBridgeEnabled, forwardDesktopAgentRequest } from "@/lib/sandbox/desktop-bridge.server";
 import { sandboxFailure } from "@/lib/sandbox/config.server";
 

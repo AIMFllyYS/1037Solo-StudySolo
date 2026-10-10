@@ -3,9 +3,9 @@
 import { createContext, useCallback, useContext, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link2 } from "lucide-react";
-import type { CitationSource } from "@/lib/chat/citationCatalog";
-import { citationByIndex, parseCiteIndexes } from "@/lib/chat/citationCatalog";
-import { openCitationSource } from "@/lib/chat/openCitation";
+import type { CitationSource } from "@/lib/chat/sources/citationCatalog";
+import { citationByIndex, parseCiteIndexes } from "@/lib/chat/sources/citationCatalog";
+import { openCitationSource } from "@/lib/chat/sources/openCitation";
 import { SourcePreviewRows, sourcePreviewMeta } from "@/components/chat/sources/SourcePreviewRows";
 import { useT } from "@/lib/i18n/index";
 

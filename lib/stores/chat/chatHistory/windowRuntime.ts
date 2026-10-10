@@ -2,8 +2,8 @@ import type { SessionWindowMeta } from "@/lib/chat/sessionTypes";
 
 import type { ChatMessage } from '@/lib/types/chat';
 import { type SessionWindowLoad, dropSessionTailCache, hasSessionWriteLease } from '@/lib/storage/chatStorage';
-import { turnCountsOf, TURNS_PER_CHUNK, type TurnSpineEntry } from '@/lib/chat/turnSpine';
-import { getMessageText } from '@/lib/chat/messageParts';
+import { turnCountsOf, TURNS_PER_CHUNK, type TurnSpineEntry } from '@/lib/chat/messages/turnSpine';
+import { getMessageText } from '@/lib/chat/messages/messageParts';
 
 import { useSessionRuns } from '@/lib/stores/chat/sessionRuns';
 

@@ -1,5 +1,5 @@
 import type { ChatContext, ChatMessage } from "@/lib/types/chat";
-import type { TurnSpineEntry } from "@/lib/chat/turnSpine";
+import type { TurnSpineEntry } from "@/lib/chat/messages/turnSpine";
 export interface SessionMeta {
   contextCheckpoint?: { summary: string; coveredIds: string[]; coveredRevisions?:Record<string,number>; cloudFileIds: string[]; createdAt: number };
   id: string;

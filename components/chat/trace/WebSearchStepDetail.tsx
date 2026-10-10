@@ -2,11 +2,11 @@
 
 import WebSourceCarousel from "@/components/chat/trace/WebSourceCarousel";
 import { WebSearchProviderChips } from "@/components/chat/trace/WebSearchProviderChips";
-import { openWebSearchSources } from "@/lib/chat/openSourceTrace";
-import { dedupeByKey, webItemKey } from "@/lib/chat/traceSources";
-import { webSearchProviderChips, webSourceHost } from "@/lib/chat/webSearchDisplay";
+import { openWebSearchSources } from "@/lib/chat/sources/openSourceTrace";
+import { dedupeByKey, webItemKey } from "@/lib/chat/sources/traceSources";
+import { webSearchProviderChips, webSourceHost } from "@/lib/chat/sources/webSearchDisplay";
 import type { WebSearchInput, WebSearchOutput } from "@/lib/ai/agent/tools/webSearch/types";
-import type { TraceToolStep } from "@/lib/chat/buildTrace";
+import type { TraceToolStep } from "@/lib/chat/messages/buildTrace";
 
 /**
  * 思考链里 webSearch 步骤的展开区：分源状态点 + 紧凑来源走马灯。

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { buildNoteCommitSideTurn } from "./runNoteCommit.ts";
 import { NOTE_COMMIT_STYLE } from "./noteCommitPrompt.ts";
-import { buildChatRequestBody } from "@/lib/chat/buildChatRequestBody";
+import { buildChatRequestBody } from "@/lib/chat/request/buildChatRequestBody";
 import type { ChatMessage } from "@/lib/types/chat";
 
 function message(id: string, role: ChatMessage["role"], text: string): ChatMessage {

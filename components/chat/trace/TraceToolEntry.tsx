@@ -13,8 +13,8 @@ import {
 } from '@/components/icons/AgentIcons';
 import { AgentTraceStep } from '@/components/chat/trace/AgentTraceStep';
 import { WebSearchStepDetail } from '@/components/chat/trace/WebSearchStepDetail';
-import { getTraceToolOutput, type TraceToolStep as ToolStep } from '@/lib/chat/buildTrace';
-import { getToolPresentation, type ToolIconKind } from '@/lib/chat/toolPresentation';
+import { getTraceToolOutput, type TraceToolStep as ToolStep } from '@/lib/chat/messages/buildTrace';
+import { getToolPresentation, type ToolIconKind } from '@/lib/chat/sources/toolPresentation';
 import { useIsAgentSurface } from '@/lib/window/useManagedWindowSurface';
 import { useT } from '@/lib/i18n';
 import type { ResultCardProps } from '@/lib/ai/agent/tools/registry';

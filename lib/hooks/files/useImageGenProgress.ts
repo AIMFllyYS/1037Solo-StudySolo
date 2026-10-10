@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import {
   estimateImageGenProgress,
   type ImageGenProgress,
-} from "@/lib/chat/imageGenProgress";
+} from "@/lib/chat/attachments/imageGenProgress";
 import type { ImageGenStatus } from "@/lib/stores/assets/imageGen";
 
 /** 只在生成中走时钟；其它状态不挂 timer，也不产生任何额外渲染。 */

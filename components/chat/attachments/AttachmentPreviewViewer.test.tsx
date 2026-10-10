@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { strToU8, zipSync } from "fflate";
 import AttachmentPreviewViewer, { htmlPreviewCsp, prepareHtmlPreview } from "./AttachmentPreviewViewer";
-import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
+import { openAttachmentPreview } from "@/lib/chat/attachments/openAttachmentPreview";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { OPAQUE_ORIGIN_STORAGE_SHIM_MARKER } from "@/lib/sandbox/opaqueOriginStorageShim";
 import { downloadHtmlFile } from "@/lib/utils/downloadHtml";

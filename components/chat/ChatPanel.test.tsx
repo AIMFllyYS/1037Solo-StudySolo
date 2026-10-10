@@ -7,7 +7,7 @@ import { useChatHistory } from '@/lib/stores/chat/chatHistory';
 import { useStore } from '@/lib/store';
 import { useSettings } from '@/lib/stores/settings';
 import { useSessionRuns, __resetSessionRunControllers } from '@/lib/stores/chat/sessionRuns';
-import { getMessageText } from '@/lib/chat/messageParts';
+import { getMessageText } from '@/lib/chat/messages/messageParts';
 import { activateStorageOwner, getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
 
 const authState = vi.hoisted(() => ({ status: "signedIn" as "loading" | "signedOut" | "signedIn", userId: "test-owner" as string | null }));

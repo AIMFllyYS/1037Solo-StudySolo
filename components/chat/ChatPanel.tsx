@@ -30,7 +30,7 @@ import { useT } from '@/lib/i18n';
 import { useAuthSession } from '@/lib/hooks/auth/useAuthSession';
 import { getOwnerEpoch, getStorageOwner } from '@/lib/storage/ownerScope';
 import {getSessionWriteFailure,hasDurableSessionRecovery,hydrateSessionRecoveryStatus,retrySessionWrite,subscribeSessionWriteStatus} from '@/lib/storage/chatStorage';
-import {exportSessionRecovery} from '@/lib/chat/exportChats';
+import {exportSessionRecovery} from '@/lib/chat/session/exportChats';
 
 interface ChatPanelProps {
   chatContext: ChatContext;

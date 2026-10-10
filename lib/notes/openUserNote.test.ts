@@ -173,7 +173,11 @@ test("note and flashcard subject chips reuse AnchoredMenu", () => {
   const menu = readFileSync(new URL("../../components/notes/SubjectPickerMenu.tsx", import.meta.url), "utf8");
   const editor = readFileSync(new URL("../../components/notes/UserNoteEditorWindow.tsx", import.meta.url), "utf8");
   const flashcards = readFileSync(new URL("../../components/notes/FlashcardCiteWindow.tsx", import.meta.url), "utf8");
-  const preview = readFileSync(new URL("../../components/review/RecordPreviewWindow.tsx", import.meta.url), "utf8");
+  const previewRoot = readFileSync(new URL("../../components/review/RecordPreviewWindow.tsx", import.meta.url), "utf8");
+  const previewMenu = readFileSync(new URL("../../components/review/recordPreview/moreMenu.tsx", import.meta.url), "utf8");
+  assert.match(previewRoot, /import \{ PreviewMoreMenu \} from "\.\/recordPreview\/moreMenu"/);
+  assert.match(previewRoot, /<PreviewMoreMenu/);
+  const preview = previewRoot + "\n" + previewMenu;
   assert.match(menu, /from "@\/components\/ui\/AnchoredMenu"/);
   assert.match(menu, /className="app-menu-item"/);
   assert.match(editor, /SubjectPickerMenu/);

@@ -4,7 +4,7 @@ import {
   isSoftLimitReached,
   resolveSessionContextBudget,
 } from "@/lib/context/estimateFullContext";
-import type { RequestMessage } from "@/lib/chat/buildRequestMessages";
+import type { RequestMessage } from "@/lib/chat/request/buildRequestMessages";
 import type { ContextBreakdown } from "@/lib/types/chat";
 
 export interface ContextTrackerSnapshot {

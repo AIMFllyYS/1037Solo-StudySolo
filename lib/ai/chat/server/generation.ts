@@ -1,7 +1,7 @@
 import { compactArtifactMessages } from "@/lib/context/compactArtifacts";
 import { compactHistory } from "@/lib/context/compactHistory";
 import { pruneStudyMessages } from "@/lib/context/pruneStudyMessages";
-import { CONTEXT_WARNING } from "@/lib/chat/estimateContextBudget";
+import { CONTEXT_WARNING } from "@/lib/chat/request/estimateContextBudget";
 import { getContextManager } from "@/lib/context";
 import { isSoftLimitReached } from "@/lib/context/estimateFullContext";
 import type { ChatMessage } from "@/lib/types/chat";
@@ -12,7 +12,7 @@ import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 
 import { createStudyAgent, type StudyAgentInput } from "@/lib/ai/agent/studyAgent";
 import { addUsage, decideContinuation, isTextOnlyContinuation } from "@/lib/ai/agent/completionGuard";
-import { isComposerForcedTool } from "@/lib/chat/composerIntent";
+import { isComposerForcedTool } from "@/lib/chat/composer/composerIntent";
 import { TOOL_STEP_LIMIT_INFO, clampMaxToolRounds } from "@/lib/ai/agent/tools/server";
 import { computeContextBreakdown, estimateRequestContextTokens } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type { NoteImageHit } from '@/lib/ai/agent/toolTypes';
-import { dedupeByKey, noteImageItemKey } from '@/lib/chat/traceSources';
+import { dedupeByKey, noteImageItemKey } from '@/lib/chat/sources/traceSources';
 import { AgentGalleryIcon } from '@/components/icons/AgentIcons';
 import { ChatImage } from '@/components/chat/messages/ChatImage';
 import { ImageStrip } from '@/components/chat/attachments/ImageStrip';

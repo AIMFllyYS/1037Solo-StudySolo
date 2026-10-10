@@ -1,6 +1,6 @@
-import { translateNow } from "@/lib/i18n";
+import { translateNow } from "@/lib/i18n/index";
 import type { NoteImageHit, SearchHit } from '@/lib/ai/agent/toolTypes';
-import { getToolPartsByName } from '@/lib/chat/messageParts';
+import { getToolPartsByName } from '@/lib/chat/messages/messageParts';
 import type { ChatMessagePart, WebSearchSource } from '@/lib/types/chat';
 
 export type TraceSource =

@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import type { ChatMessage } from '@/lib/types/chat';
-import { buildTrace } from '@/lib/chat/buildTrace';
+import { buildTrace } from '@/lib/chat/messages/buildTrace';
 import { AgentTrace } from '@/components/chat/trace/AgentTrace';
 import { useT } from '@/lib/i18n/index';
 

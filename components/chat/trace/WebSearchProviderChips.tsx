@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useUiReducedMotion } from "@/lib/hooks/runtime/useUiReducedMotion";
-import { WEB_SEARCH_PROVIDER_LABELS, type ProviderChip } from "@/lib/chat/webSearchDisplay";
+import { WEB_SEARCH_PROVIDER_LABELS, type ProviderChip } from "@/lib/chat/sources/webSearchDisplay";
 
 /**
  * 分源状态点：Kimi / 智谱 / Perplexity 各自一颗。

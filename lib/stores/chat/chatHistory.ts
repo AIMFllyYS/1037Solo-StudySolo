@@ -9,7 +9,7 @@ export type { ChatSession, SessionWindowMeta } from "@/lib/chat/sessionTypes";
 import { create } from 'zustand';
 import type { ChatMessage } from '@/lib/types/chat';
 import { type SessionMeta, loadManifest, migrateFromV1IfNeeded, scheduleOrphanChatGc } from '@/lib/storage/chatStorage';
-import { tailWindowSlice } from '@/lib/chat/turnSpine';
+import { tailWindowSlice } from '@/lib/chat/messages/turnSpine';
 
 import { useSessionRuns } from '@/lib/stores/chat/sessionRuns';
 import {registerResourceMetrics} from '@/lib/performance/resourceMetrics';

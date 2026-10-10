@@ -4,7 +4,7 @@
 import { findContentItem, readContentMarkdown } from "@/lib/content/loader";
 import { getOutlineIo } from "@/lib/ai/agent/tools/getOutline/tool";
 import { isAcademicYearId, type AcademicYearId } from "@/lib/constants/academic-year";
-import { isCompactedToolText, toolNameFromPart } from "@/lib/chat/compactStudyParts";
+import { isCompactedToolText, toolNameFromPart } from "@/lib/chat/messages/compactStudyParts";
 import type { ArtifactCatalogItem } from "@/lib/ai/agent/tools/getArtifact/types";
 import type { Skill } from "@/lib/types/skill";
 

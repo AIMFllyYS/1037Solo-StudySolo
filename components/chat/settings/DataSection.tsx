@@ -6,7 +6,7 @@ import { Cloud, DollarSign, Download, Ticket } from "lucide-react";
 import { StorageQuotaBlock } from "@/components/chat/billing/StorageQuota";
 import { useSettings } from "@/lib/stores/settings";
 import { useAuthSession } from "@/lib/hooks/auth/useAuthSession";
-import { exportAllChats } from "@/lib/chat/exportChats";
+import { exportAllChats } from "@/lib/chat/session/exportChats";
 import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
 import { clearCloudSyncMessage, useCloudSyncStatus } from "@/lib/sync/status";
 import { MAX_FLASHCARDS_POOL_BYTES, MAX_NOTES_POOL_BYTES, MAX_USER_SYNC_BYTES } from "@/lib/sync/types";

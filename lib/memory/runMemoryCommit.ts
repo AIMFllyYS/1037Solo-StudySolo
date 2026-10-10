@@ -1,8 +1,8 @@
 // 记忆批准的旁路请求：复用当前对话前缀（history + 同一套 body 构造），
 // 只在末尾追加撰写指令，不写入主 thread。笔记 / 闪卡共用。
 
-import { createAssistantPlaceholder, createUserMessage } from "@/lib/chat/messageParts";
-import { buildRequestMessages } from "@/lib/chat/buildRequestMessages";
+import { createAssistantPlaceholder, createUserMessage } from "@/lib/chat/messages/messageParts";
+import { buildRequestMessages } from "@/lib/chat/request/buildRequestMessages";
 import {
   buildChatRequestBody,
   estimateContextBudget,

@@ -13,7 +13,7 @@ import type { ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 import type { FlashcardCatalogItem, UserNoteCatalogItem } from "@/lib/ai/agent/tools/memoryCatalog";
-import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composerIntent";
+import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composer/composerIntent";
 import type { ClassAgentContext } from "@/lib/class/agentContext";
 import type {
   ProjectFileCatalogItem,

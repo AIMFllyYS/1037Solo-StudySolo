@@ -10,7 +10,7 @@ import {
   setMemoryCommitRunnerForTests,
   type RunMemoryCommitInput,
 } from "@/lib/memory/runMemoryCommit";
-import { createAssistantPlaceholder } from "@/lib/chat/messageParts";
+import { createAssistantPlaceholder } from "@/lib/chat/messages/messageParts";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 import { useReviewCards } from "@/lib/stores/learning/reviewCards";
 import { useRecordPreviews } from "@/lib/stores/learning/recordPreviews";

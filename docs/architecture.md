@@ -41,7 +41,7 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 输入器和 `lib/hooks/chat/useChat*` 使用既有 UIMessage 流协议，经 `/api/chat`（`/api/agent/chat` 有对应入口）进入请求校验、上下文/文件恢复、模型解析、身份及额度检查、`ToolLoopAgent` 和流输出。
 
-`ChatInput` 是草稿、附件、palette、发送/停止门控的组合入口，`composer/input/` 分出纯输入契约、模型默认值/覆盖、尺寸/焦点、按实例与会话绑定的排队，以及 toolbar/queue/quote 视图。队列继续按当时 sessionId 保存，只发送当前会话匹配项并等待下一轮 loading；输入字符限制位于 `lib/chat/inputLimits.ts`，公共入口继续显式转出原 props 和限制值。
+`ChatInput` 是草稿、附件、palette、发送/停止门控的组合入口，`composer/input/` 分出纯输入契约、模型默认值/覆盖、尺寸/焦点、按实例与会话绑定的排队，以及 toolbar/queue/quote 视图。队列继续按当时 sessionId 保存，只发送当前会话匹配项并等待下一轮 loading；输入字符限制位于 `lib/chat/composer/inputLimits.ts`，公共入口继续显式转出原 props 和限制值。
 
 `lib/ai/chat/server/handler.ts` 独占请求门控与响应包装，`messages.ts` 处理 UIMessage 压缩/恢复和模型消息转换，`generation.ts` 保持生成、取消、续写、本地文件续接、计费与结束事件的顺序，`contracts.ts` 提供窄输入契约。`lib/ai/agent/requestSchema.ts` 是显式公共入口，`request/` 分出共享限额、聊天/卫星 schema、安全错误文本与 parser。
 

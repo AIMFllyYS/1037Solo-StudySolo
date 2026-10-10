@@ -1,7 +1,7 @@
 import { type FormEvent, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
 
-import { prepareFeedbackText } from "@/lib/chat/feedbackExcerpt";
+import { prepareFeedbackText } from "@/lib/chat/feedback/feedbackExcerpt";
 
 import { useT } from "@/lib/i18n";
 

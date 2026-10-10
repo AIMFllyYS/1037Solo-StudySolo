@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
 import { ChevronDown, ChevronLeft, ChevronRight, Check, Compass, Zap, Plug, Server } from "lucide-react";
-import { submenuTop } from '@/lib/chat/modelMenuPosition';
+import { submenuTop } from '@/lib/chat/composer/modelMenuPosition';
 import { useSettings, type ThinkingEffort } from "@/lib/stores/settings";
 import { AUTO_MODEL_ID, AUTO_MODEL_INFO, MODELS, modelsForPicker, getAllModels, getModelInfoWithCustom, CUSTOM_PREFIX, modelSupportsThinkingEffort, clampThinkingEffort, modelMenuCategories, type ModelInfo } from "@/lib/ai/models";
 import { ModelIcon } from "@/components/icons/ModelBrandIcons";

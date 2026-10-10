@@ -1,6 +1,6 @@
 import type { ChatMessage, StoredChatAttachment } from "@/lib/types/chat";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
-import { compactStudyMessages } from "@/lib/chat/compactStudyParts";
+import { compactStudyMessages } from "@/lib/chat/messages/compactStudyParts";
 import {
   KIND_SIZE_LIMIT,
   KIND_QUOTA_POOL,

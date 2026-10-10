@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSettings } from "@/lib/stores/settings";
-import { TOGGLEABLE_TOOLS as TOOLS } from "@/lib/chat/toolPresentation";
+import { TOGGLEABLE_TOOLS as TOOLS } from "@/lib/chat/sources/toolPresentation";
 import { MAX_TOOL_ROUNDS_CAP, MAX_TOOL_STEPS, MIN_TOOL_ROUNDS } from "@/lib/ai/agent/toolRounds";
 import { MAX_TURN_BUDGET_CREDITS, MAX_USER_MAX_OUTPUT_TOKENS } from "@/lib/ai/outputLimits";
 import { declaredMaxOutputTokens, getModelInfoWithCustom } from "@/lib/ai/models";
@@ -10,7 +10,7 @@ import {
   DEFAULT_MAX_WAIT_MS,
   MAX_MAX_WAIT_MS,
   MIN_MAX_WAIT_MS,
-} from "@/lib/chat/createStallWatchdog";
+} from "@/lib/chat/streaming/createStallWatchdog";
 import { Toggle, h3Cls } from "./_shared";
 import { useT } from "@/lib/i18n";
 

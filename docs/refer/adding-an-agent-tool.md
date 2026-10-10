@@ -28,7 +28,7 @@ components/chat/toolCards/
 | `index.ts` | 同构桶：只导出类型 + presentation。**禁止** re-export `tool.ts` / `server.ts` / 卡片 |
 | `components/chat/toolCards/registry.tsx` | 客户端卡片注册表与顺序 |
 
-旧路径 `lib/ai/agent/toolTypes.ts`、`lib/chat/toolPresentation.ts` 只是兼容 re-export。
+旧路径 `lib/ai/agent/toolTypes.ts`、`lib/chat/sources/toolPresentation.ts` 只是兼容 re-export。
 
 ## 服务端 / 客户端边界
 

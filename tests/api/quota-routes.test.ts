@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { after, afterEach, before, type TestContext } from "node:test";
 import type { NextRequest } from "next/server";
 import { buildCustomModelRegistryId, CUSTOM_OPENAI_MODEL_ID, type CustomApiGroup } from "@/lib/ai/models";
-import { createUserMessage } from "@/lib/chat/messageParts";
+import { createUserMessage } from "@/lib/chat/messages/messageParts";
 import {
   PLATFORM_QUOTA_EXHAUSTED_MESSAGE,
   setQuotaGateTestDeps,
