@@ -65,8 +65,11 @@ function ConsentCardBody({ output, messageId }: { output: UpdateUserNoteOutput; 
   useEffect(() => {
     if (!autoApprove || isDelete || blocked || status !== "pending" || autoTriedRef.current) return;
     autoTriedRef.current = true;
-    const result = approve(id);
-    if (!result.ok) setFailure(result.reason ?? t("window.note.consent.writeFailed"));
+    // approve 的失败提示走 setState，排进微任务避免 effect 体内同步 setState 触发级联渲染。
+    queueMicrotask(() => {
+      const result = approve(id);
+      if (!result.ok) setFailure(result.reason ?? t("window.note.consent.writeFailed"));
+    });
   }, [autoApprove, isDelete, blocked, status, approve, id, t]);
 
   const onApprove = () => {

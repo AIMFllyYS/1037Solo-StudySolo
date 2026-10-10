@@ -17,7 +17,6 @@ import {
 } from "@/lib/auth/password";
 import { installAiAuthFetch } from "@/lib/auth/installAiAuthFetch";
 import { sessionAccessToken } from "@/lib/auth/sessionCookie";
-import { BootLoader } from "@/components/shared/BootLoader";
 import {
   readPersistedSession,
   snapshotAuthSession,
@@ -116,9 +115,12 @@ function useCloudSyncOnAuth(status: AuthStatus, userId: string | null) {
 export function AuthProvider({
   children,
   client,
+  loader = null,
 }: {
   children: ReactNode;
   client?: AuthRuntimeClient | null;
+  /** 账号数据水合期间的兜底 UI，由调用方（app 层）注入——lib 不得反向依赖 components。 */
+  loader?: ReactNode;
 }) {
   const value = useAuthSessionController(client);
   const fetchClient = client ?? null;
@@ -136,7 +138,7 @@ export function AuthProvider({
   },[value.status,value.userId]);
   const ready=value.status!=="loading"&&readyOwner===value.userId;
   useCloudSyncOnAuth(ready?value.status:"loading",ready?value.userId:null);
-  return <AuthSessionContext.Provider value={value}>{ready?children:<BootLoader />}</AuthSessionContext.Provider>;
+  return <AuthSessionContext.Provider value={value}>{ready?children:loader}</AuthSessionContext.Provider>;
 
 }
 

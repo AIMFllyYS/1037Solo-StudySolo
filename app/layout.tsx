@@ -4,6 +4,7 @@ import { AuthProvider } from "@/lib/hooks/useAuthSession";
 import AppShell from "@/components/layout/AppShell";
 import MotionPreferenceProvider from "@/components/layout/MotionPreferenceProvider";
 import { BootSplash } from "@/components/shared/LoadingStates";
+import { BootLoader } from "@/components/shared/BootLoader";
 import "./globals.css";
 import "katex/dist/katex.min.css";
 import "@vidstack/react/player/styles/base.css";
@@ -58,7 +59,7 @@ export default function RootLayout({
       </head>
       <body>
         <Suspense fallback={<BootSplash />}>
-          <AuthProvider>
+          <AuthProvider loader={<BootLoader />}>
             <MotionPreferenceProvider>
               <AppShell>{children}</AppShell>
             </MotionPreferenceProvider>

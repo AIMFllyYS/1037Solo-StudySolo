@@ -13,7 +13,15 @@ const THINKING_MIN=84,QUESTION_MIN=140,NOTE_MIN=120
 function useRailHeight(key:string,initial:number,min:number){
   const [height,setHeight]=useState(initial),latest=useRef(initial)
   useEffect(()=>{
-    try{const saved=Number(window.localStorage.getItem(key));if(Number.isFinite(saved)&&saved>=min&&saved<=900){latest.current=saved;setHeight(saved)}}catch{/* ignore */}
+    try{
+      const saved=Number(window.localStorage.getItem(key));
+      if(Number.isFinite(saved)&&saved>=min&&saved<=900){
+        latest.current=saved;
+        // 挂载后一次性从 localStorage 还原高度（SSR 期读不到 window，只能在 effect 做）。
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setHeight(saved);
+      }
+    }catch{/* ignore */}
   },[key,min])
   const set=(next:number)=>{latest.current=next;setHeight(next)}
   const commit=()=>{try{window.localStorage.setItem(key,String(latest.current))}catch{/* ignore */}}
