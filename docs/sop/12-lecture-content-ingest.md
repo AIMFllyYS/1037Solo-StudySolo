@@ -6,7 +6,7 @@
 
 与旧 `03-recording-processing.md` 的区别：03 只产出单篇课堂材料；本 SOP 面向**四材料打包接入 + 严格校验 + PR 合入**，并冻结目录形态与作者契约。
 
-规划依据：`docs/analysis/Content/2026-09-13-classroom-content-integration-plan.md`（P0 契约 / P1 只读文章链 / P2 学习闭环 / P3 内容同步）。
+规划依据：`docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Content/2026-09-13-classroom-content-integration-plan.md`（P0 契约 / P1 只读文章链 / P2 学习闭环 / P3 内容同步）。
 
 ## 输入物料
 
@@ -122,7 +122,7 @@ pnpm typecheck
 
 ## 参考文件（相对路径链接）
 
-- 规划：`docs/analysis/Content/2026-09-13-classroom-content-integration-plan.md`
+- 规划：`docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Content/2026-09-13-classroom-content-integration-plan.md`
 - 契约/校验：`lib/content/lectures/`（roles/subjectAliases/schema/extractTranscript/extractHtml/hash/catalog/validate/paths）
 - 导航适配：`lib/content-data/lectures.ts`、`lib/content-data/manifest.ts`
 - 加载/渲染：`lib/content/loader.ts`、`app/[subject]/[category]/[id]/ContentPageClient.tsx`、`components/notes/PlainTextReader.tsx`

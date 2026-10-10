@@ -39,6 +39,8 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 `lib/ai/models.ts` 是保持 Node/tsx 兼容的稳定公共入口。内部 `models/contracts.ts` 管理模型与自定义 API 契约，`catalog.ts` 管理固定注册数据与查找，`aliases.ts` 管理旧标识兼容，`thinking.ts` 管理上游思考参数，`selection.ts` 管理菜单分组，`custom.ts` 管理自定义分组解析。`lib/ai/provider.ts`、`lib/ai/sdk/` 和计费服务保留实际上游协议、请求和错误处理。Fast 系列选择与思考强度相互独立：前者换真实模型变体，后者沿用模型支持的上游参数。
 
+当前模型维护入口见 [模型注册说明](./refer/model-registry.md)，旧价格和 loop 调研只保留在归档中，不用它们覆盖真实服务端配置和结算。
+
 Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 presentation/type 入口分离；结果卡片位于聊天工具展示域。工具、沙箱、连接器均沿用真实权限、所有者和计费规则。
 
 ## 数据与状态

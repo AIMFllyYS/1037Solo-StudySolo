@@ -1,0 +1,531 @@
+{
+  "archivedAt": "2026-10-10T08:11:40.120Z",
+  "reason": "Old work queues, loop plans and dated investigation snapshots are replaced as maintenance entrypoints by current architecture, standards and the active refactor record. Their unfinished historical tasks are not claimed complete.",
+  "records": [
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/00-research-plan.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/00-research-plan.md",
+      "bytes": 37736,
+      "sha256": "dd5b7520c588d3d6a3ddb03a6c69bb927836ec17fb170186566fa8417d2ff99d"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/01-architecture-overview.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/01-architecture-overview.md",
+      "bytes": 21023,
+      "sha256": "b6ede0acce7e4e4d0a0e566e61b1c51d17e42954364747cee6cff2e890f3c0eb"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/02-content-management.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/02-content-management.md",
+      "bytes": 29564,
+      "sha256": "821ee78bf077c780a7ad5e528edd360c9b3f28a26e192aec13f44f6ed56b9ac5"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/03-rendering-architecture.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/03-rendering-architecture.md",
+      "bytes": 48029,
+      "sha256": "44c16d11c4cfe5a2c8574bcd4b3150f8ce52acfee0dc1f168c6f5be7d0610931"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/04-ai-chat-system.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/04-ai-chat-system.md",
+      "bytes": 38725,
+      "sha256": "5383059640beb3c9dea26f89c92351b82e945536f143491c70f1d68cd6f58901"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/05-storage-architecture.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/05-storage-architecture.md",
+      "bytes": 39722,
+      "sha256": "ce83ed12c296576f53f2cddacfe164fd8de1b470b7f8c5c9d69f55bc02f19dbd"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/06-state-management.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/06-state-management.md",
+      "bytes": 45601,
+      "sha256": "d54b903efec125bd926db265b95c11360ce075901a592bfd54e9d0c5412f892f"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/07-performance-optimization.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/07-performance-optimization.md",
+      "bytes": 31001,
+      "sha256": "bf0e6fd275332989f8bad42a4736effc320fba8a3b7a190822c1b8f70ae72a99"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/08-interactive-components.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/08-interactive-components.md",
+      "bytes": 34283,
+      "sha256": "437861f1f3625182bdb93e793b488d197fcf29b673ca8c5eb0df27b2ee9148e2"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/09-manim-animation.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/09-manim-animation.md",
+      "bytes": 44489,
+      "sha256": "b19f172abebf911b307ffc13aac64680b1bbb5184e69c30adf0d340c5c665459"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/10-routing-ssr-ssg.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/10-routing-ssr-ssg.md",
+      "bytes": 33181,
+      "sha256": "e61512b9b7ccb2511b59bd74707e842a15a54d84fe9ba33c2672029848a36a46"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/11-electron-desktop.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/11-electron-desktop.md",
+      "bytes": 24302,
+      "sha256": "dbf371982070f514f8ac70ed40afd7a392972522776d95fc695cd3aa59bc99d6"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/12-testing-system.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/12-testing-system.md",
+      "bytes": 25199,
+      "sha256": "e5e48f47ec8025a3f2071728defe2012388ae704742c9891a7ddf16d0e3dc82d"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/13-build-scripts.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/13-build-scripts.md",
+      "bytes": 28048,
+      "sha256": "4e12333348cf01b9a084e3d51d8963b7fd92ccf3abe03a4e322033daac20876f"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/14-sop-content-pipeline.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/14-sop-content-pipeline.md",
+      "bytes": 27692,
+      "sha256": "46f10f18f427db5dde433f81a6e808c1da4d9024fb5da1329225f04ff6c90b21"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/15-nextjs-compliance.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/15-nextjs-compliance.md",
+      "bytes": 47677,
+      "sha256": "c8a703ca3aa920fc3491c2e58d9f5997870532e9462744558fb086292ec26564"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/16-automation-platform.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/16-automation-platform.md",
+      "bytes": 36001,
+      "sha256": "ba3035018f079962c45723d9d1f84ed9ed5e4bd4f090f2ac403af30708b6c86b"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/9-9/overview.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/9-9/overview.md",
+      "bytes": 22732,
+      "sha256": "8476f2dc58ff6540a70062a7c5d40432e3a054c679825854ff530b8404a440b9"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/00-agent-issues-consolidated.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/00-agent-issues-consolidated.md",
+      "bytes": 36727,
+      "sha256": "1a0b7a62c7bcf33b7a6edb6bb0e071380c2682fdf18a9e54c031798585e7d714"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/01-context-integrity-fixes.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/01-context-integrity-fixes.md",
+      "bytes": 9685,
+      "sha256": "b96cce326449b26d7ada1e9f9bfc2f3057917c7aedbe308fc91978b92917a3b8"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/01-goal-mode-runbook.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/01-goal-mode-runbook.md",
+      "bytes": 10965,
+      "sha256": "be43f172d6a7b84dcf420357354402fff5f1474fbc2e14e6c3befadbba40b27b"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/02-provider-routing-and-image-2026-09.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/02-provider-routing-and-image-2026-09.md",
+      "bytes": 9760,
+      "sha256": "0e9f2863d5f00d46bf807f88124b465c8606609f50cad58f95a6159343f0dd18"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/03-multi-provider-web-search-2026-09.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/03-multi-provider-web-search-2026-09.md",
+      "bytes": 6661,
+      "sha256": "31d0a4492aec4f1b0a5c94df4fddb9bb0177c2cccf15df404d1440f178b2c1e1"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/agent-analysis-cluade-4-6.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/agent-analysis-cluade-4-6.md",
+      "bytes": 19989,
+      "sha256": "3895c71a9a40e09613fc6a709acaf2fa8abcaf41d178f4fded49c08623de09fb"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/agent-analysis-cursor-grok.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/agent-analysis-cursor-grok.md",
+      "bytes": 86731,
+      "sha256": "9b1a9326d9252ea798aee38e124a6ef5270e920433b9f7661184127edc1a3bb9"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/agent-analysis-gemini.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/agent-analysis-gemini.md",
+      "bytes": 25525,
+      "sha256": "e8376fa4596d657876acf763e7450a3fc289c202408015aed580bd317195909f"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/agent-analysis-grok-cli.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/agent-analysis-grok-cli.md",
+      "bytes": 54061,
+      "sha256": "bb13409a702bf777be0a595ada8033fa66fd869d675375edbe53dbaa4eea15dc"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/agent-analysis-kimi-k2-8.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/agent-analysis-kimi-k2-8.md",
+      "bytes": 31268,
+      "sha256": "fb0da2cf118c2f4f359f157b69c53ccadb0b11b2c1550ab691813cbfd04d5ffa"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/agent-analysis-kimi-k3.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/agent-analysis-kimi-k3.md",
+      "bytes": 17517,
+      "sha256": "58e3ea07e95cf6a569c976954cd37434a723a8bd5920217234b802692d9cfdd6"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Agent/agent-model-comparison.html",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Agent/agent-model-comparison.html",
+      "bytes": 49905,
+      "sha256": "55066e631ab736f9f852c5e99d9066ead1f94d3c1ef8566611d5b8fee05ad163"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/Content/2026-09-13-classroom-content-integration-plan.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/Content/2026-09-13-classroom-content-integration-plan.md",
+      "bytes": 46870,
+      "sha256": "bac726d485f98929759a226262e0161c9a4594bee95ba471048345806340ab99"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/perf-audit-2026-09/00-summary.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/perf-audit-2026-09/00-summary.md",
+      "bytes": 8309,
+      "sha256": "c3310affc61f8ed374f209bba97dbbace4363e9ae9765aede647d64718843556"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/perf-audit-2026-09/README.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/perf-audit-2026-09/README.md",
+      "bytes": 2348,
+      "sha256": "0087f55447449ef61c28a89299086aac9ac3d95df367ae218e48365b20e8a04d"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/perf-audit-2026-09/d1-windowed-session.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/perf-audit-2026-09/d1-windowed-session.md",
+      "bytes": 11682,
+      "sha256": "d2e3b58b2d950470739c1cc049c264c756fcd751c24b559d1a2b0588056ee536"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/perf-audit-2026-09/d2-chat-rendering.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/perf-audit-2026-09/d2-chat-rendering.md",
+      "bytes": 7537,
+      "sha256": "8b484b68a4c86607c52d52a66573da9448b130bdd012e3d6504feaec26ebf8f9"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/perf-audit-2026-09/d3-persistence-sync-startup.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/perf-audit-2026-09/d3-persistence-sync-startup.md",
+      "bytes": 8851,
+      "sha256": "9e6b445900a0bc58ff30c76be5d8da6be5e6f2b26c8832245cedd1e0236a2d1c"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/perf-audit-2026-09/d4-bundle-build.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/perf-audit-2026-09/d4-bundle-build.md",
+      "bytes": 7642,
+      "sha256": "78f51a9f4d02a747813d3017e87fb1dc2ee71d232ee133eb15d70b9d649386ec"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/perf-audit-2026-09/d5-content-readers.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/perf-audit-2026-09/d5-content-readers.md",
+      "bytes": 7718,
+      "sha256": "e8a8e2e66ad281af6c57eef494499bdef1ff7ddcce1b80be786493a4fb81f3a6"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/perf-audit-2026-09/d6-search-api.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/perf-audit-2026-09/d6-search-api.md",
+      "bytes": 7342,
+      "sha256": "7523a09857ecab8ec5d5d9442747b8d66147a597571fad9fdf221fb799d29f68"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/perf-audit-2026-09/d7-memory-css.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/perf-audit-2026-09/d7-memory-css.md",
+      "bytes": 7685,
+      "sha256": "7671b07caa00138ca4c619b86ad7eed304bd8d54185c93be0bbaed28fb6d9a02"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/perf-audit-2026-09/fix-roadmap.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/perf-audit-2026-09/fix-roadmap.md",
+      "bytes": 6963,
+      "sha256": "5a9f1330694e24e2b3620fcabfa3eefff5ff0181f0a0f73a4adeffa98654e4c7"
+    },
+    {
+      "action": "move",
+      "source": "docs/analysis/perf-audit-2026-09/measurements.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/perf-audit-2026-09/measurements.md",
+      "bytes": 6269,
+      "sha256": "f6440f6e8eafe0e8404e5262af536ec3d9db79dc967fd9fbfcda26cb56e76627"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/README.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/README.md",
+      "bytes": 3279,
+      "sha256": "05483c662ea256a0ca75611bc22cc8a37686d697f82daf8f9f75a5be8e7e33e1"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/studysolo-unattended-handoff.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-unattended-handoff.md",
+      "bytes": 21725,
+      "sha256": "c5bbddfb290e418d6a1ff1ee560d32bd34ed65e47bdc696ea7b47e53a6f4990d"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/studysolo-workstreams.json",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-workstreams.json",
+      "bytes": 48182,
+      "sha256": "704e52717fd4e1996bf1303fba14dc1ba4a18e2b3e1b74652b4a0c0ffb1d004b"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/three-lines-execution-plan.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/three-lines-execution-plan.md",
+      "bytes": 4183,
+      "sha256": "18f3edc1ef92e9d03a574f64074ac4bec28ed8f588365e7c444ae46d96db6f95"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/unattended-workstream-template.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/unattended-workstream-template.md",
+      "bytes": 5165,
+      "sha256": "30f5df8de200c8c5a6937d3ddbbf4530e2ef32207df6c9d849b0b2bb422e4885"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/workstreams/browser-basics-2026-10-05.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/workstreams/browser-basics-2026-10-05.md",
+      "bytes": 16772,
+      "sha256": "831724faee91b5e646ce8cf932a8223479ef1884ef3fd257b29e9367be44262d"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/workstreams/core-mcp-2026-10-04.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/workstreams/core-mcp-2026-10-04.md",
+      "bytes": 27430,
+      "sha256": "acdda45a1aa0cb71ec986203c7c1bc71fd5fff387bf99ebb6214a9b429679c54"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/workstreams/core-sandbox-2026-10-05.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/workstreams/core-sandbox-2026-10-05.md",
+      "bytes": 21859,
+      "sha256": "833c0331145be5ae046fa83ccfbd5276071b51839557e14424237400ded4c362"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/workstreams/feedback-admin-2026-10-05.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/workstreams/feedback-admin-2026-10-05.md",
+      "bytes": 13238,
+      "sha256": "75049ed255b80089a8303dd510ace0dabaa222d0670471c68fb65d8c21460686"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/workstreams/review-notes-2026-10-05.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/workstreams/review-notes-2026-10-05.md",
+      "bytes": 13805,
+      "sha256": "b99ffe7d22397fffb13fa955d04671a0fd14d9a55ad9f7e64a666798650f163a"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/workstreams/sandbox-readiness-2026-10-05.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/workstreams/sandbox-readiness-2026-10-05.md",
+      "bytes": 46087,
+      "sha256": "da1f80fe92b41f03158c81f504b5bc8011da04dc10b9c4c41caba8a28f9ae37d"
+    },
+    {
+      "action": "move",
+      "source": "docs/handoff/workstreams/ui-dialogue-2026-10-05.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/workstreams/ui-dialogue-2026-10-05.md",
+      "bytes": 25755,
+      "sha256": "2a1e1f567bff2febc597af0c7231783d7ec1f95666312fc3fada3158a4efab6f"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/00-loop-map.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/00-loop-map.md",
+      "bytes": 20252,
+      "sha256": "8baeb21c9e55b91a83edf8e3c16680bc383e5c46eb0140a1929396b27faa2b4f"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/99-goal-mode-prompt.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/99-goal-mode-prompt.md",
+      "bytes": 16875,
+      "sha256": "9c1429842c51780269bc19c059e0d4225c58ec29359ed46827dacbbfbc92246a"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/AUTH-MENU-FOLLOWUP.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/AUTH-MENU-FOLLOWUP.md",
+      "bytes": 3549,
+      "sha256": "637deda8adf7719c6e52f16cae1fef2181eb2298c9a546a61e776aa80e328993"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/GATEWAY-API-RECOVERY.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/GATEWAY-API-RECOVERY.md",
+      "bytes": 5796,
+      "sha256": "18c1017f12a002d8eba909238875e43def63fe96d5b89c154c095d3983a12859"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/L0-model-catalog.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/L0-model-catalog.md",
+      "bytes": 31090,
+      "sha256": "117b154f73aad9ddaf539ab03aea9fe5ed3fdaa8ebf15208cacbf75d23ff522e"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/L1-billing-quota.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/L1-billing-quota.md",
+      "bytes": 18167,
+      "sha256": "f0748d2c6785be393ae8b9bbce06c533ae813e0dd62b8e89aae66b8a9eade9b7"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/L2-server-boundary.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/L2-server-boundary.md",
+      "bytes": 13123,
+      "sha256": "8465cfb387e97d1c321da9b4659e94b18a8d4a2787fa96928956b5cec8c2ad89"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/L3-context-cache.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/L3-context-cache.md",
+      "bytes": 26470,
+      "sha256": "fde32e771629fc1c244d972562b9857e9ba4b84d96f778205e53c6d7ceef22e9"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/L4-model-keys.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/L4-model-keys.md",
+      "bytes": 24612,
+      "sha256": "4d7f02b6db16c1116146a299995f5fe09c123bbf67e5d96e5a610ae5bdd30724"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/L5-message-surface.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/L5-message-surface.md",
+      "bytes": 20317,
+      "sha256": "e5787f2d5e80053aca07c62789fa0c9de35da3f408c671ff648ee684a6424aac"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/L6-cloud-sync.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/L6-cloud-sync.md",
+      "bytes": 12447,
+      "sha256": "ca30afdf91b74428697a6afee1030a8a9ad451bde60be979edeaba3885b91446"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/L7-copy-and-debt.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/L7-copy-and-debt.md",
+      "bytes": 16410,
+      "sha256": "87997b22f11ce4e418dcb44112ce9bbec3e22c1b3a6d932b41a13d00d9fc05bb"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/MENU-ANCHOR-LIVE-MODELS.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/MENU-ANCHOR-LIVE-MODELS.md",
+      "bytes": 5492,
+      "sha256": "53232fea9d5e6199a5e77071faa7c2f056142fa43ea342da8b968fdb673adc49"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/MODELS.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/MODELS.md",
+      "bytes": 15177,
+      "sha256": "6e317b814889587f68f782f1dde0ad7340b4bab8eee3375a26675828fb9b9f8a"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/STABILIZATION.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/STABILIZATION.md",
+      "bytes": 7416,
+      "sha256": "23cd9fc1ee8ebef99e6bbf1c5cb2087324a14654225ff5bc422c99a5a3dcfacc"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/Agent-refactor/UNICODE-REQUEST-FIX.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/UNICODE-REQUEST-FIX.md",
+      "bytes": 5140,
+      "sha256": "afb99bfc18aa3c192f4875c836f77952f7eae4add87519b237a690102e67a48c"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/agent-right-panel-unification.execution.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/agent-right-panel-unification.execution.md",
+      "bytes": 80662,
+      "sha256": "ce539e645fff2292f2b810defde34ddf71b6934b329a171ca78c866fba910b12"
+    },
+    {
+      "action": "move",
+      "source": "docs/plans/agent-right-panel-unification.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/agent-right-panel-unification.md",
+      "bytes": 35238,
+      "sha256": "d9dafe7aea48f72f574c4fbae08f46904a77e1f5e7df0702b4a7de457d03565c"
+    },
+    {
+      "action": "snapshot",
+      "source": "docs/sop/07-testing.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/original-references/docs/sop/07-testing.md",
+      "bytes": 10676,
+      "sha256": "8736084f669a87c52d598905edcab89ae771ced2ba5ccb2d258f647b07361274"
+    },
+    {
+      "action": "snapshot",
+      "source": "docs/refer/storage-architecture.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/original-references/docs/refer/storage-architecture.md",
+      "bytes": 11661,
+      "sha256": "def60494fecea99148f9b0eae95993af80a99aaed592be908eb32a24e28c77a7"
+    },
+    {
+      "action": "snapshot",
+      "source": "docs/archive/README.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/original-references/docs/archive/README.md",
+      "bytes": 8417,
+      "sha256": "d8814ed5c7ab458fb2d8b565e760bfdaf4176be41c47a15175810bf860427785"
+    }
+  ]
+}

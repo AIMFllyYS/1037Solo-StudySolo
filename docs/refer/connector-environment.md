@@ -1,8 +1,8 @@
 # 连接器服务端环境配置
 
-更新：2026-10-04。本页说明应用级凭证与运行时环境的配置。环境就绪不等于用户 OAuth 已关联，也不等于 Agent 已获得工具。当前部署交接与剩余验收见[完整交接](../handoff/studysolo-unattended-handoff.md)及[唯一账本](../handoff/studysolo-workstreams.json)。
+更新：2026-10-04。本页说明应用级凭证与运行时环境的配置。环境就绪不等于用户 OAuth 已关联，也不等于 Agent 已获得工具。当前部署交接与剩余验收见[完整交接](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-unattended-handoff.md)及[唯一账本](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-workstreams.json)。
 
-当前服务范围与未交付项见[完整交接](../handoff/studysolo-unattended-handoff.md)。早期选型快照已归档。Google 官方也有 Workspace MCP，但当前是有资格与公开使用限制的 Developer Preview；本页配置的是普通 API/OAuth 应用，不能据此声称对应 MCP 组件已启用。Notion / Todoist 官方托管 MCP 的动态注册与用户 token 不要求先加全局个人 API key。
+当前服务范围与未交付项见[完整交接](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-unattended-handoff.md)。早期选型快照已归档。Google 官方也有 Workspace MCP，但当前是有资格与公开使用限制的 Developer Preview；本页配置的是普通 API/OAuth 应用，不能据此声称对应 MCP 组件已启用。Notion / Todoist 官方托管 MCP 的动态注册与用户 token 不要求先加全局个人 API key。
 
 ## 凭证放在哪里
 
@@ -63,7 +63,7 @@ npm run connectors:check -- --live-github
 
 `check` 按 Next 文档中的优先级合并环境文件与当前进程环境，只输出非敏感状态。`--live-github` 使用 App JWT 调用 GitHub `GET /app` 验证身份，不创建安装 token，不读取仓库文件。JWT、Client Secret、完整响应体均不写日志。
 
-`check --production` 仍按此加载优先级，不是 `.env.production` 单文件审计；开发用 `.env.local` 的生产关闭值可能覆盖准备文件。本包另以单文件解析完成非敏感配置检查，不更新环境值，也不将本机准备文件当作当前正式进程环境。当前验证边界见[工作报告](../handoff/workstreams/core-mcp-2026-10-04.md)。
+`check --production` 仍按此加载优先级，不是 `.env.production` 单文件审计；开发用 `.env.local` 的生产关闭值可能覆盖准备文件。本包另以单文件解析完成非敏感配置检查，不更新环境值，也不将本机准备文件当作当前正式进程环境。当前验证边界见[工作报告](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/workstreams/core-mcp-2026-10-04.md)。
 
 服务端可复用 `lib/connectors/config.server.ts` 的 GitHub / Google 配置读取。`GET /api/health/connectors` 返回只包含可用状态与错误类别的投影，响应禁止缓存，不返回 Client Secret、私钥、加密密钥或文件路径。2026-10-04 起 `authorizationImplemented=true`、`authorizationScope=runtime_implementation`、`nativeAgentIntegrationImplemented=true` 表示代码已实现；`productionVerificationComplete=false` 表示生产验收未完成，不能推断任何个人账号已授权。当前原生合同见 [运行时](learning-connector-runtime.md)。
 

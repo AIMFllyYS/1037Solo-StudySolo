@@ -1,6 +1,6 @@
 # 云端命令与学习连接器接入报告
 
-日期：2026-10-04。用户反馈整体不可用；当前范围和用户验收只看[交接](../handoff/studysolo-unattended-handoff.md)与[账本](../handoff/studysolo-workstreams.json)。此前技术实现由主智能体完成。后续包括MCP与云沙箱的所有板块，统一派GPT-6.1 Sol High子智能体；主智能体统筹与验收，最多一名子执行。
+日期：2026-10-04。用户反馈整体不可用；当前范围和用户验收只看[交接](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-unattended-handoff.md)与[账本](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-workstreams.json)。此前技术实现由主智能体完成。后续包括MCP与云沙箱的所有板块，统一派GPT-6.1 Sol High子智能体；主智能体统筹与验收，最多一名子执行。
 
 ## 已有代码与历史局部证据（不代表用户交付）
 
@@ -45,7 +45,7 @@ server instrumentation每15秒捕获运行结果并处理回收队列；已释�
 
 用户授权本轮新增累计≤100元、月预算≤100元。应用配置不能提高到此上限以上，另默认保留30元准备/存储余量，计算预留使用余下70元；每个15分钟会话按最高1元/小时再加0.05元余量保守预留0.30元。实际账单仍要核对；不把预留视为用户钱包收费或 measured成本。
 
-同一provider绑定的开发file账本与生产DB账本原来独立。当前真实环境新create要求shared预算authority、准确RootSolo与已审查legacy marker；新增reconciled RPC候选在原capacity事务锁内检查marker和所有unreleased占位。local1.8与shared.3的只读对账不是invoice，不搬开发用户/会话/grant、不删除旧reserve。新RPC/import/env尚待父审和实际账单核查，未准备时fail closed，不能退回第二份本地预算。精确候选和实时schema/history证据见[联合CORE报告](../handoff/workstreams/core-sandbox-2026-10-05.md)。本轮runId保持原10/04，不因午夜重置。
+同一provider绑定的开发file账本与生产DB账本原来独立。当前真实环境新create要求shared预算authority、准确RootSolo与已审查legacy marker；新增reconciled RPC候选在原capacity事务锁内检查marker和所有unreleased占位。local1.8与shared.3的只读对账不是invoice，不搬开发用户/会话/grant、不删除旧reserve。新RPC/import/env尚待父审和实际账单核查，未准备时fail closed，不能退回第二份本地预算。精确候选和实时schema/history证据见[联合CORE报告](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/workstreams/core-sandbox-2026-10-05.md)。本轮runId保持原10/04，不因午夜重置。
 
 Supabase继续承担 PostgreSQL状态、权限、预算与私有产物存储。它没有承担任意命令进程的执行。已将 Shared三份连接器/执行/技能安装迁移经当前 Supabase MCP应用到 RootSolo，ACL、不可变owner、围栏、预算在 PostgreSQL/PGlite验证。PGlite为单连接验证，不代表多连接生产压测。
 
@@ -77,7 +77,7 @@ GitHub仓库公开不等于容器镜像自动公开：[官方Container registry�
 
 本机 `.env.local`启用基础开发运行；本机 `.env.production`已按用户要求完成待部署配置校验，CLOUD_SANDBOX_ENABLED/CONNECTOR_ALLOW_PRODUCTION为true；尚未更新远端，不能当作生产验收通过。新增/管理的名称为 CLOUD_SANDBOX_ENABLED、REGION、DOMAIN、API_URL、API_KEY、TEMPLATE、APP_ORIGIN、ENCRYPTION_KEY、MONTHLY_BUDGET_CNY、RUN_BUDGET_CNY、BUDGET_RUN_ID、FIXED_COST_CNY、SKILLS_VERSION、SKILLS_TEMPLATE（均带 CLOUD_SANDBOX_前缀）。初次开发配置未更新Windows全局或远端进程环境；随后新增的服务器预检配置见下一段。密钥值不在报告中记录。
 
-2026-10-04用户指出预检VPS承担VPN后，该私有预检已撤回：专属进程/daemon/SSH forward停止，配置日志本机受限备份后移除仅本轮两个新增目录，释放3.98GiB。正式网站未切换，禁止再次在VPN VPS部署。候选环境与完整Web归档仍保存在本机；正式网页按用户现有master/dev推送触发部署；必要时才按准确Grok BOT / Notebook Agent协作，详情见[当前交接](../handoff/studysolo-unattended-handoff.md)。阿里云沙箱的实际运行不发生在该VPS。Google与GitHub正式回调已现场确认保存并刷新读回，现有callback origin匹配；五项Google scope/Testing、GitHub原权限/密钥不变，两条GitHub回调通配均关闭。
+2026-10-04用户指出预检VPS承担VPN后，该私有预检已撤回：专属进程/daemon/SSH forward停止，配置日志本机受限备份后移除仅本轮两个新增目录，释放3.98GiB。正式网站未切换，禁止再次在VPN VPS部署。候选环境与完整Web归档仍保存在本机；正式网页按用户现有master/dev推送触发部署；必要时才按准确Grok BOT / Notebook Agent协作，详情见[当前交接](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-unattended-handoff.md)。阿里云沙箱的实际运行不发生在该VPS。Google与GitHub正式回调已现场确认保存并刷新读回，现有callback origin匹配；五项Google scope/Testing、GitHub原权限/密钥不变，两条GitHub回调通配均关闭。
 
 真实OCI验收后，仅将本项目两个env文件中的`CLOUD_SANDBOX_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_TEMPLATE`、`CLOUD_SANDBOX_SKILLS_VERSION`更新为已验收组合。无关变量逐项保持，旧文件留在受限备份目录；原API key及加密key没有旋转，生产开关保持false。GitHub构建环境Secret是另一受限服务端配置，不是Windows全局变量或EXE内置凭据。
 

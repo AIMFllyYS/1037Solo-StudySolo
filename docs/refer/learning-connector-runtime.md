@@ -1,6 +1,6 @@
 # 学习连接器原生运行时
 
-更新：2026-10-04。本文说明已落地代码，不等同于真实账号端到端验收或生产发布。当前范围/用户验收以[交接](../handoff/studysolo-unattended-handoff.md)和唯一[任务账本](../handoff/studysolo-workstreams.json)为准。用户反馈整体不可用，需要完整正常账号路径返工；本文描述已有代码，不能作为完成表。
+更新：2026-10-04。本文说明已落地代码，不等同于真实账号端到端验收或生产发布。当前范围/用户验收以[交接](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-unattended-handoff.md)和唯一[任务账本](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/studysolo-workstreams.json)为准。用户反馈整体不可用，需要完整正常账号路径返工；本文描述已有代码，不能作为完成表。
 
 ## 接入与调用链
 
@@ -60,4 +60,4 @@ OAuth JSON 与 Zotero token／权限响应按实际接收字节设限，包含�
 
 所有远程执行固定于提供者审查过的 HTTPS 地址；不接受任意 MCP URL、stdio 命令、额外授权 header 或模型给的 token。`readOnlyHint` 只是提供者描述，不授予调用权限；未知工具默认不披露和不执行。
 
-浏览器表单/回调失败在固定配置 origin 上以白名单错误 code 返回插件市场，JSON/API 调用仍保留错误状态码与响应。页面完成实际状态查询后才消费回站提示；`connected` 查询参数不能建立授权，也不能绕过当前用户状态。一次提示、URL 清理与 Toast 在同一个可取消提交中执行，支持 StrictMode。实际环境、用户授权和页面端测证据见本包[工作报告](../handoff/workstreams/core-mcp-2026-10-04.md)。
+浏览器表单/回调失败在固定配置 origin 上以白名单错误 code 返回插件市场，JSON/API 调用仍保留错误状态码与响应。页面完成实际状态查询后才消费回站提示；`connected` 查询参数不能建立授权，也不能绕过当前用户状态。一次提示、URL 清理与 Toast 在同一个可取消提交中执行，支持 StrictMode。实际环境、用户授权和页面端测证据见本包[工作报告](../archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/workstreams/core-mcp-2026-10-04.md)。

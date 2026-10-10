@@ -2,6 +2,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { markdownLinks } from "./markdown-links.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const excluded = ["docs/archive/", "docs/plans/archive/", "docs/design-snapshots/", "docs/vendor/", "docs/refer/dist/"];
@@ -19,16 +20,13 @@ const broken = [];
 let checked = 0;
 for (const file of files) {
   const markdown = readFileSync(path.join(root, file), "utf8");
-  // Preserve line numbers while excluding illustrative code.
-  const prose = markdown.replace(/```[^\n]*\n[\s\S]*?```/g, (block) => "\n".repeat(block.split("\n").length - 1));
-  for (const match of prose.matchAll(/!?\[[^\]\n]*\]\((<[^>]+>|[^\s)]+)(?:\s+"[^"]*")?\)/g)) {
-    const target = match[1].replace(/^<|>$/g, "");
+  for (const { target, line } of markdownLinks(markdown)) {
     if (/^(?:[a-z][a-z0-9+.-]*:|#|\/)/i.test(target)) continue;
     const local = decodeURIComponent(target.split("#")[0].split("?")[0]);
     if (!local) continue;
     checked += 1;
     if (!existsSync(path.resolve(root, path.dirname(file), local))) {
-      broken.push({ file, line: prose.slice(0, match.index).split("\n").length, target });
+      broken.push({ file, line, target });
     }
   }
 }

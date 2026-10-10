@@ -6,7 +6,7 @@
  * 开启 = 选中 Fast 变体，关闭 = 回到标准模型，思考深度沿用并按目标模型的合法档位收敛。
  *
  * 新增一对：在 FAST_MODE_PAIRS 里加一行，并保证两个 id 都在 lib/ai/models.ts 的 MODELS 中；
- * 同时更新 docs/plans/Agent-refactor/MODELS.md 的「Fast 模式注册表」一节。
+ * 同时更新 docs/refer/model-registry.md 的「Fast 系列」一节。
  * lib/ai/fastModeRegistry.test.tsx 会校验每个 id 都真实存在。
  */
 export interface FastModePair {

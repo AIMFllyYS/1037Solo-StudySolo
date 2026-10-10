@@ -21,6 +21,7 @@
 | Markdown、公式、HTML、SVG、媒体 | [渲染架构](refer/rendering-architecture.md) |
 | 用户状态、IndexedDB、checkpoint、完整历史、同步 | [存储架构](refer/storage-architecture.md)、[store 索引](../lib/stores/README.md) |
 | Agent 工具与结果卡片 | [新增工具](refer/adding-an-agent-tool.md)、[工具卡片目录](../components/chat/toolCards/README.md) |
+| 模型、思考、Fast 与供应商 | [模型维护](refer/model-registry.md) |
 | 手写交互与数值模型 | [交互组件目录](../components/interactives/README.md)、[概率拆分与数值验收](analysis/2026-10-10-probability-refactor-validation.md) |
 | 连接器 / OAuth / MCP | [环境配置](refer/connector-environment.md)、[学习连接器](refer/learning-connector-runtime.md)、[KitSolo MCP](refer/kitsolo-mcp.md) |
 | 云沙箱 | [沙箱运行说明](refer/cloud-sandbox-runtime.md) |
@@ -46,7 +47,7 @@
 | `archive/`、`plans/archive/` | 被取代的资料和原件，只供历史追溯 |
 | `design-snapshots/` | 设计探索快照，不能据此宣称产品已采用 |
 
-现有 [handoff](handoff/README.md) 和 [旧 Agent loop 计划](plans/Agent-refactor/00-loop-map.md) 是带日期的历史材料，其“唯一任务账本”和旧调度说明已被本轮用户任务取代；当前授权与状态见上表的本轮执行记录。归档过程仍需逐份核对真实引用，不能把历史内容直接变成运行指令。
+已归档的 [handoff](archive/refactor-2026-10-10/historical-docs/moved/docs/handoff/README.md) 和 [旧 Agent loop 计划](archive/refactor-2026-10-10/historical-docs/moved/docs/plans/Agent-refactor/00-loop-map.md) 是带日期的历史材料，其“唯一任务账本”和旧调度说明已被本轮用户任务取代；当前授权与状态见上表的本轮执行记录。原件和哈希见 [归档说明](archive/refactor-2026-10-10/historical-docs/README.md)，不能把历史内容直接变成运行指令。
 
 ## 维护方法
 
