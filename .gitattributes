@@ -21,3 +21,7 @@
 
 # User-provided skill references intentionally use Markdown two-space hard breaks.
 lib/sandbox/skill-packs/**/*.md whitespace=-blank-at-eol
+
+# Original documentation snapshots have SHA256 receipts for their exact captured bytes.
+docs/archive/refactor-2026-10-10/document-entrypoints/root/** -text whitespace=cr-at-eol,-blank-at-eol
+docs/archive/refactor-2026-10-10/document-entrypoints/docs/** -text whitespace=cr-at-eol,-blank-at-eol
