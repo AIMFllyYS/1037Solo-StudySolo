@@ -1,6 +1,7 @@
+import type { ChatSession, SessionWindowMeta } from "@/lib/chat/sessionTypes";
+export type { ChatSession, SessionWindowMeta } from "@/lib/chat/sessionTypes";
 import { create } from 'zustand';
 import type { ChatMessage, ChatContext } from '@/lib/types/chat';
-import { useArtifacts } from '@/lib/hooks/useArtifacts';
 import {
   type ChatFolder,
   type ChatManifestV2,
@@ -75,28 +76,6 @@ function updateResidentEstimate(id:string,before:ChatMessage[],after:ChatMessage
   const previous=estimateResident(id,before)
   const bytes=oldMessage&&newMessage?Math.max(0,previous+estimateHotValueBytes(newMessage)-estimateHotValueBytes(oldMessage)):estimateHotValueBytes(after)
   residentEstimates.set(id,{messages:after,bytes})
-}
-
-export interface ChatSession {
-  id: string;
-  title: string;
-  messages: ChatMessage[];
-  createdAt: number;
-  updatedAt: number;
-  context?: ChatContext;
-  kind?: 'main' | 'floating' | 'note' | 'scheduled';
-  /** Storage v2：历史列表在未加载消息体时使用 */
-  messageCount?: number;
-}
-
-/** 已加载窗口的描述：messagesById[id] 保存的是轮次区间 [startTurn, turnCount) 的消息。 */
-export interface SessionWindowMeta {
-  startTurn: number;
-  /** 窗口首条消息在全量数组里的下标。 */
-  startIndex: number;
-  turnCount: number;
-  messageCount: number;
-  spine: TurnSpineEntry[];
 }
 
 interface ChatHistoryState {

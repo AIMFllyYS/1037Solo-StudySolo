@@ -68,6 +68,7 @@
 - Next 依赖更换导致旧开发进程退出，已通过现有 RootSolo 的本机 API 仅恢复 studysolo-web；实际 Next 16.4.0 HTTP /agent 200、浏览器完成水合。一次配置自动重启期间旧 IAB 进入连接错误页，新临时页已正常访问，未修改浏览器或系统安全设置。
 - R3a 模型模块：按官方 project structure 和 server/client 边界的领域分组原则，将 996 行入口拆为 contracts / aliases / catalog / thinking / selection / custom，最大模块 475 行；公共入口用显式 re-export 保留 Node/tsx 命名导入兼容。原始模型、旧别名和菜单分组序列化结果逐字节一致；73 项模型/供应商 node 检查、20 项 React 模型菜单/Fast/设置检查、类型及定向 lint 通过。
 - R3b 同步：将 1324 行 engine 拆为 740 行左右的协议/队列所有者、283 行 Zustand/持久化 adapter、载荷转换、额度快照、远端应用和共享 ownership。远端应用只通过 live stores getter、dirty 判断、基线读取与 merge 通知取得执行策略，不反向依赖 engine；保留原账户 epoch、CAS、待提交删除、冲突副本、额度与重试规则。44 项 node 同步检查、4 项版本/journal React 检查、全量类型和定向 lint 通过。
+- R3c 聊天存储：1188 行混合文件拆为纯协议/键、manifest、Blob、legacy migration、保守 GC 和 619 行 session checkpoint engine；原公开函数、key、checkpoint 注入对象、写队列与恢复规则保留。ChatSession/窗口 DTO 移到 `lib/chat/sessionTypes.ts`，store 继续转出旧类型入口。64 项存储/历史/同步 node 检查、20 项来源/owner/导出 React 检查、全量类型、定向 lint、Node ESM 命名导入及 checkpoint seam 检查通过。
 
 ## 局部阻塞
 
