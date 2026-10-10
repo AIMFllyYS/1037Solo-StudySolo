@@ -62,6 +62,7 @@ BM25/向量；未选学科路由、正文与导航入口不可用。构建不复
 
 当前 staging builder 在打包前核对 `server.js`、实体化 `node_modules/next`、Worker 与索引，
 打包后由 `perf:package-check` 核对实际 `win-unpacked/resources/standalone/` 和两个 EXE 的 SHA-256。
+Next 的 dist/node_modules 下可能出现指向 pnpm 的嵌套包链接；standalone-shell 在白名单复制阶段解引用为真实文件，顶层依赖仍由原 materialize 阶段处理。Windows 验收包含目录 junction 夹具和实际暂存/包检查。
 **发布前还必须实际启动打包后的程序并检查 `/` 与离线功能**；结构断言不证明运行成功。
 
 ### 不变量 3：密钥绝不进包，公开发布前必扫描

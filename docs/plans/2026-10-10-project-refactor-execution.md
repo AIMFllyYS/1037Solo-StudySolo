@@ -120,6 +120,8 @@
 
 R6 实际页面复核发现教材选择器的学期行只有展开动作，直接点学期后正文目录仍属于上一学期。已为 YearSubjectFolderTree 增加仅教材调用者传入的可选 onSelectYear，更新同一 reading/managed window 的 yearId 并清除旧学科/选择/展开键；其他主体选择器仍只展开并按学科选择。11 项教材/共享树回归通过，包含直接选学期和重挂载、默认共享树行为。此前 web 隔离构建已通过；修复后重新冻结并复核门禁/构建，不能用修复前 artifact 代替最终候选。
 
+R6 Windows 桌面构建的 Next 编译/1456 静态页通过，shell 暂存遇到新的 dist/node_modules/sharp-* 包链接；原 cpSync 尝试新建符号链接出现 EPERM。白名单 shell 复制提取为 standalone-shell 并解引用实际目标，保留顶层 pnpm materialize、源输出、旧包与环境文件排除。真实目录 junction 夹具验证目标内容为实体目录，server/package 保留，秘密/顶层依赖/segments 排除；1 项回归通过。随后使用新的独立输出重新打包，不更改系统权限或复用不完整包。
+
 
 尚无已确认的整体阻塞。后续按任务、症状、证据、尝试、影响、替代及恢复条件记录。
 

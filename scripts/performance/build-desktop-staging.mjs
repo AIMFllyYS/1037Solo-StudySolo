@@ -2,6 +2,7 @@
 import { spawnSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { relative, resolve, join, dirname } from 'node:path';
+import { copyStandaloneShell } from './standalone-shell.mjs';
 
 const root = process.cwd();
 const id = new Date().toISOString().toLowerCase().replace(/[:.]/g, '-');
@@ -65,16 +66,7 @@ if (!existsSync(join(source, 'server.js'))) throw new Error('standalone_server_m
 for (const name of readdirSync(source)) {
   if (/^\.env(?:\..*)?$/.test(name)) writeFileSync(join(source, name), '# generated environment copy redacted; inject secrets at runtime\n');
 }
-const allowedTop = new Set(['server.js', 'package.json', distDir]);
-cpSync(source, stageRoot, {
-  recursive: true,
-  filter: (src) => {
-    const rel = relative(source, src);
-    if (!rel) return true;
-    const parts = rel.split(/[\\/]/);
-    return allowedTop.has(parts[0]) && !parts.some((part) => part.endsWith('.segments'));
-  },
-});
+copyStandaloneShell(source, stageRoot, distDir);
 cpSync(withinWorkspace(join(distDir, 'static')), join(stageRoot, distDir, 'static'), { recursive: true });
 
 // Materialize the existing pnpm trace into a fresh destination. Nothing in the
