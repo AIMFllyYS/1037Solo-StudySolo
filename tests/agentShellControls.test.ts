@@ -5,10 +5,12 @@ import { join } from "node:path";
 import { AGENT_CHAT_MAX_PX } from "@/lib/constants/layout";
 import { fitAgentPanelSizes } from "@/lib/layout/agentPanelSizes";
 import { useStore } from "@/lib/stores/ui";
+import { readAppShellSources } from "./helpers/appShellSources";
 
 const root = process.cwd();
 
 function readFile(path: string) {
+  if (path === "components/layout/AppShell.tsx") return readAppShellSources();
   return readFileSync(join(root, path), "utf8");
 }
 

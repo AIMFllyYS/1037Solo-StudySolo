@@ -95,6 +95,8 @@
 
 - R3m 设置与闪卡长 UI：GlobalSettings 的成绩分组/路由转换、卡片、定位、成绩视图独立，账户/清空确认/分区和 popover 仍由一个入口负责；RecordPreviewWindow 的模式、原文/思考、修订、菜单与动作独立，流式/取消/保存处理仍在同一个窗口入口。18 项设置/手机/闪卡 React 回归、12 项处理/菜单/账户/动画 node 检查、全量类型与定向 lint 通过。位置和菜单结构检查指向新实际实现，原断言保留。实际 Agent 打开设置→成绩，空态及禁用清空正常，截图 `project-refactor/verify/global-settings-after-split.jpg`；未对真实成绩执行清空或触发付费闪卡生成。
 
+- R3n 外壳与输入器：AppShell 拆出 TopBar 与连续的 useShellLifecycle，主入口约 447 行，保留分栏 ref/像素偏好/回写门控和原 dynamic 声明；一次挂载依然只有一个窗口会话 provider，卸载清理、模式动画取消和移动深链均沿用原逻辑。ChatInput 拆出模型覆盖、geometry/focus、单实例 session 队列、props/limits、toolbar/queue/quote，主入口约 494 行；草稿/附件/palette/发送停止门控仍在同一个控制器。采用安装版 Next server/client/use-client 与 Vercel React bundle-dynamic-imports/client-event-listeners 原则，没有新装 SWR 或声称未测量性能。类型、定向 lint、27 项 React、30 项 node 通过，新增 queue 跨会话/就绪门控和 shell 生命周期用例。实际左右分别调整时另一列值不变，恢复 290/619；资产管理路由沿用右栏收起（可见值 0），返回 Agent 恢复 619。截图 `project-refactor/verify/agent-shell-after-lifecycle-split.jpg`。
+
 ## 局部阻塞
 
 

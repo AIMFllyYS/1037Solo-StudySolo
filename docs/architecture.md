@@ -8,6 +8,8 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 根 `app/layout.tsx` 负责全局样式、metadata、主题/字体和应用外壳。`components/layout/AppShell.tsx` 组合模式、导航、工作区、全局悬浮层与必要运行器；各模块的状态和领域实现不应堆在外壳中。
 
+`layout/shell/TopBar.tsx` 负责顶栏展示与其控件；`useShellLifecycle.ts` 负责连续的挂载/路由副作用、水合、窗口会话提供者、TOC、移动深链和模式动画清理。AppShell 继续拥有分栏 ref、宽度和回写门控，重型/移动表面继续按原 dynamic 声明加载；拆分不增加另一套状态或全局事件监听。
+
 ## 页面与工作区
 
 | 路由 | 领域入口 | 主要职责 |
@@ -36,6 +38,8 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 ## AI 调用路径
 
 输入器和 `lib/hooks/chat/useChat*` 使用既有 UIMessage 流协议，经 `/api/chat`（`/api/agent/chat` 有对应入口）进入请求校验、上下文/文件恢复、模型解析、身份及额度检查、`ToolLoopAgent` 和流输出。
+
+`ChatInput` 是草稿、附件、palette、发送/停止门控的组合入口，`composer/input/` 分出纯输入契约、模型默认值/覆盖、尺寸/焦点、按实例与会话绑定的排队，以及 toolbar/queue/quote 视图。队列继续按当时 sessionId 保存，只发送当前会话匹配项并等待下一轮 loading；输入字符限制位于 `lib/chat/inputLimits.ts`，公共入口继续显式转出原 props 和限制值。
 
 `lib/ai/chat/server/handler.ts` 独占请求门控与响应包装，`messages.ts` 处理 UIMessage 压缩/恢复和模型消息转换，`generation.ts` 保持生成、取消、续写、本地文件续接、计费与结束事件的顺序，`contracts.ts` 提供窄输入契约。`lib/ai/agent/requestSchema.ts` 是显式公共入口，`request/` 分出共享限额、聊天/卫星 schema、安全错误文本与 parser。
 

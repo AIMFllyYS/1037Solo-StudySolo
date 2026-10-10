@@ -2,10 +2,12 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { join } from "node:path";
+import { readAppShellSources } from "./helpers/appShellSources";
 
 const root = process.cwd();
 
 function readWorkspaceFile(path: string) {
+  if (path === "components/layout/AppShell.tsx") return readAppShellSources();
   return readFileSync(join(root, path), "utf8");
 }
 
@@ -16,7 +18,7 @@ test("顶栏与壳走 StudySolo 三模式，不再写期末复习工作站", () 
   const bookshelf = readWorkspaceFile("components/layout/navigation/HomeBookshelf.tsx");
   const logo = readWorkspaceFile("components/layout/BrandLogo.tsx");
 
-  assert.match(appShell, /from "\.\/navigation\/ModeSwitcher"/);
+  assert.match(appShell, /from "\.\.\/navigation\/ModeSwitcher"/);
   assert.match(appShell, /<ModeSwitcher\s*\/>/);
   assert.match(appShell, /useAppMode/);
   assert.match(appShell, /usesStudioChrome/);

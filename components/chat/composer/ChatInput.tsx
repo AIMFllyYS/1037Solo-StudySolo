@@ -1,24 +1,16 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useCallback, useMemo, useId } from 'react';
-import {
-  AgentGlobeIcon, AgentArrowUpIcon, AgentStopIcon, AgentQuoteIcon,
-  AgentCloseIcon, AgentPlusIcon,
-} from '@/components/icons/AgentIcons';
-import type { ChatContext } from '@/lib/types/chat';
-import type { SendMessageOptions } from '@/lib/chat/sendMessage';
+import { ComposerToolbar } from './input/ComposerToolbar';
+import { QueuedMessages } from './input/QueuedMessages';
+import { QuotePreview } from './input/QuotePreview';
+
+import React, { useState, useRef, useCallback, useMemo, useId } from 'react';
+import { AgentGlobeIcon, AgentArrowUpIcon, AgentStopIcon, AgentPlusIcon } from '@/components/icons/AgentIcons';
+
 import { useChatUI } from '@/lib/stores/chat/chatUI';
-import { useSettings, type ThinkingEffort } from '@/lib/stores/settings';
+import { useSettings } from '@/lib/stores/settings';
 import { useSkills } from '@/lib/stores/skills';
-import {
-  hasNotebookFileDrag,
-  mergeAttachedFiles,
-  readNotebookFileDrag,
-  skillForcedTool,
-  type AttachedFileRef,
-  type ComposerForcedTool,
-  type ForcedComposerTool,
-} from '@/lib/chat/composerIntent';
+import { hasNotebookFileDrag, mergeAttachedFiles, readNotebookFileDrag, skillForcedTool, type AttachedFileRef, type ComposerForcedTool, type ForcedComposerTool } from '@/lib/chat/composerIntent';
 import { detectComposerTrigger, flattenFileMentions, listFileMentions, replaceComposerTrigger } from '@/lib/chat/fileMentions';
 import { readPlanModeGate, resolvePlanMode } from '@/lib/chat/planModeGate';
 import { compactActiveSession } from '@/lib/context/compactChatSession';
@@ -32,97 +24,24 @@ import FileMentionMenu from '@/components/chat/composer/FileMentionMenu';
 import { useImageAttachments } from '@/lib/hooks/files/useImageAttachments';
 import { ACCEPTED_DOCUMENT_FILE_TYPES } from '@/lib/ai/imageUtils';
 import { useKeyboardSettings } from '@/lib/keyboard/useKeyboardSettings';
-import {
-  getModelInfoWithCustom,
-  modelSupportsThinkingEffort,
-  clampThinkingEffort,
-} from '@/lib/ai/models';
-import ModelMenu from '@/components/chat/composer/ModelMenu';
-import AnchoredMenu from '@/components/ui/AnchoredMenu';
-import AgentModeMenu, { AgentModeMenuItems } from '@/components/chat/composer/AgentModeMenu';
-import { MoreHorizontal } from 'lucide-react';
+
 import InputLimitDialog from '@/components/chat/attachments/InputLimitDialog';
-import TokenDashboard from '@/components/chat/billing/TokenDashboard';
+
 import AttachmentThumbnails from '@/components/chat/attachments/AttachmentThumbnails';
 import ProjectPickerChip from '@/components/chat/composer/ProjectPickerChip';
 import { shouldBlockFocusSteal } from '@/lib/notes/selectionPopover';
 import { useT } from '@/lib/i18n/index';
-export interface ChatInputProps {
-  onSend: (content: string, options?: SendMessageOptions) => void;
-  onStop: () => void;
-  isLoading: boolean;
-  /**
-   * 本输入框写入的会话 id。生成中再发的消息会进队列；队列项绑定当时所在会话——
-   * 切到别的会话后 drain 不会把这条会话的待发消息错发给另一条。
-   */
-  sessionId?: string;
-  chatContext: ChatContext;
-  onOpenSettings?: () => void;
-  disabled?: boolean;
-  disabledReason?: string;
-  /** 受控模型（划词浮窗每窗独立选模型）；不传则模型菜单读写全局 useSettings。 */
-  modelId?: string;
-  onModelChange?: (id: string) => void;
-  /** 是否显示上下文 token 看板（划词浮窗传 false，避免显示主面板的全局统计）。默认 true。 */
-  showTokenDashboard?: boolean;
-  /** 划词浮窗的 sessionId，用于独立 token 统计。不传则用全局 tracker。 */
-  floatingSessionId?: string;
-  /** 禁用「引用到输入框」（划词浮窗传 true，避免全局选区引用串入浮窗）。默认 false。 */
-  disableQuote?: boolean;
-  /**
-   * 局部引用槽：提供时优先于全局 quotedText（disableQuote 只屏蔽全局那条）。
-   * 笔记内嵌 Agent 等独立会话用它隔离引用，不串进主对话。
-   */
-  quoteText?: string | null;
-  /** 局部引用槽的清除回调；不传则走全局 clearQuotedText。 */
-  onClearQuote?: () => void;
-  /** 浮动输入区占用的底部安全距离（高度 + 实际底距 + 呼吸间距），供会话滚动区避让。 */
-  onComposerInsetChange?: (inset: number) => void;
-  /** 可选上下文警告等内容：与输入区一起测量，避免被底部浮层遮住。 */
-  notice?: React.ReactNode;
-  /** 自增即聚焦输入框一次（例如点了「新建对话」但其实已经在新对话里，提示用户直接开说）。 */
-  focusSignal?: number;
-  /**
-   * 显示「对话所属项目」chip（输入框右下角）。
-   * 只有 Agent 中央对话传 true：划词浮窗 / 题目解析 / 手机迷你聊天都不该出现项目归属。
-   */
-  showProjectPicker?: boolean;
-  /** Agent 执行模式（询问/完全同意）入口；由 ChatPanel 默认开启，迷你输入框保持关闭。 */
-  showAgentModeMenu?: boolean;
-}
-
-export const MAX_INPUT_CHARACTERS = 50_000;
-
-type QueuedMessage = {
-  id: string;
-  /** 排队时所在会话：drain 只放与当前会话一致的项，防止跨会话错发。 */
-  sessionId?: string;
-  content: string;
-  quotedText?: string;
-  attachments?: SendMessageOptions["attachments"];
-  planMode?: boolean;
-  forcedTool?: ComposerForcedTool;
-  attachedFiles?: AttachedFileRef[];
-};
-
-type PaletteKind = "slash" | "hash" | null;
-
-function countCharacters(text: string) {
-  // Count Unicode code points without allocating a second large array.
-  let count = 0;
-  for (const character of text) count += character ? 1 : 0;
-  return count;
-}
-
-/** 输入框最大高度（与 `.chat-input-textarea` 的 CSS max-height 保持一致）。 */
-const MAX_TEXTAREA_HEIGHT = 120;
+import type { ChatInputProps, QueuedMessage, PaletteKind } from './input/types';
+export type { ChatInputProps } from './input/types';
+import { countCharacters, MAX_INPUT_CHARACTERS } from '@/lib/chat/inputLimits';
+export { MAX_INPUT_CHARACTERS } from '@/lib/chat/inputLimits';
+import { useComposerModelControls } from './input/useComposerModelControls';
+import { useComposerGeometry } from './input/useComposerGeometry';
+import { useComposerQueue } from './input/useComposerQueue';
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessionId, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, quoteText, onClearQuote, onComposerInsetChange, notice, focusSignal, showProjectPicker = false, showAgentModeMenu = false, chatContext }) => {
   const t = useT();
   const [input, setInput] = useState('');
-  const [queuedMessages, setQueuedMessages] = useState<QueuedMessage[]>([]);
-  const [editingQueuedId, setEditingQueuedId] = useState<string | null>(null);
-  const queueAwaitingLoadingRef = useRef(false);
   const countId = useId();
   const characterCount = useMemo(() => countCharacters(input), [input]);
   const overLimit = characterCount > MAX_INPUT_CHARACTERS;
@@ -130,23 +49,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
   const [showLimitDialog, setShowLimitDialog] = useState(false);
   const composingRef = useRef(false);
   const [isFocused, setIsFocused] = useState(false);
-  // 本机默认值只在水合完成后由 hydrateSettings() 应用（首帧是 DEFAULTS，见 lib/stores/settings.ts），
-  // 用户手动改过就以覆盖值为准：既不会 hydration mismatch，也避免在 effect 里 setState。
-  const defaultThinking = useSettings((s) => s.defaultThinking);
-  const defaultThinkingEffort = useSettings((s) => s.defaultThinkingEffort);
-  const defaultSearch = useSettings((s) => s.defaultSearch);
-  const [thinkingEnabledOverride, setThinkingEnabledOverride] = useState<boolean | null>(null);
-  const [thinkingEffortOverride, setThinkingEffortOverride] = useState<ThinkingEffort | null>(null);
-  const [searchOverride, setSearchOverride] = useState<boolean | null>(null);
-  const enableThinking = thinkingEnabledOverride ?? defaultThinking;
-  const thinkingEffort = thinkingEffortOverride ?? defaultThinkingEffort;
-  const enableSearch = searchOverride ?? defaultSearch;
-  const setEnableThinking = setThinkingEnabledOverride;
-  const setThinkingEffort = setThinkingEffortOverride;
-  const setEnableSearch = setSearchOverride;
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const composerRef = useRef<HTMLDivElement>(null);
-  const lastInsetRef = useRef<number | null>(null);
+  const { enableSearch, setEnableSearch, displayEffort, effectiveEnableThinking, effectiveThinkingEffort, setEnableThinking, setThinkingEffort } = useComposerModelControls(modelId);
+  const { textareaRef, composerRef } = useComposerGeometry(input, onComposerInsetChange, focusSignal);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const plusRef = useRef<HTMLButtonElement>(null);
   const { quotedText, clearQuotedText } = useChatUI();
@@ -164,20 +69,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
   const [paletteIndex, setPaletteIndex] = useState(0);
   const [mentionQuery, setMentionQuery] = useState("");
   const mentionTriggerRef = useRef<ReturnType<typeof detectComposerTrigger>>(null);
-  const globalSelectedModelId = useSettings((s) => s.selectedModelId);
-  const customApiGroups = useSettings((s) => s.customApiGroups);
-  const selectedModelId = modelId ?? globalSelectedModelId;
-  const selectedModelInfo = useMemo(
-    () => getModelInfoWithCustom(selectedModelId, customApiGroups),
-    [selectedModelId, customApiGroups],
-  );
-  const thinkingSupported = selectedModelInfo?.thinking === true;
-  const thinkingEffortSupported = modelSupportsThinkingEffort(selectedModelInfo);
-  const displayEffort = thinkingEffortSupported
-    ? clampThinkingEffort(selectedModelInfo, thinkingEffort)
-    : thinkingEffort;
-  const effectiveEnableThinking = (enableThinking || !!selectedModelInfo?.thinkingRequired) && thinkingSupported;
-  const effectiveThinkingEffort = effectiveEnableThinking ? displayEffort : undefined;
   const effectiveQuote = quoteText !== undefined ? quoteText : (disableQuote ? null : quotedText);
   const quotedCloudFileIds = useMemo(() => referencedFileIdsInText(`${input}\n${effectiveQuote ?? ''}`), [input, effectiveQuote]);
   const clearQuote = onClearQuote ?? clearQuotedText;
@@ -201,59 +92,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
   } = useImageAttachments({ reservedCount: attachedFiles.length, citedFileIds: quotedCloudFileIds });
   const [fileDragOver, setFileDragOver] = useState(false);
   const showDropOverlay = isDragging || fileDragOver;
-
-  useEffect(() => {
-    const el = textareaRef.current;
-    if (!el) return;
-    let lastWidth = 0;
-    const resize = () => {
-      // 首帧分栏还没量出宽度时（clientWidth 退化），此时 scrollHeight 是假值：
-      // 一旦写进去就没人再改，空输入框会永久停在 max-height（用户看到「空着也占好几行」）。
-      if (el.clientWidth < 40) return;
-      lastWidth = el.clientWidth;
-      el.style.height = 'auto';
-      el.style.height = `${Math.min(el.scrollHeight, MAX_TEXTAREA_HEIGHT)}px`;
-    };
-    resize();
-    // 左右栏拖动/收起会改可用宽度，换行数随之变化：宽度变了就重新量一次高度。
-    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => {
-      if (el.clientWidth === lastWidth) return;
-      resize();
-    });
-    observer?.observe(el);
-    window.addEventListener('resize', resize);
-    return () => {
-      observer?.disconnect();
-      window.removeEventListener('resize', resize);
-    };
-  }, [input]);
-
-  useEffect(() => {
-    const composer = composerRef.current;
-    if (!composer || !onComposerInsetChange) return;
-    const reportInset = () => {
-      const bottom = Number.parseFloat(window.getComputedStyle(composer).bottom) || 0;
-      const next = Math.ceil(composer.getBoundingClientRect().height + bottom + 16);
-      if (lastInsetRef.current !== null && Math.abs(next - lastInsetRef.current) < 2) return;
-      lastInsetRef.current = next;
-      onComposerInsetChange(next);
-    };
-    reportInset();
-    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(reportInset);
-    observer?.observe(composer);
-    window.addEventListener('resize', reportInset);
-    return () => {
-      observer?.disconnect();
-      window.removeEventListener('resize', reportInset);
-      // 保留最后测量值；StrictMode effect 重放时不先清零，避免滚动区短暂失去避让空间。
-    };
-  }, [onComposerInsetChange]);
-
-  // 外部要求聚焦（自增即触发一次）：只聚焦，不碰草稿。
-  useEffect(() => {
-    if (!focusSignal) return;
-    textareaRef.current?.focus();
-  }, [focusSignal]);
 
   const planMode = planModeOverride ?? planGate.defaultOn;
   const effectivePlanMode = resolvePlanMode(planMode, settingsSnapshot);
@@ -283,7 +121,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
     const next = replaceComposerTrigger(input, trigger, cursor);
     setInput(next);
     mentionTriggerRef.current = null;
-  }, [input]);
+  }, [input, textareaRef]);
 
   const applyPlan = useCallback(() => {
     if (!planGate.allowed) return;
@@ -334,6 +172,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
       sessionId: message.sessionId,
     });
   }, [onSend, effectiveEnableThinking, effectiveThinkingEffort, enableSearch]);
+  const { queueMessage, visibleQueuedMessages, editQueuedMessage, cancelQueuedMessage } = useComposerQueue({ sessionId, isLoading, externalDisabled, dispatchMessage, setInput, textareaRef });
 
   const clearDraft = useCallback(() => {
     setInput('');
@@ -359,50 +198,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
       attachedFiles: attachedFiles.length > 0 ? attachedFiles : undefined,
     };
     if (isLoading) {
-      if (editingQueuedId) {
-        setQueuedMessages((items) => items.map((item) => item.id === editingQueuedId ? { ...item, content: message.content } : item));
-        setEditingQueuedId(null);
-      } else {
-        setQueuedMessages((items) => [...items, message]);
-      }
+      queueMessage(message);
     } else {
       dispatchMessage(message);
     }
     clearDraft();
-  }, [input, overLimit, attachments, attachedFiles, isLoading, externalDisabled, attachmentProcessing, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft, effectivePlanMode, forcedTool, sessionId, t]);
-
-  useEffect(() => {
-    if (isLoading) {
-      // 下一轮生成已经开始，允许在它结束后继续发送队列中的下一条。
-      queueAwaitingLoadingRef.current = false;
-      return;
-    }
-    if (externalDisabled || queuedMessages.length === 0) return;
-    // onSend 通常会让父级立即进入 loading；即使父级更新稍有延迟，也不能
-    // 在同一轮 effect 中把多条排队消息一次性发出。
-    if (queueAwaitingLoadingRef.current) return;
-    // 只放属于当前会话的排队项：别的会话的队列等用户切回去再发，不能发错地方。
-    const next = queuedMessages.find((item) => item.sessionId === sessionId);
-    if (!next) return;
-    queueAwaitingLoadingRef.current = true;
-    // 微任务里再改 state：effect 体里同步 setState 会触发级联渲染（lint 明令禁止）。
-    queueMicrotask(() => {
-      setQueuedMessages((items) => items.filter((item) => item.id !== next.id));
-      setEditingQueuedId((current) => current === next.id ? null : current);
-      dispatchMessage(next);
-    });
-  }, [dispatchMessage, externalDisabled, isLoading, queuedMessages, sessionId]);
-
-  const editQueuedMessage = useCallback((message: QueuedMessage) => {
-    setInput(message.content);
-    setEditingQueuedId(message.id);
-    textareaRef.current?.focus();
-  }, []);
-
-  const cancelQueuedMessage = useCallback((id: string) => {
-    setQueuedMessages((items) => items.filter((item) => item.id !== id));
-    setEditingQueuedId((current) => current === id ? null : current);
-  }, []);
+  }, [input, overLimit, attachments, attachedFiles, isLoading, externalDisabled, attachmentProcessing, effectiveQuote, toChatFormat, queueMessage, dispatchMessage, clearDraft, effectivePlanMode, forcedTool, sessionId, t]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (composingRef.current || e.nativeEvent.isComposing || e.keyCode === 229) return;
@@ -454,8 +255,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
   };
 
   const inputDisabled = !!externalDisabled;
-  // 队列按会话过滤展示：切到别的会话时不把那边排队的消息摆在这里。
-  const visibleQueuedMessages = queuedMessages.filter((item) => item.sessionId === sessionId);
   const composerEmpty = !input.trim() && attachments.length === 0 && attachedFiles.length === 0;
   const showStopButton = isLoading && (inputDisabled || composerEmpty);
   // An access/readiness gate blocks new sends but must not hide the real abort
@@ -535,81 +334,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
       {attachmentProcessing ? <div className="chat-attachment-notice" role="status">正在处理并上传附件到云端，请稍候…</div> : null}
 
       {visibleQueuedMessages.length > 0 && (
-        <div className="chat-input-queue" role="region" aria-label={t('menu.chatInput.queue.title')}>
-          <div className="chat-input-queue-heading">
-            <span className="chat-input-queue-label"><span className="chat-input-queue-pulse" />{t('menu.chatInput.queue.title')}</span>
-            <span className="chat-input-queue-count">{t('menu.chatInput.queue.count', { count: visibleQueuedMessages.length })}</span>
-          </div>
-          <div className="chat-input-queue-list">
-            {visibleQueuedMessages.map((message, index) => (
-              <div className="chat-input-queue-item" key={message.id}>
-                <span className="chat-input-queue-index">{index + 1}</span>
-                <span className="chat-input-queue-text" title={message.content}>{message.content}</span>
-                <button type="button" className="chat-input-queue-action" onClick={() => editQueuedMessage(message)} aria-label={t('menu.chatInput.queue.editAria', { index: index + 1 })}>{t('menu.chatInput.queue.edit')}</button>
-                <button type="button" className="chat-input-queue-action chat-input-queue-action-muted" onClick={() => cancelQueuedMessage(message.id)} aria-label={t('menu.chatInput.queue.cancelAria', { index: index + 1 })}>{t('common.cancel')}</button>
-              </div>
-            ))}
-          </div>
-        </div>
+        <QueuedMessages visibleQueuedMessages={visibleQueuedMessages} editQueuedMessage={editQueuedMessage} cancelQueuedMessage={cancelQueuedMessage} />
       )}
 
       {effectiveQuote && (
-        <div className="chat-input-quote">
-          <AgentQuoteIcon size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--md-sys-color-tertiary)' }} />
-          <div className="chat-input-quote-label">
-            <AgentQuoteIcon size={10} />
-            <span>{t('menu.chatInput.quote.label')}</span>
-          </div>
-          <div className="chat-input-quote-text">
-            {effectiveQuote}
-          </div>
-          <button
-            onClick={clearQuote}
-            className="chat-input-quote-close"
-            title={t('menu.chatInput.quote.remove')}
-          >
-            <AgentCloseIcon size={14} />
-          </button>
-        </div>
+        <QuotePreview effectiveQuote={effectiveQuote} clearQuote={clearQuote} />
       )}
 
-      <div className="chat-input-toolbar" aria-label={t('menu.chatInput.toolbarAria')}>
-        {showProjectPicker || showAgentModeMenu ? (
-          <AnchoredMenu
-            label={t('menu.chatInput.more')}
-            placement="top"
-            width={240}
-            disabled={inputDisabled}
-            className="chat-input-more"
-            testId="chat-input-more"
-            trigger={<MoreHorizontal size={15} aria-hidden />}
-          >
-            {(close) => (
-              <div className="chat-input-more-panel">
-                <AgentModeMenuItems onPicked={close} />
-              </div>
-            )}
-          </AnchoredMenu>
-        ) : null}
-        <div className="chat-input-toolbar-group chat-input-toolbar-options">
-          {showProjectPicker || showAgentModeMenu ? <AgentModeMenu disabled={inputDisabled} /> : null}
-        </div>
-
-        <div className="chat-input-toolbar-group chat-input-toolbar-models">
-          {showTokenDashboard && <TokenDashboard isLoading={isLoading} floatingSessionId={floatingSessionId} modelId={modelId} />}
-          <ModelMenu
-            onOpenSettings={onOpenSettings}
-            value={modelId}
-            onChange={onModelChange}
-            thinkingEnabled={effectiveEnableThinking}
-            thinkingEffort={displayEffort}
-            onThinkingChange={({ enabled, effort }) => {
-              setEnableThinking(enabled);
-              setThinkingEffort(effort);
-            }}
-          />
-        </div>
-      </div>
+      <ComposerToolbar showProjectPicker={showProjectPicker} showAgentModeMenu={showAgentModeMenu} inputDisabled={inputDisabled} showTokenDashboard={showTokenDashboard} isLoading={isLoading} floatingSessionId={floatingSessionId} modelId={modelId} onOpenSettings={onOpenSettings} onModelChange={onModelChange} effectiveEnableThinking={effectiveEnableThinking} displayEffort={displayEffort} onThinkingChange={({ enabled, effort }) => { setEnableThinking(enabled); setThinkingEffort(effort); }} />
 
       <div className={`chat-input-row ${isFocused ? 'chat-input-row-focused' : ''} ${showCharacterCount ? 'chat-input-row-with-count' : ''}`}>
         {attachments.length > 0 ? (
@@ -758,5 +490,4 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, sessio
     </div>
   );
 };
-
 export default ChatInput;

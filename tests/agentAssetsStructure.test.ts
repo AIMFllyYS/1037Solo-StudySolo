@@ -73,7 +73,7 @@ test("项目 chip 只出现在 Agent 中央对话的输入框右下角", () => {
   const chatInput = readFile("components/chat/composer/ChatInput.tsx");
   const chip = readFile("components/chat/composer/ProjectPickerChip.tsx");
   assert.match(chatPanel, /showProjectPicker=\{emptyLayout === "agent"\}/);
-  assert.match(chatInput, /showProjectPicker\?: boolean;/);
+  assert.match(readFile("components/chat/composer/input/types.ts"), /showProjectPicker\?: boolean;/);
   assert.match(chatInput, /\{showProjectPicker \? <ProjectPickerChip \/> : null\}/);
   // 位置：在发送键之前（输入框右下角）
   assert.ok(

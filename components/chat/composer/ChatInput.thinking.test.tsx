@@ -97,6 +97,27 @@ describe('ChatInput thinking menu', () => {
     expect(onSend).toHaveBeenCalledWith('hello', expect.objectContaining({ enableThinking: true, thinkingEffort: 'medium' }));
   });
 
+  it('keeps a queued message bound to its original session and waits through a readiness gate', async () => {
+    const onSend = vi.fn();
+    const onStop = vi.fn();
+    const { getByRole, getByTitle, queryByRole, rerender } = render(
+      <ChatInput {...{ onSend, onStop, isLoading: true, chatContext }} sessionId="session-a" />,
+    );
+    fireEvent.change(getByRole('textbox'), { target: { value: '只发给 A' } });
+    fireEvent.click(getByTitle('发送'));
+    rerender(<ChatInput {...{ onSend, onStop, isLoading: false, chatContext }} sessionId="session-b" />);
+    await Promise.resolve();
+    expect(queryByRole('region', { name: '等待发送' })).toBeNull();
+    expect(onSend).not.toHaveBeenCalled();
+    rerender(<ChatInput {...{ onSend, onStop, isLoading: false, chatContext }} sessionId="session-a" disabled />);
+    await Promise.resolve();
+    expect(getByRole('region', { name: '等待发送' })).toHaveTextContent('只发给 A');
+    expect(onSend).not.toHaveBeenCalled();
+    rerender(<ChatInput {...{ onSend, onStop, isLoading: false, chatContext }} sessionId="session-a" />);
+    await waitFor(() => expect(onSend).toHaveBeenCalledWith('只发给 A', expect.objectContaining({ sessionId: 'session-a' })));
+    expect(onSend).toHaveBeenCalledTimes(1);
+  });
+
   it('keeps drafting while loading and sends queued messages in order after generation ends', async () => {
     const onSend = vi.fn();
     const onStop = vi.fn();
