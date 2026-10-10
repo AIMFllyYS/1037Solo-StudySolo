@@ -6,7 +6,7 @@ Usage (after extract-textbook-pdf.py):
 
 Output:
     content/{subject}/textbook/*.md
-    lib/content-data/{subject}-textbook.ts   exporting {camelCase(subject)}TextbookItems
+    lib/content-data/subjects/{subject}/{subject}-textbook.ts   exporting {camelCase(subject)}TextbookItems
 
 学科不需要在此脚本登记；导出名由 subject id 机械推导（cell-biology -> cellBiologyTextbookItems），
 接入 manifest 时 import 同名即可。
@@ -17,6 +17,8 @@ import argparse
 import json
 import re
 from pathlib import Path
+
+from content.textbook_catalog import write_catalog
 
 REPO = Path(__file__).resolve().parents[1]
 
@@ -222,44 +224,6 @@ def wrap_format(title: str, body: str) -> str:
     return text.strip() + "\n"
 
 
-def ts_escape(s: str) -> str:
-    return s.replace("\\", "\\\\").replace('"', '\\"')
-
-
-def emit_item(obj: dict, indent: int) -> str:
-    sp = "  " * indent
-    lines = [f'{sp}{{']
-    lines.append(f'{sp}  id: "{obj["id"]}",')
-    lines.append(f'{sp}  title: "{ts_escape(obj["title"])}",')
-    lines.append(f'{sp}  type: "{obj["type"]}",')
-    lines.append(f'{sp}  status: "{obj["status"]}",')
-    if obj.get("summary"):
-        lines.append(f'{sp}  summary: "{ts_escape(obj["summary"])}",')
-    if obj.get("children"):
-        lines.append(f'{sp}  children: [')
-        for i, child in enumerate(obj["children"]):
-            chunk = emit_item(child, indent + 2)
-            if i < len(obj["children"]) - 1:
-                chunk = chunk.rstrip() + ","
-            lines.append(chunk)
-        lines.append(f'{sp}  ],')
-    lines.append(f'{sp}}}')
-    return "\n".join(lines)
-
-
-def write_ts(subject: str, export_name: str, items: list[dict]) -> None:
-    path = REPO / "lib" / "content-data" / f"{subject}-textbook.ts"
-    body_items = ",\n".join(emit_item(it, 1) for it in items)
-    content = (
-        "import type { ContentItem } from '@/lib/types/content';\n\n"
-        f"export const {export_name}: ContentItem[] = [\n"
-        f"{body_items}\n"
-        "];\n"
-    )
-    path.write_text(content, encoding="utf-8")
-    print(f"  wrote {path}")
-
-
 def ingest_subject(subject: str) -> None:
     ts_export = export_name(subject)
     data = load_toc(subject)
@@ -352,7 +316,8 @@ def ingest_subject(subject: str) -> None:
             )
         print(f"  {cid} {title} kids={len(children_items)} pages={start}-{end}")
 
-    write_ts(subject, ts_export, items)
+    for path in write_catalog(REPO, subject, ts_export, items):
+        print(f"  wrote {path}")
 
 
 def main() -> None:

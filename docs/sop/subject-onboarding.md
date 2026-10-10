@@ -46,7 +46,9 @@ python scripts/extract-textbook-pdf.py --pdf <pdf-path> --subject xxx --basename
 python scripts/ingest-sophomore-textbooks.py --subject xxx
 ```
 
-脚本生成 `lib/content-data/xxx-textbook.ts`，导出名固定为 `xxxTextbookItems`（kebab-case 学科 id 转 camelCase），并生成 `content/xxx/textbook/` 下的教材正文。生成的导航树是“章 → 节”两级结构；不要手改生成的教材条目，需调整时修改原始材料后重新运行脚本。
+脚本生成 `lib/content-data/subjects/xxx/xxx-textbook.ts`，导出名固定为 `xxxTextbookItems`（kebab-case 学科 id 转 camelCase），并生成 `content/xxx/textbook/` 下的教材正文。生成的导航树是“章 → 节”两级结构。目录生成由 `scripts/content/textbook_catalog.py` 负责：histology、biochemistry、instrumental-analysis、cell-biology 按连续章节主题写到同学科 `textbook/` 子目录，原入口只组合这些数组；其他学科保留同学科目录内的单一数组。
+
+原始教材内容、目录层级或标题需调整时，先修改原始材料，再运行接入脚本；该脚本会替换该学科 `content/xxx/textbook/*.md`，所以应从当前分支审查生成 diff。单独维护目录 writer 时使用 `python -B scripts/content/test_textbook_catalog.py`，它只在临时目录检查输出、分组顺序、嵌套及转义，不会重生成仓库正文。
 
 ## 4. 正文文件
 

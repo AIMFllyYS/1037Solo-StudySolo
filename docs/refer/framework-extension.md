@@ -48,7 +48,7 @@ public/
 
 ## 2. registry 注册步骤
 
-交互组件通过 `components/interactives/registry.ts` 的 `interactives` 数组注册。每个条目是一个 `InteractiveMeta` 对象。
+交互组件按学科注册在 `components/interactives/catalog/{subject}.ts`，每个条目是一个 `InteractiveMeta` 对象（契约在 `catalog/types.ts`）。`components/interactives/registry.ts` 按原顺序组合学科数组并拥有全局 ID 唯一检查与两个公开查询函数。新增已有学科的交互修改对应 catalog；新增交互学科时再把该数组加入 registry 组合。
 
 ### InteractiveMeta 字段说明
 
@@ -64,7 +64,7 @@ public/
 
 ### 示例代码（physics 学科）
 
-在 `registry.ts` 的 `interactives` 数组中追加：
+在 `catalog/physics.ts` 的 `physicsInteractives` 数组中追加：
 
 ```typescript
 {
@@ -74,13 +74,13 @@ public/
   sectionId: "1.1",
   title: "匀变速直线运动探索器",
   description: "调初速度 v₀、加速度 a、时间 t，实时绘制 x-t / v-t 图像，直观体会运动学方程。",
-  Component: dynamic(() => import("./physics/ch01/MotionExplorer"), { ssr: false }),
+  Component: dynamic(() => import("../physics/ch01/MotionExplorer"), { ssr: false }),
 },
 ```
 
 ### dynamic import 路径规范
 
-- 路径相对于 `registry.ts` 文件，前缀为 `./{subject}/ch{XX}/{ComponentName}`
+- 路径相对于 `catalog/{subject}.ts`，前缀为 `../{subject}/ch{XX}/{ComponentName}`
 - 必须使用 `dynamic(() => import(...), { ssr: false })` 以避免 SSR 时引用浏览器 API
 - 组件文件需有默认导出（`export default ...`）
 - 组件 Props 类型应为 `Record<string, never>`（无 props），如需配置应通过内部 state 实现
@@ -652,10 +652,9 @@ import { SvgCanvas, FunctionPlot } from '@/components/canvas';
 | `lib/content-data/subjects.registry.ts` | `SUBJECT_REGISTRY` 单一真相源：`SubjectId` 派生、学科元数据、`contentRoot.detail` |
 | `lib/types/content.ts` | re-export `SubjectId`/`isSubjectId`；`CategoryId` / `ContentItem` 类型定义 |
 | `lib/content/types.ts` | `VideoEntry` / `MediaManifest` 类型定义 |
-| `components/interactives/registry.ts` | `InteractiveMeta` 类型 + 交互组件注册表 + `getInteractive` / `getInteractivesForSection` |
+| `components/interactives/registry.ts`、`components/interactives/catalog/` | 全局唯一/公开查询与按学科注册数据；纯类型在 catalog/types.ts |
 | `lib/content/contentPaths.ts` | `CONTENT_PATH_RESOLVERS`：按 `contentRoot.detail` 解析正文文件路径 |
 | `lib/content/loader.ts` | `readContentMarkdown(subjectId, categoryId, itemId)` 等正文/例题读取函数 |
-| `lib/store.ts` | 2 行 `@deprecated` 转发壳，真身见下一行 |
 | `lib/stores/ui.ts` | `activeSubjectId` 状态 + `setActiveSection(subjectId, chapterId, sectionId)`（`useStore`） |
 | `lib/content-data/manifest.ts` | 多科内容树（驱动左侧导航），由 `category()`/`stubCategory()` 组装各学科的 `*-detail.ts` 数据模块 |
 | `lib/content-data/media.ts` | `getVideo(id)` / `getVideosForSection(subjectId, chapterId, sectionId)`；合并 `media.generated.ts` 与各学科 `media.{subject}.generated.ts` |

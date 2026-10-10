@@ -4,14 +4,12 @@ from __future__ import annotations
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-TARGETS = [
-    REPO / "lib" / "content-data" / "histology-textbook.ts",
-    REPO / "lib" / "content-data" / "anatomy-textbook.ts",
-    REPO / "lib" / "content-data" / "cell-biology-textbook.ts",
-    REPO / "lib" / "content-data" / "biochemistry-textbook.ts",
-    REPO / "lib" / "content-data" / "instrumental-analysis-textbook.ts",
-    REPO / "lib" / "content-data" / "nav.generated.json",
-]
+SUBJECTS = ["histology", "anatomy", "cell-biology", "biochemistry", "instrumental-analysis"]
+TARGETS = [REPO / "lib" / "content-data" / "nav.generated.json"]
+for subject in SUBJECTS:
+    folder = REPO / "lib" / "content-data" / "subjects" / subject
+    TARGETS.append(folder / f"{subject}-textbook.ts")
+    TARGETS.extend(sorted((folder / "textbook").glob("*.ts")))
 
 
 def strip_text(text: str) -> str:
@@ -29,7 +27,7 @@ def main() -> None:
             path.write_text(updated, encoding="utf-8")
             n += 1
             print(f"stripped {path.relative_to(REPO)}")
-    for subject in ["histology", "anatomy", "cell-biology", "biochemistry", "instrumental-analysis"]:
+    for subject in SUBJECTS:
         folder = REPO / "content" / subject / "textbook"
         if not folder.exists():
             continue
