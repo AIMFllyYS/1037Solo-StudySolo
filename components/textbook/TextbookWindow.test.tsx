@@ -47,6 +47,23 @@ describe("TextbookWindow", () => {
     expect(screen.getByTestId("year-subject-folder-tree")).toBeInTheDocument();
     expect(screen.getByTestId("textbook-choose")).toHaveAttribute("aria-expanded", "true");
   });
+  it("直接选择学期行会切换该学期全部教材并清除旧学科，重挂载保留学期", () => {
+    useAcademicYear.setState({ year: "sophomore-1" });
+    openTextbookWindow();
+    const view = render(<TextbookWindow />);
+    fireEvent.click(screen.getByTestId("textbook-choose"));
+    const picker = within(screen.getByTestId("textbook-selection-tree"));
+    fireEvent.click(picker.getByRole("button", { name: "大一下学期" }));
+    fireEvent.click(picker.getByRole("button", { name: "完成" }));
+    expect(within(screen.getByTestId("textbook-tree-panel")).getByText("大一下学期")).toBeInTheDocument();
+    expect(within(screen.getByTestId("textbook-folder-tree")).getByRole("button", { name: "概率论与数理统计" })).toBeInTheDocument();
+    expect(within(screen.getByTestId("textbook-folder-tree")).queryByText("医学细胞生物学")).toBeNull();
+    const saved = useWindowManager.getState().windows.find((window) => window.id === TEXTBOOK_WINDOW_ID)!.data as TextbookReadingState;
+    expect(saved).toMatchObject({ yearId: "freshman-2", subjectId: null, selection: null, expandedKeys: [] });
+    view.unmount();
+    render(<TextbookWindow />);
+    expect(within(screen.getByTestId("textbook-tree-panel")).getByText("大一下学期")).toBeInTheDocument();
+  });
   it("同一教材窗口在右栏收起重挂载后恢复当前章节与展开树，再打开入口也不丢阅读状态", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ content: "# 章节正文\n\n已读内容保留", format: "markdown" }) }));
     const group = listFlashcardSubjectGroups()[0]!;

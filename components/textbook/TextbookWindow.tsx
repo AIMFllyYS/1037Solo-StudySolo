@@ -65,7 +65,7 @@ export default function TextbookWindow() {
           </div>
           {choosing ? <div role="dialog" aria-label={t("window.textbook.yearAria")} className="absolute inset-0 z-10 flex min-h-0 flex-col bg-[var(--bg-panel)]" data-testid="textbook-selection-tree">
             <div className="flex shrink-0 items-center justify-between border-b border-[var(--line-soft)] px-2 py-2 text-[12px] font-semibold"><span>{t("window.textbook.yearAria")}</span><button type="button" onClick={() => setChoosing(false)} className="rounded px-2 py-1 text-[11px] text-[var(--ink-soft)]">{t("window.textbook.done")}</button></div>
-            <YearSubjectFolderTree selectedId={subjectId} onSelect={chooseSubject} />
+            <YearSubjectFolderTree selectedId={subjectId} onSelect={chooseSubject} onSelectYear={(nextYear) => updateReading({ yearId: nextYear, subjectId: null, selection: null, expandedKeys: [] })} />
           </div> : null}
           <TextbookFolderTree group={group} subjectId={subjectId} selectedKey={selection ? textbookSelectionKey(selection) : null} onSelect={(next) => updateReading({ selection: next })} expandedKeys={reading.expandedKeys} onExpandedChange={(keys) => updateReading({ expandedKeys: keys })} />
         </aside>
