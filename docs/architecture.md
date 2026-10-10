@@ -36,7 +36,7 @@ Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 
 - `lib/stores/` 持有界面和用户领域的 Zustand 状态；`lib/hooks/` 提供 React 适配与生命周期。
 - 小型偏好存储于 localStorage；账户用户数据按所有者作用域进入 IndexedDB。实际 key、DB 与迁移由 `lib/storage/` 管理。
 - 聊天 manifest、v3 head/chunks、turn spine、窗口物化、lease、CAS checkpoint、附件和故障恢复分别有契约；载入尾部窗口不意味着导出或同步可以只发送尾部。
-- `lib/sync/` 负责 sync intent/journal、队列、限额、冲突、API 与状态适配。网络状态不是 UI 数据的第二份权威来源。
+- `lib/sync/engine.ts` 持有 sync intent/journal 的执行生命周期、队列、重试和版本基线。`stores.ts` 适配 Zustand 与持久化，`storeAdapterTypes.ts` 定义注入契约，`payloadReaders.ts` 转换完整本机载荷，`quotaSnapshot.ts` 持有额度字节快照，`remoteApply.ts` 通过窄策略接口应用远端版本，`ownership.ts` 共享所有者/epoch 判据。网络状态不是 UI 数据的第二份权威来源，额度快照重置仍由引擎账户生命周期控制。
 - 资产原件、外部 body、版本和回收站服务由 `lib/assets/`、`lib/files/` 与对应 API 管理。文件名不是唯一身份，签名 URL 不作为长期标识。
 
 详见 [存储架构](./refer/storage-architecture.md)。本次整理将迁移/附件/存储引擎/界面状态等独立职责拆开，持久化格式和账户边界不变。

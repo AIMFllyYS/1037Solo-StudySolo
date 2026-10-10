@@ -1,62 +1,36 @@
+import { applyRemoteRow, type RemoteApplyContext } from "./remoteApply";
+import { syncUsageState, getCachedCloudSyncUsage, rememberRemoteBytesFromRows, noteRemoteBytes, cachedPoolBytes, remoteUserBytes } from "./quotaSnapshot";
+export { getCachedCloudSyncUsage } from "./quotaSnapshot";
+import { createDefaultStores } from "./stores";
+import { ownerStillCurrent } from "./ownership";
+import { asChatPayload, asUserNote, asReviewCard, cardVersion, asChatProject, loadLocalPayload } from "./payloadReaders";
+import type { CloudSyncStores } from "./storeAdapterTypes";
+export type { CloudSyncStores } from "./storeAdapterTypes";
 import { pendingSyncJobs, persistSyncJournal, setJournalActive, type SyncJob } from './journal';
 ﻿import { tryGetBrowserDataClient } from "@/lib/auth/browserClient";
 import { getBrowserSession } from "@/lib/auth/browserSession";
 import { getOwnerEpoch, getStorageOwner, onStorageOwnerChange } from "@/lib/storage/ownerScope";
 import { registerResourceMetrics } from "@/lib/performance/resourceMetrics";
-import {
-  deleteSessionData,
-  isSystemProject,
-  listBlobIdsForSession,
-  loadSessionMessages,
-  manifestFrom,
-  saveManifest,
-  saveManifestCommitted,
-  saveSessionMessagesCommitted,
-  type ChatFolder,
-  type SessionMeta,
-} from "@/lib/storage/chatStorage";
-import { loadArtifactFull, persistArtifactBody, useArtifacts, type Artifact } from "@/lib/stores/artifacts";
-import { applyCloudSessionWindow, ensureChatHistoryBootstrap, useChatHistory } from "@/lib/stores/chatHistory";
-import { loadDocumentFull, persistDocumentBody, useDocuments } from "@/lib/stores/documents";
-import { useUserNotes } from "@/lib/stores/userNotes";
-import { useReviewCards } from "@/lib/stores/reviewCards";
+import { type SessionMeta } from "@/lib/storage/chatStorage";
+import type { Artifact } from "@/lib/stores/artifacts";
+
+
 import type { StoredDocument } from "@/lib/documents/types";
 import type { UserNote } from "@/lib/notes/userNote";
 import type { ReviewCard } from "@/lib/review/types";
-import type { ChatMessage } from "@/lib/types/chat";
+
 import { createSupabaseSyncClient } from "./client";
 import { isRemoteNewer, mergeChatSessionPayloads } from "./merge";
-import { compactStudyMessages } from "@/lib/chat/compactStudyParts";
-import { htmlToSummary } from "@/lib/context/compactArtifacts";
-import {
-  buildArtifactPayload,
-  buildChatProjectPayload,
-  buildChatSessionPayload,
-  buildDocumentPayload,
-  buildReviewCardPayload,
-  buildUserNotePayload,
-  effectivePoolLimit,
-  effectiveUserLimit,
-  formatKindLimitMessage,
-  formatPoolLimitMessage,
-  formatUserLimitMessage,
-  isSyncKindLimitError,
-  isSyncPoolLimitError,
-  isSyncUnknownKindError,
-  isSyncUserLimitError,
-  payloadByteSize,
-  preparePayload,
-  quotaPoolForKind,
-  __setSyncLimitsForTests,
-} from "./payload";
-import { beginCloudSyncApply, endCloudSyncApply } from "./schedule";
+
+import { effectivePoolLimit, effectiveUserLimit, formatKindLimitMessage, formatPoolLimitMessage, formatUserLimitMessage, isSyncKindLimitError, isSyncPoolLimitError, isSyncUnknownKindError, isSyncUserLimitError, payloadByteSize, preparePayload, quotaPoolForKind, __setSyncLimitsForTests } from "./payload";
+
 import { isSessionStreaming, __resetStreamingSessionsForTests } from "./streamingSessions";
 import { getCloudSyncStatus, setCloudRowKeys, setCloudSyncStatus, setSyncItemStatus, getSyncItemStatus,resetSyncItemStatuses } from "./status";
 import { retryableFailure, type SyncFailure } from './failure';
 import { hasExternalBody } from '@/lib/assets/body';
 import { hydrateRemotePayload } from '@/lib/assets/client';
 import { mergeIndependent } from './conflicts';
-import {useImageGen,loadImageGenSessionFull,applyCloudImageSession,type ImageGenSession} from '@/lib/stores/imageGen';
+import type { ImageGenSession } from '@/lib/stores/imageGen';
 import {assetApi} from '@/lib/assets/client';
 import {
   CLOUD_SYNC_KINDS,
@@ -65,9 +39,7 @@ import {
   type ChatProjectSyncPayload,
   type ChatSessionSyncPayload,
   type CloudSyncKind,
-  type SyncDocumentRow,
   type SyncDocumentsApi,
-  type SyncQuotaPool,
 } from "./types";
 import {
   emptyCloudSyncUsage,
@@ -77,96 +49,8 @@ import {
 } from "./usage";
 
 const DEFAULT_DEBOUNCE_MS = 2000;
-const MAX_LOCAL_SESSIONS = 50;
 
 type Job = SyncJob;
-
-export interface CloudSyncStores {
-  applyCloudHead?:(row:SyncDocumentRow)=>boolean;
-  listImageIds?:()=>string[];
-  getImage?:(id:string)=>Promise<ImageGenSession|null>;
-  applyImage?:(row:ImageGenSession)=>Promise<void>;
-  forgetImage?:(id:string)=>void;
-  listSessionMetas: () => SessionMeta[];
-  loadSession: (id: string) => Promise<{ meta: SessionMeta; messages: ChatMessage[] } | null>;
-  applySession: (payload: ChatSessionSyncPayload) => void | Promise<void>;
-  forgetSession: (id: string) => void | Promise<void>;
-  listArtifactIds: () => string[];
-  getArtifact: (id: string) => Artifact | null | Promise<Artifact | null>;
-  applyArtifact: (artifact: Artifact) => void | Promise<void>;
-  forgetArtifact: (id: string) => void;
-  listDocumentIds: () => string[];
-  getDocument: (id: string) => StoredDocument | null | Promise<StoredDocument | null>;
-  applyDocument: (doc: StoredDocument) => void | Promise<void>;
-  forgetDocument: (id: string) => void;
-  listNoteIds: () => string[];
-  getNote: (id: string) => UserNote | null;
-  applyNote: (note: UserNote) => void;
-  forgetNote: (id: string) => void;
-  listCardIds: () => string[];
-  getCard: (id: string) => ReviewCard | null;
-  applyCard: (card: ReviewCard) => void;
-  forgetCard: (id: string) => void;
-  listProjectIds: () => string[];
-  getProject: (id: string) => ChatProjectSyncPayload | null;
-  applyProject: (project: ChatProjectSyncPayload) => void;
-  forgetProject: (id: string) => void;
-}
-
-function createDefaultStores(): CloudSyncStores {
-  return {
-    applyCloudHead:row=>{
-      const payload=row.payload as Record<string,unknown>;
-      if(row.kind==='artifact'){useArtifacts.setState(state=>({order:state.order.includes(row.client_id)?state.order:[...state.order,row.client_id],byId:{...state.byId,[row.client_id]:{...payload,id:row.client_id,html:'',status:'done',bodyRef:true,cloudRevision:row.revision} as Artifact}}));return true;}
-      if(row.kind==='document'){useDocuments.setState(state=>({byId:{...state.byId,[row.client_id]:{...payload,id:row.client_id,bodyRef:true,cloudRevision:row.revision} as unknown as StoredDocument}}));return true;}
-      if(row.kind==='image-gen'){useImageGen.setState(state=>({sessions:{...state.sessions,[row.client_id]:{...payload,id:row.client_id,images:[],bodyRef:true,cloudRevision:row.revision} as unknown as ImageGenSession}}));return true;}
-      return false;
-    },
-    listImageIds:()=>Object.keys(useImageGen.getState().sessions),getImage:loadImageGenSessionFull,applyImage:applyCloudImageSession,
-    forgetImage:id=>withLocalApply(()=>useImageGen.setState(state=>{const sessions={...state.sessions};delete sessions[id];return {sessions};})),
-    listSessionMetas: () => useChatHistory.getState().sessionsMeta,
-    async loadSession(id) {
-      const meta = useChatHistory.getState().sessionsMeta.find((item) => item.id === id);
-      if (!meta) return null;
-      // 窗口化后 messagesById 只是尾部窗口，上行 payload 必须全量装配，
-      // 否则云端拿到的就是「只剩最近几轮」的截断会话。
-      const messages = (await loadSessionMessages(id)) ?? [];
-      return { meta, messages };
-    },
-    applySession: applyChatPayloadToZustand,
-    forgetSession: forgetLocalSessionInZustand,
-    listArtifactIds: () => useArtifacts.getState().order,
-    getArtifact: loadArtifactFull,
-    applyArtifact: applyArtifactToZustand,
-    forgetArtifact: forgetArtifactInZustand,
-    listDocumentIds: () => Object.keys(useDocuments.getState().byId),
-    getDocument: loadDocumentFull,
-    applyDocument: applyDocumentToZustand,
-    forgetDocument: forgetDocumentInZustand,
-    listNoteIds: () => useUserNotes.getState().order,
-    getNote: (id) => useUserNotes.getState().byId[id] ?? null,
-    applyNote: applyNoteToZustand,
-    forgetNote: forgetNoteInZustand,
-    listCardIds: () => useReviewCards.getState().order,
-    getCard: (id) => useReviewCards.getState().byId[id] ?? null,
-    applyCard: applyCardToZustand,
-    forgetCard: forgetCardInZustand,
-    listProjectIds: () => useChatHistory.getState().folders.map((folder) => folder.id),
-    getProject: (id) => {
-      const folder = useChatHistory.getState().folders.find((item) => item.id === id);
-      if (!folder) return null;
-      return {
-        id: folder.id,
-        name: folder.name,
-        createdAt: folder.createdAt,
-        updatedAt: folder.updatedAt ?? folder.createdAt,
-        ...(folder.system ? { system: folder.system } : {}),
-      };
-    },
-    applyProject: applyProjectToZustand,
-    forgetProject: forgetProjectInZustand,
-  };
-}
 
 let stores: CloudSyncStores = createDefaultStores();
 let injectedClient: SyncDocumentsApi | null | undefined;
@@ -177,8 +61,6 @@ const baseline = new Map<string, string>();
 const baselineRevisions=new Map<string,number>();
 const lastOkBytes = new Map<string, number>();
 const lastPushedHash = new Map<string, string>();
-let remoteBytesByKey = new Map<string, number>();
-let remoteBytesReady = false;
 let chain: Promise<void> = Promise.resolve();
 let drainScheduled = false;
 let inFlightJob: Job | null = null;
@@ -189,10 +71,6 @@ let pagehideBound = false;
 
 function jobKey(kind: CloudSyncKind, clientId: string): string {
   return `${kind}:${clientId}`;
-}
-
-function ownerStillCurrent(ownerId: string | null, epoch: number): boolean {
-  return getStorageOwner() === ownerId && getOwnerEpoch() === epoch;
 }
 
 function retryStorageKey(ownerId: string): string { return `ss-sync-jobs:${ownerId}`; }
@@ -234,8 +112,8 @@ onStorageOwnerChange((previous, next) => {
   if(next&&typeof localStorage!=='undefined')try{for(const [key,revision] of Object.entries(JSON.parse(localStorage.getItem(`ss-sync-heads:${next}`)??'{}')))if(Number.isSafeInteger(revision))baselineRevisions.set(key,Number(revision));}catch{}
   lastOkBytes.clear();
   lastPushedHash.clear();
-  remoteBytesByKey.clear();
-  remoteBytesReady = false;
+  syncUsageState.remoteBytesByKey.clear();
+  syncUsageState.remoteBytesReady = false;
   setCloudRowKeys(null);
   restoreLightJobs(next);
   if (pending.size) void flushPendingJobs();
@@ -271,8 +149,8 @@ export function __resetCloudSyncForTests(): void {
   baselineRevisions.clear();
   lastOkBytes.clear();
   lastPushedHash.clear();
-  remoteBytesByKey = new Map();
-  remoteBytesReady = false;
+  syncUsageState.remoteBytesByKey = new Map();
+  syncUsageState.remoteBytesReady = false;
   setCloudRowKeys(null);
   chain = Promise.resolve();
   drainScheduled = false;
@@ -290,48 +168,30 @@ async function resolveClient(): Promise<SyncDocumentsApi | null> {
   return createSupabaseSyncClient(supabase, userId);
 }
 
-function parseJobKey(key: string): CloudSyncKind | null {
-  for (const kind of CLOUD_SYNC_KINDS) {
-    if (key.startsWith(`${kind}:`)) return kind;
-  }
-  return null;
-}
-
-export function getCachedCloudSyncUsage(): CloudSyncUsage | null {
-  if (!remoteBytesReady) return null;
-  return summarizeSyncUsage(
-    [...remoteBytesByKey].flatMap(([key, bytes]) => {
-      const kind = parseJobKey(key);
-      return kind && bytes > 0 ? [{ kind, bytes }] : [];
-    }),
-    "cloud",
-  );
-}
-
 async function measureLocalSyncUsage(): Promise<CloudSyncUsage> {
   const entries: { kind: CloudSyncKind; bytes: number }[] = [];
   for (const meta of stores.listSessionMetas()) {
-    const payload = await loadLocalPayload("chat-session", meta.id);
+    const payload = await loadLocalPayload(stores, "chat-session", meta.id);
     if (payload) entries.push({ kind: "chat-session", bytes: payloadByteSize(payload) });
   }
   for (const id of stores.listArtifactIds()) {
-    const payload = await loadLocalPayload("artifact", id);
+    const payload = await loadLocalPayload(stores, "artifact", id);
     if (payload) entries.push({ kind: "artifact", bytes: payloadByteSize(payload) });
   }
   for (const id of stores.listDocumentIds()) {
-    const payload = await loadLocalPayload("document", id);
+    const payload = await loadLocalPayload(stores, "document", id);
     if (payload) entries.push({ kind: "document", bytes: payloadByteSize(payload) });
   }
   for (const id of stores.listNoteIds()) {
-    const payload = await loadLocalPayload("user-note", id);
+    const payload = await loadLocalPayload(stores, "user-note", id);
     if (payload) entries.push({ kind: "user-note", bytes: payloadByteSize(payload) });
   }
   for (const id of stores.listCardIds()) {
-    const payload = await loadLocalPayload("review-card", id);
+    const payload = await loadLocalPayload(stores, "review-card", id);
     if (payload) entries.push({ kind: "review-card", bytes: payloadByteSize(payload) });
   }
   for (const id of stores.listProjectIds()) {
-    const payload = await loadLocalPayload("chat-project", id);
+    const payload = await loadLocalPayload(stores, "chat-project", id);
     if (payload) entries.push({ kind: "chat-project", bytes: payloadByteSize(payload) });
   }
   return summarizeSyncUsage(entries, "local");
@@ -465,7 +325,7 @@ export async function flushCloudSyncForTests(): Promise<void> {
 export async function loadOneCloudAsset(kind:CloudSyncKind,id:string):Promise<boolean>{
  const owner=getStorageOwner(),epoch=getOwnerEpoch(),api=await resolveClient();if(!api)return false;
  const row=await api.get(kind,id);if(row.error||!row.data||!ownerStillCurrent(owner,epoch))return false;
- const applied=await applyRemoteRow(row.data);if(applied==='skipped'||!ownerStillCurrent(owner,epoch))return false;
+ const applied=await applyRemoteRow(remoteApplyContext, row.data);if(applied==='skipped'||!ownerStillCurrent(owner,epoch))return false;
  rememberBaseline(kind,id,row.data.updated_at,row.data.revision);return true;
 }
 export async function cancelConflictingDelete(kind: CloudSyncKind, id: string): Promise<void> {
@@ -481,169 +341,6 @@ export async function cancelConflictingDelete(kind: CloudSyncKind, id: string): 
   if (ownerStillCurrent(owner,epoch)) setSyncItemStatus(key,{phase:'synced'});
 }
 
-function withLocalApply(fn: () => void): void {
-  beginCloudSyncApply();
-  try {
-    fn();
-  } finally {
-    endCloudSyncApply();
-  }
-}
-
-function asChatPayload(value: unknown): ChatSessionSyncPayload | null {
-  if (!value || typeof value !== "object") return null;
-  const row = value as ChatSessionSyncPayload;
-  if (row.v !== 1 || !row.meta?.id || !Array.isArray(row.messages)) return null;
-  return {
-    v: 1,
-    meta: row.meta,
-    messages: compactStudyMessages(row.messages, "persist"),
-  };
-}
-
-function asArtifact(value: unknown): Artifact | null {
-  if (!value || typeof value !== "object") return null;
-  const row = value as Artifact;
-  if (typeof row.id !== "string" || typeof row.html !== "string") return null;
-  return {
-    id: row.id,
-    title: typeof row.title === "string" ? row.title : "",
-    html: row.html,
-    status: "done",
-    reasoning: typeof row.reasoning === "string" ? row.reasoning : undefined,
-  };
-}
-
-function asDocument(value: unknown): StoredDocument | null {
-  if (!value || typeof value !== "object") return null;
-  const row = value as StoredDocument;
-  if (typeof row.id !== "string" || !row.spec) return null;
-  return row;
-}
-
-function asUserNote(value: unknown): UserNote | null {
-  if (!value || typeof value !== "object") return null;
-  const row = value as UserNote;
-  if (typeof row.id !== "string" || typeof row.markdown !== "string") return null;
-  return {
-    id: row.id,
-    title: typeof row.title === "string" ? row.title : "",
-    markdown: row.markdown,
-    subjectId: typeof row.subjectId === "string" ? row.subjectId : null,
-    createdAt: typeof row.createdAt === "number" ? row.createdAt : Date.now(),
-    updatedAt: typeof row.updatedAt === "number" ? row.updatedAt : Date.now(),
-    kind: row.kind === "classroom" ? "classroom" : row.kind === "personal" ? "personal" : undefined,
-    quote: typeof row.quote === "string" ? row.quote : undefined,
-    source: row.source,
-  };
-}
-
-function asReviewCard(value: unknown): ReviewCard | null {
-  if (!value || typeof value !== "object") return null;
-  const row = value as ReviewCard;
-  if (typeof row.id !== "string" || typeof row.originalText !== "string") return null;
-  return row;
-}
-
-/**
- * 闪卡的版本号。
- *
- * 闪卡本来没有 updatedAt（现网 94/94 只有 createdAt），所以过去无法判断先后，
- * 导致 pushOne 对 review-card 只能无条件覆盖云端。第三方改写方（Platform 的
- * Wiki）会补一个更新鲜的 updatedAt；没补时退回 createdAt，这样现网已有的卡
- * 无需迁移就能参与比较。
- */
-function cardVersion(card: ReviewCard): number {
-  const stamped = (card as { updatedAt?: unknown }).updatedAt;
-  return typeof stamped === "number" && Number.isFinite(stamped) ? stamped : card.createdAt;
-}
-
-function asChatProject(value: unknown): ChatProjectSyncPayload | null {
-  if (!value || typeof value !== "object") return null;
-  const row = value as ChatProjectSyncPayload;
-  if (typeof row.id !== "string" || typeof row.name !== "string") return null;
-  const createdAt = typeof row.createdAt === "number" ? row.createdAt : Date.now();
-  const updatedAt = typeof row.updatedAt === "number" ? row.updatedAt : createdAt;
-  return {
-    id: row.id,
-    name: row.name,
-    createdAt,
-    updatedAt,
-    ...(row.system === "note" || row.system === "floating" || row.system === "scheduled" ? { system: row.system } : {}),
-  };
-}
-
-async function loadLocalPayload(kind: CloudSyncKind, clientId: string): Promise<unknown | null> {
-  if(kind==='image-gen'){
-    const row=await stores.getImage?.(clientId);if(!row)return null;if(row.status!=='done')return row;const images=[];
-    for(const image of row.images){if(image.b64_json)images.push({b64_json:image.b64_json,revised_prompt:image.revised_prompt});else if(image.url?.startsWith('data:image/'))images.push({b64_json:image.url.split(',')[1],revised_prompt:image.revised_prompt});else if(image.url){const captured=await assetApi('/capture-image',{method:'POST',body:JSON.stringify({url:image.url})});images.push({b64_json:captured.b64_json,revised_prompt:image.revised_prompt});}}
-    return {...row,images,bodyRef:undefined};
-  }
-  if (kind === "chat-session") {
-    const session = await stores.loadSession(clientId);
-    return session ? buildChatSessionPayload(session.meta, session.messages) : null;
-  }
-  if (kind === "artifact") {
-    const artifact = await stores.getArtifact(clientId);
-    return artifact ? buildArtifactPayload(artifact) : null;
-  }
-  if (kind === "document") {
-    const doc = await stores.getDocument(clientId);
-    return doc ? buildDocumentPayload(doc) : null;
-  }
-  if (kind === "user-note") {
-    const note = stores.getNote(clientId);
-    return note ? buildUserNotePayload(note) : null;
-  }
-  if (kind === "chat-project") {
-    const project = stores.getProject(clientId);
-    return project ? buildChatProjectPayload(project) : null;
-  }
-  const card = stores.getCard(clientId);
-  return card ? buildReviewCardPayload(card) : null;
-}
-
-function rememberRemoteBytesFromRows(rows: SyncDocumentRow[]): void {
-  const next = new Map<string, number>();
-  for (const row of rows) {
-    if (row.deleted) continue;
-    next.set(jobKey(row.kind, row.client_id), payloadByteSize(row.payload));
-  }
-  remoteBytesByKey = next;
-  remoteBytesReady = true;
-  setCloudRowKeys(next.keys());
-}
-
-function noteRemoteBytes(kind: CloudSyncKind, clientId: string, bytes: number, deleted: boolean): void {
-  const key = jobKey(kind, clientId);
-  if (deleted) remoteBytesByKey.delete(key);
-  else remoteBytesByKey.set(key, bytes);
-  setCloudRowKeys(remoteBytesByKey.keys());
-}
-
-function cachedUserBytes(skipKind: CloudSyncKind, skipId: string): number | null {
-  if (!remoteBytesReady) return null;
-  let bytes = 0;
-  const skip = jobKey(skipKind, skipId);
-  for (const [key, value] of remoteBytesByKey) {
-    if (key === skip) continue;
-    bytes += value;
-  }
-  return bytes;
-}
-
-function cachedPoolBytes(pool: SyncQuotaPool, skipKind: CloudSyncKind, skipId: string): number {
-  let bytes = 0;
-  const skip = jobKey(skipKind, skipId);
-  for (const [key, value] of remoteBytesByKey) {
-    if (key === skip) continue;
-    const kind = parseJobKey(key);
-    if (!kind || quotaPoolForKind(kind) !== pool) continue;
-    bytes += value;
-  }
-  return bytes;
-}
-
 async function payloadFingerprint(payload: unknown): Promise<string> {
   try {
     if (!globalThis.crypto?.subtle) return "";
@@ -653,21 +350,6 @@ async function payloadFingerprint(payload: unknown): Promise<string> {
   } catch {
     return "";
   }
-}
-
-async function remoteUserBytes(
-  api: SyncDocumentsApi,
-  skipKind: CloudSyncKind,
-  skipId: string,
-  job?: Job,
-): Promise<{ bytes: number; error: string | null }> {
-  const cached = cachedUserBytes(skipKind, skipId);
-  if (cached != null) return { bytes: cached, error: null };
-  const { data, error } = await api.list(CLOUD_SYNC_KINDS);
-  if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return { bytes: 0, error: "sync_owner_changed" };
-  if (error) return { bytes: 0, error: error.message };
-  rememberRemoteBytesFromRows(data);
-  return { bytes: cachedUserBytes(skipKind, skipId) ?? 0, error: null };
 }
 
 function rememberBaseline(kind: CloudSyncKind, clientId: string, updatedAt: string | undefined, revision?:number): void {
@@ -738,7 +420,7 @@ async function pushTombstone(api: SyncDocumentsApi, kind: CloudSyncKind, clientI
 
 async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: string, job?: Job): Promise<boolean> {
   if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
-  const local = await loadLocalPayload(kind, clientId);
+  const local = await loadLocalPayload(stores, kind, clientId);
   if ((kind === 'document' || kind === 'artifact' || kind==='image-gen') && local && (local as { status?: string }).status !== 'done') {setSyncItemStatus(jobKey(kind,clientId),{phase:'blocked',message:'未完成稿仅保留本机。',retryable:false});return false;}
   if (job && !ownerStillCurrent(job.ownerId, job.epoch)) return false;
   if (!local) {
@@ -941,283 +623,20 @@ async function preserveConflict(api:SyncDocumentsApi,kind:CloudSyncKind,id:strin
   return true;
 }
 
-function capSessions(metas: SessionMeta[]): SessionMeta[] {
-  if (metas.length <= MAX_LOCAL_SESSIONS) return metas;
-  return [...metas].sort((a, b) => b.updatedAt - a.updatedAt).slice(0, MAX_LOCAL_SESSIONS);
-}
 
-async function applyChatPayloadToZustand(payload: ChatSessionSyncPayload): Promise<void> {
-  // 先等本地水合：未水合时 sessionsMeta 是空的，据此写 manifest 会把盘上真实的会话列表
-  // 覆盖成「只剩云端这一条」。等水合完再合并，顺带也保证拉取不会白跑。
-  await ensureChatHistoryBootstrap().catch(() => {});
-  const { meta, messages } = payload;
-  const initial = useChatHistory.getState();
-  if (!initial._hasHydrated) throw new Error("chat_history_not_hydrated");
-  const ownerId = getStorageOwner(), epoch = getOwnerEpoch();
-  await saveSessionMessagesCommitted(meta.id, messages);
-  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
-  const state = useChatHistory.getState();
-  const sessionsMeta = capSessions([meta, ...state.sessionsMeta.filter((item) => item.id !== meta.id)]);
-  // The page checkpoint advances only after both content and its manifest are durable.
-  await saveManifestCommitted(manifestFrom(state, { activeSessionId: state.activeSessionId ?? meta.id, sessions: sessionsMeta }));
-  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
-  withLocalApply(() => applyCloudSessionWindow(meta, messages, sessionsMeta));
-}
-
-async function forgetLocalSessionInZustand(id: string): Promise<void> {
-  // 同上：等水合完再按本地真实列表重写 manifest。
-  await ensureChatHistoryBootstrap().catch(() => {});
-  const ownerId = getStorageOwner(), epoch = getOwnerEpoch();
-  const blobIds = await listBlobIdsForSession(id);
-  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
-  await deleteSessionData(id, blobIds);
-  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
-  const before = useChatHistory.getState();
-  if (!before._hasHydrated) throw new Error("chat_history_not_hydrated");
-  const retained = before.sessionsMeta.filter((item) => item.id !== id);
-  const nextActive = before.activeSessionId === id ? retained[0]?.id ?? null : before.activeSessionId;
-  await saveManifestCommitted(manifestFrom(before, { activeSessionId: nextActive, sessions: retained }));
-  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
-  withLocalApply(() => {
-    const state = useChatHistory.getState();
-    if (!state._hasHydrated) return;
-    const sessionsMeta = state.sessionsMeta.filter((item) => item.id !== id);
-    const messagesById = { ...state.messagesById };
-    delete messagesById[id];
-    const sessionWindowById = { ...state.sessionWindowById };
-    delete sessionWindowById[id];
-    const sessionLoadState = { ...state.sessionLoadState };
-    delete sessionLoadState[id];
-    const deletedActive = state.activeSessionId === id;
-    const activeSessionId = deletedActive ? sessionsMeta[0]?.id ?? null : state.activeSessionId;
-    useChatHistory.setState({
-      sessionsMeta,
-      messagesById,
-      sessionWindowById,
-      sessionLoadState,
-      activeSessionId,
-      loadedSessionIds: state.loadedSessionIds.filter((item) => item !== id),
-    });
-  });
-}
-
-async function applyArtifactToZustand(artifact: Artifact): Promise<void> {
-  const ownerId = getStorageOwner(), epoch = getOwnerEpoch();
-  if (!await persistArtifactBody(artifact)) throw new Error("artifact_body_checkpoint_failed");
-  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
-  withLocalApply(() => {
-    useArtifacts.setState((state) => ({
-      byId: { ...state.byId, [artifact.id]: { ...artifact, bodyRef: true, html: "", summary: artifact.summary ?? htmlToSummary(artifact.html) } },
-      order: state.order.includes(artifact.id) ? state.order : [...state.order, artifact.id],
-    }));
-  });
-}
-
-function forgetArtifactInZustand(id: string): void {
-  withLocalApply(() => {
-    useArtifacts.setState((state) => {
-      const byId = { ...state.byId };
-      delete byId[id];
-      return { byId, order: state.order.filter((item) => item !== id) };
-    });
-  });
-}
-
-async function applyDocumentToZustand(doc: StoredDocument): Promise<void> {
-  const ownerId = getStorageOwner(), epoch = getOwnerEpoch();
-  if (!await persistDocumentBody(doc)) throw new Error("document_body_checkpoint_failed");
-  if (!ownerStillCurrent(ownerId, epoch)) throw new Error("sync_owner_changed");
-  withLocalApply(() => {
-    useDocuments.setState((state) => ({
-      byId: { ...state.byId, [doc.id]: { ...doc, bodyRef: true, sections: doc.sections.map((section) => ({ ...section, markdown: undefined })) } },
-    }));
-  });
-}
-
-function forgetDocumentInZustand(id: string): void {
-  withLocalApply(() => {
-    useDocuments.setState((state) => {
-      const byId = { ...state.byId };
-      delete byId[id];
-      return { byId };
-    });
-  });
-}
-
-function applyNoteToZustand(note: UserNote): void {
-  withLocalApply(() => {
-    useUserNotes.setState((state) => ({
-      byId: { ...state.byId, [note.id]: note },
-      order: state.order.includes(note.id) ? state.order : [...state.order, note.id],
-    }));
-  });
-}
-
-function forgetNoteInZustand(id: string): void {
-  withLocalApply(() => {
-    useUserNotes.setState((state) => {
-      const byId = { ...state.byId };
-      delete byId[id];
-      const noteAgentSessionById = { ...state.noteAgentSessionById };
-      delete noteAgentSessionById[id];
-      return {
-        byId,
-        order: state.order.filter((item) => item !== id),
-        openEditorIds: state.openEditorIds.filter((item) => item !== id),
-        noteAgentOpenIds: state.noteAgentOpenIds.filter((item) => item !== id),
-        noteAgentSessionById,
-        agentEditingNoteId: state.agentEditingNoteId === id ? null : state.agentEditingNoteId,
-      };
-    });
-  });
-}
-
-function applyProjectToZustand(project: ChatProjectSyncPayload): void {
-  withLocalApply(() => {
-    useChatHistory.setState((state) => {
-      const existing = state.folders.find((folder) => folder.id === project.id);
-      const next: ChatFolder = {
-        id: project.id,
-        name: project.name,
-        createdAt: existing?.createdAt ?? project.createdAt,
-        updatedAt: project.updatedAt,
-        ...(project.system ? { system: project.system } : {}),
-      };
-      const folders = existing
-        ? state.folders.map((folder) => (folder.id === project.id ? next : folder))
-        : [...state.folders, next];
-      saveManifest(manifestFrom(state, { folders }));
-      return { folders };
-    });
-  });
-}
-
-function forgetProjectInZustand(id: string): void {
-  withLocalApply(() => {
-    useChatHistory.setState((state) => {
-      const target = state.folders.find((folder) => folder.id === id);
-      // 系统项目不跟着云端 tombstone 消失：成员由 kind 决定，本地必须留着。
-      if (!target || isSystemProject(target)) return state;
-      const folders = state.folders.filter((folder) => folder.id !== id);
-      const sessionsMeta = state.sessionsMeta.map((s) =>
-        s.folderId === id ? { ...s, folderId: null } : s,
-      );
-      saveManifest(
-        manifestFrom(state, {
-          sessions: sessionsMeta,
-          folders,
-          activeProjectId: state.activeProjectId === id ? null : state.activeProjectId,
-        }),
-      );
-      return {
-        folders,
-        sessionsMeta,
-        activeProjectId: state.activeProjectId === id ? null : state.activeProjectId,
-      };
-    });
-  });
-}
-
-function applyCardToZustand(card: ReviewCard): void {
-  withLocalApply(() => {
-    useReviewCards.setState((state) => ({
-      byId: { ...state.byId, [card.id]: card },
-      order: state.order.includes(card.id) ? state.order : [...state.order, card.id],
-    }));
-  });
-}
-
-function forgetCardInZustand(id: string): void {
-  withLocalApply(() => {
-    useReviewCards.setState((state) => {
-      const byId = { ...state.byId };
-      delete byId[id];
-      return { byId, order: state.order.filter((item) => item !== id) };
-    });
-  });
-}
-
-async function applyRemoteRow(row: SyncDocumentRow): Promise<'skipped'|void> {
-  const owner=getStorageOwner(),epoch=getOwnerEpoch();
-  // An uncommitted local replacement is authoritative until resolved. In-flight
-  // and blocked jobs count as dirty too; refreshing cannot undo either edit/delete.
-  const key = jobKey(row.kind, row.client_id);
-  const dirty=()=>pending.has(key)||['pending','syncing','blocked','error'].includes(getSyncItemStatus(key)?.phase??'')||(inFlightJob&&jobKey(inFlightJob.kind,inFlightJob.clientId)===key);
-  if (dirty()) return 'skipped';
-  if (row.kind === 'chat-session' && isSessionStreaming(row.client_id)) return 'skipped';
-  const appliedBaseline=baseline.get(key);if(!row.deleted&&appliedBaseline&&!isRemoteNewer(row.updated_at,appliedBaseline))return;
-  if(!row.deleted&&hasExternalBody(row.payload)&&stores.applyCloudHead?.(row))return;
-  if (!row.deleted && hasExternalBody(row.payload)) row = { ...row, payload: await hydrateRemotePayload(row.kind, row.client_id,row.revision) };
-  if(!ownerStillCurrent(owner,epoch)||dirty()||(row.kind==='chat-session'&&isSessionStreaming(row.client_id)))return 'skipped';
-  if (row.deleted) {
-    if (row.kind === "chat-session") await stores.forgetSession(row.client_id);
-    else if (row.kind === "artifact") stores.forgetArtifact(row.client_id);
-    else if (row.kind === "document") stores.forgetDocument(row.client_id);
-    else if (row.kind === "user-note") stores.forgetNote(row.client_id);
-    else if (row.kind === "review-card") stores.forgetCard(row.client_id);
-    else if(row.kind==='image-gen')stores.forgetImage?.(row.client_id);
-    else stores.forgetProject(row.client_id);
-    return;
-  }
-  // 远端版本未前进（周期拉取里占绝大多数）：整行跳过，
-  // 尤其对 chat-session 免去全量装配 + 合并 + v3 全量重写。
-  const known = baseline.get(jobKey(row.kind, row.client_id));
-  if (known && !isRemoteNewer(row.updated_at, known)) return;
-  if(row.kind==='image-gen'){await stores.applyImage?.(row.payload as ImageGenSession);return;}
-  if (row.kind === "chat-session") {
-    const remote = asChatPayload(row.payload);
-    if (!remote) return;
-    const local = await stores.loadSession(remote.meta.id);
-    if(dirty() || !ownerStillCurrent(owner,epoch))return 'skipped';
-    if(row.revision!==undefined){await stores.applySession(remote);return;}
-    if (local) {
-      const merged = mergeChatSessionPayloads(
-        { v: 1, meta: local.meta, messages: local.messages },
-        remote,
-      );
-      // 字节相等短路：合并结果与本地一致时跳过全量落盘 + 窗口/派生重算。
-      if (JSON.stringify(merged.payload) !== JSON.stringify({ v: 1, meta: local.meta, messages: local.messages })) {
-        await stores.applySession(merged.payload);
-      }
-      if (merged.added > 0) reportMerged();
-    } else {
-      await stores.applySession(remote);
-    }
-    return;
-  }
-  if (row.kind === "artifact") {
-    const artifact = asArtifact(row.payload);
-    if (artifact) await stores.applyArtifact(artifact);
-    return;
-  }
-  if (row.kind === "document") {
-    const doc = asDocument(row.payload);
-    if (doc) await stores.applyDocument(doc);
-    return;
-  }
-  if (row.kind === "user-note") {
-    const note = asUserNote(row.payload);
-    if (!note) return;
-    const local = stores.getNote(row.client_id);
-    if (row.revision===undefined && local && local.updatedAt > note.updatedAt) return;
-    stores.applyNote(note);
-    return;
-  }
-  if (row.kind === "review-card") {
-    const card = asReviewCard(row.payload);
-    if (card) stores.applyCard(card);
-    return;
-  }
-  const project = asChatProject(row.payload);
-  if (!project) return;
-  const localProject = stores.getProject(row.client_id);
-  if (row.revision===undefined && localProject && localProject.updatedAt > project.updatedAt) return;
-  stores.applyProject(project);
-}
+const remoteApplyContext: RemoteApplyContext = {
+  get stores() { return stores; },
+  isDirty: (kind, id) => {
+    const key = jobKey(kind, id);
+    return pending.has(key) || ['pending', 'syncing', 'blocked', 'error'].includes(getSyncItemStatus(key)?.phase ?? '') || !!(inFlightJob && jobKey(inFlightJob.kind, inFlightJob.clientId) === key);
+  },
+  baselineFor: (kind, id) => baseline.get(jobKey(kind, id)),
+  onMerged: reportMerged,
+};
 
 async function pullFromCloud(api: SyncDocumentsApi, ownerId: string | null, epoch: number): Promise<boolean> {
-  remoteBytesByKey = new Map();
-  remoteBytesReady = false;
+  syncUsageState.remoteBytesByKey = new Map();
+  syncUsageState.remoteBytesReady = false;
   let cursor: string | undefined;
   // listPage is bounded for the canonical client; legacy injected clients remain a single array adapter.
   for (let pageNumber = 0; pageNumber < 100; pageNumber++) {
@@ -1228,14 +647,14 @@ async function pullFromCloud(api: SyncDocumentsApi, ownerId: string | null, epoc
     if (!ownerStillCurrent(ownerId, epoch)) return false;
     if (page.error) { reportError(`云端同步失败：${page.error.message}`); pullRetryNeeded = retryableFailure(page.error); if (pullRetryNeeded) queueRetry(page.error.retryAfterMs); return false; }
     for (const row of page.data) {
-      if (!row.deleted) remoteBytesByKey.set(jobKey(row.kind, row.client_id), payloadByteSize(row.payload));
+      if (!row.deleted) syncUsageState.remoteBytesByKey.set(jobKey(row.kind, row.client_id), payloadByteSize(row.payload));
     }
     for (const deleted of [true, false]) {
       for (const row of page.data) {
         if (row.deleted !== deleted) continue;
         if (!ownerStillCurrent(ownerId, epoch)) return false;
         try {
-          const applied=await applyRemoteRow(row);
+          const applied=await applyRemoteRow(remoteApplyContext, row);
           if (!ownerStillCurrent(ownerId, epoch)) return false;
           if(applied!=='skipped')rememberBaseline(row.kind, row.client_id, row.updated_at, row.revision);
         } catch (error) {
@@ -1245,9 +664,9 @@ async function pullFromCloud(api: SyncDocumentsApi, ownerId: string | null, epoc
       }
     }
     if (!page.nextCursor) {
-      remoteBytesReady = true;
+      syncUsageState.remoteBytesReady = true;
       pullRetryNeeded = false;
-      setCloudRowKeys(remoteBytesByKey.keys());
+      setCloudRowKeys(syncUsageState.remoteBytesByKey.keys());
       return true;
     }
     cursor = page.nextCursor;
@@ -1263,9 +682,7 @@ async function pushAllLocal(api: SyncDocumentsApi, ownerId: string | null, epoch
   const push = async (kind: CloudSyncKind, id: string) => {
     const key = jobKey(kind, id);
     if (pending.has(key)) return false;
-    if(kind==='artifact'&&useArtifacts.getState().byId[id]?.cloudRevision!==undefined)return true;
-    if(kind==='document'&&useDocuments.getState().byId[id]?.cloudRevision!==undefined)return true;
-    if(kind==='image-gen'&&useImageGen.getState().sessions[id]?.cloudRevision!==undefined)return true;
+    if (stores.hasCloudRevision?.(kind, id)) return true;
     const job: Job = { op: 'upsert', kind, clientId: id, ownerId, epoch };
     const committed = await pushOne(api, kind, id, job);
     if (!ownerStillCurrent(ownerId, epoch)) return false;

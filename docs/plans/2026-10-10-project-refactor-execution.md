@@ -67,6 +67,7 @@
 - 旧索引内容 hash 过期，原件备份在 `.local-archive/refactor-index-20261010-before-upgrade/`。离线关键词重建保留 45784/48321 已有向量；2537 个新增块只有关键词召回，未付费补向量。深 content hash 校验通过，备份 manifest hash 一致。
 - Next 依赖更换导致旧开发进程退出，已通过现有 RootSolo 的本机 API 仅恢复 studysolo-web；实际 Next 16.4.0 HTTP /agent 200、浏览器完成水合。一次配置自动重启期间旧 IAB 进入连接错误页，新临时页已正常访问，未修改浏览器或系统安全设置。
 - R3a 模型模块：按官方 project structure 和 server/client 边界的领域分组原则，将 996 行入口拆为 contracts / aliases / catalog / thinking / selection / custom，最大模块 475 行；公共入口用显式 re-export 保留 Node/tsx 命名导入兼容。原始模型、旧别名和菜单分组序列化结果逐字节一致；73 项模型/供应商 node 检查、20 项 React 模型菜单/Fast/设置检查、类型及定向 lint 通过。
+- R3b 同步：将 1324 行 engine 拆为 740 行左右的协议/队列所有者、283 行 Zustand/持久化 adapter、载荷转换、额度快照、远端应用和共享 ownership。远端应用只通过 live stores getter、dirty 判断、基线读取与 merge 通知取得执行策略，不反向依赖 engine；保留原账户 epoch、CAS、待提交删除、冲突副本、额度与重试规则。44 项 node 同步检查、4 项版本/journal React 检查、全量类型和定向 lint 通过。
 
 ## 局部阻塞
 
