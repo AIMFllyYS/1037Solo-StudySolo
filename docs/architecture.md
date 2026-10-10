@@ -27,7 +27,7 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 输入器和 `lib/hooks/useChat*` 使用既有 UIMessage 流协议，经 `/api/chat`（`/api/agent/chat` 有对应入口）进入请求校验、上下文/文件恢复、模型解析、身份及额度检查、`ToolLoopAgent` 和流输出。
 
-`lib/ai/models.ts` 当前同时包含模型契约、固定注册数据和自定义 API 解析，后续按这些职责拆分。`lib/ai/provider.ts`、`lib/ai/sdk/` 和计费服务保留实际上游协议、请求和错误处理。Fast 系列选择与思考强度相互独立：前者换真实模型变体，后者沿用模型支持的上游参数。
+`lib/ai/models.ts` 是保持 Node/tsx 兼容的稳定公共入口。内部 `models/contracts.ts` 管理模型与自定义 API 契约，`catalog.ts` 管理固定注册数据与查找，`aliases.ts` 管理旧标识兼容，`thinking.ts` 管理上游思考参数，`selection.ts` 管理菜单分组，`custom.ts` 管理自定义分组解析。`lib/ai/provider.ts`、`lib/ai/sdk/` 和计费服务保留实际上游协议、请求和错误处理。Fast 系列选择与思考强度相互独立：前者换真实模型变体，后者沿用模型支持的上游参数。
 
 Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 presentation/type 入口分离；结果卡片位于聊天工具展示域。工具、沙箱、连接器均沿用真实权限、所有者和计费规则。
 
