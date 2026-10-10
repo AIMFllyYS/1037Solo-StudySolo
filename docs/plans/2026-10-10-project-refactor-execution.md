@@ -87,6 +87,8 @@
 
 - R4a 概率交互：六个 873–999 行入口拆为 321–413 行本机状态/视图组合，数学模型、图形、控件、推导、CDF 场景/拖动及边缘分布反例分别负责一层。共享 6 组 token 相同的数值算法覆盖 11 个消费者，几何尺寸与不同近似方式不混合。以安装版 Next use-client/project structure 文档维持原客户端入口和 registry 延迟加载。修复前 906 组数值输出与旧版完全一致；独立公式测试发现旧 χ² 连分式的系数/倒数错误及大自由度 Gamma 溢出，针对修复后 824 组继续相同，82 组 χ² 结果按正确公式改变，不把这部分冒充“全部结果未变”。6 项独立数学检查、11 项 UI 回归、类型和定向 lint 通过；实际教材页通过可交互 Tab 显示正态 CDF=0.5000、方差检验 n=3/df=2 的双侧临界值 0.051 / 7.378。原图形与参数交互保留，具体数值修复及官方数学来源见 [验收记录](../analysis/2026-10-10-probability-refactor-validation.md)。
 
+- R5a 文档入口：中英文 README、docs 总索引与 plans 索引已按源码重写；Next 16.4.0、实际路由/目录/命令、账号与文件契约和当前任务入口一致，旧 handoff/loop 不再被声明成当前任务权威。四份旧入口逐字节归档并记录 SHA256，归档说明与原件分别放置，写入新入口前核对原件和当前源，保留历史内容。五个当前入口（含 architecture）的本地链接均有效；全 docs 检查仍有 48 项缺失，主要是旧审计的对话 UUID、旧路径、未入库验收附件和示例占位链接，尚需分类归档/修正，不宣称全站链接通过。
+
 ## 局部阻塞
 
 
@@ -94,14 +96,14 @@
 
 ## 续接检查点
 
-已完成 R0/R1/R2 与 R3a–R3l，代码提交 `5f6a827a` 已同步至同名云端重构分支，整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
+已完成 R0/R1/R2、R3a–R3l 与 R4a 概率首批分层，代码提交 `9d847d2c` 已同步至同名云端重构分支，文档入口 R5a 已改写并保留原件，整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
 
 下一阶段仍需：
 
 1. 已拆内容加载、聊天/复习 API 与 QuizQuestion，已完成 chat/layout/hooks/stores/content-data 归类，即时循环为 0。继续审查 ChatInput、GlobalSettings、AppShell、ReviewQuizPane、RecordPreviewWindow、TokenDashboard、provider、db migration、Electron 和剩余学习状态等混合职责，不重复已完成迁移。
-2. R4 优先处理概率交互的数学、绘图、控制分界：CDFVisualizer、MeanTestExplorer、MarginalExplorer、SamplingDistExplorer、VarianceTestExplorer、MomentEstimator 仍超过 800 行。其余超过 500 行文件全部按 inventory-r3l 逐项审查，保留数学误差/边界与注册功能；教材目录数据不能仅凭行数认定死代码或损坏结构。
+2. 六个优先概率交互已完成分层，不重复拆分；其中 χ² 数值修复已单独记录。其余超过 500 行文件按 inventory-r4a 逐项审查，保留注册和交互；教材目录数据不能仅凭行数认定死代码或损坏结构。目前超过 800 行的仅剩 histology/biochemistry 两个目录数据与旧 workflow 脚本，需核对实际职责和使用。
 3. 完整入口 Knip 临时审计位于本地 verify/knip-complete-entries.json，配置在 tmp/knip-complete-entries.json；包括 classolo/worker/沙箱入口，尚有 44 个候选文件、134 个导出、55 个类型待实际消费者核实。脚本 CLI、生成产物和沙箱外部 runtime 必须分别处理；不能将报告当删除清单。正式 knip.json 的入口配置仍需按核实结果更新。
-4. 归档旧执行队列/过时说明，重写 docs 总入口，更新 README、rendering/storage/extension 与测试/维护 SOP；文档断链初轮 34 项需分类修正。21 个旧 hook 转发已可恢复归档；旧计划原件不应因路径迁移自动改写，保留原历史。
+4. 文档入口和 README 已更新，继续归档旧执行队列/过时说明，核对 rendering/storage/extension 和测试/维护 SOP。当前全站断链 48 项需分类修正。21 个旧 hook 转发已可恢复归档；旧计划原件不应因路径迁移自动改写，保留原历史。旧 Agent MODELS 还有 live code 注释引用，先写当前模型维护说明再归档该旧计划。
 5. 最终候选统一运行适用 gate、全量类型/lint/代码/内容/React 与隔离生产构建，并复核实际浏览器与既有交互；报告真实账号、付费请求及向量新增覆盖的未验边界。当前 2040 项代码与 1234 项 React 的通过结果不替代后续新改动的最终验收。
 
-已完成模块的职责和原始算法已分离；当前 inventory 2121 源码/测试文件、1497 人工源码、63 个超过 500 行、9 个超过 800 行，即时循环为 0。仍存在未完成模块，以上检查结果不替代最终全量验收。RootSolo 当前服务是 studysolo-web / 35349、Next 16.4.0；使用时重新核对实时健康，不盲目重复启动。
+已完成模块的职责和算法已分离；当前 inventory 2160 源码/测试文件、1534 人工源码、57 个超过 500 行、3 个超过 800 行，即时循环为 0。仍存在未完成模块，以上检查结果不替代最终全量验收。RootSolo 当前服务是 studysolo-web / 35349、Next 16.4.0；使用时重新核对实时健康，不盲目重复启动。

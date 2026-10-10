@@ -1,30 +1,34 @@
-# 执行计划
+# 执行计划与历史记录
 
-当前无人值守先读 [`../handoff/README.md`](../handoff/README.md)，任务状态只维护在机器账本。当前阶段仅文档整理；按大板块派遣，不使用旧完成表。
+当前已授权任务是 [2026-10-10 项目系统整理](2026-10-10-project-refactor-execution.md)。该记录维护范围、不可丢失的契约、阶段验证和剩余工作；实际 Goal 状态与当前人类指令一起决定是否继续执行。
 
-2026-09 Agent工程基线在 [`Agent-refactor/`](./Agent-refactor/)。入口是 [`00-loop-map.md`](./Agent-refactor/00-loop-map.md)，可投喂的目标模式提示词是 [`99-goal-mode-prompt.md`](./Agent-refactor/99-goal-mode-prompt.md)。
+旧 handoff 账本、旧模型派遣策略和目标模式提示词是历史材料，不能自动恢复旧任务、启动子智能体或代替本轮授权。架构现状见 [当前架构](../architecture.md)，长期组织规则见 [标准](../standards/code-organization.md)。
 
-已完成或被取代的内容计划、工程基线与审计报告在 [`archive/`](./archive/)，仅供历史参考。当前滚动与渲染行为以现行代码及 [`../refer/rendering-architecture.md`](../refer/rendering-architecture.md) 为准。
+## 当前记录
 
-## 现行计划
+| 文件 | 用途 |
+| --- | --- |
+| [项目系统整理](2026-10-10-project-refactor-execution.md) | 当前重构、框架升级、职责/目录、文档及最终验收 |
+| [概率重构验收](../analysis/2026-10-10-probability-refactor-validation.md) | 已完成分层、数值修复、公式与实际页面证据 |
 
-| 计划 | 说明 |
-|---|---|
-| [`../handoff/studysolo-unattended-handoff.md`](../handoff/studysolo-unattended-handoff.md) | 当前完整上下文、最新用户要求、代码/接口/复用与边界；不另维护完成表 |
-| [`../handoff/studysolo-workstreams.json`](../handoff/studysolo-workstreams.json) | 唯一当前状态：6项大板块，统一GPT-6.1 Sol High，现为需返工/未完成用户验收 |
-| [`../handoff/unattended-workstream-template.md`](../handoff/unattended-workstream-template.md) | 一大板块一名GPT-6.1 Sol High，完整分析/实施/必要自测/主验收后下一包 |
-| [`2026-10-02-class-systematic-repair.md`](./2026-10-02-class-systematic-repair.md) | Class全链路修复执行计划：可靠录音与保存、增量导图、学科公式、题答视觉、笔记和移动工作台（进行中） |
-| [`2026-10-02-memory-performance-optimization-spec.md`](./2026-10-02-memory-performance-optimization-spec.md) | 系统内存与性能优化执行规格：会话/存储/资源/检索Worker/同步/内容边界及验收（待实施） |
-| [`agent-right-panel-unification.md`](./agent-right-panel-unification.md) | 右栏统一：现状分析与选型（改造前快照） |
-| [`agent-right-panel-unification.execution.md`](./agent-right-panel-unification.execution.md) | 右栏统一的落地记录（含附一～附十一） |
-| [`agent-sidebar-assets.md`](./agent-sidebar-assets.md) | Agent 左栏体系化 + 我的资产 / 项目 / 项目文件：规划 |
-| [`agent-sidebar-assets.execution.md`](./agent-sidebar-assets.execution.md) | 同上：落地记录（附一～附五 + 质量门） |
-| [`document-readers-rebuild.md`](./document-readers-rebuild.md) | 文档阅读器重建（PDF / DOCX / PPTX）：规划 |
-| [`agent-ux-finalization.md`](./agent-ux-finalization.md) | Agent 页面 UX 收尾：来源 / 出题 / 顶栏 / i18n / 划词（规划与需求拆解） |
-| [`agent-ux-finalization.execution.md`](./agent-ux-finalization.execution.md) | 同上：实施记录（落点对照 · 决定 · 验收 · 已知边界） |
-| [`notes-flashcards-cloud-sync.md`](./notes-flashcards-cloud-sync.md) | 笔记 / 闪卡云同步（0005 迁移） |
-| [`app-users-nickname.md`](./app-users-nickname.md) | 昵称（0006 迁移） |
-| [`classolo-review-goal-20260929.md`](./classolo-review-goal-20260929.md) | Classolo 全量接入 + Review 模式 + Agent UX：可恢复的目标与进度记录（2026-09-29 起，含阶段状态与 Issue 取舍） |
-| [`2026-auth-login-redesign-plan.md`](./2026-auth-login-redesign-plan.md) | 登录注册板块 + 人机验证面板改版：设计与落地规划（**主体已落地**；文首记录了与现状的偏差——登录入口已改为跳转 1037Solo 统一账号中心） |
+## 历史材料的阅读入口
 
-本轮旧准备/实施/进度快照已移到 [`../archive/2026-10-04-unattended-snapshots/README.md`](../archive/2026-10-04-unattended-snapshots/README.md)。其余Class/性能/内容计划本轮未全量审查，保留作为独立资料，不据此自动启动范围外任务。
+以下记录解释原来为什么这样设计，状态和结论以文件日期为界；阅读它们不代表获得实施或发布授权。
+
+| 记录 | 主题 |
+| --- | --- |
+| [2026-10-02 内存与性能规格](2026-10-02-memory-performance-optimization-spec.md) | 会话、存储、资源、Worker、同步与内容边界 |
+| [2026-10-02 课堂修复](2026-10-02-class-systematic-repair.md) | 课堂录音、导图、材料、题答和移动工作台 |
+| [右侧面板设计](agent-right-panel-unification.md)、[实施记录](agent-right-panel-unification.execution.md) | 面板统一前后的依据 |
+| [Agent UX](agent-ux-finalization.md)、[实施记录](agent-ux-finalization.execution.md) | 交互变更和当时的验收边界 |
+| [笔记/闪卡同步](notes-flashcards-cloud-sync.md) | 同步与历史迁移口径 |
+| [课堂/复习接入](classolo-review-goal-20260929.md) | 当时的接入目标和状态 |
+| [旧交接目录](../handoff/README.md) | 旧上下文、账本和工作包 |
+| [旧 Agent loop](Agent-refactor/00-loop-map.md) | 2026-09 工程调研与执行历史 |
+| [旧内容/工程计划](archive/README.md) | 已被取代的 01–25 计划及约定 |
+
+历史契约中仍适用的规则，应核实代码后写入当前架构、标准或领域参考；不把归档文件重新声明成唯一现状依据。
+
+## 新记录的要求
+
+写明任务来源与范围、保留的契约、实际改动、检查层级和证据、已知未完成项与续接条件。更新原任务记录，不复制另一份完成表。任务完成后的过程资料归档，并将长期规则转入对应维护文档。

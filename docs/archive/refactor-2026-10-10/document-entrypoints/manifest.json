@@ -1,0 +1,30 @@
+{
+  "archivedAt": "2026-10-10T07:53:33.063Z",
+  "reason": "Preserve original entrypoints before rewriting them around current code and the active user goal.",
+  "files": [
+    {
+      "source": "README.md",
+      "target": "docs/archive/refactor-2026-10-10/document-entrypoints/root/README.md",
+      "bytes": 27320,
+      "sha256": "681f181dae7085499818f59b3968db3ea56cf1a91a7a1294a7bb32a115f64392"
+    },
+    {
+      "source": "README_en.md",
+      "target": "docs/archive/refactor-2026-10-10/document-entrypoints/root/README_en.md",
+      "bytes": 29709,
+      "sha256": "31bc63b7d575e13419dd805e8870cbbaa78e5c7c51bd16d2a0f805daba675146"
+    },
+    {
+      "source": "docs/README.md",
+      "target": "docs/archive/refactor-2026-10-10/document-entrypoints/docs/README.md",
+      "bytes": 11052,
+      "sha256": "052fa3feb1b5bd53c16fea7e335188ad827917a0fd22e24064cc7799827bc708"
+    },
+    {
+      "source": "docs/plans/README.md",
+      "target": "docs/archive/refactor-2026-10-10/document-entrypoints/docs/plans/README.md",
+      "bytes": 3784,
+      "sha256": "a177aba31584ad9f801dfbe2f9cbe3f2384e9df8c57b54ff5d906f0753e60470"
+    }
+  ]
+}
