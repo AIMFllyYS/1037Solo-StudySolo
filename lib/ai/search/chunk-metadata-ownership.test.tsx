@@ -1,6 +1,6 @@
 // @vitest-environment node
 import {afterEach,expect,it,vi} from 'vitest'
-import {chunkMetadataIo,getChunkMetadataIndex,resetChunkMetadataForTests} from './indexIo'
+import {chunkMetadataIo,getChunkMetadataIndex,resetChunkMetadataForTests} from './indexes/indexIo'
 
 afterEach(()=>{vi.restoreAllMocks();resetChunkMetadataForTests()})
 it('shares one parsed metadata index until the file revision changes',()=>{

@@ -1,16 +1,16 @@
 // 向量存储：只加载本地 content/.index/vectors.bin（与 chunks-meta 按 id 对齐）。
 import type { ScoredChunk } from "./vectorStoreTypes";
-import type { SearchFilter } from "./searchScope";
-import { chunkInScope } from "./searchScope";
+import type { SearchFilter } from "../searchScope";
+import { chunkInScope } from "../searchScope";
 import {
   INDEX_FILES,
   parseManifest,
   readLocalIndexFile,
   getChunkMetadataIndex,type SearchChunkMeta,
 } from "./indexIo";
-import { searchLogOnce } from "./searchLog";
+import { searchLogOnce } from "../searchLog";
 import {createIndexLoader} from './indexLoader';
-import {scoreVectorCore} from './worker/core.mjs';
+import {scoreVectorCore} from '../worker/core.mts';
 
 export type { ScoredChunk } from "./vectorStoreTypes";
 

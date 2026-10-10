@@ -14,7 +14,7 @@ import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { shouldMountHeavyEditor } from "@/lib/window/heavyEditor";
 import { useManagedWindowSurface } from "@/lib/window/useManagedWindowSurface";
 import { useT } from "@/lib/i18n";
-import { captureReviewEditorOwner } from "@/lib/notes/reviewEditorOwner";
+import { captureReviewEditorOwner } from "@/lib/notes/editor/reviewEditorOwner";
 
 /** dynamic 的 loading 需要是组件（拿不到调用方的 t），单独包一层。 */
 function CrepeLoading() {

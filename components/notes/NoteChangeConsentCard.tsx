@@ -5,7 +5,7 @@ import { useAgentApproval } from "@/lib/stores/agentApprovalMode";
 import { AlertTriangle, Check, ChevronDown, Pencil, Trash2, X } from "lucide-react";
 import type { ResultCardProps } from "@/lib/ai/agent/tools/registry";
 import type { UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/types";
-import { isUsableOutput, proposalFromToolOutput, type NoteChangeStatus } from "@/lib/notes/noteChangeProposal";
+import { isUsableOutput, proposalFromToolOutput, type NoteChangeStatus } from "@/lib/notes/proposals/noteChangeProposal";
 import { sessionIdOfMessage, useNoteChangeProposals } from "@/lib/stores/assets/noteChangeProposals";
 import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import { useT, type Translate } from "@/lib/i18n";

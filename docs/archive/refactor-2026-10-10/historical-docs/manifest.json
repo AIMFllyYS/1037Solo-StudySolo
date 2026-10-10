@@ -526,6 +526,54 @@
       "target": "docs/archive/refactor-2026-10-10/historical-docs/original-references/docs/archive/README.md",
       "bytes": 8417,
       "sha256": "d8814ed5c7ab458fb2d8b565e760bfdaf4176be41c47a15175810bf860427785"
+    },
+    {
+      "source": "docs/analysis/class-audit-2026-10-02/ACCEPTANCE.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/class-audit-2026-10-02/ACCEPTANCE.md",
+      "action": "move",
+      "reason": "Dated pre-fix audit and historical repair execution plan; current refactor scope and regression suites supersede task authority",
+      "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+      "sha256": "45e21caa71342a416d189e95cc506655467b0c0371f5c020f84c5764d651136e"
+    },
+    {
+      "source": "docs/analysis/class-audit-2026-10-02/E2E-CLOSEOUT.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/class-audit-2026-10-02/E2E-CLOSEOUT.md",
+      "action": "move",
+      "reason": "Dated pre-fix audit and historical repair execution plan; current refactor scope and regression suites supersede task authority",
+      "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+      "sha256": "d232bd6d1a78e4a7ab745067d45dd4822bf9bda2ac3cccff64715acac435a8c6"
+    },
+    {
+      "source": "docs/analysis/class-audit-2026-10-02/REMOTE-MIGRATION.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/class-audit-2026-10-02/REMOTE-MIGRATION.md",
+      "action": "move",
+      "reason": "Dated pre-fix audit and historical repair execution plan; current refactor scope and regression suites supersede task authority",
+      "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+      "sha256": "a80973652afe33b5741022545df28eab88d0eab969587b4220ef7774b82d9065"
+    },
+    {
+      "source": "docs/analysis/class-audit-2026-10-02/REPORT.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/class-audit-2026-10-02/REPORT.md",
+      "action": "move",
+      "reason": "Dated pre-fix audit and historical repair execution plan; current refactor scope and regression suites supersede task authority",
+      "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+      "sha256": "27fb8a1b9ba825094643290d7eaa43dd0794f27000032c47706340e3248bf401"
+    },
+    {
+      "source": "docs/analysis/class-audit-2026-10-02/probe-results.json",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/analysis/class-audit-2026-10-02/probe-results.json",
+      "action": "move",
+      "reason": "Dated pre-fix audit and historical repair execution plan; current refactor scope and regression suites supersede task authority",
+      "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+      "sha256": "cb846c85971f55eaa4b7ab316fee625cb8633a398cfba3025e293e0122d76bcc"
+    },
+    {
+      "source": "docs/plans/2026-10-02-class-systematic-repair.md",
+      "target": "docs/archive/refactor-2026-10-10/historical-docs/moved/docs/plans/2026-10-02-class-systematic-repair.md",
+      "action": "move",
+      "reason": "Dated pre-fix audit and historical repair execution plan; current refactor scope and regression suites supersede task authority",
+      "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+      "sha256": "f09283fe1807684d1371e29c4c30c0700be386189a238359007d273ca1fc86e0"
     }
   ]
 }

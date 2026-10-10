@@ -5,7 +5,7 @@
  * 由确认卡经用户同意后落地（lib/stores/noteChangeProposals.ts）。
  */
 import { useUserNotes } from "@/lib/stores/learning/userNotes";
-import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
+import type { EditingUserNoteContext } from "@/lib/notes/editor/editingUserNote";
 
 /** 正在交给 Agent 的已打开个人笔记；关掉编辑器后返回 null。 */
 export function selectEditingUserNote(noteId?: string | null): EditingUserNoteContext | null {

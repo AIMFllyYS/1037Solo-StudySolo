@@ -11,7 +11,7 @@ import { startRecord } from "@/lib/review/startRecord";
 import { currentRecordContext } from "@/lib/review/recordContext";
 import { copyTextToClipboard, shouldInterceptSelectionCopy } from "@/lib/clipboard/copyText";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
-import { unwrapMark, wrapRange } from "@/lib/notes/crayonHighlight";
+import { unwrapMark, wrapRange } from "@/lib/notes/selection/crayonHighlight";
 import { createAndOpenClassroomNote } from "@/lib/notes/openUserNote";
 import { useSettings } from "@/lib/stores/settings";
 import { useT } from "@/lib/i18n";
@@ -19,12 +19,12 @@ import {
   SELECTION_ASSISTANT_ACTION_LABELS,
   hasVisibleSelectionActions,
   isSelectionActionVisible,
-} from "@/lib/notes/selectionAssistant";
+} from "@/lib/notes/selection/selectionAssistant";
 import {
   SELECTION_POPOVER_COLLAPSE_GRACE_MS,
   SELECTION_POPOVER_SCROLL_GRACE_MS,
   shouldIgnoreSelectionDismiss,
-} from "@/lib/notes/selectionPopover";
+} from "@/lib/notes/selection/selectionPopover";
 import {
   SELECTION_ACTION_ICONS,
   SelectionPopBtn,

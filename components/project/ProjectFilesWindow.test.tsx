@@ -53,7 +53,7 @@ vi.mock("@/lib/project/studioRefs", () => ({
 vi.mock("@/components/window/ManagedWindow", () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="managed-window">{children}</div>,
 }));
-vi.mock("@/components/window/DocumentWorkspace", () => ({
+vi.mock("@/components/window/documents/DocumentWorkspace", () => ({
   default: ({ children, toolbar, folderTree }: { children: React.ReactNode; toolbar?: React.ReactNode; folderTree?: React.ReactNode }) => (
     <div>
       {toolbar}

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach } from "vitest";
 import { useAcademicYear } from "@/lib/stores/academicYear";
-import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
+import { listFlashcardSubjectGroups } from "@/lib/notes/library/flashcardSubjects";
 import { navTree } from "@/lib/content-data/nav";
 import { NOTEBOOK_FILE_MIME } from "@/lib/chat/composer/composerIntent";
 import { openTextbookWindow, TEXTBOOK_WINDOW_ID } from "@/lib/textbook/openTextbook";

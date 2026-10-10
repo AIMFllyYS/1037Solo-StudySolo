@@ -1,4 +1,4 @@
-import { getIndexHealth } from "@/lib/ai/search/indexHealth";
+import { getIndexHealth } from "@/lib/ai/search/indexes/indexHealth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

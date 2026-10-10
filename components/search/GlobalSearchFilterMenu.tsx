@@ -4,7 +4,7 @@ import { useState } from "react";
 import { BookOpen, Check, ChevronLeft, ChevronRight, ListFilter } from "lucide-react";
 import AnchoredMenu from "@/components/ui/AnchoredMenu";
 import { SPOTLIGHT_CLOSE_CLASS } from "@/components/search/spotlightChrome";
-import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
+import { listFlashcardSubjectGroups } from "@/lib/notes/library/flashcardSubjects";
 import { subjectLabel } from "@/lib/notes/userNote";
 
 export type GlobalSearchKindFilter = "note" | "flashcard" | "body" | null;

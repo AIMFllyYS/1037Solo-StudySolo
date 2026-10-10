@@ -4,7 +4,7 @@ import {
   SELECTION_POPOVER_SCROLL_GRACE_MS,
   shouldBlockFocusSteal,
   shouldIgnoreSelectionDismiss,
-} from "@/lib/notes/selectionPopover";
+} from "@/lib/notes/selection/selectionPopover";
 
 test("scroll dismiss is ignored during the virtualizer grace window", () => {
   assert.equal(shouldIgnoreSelectionDismiss(100, 200), true);

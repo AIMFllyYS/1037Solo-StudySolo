@@ -1,4 +1,4 @@
-import { unwrapMark, wrapRange } from "@/lib/notes/crayonHighlight";
+import { unwrapMark, wrapRange } from "@/lib/notes/selection/crayonHighlight";
 
 interface MapPoint {
   node: Text;

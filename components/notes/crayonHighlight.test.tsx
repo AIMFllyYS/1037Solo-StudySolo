@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { unwrapMark, wrapRange } from "@/lib/notes/crayonHighlight";
+import { unwrapMark, wrapRange } from "@/lib/notes/selection/crayonHighlight";
 
 describe("wrapRange", () => {
   it("wraps a cross-line selection after snapshotting offsets", () => {

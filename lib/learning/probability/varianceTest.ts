@@ -1,5 +1,4 @@
 import { logAbsGammaLanczos } from '@/lib/learning/probability/math/gamma';
-export { gammaLanczos } from '@/lib/learning/probability/math/gamma';
 
 export function logGamma(z: number): number {
   return logAbsGammaLanczos(z);

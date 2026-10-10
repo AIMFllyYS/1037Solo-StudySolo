@@ -1,0 +1,44 @@
+[
+  {
+    "file": "lib/auth/server/aiGate.ts",
+    "symbol": "readTrustedProxyUserId",
+    "target": "docs/archive/refactor-2026-10-10/symbol-cleanup/lib/auth/server/aiGate.ts.txt",
+    "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+    "sha256": "087395229d2905d862898792b3fd51da3e184711b2817f8dace356f3a43b83bf"
+  },
+  {
+    "file": "lib/review-mode/quizSnapshot.ts",
+    "symbol": "questionsById",
+    "target": "docs/archive/refactor-2026-10-10/symbol-cleanup/lib/review-mode/quizSnapshot.ts.txt",
+    "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+    "sha256": "e3b6666652bf41a70462271fee7e0a5ba5e6c19fcb34170e2d431a96b0fe81e8"
+  },
+  {
+    "file": "classolo/features/transcript/resample.ts",
+    "symbol": "resampleTo16k",
+    "target": "docs/archive/refactor-2026-10-10/symbol-cleanup/classolo/features/transcript/resample.ts.txt",
+    "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+    "sha256": "e6dceacd23116b80a11221d2b5f680154ce372ca8a9eeac6dd4a431df2abc9fb"
+  },
+  {
+    "file": "classolo/features/notes/incremental.ts",
+    "symbol": "parseOutlinePatch",
+    "target": "docs/archive/refactor-2026-10-10/symbol-cleanup/classolo/features/notes/incremental.ts.txt",
+    "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+    "sha256": "de855a479437e5934ec9001d00249ca86ca146a9a2380c0fd6d39f6acb307d1f"
+  },
+  {
+    "file": "classolo/features/notes/knowledge-cards.ts",
+    "symbol": "redundant parser/schema re-export paths",
+    "target": "docs/archive/refactor-2026-10-10/symbol-cleanup/classolo/features/notes/knowledge-cards.ts.txt",
+    "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+    "sha256": "2b27bf00e842e4ceb015066d3d2f6591555f40d9d13815a1691d976b45019d9e"
+  },
+  {
+    "file": "classolo/features/formulas/validate.ts",
+    "symbol": "redundant parser/schema re-export paths",
+    "target": "docs/archive/refactor-2026-10-10/symbol-cleanup/classolo/features/formulas/validate.ts.txt",
+    "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+    "sha256": "2748c32a36d4ecfc887e646dd0d8827a63246f1ff4327be9f3b14ef5d77a258b"
+  }
+]

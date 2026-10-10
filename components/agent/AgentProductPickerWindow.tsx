@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { FileDigit, MonitorPlay } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
-import DocumentWorkspace from "@/components/window/DocumentWorkspace";
+import DocumentWorkspace from "@/components/window/documents/DocumentWorkspace";
 import { useAgentProductPicker } from "@/lib/stores/workspace/agentProductPicker";
 import { useArtifacts } from "@/lib/stores/assets/artifacts";
 import { useDocuments } from "@/lib/stores/assets/documents";

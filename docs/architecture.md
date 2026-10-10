@@ -39,6 +39,8 @@ StudySolo 是 Next.js App Router 应用，包含浏览器学习工作站、服�
 
 ## AI 调用路径
 
+`lib/chat/` 的根入口保留 sendMessage 组合与 sessionTypes 契约；request、streaming、messages、sources、attachments、composer、feedback、session 各自负责一层。输入与窗口调用真实实现，流消费、请求配额、引用与会话存储不再平铺混在一起。`lib/ai/endpoints/` 维护 URL/能力配置与既有读取时机，`images/` 分开客户端附件处理和服务端图片请求；model selection 位于 models/selection，model/provider 的显式入口保留原调用约定。
+
 输入器和 `lib/hooks/chat/useChat*` 使用既有 UIMessage 流协议，经 `/api/chat`（`/api/agent/chat` 有对应入口）进入请求校验、上下文/文件恢复、模型解析、身份及额度检查、`ToolLoopAgent` 和流输出。
 
 `ChatInput` 是草稿、附件、palette、发送/停止门控的组合入口，`composer/input/` 分出纯输入契约、模型默认值/覆盖、尺寸/焦点、按实例与会话绑定的排队，以及 toolbar/queue/quote 视图。队列继续按当时 sessionId 保存，只发送当前会话匹配项并等待下一轮 loading；输入字符限制位于 `lib/chat/composer/inputLimits.ts`，公共入口继续显式转出原 props 和限制值。
@@ -55,6 +57,10 @@ Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 
 
 ## 数据与状态
 
+认证按 browser、sessions、server、provisioning、presentation 归属，公共环境/站点规则留在 auth 根目录。sessions 保留共享 cookie/token DTO 和既有登录辅助，server 保留 Account 验证与 OAuth/服务端客户端；源码位置不改变凭据来源或刷新规则。计费按 settlement、ledger、quota、pricing 分组，预留/结算、账本与额度读、受信价格各自独立，原账户、幂等、microcredits 计量和真实失败语义不变。
+
+`lib/quiz-progress.ts` 是显式成绩本接口，quizProgress 下的 key/IO/legacy/events/entries/metrics/records 分工明确。learning/quiz 保留同一个作答 store，checkpoint 接受同一 set/get；learning/userNotes 保留同一个持久化 store、账户生命周期与刷新调度。lib/notes 的 editor、selection、library、proposals 分开编辑规则、划词、检索与提案，公共打开/同步和基础笔记模型保持原入口。
+
 - `lib/stores/` 持有界面和用户领域的 Zustand 状态，按 `assets/`、`chat/`、`learning/`、`workspace/` 归类；根目录保留共享持久化、设置、偏好和集成入口。`lib/hooks/` 只提供真正的 React 适配与生命周期，按 auth/chat/layout/runtime/learning/files 分组。21 个旧纯转发 hook 的全部仓库消费者已改用真实 store，转发原件以文本归档，不再进入运行图或测试发现。
 - 聊天历史仍只有一个 `useChatHistory` store。其入口组合窗口、会话、消息和项目四组 action；`chatHistory/stateTypes.ts` 定义完整接口，`manifest.ts` 统一元数据写入门控，`windowRuntime.ts` 维护驻留估算、lease、spine 与预算。账户变更、bootstrap 和 cloud-window 接入仍在组合入口，所有动作共享同一 set/get，不另建平行权威状态。
 - 小型偏好存储于 localStorage；账户用户数据按所有者作用域进入 IndexedDB。实际 key、DB 与迁移由 `lib/storage/` 管理。
@@ -67,6 +73,10 @@ Agent 工具位于 `lib/ai/agent/tools/<工具>/`。服务端执行和客户端 
 详见 [存储架构](./refer/storage-architecture.md)。本次整理将迁移/附件/存储引擎/界面状态等独立职责拆开，持久化格式和账户边界不变。
 
 ## 内容与渲染
+
+教材导航按连续章节主题放在同学科 textbook/detail 子目录，原导出组合顺序保留。教材接入通过 scripts/content/textbook_catalog.py 写入 subjects/<subject>/，四个长生成教材维持当前分组；原始正文仍由接入流程管理。交互数据在 components/interactives/catalog 的概率/化学两份数组，registry 保留全局唯一检查与查询，所有组件继续采用原 dynamic/ssr:false 入口。
+
+文档窗口的 DocumentWorkspace、PDF/Docx/Pptx/本机来源视图归到 window/documents；ManagedWindow/Chrome/Taskbar 与 dock 生命周期留在窗口组合层。i18n 的 window.note/project/quiz 和 settings.appearance/models/modelForm/keyboard 分片拥有各自中英文文案，公开 namespace、键、占位符和值保持。
 
 `lib/content-data/subjects.registry.ts` 是学科元数据入口，manifest 组织导航，生成清单和离线索引由脚本构建。`lib/content/` 在服务端解析安全内容路径、课堂材料与题库，API 和服务端页面复用。
 
@@ -95,5 +105,9 @@ Web 发布说明见 [studysolo-web-release.md](./refer/studysolo-web-release.md)
 迁移工具的兼容入口为 `lib/db/migrate.ts`，`migrations/` 分离协议、原 SQL、文件/校验和、SQL 分析、执行、目录比较和管理 API 传输；源码重构不执行真实迁移。Electron 的 `keyStorage.cjs` 接收一个 userData/safeStorage 实例并维护原密钥格式、文件名和权限处理，主进程保留启动/窗口/IPC 来源检查。打包 glob 收入该运行模块并排除源码测试。
 
 ## 维护导航
+
+最后两个长源码是 sync engine 和 chatStorage sessionStore：适配、载荷、IO、迁移、附件与配额已分层，连续队列/所有者/版本/checkpoint 的状态机由一个入口负责。它们具有一个变化原因与同一生命周期，保留完整引擎能维持状态所有权；长度继续作为审查信号，新增独立职责时再拆。
+
+[导出审查](./analysis/2026-10-10-export-surface-audit.md)记录实际删除和已存在接口的保留范围。Knip 仍报告保留的兼容/类型/诊断入口，CI 的存量非阻断安排沿用；不把候选数量当作运行调用或功能覆盖证明。
 
 [代码组织规范](./standards/code-organization.md)定义模块职责和拆分方式；[本轮阶段记录](./plans/2026-10-10-project-refactor-execution.md)记录进度与验收；[官方文档快照](./vendor/nextjs/2026-10-10/README.md)提供框架依据。历史计划进入归档后只保留证据价值。

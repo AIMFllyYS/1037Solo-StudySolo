@@ -1,7 +1,6 @@
 import katex from 'katex'
 import 'katex/contrib/mhchem'
 import {formulaProposalSchema,formulaPropsSchema,type FormulaProposal,type FormulaProps} from './schema'
-export {formulaProposalSchema,formulaPropsSchema} from './schema'
 export type {FormulaProposal,FormulaProps} from './schema'
 const forbidden=/\\(?:href|url|includegraphics|htmlId|htmlClass|htmlStyle|htmlData|html|def|gdef|global)\b/u
 

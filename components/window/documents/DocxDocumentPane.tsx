@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { translateNow, useT } from "@/lib/i18n";
+import { translateNow, useT } from "@/lib/i18n/index";
 import {getOwnerEpoch,onStorageOwnerChange} from '@/lib/storage/ownerScope';
 
 export default function DocxDocumentPane({ src, name }: { src: string; name: string }) {

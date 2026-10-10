@@ -1,7 +1,7 @@
 // @vitest-environment node
 import {beforeEach,expect,it,vi} from 'vitest'
 const f=vi.hoisted(()=>({files:new Map<string,Buffer>(),reads:[] as string[],metaCalls:0}))
-vi.mock('@/lib/ai/search/indexIo',()=>({INDEX_FILES:{bm25:'bm25.json',chunksMeta:'chunks-meta.json'},readLocalIndexFile:(name:string)=>{f.reads.push(name);return f.files.get(name)??null},getChunkMetadataIndex:()=>{f.metaCalls++;const rows=JSON.parse(f.files.get('chunks-meta.json')!.toString('utf8')).chunks;return {rows,byId:new Map(rows.map((row:{id:string})=>[row.id,row]))}}}))
+vi.mock('@/lib/ai/search/indexes/indexIo',()=>({INDEX_FILES:{bm25:'bm25.json',chunksMeta:'chunks-meta.json'},readLocalIndexFile:(name:string)=>{f.reads.push(name);return f.files.get(name)??null},getChunkMetadataIndex:()=>{f.metaCalls++;const rows=JSON.parse(f.files.get('chunks-meta.json')!.toString('utf8')).chunks;return {rows,byId:new Map(rows.map((row:{id:string})=>[row.id,row]))}}}))
 import {buildCompactBm25Index} from '@/lib/ai/indexing/bm25Index'
 
 const rows=[

@@ -3,7 +3,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { buildCompactBm25Index } from "../../lib/ai/indexing/bm25Index";
 import { contentHashOf } from "../../lib/ai/indexing/contentHash";
-import { INDEX_FILES, parseManifest, type SearchChunkMeta } from "../../lib/ai/search/indexIo";
+import { INDEX_FILES, parseManifest, type SearchChunkMeta } from "../../lib/ai/search/indexes/indexIo";
 import { SUBJECT_REGISTRY } from "../../lib/content-data/subjects.registry";
 
 const selected = [...new Set((process.argv.find((arg) => arg.startsWith("--subjects="))?.slice(11) ?? "").split(",").filter(Boolean))].sort();

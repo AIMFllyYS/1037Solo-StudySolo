@@ -9,7 +9,7 @@ import {
   readLocalIndexFile,
   type SearchIndexManifest,
 } from "./indexIo";
-import { searchLog, searchLogOnce } from "./searchLog";
+import { searchLog, searchLogOnce } from "../searchLog";
 
 export interface IndexHealth {
   ok: boolean;

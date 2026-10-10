@@ -6,7 +6,7 @@ import FolderTreeRow from "./FolderTreeRow";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import SubjectIcon from "@/components/shared/SubjectIcon";
 import { DEFAULT_ACADEMIC_YEAR, academicYearOfSubject } from "@/lib/constants/academic-year";
-import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
+import { listFlashcardSubjectGroups } from "@/lib/notes/library/flashcardSubjects";
 
 /** 学年 → 学科文件夹树。数据与主页书架同一份 registry；行组件复用 FolderTreeRow。 */
 export default function YearSubjectFolderTree({

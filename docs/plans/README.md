@@ -18,7 +18,7 @@
 | 记录 | 主题 |
 | --- | --- |
 | [2026-10-02 内存与性能规格](2026-10-02-memory-performance-optimization-spec.md) | 会话、存储、资源、Worker、同步与内容边界 |
-| [2026-10-02 课堂修复](2026-10-02-class-systematic-repair.md) | 课堂录音、导图、材料、题答和移动工作台 |
+| [2026-10-02 课堂修复](../archive/refactor-2026-10-10/historical-docs/moved/docs/plans/2026-10-02-class-systematic-repair.md) | 课堂录音、导图、材料、题答和移动工作台的历史记录 |
 | [右侧面板设计](../archive/refactor-2026-10-10/historical-docs/moved/docs/plans/agent-right-panel-unification.md)、[实施记录](../archive/refactor-2026-10-10/historical-docs/moved/docs/plans/agent-right-panel-unification.execution.md) | 面板统一前后的依据 |
 | [Agent UX](agent-ux-finalization.md)、[实施记录](agent-ux-finalization.execution.md) | 交互变更和当时的验收边界 |
 | [笔记/闪卡同步](notes-flashcards-cloud-sync.md) | 同步与历史迁移口径 |

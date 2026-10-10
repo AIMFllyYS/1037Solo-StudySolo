@@ -1,7 +1,7 @@
 import type { Skill } from "@/lib/types/skill";
 import type { AcademicYearId } from "@/lib/constants/academic-year";
 import type { TextToolOutput } from "@/lib/ai/agent/tools/_types";
-import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
+import type { EditingUserNoteContext } from "@/lib/notes/editor/editingUserNote";
 import type { ClassAgentContext } from "@/lib/class/agentContext";
 import type { FlashcardCatalogItem, UserNoteCatalogItem } from "@/lib/ai/agent/tools/memoryCatalog";
 import type {

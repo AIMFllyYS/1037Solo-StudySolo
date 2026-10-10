@@ -111,6 +111,9 @@
 
 - R3s 字典与认证 CLI：中英文 window 的 note/project/quiz，以及 settings 的 appearance/models/modelForm/keyboard 分为对应业务字典，四个公开命名空间形状和值不变；完整 JSON 83425 字节与前版相同，7 项翻译/键/占位符 node、6 项 DOM/外观 React、完整类型与定向 lint 通过。504 行 auth-setup CLI 保留原命令名/默认 status/main 调度，拆出路径/环境、SMTP、signup trigger、一次性邮箱和 OTP 证明流程；27 个原声明 token 保留，仅 ROOT 的父层级跟随新 helper 位置调整，路径测试确认仍为仓库根。14 项模拟 SMTP/signup/OTP/helper 检查通过，新增 helper 3 项覆盖根路径与 6–8 位码遮蔽。没有执行 status/apply-smtp/verify-trigger/verify-otp 等真实运营命令，没有发送邮件或写真实数据库。原长混合 CLI 与字典已处理，仍保留 sync/sessionStore 单一连续引擎并审查其必要性。
 
+- R3t 剩余领域目录：46 个索引 IO/相邻测试、文档 pane 和笔记 editor/selection/library/proposals 文件迁移，78 个调用者/结构路径更新；Worker 与搜索入口、窗口生命周期、笔记 store 与身份保持原所有权。完整 React 304 文件/1280 项通过、类型通过、ESLint 0 error/21 原 warning。node 首轮 2067 项/2065 通过/1 原跳过/1 失败，是 toolbar 检查仍把 note 文案视为 window.ts 内联字面量；改为检查真实 windowZh.note 值，保留组件 key/CSS 断言，相关检查通过。最后冻结统一重跑。运行位置检查确认索引继续使用 cwd/content/.index，不因源码目录产生物理路径变化。
+- R5d 符号和历史探针：删除无消费者的内部 header reader/题目 Map 包装，以及已由连续带限重采样替代的无状态线性函数、nodes-only 解析包装；真实重采样/解析/schema 保留，清理数学/parser/schema 重复转出。旧 2026-10-02 三份探针/config 和日期报告/验收/执行计划按原 Git blob 归档，保留忽略的本机日志；15 个新增原件已验证暂存 Git blob SHA256，不执行旧命令。21 项认证/快照/数学 node、14 项课堂 parser node、19 项音频/导图/公式 React 与完整类型通过。当前 70 份活文档/306 本地链接/0 缺失，Knip 文件/依赖/unlisted/binary 0，130 个值/69 类型保留为已有公开/兼容/配置/诊断表面，逐项决定见导出审查；1 个组件/连线语义颜色别名保留，不声称完整 Knip 退出 0。架构同步了目录、字典、成绩/store、生成链和最后两处连续引擎的职责理由。
+
 ## 局部阻塞
 
 
@@ -118,7 +121,7 @@
 
 ## 续接检查点
 
-已完成 R0/R1/R2、R3a–R3s 与 R4a–R4c 分层；认证/计费/AI 目录已提交 `5fe85bdb`，字典与认证 CLI 定向验证已通过并按阶段提交至同名云端重构分支，具体 SHA 以分支 Git 历史为准。R5a–R5c 已更新入口/SOP、归档历史与确认未使用源码；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
+已完成 R0/R1/R2、R3a–R3t 与 R4a–R4c 分层；字典与认证 CLI 已提交 `161edf60`，剩余目录、符号和历史探针验证已通过并按阶段提交至同名云端重构分支，具体 SHA 以分支 Git 历史为准。R5a–R5d 已更新入口/SOP、归档历史、确认未使用源码与逐项保留接口；整体 Goal 仍 active。不要将这份阶段记录解释为全项目重构完成。
 
 下一阶段仍需：
 
@@ -128,4 +131,4 @@
 4. 当前 74 份活文档、316 本地链接、0 缺失。72 份旧 handoff/loop/日期快照与 3 原参考已归档，当前模型维护与 Fast 注释已更新；SOP 07/14 与 storage 参考已核实。继续核对 rendering/framework-extension 和其余 SOP 中的存量事实（特别是旧数量/旧执行角色措辞），不能把链接通过当作所有说明已准确。37 个未使用源码和 21 个旧转发已保留可恢复原件，字节承诺已验证实际 Git blob。
 5. 最终候选统一运行适用 gate、全量类型/lint/代码/内容/React 与隔离生产构建，并复核实际浏览器与既有交互；报告真实账号、付费请求及向量新增覆盖的未验边界。最近全量为代码 2049 项/2048 通过/1 原跳过、React 300 文件/1245 项通过、ESLint 0 error/21 warning；R3n/o 的新改动虽定向通过，仍需最终统一验收。Electron 新 keyStorage 已由 electron/**/* 收入包，.test.* 被排除；最终 staged/package 资源及实际 OS 验收范围不得混同。
 
-已完成模块的职责和算法已分离；当前 inventory 2331 源码/测试文件、1695 人工源码、7 个超过 500 行、0 个超过 800 行，即时循环为 0。余下长文件是 i18n 字典、auth setup CLI 与已分层连续引擎，仍需职责审查；拥挤目录、导出候选、文档事实与最终统一门禁仍待完成，以上检查结果不替代最终验收。RootSolo 当前服务是 studysolo-web / 35349、Next 16.4.0；使用时重新核对实时健康，不盲目重复启动。
+已完成模块的职责和算法已分离；当前 inventory 2351 源码/测试文件、1714 人工源码、2 个超过 500 行、0 个超过 800 行，即时循环为 0。两处连续引擎的状态所有权和保留理由已写入架构；拥挤目录与导出表面已有分类，仍需收尾文档事实核对和最终统一门禁，以上检查结果不替代最终验收。RootSolo 当前服务是 studysolo-web / 35349、Next 16.4.0；使用时重新核对实时健康，不盲目重复启动。

@@ -5,8 +5,8 @@ import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useStore } from "@/lib/stores/ui";
 import { useChatUI } from "@/lib/stores/chat/chatUI";
-import { SELECTION_POPOVER_SCROLL_GRACE_MS } from "@/lib/notes/selectionPopover";
-import { DEFAULT_SELECTION_ASSISTANT_ACTIONS } from "@/lib/notes/selectionAssistant";
+import { SELECTION_POPOVER_SCROLL_GRACE_MS } from "@/lib/notes/selection/selectionPopover";
+import { DEFAULT_SELECTION_ASSISTANT_ACTIONS } from "@/lib/notes/selection/selectionAssistant";
 import { useSettings } from "@/lib/stores/settings";
 
 vi.mock("@/lib/keyboard/useOverlayRegistration", () => ({

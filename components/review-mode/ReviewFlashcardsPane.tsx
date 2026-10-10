@@ -6,7 +6,7 @@ import { Layers, RotateCcw } from "lucide-react";
 import FlipCard from "@/components/review/FlipCard";
 import { useReviewCards } from "@/lib/stores/learning/reviewCards";
 import { useReviewSchedule } from "@/lib/review-mode/scheduleStore";
-import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
+import { listFlashcardSubjectGroups } from "@/lib/notes/library/flashcardSubjects";
 import type { ReviewCard } from "@/lib/review/types";
 import type { ReviewGrade } from "@/lib/review-mode/scheduler";
 import { useT } from "@/lib/i18n";

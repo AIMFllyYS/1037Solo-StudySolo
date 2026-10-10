@@ -24,7 +24,7 @@ await Promise.all([
   writeFile(resolve(indexDir,'manifest.json'),JSON.stringify({version:2,builtAt:bm25.builtAt,embeddingModel:'synthetic-8d',dimension:8,chunkCount:rows.length,vectorCount:rows.length,contentHash:fixtureHash,files:[]})),
 ])
 process.env.SEARCH_INDEX_DIR=indexDir
-const [{rrfMerge},local]=await Promise.all([import('../../lib/ai/search/hybridSearch.ts'),workerMode?import('../../lib/ai/search/searchService.ts'):Promise.all([import('../../lib/ai/search/bm25Store.ts'),import('../../lib/ai/search/vectorStore.ts')])])
+const [{rrfMerge},local]=await Promise.all([import('../../lib/ai/search/hybridSearch.ts'),workerMode?import('../../lib/ai/search/searchService.ts'):Promise.all([import('../../lib/ai/search/indexes/bm25Store.ts'),import('../../lib/ai/search/indexes/vectorStore.ts')])])
 const bm25Search=workerMode?(query,topK,filter)=>local.searchLocalIndex({mode:'keyword',query,topK,filter}):local[0].bm25Search
 const vectorSearch=workerMode?(vector,topK,filter)=>local.searchLocalIndex({mode:'vector',query:'',queryVector:vector,topK,filter}):local[1].vectorSearch
 const clock=monitorEventLoopDelay({resolution:10});clock.enable()

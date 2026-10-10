@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { PanelLeftClose } from "lucide-react";
-import type { NoteTocItem } from "@/lib/notes/noteToc";
+import type { NoteTocItem } from "@/lib/notes/library/noteToc";
 
 export default function NoteTocSidebar({
   items,

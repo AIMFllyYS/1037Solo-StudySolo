@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Presentation } from "lucide-react";
-import DocumentWorkspace from "@/components/window/DocumentWorkspace";
+import DocumentWorkspace from "@/components/window/documents/DocumentWorkspace";
 import { parsePptxSlideBytes, type PptxSlideText } from "@/lib/chat/attachments/parsePptx";
 import {
   createSlideSlots,
@@ -13,7 +13,7 @@ import {
 } from "@/lib/chat/attachments/pptxSlideList";
 import { useElementWidth } from "@/lib/hooks/layout/useElementWidth";
 import { scrollToElementTop } from "@/lib/window/scrollToElementTop";
-import { translate, translateNow, useT } from "@/lib/i18n";
+import { translate, translateNow, useT } from "@/lib/i18n/index";
 import { useSettings } from "@/lib/stores/settings";
 import {disposePptxPreviewer,trackPptxMedia} from '@/lib/resources/pptxPreviewLease';
 import {registerResourceMetrics} from '@/lib/performance/resourceMetrics';

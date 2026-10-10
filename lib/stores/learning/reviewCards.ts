@@ -1,6 +1,6 @@
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { createPersistedStore } from "@/lib/stores/_persist";
-import { retargetCardSourceLabel } from "@/lib/notes/flashcardSubjects";
+import { retargetCardSourceLabel } from "@/lib/notes/library/flashcardSubjects";
 import { scheduleCloudTombstone, scheduleCloudUpsert } from "@/lib/sync/schedule";
 import type {
   ReviewCard,

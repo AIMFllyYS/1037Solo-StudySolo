@@ -5,7 +5,7 @@ import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { BLANK_NOTE_MARKDOWN, deriveNoteTitle, EXAMPLE_USER_NOTE_ID, isClassroomNote, seedExampleNoteIfEmpty, USER_NOTE_LIBRARY_WINDOW_ID, userNoteWindowId, type NoteLibraryIntent, type UserNote, type UserNoteKind } from "@/lib/notes/userNote";
 import { notifyUserNoteChanged } from "@/lib/notes/userNoteSync";
-import { carryUserNoteSearchFields } from "@/lib/notes/userNoteSearch";
+import { carryUserNoteSearchFields } from "@/lib/notes/library/userNoteSearch";
 import { stripUserNoteWindowState } from "@/lib/stores/workspace/windowPersist";
 import { useToast } from "@/lib/stores/toast";
 import type { UserNotesState } from "./userNotes/types";

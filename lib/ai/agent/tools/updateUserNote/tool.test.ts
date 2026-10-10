@@ -3,8 +3,8 @@ import { test } from "node:test";
 import { createUpdateUserNoteTool } from "./tool.ts";
 import type { UpdateUserNoteOutput } from "./types.ts";
 import type { StudyToolContext } from "@/lib/ai/agent/tools/_shared.ts";
-import { EDITING_NOTE_CONTEXT_MAX_CHARS } from "@/lib/notes/editingUserNote.ts";
-import { markdownDigest } from "@/lib/notes/noteChangeProposal.ts";
+import { EDITING_NOTE_CONTEXT_MAX_CHARS } from "@/lib/notes/editor/editingUserNote.ts";
+import { markdownDigest } from "@/lib/notes/proposals/noteChangeProposal.ts";
 
 const execOpts = {
   toolCallId: "u1",

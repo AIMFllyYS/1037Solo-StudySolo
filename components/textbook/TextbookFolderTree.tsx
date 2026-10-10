@@ -8,7 +8,7 @@ import { navTree } from "@/lib/content-data/nav";
 import { writeNotebookFileDrag } from "@/lib/chat/composer/composerIntent";
 import { toAttachedFileRef } from "@/lib/chat/attachments/fileMentions";
 import type { ContentItem } from "@/lib/types/content";
-import type { FlashcardSubjectGroup } from "@/lib/notes/flashcardSubjects";
+import type { FlashcardSubjectGroup } from "@/lib/notes/library/flashcardSubjects";
 import { useT } from "@/lib/i18n";
 import type { TextbookSelection } from "@/lib/textbook/state";
 

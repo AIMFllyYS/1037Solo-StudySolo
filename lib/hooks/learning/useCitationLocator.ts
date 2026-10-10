@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { notePathEquals } from "@/lib/content/notePath";
-import { applyCitationHighlight } from "@/lib/notes/locateSnippet";
+import { applyCitationHighlight } from "@/lib/notes/selection/locateSnippet";
 import { useNoteLocator } from "@/lib/stores/learning/noteLocator";
 
 export function useCitationLocator({

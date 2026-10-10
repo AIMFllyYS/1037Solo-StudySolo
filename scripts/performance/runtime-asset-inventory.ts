@@ -4,7 +4,7 @@ import * as path from "node:path";
 import { contentTree } from "../../lib/content-data/manifest";
 import { mediaManifest } from "../../lib/content-data/media";
 import { videoPoster } from "../../lib/content/poster";
-import { INDEX_FILES } from "../../lib/ai/search/indexIo";
+import { INDEX_FILES } from "../../lib/ai/search/indexes/indexIo";
 
 export type RuntimeTier = "web" | "desktop-online" | "desktop-offline-subjects";
 const ROOT = process.cwd();

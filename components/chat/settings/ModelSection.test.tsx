@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { RecordAssistantSection } from "./ModelSection";
 import { useSettings } from "@/lib/stores/settings";
-import { DEFAULT_SELECTION_ASSISTANT_ACTIONS } from "@/lib/notes/selectionAssistant";
+import { DEFAULT_SELECTION_ASSISTANT_ACTIONS } from "@/lib/notes/selection/selectionAssistant";
 import { DEFAULT_MODEL_ID } from "@/lib/ai/models";
 
 afterEach(() => {

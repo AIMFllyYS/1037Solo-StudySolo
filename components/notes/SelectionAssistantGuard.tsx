@@ -5,7 +5,7 @@ import { useSettings } from "@/lib/stores/settings";
 import {
   applyForeignSelectionBlockAttr,
   shouldPreventForeignSelectionMenu,
-} from "@/lib/notes/selectionAssistant";
+} from "@/lib/notes/selection/selectionAssistant";
 
 /** 全站挂载：按设置给 html 打标，并尽量拦截系统/浏览器划词菜单。 */
 export default function SelectionAssistantGuard() {

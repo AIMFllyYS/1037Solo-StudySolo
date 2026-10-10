@@ -5,7 +5,7 @@ import {
   SELECTION_ASSISTANT_ACTION_LABELS,
   type SelectionAssistantAction,
   type SelectionAssistantActions,
-} from "@/lib/notes/selectionAssistant";
+} from "@/lib/notes/selection/selectionAssistant";
 import {
   SELECTION_ACTION_ICONS,
   SelectionPopBtn,

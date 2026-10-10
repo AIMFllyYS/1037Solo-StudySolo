@@ -3,11 +3,11 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import DocumentWorkspace, { type DocumentOutlineItem } from "@/components/window/DocumentWorkspace";
-import PdfPageCanvas from "@/components/window/PdfPageCanvas";
+import DocumentWorkspace, { type DocumentOutlineItem } from "@/components/window/documents/DocumentWorkspace";
+import PdfPageCanvas from "@/components/window/documents/PdfPageCanvas";
 import { useElementWidth } from "@/lib/hooks/layout/useElementWidth";
 import { scrollToElementTop } from "@/lib/window/scrollToElementTop";
-import { translate, translateNow, useT } from "@/lib/i18n";
+import { translate, translateNow, useT } from "@/lib/i18n/index";
 import { useSettings } from "@/lib/stores/settings";
 import {DEFAULT_RESOURCE_BUDGETS} from '@/lib/performance/budgets';
 

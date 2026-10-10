@@ -3,7 +3,7 @@
 import {useEffect} from 'react'
 import {useChatHistory} from '@/lib/stores/chat/chatHistory'
 import {useNoteChangeProposals} from '@/lib/stores/assets/noteChangeProposals'
-import {collectNoteChangeProposals} from '@/lib/notes/noteChangeProposal'
+import {collectNoteChangeProposals} from '@/lib/notes/proposals/noteChangeProposal'
 
 /** Proposal ingestion lives outside the optional note editor window. */
 export default function UserNoteProposalRuntime(){

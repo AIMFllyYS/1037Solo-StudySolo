@@ -404,7 +404,7 @@ import { contentTree } from "@/lib/content-data/manifest";
 
 #### 5.5.2 vectorSearch 线性扫描（规模风险）
 
-```140:158:lib/ai/search/vectorStore.ts
+```140:158:lib/ai/search/indexes/vectorStore.ts
 export async function vectorSearch(queryEmbedding: number[], topK: number): Promise<ScoredChunk[]> {
   const index = await loadIndexAsync();
   ...

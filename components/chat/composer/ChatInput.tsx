@@ -29,7 +29,7 @@ import InputLimitDialog from '@/components/chat/attachments/InputLimitDialog';
 
 import AttachmentThumbnails from '@/components/chat/attachments/AttachmentThumbnails';
 import ProjectPickerChip from '@/components/chat/composer/ProjectPickerChip';
-import { shouldBlockFocusSteal } from '@/lib/notes/selectionPopover';
+import { shouldBlockFocusSteal } from '@/lib/notes/selection/selectionPopover';
 import { useT } from '@/lib/i18n/index';
 import type { ChatInputProps, QueuedMessage, PaletteKind } from './input/types';
 export type { ChatInputProps } from './input/types';

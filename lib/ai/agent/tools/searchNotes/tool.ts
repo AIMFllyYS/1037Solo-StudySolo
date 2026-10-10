@@ -1,7 +1,7 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { findContentItem, searchAllContent, type ContentSearchScope } from "@/lib/content/loader";
-import { getIndexHealth } from "@/lib/ai/search/indexHealth";
+import { getIndexHealth } from "@/lib/ai/search/indexes/indexHealth";
 import type { SearchDiagnostics } from "@/lib/ai/search/hybridSearch";
 import {
   SEARCH_NOTES_HIT_LIMIT,

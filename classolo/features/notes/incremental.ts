@@ -43,7 +43,6 @@ export function parseOutlineAnalysis(text:string){
   if(start<0||end<start)throw new Error('导图更新不是合法JSON')
   return analysisSchema.parse(JSON.parse(text.slice(start,end+1)))
 }
-export function parseOutlinePatch(text:string){return parseOutlineAnalysis(text).nodes}
 
 /** Model IDs for new nodes are temporary; established IDs and locked user edits are preserved. */
 export function applyOutlinePatch(existing:readonly OutlineDigestNode[],raw:unknown,allowedSources:ReadonlySet<string>):readonly OutlineDigestNode[]{

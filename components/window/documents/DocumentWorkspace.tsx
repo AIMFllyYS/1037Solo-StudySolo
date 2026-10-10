@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useIsAgentSurface } from "@/lib/window/useManagedWindowSurface";
-import { useT } from "@/lib/i18n";
+import { useT } from "@/lib/i18n/index";
 
 /**
  * 目录分组标题。**文案一律由调用方给**（i18n 在调用方做），

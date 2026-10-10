@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { BookOpen, ChevronDown } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import YearSubjectFolderTree from "@/components/layout/navigation/YearSubjectFolderTree";
-import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
+import { listFlashcardSubjectGroups } from "@/lib/notes/library/flashcardSubjects";
 import { academicYearOfSubject } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/stores/academicYear";
 import { TEXTBOOK_WINDOW_ID } from "@/lib/textbook/openTextbook";

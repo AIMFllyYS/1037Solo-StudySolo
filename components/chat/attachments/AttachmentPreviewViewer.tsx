@@ -5,10 +5,10 @@ import clsx from "clsx";
 import { Download, Globe, GlobeLock, Presentation } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import FileTypeIcon from "@/components/icons/file-types/FileTypeIcon";
-import PdfDocumentPane from "@/components/window/PdfDocumentPane";
-import DocxDocumentPane from "@/components/window/DocxDocumentPane";
-import PptxDocumentPane from "@/components/window/PptxDocumentPane";
-import DocumentWorkspace from "@/components/window/DocumentWorkspace";
+import PdfDocumentPane from "@/components/window/documents/PdfDocumentPane";
+import DocxDocumentPane from "@/components/window/documents/DocxDocumentPane";
+import PptxDocumentPane from "@/components/window/documents/PptxDocumentPane";
+import DocumentWorkspace from "@/components/window/documents/DocumentWorkspace";
 import { attachmentPreviewKind, isOpenXmlPptx } from "@/lib/chat/attachments/attachmentPreviewKind";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import type { AttachmentPreviewData } from "@/lib/stores/workspace/windowManager";
@@ -21,7 +21,7 @@ import {useObjectUrl} from '@/lib/resources/useObjectUrl';
 import { localSourceFile } from "@/lib/local-files/client";
 import dynamic from 'next/dynamic';
 import { PanelSkeleton } from "@/components/shared/LoadingStates";
-const LocalSourcePane = dynamic(() => import('@/components/window/LocalSourcePane'), { loading: () => <PanelSkeleton variant="document" /> });
+const LocalSourcePane = dynamic(() => import('@/components/window/documents/LocalSourcePane'), { loading: () => <PanelSkeleton variant="document" /> });
 
 
 /**

@@ -1,6 +1,5 @@
 import { gammaLanczos } from '@/lib/learning/probability/math/gamma';
 export { standardNormalDensity as normalPDF } from '@/lib/learning/probability/math/normal';
-export { gammaLanczos } from '@/lib/learning/probability/math/gamma';
 
 // Error function approximation (Abramowitz & Stegun 7.1.26)
 export function erf(x: number): number {

@@ -11,8 +11,6 @@ import {getClassUserId} from '@/classolo/lib/db'
 
 import { parseFlashcards, type FlashcardDraft } from './flashcard-parse'
 
-export type { FlashcardDraft } from './flashcard-parse'
-export { parseFlashcards } from './flashcard-parse'
 
 export interface GenerateFlashcardsResult {
   saved: number

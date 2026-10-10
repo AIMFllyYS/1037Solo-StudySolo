@@ -1,7 +1,7 @@
 import { billableJsonFetch } from "@/lib/billing/settlement/billableFetch";
 // 混合检索 + Rerank：并行 BM25 + 向量 → RRF 合并 → rerank API 精排 → MultiSearchHit[]
 import {searchLocalIndex,localSearchAvailability,localVectorModel,localIndexBuiltAt} from './searchService';
-import type { ScoredChunk } from "./vectorStoreTypes";
+import type { ScoredChunk } from "./indexes/vectorStoreTypes";
 import { getQueryEmbeddingClient } from "@/lib/ai/embedding";
 import { mainUsedPlatformCredentials, settleUsage } from "@/lib/billing/ledger/usageLedger";
 import { resolveSidecarBilling } from "@/lib/billing/usagePool";
@@ -14,7 +14,7 @@ import { normalizeSearchQuery } from "./queryNormalize";
 import { shortTitleForIndex } from "@/lib/ai/indexing/bm25Index";
 import type { SearchFilter } from "./searchScope";
 import { searchLog } from "./searchLog";
-import {INDEX_FILES,parseManifest,readLocalIndexFile} from './indexIo';
+import {INDEX_FILES,parseManifest,readLocalIndexFile} from './indexes/indexIo';
 
 export type { SearchFilter } from "./searchScope";
 

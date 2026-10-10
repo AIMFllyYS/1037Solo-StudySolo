@@ -1,4 +1,4 @@
-import { verifyIndexContentFreshness } from "../lib/ai/search/indexHealth";
+import { verifyIndexContentFreshness } from "../lib/ai/search/indexes/indexHealth";
 
 const fresh = verifyIndexContentFreshness();
 if (fresh === null) {

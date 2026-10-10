@@ -15,7 +15,7 @@ function readWorkspaceFile(path: string) {
  * 每一条都对应 analysis/attachment-preview-rendering-defects-2026-09-20.md 里的一个实测缺陷。
  */
 test("PPTX 阅读器走 list 模式 + 懒渲染，不再有单页缩放舞台", () => {
-  const pane = readWorkspaceFile("components/window/PptxDocumentPane.tsx");
+  const pane = readWorkspaceFile("components/window/documents/PptxDocumentPane.tsx");
   const helper = readWorkspaceFile("lib/chat/attachments/pptxSlideList.ts");
   const css = readWorkspaceFile("app/styles/chat-tools.css");
 
@@ -42,8 +42,8 @@ test("PPTX 阅读器走 list 模式 + 懒渲染，不再有单页缩放舞台", 
 });
 
 test("PDF 阅读器是连续页流：多页占位 + 按 DPR 出图 + 可取消的 render task", () => {
-  const pane = readWorkspaceFile("components/window/PdfDocumentPane.tsx");
-  const page = readWorkspaceFile("components/window/PdfPageCanvas.tsx");
+  const pane = readWorkspaceFile("components/window/documents/PdfDocumentPane.tsx");
+  const page = readWorkspaceFile("components/window/documents/PdfPageCanvas.tsx");
 
   // 单画布单页模型必须消失：不能再有 max-w-full 把位图压小。
   assert.doesNotMatch(pane, /max-w-full/);
@@ -82,7 +82,7 @@ test("HTML 附件预览：允许脚本、默认锁网、可显式放行联网", 
 });
 
 test("DocumentWorkspace：正文容器可被阅读器接管，分栏布局键按外壳拆分", () => {
-  const workspace = readWorkspaceFile("components/window/DocumentWorkspace.tsx");
+  const workspace = readWorkspaceFile("components/window/documents/DocumentWorkspace.tsx");
   const globals = readWorkspaceFile("app/globals.css");
 
   assert.match(workspace, /bodyRef/);

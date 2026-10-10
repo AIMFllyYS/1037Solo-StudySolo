@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { FLASHCARD_CITE_WINDOW_ID } from "@/lib/notes/userNote";
-import { flashcardPickerTitle } from "@/lib/notes/flashcardSubjects";
+import { flashcardPickerTitle } from "@/lib/notes/library/flashcardSubjects";
 
 // 「复习闪卡页面」管理窗的会话态（单开、不持久化，与 noteCitations 同构）。
 // 卡片本体在 useReviewCards（IndexedDB），这里只记住窗口开着、左侧选了哪一科、选中哪张。

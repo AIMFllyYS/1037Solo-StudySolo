@@ -3,7 +3,7 @@
 import type { ComponentType, MouseEventHandler, ReactNode, Ref } from "react";
 import { BookmarkPlus, Copy, Lightbulb, MessageSquare, Send, StickyNote } from "lucide-react";
 import { useT } from "@/lib/i18n";
-import type { SelectionAssistantAction } from "@/lib/notes/selectionAssistant";
+import type { SelectionAssistantAction } from "@/lib/notes/selection/selectionAssistant";
 
 export const SELECTION_POPOVER_BAR_CLASS =
   "flex items-center gap-0.5 rounded-xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] p-1 shadow-lg";

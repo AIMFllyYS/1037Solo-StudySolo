@@ -1,6 +1,6 @@
 import { DEFAULT_MODEL_ID, type ThinkingEffort } from "@/lib/ai/models";
 import { EMPTY_CAPABILITY_ENDPOINTS } from "@/lib/ai/endpoints/capabilityEndpoints";
-import { DEFAULT_SELECTION_ASSISTANT_ACTIONS } from "@/lib/notes/selectionAssistant";
+import { DEFAULT_SELECTION_ASSISTANT_ACTIONS } from "@/lib/notes/selection/selectionAssistant";
 import { MAX_TOOL_STEPS } from "@/lib/ai/agent/toolRounds";
 
 import { DEFAULT_IMAGE_MODEL_ID } from "@/lib/ai/models";

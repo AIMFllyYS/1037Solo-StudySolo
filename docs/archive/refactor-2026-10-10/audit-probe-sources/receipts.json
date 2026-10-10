@@ -1,0 +1,20 @@
+[
+  {
+    "source": "docs/analysis/class-audit-2026-10-02/audit.config.ts",
+    "target": "docs/archive/refactor-2026-10-10/audit-probe-sources/audit.config.ts.txt",
+    "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+    "sha256": "d1481829b25f6efda3d81e5ae452033d5ef47d43bdc628bfcb8609493c499fcc"
+  },
+  {
+    "source": "docs/analysis/class-audit-2026-10-02/runtime.probe.tsx",
+    "target": "docs/archive/refactor-2026-10-10/audit-probe-sources/runtime.probe.tsx.txt",
+    "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+    "sha256": "d534834c188245468c52412fc258c1a9e2f801e64f7721dd7b1efd46adf0e8ac"
+  },
+  {
+    "source": "docs/analysis/class-audit-2026-10-02/server.probe.tsx",
+    "target": "docs/archive/refactor-2026-10-10/audit-probe-sources/server.probe.tsx.txt",
+    "sourceCommit": "161edf6025b817fe9dc3f50697b80e4fd612f474",
+    "sha256": "9cca5448caf7ae13efee7afd755820e9a569dd33f94436b3a2d3c369fc998889"
+  }
+]

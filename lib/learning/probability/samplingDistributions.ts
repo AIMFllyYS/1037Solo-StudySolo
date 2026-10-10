@@ -1,5 +1,4 @@
 import { standardNormalDensity as normPDF } from '@/lib/learning/probability/math/normal';
-export { standardNormalDensity as normPDF } from '@/lib/learning/probability/math/normal';
 // ─── 数学工具：Gamma 函数近似（Lanczos，精度 ~1e-10） ────────────────────────
 export function lnGamma(z: number): number {
   const g = 7;

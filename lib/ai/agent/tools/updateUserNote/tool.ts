@@ -3,8 +3,8 @@ import { z } from "zod";
 import type { UpdateUserNoteAction, UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/types";
 import { findUserNote } from "@/lib/ai/agent/tools/memoryCatalog";
 import { toText, type StudyToolContext } from "@/lib/ai/agent/tools/_shared";
-import { EDITING_NOTE_CONTEXT_MAX_CHARS } from "@/lib/notes/editingUserNote";
-import { markdownDigest } from "@/lib/notes/noteChangeProposal";
+import { EDITING_NOTE_CONTEXT_MAX_CHARS } from "@/lib/notes/editor/editingUserNote";
+import { markdownDigest } from "@/lib/notes/proposals/noteChangeProposal";
 
 /** 缺 toolCallId 时的稳定兜底幂等键：同目标同内容 → 同 id。 */
 function fallbackProposalId(action: string, noteId: string, markdown: string): string {

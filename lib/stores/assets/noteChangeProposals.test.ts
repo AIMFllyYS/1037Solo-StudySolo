@@ -5,7 +5,7 @@ import { useUserNotes } from "@/lib/stores/learning/userNotes";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useChatHistory } from "@/lib/stores/chat/chatHistory";
 import { useToast } from "@/lib/stores/toast";
-import { markdownDigest, type NoteChangeProposal } from "@/lib/notes/noteChangeProposal";
+import { markdownDigest, type NoteChangeProposal } from "@/lib/notes/proposals/noteChangeProposal";
 
 function reset() {
   useNoteChangeProposals.getState().reset();

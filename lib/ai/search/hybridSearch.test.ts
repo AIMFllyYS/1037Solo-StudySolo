@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { expandShortQuery, rrfMerge } from "./hybridSearch.ts";
-import type { ScoredChunk } from "./vectorStore.ts";
+import type { ScoredChunk } from "./indexes/vectorStore.ts";
 
 function makeChunk(id: string, path: string): ScoredChunk {
   return {

@@ -7,7 +7,7 @@ import {
   flashcardPickerTitle,
   listFlashcardSubjectGroups,
   retargetCardSourceLabel,
-} from "@/lib/notes/flashcardSubjects";
+} from "@/lib/notes/library/flashcardSubjects";
 
 test("flashcard picker title uses the management-page name", () => {
   assert.equal(flashcardPickerTitle(null), FLASHCARD_PICKER_TITLE);

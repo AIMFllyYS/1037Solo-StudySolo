@@ -1,6 +1,6 @@
 import { type CustomModelConfig, type CustomApiGroup, type ThinkingEffort } from "@/lib/ai/models";
 import { type CapabilityEndpoints } from "@/lib/ai/endpoints/capabilityEndpoints";
-import { type SelectionAssistantActions } from "@/lib/notes/selectionAssistant";
+import { type SelectionAssistantActions } from "@/lib/notes/selection/selectionAssistant";
 
 import { type Locale } from "@/lib/i18n/types";
 

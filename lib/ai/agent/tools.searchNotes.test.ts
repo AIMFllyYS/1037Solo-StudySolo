@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { buildStudyTools, createToolRuntime } from "./tools/server.ts";
-import { resetIndexHealthCache } from "../search/indexHealth.ts";
+import { resetIndexHealthCache } from "../search/indexes/indexHealth.ts";
 
 test("searchNotes：索引缺失时返回「检索索引未加载」而不是「未检索到相关内容」", async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "search-index-"));

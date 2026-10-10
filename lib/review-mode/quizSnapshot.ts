@@ -1,4 +1,4 @@
-import type { QuizData, QuizQuestion } from "@/lib/quiz/types";
+import type { QuizData } from "@/lib/quiz/types";
 import type { ReviewQuizSourceKind, ReviewQuizSet } from "./attemptTypes";
 
 function canonicalNode(value: unknown): unknown {
@@ -42,8 +42,4 @@ export async function createQuizSetIdentity(input: {
 /** Stable within the immutable question set; an identical q.id in another chapter cannot collide. */
 export function questionLocationKey(contentHash: string, questionId: string): string {
   return `ssq-v1:${contentHash}:${encodeURIComponent(questionId)}`;
-}
-
-export function questionsById(quizData: QuizData): Map<string, QuizQuestion> {
-  return new Map(quizData.questions.map((question) => [question.id, question]));
 }

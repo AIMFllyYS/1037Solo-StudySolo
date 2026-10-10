@@ -7,7 +7,7 @@ import {
   checkProposalAgainstNote,
   type NoteChangeProposal,
   type NoteChangeStatus,
-} from "@/lib/notes/noteChangeProposal";
+} from "@/lib/notes/proposals/noteChangeProposal";
 
 // 笔记变更的待确认收件箱。Agent 只产出候选稿，写入一律经过这里。
 //

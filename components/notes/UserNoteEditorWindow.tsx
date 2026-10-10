@@ -19,13 +19,13 @@ import { downloadAsMarkdown } from "@/lib/documents/export";
 import { citeUserNoteToMainAgent, openAgentForUserNote } from "@/lib/notes/openUserNote";
 import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
 import { formatNoteQuote, userNoteWindowId } from "@/lib/notes/userNote";
-import { keepEditorShortcut } from "@/lib/notes/editorShortcuts";
+import { keepEditorShortcut } from "@/lib/notes/editor/editorShortcuts";
 import {
   focusMarkdownLine,
   parseNoteToc,
   scrollCrepeHeading,
   type NoteTocItem,
-} from "@/lib/notes/noteToc";
+} from "@/lib/notes/library/noteToc";
 import { DURATION, EASE } from "@/lib/motion";
 import { useWindowManager } from "@/lib/stores/workspace/windowManager";
 import { useT } from "@/lib/i18n";

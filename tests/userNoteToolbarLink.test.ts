@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { join } from "node:path";
+import { windowZh } from "../lib/i18n/messages/parts/zh/window";
 
 const root = process.cwd();
 
@@ -39,17 +40,16 @@ test("tool action text uses the existing toolbar button, without underline", () 
   assert.equal((flashcards.match(/className="user-note-toolbar-link"/g) || []).length, 4);
   // 文案已搬进 window 词典分片：这里同时钉住「组件引用 key」与「zh 分片里仍是原句」，
   // 两边都断言，既不丢文案，也不允许组件绕过词典写死中文。
-  const windowZh = readWorkspaceFile("lib/i18n/messages/parts/zh/window.ts");
   assert.match(flashcards, /t\("window\.note\.flashcard\.downloadOne"\)/);
-  assert.match(windowZh, /downloadOne: "下载这张"/);
+  assert.equal(windowZh.note.flashcard.downloadOne, "下载这张");
   assert.match(flashcards, /t\("window\.note\.flashcard\.downloadCsv"\)/);
-  assert.match(windowZh, /downloadCsv: "下载 CSV"/);
+  assert.equal(windowZh.note.flashcard.downloadCsv, "下载 CSV");
   assert.match(flashcards, /t\("window\.note\.flashcard\.openBoard"\)/);
-  assert.match(windowZh, /openBoard: "打开复习板"/);
+  assert.equal(windowZh.note.flashcard.openBoard, "打开复习板");
   assert.match(flashcards, /t\("window\.note\.flashcard\.edit"\)/);
-  assert.match(windowZh, /edit: "编辑"/);
+  assert.equal(windowZh.note.flashcard.edit, "编辑");
   assert.match(cloud, /className="user-note-toolbar-link"[\s\S]{0,180}t\("window\.memory\.dismiss"\)/);
-  assert.match(windowZh, /dismiss: "不用了"/);
+  assert.equal(windowZh.memory.dismiss, "不用了");
 
   assert.doesNotMatch(noteEditor, /user-note-toolbar-link/);
   assert.match(noteEditor, /user-note-chrome-btn/);

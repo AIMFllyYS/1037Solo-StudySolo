@@ -1,12 +1,12 @@
 // BM25 检索：惰性加载 content/.index/bm25.json（v3 紧凑格式或旧版字符串 posting）。
 import { parseBm25Index, tokenize, type RuntimeBm25Index } from "@/lib/ai/indexing/bm25Index";
 import type { ScoredChunk } from "./vectorStoreTypes";
-import type { SearchFilter } from "./searchScope";
-import { chunkInScope } from "./searchScope";
+import type { SearchFilter } from "../searchScope";
+import { chunkInScope } from "../searchScope";
 import { INDEX_FILES, readLocalIndexFile,getChunkMetadataIndex,type SearchChunkMeta } from "./indexIo";
-import { searchLog, searchLogOnce } from "./searchLog";
+import { searchLog, searchLogOnce } from "../searchLog";
 import {createIndexLoader} from './indexLoader';
-import {scoreBm25Core} from './worker/core.mjs';
+import {scoreBm25Core} from '../worker/core.mts';
 
 export { tokenize };
 

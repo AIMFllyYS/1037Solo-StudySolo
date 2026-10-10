@@ -2,7 +2,7 @@
 
 import { Check } from "lucide-react";
 import AnchoredMenu from "@/components/ui/AnchoredMenu";
-import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
+import { listFlashcardSubjectGroups } from "@/lib/notes/library/flashcardSubjects";
 import { subjectLabel } from "@/lib/notes/userNote";
 
 interface SubjectPickerMenuProps {

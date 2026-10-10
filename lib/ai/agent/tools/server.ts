@@ -36,7 +36,7 @@ import { createUpdateUserNoteTool } from "@/lib/ai/agent/tools/updateUserNote/to
 import { createGetProjectFilesTool } from "@/lib/ai/agent/tools/getProjectFiles/tool";
 import { createReadProjectSlicesTool } from "@/lib/ai/agent/tools/readProjectSlices/tool";
 import { createSearchClassTranscriptTool } from "@/lib/ai/agent/tools/searchClassTranscript/tool";
-import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
+import type { EditingUserNoteContext } from "@/lib/notes/editor/editingUserNote";
 import type { ArtifactCatalogItem } from "@/lib/ai/agent/tools/getArtifact/types";
 import { PLAN_MODE_WRITE_TOOL_SET } from "@/lib/ai/agent/planMode";
 

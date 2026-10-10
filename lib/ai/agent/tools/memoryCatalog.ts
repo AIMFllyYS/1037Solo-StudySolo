@@ -1,6 +1,6 @@
 import { extractSnippet, matchFlashcard, matchUserNote } from "@/lib/search/globalSearch";
 import { subjectLabel } from "@/lib/notes/userNote";
-import { markdownDigest } from "@/lib/notes/noteChangeProposal";
+import { markdownDigest } from "@/lib/notes/proposals/noteChangeProposal";
 
 /** 请求里随身带的本机笔记/闪卡目录上限：只给工具按需取，不进 system 全文。 */
 export const MAX_MEMORY_NOTES = 24;

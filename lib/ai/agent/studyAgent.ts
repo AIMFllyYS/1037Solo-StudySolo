@@ -27,7 +27,7 @@ import { formatArtifactCatalog, type ArtifactCatalogItem } from "@/lib/context/c
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
 import { isTextOnlyContinuation, type ContinuationKind } from "@/lib/ai/agent/completionGuard";
 import { normalizeUserMaxOutputTokens } from "@/lib/ai/outputLimits";
-import { formatEditingUserNoteContext, type EditingUserNoteContext } from "@/lib/notes/editingUserNote";
+import { formatEditingUserNoteContext, type EditingUserNoteContext } from "@/lib/notes/editor/editingUserNote";
 import { formatClassContextBlock, type ClassAgentContext } from "@/lib/class/agentContext";
 import {
   formatMemoryCatalogLine,

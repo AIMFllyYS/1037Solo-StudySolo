@@ -47,12 +47,6 @@ export type AiGateDecision =
       headers?: Record<string, string>;
     };
 
-export function readTrustedProxyUserId(headers: { get(name: string): string | null }): string | null {
-  const id = headers.get(TRUSTED_PROXY_USER_HEADER)?.trim();
-  if (!id || id.length > 128) return null;
-  return id;
-}
-
 /** Compatibility name; canonical identity comes only from Account introspection. */
 export async function verifySupabaseAccessToken(token: string): Promise<GateUser | null> {
   const result=await verifyAccount(token,{accountBackendUrl:accountBackendUrl('account-shared')});

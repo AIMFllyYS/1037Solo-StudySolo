@@ -3,7 +3,7 @@ import { contentTree } from "@/lib/content-data/manifest";
 import { readContentMarkdown } from "@/lib/content/loader";
 import { isSubjectId } from "@/lib/types/content";
 import { isSubjectInRuntime } from "@/lib/content/offlineSubjects";
-import { INDEX_FILES, parseManifest, readLocalIndexFile } from "@/lib/ai/search/indexIo";
+import { INDEX_FILES, parseManifest, readLocalIndexFile } from "@/lib/ai/search/indexes/indexIo";
 import {
   buildGlobalSearchIndex,
   clampSearchQuery,

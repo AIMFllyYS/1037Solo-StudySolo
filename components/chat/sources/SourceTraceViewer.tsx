@@ -5,7 +5,7 @@ import { BookOpen, Globe } from 'lucide-react';
 import EmbedFallback from '@/components/browser/EmbedFallback';
 import WebviewSite from '@/components/browser/WebviewSite';
 import ManagedWindow from '@/components/window/ManagedWindow';
-import DocumentWorkspace, { type DocumentOutlineGroup } from '@/components/window/DocumentWorkspace';
+import DocumentWorkspace, { type DocumentOutlineGroup } from '@/components/window/documents/DocumentWorkspace';
 import NoteRenderer from '@/components/notes/NoteRenderer';
 import PlainTextReader from '@/components/notes/PlainTextReader';
 import { SOURCE_TRACE_WINDOW_ID, sourceItemKey } from '@/lib/chat/sources/openSourceTrace';

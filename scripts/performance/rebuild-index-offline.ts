@@ -5,7 +5,7 @@ import { createHash } from "node:crypto";
 import { generateChunks } from "../../lib/ai/indexing/chunker";
 import { buildCompactBm25Index } from "../../lib/ai/indexing/bm25Index";
 import { contentHashOf } from "../../lib/ai/indexing/contentHash";
-import { INDEX_FILES, parseManifest } from "../../lib/ai/search/indexIo";
+import { INDEX_FILES, parseManifest } from "../../lib/ai/search/indexes/indexIo";
 
 const root = process.cwd();
 const source = path.resolve(root, "content/.index");

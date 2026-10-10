@@ -1,6 +1,6 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { getIndexHealth, verifyIndexContentFreshness } from "../../lib/ai/search/indexHealth";
+import { getIndexHealth, verifyIndexContentFreshness } from "../../lib/ai/search/indexes/indexHealth";
 import { searchLocalIndex, shutdownSearchWorker } from "../../lib/ai/search/searchService";
 
 const arg = process.argv.find((value) => value.startsWith("--dir="));

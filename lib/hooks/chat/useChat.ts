@@ -22,7 +22,7 @@ import {
   buildChatRequestBody, kickoffSessionTitle, classifySendError, executeChatRequest,
   type SendMessageOptions,
 } from '@/lib/chat/sendMessage';
-import { selectEditingUserNote } from '@/lib/notes/selectEditingNote';
+import { selectEditingUserNote } from '@/lib/notes/editor/selectEditingNote';
 import { collectFlashcardCatalog, collectUserNoteCatalog } from '@/lib/ai/agent/tools/memoryCatalog';
 import { useUserNotes } from '@/lib/stores/learning/userNotes';
 import { useReviewCards } from '@/lib/stores/learning/reviewCards';
