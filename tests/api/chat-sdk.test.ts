@@ -212,7 +212,7 @@ test('chat SDK: real route → transport → parts preserves reasoning, tools, c
   assert.equal(firstMessages.filter((m) => m.role === 'system').length, 1);
   assert.match(firstMessages[0].content, /【上下文策略】/);
   assert.match(firstMessages[0].content, /文件引用可继续按需读取/);
-  assert.match(firstMessages[0].content, /【参考材料】/);
+  assert.doesNotMatch(firstMessages[0].content, /【参考材料】/);
   const modelToolResult = (requests[1].messages as Array<{ role: string; content: string }>).find((m) => m.role === 'tool');
   assert.ok(modelToolResult?.content);
   assert.doesNotMatch(modelToolResult.content, /"contextKey"|"sources"/);

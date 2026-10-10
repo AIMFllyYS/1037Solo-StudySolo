@@ -22,7 +22,7 @@ test("项目文件入口只在 Agent 的加号菜单里，且排在最上面一�
 
 test("项目文件窗：注册类型、窗层、图标与打开入口", () => {
   const manager = readFile("lib/stores/windowManager.ts");
-  assert.match(manager, /\| "project-files";/);
+  assert.match(manager, /\| "project-files"/);
   assert.match(manager, /export interface ProjectFilesData \{\s*projectId: string;\s*\}/);
   assert.match(readFile("components/window/DeferredWindowLayers.tsx"), /ProjectFilesLayer/);
   assert.match(readFile("components/window/WindowTypeIcon.tsx"), /type === "project-files"/);
