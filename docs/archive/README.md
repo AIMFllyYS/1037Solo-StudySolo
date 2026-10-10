@@ -9,6 +9,7 @@
 | [historical-docs](refactor-2026-10-10/historical-docs/README.md) | 旧 handoff、Agent loop/模型调研、9-9/Agent/Content/性能审计、旧右栏计划；原测试/存储/归档索引快照 | 当前架构、维护与测试 SOP、领域参考 |
 | [document-entrypoints](refactor-2026-10-10/document-entrypoints/README.md) | 中英文 README 与 docs/plans 入口原文和 SHA256 | 当前 README / docs 索引 |
 | [source-shims](refactor-2026-10-10/source-shims/README.md) | 21 个旧纯 hook 转发源码文本 | 真实领域 store |
+| [retired-source](refactor-2026-10-10/retired-source/README.md) | 经实际入口和集合外消费者核实的旧 Classolo/认证/构建/生成源码 | 当前应用与维护 CLI |
 
 本轮原件按来源路径和 manifest 记录恢复；承诺字节原件的文件在 Git 中也保持原行尾。原相对路径以原文件所在目录解释，正文不为消除历史断链而改写；未入库的旧验收附件仍须如实标记缺失。
 

@@ -1,9 +1,7 @@
 /**
- * ASR Provider 工厂。适配器按协议族放在本目录：
- *   realtime-ws/    阶跃 stepaudio-2.5-asr-stream + 百炼 qwen3-asr-flash-realtime（双 dialect）
- *   transcriptions-rest/  OpenAI 兼容文件端点 + 切片伪流式降级
- *   local-engine/   sherpa-onnx（Electron 阶段接入）
- * 业务代码只 import 本文件与 types.ts。
+ * 当前 ASR 工厂统一使用应用拥有的 /api/class/asr REST 代理与热词装配。
+ * ASRConfig 保留协议族兼容类型；它不意味着客户端会选择旧直连 WebSocket 实现。
+ * 业务代码从本入口与 types.ts 读取契约，凭据/准入/真实上游保持服务端归属。
  */
 import { getCustomHotwords, mergeHotwords } from './custom-hotwords'
 import { getSelectedHotwordPackId, resolveHotwordPack } from './hotword-packs'

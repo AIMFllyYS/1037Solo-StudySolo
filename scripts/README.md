@@ -39,8 +39,12 @@
 
 - `content/` — 内容抽取辅助（docx 图文、纪要）
 - `media/` — 视频海报与 COS 上传
-- `workflows/` — 章节生成工作流
-- `legacy/` — 已弃用的构建辅助，见该目录 README
+- 旧 `workflows/` — 使用 `D:/new_project/Gailvlun` 和旧智能体编排的章节生成 DSL，已保存到 [源码归档](../docs/archive/refactor-2026-10-10/retired-source/README.md)，当前内容生产使用现行 SOP。
+- `legacy/` — 停用构建辅助的归档指针，见该目录 README。
+
+Knip 将 app 特殊入口、proxy/instrumentation、Classolo、搜索 Worker 和实际 CLI 纳入分析。`ops/supabase-mcp-client.mjs` 是读取父工作区 MCP 配置的受限操作命令，`sandbox/prepare-template.ts` 和 `refresh-skill-catalog.mjs` 是运行模板/技能清单维护入口；声明入口不授权执行其外部操作。
+
+`server-only` 是 Next 内部处理的标记，安装版官方文档说明安装 npm 包可选；Knip 仅对 `lib/content-data/server.ts` 的该未列出标记作明确例外。技能包 `render_pdf.js` 在云模板而非 app 包中使用预装 Playwright，保留完整包资源及其独立运行依赖；不将它从源码删掉，也不为它安装浏览器到 app 依赖。ffmpeg 为媒体 CLI 的外部工具，不是 npm 包。其他未使用导出/类型继续报告，不能用泛化 ignore 隐藏。
 
 ## 本地产物板块（均被 `.gitignore` 忽略，不进版本库）
 

@@ -1,0 +1,229 @@
+{
+  "archivedAt": "2026-10-10T08:26:23.173Z",
+  "sourceCommit": "ed7deb4000d037873e9520982c6bfc7a125e9de9",
+  "evidence": "Knip with real entrypoints, static/type/lazy consumer inventory and manual runtime entry inspection. No import from outside this retired set. Current ASR factory uses the application-owned REST proxy, current classroom settings use capabilities/course forms, and old workflows target D:/new_project/Gailvlun.",
+  "records": [
+    {
+      "source": "components/auth/OtpInput.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/components/auth/OtpInput.tsx.txt",
+      "bytes": 3258,
+      "sha256": "55ce8fbb14054bf3d48211f32398852da5ebf0a7928ecfaf341978bb57fec15f"
+    },
+    {
+      "source": "scripts/legacy/free-build-disk.mjs",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/scripts/legacy/free-build-disk.mjs.txt",
+      "bytes": 4403,
+      "sha256": "4c74b7daae19f213172c818a17ee5422d93c4a281628b20880e66ab23abd9a3d"
+    },
+    {
+      "source": "scripts/legacy/report-disk.mjs",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/scripts/legacy/report-disk.mjs.txt",
+      "bytes": 1398,
+      "sha256": "9abc11b5044b1af0a14a601606e72e08d5d83ab889b180ceeb741371e6dcf7a2"
+    },
+    {
+      "source": "scripts/workflows/generate-all-chapters.workflow.js",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/scripts/workflows/generate-all-chapters.workflow.js.txt",
+      "bytes": 62312,
+      "sha256": "b6ecf2f261a138e9a76c61209cc35dbeda4e5fe9ee093b12f695cba6d548a5bd"
+    },
+    {
+      "source": "scripts/workflows/generate-chapter.workflow.js",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/scripts/workflows/generate-chapter.workflow.js.txt",
+      "bytes": 14363,
+      "sha256": "11850d4c498f1eb2a1136daa01e4a0a491515e51a87597b430b700db5ed1a1ce"
+    },
+    {
+      "source": "classolo/components/layout/app-chrome.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/layout/app-chrome.tsx.txt",
+      "bytes": 487,
+      "sha256": "18c7b7f3674d030cdd85206443d87750cd2dc484ccc4bc8176df6bdd167fa24e"
+    },
+    {
+      "source": "classolo/components/layout/index.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/layout/index.ts.txt",
+      "bytes": 727,
+      "sha256": "97ae439a3d27c88d15b5f9e76767e0ec0f26606b2f9195487fe7b92837ed8468"
+    },
+    {
+      "source": "classolo/components/layout/layout-storage.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/layout/layout-storage.ts.txt",
+      "bytes": 764,
+      "sha256": "01f618ef86d329cb5961a23b4b675e599bfc79cb3258cc2ddf9d1a4de3d3434f"
+    },
+    {
+      "source": "classolo/components/layout/narrow.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/layout/narrow.ts.txt",
+      "bytes": 224,
+      "sha256": "ac93e73f255947c9d7a15158c527529f5dd584cd220df479ad06cd53d4886a8d"
+    },
+    {
+      "source": "classolo/components/layout/use-is-client.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/layout/use-is-client.ts.txt",
+      "bytes": 278,
+      "sha256": "32128e373bb3f49a51aa4195b0e21e4ce4c71930667a11960691dbf2185f6333"
+    },
+    {
+      "source": "classolo/components/layout/workbench-panes.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/layout/workbench-panes.tsx.txt",
+      "bytes": 3637,
+      "sha256": "29d1c6209a63cf641b496fad6734e18d293892367ac07c3dd577c78fa4108c59"
+    },
+    {
+      "source": "classolo/features/agent/crp-sample-seeder.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/agent/crp-sample-seeder.tsx.txt",
+      "bytes": 1986,
+      "sha256": "4823e377c48d6bac31b02796fba9c3da2e79804da950c0e8528c95ff603ac9ed"
+    },
+    {
+      "source": "classolo/components/ui/button.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/ui/button.tsx.txt",
+      "bytes": 2272,
+      "sha256": "eea6479df3a697db606b8f08197e465e2cd4b82868760d4a54b03ad9aba671d9"
+    },
+    {
+      "source": "classolo/components/ui/card.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/ui/card.tsx.txt",
+      "bytes": 2060,
+      "sha256": "27f7d97b8fc7212f632bf6264efe8ed166fff7a45e8177bcb2f7718fa14ae7d4"
+    },
+    {
+      "source": "classolo/components/ui/index.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/ui/index.ts.txt",
+      "bytes": 905,
+      "sha256": "72d38e38c12b10a72cee4379b4d7bff8428c12f99ed094f5f3676e2d47ef4686"
+    },
+    {
+      "source": "classolo/components/ui/input.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/ui/input.tsx.txt",
+      "bytes": 818,
+      "sha256": "795b3ea32318ebe6f6370643a34fbb78851d1e29cf7d659ab151804653f8ae79"
+    },
+    {
+      "source": "classolo/components/ui/kit.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/ui/kit.ts.txt",
+      "bytes": 873,
+      "sha256": "dc2810d868dc68429b141f8ddc5edbbcca40c9d85d55b782f4f03c941607a64b"
+    },
+    {
+      "source": "classolo/components/ui/select.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/ui/select.tsx.txt",
+      "bytes": 5995,
+      "sha256": "b58481ff08b61184d604eb66a01ec6e073a223ef59626d78c16488b5b7dbd952"
+    },
+    {
+      "source": "classolo/components/ui/skeleton.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/ui/skeleton.tsx.txt",
+      "bytes": 338,
+      "sha256": "8336c1eed2b27a7190e78987e3f19719a09a23bd056f76503dd891caad983e01"
+    },
+    {
+      "source": "classolo/components/ui/sonner.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/ui/sonner.tsx.txt",
+      "bytes": 648,
+      "sha256": "1db9b7c4aae72fe919b10dd6edad84f651ebeace15cbdfc38d44fe4dc9a67611"
+    },
+    {
+      "source": "classolo/components/ui/switch.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/ui/switch.tsx.txt",
+      "bytes": 1461,
+      "sha256": "6edc85f99fe3767654c5366009494a91ad59f378cbf6c5a834bf86e74680bf9f"
+    },
+    {
+      "source": "classolo/components/ui/tabs.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/components/ui/tabs.tsx.txt",
+      "bytes": 2669,
+      "sha256": "a90603c6150a729efa423617bf4619956ee289a99b90b4af0b7224363329075a"
+    },
+    {
+      "source": "classolo/features/render-modules/kit.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/render-modules/kit.ts.txt",
+      "bytes": 506,
+      "sha256": "1d969dc40fb837d55ac04fb3f8067801ac31a0e3de793bf5c9cdc1dc586236f2"
+    },
+    {
+      "source": "classolo/features/settings/ai-form.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/ai-form.tsx.txt",
+      "bytes": 3830,
+      "sha256": "367feaa441c812f0e8c1a00c128c1cfc0b6fd9555c8c7907ab34f4412bc8c86e"
+    },
+    {
+      "source": "classolo/features/settings/ai-ping.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/ai-ping.ts.txt",
+      "bytes": 1458,
+      "sha256": "b76ae6ef30e00e52d88a4ee1dc7c5d87ba0d1dba6f8aaa9930a51e374e1c9a01"
+    },
+    {
+      "source": "classolo/features/settings/ai-save.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/ai-save.ts.txt",
+      "bytes": 1199,
+      "sha256": "4f4f13c222ac8622a49922f926827aaf18fe3a15e0bf446d085c00a238d19250"
+    },
+    {
+      "source": "classolo/features/settings/asr-config.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/asr-config.ts.txt",
+      "bytes": 1955,
+      "sha256": "dc9912d8069011bd52f7141a840b6c3fe4c28e9a73bc986e90f2dbaf0d29008c"
+    },
+    {
+      "source": "classolo/features/settings/asr-form.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/asr-form.tsx.txt",
+      "bytes": 6740,
+      "sha256": "1cffffac76cb479405777699ccc75a35dd5aa4eeee467e28f11311b8ad550196"
+    },
+    {
+      "source": "classolo/features/settings/asr-private-store.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/asr-private-store.ts.txt",
+      "bytes": 837,
+      "sha256": "2d5246c38dbb4da40156b078b09970bfcb48ba809b8c64709fe9b6ad108fb4e8"
+    },
+    {
+      "source": "classolo/features/settings/asr-save.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/asr-save.ts.txt",
+      "bytes": 1840,
+      "sha256": "bcd71b2e42449facbe839d05657117c042a54e70cf1371efae3ba3400ced8a8e"
+    },
+    {
+      "source": "classolo/features/settings/hotwords-form.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/hotwords-form.tsx.txt",
+      "bytes": 4396,
+      "sha256": "c4c8f69c89a42eb664b3942827727f6afd914cc371e67ce6ad2c53e1a31f850f"
+    },
+    {
+      "source": "classolo/features/settings/hotwords-save.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/hotwords-save.ts.txt",
+      "bytes": 1711,
+      "sha256": "a788a628fdbe33a2f0f5e9de6f74bd59567ab7d4cf387831a061b77b384ba53f"
+    },
+    {
+      "source": "classolo/features/settings/private-store.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/private-store.ts.txt",
+      "bytes": 708,
+      "sha256": "cd734814809de632a54794c606b2040f823ae66a358be63603fcbbd19377ca9e"
+    },
+    {
+      "source": "classolo/features/settings/screen.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/screen.tsx.txt",
+      "bytes": 1357,
+      "sha256": "d70eb1aa2f4bb381b150ff37b249818ed37ac4a62521e31da1b46eb6ab3c0146"
+    },
+    {
+      "source": "classolo/features/settings/theme-form.tsx",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/features/settings/theme-form.tsx.txt",
+      "bytes": 2493,
+      "sha256": "ea071cbb3dbaf68a72f8d73cc8386cf5c70b65005a0333f98c98a2c3e625ac9f"
+    },
+    {
+      "source": "classolo/lib/session/writes/settings.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/lib/session/writes/settings.ts.txt",
+      "bytes": 356,
+      "sha256": "b4f5fd481d431d9523fb1eef0d17ea8fda10dedff4510a420ba13bb25d00778f"
+    },
+    {
+      "source": "classolo/lib/providers/asr/realtime-ws/stepfun.ts",
+      "target": "docs/archive/refactor-2026-10-10/retired-source/classolo/lib/providers/asr/realtime-ws/stepfun.ts.txt",
+      "bytes": 5776,
+      "sha256": "de1ab955a4436c2cf6063678e498149de2d9564bc86c154317831b6eb0680852"
+    }
+  ]
+}

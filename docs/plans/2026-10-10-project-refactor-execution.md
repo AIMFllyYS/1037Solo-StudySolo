@@ -91,6 +91,8 @@
 
 - R5b 文档归档与 SOP：72 份旧 handoff/Agent loop/日期审计/右栏计划迁入带来源路径的历史归档，测试/存储/归档索引另存 3 份原文快照；先提供当前 model-registry，再改 Fast 注册表唯一活源码维护注释，不恢复旧任务。重写测试 SOP 和实际 owner/v3 checkpoint/storage 参考，增加项目维护 SOP；旧无归属历史、所有者、失败/恢复与完整历史规则按源码核对。Markdown 检查改为实际 AST 解析，3 项测试覆盖 code 示例/引用/图片/括号转义；当前 74 份活文档、316 个本地链接、0 缺失。归档正文与缺失旧附件没有伪造或批量回改，静态链接通过不等于全篇事实审查完成。
 
+- R5c 已确认未使用源码：正式 Knip 包含 Next proxy/instrumentation、Classolo、实际 CLI、Worker、Electron CJS 和沙箱技能脚本；server-only 按安装版 Next 官方“内部处理、安装可选”说明保留，云模板中的 Playwright 和媒体 ffmpeg 按独立运行环境解释，不混进 app 依赖。37 个已退出运行的 Classolo/OTP/旧构建/旧目录生成 DSL 原件保存为 txt；清点确认集合外静态/类型/延迟导入为 0，并核对了当前课堂 settings、ASR REST factory、公开 session/渲染入口。readLocalFile 重复内联 metadata 改为引用原 presentation 模块。删除无实际消费者的 class-variance-authority / sonner 两个直接依赖，锁文件仅对应移除。全量代码 2049 项/2048 通过/1 原跳过/0 失败，React 300 文件/1245 项通过，全量类型通过、ESLint 0 error/21 warning。Knip 文件/依赖/unlisted/binary 候选均为 0，但仍报告 137 个值导出、55 个类型，包含公共 façade/协议和待继续核实项，未伪称完整 Knip 通过。
+
 ## 局部阻塞
 
 

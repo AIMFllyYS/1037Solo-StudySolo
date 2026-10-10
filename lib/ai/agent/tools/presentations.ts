@@ -27,10 +27,11 @@ import { presentation as updateUserNote } from "@/lib/ai/agent/tools/updateUserN
 import { presentation as getProjectFiles } from "@/lib/ai/agent/tools/getProjectFiles/presentation";
 import { presentation as readProjectSlices } from "@/lib/ai/agent/tools/readProjectSlices/presentation";
 import { presentation as searchClassTranscript } from "@/lib/ai/agent/tools/searchClassTranscript/presentation";
+import { presentation as readLocalFile } from "@/lib/ai/agent/tools/readLocalFile/presentation";
 
 export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
   readSavedAsset:{labelKey:'trace.tool.readSavedAsset.label',settingsLabelKey:'trace.tool.readSavedAsset.settingsLabel',descriptionKey:'trace.tool.readSavedAsset.description',icon:'file',toggleable:false},
-  readLocalFile: {labelKey:'trace.tool.readLocalFile.label',settingsLabelKey:'trace.tool.readLocalFile.settingsLabel',descriptionKey:'trace.tool.readLocalFile.description',icon:'file',toggleable:false},
+  readLocalFile,
   cloudSandbox,
   learningConnectors,
   kitSolo,

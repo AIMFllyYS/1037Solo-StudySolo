@@ -26,3 +26,4 @@ lib/sandbox/skill-packs/**/*.md whitespace=-blank-at-eol
 docs/archive/refactor-2026-10-10/document-entrypoints/root/** -text whitespace=cr-at-eol,-blank-at-eol
 docs/archive/refactor-2026-10-10/document-entrypoints/docs/** -text whitespace=cr-at-eol,-blank-at-eol
 docs/archive/refactor-2026-10-10/historical-docs/** -text whitespace=cr-at-eol,-blank-at-eol
+docs/archive/refactor-2026-10-10/retired-source/** -text whitespace=cr-at-eol,-blank-at-eol

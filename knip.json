@@ -2,16 +2,31 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "entry": [
     "app/**/{page,layout,route,manifest,not-found,error,loading}.{ts,tsx}",
-    "electron/**/*.{js,mjs,ts}",
+    "proxy.ts",
+    "instrumentation.ts",
+    "electron/**/*.{js,mjs,cjs,ts}",
     "scripts/*.{ts,mjs,js}",
+    "scripts/connectors/*.{ts,mjs,js}",
+    "scripts/content/*.{ts,mjs,js}",
+    "scripts/files/*.{ts,mjs,js}",
+    "scripts/maintenance/*.{ts,mjs,js}",
+    "scripts/media/*.{ts,mjs,js}",
+    "scripts/performance/*.{ts,mjs,js}",
+    "scripts/ops/supabase-mcp-client.mjs",
+    "scripts/sandbox/reap.ts",
+    "scripts/sandbox/prepare-template.ts",
+    "scripts/sandbox/refresh-skill-catalog.mjs",
+    "lib/ai/search/worker/index.mts",
+    "lib/sandbox/skill-packs/notes-to-handbook/scripts/render_pdf.js",
     "**/*.test.{ts,tsx}"
   ],
-  "project": ["app/**", "components/**", "lib/**", "electron/**", "scripts/*.{ts,mjs,js}"],
+  "project": ["app/**", "components/**", "lib/**", "classolo/**", "electron/**", "scripts/**/*.{ts,mjs,js}", "proxy.ts", "instrumentation.ts"],
+  "ignore": ["scripts/archive/**", "scripts/one-off/**"],
   "ignoreDependencies": [
     "electron-builder",
     "@types/mdast"
   ],
-  "ignoreBinaries": ["robocopy", "whoami.exe", "icacls.exe"],
+  "ignoreBinaries": ["robocopy", "whoami.exe", "icacls.exe", "ffmpeg"],
   "ignoreMembers": ["default"],
   "ignoreExportsUsedInFile": true,
   "ignoreIssues": {
@@ -19,7 +34,9 @@
     "lib/context/index.ts": ["types"],
     "components/visualizations/primitives/index.ts": ["types"],
     "lib/auth/sign-in/sign-in-window.ts": ["exports", "types"],
-    "lib/auth/sign-in/sign-in-prompt.ts": ["files", "exports", "types"]
+    "lib/auth/sign-in/sign-in-prompt.ts": ["files", "exports", "types"],
+    "lib/content-data/server.ts": ["unlisted"],
+    "lib/sandbox/skill-packs/notes-to-handbook/scripts/render_pdf.js": ["unlisted"]
   },
   "treatConfigHintsAsErrors": false,
   "next": true,
